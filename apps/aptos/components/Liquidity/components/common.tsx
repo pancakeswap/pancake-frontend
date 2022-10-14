@@ -1,5 +1,5 @@
 import React from 'react'
-import { Percent, CurrencyAmount, Token, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Percent, CurrencyAmount, Price } from '@pancakeswap/aptos-swap-sdk'
 import { Currency } from '@pancakeswap/swap-sdk-core'
 
 import {
@@ -170,7 +170,7 @@ export const AddLiquidityModalHeader = ({
                 {currencyA?.symbol && currencyB?.symbol && getLPSymbol(currencyA.symbol, currencyB.symbol)}
               </Text>
             </AutoRow>
-            <Text ml="8px">{liquidityMinted?.toSignificant(6) || 0}</Text>
+            <Text ml="8px">{liquidityMinted?.toSignificant(8)}</Text>
           </RowBetween>
         </GreyCard>
       </AutoColumn>

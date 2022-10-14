@@ -34,11 +34,11 @@ const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposit
 
   const token0USDValue =
     token0Deposited && token0Price
-      ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(6)))
+      ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(8)))
       : null
   const token1USDValue =
     token1Deposited && token1Price
-      ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(6)))
+      ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(8)))
       : null
   return token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
 }

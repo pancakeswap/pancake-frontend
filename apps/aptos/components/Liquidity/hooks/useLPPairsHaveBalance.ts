@@ -32,7 +32,11 @@ const selector = (resource: FetchAccountResourcesResult) => {
 export default function useLPPairsHaveBalance(): LPPairsResponse {
   const { account } = useAccount()
 
-  const { data: v2PairsBalances, isLoading } = useAccountResources({
+  const {
+    data: v2PairsBalances,
+    isLoading,
+    isIdle,
+  } = useAccountResources({
     watch: true,
     address: account?.address,
     select: selector,
@@ -51,8 +55,10 @@ export default function useLPPairsHaveBalance(): LPPairsResponse {
   return useMemo(
     () => ({
       data: filterPair(v2Pairs),
-      loading: isLoading || Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING)),
+      loading:
+        (isIdle && isLoading) ||
+        Boolean(v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING)),
     }),
-    [v2Pairs, isLoading],
+    [v2Pairs, isLoading, isIdle],
   )
 }

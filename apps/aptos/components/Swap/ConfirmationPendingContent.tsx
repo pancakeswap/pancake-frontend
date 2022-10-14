@@ -16,9 +16,9 @@ function ConfirmationPendingContent({ trade }: { trade: Trade<Currency, Currency
 
   // text to show while loading
   const pendingText = t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
-    amountA: trade?.inputAmount?.toSignificant(6) ?? '',
+    amountA: trade?.inputAmount?.toSignificant(8) ?? '',
     symbolA: trade?.inputAmount?.currency?.symbol ?? '',
-    amountB: trade?.outputAmount?.toSignificant(6) ?? '',
+    amountB: trade?.outputAmount?.toSignificant(8) ?? '',
     symbolB: trade?.outputAmount?.currency?.symbol ?? '',
   })
 

@@ -142,11 +142,11 @@ export default function useBurnLiquidityInfo(
         ? '<1'
         : parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0),
       [Field.LIQUIDITY]:
-        independentField === Field.LIQUIDITY ? typedValue : parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? '',
+        independentField === Field.LIQUIDITY ? typedValue : parsedAmounts[Field.LIQUIDITY]?.toSignificant(8) ?? '',
       [Field.CURRENCY_A]:
-        independentField === Field.CURRENCY_A ? typedValue : parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '',
+        independentField === Field.CURRENCY_A ? typedValue : parsedAmounts[Field.CURRENCY_A]?.toSignificant(8) ?? '',
       [Field.CURRENCY_B]:
-        independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
+        independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(8) ?? '',
     }),
     [parsedAmounts, typedValue, independentField],
   )

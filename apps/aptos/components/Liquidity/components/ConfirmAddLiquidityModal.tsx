@@ -48,9 +48,9 @@ const ConfirmAddLiquidityModal: React.FC<
   const { t } = useTranslation()
 
   const pendingText = t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', {
-    amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '',
+    amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(8) ?? '',
     symbolA: currencies?.currencyA?.symbol ?? '',
-    amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
+    amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(8) ?? '',
     symbolB: currencies?.currencyB?.symbol ?? '',
   })
 
@@ -69,8 +69,8 @@ const ConfirmAddLiquidityModal: React.FC<
           title={t('Input')}
           percent={percent}
           currencies={currencies}
-          currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}
-          currencyBValue={parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}
+          currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(8)}
+          currencyBValue={parsedAmounts[Field.CURRENCY_B]?.toSignificant(8)}
         />
       </AddLiquidityModalHeader>
     )

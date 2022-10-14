@@ -37,7 +37,7 @@ export default function AddLiquidityForm({ notSupportPair }: { notSupportPair: b
   const formattedAmounts = useMemo(
     () => ({
       [independentField]: typedValue,
-      [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+      [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(8) ?? '',
     }),
     [dependentField, independentField, noLiquidity, otherTypedValue, parsedAmounts, typedValue],
   )

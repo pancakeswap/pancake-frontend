@@ -109,7 +109,7 @@ export default function SwapModalFooter({
             />
           </RowFixed>
           <Text fontSize="14px">
-            {realizedLPFee ? `${realizedLPFee?.toSignificant(6)} ${trade.inputAmount.currency.symbol}` : '-'}
+            {realizedLPFee ? `${realizedLPFee?.toSignificant(8)} ${trade.inputAmount.currency.symbol}` : '-'}
           </Text>
         </RowBetween> */}
       </SwapModalFooterContainer>

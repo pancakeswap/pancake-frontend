@@ -13,8 +13,9 @@ import useCurrencySelectRoute from 'components/Liquidity/hooks/useCurrencySelect
 import Page from 'components/Layout/Page'
 import { usePair } from 'hooks/usePairs'
 import { useMemo } from 'react'
+import { MinimalPositionCard } from 'components/Liquidity/components/PositionCard'
 
-const { LiquidityCard, MinimalPositionCard } = LiquidityUI
+const { LiquidityCard } = LiquidityUI
 
 const MinimalPositionCardContainer = withLPValues(MinimalPositionCard)
 
@@ -65,7 +66,7 @@ const RemoveLiquidityPage = () => {
                       1 {currencyA?.symbol} =
                     </Text>
                     <Text small>
-                      {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
+                      {tokenA ? pair.priceOf(tokenA).toSignificant(8) : '-'} {currencyB?.symbol}
                     </Text>
                   </AtomBox>
                   <AtomBox display="flex" justifyContent="space-between">
@@ -73,7 +74,7 @@ const RemoveLiquidityPage = () => {
                       1 {currencyB?.symbol} =
                     </Text>
                     <Text small>
-                      {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
+                      {tokenB ? pair.priceOf(tokenB).toSignificant(8) : '-'} {currencyA?.symbol}
                     </Text>
                   </AtomBox>
                 </LightGreyCard>

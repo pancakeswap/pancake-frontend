@@ -1,6 +1,44 @@
 import { Types } from 'aptos'
 
-export const ADDRESS = '0xb3993dc91a8f0183dbb54c9c4e5f6e14e9d9370b532196c4337ee21c5873c1f1' as const
+export const ADDRESS = '0xdcec7792faa493a0e28a9d23324666ec30f9ba7463b93ba3a13aaabff32df547' as const
+
+export type SwapSetAdminArgs = [string]
+
+export const swapSetAdmin = (args: SwapSetAdminArgs): Types.EntryFunctionPayload => {
+  return {
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::swap::set_admin`,
+  }
+}
+
+export type SwapSetFeeToArgs = [string]
+
+export const swapSetFeeTo = (args: SwapSetFeeToArgs): Types.EntryFunctionPayload => {
+  return {
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::swap::set_fee_to`,
+  }
+}
+
+export type SwapUpgradeSwapArgs = [number[] | Uint8Array, number[] | Uint8Array]
+
+export const swapUpgradeSwap = (args: SwapUpgradeSwapArgs): Types.EntryFunctionPayload => {
+  return {
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::swap::upgrade_swap`,
+  }
+}
+
+export const swapWithdrawFee = (typeArgs: [string, string]): Types.EntryFunctionPayload => {
+  return {
+    type_arguments: typeArgs,
+    arguments: [],
+    function: `${ADDRESS}::swap::withdraw_fee`,
+  }
+}
 
 export type RouterAddLiquidityArgs = [bigint | string, bigint | string, bigint | string, bigint | string]
 

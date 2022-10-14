@@ -48,12 +48,18 @@ export function useToken(coinId?: string) {
 export function useCoins(addresses: string[]) {
   const { networkName } = useActiveNetwork()
   const chainId = useActiveChainId()
+  const tokens = useAllTokens()
+  const native = useNativeCurrency()
 
   const select = useCallback(
     (result) => {
-      return new Coin(chainId, result.address, result.decimals, result.symbol, result.name)
+      const isNative = result.address === APTOS_COIN
+
+      if (isNative) return native
+
+      return tokens[result.address] || new Coin(chainId, result.address, result.decimals, result.symbol, result.name)
     },
-    [chainId],
+    [chainId, tokens, native],
   )
 
   return useCoins_({

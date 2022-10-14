@@ -14,13 +14,14 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useActiveChainId } from 'hooks/useNetwork'
 import { PairState } from 'hooks/usePairs'
 import { useCallback, useMemo, useState } from 'react'
+import { MinimalPositionCard } from 'components/Liquidity/components/PositionCard'
 
 enum Steps {
   Choose,
   Add,
 }
 
-const MinimalPositionCardContainer = withLPValues(LiquidityUI.MinimalPositionCard)
+const MinimalPositionCardContainer = withLPValues(MinimalPositionCard)
 
 const AddLiquidityPage = () => {
   const { t } = useTranslation()

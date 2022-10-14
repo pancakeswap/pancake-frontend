@@ -22,7 +22,7 @@ export default function PoolPriceBar({
     <AutoColumn gap="md">
       <AutoRow justifyContent="space-around" gap="4px">
         <AutoColumn justify="center">
-          <Text>{price?.toSignificant(6) ?? '-'}</Text>
+          <Text>{price?.toSignificant(8) ?? '-'}</Text>
           <Text fontSize="14px" pt={1}>
             {t('%assetA% per %assetB%', {
               assetA: currencyA?.symbol ?? '',
@@ -31,7 +31,7 @@ export default function PoolPriceBar({
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
-          <Text>{price?.invert()?.toSignificant(6) ?? '-'}</Text>
+          <Text>{price?.invert()?.toSignificant(8) ?? '-'}</Text>
           <Text fontSize="14px" pt={1}>
             {t('%assetA% per %assetB%', {
               assetA: currencyB?.symbol ?? '',

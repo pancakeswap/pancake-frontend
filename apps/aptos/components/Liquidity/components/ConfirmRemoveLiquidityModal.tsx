@@ -53,9 +53,9 @@ const ConfirmRemoveLiquidityModal: React.FC<
   const [allowedSlippage] = useUserSlippage() // custom from users
 
   const pendingText = t('Removing %amountA% %symbolA% and %amountB% %symbolB%', {
-    amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '',
+    amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(8) ?? '',
     symbolA: currencyA?.symbol ?? '',
-    amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
+    amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(8) ?? '',
     symbolB: currencyB?.symbol ?? '',
   })
 
@@ -64,7 +64,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
       <AutoColumn gap="md">
         {parsedAmounts[Field.CURRENCY_A] && (
           <RowBetween justifyContent="space-between">
-            <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)}</Text>
+            <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_A]?.toSignificant(8)}</Text>
             <RowFixed gap="4px">
               <CurrencyLogo currency={currencyA} size="24px" />
               <Text fontSize="24px" ml="10px">
@@ -80,7 +80,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
         )}
         {parsedAmounts[Field.CURRENCY_B] && (
           <RowBetween justifyContent="space-between">
-            <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)}</Text>
+            <Text fontSize="24px">{parsedAmounts[Field.CURRENCY_B]?.toSignificant(8)}</Text>
             <RowFixed gap="4px">
               <CurrencyLogo currency={currencyB} size="24px" />
               <Text fontSize="24px" ml="10px">
@@ -108,7 +108,7 @@ const ConfirmRemoveLiquidityModal: React.FC<
           </Text>
           <RowFixed>
             <DoubleCurrencyLogo currency0={currencyA} currency1={currencyB} margin />
-            <Text>{parsedAmounts[Field.LIQUIDITY]?.toSignificant(6)}</Text>
+            <Text>{parsedAmounts[Field.LIQUIDITY]?.toSignificant(8)}</Text>
           </RowFixed>
         </RowBetween>
         {pair && (
@@ -116,13 +116,13 @@ const ConfirmRemoveLiquidityModal: React.FC<
             <RowBetween>
               <Text>{t('Price')}</Text>
               <Text>
-                1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
+                1 {currencyA?.symbol} = {tokenA ? pair.priceOf(tokenA).toSignificant(8) : '-'} {currencyB?.symbol}
               </Text>
             </RowBetween>
             <RowBetween>
               <div />
               <Text>
-                1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
+                1 {currencyB?.symbol} = {tokenB ? pair.priceOf(tokenB).toSignificant(8) : '-'} {currencyA?.symbol}
               </Text>
             </RowBetween>
           </>

@@ -39,8 +39,8 @@ export default function SwapModalHeader({
 
   const amount =
     trade.tradeType === TradeType.EXACT_INPUT
-      ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)
-      : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)
+      ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(8)
+      : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(8)
   const symbol =
     trade.tradeType === TradeType.EXACT_INPUT ? trade.outputAmount.currency.symbol : trade.inputAmount.currency.symbol
 
@@ -65,7 +65,7 @@ export default function SwapModalHeader({
         <RowFixed gap="4px">
           <CurrencyLogo currency={trade.inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color={inputTextColor}>
-            {trade.inputAmount.toSignificant(6)}
+            {trade.inputAmount.toSignificant(8)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0">
@@ -90,7 +90,7 @@ export default function SwapModalHeader({
                 : 'text'
             }
           >
-            {trade.outputAmount.toSignificant(6)}
+            {trade.outputAmount.toSignificant(8)}
           </TruncatedText>
         </RowFixed>
         <RowFixed>

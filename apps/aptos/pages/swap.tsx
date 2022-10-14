@@ -94,7 +94,7 @@ const SwapPage = () => {
 
   const formattedAmounts = {
     [independentField]: typedValue,
-    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+    [dependentField]: parsedAmounts[dependentField]?.toSignificant(8) ?? '',
   }
 
   const [allowedSlippage] = useUserSlippage()

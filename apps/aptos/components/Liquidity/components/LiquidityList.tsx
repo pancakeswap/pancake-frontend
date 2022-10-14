@@ -1,8 +1,9 @@
 import { Liquidity as LiquidityUI } from '@pancakeswap/uikit'
 import useLPPairsHaveBalance from 'components/Liquidity/hooks/useLPPairsHaveBalance'
 import withLPValues from '../hocs/withLPValues'
+import { FullPositionCard } from './PositionCard'
 
-const { LoadingDot, NoLiquidity, FullPositionCard } = LiquidityUI
+const { LoadingDot, NoLiquidity } = LiquidityUI
 
 const FullPositionCardContainer = withLPValues(FullPositionCard)
 
