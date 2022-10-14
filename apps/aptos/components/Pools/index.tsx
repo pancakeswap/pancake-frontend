@@ -214,7 +214,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
           </Flex>
         </Flex>
       </PageHeader>
-      <Page>
+      <Page title={t('Pools')}>
         <NoSSR>
           <PoolControls>
             <PoolTabButtons

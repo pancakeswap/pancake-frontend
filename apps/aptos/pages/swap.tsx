@@ -344,7 +344,7 @@ const SwapPage = () => {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   return (
-    <Page>
+    <Page title={t('Exchange')}>
       <Card style={{ width: '328px' }}>
         <CurrencyInputHeader
           title={

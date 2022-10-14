@@ -45,7 +45,7 @@ const AddLiquidityPage = () => {
   const goToChoose = useCallback(() => setSteps(Steps.Choose), [])
 
   return (
-    <Page>
+    <Page title={t('Add Liquidity')}>
       <LiquidityUI.LiquidityCard>
         <LiquidityUI.LiquidityCard.Header
           title={t('Add Liquidity')}

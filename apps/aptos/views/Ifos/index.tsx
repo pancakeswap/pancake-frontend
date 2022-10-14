@@ -14,7 +14,7 @@ export const IfoPageLayout = ({ children }) => {
 
   return (
     <IfoProvider>
-      <PageMeta />
+      <PageMeta title={t('Initial Farm Offering')} />
       <SubMenuItems
         items={[
           {

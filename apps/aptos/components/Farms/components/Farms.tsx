@@ -321,7 +321,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Box>
         </FarmFlexWrapper>
       </PageHeader>
-      <Page>
+      <Page title={t('Farms')}>
         <ControlContainer>
           <ViewControls>
             {/* <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} /> */}

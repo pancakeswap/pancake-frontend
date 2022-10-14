@@ -11,7 +11,7 @@ const LiquidityPage = () => {
   const { t } = useTranslation()
 
   return (
-    <Page>
+    <Page title={t('Liquidity')}>
       <LiquidityCard>
         <LiquidityCard.Header title={t('Your Liquidity')} subtitle={t('Remove liquidity to receive tokens back')} />
         <LiquidityCard.ListBody>

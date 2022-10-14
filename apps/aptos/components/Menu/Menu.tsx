@@ -104,7 +104,7 @@ export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string;
 export const Menu = ({ children }: { children: ReactNode }) => {
   const { currentLanguage, setLanguage, t } = useTranslation()
 
-  const menuItems = config(t)
+  const menuItems = useMemo(() => config(t), [t])
   const { pathname } = useRouter()
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })

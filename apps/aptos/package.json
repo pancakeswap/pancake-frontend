@@ -18,6 +18,7 @@
     "aptos": "^1.3.14",
     "next": "^12.2.5",
     "next-axiom": "^0.13.0",
+    "next-seo": "^5.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "styled-components": "^5.3.3",

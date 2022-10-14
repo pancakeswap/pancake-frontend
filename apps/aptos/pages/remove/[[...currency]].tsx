@@ -37,7 +37,7 @@ const RemoveLiquidityPage = () => {
   )
 
   return (
-    <Page>
+    <Page title={t('Remove Liquidity')}>
       <LiquidityCard>
         <LiquidityCard.Header
           backTo="/liquidity"
