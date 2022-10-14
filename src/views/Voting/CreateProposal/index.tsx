@@ -97,7 +97,7 @@ const CreateProposal = () => {
       })
 
       // Redirect user to newly created proposal page
-      push(`/voting/proposal/${data.ipfs}`)
+      push(`/voting/proposal/${data.id}`)
       toastSuccess(t('Proposal created!'))
     } catch (error) {
       toastError(t('Error'), (error as Error)?.message)
