@@ -565,7 +565,6 @@
   "Votes (%count%)": "Голоса (%count%)",
   "Snapshot": "Снимок",
   "Choices": "Варианты выбора",
-  "Unable to sign payload": "Не удается подписать полезные данные",
   "Identifier": "Идентификатор",
   "Current Results": "Текущие результаты",
   "Vote cast!": "Голос подан!",
