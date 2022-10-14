@@ -91,7 +91,7 @@ const CreateProposal = () => {
             return choice.value
           }),
         snapshot,
-        network: '56',
+        discussion: '',
         plugins: JSON.stringify({}),
         app: 'snapshot',
       })
