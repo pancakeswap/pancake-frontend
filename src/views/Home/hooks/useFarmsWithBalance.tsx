@@ -6,11 +6,11 @@ import { FAST_INTERVAL } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import { useFarmsLength } from 'state/farms/hooks'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useBCakeProxyContract, useMasterchef } from 'hooks/useContract'
 import { Masterchef, BCakeProxy } from 'config/abi/types'
-import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { useBCakeProxyContractAddress } from '../../Farms/hooks/useBCakeProxyContractAddress'
 import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitProxyFarms'
 
@@ -55,35 +55,55 @@ const useFarmsWithBalance = () => {
     return { farmsWithBalances, totalEarned }
   }
 
-  const {
-    data: { farmsWithStakedBalance, earningsSum } = {
-      farmsWithStakedBalance: [] as FarmWithBalance[],
-      earningsSum: null,
-    },
-  } = useSWR(
-    account && poolLength && chainId ? [account, 'farmsWithBalance', chainId, poolLength] : null,
+  const { data: farmsCanFetch } = useSWRImmutable(
+    chainId && poolLength ? ['farmsCanFetch', chainId, poolLength] : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
-      const farmsCanFetch = farmsConfig.filter((f) => poolLength > f.pid)
-      const normalBalances = await getFarmsWithBalances(farmsCanFetch, account, masterChefContract)
-      if (proxyAddress && farmsCanFetch?.length && verifyBscNetwork(chainId)) {
-        const { farmsWithProxy } = splitProxyFarms(farmsCanFetch)
+      return farmsConfig.filter((f) => poolLength > f.pid)
+    },
+  )
 
-        const proxyBalances = await getFarmsWithBalances(farmsWithProxy, proxyAddress, bCakeProxy)
-        return {
-          farmsWithStakedBalance: [...normalBalances.farmsWithBalances, ...proxyBalances.farmsWithBalances],
-          earningsSum: normalBalances.totalEarned + proxyBalances.totalEarned,
-        }
-      }
+  const {
+    data: { normalFarmsWithStakedBalance, normalEarningsSum } = {
+      normalFarmsWithStakedBalance: [] as FarmWithBalance[],
+      normalEarningsSum: null,
+    },
+  } = useSWR(
+    account && farmsCanFetch?.length ? [account, 'normalFarmsWithBalance', chainId, farmsCanFetch] : null,
+    async () => {
+      const normalBalances = await getFarmsWithBalances(farmsCanFetch, account, masterChefContract)
       return {
-        farmsWithStakedBalance: normalBalances.farmsWithBalances,
-        earningsSum: normalBalances.totalEarned,
+        normalFarmsWithStakedBalance: normalBalances.farmsWithBalances,
+        normalEarningsSum: normalBalances.totalEarned,
       }
     },
     { refreshInterval: FAST_INTERVAL },
   )
 
-  return { farmsWithStakedBalance, earningsSum }
+  const {
+    data: { proxyFarmsWithStakedBalance, proxyEarningsSum } = {
+      proxyFarmsWithStakedBalance: [] as FarmWithBalance[],
+      proxyEarningsSum: null,
+    },
+  } = useSWR(
+    account && farmsCanFetch?.length && proxyAddress
+      ? [account, 'proxyFarmsWithBalance', chainId, farmsCanFetch]
+      : null,
+    async () => {
+      const { farmsWithProxy } = splitProxyFarms(farmsCanFetch)
+      const proxyBalances = await getFarmsWithBalances(farmsWithProxy, proxyAddress, bCakeProxy)
+      return {
+        proxyFarmsWithStakedBalance: proxyBalances.farmsWithBalances,
+        proxyEarningsSum: proxyBalances.totalEarned,
+      }
+    },
+    { refreshInterval: FAST_INTERVAL },
+  )
+
+  return {
+    farmsWithStakedBalance: [...normalFarmsWithStakedBalance, ...proxyFarmsWithStakedBalance],
+    earningsSum: normalEarningsSum + proxyEarningsSum,
+  }
 }
 
 export default useFarmsWithBalance
