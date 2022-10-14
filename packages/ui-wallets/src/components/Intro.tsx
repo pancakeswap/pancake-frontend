@@ -6,7 +6,7 @@ import { getDocLink } from '../docLangCodeMapping'
 
 const IntroSteps = [
   {
-    title: <Trans>Your first step entering the defi world</Trans>,
+    title: <Trans>Your first step in the DeFi world</Trans>,
     icon: 'https://cdn.pancakeswap.com/wallets/wallet_intro.png',
     description: (
       <Trans>
@@ -15,11 +15,12 @@ const IntroSteps = [
     ),
   },
   {
-    title: <Trans>Login using wallet connection</Trans>,
+    title: <Trans>Login using a wallet connection</Trans>,
     icon: 'https://cdn.pancakeswap.com/wallets/world_lock.png',
     description: (
       <Trans>
-        Instead of setting up new accounts and passwords for every website, simply connect your wallet in one go.
+        Instead of setting up new accounts and passwords for every website, simply set up your wallet in one go, and
+        connect it to your favorite DApps.
       </Trans>
     ),
   },
@@ -72,7 +73,7 @@ export const StepIntro = () => {
         <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
         <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
       </AtomBox>
-      <Button variant="subtle" external as={LinkExternal} color="backgroundAlt" href={getDocLink(code)}>
+      <Button minHeight={40} variant="subtle" external as={LinkExternal} color="backgroundAlt" href={getDocLink(code)}>
         {t('Learn How to Connect')}
       </Button>
     </AtomBox>

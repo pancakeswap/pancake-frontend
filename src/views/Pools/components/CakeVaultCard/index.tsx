@@ -1,4 +1,4 @@
-import { Box, CardBody, CardProps, Flex, Text, TokenPairImage } from '@pancakeswap/uikit'
+import { Box, CardBody, CardProps, Flex, Text, TokenPairImage, Skeleton } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FlexGap } from 'components/Layout/Flex'
@@ -27,6 +27,7 @@ interface CakeVaultProps extends CardProps {
   showStakedOnly: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
+  showSkeleton?: boolean
 }
 
 interface CakeVaultDetailProps {
@@ -110,11 +111,13 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   showStakedOnly,
   defaultFooterExpanded,
   showICake = false,
+  showSkeleton = true,
   ...props
 }) => {
   const { account } = useWeb3React()
 
   const vaultPool = useVaultPoolByKey(pool.vaultKey)
+  const { totalStaked } = pool
 
   const {
     userData: { userShares, isLoading: isVaultUserDataLoading },
@@ -131,11 +134,23 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   return (
     <StyledCard isActive {...props}>
       <PoolCardHeader isStaking={accountHasSharesStaked}>
-        <PoolCardHeaderTitle
-          title={vaultPoolConfig[pool.vaultKey].name}
-          subTitle={vaultPoolConfig[pool.vaultKey].description}
-        />
-        <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
+        {!showSkeleton || (totalStaked && totalStaked.gte(0)) ? (
+          <>
+            <PoolCardHeaderTitle
+              title={vaultPoolConfig[pool.vaultKey].name}
+              subTitle={vaultPoolConfig[pool.vaultKey].description}
+            />
+            <TokenPairImage {...vaultPoolConfig[pool.vaultKey].tokenImage} width={64} height={64} />
+          </>
+        ) : (
+          <Flex width="100%" justifyContent="space-between">
+            <Flex flexDirection="column">
+              <Skeleton width={100} height={26} mb="4px" />
+              <Skeleton width={65} height={20} />
+            </Flex>
+            <Skeleton width={58} height={58} variant="circle" />
+          </Flex>
+        )}
       </PoolCardHeader>
       <CakeVaultDetail
         isLoading={isLoading}

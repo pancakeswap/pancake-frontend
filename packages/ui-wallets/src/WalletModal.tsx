@@ -81,7 +81,7 @@ const TabContainer = ({ children }: PropsWithChildren) => {
       <AtomBox position="absolute" style={{ top: '-50px' }}>
         <TabMenu activeIndex={index} onItemClick={setIndex} gap="16px">
           <Tab>{t('Connect Wallet')}</Tab>
-          <Tab>{t('What’s Web3 Wallet?')}</Tab>
+          <Tab>{t('What’s a Web3 Wallet?')}</Tab>
         </TabMenu>
       </AtomBox>
       <AtomBox
@@ -117,7 +117,13 @@ function MobileModal<T>({
   const [selected] = useSelectedWallet()
   const [error] = useAtom(errorAtom)
 
-  const walletsToShow: WalletConfigV2[] = wallets.filter((w) => w.installed !== false || w.deepLink)
+  const installedWallets: WalletConfigV2[] = wallets.filter((w) => w.installed)
+  const walletsToShow: WalletConfigV2[] = wallets.filter((w) => {
+    if (installedWallets.length) {
+      return w.installed
+    }
+    return w.installed !== false || w.deepLink
+  })
 
   return (
     <AtomBox width="full">
@@ -137,7 +143,9 @@ function MobileModal<T>({
         </AtomBox>
       ) : (
         <Text color="textSubtle" small p="24px">
-          {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
+          {t(
+            'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
+          )}
         </Text>
       )}
       <AtomBox flex={1} py="16px" style={{ maxHeight: '230px' }} overflow="auto">
@@ -146,7 +154,7 @@ function MobileModal<T>({
           wallets={walletsToShow}
           onClick={(wallet) => {
             connectWallet(wallet)
-            if (wallet.deepLink) {
+            if (wallet.deepLink && wallet.installed === false) {
               window.open(wallet.deepLink)
             }
           }}
@@ -177,6 +185,7 @@ function WalletSelect<T, D>({
   selected?: WalletConfigV2<T, D>
   displayCount?: number
 }) {
+  const { t } = useTranslation()
   const [showMore, setShowMore] = useState(false)
   const walletsToShow = showMore ? wallets : wallets.slice(0, displayCount)
   return (
@@ -237,7 +246,7 @@ function WalletSelect<T, D>({
               <MoreHorizontalIcon color="text" />
             </AtomBox>
             <Text fontSize="12px" textAlign="center" mt="4px">
-              More
+              {t('More')}
             </Text>
           </Button>
         </AtomBox>
@@ -300,7 +309,9 @@ function DesktopModal<T>({
             {t('Connect Wallet')}
           </Heading>
           <Text color="textSubtle" small pt="24px" pb="32px">
-            {t('Starts connect with one of the wallets below. Manage and store your private keys and assets securely.')}
+            {t(
+              'Start by connecting with one of the wallets below. Be sure to store your private keys or seed phrase securely. Never share them with anyone.',
+            )}
           </Text>
         </AtomBox>
         <WalletSelect
