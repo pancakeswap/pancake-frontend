@@ -565,7 +565,6 @@
   "Votes (%count%)": "投票数（%count%）",
   "Snapshot": "スナップショット",
   "Choices": "選択項目",
-  "Unable to sign payload": "ペイロードに署名できません",
   "Identifier": "ID",
   "Current Results": "現在の結果",
   "Vote cast!": "投票総数！",
