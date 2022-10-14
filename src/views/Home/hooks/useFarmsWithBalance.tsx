@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import multicall from 'utils/multicall'
-import { getMasterChefAddress } from 'utils/addressHelpers'
 import masterChefABI from 'config/abi/masterchef.json'
 import { FAST_INTERVAL } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
