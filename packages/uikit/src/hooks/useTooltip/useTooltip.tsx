@@ -2,7 +2,7 @@ import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-moti
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import { DefaultTheme, ThemeProvider } from "styled-components";
+import { DefaultTheme, ThemeProvider, useTheme } from "styled-components";
 import { dark, light } from "../../theme";
 import getPortalRoot from "../../util/getPortalRoot";
 import isTouchDevice from "../../util/isTouchDevice";
@@ -29,6 +29,7 @@ const invertTheme = (currentTheme: DefaultTheme) => {
 };
 
 const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipRefs => {
+  const { isDark } = useTheme();
   const {
     placement = "auto",
     trigger = "hover",
@@ -198,6 +199,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
 
   const tooltip = (
     <StyledTooltip
+      data-theme={isDark ? "light" : "dark"}
       {...animationMap}
       variants={animationVariants}
       transition={{ duration: 0.3 }}
