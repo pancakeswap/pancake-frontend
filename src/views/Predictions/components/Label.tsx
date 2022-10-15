@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react'
 import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
 import { useGetCurrentRoundCloseTimestamp } from 'state/predictions/hooks'
 import { PredictionSupportedSymbol } from 'state/types'
-import styled, { keyframes } from 'styled-components'
+import styled, { keyframes, useTheme } from 'styled-components'
 import { useConfig } from '../context/ConfigProvider'
 import { formatRoundTime } from '../helpers'
 import useCountdown from '../hooks/useCountdown'
@@ -146,6 +146,7 @@ const Label = styled(Flex)<{ dir: 'left' | 'right'; backgroundOpacity?: boolean 
 export const PricePairLabel: React.FC<React.PropsWithChildren> = () => {
   const { token } = useConfig()
   const router = useRouter()
+  const { isDark } = useTheme()
   const { t } = useTranslation()
   const { price } = usePollOraclePrice()
   const [dismissTooltip, setDismissTooltip] = useState(() => {
@@ -178,7 +179,7 @@ export const PricePairLabel: React.FC<React.PropsWithChildren> = () => {
     <>
       <Box pl={['20px', '20px', '20px', '20px', '40px']} position="relative" display="inline-block">
         {!dismissTooltip && (
-          <Tooltip>
+          <Tooltip data-theme={isDark ? 'light' : 'dark'}>
             <Text mr="5px" display="inline-block" verticalAlign="super">
               {t('Switch pairs here.')}
             </Text>
