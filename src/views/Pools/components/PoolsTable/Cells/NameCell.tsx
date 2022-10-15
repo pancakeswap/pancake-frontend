@@ -32,6 +32,7 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
   const vaultData = useVaultPoolByKey(pool.vaultKey)
   const {
     userData: { userShares },
+    totalCakeInVault,
   } = vaultData
   const hasVaultShares = userShares.gt(0)
 
@@ -54,7 +55,7 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
 
   return (
     <StyledCell role="cell">
-      {totalStaked && totalStaked.gte(0) ? (
+      {(totalStaked && totalStaked.gte(0)) || (totalCakeInVault && totalCakeInVault.gte(0)) ? (
         <>
           {vaultKey ? (
             <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} mr="8px" width={40} height={40} />
