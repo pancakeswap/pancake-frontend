@@ -19,6 +19,7 @@ import SearchInput from 'components/SearchInput'
 import Select, { OptionProps } from 'components/Select/Select'
 import { DeserializedPool, DeserializedPoolVault, VaultKey, DeserializedPoolLockedVault } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
+import { usePollCoreFarmData } from 'state/farms/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import Loading from 'components/Loading'
@@ -210,6 +211,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
   }, [openPoolsWithStartBlockFilter])
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
 
+  usePollCoreFarmData()
   usePoolsPageFetch()
 
   useEffect(() => {
