@@ -10,6 +10,7 @@ import { NftToken } from 'state/nftMarket/types'
 import BuyModal from 'views/Nft/market/components/BuySellModals/BuyModal'
 import SellModal from 'views/Nft/market/components/BuySellModals/SellModal'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
+import { isAddress } from 'utils'
 import { ButtonContainer } from '../../shared/styles'
 
 const OwnersTableRow = styled(Grid)`
@@ -33,7 +34,7 @@ interface RowProps {
 const Row: React.FC<React.PropsWithChildren<RowProps>> = ({ t, nft, bnbBusdPrice, account, onSuccessSale }) => {
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nft?.marketData?.currentAskPrice))
 
-  const ownNft = account ? nft.marketData.currentSeller === account.toLowerCase() : false
+  const ownNft = account ? isAddress(nft.marketData.currentSeller) === isAddress(account) : false
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nft} />)
   const [onPresentAdjustPriceModal] = useModal(
     <SellModal variant="edit" nftToSell={nft} onSuccessSale={onSuccessSale} />,
