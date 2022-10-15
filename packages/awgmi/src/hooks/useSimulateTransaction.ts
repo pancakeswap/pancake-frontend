@@ -3,6 +3,7 @@ import { simulateTransaction, SimulateTransactionArgs, SimulateTransactionResult
 
 import { MutationConfig } from '../types'
 import { useMutation } from './utils/useMutation'
+import { useNetwork } from './useNetwork'
 
 export type UseSimulateTransactionArgs = Partial<SimulateTransactionArgs>
 
@@ -25,7 +26,7 @@ const mutationFn = async ({ networkName, payload, options, throwOnError }: Simul
 }
 
 export function useSimulateTransaction({
-  networkName,
+  networkName: networkName_,
   payload,
   options,
   throwOnError,
@@ -34,6 +35,9 @@ export function useSimulateTransaction({
   onSettled,
   onSuccess,
 }: UseSimulateTransactionArgs & UseSimulateTransactionConfig = {}) {
+  const { chain } = useNetwork()
+  const networkName = networkName_ ?? chain?.network
+
   const { data, error, isError, isIdle, isLoading, isSuccess, mutate, mutateAsync, reset, status, variables } =
     useMutation(
       mutationKey({

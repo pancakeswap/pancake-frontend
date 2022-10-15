@@ -25,7 +25,7 @@ export function useCoins<TData = unknown>({
 }: UseCoinsArgs & UseCoinsConfig<TData>) {
   const { chain } = useNetwork()
 
-  const networkName = chain?.network ?? networkName_
+  const networkName = networkName_ ?? chain?.network
 
   return useQueries({
     queries: coins.map((coin) => {

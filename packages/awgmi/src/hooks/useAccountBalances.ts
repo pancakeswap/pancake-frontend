@@ -13,6 +13,7 @@ import { useCallback, useMemo } from 'react'
 import { QueryConfig } from '../types'
 import { useAccountResources, UseAccountResourcesArgs, UseAccountResourcesConfig } from './useAccountResources'
 import { useCoins } from './useCoins'
+import { useNetwork } from './useNetwork'
 
 export type UseAccountBalancesResult = { value: string; formatted: string } & FetchCoinResult
 
@@ -33,7 +34,7 @@ export function useAccountBalances<TData = unknown>({
   enabled,
   isDataEqual,
   keepPreviousData,
-  networkName,
+  networkName: networkName_,
   onError,
   onSettled,
   onSuccess,
@@ -43,6 +44,9 @@ export function useAccountBalances<TData = unknown>({
   watch,
   coinFilter,
 }: UseAccountResourcesArgs & { coinFilter?: string } & UseAccountBalancesConfig<TData>) {
+  const { chain } = useNetwork()
+  const networkName = networkName_ ?? chain?.network
+
   const { data } = useAccountResources({
     address,
     cacheTime,

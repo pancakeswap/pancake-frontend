@@ -3,6 +3,7 @@ import { fetchBalance, FetchBalanceArgs, FetchCoinResult } from '@pancakeswap/aw
 
 import { QueryConfig } from '../types'
 import { useCoin } from './useCoin'
+import { useNetwork } from './useNetwork'
 import { useQuery } from './utils/useQuery'
 
 export type UseBalanceArgs = Partial<FetchBalanceArgs> & {
@@ -20,7 +21,7 @@ export const queryKey = ({ address, networkName, coin }: Partial<FetchBalanceArg
 export function useBalance<TData = UseBalanceResult>({
   address,
   cacheTime = 1_000,
-  networkName,
+  networkName: networkName_,
   enabled = true,
   keepPreviousData,
   staleTime,
@@ -32,14 +33,16 @@ export function useBalance<TData = UseBalanceResult>({
   onSuccess,
   select,
 }: UseBalanceArgs & UseBalanceConfig<TData> = {}) {
+  const { chain } = useNetwork()
+  const networkName = networkName_ ?? chain?.network
   const { data: coinData } = useCoin({ coin, networkName })
 
   const balanceQuery = useQuery(
     queryKey({ address, networkName, coin }),
-    async ({ queryKey: [{ address: address_, networkName: networkName_, coin: coin_ }] }) => {
+    async ({ queryKey: [{ address: address_, networkName: networkName__, coin: coin_ }] }) => {
       if (!address_) throw new Error('address is required')
       if (!coinData) throw new Error('coin data is missing')
-      const balance = await fetchBalance({ address: address_, coin: coin_, networkName: networkName_ })
+      const balance = await fetchBalance({ address: address_, coin: coin_, networkName: networkName__ })
       return {
         ...coinData,
         value: balance.value,

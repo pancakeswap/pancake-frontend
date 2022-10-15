@@ -1,6 +1,7 @@
 import { FetchLedgerArgs, fetchLedgerInfo, FetchLedgerResult } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
+import { useNetwork } from './useNetwork'
 import { useQuery } from './utils/useQuery'
 
 type UseLedgerArgs = Partial<FetchLedgerArgs> & {
@@ -18,7 +19,7 @@ const queryFn = ({ queryKey: [{ networkName }] }: QueryFunctionArgs<typeof query
 
 export function useLedger<TData>({
   cacheTime = 0,
-  networkName: _networkName,
+  networkName: networkName_,
   enabled = true,
   staleTime,
   suspense,
@@ -27,7 +28,8 @@ export function useLedger<TData>({
   onSettled,
   onSuccess,
 }: UseLedgerArgs & UseLedgerConfig<TData> = {}) {
-  return useQuery(queryKey({ networkName: _networkName }), queryFn, {
+  const { chain } = useNetwork()
+  return useQuery(queryKey({ networkName: networkName_ ?? chain?.network }), queryFn, {
     cacheTime,
     enabled,
     staleTime,

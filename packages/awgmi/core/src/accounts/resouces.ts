@@ -2,7 +2,7 @@ import { Types } from 'aptos'
 import { getProvider } from '../provider'
 
 export type FetchAccountResourcesArgs = {
-  /** Address or ANS name */
+  /** Address */
   address: string
   /** Network to use for provider */
   networkName?: string

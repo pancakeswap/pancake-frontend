@@ -1,6 +1,7 @@
 import { fetchAccountResource, FetchAccountResourceArgs, FetchAccountResourceResult } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
+import { useNetwork } from './useNetwork'
 import { useQuery } from './utils/useQuery'
 
 type UseAccountResourceArgs = Partial<FetchAccountResourceArgs> & {
@@ -28,7 +29,7 @@ const queryFn = ({ queryKey: [{ networkName, address, resourceType }] }: QueryFu
 
 export function useAccountResource<TData = unknown>({
   cacheTime,
-  networkName: _networkName,
+  networkName: networkName_,
   resourceType,
   keepPreviousData,
   address,
@@ -41,7 +42,10 @@ export function useAccountResource<TData = unknown>({
   onSuccess,
   select,
 }: UseAccountResourceArgs & UseAccountResourceConfig<TData> = {}) {
-  return useQuery(queryKey({ networkName: _networkName, address, resourceType }), queryFn, {
+  const { chain } = useNetwork()
+  const networkName = networkName_ ?? chain?.network
+
+  return useQuery(queryKey({ networkName, address, resourceType }), queryFn, {
     cacheTime,
     enabled: Boolean(enabled && address),
     staleTime,

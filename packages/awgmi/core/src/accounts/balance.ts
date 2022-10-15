@@ -3,9 +3,9 @@ import { APTOS_COIN } from '../constants'
 import { getProvider } from '../provider'
 
 export type FetchBalanceArgs = {
-  /** Address or ANS name */
+  /** Address */
   address: string
-  /** Chain id to use for provider */
+  /** Network to use for provider */
   networkName?: string
   /** resource type */
   coin?: string

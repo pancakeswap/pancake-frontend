@@ -1,6 +1,7 @@
 import { fetchHealthy, FetchHealthyArgs } from '@pancakeswap/awgmi/core'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
+import { useNetwork } from './useNetwork'
 import { useQuery } from './utils/useQuery'
 
 type UseLedgerArgs = Partial<FetchHealthyArgs> & {
@@ -19,7 +20,7 @@ const queryFn = ({ queryKey: [{ networkName, durationSecs }] }: QueryFunctionArg
 
 export function useHealthy({
   cacheTime = 0,
-  networkName: _networkName,
+  networkName: networkName_,
   durationSecs = 2,
   enabled = true,
   staleTime,
@@ -29,7 +30,8 @@ export function useHealthy({
   onSettled,
   onSuccess,
 }: UseLedgerArgs & UseHealthyConfig = {}) {
-  return useQuery(queryKey({ networkName: _networkName, durationSecs }), queryFn, {
+  const { chain } = useNetwork()
+  return useQuery(queryKey({ networkName: networkName_ ?? chain?.network, durationSecs }), queryFn, {
     cacheTime,
     enabled,
     staleTime,
