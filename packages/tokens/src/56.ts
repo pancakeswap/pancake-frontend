@@ -2321,4 +2321,5 @@ export const bscTokens = {
     'Kingdom Raids',
     'https://kingdomraids.io/',
   ),
+  wmx: new Token(ChainId.BSC, '', 18, 'WMX', '', 'https://wombex.finance/'),
 }
