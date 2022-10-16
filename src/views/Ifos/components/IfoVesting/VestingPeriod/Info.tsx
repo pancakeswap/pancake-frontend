@@ -6,6 +6,7 @@ import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
 import { getFullDisplayBalance } from 'utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { format } from 'date-fns'
 import Claim from './Claim'
 
 const WhiteCard = styled.div`
@@ -30,15 +31,20 @@ interface InfoProps {
 const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
+  const { vestingStartTime } = data.userVestingData
   const {
     isVestingInitialized,
     vestingComputeReleasableAmount,
     offeringAmountInToken,
     vestingInformationPercentage,
     vestingReleased,
+    vestingInformationDuration,
   } = data.userVestingData[poolId]
 
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
+
+  const timeCliff = vestingStartTime * 1000
+  const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
@@ -90,6 +96,20 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {t('Vesting Schedule')}
         </Text>
         <StyleTag isPrivate={poolId === PoolIds.poolBasic}>{labelText}</StyleTag>
+      </Flex>
+      <Flex mt="8px">
+        <Flex flexDirection="column" ml="8px">
+          <Text fontSize="14px" color="textSubtle" bold textTransform="uppercase">
+            {t('Cliff')}
+          </Text>
+          <Text fontSize="14px">{format(timeCliff, 'MM/dd/yyyy HH:mm')}</Text>
+        </Flex>
+        <Flex flexDirection="column" ml="auto" mr="8px">
+          <Text fontSize="14px" color="textSubtle" bold textTransform="uppercase">
+            {t('Vesting end')}
+          </Text>
+          <Text fontSize="14px">{format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}</Text>
+        </Flex>
       </Flex>
       <WhiteCard>
         <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePercentage} />
