@@ -10,7 +10,7 @@ const ifos: Ifo[] = [
     id: 'krs',
     cIFO: true,
     address: '0x4CCB9960dEF2f9a55D1a0454a134a8Adb0047B8e',
-    isActive: true,
+    isActive: false,
     name: 'KRS',
     poolBasic: {
       saleAmount: '12,000,000 KRS',
