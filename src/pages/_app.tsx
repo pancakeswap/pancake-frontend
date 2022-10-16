@@ -47,7 +47,6 @@ function GlobalHooks() {
 function MPGlobalHooks() {
   usePollBlockNumber()
   useEagerConnectMP()
-  usePollCoreFarmData()
   useUserAgent()
   useAccountEventListener()
   useSentryUser()
