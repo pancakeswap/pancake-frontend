@@ -22,7 +22,6 @@ export function useLocalNetworkChain() {
   const [sessionChainId] = useSessionChainId()
   // useRouter is kind of slow, we only get this query chainId once
   const queryChainId = useAtomValue(queryChainIdAtom)
-
   const { query } = useRouter()
 
   const chainId = +(sessionChainId || query.chainId || queryChainId)
