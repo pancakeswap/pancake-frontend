@@ -1,4 +1,5 @@
-import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector'
+// eslint-disable-next-line import/extensions
+import { useSyncExternalStoreWithSelector } from 'use-sync-external-store/shim/with-selector.js'
 import { AptosClient } from 'aptos'
 import { GetProviderArgs, getProvider, watchProvider } from '@pancakeswap/awgmi/core'
 

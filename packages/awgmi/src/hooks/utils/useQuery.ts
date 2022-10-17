@@ -13,7 +13,7 @@ import {
 
 import * as React from 'react'
 
-import { useSyncExternalStore } from 'use-sync-external-store/shim'
+import { useSyncExternalStore } from './useSyncExternalStore'
 import { queryClientContext as context } from '../../context'
 import { shouldThrowError, parseQueryArgs, trackResult } from './utils'
 
