@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area, Dot } from 'recharts'
 import useTheme from 'hooks/useTheme'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
@@ -81,15 +81,6 @@ type ChartData = {
   answer: string
   roundId: string
   startedAt: number
-}
-
-const HoverUpdater = ({ payload }) => {
-  const mutate = useChartHoverMutate()
-  useEffect(() => {
-    mutate(payload)
-  }, [mutate, payload])
-
-  return null
 }
 
 function useChartHover() {
@@ -256,7 +247,10 @@ const Chart = ({
         <Tooltip
           cursor={{ stroke: theme.colors.textSubtle, strokeDasharray: '3 3' }}
           contentStyle={{ display: 'none' }}
-          formatter={(_, __, props) => <HoverUpdater payload={props.payload} />}
+          formatter={(tooltipValue, name, props) => {
+            mutate(props.payload)
+            return null
+          }}
         />
         <Area
           dataKey="answer"
