@@ -6,6 +6,7 @@ import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import AddLiquidityButton from 'components/Liquidity/components/AddLiquidityButton'
 import { PairState } from 'hooks/usePairs'
 import { useContext, useEffect, useMemo } from 'react'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { useDerivedMintInfo } from '../hooks/useAddLiquidityForm'
 import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
@@ -37,7 +38,7 @@ export default function AddLiquidityForm({ notSupportPair }: { notSupportPair: b
   const formattedAmounts = useMemo(
     () => ({
       [independentField]: typedValue,
-      [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(8) ?? '',
+      [dependentField]: noLiquidity ? otherTypedValue : formatAmountDisplay(parsedAmounts[dependentField]),
     }),
     [dependentField, independentField, noLiquidity, otherTypedValue, parsedAmounts, typedValue],
   )

@@ -2,6 +2,7 @@ import { Currency, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
 import { AutoColumn, AutoRow, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ONE_BIPS } from 'config/constants/exchange'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 export default function PoolPriceBar({
   currencyA,
@@ -22,7 +23,7 @@ export default function PoolPriceBar({
     <AutoColumn gap="md">
       <AutoRow justifyContent="space-around" gap="4px">
         <AutoColumn justify="center">
-          <Text>{price?.toSignificant(8) ?? '-'}</Text>
+          <Text>{price ? formatAmountDisplay(price) : '-'}</Text>
           <Text fontSize="14px" pt={1}>
             {t('%assetA% per %assetB%', {
               assetA: currencyA?.symbol ?? '',
@@ -31,7 +32,7 @@ export default function PoolPriceBar({
           </Text>
         </AutoColumn>
         <AutoColumn justify="center">
-          <Text>{price?.invert()?.toSignificant(8) ?? '-'}</Text>
+          <Text>{price?.invert() ? formatAmountDisplay(price?.invert()) : '-'}</Text>
           <Text fontSize="14px" pt={1}>
             {t('%assetA% per %assetB%', {
               assetA: currencyB?.symbol ?? '',

@@ -1,4 +1,5 @@
 import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
+import { APTOS_COIN } from '@pancakeswap/awgmi'
 import { useHttpLocations } from '@pancakeswap/hooks'
 import { AptosIcon } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
@@ -39,7 +40,8 @@ export function CurrencyLogo({
     return []
   }, [currency, uriLocations])
 
-  if (currency?.isNative) {
+  // isNative of AptosCoin wrapped is false, using address comparison is safer
+  if (currency?.isNative || currency?.address === APTOS_COIN) {
     return <AptosIcon width={size} style={style} />
   }
 

@@ -6,6 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import { CurrencyLogo } from 'components/Logo'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 
 export default function SwapModalHeader({
@@ -65,7 +66,7 @@ export default function SwapModalHeader({
         <RowFixed gap="4px">
           <CurrencyLogo currency={trade.inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color={inputTextColor}>
-            {trade.inputAmount.toSignificant(8)}
+            {formatAmountDisplay(trade.inputAmount)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0">
@@ -90,7 +91,7 @@ export default function SwapModalHeader({
                 : 'text'
             }
           >
-            {trade.outputAmount.toSignificant(8)}
+            {formatAmountDisplay(trade.outputAmount)}
           </TruncatedText>
         </RowFixed>
         <RowFixed>

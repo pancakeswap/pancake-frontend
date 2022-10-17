@@ -40,6 +40,8 @@ import {
   warningSeverity,
 } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
+
 import { CommitButton } from '../components/CommitButton'
 
 const {
@@ -94,7 +96,7 @@ const SwapPage = () => {
 
   const formattedAmounts = {
     [independentField]: typedValue,
-    [dependentField]: parsedAmounts[dependentField]?.toSignificant(8) ?? '',
+    [dependentField]: formatAmountDisplay(parsedAmounts[dependentField]),
   }
 
   const [allowedSlippage] = useUserSlippage()

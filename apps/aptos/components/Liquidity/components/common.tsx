@@ -20,6 +20,7 @@ import styled from 'styled-components'
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { useUserSlippage } from 'state/user'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 import { CurrencySelectorValue } from '../hooks/useCurrencySelectRoute'
 
@@ -170,7 +171,7 @@ export const AddLiquidityModalHeader = ({
                 {currencyA?.symbol && currencyB?.symbol && getLPSymbol(currencyA.symbol, currencyB.symbol)}
               </Text>
             </AutoRow>
-            <Text ml="8px">{liquidityMinted?.toSignificant(8)}</Text>
+            <Text ml="8px">{formatAmountDisplay(liquidityMinted)}</Text>
           </RowBetween>
         </GreyCard>
       </AutoColumn>
@@ -182,10 +183,10 @@ export const AddLiquidityModalHeader = ({
       <AutoColumn>
         <RowBetween>
           <Subtitle>{t('Rates')}</Subtitle>
-          <Text>{`1 ${currencyA?.symbol} = ${price?.toSignificant(4)} ${currencyB?.symbol}`}</Text>
+          <Text>{`1 ${currencyA?.symbol} = ${formatAmountDisplay(price)} ${currencyB?.symbol}`}</Text>
         </RowBetween>
         <RowBetween style={{ justifyContent: 'flex-end' }}>
-          <Text>{`1 ${currencyB?.symbol} = ${price?.invert().toSignificant(4)} ${currencyA?.symbol}`}</Text>
+          <Text>{`1 ${currencyB?.symbol} = ${formatAmountDisplay(price?.invert())} ${currencyA?.symbol}`}</Text>
         </RowBetween>
       </AutoColumn>
       {!noLiquidity && (

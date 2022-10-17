@@ -57,6 +57,8 @@ export default function useRemoveLiquidityHandler({
       currencyB.wrapped.address,
     )
 
+    setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
+
     console.info(payload, 'payload')
     simulateTransactionAsync({
       payload,
@@ -87,7 +89,7 @@ export default function useRemoveLiquidityHandler({
           liquidityErrorMessage:
             // TODO: map error
             err && err.code !== 4001
-              ? t('Remove liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err.message) })
+              ? t('Remove liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err) })
               : undefined,
           txHash: undefined,
         })

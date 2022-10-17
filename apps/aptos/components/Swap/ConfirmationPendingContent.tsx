@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Text, Spinner, AutoColumn, ColumnCenter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Trade, Currency, TradeType } from '@pancakeswap/aptos-swap-sdk'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -16,9 +17,9 @@ function ConfirmationPendingContent({ trade }: { trade: Trade<Currency, Currency
 
   // text to show while loading
   const pendingText = t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
-    amountA: trade?.inputAmount?.toSignificant(8) ?? '',
+    amountA: formatAmountDisplay(trade?.inputAmount),
     symbolA: trade?.inputAmount?.currency?.symbol ?? '',
-    amountB: trade?.outputAmount?.toSignificant(8) ?? '',
+    amountB: formatAmountDisplay(trade?.outputAmount),
     symbolB: trade?.outputAmount?.currency?.symbol ?? '',
   })
 

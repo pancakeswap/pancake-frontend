@@ -7,6 +7,7 @@ import TransactionConfirmationModal, {
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
 import _toNumber from 'lodash/toNumber'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { AddLiquidityModalHeader, PairDistribution } from './common'
 import { CurrencySelectorValue } from '../hooks/useCurrencySelectRoute'
 import { Field } from '../type'
@@ -48,9 +49,9 @@ const ConfirmAddLiquidityModal: React.FC<
   const { t } = useTranslation()
 
   const pendingText = t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', {
-    amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(8) ?? '',
+    amountA: formatAmountDisplay(parsedAmounts[Field.CURRENCY_A]),
     symbolA: currencies?.currencyA?.symbol ?? '',
-    amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(8) ?? '',
+    amountB: formatAmountDisplay(parsedAmounts[Field.CURRENCY_B]),
     symbolB: currencies?.currencyB?.symbol ?? '',
   })
 
@@ -69,8 +70,8 @@ const ConfirmAddLiquidityModal: React.FC<
           title={t('Input')}
           percent={percent}
           currencies={currencies}
-          currencyAValue={parsedAmounts[Field.CURRENCY_A]?.toSignificant(8)}
-          currencyBValue={parsedAmounts[Field.CURRENCY_B]?.toSignificant(8)}
+          currencyAValue={formatAmountDisplay(parsedAmounts[Field.CURRENCY_A])}
+          currencyBValue={formatAmountDisplay(parsedAmounts[Field.CURRENCY_B])}
         />
       </AddLiquidityModalHeader>
     )

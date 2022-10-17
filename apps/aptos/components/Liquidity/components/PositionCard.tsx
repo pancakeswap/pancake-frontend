@@ -24,6 +24,7 @@ import {
 
 import { useTooltip } from '@pancakeswap/uikit/src/hooks'
 import { NextLinkFromReactRouter } from '@pancakeswap/uikit/src/components/NextLink'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;
@@ -93,7 +94,7 @@ function MinimalPositionCardView({
                 </RowFixed>
                 <RowFixed>
                   <Flex flexDirection="column" alignItems="flex-end">
-                    <Text>{userPoolBalance ? userPoolBalance.toSignificant(4) : '-'}</Text>
+                    <Text>{userPoolBalance ? formatAmountDisplay(userPoolBalance) : '-'}</Text>
                     {Number.isFinite(totalUSDValue) && (
                       <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString(undefined, {
                         minimumFractionDigits: 2,
@@ -125,7 +126,7 @@ function MinimalPositionCardView({
                   </Text>
                   {token0Deposited ? (
                     <RowFixed>
-                      <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                      <Text ml="6px">{formatAmountDisplay(token0Deposited)}</Text>
                     </RowFixed>
                   ) : (
                     '-'
@@ -137,7 +138,7 @@ function MinimalPositionCardView({
                   </Text>
                   {token1Deposited ? (
                     <RowFixed>
-                      <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                      <Text ml="6px">{formatAmountDisplay(token1Deposited)}</Text>
                     </RowFixed>
                   ) : (
                     '-'
@@ -196,7 +197,7 @@ function FullPositionCardView({
             </Text>
           </Flex>
           <Text fontSize="14px" color="textSubtle">
-            {userPoolBalance?.toExact()}
+            {formatAmountDisplay(userPoolBalance)}
           </Text>
           {Number.isFinite(totalUSDValue) && (
             <Text small color="textSubtle">{`(~${totalUSDValue.toLocaleString(undefined, {
@@ -219,7 +220,7 @@ function FullPositionCardView({
             </RowFixed>
             {token0Deposited ? (
               <RowFixed>
-                <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                <Text ml="6px">{formatAmountDisplay(token0Deposited)}</Text>
               </RowFixed>
             ) : (
               '-'
@@ -235,7 +236,7 @@ function FullPositionCardView({
             </RowFixed>
             {token1Deposited ? (
               <RowFixed>
-                <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                <Text ml="6px">{formatAmountDisplay(token1Deposited)}</Text>
               </RowFixed>
             ) : (
               '-'

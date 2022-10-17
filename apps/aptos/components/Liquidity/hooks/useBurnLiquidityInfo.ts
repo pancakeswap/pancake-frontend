@@ -4,6 +4,7 @@ import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useCurrencyBalance } from 'hooks/Balances'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useMemo } from 'react'
+import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { useBurnState } from '../state/remove'
 import { Field } from '../type'
 
@@ -142,11 +143,11 @@ export default function useBurnLiquidityInfo(
         ? '<1'
         : parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0),
       [Field.LIQUIDITY]:
-        independentField === Field.LIQUIDITY ? typedValue : parsedAmounts[Field.LIQUIDITY]?.toSignificant(8) ?? '',
+        independentField === Field.LIQUIDITY ? typedValue : formatAmountDisplay(parsedAmounts[Field.LIQUIDITY]),
       [Field.CURRENCY_A]:
-        independentField === Field.CURRENCY_A ? typedValue : parsedAmounts[Field.CURRENCY_A]?.toSignificant(8) ?? '',
+        independentField === Field.CURRENCY_A ? typedValue : formatAmountDisplay(parsedAmounts[Field.CURRENCY_A]),
       [Field.CURRENCY_B]:
-        independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(8) ?? '',
+        independentField === Field.CURRENCY_B ? typedValue : formatAmountDisplay(parsedAmounts[Field.CURRENCY_B]),
     }),
     [parsedAmounts, typedValue, independentField],
   )
