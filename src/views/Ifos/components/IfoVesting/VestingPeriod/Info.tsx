@@ -40,7 +40,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     vestingReleased,
     vestingInformationDuration,
   } = data.userVestingData[poolId]
-
+  console.log(data)
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
 
   const timeCliff = vestingStartTime * 1000
@@ -97,19 +97,17 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
         </Text>
         <StyleTag isPrivate={poolId === PoolIds.poolBasic}>{labelText}</StyleTag>
       </Flex>
-      <Flex mt="8px">
-        <Flex flexDirection="column" ml="8px">
-          <Text fontSize="14px" color="textSubtle" bold textTransform="uppercase">
-            {t('Cliff')}
-          </Text>
-          <Text fontSize="14px">{format(timeCliff, 'MM/dd/yyyy HH:mm')}</Text>
-        </Flex>
-        <Flex flexDirection="column" ml="auto" mr="8px">
-          <Text fontSize="14px" color="textSubtle" bold textTransform="uppercase">
-            {t('Vesting end')}
-          </Text>
-          <Text fontSize="14px">{format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}</Text>
-        </Flex>
+      <Flex justifyContent="space-between" mt="8px">
+        <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
+          {t('Cliff')}
+        </Text>
+        <Text fontSize="14px">{format(timeCliff, 'MM/dd/yyyy HH:mm')}</Text>
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
+          {t('Vesting end')}
+        </Text>
+        <Text fontSize="14px">{format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}</Text>
       </Flex>
       <WhiteCard>
         <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePercentage} />
