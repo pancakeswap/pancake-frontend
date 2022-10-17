@@ -4,9 +4,9 @@ import {
   CurrencyAmount,
   JSBI,
   Percent,
+  SWAP_ADDRESS_MODULE,
   Trade,
   TradeType,
-  SWAP_ADDRESS_MODULE,
 } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
@@ -15,11 +15,11 @@ import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import Page from 'components/Layout/Page'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
-import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/SettingsModal'
+import { PageMeta } from 'components/Layout/Page'
 import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
+import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/SettingsModal'
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
@@ -39,8 +39,8 @@ import {
   computeTradePriceBreakdown,
   warningSeverity,
 } from 'utils/exchange'
-import { maxAmountSpend } from 'utils/maxAmountSpend'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 
 import { CommitButton } from '../components/CommitButton'
 
@@ -346,7 +346,8 @@ const SwapPage = () => {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   return (
-    <Page title={t('Exchange')}>
+    <>
+      <PageMeta title={t('Exchange')} />
       <Card style={{ width: '328px' }}>
         <CurrencyInputHeader
           title={
@@ -428,7 +429,7 @@ const SwapPage = () => {
         {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
       </Card>
       <TestTokens />
-    </Page>
+    </>
   )
 }
 

@@ -3,17 +3,17 @@ import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Box, CardBody, Liquidity as LiquidityUI, RowBetween, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
+import { PageMeta } from 'components/Layout/Page'
 import DetailToggler from 'components/Liquidity/components/DetailToggler'
+import { MinimalPositionCard } from 'components/Liquidity/components/PositionCard'
 import RemoveLiquidityButton from 'components/Liquidity/components/RemoveLiquidityButton'
 import SimpleRemoveForm from 'components/Liquidity/components/SimpleRemoveForm'
 import SlippageSection from 'components/Liquidity/components/SlippageSection'
 import withLPValues from 'components/Liquidity/hocs/withLPValues'
 import useBurnLiquidityInfo from 'components/Liquidity/hooks/useBurnLiquidityInfo'
 import useCurrencySelectRoute from 'components/Liquidity/hooks/useCurrencySelectRoute'
-import Page from 'components/Layout/Page'
 import { usePair } from 'hooks/usePairs'
 import { useMemo } from 'react'
-import { MinimalPositionCard } from 'components/Liquidity/components/PositionCard'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 const { LiquidityCard } = LiquidityUI
@@ -38,7 +38,8 @@ const RemoveLiquidityPage = () => {
   )
 
   return (
-    <Page title={t('Remove Liquidity')}>
+    <>
+      <PageMeta title={t('Remove Liquidity')} />
       <LiquidityCard>
         <LiquidityCard.Header
           backTo="/liquidity"
@@ -113,7 +114,7 @@ const RemoveLiquidityPage = () => {
           <MinimalPositionCardContainer pair={pair} />
         </AutoColumn>
       ) : null}
-    </Page>
+    </>
   )
 }
 
