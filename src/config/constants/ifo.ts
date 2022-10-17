@@ -7,6 +7,33 @@ export const cakeBnbLpToken = new Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'C
 
 const ifos: Ifo[] = [
   {
+    id: 'wmx',
+    address: '0xC202eb5f2487DA3675c4aAa2C3D2c071078699c1',
+    isActive: true,
+    name: 'WMX',
+    poolBasic: {
+      saleAmount: '10,000,000 WMX',
+      raiseAmount: '$3,000,000',
+      distributionRatio: 0.25,
+    },
+    poolUnlimited: {
+      saleAmount: '30,000,000 WMX',
+      raiseAmount: '$9,000,000',
+      distributionRatio: 0.75,
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.wmx,
+    releaseBlockNumber: 22242441,
+    campaignId: '511800000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x8bef379b1f3e1f42e180d877edd3ef5b11476300f9de37196904ca4c2070b470',
+    tokenOfferingPrice: 0.3,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/WombexFinance',
+    description: 'Wombex is a customized fork of Convex, designed specifically for the Wombat Exchange ecosystem',
+    vestingTitle: 'Earn $WMX by staking assets; Lock $WMX for Fee-Sharing and Wombat Governance',
+  },
+  {
     id: 'krs',
     cIFO: true,
     address: '0x4CCB9960dEF2f9a55D1a0454a134a8Adb0047B8e',
