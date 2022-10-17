@@ -101,13 +101,17 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
         <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
           {t('Cliff')}
         </Text>
-        <Text fontSize="14px">{format(timeCliff, 'MM/dd/yyyy HH:mm')}</Text>
+        <Text fontSize="12px" color="textSubtle">
+          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
+        </Text>
       </Flex>
       <Flex justifyContent="space-between">
         <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
           {t('Vesting end')}
         </Text>
-        <Text fontSize="14px">{format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}</Text>
+        <Text fontSize="12px" color="textSubtle">
+          {format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}
+        </Text>
       </Flex>
       <WhiteCard>
         <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePercentage} />
