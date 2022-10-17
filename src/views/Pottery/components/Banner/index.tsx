@@ -125,7 +125,7 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
               {t('Deposit CAKE for')}
             </Text>
             <DarkTextStyle ml="3px" bold as="span">
-              {t('10 Weeks to earn')}
+              {t('10 Weeks')}
             </DarkTextStyle>
           </Box>
           <Box>
