@@ -49,7 +49,7 @@ export default function useRemoveLiquidityHandler({
   )
 
   const onRemove = useCallback(async () => {
-    const payload = AptosSwapRouter.unstable_removeLiquidityParameters(
+    const payload = AptosSwapRouter.removeLiquidityParameters(
       parsedAmounts[Field.LIQUIDITY]?.quotient?.toString() ?? '',
       amountsMin[Field.CURRENCY_A]?.toString() ?? '',
       amountsMin[Field.CURRENCY_B]?.toString() ?? '',

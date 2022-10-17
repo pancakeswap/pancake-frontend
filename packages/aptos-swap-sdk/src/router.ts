@@ -73,8 +73,7 @@ export abstract class AptosSwapRouter {
     return undefined
   }
 
-  // eslint-disable-next-line camelcase
-  public static unstable_addLiquidityParameters(
+  public static addLiquidityParameters(
     amountX: string,
     amountY: string,
     amountXMin: string,
@@ -85,8 +84,7 @@ export abstract class AptosSwapRouter {
     return routerAddLiquidity([amountX, amountY, amountXMin, amountYMin], [addressX, addressY])
   }
 
-  // eslint-disable-next-line camelcase
-  public static unstable_removeLiquidityParameters(
+  public static removeLiquidityParameters(
     liquidityAmount: string,
     minAmountX: string,
     minAmountY: string,
