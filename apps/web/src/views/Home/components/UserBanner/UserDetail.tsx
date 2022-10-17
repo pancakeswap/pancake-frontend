@@ -69,7 +69,7 @@ const UserDetail = () => {
             {profile ? (
               <Heading scale="xl">
                 {t('Hi, %userName%!', {
-                  userName: userUsernameVisibility ? profile.username : profile.username?.replace(/./g, '*'),
+                  userName: userUsernameVisibility ? profile.username : '🐰🐰🐰🐰🐰🐰',
                 })}
                 <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
               </Heading>
@@ -89,7 +89,7 @@ const UserDetail = () => {
           {profile ? (
             <Heading mb="18px" textAlign="center">
               {t('Hi, %userName%!', {
-                userName: userUsernameVisibility ? profile.username : profile.username?.replace(/./g, '*'),
+                userName: userUsernameVisibility ? profile.username : '🐰🐰🐰🐰🐰🐰',
               })}
               <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
             </Heading>

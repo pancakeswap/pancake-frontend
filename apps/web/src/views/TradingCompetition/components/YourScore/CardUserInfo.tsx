@@ -16,6 +16,7 @@ import {
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { REGISTRATION, LIVE } from 'config/constants/trading-competition/phases'
+import { useUserUsernameVisibility } from 'state/user/hooks'
 import { YourScoreProps } from '../../types'
 import UserRankBox from './UserRankBox'
 import NextRankBox from './NextRankBox'
@@ -56,6 +57,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
   const { t } = useTranslation()
   const [onPresentShareModal] = useModal(shareModal, false)
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
+  const [userUsernameVisibility] = useUserUsernameVisibility()
   const shouldShowUserRanks = account && hasRegistered
 
   const getMedal = (currentRank: string | number) => {
@@ -139,7 +141,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
     if (!hasRegistered) {
       return t('You’re not participating this time.')
     }
-    return profile ? `@${profile.username}` : ''
+    return profile ? `@${userUsernameVisibility ? profile.username : '🐰🐰🐰🐰🐰🐰'}` : ''
   }
 
   const getSubHeadingText = () => {

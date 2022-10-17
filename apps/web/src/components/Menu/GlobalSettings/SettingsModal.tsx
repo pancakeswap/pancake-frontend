@@ -18,6 +18,7 @@ import {
   useUserExpertModeAcknowledgementShow,
   useUserSingleHopOnly,
   useZapModeManager,
+  useUserUsernameVisibility,
 } from 'state/user/hooks'
 import { ChainId } from '@pancakeswap/sdk'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
@@ -71,6 +72,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
   const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
+  const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
 
@@ -129,6 +131,24 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   scale="md"
                   onChange={() => {
                     setSubgraphHealth(!subgraphHealth)
+                  }}
+                />
+              </Flex>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Show username')}</Text>
+                  <QuestionHelper
+                    text={t('Shows username of wallet instead of bunnies')}
+                    placement="top-start"
+                    ml="4px"
+                  />
+                </Flex>
+                <Toggle
+                  id="toggle-username-visibility"
+                  checked={userUsernameVisibility}
+                  scale="md"
+                  onChange={() => {
+                    setUserUsernameVisibility(!userUsernameVisibility)
                   }}
                 />
               </Flex>

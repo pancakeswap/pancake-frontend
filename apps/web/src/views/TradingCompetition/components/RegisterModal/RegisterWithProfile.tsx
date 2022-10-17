@@ -6,6 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { useUserUsernameVisibility } from 'state/user/hooks'
 import { CompetitionProps } from '../../types'
 
 const StyledCheckbox = styled(Checkbox)`
@@ -27,6 +28,7 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
   const { callWithGasPrice } = useCallWithGasPrice()
+  const [userUsernameVisibility] = useUserUsernameVisibility()
 
   const handleConfirmClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
@@ -44,7 +46,7 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
 
   return (
     <>
-      <Heading scale="md" mb="24px">{`@${profile.username}`}</Heading>
+      <Heading scale="md" mb="24px">{`@${userUsernameVisibility ? profile.username : '🐰🐰🐰🐰🐰🐰'}`}</Heading>
       <Flex flexDirection="column">
         <Text bold>
           {t('Registering for the competition will make your wallet address publicly visible on the leaderboard.')}
