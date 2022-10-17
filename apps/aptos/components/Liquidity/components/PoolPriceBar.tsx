@@ -26,8 +26,8 @@ export default function PoolPriceBar({
           <Text>{price ? formatAmountDisplay(price) : '-'}</Text>
           <Text fontSize="14px" pt={1}>
             {t('%assetA% per %assetB%', {
-              assetA: currencyA?.symbol ?? '',
-              assetB: currencyB?.symbol ?? '',
+              assetA: currencyB?.symbol ?? '',
+              assetB: currencyA?.symbol ?? '',
             })}
           </Text>
         </AutoColumn>
@@ -35,8 +35,8 @@ export default function PoolPriceBar({
           <Text>{price?.invert() ? formatAmountDisplay(price?.invert()) : '-'}</Text>
           <Text fontSize="14px" pt={1}>
             {t('%assetA% per %assetB%', {
-              assetA: currencyB?.symbol ?? '',
-              assetB: currencyA?.symbol ?? '',
+              assetA: currencyA?.symbol ?? '',
+              assetB: currencyB?.symbol ?? '',
             })}
           </Text>
         </AutoColumn>
