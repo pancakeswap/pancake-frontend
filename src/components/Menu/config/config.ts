@@ -53,6 +53,7 @@ const config: (
         {
           label: t('Swap'),
           href: '/swap',
+          supportChainIds: SUPPORT_ONLY_BSC,
         },
         {
           label: t('Limit'),
@@ -63,6 +64,7 @@ const config: (
         {
           label: t('Liquidity'),
           href: '/liquidity',
+          supportChainIds: SUPPORT_ONLY_BSC,
         },
         {
           label: t('Perpetual'),
@@ -76,6 +78,7 @@ const config: (
           label: t('Bridge'),
           href: 'https://bridge.pancakeswap.finance/',
           type: DropdownMenuItemType.EXTERNAL_LINK,
+          supportChainIds: SUPPORT_ONLY_BSC,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
@@ -89,6 +92,7 @@ const config: (
         {
           label: t('Farms'),
           href: '/farms',
+          supportChainIds: SUPPORT_ONLY_BSC,
         },
         {
           label: t('Pools'),

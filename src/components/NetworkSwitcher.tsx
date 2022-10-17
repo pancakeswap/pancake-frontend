@@ -27,7 +27,6 @@ import { ChainLogo } from './Logo/ChainLogo'
 
 const NetworkSelect = ({ switchNetwork, chainId }) => {
   const { t } = useTranslation()
-
   return (
     <>
       <Box px="16px" py="8px">

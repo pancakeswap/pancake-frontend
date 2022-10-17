@@ -66,6 +66,26 @@ export const fantomTestnet: Chain = {
   },
   testnet: true,
 }
+// add ethw mainnet
+export const ethwMainnet: Chain = {
+  id: 10001,
+  name: 'ETHW Mainnet',
+  network: 'ethw-mainnet',
+  nativeCurrency: { name: 'ETHW', symbol: 'ETHW', decimals: 18 },
+  rpcUrls: {
+    default: 'https://mainnet.ethereumpow.org',
+  },
+  blockExplorers: {
+    default: {
+      name: 'ETHWScan',
+      url: 'https://mainnet.ethwscan.com',
+    },
+  },
+  multicall: {
+    address: '0xcd7791e8dd276c04cdfa92b412ea8e1edae0d08e',
+    blockCreated: 15727173,
+  },
+}
 
 const bscExplorer = { name: 'BscScan', url: 'https://bscscan.com' }
 
