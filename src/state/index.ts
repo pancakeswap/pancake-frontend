@@ -7,12 +7,14 @@ import burn from './burn/reducer'
 import farmsReducer from './farms'
 import farmsReducerV1 from './farmsV1'
 import { updateVersion } from './global/actions'
+import infoReducer from './info'
 import mint from './mint/reducer'
 import multicall from './multicall/reducer'
 import poolsReducer from './pools'
 import swap from './swap/reducer'
 import transactions from './transactions/reducer'
 import user from './user/reducer'
+import limitOrders from './limitOrders/reducer'
 import globalReducer from './global/reducer'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions']
@@ -32,6 +34,8 @@ const persistedReducer = persistReducer(
     farms: farmsReducer,
     farmsV1: farmsReducerV1,
     pools: poolsReducer,
+    info: infoReducer,
+    limitOrders,
 
     // Exchange
     user,
