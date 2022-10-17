@@ -13,12 +13,12 @@ const ifos: Ifo[] = [
     name: 'WMX',
     poolBasic: {
       saleAmount: '1,000,000 WMX',
-      raiseAmount: '$3,000,000',
+      raiseAmount: '$300,000',
       distributionRatio: 0.25,
     },
     poolUnlimited: {
       saleAmount: '3,000,000 WMX',
-      raiseAmount: '$9,000,000',
+      raiseAmount: '$900,000',
       distributionRatio: 0.75,
     },
     currency: bscTokens.cake,
