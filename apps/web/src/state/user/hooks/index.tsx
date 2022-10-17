@@ -26,6 +26,7 @@ import {
   updateUserFarmStakedOnly,
   updateUserSingleHopOnly,
   updateUserSlippageTolerance,
+  updateGasPrice,
   addWatchlistToken,
   addWatchlistPool,
   updateUserPoolStakedOnly,
@@ -403,12 +404,17 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
   )
 }
 
-export function useGasPrice(chainIdOverride?: number): string {
+export function useGasPrice(chainIdOverride?: number, resolveRpcDefault = true): string {
   const { chainId: chainId_, chain } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
   const chainId = chainIdOverride ?? chainId_
+  const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
   const { data: bscProviderGasPrice = GAS_PRICE_GWEI.default } = useSWR(
-    library && library.provider && chainId === ChainId.BSC && ['bscProviderGasPrice', library.provider],
+    library &&
+      library.provider &&
+      chainId === ChainId.BSC &&
+      userGas === GAS_PRICE_GWEI.rpcDefault &&
+      resolveRpcDefault && ['bscProviderGasPrice', library.provider],
     async () => {
       const gasPrice = await library.getGasPrice()
       return gasPrice.toString()
@@ -424,7 +430,7 @@ export function useGasPrice(chainIdOverride?: number): string {
     watch: true,
   })
   if (chainId === ChainId.BSC) {
-    return bscProviderGasPrice
+    return userGas === GAS_PRICE_GWEI.rpcDefault && resolveRpcDefault ? bscProviderGasPrice : userGas
   }
   if (chainId === ChainId.BSC_TESTNET) {
     return GAS_PRICE_GWEI.testnet
@@ -433,6 +439,20 @@ export function useGasPrice(chainIdOverride?: number): string {
     return data?.formatted?.maxPriorityFeePerGas
   }
   return data?.formatted?.gasPrice
+}
+
+export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
+  const dispatch = useAppDispatch()
+  const userGasPrice = useGasPrice(null, false)
+
+  const setGasPrice = useCallback(
+    (gasPrice: string) => {
+      dispatch(updateGasPrice({ gasPrice }))
+    },
+    [dispatch],
+  )
+
+  return [userGasPrice, setGasPrice]
 }
 
 function serializePair(pair: Pair): SerializedPair {

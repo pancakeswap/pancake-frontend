@@ -62,6 +62,7 @@ export const updateUserExpertModeAcknowledgementShow = createAction<{ userExpert
 export const updateUserUsernameVisibility = createAction<{ userUsernameVisibility: boolean }>(
   'user/updateUserUsernameVisibility',
 )
+export const updateGasPrice = createAction<{ gasPrice: string }>('user/updateGasPrice')
 
 export const addWatchlistToken = createAction<{ address: string }>('user/addWatchlistToken')
 export const addWatchlistPool = createAction<{ address: string }>('user/addWatchlistPool')

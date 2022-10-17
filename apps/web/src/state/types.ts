@@ -23,6 +23,7 @@ export enum GAS_PRICE {
 }
 
 export const GAS_PRICE_GWEI = {
+  rpcDefault: 'rpcDefault',
   default: parseUnits(GAS_PRICE.default, 'gwei').toString(),
   fast: parseUnits(GAS_PRICE.fast, 'gwei').toString(),
   instant: parseUnits(GAS_PRICE.instant, 'gwei').toString(),

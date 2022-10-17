@@ -15,7 +15,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
 import { ConnectedBidder, FetchStatus } from 'config/constants/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { bscTokens } from '@pancakeswap/tokens'
 import { requiresApproval } from 'utils/requiresApproval'
@@ -57,7 +57,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const [bid, setBid] = useState('')
   const [isMultipleOfTen, setIsMultipleOfTen] = useState(false)
@@ -107,7 +107,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
         return requiresApproval(cakeContractReader, account, farmAuctionContract.address)
       },
       onApprove: () => {
-        return callWithMarketGasPrice(cakeContractApprover, 'approve', [farmAuctionContract.address, MaxUint256])
+        return callWithGasPrice(cakeContractApprover, 'approve', [farmAuctionContract.address, MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(
@@ -117,7 +117,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
       },
       onConfirm: () => {
         const bidAmount = new BigNumber(bid).times(DEFAULT_TOKEN_DECIMAL).toString()
-        return callWithMarketGasPrice(farmAuctionContract, 'bid', [bidAmount])
+        return callWithGasPrice(farmAuctionContract, 'bid', [bidAmount])
       },
       onSuccess: async ({ receipt }) => {
         refreshBidders()

@@ -44,12 +44,13 @@ import Dots from '../../../components/Loader/Dots'
 import { useBurnActionHandlers, useBurnState } from '../../../state/burn/hooks'
 
 import { Field } from '../../../state/burn/actions'
-import { useUserSlippageTolerance } from '../../../state/user/hooks'
+import { useGasPrice, useUserSlippageTolerance } from '../../../state/user/hooks'
 import Page from '../../Page'
 import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../../utils/sentry'
 import { CommonBasesType } from '../../../components/SearchModal/types'
 import { useStableDerivedBurnInfo } from './hooks/useStableDerivedBurnInfo'
+import { GAS_PRICE_GWEI } from '../../../state/types'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -66,6 +67,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   const [tokenA, tokenB] = useMemo(() => [currencyA?.wrapped, currencyB?.wrapped], [currencyA, currencyB])
 
   const { t } = useTranslation()
+  const gasPrice = useGasPrice()
 
   // burn state
   const { independentField, typedValue } = useBurnState()
@@ -198,6 +200,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await stableSwapContract[methodName](...args, {
         gasLimit: safeGasEstimate,
+        gasPrice,
       })
         .then((response: TransactionResponse) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })

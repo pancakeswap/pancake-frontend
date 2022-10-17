@@ -19,7 +19,7 @@ import { Field } from '../../../state/mint/actions'
 import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { useIsExpertMode, useUserSlippageTolerance } from '../../../state/user/hooks'
+import { useGasPrice, useIsExpertMode, useUserSlippageTolerance } from '../../../state/user/hooks'
 import { calculateGasMargin } from '../../../utils'
 import { calculateSlippageAmount } from '../../../utils/exchange'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
@@ -33,6 +33,7 @@ import { AppHeader, AppBody } from '../../../components/App'
 import { RowBetween } from '../../../components/Layout/Row'
 import { MinimalPositionCard } from '../../../components/PositionCard'
 import { useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
+import { GAS_PRICE_GWEI } from '../../../state/types'
 
 export default function AddStableLiquidity({ currencyA, currencyB }) {
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
@@ -40,6 +41,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
   const expertMode = useIsExpertMode()
 
   const { t } = useTranslation()
+  const gasPrice = useGasPrice()
 
   // mint state
   const { independentField, typedValue, otherTypedValue } = useMintState()
@@ -143,6 +145,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
         method(...args, {
           ...(value ? { value } : {}),
           gasLimit: calculateGasMargin(estimatedGasLimit),
+          gasPrice,
         }).then((response) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
