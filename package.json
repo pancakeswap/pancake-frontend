@@ -89,7 +89,7 @@
     "react-redux": "^8.0.4",
     "react-transition-group": "^4.4.5",
     "react-window": "^1.8.7",
-    "recharts": "2.1.12",
+    "recharts": "2.1.15",
     "redux-persist": "^6.0.0",
     "remark-gfm": "^1.0.0",
     "split-grid": "^1.0.11",
