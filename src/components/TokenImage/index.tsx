@@ -33,10 +33,3 @@ export const TokenPairImage: React.FC<React.PropsWithChildren<TokenPairImageProp
   )
 }
 
-interface TokenImageProps extends ImageProps {
-  token: Token
-}
-
-export const TokenImage: React.FC<React.PropsWithChildren<TokenImageProps>> = ({ token, ...props }) => {
-  return <UIKitTokenImage src={getImageUrlFromToken(token)} {...props} />
-}
