@@ -12,11 +12,13 @@ import {
   Image,
   Loading,
   Link,
+  FlexLayout,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import Page from 'components/Layout/Page'
 import Portal from 'components/Portal'
+import { usePoolsList, usePoolsPageFetch, usePoolsUserDataLoaded } from 'state/pools/hooks'
 import { usePoolsStakedOnly, usePoolsViewMode, ViewMode } from 'state/user'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -24,11 +26,14 @@ import { latinise } from 'utils/latinise'
 import partition from 'lodash/partition'
 import BigNumber from 'bignumber.js'
 import orderBy from 'lodash/orderBy'
-import * as data from './data'
 import PoolTabButtons from './components/PoolTabButtons'
+import PoolCard from './components/PoolCard'
 import NoSSR from '../NoSSR'
+import { Pool } from '../../state/pools/types'
 
-const BSC_BLOCK_TIME = 3
+const CardLayout = styled(FlexLayout)`
+  justify-content: center;
+`
 
 const PoolControls = styled.div`
   display: flex;
@@ -87,8 +92,6 @@ const FinishedTextLink = styled(Link)`
 
 const NUMBER_OF_POOLS_VISIBLE = 12
 
-const POOL_START_BLOCK_THRESHOLD = (60 / BSC_BLOCK_TIME) * 4
-
 const sortPools = (sortOption: string, pools: any[], poolsToSort: any[]) => {
   switch (sortOption) {
     case 'apr':
@@ -105,6 +108,8 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
+  const pools = usePoolsList()
+  const userDataLoaded = usePoolsUserDataLoaded()
   const [viewMode, setViewMode] = usePoolsViewMode()
   const [stakedOnly, setStakedOnly] = usePoolsStakedOnly()
   const [sortOption, setSortOption] = useState('hot')
@@ -112,11 +117,6 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
   const chosenPoolsLength = useRef(0)
-  // todo
-  const userDataLoaded = true
-  const initialBlock = 0
-
-  const pools = data.pools as any
 
   const normalizedUrlSearch = useMemo(
     () => (typeof router?.query?.search === 'string' ? router.query.search : ''),
@@ -132,38 +132,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
     [],
   )
 
-  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
-  const openPoolsWithStartBlockFilter = useMemo(
-    () =>
-      openPools.filter((pool) =>
-        initialBlock > 0 && pool.startBlock
-          ? Number(pool.startBlock) < initialBlock + POOL_START_BLOCK_THRESHOLD
-          : true,
-      ),
-    [initialBlock, openPools],
-  )
-  const stakedOnlyFinishedPools = useMemo(
-    () =>
-      finishedPools.filter((pool) => {
-        if (pool.vaultKey) {
-          const vault = pool
-          return vault.userData.userShares.gt(0)
-        }
-        return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
-      }),
-    [finishedPools],
-  )
-  const stakedOnlyOpenPools = useCallback(() => {
-    return openPoolsWithStartBlockFilter.filter((pool) => {
-      if (pool.vaultKey) {
-        const vault = pool
-        return vault.userData.userShares.gt(0)
-      }
-      return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
-    })
-  }, [openPoolsWithStartBlockFilter])
-
-  const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
+  usePoolsPageFetch()
 
   useEffect(() => {
     if (isIntersecting) {
@@ -176,17 +145,32 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
     }
   }, [isIntersecting])
 
-  let chosenPools
+  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
+
+  const stakedOnlyFinishedPools = useMemo(
+    () =>
+      finishedPools.filter((pool) => {
+        return pool.userData && new BigNumber(pool.userData.stakedBalance.toExact()).isGreaterThan(0)
+      }),
+    [finishedPools],
+  )
+  const stakedOnlyOpenPools = useMemo(() => {
+    return openPools.filter((pool) => {
+      return pool.userData && new BigNumber(pool.userData.stakedBalance.toExact()).isGreaterThan(0)
+    })
+  }, [openPools])
+
+  const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
+
+  let chosenPools: Pool[]
   if (showFinishedPools) {
     chosenPools = stakedOnly ? stakedOnlyFinishedPools : finishedPools
   } else {
-    chosenPools = stakedOnly ? stakedOnlyOpenPools() : openPoolsWithStartBlockFilter
+    chosenPools = stakedOnly ? stakedOnlyOpenPools : openPools
   }
 
   chosenPools = useMemo(() => {
     const sortedPools = sortPools(sortOption, pools, chosenPools).slice(0, numberOfPoolsVisible)
-
-    console.log('sortedPools', sortedPools)
 
     if (searchQuery) {
       const lowercaseQuery = latinise(searchQuery.toLowerCase())
@@ -196,6 +180,23 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   }, [sortOption, pools, chosenPools, numberOfPoolsVisible, searchQuery])
 
   chosenPoolsLength.current = chosenPools.length
+
+  const cardLayout = (
+    <CardLayout>
+      {chosenPools.map((pool) => (
+        <PoolCard key={pool.type} pool={pool} />
+      ))}
+    </CardLayout>
+  )
+
+  const tableLayout = chosenPools.map((pool) => {
+    return (
+      <Flex key={pool.type} py={2}>
+        <Flex mr={2}>StakingToken: {pool.stakingToken.symbol}</Flex>
+        <Flex mr={2}>EarningToken: {pool.earningToken.symbol}</Flex>
+      </Flex>
+    )
+  })
 
   return (
     <>
@@ -282,18 +283,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
           </Flex>
         )}
         {/* pools list */}
-        <NoSSR>
-          {viewMode}
-          {chosenPools.map((pool) => {
-            return (
-              <Flex key={pool.sousId} py={2}>
-                <Flex mr={2}>StakingToken: {pool.stakingToken.symbol}</Flex>
-                <Flex mr={2}>EarningToken: {pool.earningToken.symbol}</Flex>
-                <Flex mr={2}>APR: {pool.apr}</Flex>
-              </Flex>
-            )
-          })}
-        </NoSSR>
+        <NoSSR>{viewMode === ViewMode.CARD ? cardLayout : tableLayout}</NoSSR>
         <div ref={observerRef} />
         <Image
           mx="auto"
