@@ -2,7 +2,6 @@
 import * as React from 'react'
 
 import { GetAccountResult, getAccount, watchAccount } from '@pancakeswap/awgmi/core'
-import { useClient } from '../context'
 import { useSyncExternalStoreWithTracked } from './useSyncExternalStoreWithTracked'
 
 export type UseAccountConfig = {
@@ -22,31 +21,19 @@ export type UseAccountConfig = {
 
 export function useAccount({ onConnect, onDisconnect }: UseAccountConfig = {}) {
   const account = useSyncExternalStoreWithTracked(watchAccount, getAccount)
+  const previousAccount = React.useRef<typeof account>()
 
-  const { subscribe } = useClient()
+  if (!!onConnect && previousAccount.current?.status !== 'connected' && account.status === 'connected')
+    onConnect({
+      account: account.account,
+      connector: account.connector,
+      isReconnected: previousAccount.current?.status === 'reconnecting',
+    })
 
-  React.useEffect(() => {
-    // No need to subscribe if these callbacks aren't defined
-    if (!onConnect && !onDisconnect) return
+  if (!!onDisconnect && previousAccount.current?.status === 'connected' && account.status === 'disconnected')
+    onDisconnect()
 
-    // Trigger update when status changes
-    const unsubscribe = subscribe(
-      (state) => state.status,
-      (status, prevStatus) => {
-        if (!!onConnect && status === 'connected') {
-          const { account: gotAccount, connector } = getAccount()
-          onConnect({
-            account: gotAccount,
-            connector,
-            isReconnected: prevStatus === 'reconnecting',
-          })
-        }
-
-        if (!!onDisconnect && prevStatus !== 'connecting' && status === 'disconnected') onDisconnect()
-      },
-    )
-    return unsubscribe
-  }, [onConnect, onDisconnect, subscribe])
+  previousAccount.current = account
 
   return account
 }
