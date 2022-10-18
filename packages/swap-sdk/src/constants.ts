@@ -123,6 +123,14 @@ export const WBNB = {
     'Wrapped BNB',
     'https://www.binance.org'
   ),
+  [ChainId.ETHW_MAINNET]: new Token(
+    ChainId.ETHW_MAINNET,
+    '0xaA7427D8f17D87a28F5e1ba3aDBB270bAdbe1011',
+    18,
+    'ETHW',
+    'Wrapped ETHW',
+    ''
+  ),
 }
 
 export const WNATIVE: Record<number, Token> = {
@@ -131,6 +139,7 @@ export const WNATIVE: Record<number, Token> = {
   [ChainId.GOERLI]: WETH9[ChainId.GOERLI],
   [ChainId.BSC]: WBNB[ChainId.BSC],
   [ChainId.BSC_TESTNET]: WBNB[ChainId.BSC_TESTNET],
+  [ChainId.ETHW_MAINNET]: WBNB[ChainId.ETHW_MAINNET],
 }
 
 export const NATIVE: Record<
@@ -152,6 +161,11 @@ export const NATIVE: Record<
   [ChainId.BSC_TESTNET]: {
     name: 'Binance Chain Native Token',
     symbol: 'tBNB',
+    decimals: 18,
+  },
+  [ChainId.ETHW_MAINNET]: {
+    name: 'ETHW Chain Native Token',
+    symbol: 'ETHW',
     decimals: 18,
   },
 }

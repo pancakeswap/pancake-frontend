@@ -12,7 +12,6 @@ import {
   MoreIcon,
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { perpLangMap } from 'utils/getPerpetualLanguageCode'
 import { perpTheme } from 'utils/getPerpetualTheme'
 import { DropdownMenuItems } from '@pancakeswap/uikit/src/components/DropdownMenu/types'
@@ -53,12 +52,10 @@ const config: (
         {
           label: t('Swap'),
           href: '/swap',
-          supportChainIds: SUPPORT_ONLY_BSC,
         },
         {
           label: t('Liquidity'),
           href: '/liquidity',
-          supportChainIds: SUPPORT_ONLY_BSC,
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
