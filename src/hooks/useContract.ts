@@ -19,8 +19,8 @@ import {
   getBCakeProxyContract,
   getBep20Contract, getBunnySpecialXmasContract,
   getCakeContract,
-  getCakeFlexibleSideVaultV2Contract, getCakeVaultV2Contract, getCrossFarmingProxyContract, getIfoV1Contract,
-  getIfoV2Contract, getMasterchefContract, getNonBscVaultContract, getSouschefContract
+  getCakeFlexibleSideVaultV2Contract, getCakeVaultV2Contract, getCrossFarmingProxyContract,
+  getMasterchefContract, getNonBscVaultContract, getSouschefContract
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
