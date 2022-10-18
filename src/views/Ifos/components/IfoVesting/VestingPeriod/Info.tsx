@@ -47,7 +47,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
 
   const currentBlock = useCurrentBlock()
   const publicIfoData = useGetPublicIfoV3Data(data.ifo)
-  const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized, secondsUntilEnd } = publicIfoData
+  const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
   useSWRImmutable(!isPublicIfoDataInitialized && currentBlock && ['fetchPublicIfoData', currentBlock], async () => {
     fetchPublicIfoData(currentBlock)
   })
