@@ -21,7 +21,6 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { isAddress } from 'utils'
 import { getBalanceNumber } from 'utils/formatBalance'
 import { bscRpcProvider } from 'utils/providers'
-import { getPoolsPriceHelperLpFiles } from 'config/constants/priceHelperLps/index'
 import fetchFarms from '../farms/fetchFarms'
 import getFarmsPrices from '../farms/getFarmsPrices'
 import {
@@ -133,87 +132,7 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
   )
 }
 
-export const fetchPoolsPublicDataAsync =
-  (currentBlockNumber: number, chainId: number) => async (dispatch, getState) => {
-    try {
-      const [blockLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
-        fetchPoolsBlockLimits(),
-        fetchPoolsTotalStaking(),
-        fetchPoolsProfileRequirement(),
-        currentBlockNumber ? Promise.resolve(currentBlockNumber) : bscRpcProvider.getBlockNumber(),
-      ])
 
-      const blockLimitsSousIdMap = fromPairs(blockLimits.map((entry) => [entry.sousId, entry]))
-      const totalStakingsSousIdMap = fromPairs(totalStakings.map((entry) => [entry.sousId, entry]))
-
-      const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
-      const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
-        return (
-          poolsConfig
-            .filter(
-              (pool) => pool.earningToken.address.toLowerCase() === priceHelperLpConfig.token.address.toLowerCase(),
-            )
-            .filter((pool) => {
-              const poolBlockLimit = blockLimitsSousIdMap[pool.sousId]
-              if (poolBlockLimit) {
-                return poolBlockLimit.endBlock > currentBlock
-              }
-              return false
-            }).length > 0
-        )
-      })
-      const poolsWithDifferentFarmToken =
-        activePriceHelperLpsConfig.length > 0 ? await fetchFarms(priceHelperLpsConfig, chainId) : []
-      const farmsData = getState().farms.data
-      const bnbBusdFarm =
-        activePriceHelperLpsConfig.length > 0
-          ? farmsData.find((farm) => farm.token.symbol === 'BUSD' && farm.quoteToken.symbol === 'WBNB')
-          : null
-      const farmsWithPricesOfDifferentTokenPools = bnbBusdFarm
-        ? getFarmsPrices([bnbBusdFarm, ...poolsWithDifferentFarmToken], chainId)
-        : []
-
-      const prices = getTokenPricesFromFarm([...farmsData, ...farmsWithPricesOfDifferentTokenPools])
-
-      const liveData = poolsConfig.map((pool) => {
-        const blockLimit = blockLimitsSousIdMap[pool.sousId]
-        const totalStaking = totalStakingsSousIdMap[pool.sousId]
-        const isPoolEndBlockExceeded =
-          currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
-        const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
-
-        const stakingTokenAddress = isAddress(pool.stakingToken.address)
-        const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
-
-        const earningTokenAddress = isAddress(pool.earningToken.address)
-        const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
-        const apr = !isPoolFinished
-          ? getPoolApr(
-              stakingTokenPrice,
-              earningTokenPrice,
-              getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-              parseFloat(pool.tokenPerBlock),
-            )
-          : 0
-
-        const profileRequirement = profileRequirements[pool.sousId] ? profileRequirements[pool.sousId] : undefined
-
-        return {
-          ...blockLimit,
-          ...totalStaking,
-          profileRequirement,
-          stakingTokenPrice,
-          earningTokenPrice,
-          apr,
-          isFinished: isPoolFinished,
-        }
-      })
-
-      dispatch(setPoolsPublicData(liveData))
-    } catch (error) {
-      console.error('[Pools Action] error when getting public data', error)
-    }
-  }
 
 export const fetchPoolsStakingLimitsAsync = () => async (dispatch, getState) => {
   const poolsWithStakingLimit = getState()

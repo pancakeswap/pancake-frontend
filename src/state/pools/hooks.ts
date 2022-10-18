@@ -11,7 +11,6 @@ import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { livePools } from 'config/constants/pools'
 
 import {
-  fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
   fetchCakeVaultPublicData,
   fetchCakeVaultUserData,
@@ -62,7 +61,6 @@ export const useFetchPublicPoolsData = () => {
         await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId, flag: farmFlag }))
 
         batch(() => {
-          dispatch(fetchPoolsPublicDataAsync(currentBlock, chainId))
           dispatch(fetchPoolsStakingLimitsAsync())
         })
       }
