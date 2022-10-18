@@ -798,6 +798,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+  pointer-events: inherit;
 }
 
 .c13:is(button) {
@@ -1245,6 +1246,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: inherit;
   padding: 0 16px;
   height: 48px;
 }
@@ -1268,6 +1270,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: inherit;
   padding: 0 16px;
   height: 48px;
 }
@@ -1300,6 +1303,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: inherit;
   padding: 0 16px;
   height: 48px;
 }
@@ -1332,6 +1336,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
   font-size: 16px;
   font-weight: 400;
   opacity: 1;
+  pointer-events: inherit;
   padding: 4px 4px 0px 4px;
   height: 42px;
 }
@@ -2201,7 +2206,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
           height="100%"
         >
           <div
-            class="_1c7dnup0 pkzlfc10i pkzlfc10 pkzlfc3"
+            class="_1c7dnup0 pkzlfc11c pkzlfc10 pkzlfc3"
           >
             <a
               class="c26"

@@ -31,7 +31,7 @@ type TestnetChain = {
 }
 
 export const devnet: Chain = {
-  id: 33,
+  id: 34,
   name: 'Devnet',
   network: 'devnet',
   restUrls: {

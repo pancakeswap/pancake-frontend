@@ -3,7 +3,7 @@ import { Percent } from '@pancakeswap/swap-sdk-core'
 import { ADDRESS } from './generated/swap'
 
 export enum ChainId {
-  DEVNET = 33,
+  DEVNET = 34,
   TESTNET = 2,
 }
 
