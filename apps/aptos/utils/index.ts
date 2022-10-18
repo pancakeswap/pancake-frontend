@@ -1,4 +1,5 @@
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
+import { stringify } from 'querystring'
 import { chains, defaultChain } from 'config/chains'
 import { TokenAddressMap } from 'state/lists/hooks'
 import convertStructTagToAddress from './convertStructTagToAddress'
@@ -10,8 +11,7 @@ export function getBlockExploreLink(
 ): string {
   const chain = chains.find((c) => c.id === chainId)
   if (!chain) return defaultChain.blockExplorers?.default.url ?? ''
-  // only Devnet is capital
-  const query = `?network=${chain.network || 'mainnet'}`
+  const query = chain.blockExplorers?.default.params ? `?${stringify(chain.blockExplorers?.default.params)}` : ''
   switch (type) {
     case 'transaction': {
       return `${chain.blockExplorers?.default.url}/txn/${data}${query}`

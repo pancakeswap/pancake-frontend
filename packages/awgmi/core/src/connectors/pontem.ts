@@ -1,0 +1,152 @@
+import { Types } from 'aptos'
+import { Chain } from '../chain'
+import { ChainNotConfiguredError, ConnectorNotFoundError } from '../errors'
+import { Address } from '../types'
+import { Connector } from './base'
+import { SignMessagePayload, SignMessageResponse } from './types'
+
+type NetworkInfo = {
+  api: string
+  name: string
+  chainId: string
+}
+
+declare global {
+  interface Window {
+    pontem?: {
+      connect: () => Promise<any>
+      account(): Promise<Address>
+      publicKey(): Promise<string>
+      signAndSubmit(
+        transaction: Types.EntryFunctionPayload,
+        options?: any,
+      ): Promise<{
+        success: boolean
+        result: {
+          hash: Types.HexEncodedBytes
+        }
+      }>
+      isConnected(): Promise<boolean>
+      signTransaction(transaction: Types.EntryFunctionPayload, options?: any): Promise<Uint8Array>
+      signMessage(message: SignMessagePayload): Promise<{
+        success: boolean
+        result: SignMessageResponse
+      }>
+      disconnect(): Promise<void>
+      network(): Promise<NetworkInfo>
+      onAccountChange(listener: (address: Address) => void): Promise<void>
+      onNetworkChange(listener: (network: NetworkInfo) => void): Promise<void>
+    }
+  }
+}
+
+export class PontemConnector extends Connector {
+  readonly id = 'pontem'
+  readonly name = 'Pontem'
+
+  readonly ready = typeof window !== 'undefined' && !!window.pontem
+
+  provider?: Window['pontem']
+
+  constructor(chains?: Chain[]) {
+    super({ chains })
+  }
+
+  async getProvider() {
+    if (typeof window !== 'undefined' && !!window.pontem) this.provider = window.pontem
+    return this.provider
+  }
+
+  async connect() {
+    try {
+      const provider = await this.getProvider()
+      if (!provider) throw new ConnectorNotFoundError()
+      if (provider.onAccountChange) provider.onAccountChange(this.onAccountsChanged)
+      if (provider.onNetworkChange) provider.onNetworkChange(this.onNetworkChanged)
+
+      const account = await provider.connect()
+      const network = await this.network()
+
+      this.emit('message', { type: 'connecting' })
+      return {
+        account,
+        network,
+        provider,
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
+
+  async network() {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    const providerNetwork = await provider.network()
+    const chain = this.chains.find((c) => c.id === parseInt(providerNetwork.chainId, 10))
+    if (!chain) throw new ChainNotConfiguredError()
+
+    return chain.network
+  }
+
+  async disconnect() {
+    const provider = await this.getProvider()
+    if (!provider) return
+    // eslint-disable-next-line consistent-return
+    return provider.disconnect()
+  }
+
+  async account() {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    return {
+      address: await provider.account(),
+    }
+  }
+
+  async isConnected() {
+    try {
+      const provider = await this.getProvider()
+      if (!provider) throw new ConnectorNotFoundError()
+      return provider.isConnected()
+    } catch {
+      return false
+    }
+  }
+
+  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload) {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+
+    const response = await provider.signAndSubmit(payload)
+
+    if (!response || !response.success) {
+      throw new Error('sign and submit failed')
+    }
+
+    return response.result
+  }
+
+  async signTransaction(payload: Types.EntryFunctionPayload) {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    return provider.signTransaction(payload)
+  }
+
+  protected onAccountsChanged = (address: Address) => {
+    this.emit('change', {
+      account: {
+        address,
+      },
+    })
+  }
+
+  protected onNetworkChanged = (network: NetworkInfo) => {
+    const chain = this.chains.find((c) => c.id === parseInt(network.chainId, 10))
+    if (chain) {
+      this.emit('change', {
+        network: chain.network,
+      })
+    }
+  }
+}

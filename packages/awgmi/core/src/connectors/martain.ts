@@ -83,7 +83,7 @@ export class MartianConnector extends Connector {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload): Promise<Types.PendingTransaction> {
+  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
@@ -96,11 +96,9 @@ export class MartianConnector extends Connector {
       provider.cancelSubmittedTransactions(),
     ])
 
-    // martian just return the hash here..
     const hash = await provider.signAndSubmitTransaction(generatedTx)
-    const tx = await provider.getTransaction(hash)
 
-    return tx
+    return { hash }
   }
 
   async signTransaction(payload: Types.EntryFunctionPayload) {

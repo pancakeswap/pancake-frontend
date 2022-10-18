@@ -26,8 +26,11 @@ export interface ConnectorEvents {
   error(error: Error): void
 }
 
+export interface ConnectorTransactionResponse {
+  hash: string
+}
+
 export abstract class Connector extends EventEmitter<ConnectorEvents> {
-  atpos?: any
   readonly chains: Chain[]
 
   constructor({ chains = defaultChains }: { chains?: Chain[] }) {
@@ -47,7 +50,7 @@ export abstract class Connector extends EventEmitter<ConnectorEvents> {
   abstract account(): Promise<Account>
   abstract network(): Promise<string>
 
-  abstract signAndSubmitTransaction(transaction?: Types.EntryFunctionPayload): Promise<Types.PendingTransaction>
+  abstract signAndSubmitTransaction(transaction?: Types.EntryFunctionPayload): Promise<ConnectorTransactionResponse>
 
   abstract signTransaction(transaction?: Types.EntryFunctionPayload): Promise<Uint8Array>
 

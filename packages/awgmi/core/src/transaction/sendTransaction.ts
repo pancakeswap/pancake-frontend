@@ -34,8 +34,10 @@ export async function sendTransaction({ networkName, payload }: SendTransactionA
     const pending = await connector.signAndSubmitTransaction(payload)
 
     const response = pending as TransactionResponse
-    response.wait = async (opts) => {
-      return provider.waitForTransactionWithResult(pending.hash, opts)
+    if (response) {
+      response.wait = async (opts) => {
+        return provider.waitForTransactionWithResult(pending.hash, opts)
+      }
     }
     return response
   } catch (error) {

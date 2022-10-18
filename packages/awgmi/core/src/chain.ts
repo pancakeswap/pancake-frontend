@@ -1,4 +1,4 @@
-export type BlockExplorer = { name: string; url: string }
+export type BlockExplorer = { name: string; url: string; params?: Record<string, string> }
 
 export type Chain = {
   /** ID in number form */
@@ -30,6 +30,24 @@ type TestnetChain = {
   faucetUrl: string
 }
 
+export const mainnet: Chain = {
+  id: 1,
+  name: 'Mainnet',
+  network: 'mainnet',
+  restUrls: {
+    default: 'https://fullnode.mainnet.aptoslabs.com/v1/',
+  },
+  blockExplorers: {
+    default: {
+      name: 'Aptos Explorer',
+      url: 'https://explorer.aptoslabs.com',
+      params: {
+        network: 'mainnet',
+      },
+    },
+  },
+}
+
 export const devnet: Chain = {
   id: 34,
   name: 'Devnet',
@@ -41,6 +59,9 @@ export const devnet: Chain = {
     default: {
       name: 'Aptos Explorer',
       url: 'https://explorer.aptoslabs.com',
+      params: {
+        network: 'devnet',
+      },
     },
   },
   testnet: true,
@@ -58,6 +79,9 @@ export const testnet: Chain = {
     default: {
       name: 'Aptos Explorer',
       url: 'https://explorer.aptoslabs.com',
+      params: {
+        network: 'testnet',
+      },
     },
   },
   testnet: true,

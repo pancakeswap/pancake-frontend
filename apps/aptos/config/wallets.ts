@@ -3,6 +3,7 @@ import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 export enum ConnectorNames {
   Petra = 'petra',
   Martian = 'martian',
+  Pontem = 'pontem',
 }
 
 export const wallets: WalletConfigV2<ConnectorNames>[] = [
@@ -24,6 +25,16 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     connectorId: ConnectorNames.Martian,
     downloadLink: {
       desktop: 'https://martianwallet.xyz/',
+    },
+  },
+  {
+    id: 'pontem',
+    title: 'Pontem',
+    icon: '/images/wallets/pontem.png',
+    installed: typeof window !== 'undefined' && Boolean(window.pontem),
+    connectorId: ConnectorNames.Pontem,
+    downloadLink: {
+      desktop: 'https://chrome.google.com/webstore/detail/pontem-aptos-wallet/phkbamefinggmakgklpkljjmgibohnba',
     },
   },
 ]

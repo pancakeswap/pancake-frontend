@@ -11,6 +11,11 @@ export class ConnectorNotFoundError extends Error {
   message = 'Connector not found'
 }
 
+export class ChainNotConfiguredError extends Error {
+  name = 'ChainNotConfigured'
+  message = 'Chain not configured'
+}
+
 export class ChainMismatchError extends Error {
   name = 'ChainMismatchError'
 
@@ -65,15 +70,10 @@ export class RpcError<T = undefined> extends Error {
  */
 export class ProviderRpcError<T = undefined> extends RpcError<T> {
   /**
-   * Create an Ethereum Provider JSON-RPC error.
-   * `code` must be an integer in the 1000 <= 4999 range.
+   * https://petra.app/docs/errors
    */
   constructor(
-    /**
-     * Number error code
-     * @see https://eips.ethereum.org/EIPS/eip-1193#error-standards
-     */
-    code: 4001 | 4100 | 4200 | 4900 | 4901 | 4902,
+    code: 4000 | 4001 | 4100,
     /** Human-readable string */
     message: string,
     /** Low-level error */

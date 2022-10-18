@@ -1,9 +1,9 @@
 import { createClient } from '@pancakeswap/awgmi'
-import { defaultChain, defaultChains, MartianConnector, PetraConnector } from '@pancakeswap/awgmi/core'
+import { defaultChain, defaultChains, MartianConnector, PetraConnector, PontemConnector } from '@pancakeswap/awgmi/core'
 import { AptosClient } from 'aptos'
 
 export const client = createClient({
-  connectors: [new PetraConnector(), new MartianConnector()],
+  connectors: [new PetraConnector(), new MartianConnector(), new PontemConnector()],
   provider: ({ networkName }) => {
     const networkNameLowerCase = networkName?.toLowerCase()
     if (networkNameLowerCase) {
