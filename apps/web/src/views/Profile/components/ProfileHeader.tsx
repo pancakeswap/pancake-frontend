@@ -19,7 +19,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useMemo } from 'react'
-import { useUserUsernameVisibility } from 'state/user/hooks'
+import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import EditProfileAvatar from './EditProfileAvatar'
 import BannerHeader from '../../Nft/market/components/BannerHeader'
 import StatBox, { StatBoxItem } from '../../Nft/market/components/StatBox'
@@ -50,7 +50,8 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
-  const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
+  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
+    useGetUsernameWithVisibility(profile)
   const [onEditProfileModal] = useModal(
     <EditProfileModal
       onSuccess={() => {
@@ -71,13 +72,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 
   const avatarImage = profile?.nft?.image?.thumbnail || '/images/nfts/no-profile-md.png'
   const profileTeamId = profile?.teamId
-  const profileUsername = isConnectedAccount
-    ? profile?.username
-      ? userUsernameVisibility
-        ? profile?.username
-        : '🐰🐰🐰🐰🐰🐰'
-      : false
-    : profile?.username
+  const profileUsername = isConnectedAccount ? usernameWithVisibility : profile?.username
   const hasProfile = !!profile
 
   const toggleUsernameVisibility = () => {

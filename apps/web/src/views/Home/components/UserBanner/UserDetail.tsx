@@ -12,10 +12,10 @@ import {
 import { useWeb3React } from '@pancakeswap/wagmi'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
-import { useUserUsernameVisibility } from 'state/user/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 
 const Desktop = styled(Flex)`
   align-items: center;
@@ -50,7 +50,8 @@ const UserDetail = () => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
-  const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
+  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
+    useGetUsernameWithVisibility(profile)
 
   const toggleUsernameVisibility = () => {
     setUserUsernameVisibility(!userUsernameVisibility)
@@ -69,7 +70,7 @@ const UserDetail = () => {
             {profile ? (
               <Heading scale="xl">
                 {t('Hi, %userName%!', {
-                  userName: userUsernameVisibility ? profile.username : '🐰🐰🐰🐰🐰🐰',
+                  userName: usernameWithVisibility,
                 })}
                 <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
               </Heading>
@@ -89,7 +90,7 @@ const UserDetail = () => {
           {profile ? (
             <Heading mb="18px" textAlign="center">
               {t('Hi, %userName%!', {
-                userName: userUsernameVisibility ? profile.username : '🐰🐰🐰🐰🐰🐰',
+                userName: usernameWithVisibility,
               })}
               <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
             </Heading>
