@@ -5,12 +5,12 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { PoolCategory } from 'config/constants/types'
-import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
+// import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import { DeserializedPool } from 'state/types'
 import ApprovalAction from './ApprovalAction'
 import StakeActions from './StakeActions'
 import HarvestActions from './HarvestActions'
-import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
+// import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
 
 const InlineText = styled(Text)`
   display: inline;
@@ -33,7 +33,7 @@ const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool
   const isStaked = stakedBalance.gt(0)
   const isLoading = !userData
 
-  const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
+  // const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
 
   return (
     <Flex flexDirection="column">
@@ -64,7 +64,7 @@ const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool
             {isStaked ? t('Staked') : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
-        {notMeetRequired || notMeetThreshold ? (
+        {/* {notMeetRequired || notMeetThreshold ? (
           <ProfileRequirementWarning profileRequirement={profileRequirement} />
         ) : needsApproval ? (
           <ApprovalAction pool={pool} isLoading={isLoading} />
@@ -77,7 +77,7 @@ const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool
             isBnbPool={isBnbPool}
             isStaked={isStaked}
           />
-        )}
+        )} */}
       </Flex>
     </Flex>
   )

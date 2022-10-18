@@ -2,7 +2,7 @@ import { Box, Message, MessageText } from '@pancakeswap/uikit'
 import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
-import { useProfileRequirement } from '../hooks/useProfileRequirement'
+// import { useProfileRequirement } from '../hooks/useProfileRequirement'
 
 export function ProfileRequirementWarning({
   profileRequirement,
@@ -10,11 +10,12 @@ export function ProfileRequirementWarning({
   profileRequirement: DeserializedPool['profileRequirement']
 }) {
   const { t } = useTranslation()
-  const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
+  // const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
   return (
     <Message variant="warning">
       <Box>
-        <MessageText>
+          <></>
+        {/* <MessageText>
           {notMeetRequired &&
             notMeetThreshold &&
             t('This pool requires active Pancake Profile and %amount% profile points.', {
@@ -39,7 +40,7 @@ export function ProfileRequirementWarning({
               </NextLinkFromReactRouter>
             )}
           </MessageText>
-        )}
+        )} */}
       </Box>
     </Message>
   )

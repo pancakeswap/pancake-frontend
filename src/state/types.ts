@@ -14,7 +14,6 @@ import {
   Team,
   TranslatableText,
 } from 'config/constants/types'
-import { NftToken } from './nftMarket/types'
 
 export enum GAS_PRICE {
   default = '5',
@@ -133,19 +132,6 @@ export interface SerializedPool extends SerializedPoolConfig, CorePoolProps {
     stakedBalance: SerializedBigNumber
     pendingReward: SerializedBigNumber
   }
-}
-
-export interface Profile {
-  userId: number
-  points: number
-  teamId: number
-  collectionAddress: string
-  tokenId: number
-  isActive: boolean
-  username: string
-  nft?: NftToken
-  team?: Team
-  hasRegistered: boolean
 }
 
 // Slices states
