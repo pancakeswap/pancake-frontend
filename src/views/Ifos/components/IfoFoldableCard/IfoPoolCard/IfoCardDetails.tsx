@@ -239,7 +239,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
                 label={t('Vesting schedule:')}
                 value={`${vestingDays} days`}
                 tooltipContent={t('The vested tokens will be released linearly over a period of %days% days.', {
-                  weeks: vestingDays,
+                  days: vestingDays,
                 })}
               />
             </>
