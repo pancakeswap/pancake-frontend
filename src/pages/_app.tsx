@@ -6,7 +6,6 @@ import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
-import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
 import { NextPage } from 'next'
@@ -40,7 +39,6 @@ function GlobalHooks() {
   usePollCoreFarmData()
   useUserAgent()
   useAccountEventListener()
-  useSentryUser()
   useThemeCookie()
   return null
 }
@@ -51,7 +49,6 @@ function MPGlobalHooks() {
   usePollCoreFarmData()
   useUserAgent()
   useAccountEventListener()
-  useSentryUser()
   return null
 }
 
