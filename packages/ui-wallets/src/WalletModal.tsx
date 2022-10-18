@@ -219,6 +219,7 @@ function WalletSelect<T>({
                 justifyContent="center"
                 alignItems="center"
                 className={walletIconClass}
+                style={{ borderRadius: '13px' }}
               >
                 {isImage ? (
                   <Image src={Icon as string} width={50} height={50} />
