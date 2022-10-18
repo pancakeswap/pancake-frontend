@@ -1,4 +1,4 @@
-import { useSelectedWallet, WalletConfigV2 } from '@pancakeswap/ui-wallets'
+import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
@@ -25,18 +25,13 @@ const createQrCode = (chainId: number, connect) => async () => {
   return uri
 }
 
-type ExtendedValue = {
-  canSwitchChain?: boolean
-  canWatchAsset?: boolean
-}
-
 const walletsConfig = ({
   chainId,
   connect,
 }: {
   chainId: number
   connect: (connectorID: ConnectorNames) => void
-}): WalletConfigV2<ConnectorNames, ExtendedValue>[] => {
+}): WalletConfigV2<ConnectorNames>[] => {
   const qrCode = createQrCode(chainId, connect)
   return [
     {
@@ -63,7 +58,6 @@ const walletsConfig = ({
           ? 'https://addons.mozilla.org/en-US/firefox/addon/binance-chain/?src=search'
           : 'https://chrome.google.com/webstore/detail/binance-wallet/fhbohimaelbohpjbbldcngcnapndodjp',
       },
-      canWatchAsset: false,
     },
     {
       id: 'coinbase',
@@ -93,7 +87,6 @@ const walletsConfig = ({
       title: 'WalletConnect',
       icon: '/images/wallets/walletconnect.png',
       connectorId: ConnectorNames.WalletConnect,
-      canSwitchChain: false,
     },
     {
       id: 'opera',
@@ -117,7 +110,6 @@ const walletsConfig = ({
       connectorId: ConnectorNames.Injected,
       installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet),
       qrCode,
-      canSwitchChain: false,
     },
     {
       id: 'tokenpocket',
@@ -134,8 +126,6 @@ const walletsConfig = ({
       connectorId: ConnectorNames.Injected,
       installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal),
       qrCode,
-      canSwitchChain: false,
-      canWatchAsset: false,
     },
     {
       id: 'coin98',
@@ -173,14 +163,4 @@ export const createWallets = (chainId: number, connect: any) => {
           installed: typeof window !== 'undefined' && Boolean(window.ethereum),
         },
       ]
-}
-
-export function useWalletCanWatchAsset() {
-  const [selected] = useSelectedWallet<ConnectorNames, ExtendedValue>()
-  return selected && selected.canWatchAsset !== false
-}
-
-export function useWalletCanSwitchChain() {
-  const [selected] = useSelectedWallet<ConnectorNames, ExtendedValue>()
-  return selected ? selected.canSwitchChain !== false : true
 }

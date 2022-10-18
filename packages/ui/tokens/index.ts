@@ -21,7 +21,6 @@ export const tokens = {
   },
   space: {
     '0': '0px',
-    px: '1px',
     '1': '4px',
     '2': '8px',
     '3': '16px',
@@ -29,6 +28,7 @@ export const tokens = {
     '5': '32px',
     '6': '48px',
     '7': '64px',
+    '1px': '1px',
     '4px': '4px',
     '8px': '8px',
     '12px': '12px',
@@ -46,6 +46,7 @@ export const tokens = {
   },
   radii: {
     '0': '0px',
+    '12px': '12px',
     small: '4px',
     default: '16px',
     card: '24px',
