@@ -167,7 +167,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const pricePerTokenWithFee = `~$${formatNumber(
     pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber(),
     0,
-    2,
+    4,
   )}`
   const raisingTokenToBurn =
     ifo[poolId].cakeToBurn ||
