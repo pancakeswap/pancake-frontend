@@ -65,7 +65,7 @@
     "canvas-confetti": "^1.5.1",
     "cids": "^1.0.0",
     "clsx": "^1.2.1",
-    "date-fns": "^2.21.3",
+    "date-fns": "^2.29.3",
     "easymde": "^2.16.1",
     "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^16.6.0",
