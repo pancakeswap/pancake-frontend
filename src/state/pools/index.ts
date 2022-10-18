@@ -1,45 +1,31 @@
-import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit'
-import BigNumber from 'bignumber.js'
-import fromPairs from 'lodash/fromPairs'
-import poolsConfig from 'config/constants/pools'
-import {
-  PoolsState,
-  SerializedPool,
-  SerializedVaultFees,
-  SerializedCakeVault,
-  SerializedLockedVaultUser,
-  PublicIfoData,
-  SerializedVaultUser,
-  SerializedLockedCakeVault,
-} from 'state/types'
-import { getPoolApr } from 'utils/apr'
-import { BIG_ZERO } from 'utils/bigNumber'
-import cakeAbi from 'config/abi/cake.json'
-import { getCakeVaultAddress, getCakeFlexibleSideVaultAddress } from 'utils/addressHelpers'
-import { multicallv2 } from 'utils/multicall'
 import { bscTokens } from '@pancakeswap/tokens'
-import { isAddress } from 'utils'
-import { getBalanceNumber } from 'utils/formatBalance'
-import { bscRpcProvider } from 'utils/providers'
-import fetchFarms from '../farms/fetchFarms'
-import getFarmsPrices from '../farms/getFarmsPrices'
+import { createAsyncThunk, createSlice, isAnyOf, PayloadAction } from '@reduxjs/toolkit'
+import BigNumber from 'bignumber.js'
+import cakeAbi from 'config/abi/cake.json'
+import poolsConfig from 'config/constants/pools'
+import fromPairs from 'lodash/fromPairs'
 import {
-  fetchPoolsBlockLimits,
-  fetchPoolsProfileRequirement,
-  fetchPoolsStakingLimits,
-  fetchPoolsTotalStaking,
+  PoolsState, PublicIfoData, SerializedCakeVault, SerializedLockedCakeVault, SerializedLockedVaultUser, SerializedPool,
+  SerializedVaultFees, SerializedVaultUser
+} from 'state/types'
+import { isAddress } from 'utils'
+import { getCakeFlexibleSideVaultAddress, getCakeVaultAddress } from 'utils/addressHelpers'
+import { BIG_ZERO } from 'utils/bigNumber'
+import { multicallv2 } from 'utils/multicall'
+import { resetUserState } from '../global/actions'
+import {
+  fetchPoolsStakingLimits
 } from './fetchPools'
 import {
   fetchPoolsAllowance,
   fetchUserBalances,
   fetchUserPendingRewards,
-  fetchUserStakeBalances,
+  fetchUserStakeBalances
 } from './fetchPoolsUser'
-import { fetchPublicVaultData, fetchVaultFees, fetchPublicFlexibleSideVaultData } from './fetchVaultPublic'
+import { fetchPublicIfoData, fetchUserIfoCredit } from './fetchUserIfo'
+import { fetchPublicFlexibleSideVaultData, fetchPublicVaultData, fetchVaultFees } from './fetchVaultPublic'
+import { fetchFlexibleSideVaultUser, fetchVaultUser } from './fetchVaultUser'
 import { getTokenPricesFromFarm } from './helpers'
-import { resetUserState } from '../global/actions'
-import { fetchUserIfoCredit, fetchPublicIfoData } from './fetchUserIfo'
-import { fetchVaultUser, fetchFlexibleSideVaultUser } from './fetchVaultUser'
 
 export const initialPoolVaultState = Object.freeze({
   totalShares: null,

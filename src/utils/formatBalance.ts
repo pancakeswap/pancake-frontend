@@ -1,7 +1,6 @@
-import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber, FixedNumber } from '@ethersproject/bignumber'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
-import { getLanguageCodeFromLS } from '@pancakeswap/localization'
+import BigNumber from 'bignumber.js'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 /**
