@@ -53,7 +53,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)
       .map((token) => token.data)
-      .filter((token) => token)
+      .filter((token) => token.name !== 'unknown')
   }, [allTokens])
 
   const allPoolData = useAllPoolDataSWR()
@@ -61,7 +61,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const poolDatas = useMemo(() => {
     return Object.values(allPoolData)
       .map((pool) => pool.data)
-      .filter((pool) => pool)
+      .filter((pool) => pool.token1.name !== 'unknown' && pool.token0.name !== 'unknown')
   }, [allPoolData])
 
   const somePoolsAreLoading = useMemo(() => {
