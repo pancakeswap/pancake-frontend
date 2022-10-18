@@ -1941,7 +1941,7 @@
   "Staking": "Staking",
   "Unstaking": "Κατάργηση staking",
   "in progress..": "σε εξέλιξη..",
-  "It might take around 30 minutes for the cross-chain tx to confirm.": "Μπορεί να χρειαστούν περίπου 30 λεπτά για την επιβεβαίωση του cross-chain tx.",
+  "It might take around 30 minutes for the cross-chain tx to confirm.": "Μπορεί να χρειαστούν περίπου 30 λεπτά για την επιβεβαίωση της συναλλαγής cross-chain.",
   "token have been staked in the Farm!": "νόμισμα έχει γίνει stake στην Farm!",
   "token have been unstaked!": "νόμισμα έχει αφαιρεθεί από το stake!",
   "You have received 0.0005 BNB as a first-time BNB Smart Chain user": "Έχετε λάβει 0,0005 BNB ως πρώτος χρήστης της BNB Smart Chain",
@@ -1997,7 +1997,7 @@
   "no provider found": "δεν βρέθηκε πάροχος",
   "until the next pot lock": "μέχρι το επόμενο κλείδωμα του επάθλου",
   "Withdrawable on %date%": "Δυνατότητα ανάληψης στις %date%",
-  "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.",
-  "For safety, cross-chain transactions will take around 30 minutes to confirm.": "For safety, cross-chain transactions will take around 30 minutes to confirm.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming."
+  "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Μια μικρή ποσότητα %nativeToken% απαιτείται για την πρώτη εγκατάσταση farming της cross-chain CAKE.",
+  "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Για λόγους ασφαλείας, οι συναλλαγές cross-chain θα χρειαστούν περίπου 30 λεπτά για να επιβεβαιωθούν.",
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Χρησιμοποιήστε επιλέξιμα NFT για την εγγραφή. Μην αφαιρέσετε ή επεξεργαστείτε το avatar του προφίλ σας πριν από τη διεκδίκηση."
 }
