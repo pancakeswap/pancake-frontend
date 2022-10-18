@@ -121,7 +121,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
       )}
       <Flex justifyContent="space-between" mt={isHasCliff ? '' : '8px'}>
         <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
-          {t('Vesting start')}
+          {t('Vesting Start')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
           {format(timeVestingStart, 'MM/dd/yyyy HH:mm')}
