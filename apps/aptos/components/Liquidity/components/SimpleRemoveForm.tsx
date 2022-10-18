@@ -58,7 +58,7 @@ const SimpleRemoveForm = ({ currencyA, currencyB, formattedAmounts }) => {
                   {formattedAmounts[Field.CURRENCY_A] || '0'}
                 </Text>
                 <Text small ml="4px">
-                  50%
+                  (50%)
                 </Text>
               </AtomBox>
             </AtomBox>
@@ -74,7 +74,7 @@ const SimpleRemoveForm = ({ currencyA, currencyB, formattedAmounts }) => {
                   {formattedAmounts[Field.CURRENCY_B] || '0'}
                 </Text>
                 <Text small ml="4px">
-                  50%
+                  (50%)
                 </Text>
               </AtomBox>
             </AtomBox>

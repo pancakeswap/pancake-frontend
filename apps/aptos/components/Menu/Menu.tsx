@@ -50,6 +50,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   {
     label: t('Earn'),
     href: '/farms',
+    disabled: true,
     icon: EarnIcon,
     fillIcon: EarnFillIcon,
     image: '/images/decorations/pe2.png',
@@ -57,10 +58,14 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Farms'),
         href: '/farms',
+        status: { text: t('Soon'), color: 'warning' },
+        disabled: true,
       },
       {
         label: t('Pools'),
         href: '/pools',
+        status: { text: t('Soon'), color: 'warning' },
+        disabled: true,
       },
     ],
   },
@@ -73,6 +78,8 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('IFO'),
         href: '/ifo',
+        disabled: true,
+        status: { text: t('Soon'), color: 'warning' },
       },
     ],
   },
