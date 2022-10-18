@@ -1,15 +1,11 @@
-import { Box, Message, MessageText } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { useTranslation } from '@pancakeswap/localization'
+import { Box, Message } from '@pancakeswap/uikit'
 import { DeserializedPool } from 'state/types'
-// import { useProfileRequirement } from '../hooks/useProfileRequirement'
 
 export function ProfileRequirementWarning({
   profileRequirement,
 }: {
   profileRequirement: DeserializedPool['profileRequirement']
 }) {
-  const { t } = useTranslation()
   // const { notMeetRequired, notMeetThreshold } = useProfileRequirement(profileRequirement)
   return (
     <Message variant="warning">

@@ -1,19 +1,8 @@
-import {
-  MenuItemsType,
-  DropdownMenuItemType,
-  SwapIcon,
-  SwapFillIcon,
-  EarnFillIcon,
-  EarnIcon,
-  TrophyIcon,
-  TrophyFillIcon,
-  NftIcon,
-  NftFillIcon,
-  MoreIcon,
-} from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
-import { perpLangMap } from 'utils/getPerpetualLanguageCode'
-import { perpTheme } from 'utils/getPerpetualTheme'
+import {
+  EarnFillIcon,
+  EarnIcon, MenuItemsType, SwapFillIcon, SwapIcon
+} from '@pancakeswap/uikit'
 import { DropdownMenuItems } from '@pancakeswap/uikit/src/components/DropdownMenu/types'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 

@@ -1,31 +1,22 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  AddIcon,
-  Button,
-  Flex,
-  IconButton,
-  MinusIcon,
-  HelpIcon,
-  Skeleton,
-  Text,
-  useModal,
-  useTooltip,
-  Box,
-  SkeletonV2,
-  useMatchBreakpoints,
+  AddIcon, Box, Button,
+  Flex, HelpIcon, IconButton,
+  MinusIcon, Skeleton, SkeletonV2, Text, useMatchBreakpoints, useModal,
+  useTooltip
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import Balance from 'components/Balance'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
-import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'
-import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import { DeserializedLockedCakeVault, DeserializedPool, VaultKey } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from 'utils/bigNumber'
+import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { getBalanceNumber, getFullDisplayBalance } from 'utils/formatBalance'
 // import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
@@ -33,17 +24,16 @@ import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks
 
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
-import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
-import StakeModal from '../../Modals/StakeModal'
-import { ProfileRequirementWarning } from '../../ProfileRequirementWarning'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
-import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import AddCakeButton from '../../LockedPool/Buttons/AddCakeButton'
 import ExtendButton from '../../LockedPool/Buttons/ExtendDurationButton'
 import AfterLockedActions from '../../LockedPool/Common/AfterLockedActions'
-import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import BurningCountDown from '../../LockedPool/Common/BurningCountDown'
+import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 import LockedStakedModal from '../../LockedPool/Modals/LockedStakeModal'
+import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
+import StakeModal from '../../Modals/StakeModal'
+import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
