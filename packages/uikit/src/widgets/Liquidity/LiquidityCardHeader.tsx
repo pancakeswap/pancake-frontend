@@ -8,7 +8,7 @@ interface LiquidityCardHeaderProps {
   subtitle?: string;
   helper?: string;
   backTo?: string | (() => void);
-  config?: null;
+  config?: React.ReactElement;
 }
 
 const AppHeaderContainer = styled(AtomBox)`

@@ -15,6 +15,7 @@ import useCurrencySelectRoute from 'components/Liquidity/hooks/useCurrencySelect
 import { usePair } from 'hooks/usePairs'
 import { useMemo } from 'react'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
+import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
 
 const { LiquidityCard } = LiquidityUI
 
@@ -51,6 +52,7 @@ const RemoveLiquidityPage = () => {
             assetA: symbolA ?? '',
             assetB: symbolB ?? '',
           })}
+          config={<SettingsButton />}
         />
         <CardBody>
           <DetailToggler>

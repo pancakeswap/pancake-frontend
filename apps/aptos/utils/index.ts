@@ -11,7 +11,7 @@ export function getBlockExploreLink(
   const chain = chains.find((c) => c.id === chainId)
   if (!chain) return defaultChain.blockExplorers?.default.url ?? ''
   // only Devnet is capital
-  const query = `?network=${chain.network === 'devnet' ? 'Devnet' : chain.id}`
+  const query = `?network=${chain.network || 'mainnet'}`
   switch (type) {
     case 'transaction': {
       return `${chain.blockExplorers?.default.url}/txn/${data}${query}`
