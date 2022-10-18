@@ -20,6 +20,11 @@ const withTH = transpileModules([
   '@pancakeswap/tokens',
 ])
 
+const blocksPage =
+  process.env.NODE_ENV === 'production'
+    ? ['/farms', '/farms/history', '/ifo', '/ifo/history', '/pools', '/pools/history']
+    : []
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -34,6 +39,11 @@ const nextConfig = {
         destination: '/swap',
         permanent: false,
       },
+      ...blocksPage.map((p) => ({
+        source: p,
+        destination: '/404',
+        permanent: false,
+      })),
     ]
   },
 }

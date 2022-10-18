@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-import { Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { VaultKey } from '../types'
 
 export interface Resource {
@@ -32,15 +31,9 @@ export interface PoolSyrupUserResource {
   }
 }
 
-export interface PoolUserData {
-  stakedBalance: CurrencyAmount<Currency> // amount
-  pendingReward: CurrencyAmount<Currency> // reward_debt
-}
-
 export interface Pool extends PoolResource {
   isFinished?: boolean
-  stakingToken: Currency
-  earningToken: Currency
-  userData?: PoolUserData
+  stakingTokenAddress: string
+  earningTokenAddress: string
   vaultKey?: VaultKey
 }

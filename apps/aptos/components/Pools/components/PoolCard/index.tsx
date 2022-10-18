@@ -1,40 +1,49 @@
-import BigNumber from 'bignumber.js'
-import { CardBody, Flex, Text, CardRibbon } from '@pancakeswap/uikit'
+import { useSendTransaction } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
+import { CardBody, CardRibbon, Flex, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Pool } from 'state/pools/types'
-import { poolDepositPayload, poolWithdrawPayload } from 'state/pools/utils'
+import BigNumber from 'bignumber.js'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { TokenPairImage } from 'components/TokenImage'
+import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useSendTransaction } from '@pancakeswap/awgmi'
 import { useState } from 'react'
+import { usePoolsUserData } from 'state/pools/hooks'
+import { syrupDeposit, syrupWithdraw } from 'state/pools/syrup'
+import { Pool } from 'state/pools/types'
 import AprRow from './AprRow'
-import { StyledCard } from './StyledCard'
 import CardFooter from './CardFooter'
 import PoolCardHeader, { PoolCardHeaderTitle } from './PoolCardHeader'
+import { StyledCard } from './StyledCard'
 // import CardActions from './CardActions'
 
 const PoolCard: React.FC<React.PropsWithChildren<{ pool: Pool }>> = ({ pool }) => {
   const { account } = useActiveWeb3React()
   const { sendTransactionAsync } = useSendTransaction()
-  const { stakingToken, earningToken, isFinished, userData } = pool
+  const { stakingTokenAddress, earningTokenAddress, isFinished } = pool
+  const { data: poolsUser } = usePoolsUserData()
+  const userData = poolsUser?.[pool.type]
   const { t } = useTranslation()
   const [inputValue, setInput] = useState('0')
-  const inputArg = new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(stakingToken.decimals)).toString()
-  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance.toExact()) : BIG_ZERO
-  const pendingReward = userData?.pendingReward ? new BigNumber(userData.pendingReward.toExact()) : BIG_ZERO
+  const [stakingToken, earningToken] = [useCurrency(stakingTokenAddress), useCurrency(earningTokenAddress)]
+
+  const inputArg =
+    stakingToken && new BigNumber(inputValue).multipliedBy(new BigNumber(10).pow(stakingToken.decimals)).toString()
+  const stakedBalance = userData?.data.amount ? new BigNumber(userData.data.amount) : BIG_ZERO
+  const pendingReward = userData?.data.reward_debt ? new BigNumber(userData.data.reward_debt) : BIG_ZERO
   const accountHasStakedBalance = stakedBalance.gt(0)
 
-  const isCakePool = earningToken.symbol === 'CAKE' && stakingToken.symbol === 'CAKE'
+  const isCakePool = earningToken?.symbol === 'CAKE' && stakingToken?.symbol === 'CAKE'
 
   const deposit = () => {
-    const payload = poolDepositPayload([stakingToken.address, earningToken.address], [inputArg])
+    if (!stakingToken || !earningToken || !inputArg) return
+    const payload = syrupDeposit([inputArg], [stakingToken.address, earningToken.address])
     sendTransactionAsync({ payload })
   }
 
   const withdraw = () => {
-    const payload = poolWithdrawPayload([stakingToken.address, earningToken.address], [inputArg])
+    if (!stakingToken || !earningToken || !inputArg) return
+    const payload = syrupWithdraw([inputArg], [stakingToken.address, earningToken.address])
     sendTransactionAsync({ payload })
   }
 
@@ -45,10 +54,14 @@ const PoolCard: React.FC<React.PropsWithChildren<{ pool: Pool }>> = ({ pool }) =
     >
       <PoolCardHeader isStaking={accountHasStakedBalance} isFinished={isFinished}>
         <PoolCardHeaderTitle
-          title={isCakePool ? t('Manual') : t('Earn %asset%', { asset: earningToken.symbol })}
-          subTitle={isCakePool ? t('Earn CAKE, stake CAKE') : t('Stake %symbol%', { symbol: stakingToken.symbol })}
+          title={isCakePool ? t('Manual') : t('Earn %asset%', { asset: earningToken?.symbol ?? '' })}
+          subTitle={
+            isCakePool ? t('Earn CAKE, stake CAKE') : t('Stake %symbol%', { symbol: stakingToken?.symbol ?? '' })
+          }
         />
-        <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} width={64} height={64} />
+        {earningToken && stakingToken && (
+          <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} width={64} height={64} />
+        )}
       </PoolCardHeader>
       <CardBody>
         <AprRow pool={pool} stakedBalance={stakedBalance} />
@@ -66,10 +79,12 @@ const PoolCard: React.FC<React.PropsWithChildren<{ pool: Pool }>> = ({ pool }) =
                 </button>
               </div>
               <div>
-                staked: {stakedBalance.toString()} {stakingToken.symbol}
+                {/* TODO: decimals */}
+                staked: {stakedBalance.toString()} {stakingToken?.symbol}
               </div>
               <div>
-                reward: {pendingReward.toString()} {earningToken.symbol}
+                {/* TODO: decimals */}
+                reward: {pendingReward.toString()} {earningToken?.symbol}
               </div>
             </>
           ) : (

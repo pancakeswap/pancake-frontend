@@ -1,35 +1,35 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useRouter } from 'next/router'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Heading,
   Flex,
+  FlexLayout,
+  Heading,
+  Image,
+  Link,
+  Loading,
+  OptionProps,
   PageHeader,
   ScrollToTopButtonV2,
-  Text,
-  Select,
   SearchInput,
-  OptionProps,
-  Image,
-  Loading,
-  Link,
-  FlexLayout,
+  Select,
+  Text,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import Portal from 'components/Portal'
-import { usePoolsList, usePoolsPageFetch, usePoolsUserDataLoaded } from 'state/pools/hooks'
-import { usePoolsStakedOnly, usePoolsViewMode, ViewMode } from 'state/user'
-import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { latinise } from 'utils/latinise'
-import partition from 'lodash/partition'
-import BigNumber from 'bignumber.js'
+import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import orderBy from 'lodash/orderBy'
-import PoolTabButtons from './components/PoolTabButtons'
-import PoolCard from './components/PoolCard'
-import NoSSR from '../NoSSR'
+import partition from 'lodash/partition'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { usePoolsList, usePoolsUserData } from 'state/pools/hooks'
+import { usePoolsStakedOnly, usePoolsViewMode, ViewMode } from 'state/user'
+import styled from 'styled-components'
+import { latinise } from 'utils/latinise'
 import { Pool } from '../../state/pools/types'
+import NoSSR from '../NoSSR'
+import PoolCard from './components/PoolCard'
+import PoolTabButtons from './components/PoolTabButtons'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -108,8 +108,8 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const router = useRouter()
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
-  const pools = usePoolsList()
-  const userDataLoaded = usePoolsUserDataLoaded()
+  const { data: pools } = usePoolsList()
+  const { isSuccess: userDataLoaded, data: userData } = usePoolsUserData()
   const [viewMode, setViewMode] = usePoolsViewMode()
   const [stakedOnly, setStakedOnly] = usePoolsStakedOnly()
   const [sortOption, setSortOption] = useState('hot')
@@ -132,8 +132,6 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
     [],
   )
 
-  usePoolsPageFetch()
-
   useEffect(() => {
     if (isIntersecting) {
       setNumberOfPoolsVisible((poolsCurrentlyVisible) => {
@@ -150,15 +148,15 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const stakedOnlyFinishedPools = useMemo(
     () =>
       finishedPools.filter((pool) => {
-        return pool.userData && new BigNumber(pool.userData.stakedBalance.toExact()).isGreaterThan(0)
+        return userData?.[pool.type] && new BigNumber(userData[pool.type].data.amount).isGreaterThan(0)
       }),
-    [finishedPools],
+    [finishedPools, userData],
   )
   const stakedOnlyOpenPools = useMemo(() => {
     return openPools.filter((pool) => {
-      return pool.userData && new BigNumber(pool.userData.stakedBalance.toExact()).isGreaterThan(0)
+      return userData?.[pool.type] && new BigNumber(userData[pool.type].data.amount).isGreaterThan(0)
     })
-  }, [openPools])
+  }, [openPools, userData])
 
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
 
@@ -170,7 +168,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   }
 
   chosenPools = useMemo(() => {
-    const sortedPools = sortPools(sortOption, pools, chosenPools).slice(0, numberOfPoolsVisible)
+    const sortedPools = sortPools(sortOption, pools ?? [], chosenPools).slice(0, numberOfPoolsVisible)
 
     if (searchQuery) {
       const lowercaseQuery = latinise(searchQuery.toLowerCase())
@@ -192,8 +190,8 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const tableLayout = chosenPools.map((pool) => {
     return (
       <Flex key={pool.type} py={2}>
-        <Flex mr={2}>StakingToken: {pool.stakingToken.symbol}</Flex>
-        <Flex mr={2}>EarningToken: {pool.earningToken.symbol}</Flex>
+        <Flex mr={2}>StakingToken: {pool.stakingTokenAddress}</Flex>
+        <Flex mr={2}>EarningToken: {pool.earningTokenAddress}</Flex>
       </Flex>
     )
   })

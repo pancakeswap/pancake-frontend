@@ -1,52 +1,30 @@
 /* eslint-disable camelcase */
-import { Coin, Pair, Currency } from '@pancakeswap/aptos-swap-sdk'
-import { fetchCoin } from '@pancakeswap/awgmi/core'
-import fromPairs from 'lodash/fromPairs'
+import { Currency, Pair } from '@pancakeswap/aptos-swap-sdk'
+import { createAccountResourceFilter, FetchAccountResourceResult } from '@pancakeswap/awgmi/core'
 import { Types } from 'aptos'
-import { PoolResource, Pool } from './types'
-import { POOLS_ADDRESS, POOLS_ADDRESS_SYRUP_USER } from './constants'
+import fromPairs from 'lodash/fromPairs'
+import { POOLS_ADDRESS, POOLS_ADDRESS_MODULE, POOLS_ADDRESS_SYRUP_USER } from './constants'
+import { Pool, PoolResource, PoolSyrupUserResource } from './types'
 
-const transformPool = async (resource: PoolResource, chainId: number): Promise<Pool> => {
+export const transformPool = (resource: PoolResource): Pool => {
   const [staking, earning] = Pair.parseType(resource.type)
-  const [stakingToken, earningToken] = await Promise.all([fetchCoin({ coin: staking }), fetchCoin({ coin: earning })])
   const now = Date.now()
   return {
     ...resource,
-    stakingToken: new Coin(
-      chainId,
-      stakingToken.address,
-      stakingToken.decimals,
-      stakingToken.symbol,
-      stakingToken.name,
-    ),
-    earningToken: new Coin(
-      chainId,
-      earningToken.address,
-      earningToken.decimals,
-      earningToken.symbol,
-      earningToken.name,
-    ),
+    stakingTokenAddress: staking,
+    earningTokenAddress: earning,
     isFinished: now > +resource.data.bonus_end_timestamp,
   }
 }
 
-export const transformPools = async (resources: PoolResource[], chainId: number): Promise<Pool[]> => {
-  const pools: Promise<Pool>[] = []
-
-  for (const resource of resources) {
-    // Bad: each loop iteration is delayed until the entire asynchronous operation completes
-    const x = transformPool(resource, chainId)
-    pools.push(x)
-  }
-
-  const result = await Promise.all(pools)
-  return result
-}
-
-export const poolsUserDataSelector = (resources) => {
-  const allPairData = resources.filter((r) => r.type.includes(POOLS_ADDRESS_SYRUP_USER))
+export const poolsUserDataSelector = (resources: FetchAccountResourceResult<any>[]) => {
+  const allPairData = resources.filter(poolsUserDataFilter)
   return fromPairs(allPairData.map((p) => [p.type, p]))
 }
+
+const poolsUserDataFilter = createAccountResourceFilter<PoolSyrupUserResource>(POOLS_ADDRESS_SYRUP_USER)
+
+export const poolsPublicDataSelector = createAccountResourceFilter<PoolResource>(`${POOLS_ADDRESS_MODULE}::Syrup<`)
 
 export const getSyrupUserAddress = (stakingToken: Currency, earningToken: Currency) => {
   return `${POOLS_ADDRESS_SYRUP_USER}<${stakingToken.address}, ${earningToken.address}>`
