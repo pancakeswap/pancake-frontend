@@ -48,45 +48,6 @@ export const formatBigNumber = (number: EthersBigNumber, displayDecimals = 18, d
   return formatUnits(number.sub(remainder), decimals)
 }
 
-/**
- * Method to format the display of wei given an EthersBigNumber object with toFixed
- * Note: rounds
- */
-export const formatBigNumberToFixed = (number: EthersBigNumber, displayDecimals = 18, decimals = 18) => {
-  const formattedString = formatUnits(number, decimals)
-  return (+formattedString).toFixed(displayDecimals)
-}
-
-/**
- * Formats a FixedNumber like BigNumber
- * i.e. Formats 9763410526137450427.1196 into 9.763 (3 display decimals)
- */
-export const formatFixedNumber = (number: FixedNumber, displayDecimals = 18, decimals = 18) => {
-  // Remove decimal
-  const [leftSide] = number.toString().split('.')
-  return formatBigNumber(EthersBigNumber.from(leftSide), displayDecimals, decimals)
-}
-
-export const formatLocalisedCompactNumber = (number: number): string => {
-  const codeFromStorage = getLanguageCodeFromLS()
-
-  const isClient = typeof window === 'object'
-  const isSupported = window?.Intl
-
-  // For clients do not support Intl, just return number
-  if (isClient && !isSupported) {
-    return `${number}`
-  }
-
-  return new Intl.NumberFormat(codeFromStorage, {
-    notation: 'compact',
-    compactDisplay: 'long',
-    maximumSignificantDigits: 2,
-  }).format(number)
-}
-
-export default formatLocalisedCompactNumber
-
 export const formatLpBalance = (balance: BigNumber) => {
   const stakedBalanceBigNumber = getBalanceAmount(balance)
   if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.00001)) {
