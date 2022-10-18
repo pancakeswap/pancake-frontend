@@ -1,6 +1,28 @@
+import { atoms } from '@pancakeswap/ui/css/atoms'
 import { responsiveStyle } from '@pancakeswap/ui/css/responsiveStyle'
-import { style } from '@vanilla-extract/css'
-import { recipe } from '@vanilla-extract/recipes'
+import { style, keyframes } from '@vanilla-extract/css'
+
+const promotedGradientKf = keyframes({
+  '0%': {
+    backgroundPosition: '50% 0%',
+  },
+  '50%': {
+    backgroundPosition: '50% 100%',
+  },
+  '100%': {
+    backgroundPosition: '50% 0%',
+  },
+})
+
+export const promotedGradientClass = style([
+  atoms({
+    background: 'gradientBold',
+  }),
+  style({
+    animation: `${promotedGradientKf} 3s ease infinite`,
+    backgroundSize: '400% 400%',
+  }),
+])
 
 export const modalWrapperClass = style([
   style({
@@ -52,21 +74,7 @@ export const walletSelectWrapperClass = style(
   }),
 )
 
-export const walletButtonVariants = recipe({
-  base: {
-    borderRadius: 12,
-  },
-  variants: {
-    selected: {
-      true: {
-        background: '#7645D9',
-        opacity: 0.5,
-      },
-    },
-  },
-})
-
-export const moreIconClass = style({
+export const walletIconClass = style({
   width: '50px',
   height: '50px',
   borderRadius: '12px',
