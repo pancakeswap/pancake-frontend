@@ -1,13 +1,9 @@
 
-import { useEffect, useReducer, useRef, useState } from 'react'
-import { useAccount } from 'wagmi'
-import BigNumber from 'bignumber.js'
-import multicall from 'utils/multicall'
-import { ERC20_ABI } from 'config/abi/erc20'
-import { getAddress } from 'utils/addressHelpers'
-import { bscTokens, ethwTokens, bscTestnetTokens } from '@pancakeswap/tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId } from '@pancakeswap/sdk'
+import { bscTestnetTokens, bscTokens, ethwTokens } from '@pancakeswap/tokens'
+import BigNumber from 'bignumber.js'
+import { ERC20_ABI } from 'config/abi/erc20'
+import multicall from 'utils/multicall'
 import { tokenBalance } from "./types"
 
 function renderTokenByChain(chainId){

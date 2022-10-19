@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { demoUseContract } from 'hooks/useContract'
+import { useDemoUseContract } from 'hooks/useContract'
 
 
 export const useTransfer = (contractAddress) => {
@@ -11,7 +11,7 @@ export const useTransfer = (contractAddress) => {
     const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
     const { t } = useTranslation()
     
-    const tokenAddress = demoUseContract(contractAddress)
+    const tokenAddress = useDemoUseContract(contractAddress)
     const [ pendingTransfer, setPending ] = useState(false)
     const handleTransfer = useCallback(async () => {
         setPending(true)

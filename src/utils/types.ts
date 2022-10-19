@@ -1,5 +1,4 @@
-import { FarmAuction, Predictions } from 'config/abi/types'
-import { Contract, ContractFunction } from '@ethersproject/contracts'
+import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from '@ethersproject/bignumber'
 
 export type MultiCallResponse<T> = T | null
@@ -35,11 +34,6 @@ export type PredictionsGetUserRoundsResponse = [BigNumber[], PredictionsLedgerRe
 
 export type PredictionsGetUserRoundsLengthResponse = BigNumber
 
-export interface PredictionsContract extends Omit<Predictions, 'getUserRounds' | 'ledger'> {
-  getUserRounds: ContractFunction<PredictionsGetUserRoundsResponse>
-  ledger: ContractFunction<PredictionsLedgerResponse>
-}
-
 // Farm Auction
 
 // Note: slightly different from AuctionStatus used throughout UI
@@ -61,20 +55,6 @@ export interface AuctionsResponse {
 export interface BidsPerAuction {
   account: string
   amount: BigNumber
-}
-
-type GetWhitelistedAddressesResponse = [
-  {
-    account: string
-    lpToken: string
-    token: string
-  }[],
-  BigNumber,
-]
-
-export interface FarmAuctionContract extends Omit<FarmAuction, 'auctions'> {
-  auctions: ContractFunction<AuctionsResponse>
-  getWhitelistedAddresses: ContractFunction<GetWhitelistedAddressesResponse>
 }
 
 // generic contract types
