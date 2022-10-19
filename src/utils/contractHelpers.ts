@@ -9,7 +9,7 @@ import { provider } from 'utils/wagmi'
 // Addresses
 import {
   getAddress, getAnniversaryAchievement, getBCakeFarmBoosterAddress,
-  getBCakeFarmBoosterProxyFactoryAddress, getBunnySpecialXmasAddress, getCakeFlexibleSideVaultAddress, getCakeVaultAddress, getCrossFarmingReceiverAddress, getCrossFarmingSenderAddress, getICakeAddress, getMasterChefAddress,
+  getBCakeFarmBoosterProxyFactoryAddress, getCakeFlexibleSideVaultAddress, getCakeVaultAddress, getCrossFarmingReceiverAddress, getCrossFarmingSenderAddress, getICakeAddress, getMasterChefAddress,
   getMasterChefV1Address, getNonBscVaultAddress
 } from 'utils/addressHelpers'
 
@@ -18,7 +18,6 @@ import anniversaryAchievementAbi from 'config/abi/anniversaryAchievement.json'
 import bCakeFarmBoosterAbi from 'config/abi/bCakeFarmBooster.json'
 import bCakeFarmBoosterProxyFactoryAbi from 'config/abi/bCakeFarmBoosterProxyFactory.json'
 import bCakeProxyAbi from 'config/abi/bCakeProxy.json'
-import bunnySpecialXmasAbi from 'config/abi/bunnySpecialXmas.json'
 import cakeAbi from 'config/abi/cake.json'
 import cakeFlexibleSideVaultV2Abi from 'config/abi/cakeFlexibleSideVaultV2.json'
 import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
@@ -97,10 +96,6 @@ export const getCakeFlexibleSideVaultV2Contract = (signer?: Signer | Provider) =
 
 export const getChainlinkOracleContract = (address: string, signer?: Signer | Provider, chainId?: number) => {
   return getContract({ abi: chainlinkOracleAbi, address, signer, chainId }) as ChainlinkOracle
-}
-
-export const getBunnySpecialXmasContract = (signer?: Signer | Provider) => {
-  return getContract({ abi: bunnySpecialXmasAbi, address: getBunnySpecialXmasAddress(), signer })
 }
 
 export const getAnniversaryAchievementContract = (signer?: Signer | Provider) => {

@@ -17,7 +17,7 @@ import {
   getBCakeFarmBoosterContract,
   getBCakeFarmBoosterProxyFactoryContract,
   getBCakeProxyContract,
-  getBep20Contract, getBunnySpecialXmasContract,
+  getBep20Contract,
   getCakeContract,
   getCakeFlexibleSideVaultV2Contract, getCakeVaultV2Contract, getCrossFarmingProxyContract,
   getMasterchefContract, getNonBscVaultContract, getSouschefContract
@@ -83,11 +83,6 @@ export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | CakeFlex
     }
     return null
   }, [signer, vaultKey])
-}
-
-export const useBunnySpecialXmasContract = () => {
-  const { data: signer } = useSigner()
-  return useMemo(() => getBunnySpecialXmasContract(signer), [signer])
 }
 
 export const useAnniversaryAchievementContract = (withSignerIfPossible = true) => {

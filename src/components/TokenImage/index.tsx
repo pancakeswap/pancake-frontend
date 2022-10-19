@@ -1,8 +1,6 @@
 import {
   TokenPairImage as UIKitTokenPairImage,
   TokenPairImageProps as UIKitTokenPairImageProps,
-  TokenImage as UIKitTokenImage,
-  ImageProps,
 } from '@pancakeswap/uikit'
 import { Token, ChainId } from '@pancakeswap/sdk'
 
