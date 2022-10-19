@@ -13,28 +13,28 @@ describe('Pair', () => {
   it('should match Pair address', () => {
     const pair1 = Pair.getAddress(coinA, AptosCoin.onChain(ChainId.TESTNET).wrapped)
     expect(pair1).toMatchInlineSnapshot(
-      '"0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC>"'
+      '"0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC>"'
     )
 
     expect(Pair.getAddress(coinA, coinB)).toMatchInlineSnapshot(
-      '"0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66::swap::LPToken<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
+      '"0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9::swap::LPToken<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
     )
     expect(Pair.getAddress(coinB, coinA)).toMatchInlineSnapshot(
-      '"0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66::swap::LPToken<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
+      '"0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9::swap::LPToken<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
     )
   })
 
   it('should match Pair Reserves address', () => {
     expect(Pair.getReservesAddress(coinA, AptosCoin.onChain(ChainId.TESTNET).wrapped)).toMatchInlineSnapshot(
-      '"0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66::swap::TokenPairReserve<0x1::aptos_coin::AptosCoin, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC>"'
+      '"0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9::swap::TokenPairReserve<0x1::aptos_coin::AptosCoin, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC>"'
     )
 
     expect(Pair.getReservesAddress(coinA, coinB)).toMatchInlineSnapshot(
-      '"0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66::swap::TokenPairReserve<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
+      '"0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9::swap::TokenPairReserve<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
     )
 
     expect(Pair.getReservesAddress(coinB, coinA)).toMatchInlineSnapshot(
-      '"0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66::swap::TokenPairReserve<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
+      '"0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9::swap::TokenPairReserve<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>"'
     )
   })
 
@@ -43,7 +43,7 @@ describe('Pair', () => {
       new Pair(CurrencyAmount.fromRawAmount(coinA, '100'), CurrencyAmount.fromRawAmount(coinB, '200')).liquidityToken
     ).toMatchInlineSnapshot(`
       Coin {
-        "address": "0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66::swap::LPToken<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>",
+        "address": "0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9::swap::LPToken<0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC, 0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL>",
         "chainId": 2,
         "decimals": 8,
         "isNative": false,

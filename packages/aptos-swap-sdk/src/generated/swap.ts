@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 
-export const ADDRESS = '0xf8ed26c82b5c628b09aa98631694d3a715e1f0eccbb9224519c4cf7a4abebf66' as const
+export const ADDRESS = '0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9' as const
 
 export type SwapSetAdminArgs = [string]
 

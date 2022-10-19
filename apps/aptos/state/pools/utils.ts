@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
-import { Currency, Pair } from '@pancakeswap/aptos-swap-sdk'
+import { Pair } from '@pancakeswap/aptos-swap-sdk'
 import { createAccountResourceFilter, FetchAccountResourceResult } from '@pancakeswap/awgmi/core'
-import { Types } from 'aptos'
 import fromPairs from 'lodash/fromPairs'
-import { POOLS_ADDRESS, POOLS_ADDRESS_MODULE, POOLS_ADDRESS_SYRUP_USER } from './constants'
+import { POOLS_ADDRESS, POOLS_ADDRESS_SYRUP_USER, POOLS_MODULE_NAME, POOLS_NAME } from './constants'
 import { Pool, PoolResource, PoolSyrupUserResource } from './types'
 
 export const transformPool = (resource: PoolResource): Pool => {
@@ -24,7 +23,11 @@ export const poolsUserDataSelector = (resources: FetchAccountResourceResult<any>
 
 const poolsUserDataFilter = createAccountResourceFilter<PoolSyrupUserResource>(POOLS_ADDRESS_SYRUP_USER)
 
-export const poolsPublicDataSelector = createAccountResourceFilter<PoolResource>(`${POOLS_ADDRESS_MODULE}::Syrup<`)
+export const poolsPublicDataSelector = createAccountResourceFilter<PoolResource>({
+  address: POOLS_ADDRESS,
+  moduleName: POOLS_MODULE_NAME,
+  name: POOLS_NAME,
+})
 
 export const getSyrupUserAddress = ({
   stakingTokenAddress,
@@ -34,20 +37,4 @@ export const getSyrupUserAddress = ({
   earningTokenAddress: string
 }) => {
   return `${POOLS_ADDRESS_SYRUP_USER}<${stakingTokenAddress}, ${earningTokenAddress}>`
-}
-
-export const poolDepositPayload = (typeArgs: [string, string], args: [string]): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${POOLS_ADDRESS}::syrup::deposit`,
-  }
-}
-
-export const poolWithdrawPayload = (typeArgs: [string, string], args: [string]): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${POOLS_ADDRESS}::syrup::withdraw`,
-  }
 }
