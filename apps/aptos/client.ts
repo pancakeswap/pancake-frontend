@@ -16,14 +16,14 @@ const NODE_REAL_API_TESTNET = process.env.NEXT_PUBLIC_NODE_REAL_API_TESTNET
 const nodeReal = {
   ...(NODE_REAL_API && {
     mainnet: {
-      USERNAME: '78388953-02da-4baa-8911-b35c9b48d5bf',
-      PASSWORD: NODE_REAL_API,
+      USERNAME: NODE_REAL_API.split(':')[0],
+      PASSWORD: NODE_REAL_API.split(':')[1],
     },
   }),
   ...(NODE_REAL_API_TESTNET && {
     testnet: {
-      USERNAME: '974c6552-9ff8-44c2-a235-465d4978a52d',
-      PASSWORD: NODE_REAL_API_TESTNET,
+      USERNAME: NODE_REAL_API_TESTNET.split(':')[0],
+      PASSWORD: NODE_REAL_API_TESTNET.split(':')[1],
     },
   }),
 }
