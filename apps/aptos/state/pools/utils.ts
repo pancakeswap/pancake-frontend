@@ -26,8 +26,14 @@ const poolsUserDataFilter = createAccountResourceFilter<PoolSyrupUserResource>(P
 
 export const poolsPublicDataSelector = createAccountResourceFilter<PoolResource>(`${POOLS_ADDRESS_MODULE}::Syrup<`)
 
-export const getSyrupUserAddress = (stakingToken: Currency, earningToken: Currency) => {
-  return `${POOLS_ADDRESS_SYRUP_USER}<${stakingToken.address}, ${earningToken.address}>`
+export const getSyrupUserAddress = ({
+  stakingTokenAddress,
+  earningTokenAddress,
+}: {
+  stakingTokenAddress: string
+  earningTokenAddress: string
+}) => {
+  return `${POOLS_ADDRESS_SYRUP_USER}<${stakingTokenAddress}, ${earningTokenAddress}>`
 }
 
 export const poolDepositPayload = (typeArgs: [string, string], args: [string]): Types.EntryFunctionPayload => {

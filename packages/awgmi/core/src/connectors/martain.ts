@@ -90,7 +90,9 @@ export class MartianConnector extends Connector<Window['martian']> {
 
     await provider.cancelSubmittedTransactions()
 
-    const hash = await provider.generateSignAndSubmitTransaction(account?.address || '', payload)
+    const hash = await provider.generateSignAndSubmitTransaction(account?.address || '', payload, {
+      max_gas_amount: '200000', // seems martian default gas amount is too low, TODO: should add option to set above
+    })
 
     return { hash }
   }

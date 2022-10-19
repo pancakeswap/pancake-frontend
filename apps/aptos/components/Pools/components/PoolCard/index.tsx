@@ -8,7 +8,7 @@ import { TokenPairImage } from 'components/TokenImage'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useState } from 'react'
-import { usePoolsUserData } from 'state/pools/hooks'
+import { usePoolUserData } from 'state/pools/hooks'
 import { syrupDeposit, syrupWithdraw } from 'state/pools/syrup'
 import { Pool } from 'state/pools/types'
 import AprRow from './AprRow'
@@ -21,8 +21,7 @@ const PoolCard: React.FC<React.PropsWithChildren<{ pool: Pool }>> = ({ pool }) =
   const { account } = useActiveWeb3React()
   const { sendTransactionAsync } = useSendTransaction()
   const { stakingTokenAddress, earningTokenAddress, isFinished } = pool
-  const { data: poolsUser } = usePoolsUserData()
-  const userData = poolsUser?.[pool.type]
+  const { data: userData } = usePoolUserData(pool)
   const { t } = useTranslation()
   const [inputValue, setInput] = useState('0')
   const [stakingToken, earningToken] = [useCurrency(stakingTokenAddress), useCurrency(earningTokenAddress)]

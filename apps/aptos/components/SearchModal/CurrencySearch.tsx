@@ -112,8 +112,6 @@ function CurrencySearch({
     return Object.values(allTokens).filter(filterToken)
   }, [allTokens, debouncedQuery])
 
-  console.log('filteredTokens', filteredTokens)
-
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 
   const tokenComparator = useTokenComparator(invertSearchOrder)
@@ -170,8 +168,6 @@ function CurrencySearch({
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
 
   const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
-
-  console.log('filteredSortedTokens', filteredSortedTokens)
 
   const getCurrencyListRows = useCallback(() => {
     if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
