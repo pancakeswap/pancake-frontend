@@ -105,7 +105,11 @@ export class PetraConnector extends Connector<Window['aptos'], PetraConnectorOpt
   }
 
   protected onAccountsChanged = (account: Account) => {
-    this.emit('change', { account })
+    if (!account.address) {
+      this.emit('disconnect')
+    } else {
+      this.emit('change', { account })
+    }
   }
 
   protected onNetworkChanged = (network: { networkName: string }) => {

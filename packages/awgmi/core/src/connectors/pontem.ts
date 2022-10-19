@@ -135,12 +135,17 @@ export class PontemConnector extends Connector<Window['pontem']> {
     return provider.signTransaction(payload)
   }
 
-  protected onAccountsChanged = (address: Address) => {
-    this.emit('change', {
-      account: {
-        address,
-      },
-    })
+  protected onAccountsChanged = async (address: Address) => {
+    if (!address) {
+      this.emit('disconnect')
+    } else {
+      this.emit('change', {
+        account: {
+          address,
+          publicKey: await (await this.getProvider())?.publicKey(),
+        },
+      })
+    }
   }
 
   protected onNetworkChanged = (network: NetworkInfo) => {

@@ -109,12 +109,14 @@ export class FewchaConnector extends Connector {
     return provider.signTransaction(transaction)
   }
 
-  protected onAccountsChanged = (address: Address) => {
-    this.emit('change', {
-      account: {
-        address,
-      },
-    })
+  protected onAccountsChanged = async (address: Address) => {
+    if (!address) {
+      this.emit('disconnect')
+    } else {
+      this.emit('change', {
+        account: await this.account(),
+      })
+    }
   }
 
   protected onNetworkChanged = (network: string) => {
