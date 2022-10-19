@@ -41,8 +41,16 @@ export const usePollFarmsWithUserData = () => {
   } = useBCakeProxyContractAddress(account, chainId)
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
+  const { data: farmDataInitialized } = useSWRImmutable(
+    chainId ? ['initialPublicFarmData', chainId] : null,
+    async () => {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+      return true
+    },
+  )
+
   useSWRImmutable(
-    chainId ? ['publicFarmData', chainId] : null,
+    chainId && farmDataInitialized ? ['publicFarmData', chainId] : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
@@ -58,7 +66,7 @@ export const usePollFarmsWithUserData = () => {
     : ['farmsWithUserData', account, chainId]
 
   useSWRImmutable(
-    account && chainId && !isProxyContractLoading ? name : null,
+    account && chainId && farmDataInitialized && !isProxyContractLoading ? name : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)

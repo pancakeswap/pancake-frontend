@@ -25,7 +25,7 @@ import {
   fetchCakePoolUserDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
-import { fetchFarmsPublicDataAsync } from '../farms'
+import { fetchFarmsPublicDataAsync, fetchInitialFarmsData } from '../farms'
 import {
   makePoolWithUserDataLoadingSelector,
   makeVaultPoolByKey,
@@ -44,7 +44,8 @@ const getActiveFarms = async (chainId: number) => {
     .filter(
       ({ token, pid, quoteToken }) =>
         pid !== 0 &&
-        ((token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
+        ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
+          (token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
           lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
     )
     .map((farm) => farm.pid)
@@ -54,6 +55,14 @@ export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
+
+  const { data: farmDataInitialized } = useSWRImmutable(
+    chainId ? ['initialPublicFarmData', chainId] : null,
+    async () => {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+      return true
+    },
+  )
 
   useSlowRefreshEffect(
     (currentBlock) => {
@@ -67,9 +76,11 @@ export const useFetchPublicPoolsData = () => {
         })
       }
 
-      fetchPoolsDataWithFarms()
+      if (farmDataInitialized) {
+        fetchPoolsDataWithFarms()
+      }
     },
-    [dispatch, chainId, farmFlag],
+    [dispatch, chainId, farmFlag, farmDataInitialized],
   )
 }
 
