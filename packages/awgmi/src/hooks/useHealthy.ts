@@ -39,6 +39,6 @@ export function useHealthy({
     onError,
     onSettled,
     onSuccess,
-    refetchInterval: watch ? 2_000 : 0,
+    refetchInterval: watch ? 3_000 : 0,
   })
 }

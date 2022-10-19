@@ -47,8 +47,8 @@ export function useAccountResources<TData = unknown>({
     select,
     keepPreviousData,
     refetchInterval: (data) => {
-      if (!data) return 5_000
-      return watch ? 2_000 : 0
+      if (!data) return 6_000
+      return watch ? 3_000 : 0
     },
   })
 }

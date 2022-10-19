@@ -59,7 +59,7 @@ export function useBalance<TData = UseBalanceResult>({
       onSettled,
       onSuccess,
       select,
-      refetchInterval: watch ? 2_000 : 0,
+      refetchInterval: watch ? 3_000 : 0,
     },
   )
 
