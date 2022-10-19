@@ -1,6 +1,5 @@
 import { ResetCSS, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
@@ -86,7 +85,6 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
           <ResetCSS />
           <GlobalStyle />
-          <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
             <Updaters />
             <App {...props} />
