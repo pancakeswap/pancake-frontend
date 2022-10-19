@@ -4,6 +4,7 @@ export enum ConnectorNames {
   Petra = 'petra',
   Martian = 'martian',
   Pontem = 'pontem',
+  Fewcha = 'fewcha',
 }
 
 export const wallets: WalletConfigV2<ConnectorNames>[] = [
@@ -35,6 +36,16 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     connectorId: ConnectorNames.Pontem,
     downloadLink: {
       desktop: 'https://chrome.google.com/webstore/detail/pontem-aptos-wallet/phkbamefinggmakgklpkljjmgibohnba',
+    },
+  },
+  {
+    id: 'fewcha',
+    title: 'Fewcha',
+    icon: '/images/wallets/fewcha.png',
+    installed: typeof window !== 'undefined' && Boolean(window.fewcha),
+    connectorId: ConnectorNames.Fewcha,
+    downloadLink: {
+      desktop: 'https://fewcha.app/',
     },
   },
 ]
