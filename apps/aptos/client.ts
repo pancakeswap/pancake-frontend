@@ -1,13 +1,9 @@
-import { createClient } from '@pancakeswap/awgmi'
-import {
-  defaultChain,
-  defaultChains,
-  MartianConnector,
-  PetraConnector,
-  PontemConnector,
-  FewchaConnector,
-  BloctoConnector,
-} from '@pancakeswap/awgmi/core'
+import { createClient, defaultChain, defaultChains } from '@pancakeswap/awgmi'
+import { PetraConnector } from '@pancakeswap/awgmi/connectors/petra'
+import { MartianConnector } from '@pancakeswap/awgmi/connectors/martian'
+import { BloctoConnector } from '@pancakeswap/awgmi/connectors/blocto'
+import { PontemConnector } from '@pancakeswap/awgmi/connectors/pontem'
+import { FewchaConnector } from '@pancakeswap/awgmi/connectors/fewcha'
 import { AptosClient } from 'aptos'
 
 const NODE_REAL_API = process.env.NEXT_PUBLIC_NODE_REAL_API

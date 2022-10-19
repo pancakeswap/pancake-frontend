@@ -8,12 +8,10 @@ import {
   createClient,
   AwgmiConfig,
   useConnect,
-} from '@pancakeswap/awgmi';
-import {
   getDefaultProviders,
-  MartianConnector,
-  PetraConnector,
-} from '@pancakeswap/awgmi/core';
+} from '@pancakeswap/awgmi';
+import { PetraConnector } from '@pancakeswap/awgmi/connectors/petra'
+import { MartianConnector } from '@pancakeswap/awgmi/connectors/martain'
 
 export const client = createClient({
   connectors: [new PetraConnector(), new MartianConnector()],

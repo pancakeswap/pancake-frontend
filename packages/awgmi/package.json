@@ -2,8 +2,8 @@
   "name": "@pancakeswap/awgmi",
   "version": "0.0.1",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
   "sideEffects": false,
   "dependencies": {
     "@ethersproject/units": "^5.7.0",
@@ -26,16 +26,11 @@
     "vitest": "^0.23.1"
   },
   "files": [
-    "/core/dist",
-    "/dist"
+    "**"
   ],
   "scripts": {
-    "build:src": "tsup src/index.ts --format esm,cjs --dts",
-    "build:core": "tsup core/src/index.ts --format esm,cjs --dts --outDir core/dist",
-    "dev:src": "tsup src/index.ts --format esm,cjs --dts --watch",
-    "dev:core": "tsup core/src/index.ts --format esm,cjs --dts --outDir core/dist --watch",
-    "dev": "yarn dev:src & yarn dev:core",
-    "build": "yarn build:core && yarn build:src",
+    "dev": "tsup ---watch",
+    "build": "rm -rf dist && tsup",
     "test": "vitest --run",
     "prepublishOnly": "yarn run build:all"
   },
@@ -44,12 +39,37 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "default": "./dist/index.js"
     },
     "./core": {
-      "types": "./core/dist/index.d.ts",
-      "import": "./core/dist/index.mjs",
-      "require": "./core/dist/index.js"
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.mjs",
+      "default": "./dist/core.js"
+    },
+    "./connectors/petra": {
+      "types": "./dist/connectors/petra.d.ts",
+      "import": "./dist/connectors/petra.mjs",
+      "default": "./dist/connectors/petra.js"
+    },
+    "./connectors/martian": {
+      "types": "./dist/connectors/martian.d.ts",
+      "import": "./dist/connectors/martian.mjs",
+      "default": "./dist/connectors/martian.js"
+    },
+    "./connectors/blocto": {
+      "types": "./dist/connectors/blocto.d.ts",
+      "import": "./dist/connectors/blocto.mjs",
+      "default": "./dist/connectors/blocto.js"
+    },
+    "./connectors/pontem": {
+      "types": "./dist/connectors/pontem.d.ts",
+      "import": "./dist/connectors/pontem.mjs",
+      "default": "./dist/connectors/pontem.js"
+    },
+    "./connectors/fewcha": {
+      "types": "./dist/connectors/fewcha.d.ts",
+      "import": "./dist/connectors/fewcha.mjs",
+      "default": "./dist/connectors/fewcha.js"
     }
   },
   "peerDependenciesMeta": {

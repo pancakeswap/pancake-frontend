@@ -8,6 +8,7 @@ import {
   isUserTransaction,
   parseVmStatusError,
   isStructTag,
+  getDefaultProviders,
 } from '@pancakeswap/awgmi/core'
 
 export {
@@ -20,6 +21,7 @@ export {
   isUserTransaction,
   parseVmStatusError,
   isStructTag,
+  getDefaultProviders,
 }
 export * from './client'
 export * from './context'

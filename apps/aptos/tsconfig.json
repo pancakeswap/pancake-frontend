@@ -5,10 +5,6 @@
   "compilerOptions": {
     "target": "ES2015",
     "noImplicitAny": false,
-    "baseUrl": ".",
-    "paths": {
-      "@pancakeswap/awgmi/core": ["../../packages/awgmi/core/src/index.ts"],
-      "@pancakeswap/awgmi": ["../../packages/awgmi/src/index.ts"]
-    }
+    "baseUrl": "."
   }
 }

@@ -26,6 +26,7 @@ export class BloctoConnector extends Connector<AptosProviderInterface, AptosProv
   async getProvider({ networkName }: { networkName?: string } = {}) {
     if (!this.provider) {
       const BloctoSDK = (await import('@blocto/sdk')).default
+      // @ts-ignore
       this.provider = new BloctoSDK({
         appId: this.options?.appId,
         aptos: {

@@ -1,0 +1,4 @@
+{
+  "main": "../../dist/connectors/martian.d.ts",
+  "module": "../../dist/connectors/martian.mjs"
+}
