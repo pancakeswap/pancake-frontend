@@ -19,7 +19,7 @@ export const ifos: Ifo[] = [
     },
     currency: AptosCoin.onChain(defaultChain.id),
     token: AptosCoin.onChain(defaultChain.id),
-    releaseBlockNumber: 0,
+    releaseTime: 0,
     campaignId: '0',
     articleUrl: '',
     tokenOfferingPrice: 0.035,

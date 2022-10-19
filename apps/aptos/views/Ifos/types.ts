@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 
 import { IfoStatus, PoolIds } from 'config/constants/types'
@@ -14,7 +13,7 @@ export interface PoolCharacteristics {
   sumTaxesOverflow: BigNumber
 
   // extends
-  pointThreshold?: number
+  // pointThreshold?: number
   vestingInformation?: VestingInformation
 }
 
@@ -22,12 +21,12 @@ export interface PoolCharacteristics {
 export interface PublicIfoData {
   isInitialized: boolean
   status: IfoStatus
-  blocksRemaining: number
+  timeRemaining: number
   secondsUntilStart: number
   progress: number
   secondsUntilEnd: number
-  startBlockNum: number
-  endBlockNum: number
+  startTime: number
+  endTime: number
   currencyPriceInUSD: BigNumber
   vestingStartTime?: number
 

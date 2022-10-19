@@ -28,7 +28,7 @@ export interface Ifo {
   name: string
   currency: Currency
   token: Currency
-  releaseBlockNumber: number
+  releaseTime: number
   articleUrl: string
   campaignId: string
   tokenOfferingPrice: number

@@ -40,7 +40,7 @@ const initialState = {
 /**
  * Gets all data from an IFO related to a wallet
  */
-const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
+export const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>(initialState)
   // const credit = useIfoCredit()
   const credit = BIG_ZERO
@@ -82,5 +82,3 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   return { ...state, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData, ifoCredit }
 }
-
-export default useGetWalletIfoData
