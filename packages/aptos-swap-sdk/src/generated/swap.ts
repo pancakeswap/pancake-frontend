@@ -2,43 +2,7 @@ import { Types } from 'aptos'
 
 export const ADDRESS = '0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9' as const
 
-export type SwapSetAdminArgs = [string]
-
-export const swapSetAdmin = (args: SwapSetAdminArgs): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: [],
-    arguments: args,
-    function: `${ADDRESS}::swap::set_admin`,
-  }
-}
-
-export type SwapSetFeeToArgs = [string]
-
-export const swapSetFeeTo = (args: SwapSetFeeToArgs): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: [],
-    arguments: args,
-    function: `${ADDRESS}::swap::set_fee_to`,
-  }
-}
-
-export type SwapUpgradeSwapArgs = [number[] | Uint8Array, number[] | Uint8Array]
-
-export const swapUpgradeSwap = (args: SwapUpgradeSwapArgs): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: [],
-    arguments: args,
-    function: `${ADDRESS}::swap::upgrade_swap`,
-  }
-}
-
-export const swapWithdrawFee = (typeArgs: [string, string]): Types.EntryFunctionPayload => {
-  return {
-    type_arguments: typeArgs,
-    arguments: [],
-    function: `${ADDRESS}::swap::withdraw_fee`,
-  }
-}
+export const ROUTER_MODULE_NAME = 'router' as const
 
 export type RouterAddLiquidityArgs = [bigint | string, bigint | string, bigint | string, bigint | string]
 
@@ -49,7 +13,7 @@ export const routerAddLiquidity = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::add_liquidity`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::add_liquidity`,
   }
 }
 
@@ -57,7 +21,7 @@ export const routerCreatePair = (typeArgs: [string, string]): Types.EntryFunctio
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: `${ADDRESS}::router::create_pair`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::create_pair`,
   }
 }
 
@@ -65,7 +29,7 @@ export const routerRegisterLp = (typeArgs: [string, string]): Types.EntryFunctio
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: `${ADDRESS}::router::register_lp`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::register_lp`,
   }
 }
 
@@ -73,7 +37,7 @@ export const routerRegisterToken = (typeArgs: [string]): Types.EntryFunctionPayl
   return {
     type_arguments: typeArgs,
     arguments: [],
-    function: `${ADDRESS}::router::register_token`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::register_token`,
   }
 }
 
@@ -86,7 +50,7 @@ export const routerRemoveLiquidity = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::remove_liquidity`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::remove_liquidity`,
   }
 }
 
@@ -99,7 +63,7 @@ export const routerSwapExactInput = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::swap_exact_input`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::swap_exact_input`,
   }
 }
 
@@ -112,7 +76,7 @@ export const routerSwapExactInputDoublehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::swap_exact_input_doublehop`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::swap_exact_input_doublehop`,
   }
 }
 
@@ -125,7 +89,7 @@ export const routerSwapExactInputTriplehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::swap_exact_input_triplehop`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::swap_exact_input_triplehop`,
   }
 }
 
@@ -138,7 +102,7 @@ export const routerSwapExactOutput = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::swap_exact_output`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::swap_exact_output`,
   }
 }
 
@@ -151,7 +115,7 @@ export const routerSwapExactOutputDoublehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::swap_exact_output_doublehop`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::swap_exact_output_doublehop`,
   }
 }
 
@@ -164,6 +128,6 @@ export const routerSwapExactOutputTriplehop = (
   return {
     type_arguments: typeArgs,
     arguments: args,
-    function: `${ADDRESS}::router::swap_exact_output_triplehop`,
+    function: `${ADDRESS}::${ROUTER_MODULE_NAME}::swap_exact_output_triplehop`,
   }
 }

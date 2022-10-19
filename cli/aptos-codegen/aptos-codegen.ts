@@ -72,6 +72,11 @@ class TransactionBuilderABI {
   }
 }
 
+
+const generateTsModuleConst = (moduleNames: string[]) => {
+  return moduleNames.map(moduleName => `export const ${moduleName.toUpperCase()}_MODULE_NAME = '${moduleName}' as const`).join("\n")
+}
+
 const generateTsFn = (moveFn: CodeGenMoveFunction) => {
   const originalArgs = moveFn.params.filter((param) =>
     param !== "signer" && param !== "&signer"
@@ -116,7 +121,7 @@ export const ${camelCase(moveFn.moduleName)}${
   return {
     type_arguments: ${hasTypeArgs ? "typeArgs" : "[]"},
     arguments: ${hasArgs ? "args" : "[]"},
-    function: \`${moveFn.fullName.replace(moveFn.address, "${ADDRESS}")}\`
+    function: \`${moveFn.fullName.replace(moveFn.address, "${ADDRESS}").replace(`::${moveFn.moduleName}::`, `::\${${moveFn.moduleName.toUpperCase()}_MODULE_NAME}::`)}\`
   }
 }
 `.trimStart();
@@ -163,6 +168,8 @@ yargs(Deno.args)
       addr = address;
     }
 
+    addr = HexString.ensure(addr).toShortString()
+
     const modules = await aptos.getAccountModules(addr);
     let abis = modules.map((mod) => mod.abi).filter((abi) => !!abi).flatMap(
       (abi) => TransactionBuilderABI.fromJson(abi!),
@@ -177,6 +184,8 @@ yargs(Deno.args)
       to = `${to}.ts`;
     }
 
+    const moduleNames = [...new Set(abis.map(abi => abi.moduleName))]
+
     const texts = abis.map(generateTsFn);
 
     const finalTexts =
@@ -184,8 +193,9 @@ yargs(Deno.args)
 
 export const ADDRESS = '${addr}' as const
 
-${texts.join("\n")}
-`;
+${generateTsModuleConst(moduleNames)}
+
+${texts.join("\n")}`;
     Deno.writeTextFileSync(to, finalTexts);
   })
   .strictCommands()
