@@ -55,6 +55,9 @@
   "peerDependenciesMeta": {
     "react": {
       "optional": true
+    },
+    "@blocto/sdk": {
+      "optional": true
     }
   }
 }
