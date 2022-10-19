@@ -173,3 +173,7 @@ export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfP
     [proxyContractAddress, providerOrSigner, chainId],
   )
 }
+
+export function demoUseContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
+}
