@@ -16,6 +16,7 @@ import transactions from './transactions/reducer'
 import user from './user/reducer'
 import limitOrders from './limitOrders/reducer'
 import globalReducer from './global/reducer'
+import demoRedux from "./demoFetchData/reducer"
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions']
 
@@ -44,6 +45,7 @@ const persistedReducer = persistReducer(
     mint,
     burn,
     multicall,
+    demoRedux
   }),
 )
 
