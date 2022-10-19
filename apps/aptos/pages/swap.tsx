@@ -137,10 +137,12 @@ const SwapPage = () => {
           throw new Error('Missing swap call')
         }
         console.info(payload)
+        let result
         try {
-          await simulateTransactionAsync({
+          const results = await simulateTransactionAsync({
             payload,
           })
+          result = results[0]
         } catch (error) {
           if (error instanceof SimulateTransactionError) {
             console.info({ error })
@@ -163,6 +165,7 @@ const SwapPage = () => {
 
         return sendTransactionAsync({
           payload,
+          options: result ? { max_gas_amount: result.max_gas_amount } : undefined,
         }).then((tx) => {
           const inputSymbol = trade.inputAmount.currency.symbol
           const outputSymbol = trade.outputAmount.currency.symbol

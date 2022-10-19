@@ -9,12 +9,17 @@ import { TransactionResponse } from './types'
 export type SendTransactionArgs = {
   /** Network name used to validate if the signer is connected to the target chain */
   networkName?: string
-  payload?: Types.EntryFunctionPayload
+  payload: Types.EntryFunctionPayload
+  options?: Partial<Types.SubmitTransactionRequest>
 }
 
 export type SendTransactionResult = TransactionResponse
 
-export async function sendTransaction({ networkName, payload }: SendTransactionArgs): Promise<SendTransactionResult> {
+export async function sendTransaction({
+  networkName,
+  payload,
+  options,
+}: SendTransactionArgs): Promise<SendTransactionResult> {
   const { chain: activeChain, chains } = getNetwork()
   const { connector } = getAccount()
   const provider = getProvider({ networkName })
@@ -31,7 +36,7 @@ export async function sendTransaction({ networkName, payload }: SendTransactionA
   }
 
   try {
-    const pending = await connector.signAndSubmitTransaction(payload)
+    const pending = await connector.signAndSubmitTransaction(payload, options)
 
     const response = pending as TransactionResponse
     if (response) {

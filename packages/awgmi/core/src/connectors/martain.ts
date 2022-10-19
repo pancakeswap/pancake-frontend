@@ -83,16 +83,14 @@ export class MartianConnector extends Connector<Window['martian']> {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload) {
+  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload, options?: Types.SubmitTransactionRequest) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
 
     await provider.cancelSubmittedTransactions()
 
-    const hash = await provider.generateSignAndSubmitTransaction(account?.address || '', payload, {
-      max_gas_amount: '200000', // seems martian default gas amount is too low, TODO: should add option to set above
-    })
+    const hash = await provider.generateSignAndSubmitTransaction(account?.address || '', payload, options)
 
     return { hash }
   }

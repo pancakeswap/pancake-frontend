@@ -9,12 +9,14 @@ export type UseSendTransactionArgs = Partial<SendTransactionArgs>
 export type UseSendTransactionMutationArgs = Partial<SendTransactionArgs>
 export type UseSendTransactionConfig = MutationConfig<SendTransactionResult, Error, SendTransactionArgs>
 
-export const mutationKey = (args: UseSendTransactionArgs) => [{ entity: 'sendTransaction', ...args }] as const
+export const mutationKey = (args: any /** TODO: fix type UseSendTransactionArgs */) =>
+  [{ entity: 'sendTransaction', ...args }] as const
 
-const mutationFn = async ({ networkName, payload }: SendTransactionArgs) => {
+const mutationFn = async ({ networkName, payload, options }: SendTransactionArgs) => {
   return sendTransaction({
     networkName,
     payload,
+    options,
   } as SendTransactionArgs)
 }
 

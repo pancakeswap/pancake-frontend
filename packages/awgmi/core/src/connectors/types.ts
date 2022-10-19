@@ -33,7 +33,10 @@ export interface Aptos {
 
   isConnected(): Promise<boolean>
   network(): Promise<string>
-  signAndSubmitTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['submitTransaction']>
+  signAndSubmitTransaction(
+    transaction: Types.EntryFunctionPayload,
+    options?: Partial<Types.SubmitTransactionRequest>,
+  ): ReturnType<AptosClient['submitTransaction']>
   signMessage(message?: SignMessagePayload): Promise<SignMessageResponse>
   signTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['signTransaction']>
   on?: any
