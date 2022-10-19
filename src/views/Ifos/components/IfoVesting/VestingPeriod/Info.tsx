@@ -53,10 +53,12 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
   })
 
   const { cliff } = publicIfoData[poolId]?.vestingInformation
-  const isHasCliff = cliff !== 0
   const timeCliff = vestingStartTime * 1000
   const timeVestingStart = (vestingStartTime + cliff) * 1000
   const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
+  const currentTimeStamp = new Date().getTime()
+  const isHasCliff = cliff !== 0
+  const isInCliff = timeVestingEnd >= currentTimeStamp && timeCliff <= currentTimeStamp
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
@@ -109,22 +111,12 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
         </Text>
         <StyleTag isPrivate={poolId === PoolIds.poolBasic}>{labelText}</StyleTag>
       </Flex>
-      {isHasCliff && (
-        <Flex justifyContent="space-between" mt="8px">
-          <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
-            {t('Cliff')}
-          </Text>
-          <Text fontSize="12px" color="textSubtle">
-            {format(timeCliff, 'MM/dd/yyyy HH:mm')}
-          </Text>
-        </Flex>
-      )}
-      <Flex justifyContent="space-between" mt={isHasCliff ? '' : '8px'}>
+      <Flex justifyContent="space-between" mt="8px">
         <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
-          {t('Vesting Start')}
+          {isHasCliff && isInCliff ? t('Cliff') : t('Vesting Start')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeVestingStart, 'MM/dd/yyyy HH:mm')}
+          {format(isHasCliff && isInCliff ? timeCliff : timeVestingStart, 'MM/dd/yyyy HH:mm')}
         </Text>
       </Flex>
       <Flex justifyContent="space-between">
