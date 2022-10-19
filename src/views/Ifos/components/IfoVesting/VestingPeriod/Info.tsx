@@ -4,8 +4,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, Progress, Tag } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
+import { useCurrentBlock } from 'state/block/hooks'
 import { getFullDisplayBalance } from 'utils/formatBalance'
+import useGetPublicIfoV3Data from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import BigNumber from 'bignumber.js'
+import useSWRImmutable from 'swr/immutable'
 import { format } from 'date-fns'
 import Claim from './Claim'
 
@@ -40,11 +43,22 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     vestingReleased,
     vestingInformationDuration,
   } = data.userVestingData[poolId]
-
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
 
+  const currentBlock = useCurrentBlock()
+  const publicIfoData = useGetPublicIfoV3Data(data.ifo)
+  const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
+  useSWRImmutable(!isPublicIfoDataInitialized && currentBlock && ['fetchPublicIfoData', currentBlock], async () => {
+    fetchPublicIfoData(currentBlock)
+  })
+
+  const { cliff } = publicIfoData[poolId]?.vestingInformation
   const timeCliff = vestingStartTime * 1000
+  const timeVestingStart = (vestingStartTime + cliff) * 1000
   const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
+  const currentTimeStamp = new Date().getTime()
+  const isHasCliff = cliff !== 0
+  const isInCliff = timeVestingEnd >= currentTimeStamp && timeCliff <= currentTimeStamp
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
@@ -99,10 +113,10 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
       </Flex>
       <Flex justifyContent="space-between" mt="8px">
         <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
-          {t('Cliff')}
+          {isHasCliff && isInCliff ? t('Cliff') : t('Vesting Start')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
+          {format(isHasCliff && isInCliff ? timeCliff : timeVestingStart, 'MM/dd/yyyy HH:mm')}
         </Text>
       </Flex>
       <Flex justifyContent="space-between">
