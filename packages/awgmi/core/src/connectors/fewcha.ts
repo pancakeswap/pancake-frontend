@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
-import { Connector } from './base'
+import { Connector, ConnectorTransactionResponse } from './base'
 import { ConnectorNotFoundError } from '../errors'
 import { Address } from '../types'
 
@@ -91,7 +91,7 @@ export class FewchaConnector extends Connector {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload): Promise<Types.PendingTransaction> {
+  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
@@ -99,9 +99,7 @@ export class FewchaConnector extends Connector {
 
     const hash = await methodWrapper(provider.signAndSubmitTransaction)(generatedTx)
 
-    const tx = await methodWrapper(provider.sdk.getTransactionByHash)(hash)
-
-    return tx
+    return { hash }
   }
 
   async signTransaction(payload: Types.EntryFunctionPayload) {
