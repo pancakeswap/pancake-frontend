@@ -12,10 +12,10 @@ declare global {
 
 export type PetraConnectorOptions = {
   /** Name of connector */
-  name?: string | ((detectedName: string | string[]) => string)
+  name?: string
 }
 
-export class PetraConnector extends Connector {
+export class PetraConnector extends Connector<Window['aptos'], PetraConnectorOptions> {
   readonly id: string
 
   readonly name: string
@@ -24,13 +24,11 @@ export class PetraConnector extends Connector {
 
   provider?: Window['aptos']
 
-  constructor(chains?: Chain[], options?: PetraConnectorOptions) {
-    super({
-      chains,
-    })
+  constructor(config: { chains?: Chain[]; options?: PetraConnectorOptions } = {}) {
+    super(config)
 
     let name = 'Petra'
-    const overrideName = options?.name
+    const overrideName = config.options?.name
     if (typeof overrideName === 'string') name = overrideName
     this.id = 'petra'
     this.name = name
@@ -44,10 +42,11 @@ export class PetraConnector extends Connector {
       if (provider.onNetworkChange) provider.onNetworkChange(this.onNetworkChanged)
       if (provider.onDisconnect) provider.onDisconnect(this.onDisconnect)
 
+      this.emit('message', { type: 'connecting' })
+
       const account = await provider.connect()
       const network = await this.network()
 
-      this.emit('message', { type: 'connecting' })
       return {
         account,
         network,

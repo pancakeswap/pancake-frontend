@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-export class MartianConnector extends Connector {
+export class MartianConnector extends Connector<Window['martian']> {
   readonly id = 'martian'
   readonly name = 'Martain'
   provider?: Window['martian']
@@ -38,10 +38,10 @@ export class MartianConnector extends Connector {
         provider.onNetworkChange(this.onNetworkChanged)
       }
 
+      this.emit('message', { type: 'connecting' })
+
       const account = await provider.connect()
       const network = await this.network()
-
-      this.emit('message', { type: 'connecting' })
 
       return {
         account,
@@ -88,15 +88,9 @@ export class MartianConnector extends Connector {
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
 
-    const [generatedTx] = await Promise.all([
-      provider.generateTransaction(account?.address || '', payload, {
-        max_gas_amount: '200000', // seems martian default gas amount is too low
-      }),
-      // pending tx is gone in martian, here we manually cancel martian pending tx
-      provider.cancelSubmittedTransactions(),
-    ])
+    await provider.cancelSubmittedTransactions()
 
-    const hash = await provider.signAndSubmitTransaction(generatedTx)
+    const hash = await provider.generateSignAndSubmitTransaction(account?.address || '', payload)
 
     return { hash }
   }

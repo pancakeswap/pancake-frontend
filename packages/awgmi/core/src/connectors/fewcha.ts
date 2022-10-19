@@ -26,10 +26,8 @@ export class FewchaConnector extends Connector {
   provider?: Window['fewcha']
 
   readonly ready = typeof window !== 'undefined' && !!window.fewcha
-  constructor(chains?: Chain[]) {
-    super({
-      chains,
-    })
+  constructor(config: { chains?: Chain[] } = {}) {
+    super(config)
   }
 
   async getProvider() {
@@ -48,10 +46,10 @@ export class FewchaConnector extends Connector {
         provider.onNetworkChange(this.onNetworkChanged)
       }
 
+      this.emit('message', { type: 'connecting' })
+
       const { data: account } = await provider.connect()
       const { data: network } = await provider.getNetwork()
-
-      this.emit('message', { type: 'connecting' })
 
       return {
         account,

@@ -24,6 +24,11 @@ export class ChainMismatchError extends Error {
   }
 }
 
+export class ConnectorUnauthorizedError extends Error {
+  name = 'ConnectorUnauthorizedError'
+  message = 'Connector Unauthorized'
+}
+
 export class SimulateTransactionError extends Error {
   name = 'SimulateTransactionError'
   tx: Types.UserTransaction

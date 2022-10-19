@@ -5,6 +5,7 @@ export enum ConnectorNames {
   Martian = 'martian',
   Pontem = 'pontem',
   Fewcha = 'fewcha',
+  Blocto = 'blocto',
 }
 
 export const wallets: WalletConfigV2<ConnectorNames>[] = [
@@ -47,5 +48,11 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     downloadLink: {
       desktop: 'https://fewcha.app/',
     },
+  },
+  {
+    id: 'blocto',
+    title: 'Blocto',
+    icon: '/images/wallets/blocto.png',
+    connectorId: ConnectorNames.Blocto,
   },
 ]

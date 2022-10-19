@@ -23,7 +23,7 @@ export interface SignMessageResponse {
 
 export type Account = {
   address: Address
-  publicKey?: string
+  publicKey?: string | string[]
 }
 
 export interface Aptos {

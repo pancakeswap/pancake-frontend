@@ -40,7 +40,7 @@ declare global {
   }
 }
 
-export class PontemConnector extends Connector {
+export class PontemConnector extends Connector<Window['pontem']> {
   readonly id = 'pontem'
   readonly name = 'Pontem'
 
@@ -48,8 +48,8 @@ export class PontemConnector extends Connector {
 
   provider?: Window['pontem']
 
-  constructor(chains?: Chain[]) {
-    super({ chains })
+  constructor(config: { chains?: Chain[] } = {}) {
+    super(config)
   }
 
   async getProvider() {
@@ -64,10 +64,11 @@ export class PontemConnector extends Connector {
       if (provider.onAccountChange) provider.onAccountChange(this.onAccountsChanged)
       if (provider.onNetworkChange) provider.onNetworkChange(this.onNetworkChanged)
 
+      this.emit('message', { type: 'connecting' })
+
       const account = await provider.connect()
       const network = await this.network()
 
-      this.emit('message', { type: 'connecting' })
       return {
         account,
         network,

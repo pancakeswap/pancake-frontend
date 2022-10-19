@@ -1,4 +1,6 @@
 import { useConnect, useDisconnect } from '@pancakeswap/awgmi'
+import { ConnectorNotFoundError } from '@pancakeswap/awgmi/core'
+import { WalletConnectorNotFoundError } from '@pancakeswap/ui-wallets'
 import { ConnectorNames } from 'config/wallets'
 
 export function useAuth() {
@@ -7,11 +9,15 @@ export function useAuth() {
 
   const login = async (connectorId: ConnectorNames) => {
     const findConnector = connectors.find((c) => c.id === connectorId)
+    if (!findConnector) {
+      throw new WalletConnectorNotFoundError()
+    }
     try {
       await connectAsync({ connector: findConnector })
     } catch (error) {
-      console.error(error)
-      // TODO: error handling
+      if (error instanceof ConnectorNotFoundError) {
+        throw new WalletConnectorNotFoundError()
+      }
     }
   }
 

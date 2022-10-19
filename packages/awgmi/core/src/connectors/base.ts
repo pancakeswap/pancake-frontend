@@ -18,8 +18,8 @@ export type ConnectorData<Provider = any> = {
   provider?: Provider
 }
 
-export interface ConnectorEvents {
-  change(data: ConnectorData): void
+export interface ConnectorEvents<Provider = any> {
+  change(data: ConnectorData<Provider>): void
   connect(): void
   message({ type, data }: { type: string; data?: unknown }): void
   disconnect(): void
@@ -30,25 +30,28 @@ export interface ConnectorTransactionResponse {
   hash: string
 }
 
-export abstract class Connector extends EventEmitter<ConnectorEvents> {
+export abstract class Connector<Provider = any, Options = any> extends EventEmitter<ConnectorEvents<Provider>> {
   readonly chains: Chain[]
 
-  constructor({ chains = defaultChains }: { chains?: Chain[] }) {
+  constructor({ chains = defaultChains, options }: { chains?: Chain[]; options?: Options }) {
     super()
     this.chains = chains
+    this.options = options
   }
 
   abstract id: string
   abstract name: string
+  readonly options?: Options
 
   abstract readonly ready: boolean
 
-  abstract connect(): Promise<Required<ConnectorData>>
+  abstract connect(config?: { networkName?: string }): Promise<Required<ConnectorData>>
 
   abstract disconnect(): Promise<void>
 
   abstract account(): Promise<Account>
   abstract network(): Promise<string>
+  abstract getProvider(config?: { networkName?: string }): Promise<Provider>
 
   abstract signAndSubmitTransaction(transaction?: Types.EntryFunctionPayload): Promise<ConnectorTransactionResponse>
 

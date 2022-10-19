@@ -1,24 +1,8 @@
-import { AptosAccount, HexString, Types } from 'aptos'
+import { HexString, TxnBuilderTypes, Types } from 'aptos'
 import { getAccount } from '../accounts/account'
-import { Account } from '../connectors'
+import { getClient } from '../client'
 import { ProviderRpcError, SimulateTransactionError } from '../errors'
 import { getProvider } from '../provider'
-
-class MockAptosAccount extends AptosAccount {
-  pubicKey: string
-
-  constructor(account: Account) {
-    if (!account.publicKey) {
-      throw new Error('PublicKey is needed')
-    }
-    super(undefined, account.address)
-    this.pubicKey = account.publicKey
-  }
-
-  pubKey() {
-    return new HexString(this.pubicKey)
-  }
-}
 
 export type SimulateTransactionArgs = {
   /** Network name used to validate if the signer is connected to the target chain */
@@ -41,15 +25,31 @@ export async function simulateTransaction({
 
   if (!account) throw new ProviderRpcError(4100, 'No Account')
 
-  const mockAccount = new MockAptosAccount(account)
-  const rawTransaction = await provider.generateTransaction(mockAccount.address(), payload, {
+  let { publicKey } = account
+
+  if (!publicKey) {
+    const client = getClient()
+    const activeConnector = client.connector
+    const accountFromActiveConnector = await activeConnector?.account()
+    publicKey = accountFromActiveConnector?.publicKey
+  }
+
+  if (!publicKey) throw new ProviderRpcError(4100, 'Missing pubic key')
+
+  const rawTransaction = await provider.generateTransaction(account.address, payload, {
     ...options,
   })
-  const simulatedUserTransactions = await provider.simulateTransaction(mockAccount, rawTransaction, {
-    estimateGasUnitPrice: true,
-    estimateMaxGasAmount: true,
-    estimatePrioritizedGasUnitPrice: false,
-  })
+  const simulatedUserTransactions = await provider.simulateTransaction(
+    new TxnBuilderTypes.Ed25519PublicKey(
+      HexString.ensure(Array.isArray(publicKey) ? publicKey[0] : publicKey).toUint8Array(),
+    ),
+    rawTransaction,
+    {
+      estimateGasUnitPrice: true,
+      estimateMaxGasAmount: true,
+      estimatePrioritizedGasUnitPrice: false,
+    },
+  )
 
   if (throwOnError) {
     const foundError = simulatedUserTransactions.find((simulatedTx) => !simulatedTx.success)
