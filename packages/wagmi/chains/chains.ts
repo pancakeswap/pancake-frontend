@@ -78,7 +78,7 @@ export const ethwMainnet: Chain = {
   blockExplorers: {
     default: {
       name: 'ETHWScan',
-      url: 'https://mainnet.ethwscan.com',
+      url: 'https://www.oklink.com/en/ethw',
     },
   },
   multicall: {

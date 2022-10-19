@@ -2321,4 +2321,12 @@ export const bscTokens = {
     'Kingdom Raids',
     'https://kingdomraids.io/',
   ),
+  runtogether: new Token(
+    ChainId.BSC,
+    '0xc643E83587818202E0fFf5eD96D10Abbc8Bb48e7',
+    18,
+    'RUN',
+    'Run Together',
+    'https://runtogether.net/',
+  ),
 }

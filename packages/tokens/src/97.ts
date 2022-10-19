@@ -30,4 +30,12 @@ export const bscTestnetTokens = {
     'USDC',
     'Binance-Peg USD Coin',
   ),
+  runtogether: new Token(
+    ChainId.BSC_TESTNET,
+    '0x242a227B38f704983FF101DC7De573ED8111601e',
+    18,
+    'RUN ',
+    'Run Together',
+    'https://runtogether.net/',
+  ),
 }

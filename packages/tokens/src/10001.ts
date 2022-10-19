@@ -26,4 +26,12 @@ export const ethwTokens = {
     'ETHW',
     '',
   ), 
+  runtogether: new Token(
+    ChainId.ETHW_MAINNET,
+    '0x81CF308d96DF5Def93435192CD768F6F0d3e6038',
+    18,
+    'RUN',
+    'Run together',
+    'https://runtogether.net/',
+  ), 
 }
