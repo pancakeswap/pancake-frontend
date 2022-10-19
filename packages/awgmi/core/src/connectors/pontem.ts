@@ -102,6 +102,7 @@ export class PontemConnector extends Connector<Window['pontem']> {
     if (!provider) throw new ConnectorNotFoundError()
     return {
       address: await provider.account(),
+      publicKey: await provider.publicKey(),
     }
   }
 
