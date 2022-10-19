@@ -153,7 +153,7 @@ yargs(Deno.args)
       throw new Error("[address] not set");
     }
 
-    const aptos = new AptosClient(chain.restUrls.default);
+    const aptos = new AptosClient(chain.nodeUrls.default);
     let addr;
 
     let moduleName: string | undefined;

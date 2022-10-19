@@ -18,7 +18,7 @@ export function getNetwork(): GetNetworkResult {
     id: 0,
     name: `Chain ${networkName}`,
     network: networkName ?? 'Unknown',
-    restUrls: { default: '' },
+    nodeUrls: { default: '' },
   }
 
   return {

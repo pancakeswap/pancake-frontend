@@ -23,11 +23,11 @@ export const client = createClient({
     if (networkNameLowerCase) {
       const foundChain = defaultChains.find((c) => c.network === networkNameLowerCase)
       if (foundChain) {
-        return new AptosClient(foundChain.restUrls.default)
+        return new AptosClient(foundChain.nodeUrls.default)
       }
     }
 
-    return new AptosClient(defaultChain.restUrls.default)
+    return new AptosClient(defaultChain.nodeUrls.default)
   },
   autoConnect: true,
 })

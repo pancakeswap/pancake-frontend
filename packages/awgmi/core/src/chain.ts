@@ -7,8 +7,8 @@ export type Chain = {
   name: string
   /** Internal network name */
   network: string
-  /** Collection of Restful endpoints */
-  restUrls: {
+  /** Collection of Node url endpoints */
+  nodeUrls: {
     [key: string]: string
     default: string
   }
@@ -34,8 +34,9 @@ export const mainnet: Chain = {
   id: 1,
   name: 'Mainnet',
   network: 'mainnet',
-  restUrls: {
+  nodeUrls: {
     default: 'https://fullnode.mainnet.aptoslabs.com/v1/',
+    nodeReal: 'https://aptos-testnet.nodereal.io/v1',
   },
   blockExplorers: {
     default: {
@@ -52,7 +53,7 @@ export const devnet: Chain = {
   id: 34,
   name: 'Devnet',
   network: 'devnet',
-  restUrls: {
+  nodeUrls: {
     default: 'https://fullnode.devnet.aptoslabs.com/v1',
   },
   blockExplorers: {
@@ -72,8 +73,9 @@ export const testnet: Chain = {
   id: 2,
   name: 'Testnet',
   network: 'testnet',
-  restUrls: {
+  nodeUrls: {
     default: 'https://testnet.aptoslabs.com/v1',
+    nodeReal: 'https://aptos-testnet.nodereal.io/v1',
   },
   blockExplorers: {
     default: {

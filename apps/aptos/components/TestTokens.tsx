@@ -15,7 +15,7 @@ export function TestTokens() {
 
   const faucetClient = useMemo(() => {
     if (!chain || !chain.testnet) return null
-    return new FaucetClient(chain.restUrls.default, chain.faucetUrl)
+    return new FaucetClient(chain.nodeUrls.default, chain.faucetUrl)
   }, [chain])
 
   const { toastSuccess, toastError, toastInfo } = useToast()

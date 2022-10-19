@@ -35,8 +35,8 @@ export function getDefaultProviders({ networkName }: { networkName?: string }) {
   if (networkName) {
     const foundChain = defaultChains.find((c) => c.network === networkName.toLowerCase())
     if (foundChain) {
-      return new AptosClient(foundChain?.restUrls.default)
+      return new AptosClient(foundChain.nodeUrls.default)
     }
   }
-  return new AptosClient(defaultChain.restUrls.default)
+  return new AptosClient(defaultChain.nodeUrls.default)
 }
