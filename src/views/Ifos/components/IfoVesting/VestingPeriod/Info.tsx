@@ -41,6 +41,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     offeringAmountInToken,
     vestingInformationPercentage,
     vestingReleased,
+    vestingInformationDuration,
   } = data.userVestingData[poolId]
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
 
@@ -51,10 +52,11 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     fetchPublicIfoData(currentBlock)
   })
 
-  const { cliff, duration } = publicIfoData[poolId]?.vestingInformation
+  const { cliff } = publicIfoData[poolId]?.vestingInformation
   const currentTimeStamp = new Date().getTime()
   const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
-  const timeVestingEnd = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + duration) * 1000
+  const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
+  const isVestingOver = currentTimeStamp > timeVestingEnd
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
@@ -75,10 +77,10 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
   }, [token, releasedAtSaleEnd, vestingReleased])
 
   const claimable = useMemo(() => {
-    return vestingComputeReleasableAmount.gt(0)
-      ? getFullDisplayBalance(vestingComputeReleasableAmount, token.decimals, 4)
-      : '0'
-  }, [token, vestingComputeReleasableAmount])
+    const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
+    const claimableAmount = isVestingOver ? vestingComputeReleasableAmount.plus(remain) : vestingComputeReleasableAmount
+    return claimableAmount.gt(0) ? getFullDisplayBalance(claimableAmount, token.decimals, 4) : '0'
+  }, [offeringAmountInToken, amountReleased, isVestingOver, vestingComputeReleasableAmount, token.decimals])
 
   const remaining = useMemo(() => {
     const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
@@ -140,7 +142,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           </Flex>
           <Flex flexDirection="column" ml="auto">
             <Text fontSize="14px" textAlign="right">
-              {remaining}
+              {isVestingOver ? '-' : remaining}
             </Text>
             <Text fontSize="14px" color="textSubtle">
               {t('Remaining')}
