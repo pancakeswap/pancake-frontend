@@ -46,11 +46,15 @@ export const mainnet: Chain = {
         network: 'mainnet',
       },
     },
+    traceMove: {
+      name: 'TraceMove',
+      url: 'https://tracemove.io/',
+    },
   },
 }
 
 export const devnet: Chain = {
-  id: 34,
+  id: 34, // note: devnet id changing constantly
   name: 'Devnet',
   network: 'devnet',
   nodeUrls: {
@@ -63,6 +67,10 @@ export const devnet: Chain = {
       params: {
         network: 'devnet',
       },
+    },
+    traceMove: {
+      name: 'TraceMove',
+      url: 'https://devnet.tracemove.io/',
     },
   },
   testnet: true,
@@ -84,6 +92,10 @@ export const testnet: Chain = {
       params: {
         network: 'testnet',
       },
+    },
+    traceMove: {
+      name: 'TraceMove',
+      url: 'https://testnet.tracemove.io/',
     },
   },
   testnet: true,
