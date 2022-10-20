@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "古いアドレスでトレードすると、資産を完全に失う可能性があります。詳細は",
   "Safemoon's announcement": "Safemoonの発表をご覧ください",
   "Newest Collections": "最新のコレクション",
-  "Your average per hour": "時間当たりの平均",
-  "CAKE per hour: %amount%": "時間当たりのCAKE: %amount%",
-  "per hour: ~$%amount%": "1時間毎: 約$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAMはITAM CUBEにブランド名を変更しました。",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "ITAMブリッジに進み、ITAMトークンの一方向スワップを行ってください。",
   "All transfers of the old ITAM token will be disabled after the swap.": "旧ITAMトークンのすべての送金は、このスワップ後に無効になります。",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "%date%に引き出し可能",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "クロスチェーンCAKEファーミングの初回セットアップには、少量の%nativeToken%が必要です。",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "安全のため、クロスチェーン取引の確定まで約30分かかります。",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "エントリに対象のNFTを使用します。請求するまで、プロファイルのアバターを削除または編集しないでください。"
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "エントリに対象のNFTを使用します。請求するまで、プロファイルのアバターを削除または編集しないでください。",
+  "Hourly Average": "Hourly Average"
 }
