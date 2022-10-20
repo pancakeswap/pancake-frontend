@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Εάν κάνετε συναλλαγές στην παλιά διεύθυνση μπορεί να οδηγήσει σε πλήρη απώλεια των κεφαλαίων σας. Για περισσότερες πληροφορίες ανατρέξτε στην",
   "Safemoon's announcement": "ανακοίνωση του Safemoon",
   "Newest Collections": "Νεότερες συλλογές",
-  "Your average per hour": "Ο μέσος όρος σας ανά ώρα",
-  "CAKE per hour: %amount%": "CAKE ανά ώρα: %amount%",
-  "per hour: ~$%amount%": "ανά ώρα: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "Το ITAM έχει μετονομαστεί σε ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Μεταβείτε στη γέφυρα ITAM για να πραγματοποιήσετε μια μονόδρομη ανταλλαγή των νομισμάτων σας ITAM.",
   "All transfers of the old ITAM token will be disabled after the swap.": "Όλες οι μεταφορές του παλαιού νομίσματος ITAM θα απενεργοποιηθούν μετά την ανταλλαγή.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Δυνατότητα ανάληψης στις %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Μια μικρή ποσότητα %nativeToken% απαιτείται για την πρώτη εγκατάσταση farming της cross-chain CAKE.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Για λόγους ασφαλείας, οι συναλλαγές cross-chain θα χρειαστούν περίπου 30 λεπτά για να επιβεβαιωθούν.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Χρησιμοποιήστε επιλέξιμα NFT για την εγγραφή. Μην αφαιρέσετε ή επεξεργαστείτε το avatar του προφίλ σας πριν από τη διεκδίκηση."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Χρησιμοποιήστε επιλέξιμα NFT για την εγγραφή. Μην αφαιρέσετε ή επεξεργαστείτε το avatar του προφίλ σας πριν από τη διεκδίκηση.",
+  "Hourly Average": "Hourly Average"
 }
