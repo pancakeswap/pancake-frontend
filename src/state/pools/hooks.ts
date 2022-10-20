@@ -139,16 +139,8 @@ export const useFetchIfo = () => {
   const dispatch = useAppDispatch()
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
-  const { data: farmDataInitialized } = useSWRImmutable(
-    chainId ? ['initialPublicFarmData', chainId] : null,
-    async () => {
-      await dispatch(fetchInitialFarmsData({ chainId }))
-      return true
-    },
-  )
-
   useSWRImmutable(
-    farmDataInitialized && 'fetchIfoPublicData',
+    'fetchIfoPublicData',
     async () => {
       const activeFarms = await getActiveFarms(chainId)
       await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId, flag: farmFlag }))
