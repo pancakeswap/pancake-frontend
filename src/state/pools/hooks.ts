@@ -25,7 +25,7 @@ import {
   fetchCakePoolUserDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
-import { fetchFarmsPublicDataAsync, fetchInitialFarmsData } from '../farms'
+import { fetchFarmsPublicDataAsync } from '../farms'
 import {
   makePoolWithUserDataLoadingSelector,
   makeVaultPoolByKey,
