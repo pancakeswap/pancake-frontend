@@ -257,7 +257,16 @@ export default function CurrencyInputPanel({
                     </Button>
                   ))}
                 {showMaxButton && (
-                  <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      e.preventDefault()
+                      onMax?.()
+                    }}
+                    scale="xs"
+                    variant="secondary"
+                    style={{ textTransform: 'uppercase' }}
+                  >
                     {t('Max')}
                   </Button>
                 )}
