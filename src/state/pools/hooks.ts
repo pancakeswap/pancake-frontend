@@ -56,14 +56,6 @@ export const useFetchPublicPoolsData = () => {
   const { chainId } = useActiveWeb3React()
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
-  const { data: farmDataInitialized } = useSWRImmutable(
-    chainId ? ['initialPublicFarmData', chainId] : null,
-    async () => {
-      await dispatch(fetchInitialFarmsData({ chainId }))
-      return true
-    },
-  )
-
   useSlowRefreshEffect(
     (currentBlock) => {
       const fetchPoolsDataWithFarms = async () => {
@@ -76,11 +68,9 @@ export const useFetchPublicPoolsData = () => {
         })
       }
 
-      if (farmDataInitialized) {
-        fetchPoolsDataWithFarms()
-      }
+      fetchPoolsDataWithFarms()
     },
-    [dispatch, chainId, farmFlag, farmDataInitialized],
+    [dispatch, chainId, farmFlag],
   )
 }
 
