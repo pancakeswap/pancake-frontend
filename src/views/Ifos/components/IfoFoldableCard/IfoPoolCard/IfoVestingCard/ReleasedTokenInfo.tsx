@@ -20,18 +20,21 @@ interface ReleasedTokenInfoProps {
   ifo: Ifo
   amountReleased: BigNumber
   amountInVesting: BigNumber
+  isVestingOver: boolean
 }
 
 const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps>> = ({
   ifo,
   amountReleased,
   amountInVesting,
+  isVestingOver,
 }) => {
   const { t } = useTranslation()
   const { token } = ifo
 
   const amount = useMemo(() => {
-    const released = getBalanceNumber(amountReleased, token.decimals)
+    const totalReleasedAmount = isVestingOver ? amountReleased.plus(amountInVesting) : amountReleased
+    const released = getBalanceNumber(totalReleasedAmount, token.decimals)
     const inVesting = getBalanceNumber(amountInVesting, token.decimals)
     const total = new BigNumber(released).plus(inVesting)
     const releasedPercentage = new BigNumber(released).div(total).times(100).toFixed(2)
@@ -47,7 +50,7 @@ const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps
       inVestingPercentage,
       inVestingPercentageDisplay,
     }
-  }, [token, amountReleased, amountInVesting])
+  }, [token, amountReleased, amountInVesting, isVestingOver])
 
   return (
     <Flex mb="24px">
@@ -61,8 +64,8 @@ const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps
             </Text>
           </Flex>
           <Box ml="auto">
-            <Text fontSize="14px" bold as="span">
-              {`${formatNumber(amount.released, 4, 4)} `}
+            <Text fontSize="14px" bold as="span" mr="4px">
+              {`${formatNumber(amount.released, 4, 4)}`}
             </Text>
             <Text fontSize="14px" as="span">
               {`(${amount.releasedPercentageDisplay}%)`}
@@ -77,8 +80,8 @@ const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps
             </Text>
           </Flex>
           <Box ml="auto">
-            <Text fontSize="14px" bold as="span">
-              {`${formatNumber(amount.inVesting, 4, 4)} `}
+            <Text fontSize="14px" bold as="span" mr="4px">
+              {isVestingOver ? '-' : `${formatNumber(amount.inVesting, 4, 4)}`}
             </Text>
             <Text fontSize="14px" as="span">
               {`(${amount.inVestingPercentageDisplay}%)`}
