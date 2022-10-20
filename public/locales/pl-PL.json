@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Handel przy użyciu starego adresu może skutkować całkowitą utratą aktywów. Więcej informacji zawiera",
   "Safemoon's announcement": "Ogłoszenie SafeMoon",
   "Newest Collections": "Najnowsze kolekcje",
-  "Your average per hour": "Twoja średnia na godzinę",
-  "CAKE per hour: %amount%": "CAKE przez godzinę: %amount%",
-  "per hour: ~$%amount%": "przez godzinę: około %amount% USD",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM przemianowano na ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Aby przeprowadzić jednokierunkową wymianę swoich tokenów ITAM, przejdź do mostu ITAM.",
   "All transfers of the old ITAM token will be disabled after the swap.": "Po wymianie wszystkie przeniesienia starego tokena ITAM zostaną zablokowane.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Możliwość wypłaty w dniu %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Niewielka kwota %nativeToken% jest wymagana do pierwszej konfiguracji międzyłańcuchowego farmienia CAKE.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Ze względów bezpieczeństwa potwierdzenie transakcji między łańcuchami będzie trwało około 30 minut.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Aby wziąć udział, należy użyć kwalifikujących się NFT. Nie usuwaj ani nie edytuj swojego awatara w profilu przed odebraniem."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Aby wziąć udział, należy użyć kwalifikujących się NFT. Nie usuwaj ani nie edytuj swojego awatara w profilu przed odebraniem.",
+  "Hourly Average": "Hourly Average"
 }
