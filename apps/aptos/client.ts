@@ -11,16 +11,10 @@ const NODE_REAL_API_TESTNET = process.env.NEXT_PUBLIC_NODE_REAL_API_TESTNET
 
 const nodeReal = {
   ...(NODE_REAL_API && {
-    mainnet: {
-      USERNAME: NODE_REAL_API.split(':')[0],
-      PASSWORD: NODE_REAL_API.split(':')[1],
-    },
+    mainnet: NODE_REAL_API,
   }),
   ...(NODE_REAL_API_TESTNET && {
-    testnet: {
-      USERNAME: NODE_REAL_API_TESTNET.split(':')[0],
-      PASSWORD: NODE_REAL_API_TESTNET.split(':')[1],
-    },
+    testnet: NODE_REAL_API_TESTNET,
   }),
 }
 
@@ -38,10 +32,7 @@ export const client = createClient({
       const foundChain = defaultChains.find((c) => c.network === networkNameLowerCase)
       if (foundChain) {
         if (foundChain.nodeUrls.nodeReal && nodeReal[networkNameLowerCase]) {
-          return new AptosClient(foundChain.nodeUrls.nodeReal, {
-            ...nodeReal[networkNameLowerCase],
-            WITH_CREDENTIALS: false,
-          })
+          return new AptosClient(`${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}`)
         }
         return new AptosClient(foundChain.nodeUrls.default)
       }
