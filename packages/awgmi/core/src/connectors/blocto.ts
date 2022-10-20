@@ -30,7 +30,7 @@ export class BloctoConnector extends Connector<AptosProviderInterface, AptosProv
       this.provider = new BloctoSDK({
         appId: this.options?.appId,
         aptos: {
-          chainId: networkMapping[networkName?.toLowerCase() || 'mainnet'],
+          chainId: networkMapping[networkName?.toLowerCase() || 'mainnet'] ?? 1,
         },
       }).aptos
 
