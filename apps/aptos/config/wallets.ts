@@ -55,6 +55,9 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     id: 'blocto',
     title: 'Blocto',
     icon: '/images/wallets/blocto.png',
+    get installed() {
+      return typeof window !== 'undefined' && Boolean(window.bloctoAptos) ? true : undefined // undefined to show SDK
+    },
     connectorId: ConnectorNames.Blocto,
   },
 ]

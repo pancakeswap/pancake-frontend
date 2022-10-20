@@ -6,6 +6,12 @@ import { Address } from '../types'
 import { Connector, ConnectorData, ConnectorTransactionResponse } from './base'
 import { Account } from './types'
 
+declare global {
+  interface Window {
+    bloctoAptos?: AptosProviderInterface
+  }
+}
+
 const networkMapping: Record<string, number> = {
   mainnet: 1,
   testnet: 2,
