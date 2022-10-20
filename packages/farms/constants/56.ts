@@ -99,7 +99,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.pex,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1664532000,
   },
   {
     pid: 117,
@@ -108,7 +107,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.spin,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1664532000,
   },
   {
     pid: 122,
