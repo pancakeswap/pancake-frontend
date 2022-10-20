@@ -12,13 +12,14 @@ export type UseConnectConfig = MutationConfig<ConnectResult, Error, ConnectArgs>
 export const mutationKey = (args: UseConnectArgs) => [{ entity: 'connect', ...args }] as const
 
 const mutationFn = (args: UseConnectArgs) => {
-  const { connector } = args
+  const { connector, networkName } = args
   if (!connector) throw new Error('connector is required')
-  return connectCore({ connector })
+  return connectCore({ connector, networkName })
 }
 
 export function useConnect({
   connector,
+  networkName,
   onError,
   onMutate,
   onSettled,
@@ -27,7 +28,7 @@ export function useConnect({
   const client = useClient()
 
   const { data, error, isError, isIdle, isLoading, isSuccess, mutate, mutateAsync, reset, status, variables } =
-    useMutation(mutationKey({ connector }), mutationFn, {
+    useMutation(mutationKey({ connector, networkName }), mutationFn, {
       onError,
       onMutate,
       onSettled,
@@ -38,18 +39,20 @@ export function useConnect({
     (args?: Partial<ConnectArgs>) => {
       return mutate(<ConnectArgs>{
         connector: args?.connector ?? connector,
+        networkName: args?.networkName ?? networkName,
       })
     },
-    [connector, mutate],
+    [connector, mutate, networkName],
   )
 
   const connectAsync = React.useCallback(
     (args?: Partial<ConnectArgs>) => {
       return mutateAsync(<ConnectArgs>{
         connector: args?.connector ?? connector,
+        networkName: args?.networkName ?? networkName,
       })
     },
-    [connector, mutateAsync],
+    [connector, mutateAsync, networkName],
   )
 
   return {

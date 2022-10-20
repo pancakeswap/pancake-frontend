@@ -2,8 +2,10 @@ import { useConnect, useDisconnect } from '@pancakeswap/awgmi'
 import { ConnectorNotFoundError } from '@pancakeswap/awgmi/core'
 import { WalletConnectorNotFoundError } from '@pancakeswap/ui-wallets'
 import { ConnectorNames } from 'config/wallets'
+import { useActiveNetwork } from './useNetwork'
 
 export function useAuth() {
+  const network = useActiveNetwork()
   const { connectAsync, connectors } = useConnect()
   const { disconnectAsync } = useDisconnect()
 
@@ -13,7 +15,7 @@ export function useAuth() {
       throw new WalletConnectorNotFoundError()
     }
     try {
-      await connectAsync({ connector: findConnector })
+      await connectAsync({ connector: findConnector, networkName: network.networkName })
     } catch (error) {
       if (error instanceof ConnectorNotFoundError) {
         throw new WalletConnectorNotFoundError()

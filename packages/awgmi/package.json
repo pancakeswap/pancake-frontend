@@ -29,7 +29,7 @@
     "**"
   ],
   "scripts": {
-    "dev": "tsup ---watch",
+    "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
     "test": "vitest --run",
     "prepublishOnly": "yarn run build:all"
