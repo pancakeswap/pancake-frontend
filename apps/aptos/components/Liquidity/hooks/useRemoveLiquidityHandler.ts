@@ -1,5 +1,6 @@
 import { AptosSwapRouter, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
+import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -60,37 +61,51 @@ export default function useRemoveLiquidityHandler({
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
 
     console.info(payload, 'payload')
-    simulateTransactionAsync({
-      payload,
-    })
-      .then(() => {
-        return sendTransactionAsync({
-          payload,
-        }).then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
-          const symbolA = currencyA.symbol
-          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) ?? ''
-          const symbolB = currencyB.symbol
-          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) ?? ''
-          addTransaction(response, {
-            summary: `Remove ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
-            translatableSummary: {
-              text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
-              data: { amountA, symbolA, amountB, symbolB },
-            },
-            type: 'remove-liquidity',
-          })
-        })
+    try {
+      await simulateTransactionAsync({
+        payload,
       })
-      .catch((err) => {
+    } catch (err) {
+      if (err instanceof SimulateTransactionError) {
         console.error(`Remove Liquidity failed`, err, payload)
         setLiquidityState({
           attemptingTxn: false,
+          liquidityErrorMessage: t('Remove liquidity failed: %message%', {
+            message: transactionErrorToUserReadableMessage(err),
+          }),
+          txHash: undefined,
+        })
+        return
+      }
+    }
+    // eslint-disable-next-line consistent-return
+    return sendTransactionAsync({
+      payload,
+    })
+      .then((response) => {
+        setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        const symbolA = currencyA.symbol
+        const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) ?? ''
+        const symbolB = currencyB.symbol
+        const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) ?? ''
+        addTransaction(response, {
+          summary: `Remove ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+          translatableSummary: {
+            text: 'Remove %amountA% %symbolA% and %amountB% %symbolB%',
+            data: { amountA, symbolA, amountB, symbolB },
+          },
+          type: 'remove-liquidity',
+        })
+      })
+      .catch((err) => {
+        setLiquidityState({
+          attemptingTxn: false,
           liquidityErrorMessage:
-            // TODO: map error
-            err && err.code !== 4001
-              ? t('Remove liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err) })
-              : undefined,
+            err instanceof UserRejectedRequestError
+              ? undefined
+              : t('Remove liquidity failed: %message%', {
+                  message: transactionErrorToUserReadableMessage(err),
+                }),
           txHash: undefined,
         })
       })

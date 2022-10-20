@@ -1,4 +1,5 @@
 import { AptosSwapRouter, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
+import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 
 import { useCallback, useContext, useMemo, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
@@ -51,7 +52,7 @@ export default function useAddLiquidityHanlder({
     [parsedAAmount, parsedBAmount, allowedSlippage, noLiquidity],
   )
 
-  const onAdd = useCallback(() => {
+  const onAdd = useCallback(async () => {
     if (!currencyA || !currencyB) {
       return
     }
@@ -66,26 +67,41 @@ export default function useAddLiquidityHanlder({
       currencyB.wrapped.address,
     )
     console.info(payload, 'payload')
-    simulateTransactionAsync({
+
+    try {
+      await simulateTransactionAsync({ payload })
+    } catch (error) {
+      if (error instanceof SimulateTransactionError) {
+        console.error(`Add Liquidity failed`, { error }, payload)
+        setLiquidityState({
+          attemptingTxn: false,
+          liquidityErrorMessage: t('Add liquidity failed: %message%', {
+            message: transactionErrorToUserReadableMessage(error),
+          }),
+          txHash: undefined,
+        })
+
+        return
+      }
+    }
+
+    // eslint-disable-next-line consistent-return
+    return sendTransactionAsync({
       payload,
     })
-      .then(() => {
-        return sendTransactionAsync({
-          payload,
-        }).then((response) => {
-          setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
-          const symbolA = currencyA.symbol
-          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) ?? ''
-          const symbolB = currencyB.symbol
-          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) ?? ''
-          addTransaction(response, {
-            summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
-            translatableSummary: {
-              text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
-              data: { amountA, symbolA, amountB, symbolB },
-            },
-            type: 'add-liquidity',
-          })
+      .then((response) => {
+        setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
+        const symbolA = currencyA.symbol
+        const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) ?? ''
+        const symbolB = currencyB.symbol
+        const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) ?? ''
+        addTransaction(response, {
+          summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
+          translatableSummary: {
+            text: 'Add %amountA% %symbolA% and %amountB% %symbolB%',
+            data: { amountA, symbolA, amountB, symbolB },
+          },
+          type: 'add-liquidity',
         })
       })
       .catch((err) => {
@@ -93,10 +109,9 @@ export default function useAddLiquidityHanlder({
         setLiquidityState({
           attemptingTxn: false,
           liquidityErrorMessage:
-            // TODO: map error
-            err && err.code !== 4001
-              ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err) })
-              : undefined,
+            err instanceof UserRejectedRequestError
+              ? undefined
+              : t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err) }),
           txHash: undefined,
         })
       })

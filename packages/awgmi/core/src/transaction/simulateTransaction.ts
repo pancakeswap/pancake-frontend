@@ -36,13 +36,16 @@ export async function simulateTransaction({
 
   if (!publicKey) throw new ProviderRpcError(4100, 'Missing pubic key')
 
+  if (Array.isArray(publicKey)) {
+    throw new Error('Multi sig not supported')
+  }
+
   const rawTransaction = await provider.generateTransaction(account.address, payload, {
     ...options,
   })
+
   const simulatedUserTransactions = await provider.simulateTransaction(
-    new TxnBuilderTypes.Ed25519PublicKey(
-      HexString.ensure(Array.isArray(publicKey) ? publicKey[0] : publicKey).toUint8Array(),
-    ),
+    new TxnBuilderTypes.Ed25519PublicKey(HexString.ensure(publicKey).toUint8Array()),
     rawTransaction,
     {
       estimateGasUnitPrice: true,
