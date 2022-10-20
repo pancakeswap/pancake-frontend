@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Việc giao dịch trên địa chỉ cũ có thể dẫn đến việc mất hoàn toàn tài sản của bạn. Để biết thêm chi tiết, vui lòng tham khảo",
   "Safemoon's announcement": "Thông báo của Safemoon",
   "Newest Collections": "Các bộ sưu tập mới nhất",
-  "Your average per hour": "Mức trung bình trên giờ của bạn",
-  "CAKE per hour: %amount%": "CAKE trên giờ: %amount%",
-  "per hour: ~$%amount%": "trên giờ: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM đã được đổi tên thành ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Vui lòng chuyển tiếp đến cầu nối ITAM để tiến hành hoán đổi một chiều các token ITAM của bạn.",
   "All transfers of the old ITAM token will be disabled after the swap.": "Mọi giao dịch chuyển khoản token ITAM cũ đều sẽ bị tắt sau khi hoán đổi.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Có thể rút vào ngày %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Một lượng %nativeToken% nhỏ là cần thiết để thiết lập lần đầu cho việc canh tác CAKE chuỗi chéo.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Để đảm bảo an toàn, các giao dịch chuỗi chéo sẽ cần khoảng 30 phút để xác nhận.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Sử dụng NFT đủ tiêu chuẩn để vào. Không xóa hay sửa ảnh hồ sơ của bạn trước khi nhận."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Sử dụng NFT đủ tiêu chuẩn để vào. Không xóa hay sửa ảnh hồ sơ của bạn trước khi nhận.",
+  "Hourly Average": "Hourly Average"
 }
