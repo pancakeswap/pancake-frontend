@@ -1,4 +1,4 @@
 {
-  "main": "../../dist/connectors/fewcha.d.ts",
+  "main": "../../dist/connectors/fewcha.js",
   "module": "../../dist/connectors/fewcha.mjs"
 }

@@ -1,4 +1,4 @@
 {
-  "main": "../../dist/connectors/pontem.d.ts",
+  "main": "../../dist/connectors/pontem.js",
   "module": "../../dist/connectors/pontem.mjs"
 }

@@ -1,4 +1,4 @@
 {
-  "main": "../dist/core.d.ts",
+  "main": "../dist/core.js",
   "module": "../dist/core.mjs"
 }
