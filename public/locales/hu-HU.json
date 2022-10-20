@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Ha a régi címen kereskedik, akár összes pénzeszközét elveszítheti. További tájékoztatásért kérjük, tekintse meg a",
   "Safemoon's announcement": "Safemoon bejelentését",
   "Newest Collections": "Legújabb gyűjtemények",
-  "Your average per hour": "Az ön átlaga óránként",
-  "CAKE per hour: %amount%": "CAKE óránként: %amount%",
-  "per hour: ~$%amount%": "óránként: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "A ITAM-új márkaneve ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Kérjük, lépjen át az ITAM-hídra, hogy egyirányú cserét hajtson végre az Ön ITAM-zsetonjaival.",
   "All transfers of the old ITAM token will be disabled after the swap.": "A csereügylet után a régi ITAM-zseton minden átvitelét letiltja a rendszer.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Visszavonható ekkor: %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Egy kisebb mennyiségű %nativeToken% zsetonra van szükség, amikor első alkalommal állítja be a láncközi CAKE-gazdálkodást.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "A biztonság kedvéért a láncközi tranzakciók megerősítése körülbelül 30 percet vesz igénybe.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Jogosult NFT használata a belépéshez. Ne távolítsa el vagy szerkessze el profil-avatárját mielőtt igényt nyújtana be."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Jogosult NFT használata a belépéshez. Ne távolítsa el vagy szerkessze el profil-avatárját mielőtt igényt nyújtana be.",
+  "Hourly Average": "Hourly Average"
 }
