@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "使用舊地址進行交易可能會導致您損失全部資產。要瞭解更多資訊，請參閱",
   "Safemoon's announcement": "SafeMoon 的公告",
   "Newest Collections": "最新收藏",
-  "Your average per hour": "您的每小時平均值",
-  "CAKE per hour: %amount%": "每小時 CAKE：%amount%",
-  "per hour: ~$%amount%": "每小時：約 $%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM 已更名為 ITAM CUBE。",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "請前往 ITAM 橋為您的 ITAM 代幣執行單向交換。",
   "All transfers of the old ITAM token will be disabled after the swap.": "舊 ITAM 代幣的所有轉移都將在交換後停用。",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "可於 %date% 提取",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "首次設定跨鏈 CAKE 挖礦需要少量 %nativeToken%。",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "安全起見，跨鏈交易需要 30 分鐘左右的時間來確認。",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "使用符合條件的 NFT 來參與。在領取之前，請勿移除或編輯您的個人檔案頭像。"
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "使用符合條件的 NFT 來參與。在領取之前，請勿移除或編輯您的個人檔案頭像。",
+  "Hourly Average": "Hourly Average"
 }
