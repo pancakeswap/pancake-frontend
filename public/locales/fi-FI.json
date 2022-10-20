@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Kaupankäynti vanhassa osoitteessa voi johtaa omaisuuseriesi täydelliseen menetykseen. Katso lisätietoja",
   "Safemoon's announcement": "Safemoonin ilmoituksesta",
   "Newest Collections": "Uusimmat kokoelmat",
-  "Your average per hour": "Keskiarvosi per tunti",
-  "CAKE per hour: %amount%": "CAKEa per tunti: %amount%",
-  "per hour: ~$%amount%": "per tunti: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM on uudelleenbrändätty ITAM CUBEksi.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Jatka ITAM-siltaan suorittamaan ITAM-polettiesi yksisuuntainen vaihto.",
   "All transfers of the old ITAM token will be disabled after the swap.": "Kaikki vanhan ITAM-poletin vaihdot poistetaan käytöstä vaihdon jälkeen.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Nostettavissa %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Pieni määrä %nativeToken%-polettia vaaditaan ketjujen välisen CAKE-viljelyn ensimääritykseen.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Turvallisuussyistä ketjujen välisten transaktioiden vahvistaminen kestää noin 30 minuuttia.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Kelvollista NFT:tä käytetään merkintään. Älä poista tai muokkaa profiilisi avataria ennen lunastamista."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Kelvollista NFT:tä käytetään merkintään. Älä poista tai muokkaa profiilisi avataria ennen lunastamista.",
+  "Hourly Average": "Hourly Average"
 }
