@@ -51,6 +51,25 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 106,
+    lpSymbol: 'MHUNT-BNB LP',
+    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
+    token: bscTokens.mhunt,
+    quoteToken: bscTokens.wbnb,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1666339200, // Fri Oct 21 2022 08:00:00 GMT+0000
+  },
+  {
+    pid: 91,
+    v1pid: 522,
+    lpSymbol: 'TINC-BNB LP',
+    lpAddress: '0x0d5b9A0f4315a4bcE36D1Ea7d6B6d3123167aFAa',
+    token: bscTokens.tinc,
+    isCommunity: true,
+    quoteToken: bscTokens.wbnb,
+    auctionHostingStartSeconds: 1666339200, // Fri Oct 21 2022 08:00:00 GMT+0000
+  },
+  {
     pid: 128,
     lpSymbol: 'WMX-BUSD LP',
     lpAddress: '0xe86eaAD81C32ffbb88B7ec9B325C8f75C8c9f1Ab',
@@ -71,15 +90,7 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.arv,
     quoteToken: bscTokens.wbnb,
   },
-  {
-    pid: 106,
-    lpSymbol: 'MHUNT-BNB LP',
-    lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
-    token: bscTokens.mhunt,
-    quoteToken: bscTokens.wbnb,
-    isCommunity: true,
-    auctionHostingStartSeconds: 1664532000,
-  },
+
   {
     pid: 90,
     v1pid: 520,
@@ -88,7 +99,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.pex,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1664532000,
   },
   {
     pid: 117,
@@ -97,7 +107,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.spin,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1664532000,
   },
   {
     pid: 122,
@@ -346,14 +355,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'CEEK-BNB',
     lpAddress: '0x046A9B3A9b743340eE2Bc4C6dDD35543E237C6c2',
     token: bscTokens.ceek,
-    quoteToken: bscTokens.wbnb,
-  },
-  {
-    pid: 91,
-    v1pid: 522,
-    lpSymbol: 'TINC-BNB LP',
-    lpAddress: '0x0d5b9A0f4315a4bcE36D1Ea7d6B6d3123167aFAa',
-    token: bscTokens.tinc,
     quoteToken: bscTokens.wbnb,
   },
   {
