@@ -43,7 +43,9 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     id: 'fewcha',
     title: 'Fewcha',
     icon: '/images/wallets/fewcha.png',
-    installed: typeof window !== 'undefined' && Boolean(window.fewcha),
+    get installed() {
+      return typeof window !== 'undefined' && Boolean(window.fewcha)
+    },
     connectorId: ConnectorNames.Fewcha,
     downloadLink: {
       desktop: 'https://fewcha.app/',
