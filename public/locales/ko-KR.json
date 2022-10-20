@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "이전 주소로 거래하면 자산을 완전히 잃을 수 있습니다. 자세한 내용은 다음을 참조하세요:",
   "Safemoon's announcement": "Safemoon 공지",
   "Newest Collections": "최신 컬렉션",
-  "Your average per hour": "시간당 평균",
-  "CAKE per hour: %amount%": "시간당 CAKE: %amount%",
-  "per hour: ~$%amount%": "시간당: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM이 ITAM CUBE로 리브랜딩되었습니다.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "ITAM 브릿지로 진행하여 ITAM 토큰의 단방향 스왑을 수행하세요.",
   "All transfers of the old ITAM token will be disabled after the swap.": "스왑 후에는 기존 ITAM 토큰의 모든 전송이 비활성화됩니다.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "%date%에 인출 가능",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "크로스체인 CAKE 파밍의 최초 설정에는 소량의 %nativeToken%이(가) 필요합니다.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "안전을 위해 크로스체인 트랜잭션은 확인하는 데 약 30분이 소요됩니다.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "엔트리에 NFT를 사용합니다. 클레임하기 전에 프로필 아바타를 제거하거나 편집하지 마세요."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "엔트리에 NFT를 사용합니다. 클레임하기 전에 프로필 아바타를 제거하거나 편집하지 마세요.",
+  "Hourly Average": "Hourly Average"
 }
