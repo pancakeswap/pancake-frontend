@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Tranzacționarea spre adresa veche poate duce la pierderea completă a activelor tale. Pentru mai multe informații, consultă",
   "Safemoon's announcement": "Anunțul Safemoon",
   "Newest Collections": "Cele mai noi colecții",
-  "Your average per hour": "Rata medie pe oră",
-  "CAKE per hour: %amount%": "CAKE pe oră: %amount%",
-  "per hour: ~$%amount%": "într-o oră: ~%amount% $",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM a primit noua denumire de marcă ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Continuă la puntea ITAM pentru a realiza o schimbare într-un singur sens a jetoanelor tale ITAM.",
   "All transfers of the old ITAM token will be disabled after the swap.": "Toate transferurile jetonului ITAM vechi vor fi dezactivate după schimbare.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Withdrawable on %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "For safety, cross-chain transactions will take around 30 minutes to confirm.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.",
+  "Hourly Average": "Hourly Average"
 }
