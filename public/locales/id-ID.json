@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Perdagangan di alamat lama dapat menyebabkan Anda kehilangan seluruh aset. Untuk mendapatkan informasi lebih lanjut, silakan simak",
   "Safemoon's announcement": "Pengumuman Safemoon",
   "Newest Collections": "Koleksi Terbaru",
-  "Your average per hour": "Rata-rata Anda per jam",
-  "CAKE per hour: %amount%": "CAKE per jam: %amount%",
-  "per hour: ~$%amount%": "per jam: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM telah berganti nama menjadi ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Silakan ke anjungan ITAM untuk melakukan pertukaran satu arah untuk token ITAM Anda.",
   "All transfers of the old ITAM token will be disabled after the swap.": "Semua transfer token ITAM lama akan dinonaktifkan setelah pertukaran.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Dapat ditarik pada %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Diperlukan sedikit %nativeToken% guna pengaturan farming CAKE lintas rantai untuk pertama kalinya.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Demi keamanan, transaksi lintas rantai akan memerlukan sekitar 30 menit untuk dikonfirmasi.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Menggunakan NFT yang memenuhi syarat untuk entri. Jangan hapus atau edit avatar profil Anda sebelum mengeklaim."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Menggunakan NFT yang memenuhi syarat untuk entri. Jangan hapus atau edit avatar profil Anda sebelum mengeklaim.",
+  "Hourly Average": "Hourly Average"
 }
