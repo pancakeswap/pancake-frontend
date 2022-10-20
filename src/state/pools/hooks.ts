@@ -52,6 +52,18 @@ const getActiveFarms = async (chainId: number) => {
     .map((farm) => farm.pid)
 }
 
+const getCakePriceFarms = async (chainId: number) => {
+  const farmsConfig = await getFarmConfig(chainId)
+  return farmsConfig
+    .filter(
+      ({ token, pid, quoteToken }) =>
+        pid !== 0 &&
+        ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
+          (token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB')),
+    )
+    .map((farm) => farm.pid)
+}
+
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
@@ -142,8 +154,8 @@ export const useFetchIfo = () => {
   useSWRImmutable(
     'fetchIfoPublicData',
     async () => {
-      const activeFarms = await getActiveFarms(chainId)
-      await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId, flag: farmFlag }))
+      const cakePriceFarms = await getCakePriceFarms(chainId)
+      await dispatch(fetchFarmsPublicDataAsync({ pids: cakePriceFarms, chainId, flag: farmFlag }))
       batch(() => {
         dispatch(fetchCakePoolPublicDataAsync())
         dispatch(fetchCakeVaultPublicData())
