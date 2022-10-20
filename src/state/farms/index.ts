@@ -93,23 +93,20 @@ export const fetchInitialFarmsData = createAsyncThunk<
   {
     state: AppState
   }
->('farms/fetchInitialFarmsData', async ({ chainId }, { rejectWithValue, getState }) => {
-  if (getState().farms.chainId !== chainId) {
-    const farmDataList = await getFarmConfig(chainId)
-    return {
-      data: farmDataList.map((farm) => ({
-        ...farm,
-        userData: {
-          allowance: '0',
-          tokenBalance: '0',
-          stakedBalance: '0',
-          earnings: '0',
-        },
-      })),
-      chainId,
-    }
+>('farms/fetchInitialFarmsData', async ({ chainId }) => {
+  const farmDataList = await getFarmConfig(chainId)
+  return {
+    data: farmDataList.map((farm) => ({
+      ...farm,
+      userData: {
+        allowance: '0',
+        tokenBalance: '0',
+        stakedBalance: '0',
+        earnings: '0',
+      },
+    })),
+    chainId,
   }
-  return rejectWithValue('Already Initialized')
 })
 
 let fallback = false
@@ -122,8 +119,11 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
   }
 >(
   'farms/fetchFarmsPublicDataAsync',
-  async ({ pids, chainId, flag = 'pkg' }, { dispatch }) => {
-    await dispatch(fetchInitialFarmsData({ chainId }))
+  async ({ pids, chainId, flag = 'pkg' }, { dispatch, getState }) => {
+    const state = getState()
+    if (state.farms.chainId !== chainId) {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+    }
     const chain = chains.find((c) => c.id === chainId)
     if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
     try {
@@ -244,9 +244,12 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   }
 >(
   'farms/fetchFarmUserDataAsync',
-  async ({ account, pids, proxyAddress, chainId }, config) => {
-    await config.dispatch(fetchInitialFarmsData({ chainId }))
-    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
+  async ({ account, pids, proxyAddress, chainId }, { dispatch, getState }) => {
+    const state = getState()
+    if (state.farms.chainId !== chainId) {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+    }
+    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
     const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
