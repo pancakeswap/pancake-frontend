@@ -41,7 +41,6 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     offeringAmountInToken,
     vestingInformationPercentage,
     vestingReleased,
-    vestingInformationDuration,
   } = data.userVestingData[poolId]
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
 
@@ -52,13 +51,10 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     fetchPublicIfoData(currentBlock)
   })
 
-  const { cliff } = publicIfoData[poolId]?.vestingInformation
-  const timeCliff = vestingStartTime * 1000
-  const timeVestingStart = (vestingStartTime + cliff) * 1000
-  const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
+  const { cliff, duration } = publicIfoData[poolId]?.vestingInformation
   const currentTimeStamp = new Date().getTime()
-  const isHasCliff = cliff !== 0
-  const isInCliff = timeVestingEnd >= currentTimeStamp && timeCliff <= currentTimeStamp
+  const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
+  const timeVestingEnd = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + duration) * 1000
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
@@ -113,10 +109,10 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
       </Flex>
       <Flex justifyContent="space-between" mt="8px">
         <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
-          {isHasCliff && isInCliff ? t('Cliff') : t('Vesting Start')}
+          {cliff === 0 ? t('Vesting Start') : t('Cliff')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(isHasCliff && isInCliff ? timeCliff : timeVestingStart, 'MM/dd/yyyy HH:mm')}
+          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
         </Text>
       </Flex>
       <Flex justifyContent="space-between">
