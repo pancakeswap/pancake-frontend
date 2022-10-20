@@ -146,15 +146,19 @@ export default function SwapForm() {
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   const handleInputSelect = useCallback(
-    (currencyInput) => {
+    (newCurrencyInput) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
-      onCurrencySelection(Field.INPUT, currencyInput)
+      onCurrencySelection(Field.INPUT, newCurrencyInput)
 
-      warningSwapHandler(currencyInput)
+      warningSwapHandler(newCurrencyInput)
 
-      replaceBrowserHistory('inputCurrency', currencyId(currencyInput))
+      const newCurrencyInputId = currencyId(newCurrencyInput)
+      if (newCurrencyInputId === outputCurrencyId) {
+        replaceBrowserHistory('outputCurrency', inputCurrencyId)
+      }
+      replaceBrowserHistory('inputCurrency', newCurrencyInputId)
     },
-    [onCurrencySelection, warningSwapHandler],
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -164,14 +168,18 @@ export default function SwapForm() {
   }, [maxAmountInput, onUserInput])
 
   const handleOutputSelect = useCallback(
-    (currencyOutput) => {
-      onCurrencySelection(Field.OUTPUT, currencyOutput)
-      warningSwapHandler(currencyOutput)
+    (newCurrencyOutput) => {
+      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
+      warningSwapHandler(newCurrencyOutput)
 
-      replaceBrowserHistory('outputCurrency', currencyId(currencyOutput))
+      const newCurrencyOutputId = currencyId(newCurrencyOutput)
+      if (newCurrencyOutputId === inputCurrencyId) {
+        replaceBrowserHistory('inputCurrency', outputCurrencyId)
+      }
+      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
     },
 
-    [onCurrencySelection, warningSwapHandler],
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
   )
 
   const handlePercentInput = useCallback(

@@ -153,13 +153,17 @@ const LimitOrders = () => {
     [handleInput],
   )
   const handleInputSelect = useCallback(
-    (inputCurrency) => {
+    (newInputCurrency) => {
       setApprovalSubmitted(false)
-      handleCurrencySelection(Field.INPUT, inputCurrency)
+      handleCurrencySelection(Field.INPUT, newInputCurrency)
 
-      replaceBrowserHistory('inputCurrency', currencyId(inputCurrency))
+      const newInputCurrencyId = currencyId(newInputCurrency)
+      if (newInputCurrencyId === currencyIds.output) {
+        replaceBrowserHistory('outputCurrency', currencyIds.input)
+      }
+      replaceBrowserHistory('inputCurrency', newInputCurrencyId)
     },
-    [handleCurrencySelection],
+    [currencyIds.input, currencyIds.output, handleCurrencySelection],
   )
   const handleTypeDesiredRate = useCallback(
     (value: string) => {
@@ -181,12 +185,16 @@ const LimitOrders = () => {
     }
   }, [maxAmountInput, handleInput])
   const handleOutputSelect = useCallback(
-    (outputCurrency) => {
-      handleCurrencySelection(Field.OUTPUT, outputCurrency)
+    (newOutputCurrency) => {
+      handleCurrencySelection(Field.OUTPUT, newOutputCurrency)
 
-      replaceBrowserHistory('outputCurrency', currencyId(outputCurrency))
+      const newOutputCurrencyId = currencyId(newOutputCurrency)
+      if (newOutputCurrencyId === currencyIds.input) {
+        replaceBrowserHistory('inputCurrency', currencyIds.output)
+      }
+      replaceBrowserHistory('outputCurrency', newOutputCurrencyId)
     },
-    [handleCurrencySelection],
+    [currencyIds.input, currencyIds.output, handleCurrencySelection],
   )
   const handleApprove = useCallback(async () => {
     await approveCallback()
