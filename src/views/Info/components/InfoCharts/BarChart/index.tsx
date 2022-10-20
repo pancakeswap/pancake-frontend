@@ -1,4 +1,4 @@
-import { useEffect, Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Bar } from 'recharts'
 import useTheme from 'hooks/useTheme'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -31,17 +31,6 @@ const CustomBar = ({
       <rect x={x} y={y} fill={fill} width={width} height={height} rx="2" />
     </g>
   )
-}
-
-// Calls setHoverValue and setHoverDate when part of chart is hovered
-// Note: this NEEDs to be wrapped inside component and useEffect, if you plug it as is it will create big render problems (try and see console)
-const HoverUpdater = ({ locale, payload, setHoverValue, setHoverDate }) => {
-  useEffect(() => {
-    setHoverValue(payload.value)
-    setHoverDate(payload.time.toLocaleString(locale, { year: 'numeric', day: 'numeric', month: 'short' }))
-  }, [locale, payload.value, payload.time, setHoverValue, setHoverDate])
-
-  return null
 }
 
 const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
@@ -89,14 +78,17 @@ const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
         <Tooltip
           cursor={{ fill: theme.colors.backgroundDisabled }}
           contentStyle={{ display: 'none' }}
-          formatter={(tooltipValue, name, props) => (
-            <HoverUpdater
-              locale={locale}
-              payload={props.payload}
-              setHoverValue={setHoverValue}
-              setHoverDate={setHoverDate}
-            />
-          )}
+          formatter={(tooltipValue, name, props) => {
+            setHoverValue(props.payload.value)
+            setHoverDate(
+              props.payload.time.toLocaleString(locale, {
+                year: 'numeric',
+                day: 'numeric',
+                month: 'short',
+              }),
+            )
+            return null
+          }}
         />
         <Bar
           dataKey="value"

@@ -1,4 +1,4 @@
-import { useEffect, Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'recharts'
 import useTheme from 'hooks/useTheme'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
@@ -12,25 +12,6 @@ export type SwapLineChartProps = {
   isChangePositive: boolean
   timeWindow: PairDataTimeWindowEnum
 } & React.HTMLAttributes<HTMLDivElement>
-
-// Calls setHoverValue and setHoverDate when part of chart is hovered
-// Note: this NEEDs to be wrapped inside component and useEffect, if you plug it as is it will create big render problems (try and see console)
-const HoverUpdater = ({ locale, payload, setHoverValue, setHoverDate }) => {
-  useEffect(() => {
-    setHoverValue(payload.value)
-    setHoverDate(
-      payload.time.toLocaleString(locale, {
-        year: 'numeric',
-        month: 'short',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      }),
-    )
-  }, [locale, payload.value, payload.time, setHoverValue, setHoverDate])
-
-  return null
-}
 
 const getChartColors = ({ isChangePositive }) => {
   return isChangePositive
@@ -103,14 +84,19 @@ const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWi
         <Tooltip
           cursor={{ stroke: theme.colors.textDisabled }}
           contentStyle={{ display: 'none' }}
-          formatter={(tooltipValue, name, props) => (
-            <HoverUpdater
-              locale={locale}
-              payload={props.payload}
-              setHoverValue={setHoverValue}
-              setHoverDate={setHoverDate}
-            />
-          )}
+          formatter={(tooltipValue, name, props) => {
+            setHoverValue(props.payload.value)
+            setHoverDate(
+              props.payload.time.toLocaleString(locale, {
+                year: 'numeric',
+                month: 'short',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+              }),
+            )
+            return null
+          }}
         />
         <Area dataKey="value" type="linear" stroke={colors.stroke} fill="url(#gradient)" strokeWidth={2} />
       </AreaChart>

@@ -18,7 +18,6 @@ import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { usePollCoreFarmData } from 'state/farms/hooks'
 import TransactionsDetailModal from 'components/TransactionDetailModal'
 import { Blocklist, Updaters } from '..'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
@@ -37,7 +36,6 @@ BigNumber.config({
 function GlobalHooks() {
   usePollBlockNumber()
   useEagerConnect()
-  usePollCoreFarmData()
   useUserAgent()
   useAccountEventListener()
   useSentryUser()
@@ -48,7 +46,6 @@ function GlobalHooks() {
 function MPGlobalHooks() {
   usePollBlockNumber()
   useEagerConnectMP()
-  usePollCoreFarmData()
   useUserAgent()
   useAccountEventListener()
   useSentryUser()

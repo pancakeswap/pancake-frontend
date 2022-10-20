@@ -16,7 +16,6 @@ import {
   Text,
   WarningIcon,
 } from '@pancakeswap/uikit'
-import clsx from 'clsx'
 import { atom, useAtom } from 'jotai'
 import { FC, lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -25,8 +24,8 @@ import { getDocLink } from './docLangCodeMapping'
 import {
   desktopWalletSelectionClass,
   modalWrapperClass,
-  moreIconClass,
-  walletButtonVariants,
+  walletIconClass,
+  promotedGradientClass,
   walletSelectWrapperClass,
 } from './WalletModal.css'
 
@@ -41,7 +40,7 @@ type DeviceLink = {
 
 type LinkOfDevice = string | DeviceLink
 
-export type WalletConfigV2<T = unknown, ExtendedValue = unknown> = {
+export type WalletConfigV2<T = unknown> = {
   id: string
   title: string
   icon: string | FC<React.PropsWithChildren<SvgProps>>
@@ -52,10 +51,10 @@ export type WalletConfigV2<T = unknown, ExtendedValue = unknown> = {
   downloadLink?: LinkOfDevice
   mobileOnly?: boolean
   qrCode?: () => Promise<string>
-} & ExtendedValue
+}
 
-interface WalletModalV2Props<T = unknown, ExtendedValue = unknown> extends ModalV2Props {
-  wallets: WalletConfigV2<T, ExtendedValue>[]
+interface WalletModalV2Props<T = unknown> extends ModalV2Props {
+  wallets: WalletConfigV2<T>[]
   login: (connectorId: T) => Promise<any>
 }
 
@@ -67,9 +66,9 @@ const errorAtom = atom<string>('')
 
 const selectedWalletAtom = atom<WalletConfigV2<unknown> | null>(null)
 
-export function useSelectedWallet<T, ExtendedValue = unknown>() {
+export function useSelectedWallet<T>() {
   // @ts-ignore
-  return useAtom<WalletConfigV2<T, ExtendedValue> | null>(selectedWalletAtom)
+  return useAtom<WalletConfigV2<T> | null>(selectedWalletAtom)
 }
 
 const TabContainer = ({ children }: PropsWithChildren) => {
@@ -79,7 +78,7 @@ const TabContainer = ({ children }: PropsWithChildren) => {
   return (
     <AtomBox position="relative" zIndex="modal" className={modalWrapperClass}>
       <AtomBox position="absolute" style={{ top: '-50px' }}>
-        <TabMenu activeIndex={index} onItemClick={setIndex} gap="16px">
+        <TabMenu activeIndex={index} onItemClick={setIndex} gap="16px" isColorInverse>
           <Tab>{t('Connect Wallet')}</Tab>
           <Tab>{t('What’s a Web3 Wallet?')}</Tab>
         </TabMenu>
@@ -108,7 +107,7 @@ const MOBILE_DEFAULT_DISPLAY_COUNT = 6
 function MobileModal<T>({
   wallets,
   connectWallet,
-}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T, any>) => void }) {
+}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T>) => void }) {
   const {
     t,
     currentLanguage: { code },
@@ -117,8 +116,8 @@ function MobileModal<T>({
   const [selected] = useSelectedWallet()
   const [error] = useAtom(errorAtom)
 
-  const installedWallets: WalletConfigV2[] = wallets.filter((w) => w.installed)
-  const walletsToShow: WalletConfigV2[] = wallets.filter((w) => {
+  const installedWallets: WalletConfigV2<T>[] = wallets.filter((w) => w.installed)
+  const walletsToShow: WalletConfigV2<T>[] = wallets.filter((w) => {
     if (installedWallets.length) {
       return w.installed
     }
@@ -174,20 +173,19 @@ function MobileModal<T>({
   )
 }
 
-function WalletSelect<T, D>({
+function WalletSelect<T>({
   wallets,
   onClick,
-  selected,
   displayCount = 5,
 }: {
-  wallets: WalletConfigV2<T, D>[]
+  wallets: WalletConfigV2<T>[]
   onClick: (wallet: WalletConfigV2<T>) => void
-  selected?: WalletConfigV2<T, D>
   displayCount?: number
 }) {
   const { t } = useTranslation()
   const [showMore, setShowMore] = useState(false)
   const walletsToShow = showMore ? wallets : wallets.slice(0, displayCount)
+  const [selected] = useSelectedWallet()
   return (
     <AtomBox
       display="grid"
@@ -213,19 +211,25 @@ function WalletSelect<T, D>({
             flexDirection="column"
             onClick={() => onClick(wallet)}
           >
-            <AtomBox
-              bgc="dropdown"
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              className={clsx(walletButtonVariants({ selected: wallet.title === selected?.title }), moreIconClass)}
-              mb="4px"
-            >
-              {isImage ? (
-                <Image src={Icon as string} width={50} height={50} />
-              ) : (
-                <Icon width={24} height={24} color="textSubtle" />
-              )}
+            <AtomBox className={wallet.installed && promotedGradientClass} p="1px" borderRadius="12px" mb="4px">
+              <AtomBox
+                bgc="dropdown"
+                display="flex"
+                position="relative"
+                justifyContent="center"
+                alignItems="center"
+                className={walletIconClass}
+                style={{ borderRadius: '13px' }}
+              >
+                {isImage ? (
+                  <Image src={Icon as string} width={50} height={50} />
+                ) : (
+                  <Icon width={24} height={24} color="textSubtle" />
+                )}
+                {wallet.id === selected?.id && (
+                  <AtomBox position="absolute" inset="0" bgc="secondary" opacity="0.5" borderRadius="12px" />
+                )}
+              </AtomBox>
             </AtomBox>
             <Text fontSize="12px" textAlign="center">
               {wallet.title}
@@ -237,7 +241,7 @@ function WalletSelect<T, D>({
         <AtomBox display="flex" justifyContent="center" alignItems="center" flexDirection="column">
           <Button height="auto" variant="text" as={AtomBox} flexDirection="column" onClick={() => setShowMore(true)}>
             <AtomBox
-              className={moreIconClass}
+              className={walletIconClass}
               display="flex"
               justifyContent="center"
               alignItems="center"
@@ -283,7 +287,7 @@ function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string
 function DesktopModal<T>({
   wallets,
   connectWallet,
-}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T, any>) => void }) {
+}: Pick<WalletModalV2Props<T>, 'wallets'> & { connectWallet: (wallet: WalletConfigV2<T>) => void }) {
   const [selected] = useSelectedWallet<T>()
   const [error] = useAtom(errorAtom)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)

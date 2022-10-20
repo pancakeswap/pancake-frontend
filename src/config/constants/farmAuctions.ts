@@ -821,6 +821,14 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'PEX',
     projectSite: 'https://peardao.io/',
   },
+  {
+    account: '0xEb12b802d97936865d10730E30F1A5663eEE310A',
+    farmName: 'BIVE-USDT',
+    tokenAddress: '0x130E6203F05805cd8C44093a53C7b50775eb4ca3',
+    quoteToken: bscTokens.usdt,
+    tokenName: 'BIVE',
+    projectSite: 'https://bizverse.io/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
