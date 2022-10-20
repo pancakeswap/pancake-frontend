@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "قد يؤدي التداول على العنوان القديم إلى خسارة كاملة لأصولك. لمزيد من المعلومات يرجى الرجوع إلى",
   "Safemoon's announcement": "إعلان Safemoon",
   "Newest Collections": "المجموعات الأحدث",
-  "Your average per hour": "المتوسط الخاص بك لكل ساعة",
-  "CAKE per hour: %amount%": "CAKE لكل ساعة: %amount%",
-  "per hour: ~$%amount%": "لكل ساعة: ~%amount% دولار",
   "ITAM has been rebranded as ITAM CUBE.": "أعيد تسمية ITAM ليصبح ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "يُرجى الانتقال لجسر ITAM لإجراء مبادلة أحادية الجانب لرموز ITAM المميزة الخاصة بك.",
   "All transfers of the old ITAM token will be disabled after the swap.": "وسيتم تعطيل كل تحويلات رموز ITAM الميزة القديمة بعد المبادلة.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "قابل للسحب في %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "مطلوب مبلغ صغير من %nativeToken% لإعداد زراعة CAKE عبر السلاسل لأول مرة.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "لأغراض الأمان، سوف يستغرق تأكيد المعاملات عبر السلاسل حوالي 30 دقيقة.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "استخدام NFT مؤهل للدخول. لا تقم بإزالة أو تعديل صورة الأفاتار لملفك الشخصي قبل المطالبة."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "استخدام NFT مؤهل للدخول. لا تقم بإزالة أو تعديل صورة الأفاتار لملفك الشخصي قبل المطالبة.",
+  "Hourly Average": "Hourly Average"
 }
