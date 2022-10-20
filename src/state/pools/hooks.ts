@@ -23,6 +23,7 @@ import {
   fetchCakeFlexibleSideVaultUserData,
   fetchCakeFlexibleSideVaultFees,
   fetchCakePoolUserDataAsync,
+  fetchCakePoolPublicDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
@@ -134,13 +135,25 @@ export const useCakeVaultPublicData = () => {
 }
 
 export const useFetchIfo = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
+  const farmFlag = useFeatureFlag(featureFarmApiAtom)
+
+  const { data: farmDataInitialized } = useSWRImmutable(
+    chainId ? ['initialPublicFarmData', chainId] : null,
+    async () => {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+      return true
+    },
+  )
 
   useSWRImmutable(
-    'fetchIfoPublicData',
+    farmDataInitialized && 'fetchIfoPublicData',
     async () => {
+      const activeFarms = await getActiveFarms(chainId)
+      await dispatch(fetchFarmsPublicDataAsync({ pids: activeFarms, chainId, flag: farmFlag }))
       batch(() => {
+        dispatch(fetchCakePoolPublicDataAsync())
         dispatch(fetchCakeVaultPublicData())
         dispatch(fetchIfoPublicDataAsync())
       })
