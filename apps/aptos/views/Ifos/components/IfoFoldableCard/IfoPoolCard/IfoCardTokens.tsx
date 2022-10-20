@@ -12,8 +12,6 @@ import {
   FlexProps,
   HelpIcon,
   useTooltip,
-  Button,
-  AutoRenewIcon,
   BunnyPlaceholderIcon,
   Message,
   MessageText,
@@ -26,7 +24,6 @@ import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 // import { useIfoCredit } from 'state/pools/hooks'
 import { MessageTextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
-import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
 import VestingAvailableToClaim from './VestingAvailableToClaim'
@@ -91,8 +88,6 @@ interface IfoCardTokensProps {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   isLoading: boolean
-  onApprove: () => Promise<any>
-  enableStatus: EnableStatus
   criterias?: any
   isEligible?: boolean
 }
@@ -120,8 +115,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   publicIfoData,
   walletIfoData,
   isLoading,
-  onApprove,
-  enableStatus,
 }) => {
   const { account } = useAccount()
   const { t } = useTranslation()
@@ -200,17 +193,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             {t('%ratio%% of total sale', { ratio: distributionRatio })}
           </Text>
           {message}
-          {enableStatus !== EnableStatus.ENABLED && account && (
-            <Button
-              width="100%"
-              mt="16px"
-              onClick={onApprove}
-              isLoading={enableStatus === EnableStatus.IS_ENABLING}
-              endIcon={enableStatus === EnableStatus.IS_ENABLING ? <AutoRenewIcon spin color="currentColor" /> : null}
-            >
-              {t('Enable')}
-            </Button>
-          )}
         </>
       )
     }

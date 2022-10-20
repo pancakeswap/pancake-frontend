@@ -1,23 +1,15 @@
 /* eslint-disable camelcase */
-import { useAccountResources, useProvider } from '@pancakeswap/awgmi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { TxnBuilderTypes, TypeTagParser } from 'aptos'
 import BigNumber from 'bignumber.js'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useCakePrice } from 'hooks/useStablePrice'
 import { useState, useCallback, useMemo } from 'react'
-import {
-  IfoPoolKey,
-  IFO_RESOURCE_ACCOUNT_ADDRESS,
-  IFO_RESOURCE_ACCOUNT_TYPE_METADATA,
-  IFO_RESOURCE_ACCOUNT_TYPE_POOL,
-  IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE,
-} from 'views/Ifos/constants'
-import { RootObject as IFOMetadata } from 'views/Ifos/generated/IFOMetadata'
+import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA } from 'views/Ifos/constants'
 import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
-import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { PoolCharacteristics, PublicIfoData, VestingInformation } from '../../types'
 import { getStatus } from '../helpers'
+import { useIfoPool } from '../useIfoPool'
+import { useIfoResources } from '../useIfoResources'
 
 const formatVestingInfo = (pool: IFOPool): VestingInformation => ({
   percentage: pool ? +pool.vesting_percentage : 0,
@@ -43,7 +35,6 @@ const formatPool = (pool: IFOPool): PoolCharacteristics => ({
  */
 export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { releaseTime } = ifo
-  const provider = useProvider()
   const { data: cakePrice } = useCakePrice()
   // const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   // const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
@@ -75,29 +66,12 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     vestingStartTime: 0,
   })
 
-  const resources = useAccountResources({
-    address: IFO_RESOURCE_ACCOUNT_ADDRESS,
-    // watch: true,
-    select: (data) => {
-      const res: {
-        [IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?: IFOMetadata
-        [IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?: IFOPoolStore
-      } = {}
-      for (const it of data) {
-        const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
-        res[parsedTypeTag.value.name.value] = it
-      }
-      return res
-    },
-  })
+  const resources = useIfoResources()
+  const pool = useIfoPool()
 
   const fetchIfoData = useCallback(
     async (_currentBlock: number) => {
-      if (
-        !resources.data ||
-        !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA] ||
-        !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
-      ) {
+      if (!pool.data || !resources.data || !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]) {
         return
       }
 
@@ -106,17 +80,7 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       const endTime = +end_time
       const vestingStartTime = +vesting_start_time
 
-      const { ifo_pools: ifoPools } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE].data
-      const item = (await provider.getTableItem(ifoPools.handle, {
-        key_type: 'u64',
-        value_type: resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE].type.replace(
-          IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE,
-          IFO_RESOURCE_ACCOUNT_TYPE_POOL,
-        ),
-        key: IfoPoolKey.UNLIMITED,
-      })) as IFOPool
-
-      const poolUnlimited = formatPool(item)
+      const poolUnlimited = formatPool(pool.data)
 
       const currentTime = Date.now() / 1000
 
@@ -143,7 +107,7 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         vestingStartTime,
       }))
     },
-    [provider, releaseTime, resources],
+    [pool, releaseTime, resources],
   )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }

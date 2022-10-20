@@ -5,7 +5,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { EnableStatus, CardConfigReturn } from '../types'
+import { CardConfigReturn } from '../types'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
 import IfoCardTokens from './IfoCardTokens'
@@ -23,8 +23,6 @@ interface IfoCardProps {
   ifo: Ifo
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
-  onApprove: () => Promise<any>
-  enableStatus: EnableStatus
 }
 
 export const cardConfig = (
@@ -55,14 +53,7 @@ export const cardConfig = (
   }
 }
 
-const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
-  poolId,
-  ifo,
-  publicIfoData,
-  walletIfoData,
-  onApprove,
-  enableStatus,
-}) => {
+const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
@@ -113,8 +104,6 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
                 publicIfoData={publicIfoData}
                 walletIfoData={walletIfoData}
                 isLoading={isLoading}
-                onApprove={onApprove}
-                enableStatus={enableStatus}
               />
               <Box mt="24px">
                 <IfoCardActions
@@ -124,7 +113,6 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
                   publicIfoData={publicIfoData}
                   walletIfoData={walletIfoData}
                   isLoading={isLoading}
-                  enableStatus={enableStatus}
                 />
               </Box>
               <IfoCardDetails

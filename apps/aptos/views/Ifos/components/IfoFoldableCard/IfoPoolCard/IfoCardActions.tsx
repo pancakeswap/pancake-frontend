@@ -6,7 +6,6 @@ import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
 import { SkeletonCardActions } from './Skeletons'
-import { EnableStatus } from '../types'
 
 interface Props {
   poolId: PoolIds
@@ -15,7 +14,6 @@ interface Props {
   walletIfoData: WalletIfoData
   isLoading: boolean
   isEligible: boolean
-  enableStatus: EnableStatus
 }
 
 const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
@@ -25,7 +23,6 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   walletIfoData,
   isLoading,
   isEligible,
-  enableStatus,
 }) => {
   const { t } = useTranslation()
   const { account } = useAccount()
@@ -49,10 +46,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
     return <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
   }
 
-  if (
-    (enableStatus !== EnableStatus.ENABLED && publicIfoData.status === 'coming_soon') ||
-    (ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible)
-  ) {
+  if (ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible) {
     return null
   }
 

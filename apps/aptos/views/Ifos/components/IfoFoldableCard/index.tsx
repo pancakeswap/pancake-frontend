@@ -7,11 +7,9 @@ import {
   CardFooter,
   CardHeader,
   ExpandableButton,
-  ExpandableLabel,
   useMatchBreakpoints,
   useToast,
 } from '@pancakeswap/uikit'
-import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
 import useCatchTxError from 'hooks/useCatchTxError'
 // import { useERC20 } from 'hooks/useContract'
@@ -22,13 +20,10 @@ import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 // import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
-// import { requiresApproval } from 'utils/requiresApproval'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import useIfoApprove from '../../hooks/useIfoApprove'
 import { CardsWrapper } from '../IfoCardStyles'
 import IfoPoolCard from './IfoPoolCard'
 import { IfoRibbon } from './IfoRibbon'
-import { EnableStatus } from './types'
 
 interface IfoFoldableCardProps {
   ifo: Ifo
@@ -151,7 +146,6 @@ export const IfoCurrentCard = ({
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }) => {
-  const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
@@ -194,7 +188,7 @@ const FoldableContent = styled.div<{ isVisible: boolean }>`
 `
 
 // Past Ifo
-const IfoFoldableCard = ({
+export const IfoFoldableCard = ({
   ifo,
   publicIfoData,
   walletIfoData,
@@ -248,7 +242,6 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
     resetIfoData: resetWalletIfoData,
     isInitialized: isWalletDataInitialized,
   } = walletIfoData
-  const [enableStatus, setEnableStatus] = useState(EnableStatus.DISABLED)
   const { t } = useTranslation()
   const { account } = useAccount()
   // const raisingTokenContract = useERC20(ifo.currency.address, false)
@@ -261,7 +254,6 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
         ((publicIfoData[PoolIds.poolBasic]?.vestingInformation?.percentage ?? -1) > 0 ||
           (publicIfoData[PoolIds.poolUnlimited].vestingInformation?.percentage ?? -1) > 0))) &&
     ifo.isActive
-  const onApprove = useIfoApprove(ifo, contract.address)
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const isWindowVisible = useIsWindowVisible()
@@ -289,36 +281,6 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
     }
   }, [account, isWalletDataInitialized, resetWalletIfoData])
 
-  const handleApprove = async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      setEnableStatus(EnableStatus.IS_ENABLING)
-      return onApprove()
-    })
-    if (receipt?.status) {
-      toastSuccess(
-        t('Successfully Enabled!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('You can now participate in the %symbol% IFO.', { symbol: ifo.token.symbol })}
-        </ToastDescriptionWithTx>,
-      )
-      setEnableStatus(EnableStatus.ENABLED)
-    } else {
-      setEnableStatus(EnableStatus.DISABLED)
-    }
-  }
-
-  useEffect(() => {
-    const checkAllowance = async () => {
-      // const approvalRequired = await requiresApproval(raisingTokenContract, account, contract.address)
-      const approvalRequired = false
-      setEnableStatus(approvalRequired ? EnableStatus.DISABLED : EnableStatus.ENABLED)
-    }
-
-    if (account) {
-      checkAllowance()
-    }
-  }, [account, contract, setEnableStatus])
-
   return (
     <>
       <StyledCardBody>
@@ -342,13 +304,9 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
             ifo={ifo}
             publicIfoData={publicIfoData}
             walletIfoData={walletIfoData}
-            onApprove={handleApprove}
-            enableStatus={enableStatus}
           />
         </CardsWrapper>
       </StyledCardBody>
     </>
   )
 }
-
-export default IfoFoldableCard
