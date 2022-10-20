@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "পুরানো ঠিকানায় ট্রেড করার ফলে আপনার অ্যাসেট পুরোপুরি হারিয়ে যেতে পারে। আরও তথ্যের জন্য অনুগ্রহ করে দেখুন",
   "Safemoon's announcement": "Safemoon এর ঘোষণা",
   "Newest Collections": "নতুন সংগ্রহ",
-  "Your average per hour": "প্রতি ঘণ্টায় আপনার গড়",
-  "CAKE per hour: %amount%": "প্রতি ঘণ্টায় CAKE: %amount%",
-  "per hour: ~$%amount%": "প্রতি ঘণ্টায়: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM-কে ITAM CUBE হিসাবে পুনঃব্র্যান্ড করা হয়েছে৷",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "আপনার ITAM টোকেন একমুখী সোয়াপ পরিচালনা করতে অনুগ্রহ করে ITAM ব্রিজে যান৷",
   "All transfers of the old ITAM token will be disabled after the swap.": "সোয়াপ করার পরে পুরানো ITAM টোকেনের সমস্ত স্থানান্তর নিষ্ক্রিয় করা হবে৷",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "%date%-এ প্রত্যাহারযোগ্য",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "ক্রস-চেইন CAKE চাষাবাদের প্রথমবারের সেটআপের জন্য অল্প পরিমাণ %nativeToken% প্রয়োজন।",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "নিরাপত্তার জন্য, ক্রস-চেইন লেনদেন নিশ্চিত হতে প্রায় 30 মিনিট সময় লাগবে।",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "প্রবেশের জন্য উপযুক্ত NFT ব্যবহার। দাবি করার আগে আপনার প্রোফাইল অ্যাভেটর অপসারণ বা সম্পাদনা করবেন না।"
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "প্রবেশের জন্য উপযুক্ত NFT ব্যবহার। দাবি করার আগে আপনার প্রোফাইল অ্যাভেটর অপসারণ বা সম্পাদনা করবেন না।",
+  "Hourly Average": "Hourly Average"
 }
