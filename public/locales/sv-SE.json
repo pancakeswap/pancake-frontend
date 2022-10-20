@@ -1403,9 +1403,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Om du bedriver handel via den gamla adressen kan det leda till att samtliga av dina tillgångar går förlorade. För mer information, se",
   "Safemoon's announcement": "Safemoons tillkännagivande",
   "Newest Collections": "Nyaste samlingarna",
-  "Your average per hour": "Ditt genomsnitt per timme",
-  "CAKE per hour: %amount%": "CAKE-tokens per timme: %amount%",
-  "per hour: ~$%amount%": "per timme: ~%amount% dollar",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM har bytt namn till ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Fortsätt till ITAM-bryggan för att genomföra en engångsväxling av dina ITAM-tokens.",
   "All transfers of the old ITAM token will be disabled after the swap.": "Alla överföringar av gamla ITAM-tokens inaktiveras efter växlingen.",
@@ -1999,5 +1996,6 @@
   "Withdrawable on %date%": "Uttagbart den %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "En liten mängd %nativeToken% krävs för första installationen av kedjeöverskridande CAKE-farmande.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "För säkerhets skull kommer det att ta cirka 30 minuter att bekräfta transaktioner över kedjan.",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Användning av stödberättigad NFT för inträde. Ta inte bort eller ändra din profilavatar innan du gör anspråk på att delta."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Användning av stödberättigad NFT för inträde. Ta inte bort eller ändra din profilavatar innan du gör anspråk på att delta.",
+  "Hourly Average": "Hourly Average"
 }
