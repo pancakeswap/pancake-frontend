@@ -44,7 +44,6 @@ export const usePollFarmsWithUserData = () => {
   useSWRImmutable(
     chainId ? ['publicFarmData', chainId] : null,
     async () => {
-      await dispatch(fetchInitialFarmsData({ chainId }))
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId, flag: farmFlag }))
@@ -61,7 +60,6 @@ export const usePollFarmsWithUserData = () => {
   useSWRImmutable(
     account && chainId && !isProxyContractLoading ? name : null,
     async () => {
-      await dispatch(fetchInitialFarmsData({ chainId }))
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }

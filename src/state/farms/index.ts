@@ -122,7 +122,8 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
   }
 >(
   'farms/fetchFarmsPublicDataAsync',
-  async ({ pids, chainId, flag = 'pkg' }) => {
+  async ({ pids, chainId, flag = 'pkg' }, { dispatch }) => {
+    await dispatch(fetchInitialFarmsData({ chainId }))
     const chain = chains.find((c) => c.id === chainId)
     if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
     try {
@@ -244,6 +245,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
 >(
   'farms/fetchFarmUserDataAsync',
   async ({ account, pids, proxyAddress, chainId }, config) => {
+    await config.dispatch(fetchInitialFarmsData({ chainId }))
     const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
     const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
