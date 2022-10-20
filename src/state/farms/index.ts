@@ -80,27 +80,37 @@ const farmApiFetch = (chainId: number) => fetch(`${FARM_API}/${chainId}`).then((
 
 const initialState: SerializedFarmsState = {
   data: [],
+  chainId: null,
   loadArchivedFarmsData: false,
   userDataLoaded: false,
   loadingKeys: {},
 }
 
 // Async thunks
-export const fetchInitialFarmsData = createAsyncThunk<SerializedFarm[], { chainId: number }>(
-  'farms/fetchInitialFarmsData',
-  async ({ chainId }) => {
+export const fetchInitialFarmsData = createAsyncThunk<
+  { data: SerializedFarm[]; chainId: number },
+  { chainId: number },
+  {
+    state: AppState
+  }
+>('farms/fetchInitialFarmsData', async ({ chainId }, { rejectWithValue, getState }) => {
+  if (getState().farms.chainId !== chainId) {
     const farmDataList = await getFarmConfig(chainId)
-    return farmDataList.map((farm) => ({
-      ...farm,
-      userData: {
-        allowance: '0',
-        tokenBalance: '0',
-        stakedBalance: '0',
-        earnings: '0',
-      },
-    }))
-  },
-)
+    return {
+      data: farmDataList.map((farm) => ({
+        ...farm,
+        userData: {
+          allowance: '0',
+          tokenBalance: '0',
+          stakedBalance: '0',
+          earnings: '0',
+        },
+      })),
+      chainId,
+    }
+  }
+  return rejectWithValue('Already Initialized')
+})
 
 let fallback = false
 
@@ -302,8 +312,9 @@ export const farmsSlice = createSlice({
     })
     // Init farm data
     builder.addCase(fetchInitialFarmsData.fulfilled, (state, action) => {
-      const farmData = action.payload
-      state.data = farmData
+      const { data, chainId } = action.payload
+      state.data = data
+      state.chainId = chainId
     })
 
     // Update farms with live data
