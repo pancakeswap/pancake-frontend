@@ -74,6 +74,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     href: '/ifo',
     icon: MoreIcon,
     hideSubNav: true,
+    disabled: true,
     items: [
       {
         label: t('IFO'),
