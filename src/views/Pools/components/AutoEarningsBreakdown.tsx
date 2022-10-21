@@ -1,4 +1,4 @@
-import { Text } from '@pancakeswap/uikit'
+import { Text, Box } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { differenceInHours } from 'date-fns'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -11,8 +11,10 @@ interface AutoEarningsBreakdownProps {
 }
 
 const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakdownProps>> = ({ pool, account }) => {
-  const { t } = useTranslation()
-
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const { earningTokenPrice } = pool
   const { pricePerFullShare, userData } = useVaultPoolByKey(pool.vaultKey)
   const { autoCakeToDisplay, autoUsdToDisplay } = getCakeVaultEarnings(
@@ -35,19 +37,27 @@ const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakd
 
   return (
     <>
-      <Text bold>
-        {autoCakeToDisplay.toFixed(3)}
-        {' CAKE'}
-      </Text>
-      <Text bold>~${autoUsdToDisplay.toFixed(2)}</Text>
       <Text>{t('Earned since your last action')}:</Text>
-      <Text>{new Date(lastActionInMs).toLocaleString()}</Text>
+      <Text bold>
+        {new Date(lastActionInMs).toLocaleString(locale, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+        })}
+      </Text>
       {hourDiffSinceLastAction ? (
-        <>
-          <Text>{t('Your average per hour')}:</Text>
-          <Text bold>{t('CAKE per hour: %amount%', { amount: earnedCakePerHour.toFixed(2) })}</Text>
-          <Text bold>{t('per hour: ~$%amount%', { amount: earnedUsdPerHour.toFixed(2) })}</Text>
-        </>
+        <Box mt="12px">
+          <Text>{t('Hourly Average')}:</Text>
+          <Text bold>
+            {earnedCakePerHour < 0.01 ? '<0.01' : earnedCakePerHour.toFixed(2)} CAKE
+            <Text display="inline-block" ml="5px">
+              ({earnedUsdPerHour < 0.01 ? '<0.01' : `~${earnedUsdPerHour.toFixed(2)}`} USD)
+            </Text>
+          </Text>
+        </Box>
       ) : null}
     </>
   )

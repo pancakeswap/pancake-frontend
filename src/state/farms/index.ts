@@ -80,17 +80,23 @@ const farmApiFetch = (chainId: number) => fetch(`${FARM_API}/${chainId}`).then((
 
 const initialState: SerializedFarmsState = {
   data: [],
+  chainId: null,
   loadArchivedFarmsData: false,
   userDataLoaded: false,
   loadingKeys: {},
 }
 
 // Async thunks
-export const fetchInitialFarmsData = createAsyncThunk<SerializedFarm[], { chainId: number }>(
-  'farms/fetchInitialFarmsData',
-  async ({ chainId }) => {
-    const farmDataList = await getFarmConfig(chainId)
-    return farmDataList.map((farm) => ({
+export const fetchInitialFarmsData = createAsyncThunk<
+  { data: SerializedFarm[]; chainId: number },
+  { chainId: number },
+  {
+    state: AppState
+  }
+>('farms/fetchInitialFarmsData', async ({ chainId }) => {
+  const farmDataList = await getFarmConfig(chainId)
+  return {
+    data: farmDataList.map((farm) => ({
       ...farm,
       userData: {
         allowance: '0',
@@ -98,9 +104,10 @@ export const fetchInitialFarmsData = createAsyncThunk<SerializedFarm[], { chainI
         stakedBalance: '0',
         earnings: '0',
       },
-    }))
-  },
-)
+    })),
+    chainId,
+  }
+})
 
 let fallback = false
 
@@ -112,7 +119,11 @@ export const fetchFarmsPublicDataAsync = createAsyncThunk<
   }
 >(
   'farms/fetchFarmsPublicDataAsync',
-  async ({ pids, chainId, flag = 'pkg' }) => {
+  async ({ pids, chainId, flag = 'pkg' }, { dispatch, getState }) => {
+    const state = getState()
+    if (state.farms.chainId !== chainId) {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+    }
     const chain = chains.find((c) => c.id === chainId)
     if (!chain || !farmFetcher.isChainSupported(chain.id)) throw new Error('chain not supported')
     try {
@@ -233,8 +244,12 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
   }
 >(
   'farms/fetchFarmUserDataAsync',
-  async ({ account, pids, proxyAddress, chainId }, config) => {
-    const poolLength = config.getState().farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
+  async ({ account, pids, proxyAddress, chainId }, { dispatch, getState }) => {
+    const state = getState()
+    if (state.farms.chainId !== chainId) {
+      await dispatch(fetchInitialFarmsData({ chainId }))
+    }
+    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
     const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,
@@ -302,8 +317,9 @@ export const farmsSlice = createSlice({
     })
     // Init farm data
     builder.addCase(fetchInitialFarmsData.fulfilled, (state, action) => {
-      const farmData = action.payload
-      state.data = farmData
+      const { data, chainId } = action.payload
+      state.data = data
+      state.chainId = chainId
     })
 
     // Update farms with live data

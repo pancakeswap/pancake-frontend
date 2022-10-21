@@ -164,11 +164,10 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
     .plus(poolCharacteristic.raisingAmountPool)
     .div(poolCharacteristic.offeringAmountPool)
     .div(poolCharacteristic.raisingAmountPool.div(poolCharacteristic.offeringAmountPool))
-  const pricePerTokenWithFee = `~$${formatNumber(
-    pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber(),
-    0,
-    2,
-  )}`
+  const pricePerTokenWithFeeNumber = pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber()
+  const maxPrecision = ifo.tokenOfferingPrice < 1 ? 4 : 2
+
+  const pricePerTokenWithFee = `~$${formatNumber(pricePerTokenWithFeeNumber, 0, maxPrecision)}`
   const raisingTokenToBurn =
     ifo[poolId].cakeToBurn ||
     (sumTaxesOverflowInUSD.gt(0) &&

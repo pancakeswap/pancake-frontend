@@ -23,9 +23,10 @@ import {
   fetchCakeFlexibleSideVaultUserData,
   fetchCakeFlexibleSideVaultFees,
   fetchCakePoolUserDataAsync,
+  fetchCakePoolPublicDataAsync,
 } from '.'
 import { DeserializedPool, VaultKey } from '../types'
-import { fetchFarmsPublicDataAsync, fetchInitialFarmsData } from '../farms'
+import { fetchFarmsPublicDataAsync } from '../farms'
 import {
   makePoolWithUserDataLoadingSelector,
   makeVaultPoolByKey,
@@ -51,18 +52,22 @@ const getActiveFarms = async (chainId: number) => {
     .map((farm) => farm.pid)
 }
 
+const getCakePriceFarms = async (chainId: number) => {
+  const farmsConfig = await getFarmConfig(chainId)
+  return farmsConfig
+    .filter(
+      ({ token, pid, quoteToken }) =>
+        pid !== 0 &&
+        ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
+          (token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB')),
+    )
+    .map((farm) => farm.pid)
+}
+
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
-
-  const { data: farmDataInitialized } = useSWRImmutable(
-    chainId ? ['initialPublicFarmData', chainId] : null,
-    async () => {
-      await dispatch(fetchInitialFarmsData({ chainId }))
-      return true
-    },
-  )
 
   useSlowRefreshEffect(
     (currentBlock) => {
@@ -76,11 +81,9 @@ export const useFetchPublicPoolsData = () => {
         })
       }
 
-      if (farmDataInitialized) {
-        fetchPoolsDataWithFarms()
-      }
+      fetchPoolsDataWithFarms()
     },
-    [dispatch, chainId, farmFlag, farmDataInitialized],
+    [dispatch, chainId, farmFlag],
   )
 }
 
@@ -144,13 +147,17 @@ export const useCakeVaultPublicData = () => {
 }
 
 export const useFetchIfo = () => {
-  const { account } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
+  const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useSWRImmutable(
     'fetchIfoPublicData',
     async () => {
+      const cakePriceFarms = await getCakePriceFarms(chainId)
+      await dispatch(fetchFarmsPublicDataAsync({ pids: cakePriceFarms, chainId, flag: farmFlag }))
       batch(() => {
+        dispatch(fetchCakePoolPublicDataAsync())
         dispatch(fetchCakeVaultPublicData())
         dispatch(fetchIfoPublicDataAsync())
       })
