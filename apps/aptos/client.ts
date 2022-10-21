@@ -32,7 +32,9 @@ export const client = createClient({
       const foundChain = defaultChains.find((c) => c.network === networkNameLowerCase)
       if (foundChain) {
         if (foundChain.nodeUrls.nodeReal && nodeReal[networkNameLowerCase]) {
-          return new AptosClient(`${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}`)
+          return new AptosClient(`${foundChain.nodeUrls.nodeReal}/${nodeReal[networkNameLowerCase]}`, {
+            WITH_CREDENTIALS: false,
+          })
         }
         return new AptosClient(foundChain.nodeUrls.default)
       }
