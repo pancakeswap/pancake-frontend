@@ -42,11 +42,6 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
       mb="16px"
       action={
         <Container mt={!isDesktopView && '8px'} ml="10px">
-          <ConvertToFlexibleButton
-            mb={!isDesktopView && '8px'}
-            minWidth={isDesktopView && '200px'}
-            mr={isDesktopView && '14px'}
-          />
           <ExtendButton
             modalTitle={t('Renew')}
             lockEndTime="0"
@@ -54,9 +49,13 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
             stakingToken={stakingToken}
             currentLockedAmount={currentLockedAmount}
             minWidth="186px"
+            variant="primary"
+            mr={isDesktopView && '14px'}
+            mb={!isDesktopView && '8px'}
           >
             {t('Renew')}
           </ExtendButton>
+          <ConvertToFlexibleButton minWidth={isDesktopView && '200px'} />
         </Container>
       }
       actionInline={isDesktopView}
