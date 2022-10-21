@@ -17,7 +17,7 @@ export const useRefreshBlockNumber = () => {
   useEffect(() => {
     if (!isLoading) return
 
-    mutate(['blockNumber', chainId])
+    mutate(['blockNumberFetcher', chainId])
 
     // setTimeout is used to demonstrate the loading
     // because the real loading state occurs on multicall state
