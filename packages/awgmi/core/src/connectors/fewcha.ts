@@ -16,7 +16,7 @@ function methodWrapper(promiseFn: any) {
 
     if (status === 200) return data
 
-    throw new Error(`Fewcha ${method} method: ${data}`)
+    throw new Error(`Fewcha ${method} method: ${data?.message || data}`)
   }
 }
 
