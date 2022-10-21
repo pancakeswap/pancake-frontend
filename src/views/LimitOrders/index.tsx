@@ -125,6 +125,7 @@ const LimitOrders = () => {
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances.input)
+  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts.input?.equalTo(maxAmountInput))
 
   // Trade execution price is always "in MUL mode", even if UI handles DIV rate
   const currentMarketRate = trade?.executionPrice
@@ -362,7 +363,7 @@ const LimitOrders = () => {
                       label={independentField === Field.OUTPUT ? t('From (estimated)') : t('From')}
                       value={formattedAmounts.input}
                       showQuickInputButton
-                      showMaxButton
+                      showMaxButton={!atMaxAmountInput}
                       currency={currencies.input}
                       onUserInput={handleTypeInput}
                       onPercentInput={handlePercentInput}
