@@ -1,7 +1,5 @@
 import { Currency, CurrencyAmount, Percent, Token } from '@pancakeswap/sdk'
 
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/burn/actions'
 import { useTokenBalances } from 'state/wallet/hooks'
@@ -10,6 +8,7 @@ import { StablePair, useStablePair } from 'views/AddLiquidity/AddStableLiquidity
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import useSWR from 'swr'
 import { useContext } from 'react'
+import { useWeb3React } from '@pancakeswap/wagmi'
 
 export function useGetRemovedTokenAmounts({ lpAmount }) {
   const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)
@@ -43,7 +42,7 @@ export function useStableDerivedBurnInfo(
   error?: string
   tokenToReceive?: string
 } {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const { independentField, typedValue } = useBurnState()
 

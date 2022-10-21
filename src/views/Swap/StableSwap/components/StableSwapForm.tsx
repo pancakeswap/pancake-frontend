@@ -14,7 +14,6 @@ import {
 } from '@pancakeswap/uikit'
 import InfoTooltip from '@pancakeswap/uikit/src/components/Timeline/InfoTooltip'
 
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
@@ -35,6 +34,7 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
 import TradePrice from 'views/Swap/components/TradePrice'
 
+import { useWeb3React } from '@pancakeswap/wagmi'
 import CurrencyInputHeader from '../../components/CurrencyInputHeader'
 import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
 import { Wrapper } from '../../components/styleds'
@@ -76,7 +76,7 @@ interface StableSwapForm {
 export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }) {
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()

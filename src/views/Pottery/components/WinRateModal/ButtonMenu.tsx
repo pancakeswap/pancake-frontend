@@ -1,8 +1,8 @@
 import BigNumber from 'bignumber.js'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Flex, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import { getBalanceNumber } from 'utils/formatBalance'
+import { useWeb3React } from '@pancakeswap/wagmi'
 
 interface ButtonMenuProps {
   cakePrice: BigNumber
@@ -16,7 +16,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
   setPrincipalFromUSDValue,
 }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
