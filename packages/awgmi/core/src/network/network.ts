@@ -22,7 +22,12 @@ export function getNetwork(): GetNetworkResult {
   }
 
   return {
-    chain: networkName ? activeChain : undefined,
+    chain: networkName
+      ? {
+          ...activeChain,
+          unsupported: client.connector?.isChainUnsupported(networkName),
+        }
+      : undefined,
     chains: activeChains,
   } as const
 }

@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
-import { ChainNotConfiguredError, ConnectorNotFoundError } from '../errors'
+import { ConnectorNotFoundError } from '../errors'
 import { Address } from '../types'
 import { Connector } from './base'
 import { SignMessagePayload, SignMessageResponse } from './types'
@@ -85,9 +85,8 @@ export class PontemConnector extends Connector<Window['pontem']> {
     if (!provider) throw new ConnectorNotFoundError()
     const providerNetwork = await provider.network()
     const chain = this.chains.find((c) => c.id === parseInt(providerNetwork.chainId, 10))
-    if (!chain) throw new ChainNotConfiguredError()
 
-    return chain.network
+    return chain?.network ?? ''
   }
 
   async disconnect() {

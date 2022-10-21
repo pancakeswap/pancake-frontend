@@ -15,18 +15,19 @@ import {
   WarningIcon,
 } from '@pancakeswap/uikit'
 import { LOW_APT } from 'config'
+import { useActiveNetwork } from 'hooks/useNetwork'
 import { useEffect, useState } from 'react'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAuth } from '../../hooks/useAuth'
 import { ConnectWalletButton } from '../ConnectWalletButton'
 import WalletModal, { WalletView } from './WalletModal'
 
-const isWrongNetwork = false
 const UserMenu = () => {
   const { t } = useTranslation()
   const { account } = useAccount()
   const { logout } = useAuth()
   const isMounted = useIsMounted()
+  const { isWrongNetwork } = useActiveNetwork()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const [userMenuText, setUserMenuText] = useState<string>('')
@@ -46,14 +47,6 @@ const UserMenu = () => {
       setUserMenuVariable('default')
     }
   }, [hasPendingTransactions, pendingNumber, t])
-
-  // const onClickWalletMenu = (): void => {
-  //   if (isWrongNetwork) {
-  //     onPresentWrongNetworkModal()
-  //   } else {
-  //     onPresentWalletModal()
-  //   }
-  // }
 
   const UserMenuItems = () => {
     return (

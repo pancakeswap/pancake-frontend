@@ -1,14 +1,10 @@
-import { chains, defaultChain } from 'config/chains'
-import { useNetwork } from '@pancakeswap/awgmi'
-import { atom, useAtom, useAtomValue } from 'jotai'
-import { useRouter } from 'next/router'
-import { isChainSupported } from 'utils'
-import { useMemo } from 'react'
+import { useAccount, useNetwork } from '@pancakeswap/awgmi'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
-
-const sessionNetworkAtom = atom<string>('')
-
-export const useSessionNetwork = () => useAtom(sessionNetworkAtom)
+import { chains, defaultChain } from 'config/chains'
+import { atom, useAtomValue } from 'jotai'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { isChainSupported } from 'utils'
 
 const queryNetworkAtom = atom('')
 
@@ -23,11 +19,10 @@ queryNetworkAtom.onMount = (set) => {
 }
 
 function useLocalNetwork() {
-  const [sessionNetwork] = useSessionNetwork()
   const queryNetwork = useAtomValue(queryNetworkAtom)
   const { query } = useRouter()
 
-  const network = sessionNetwork || query.network || queryNetwork
+  const network = query.network || queryNetwork
 
   if (typeof network === 'string' && isChainSupported(network)) {
     return network
@@ -39,7 +34,9 @@ function useLocalNetwork() {
 export function useActiveNetwork() {
   const localNetworkName = useLocalNetwork()
   const { chain } = useNetwork()
+  const { isConnected } = useAccount()
   const queryNetwork = useAtomValue(queryNetworkAtom)
+  const isWrongNetwork = (isConnected && !chain) || chain?.unsupported
 
   // until wallet support switch network, we follow wallet chain instead of routing
   return useMemo(() => {
@@ -51,12 +48,13 @@ export function useActiveNetwork() {
       }
     }
 
-    networkName = chain?.name ?? localNetworkName
+    networkName = chain?.network ?? localNetworkName
 
     return {
       networkName,
+      isWrongNetwork,
     }
-  }, [queryNetwork, chain?.name, localNetworkName])
+  }, [queryNetwork, chain?.network, localNetworkName, isWrongNetwork])
 }
 
 export function useActiveChainId() {

@@ -62,7 +62,7 @@ export abstract class Connector<Provider = any, Options = any> extends EventEmit
 
   abstract isConnected(): Promise<boolean>
 
-  protected isChainUnsupported(networkName: string) {
+  isChainUnsupported(networkName: string) {
     return !this.chains.some((x) => equalsIgnoreCase(x.name, networkName))
   }
 }

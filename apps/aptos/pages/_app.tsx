@@ -14,6 +14,7 @@ import { Fragment } from 'react'
 import { useStore } from 'state'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
+import { WrongNetworkModal } from 'components/WrongNetworkModal'
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */
@@ -96,6 +97,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
           <Component {...pageProps} />
         </Layout>
       </ShowMenu>
+      <WrongNetworkModal />
       <ToastListener />
     </>
   )
