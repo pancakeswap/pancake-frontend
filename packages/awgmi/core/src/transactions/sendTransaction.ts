@@ -3,7 +3,7 @@ import { Types } from 'aptos'
 import { getAccount } from '../accounts/account'
 import { ChainMismatchError, ConnectorNotFoundError, ProviderRpcError, UserRejectedRequestError } from '../errors'
 import { getNetwork } from '../network/network'
-import { getProvider } from '../provider'
+import { getProvider } from '../providers'
 import { TransactionResponse } from './types'
 
 export type SendTransactionArgs = {

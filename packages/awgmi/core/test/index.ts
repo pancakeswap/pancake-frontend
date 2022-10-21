@@ -2,7 +2,7 @@ import { AptosAccount, AptosClient } from 'aptos'
 import { devnet } from '../src/chain'
 import { ClientConfig, createClient } from '../src/client'
 import { MockConnector } from '../src/connectors/mock'
-import { getDefaultProviders } from '../src/provider'
+import { getDefaultProviders } from '../src/providers'
 
 // default generated account for testing
 const accounts = [

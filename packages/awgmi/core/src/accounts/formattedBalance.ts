@@ -2,7 +2,7 @@ import { formatUnits } from '@ethersproject/units'
 import { fetchCoin } from '../coins/coin'
 import { CoinStoreResult, wrapCoinStoreTypeTag } from '../coins/coinStore'
 import { APTOS_COIN } from '../constants'
-import { getProvider } from '../provider'
+import { getProvider } from '../providers'
 
 export type FetchFormattedBalanceArgs = {
   /** Address */

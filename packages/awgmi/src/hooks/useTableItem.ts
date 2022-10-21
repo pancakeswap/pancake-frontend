@@ -7,6 +7,7 @@ import { useNetwork } from './useNetwork'
 import { useQuery } from './utils/useQuery'
 
 export type FetchTableItemArgs = {
+  networkName?: string
   handle: string
   data: {
     key: Types.TableItemRequest['key']
@@ -37,6 +38,7 @@ export function useTableItem<TData = unknown>({
   cacheTime,
   keepPreviousData,
   enabled = true,
+  networkName: networkName_,
   staleTime,
   suspense,
   onError,
@@ -48,7 +50,7 @@ export function useTableItem<TData = unknown>({
 }: Partial<FetchTableItemArgs> & UseTableItemConfig<TData>) {
   const { chain } = useNetwork()
 
-  return useQuery(queryKey({ networkName: chain?.network, handle, data: data_ }), queryFn, {
+  return useQuery(queryKey({ networkName: networkName_ ?? chain?.network, handle, data: data_ }), queryFn, {
     cacheTime,
     enabled: enabled && !!handle && !!data_,
     staleTime,

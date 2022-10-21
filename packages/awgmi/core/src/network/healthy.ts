@@ -1,4 +1,4 @@
-import { getProvider } from '../provider'
+import { getProvider } from '../providers'
 
 export type FetchHealthyArgs = {
   networkName?: string

@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
-import { ConnectorTransactionResponse } from '../connectors'
+import { ConnectorTransactionResponse } from '../connectors/index'
 
 export const isUserTransaction = (tx: Types.Transaction): tx is Types.Transaction_UserTransaction =>
   tx.type === 'user_transaction'
