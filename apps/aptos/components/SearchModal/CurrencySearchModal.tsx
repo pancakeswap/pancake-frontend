@@ -61,7 +61,7 @@ export default function CurrencySearchModal({
   onCurrencySelect,
   selectedCurrency,
   otherSelectedCurrency,
-  showCommonBases = true,
+  showCommonBases = false,
   commonBasesType,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
