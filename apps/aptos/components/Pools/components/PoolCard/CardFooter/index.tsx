@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Farm as FarmUI } from '@pancakeswap/uikit'
 import { Pool } from 'state/pools/types'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const { CompoundingPoolTag, ManualPoolTag } = FarmUI.Tags
 
@@ -30,7 +29,6 @@ const ExpandedWrapper = styled(Flex)`
 
 const Footer: React.FC<React.PropsWithChildren<FooterProps>> = ({ pool, defaultExpanded, children }) => {
   const { vaultKey } = pool
-  const { account } = useActiveWeb3React()
   const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(defaultExpanded || false)
 

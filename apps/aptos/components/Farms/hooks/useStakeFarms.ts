@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-const useStakeFarms = (pid: number) => {
-  const handleStake = useCallback(async (amount: string) => {
+const useStakeFarms = (_pid: number) => {
+  const handleStake = useCallback(async (_amount: string) => {
     return null
   }, [])
 

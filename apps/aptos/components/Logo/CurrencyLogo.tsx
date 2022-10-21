@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { WrappedCoinInfo } from 'utils/WrappedCoinInfo'
 import Logo from './Logo'
 
-const getTokenLogoURL = (token?: Token) => null
+const getTokenLogoURL = (_token?: Token) => null
 
 const StyledLogo = styled(Logo)<{ size: string }>`
   width: ${({ size }) => size};

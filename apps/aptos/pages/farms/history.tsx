@@ -3,7 +3,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { FarmsPageLayout, FarmsContext } from 'components/Farms/components/index'
 import BigNumber from 'bignumber.js'
 import FarmCard from 'components/Farms/components/FarmCard/FarmCard'
-import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
+// import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
 // import { usePriceCakeBusd } from 'state/farms/hooks'
 
 const FarmsHistoryPage = () => {

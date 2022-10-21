@@ -12,9 +12,9 @@ interface AprRowProps {
 
 const AprRow: React.FC<React.PropsWithChildren<AprRowProps>> = ({
   pool,
-  stakedBalance,
-  performanceFee = 0,
-  showIcon = true,
+  // stakedBalance,
+  // performanceFee = 0,
+  // showIcon = true,
 }) => {
   const { t } = useTranslation()
   const { vaultKey } = pool

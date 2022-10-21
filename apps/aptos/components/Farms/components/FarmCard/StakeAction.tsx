@@ -1,8 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
+import {
+  AddIcon,
+  Button,
+  Flex,
+  IconButton,
+  MinusIcon,
+  useModal,
+  // useToast,
+  // Farm as FarmUI
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+// import useActiveWeb3React from 'hooks/useActiveWeb3React'
 // import { useLpTokenPrice, usePriceCakeBusd } from 'state/farms/hooks'
 // import { FarmWithStakedValue } from '../types'
 
@@ -23,57 +32,60 @@ const IconButtonWrapper = styled.div`
 // }
 
 const StakeAction: React.FC<React.PropsWithChildren<any>> = ({
-  pid,
-  quoteToken,
-  token,
-  lpSymbol,
-  multiplier,
-  apr,
-  displayApr,
-  addLiquidityUrl,
-  lpLabel,
-  lpTokenPrice,
-  lpTotalSupply,
-  tokenAmountTotal,
-  quoteTokenAmountTotal,
+  // pid,
+  // quoteToken,
+  // token,
+  // lpSymbol,
+  // multiplier,
+  // apr,
+  // displayApr,
+  // addLiquidityUrl,
+  // lpLabel,
+  // lpTokenPrice,
+  // lpTotalSupply,
+  // tokenAmountTotal,
+  // quoteTokenAmountTotal,
   userData,
-  onStake,
-  onUnstake,
-  onDone,
+  // onStake,
+  // onUnstake,
+  // onDone,
 }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
-  const { tokenBalance, stakedBalance } = userData
+  // const { account } = useActiveWeb3React()
+  const {
+    // tokenBalance,
+    stakedBalance,
+  } = userData
   // const cakePrice = usePriceCakeBusd()
   const router = useRouter()
   // const lpPrice = useLpTokenPrice(lpSymbol)
-  const { toastSuccess } = useToast()
+  // const { toastSuccess } = useToast()
 
-  const handleStake = async (amount: string) => {
-    // const receipt = await fetchWithCatchTxError(() => onStake(amount))
-    // if (receipt?.status) {
-    //   toastSuccess(
-    //     `${t('Staked')}!`,
-    //     <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-    //       {t('Your funds have been staked in the farm')}
-    //     </ToastDescriptionWithTx>,
-    //   )
-    //   onDone()
-    // }
-  }
+  // const handleStake = async (amount: string) => {
+  // const receipt = await fetchWithCatchTxError(() => onStake(amount))
+  // if (receipt?.status) {
+  //   toastSuccess(
+  //     `${t('Staked')}!`,
+  //     <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+  //       {t('Your funds have been staked in the farm')}
+  //     </ToastDescriptionWithTx>,
+  //   )
+  //   onDone()
+  // }
+  // }
 
-  const handleUnstake = async (amount: string) => {
-    // const receipt = await fetchWithCatchTxError(() => onUnstake(amount))
-    // if (receipt?.status) {
-    //   toastSuccess(
-    //     `${t('Unstaked')}!`,
-    //     <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-    //       {t('Your earnings have also been harvested to your wallet')}
-    //     </ToastDescriptionWithTx>,
-    //   )
-    //   onDone()
-    // }
-  }
+  // const handleUnstake = async (amount: string) => {
+  // const receipt = await fetchWithCatchTxError(() => onUnstake(amount))
+  // if (receipt?.status) {
+  //   toastSuccess(
+  //     `${t('Unstaked')}!`,
+  //     <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+  //       {t('Your earnings have also been harvested to your wallet')}
+  //     </ToastDescriptionWithTx>,
+  //   )
+  //   onDone()
+  // }
+  // }
 
   const [onPresentDeposit] = useModal(
     // <FarmUI.DepositModal

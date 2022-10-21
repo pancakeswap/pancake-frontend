@@ -42,7 +42,10 @@ export default function SwapModalFooter({
 }) {
   const { t } = useTranslation()
 
-  const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const {
+    priceImpactWithoutFee,
+    // realizedLPFee
+  } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 
   // const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`

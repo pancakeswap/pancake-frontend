@@ -1,9 +1,7 @@
 import { ModalProvider, light, dark, UIKitProvider } from '@pancakeswap/uikit'
-import { Provider } from 'react-redux'
 import { SWRConfig } from 'swr'
 import { LanguageProvider } from '@pancakeswap/localization'
 import { AwgmiConfig } from '@pancakeswap/awgmi'
-import { Store } from '@reduxjs/toolkit'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import { client } from '../client'
 
@@ -16,23 +14,18 @@ const StyledUIKitProvider: React.FC<React.PropsWithChildren> = ({ children, ...p
   )
 }
 
-const Providers: React.FC<React.PropsWithChildren<{ store: Store; children: React.ReactNode }>> = ({
-  children,
-  store,
-}) => {
+const Providers: React.FC<React.PropsWithChildren<{ children: React.ReactNode }>> = ({ children }) => {
   return (
     <AwgmiConfig client={client}>
-      <Provider store={store}>
-        <NextThemeProvider>
-          <StyledUIKitProvider>
-            <LanguageProvider>
-              <SWRConfig>
-                <ModalProvider>{children}</ModalProvider>
-              </SWRConfig>
-            </LanguageProvider>
-          </StyledUIKitProvider>
-        </NextThemeProvider>
-      </Provider>
+      <NextThemeProvider>
+        <StyledUIKitProvider>
+          <LanguageProvider>
+            <SWRConfig>
+              <ModalProvider>{children}</ModalProvider>
+            </SWRConfig>
+          </LanguageProvider>
+        </StyledUIKitProvider>
+      </NextThemeProvider>
     </AwgmiConfig>
   )
 }

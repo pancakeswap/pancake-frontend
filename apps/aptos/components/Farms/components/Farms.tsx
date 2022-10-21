@@ -1,7 +1,14 @@
-import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
+import {
+  // useEffect,
+  // useCallback,
+  useState,
+  useMemo,
+  // useRef,
+  createContext,
+} from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from '@pancakeswap/localization'
-import BigNumber from 'bignumber.js'
+// import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
@@ -22,10 +29,10 @@ import {
   Farm as FarmUI,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import orderBy from 'lodash/orderBy'
+// import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
-import ToggleView from 'components/ToggleView/ToggleView'
-import { useFarmViewMode } from 'state/user'
+// import ToggleView from 'components/ToggleView/ToggleView'
+// import { useFarmViewMode } from 'state/user'
 
 // import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 // import { useCakeVaultUserData } from 'state/pools/hooks'
@@ -132,12 +139,15 @@ const StyledImage = styled(Image)`
   margin-top: 58px;
 `
 
-const NUMBER_OF_FARMS_VISIBLE = 12
+// const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const isMounted = useIsMounted()
-  const { pathname, query: urlQuery } = useRouter()
+  const {
+    // pathname,
+    query: urlQuery,
+  } = useRouter()
   const userDataLoaded = false // TODO: Aptos Farms
   const stakedOnly = false // TODO: Aptos Farms
   // const [viewMode, setViewMode] = useFarmViewMode()
@@ -146,16 +156,20 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
-  const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
+  // const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
 
   const { account } = useAccount()
-  const [sortOption, setSortOption] = useState('hot')
+  const [
+    ,
+    // sortOption
+    setSortOption,
+  ] = useState('hot')
   // const { observerRef, isIntersecting } = useIntersectionObserver()
-  const chosenFarmsLength = useRef(0)
+  // const chosenFarmsLength = useRef(0)
 
-  const isArchived = pathname.includes('archived')
-  const isInactive = pathname.includes('history')
-  const isActive = !isInactive && !isArchived
+  // const isArchived = pathname.includes('archived')
+  // const isInactive = pathname.includes('history')
+  // const isActive = !isInactive && !isArchived
 
   // useCakeVaultUserData()
 

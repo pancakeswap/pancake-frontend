@@ -1,8 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, TooltipText, useModal, useTooltip, Farm as FarmUI, RoiCalculatorModal } from '@pancakeswap/uikit'
+import {
+  Text,
+  TooltipText,
+  // useModal,
+  useTooltip,
+  Farm as FarmUI,
+  // RoiCalculatorModal
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+// import useActiveWeb3React from 'hooks/useActiveWeb3React'
 // import { useFarmFromPid, useFarmUser, useLpTokenPrice } from 'state/farms/hooks'
 
 export interface ApyButtonProps {
@@ -22,20 +29,20 @@ export interface ApyButtonProps {
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   variant,
-  pid,
-  lpLabel,
-  lpSymbol,
-  cakePrice,
+  // pid,
+  // lpLabel,
+  // lpSymbol,
+  // cakePrice,
   apr = 0,
-  multiplier,
+  // multiplier,
   displayApr,
   lpRewardsApr,
-  addLiquidityUrl = '',
+  // addLiquidityUrl = '',
   useTooltipText,
   hideButton,
 }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  // const { account } = useActiveWeb3React()
 
   // const lpPrice = useLpTokenPrice(lpSymbol)
   // const { tokenBalance, stakedBalance } = useFarmUser(pid)

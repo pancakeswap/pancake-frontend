@@ -1,7 +1,7 @@
 import multiplyPriceByAmount from '@pancakeswap/utils/multiplyPriceByAmount'
 
 import { Coin, JSBI, Pair, Percent, Price } from '@pancakeswap/aptos-swap-sdk'
-import { memo, useEffect, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { useCurrencyBalance } from 'hooks/Balances'
 import useTotalSupply from 'hooks/useTotalSupply'
 import currencyId from 'utils/currencyId'

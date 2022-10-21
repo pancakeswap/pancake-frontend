@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-const useHarvestFarm = (farmPid: number) => {
+const useHarvestFarm = (_farmPid: number) => {
   const handleHarvest = useCallback(async () => {
     return null
   }, [])

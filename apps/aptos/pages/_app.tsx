@@ -11,7 +11,6 @@ import Script from 'next/script'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
 import { Fragment } from 'react'
-import { useStore } from 'state'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
 import { WrongNetworkModal } from 'components/WrongNetworkModal'
@@ -34,9 +33,7 @@ function GlobalHooks() {
   return null
 }
 
-function MyApp(props: AppProps<{ initialReduxState: any }>) {
-  const { pageProps } = props
-  const store = useStore(pageProps.initialReduxState)
+function MyApp(props: AppProps) {
   return (
     <>
       <Head>
@@ -47,7 +44,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         <meta name="theme-color" content="#1FC7D4" />
       </Head>
       <DefaultSeo {...SEO} />
-      <Providers store={store}>
+      <Providers>
         <GlobalHooks />
         <ResetCSS />
         <Updaters />
