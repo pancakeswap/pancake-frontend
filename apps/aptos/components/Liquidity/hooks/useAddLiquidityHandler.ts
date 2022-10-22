@@ -1,4 +1,4 @@
-import { AptosSwapRouter, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
+import { Router, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 
 import { useCallback, useContext, useMemo, useState } from 'react'
@@ -58,7 +58,7 @@ export default function useAddLiquidityHanlder({
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    const payload = AptosSwapRouter.addLiquidityParameters(
+    const payload = Router.addLiquidityParameters(
       parsedAAmount?.quotient?.toString() ?? '',
       parsedBAmount?.quotient?.toString() ?? '',
       amountsMin?.[Field.CURRENCY_A]?.toString() ?? '',

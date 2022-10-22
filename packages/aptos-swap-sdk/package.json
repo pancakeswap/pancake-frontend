@@ -2,9 +2,10 @@
   "name": "@pancakeswap/aptos-swap-sdk",
   "license": "MIT",
   "version": "0.0.1",
-  "description": "🛠 An SDK for building applications on top of Pancakeswap.",
+  "description": "🛠 An SDK for building applications on top of Pancakeswap Aptos.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "module": "dist/index.mjs",
   "files": [
     "dist"
   ],
@@ -17,11 +18,10 @@
     "pancakeswap",
     "aptos"
   ],
-  "module": "dist/index.mjs",
   "scripts": {
     "lint": "eslint src test",
-    "build": "tsup src/index.ts --format esm,cjs --dts",
-    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "test": "vitest --run",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"

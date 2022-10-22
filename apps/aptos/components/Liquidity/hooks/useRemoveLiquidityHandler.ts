@@ -1,4 +1,4 @@
-import { AptosSwapRouter, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
+import { Router, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
@@ -50,7 +50,7 @@ export default function useRemoveLiquidityHandler({
   )
 
   const onRemove = useCallback(async () => {
-    const payload = AptosSwapRouter.removeLiquidityParameters(
+    const payload = Router.removeLiquidityParameters(
       parsedAmounts[Field.LIQUIDITY]?.quotient?.toString() ?? '',
       amountsMin[Field.CURRENCY_A]?.toString() ?? '',
       amountsMin[Field.CURRENCY_B]?.toString() ?? '',

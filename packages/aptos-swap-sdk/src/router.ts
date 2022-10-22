@@ -19,7 +19,7 @@ export interface TradeOptions {
   allowedSlippage: Percent
 }
 
-export abstract class AptosSwapRouter {
+export abstract class Router {
   public static swapCallParameters(trade: Trade<Currency, Currency, TradeType>, options: TradeOptions) {
     const amountIn = trade.maximumAmountIn(options.allowedSlippage).quotient.toString()
     const amountOut = trade.minimumAmountOut(options.allowedSlippage).quotient.toString()

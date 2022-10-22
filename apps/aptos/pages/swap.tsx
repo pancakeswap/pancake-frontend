@@ -1,5 +1,5 @@
 import {
-  AptosSwapRouter,
+  Router,
   Currency,
   CurrencyAmount,
   JSBI,
@@ -130,7 +130,7 @@ const SwapPage = () => {
   const swapCallback = useMemo(() => {
     if (trade) {
       return async () => {
-        const payload = AptosSwapRouter.swapCallParameters(trade, {
+        const payload = Router.swapCallParameters(trade, {
           allowedSlippage: new Percent(JSBI.BigInt(userAllowedSlippage), BIPS_BASE),
         })
         if (!payload) {
