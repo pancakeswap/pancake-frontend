@@ -2,7 +2,6 @@
 /* eslint-disable no-restricted-syntax */
 import { SNAPSHOT_API } from 'config/constants/endpoints'
 import request, { gql } from 'graphql-request'
-import { getVotingPowerByCakeStrategy } from 'views/Voting/helpers'
 import { Proposal, ProposalState, Vote, VoteWhere } from 'state/types'
 import _chunk from 'lodash/chunk'
 
@@ -59,7 +58,6 @@ export const getProposal = async (id: string): Promise<Proposal> => {
   return response.proposal
 }
 
-const CHUNK_SIZE = 150
 export const getVotes = async (first: number, skip: number, where: VoteWhere): Promise<Vote[]> => {
   const response: { votes: Vote[] } = await request(
     SNAPSHOT_API,
@@ -73,6 +71,7 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
           proposal {
             choices
           }
+          vp
         }
       }
     `,
@@ -81,6 +80,7 @@ export const getVotes = async (first: number, skip: number, where: VoteWhere): P
   return response.votes
 }
 
+// TODO: lazy get all votes when user click load more
 export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Promise<Vote[]> => {
   const voters = await new Promise<Vote[]>((resolve, reject) => {
     let votes: Vote[] = []
@@ -103,26 +103,10 @@ export const getAllVotes = async (proposal: Proposal, votesPerChunk = 30000): Pr
     fetchVoteChunk(0)
   })
 
-  const voterChunk = _chunk(
-    voters.map((v) => v.voter),
-    CHUNK_SIZE,
-  )
-
-  let votingPowers = {}
-
-  const vps = await Promise.all(voterChunk.map((v) => getVotingPowerByCakeStrategy(v, parseInt(proposal.snapshot))))
-
-  for (const vp of vps) {
-    votingPowers = {
-      ...votingPowers,
-      ...vp,
-    }
-  }
-
   return voters.map((v) => ({
     ...v,
     metadata: {
-      votingPower: votingPowers[v.voter] || '0',
+      votingPower: String(v.vp) || '0',
     },
   }))
 }

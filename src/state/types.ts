@@ -533,6 +533,7 @@ export interface Vote {
   metadata?: {
     votingPower: string
   }
+  vp: number
 }
 
 export interface LotteryRoundUserTickets {
