@@ -1998,5 +1998,7 @@
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Se requiere una pequeña cantidad de %nativeToken% para configurar por primera vez el farming de CAKE de cadena cruzada.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Por seguridad, las transacciones entre cadenas tardarán alrededor de 30 minutos en confirmarse.",
   "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Utiliza el NFT apto para la entrada. No elimines ni edites el avatar de tu perfil antes de cobrar.",
-  "Hourly Average": "Hourly Average"
+  "Hourly Average": "Hourly Average",
+  "Get in Touch": "Get in Touch",
+  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!"
 }
