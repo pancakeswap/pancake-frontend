@@ -1998,5 +1998,7 @@
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Egy kisebb mennyiségű %nativeToken% zsetonra van szükség, amikor első alkalommal állítja be a láncközi CAKE-gazdálkodást.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "A biztonság kedvéért a láncközi tranzakciók megerősítése körülbelül 30 percet vesz igénybe.",
   "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Jogosult NFT használata a belépéshez. Ne távolítsa el vagy szerkessze el profil-avatárját mielőtt igényt nyújtana be.",
-  "Hourly Average": "Hourly Average"
+  "Hourly Average": "Hourly Average",
+  "Get in Touch": "Get in Touch",
+  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!"
 }
