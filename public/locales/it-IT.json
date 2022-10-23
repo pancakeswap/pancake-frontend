@@ -67,7 +67,7 @@
   "Farms": "Farm",
   "Pools": "Pool",
   "NFT": "NFT",
-  "This collection has been inactived for a while. Trade at your own risk.": "This collection has been inactived for a while. Trade at your own risk.",
+  "This collection has been inactived for a while. Trade at your own risk.": "Questa raccolta è stata inattiva per un po'. Fai trading a tuo rischio.",
   "Info": "Info",
   "IFO": "IFO",
   "More": "Altro",
@@ -1998,7 +1998,7 @@
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "È necessaria una piccola quantità di %nativeToken% per la prima configurazione della farm CAKE cross-chain.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Per motivi di sicurezza, le transazioni cross-chain impiegheranno circa 30 minuti per essere confermate.",
   "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Utilizzo di NFT idoneo per la partecipazione. Non rimuovere o modificare l'avatar del tuo profilo prima di riscuotere.",
-  "Hourly Average": "Hourly Average",
-  "Get in Touch": "Get in Touch",
-  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!"
+  "Hourly Average": "Media oraria",
+  "Get in Touch": "Mettiti in contatto",
+  "Hello Aptos Project Teams!": "Ciao team del Progetto Aptos!"
 }
