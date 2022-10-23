@@ -7,6 +7,7 @@ import PerpetualBanner from '../PerpetualBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderLotteryBanner from './useIsRenderLotteryBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
+import AptosBanner from '../AptosBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -32,6 +33,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <AptosBanner /> },
       {
         shouldRender: isRenderIFOBanner,
         banner: <IFOBanner />,
