@@ -1,11 +1,11 @@
 import styled from 'styled-components'
 import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex, BoxProps } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from 'utils/formatBalance'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { CurrencyLogo } from '../Logo'
 import { RowBetween, AutoRow } from '../Layout/Row'
 
@@ -59,7 +59,7 @@ export const CurrencySelect = ({
   hideBalance,
   ...props
 }: CurrencySelectProps) => {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const selectedCurrencyBalance = useCurrencyBalance(
     account ?? undefined,

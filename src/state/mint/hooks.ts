@@ -15,7 +15,6 @@ import {
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { FetchStatus } from 'config/constants/types'
 import { useTradeExactIn } from 'hooks/Trades'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useZapContract } from 'hooks/useContract'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { PairState, usePair } from 'hooks/usePairs'
@@ -27,6 +26,7 @@ import { useSelector } from 'react-redux'
 import { useGasPrice } from 'state/user/hooks'
 import { warningSeverity } from 'utils/exchange'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
@@ -77,7 +77,7 @@ export function useDerivedMintInfo(
   error?: string
   addError?: string
 } {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const { t } = useTranslation()
 

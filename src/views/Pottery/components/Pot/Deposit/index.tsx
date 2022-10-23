@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js'
 import { Flex, Box, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { GreyCard } from 'components/Card'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
@@ -15,6 +14,7 @@ import { BIG_ZERO } from 'utils/bigNumber'
 import { PotteryDepositStatus } from 'state/types'
 import { remainTimeToNextFriday, calculateCakeAmount } from 'views/Pottery/helpers'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
 import DepositAction from './DepositAction'
@@ -32,7 +32,7 @@ const CardAction = styled(Flex)`
 
 const Deposit: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { getLockedApy } = useVaultApy()
   const { publicData, userData } = usePotteryData()
   const lastVaultAddress = useLatestVaultAddress()
