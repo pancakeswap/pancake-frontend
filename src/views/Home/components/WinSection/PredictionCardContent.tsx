@@ -75,10 +75,8 @@ const PredictionCardContent = () => {
       <Flex alignItems="center" justifyContent="center">
         <StyledLink to="/prediction" id="homepage-prediction-cta">
           <Button width="100%">
-            <Text bold color="invertedContrast">
-              {t('Play')}
-            </Text>
-            <ArrowForwardIcon ml="4px" color="invertedContrast" />
+            <Text bold>{t('Play')}</Text>
+            <ArrowForwardIcon ml="4px" />
           </Button>
         </StyledLink>
       </Flex>
