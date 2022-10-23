@@ -1998,5 +1998,6 @@
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "For safety, cross-chain transactions will take around 30 minutes to confirm.",
   "no provider found": "no provider found",
   "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.",
-  "Hourly Average": "Hourly Average"
+  "Hourly Average": "Hourly Average",
+  "Please check your wallet app and make sure ’%network%’ is selected.": "Please check your wallet app and make sure ’%network%’ is selected."
 }
