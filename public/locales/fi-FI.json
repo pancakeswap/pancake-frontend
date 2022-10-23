@@ -1998,5 +1998,7 @@
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Pieni määrä %nativeToken%-polettia vaaditaan ketjujen välisen CAKE-viljelyn ensimääritykseen.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Turvallisuussyistä ketjujen välisten transaktioiden vahvistaminen kestää noin 30 minuuttia.",
   "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Kelvollista NFT:tä käytetään merkintään. Älä poista tai muokkaa profiilisi avataria ennen lunastamista.",
-  "Hourly Average": "Hourly Average"
+  "Hourly Average": "Hourly Average",
+  "Get in Touch": "Get in Touch",
+  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!"
 }
