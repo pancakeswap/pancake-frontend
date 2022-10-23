@@ -1998,5 +1998,7 @@
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "크로스체인 CAKE 파밍의 최초 설정에는 소량의 %nativeToken%이(가) 필요합니다.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "안전을 위해 크로스체인 트랜잭션은 확인하는 데 약 30분이 소요됩니다.",
   "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "엔트리에 NFT를 사용합니다. 클레임하기 전에 프로필 아바타를 제거하거나 편집하지 마세요.",
-  "Hourly Average": "Hourly Average"
+  "Hourly Average": "Hourly Average",
+  "Get in Touch": "Get in Touch",
+  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!"
 }
