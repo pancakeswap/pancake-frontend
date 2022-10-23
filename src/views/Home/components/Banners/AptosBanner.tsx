@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, useMatchBreakpoints, Box, OpenNewIcon } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import Image from 'next/image'
 import styled from 'styled-components'
 import { Aptos, AptosXPancakeSwap } from './images'
@@ -54,14 +53,16 @@ const AptosBanner = () => {
             <Image src={AptosXPancakeSwap} alt="aptosXPancakeSwapImage" width={211} height={18} placeholder="blur" />
           </Box>
           <AptosTitle>{t('Hello Aptos Project Teams!')}</AptosTitle>
-          <NextLinkFromReactRouter to="/voting/proposal/0x29913ec3d379014a6137fdfe62c1cf27f7b2c1edff7c6a802d4300251d06d34c">
-            <Button>
-              <Text color="invertedContrast" bold fontSize="16px" mr="4px">
-                👋 {t('Get in Touch')}
-              </Text>
-              <OpenNewIcon color="invertedContrast" />
-            </Button>
-          </NextLinkFromReactRouter>
+
+          <Button
+            height="48px"
+            onClick={() => window?.open('https://docs.pancakeswap.finance/aptos-deployment', '_blank')}
+          >
+            <Text color="invertedContrast" bold fontSize="16px" mr="4px">
+              👋 {t('Get in Touch')}
+            </Text>
+            <OpenNewIcon color="invertedContrast" />
+          </Button>
         </S.LeftWrapper>
         <RightWrapper>
           <Image
