@@ -7,7 +7,7 @@ import { FlexGap } from 'components/Layout/Flex'
 import { useLPApr } from 'state/swap/hooks'
 import { RowBetween } from 'components/Layout/Row'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { usePair } from 'hooks/usePairs'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { AppHeader } from '../../components/App'
@@ -26,7 +26,7 @@ export function ChoosePair({
   onNext?: () => void
 }) {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const isValid = !error
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
   const [, pair] = usePair(currencyA, currencyB)

@@ -2,8 +2,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-
 import { PairState } from 'hooks/usePairs'
 
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -16,6 +14,7 @@ import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
+import { useWeb3React } from '@pancakeswap/wagmi'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -122,7 +121,7 @@ export function useStableLPDerivedMintInfo(
   error?: string
   addError?: string
 } {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const { t } = useTranslation()
 

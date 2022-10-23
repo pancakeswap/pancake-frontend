@@ -7,7 +7,6 @@ import { Field } from 'state/swap/actions'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { TOTAL_FEE, LP_HOLDERS_FEE, TREASURY_FEE, BUYBACK_FEE } from 'config/constants/info'
 import { formatExecutionPrice } from 'utils/exchange'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 
@@ -36,11 +35,6 @@ export default function StableSwapModalFooter({
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-
-  const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
-  const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
-  const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
-  const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   return (
     <>
@@ -87,23 +81,6 @@ export default function StableSwapModalFooter({
                 ? trade.outputAmount.currency.symbol
                 : trade.inputAmount.currency.symbol}
             </Text>
-          </RowFixed>
-        </RowBetween>
-
-        <RowBetween>
-          <RowFixed>
-            <Text fontSize="14px">{t('Liquidity Provider Fee')}</Text>
-            <QuestionHelper
-              text={
-                <>
-                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
-                  <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
-                  <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
-                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
-                </>
-              }
-              ml="4px"
-            />
           </RowFixed>
         </RowBetween>
       </SwapModalFooterContainer>

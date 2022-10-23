@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { usePotteryData } from 'state/pottery/hook'
 import { calculateCakeAmount } from 'views/Pottery/helpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ONE } from 'utils/bigNumber'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import YourDeposit from '../YourDeposit'
 import WalletNotConnected from './WalletNotConnected'
 import AvailableWithdraw from './AvailableWithdraw'
@@ -19,7 +19,7 @@ const Container = styled(Flex)`
 `
 
 const Claim: React.FC<React.PropsWithChildren> = () => {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const { publicData, userData } = usePotteryData()
 
   const allDeposit = userData.withdrawAbleData
