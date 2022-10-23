@@ -7,7 +7,6 @@ import { Field } from 'state/swap/actions'
 import { AutoColumn } from 'components/Layout/Column'
 import QuestionHelper from 'components/QuestionHelper'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { TOTAL_FEE, LP_HOLDERS_FEE, TREASURY_FEE, BUYBACK_FEE } from 'config/constants/info'
 import { formatExecutionPrice } from 'utils/exchange'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 
