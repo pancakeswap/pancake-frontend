@@ -5,7 +5,11 @@ import { Flex, Text, Progress, Tag } from '@pancakeswap/uikit'
 import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { useCurrentBlock } from 'state/block/hooks'
+import useGetPublicIfoV3Data from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import BigNumber from 'bignumber.js'
+import useSWRImmutable from 'swr/immutable'
+import { format } from 'date-fns'
 import Claim from './Claim'
 
 const WhiteCard = styled.div`
@@ -30,15 +34,29 @@ interface InfoProps {
 const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
+  const { vestingStartTime } = data.userVestingData
   const {
     isVestingInitialized,
     vestingComputeReleasableAmount,
     offeringAmountInToken,
     vestingInformationPercentage,
     vestingReleased,
+    vestingInformationDuration,
   } = data.userVestingData[poolId]
-
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
+
+  const currentBlock = useCurrentBlock()
+  const publicIfoData = useGetPublicIfoV3Data(data.ifo)
+  const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
+  useSWRImmutable(!isPublicIfoDataInitialized && currentBlock && ['fetchPublicIfoData', currentBlock], async () => {
+    fetchPublicIfoData(currentBlock)
+  })
+
+  const { cliff } = publicIfoData[poolId]?.vestingInformation
+  const currentTimeStamp = new Date().getTime()
+  const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
+  const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
+  const isVestingOver = currentTimeStamp > timeVestingEnd
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
@@ -59,10 +77,10 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
   }, [token, releasedAtSaleEnd, vestingReleased])
 
   const claimable = useMemo(() => {
-    return vestingComputeReleasableAmount.gt(0)
-      ? getFullDisplayBalance(vestingComputeReleasableAmount, token.decimals, 4)
-      : '0'
-  }, [token, vestingComputeReleasableAmount])
+    const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
+    const claimableAmount = isVestingOver ? vestingComputeReleasableAmount.plus(remain) : vestingComputeReleasableAmount
+    return claimableAmount.gt(0) ? getFullDisplayBalance(claimableAmount, token.decimals, 4) : '0'
+  }, [offeringAmountInToken, amountReleased, isVestingOver, vestingComputeReleasableAmount, token.decimals])
 
   const remaining = useMemo(() => {
     const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
@@ -91,6 +109,22 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
         </Text>
         <StyleTag isPrivate={poolId === PoolIds.poolBasic}>{labelText}</StyleTag>
       </Flex>
+      <Flex justifyContent="space-between" mt="8px">
+        <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
+          {cliff === 0 ? t('Vesting Start') : t('Cliff')}
+        </Text>
+        <Text fontSize="12px" color="textSubtle">
+          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
+        </Text>
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
+          {t('Vesting end')}
+        </Text>
+        <Text fontSize="12px" color="textSubtle">
+          {format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}
+        </Text>
+      </Flex>
       <WhiteCard>
         <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePercentage} />
         <Flex>
@@ -108,7 +142,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           </Flex>
           <Flex flexDirection="column" ml="auto">
             <Text fontSize="14px" textAlign="right">
-              {remaining}
+              {isVestingOver ? '-' : remaining}
             </Text>
             <Text fontSize="14px" color="textSubtle">
               {t('Remaining')}

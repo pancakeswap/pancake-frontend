@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRenewIcon, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { AutoRenewIcon, NextLinkFromReactRouter, Button } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
 
 import BigNumber from 'bignumber.js'
@@ -51,9 +51,12 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
             title={`${t('Up to')} ${boostMultiplierDisplay}x`}
             description={t('Lock CAKE to activate yield booster')}
             style={{ whiteSpace: 'nowrap' }}
-          >
-            <NextLinkFromReactRouter to="/pools">{t('Go to Pool')}</NextLinkFromReactRouter>
-          </ActionButton>
+            button={
+              <NextLinkFromReactRouter to="/pools">
+                <Button> {t('Go to Pool')}</Button>
+              </NextLinkFromReactRouter>
+            }
+          />
         )
       case YieldBoosterState.LOCKED_END:
         return (
@@ -61,9 +64,12 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
             title={`${t('Up to')} ${boostMultiplierDisplay}x`}
             description={t('Lock CAKE is ended. Re-lock CAKE to activate yield booster')}
             style={{ whiteSpace: 'nowrap' }}
-          >
-            <NextLinkFromReactRouter to="/pools">{t('Go to Pool')}</NextLinkFromReactRouter>
-          </ActionButton>
+            button={
+              <NextLinkFromReactRouter to="/pools">
+                <Button> {t('Go to Pool')}</Button>
+              </NextLinkFromReactRouter>
+            }
+          />
         )
       case YieldBoosterState.NO_PROXY_CREATED:
         return (

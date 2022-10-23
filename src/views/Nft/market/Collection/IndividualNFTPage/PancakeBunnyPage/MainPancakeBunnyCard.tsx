@@ -6,6 +6,7 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { NftToken } from 'state/nftMarket/types'
 import NFTMedia from 'views/Nft/market/components/NFTMedia'
 import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
+import { isAddress } from 'utils'
 import BuyModal from '../../../components/BuySellModals/BuyModal'
 import SellModal from '../../../components/BuySellModals/SellModal'
 import { nftsBaseUrl } from '../../../constants'
@@ -28,9 +29,7 @@ const MainPancakeBunnyCard: React.FC<React.PropsWithChildren<MainPancakeBunnyCar
 
   const nftToDisplay = cheapestNft || nothingForSaleBunny
 
-  const onlyOwnNftsOnSale = account
-    ? cheapestNft?.marketData?.currentSeller.toLowerCase() === account.toLowerCase()
-    : false
+  const onlyOwnNftsOnSale = account ? isAddress(cheapestNft?.marketData?.currentSeller) === isAddress(account) : false
 
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, parseFloat(nftToDisplay?.marketData?.currentAskPrice))
   const [onPresentBuyModal] = useModal(<BuyModal nftToBuy={nftToDisplay} />)

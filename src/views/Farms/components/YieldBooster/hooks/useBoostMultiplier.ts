@@ -1,4 +1,3 @@
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBCakeFarmBoosterContract, useMasterchef } from 'hooks/useContract'
 import farmBoosterAbi from 'config/abi/farmBooster.json'
 import masterChefAbi from 'config/abi/masterchef.json'
@@ -7,6 +6,7 @@ import { multicallv2 } from 'utils/multicall'
 import { useCallback } from 'react'
 import useSWR from 'swr'
 import _toNumber from 'lodash/toNumber'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { YieldBoosterState } from './useYieldBoosterState'
 
 const PRECISION_FACTOR = FixedNumber.from('1000000000000') // 1e12
@@ -93,7 +93,7 @@ export default function useBoostMultiplier({ pid, boosterState, proxyAddress }):
   const farmBoosterContract = useBCakeFarmBoosterContract()
   const masterChefContract = useMasterchef()
 
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const shouldGetFromSC = [YieldBoosterState.DEACTIVE, YieldBoosterState.ACTIVE, YieldBoosterState.MAX].includes(
     boosterState,

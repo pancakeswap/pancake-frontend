@@ -1,4 +1,3 @@
-import { ChangeEvent, FormEvent, useEffect, useState, useMemo } from 'react'
 import {
   AutoRenewIcon,
   Box,
@@ -15,31 +14,34 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
-import times from 'lodash/times'
+import { useWeb3LibraryContext, useWeb3React } from '@pancakeswap/wagmi'
+import snapshot from '@snapshot-labs/snapshot.js'
 import isEmpty from 'lodash/isEmpty'
+import times from 'lodash/times'
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
 import { useInitialBlock } from 'state/block/hooks'
-import { SnapshotCommand } from 'state/types'
 
-import { getBlockExploreLink } from 'utils'
-import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useTranslation } from '@pancakeswap/localization'
-import Container from 'components/Layout/Container'
-import { DatePicker, TimePicker, DatePickerPortal } from 'views/Voting/components/DatePicker'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import ReactMarkdown from 'components/ReactMarkdown'
+import Container from 'components/Layout/Container'
 import { PageMeta } from 'components/Layout/Page'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
+import ReactMarkdown from 'components/ReactMarkdown'
 import dynamic from 'next/dynamic'
-import { sendSnapshotData, Message, generateMetaData, generatePayloadData } from '../helpers'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { getBlockExploreLink } from 'utils'
+import { DatePicker, DatePickerPortal, TimePicker } from 'views/Voting/components/DatePicker'
 import Layout from '../components/Layout'
-import { FormErrors, Label, SecondaryLabel } from './styles'
+import VoteDetailsModal from '../components/VoteDetailsModal'
+import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
+import { FormErrors, Label, SecondaryLabel } from './styles'
 import { FormState } from './types'
-import { ADMINS, VOTE_THRESHOLD } from '../config'
-import VoteDetailsModal from '../components/VoteDetailsModal'
+
+const hub = 'https://hub.snapshot.org'
+const client = new snapshot.Client712(hub)
 
 const EasyMde = dynamic(() => import('components/EasyMde'), {
   ssr: false,
@@ -62,51 +64,41 @@ const CreateProposal = () => {
   const { account } = useWeb3React()
   const initialBlock = useInitialBlock()
   const { push } = useRouter()
-  const { signMessageAsync } = useSignMessage()
   const { toastSuccess, toastError } = useToast()
   const [onPresentVoteDetailsModal] = useModal(<VoteDetailsModal block={state.snapshot} />)
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const { name, body, choices, startDate, startTime, endDate, endTime, snapshot } = state
   const formErrors = getFormErrors(state, t)
+
+  const library = useWeb3LibraryContext()
 
   const handleSubmit = async (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
 
     try {
       setIsLoading(true)
-      const proposal = JSON.stringify({
-        ...generatePayloadData(),
-        type: SnapshotCommand.PROPOSAL,
-        payload: {
-          name,
-          body,
-          snapshot,
-          start: combineDateAndTime(startDate, startTime),
-          end: combineDateAndTime(endDate, endTime),
-          choices: choices
-            .filter((choice) => choice.value)
-            .map((choice) => {
-              return choice.value
-            }),
-          metadata: generateMetaData(),
-          type: 'single-choice',
-        },
+
+      const data: any = await client.proposal(library as any, account, {
+        space: PANCAKE_SPACE,
+        type: 'single-choice',
+        title: name,
+        body,
+        start: combineDateAndTime(startDate, startTime),
+        end: combineDateAndTime(endDate, endTime),
+        choices: choices
+          .filter((choice) => choice.value)
+          .map((choice) => {
+            return choice.value
+          }),
+        snapshot,
+        discussion: '',
+        plugins: JSON.stringify({}),
+        app: 'snapshot',
       })
 
-      const sig = await signMessageAsync({ message: proposal })
-
-      if (sig) {
-        const msg: Message = { address: account, msg: proposal, sig }
-
-        // Save proposal to snapshot
-        const data = await sendSnapshotData(msg)
-
-        // Redirect user to newly created proposal page
-        push(`/voting/proposal/${data.ipfsHash}`)
-
-        toastSuccess(t('Proposal created!'))
-      } else {
-        toastError(t('Error'), t('Unable to sign payload'))
-      }
+      // Redirect user to newly created proposal page
+      push(`/voting/proposal/${data.id}`)
+      toastSuccess(t('Proposal created!'))
     } catch (error) {
       toastError(t('Error'), (error as Error)?.message)
       console.error(error)

@@ -7,7 +7,7 @@ import { vars } from './vars.css'
 const flexAlignment = ['flex-start', 'center', 'start', 'flex-end', 'stretch'] as const
 
 const negativeSpace = {
-  '-px': `${calc(vars.space.px).negate()}`,
+  '-1px': `${calc(vars.space['1px']).negate()}`,
   '-1': `${calc(vars.space['1']).negate()}`,
   '-2': `${calc(vars.space['2']).negate()}`,
   '-3': `${calc(vars.space['3']).negate()}`,
@@ -131,6 +131,7 @@ const responsiveProperties = defineProperties({
     },
     gridAutoRows: ['auto'],
     opacity: {
+      '0.5': 0.5,
       '0.6': 0.6,
     },
     lineHeight: {
@@ -200,6 +201,12 @@ const interactiveProperties = defineProperties({
     borderColor: vars.colors,
     color: vars.colors,
     outlineColor: vars.colors,
+    opacity: {
+      '0': 0,
+      '0.5': 0.5,
+      '0.6': 0.6,
+      '1': 1,
+    },
   },
   shorthands: {
     bgc: ['backgroundColor'],

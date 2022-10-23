@@ -33,6 +33,7 @@ import Page from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 import ToggleView from 'components/ToggleView/ToggleView'
+import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
 import { CollectionCard } from '../components/CollectibleCard'
 import { BNBAmountLabel } from '../components/CollectibleCard/styles'
 
@@ -194,7 +195,7 @@ const Collectible = () => {
         return parseFloat(collection[sortField])
       },
       sortDirection ? 'desc' : 'asc',
-    )
+    ).filter((collection) => !DELIST_COLLECTIONS[collection.address])
   }, [collections, sortField, sortDirection])
 
   return (

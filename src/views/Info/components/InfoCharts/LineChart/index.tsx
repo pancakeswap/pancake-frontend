@@ -1,4 +1,4 @@
-import { useEffect, Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'recharts'
 import useTheme from 'hooks/useTheme'
 import { formatAmount } from 'utils/formatInfoNumbers'
@@ -10,17 +10,6 @@ export type LineChartProps = {
   setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
   setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
 } & React.HTMLAttributes<HTMLDivElement>
-
-// Calls setHoverValue and setHoverDate when part of chart is hovered
-// Note: this NEEDs to be wrapped inside component and useEffect, if you plug it as is it will create big render problems (try and see console)
-const HoverUpdater = ({ locale, payload, setHoverValue, setHoverDate }) => {
-  useEffect(() => {
-    setHoverValue(payload.value)
-    setHoverDate(payload.time.toLocaleString(locale, { year: 'numeric', day: 'numeric', month: 'short' }))
-  }, [locale, payload.value, payload.time, setHoverValue, setHoverDate])
-
-  return null
-}
 
 /**
  * Note: remember that it needs to be mounted inside the container with fixed height
@@ -77,14 +66,17 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
         <Tooltip
           cursor={{ stroke: theme.colors.secondary }}
           contentStyle={{ display: 'none' }}
-          formatter={(tooltipValue, name, props) => (
-            <HoverUpdater
-              locale={locale}
-              payload={props.payload}
-              setHoverValue={setHoverValue}
-              setHoverDate={setHoverDate}
-            />
-          )}
+          formatter={(tooltipValue, name, props) => {
+            setHoverValue(props.payload.value)
+            setHoverDate(
+              props.payload.time.toLocaleString(locale, {
+                year: 'numeric',
+                day: 'numeric',
+                month: 'short',
+              }),
+            )
+            return null
+          }}
         />
         <Area dataKey="value" type="monotone" stroke={theme.colors.secondary} fill="url(#gradient)" strokeWidth={2} />
       </AreaChart>

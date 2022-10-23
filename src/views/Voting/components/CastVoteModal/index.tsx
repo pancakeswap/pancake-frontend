@@ -1,14 +1,17 @@
-import { useState } from 'react'
-import { Box, Modal, useToast } from '@pancakeswap/uikit'
-import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { SnapshotCommand } from 'state/types'
+import { Box, Modal, useToast } from '@pancakeswap/uikit'
+import { useWeb3LibraryContext, useWeb3React } from '@pancakeswap/wagmi'
+import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
-import { CastVoteModalProps, ConfirmVoteView } from './types'
-import MainView from './MainView'
-import DetailsView from './DetailsView'
-import { generatePayloadData, Message, sendSnapshotData } from '../../helpers'
+import { useState } from 'react'
+import { PANCAKE_SPACE } from 'views/Voting/config'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
+import DetailsView from './DetailsView'
+import MainView from './MainView'
+import { CastVoteModalProps, ConfirmVoteView } from './types'
+
+const hub = 'https://hub.snapshot.org'
+const client = new snapshot.Client712(hub)
 
 const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   onSuccess,
@@ -22,7 +25,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   const [isPending, setIsPending] = useState(false)
   const { account } = useWeb3React()
   const { t } = useTranslation()
-  const { signMessageAsync } = useSignMessage()
+  const library = useWeb3LibraryContext()
   const { toastError } = useToast()
   const { theme } = useTheme()
   const {
@@ -56,20 +59,15 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   const handleConfirmVote = async () => {
     try {
       setIsPending(true)
-      const voteMsg = JSON.stringify({
-        ...generatePayloadData(),
-        type: SnapshotCommand.VOTE,
-        payload: {
-          proposal: proposalId,
-          choice: vote.value,
-        },
+
+      await client.vote(library as any, account, {
+        space: PANCAKE_SPACE,
+        choice: vote.value,
+        reason: '',
+        type: 'single-choice',
+        proposal: proposalId,
+        app: 'snapshot',
       })
-
-      const sig = await signMessageAsync({ message: voteMsg })
-      const msg: Message = { address: account, msg: voteMsg, sig }
-
-      // Save proposal to snapshot
-      await sendSnapshotData(msg)
 
       await onSuccess()
 

@@ -67,6 +67,7 @@
   "Farms": "Farms",
   "Pools": "Pools",
   "NFT": "NFT",
+  "This collection has been inactived for a while. Trade at your own risk.": "This collection has been inactived for a while. Trade at your own risk.",
   "Info": "Info",
   "IFO": "IFO",
   "More": "More",
@@ -565,7 +566,6 @@
   "Votes (%count%)": "Votes (%count%)",
   "Snapshot": "Snapshot",
   "Choices": "Choices",
-  "Unable to sign payload": "Unable to sign payload",
   "Identifier": "Identifier",
   "Current Results": "Current Results",
   "Vote cast!": "Vote cast!",
@@ -1404,9 +1404,6 @@
   "Trading on the old address may result in the complete loss of your assets. For more information please refer to": "Trading on the old address may result in the complete loss of your assets. For more information please refer to",
   "Safemoon's announcement": "Safemoon's announcement",
   "Newest Collections": "Newest Collections",
-  "Your average per hour": "Your average per hour",
-  "CAKE per hour: %amount%": "CAKE per hour: %amount%",
-  "per hour: ~$%amount%": "per hour: ~$%amount%",
   "ITAM has been rebranded as ITAM CUBE.": "ITAM has been rebranded as ITAM CUBE.",
   "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.": "Please proceed to ITAM bridge to conduct a one-way swap of your ITAM tokens.",
   "All transfers of the old ITAM token will be disabled after the swap.": "All transfers of the old ITAM token will be disabled after the swap.",
@@ -1710,7 +1707,7 @@
   "The PancakeSwap": "The PancakeSwap",
   "To be won !": "To be won !",
   "Deposit CAKE for": "Deposit CAKE for",
-  "10 Weeks to earn": "10 Weeks to earn",
+  "10 Weeks": "10 Weeks",
   "to earn": "to earn",
   "And a chance to": "And a chance to",
   "win prize pot!": "win prize pot!",
@@ -2000,5 +1997,6 @@
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "For safety, cross-chain transactions will take around 30 minutes to confirm.",
   "no provider found": "no provider found",
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming."
+  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.",
+  "Hourly Average": "Hourly Average"
 }

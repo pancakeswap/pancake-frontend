@@ -12,9 +12,10 @@ export const usePollBlockNumber = () => {
   const { chainId, provider } = useActiveWeb3React()
 
   const { data } = useSWR(
-    chainId && ['blockNumber', chainId],
+    chainId && ['blockNumberFetcher', chainId],
     async () => {
       const blockNumber = await provider.getBlockNumber()
+      mutate(['blockNumber', chainId], blockNumber)
       if (!cache.get(unstable_serialize(['initialBlockNumber', chainId]))) {
         mutate(['initialBlockNumber', chainId], blockNumber)
       }

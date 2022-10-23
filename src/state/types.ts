@@ -152,6 +152,7 @@ export interface Profile {
 
 export interface SerializedFarmsState {
   data: SerializedFarm[]
+  chainId?: number
   loadArchivedFarmsData: boolean
   userDataLoaded: boolean
   loadingKeys: Record<string, boolean>
@@ -532,6 +533,7 @@ export interface Vote {
   metadata?: {
     votingPower: string
   }
+  vp: number
 }
 
 export interface LotteryRoundUserTickets {

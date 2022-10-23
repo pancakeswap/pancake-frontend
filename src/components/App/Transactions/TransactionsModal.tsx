@@ -1,5 +1,4 @@
 import { useCallback } from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Modal, ModalBody, Text, Button, Flex, InjectedModalProps } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import isEmpty from 'lodash/isEmpty'
@@ -9,6 +8,7 @@ import { TransactionDetails } from 'state/transactions/reducer'
 import { useAppDispatch } from 'state'
 import { clearAllTransactions } from 'state/transactions/actions'
 import { chains } from 'utils/wagmi'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { AutoRow } from '../../Layout/Row'
 import Transaction from './Transaction'
 import ConnectWalletButton from '../../ConnectWalletButton'
@@ -24,7 +24,7 @@ function renderTransactions(transactions: TransactionDetails[], chainId: number)
 }
 
 const TransactionsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
   const dispatch = useAppDispatch()
   const sortedRecentTransactions = useAllSortedRecentTransactions()
 

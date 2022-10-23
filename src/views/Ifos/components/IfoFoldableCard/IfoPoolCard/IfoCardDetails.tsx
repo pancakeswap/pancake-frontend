@@ -164,11 +164,10 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
     .plus(poolCharacteristic.raisingAmountPool)
     .div(poolCharacteristic.offeringAmountPool)
     .div(poolCharacteristic.raisingAmountPool.div(poolCharacteristic.offeringAmountPool))
-  const pricePerTokenWithFee = `~$${formatNumber(
-    pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber(),
-    0,
-    2,
-  )}`
+  const pricePerTokenWithFeeNumber = pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber()
+  const maxPrecision = ifo.tokenOfferingPrice < 1 ? 4 : 2
+
+  const pricePerTokenWithFee = `~$${formatNumber(pricePerTokenWithFeeNumber, 0, maxPrecision)}`
   const raisingTokenToBurn =
     ifo[poolId].cakeToBurn ||
     (sumTaxesOverflowInUSD.gt(0) &&
@@ -218,6 +217,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
             />
           )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
+          <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
           {raisingTokenToBurn && <FooterEntry label={t('CAKE to burn:')} value={raisingTokenToBurn} />}
           {ifo.version >= 3.2 && poolCharacteristic.vestingInformation.percentage > 0 && (
             <>
@@ -238,7 +238,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
                 label={t('Vesting schedule:')}
                 value={`${vestingDays} days`}
                 tooltipContent={t('The vested tokens will be released linearly over a period of %days% days.', {
-                  weeks: vestingDays,
+                  days: vestingDays,
                 })}
               />
             </>

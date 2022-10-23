@@ -7,6 +7,7 @@ import { NftLocation, NftToken, TokenMarketData } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
 import useSWR from 'swr'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
+import { isAddress } from 'utils'
 
 const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: TokenMarketData) => {
   const { account } = useWeb3React()
@@ -30,13 +31,13 @@ const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: Toke
       nftIsProfilePic = tokenId === profile?.tokenId?.toString() && collectionAddress === profile?.collectionAddress
       const nftIsOnSale = marketData ? marketData?.currentSeller !== NOT_ON_SALE_SELLER : false
       if (nftIsOnSale) {
-        isOwn = marketData?.currentSeller.toLowerCase() === account.toLowerCase()
+        isOwn = isAddress(marketData?.currentSeller) === isAddress(account)
         location = NftLocation.FORSALE
       } else if (nftIsProfilePic) {
         isOwn = true
         location = NftLocation.PROFILE
       } else {
-        isOwn = tokenOwner.toLowerCase() === account.toLowerCase()
+        isOwn = isAddress(tokenOwner) === isAddress(account)
         location = NftLocation.WALLET
       }
 

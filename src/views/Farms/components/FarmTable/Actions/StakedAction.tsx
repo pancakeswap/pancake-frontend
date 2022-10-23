@@ -33,6 +33,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
 import { ChainId } from '@pancakeswap/sdk'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -93,7 +94,7 @@ export function useStakedActions(lpContract, pid, vaultPid) {
 }
 
 export const ProxyStakedContainer = ({ children, ...props }) => {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const { lpAddress } = props
   const lpContract = useERC20(lpAddress)
@@ -115,7 +116,7 @@ export const ProxyStakedContainer = ({ children, ...props }) => {
 }
 
 export const StakedContainer = ({ children, ...props }) => {
-  const { account } = useActiveWeb3React()
+  const { account } = useWeb3React()
 
   const { lpAddress } = props
   const lpContract = useERC20(lpAddress)

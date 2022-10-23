@@ -23,7 +23,7 @@ export const tokens = {
     '0': '0px',
     '0px': '0px',
     '1rem': '1rem',
-    px: '1px',
+    '1px': '1px',
     '1': '4px',
     '2': '8px',
     '3': '16px',
@@ -51,6 +51,7 @@ export const tokens = {
   radii: {
     '0': '0px',
     '8px': '8px',
+    '12px': '12px',
     '20px': '20px',
     small: '4px',
     default: '16px',

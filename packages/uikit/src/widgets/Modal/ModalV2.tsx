@@ -29,18 +29,20 @@ export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...p
     return createPortal(
       <LazyMotion features={domMax}>
         <AnimatePresence>
-          <StyledModalWrapper
-            ref={animationRef}
-            // @ts-ignore
-            onAnimationStart={() => animationHandler(animationRef.current)}
-            {...animationMap}
-            variants={animationVariants}
-            transition={{ duration: 0.3 }}
-            {...props}
-          >
-            <Overlay onClick={handleOverlayDismiss} />
-            {children}
-          </StyledModalWrapper>
+          {isOpen && (
+            <StyledModalWrapper
+              ref={animationRef}
+              // @ts-ignore
+              onAnimationStart={() => animationHandler(animationRef.current)}
+              {...animationMap}
+              variants={animationVariants}
+              transition={{ duration: 0.3 }}
+              {...props}
+            >
+              <Overlay onClick={handleOverlayDismiss} />
+              {children}
+            </StyledModalWrapper>
+          )}
         </AnimatePresence>
       </LazyMotion>,
       portal

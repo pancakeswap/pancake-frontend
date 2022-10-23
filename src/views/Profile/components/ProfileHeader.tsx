@@ -8,7 +8,7 @@ import {
   NextLinkFromReactRouter as ReactRouterLink,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBlockExploreLink } from 'utils'
+import { getBlockExploreLink, isAddress } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
@@ -54,7 +54,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     false,
   )
 
-  const isConnectedAccount = account?.toLowerCase() === accountPath?.toLowerCase()
+  const isConnectedAccount = isAddress(account) === isAddress(accountPath)
   const numNftCollected = !isNftLoading ? (nftCollected ? formatNumber(nftCollected, 0, 0) : '-') : null
   const numPoints = !isProfileLoading ? (profile?.points ? formatNumber(profile.points, 0, 0) : '-') : null
   const numAchievements = !isAchievementsLoading
