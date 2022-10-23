@@ -56,7 +56,9 @@ const AptosBanner = () => {
 
           <Button
             minHeight="48px"
-            onClick={() => window?.open('https://docs.pancakeswap.finance/aptos-deployment', '_blank', 'noopener')}
+            onClick={() =>
+              window?.open('https://docs.pancakeswap.finance/aptos-deployment', '_blank', 'noopener noreferrer')
+            }
           >
             <Text color="invertedContrast" bold fontSize="16px" mr="4px">
               👋 {t('Get in Touch')}
