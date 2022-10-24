@@ -1,15 +1,15 @@
 {
   "name": "@pancakeswap/awgmi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
   "sideEffects": false,
   "dependencies": {
     "@ethersproject/units": "^5.7.0",
-    "@tanstack/react-query": "^4.2.3",
-    "@tanstack/react-query-persist-client": "^4.2.1",
-    "@tanstack/query-sync-storage-persister": "^4.2.3",
+    "@tanstack/query-sync-storage-persister": "^4.10.1",
+    "@tanstack/react-query": "^4.10.1",
+    "@tanstack/react-query-persist-client": "^4.10.1",
     "eventemitter3": "^4.0.7",
     "use-sync-external-store": "^1.2.0",
     "zustand": "^4.1.1"
@@ -26,13 +26,13 @@
     "vitest": "^0.23.1"
   },
   "files": [
-    "**"
+    "dist"
   ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "rm -rf dist && tsup",
     "test": "vitest --run",
-    "prepublishOnly": "yarn run build:all"
+    "prepublishOnly": "yarn run build"
   },
   "exports": {
     "./package.json": "./package.json",
