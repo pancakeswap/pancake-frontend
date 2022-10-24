@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 
-export const ADDRESS = '0xfae687586cfef86492d268a29c6df14bbb2ff2b51f6d7de476e07d579bca7dc9' as const
+export const ADDRESS = '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa' as const
 
 export const ROUTER_MODULE_NAME = 'router' as const
 
