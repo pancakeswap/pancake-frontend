@@ -158,8 +158,21 @@ const useGelatoLimitOrdersHandlers = (): GelatoLimitOrdersHandlers => {
         ? `Order cancellation: ${orderDetails.inputAmount} ${orderDetails.inputTokenSymbol} for ${orderDetails.outputAmount} ${orderDetails.outputTokenSymbol}`
         : 'Order cancellation'
 
+      const translatableSummary = orderDetails
+        ? {
+            text: 'Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%',
+            data: {
+              inputAmount: orderDetails.inputAmount,
+              inputTokenSymbol: orderDetails.inputTokenSymbol,
+              outputAmount: orderDetails.outputAmount,
+              outputTokenSymbol: orderDetails.outputTokenSymbol,
+            },
+          }
+        : { text: 'Order cancellation' }
+
       addTransaction(tx, {
         summary,
+        translatableSummary,
         type: 'limit-order-cancellation',
         order: {
           ...orderToCancel,
