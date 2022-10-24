@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/awgmi",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
@@ -26,7 +26,9 @@
     "vitest": "^0.23.1"
   },
   "files": [
-    "dist"
+    "dist",
+    "connectors",
+    "core/package.json"
   ],
   "scripts": {
     "dev": "tsup --watch",
