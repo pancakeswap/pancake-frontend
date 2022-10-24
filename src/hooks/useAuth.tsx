@@ -27,7 +27,6 @@ const useAuth = () => {
   const { t } = useTranslation()
 
   const login = useCallback(
-    // eslint-disable-next-line consistent-return
     async (connectorID: ConnectorNames) => {
       const findConnector = connectors.find((c) => c.id === connectorID)
       try {
@@ -46,6 +45,7 @@ const useAuth = () => {
           throw new WalletSwitchChainError(t('Unable to switch network. Please try it on your wallet'))
         }
       }
+      return undefined
     },
     [connectors, connectAsync, chainId, setSessionChainId, t],
   )

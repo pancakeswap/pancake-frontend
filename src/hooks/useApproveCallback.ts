@@ -58,30 +58,30 @@ export function useApproveCallback(
     if (approvalState !== ApprovalState.NOT_APPROVED) {
       toastError(t('Error'), t('Approve was called unnecessarily'))
       console.error('approve was called unnecessarily')
-      return
+      return undefined
     }
     if (!token) {
       toastError(t('Error'), t('No token'))
       console.error('no token')
-      return
+      return undefined
     }
 
     if (!tokenContract) {
       toastError(t('Error'), t('Cannot find contract of the token %tokenAddress%', { tokenAddress: token?.address }))
       console.error('tokenContract is null')
-      return
+      return undefined
     }
 
     if (!amountToApprove) {
       toastError(t('Error'), t('Missing amount to approve'))
       console.error('missing amount to approve')
-      return
+      return undefined
     }
 
     if (!spender) {
       toastError(t('Error'), t('No spender'))
       console.error('no spender')
-      return
+      return undefined
     }
 
     let useExact = false
@@ -92,7 +92,6 @@ export function useApproveCallback(
       return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString())
     })
 
-    // eslint-disable-next-line consistent-return
     return callWithMarketGasPrice(
       tokenContract,
       'approve',

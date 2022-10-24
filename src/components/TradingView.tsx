@@ -119,7 +119,6 @@ export function useTradingViewEvent({
     }
     window.addEventListener('message', onNoDataAvailable)
 
-    // eslint-disable-next-line consistent-return
     return () => {
       window.removeEventListener('message', onNoDataAvailable)
     }
