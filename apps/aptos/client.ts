@@ -25,6 +25,7 @@ export const client = createClient({
     new PontemConnector(),
     new FewchaConnector(),
     new BloctoConnector(),
+    new PetraConnector({ options: { name: 'Trust Wallet', id: 'trustWallet' } }),
   ],
   provider: ({ networkName }) => {
     const networkNameLowerCase = networkName?.toLowerCase()

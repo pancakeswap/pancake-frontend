@@ -113,10 +113,7 @@ function MobileModal<T>({
 }: Pick<WalletModalV2Props<T>, 'wallets' | 'docLink' | 'docText'> & {
   connectWallet: (wallet: WalletConfigV2<T>) => void
 }) {
-  const {
-    t,
-    currentLanguage: { code },
-  } = useTranslation()
+  const { t } = useTranslation()
 
   const [selected] = useSelectedWallet()
   const [error] = useAtom(errorAtom)
@@ -290,13 +287,17 @@ function sortWallets<T>(wallets: WalletConfigV2<T>[], lastUsedWalletName: string
 }
 
 function DesktopModal<T>({
-  wallets,
+  wallets: wallets_,
   connectWallet,
   docLink,
   docText,
 }: Pick<WalletModalV2Props<T>, 'wallets' | 'docLink' | 'docText'> & {
   connectWallet: (wallet: WalletConfigV2<T>) => void
 }) {
+  const wallets: WalletConfigV2<T>[] = wallets_.filter((w) => {
+    return w.installed !== false || (!w.installed && (w.guide || w.downloadLink || w.qrCode))
+  })
+
   const [selected] = useSelectedWallet<T>()
   const [error] = useAtom(errorAtom)
   const [qrCode, setQrCode] = useState<string | undefined>(undefined)

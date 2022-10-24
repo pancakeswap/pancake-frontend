@@ -11,6 +11,8 @@ declare global {
 }
 
 export type PetraConnectorOptions = {
+  /** Id of connector */
+  id?: string
   /** Name of connector */
   name?: string
 }
