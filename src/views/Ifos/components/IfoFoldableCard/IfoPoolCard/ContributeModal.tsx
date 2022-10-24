@@ -28,7 +28,7 @@ import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import { useERC20 } from 'hooks/useContract'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { formatNumber, getBalanceAmount } from 'utils/formatBalance'
+import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { requiresApproval } from 'utils/requiresApproval'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 

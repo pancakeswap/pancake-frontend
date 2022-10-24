@@ -13,10 +13,10 @@ import {
   Slider,
   Text,
   useToast,
+  RoiCalculatorModal,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
-import RoiCalculatorModal from 'components/RoiCalculatorModal'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import useTheme from 'hooks/useTheme'
@@ -25,8 +25,8 @@ import { useAppDispatch } from 'state'
 import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
 import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
-import { getInterestBreakdown } from 'utils/compoundApyHelpers'
-import { formatNumber, getDecimalAmount, getFullDisplayBalance } from 'utils/formatBalance'
+import { getInterestBreakdown } from '@pancakeswap/utils/compoundApyHelpers'
+import { formatNumber, getDecimalAmount, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
 import PercentageButton from './PercentageButton'
@@ -187,6 +187,7 @@ const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   if (showRoiCalculator) {
     return (
       <RoiCalculatorModal
+        account={account}
         earningTokenPrice={earningTokenPrice}
         stakingTokenPrice={stakingTokenPrice}
         apr={apr}

@@ -6,7 +6,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import useCatchTxError from 'hooks/useCatchTxError'
 import styled from 'styled-components'
-import { FlexGap } from 'components/Layout/Flex'
 import { TokenPairImage } from 'components/TokenImage'
 import {
   Modal,
@@ -20,11 +19,12 @@ import {
   ArrowForwardIcon,
   AutoRenewIcon,
   useToast,
+  FlexGap,
+  Balance,
 } from '@pancakeswap/uikit'
 import { ChainLogo } from 'components/Logo/ChainLogo'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { LightGreyCard } from 'components/Card'
-import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useFarmCProxyAddress } from 'views/Farms/hooks/useFarmCProxyAddress'
 import useNonBscHarvestFarm from 'views/Farms/hooks/useNonBscHarvestFarm'

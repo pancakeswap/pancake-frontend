@@ -18,7 +18,7 @@ const makeColorScheme = (mode: Mode = 'light') => {
 }
 
 const modeTokens = makeColorScheme('light')
-const modeVars = createGlobalThemeContract(modeTokens, getVarName)
+export const modeVars = createGlobalThemeContract(modeTokens, getVarName)
 createGlobalTheme('[data-theme="light"]', modeVars, modeTokens)
 createGlobalTheme('[data-theme="dark"]', modeVars, makeColorScheme('dark'))
 

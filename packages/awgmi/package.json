@@ -1,0 +1,85 @@
+{
+  "name": "@pancakeswap/awgmi",
+  "version": "0.0.3",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "sideEffects": false,
+  "dependencies": {
+    "@ethersproject/units": "^5.7.0",
+    "@tanstack/query-sync-storage-persister": "^4.10.1",
+    "@tanstack/react-query": "^4.10.1",
+    "@tanstack/react-query-persist-client": "^4.10.1",
+    "eventemitter3": "^4.0.7",
+    "use-sync-external-store": "^1.2.0",
+    "zustand": "^4.1.1"
+  },
+  "peerDependencies": {
+    "@blocto/sdk": "^0.3.0-beta.9",
+    "aptos": "^1.3.16",
+    "react": "^18.0.0"
+  },
+  "devDependencies": {
+    "@blocto/sdk": "^0.3.0-beta.9",
+    "tsup": "^6.2.3",
+    "aptos": "^1.3.16",
+    "vitest": "^0.23.1"
+  },
+  "files": [
+    "dist",
+    "connectors",
+    "core/package.json"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "rm -rf dist && tsup",
+    "test": "vitest --run",
+    "prepublishOnly": "yarn run build"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.js"
+    },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.mjs",
+      "default": "./dist/core.js"
+    },
+    "./connectors/petra": {
+      "types": "./dist/connectors/petra.d.ts",
+      "import": "./dist/connectors/petra.mjs",
+      "default": "./dist/connectors/petra.js"
+    },
+    "./connectors/martian": {
+      "types": "./dist/connectors/martian.d.ts",
+      "import": "./dist/connectors/martian.mjs",
+      "default": "./dist/connectors/martian.js"
+    },
+    "./connectors/blocto": {
+      "types": "./dist/connectors/blocto.d.ts",
+      "import": "./dist/connectors/blocto.mjs",
+      "default": "./dist/connectors/blocto.js"
+    },
+    "./connectors/pontem": {
+      "types": "./dist/connectors/pontem.d.ts",
+      "import": "./dist/connectors/pontem.mjs",
+      "default": "./dist/connectors/pontem.js"
+    },
+    "./connectors/fewcha": {
+      "types": "./dist/connectors/fewcha.d.ts",
+      "import": "./dist/connectors/fewcha.mjs",
+      "default": "./dist/connectors/fewcha.js"
+    }
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "@blocto/sdk": {
+      "optional": true
+    }
+  }
+}

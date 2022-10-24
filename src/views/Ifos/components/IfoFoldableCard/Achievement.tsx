@@ -11,15 +11,15 @@ import {
   TwitterIcon,
   Link,
   TelegramIcon,
+  FlexGap,
 } from '@pancakeswap/uikit'
 import { bscTokens } from '@pancakeswap/tokens'
 import { useTranslation } from '@pancakeswap/localization'
 import { PublicIfoData } from 'views/Ifos/types'
 import { Ifo } from 'config/constants/types'
-import { BIG_TEN } from 'utils/bigNumber'
+import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
 import { getBlockExploreLink } from 'utils'
-import { formatBigNumber } from 'utils/formatBalance'
-import { FlexGap } from 'components/Layout/Flex'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 
 const SmartContractIcon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
   return (

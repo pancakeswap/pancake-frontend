@@ -1,19 +1,27 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BalanceInput, Box, Button, Flex, HelpIcon, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
+import {
+  BalanceInput,
+  Box,
+  Button,
+  Flex,
+  HelpIcon,
+  Text,
+  Toggle,
+  useTooltip,
+  useRoiCalculatorReducer,
+  CalculatorMode,
+  EditingCurrency,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import styled, { useTheme } from 'styled-components'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useBCakeTooltipContent } from 'views/Farms/components/BCakeBoosterCard'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
-import useRoiCalculatorReducer, {
-  CalculatorMode,
-  EditingCurrency,
-} from 'components/RoiCalculatorModal/useRoiCalculatorReducer'
 import { useGetCalculatorMultiplier } from '../hooks/useGetBoostedAPR'
 import LockDurationField from './BCakeLockedDuration'
 

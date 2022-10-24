@@ -1,11 +1,10 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, useMatchBreakpoints, Skeleton } from '@pancakeswap/uikit'
+import { Box, Flex, useMatchBreakpoints, Skeleton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
 
-import { FarmAuctionTag, CoreTag } from 'components/Tags'
 import Apr, { AprProps } from './Apr'
 import Farm, { FarmProps } from './Farm'
 
@@ -18,6 +17,8 @@ import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
+
+const { FarmAuctionTag, CoreTag } = FarmUI.Tags
 
 export interface RowProps {
   apr: AprProps

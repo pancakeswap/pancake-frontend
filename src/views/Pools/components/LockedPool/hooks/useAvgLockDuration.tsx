@@ -3,7 +3,7 @@ import { BOOST_WEIGHT, DURATION_FACTOR } from 'config/constants/pools'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { useCakeVault } from 'state/pools/hooks'
-import { getFullDecimalMultiplier } from 'utils/getFullDecimalMultiplier'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import formatSecondsToWeeks from '../../utils/formatSecondsToWeeks'

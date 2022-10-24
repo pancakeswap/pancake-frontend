@@ -9,7 +9,7 @@ import {
 } from 'state/nftMarket/helpers'
 import useSWRInfinite from 'swr/infinite'
 import { FetchStatus } from 'config/constants/types'
-import { formatBigNumber } from 'utils/formatBalance'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { isAddress } from 'utils'
 import { pancakeBunniesAddress } from '../constants'

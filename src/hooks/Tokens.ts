@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { arrayify } from '@ethersproject/bytes'
 import { parseBytes32String } from '@ethersproject/strings'
-import { Currency, Token } from '@pancakeswap/sdk'
-import { TokenAddressMap } from '@pancakeswap/tokens'
+import { Currency, ERC20Token, ChainId } from '@pancakeswap/sdk'
+import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { GELATO_NATIVE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
@@ -19,8 +19,8 @@ import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
 import useNativeCurrency from './useNativeCurrency'
 
-const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
-  Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: Token }>((newMap, address) => {
+const mapWithoutUrls = (tokenMap: TokenAddressMap<ChainId>, chainId: number) =>
+  Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: ERC20Token }>((newMap, address) => {
     newMap[address] = tokenMap[chainId][address].token
     return newMap
   }, {})
@@ -28,7 +28,7 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
 /**
  * Returns all tokens that are from active urls and user added tokens
  */
-export function useAllTokens(): { [address: string]: Token } {
+export function useAllTokens(): { [address: string]: ERC20Token } {
   const { chainId } = useActiveWeb3React()
   const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
   const userAddedTokens = useUserAddedTokens()
@@ -36,7 +36,7 @@ export function useAllTokens(): { [address: string]: Token } {
     return (
       userAddedTokens
         // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Token }>(
+        .reduce<{ [address: string]: ERC20Token }>(
           (tokenMap_, token) => {
             tokenMap_[token.address] = token
             return tokenMap_
@@ -52,7 +52,7 @@ export function useAllTokens(): { [address: string]: Token } {
 /**
  * Returns all tokens that are from officials token list and user added tokens
  */
-export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
+export function useOfficialsAndUserAddedTokens(): { [address: string]: ERC20Token } {
   const { chainId } = useActiveWeb3React()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
   const userAddedTokens = useUserAddedTokens()
@@ -60,7 +60,7 @@ export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
     return (
       userAddedTokens
         // reduce into all ALL_TOKENS filtered by the current chain
-        .reduce<{ [address: string]: Token }>(
+        .reduce<{ [address: string]: ERC20Token }>(
           (tokenMap_, token) => {
             tokenMap_[token.address] = token
             return tokenMap_
@@ -73,19 +73,19 @@ export function useOfficialsAndUserAddedTokens(): { [address: string]: Token } {
   }, [userAddedTokens, tokenMap, chainId])
 }
 
-export function useUnsupportedTokens(): { [address: string]: Token } {
+export function useUnsupportedTokens(): { [address: string]: ERC20Token } {
   const { chainId } = useActiveWeb3React()
   const unsupportedTokensMap = useUnsupportedTokenList()
   return useMemo(() => mapWithoutUrls(unsupportedTokensMap, chainId), [unsupportedTokensMap, chainId])
 }
 
-export function useWarningTokens(): { [address: string]: Token } {
+export function useWarningTokens(): { [address: string]: ERC20Token } {
   const warningTokensMap = useWarningTokenList()
   const { chainId } = useActiveWeb3React()
   return useMemo(() => mapWithoutUrls(warningTokensMap, chainId), [warningTokensMap, chainId])
 }
 
-export function useIsTokenActive(token: Token | undefined | null): boolean {
+export function useIsTokenActive(token: ERC20Token | undefined | null): boolean {
   const activeTokens = useAllTokens()
 
   if (!activeTokens || !token) {
@@ -121,7 +121,7 @@ function parseStringOrBytes32(str: string | undefined, bytes32: string | undefin
 // undefined if invalid or does not exist
 // null if loading
 // otherwise returns the token
-export function useToken(tokenAddress?: string): Token | undefined | null {
+export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   const { chainId } = useActiveWeb3React()
   const tokens = useAllTokens()
 
@@ -129,7 +129,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
 
   const tokenContract = useTokenContract(address || undefined, false)
   const tokenContractBytes32 = useBytes32TokenContract(address || undefined, false)
-  const token: Token | undefined = address ? tokens[address] : undefined
+  const token: ERC20Token | undefined = address ? tokens[address] : undefined
 
   const tokenName = useSingleCallResult(token ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
   const tokenNameBytes32 = useSingleCallResult(
@@ -147,7 +147,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
     if (!chainId || !address) return undefined
     if (decimals.loading || symbol.loading || tokenName.loading) return null
     if (decimals.result) {
-      return new Token(
+      return new ERC20Token(
         chainId,
         address,
         decimals.result[0],
@@ -171,7 +171,7 @@ export function useToken(tokenAddress?: string): Token | undefined | null {
   ])
 }
 
-export function useCurrency(currencyId: string | undefined): Currency | Token | null | undefined {
+export function useCurrency(currencyId: string | undefined): Currency | ERC20Token | null | undefined {
   const native = useNativeCurrency()
   const isNative =
     currencyId?.toUpperCase() === native.symbol?.toUpperCase() || currencyId?.toLowerCase() === GELATO_NATIVE

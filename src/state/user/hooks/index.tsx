@@ -1,5 +1,5 @@
-import { ChainId, Pair, Token } from '@pancakeswap/sdk'
-import { deserializeToken } from '@pancakeswap/tokens'
+import { ChainId, Pair, ERC20Token } from '@pancakeswap/sdk'
+import { deserializeToken } from '@pancakeswap/token-lists'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
@@ -383,10 +383,10 @@ export function useUserTransactionTTL(): [number, (slippage: number) => void] {
   return [userDeadline, setUserDeadline]
 }
 
-export function useAddUserToken(): (token: Token) => void {
+export function useAddUserToken(): (token: ERC20Token) => void {
   const dispatch = useAppDispatch()
   return useCallback(
-    (token: Token) => {
+    (token: ERC20Token) => {
       dispatch(addSerializedToken({ serializedToken: token.serialize }))
     },
     [dispatch],
@@ -458,14 +458,14 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenA one of the two tokens
  * @param tokenB the other token
  */
-export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
-  return new Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Pancake LPs')
+export function toV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]): ERC20Token {
+  return new ERC20Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Pancake LPs')
 }
 
 /**
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
-export function useTrackedTokenPairs(): [Token, Token][] {
+export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   const { chainId } = useActiveWeb3React()
   const tokens = useOfficialsAndUserAddedTokens()
 
@@ -475,7 +475,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
     const farms = await getFarmConfig(chainId)
 
-    const fPairs: [Token, Token][] = farms
+    const fPairs: [ERC20Token, ERC20Token][] = farms
       .filter((farm) => farm.pid !== 0)
       .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
 
@@ -483,7 +483,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   })
 
   // pairs for every token against every base
-  const generatedPairs: [Token, Token][] = useMemo(
+  const generatedPairs: [ERC20Token, ERC20Token][] = useMemo(
     () =>
       chainId
         ? flatMap(Object.keys(tokens), (tokenAddress) => {
@@ -499,7 +499,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
                   }
                   return [base, token]
                 })
-                .filter((p): p is [Token, Token] => p !== null)
+                .filter((p): p is [ERC20Token, ERC20Token] => p !== null)
             )
           })
         : [],
@@ -509,7 +509,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
   // pairs saved by users
   const savedSerializedPairs = useSelector<AppState, AppState['user']['pairs']>(({ user: { pairs } }) => pairs)
 
-  const userPairs: [Token, Token][] = useMemo(() => {
+  const userPairs: [ERC20Token, ERC20Token][] = useMemo(() => {
     if (!chainId || !savedSerializedPairs) return []
     const forChain = savedSerializedPairs[chainId]
     if (!forChain) return []
@@ -526,7 +526,7 @@ export function useTrackedTokenPairs(): [Token, Token][] {
 
   return useMemo(() => {
     // dedupes pairs of tokens in the combined list
-    const keyed = combinedList.reduce<{ [key: string]: [Token, Token] }>((memo, [tokenA, tokenB]) => {
+    const keyed = combinedList.reduce<{ [key: string]: [ERC20Token, ERC20Token] }>((memo, [tokenA, tokenB]) => {
       const sorted = tokenA.sortsBefore(tokenB)
       const key = sorted ? `${tokenA.address}:${tokenB.address}` : `${tokenB.address}:${tokenA.address}`
       if (memo[key]) return memo

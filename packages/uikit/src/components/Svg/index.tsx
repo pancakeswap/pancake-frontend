@@ -1,5 +1,6 @@
 export { default as AccountFilledIcon } from "./Icons/AccountFilled";
 export { default as AccountIcon } from "./Icons/Account";
+export { default as AptosIcon } from "./Icons/Aptos";
 export { default as AddIcon } from "./Icons/Add";
 export { default as ArrowBackIcon } from "./Icons/ArrowBack";
 export { default as ArrowDownIcon } from "./Icons/ArrowDown";
@@ -159,4 +160,6 @@ export { default as LightBulbIcon } from "./Icons/LightBulb";
 export { default as Svg } from "./Svg";
 export { default as BraveIcon } from "./Icons/Brave";
 export { default as BloctoIcon } from "./Icons/Blocto";
+export { default as MartianWalletIcon } from "./Icons/MartianWallet";
+export { default as PetraWalletIcon } from "./Icons/PetraWallet";
 export type { SvgProps } from "./types";

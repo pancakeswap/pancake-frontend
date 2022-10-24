@@ -1,8 +1,7 @@
-import { Trans, useTranslation } from '@pancakeswap/localization'
+import { Trans } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import { Button, Heading, Image, LinkExternal, Text } from '@pancakeswap/uikit'
 import { useState } from 'react'
-import { getDocLink } from '../docLangCodeMapping'
 
 const IntroSteps = [
   {
@@ -38,11 +37,7 @@ const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 
   </AtomBox>
 )
 
-export const StepIntro = () => {
-  const {
-    t,
-    currentLanguage: { code },
-  } = useTranslation()
+export const StepIntro = ({ docLink, docText }: { docLink: string; docText: string }) => {
   const [step, setStep] = useState(0)
 
   const introStep = IntroSteps[step]
@@ -73,8 +68,8 @@ export const StepIntro = () => {
         <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
         <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
       </AtomBox>
-      <Button minHeight={40} variant="subtle" external as={LinkExternal} color="backgroundAlt" href={getDocLink(code)}>
-        {t('Learn How to Connect')}
+      <Button minHeight={40} variant="subtle" external as={LinkExternal} color="backgroundAlt" href={docLink}>
+        {docText}
       </Button>
     </AtomBox>
   )

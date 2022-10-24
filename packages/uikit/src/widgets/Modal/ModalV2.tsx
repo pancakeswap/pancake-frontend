@@ -25,6 +25,7 @@ export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...p
   const portal = getPortalRoot();
 
   if (portal) {
+    if (!isOpen) return null;
     return createPortal(
       <LazyMotion features={domMax}>
         <AnimatePresence>

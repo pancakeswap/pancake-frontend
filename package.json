@@ -10,9 +10,11 @@
   "scripts": {
     "analyze": "ANALYZE=true yarn build",
     "dev": "next dev",
+    "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
     "build": "next build",
     "start": "next start",
     "test": "LC_ALL=\"en_US.UTF-8\" jest && yarn turbo run test",
+    "test:ci": "jest && yarn turbo run test --filter=[HEAD^1]",
     "test:watch": "LC_ALL=\"en_US.UTF-8\" jest --watch",
     "test:config": "jest src/config/__tests__/ --testPathIgnorePatterns",
     "integration-test": "start-server-and-test start http://localhost:3000 'turbo run integration-test --filter=test'",
@@ -24,7 +26,8 @@
     "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk && NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "prepare": "husky install",
     "postinstall": "patch-package && yarn run typechain",
-    "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
+    "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\"",
+    "clean": "turbo run clean && rm -rf node_modules"
   },
   "browserslist": {
     "production": [
@@ -59,7 +62,7 @@
     "@sentry/nextjs": "^7.9.0",
     "@snapshot-labs/snapshot.js": "^0.4.40",
     "@uniswap/token-lists": "^1.0.0-beta.19",
-    "@vanilla-extract/next-plugin": "2.0.1",
+    "@vanilla-extract/next-plugin": "^2.0.2",
     "ajv": "^6.12.3",
     "bignumber.js": "^9.0.0",
     "canvas-confetti": "^1.5.1",
@@ -96,7 +99,7 @@
     "styled-components": "^5.3.3",
     "swiper": "^8.4.2",
     "swr": "^1.3.0",
-    "typescript": "^4.6.3",
+    "typescript": "^4.8.4",
     "wagmi": "^0.6.7"
   },
   "devDependencies": {
@@ -108,6 +111,7 @@
     "@typechain/ethers-v5": "^8.0.5",
     "@types/canvas-confetti": "^1.4.2",
     "@types/jest": "^26.0.23",
+    "@types/js-cookie": "^3.0.2",
     "@types/lodash": "^4.14.178",
     "@types/node": "^13.13.5",
     "@types/react": "^18.0.17",
@@ -139,9 +143,10 @@
     "stylelint-config-recommended": "^7.0.0",
     "stylelint-config-standard": "^25.0.0",
     "stylelint-config-styled-components": "^0.1.1",
+    "tilg": "^0.1.1",
     "ts-node": "^10.9.1",
     "tsconfig": "*",
-    "turbo": "^1.4.5",
+    "turbo": "^1.6.1",
     "typechain": "^6.1.0",
     "vitest": "^0.23.1"
   }

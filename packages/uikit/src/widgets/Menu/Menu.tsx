@@ -1,19 +1,21 @@
+import { useIsMounted } from "@pancakeswap/hooks";
+import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
 import throttle from "lodash/throttle";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import BottomNav from "../../components/BottomNav";
 import { Box } from "../../components/Box";
 import Flex from "../../components/Box/Flex";
+import CakePrice from "../../components/CakePrice/CakePrice";
 import Footer from "../../components/Footer";
+import LangSelector from "../../components/LangSelector/LangSelector";
 import MenuItems from "../../components/MenuItems/MenuItems";
 import { SubMenuItems } from "../../components/SubMenuItems";
 import { useMatchBreakpoints } from "../../contexts";
-import CakePrice from "../../components/CakePrice/CakePrice";
 import Logo from "./components/Logo";
 import { MENU_HEIGHT, MOBILE_MENU_HEIGHT, TOP_BANNER_HEIGHT, TOP_BANNER_HEIGHT_MOBILE } from "./config";
-import { NavProps } from "./types";
-import LangSelector from "../../components/LangSelector/LangSelector";
 import { MenuContext } from "./context";
+import { NavProps } from "./types";
 
 const Wrapper = styled.div`
   position: relative;
@@ -81,13 +83,14 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   buyCakeLabel,
   children,
 }) => {
-  const { isMobile, isMd } = useMatchBreakpoints();
+  const { isMobile } = useMatchBreakpoints();
+  const isMounted = useIsMounted();
   const [showMenu, setShowMenu] = useState(true);
   const refPrevOffset = useRef(typeof window === "undefined" ? 0 : window.pageYOffset);
 
   const topBannerHeight = isMobile ? TOP_BANNER_HEIGHT_MOBILE : TOP_BANNER_HEIGHT;
 
-  const totalTopMenuHeight = banner ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT;
+  const totalTopMenuHeight = isMounted && banner ? MENU_HEIGHT + topBannerHeight : MENU_HEIGHT;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -128,18 +131,18 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
     <MenuContext.Provider value={{ linkComponent }}>
       <Wrapper>
         <FixedContainer showMenu={showMenu} height={totalTopMenuHeight}>
-          {banner && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
+          {banner && isMounted && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
           <StyledNav>
             <Flex>
-              <Logo isDark={isDark} href={homeLink?.href ?? "/"} />
-              {!isMobile && <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />}
+              <Logo href={homeLink?.href ?? "/"} />
+              <AtomBox display={{ xs: "none", md: "block" }}>
+                <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
+              </AtomBox>
             </Flex>
             <Flex alignItems="center" height="100%">
-              {!isMobile && !isMd && (
-                <Box mr="12px">
-                  <CakePrice showSkeleton={false} cakePriceUsd={cakePriceUsd} />
-                </Box>
-              )}
+              <AtomBox mr="12px" display={{ xs: "none", lg: "block" }}>
+                <CakePrice showSkeleton={false} cakePriceUsd={cakePriceUsd} />
+              </AtomBox>
               <Box mt="4px">
                 <LangSelector
                   currentLang={currentLang}
@@ -158,7 +161,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
           <Flex justifyContent="space-around">
             <SubMenuItems items={subLinksWithoutMobile} mt={`${totalTopMenuHeight + 1}px`} activeItem={activeSubItem} />
 
-            {subLinksMobileOnly?.length > 0 && (
+            {subLinksMobileOnly && subLinksMobileOnly?.length > 0 && (
               <SubMenuItems
                 items={subLinksMobileOnly}
                 mt={`${totalTopMenuHeight + 1}px`}
@@ -184,7 +187,9 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
             />
           </Inner>
         </BodyWrapper>
-        {isMobile && <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />}
+        <AtomBox display={{ xs: "block", md: "none" }}>
+          <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
+        </AtomBox>
       </Wrapper>
     </MenuContext.Provider>
   );

@@ -61,6 +61,7 @@ const WalletCard: React.FC<React.PropsWithChildren<Props<any>>> = ({ login, wall
       rel: "noopener noreferrer",
     };
   }
+  // @ts-ignore
   if (typeof window !== "undefined" && !window.ethereum && walletConfig.href && isMobile) {
     linkAction = {
       style: {

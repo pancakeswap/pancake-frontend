@@ -9,10 +9,10 @@ import {
   Skeleton,
   Text,
   useToast,
+  Balance,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import Balance from 'components/Balance'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'

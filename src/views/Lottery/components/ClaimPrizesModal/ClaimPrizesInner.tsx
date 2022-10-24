@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRenewIcon, Button, Flex, PresentWonIcon, Text, useToast } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Flex, PresentWonIcon, Text, useToast, Balance } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { LotteryTicket, LotteryTicketClaimData } from 'config/constants/types'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -12,7 +11,7 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { fetchUserLotteries } from 'state/lottery'
 import { useLottery } from 'state/lottery/hooks'
 import { callWithEstimateGas } from 'utils/calls'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
 interface ClaimInnerProps {
   roundsToClaim: LotteryTicketClaimData[]

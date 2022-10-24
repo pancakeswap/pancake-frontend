@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot } from '@pancakeswap/uikit'
+import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot, QuestionHelper } from '@pancakeswap/uikit'
 import { useExpertModeManager } from 'state/user/hooks'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
 import Transactions from './Transactions'
-import QuestionHelper from '../QuestionHelper'
 import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {

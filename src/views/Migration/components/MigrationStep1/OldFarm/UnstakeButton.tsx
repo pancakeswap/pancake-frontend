@@ -7,7 +7,7 @@ import React from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farmsV1'
 import { useFarmUser } from 'state/farmsV1/hooks'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import useUnstakeFarms from '../../../hook/V1/Farms/useUnstakeFarms'
 
 export interface UnstakeButtonProps {

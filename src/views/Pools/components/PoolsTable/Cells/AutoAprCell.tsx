@@ -1,7 +1,15 @@
-import { Skeleton, Text, Flex, Button, CalculateIcon, useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  Skeleton,
+  Text,
+  Flex,
+  Button,
+  CalculateIcon,
+  useModal,
+  useMatchBreakpoints,
+  FlexGap,
+  Balance,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import Balance from 'components/Balance'
-import { FlexGap } from 'components/Layout/Flex'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultPoolByKey } from 'state/pools/hooks'

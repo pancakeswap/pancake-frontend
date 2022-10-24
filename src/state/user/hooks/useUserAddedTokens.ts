@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Token } from '@pancakeswap/sdk'
 import { createSelector } from '@reduxjs/toolkit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { deserializeToken } from '@pancakeswap/tokens'
+import { deserializeToken } from '@pancakeswap/token-lists'
 import { useSelector } from 'react-redux'
 import { AppState } from '../../index'
 

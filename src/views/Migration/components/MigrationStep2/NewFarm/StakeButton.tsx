@@ -1,22 +1,30 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Button, IconButton, MinusIcon, useMatchBreakpoints, useModal, useToast } from '@pancakeswap/uikit'
+import {
+  AddIcon,
+  Button,
+  IconButton,
+  MinusIcon,
+  useMatchBreakpoints,
+  useModal,
+  useToast,
+  Farm as FarmUI,
+} from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useAppDispatch } from 'state'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useFarmUser, usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import DepositModal from 'views/Farms/components/DepositModal'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
-import WithdrawModal from 'views/Farms/components/WithdrawModal'
 import useApproveFarm from 'views/Farms/hooks/useApproveFarm'
 import useStakeFarms from 'views/Farms/hooks/useStakeFarms'
 import useUnstakeFarms from 'views/Farms/hooks/useUnstakeFarms'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -51,6 +59,7 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
   const { onStake } = useStakeFarms(stakedPid)
   const { onUnstake } = useUnstakeFarms(stakedPid)
   const cakePrice = usePriceCakeBusd()
+  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
 
   const isApproved = account && allowance && allowance.isGreaterThan(0)
 
@@ -91,10 +100,19 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
     }
   }
 
+  const bCakeCalculatorSlot = (calculatorBalance) => (
+    <BCakeCalculator
+      targetInputBalance={calculatorBalance}
+      earningTokenPrice={cakePrice.toNumber()}
+      lpTotalSupply={lpTotalSupply}
+      setBCakeMultiplier={setBCakeMultiplier}
+    />
+  )
+
   const [onPresentDeposit] = useModal(
-    <DepositModal
+    <FarmUI.DepositModal
+      account={account}
       pid={pid}
-      vaultPid={vaultPid}
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       lpPrice={lpTokenPrice}
@@ -107,10 +125,12 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
       multiplier={multiplier}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
+      bCakeMultiplier={bCakeMultiplier}
+      bCakeCalculatorSlot={bCakeCalculatorSlot}
     />,
   )
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
+    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
   )
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()

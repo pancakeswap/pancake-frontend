@@ -9,7 +9,7 @@ import {
 } from 'state/nftMarket/helpers'
 import { FAST_INTERVAL } from 'config/constants'
 import { FetchStatus } from 'config/constants/types'
-import { formatBigNumber } from 'utils/formatBalance'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { pancakeBunniesAddress } from '../constants'
 import { getLowestUpdatedToken } from './useGetLowestPrice'
 

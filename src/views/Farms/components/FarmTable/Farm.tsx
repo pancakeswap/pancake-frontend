@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import { useFarmUser } from 'state/farms/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, Skeleton, Flex } from '@pancakeswap/uikit'
+import { Text, Skeleton, Flex, Farm as FarmUI } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { TokenPairImage } from 'components/TokenImage'
-import { StableFarmTag } from 'components/Tags'
+
+const { StableFarmTag } = FarmUI.Tags
 
 export interface FarmProps {
   label: string

@@ -1,6 +1,13 @@
-import { ArrowForwardIcon, Button, Heading, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  ArrowForwardIcon,
+  Button,
+  Heading,
+  Skeleton,
+  Text,
+  useMatchBreakpoints,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { FetchStatus, LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -9,7 +16,7 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { LotteryResponse } from 'state/types'
 import styled from 'styled-components'
 import useSWR from 'swr'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import Timer from 'views/Lottery/components/Countdown/Timer'
 import useGetNextLotteryEvent from 'views/Lottery/hooks/useGetNextLotteryEvent'

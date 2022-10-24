@@ -2,7 +2,7 @@ import BigNumber from 'bignumber.js'
 import { convertSharesToCake } from 'views/Pools/helpers'
 import { multicallv2 } from 'utils/multicall'
 import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 export const fetchPublicVaultData = async (cakeVaultAddress: string) => {
   try {

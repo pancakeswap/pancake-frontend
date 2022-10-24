@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
-import Balance from 'components/Balance'
+import { Text, Flex, Box, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 

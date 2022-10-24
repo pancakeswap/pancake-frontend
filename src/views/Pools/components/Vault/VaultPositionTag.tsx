@@ -1,5 +1,15 @@
-import { Tag, TagProps, Text, SplitIcon, LockIcon, UnlockIcon, HotIcon, Box } from '@pancakeswap/uikit'
-import { FlexGap, FlexGapProps } from 'components/Layout/Flex'
+import {
+  Tag,
+  TagProps,
+  Text,
+  SplitIcon,
+  LockIcon,
+  UnlockIcon,
+  HotIcon,
+  Box,
+  FlexGap,
+  FlexGapProps,
+} from '@pancakeswap/uikit'
 import Trans from 'components/Trans'
 import { useTranslation } from '@pancakeswap/localization'
 import { FC, ReactNode, useMemo } from 'react'

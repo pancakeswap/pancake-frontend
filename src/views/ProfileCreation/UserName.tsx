@@ -1,33 +1,33 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
-import styled from 'styled-components'
+import { formatUnits } from '@ethersproject/units'
+import { useTranslation } from '@pancakeswap/localization'
 import {
+  AutoRenewIcon,
+  Button,
   Card,
   CardBody,
-  Heading,
-  Text,
-  Input as UIKitInput,
-  Button,
-  AutoRenewIcon,
+  Checkbox,
   CheckmarkIcon,
   Flex,
-  WarningIcon,
-  useModal,
+  Heading,
+  Input as UIKitInput,
   Skeleton,
-  Checkbox,
+  Text,
+  useModal,
   useToast,
+  WarningIcon,
 } from '@pancakeswap/uikit'
-import { parseISO, formatDistance } from 'date-fns'
-import { useWeb3React, useSignMessage } from '@pancakeswap/wagmi'
-import { formatUnits } from '@ethersproject/units'
+import { useDebounce } from '@pancakeswap/hooks'
+import { useSignMessage, useWeb3React } from '@pancakeswap/wagmi'
 import { API_PROFILE } from 'config/constants/endpoints'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
-import fetchWithTimeout from 'utils/fetchWithTimeout'
-import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
+import { formatDistance, parseISO } from 'date-fns'
+import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
+import fetchWithTimeout from 'utils/fetchWithTimeout'
+import { REGISTER_COST, USERNAME_MAX_LENGTH, USERNAME_MIN_LENGTH } from './config'
 import ConfirmProfileCreationModal from './ConfirmProfileCreationModal'
 import useProfileCreation from './contexts/hook'
-import { USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH, REGISTER_COST } from './config'
-import useDebounce from '../../hooks/useDebounce'
 
 enum ExistingUserState {
   IDLE = 'idle', // initial state

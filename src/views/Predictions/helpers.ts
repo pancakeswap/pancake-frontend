@@ -1,6 +1,6 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { BetPosition } from 'state/types'
-import { formatBigNumberToFixed } from 'utils/formatBalance'
+import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import { NegativeOne, One, Zero } from '@ethersproject/constants'
 

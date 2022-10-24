@@ -4,7 +4,7 @@ import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@p
 import _noop from 'lodash/noop'
 import { useTranslation } from '@pancakeswap/localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useIfoCeiling } from 'state/pools/hooks'
 
 import { LockedModalBodyPropsType, ModalValidator } from '../types'

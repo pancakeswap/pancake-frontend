@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Text, Heading, Card, CardHeader, CardBody, Flex } from '@pancakeswap/uikit'
 import { Auction, Bidder } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import useCongratulateAuctionWinner from '../hooks/useCongratulateAuctionWinner'
 import WhitelistedBiddersButton from './WhitelistedBiddersButton'
 

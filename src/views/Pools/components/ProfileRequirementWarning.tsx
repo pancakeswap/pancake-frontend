@@ -1,5 +1,4 @@
-import { Box, Message, MessageText } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import { Box, Message, MessageText, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import { useProfileRequirement } from '../hooks/useProfileRequirement'
