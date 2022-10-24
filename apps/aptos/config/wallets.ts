@@ -1,3 +1,4 @@
+import { isIOS } from 'react-device-detect'
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 
 export enum ConnectorNames {
@@ -66,7 +67,7 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     title: 'Trust Wallet',
     icon: 'https://pancakeswap.finance/images/wallets/trust.png',
     get installed() {
-      return typeof window !== 'undefined' && Boolean(window.aptos) && Boolean((window.aptos as any)?.isTrust)
+      return typeof window !== 'undefined' && isIOS && Boolean(window.aptos) && Boolean((window.aptos as any)?.isTrust)
     },
     connectorId: ConnectorNames.TrustWallet,
   },
