@@ -1,6 +1,6 @@
 import { Chain } from '../chain'
 import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
-import { PetraConnector, PetraConnectorOptions } from './petra'
+import { Connector } from './base'
 
 declare global {
   interface Window {
@@ -8,20 +8,15 @@ declare global {
   }
 }
 
-export class RiseWalletConnector extends PetraConnector {
-  readonly id: string
+export class RiseWalletConnector extends Connector<any, any> {
+  readonly id = 'riseWallet'
 
-  readonly name: string
-  readonly ready = typeof window !== 'undefined' && !!window.rise
+  readonly name = 'Rise Wallet'
+  readonly ready = typeof window !== 'undefined' && !!window.rise && window.rise?.isRise
   provider?: any
 
-  constructor(chains?: Chain[], options?: PetraConnectorOptions) {
-    super(chains, options)
-    let name = 'Rise Wallet'
-    const overrideName = options?.name
-    if (typeof overrideName === 'string') name = overrideName
-    this.id = 'riseWallet'
-    this.name = name
+  constructor(config: { chains?: Chain[] } = {}) {
+    super(config)
   }
 
   async getProvider() {
