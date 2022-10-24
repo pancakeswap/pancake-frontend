@@ -1,12 +1,12 @@
 import { ChainId, Coin, AptosCoin } from '.'
 
 describe('Coin', () => {
-  const ADDRESS_ONE = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::TESTNET_coins::TESTNETBTC'
-  const ADDRESS_TWO = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::TESTNET_coins::TESTNETSOL'
+  const ADDRESS_ONE = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC'
+  const ADDRESS_TWO = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetSOL'
 
-  const ADDRESS_USDC = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::TESTNET_coins::TESTNETUSDC'
-  const ADDRESS_BUSD = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::TESTNET_coins::TESTNETBUSD'
-  const ADDRESS_BNB = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::TESTNET_coins::TESTNETBNB'
+  const ADDRESS_USDC = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetUSDC'
+  const ADDRESS_BUSD = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBUSD'
+  const ADDRESS_BNB = '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB'
 
   describe('#equals', () => {
     it('fails if address differs', () => {
@@ -67,7 +67,7 @@ describe('Coin', () => {
 
       expect(
         new Coin(ChainId.TESTNET, '0x16::pancake::CAKE', 8, '').sortsBefore(
-          new Coin(ChainId.TESTNET, '0x16::TESTNET_coins::TESTNETBTC', 8, '')
+          new Coin(ChainId.TESTNET, '0x16::devnet_coins::DevnetBTC', 8, '')
         )
       ).toBe(false)
 
