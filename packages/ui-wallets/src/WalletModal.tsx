@@ -213,7 +213,7 @@ function WalletSelect<T>({
             flexDirection="column"
             onClick={() => onClick(wallet)}
           >
-            <AtomBox className={wallet.installed && promotedGradientClass} p="1px" borderRadius="12px" mb="4px">
+            <AtomBox className={wallet.installed && promotedGradientClass} p="2px" borderRadius="12px" mb="4px">
               <AtomBox
                 bgc="dropdown"
                 display="flex"
