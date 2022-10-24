@@ -2,7 +2,7 @@ import { Types } from 'aptos'
 import { Chain } from '../chain'
 import { ConnectorNotFoundError } from '../errors'
 import { Connector } from './base'
-import { Aptos, Account } from './types'
+import { Aptos, Account, SignMessagePayload, SignMessageResponse } from './types'
 
 declare global {
   interface Window {
@@ -102,6 +102,14 @@ export class PetraConnector extends Connector<Window['aptos'], PetraConnectorOpt
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signTransaction(tx)
+  }
+
+  async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    const response = await provider.signMessage(message)
+
+    return response
   }
 
   protected onAccountsChanged = (account: Account) => {

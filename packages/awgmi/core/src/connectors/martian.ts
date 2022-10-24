@@ -3,6 +3,7 @@ import { Chain } from '../chain'
 import { Connector } from './base'
 import { ConnectorNotFoundError } from '../errors'
 import { Address } from '../types'
+import { SignMessagePayload, SignMessageResponse } from './types'
 
 declare global {
   interface Window {
@@ -101,6 +102,14 @@ export class MartianConnector extends Connector<Window['martian']> {
     if (!provider) throw new ConnectorNotFoundError()
     const transaction = await provider.generateTransaction(account?.address || '', payload)
     return provider.signTransaction(transaction)
+  }
+
+  async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    const response = await provider.signMessage(message)
+
+    return response
   }
 
   protected onAccountsChanged = async (address: Address) => {

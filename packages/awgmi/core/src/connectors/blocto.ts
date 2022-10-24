@@ -4,7 +4,7 @@ import { Chain } from '../chain'
 import { ChainNotConfiguredError, ConnectorNotFoundError, ConnectorUnauthorizedError } from '../errors'
 import { Address } from '../types'
 import { Connector, ConnectorData, ConnectorTransactionResponse } from './base'
-import { Account } from './types'
+import { Account, SignMessagePayload, SignMessageResponse } from './types'
 
 declare global {
   interface Window {
@@ -94,6 +94,14 @@ export class BloctoConnector extends Connector<AptosProviderInterface, AptosProv
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signTransaction(transaction)
+  }
+
+  async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    const response = await provider.signMessage(message)
+
+    return response
   }
 
   async isConnected(): Promise<boolean> {

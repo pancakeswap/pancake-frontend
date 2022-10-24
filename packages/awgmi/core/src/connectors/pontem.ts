@@ -134,6 +134,18 @@ export class PontemConnector extends Connector<Window['pontem']> {
     return provider.signTransaction(payload)
   }
 
+  async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    const response = await provider.signMessage(message)
+
+    if (!response || response.success) {
+      throw new Error('signMessage failed')
+    }
+
+    return response.result
+  }
+
   protected onAccountsChanged = async (address: Address) => {
     if (!address) {
       this.emit('disconnect')

@@ -10,7 +10,7 @@ import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import { Types } from 'aptos'
 import EventEmitter from 'eventemitter3'
 import { Chain, defaultChains } from '../chain'
-import { Account } from './types'
+import { Account, SignMessagePayload, SignMessageResponse } from './types'
 
 export type ConnectorData<Provider = any> = {
   account?: Account
@@ -61,6 +61,7 @@ export abstract class Connector<Provider = any, Options = any> extends EventEmit
   abstract signTransaction(transaction: Types.EntryFunctionPayload): Promise<Uint8Array>
 
   abstract isConnected(): Promise<boolean>
+  abstract signMessage(payload: SignMessagePayload): Promise<SignMessageResponse>
 
   isChainUnsupported(networkName: string) {
     return !this.chains.some((x) => equalsIgnoreCase(x.name, networkName))

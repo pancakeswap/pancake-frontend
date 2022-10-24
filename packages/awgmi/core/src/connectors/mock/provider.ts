@@ -27,7 +27,7 @@ const client = new AptosClient(devnet.nodeUrls.default)
 
 type Events = {
   accountChange(account: Account): void
-  networkChange(network: string): void
+  networkChange(network: { networkName: string }): void
   disconnect(): void
 }
 
@@ -129,7 +129,7 @@ export class MockProvider implements Aptos {
     this.events.addListener('accountChange', listener)
   }
 
-  onNetworkChange(listener: (network: string) => void): void {
+  onNetworkChange(listener: (network: { networkName: string }) => void): void {
     this.events.addListener('networkChange', listener)
   }
 

@@ -3,6 +3,7 @@ import { Chain } from '../chain'
 import { Connector, ConnectorTransactionResponse } from './base'
 import { ConnectorNotFoundError } from '../errors'
 import { Address } from '../types'
+import { SignMessagePayload, SignMessageResponse } from './types'
 
 declare global {
   interface Window {
@@ -107,6 +108,14 @@ export class FewchaConnector extends Connector {
     if (!provider) throw new ConnectorNotFoundError()
     const transaction = await methodWrapper(provider.generateTransaction)(payload)
     return provider.signTransaction(transaction)
+  }
+
+  async signMessage(message: SignMessagePayload): Promise<SignMessageResponse> {
+    const provider = await this.getProvider()
+    if (!provider) throw new ConnectorNotFoundError()
+    const response = await provider.signMessage(message)
+
+    return response
   }
 
   protected onAccountsChanged = async (address: Address) => {
