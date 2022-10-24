@@ -244,18 +244,26 @@ const SwapPage = () => {
 
   const handleInputSelect = useCallback(
     (currency: Currency) => {
+      if (outputCurrency?.wrapped.equals(currency.wrapped) && inputCurrency) {
+        replaceBrowserHistory('outputCurrency', currencyId(inputCurrency))
+      }
+
       dispatch(selectCurrency({ field: Field.INPUT, currencyId: currency.wrapped.address }))
       replaceBrowserHistory('inputCurrency', currencyId(currency))
     },
-    [dispatch],
+    [dispatch, inputCurrency, outputCurrency],
   )
 
   const handleOutputSelect = useCallback(
     (currency: Currency) => {
+      if (inputCurrency?.wrapped.equals(currency.wrapped) && outputCurrency) {
+        replaceBrowserHistory('inputCurrency', currencyId(outputCurrency))
+      }
+
       dispatch(selectCurrency({ field: Field.OUTPUT, currencyId: currency.wrapped.address }))
       replaceBrowserHistory('outputCurrency', currencyId(currency))
     },
-    [dispatch],
+    [dispatch, inputCurrency, outputCurrency],
   )
 
   const handleSwitch = useCallback(() => {
