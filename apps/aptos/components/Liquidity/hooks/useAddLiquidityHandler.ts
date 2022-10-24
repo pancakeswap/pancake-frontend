@@ -68,27 +68,16 @@ export default function useAddLiquidityHanlder({
     )
     console.info(payload, 'payload')
 
-    try {
-      await simulateTransactionAsync({ payload })
-    } catch (error) {
-      if (error instanceof SimulateTransactionError) {
-        console.error(`Add Liquidity failed`, { error }, payload)
-        setLiquidityState({
-          attemptingTxn: false,
-          liquidityErrorMessage: t('Add liquidity failed: %message%', {
-            message: transactionErrorToUserReadableMessage(error),
-          }),
-          txHash: undefined,
-        })
-
-        return
-      }
-    }
-
     // eslint-disable-next-line consistent-return
-    return sendTransactionAsync({
-      payload,
-    })
+    return simulateTransactionAsync({ payload })
+      .then((results) => {
+        const result = Array.isArray(results) ? results[0] : { max_gas_amount: '0' }
+
+        return sendTransactionAsync({
+          payload,
+          options: { max_gas_amount: result.max_gas_amount },
+        })
+      })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
         const symbolA = currencyA.symbol
@@ -106,12 +95,18 @@ export default function useAddLiquidityHanlder({
       })
       .catch((err) => {
         console.error(`Add Liquidity failed`, { err }, payload)
+
+        let errorMsg = ''
+
+        if (err instanceof UserRejectedRequestError || err instanceof SimulateTransactionError) {
+          errorMsg = t('Add liquidity failed: %message%', {
+            message: transactionErrorToUserReadableMessage(err),
+          })
+        }
+
         setLiquidityState({
           attemptingTxn: false,
-          liquidityErrorMessage:
-            err instanceof UserRejectedRequestError
-              ? undefined
-              : t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err) }),
+          liquidityErrorMessage: errorMsg,
           txHash: undefined,
         })
       })
