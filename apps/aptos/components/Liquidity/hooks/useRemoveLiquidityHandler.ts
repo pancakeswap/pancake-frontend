@@ -61,27 +61,17 @@ export default function useRemoveLiquidityHandler({
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
 
     console.info(payload, 'payload')
-    try {
-      await simulateTransactionAsync({
-        payload,
-      })
-    } catch (err) {
-      if (err instanceof SimulateTransactionError) {
-        console.error(`Remove Liquidity failed`, err, payload)
-        setLiquidityState({
-          attemptingTxn: false,
-          liquidityErrorMessage: t('Remove liquidity failed: %message%', {
-            message: transactionErrorToUserReadableMessage(err),
-          }),
-          txHash: undefined,
-        })
-        return
-      }
-    }
+
     // eslint-disable-next-line consistent-return
-    return sendTransactionAsync({
-      payload,
-    })
+    return simulateTransactionAsync({ payload })
+      .then((results) => {
+        const result = Array.isArray(results) ? results[0] : { max_gas_amount: '0' }
+
+        return sendTransactionAsync({
+          payload,
+          options: { max_gas_amount: result.max_gas_amount },
+        })
+      })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
         const symbolA = currencyA.symbol
@@ -98,14 +88,17 @@ export default function useRemoveLiquidityHandler({
         })
       })
       .catch((err) => {
+        let errorMsg = ''
+
+        if (err instanceof UserRejectedRequestError || err instanceof SimulateTransactionError) {
+          errorMsg = t('Remove liquidity failed: %message%', {
+            message: transactionErrorToUserReadableMessage(err),
+          })
+        }
+
         setLiquidityState({
           attemptingTxn: false,
-          liquidityErrorMessage:
-            err instanceof UserRejectedRequestError
-              ? undefined
-              : t('Remove liquidity failed: %message%', {
-                  message: transactionErrorToUserReadableMessage(err),
-                }),
+          liquidityErrorMessage: errorMsg,
           txHash: undefined,
         })
       })
