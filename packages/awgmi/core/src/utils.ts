@@ -30,19 +30,23 @@ export const isStructTag = (structTag: string) => {
 }
 
 export const unwrapTypeFromString = (type: string) => {
-  const bracketsRegexp = /(?<=<)[^\][\r\n]*(?=>)/g
+  // safari unsupported lookbehind
+  // const bracketsRegexp = /(?<=<)[^\][\r\n]*(?=>)/g
+  const bracketsRegexp = /(<)[^\][\r\n]*(>)/g
   const match = bracketsRegexp.exec(type)
   if (match) {
-    return match[0]
+    return match[0].substring(1).slice(0, -1)
   }
   return undefined
 }
 
 export const unwrapTypeArgFromString = (type: string) => {
-  const bracketsRegexp = /(?<=<)([^<>]+)(?=>)/g
+  // safari unsupported lookbehind
+  // const bracketsRegexp = /(?<=<)([^<>]+)(?=>)/g
+  const bracketsRegexp = /(<)([^<>]+)(>)/g
   const match = bracketsRegexp.exec(type)
   if (match) {
-    return match[0]
+    return match[0].substring(1).slice(0, -1)
   }
   return undefined
 }
