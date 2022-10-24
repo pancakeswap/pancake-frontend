@@ -23,7 +23,6 @@ import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/Set
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
-import { TestTokens } from 'components/TestTokens'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useCurrency } from 'hooks/Tokens'
@@ -439,7 +438,6 @@ const SwapPage = () => {
         </AutoColumn>
         {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
       </Card>
-      <TestTokens />
     </>
   )
 }

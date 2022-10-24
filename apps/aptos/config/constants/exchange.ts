@@ -1,5 +1,5 @@
 import { ChainId, ONE_HUNDRED_PERCENT, JSBI, Percent, Token, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { APT } from 'config/coins'
+import { APT, USDC } from 'config/coins'
 import { ChainTokenList } from './types'
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
@@ -18,21 +18,6 @@ export const SUGGESTED_BASES = {}
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST = {
-  [ChainId.DEVNET]: [
-    APT[ChainId.DEVNET],
-    new Coin(
-      ChainId.DEVNET,
-      '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB',
-      8,
-      'BNB',
-    ),
-    new Coin(
-      ChainId.DEVNET,
-      '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetETH',
-      8,
-      'ETH',
-    ),
-  ],
   [ChainId.TESTNET]: [
     APT[ChainId.TESTNET],
     new Coin(
@@ -48,6 +33,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       'ETH',
     ),
   ],
+  [ChainId.MAINNET]: [APT[ChainId.MAINNET], USDC[ChainId.MAINNET]],
 }
 
 /**
@@ -59,13 +45,13 @@ export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {}
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.DEVNET]: [],
+  [ChainId.MAINNET]: [],
   [ChainId.TESTNET]: [],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  [ChainId.DEVNET]: [],
+  [ChainId.MAINNET]: [],
   [ChainId.TESTNET]: [],
 }
 

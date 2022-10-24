@@ -127,7 +127,7 @@ export const ${camelCase(moveFn.moduleName)}${
 `.trimStart();
 };
 
-const DEFAULT_NETWORK = "devnet";
+const DEFAULT_NETWORK = "mainnet";
 
 interface FetchArgs extends Arguments {
   address: string;

@@ -26,7 +26,7 @@ export function PercentSlider({ onValueChanged, currentValue }: PercentSliderPro
   );
 
   const handleChangePercent = useCallback(
-    (value) => setInnerLiquidityPercentage(Math.ceil(value)),
+    (value: any) => setInnerLiquidityPercentage(Math.ceil(value)),
     [setInnerLiquidityPercentage]
   );
 

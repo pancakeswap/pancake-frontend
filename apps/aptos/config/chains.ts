@@ -1,5 +1,8 @@
-import { defaultChains, defaultChain } from '@pancakeswap/awgmi'
+// import { defaultChain } from '@pancakeswap/awgmi'
+import { mainnet, testnet } from '@pancakeswap/awgmi/core'
 
-export { defaultChain }
+// export { defaultChain }
 
-export const chains = defaultChains
+export const defaultChain = testnet
+
+export const chains = [mainnet, testnet]

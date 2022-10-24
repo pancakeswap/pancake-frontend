@@ -15,7 +15,6 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
   const native = useNativeCurrency()
   const wrapped = currency?.wrapped
   const wnative = native.wrapped
-  // only devnet/ testnet support
   const stable = USDC[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(

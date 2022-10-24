@@ -4,6 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
 
 import { APEX_DOMAIN } from 'config'
+import { defaultChain } from 'config/chains'
 import Image from 'next/future/image'
 
 const evmChains = [
@@ -45,7 +46,9 @@ const NetworkSelect = () => {
 }
 
 export const NetworkSwitcher = () => {
-  const network = useNetwork()
+  const network = useNetwork() || defaultChain
+
+  const { chain = defaultChain } = network
 
   const isMounted = useIsMounted()
 
@@ -58,7 +61,7 @@ export const NetworkSwitcher = () => {
       text={
         <>
           <Box display={['none', null, null, null, null, 'block']}>
-            Aptos{isMounted && network.chain?.testnet && network.chain?.name ? ` ${network.chain?.name}` : ''}
+            Aptos{isMounted && chain?.testnet && chain?.name ? ` ${chain?.name}` : ''}
           </Box>
           <Box display={['block', null, null, null, null, 'none']}>APT</Box>
         </>

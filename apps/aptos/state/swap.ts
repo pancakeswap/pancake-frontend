@@ -163,7 +163,7 @@ export function useDefaultsFromURLSearch():
 
   useEffect(() => {
     if (!chainId) return
-    const parsed = queryParametersToSwapState(query, APTOS_COIN, USDC[chainId].address)
+    const parsed = queryParametersToSwapState(query, APTOS_COIN, USDC[chainId]?.address)
 
     dispatch(
       replaceSwapState({

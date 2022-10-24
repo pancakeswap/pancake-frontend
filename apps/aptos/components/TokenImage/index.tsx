@@ -1,4 +1,4 @@
-import { ChainId, Currency } from '@pancakeswap/aptos-swap-sdk'
+import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import {
   TokenPairImage as UIKitTokenPairImage,
   TokenPairImageProps as UIKitTokenPairImageProps,
@@ -13,9 +13,6 @@ interface TokenPairImageProps extends Omit<UIKitTokenPairImageProps, 'primarySrc
 
 const getImageUrlFromToken = (token: Currency) => {
   const address = token?.isNative ? token.wrapped.address : token.address
-  if (token.chainId !== ChainId.DEVNET) {
-    return `/images/${token.chainId}/tokens/${address}.png`
-  }
   return `/images/tokens/${address}.png`
 }
 

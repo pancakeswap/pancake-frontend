@@ -17,10 +17,8 @@ export class MartianConnector extends Connector<Window['martian']> {
   provider?: Window['martian']
 
   readonly ready = typeof window !== 'undefined' && !!window.martian
-  constructor(chains?: Chain[]) {
-    super({
-      chains,
-    })
+  constructor(config: { chains?: Chain[] } = {}) {
+    super(config)
   }
 
   async getProvider() {

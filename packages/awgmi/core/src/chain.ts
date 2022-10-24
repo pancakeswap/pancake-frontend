@@ -36,7 +36,7 @@ export const mainnet: Chain = {
   network: 'mainnet',
   nodeUrls: {
     default: 'https://fullnode.mainnet.aptoslabs.com/v1/',
-    nodeReal: 'https://aptos-testnet.nodereal.io/v1',
+    nodeReal: 'https://aptos-mainnet.nodereal.io/v1',
   },
   blockExplorers: {
     default: {
@@ -102,6 +102,6 @@ export const testnet: Chain = {
   faucetUrl: 'https://faucet.testnet.aptoslabs.com',
 }
 
-export const defaultChains = [devnet, testnet]
+export const defaultChains = [mainnet, devnet, testnet]
 
-export const defaultChain = devnet
+export const defaultChain = mainnet
