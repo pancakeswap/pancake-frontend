@@ -27,7 +27,10 @@
     "prepare": "husky install",
     "postinstall": "patch-package && yarn run typechain",
     "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\"",
-    "clean": "turbo run clean && rm -rf node_modules"
+    "clean": "turbo run clean && rm -rf node_modules",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release-packages": "turbo run build --filter=packages/* && changeset version && changeset publish"
   },
   "browserslist": {
     "production": [
@@ -103,6 +106,7 @@
     "wagmi": "^0.6.7"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.25.0",
     "@next/eslint-plugin-next": "^12.0.10",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@testing-library/jest-dom": "^5.16.2",
