@@ -166,6 +166,18 @@ export const pageVariants = recipe({
         },
       }),
     },
+    hasWarningBanner: {
+      true: responsiveStyle({
+        lg: {
+          minHeight: "calc(100vh - 169px)",
+        },
+      }),
+      false: responsiveStyle({
+        lg: {
+          minHeight: "calc(100vh - 99px)",
+        },
+      }),
+    },
   },
 });
 
