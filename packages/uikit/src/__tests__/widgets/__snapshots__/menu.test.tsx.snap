@@ -1906,7 +1906,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
             </a>
           </div>
           <div
-            class="_1c7dnup0 pkzlfc10 pkzlfc2"
+            class="reset__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_md__pkzlfc2"
           >
             <div
               class="c6 c3"
@@ -2206,7 +2206,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
           height="100%"
         >
           <div
-            class="_1c7dnup0 pkzlfc12c pkzlfc10 pkzlfc3"
+            class="reset__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfc12c sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
           >
             <a
               class="c26"
@@ -2447,10 +2447,10 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
       class="c37"
     >
       <div
-        class="c38 c3 c39 _1c7dnup0 pkzlfc10 pkzlfc1"
+        class="c38 c3 c39 reset__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
       >
         <div
-          class="c40 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c40 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c5"
@@ -2465,7 +2465,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
           </svg>
         </div>
         <div
-          class="c41 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c41 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c5"
@@ -2513,10 +2513,10 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
         </div>
       </div>
       <div
-        class="c38 c3 c48 _1c7dnup0 pkzlfc10 pkzlfc1"
+        class="c38 c3 c48 reset__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
       >
         <div
-          class="c40 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c40 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c5"
@@ -2531,7 +2531,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
           </svg>
         </div>
         <div
-          class="c41 _1c7dnup0 pkzlfc0 pkzlfc12"
+          class="c41 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c5"
@@ -3646,7 +3646,7 @@ html[data-useragent*="TokenPocket_iOS"] .c99 {
       </div>
     </div>
     <div
-      class="_1c7dnup0 pkzlfc0 pkzlfc12"
+      class="reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
     >
       <div
         class="c99 c37 c100"

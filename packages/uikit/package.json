@@ -65,7 +65,7 @@
     "@types/styled-system": "^5.1.15",
     "@pancakeswap/ui": "*",
     "@vanilla-extract/recipes": "^0.2.5",
-    "@vanilla-extract/css": "^1.9.0",
+    "@vanilla-extract/css": "^1.9.1",
     "framer-motion": "6.5.1",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",
