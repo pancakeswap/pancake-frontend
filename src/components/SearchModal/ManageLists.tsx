@@ -8,10 +8,9 @@ import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { listsAtom, useListState } from 'state/lists/lists'
 import styled from 'styled-components'
-import { useFetchListCallback } from '@pancakeswap/token-lists'
+import { useFetchListCallback, acceptListUpdate, disableList, enableList, removeList } from '@pancakeswap/token-lists'
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
-import { acceptListUpdate, disableList, enableList, removeList } from '../../../packages/token-lists/src/actions'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
 
 import Column, { AutoColumn } from '../Layout/Column'

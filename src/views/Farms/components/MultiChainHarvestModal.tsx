@@ -28,7 +28,7 @@ import { LightGreyCard } from 'components/Card'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useFarmCProxyAddress } from 'views/Farms/hooks/useFarmCProxyAddress'
 import useNonBscHarvestFarm from 'views/Farms/hooks/useNonBscHarvestFarm'
-import { farmFetcher } from '../../../../apis/farms/src/helper'
+import { farmFetcher } from 'state/farms'
 
 const TokenWrapper = styled.div`
   padding-right: 8px;
