@@ -7,5 +7,21 @@
   "access": "public",
   "baseBranch": "develop",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [
+    "@pancakeswap/eslint-config-pancake",
+    "@pancakeswap/farms",
+    "@pancakeswap/hooks",
+    "@pancakeswap/localization",
+    "@pancakeswap/multicall",
+    "@pancakeswap/tokens",
+    "@pancakeswap/token-lists",
+    "@pancakeswap/ui",
+    "@pancakeswap/ui-wallets",
+    "@pancakeswap/uikit",
+    "@pancakeswap/utils",
+    "farms-api",
+    "aptos-web",
+    "bridge",
+    "test"
+  ]
 }
