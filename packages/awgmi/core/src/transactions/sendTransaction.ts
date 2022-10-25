@@ -9,7 +9,7 @@ import { TransactionResponse } from './types'
 export type SendTransactionArgs = {
   /** Network name used to validate if the signer is connected to the target chain */
   networkName?: string
-  payload: Types.EntryFunctionPayload
+  payload: Types.TransactionPayload
   options?: Partial<Types.SubmitTransactionRequest>
 }
 

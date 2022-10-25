@@ -49,16 +49,14 @@ export class MockProvider implements Aptos {
     return devnet.network
   }
 
-  async signTransaction(transaction: Types.EntryFunctionPayload): Promise<Uint8Array> {
+  async signTransaction(transaction: Types.TransactionPayload): Promise<Uint8Array> {
     if (!this._account) throw new UserRejectedRequestError(new Error())
     const txnRequest = await client.generateTransaction(this._account.address(), transaction)
     const signedTxn = await client.signTransaction(this._account, txnRequest)
     return signedTxn
   }
 
-  async signAndSubmitTransaction(
-    transaction: Types.EntryFunctionPayload,
-  ): ReturnType<AptosClient['submitTransaction']> {
+  async signAndSubmitTransaction(transaction: Types.TransactionPayload): ReturnType<AptosClient['submitTransaction']> {
     if (!this._account) throw new UserRejectedRequestError(new Error())
 
     const rawTxn = await client.generateTransaction(this._account.address(), transaction)

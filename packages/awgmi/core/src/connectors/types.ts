@@ -34,11 +34,11 @@ export interface Aptos {
   isConnected(): Promise<boolean>
   network(): Promise<string>
   signAndSubmitTransaction(
-    transaction: Types.EntryFunctionPayload,
+    transaction: Types.TransactionPayload,
     options?: Partial<Types.SubmitTransactionRequest>,
   ): ReturnType<AptosClient['submitTransaction']>
   signMessage(message?: SignMessagePayload): Promise<SignMessageResponse>
-  signTransaction(transaction: Types.EntryFunctionPayload): ReturnType<AptosClient['signTransaction']>
+  signTransaction(transaction: Types.TransactionPayload): ReturnType<AptosClient['signTransaction']>
   on?: any
   onAccountChange?(listener: (account: Account) => void): void
   onNetworkChange?(listener: (network: { networkName: string }) => void): void

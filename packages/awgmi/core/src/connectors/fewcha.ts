@@ -92,7 +92,7 @@ export class FewchaConnector extends Connector {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload): Promise<ConnectorTransactionResponse> {
+  async signAndSubmitTransaction(payload: Types.TransactionPayload): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
@@ -103,7 +103,7 @@ export class FewchaConnector extends Connector {
     return { hash }
   }
 
-  async signTransaction(payload: Types.EntryFunctionPayload) {
+  async signTransaction(payload: Types.TransactionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     const transaction = await methodWrapper(provider.generateTransaction)(payload)

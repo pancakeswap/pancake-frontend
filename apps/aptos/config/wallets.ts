@@ -62,13 +62,13 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     },
     connectorId: ConnectorNames.Blocto,
   },
-  // {
-  //   id: 'trustWallet',
-  //   title: 'Trust Wallet',
-  //   icon: 'https://pancakeswap.finance/images/wallets/trust.png',
-  //   get installed() {
-  //     return typeof window !== 'undefined' && isIOS && Boolean(window.aptos) && Boolean((window.aptos as any)?.isTrust)
-  //   },
-  //   connectorId: ConnectorNames.TrustWallet,
-  // },
+  {
+    id: 'trustWallet',
+    title: 'Trust Wallet',
+    icon: 'https://pancakeswap.finance/images/wallets/trust.png',
+    get installed() {
+      return typeof window !== 'undefined' && isIOS && Boolean(window.aptos) && Boolean((window.aptos as any)?.isTrust)
+    },
+    connectorId: ConnectorNames.TrustWallet,
+  },
 ]

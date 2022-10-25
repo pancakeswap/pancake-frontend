@@ -82,7 +82,7 @@ export class MartianConnector extends Connector<Window['martian']> {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload, options?: Types.SubmitTransactionRequest) {
+  async signAndSubmitTransaction(payload: Types.TransactionPayload, options?: Types.SubmitTransactionRequest) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
@@ -94,7 +94,7 @@ export class MartianConnector extends Connector<Window['martian']> {
     return { hash }
   }
 
-  async signTransaction(payload: Types.EntryFunctionPayload) {
+  async signTransaction(payload: Types.TransactionPayload) {
     const provider = await this.getProvider()
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()

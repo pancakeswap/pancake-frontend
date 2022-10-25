@@ -66,13 +66,13 @@ export class MockConnector extends Connector {
     return this.provider
   }
 
-  async signAndSubmitTransaction(transaction?: Types.EntryFunctionPayload) {
+  async signAndSubmitTransaction(transaction?: Types.TransactionPayload) {
     const provider = await this.getProvider()
     if (!transaction) throw new Error('missing transaction')
     return provider?.signAndSubmitTransaction(transaction)
   }
 
-  async signTransaction(transaction?: Types.EntryFunctionPayload): Promise<Uint8Array> {
+  async signTransaction(transaction?: Types.TransactionPayload): Promise<Uint8Array> {
     const provider = await this.getProvider()
     if (!transaction) throw new Error('missing transaction')
     return provider?.signTransaction(transaction)
