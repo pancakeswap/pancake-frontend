@@ -117,8 +117,9 @@ const generateTsFn = (moveFn: CodeGenMoveFunction) => {
 ${typeTemplate}
 export const ${camelCase(moveFn.moduleName)}${
     camelCase(moveFn.name, { pascalCase: true })
-  } = (${argsTemplate}): Types.EntryFunctionPayload => {
+  } = (${argsTemplate}): Types.TransactionPayload_EntryFunctionPayload => {
   return {
+    type: 'entry_function_payload',
     type_arguments: ${hasTypeArgs ? "typeArgs" : "[]"},
     arguments: ${hasArgs ? "args" : "[]"},
     function: \`${moveFn.fullName.replace(moveFn.address, "${ADDRESS}").replace(`::${moveFn.moduleName}::`, `::\${${moveFn.moduleName.toUpperCase()}_MODULE_NAME}::`)}\`
@@ -189,7 +190,8 @@ yargs(Deno.args)
     const texts = abis.map(generateTsFn);
 
     const finalTexts =
-      `import { Types } from 'aptos'
+      `/* eslint-disable camelcase */
+import { Types } from 'aptos'
 
 export const ADDRESS = '${addr}' as const
 

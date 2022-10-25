@@ -84,13 +84,13 @@ export class BloctoConnector extends Connector<AptosProviderInterface, AptosProv
     }
   }
 
-  async signAndSubmitTransaction(transaction?: Types.EntryFunctionPayload): Promise<ConnectorTransactionResponse> {
+  async signAndSubmitTransaction(transaction?: Types.TransactionPayload): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signAndSubmitTransaction(transaction)
   }
 
-  async signTransaction(transaction?: Types.EntryFunctionPayload): Promise<Uint8Array> {
+  async signTransaction(transaction?: Types.TransactionPayload): Promise<Uint8Array> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signTransaction(transaction)

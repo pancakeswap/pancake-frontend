@@ -54,11 +54,11 @@ export abstract class Connector<Provider = any, Options = any> extends EventEmit
   abstract getProvider(config?: { networkName?: string }): Promise<Provider>
 
   abstract signAndSubmitTransaction(
-    transaction: Types.EntryFunctionPayload,
+    transaction: Types.TransactionPayload,
     options?: Partial<Types.SubmitTransactionRequest>,
   ): Promise<ConnectorTransactionResponse>
 
-  abstract signTransaction(transaction: Types.EntryFunctionPayload): Promise<Uint8Array>
+  abstract signTransaction(transaction: Types.TransactionPayload): Promise<Uint8Array>
 
   abstract isConnected(): Promise<boolean>
   abstract signMessage(payload: SignMessagePayload): Promise<SignMessageResponse>

@@ -18,7 +18,7 @@ declare global {
       account(): Promise<Address>
       publicKey(): Promise<string>
       signAndSubmit(
-        transaction: Types.EntryFunctionPayload,
+        transaction: Types.TransactionPayload,
         options?: any,
       ): Promise<{
         success: boolean
@@ -27,7 +27,7 @@ declare global {
         }
       }>
       isConnected(): Promise<boolean>
-      signTransaction(transaction: Types.EntryFunctionPayload, options?: any): Promise<Uint8Array>
+      signTransaction(transaction: Types.TransactionPayload, options?: any): Promise<Uint8Array>
       signMessage(message: SignMessagePayload): Promise<{
         success: boolean
         result: SignMessageResponse
@@ -115,7 +115,7 @@ export class PontemConnector extends Connector<Window['pontem']> {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.EntryFunctionPayload) {
+  async signAndSubmitTransaction(payload: Types.TransactionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
@@ -128,7 +128,7 @@ export class PontemConnector extends Connector<Window['pontem']> {
     return response.result
   }
 
-  async signTransaction(payload: Types.EntryFunctionPayload) {
+  async signTransaction(payload: Types.TransactionPayload) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     return provider.signTransaction(payload)
