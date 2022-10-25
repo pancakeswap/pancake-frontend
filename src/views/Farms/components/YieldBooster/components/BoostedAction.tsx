@@ -1,8 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
+import { AutoRenewIcon, NextLinkFromReactRouter, Button } from '@pancakeswap/uikit'
 import { ReactNode, useCallback, useContext } from 'react'
-
-import { NextLinkFromReactRouter } from 'components/NextLink'
 
 import BigNumber from 'bignumber.js'
 import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'

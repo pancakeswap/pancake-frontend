@@ -61,6 +61,7 @@ function ConnectModal<T>({ login, onDismiss = () => null, displayCount = 3, t, w
   const sortedConfig = getPreferredConfig(connectors);
   // Filter out WalletConnect if user is inside TrustWallet built-in browser
   const walletsToShow =
+    // @ts-ignore
     window.ethereum?.isTrust &&
     // @ts-ignore
     !window?.ethereum?.isSafePal

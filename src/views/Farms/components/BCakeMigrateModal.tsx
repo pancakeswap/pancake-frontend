@@ -19,7 +19,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useBCakeProxyContract } from 'hooks/useContract'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
 import useProxyStakedActions from './YieldBooster/hooks/useProxyStakedActions'
 

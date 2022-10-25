@@ -1,14 +1,24 @@
 import styled from 'styled-components'
 import { useState, useMemo } from 'react'
-import { Flex, Box, Button, Text, HelpIcon, useTooltip, LogoRoundIcon, Skeleton, InputProps } from '@pancakeswap/uikit'
+import {
+  Flex,
+  Box,
+  Button,
+  Text,
+  HelpIcon,
+  useTooltip,
+  LogoRoundIcon,
+  Skeleton,
+  InputProps,
+  NumericalInput,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { usePotteryData, useLatestVaultAddress } from 'state/pottery/hook'
-import { Input as NumericalInput } from 'components/CurrencyInputPanel/NumericalInput'
 import { CAKE } from '@pancakeswap/tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTokenBalance from 'hooks/useTokenBalance'
-import { getFullDisplayBalance, getBalanceNumber } from 'utils/formatBalance'
+import { getFullDisplayBalance, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PotteryDepositStatus } from 'state/types'
 import { useUserEnoughCakeValidator } from 'views/Pools/components/LockedPool/hooks/useUserEnoughCakeValidator'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'

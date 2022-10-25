@@ -1,4 +1,14 @@
-import { Box, Button, Flex, InjectedModalProps, LinkExternal, Message, Skeleton, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  Flex,
+  InjectedModalProps,
+  LinkExternal,
+  Message,
+  Skeleton,
+  Text,
+  CopyAddress,
+} from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -9,9 +19,8 @@ import { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { formatBigNumber } from 'utils/formatBalance'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { useBalance } from 'wagmi'
-import CopyAddress from './CopyAddress'
 
 const COLORS = {
   ETH: '#627EEA',
@@ -44,7 +53,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
         {t('Your Address')}
       </Text>
-      <CopyAddress account={account} mb="24px" />
+      <CopyAddress tooltipMessage={t('Copied')} account={account} mb="24px" />
       {hasLowNativeBalance && (
         <Message variant="warning" mb="24px">
           <Box>

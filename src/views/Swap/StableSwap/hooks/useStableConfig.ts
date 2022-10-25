@@ -2,13 +2,13 @@ import { useContract } from 'hooks/useContract'
 import stableSwapABI from 'config/abi/stableSwap.json'
 import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 import stableLPABI from 'config/abi/stableLP.json'
-import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import { createContext, useMemo } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWRImmutable from 'swr/immutable'
 import { getStableConfig } from '@pancakeswap/farms/constants'
-import { deserializeToken } from '@pancakeswap/tokens'
+import { deserializeToken } from '@pancakeswap/token-lists'
 
 export function useStableFarms() {
   const { chainId } = useActiveWeb3React()
@@ -18,7 +18,7 @@ export function useStableFarms() {
 
     return farms.map(({ token, quoteToken, lpAddress, ...rest }) => ({
       ...rest,
-      liquidityToken: new Token(chainId, lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
+      liquidityToken: new ERC20Token(chainId, lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
       token0: deserializeToken(token),
       token1: deserializeToken(quoteToken),
     }))

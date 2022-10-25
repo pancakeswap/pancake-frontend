@@ -13,14 +13,14 @@ import {
   Box,
   CardFooter,
   ExpandableLabel,
+  Balance,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
-import Balance from 'components/Balance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import ViewTicketsModal from './ViewTicketsModal'
 import BuyTicketsButton from './BuyTicketsButton'
 import { dateTimeOptions } from '../helpers'

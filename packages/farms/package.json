@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "main": "./src/index.ts",
   "sideEffects": false,
+  "private": true,
   "scripts": {
     "build": "npx tsx scripts/build.ts"
   },

@@ -28,7 +28,7 @@ const getRegExpForDataKey = memoize((dataKey: string): RegExp => {
 const languageMap = new Map<Language['locale'], Record<string, string>>()
 languageMap.set(EN.locale, {})
 
-export const LanguageContext = createContext<ContextApi>(undefined)
+export const LanguageContext = createContext<ContextApi | undefined>(undefined)
 
 export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()

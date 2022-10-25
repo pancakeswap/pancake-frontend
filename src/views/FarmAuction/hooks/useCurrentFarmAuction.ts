@@ -5,7 +5,7 @@ import { useFarmAuctionContract } from 'hooks/useContract'
 import { ConnectedBidder } from 'config/constants/types'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { FAST_INTERVAL } from 'config/constants'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useFarmAuction } from './useFarmAuction'
 
 export const useCurrentFarmAuction = (account: string) => {

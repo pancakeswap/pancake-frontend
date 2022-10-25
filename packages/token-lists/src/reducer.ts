@@ -40,19 +40,6 @@ export const NEW_LIST_STATE: ListByUrlState = {
   pendingUpdate: null,
 }
 
-type Mutable<T> = { -readonly [P in keyof T]: T[P] extends ReadonlyArray<infer U> ? U[] : T[P] }
-
-// export const INITIAL_STATE: ListsState = {
-//   lastInitializedDefaultListOfLists: DEFAULT_LIST_OF_LISTS,
-//   byUrl: {
-//     ...DEFAULT_LIST_OF_LISTS.concat(...UNSUPPORTED_LIST_URLS).reduce<Mutable<ListsState['byUrl']>>((memo, listUrl) => {
-//       memo[listUrl] = NEW_LIST_STATE
-//       return memo
-//     }, {}),
-//   },
-//   activeListUrls: DEFAULT_ACTIVE_LIST_URLS,
-// }
-
 export const createTokenListReducer = (
   initialState: ListsState,
   DEFAULT_LIST_OF_LISTS: string[],
@@ -61,10 +48,12 @@ export const createTokenListReducer = (
   createReducer(initialState, (builder) =>
     builder
       .addCase(fetchTokenList.pending, (state, { payload: { requestId, url } }) => {
+        const current = state.byUrl[url]?.current ?? null
+        const pendingUpdate = state.byUrl[url]?.pendingUpdate ?? null
+
         state.byUrl[url] = {
-          current: null,
-          pendingUpdate: null,
-          ...state.byUrl[url],
+          current,
+          pendingUpdate,
           loadingRequestId: requestId,
           error: null,
         }

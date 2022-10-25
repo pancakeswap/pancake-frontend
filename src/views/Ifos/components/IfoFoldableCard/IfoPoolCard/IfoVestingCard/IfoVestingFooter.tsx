@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { getFullDisplayBalance } from 'utils/formatBalance'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 
 const StyledIfoVestingFooter = styled(Flex)`
   padding: 16px;

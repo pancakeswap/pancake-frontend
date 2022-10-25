@@ -3,7 +3,7 @@ import { AutoRenewIcon, Button, Checkbox, Flex, InjectedModalProps, Text, useToa
 import { useTranslation } from '@pancakeswap/localization'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
-import { formatBigNumber } from 'utils/formatBalance'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { useProfileContract } from 'hooks/useContract'
 import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'

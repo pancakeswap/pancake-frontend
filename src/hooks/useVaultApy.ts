@@ -7,7 +7,7 @@ import { useCallback, useMemo } from 'react'
 import { useCakeVault } from 'state/pools/hooks'
 import useSWRImmutable from 'swr/immutable'
 import { getMasterChefAddress } from 'utils/addressHelpers'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from 'config/constants/pools'
 import { multicallv2 } from '../utils/multicall'
 

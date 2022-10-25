@@ -1,12 +1,11 @@
 import styled, { keyframes, css } from 'styled-components'
-import { Box, Flex, HelpIcon, Text, useTooltip, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, HelpIcon, Text, useTooltip, useMatchBreakpoints, Farm as FarmUI } from '@pancakeswap/uikit'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import BigNumber from 'bignumber.js'
 import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedLockedVaultUser } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { CompoundingPoolTag, ManualPoolTag } from 'components/Tags'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import AutoHarvest from './AutoHarvest'
@@ -16,6 +15,8 @@ import LockDurationRow from '../../LockedPool/Common/LockDurationRow'
 import useUserDataInVaultPresenter from '../../LockedPool/hooks/useUserDataInVaultPresenter'
 import CakeVaultApr from './CakeVaultApr'
 import PoolStatsInfo from '../../PoolStatsInfo'
+
+const { CompoundingPoolTag, ManualPoolTag } = FarmUI.Tags
 
 const expandAnimation = keyframes`
   from {

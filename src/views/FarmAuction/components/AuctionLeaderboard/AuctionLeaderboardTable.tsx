@@ -16,7 +16,7 @@ import {
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { Bidder } from 'config/constants/types'

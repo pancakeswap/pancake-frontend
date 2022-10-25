@@ -7,7 +7,7 @@ import { memo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import styled from 'styled-components'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
 import BaseCell, { CellContent } from './BaseCell'
 

@@ -11,13 +11,13 @@ import {
   Heading,
   HelpIcon,
   LinkExternal,
+  NextLinkFromReactRouter,
   Spinner,
   Text,
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { useState } from 'react'
 import { multiChainId, multiChainScan } from 'state/info/constant'
 import {

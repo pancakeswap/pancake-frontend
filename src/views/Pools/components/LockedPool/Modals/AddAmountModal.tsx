@@ -8,9 +8,9 @@ import BigNumber from 'bignumber.js'
 import { useIfoCeiling } from 'state/pools/hooks'
 import useTheme from 'hooks/useTheme'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
-import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from 'utils/formatBalance'
+import { getBalanceNumber, getDecimalAmount, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { ONE_WEEK_DEFAULT } from 'config/constants/pools'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 

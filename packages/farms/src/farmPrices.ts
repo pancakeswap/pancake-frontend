@@ -1,8 +1,8 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { ChainId } from '@pancakeswap/sdk'
+import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import _toNumber from 'lodash/toNumber'
 import { SerializedFarmPublicData, FarmData } from './types'
-import { equalsIgnoreCase } from './equalsIgnoreCase'
 import { FIXED_ONE, FIXED_TEN_IN_POWER_18, FIXED_TWO, FIXED_ZERO } from './const'
 
 // Find BUSD price for token

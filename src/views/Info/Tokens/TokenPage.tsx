@@ -13,10 +13,10 @@ import {
   Spinner,
   Text,
   useMatchBreakpoints,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import Page from 'components/Layout/Page'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
 import { Duration } from 'date-fns'
 import { useMemo } from 'react'

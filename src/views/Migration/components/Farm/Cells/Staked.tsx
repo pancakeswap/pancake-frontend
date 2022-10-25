@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { formatLpBalance } from 'utils/formatBalance'
+import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
 const StyledCell = styled(BaseCell)`

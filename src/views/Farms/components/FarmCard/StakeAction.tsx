@@ -1,8 +1,9 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast } from '@pancakeswap/uikit'
+import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { useCallback, useContext, useMemo } from 'react'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { useCallback, useContext, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
@@ -12,17 +13,16 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import { formatLpBalance } from 'utils/formatBalance'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { getCrossFarmingSenderContract } from 'utils/contractHelpers'
 import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
-import DepositModal from '../DepositModal'
-import StakedLP from '../StakedLP'
+import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { FarmWithStakedValue } from '../types'
-import WithdrawModal from '../WithdrawModal'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
+import { useFirstTimeCrossFarming } from '../../hooks/useFirstTimeCrossFarming'
 
 interface FarmCardActionsProps extends FarmWithStakedValue {
   lpLabel?: string
@@ -69,13 +69,24 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const dispatch = useAppDispatch()
   const addTransaction = useTransactionAdder()
   const { account, chainId } = useActiveWeb3React()
+  const native = useNativeCurrency()
   const { tokenBalance, stakedBalance } = userData
   const cakePrice = usePriceCakeBusd()
   const router = useRouter()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { boosterState } = useContext(YieldBoosterStateContext)
+  const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
+  const { isFirstTime } = useFirstTimeCrossFarming(vaultPid)
+
+  const crossChainWarningText = useMemo(() => {
+    return isFirstTime
+      ? t('A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.', {
+          nativeToken: native.symbol,
+        })
+      : t('For safety, cross-chain transactions will take around 30 minutes to confirm.')
+  }, [isFirstTime, native, t])
 
   const isStakeReady = useMemo(() => {
     return ['history', 'archived'].some((item) => router.pathname.includes(item)) || pendingFarm.length > 0
@@ -99,11 +110,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   }
 
   const handleNonBscStake = async (amountValue: string) => {
-    const crossFarmingAddress = getCrossFarmingSenderContract(null, chainId)
-    const [receipt, isFirstTime] = await Promise.all([
-      fetchTxResponse(() => onStake(amountValue)),
-      crossFarmingAddress.is1st(account),
-    ])
+    const receipt = await fetchTxResponse(() => onStake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
     const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
 
@@ -216,10 +223,19 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     }
   }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
 
+  const bCakeCalculatorSlot = (calculatorBalance) => (
+    <BCakeCalculator
+      targetInputBalance={calculatorBalance}
+      earningTokenPrice={cakePrice.toNumber()}
+      lpTotalSupply={lpTotalSupply}
+      setBCakeMultiplier={setBCakeMultiplier}
+    />
+  )
+
   const [onPresentDeposit] = useModal(
-    <DepositModal
+    <FarmUI.DepositModal
+      account={account}
       pid={pid}
-      vaultPid={vaultPid}
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       stakedBalance={stakedBalance}
@@ -233,15 +249,20 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
+      bCakeMultiplier={bCakeMultiplier}
+      bCakeCalculatorSlot={bCakeCalculatorSlot}
+      showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
+      crossChainWarningText={crossChainWarningText}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
-    <WithdrawModal
+    <FarmUI.WithdrawModal
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       max={stakedBalance}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
+      showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
     />,
   )
 
@@ -262,6 +283,19 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     )
   }
 
+  const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
+
+  const onClickLoadingIcon = () => {
+    const { length } = pendingFarm
+    if (length) {
+      if (length > 1) {
+        onPresentTransactionModal()
+      } else {
+        dispatch(pickFarmTransactionTx({ tx: pendingFarm[0].txid, chainId }))
+      }
+    }
+  }
+
   // TODO: Move this out to prevent unnecessary re-rendered
   if (!isApproved) {
     return (
@@ -273,8 +307,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
-      <StakedLP
-        lpAddress={lpAddress}
+      <FarmUI.StakedLP
         stakedBalance={stakedBalance}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}
@@ -282,6 +315,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         lpTokenPrice={lpTokenPrice}
         tokenAmountTotal={tokenAmountTotal}
         quoteTokenAmountTotal={quoteTokenAmountTotal}
+        pendingFarmLength={pendingFarm.length}
+        onClickLoadingIcon={onClickLoadingIcon}
       />
       {renderStakingButtons()}
     </Flex>

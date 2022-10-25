@@ -3,11 +3,11 @@ import { Trade, Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
 import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
-import useTranslation from '../../../../packages/localization/src/useTranslation'
 import { StableTrade } from '../StableSwap/hooks/useStableTradeExactIn'
 
 const PancakeRouterSlippageErrorMsg =

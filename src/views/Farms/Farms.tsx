@@ -4,10 +4,27 @@ import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { Image, Heading, Toggle, Text, Button, ArrowForwardIcon, Flex, Link, Box } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
+import {
+  Image,
+  Heading,
+  Toggle,
+  Text,
+  Button,
+  ArrowForwardIcon,
+  Flex,
+  Link,
+  Box,
+  Farm as FarmUI,
+  ScrollToTopButtonV2,
+  Loading,
+  SearchInput,
+  Select,
+  OptionProps,
+  FlexLayout,
+  PageHeader,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import FlexLayout from 'components/Layout/Flex'
 import Page from 'components/Layout/Page'
 import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
@@ -20,14 +37,8 @@ import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
-import PageHeader from 'components/PageHeader'
-import SearchInput from 'components/SearchInput'
-import Select, { OptionProps } from 'components/Select/Select'
-import Loading from 'components/Loading'
 import ToggleView from 'components/ToggleView/ToggleView'
-import ScrollToTopButton from 'components/ScrollToTopButton/ScrollToTopButtonV2'
 import Table from './components/FarmTable/FarmTable'
-import FarmTabButtons from './components/FarmTabButtons'
 import { FarmWithStakedValue } from './components/types'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 
@@ -368,7 +379,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               />
               <Text> {t('Booster Available')}</Text>
             </ToggleWrapper>
-            <FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
@@ -445,7 +456,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         {poolLength && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
-      {createPortal(<ScrollToTopButton />, document.body)}
+      {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </FarmsContext.Provider>
   )
 }

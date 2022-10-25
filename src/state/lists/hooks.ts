@@ -1,12 +1,12 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { EMPTY_LIST, TokenAddressMap, WrappedTokenInfo } from '@pancakeswap/tokens'
+import { TokenAddressMap as TTokenAddressMap, WrappedTokenInfo, ListsState } from '@pancakeswap/token-lists'
 import { TokenList, TokenInfo } from '@uniswap/token-lists'
 import { DEFAULT_LIST_OF_LISTS, OFFICIAL_LISTS } from 'config/constants/lists'
 import { atom, useAtomValue } from 'jotai'
 import mapValues from 'lodash/mapValues'
 import groupBy from 'lodash/groupBy'
 import keyBy from 'lodash/keyBy'
-import { ListsState } from '@pancakeswap/token-lists'
+import { EMPTY_LIST } from '@pancakeswap/tokens'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 import { UNSUPPORTED_LIST_URLS, WARNING_LIST_URLS } from '../../config/constants/lists'
@@ -14,6 +14,8 @@ import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-defaul
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { listsAtom } from './lists'
+
+type TokenAddressMap = TTokenAddressMap<ChainId>
 
 // use ordering of default list of lists to assign priority
 function sortByListPriority(urlA: string, urlB: string) {

@@ -3,5 +3,9 @@
   "license": "MIT",
   "version": "0.0.1",
   "description": "Tokens for pancakeswap",
-  "main": "src/index.ts"
+  "main": "src/index.ts",
+  "private": true,
+  "dependencies": {
+    "@pancakeswap/sdk": "*"
+  }
 }

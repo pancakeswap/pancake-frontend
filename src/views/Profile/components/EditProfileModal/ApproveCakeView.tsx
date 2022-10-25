@@ -4,7 +4,7 @@ import { useCake } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
-import { formatBigNumber } from 'utils/formatBalance'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { UseEditProfileResponse } from './reducer'
 

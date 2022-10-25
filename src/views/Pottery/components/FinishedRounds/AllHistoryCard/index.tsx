@@ -6,7 +6,7 @@ import { useAppDispatch } from 'state'
 import { setFinishedRoundInfoFetched, fetchPotteryRoundData } from 'state/pottery/index'
 import { usePotteryData } from 'state/pottery/hook'
 import RoundSwitcher from 'views/Lottery/components/AllHistoryCard/RoundSwitcher'
-import useDebounce from 'hooks/useDebounce'
+import { useDebounce } from '@pancakeswap/hooks'
 import { getDrawnDate } from 'views/Lottery/helpers'
 import PreviousRoundCardBody from './PreviousRoundCardBody'
 

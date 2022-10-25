@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { Text } from '@pancakeswap/uikit'
 import { Collection } from 'state/nftMarket/types'
-import { formatNumber } from 'utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import Container from 'components/Layout/Container'
 import MarketPageHeader from '../components/MarketPageHeader'

@@ -1,4 +1,4 @@
-import { getInterestBreakdown, getRoi, getPrincipalForInterest, getApy } from 'utils/compoundApyHelpers'
+import { getInterestBreakdown, getRoi, getPrincipalForInterest, getApy } from '@pancakeswap/utils/compoundApyHelpers'
 
 const TWICE_PER_DAY = 2
 const FIVE_THOUSAND_TIMES_PER_DAY = 5000

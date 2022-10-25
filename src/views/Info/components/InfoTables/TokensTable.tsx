@@ -1,14 +1,22 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, Skeleton, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import orderBy from 'lodash/orderBy'
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
+import styled from 'styled-components'
+import {
+  Text,
+  Flex,
+  Box,
+  Skeleton,
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  useMatchBreakpoints,
+  NextLinkFromReactRouter,
+} from '@pancakeswap/uikit'
 import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
-import styled from 'styled-components'
-import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import Percent from 'views/Info/components/Percent'
+import { useTranslation } from '@pancakeswap/localization'
+import orderBy from 'lodash/orderBy'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from './shared'
 
 /**

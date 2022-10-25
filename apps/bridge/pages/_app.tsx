@@ -1,8 +1,9 @@
-import { PancakeTheme, ResetCSS, dark, light, ModalProvider } from '@pancakeswap/uikit'
+import '@pancakeswap/ui/css/reset.css'
+import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
 import { useEffect, useState } from 'react'
 import { AppProps } from 'next/app'
 import Script from 'next/script'
-import { createGlobalStyle, ThemeProvider } from 'styled-components'
+import { createGlobalStyle } from 'styled-components'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import Head from 'next/head'
 import { Menu } from '../components/Menu'
@@ -15,9 +16,9 @@ declare module 'styled-components' {
 const StyledThemeProvider: React.FC<React.PropsWithChildren> = (props) => {
   const { resolvedTheme } = useNextTheme()
   return (
-    <ThemeProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
+    <UIKitProvider theme={resolvedTheme === 'dark' ? dark : light} {...props}>
       {props.children}
-    </ThemeProvider>
+    </UIKitProvider>
   )
 }
 

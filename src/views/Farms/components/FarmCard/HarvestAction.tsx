@@ -1,15 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Flex, Heading, TooltipText, useToast, useTooltip, useModal } from '@pancakeswap/uikit'
+import { Button, Flex, Heading, TooltipText, useToast, useTooltip, useModal, Balance } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
-import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 
 import { TransactionResponse } from '@ethersproject/providers'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 

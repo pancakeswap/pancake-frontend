@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button } from '@pancakeswap/uikit'
+import { Button, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import ConnectWalletButton from 'components/ConnectWalletButton'

@@ -1,7 +1,5 @@
-import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-
+import { Flex, Text, TooltipText, useTooltip, BalanceWithLoading } from '@pancakeswap/uikit'
 import { useVaultApy } from 'hooks/useVaultApy'
-import { BalanceWithLoading } from 'components/Balance'
 import { useTranslation } from '@pancakeswap/localization'
 
 const YieldBoostRow = ({ secondDuration }) => {

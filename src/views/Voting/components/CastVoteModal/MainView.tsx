@@ -12,7 +12,7 @@ import {
   RocketIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { formatNumber } from 'utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import TextEllipsis from '../TextEllipsis'
 import { VotingBoxBorder, VotingBoxCardInner, ModalInner } from './styles'

@@ -25,11 +25,11 @@ export const createListsAtom = (storeName: string, reducer, initialState) => {
           }
           return initialState
         },
-        // eslint-disable-next-line consistent-return
         setItem: (k, v) => {
           if (gotOnce) {
             return db.setItem(k, v)
           }
+          return undefined
         },
         removeItem: db.removeItem,
         delayInit: true,

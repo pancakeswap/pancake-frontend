@@ -1,6 +1,5 @@
-import { Card, Heading } from '@pancakeswap/uikit'
+import { Card, Heading, PageHeader } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import PageHeader from 'components/PageHeader'
 import { useTranslation } from '@pancakeswap/localization'
 import ActivityHistory from '../ActivityHistory/ActivityHistory'
 

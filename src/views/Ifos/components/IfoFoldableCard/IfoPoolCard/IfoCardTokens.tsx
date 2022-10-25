@@ -13,6 +13,7 @@ import {
   Message,
   MessageText,
   ErrorIcon,
+  BalanceWithLoading,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Token } from '@pancakeswap/sdk'
@@ -21,10 +22,9 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
-import BalanceWithLoading from 'components/Balance'
 import { EnableStatus } from '../types'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'

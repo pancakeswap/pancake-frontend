@@ -1,8 +1,15 @@
-import { NextLinkFromReactRouter as ReactRouterLink } from 'components/NextLink'
-import { BscScanIcon, Flex, IconButton, Link, Button, useModal } from '@pancakeswap/uikit'
+import {
+  BscScanIcon,
+  Flex,
+  IconButton,
+  Link,
+  Button,
+  useModal,
+  NextLinkFromReactRouter as ReactRouterLink,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBlockExploreLink, isAddress } from 'utils'
-import { formatNumber } from 'utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
 import { useWeb3React } from '@pancakeswap/wagmi'

@@ -1,8 +1,17 @@
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Heading, Skeleton, Text, TooltipText, useToast, useTooltip, useModal } from '@pancakeswap/uikit'
+import {
+  Button,
+  Heading,
+  Skeleton,
+  Text,
+  TooltipText,
+  useToast,
+  useTooltip,
+  Balance,
+  useModal,
+} from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import Balance from 'components/Balance'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useERC20 } from 'hooks/useContract'
@@ -12,8 +21,8 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getBalanceAmount } from 'utils/formatBalance'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { FarmWithStakedValue } from '../../types'

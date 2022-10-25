@@ -1,11 +1,10 @@
 import React, { useMemo } from 'react'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text, Balance } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
-import Balance from 'components/Balance'
 import { DeserializedPool } from 'state/types'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 
 const Containter = styled(Flex)`
   margin-top: 12px;

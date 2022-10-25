@@ -4,7 +4,7 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 
 import { NftToken } from 'state/nftMarket/types'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { formatNumber } from 'utils/formatBalance'
+import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import NFTMedia from 'views/Nft/market/components/NFTMedia'
 import EditProfileModal from 'views/Profile/components/EditProfileModal'
 import BuyModal from '../../../components/BuySellModals/BuyModal'

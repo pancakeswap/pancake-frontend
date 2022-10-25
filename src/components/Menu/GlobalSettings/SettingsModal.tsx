@@ -1,6 +1,16 @@
 import { useState, useCallback } from 'react'
 import styled from 'styled-components'
-import { Text, PancakeToggle, Toggle, Flex, Modal, InjectedModalProps, ThemeSwitcher, Box } from '@pancakeswap/uikit'
+import {
+  Text,
+  PancakeToggle,
+  Toggle,
+  Flex,
+  Modal,
+  InjectedModalProps,
+  ThemeSwitcher,
+  Box,
+  QuestionHelper,
+} from '@pancakeswap/uikit'
 import {
   useAudioModeManager,
   useExpertModeManager,
@@ -14,7 +24,6 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
-import QuestionHelper from '../../QuestionHelper'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 import { SettingsMode } from './types'

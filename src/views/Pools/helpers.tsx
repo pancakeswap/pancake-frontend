@@ -1,9 +1,9 @@
 import BigNumber from 'bignumber.js'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { DeserializedPool } from 'state/types'
-import { BIG_ZERO } from 'utils/bigNumber'
-import { getApy } from 'utils/compoundApyHelpers'
-import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from 'utils/formatBalance'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getApy } from '@pancakeswap/utils/compoundApyHelpers'
+import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import memoize from 'lodash/memoize'
 
 // min deposit and withdraw amount

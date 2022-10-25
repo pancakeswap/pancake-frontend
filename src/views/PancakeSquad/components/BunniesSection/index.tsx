@@ -1,5 +1,4 @@
-import { NextLinkFromReactRouter } from 'components/NextLink'
-import { Box, Button, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Button, Flex, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import ColoredWordHeading from 'views/Home/components/ColoredWordHeading'
 import { LandingBodyWrapper } from 'views/PancakeSquad/styles'

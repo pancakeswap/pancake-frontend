@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { BIG_ZERO } from 'utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useSousChef } from 'hooks/useContract'
 import { BOOSTED_FARM_GAS_LIMIT } from 'config'
 

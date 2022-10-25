@@ -14,21 +14,22 @@ import {
   Card,
   Skeleton,
   useMatchBreakpoints,
+  PageHeader,
+  Select,
+  OptionProps,
+  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
 import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
-import { NextLinkFromReactRouter } from 'components/NextLink'
 import { ViewMode } from 'state/user/actions'
 import { Collection } from 'state/nftMarket/types'
 import styled from 'styled-components'
 import { laggyMiddleware } from 'hooks/useSWRContract'
 import { FetchStatus } from 'config/constants/types'
 import { useGetShuffledCollections } from 'state/nftMarket/hooks'
-import Select, { OptionProps } from 'components/Select/Select'
 import { useTranslation } from '@pancakeswap/localization'
 import Page from 'components/Layout/Page'
-import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 import ToggleView from 'components/ToggleView/ToggleView'

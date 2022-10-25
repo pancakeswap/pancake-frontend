@@ -68,6 +68,7 @@ describe('Check translations available', () => {
   }
 
   throughDirectory('src/')
+  throughDirectory('apps/aptos')
   throughDirectory('packages/uikit/src')
   throughDirectory('packages/ui-wallets/src')
 

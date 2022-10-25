@@ -1,11 +1,10 @@
 import { useMemo } from 'react'
-import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text, Balance } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import Balance from 'components/Balance'
 import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { getBalanceNumber } from 'utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface TotalStakedCellProps {
