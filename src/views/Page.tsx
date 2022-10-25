@@ -1,6 +1,7 @@
 import { Swap } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
+import { usePhishingBannerManager } from 'state/user/hooks'
 
 const Page: React.FC<
   React.PropsWithChildren<{
@@ -17,6 +18,8 @@ const Page: React.FC<
   helpUrl = EXCHANGE_DOCS_URLS,
   ...props
 }) => {
+  const [showPhishingBanner] = usePhishingBannerManager()
+
   return (
     <>
       <PageMeta />
@@ -25,6 +28,7 @@ const Page: React.FC<
         noMinHeight={noMinHeight}
         hideFooterOnDesktop={hideFooterOnDesktop}
         helpUrl={helpUrl}
+        hasWarningBanner={showPhishingBanner}
         {...props}
       >
         {children}

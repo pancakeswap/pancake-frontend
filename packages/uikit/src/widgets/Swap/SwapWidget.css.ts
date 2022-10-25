@@ -149,7 +149,7 @@ export const pageVariants = recipe({
       lg: {
         padding: "32px",
         paddingBottom: "0",
-        minHeight: "calc(100vh - 169px)",
+        minHeight: "calc(100vh - 100px)",
       },
     }),
   ]),
@@ -163,6 +163,18 @@ export const pageVariants = recipe({
       true: responsiveStyle({
         xs: {
           minHeight: "initial!important",
+        },
+      }),
+    },
+    hasWarningBanner: {
+      true: responsiveStyle({
+        lg: {
+          minHeight: "calc(100vh - 169px)",
+        },
+      }),
+      false: responsiveStyle({
+        lg: {
+          minHeight: "calc(100vh - 99px)",
         },
       }),
     },
