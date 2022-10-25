@@ -69,6 +69,9 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     get installed() {
       return typeof window !== 'undefined' && isIOS && Boolean(window.aptos) && Boolean((window.aptos as any)?.isTrust)
     },
+    deepLink: isIOS
+      ? 'https://link.trustwallet.com/open_url?coin_id=637&url=https://aptos.pancakeswap.finance/'
+      : undefined,
     connectorId: ConnectorNames.TrustWallet,
   },
 ]
