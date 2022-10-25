@@ -15,8 +15,7 @@ import {
 import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
 import { useTheme } from 'next-themes'
 import { useCallback, useState } from 'react'
-import { useAudioPlay, useUserSlippage } from 'state/user'
-import { useUserSingleHopOnly } from 'state/user/singleHop'
+import { useAudioPlay, useUserSlippage, useUserShowWalletCoins, useUserSingleHopOnly } from 'state/user'
 import styled from 'styled-components'
 
 export const withCustomOnDismiss =
@@ -175,6 +174,7 @@ const SlippageSetting = () => {
 export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [audioPlay, setAudioPlay] = useAudioPlay()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
+  const [showWalletCoins, setShowWalletCoins] = useUserShowWalletCoins()
 
   const { t } = useTranslation()
   const { resolvedTheme, setTheme } = useTheme()
@@ -218,6 +218,20 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
               scale="md"
               onChange={() => {
                 setSingleHopOnly(!singleHopOnly)
+              }}
+            />
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>{t('Show all tokens in wallet')}</Text>
+              {/* <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" /> */}
+            </Flex>
+            <Toggle
+              id="toggle-disable-multihop-button"
+              checked={showWalletCoins}
+              scale="md"
+              onChange={() => {
+                setShowWalletCoins(!showWalletCoins)
               }}
             />
           </Flex>

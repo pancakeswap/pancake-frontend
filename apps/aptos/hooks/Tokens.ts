@@ -1,12 +1,13 @@
 /* eslint-disable no-param-reassign */
 import { Coin, Currency, CurrencyAmount, Token } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN, useAccount, useAccountResources, useCoin, useCoins as useCoins_ } from '@pancakeswap/awgmi'
-import { coinStoreResourcesFilter, unwrapTypeFromString } from '@pancakeswap/awgmi/core'
+import { coinStoreResourcesFilter, unwrapTypeFromString, wrapCoinStoreTypeTag } from '@pancakeswap/awgmi/core'
+import { TxnBuilderTypes, TypeTagParser } from 'aptos'
 import { useAtomValue } from 'jotai'
 import fromPairs from 'lodash/fromPairs'
 import { useCallback, useMemo } from 'react'
 import { combinedTokenMapFromActiveUrlsAtom, TokenAddressMap } from 'state/lists/hooks'
-import { useUserAddedTokens } from 'state/user'
+import { useUserAddedTokens, useUserShowWalletCoins } from 'state/user'
 import useNativeCurrency from './useNativeCurrency'
 import { useActiveChainId, useActiveNetwork } from './useNetwork'
 
@@ -66,6 +67,7 @@ export function useCoins(addresses: string[]) {
     coins: addresses,
     networkName,
     select,
+    enabled: !addresses || !addresses.length,
   })
 }
 
@@ -75,10 +77,11 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
     return newMap
   }, {})
 
-export function useAllTokens(): { [address: string]: Token } {
+function useTokenFromListAndUserAddedToken() {
   const chainId = useActiveChainId()
   const tokenMap = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
   const userAddedTokens = useUserAddedTokens()
+
   return useMemo(() => {
     return (
       userAddedTokens
@@ -94,6 +97,62 @@ export function useAllTokens(): { [address: string]: Token } {
         )
     )
   }, [userAddedTokens, tokenMap, chainId])
+}
+
+export function useAllTokens(): { [address: string]: Token } {
+  const chainId = useActiveChainId()
+  const [showWalletCoins] = useUserShowWalletCoins()
+  const { account } = useAccount()
+
+  const tokenListAndUserAddedTokens = useTokenFromListAndUserAddedToken()
+
+  const { data: coinResources } = useAccountResources({
+    enabled: showWalletCoins,
+    address: account?.address,
+    select: (resources) =>
+      resources
+        .filter(coinStoreResourcesFilter)
+        .filter(
+          (coin) =>
+            coin.type !== wrapCoinStoreTypeTag(APTOS_COIN) &&
+            coin.data.coin.value !== '0' &&
+            unwrapTypeFromString(coin.type) &&
+            !tokenListAndUserAddedTokens[unwrapTypeFromString(coin.type) ?? ''],
+        )
+        .filter((r) => {
+          const parsedTypeTag = new TypeTagParser(r.type).parseTypeTag()
+          if (
+            parsedTypeTag instanceof TxnBuilderTypes.TypeTagStruct &&
+            parsedTypeTag.value.type_args.length === 1 &&
+            parsedTypeTag.value.type_args[0] instanceof TxnBuilderTypes.TypeTagStruct &&
+            parsedTypeTag.value.type_args[0].value.type_args.length === 0
+          ) {
+            return true
+          }
+          return false
+        }),
+  })
+
+  const coins = useCoins_({
+    enabled: showWalletCoins && !!coinResources,
+    coins: useMemo(
+      () => (coinResources?.map((r) => unwrapTypeFromString(r.type)).filter(Boolean) as string[]) ?? [],
+      [coinResources],
+    ),
+    select(data) {
+      return new Coin(chainId, data.address, data.decimals, data.symbol, data.name)
+    },
+  })
+
+  return useMemo(() => {
+    if (!showWalletCoins) return tokenListAndUserAddedTokens
+    return coins.reduce((tokenMap_, coin) => {
+      if (coin.data?.address && !tokenMap_[coin.data.address]) {
+        tokenMap_[coin.data.address] = coin.data
+      }
+      return tokenMap_
+    }, tokenListAndUserAddedTokens)
+  }, [tokenListAndUserAddedTokens, coins, showWalletCoins])
 }
 
 // Check if currency is included in custom list from user storage
