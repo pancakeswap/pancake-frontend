@@ -12,7 +12,7 @@ import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancake
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, Card, RowBetween, Skeleton, Swap as SwapUI, useModal } from '@pancakeswap/uikit'
+import { AutoColumn, Card, Skeleton, Swap as SwapUI, useModal, Flex } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
@@ -361,11 +361,12 @@ const SwapPage = () => {
       <Card style={{ width: '328px' }}>
         <CurrencyInputHeader
           title={
-            <RowBetween>
-              <div />
-              <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
+            <Flex width="100%" ml={32}>
+              <Flex flexDirection="column" alignItems="center" width="100%">
+                <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
+              </Flex>
               <SettingsButton />
-            </RowBetween>
+            </Flex>
           }
           subtitle={<CurrencyInputHeaderSubTitle>{t('Trade tokens in an instant')}</CurrencyInputHeaderSubTitle>}
         />

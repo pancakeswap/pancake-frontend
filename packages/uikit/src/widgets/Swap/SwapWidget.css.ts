@@ -139,7 +139,7 @@ export const pageVariants = recipe({
     }),
     style({
       backgroundSize: "auto",
-      minHeight: "calc(100vh - 64px)",
+      minHeight: "calc(768px - 64px)",
     }),
     responsiveStyle({
       sm: {
@@ -149,7 +149,7 @@ export const pageVariants = recipe({
       lg: {
         padding: "32px",
         paddingBottom: "0",
-        minHeight: "calc(100vh - 100px)",
+        minHeight: "calc(768px - 100px)",
       },
     }),
   ]),
