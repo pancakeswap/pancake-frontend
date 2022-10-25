@@ -32,7 +32,7 @@ export class PetraConnector extends Connector<Window['aptos'], PetraConnectorOpt
     let name = 'Petra'
     const overrideName = config.options?.name
     if (typeof overrideName === 'string') name = overrideName
-    this.id = 'petra'
+    this.id = config.options?.id || 'petra'
     this.name = name
   }
 
