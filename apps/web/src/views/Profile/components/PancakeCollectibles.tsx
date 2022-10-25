@@ -1,11 +1,10 @@
-import { Grid, Heading } from '@pancakeswap/uikit'
+import { Grid, Heading, PageHeader } from '@pancakeswap/uikit'
 import useSWR from 'swr'
 import dynamic from 'next/dynamic'
 import { FetchStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { Collection } from 'state/nftMarket/types'
 import Page from 'components/Layout/Page'
-import PageHeader from 'components/PageHeader'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 
