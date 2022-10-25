@@ -5,6 +5,7 @@
   "sideEffects": [
     "*.css.ts"
   ],
+  "private": true,
   "dependencies": {
     "@pancakeswap/uikit": "*",
     "qrcode.react": "^3.1.0"
