@@ -30,7 +30,7 @@ interface WalletModalProps extends InjectedModalProps {
   initialView?: WalletView
 }
 
-export const LOW_BNB_BALANCE = parseUnits('2', 'gwei')
+export const LOW_NATIVE_BALANCE = parseUnits('0.002', 'ether')
 
 const ModalHeader = styled(UIKitModalHeader)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};
@@ -50,7 +50,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { data, isFetched } = useBalance({ addressOrName: account })
-  const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_BNB_BALANCE)
+  const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_NATIVE_BALANCE)
 
   const handleClick = (newIndex: number) => {
     setView(newIndex)
