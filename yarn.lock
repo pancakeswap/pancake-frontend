@@ -6324,7 +6324,7 @@
     lodash "^4.17.21"
     outdent "^0.8.0"
 
-"@vanilla-extract/next-plugin@^2.0.2":
+"@vanilla-extract/next-plugin@^2.1.1":
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/@vanilla-extract/next-plugin/-/next-plugin-2.1.1.tgz#c030bb930d7e64739158e36bf49bdd55c96102af"
   integrity sha512-8+7WRL7JRv9w9MOwTpVi/ZDv3qXkxjkgJgxzS9wQJHjvdfcs0Xyq30ePeaJfBN4b6ClUeqOdj7UYa8fqKA8oOQ==
@@ -6342,10 +6342,10 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/recipes/-/recipes-0.2.5.tgz#40314b6db7319707303cccfb2c7200d919c313a8"
   integrity sha512-OWXUUiFJdswD3+Xg8f8avuw/vAHZRFS4oHqFeoV1TcO8cfbDQ0zmkreBHvyspoJU+qsyWK48yPHKSptqNRPy9Q==
 
-"@vanilla-extract/sprinkles@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@vanilla-extract/sprinkles/-/sprinkles-1.4.1.tgz#8c8703ddedaac355c1187db909119816c0fc771c"
-  integrity sha512-aW6CfMMToX4a+baLuVxwcT0FSACjX3xrNt8wdi/3LLRlLAfhyue8OK7kJxhcYNZfydBeWTP59aRy8p5FUTIeew==
+"@vanilla-extract/sprinkles@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@vanilla-extract/sprinkles/-/sprinkles-1.5.0.tgz#c921183ae518bb484299c2dc81f2acefd91c3dbe"
+  integrity sha512-W58f2Rzz5lLmk0jbhgStVlZl5wEiPB1Ur3fRvUaBM+MrifZ3qskmFq/CiH//fEYeG5Dh9vF1qRviMMH46cX9Nw==
 
 "@vanilla-extract/vite-plugin@^3.3.1":
   version "3.3.1"
