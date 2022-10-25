@@ -4,6 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMemo } from 'react'
 import { finalizeTransaction } from './actions'
 import { useAllChainTransactions } from './hooks'
 import { TransactionDetails, useTransactionState } from './reducer'
@@ -23,40 +24,44 @@ export default function Updater(): null {
   const { toastError, toastSuccess } = useToast()
 
   useQueries({
-    queries: Object.keys(transactions)
-      .filter((hash) => shouldCheck(transactions[hash]))
-      .map((hash) => {
-        return {
-          enabled: Boolean(chainId && provider),
-          queryFn: () => provider.waitForTransactionWithResult(hash),
-          queryKey: [{ entity: 'transaction', hash, networkName }],
-          onSuccess: (receipt) => {
-            if (receipt && isUserTransaction(receipt)) {
-              dispatch(
-                finalizeTransaction({
-                  chainId,
-                  hash,
-                  receipt: {
-                    blockNumber: receipt.version,
-                    sequenceNumber: receipt.sequence_number,
-                    from: receipt.sender,
-                    success: receipt.success,
-                    transactionHash: receipt.hash,
-                    payload: receipt.payload,
-                    timestamp: receipt.timestamp,
-                  },
-                }),
-              )
+    queries: useMemo(
+      () =>
+        Object.keys(transactions)
+          .filter((hash) => shouldCheck(transactions[hash]))
+          .map((hash) => {
+            return {
+              enabled: Boolean(chainId && provider),
+              queryFn: () => provider.waitForTransactionWithResult(hash),
+              queryKey: [{ entity: 'transaction', hash, networkName }],
+              onSuccess: (receipt) => {
+                if (receipt && isUserTransaction(receipt)) {
+                  dispatch(
+                    finalizeTransaction({
+                      chainId,
+                      hash,
+                      receipt: {
+                        blockNumber: receipt.version,
+                        sequenceNumber: receipt.sequence_number,
+                        from: receipt.sender,
+                        success: receipt.success,
+                        transactionHash: receipt.hash,
+                        payload: receipt.payload,
+                        timestamp: receipt.timestamp,
+                      },
+                    }),
+                  )
 
-              const toast = receipt.success ? toastSuccess : toastError
-              toast(t('Transaction receipt'), <ToastDescriptionWithTx txHash={receipt.hash} />)
+                  const toast = receipt.success ? toastSuccess : toastError
+                  toast(t('Transaction receipt'), <ToastDescriptionWithTx txHash={receipt.hash} />)
+                }
+              },
+              onError: (err) => {
+                console.error(`failed to check transaction hash: ${hash}`, err)
+              },
             }
-          },
-          onError: (err) => {
-            console.error(`failed to check transaction hash: ${hash}`, err)
-          },
-        }
-      }),
+          }),
+      [chainId, dispatch, networkName, provider, t, toastError, toastSuccess, transactions],
+    ),
   })
 
   return null
