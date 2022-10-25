@@ -94,7 +94,6 @@
     "@pancakeswap/tokens": "*"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.25.0",
     "@next/eslint-plugin-next": "^12.0.10",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@testing-library/jest-dom": "^5.16.2",
@@ -118,9 +117,7 @@
     "eslint": "^7.26.0",
     "eslint-plugin-cypress": "^2.11.3",
     "eslint-plugin-lodash": "^7.4.0",
-    "husky": "^7.0.0",
     "jest": "^27.4.5",
-    "lerna": "^4.0.0",
     "lint-staged": "^12.3.4",
     "next-transpile-modules": "^9.0.0",
     "postcss-scss": "^4.0.3",
@@ -137,7 +134,6 @@
     "tilg": "^0.1.1",
     "ts-node": "^10.9.1",
     "tsconfig": "*",
-    "turbo": "^1.6.1",
     "typechain": "^6.1.0",
     "vitest": "^0.23.1"
   }

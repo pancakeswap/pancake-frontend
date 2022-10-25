@@ -4,3 +4,4 @@ export type { TranslateFunction, ContextApi, ProviderState, ContextData, Transla
 export { default as languageList } from './config/languages'
 export * from './helpers'
 export { Trans } from './Trans'
+export { default as translations } from './config/translations.json'

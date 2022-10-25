@@ -4,7 +4,7 @@ import teams from 'config/constants/teams'
 import { NftLocation } from 'state/nftMarket/types'
 
 // FIXME: should move this test file inside localization pkg
-import translations from '../../packages/localization/src/config/translations.json'
+import { translations } from '@pancakeswap/localization'
 
 const allTranslationKeys = Object.keys(translations)
 
@@ -68,10 +68,10 @@ describe('Check translations available', () => {
   }
 
   throughDirectory('src/')
-  throughDirectory('apps/aptos')
-  throughDirectory('packages/uikit/src')
-  throughDirectory('packages/ui-wallets/src')
-
+  throughDirectory('../../apps/aptos')
+  throughDirectory('../../packages/uikit/src')
+  throughDirectory('../../packages/ui-wallets/src')
+  throughDirectory('../../packages/uikit/src')
   let match
 
   const extractedKeys = new Set<string>(whitelist)

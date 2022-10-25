@@ -65,15 +65,15 @@ import { useSigner } from 'wagmi'
 // Imports below migrated from Exchange useContract.ts
 import { Contract } from '@ethersproject/contracts'
 import { WNATIVE } from '@pancakeswap/sdk'
-import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
-import ERC20_ABI from '../config/abi/erc20.json'
-import IPancakePairABI from '../config/abi/IPancakePair.json'
-import multiCallAbi from '../config/abi/Multicall.json'
-import WETH_ABI from '../config/abi/weth.json'
-import { getContract } from '../utils'
+import { ERC20_BYTES32_ABI } from 'config/abi/erc20'
+import ERC20_ABI from 'config/abi/erc20.json'
+import IPancakePairABI from 'config/abi/IPancakePair.json'
+import multiCallAbi from 'config/abi/Multicall.json'
+import WETH_ABI from 'config/abi/weth.json'
+import { getContract } from 'utils'
 
-import { IPancakePair } from '../config/abi/types/IPancakePair'
-import { VaultKey } from '../state/types'
+import { IPancakePair } from 'config/abi/types/IPancakePair'
+import { VaultKey } from 'state/types'
 import { useActiveChainId } from './useActiveChainId'
 
 /**
