@@ -65,7 +65,7 @@ export default function Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex width="100%" justifyContent="center" position="relative">
+      <Flex width={['328px', , '100%']} height="100%" justifyContent="center" position="relative">
         {!isMobile && isChartSupported && (
           <PriceChartContainer
             inputCurrencyId={inputCurrencyId}
@@ -107,10 +107,12 @@ export default function Swap() {
                       <StableSwapFormContainer
                         setIsChartDisplayed={setIsChartDisplayed}
                         isChartDisplayed={isChartDisplayed}
+                        isChartSupported={isChartSupported}
                       />
                     ) : (
                       <SwapForm
                         isAccessTokenSupported={isAccessTokenSupported}
+                        isChartSupported={isChartSupported}
                         setIsChartDisplayed={setIsChartDisplayed}
                         isChartDisplayed={isChartDisplayed}
                       />

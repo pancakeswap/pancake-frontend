@@ -98,24 +98,13 @@ const getFarmsPrices = (farms: SerializedFarm[], chainId: number) => {
   )
   const nativePriceUSD = nativeStableFarm.tokenPriceVsQuote ? BIG_ONE.div(nativeStableFarm.tokenPriceVsQuote) : BIG_ZERO
   const farmsWithPrices = farms.map((farm) => {
-    const quoteTokenFarm = getFarmFromTokenSymbol(farms, farm.quoteToken.symbol, [
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
-    ])
-    const tokenPriceBusd = getFarmBaseTokenPrice(
-      farm,
-      quoteTokenFarm,
-      nativePriceUSD,
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
-    )
-    const quoteTokenPriceBusd = getFarmQuoteTokenPrice(
-      farm,
-      quoteTokenFarm,
-      nativePriceUSD,
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
-    )
+    const { wNative, stable } = nativeStableLpMap[chainId]
+    const quoteTokenFarm =
+      farm.quoteToken.symbol !== stable && farm.quoteToken.symbol !== wNative
+        ? getFarmFromTokenSymbol(farms, farm.quoteToken.symbol, [wNative, stable])
+        : null
+    const tokenPriceBusd = getFarmBaseTokenPrice(farm, quoteTokenFarm, nativePriceUSD, wNative, stable)
+    const quoteTokenPriceBusd = getFarmQuoteTokenPrice(farm, quoteTokenFarm, nativePriceUSD, wNative, stable)
 
     return {
       ...farm,

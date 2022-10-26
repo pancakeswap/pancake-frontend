@@ -29,6 +29,7 @@ const extendedSpace = {
 } as const
 
 const margin = { ...vars.space, auto: 'auto' }
+const extendedHeight = { '100vh': '100vh' }
 
 const responsiveProperties = defineProperties({
   conditions: {
@@ -56,7 +57,7 @@ const responsiveProperties = defineProperties({
     justifyItems: [...flexAlignment, 'space-around', 'space-between'],
     justifySelf: [...flexAlignment],
     inset: { ...vars.space, ...negativeSpace },
-    height: { ...vars.space, ...extendedSpace },
+    height: { ...vars.space, ...extendedSpace, ...extendedHeight },
     left: { ...vars.space, ...negativeSpace },
     marginBottom: { ...margin, ...negativeSpace },
     marginLeft: { ...margin, ...negativeSpace },
@@ -70,7 +71,7 @@ const responsiveProperties = defineProperties({
       ...extendedSpace,
       none: 'none',
     },
-    minHeight: vars.space,
+    minHeight: { ...vars.space, ...extendedSpace, ...extendedHeight },
     minWidth: vars.space,
     paddingBottom: vars.space,
     paddingLeft: vars.space,

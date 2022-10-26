@@ -41,6 +41,8 @@ const whitelist = [
   'Zap %amountA% %symbolA% and %amountB% %symbolB%',
   'Zap in %amount% BNB for %symbol%',
   'Zap in %amount% %symbol% for %lpSymbol%',
+  'Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%',
+  'Order cancellation',
 ]
 
 describe('Check translations integrity', () => {

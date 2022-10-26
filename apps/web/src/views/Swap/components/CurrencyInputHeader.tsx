@@ -20,6 +20,7 @@ interface Props {
   title: string | ReactElement
   subtitle: string
   noConfig?: boolean
+  isChartSupported: boolean
   setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed?: boolean
   hasAmount: boolean
@@ -33,6 +34,7 @@ const ColoredIconButton = styled(IconButton)`
 const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   title,
   subtitle,
+  isChartSupported,
   setIsChartDisplayed,
   isChartDisplayed,
   hasAmount,
@@ -49,7 +51,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
     <Swap.CurrencyInputHeader
       title={
         <Flex width="100%" alignItems="center" justifyContent="space-between">
-          {setIsChartDisplayed && (
+          {isChartSupported && setIsChartDisplayed && (
             <ColoredIconButton onClick={toggleChartDisplayed} variant="text" scale="sm">
               {isChartDisplayed ? (
                 <ChartDisableIcon color="textSubtle" />
