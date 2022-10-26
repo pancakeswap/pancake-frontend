@@ -12,6 +12,7 @@
     "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
     "build": "turbo run build --filter=web...",
     "start": "turbo run start --filter=web",
+    "test:config": "yarn workspace web run test:config",
     "test:ci": "yarn turbo run test --filter=[HEAD^1]",
     "lint": "turbo run lint --filter=web",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",

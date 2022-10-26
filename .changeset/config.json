@@ -22,6 +22,7 @@
     "farms-api",
     "aptos-web",
     "bridge",
-    "test"
+    "test",
+    "web"
   ]
 }
