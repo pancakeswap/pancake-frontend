@@ -13,9 +13,9 @@
   },
   "scripts": {
     "build:src": "tsup src/index.ts --format esm,cjs --dts",
-    "build:mp": "tsup connectors/miniProgram/index.ts --format esm,cjs --dts --outDir connectors/miniProgram/dist",
-    "build:bsc": "tsup connectors/binanceWallet/index.ts --format esm,cjs --dts --outDir connectors/binanceWallet/dist",
-    "build:chains": "tsup chains/index.ts --format esm,cjs --dts --outDir chains/dist",
+    "build:mp": "tsup connectors/miniProgram/index.ts --format esm,cjs --dts --outDir dist/connectors/miniProgram/dist",
+    "build:bsc": "tsup connectors/binanceWallet/index.ts --format esm,cjs --dts --outDir dist/connectors/binanceWallet/dist",
+    "build:chains": "tsup chains/index.ts --format esm,cjs --dts --outDir dist/chains/dist",
     "build": "yarn build:src && yarn build:mp && yarn build:bsc && yarn build:chains",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
@@ -47,19 +47,19 @@
       "require": "./dist/index.js"
     },
     "./connectors/miniProgram": {
-      "types": "./connectors/miniProgram/dist/index.d.ts",
-      "import": "./connectors/miniProgram/dist/index.mjs",
-      "require": "./connectors/miniProgram/dist/index.js"
+      "types": "./dist/connectors/miniProgram/dist/index.d.ts",
+      "import": "./dist/connectors/miniProgram/dist/index.mjs",
+      "require": "./dist/connectors/miniProgram/dist/index.js"
     },
     "./connectors/binanceWallet": {
-      "types": "./connectors/binanceWallet/dist/index.d.ts",
-      "import": "./connectors/binanceWallet/dist/index.mjs",
-      "require": "./connectors/binanceWallet/dist/index.js"
+      "types": "./dist/connectors/binanceWallet/dist/index.d.ts",
+      "import": "./dist/connectors/binanceWallet/dist/index.mjs",
+      "require": "./dist/connectors/binanceWallet/dist/index.js"
     },
     "./chains": {
-      "types": "./chains/dist/index.d.ts",
-      "import": "./chains/dist/index.mjs",
-      "require": "./chains/dist/index.js"
+      "types": "./dist/chains/dist/index.d.ts",
+      "import": "./dist/chains/dist/index.mjs",
+      "require": "./dist/chains/dist/index.js"
     }
   }
 }
