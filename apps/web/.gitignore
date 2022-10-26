@@ -5,12 +5,6 @@ node_modules
 /.pnp
 .pnp.js
 
-# testing
-/coverage
-cypress/videos
-cypress/screenshots
-cypress/fixtures/example.json
-
 # next.js
 .next/
 out/
@@ -19,7 +13,6 @@ out/
 # production
 build
 dist
-storybook-static
 
 # misc
 .DS_Store
@@ -37,7 +30,8 @@ yarn-debug.log*
 yarn-error.log*
 debug.log*
 
-**/apps/web/config/abi/types
+**/config/abi/types
+
 
 # Sentry
 .sentryclirc

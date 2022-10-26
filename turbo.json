@@ -3,7 +3,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "outputs": ["dist/**", ".next/**", "connectors/**/dist/**"]
     },
     "test": {
       "outputs": ["coverage/**"],
@@ -15,6 +15,9 @@
     "dev": {
       "cache": false
     },
+    "start": {
+      "cache": false
+    },
     "build:list": {
       "outputs": ["list/**"]
     },
@@ -24,6 +27,12 @@
     },
     "clean": {
       "cache": false
+    },
+    "postinstall": {
+      "outputs": []
+    },
+    "format:check:staged": {
+      "outputs": []
     }
   }
 }

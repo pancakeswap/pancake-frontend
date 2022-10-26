@@ -16,8 +16,8 @@
     "build:mp": "tsup connectors/miniProgram/index.ts --format esm,cjs --dts --outDir connectors/miniProgram/dist",
     "build:bsc": "tsup connectors/binanceWallet/index.ts --format esm,cjs --dts --outDir connectors/binanceWallet/dist",
     "build:chains": "tsup chains/index.ts --format esm,cjs --dts --outDir chains/dist",
-    "build:all": "yarn build:src && yarn build:mp && yarn build:bsc && yarn build:chains",
-    "prepublishOnly": "yarn run build:all",
+    "build": "yarn build:src && yarn build:mp && yarn build:bsc && yarn build:chains",
+    "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
