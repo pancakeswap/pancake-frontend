@@ -61,7 +61,7 @@ const BodyWrapper = styled(Box)`
   max-width: 100vw;
 `;
 
-const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
+const Inner = styled.div`
   flex-grow: 1;
   transition: margin-top 0.2s, margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translate3d(0, 0, 0);
@@ -185,13 +185,9 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
               )}
             </Flex>
           )}
-          {/* <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"}> */}
-          {/* <Inner isPushed={false} showMenu={showMenu}> */}
           <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"}>
             <Inner>{children}</Inner>
           </BodyWrapper>
-          {/* </Inner> */}
-          {/* </BodyWrapper> */}
         </Wrapper>
       </AtomBox>
       <Footer
