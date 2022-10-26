@@ -30,9 +30,6 @@
     },
     "postinstall": {
       "outputs": []
-    },
-    "format:check:staged": {
-      "outputs": []
     }
   }
 }

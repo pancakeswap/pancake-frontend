@@ -8,7 +8,7 @@
     "apis/*"
   ],
   "scripts": {
-    "dev": "turbo run dev --filter=web",
+    "dev": "turbo run dev --filter=web...",
     "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
     "build": "turbo run build --filter=web...",
     "start": "turbo run start --filter=web",
@@ -16,7 +16,7 @@
     "test:ci": "yarn turbo run test --filter=[HEAD^1]",
     "lint": "turbo run lint --filter=web",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
-    "format:check:staged": "turbo run format:check:staged --filter=web",
+    "format:check:staged": "lint-staged",
     "integration-test": "start-server-and-test start http://localhost:3000 'turbo run integration-test --filter=test'",
     "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk && NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "postinstall": "turbo run --filter=web postinstall",

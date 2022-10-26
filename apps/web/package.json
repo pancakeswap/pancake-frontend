@@ -12,7 +12,6 @@
     "test:config": "jest src/config/__tests__/ --testPathIgnorePatterns",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
     "lint:style": "npx stylelint '**/*.{ts,tsx}'",
-    "format:check:staged": "lint-staged",
     "format:write": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
     "postinstall": "yarn run typechain",
     "typechain": "typechain --out-dir src/config/abi/types --target=ethers-v5 \"src/config/abi/*.json\""
