@@ -107,10 +107,12 @@ export default function Swap() {
                       <StableSwapFormContainer
                         setIsChartDisplayed={setIsChartDisplayed}
                         isChartDisplayed={isChartDisplayed}
+                        isChartSupported={isChartSupported}
                       />
                     ) : (
                       <SwapForm
                         isAccessTokenSupported={isAccessTokenSupported}
+                        isChartSupported={isChartSupported}
                         setIsChartDisplayed={setIsChartDisplayed}
                         isChartDisplayed={isChartDisplayed}
                       />
