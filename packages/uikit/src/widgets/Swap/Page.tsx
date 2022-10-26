@@ -10,7 +10,6 @@ type SwapPageProps = AtomBoxProps & {
   helpUrl?: string;
   isEvm?: boolean;
   helpImage?: ReactNode;
-  hasWarningBanner?: boolean;
 };
 
 export const SwapPage = ({
