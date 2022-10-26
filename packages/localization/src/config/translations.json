@@ -2004,6 +2004,7 @@
   "Explorer": "Explorer",
   "Get in Touch": "Get in Touch",
   "Hello Aptos Project Teams!": "Hello Aptos Project Teams!",
+  "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Order cancellation",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%"
 }

@@ -1,16 +1,16 @@
-import { useMemo } from 'react'
-import styled from 'styled-components'
-import { useTranslation, ContextApi } from '@pancakeswap/localization'
+import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { Box, Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { Ifo, PoolIds } from 'config/constants/types'
+import { useMemo } from 'react'
 import { useProfile } from 'state/profile/hooks'
+import styled from 'styled-components'
 import useCriterias from 'views/Ifos/hooks/v3/useCriterias'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { useWeb3React } from '@pancakeswap/wagmi'
-import { EnableStatus, CardConfigReturn } from '../types'
-import IfoCardTokens from './IfoCardTokens'
+import { CardConfigReturn, EnableStatus } from '../types'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
+import IfoCardTokens from './IfoCardTokens'
 import IfoVestingCard from './IfoVestingCard'
 
 const StyledCard = styled(Card)`
@@ -56,7 +56,11 @@ export const cardConfig = (
           variant: 'blue',
           tooltip: msgs?.length ? (
             <>
-              <Text>{t('Meet any one of the requirements to join:')}</Text>
+              <Text>
+                {msgs.length > 1 // one or multiple
+                  ? t('Meet any one of the requirements to join:')
+                  : t('Meet the following requirement to join:')}
+              </Text>
               {msgs.map((msg) => (
                 <Text ml="16px" key={msg} as="li">
                   {msg}
