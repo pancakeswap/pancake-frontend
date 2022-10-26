@@ -7,6 +7,35 @@ export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 1
 
 const ifos: Ifo[] = [
   {
+    id: 'mgp',
+    address: '0x80828B68D126741EeA62b4712eBF7Ceb9d54CBAA',
+    isActive: true,
+    name: 'MGP',
+    poolBasic: {
+      saleAmount: '17,500,000 MGP',
+      raiseAmount: '$437,500',
+      distributionRatio: 0.25,
+    },
+    poolUnlimited: {
+      saleAmount: '52,500,000 MGP',
+      raiseAmount: '$1,312,500',
+      distributionRatio: 0.75,
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.mgp,
+    releaseBlockNumber: 21595548,
+    campaignId: '511900000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x5bbaee587df5b7e9b52e2b35f35f30afa08e15ab7098c73cb2503319c8d8ce44',
+    tokenOfferingPrice: 0.025,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/magpiexyz_io',
+    description:
+      'Magpie is a customized fork of Convex that helps users in the Wombat ecosystem to obtain better yields and voting power',
+    vestingTitle:
+      'Earn $MGP by converting $WOM and providing liquidities; Lock $MGP to share revenue and receive bribes.',
+  },
+  {
     id: 'wmx',
     address: '0xC202eb5f2487DA3675c4aAa2C3D2c071078699c1',
     isActive: false,
