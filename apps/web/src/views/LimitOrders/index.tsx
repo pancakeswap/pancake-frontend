@@ -2,7 +2,16 @@ import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import { Button, Box, Flex, useModal, BottomDrawer, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  Button,
+  Box,
+  Flex,
+  useModal,
+  BottomDrawer,
+  Link,
+  useMatchBreakpoints,
+  Swap as SwapUI,
+} from '@pancakeswap/uikit'
 
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn } from 'components/Layout/Column'
@@ -313,10 +322,16 @@ const LimitOrders = () => {
   const isSideFooter = isChartExpanded || isChartDisplayed
 
   return (
-    <Page removePadding={isChartExpanded} noMinHeight helpUrl={LIMIT_ORDERS_DOCS_URL}>
+    <Page
+      removePadding={isChartExpanded}
+      hideFooterOnDesktop={isSideFooter}
+      noMinHeight
+      helpUrl={LIMIT_ORDERS_DOCS_URL}
+    >
       <ClaimWarning />
       <Flex
         width="100%"
+        height="100%"
         justifyContent="center"
         position="relative"
         mb={isSideFooter ? null : '24px'}
@@ -457,6 +472,11 @@ const LimitOrders = () => {
             <Flex mt="24px" width="100%">
               <LimitOrderTable isCompact />
             </Flex>
+          )}
+          {isSideFooter && (
+            <Box display={['none', null, null, 'block']} width="100%" height="100%">
+              <SwapUI.Footer variant="side" helpUrl={LIMIT_ORDERS_DOCS_URL} />
+            </Box>
           )}
         </Flex>
       </Flex>
