@@ -6650,24 +6650,7 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/css-utils/-/css-utils-0.1.2.tgz#6bcd3e45f187d56c319ce9bc36ae1814b373c581"
   integrity sha512-qoxIu5E/UhJtoKsPL1JaU9nhTN0Xl5zYV0pScOgsvc3JN46TvTTt0L3GV8x3PQpZP7x3elw8BsC9czYbhJy9Gg==
 
-"@vanilla-extract/css@^1.7.2":
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@vanilla-extract/css/-/css-1.9.0.tgz#870efb6950896b429093067b9fba3d3ffcf6c16d"
-  integrity sha512-YERVutWIpttfkEAynBUgdHKMcSPjMAtu5IFfDfEdXmeygilV12S5WUYMzjrqu0F/LZBtqrHG5fa2tiCiFpay+w==
-  dependencies:
-    "@emotion/hash" "^0.8.0"
-    "@vanilla-extract/private" "^1.0.3"
-    chalk "^4.1.1"
-    css-what "^5.0.1"
-    cssesc "^3.0.0"
-    csstype "^3.0.7"
-    deep-object-diff "^1.1.0"
-    deepmerge "^4.2.2"
-    escape-string-regexp "^4.0.0"
-    media-query-parser "^2.0.2"
-    outdent "^0.8.0"
-
-"@vanilla-extract/css@^1.9.1":
+"@vanilla-extract/css@^1.7.2", "@vanilla-extract/css@^1.9.1":
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/@vanilla-extract/css/-/css-1.9.1.tgz#337b79faa5f8f98915a90c3fe3c30b54be746c09"
   integrity sha512-pu2SFiff5jRhPwvGoj8cM5l/qIyLvigOmy22ss5DGjwV5pJYezRjDLxWumi2luIwioMWvh9EozCjyfH8nq+7fQ==
@@ -6736,12 +6719,12 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/sprinkles/-/sprinkles-1.5.0.tgz#c921183ae518bb484299c2dc81f2acefd91c3dbe"
   integrity sha512-W58f2Rzz5lLmk0jbhgStVlZl5wEiPB1Ur3fRvUaBM+MrifZ3qskmFq/CiH//fEYeG5Dh9vF1qRviMMH46cX9Nw==
 
-"@vanilla-extract/vite-plugin@^3.3.1":
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/@vanilla-extract/vite-plugin/-/vite-plugin-3.3.1.tgz#c45615d0670894b11a23ee8208b58b0b5ddf22c8"
-  integrity sha512-x5tl1s7uELTKU5HDMrZB9zDW7z+rcTuiT+sGPJ5/OOb+DHS4Y5S8caXOEytk/lhGegBS2gib4fN7yaJ0azuJlQ==
+"@vanilla-extract/vite-plugin@^3.6.1":
+  version "3.6.1"
+  resolved "https://registry.yarnpkg.com/@vanilla-extract/vite-plugin/-/vite-plugin-3.6.1.tgz#d0ff721c20f10646c2ae01da606efd5d7c26bbdc"
+  integrity sha512-Pn3LhndH0NYPLdJejoExS1KdoFE2ZhtGnc2aH3EJDXKqobmDucdtmNZiIJ2NtI/1/cJ9ZnHuzXxpTE6V9yy8Cg==
   dependencies:
-    "@vanilla-extract/integration" "^5.0.0"
+    "@vanilla-extract/integration" "^6.0.0"
     outdent "^0.8.0"
     postcss "^8.3.6"
     postcss-load-config "^3.1.0"
