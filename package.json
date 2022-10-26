@@ -8,7 +8,7 @@
     "apis/*"
   ],
   "scripts": {
-    "dev": "turbo run dev --filter=web",
+    "dev": "turbo run dev --filter=web...",
     "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
     "build": "turbo run build --filter=web...",
     "start": "turbo run start --filter=web",
