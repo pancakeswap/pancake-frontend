@@ -2003,5 +2003,7 @@
   "Learn How to Create and Connect": "Learn How to Create and Connect",
   "Explorer": "Explorer",
   "Get in Touch": "Get in Touch",
-  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!"
+  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!",
+  "Order cancellation": "Order cancellation",
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%"
 }
