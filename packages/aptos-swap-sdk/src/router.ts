@@ -23,8 +23,6 @@ export abstract class Router {
   public static swapCallParameters(trade: Trade<Currency, Currency, TradeType>, options: TradeOptions) {
     const amountIn = trade.maximumAmountIn(options.allowedSlippage).quotient.toString()
     const amountOut = trade.minimumAmountOut(options.allowedSlippage).quotient.toString()
-    console.info(trade, 'trade')
-    console.info(trade.route.path, 'trade')
 
     if (trade.tradeType === TradeType.EXACT_INPUT) {
       const args: [string, string] = [amountIn, amountOut]
