@@ -250,9 +250,11 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
-          <Box style={{ display: isAccessTokenSupported ? 'block' : 'none' }}>
-            <AccessRisk inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
-          </Box>
+          {isAccessTokenSupported && (
+            <Box>
+              <AccessRisk inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
+            </Box>
+          )}
 
           {isExpertMode && recipient !== null && !showWrap ? (
             <>
