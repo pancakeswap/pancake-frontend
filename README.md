@@ -22,6 +22,7 @@ If you want to contribute, please refer to the [contributing guidelines](./CONTR
 <summary>
 How to start
 </summary>
+
 ```sh
 yarn
 ```
@@ -45,6 +46,7 @@ yarn start
 <summary>
 How to start
 </summary>
+
 ```sh
 yarn dev:aptos
 ```
