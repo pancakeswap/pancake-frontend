@@ -31,8 +31,9 @@ import {
 import styled from 'styled-components'
 // import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
-// import ToggleView from 'components/ToggleView/ToggleView'
-// import { useFarmViewMode } from 'state/user'
+import ToggleView from 'components/ToggleView/ToggleView'
+import { useFarmViewMode, ViewMode } from 'state/user'
+import NoSSR from 'components/NoSSR'
 
 // import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 // import { useCakeVaultUserData } from 'state/pools/hooks'
@@ -41,7 +42,7 @@ import Page from 'components/Layout/Page'
 // import { getFarmApr } from 'utils/apr'
 // import { latinise } from 'utils/latinise'
 // import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
-// import Table from './components/FarmTable/FarmTable'
+import Table from './FarmTable/FarmTable'
 // import { FarmWithStakedValue } from './components/types'
 
 const ControlContainer = styled.div`
@@ -150,7 +151,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   } = useRouter()
   const userDataLoaded = false // TODO: Aptos Farms
   const stakedOnly = false // TODO: Aptos Farms
-  // const [viewMode, setViewMode] = useFarmViewMode()
+  const [viewMode, setViewMode] = useFarmViewMode()
   // const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
   // const cakePrice = usePriceCakeBusd()
 
@@ -338,8 +339,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Page title={t('Farms')}>
         <ControlContainer>
           <ViewControls>
-            {/* <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} /> */}
             <ToggleWrapper>
+              <NoSSR>
+                <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+              </NoSSR>
               <Toggle
                 id="staked-only-farms"
                 scale="sm"
@@ -389,7 +392,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>
-        <FlexLayout>{children}</FlexLayout>
+        <NoSSR>{viewMode === ViewMode.TABLE ? <Table /> : <FlexLayout>{children}</FlexLayout>}</NoSSR>
         {account && !userDataLoaded && stakedOnly && (
           <Flex justifyContent="center">
             <Loading />

@@ -45,17 +45,17 @@ const StakeAction: React.FC<React.PropsWithChildren<any>> = ({
   // lpTotalSupply,
   // tokenAmountTotal,
   // quoteTokenAmountTotal,
-  userData,
+  // userData,
   // onStake,
   // onUnstake,
-  // onDone,
+  onDone,
 }) => {
   const { t } = useTranslation()
   // const { account } = useActiveWeb3React()
-  const {
-    // tokenBalance,
-    stakedBalance,
-  } = userData
+  // const {
+  //   tokenBalance,
+  //   stakedBalance,
+  // } = userData
   // const cakePrice = usePriceCakeBusd()
   const router = useRouter()
   // const lpPrice = useLpTokenPrice(lpSymbol)
@@ -116,29 +116,29 @@ const StakeAction: React.FC<React.PropsWithChildren<any>> = ({
     null,
   )
 
-  const renderStakingButtons = () => {
-    return stakedBalance.eq(0) ? (
-      <Button
-        onClick={onPresentDeposit}
-        disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
-      >
-        {t('Stake LP')}
-      </Button>
-    ) : (
-      <IconButtonWrapper>
-        <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
-          <MinusIcon color="primary" width="14px" />
-        </IconButton>
-        <IconButton
-          variant="tertiary"
-          onClick={onPresentDeposit}
-          disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
-        >
-          <AddIcon color="primary" width="14px" />
-        </IconButton>
-      </IconButtonWrapper>
-    )
-  }
+  // const renderStakingButtons = () => {
+  //   return stakedBalance.eq(0) ? (
+  //     <Button
+  //       onClick={onPresentDeposit}
+  //       disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
+  //     >
+  //       {t('Stake LP')}
+  //     </Button>
+  //   ) : (
+  //     <IconButtonWrapper>
+  //       <IconButton variant="tertiary" onClick={onPresentWithdraw} mr="6px">
+  //         <MinusIcon color="primary" width="14px" />
+  //       </IconButton>
+  //       <IconButton
+  //         variant="tertiary"
+  //         onClick={onPresentDeposit}
+  //         disabled={['history', 'archived'].some((item) => router.pathname.includes(item))}
+  //       >
+  //         <AddIcon color="primary" width="14px" />
+  //       </IconButton>
+  //     </IconButtonWrapper>
+  //   )
+  // }
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
@@ -151,7 +151,7 @@ const StakeAction: React.FC<React.PropsWithChildren<any>> = ({
         tokenAmountTotal={tokenAmountTotal}
         quoteTokenAmountTotal={quoteTokenAmountTotal}
       /> */}
-      {renderStakingButtons()}
+      {/* {renderStakingButtons()} */}
     </Flex>
   )
 }
