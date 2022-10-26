@@ -20,6 +20,8 @@ import { NavProps } from "./types";
 const Wrapper = styled.div`
   position: relative;
   width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
 `;
 
 const StyledNav = styled.nav`
@@ -56,9 +58,10 @@ const TopBannerContainer = styled.div<{ height: number }>`
 const BodyWrapper = styled(Box)`
   position: relative;
   display: flex;
+  max-width: 100vw;
 `;
 
-const Inner = styled.div<{ isPushed: boolean; showMenu: boolean }>`
+const Inner = styled.div`
   flex-grow: 1;
   transition: margin-top 0.2s, margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   transform: translate3d(0, 0, 0);
@@ -129,68 +132,78 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
 
   return (
     <MenuContext.Provider value={{ linkComponent }}>
-      <Wrapper>
-        <FixedContainer showMenu={showMenu} height={totalTopMenuHeight}>
-          {banner && isMounted && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
-          <StyledNav>
-            <Flex>
-              <Logo href={homeLink?.href ?? "/"} />
-              <AtomBox display={{ xs: "none", md: "block" }}>
-                <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
-              </AtomBox>
-            </Flex>
-            <Flex alignItems="center" height="100%">
-              <AtomBox mr="12px" display={{ xs: "none", lg: "block" }}>
-                <CakePrice showSkeleton={false} cakePriceUsd={cakePriceUsd} />
-              </AtomBox>
-              <Box mt="4px">
-                <LangSelector
-                  currentLang={currentLang}
-                  langs={langs}
-                  setLang={setLang}
-                  buttonScale="xs"
-                  color="textSubtle"
-                  hideLanguage
-                />
-              </Box>
-              {rightSide}
-            </Flex>
-          </StyledNav>
-        </FixedContainer>
-        {subLinks && (
-          <Flex justifyContent="space-around">
-            <SubMenuItems items={subLinksWithoutMobile} mt={`${totalTopMenuHeight + 1}px`} activeItem={activeSubItem} />
-
-            {subLinksMobileOnly && subLinksMobileOnly?.length > 0 && (
+      <AtomBox
+        asChild
+        minHeight={{
+          xs: "auto",
+          md: "100vh",
+        }}
+      >
+        <Wrapper>
+          <FixedContainer showMenu={showMenu} height={totalTopMenuHeight}>
+            {banner && isMounted && <TopBannerContainer height={topBannerHeight}>{banner}</TopBannerContainer>}
+            <StyledNav>
+              <Flex>
+                <Logo href={homeLink?.href ?? "/"} />
+                <AtomBox display={{ xs: "none", md: "block" }}>
+                  <MenuItems items={links} activeItem={activeItem} activeSubItem={activeSubItem} ml="24px" />
+                </AtomBox>
+              </Flex>
+              <Flex alignItems="center" height="100%">
+                <AtomBox mr="12px" display={{ xs: "none", lg: "block" }}>
+                  <CakePrice showSkeleton={false} cakePriceUsd={cakePriceUsd} />
+                </AtomBox>
+                <Box mt="4px">
+                  <LangSelector
+                    currentLang={currentLang}
+                    langs={langs}
+                    setLang={setLang}
+                    buttonScale="xs"
+                    color="textSubtle"
+                    hideLanguage
+                  />
+                </Box>
+                {rightSide}
+              </Flex>
+            </StyledNav>
+          </FixedContainer>
+          {subLinks && (
+            <Flex justifyContent="space-around" overflow="hidden">
               <SubMenuItems
-                items={subLinksMobileOnly}
+                items={subLinksWithoutMobile}
                 mt={`${totalTopMenuHeight + 1}px`}
                 activeItem={activeSubItem}
-                isMobileOnly
               />
-            )}
-          </Flex>
-        )}
-        <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"}>
-          <Inner isPushed={false} showMenu={showMenu}>
-            {children}
-            <Footer
-              items={footerLinks}
-              isDark={isDark}
-              toggleTheme={toggleTheme}
-              langs={langs}
-              setLang={setLang}
-              currentLang={currentLang}
-              cakePriceUsd={cakePriceUsd}
-              buyCakeLabel={buyCakeLabel}
-              mb={[`${MOBILE_MENU_HEIGHT}px`, null, "0px"]}
-            />
-          </Inner>
-        </BodyWrapper>
-        <AtomBox display={{ xs: "block", md: "none" }}>
-          <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
-        </AtomBox>
-      </Wrapper>
+
+              {subLinksMobileOnly && subLinksMobileOnly?.length > 0 && (
+                <SubMenuItems
+                  items={subLinksMobileOnly}
+                  mt={`${totalTopMenuHeight + 1}px`}
+                  activeItem={activeSubItem}
+                  isMobileOnly
+                />
+              )}
+            </Flex>
+          )}
+          <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"}>
+            <Inner>{children}</Inner>
+          </BodyWrapper>
+        </Wrapper>
+      </AtomBox>
+      <Footer
+        items={footerLinks}
+        isDark={isDark}
+        toggleTheme={toggleTheme}
+        langs={langs}
+        setLang={setLang}
+        currentLang={currentLang}
+        cakePriceUsd={cakePriceUsd}
+        buyCakeLabel={buyCakeLabel}
+        mb={[`${MOBILE_MENU_HEIGHT}px`, null, "0px"]}
+      />
+      <AtomBox display={{ xs: "block", md: "none" }}>
+        <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
+      </AtomBox>
     </MenuContext.Provider>
   );
 };
