@@ -62,16 +62,25 @@ export default function useRemoveLiquidityHandler({
 
     console.info(payload, 'payload')
 
-    // eslint-disable-next-line consistent-return
-    return simulateTransactionAsync({ payload })
-      .then((results) => {
-        const result = Array.isArray(results) ? results[0] : { max_gas_amount: '0' }
-
-        return sendTransactionAsync({
-          payload,
-          options: { max_gas_amount: result.max_gas_amount },
+    let results
+    try {
+      results = await simulateTransactionAsync({ payload })
+    } catch (error) {
+      if (error instanceof SimulateTransactionError) {
+        setLiquidityState({
+          attemptingTxn: false,
+          liquidityErrorMessage: transactionErrorToUserReadableMessage(error),
+          txHash: undefined,
         })
-      })
+      }
+    }
+
+    const options = Array.isArray(results) ? { max_gas_amount: results[0].max_gas_amount } : undefined
+
+    return sendTransactionAsync({
+      payload,
+      options,
+    })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
         const symbolA = currencyA.symbol
@@ -90,7 +99,7 @@ export default function useRemoveLiquidityHandler({
       .catch((err) => {
         let errorMsg = ''
 
-        if (err instanceof UserRejectedRequestError || err instanceof SimulateTransactionError) {
+        if (!(err instanceof UserRejectedRequestError)) {
           errorMsg = t('Remove liquidity failed: %message%', {
             message: transactionErrorToUserReadableMessage(err),
           })
