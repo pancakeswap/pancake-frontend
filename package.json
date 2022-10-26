@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "turbo run dev --filter=web",
     "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
-    "build": "turbo run build --filter=web...",
+    "build": "turbo run build --filter=web... --no-cache",
     "start": "turbo run start --filter=web",
     "test:ci": "yarn turbo run test --filter=[HEAD^1]",
     "lint": "turbo run lint --filter=web",
