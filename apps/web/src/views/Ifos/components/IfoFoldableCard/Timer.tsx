@@ -5,6 +5,7 @@ import getTimePeriods from 'utils/getTimePeriods'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
+import { differenceInHours } from 'date-fns'
 
 interface Props {
   publicIfoData: PublicIfoData
@@ -22,11 +23,20 @@ const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
 `
 
+const USE_CLIENT_TIME_UNTIL = 3
+
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { status, secondsUntilStart, startBlockNum } = publicIfoData
-  const timeUntil = getTimePeriods(secondsUntilStart)
+  const hoursLeft = differenceInHours(publicIfoData.startTime * 1000, Date.now())
+  const fallbackToClientTime = hoursLeft > USE_CLIENT_TIME_UNTIL
+  let timeUntil
+  if (fallbackToClientTime) {
+    timeUntil = getTimePeriods(publicIfoData.startTime - Date.now() / 1000)
+  } else {
+    timeUntil = getTimePeriods(secondsUntilStart)
+  }
 
   return (
     <Flex justifyContent="center" position="relative">

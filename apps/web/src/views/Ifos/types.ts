@@ -34,6 +34,7 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   numberPoints: number
   thresholdPoints: EthersBigNumber
+  startTime?: number
   vestingStartTime?: number
 
   fetchIfoData: (currentBlock: number) => Promise<void>
