@@ -7,7 +7,7 @@ import { RootObject as UserInfo } from 'views/Ifos/generated/UserInfo'
 import { RootObject as VestingSchedule } from 'views/Ifos/generated/VestingSchedule'
 import { calculateTaxOverflow, computeVestingScheduleId, getUserAllocation } from './utils'
 
-export * from 'utils'
+export * from './utils'
 
 /**
  * compute_offering_and_refund_amount
