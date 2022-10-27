@@ -13,12 +13,10 @@ const ifos: Ifo[] = [
     name: 'MGP',
     plannedStartTime: 1666872000,
     poolBasic: {
-      saleAmount: '17,500,000 MGP',
       raiseAmount: '$437,500',
       distributionRatio: 0.25,
     },
     poolUnlimited: {
-      saleAmount: '52,500,000 MGP',
       raiseAmount: '$1,312,500',
       distributionRatio: 0.75,
     },
@@ -42,12 +40,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'WMX',
     poolBasic: {
-      saleAmount: '1,000,000 WMX',
       raiseAmount: '$300,000',
       distributionRatio: 0.25,
     },
     poolUnlimited: {
-      saleAmount: '3,000,000 WMX',
       raiseAmount: '$900,000',
       distributionRatio: 0.75,
     },
@@ -70,12 +66,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'KRS',
     poolBasic: {
-      saleAmount: '12,000,000 KRS',
       raiseAmount: '$420,000',
       distributionRatio: 0.4,
     },
     poolUnlimited: {
-      saleAmount: '18,000,000 KRS',
       raiseAmount: '$630,000',
       distributionRatio: 0.6,
     },
@@ -97,12 +91,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'CO',
     poolBasic: {
-      saleAmount: '10,500,000 CO',
       raiseAmount: '$367,500',
       distributionRatio: 0.25,
     },
     poolUnlimited: {
-      saleAmount: '31,500,000 CO',
       raiseAmount: '$1,102,500',
       distributionRatio: 0.75,
     },
@@ -126,12 +118,10 @@ const ifos: Ifo[] = [
     cIFO: true,
     name: 'HOOP',
     poolBasic: {
-      saleAmount: '6,499,500 HOOP',
       raiseAmount: '$357,472.50',
       distributionRatio: 0.3,
     },
     poolUnlimited: {
-      saleAmount: '15,165,500 HOOP',
       raiseAmount: '$834,102.50',
       distributionRatio: 0.7,
     },
@@ -153,12 +143,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'WOM',
     poolBasic: {
-      saleAmount: '2,800,000 WOM',
       raiseAmount: '$210,000',
       distributionRatio: 0.1,
     },
     poolUnlimited: {
-      saleAmount: '25,200,000 WOM',
       raiseAmount: '$1,890,000',
       distributionRatio: 0.9,
     },
@@ -180,12 +168,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'Meta Apes ($PEEL)',
     poolBasic: {
-      saleAmount: '10,000,000 PEEL',
       raiseAmount: '$400,000',
       distributionRatio: 0.2,
     },
     poolUnlimited: {
-      saleAmount: '40,000,000 PEEL',
       raiseAmount: '$1,600,000',
       distributionRatio: 0.8,
     },
@@ -208,12 +194,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'TRIVIA',
     poolBasic: {
-      saleAmount: '10,000,000 TRIVIA',
       raiseAmount: '$350,000',
       distributionRatio: 0.2,
     },
     poolUnlimited: {
-      saleAmount: '40,000,000 TRIVIA',
       raiseAmount: '$1,400,000',
       distributionRatio: 0.8,
     },
@@ -237,12 +221,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'DUET',
     poolBasic: {
-      saleAmount: '1,200,000 DUET',
       raiseAmount: '$360,000',
       distributionRatio: 0.2,
     },
     poolUnlimited: {
-      saleAmount: '4,800,000 DUET',
       raiseAmount: '$1,440,000',
       distributionRatio: 0.8,
     },
@@ -264,12 +246,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'ERA (Game of Truth)',
     poolBasic: {
-      saleAmount: '4,000,000 ERA',
       raiseAmount: '$360,000',
       distributionRatio: 0.2,
     },
     poolUnlimited: {
-      saleAmount: '16,000,000 ERA',
       raiseAmount: '$1,440,000',
       distributionRatio: 0.8,
     },
@@ -291,12 +271,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'Froyo Games (FROYO)',
     poolBasic: {
-      saleAmount: '20,000,000 FROYO',
       raiseAmount: '$1,200,000',
       distributionRatio: 0.3,
     },
     poolUnlimited: {
-      saleAmount: '46,666,668 FROYO',
       raiseAmount: '$2,800,000',
       distributionRatio: 0.7,
     },
@@ -317,12 +295,10 @@ const ifos: Ifo[] = [
     isActive: false,
     name: 'Diviner Protocol (DPT)',
     poolBasic: {
-      saleAmount: '7,200,000 DPT',
       raiseAmount: '$180,000',
       distributionRatio: 0.3,
     },
     poolUnlimited: {
-      saleAmount: '16,800,000 DPT',
       raiseAmount: '$420,000',
       distributionRatio: 0.7,
     },
