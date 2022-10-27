@@ -2,6 +2,7 @@ import '@pancakeswap/ui/css/reset.css'
 import '../css/theme.css'
 
 import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
+import { Analytics } from '@vercel/analytics/react'
 import { Menu } from 'components/Menu'
 import Providers from 'components/Providers'
 import { NextPage } from 'next'
@@ -51,6 +52,7 @@ function MyApp(props: AppProps) {
         <App {...props} />
         <ToastListener />
       </Providers>
+      <Analytics />
       {process.env.NEXT_PUBLIC_GA_TRACKING_ID && (
         <Script
           strategy="afterInteractive"
