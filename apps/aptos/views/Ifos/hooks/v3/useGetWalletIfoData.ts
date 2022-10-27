@@ -15,6 +15,7 @@ import { useIfoPool } from '../useIfoPool'
 import { useIfoResources } from '../useIfoResources'
 import { useIfoUserInfo } from '../useIfoUserInfo'
 import { useIfoVestingSchedule } from '../useIfoVestingSchedule'
+import { useVestingCharacteristics } from '../vesting/useVestingCharacteristics'
 
 const initialState = {
   isInitialized: false,
@@ -73,38 +74,27 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
   const pool = useIfoPool()
   const userInfo = useIfoUserInfo()
   const vestingSchedule = useIfoVestingSchedule({ key: vestingScheduleId })
+  const vestingCharacteristics = useVestingCharacteristics()
 
   const fetchIfoData = useCallback(async () => {
-    if (!pool.data) {
-      return
-    }
-
-    const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } = userInfo.data
-      ? computeOfferingAndRefundAmount(userInfo.data, pool.data)
-      : {
-          tax_amount: BIG_ZERO,
-          refunding_amount: BIG_ZERO,
-        }
-    const vestingComputeReleasableAmount = vestingSchedule.data
-      ? computeReleaseAmount(resources[IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA], pool.data, vestingSchedule.data)
-      : BIG_ZERO
+    const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } =
+      pool.data && userInfo.data
+        ? computeOfferingAndRefundAmount(userInfo.data, pool.data)
+        : {
+            tax_amount: BIG_ZERO,
+            refunding_amount: BIG_ZERO,
+          }
 
     setState((prevState) => ({
       ...prevState,
       isInitialized: true,
       poolUnlimited: {
         ...prevState.poolUnlimited,
+        ...vestingCharacteristics,
         amountTokenCommittedInLP: userInfo.data ? new BigNumber(userInfo.data.amount) : BIG_ZERO,
-        offeringAmountInToken: pool.data ? new BigNumber(pool.data.offering_amount) : BIG_ZERO,
+        hasClaimed: userInfo.data?.claimed ?? false,
         refundingAmountInLP,
         taxAmountInLP,
-        hasClaimed: userInfo.data?.claimed ?? false,
-        vestingReleased: vestingSchedule.data ? new BigNumber(vestingSchedule.data.amount_released) : BIG_ZERO,
-        vestingAmountTotal: vestingSchedule.data ? new BigNumber(vestingSchedule.data.amount_total) : BIG_ZERO,
-        // Not in contract, compute this by checking if there is a vesting schedule for this user.
-        isVestingInitialized: !!vestingSchedule.data,
-        vestingId: vestingSchedule.data?.pid,
-        vestingComputeReleasableAmount,
       },
     }))
   }, [pool, resources, userInfo, vestingSchedule])
