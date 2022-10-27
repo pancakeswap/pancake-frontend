@@ -237,7 +237,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               step: 1,
               chainId,
               tx: receipt.hash,
-              isFirstTime: !isFirstTime,
+              isFirstTime,
               status: FarmTransactionStatus.PENDING,
             },
             {
