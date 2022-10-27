@@ -7,7 +7,7 @@ import {
   Skeleton,
   Farm as FarmUI,
   useDelayedUnmount,
-  FarmTableEarnProps,
+  FarmTableEarnedProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
 } from '@pancakeswap/uikit'
@@ -28,7 +28,7 @@ const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 export interface RowProps {
   apr: AprProps
   farm: FarmProps
-  earned: FarmTableEarnProps
+  earned: FarmTableEarnedProps
   multiplier: FarmTableMultiplierProps
   liquidity: FarmTableLiquidityProps
   details: FarmWithStakedValue

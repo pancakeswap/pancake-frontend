@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { RowType } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
 import { getDisplayApr } from '../getDisplayApr'
 
