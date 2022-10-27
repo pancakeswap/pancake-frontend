@@ -1395,7 +1395,7 @@
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "서브그래프가 BSC 문제로 인해 현재 지연되고 있습니다. 서브그래프가 복원될 때까지 성능이 저하될 수 있습니다.",
   "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "서브그래프가 BSC 문제로 인해 현재 지연되고 있습니다. 서브그래프가 복원될 때까지 순위 및 볼륨 데이터가 부정확할 수 있습니다.",
   "No issues with the subgraph.": "서브그래프에는 문제가 없습니다.",
-  "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "항상 NFT 마켓 서브그래프 상태 표시기를 켜세요. 기본값은 네트워크가 지연될 때만 이 표시기를 표시하는 것입니다.",
+  "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed",
   "Subgraph Health Indicator": "서브그래프 상태 표시기",
   "Delay": "지연",
   "Add liquidity instead": "대신 유동성 추가",
@@ -2004,6 +2004,7 @@
   "Explorer": "Explorer",
   "Get in Touch": "Get in Touch",
   "Hello Aptos Project Teams!": "Hello Aptos Project Teams!",
+  "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Order cancellation",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%"
 }
