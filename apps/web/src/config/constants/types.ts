@@ -55,7 +55,7 @@ export interface Ifo {
   version: number
   vestingTitle?: string
   cIFO?: boolean
-  startTime?: number
+  plannedStartTime?: number
   [PoolIds.poolBasic]?: IfoPoolInfo
   [PoolIds.poolUnlimited]: IfoPoolInfo
 }

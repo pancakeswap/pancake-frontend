@@ -11,7 +11,7 @@ const ifos: Ifo[] = [
     address: '0x80828B68D126741EeA62b4712eBF7Ceb9d54CBAA',
     isActive: true,
     name: 'MGP',
-    startTime: 1666872000,
+    plannedStartTime: 1666872000,
     poolBasic: {
       saleAmount: '17,500,000 MGP',
       raiseAmount: '$437,500',

@@ -31,13 +31,13 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
   const { status, secondsUntilStart, startBlockNum } = publicIfoData
   const currentBlockTimestamp = useCurrentBlockTimestamp()
   const hoursLeft =
-    publicIfoData.startTime && currentBlockTimestamp
-      ? (publicIfoData.startTime - currentBlockTimestamp.toNumber()) / 3600
+    publicIfoData.plannedStartTime && currentBlockTimestamp
+      ? (publicIfoData.plannedStartTime - currentBlockTimestamp.toNumber()) / 3600
       : 0
   const fallbackToBlockTimestamp = hoursLeft > USE_BLOCK_TIMESTAMP_UNTIL
   let timeUntil
   if (fallbackToBlockTimestamp) {
-    timeUntil = getTimePeriods(publicIfoData.startTime - currentBlockTimestamp.toNumber())
+    timeUntil = getTimePeriods(publicIfoData.plannedStartTime - currentBlockTimestamp.toNumber())
   } else {
     timeUntil = getTimePeriods(secondsUntilStart)
   }
