@@ -1395,7 +1395,7 @@
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "Just nu förekommer det fördröjningar i kantgrafen på grund av problem med BSC. Detta kan påverka prestandan tills kantgrafen är tillgänglig igen.",
   "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "Just nu förekommer det fördröjningar i uppdateringen av kantgrafen på grund av problem med BSC. Detta kan påverka ranknings- och volymdata tills kantgrafen är tillgänglig igen.",
   "No issues with the subgraph.": "Inga problem med kantgrafen.",
-  "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Visa alltid driftstatus för NFT-marknadens kantgraf. Enligt standardinställningen visas endast driftstatus vid nätverksfördröjningar",
+  "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed",
   "Subgraph Health Indicator": "Kantgrafens driftstatus",
   "Delay": "Fördröjning",
   "Add liquidity instead": "Lägg till likviditet istället",
@@ -2004,6 +2004,7 @@
   "Explorer": "Utforskare",
   "Get in Touch": "Kontakt",
   "Hello Aptos Project Teams!": "Hej Aptos projektteam!",
+  "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Avbeställning av order",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Avbeställning av order: %inputAmount% %inputTokenSymbol% för %outputAmount% %outputTokenSymbol%"
 }
