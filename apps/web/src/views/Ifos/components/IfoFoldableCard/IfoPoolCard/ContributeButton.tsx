@@ -62,13 +62,13 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
       walletIfoData.ifoCredit?.creditLeft.isLessThanOrEqualTo(0)) ||
     (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
 
-  const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
+  // const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
 
   return (
     <Button
       onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
       width="100%"
-      disabled={isDisabled}
+      disabled
     >
       {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
     </Button>
