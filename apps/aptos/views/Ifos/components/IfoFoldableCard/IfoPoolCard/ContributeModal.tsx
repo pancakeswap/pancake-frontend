@@ -78,7 +78,6 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   publicIfoData,
   walletIfoData,
   userCurrencyBalance,
-  creditLeft,
   onDismiss,
   // onSuccess,
 }) => {
@@ -90,56 +89,27 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { limitPerUserInLP, vestingInformation } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   // const { contract } = walletIfoData
-  const [value, setValue] = useState('')
   // const { account } = useAccount()
   // const { callWithGasPrice } = useCallWithGasPrice()
   // const raisingTokenContractReader = useERC20(currency.address, false)
   // const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
+
+  const [value, setValue] = useState('')
+
   const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
   // const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
-  const label = 'TODO: Aptos'
+  const label = t('Max. token entry')
 
-  // in v3 max token entry is based on ifo credit and hard cap limit per user minus amount already committed
   const maximumTokenEntry = useMemo(() => {
-    if (!creditLeft || (ifo.version >= 3.1 && poolId === PoolIds.poolBasic)) {
-      return limitPerUserInLP.minus(amountTokenCommittedInLP)
-    }
-    if (limitPerUserInLP.isGreaterThan(0)) {
-      if (limitPerUserInLP.isGreaterThan(0)) {
-        return limitPerUserInLP.minus(amountTokenCommittedInLP).isLessThanOrEqualTo(creditLeft)
-          ? limitPerUserInLP.minus(amountTokenCommittedInLP)
-          : creditLeft
-      }
-    }
-    return creditLeft
-  }, [creditLeft, limitPerUserInLP, amountTokenCommittedInLP, ifo.version, poolId])
+    // No concept of credit initially, max is the user's balance.
+    return userCurrencyBalance
+  }, [userCurrencyBalance])
 
   // include user balance for input
   const maximumTokenCommittable = useMemo(() => {
     return maximumTokenEntry.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
   }, [maximumTokenEntry, userCurrencyBalance])
-
-  const basicTooltipContent = t(
-    'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
-  )
-
-  const unlimitedToolipContent = (
-    <Box>
-      <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
-      <Text bold display="inline">
-        {t('the number of iCAKE.')}{' '}
-      </Text>
-      <Text display="inline">
-        {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
-      </Text>
-    </Box>
-  )
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent,
-    {},
-  )
 
   const isWarning =
     valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) || valueWithTokenDecimals.isGreaterThan(maximumTokenEntry)
@@ -155,8 +125,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
       <ModalBody maxWidth="360px">
         <Box p="2px">
           <Flex justifyContent="space-between" mb="16px">
-            {tooltipVisible && tooltip}
-            <TooltipText ref={targetRef}>{label}:</TooltipText>
+            <Text>{label}:</Text>
             <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
               ifo.currency.symbol
             }`}</Text>

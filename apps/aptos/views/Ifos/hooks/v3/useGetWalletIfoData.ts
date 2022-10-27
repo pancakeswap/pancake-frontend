@@ -5,8 +5,6 @@ import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useState, useCallback } from 'react'
 import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
-// import { fetchCakeVaultUserData } from 'state/pools'
-// import { useIfoCredit } from 'state/pools/hooks'
 import { WalletIfoState, WalletIfoData } from '../../types'
 import { useIfoPool } from '../useIfoPool'
 import { useIfoUserInfo } from '../useIfoUserInfo'
@@ -34,8 +32,6 @@ const initialState = {
  */
 export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
   const [state, setState] = useState<WalletIfoState>(initialState)
-  // const credit = useIfoCredit()
-  const credit = BIG_ZERO
 
   const contract = {} as Contract
 
@@ -89,12 +85,5 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
     setState({ ...initialState })
   }, [])
 
-  const creditLeftWithNegative = credit.minus(state.poolUnlimited.amountTokenCommittedInLP)
-
-  const ifoCredit = {
-    credit,
-    creditLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
-  }
-
-  return { ...state, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData, ifoCredit }
+  return { ...state, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData }
 }
