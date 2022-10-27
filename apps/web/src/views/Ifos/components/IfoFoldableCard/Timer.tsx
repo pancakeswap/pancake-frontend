@@ -6,7 +6,6 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
-import { differenceInHours } from 'date-fns'
 
 interface Props {
   publicIfoData: PublicIfoData
@@ -33,7 +32,7 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
   const currentBlockTimestamp = useCurrentBlockTimestamp()
   const hoursLeft =
     publicIfoData.startTime && currentBlockTimestamp
-      ? differenceInHours(publicIfoData.startTime * 1000, currentBlockTimestamp.toNumber() * 1000)
+      ? (publicIfoData.startTime - currentBlockTimestamp.toNumber()) / 3600
       : 0
   const fallbackToBlockTimestamp = hoursLeft > USE_BLOCK_TIMESTAMP_UNTIL
   let timeUntil
