@@ -1,12 +1,8 @@
 import styled from "styled-components";
-import { Skeleton } from "@pancakeswap/uikit";
+import { Skeleton } from "../../../../components/Skeleton";
+import { FarmTableEarnedProps } from "../../types";
 
-export interface EarnedProps {
-  earnings: number;
-  pid: number;
-}
-
-interface EarnedPropsWithLoading extends EarnedProps {
+interface EarnedPropsWithLoading extends FarmTableEarnedProps {
   userDataReady: boolean;
 }
 

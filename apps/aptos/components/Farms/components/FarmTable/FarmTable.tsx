@@ -8,19 +8,12 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
 import { getDisplayApr } from '../getDisplayApr'
 
-// import Row, { RowProps } from './Row'
+import Row, { RowProps } from './Row'
 // import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 import { DesktopColumnSchema } from '../types'
 
-// export interface ITableProps {
-//   farms: FarmWithStakedValue[]
-//   userDataReady: boolean
-//   cakePrice: BigNumber
-//   sortColumn?: string
-// }
-
 export interface ITableProps {
-  farms: any
+  farms: any // FarmWithStakedValue[]
   userDataReady: boolean
   cakePrice: BigNumber
   sortColumn?: string
@@ -75,8 +68,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         id: column.id,
         name: column.name,
         label: column.label,
-        // sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
-        sort: (a: RowType<any>, b: RowType<any>) => {
+        sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
           switch (column.name) {
             case 'farm':
               return b.id - a.id

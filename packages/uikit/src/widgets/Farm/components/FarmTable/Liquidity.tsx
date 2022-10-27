@@ -1,15 +1,14 @@
 import styled from "styled-components";
-import { HelpIcon, Text, Skeleton, useTooltip } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
-import BigNumber from "bignumber.js";
+import { Text } from "../../../../components/Text";
+import { HelpIcon } from "../../../../components/Svg";
+import { Skeleton } from "../../../../components/Skeleton";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import { FarmTableLiquidityProps } from "../../types";
 
 const ReferenceElement = styled.div`
   display: inline-block;
 `;
-
-export interface LiquidityProps {
-  liquidity: BigNumber;
-}
 
 const LiquidityWrapper = styled.div`
   min-width: 110px;
@@ -28,7 +27,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Liquidity: React.FunctionComponent<React.PropsWithChildren<LiquidityProps>> = ({ liquidity }) => {
+const Liquidity: React.FunctionComponent<React.PropsWithChildren<FarmTableLiquidityProps>> = ({ liquidity }) => {
   const displayLiquidity =
     liquidity && liquidity.gt(0) ? (
       `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`

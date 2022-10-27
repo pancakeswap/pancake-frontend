@@ -1,14 +1,14 @@
-import styled from "styled-components";
-import { Text, HelpIcon, Skeleton, useTooltip } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
+import styled from "styled-components";
+import { Text } from "../../../../components/Text";
+import { HelpIcon } from "../../../../components/Svg";
+import { Skeleton } from "../../../../components/Skeleton";
+import { useTooltip } from "../../../../hooks/useTooltip";
+import { FarmTableMultiplierProps } from "../../types";
 
 const ReferenceElement = styled.div`
   display: inline-block;
 `;
-
-export interface MultiplierProps {
-  multiplier: string;
-}
 
 const MultiplierWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text};
@@ -27,7 +27,7 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Multiplier: React.FunctionComponent<React.PropsWithChildren<MultiplierProps>> = ({ multiplier }) => {
+const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMultiplierProps>> = ({ multiplier }) => {
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : <Skeleton width={30} />;
   const { t } = useTranslation();
   const tooltipContent = (

@@ -7,31 +7,30 @@ import {
   Skeleton,
   Farm as FarmUI,
   useDelayedUnmount,
-  FarmTableEarnProps,
+  FarmTableEarnedProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useFarmUser } from 'state/farms/hooks'
+// import { useFarmUser } from 'state/farms/hooks'
 
-import Apr, { AprProps } from './Apr'
-import Farm, { FarmProps } from './Farm'
+// import Apr, { AprProps } from './Apr'
+// import Farm, { FarmProps } from './Farm'
 
-import ActionPanel from './Actions/ActionPanel'
-import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
-import BoostedApr from '../YieldBooster/components/BoostedApr'
-import BoostedTag from '../YieldBooster/components/BoostedTag'
+// import ActionPanel from './Actions/ActionPanel'
+// import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
+import { DesktopColumnSchema, MobileColumnSchema } from '../types'
 
 const { FarmAuctionTag, CoreTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 
 export interface RowProps {
-  apr: AprProps
-  farm: FarmProps
-  earned: FarmTableEarnProps
+  apr: any // AprProps
+  farm: any // FarmProps
+  earned: FarmTableEarnedProps
   multiplier: FarmTableMultiplierProps
   liquidity: FarmTableLiquidityProps
-  details: FarmWithStakedValue
+  details: any // FarmWithStakedValue
   type: 'core' | 'community'
   initialActivity?: boolean
 }
@@ -41,8 +40,8 @@ interface RowPropsWithLoading extends RowProps {
 }
 
 const cells = {
-  apr: Apr,
-  farm: Farm,
+  // apr: Apr,
+  // farm: Farm,
   earned: Earned,
   details: Details,
   multiplier: Multiplier,
@@ -83,10 +82,10 @@ const FarmMobileCell = styled.td`
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
   const { details, initialActivity, multiplier } = props
-  const { stakedBalance, proxy, tokenBalance } = props.details.userData
   const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
-  const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
+  const hasStakedAmount = false
+  // const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
   const { t } = useTranslation()
@@ -128,7 +127,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     {userDataReady ? (
                       <CellInner style={{ width: '140px' }}>
                         {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
-                        {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
                       </CellInner>
                     ) : (
                       <Skeleton width={60} height={24} />
@@ -150,25 +148,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        <Apr
+                        {/* <Apr
                           {...props.apr}
                           hideButton={isSmallerScreen}
                           strikethrough={props?.details?.boosted}
                           boosted={props?.details?.boosted}
-                        />
-                        {props?.details?.boosted ? (
-                          <BoostedApr
-                            lpRewardsApr={props?.apr?.lpRewardsApr}
-                            apr={props?.apr?.originalValue}
-                            pid={props.farm?.pid}
-                            lpTotalSupply={props.details?.lpTotalSupply}
-                            userBalanceInFarm={
-                              stakedBalance.plus(tokenBalance).gt(0)
-                                ? stakedBalance.plus(tokenBalance)
-                                : proxy.stakedBalance.plus(proxy.tokenBalance)
-                            }
-                          />
-                        ) : null}
+                        /> */}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -194,15 +179,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
         <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
-              <Farm {...props.farm} />
+              {/* <Farm {...props.farm} /> */}
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
                 <Box style={{ marginRight: '16px' }}>
                   <CoreTag scale="sm" />
-                  {props?.details?.boosted ? (
-                    <BoostedTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
-                  ) : null}
                 </Box>
               )}
             </Flex>
@@ -219,25 +201,11 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
-                <Apr
+                {/* <Apr
                   {...props.apr}
                   hideButton
                   strikethrough={props?.details?.boosted}
-                  boosted={props?.details?.boosted}
-                />
-                {props?.details?.boosted ? (
-                  <BoostedApr
-                    lpRewardsApr={props?.apr?.lpRewardsApr}
-                    apr={props?.apr?.originalValue}
-                    pid={props.farm?.pid}
-                    lpTotalSupply={props.details?.lpTotalSupply}
-                    userBalanceInFarm={
-                      stakedBalance.plus(tokenBalance).gt(0)
-                        ? stakedBalance.plus(tokenBalance)
-                        : proxy.stakedBalance.plus(proxy.tokenBalance)
-                    }
-                  />
-                ) : null}
+                /> */}
               </CellLayout>
             </AprMobileCell>
           </td>
@@ -256,9 +224,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {handleRenderRow()}
       {shouldRenderChild && (
         <tr>
-          <td colSpan={7}>
-            <ActionPanel {...props} expanded={actionPanelExpanded} />
-          </td>
+          <td colSpan={7}>{/* <ActionPanel {...props} expanded={actionPanelExpanded} /> */}</td>
         </tr>
       )}
     </>
