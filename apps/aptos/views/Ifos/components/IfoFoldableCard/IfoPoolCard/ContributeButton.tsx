@@ -1,13 +1,12 @@
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, useModal, useToast } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
-// import { useCurrencyBalance } from 'hooks/Balances'
-// import useTokenBalance from 'hooks/useTokenBalance'
-// import { useCurrentBlock } from 'state/block/hooks'
+import { useCurrencyBalance } from 'hooks/Balances'
+import { useMemo } from 'react'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import ContributeModal from './ContributeModal'
 import GetTokenModal from './GetTokenModal'
@@ -26,14 +25,16 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  // const currentBlock = useCurrentBlock()
-  const currentBlock = 1
-  // const balance = useCurrencyBalance(ifo.currency.address)
-  const userCurrencyBalance = BIG_ZERO
+  const currencyBalance = useCurrencyBalance(ifo.currency.address)
+
+  const balance = useMemo(
+    () => (currencyBalance ? new BigNumber(currencyBalance.quotient.toString()) : BIG_ZERO),
+    [currencyBalance],
+  )
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
-    await Promise.all([publicIfoData.fetchIfoData(currentBlock), walletIfoData.fetchIfoData()])
+    await Promise.all([publicIfoData.fetchIfoData(), walletIfoData.fetchIfoData()])
     toastSuccess(
       t('Success!'),
       <ToastDescriptionWithTx txHash={txHash}>
@@ -52,14 +53,15 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
       publicIfoData={publicIfoData}
       walletIfoData={walletIfoData}
       onSuccess={handleContributeSuccess}
-      userCurrencyBalance={userCurrencyBalance}
+      userCurrencyBalance={balance}
     />,
     false,
   )
 
   const [onPresentGetTokenModal] = useModal(<GetTokenModal currency={ifo.currency} />, false)
 
-  const noNeedCredit = ifo.version >= 3.1 && poolId === PoolIds.poolBasic
+  // const noNeedCredit = ifo.version >= 3.1 && poolId === PoolIds.poolBasic
+  const noNeedCredit = true
 
   const isMaxCommitted =
     (!noNeedCredit &&
@@ -71,7 +73,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
 
   return (
     <Button
-      onClick={userCurrencyBalance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
+      onClick={balance.isEqualTo(0) ? onPresentGetTokenModal : onPresentContributeModal}
       width="100%"
       disabled={isDisabled}
     >
