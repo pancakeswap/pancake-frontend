@@ -38,7 +38,7 @@ const formatVestingInfo = (pool) => ({
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { address, releaseBlockNumber, version } = ifo
+  const { address, releaseBlockNumber, version, plannedStartTime } = ifo
   const cakePriceUsd = usePriceCakeBusd()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
@@ -85,6 +85,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     endBlockNum: 0,
     numberPoints: 0,
     vestingStartTime: 0,
+    plannedStartTime: 0,
   })
 
   const abi = version >= 3.1 ? ifoV3Abi : ifoV2Abi // ifoV2Abi use for version 3.0
@@ -207,10 +208,11 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         endBlockNum,
         thresholdPoints: thresholdPoints && thresholdPoints[0],
         numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
+        plannedStartTime: plannedStartTime ?? 0,
         vestingStartTime: vestingStartTime ? vestingStartTime[0].toNumber() : 0,
       }))
     },
-    [releaseBlockNumber, address, version, abi],
+    [plannedStartTime, releaseBlockNumber, address, version, abi],
   )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
