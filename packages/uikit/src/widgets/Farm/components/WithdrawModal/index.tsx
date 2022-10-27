@@ -48,11 +48,19 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
     setVal(fullBalance);
   }, [fullBalance, setVal]);
 
+  const handlePercentInput = useCallback(
+    (percent: number) => {
+      setVal(fullBalanceNumber.dividedBy(100).multipliedBy(percent).toString());
+    },
+    [fullBalanceNumber, setVal]
+  );
+
   return (
     <Modal title={t("Unstake LP tokens")} onDismiss={onDismiss}>
       <ModalBody width={["100%", "100%", "100%", "420px"]}>
         <ModalInput
           onSelectMax={handleSelectMax}
+          onPercentInput={handlePercentInput}
           onChange={handleChange}
           value={val}
           max={fullBalance}
