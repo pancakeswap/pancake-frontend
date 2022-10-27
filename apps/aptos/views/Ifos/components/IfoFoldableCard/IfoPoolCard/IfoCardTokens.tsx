@@ -23,7 +23,6 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 // import { useIfoCredit } from 'state/pools/hooks'
 import { MessageTextLink } from '../../IfoCardStyles'
-import StakeVaultButton from '../StakeVaultButton'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
 import VestingAvailableToClaim from './VestingAvailableToClaim'
@@ -88,8 +87,6 @@ interface IfoCardTokensProps {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   isLoading: boolean
-  criterias?: any
-  isEligible?: boolean
 }
 
 const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
@@ -108,8 +105,6 @@ const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
 }
 
 const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
-  criterias,
-  isEligible,
   poolId,
   ifo,
   publicIfoData,
@@ -142,45 +137,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       return <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
     }
 
-    let message
-
-    const ifov31Msg =
-      ifo.version >= 3.1 && poolId === PoolIds.poolBasic && criterias?.length > 0 ? (
-        <Box mt="16px">
-          {!isEligible && (
-            <Message mb="24px" p="8px" variant="warning" icon={<ErrorIcon color="warning" width="24px" />}>
-              <MessageText small display="inline">
-                {t('Meet any one of the following requirements to be eligible.')}
-              </MessageText>
-            </Message>
-          )}
-          {isEligible && (
-            <Message mt="24px" p="8px" variant="success">
-              <MessageText small display="inline">
-                {t('You are eligible to participate in this Private Sale!')}
-              </MessageText>
-            </Message>
-          )}
-        </Box>
-      ) : null
-
-    if (
-      (ifo.version === 3 || (ifo.version >= 3.1 && poolId === PoolIds.poolUnlimited)) &&
-      getBalanceNumber(credit) === 0
-    ) {
-      message = (
-        <Message my="24px" p="8px" variant="danger">
-          <Box>
-            <MessageText display="inline">{t('You don’t have any iCAKE available for IFO public sale.')}</MessageText>{' '}
-            <MessageTextLink display="inline" fontWeight={700} href="/ifo#ifo-how-to" color="failure">
-              {t('How does it work?')} »
-            </MessageTextLink>
-          </Box>
-        </Message>
-      )
-    }
-
-    message = ifov31Msg || message
+    const message = null
 
     if (publicIfoData.status === 'coming_soon') {
       return (
@@ -228,17 +185,12 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
           <Text fontWeight={600}>{t('You didn’t participate in this sale!')}</Text>
-          {ifov31Msg || (
-            <>
-              <Text textAlign="center" fontSize="14px">
-                {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
-              </Text>
-              <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
-                {t('How does it work?')} »
-              </MessageTextLink>
-              <StakeVaultButton mt="24px" />
-            </>
-          )}
+          <Text textAlign="center" fontSize="14px">
+            {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
+          </Text>
+          <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
+            {t('How does it work?')} »
+          </MessageTextLink>
         </Flex>
       ) : (
         <>
