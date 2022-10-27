@@ -1,20 +1,15 @@
 /* eslint-disable camelcase */
 import { Contract } from '@ethersproject/contracts'
-import { useAccount } from '@pancakeswap/awgmi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { useState, useCallback, useMemo } from 'react'
-import { IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA } from 'views/Ifos/constants'
-import { computeOfferingAndRefundAmount, computeReleaseAmount } from 'views/Ifos/utils'
-import { computeVestingScheduleId } from 'views/Ifos/utils/utils'
+import { useState, useCallback } from 'react'
+import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
 // import { fetchCakeVaultUserData } from 'state/pools'
 // import { useIfoCredit } from 'state/pools/hooks'
 import { WalletIfoState, WalletIfoData } from '../../types'
 import { useIfoPool } from '../useIfoPool'
-import { useIfoResources } from '../useIfoResources'
 import { useIfoUserInfo } from '../useIfoUserInfo'
-import { useIfoVestingSchedule } from '../useIfoVestingSchedule'
 import { useVestingCharacteristics } from '../vesting/useVestingCharacteristics'
 
 const initialState = {
@@ -38,8 +33,6 @@ const initialState = {
  * Gets all data from an IFO related to a wallet
  */
 export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
-  const { account } = useAccount()
-
   const [state, setState] = useState<WalletIfoState>(initialState)
   // const credit = useIfoCredit()
   const credit = BIG_ZERO
@@ -65,15 +58,8 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
     }))
   }
 
-  const vestingScheduleId = useMemo(
-    () => (account?.address ? computeVestingScheduleId(account.address, 0) : undefined),
-    [account?.address],
-  )
-
-  const resources = useIfoResources()
   const pool = useIfoPool()
   const userInfo = useIfoUserInfo()
-  const vestingSchedule = useIfoVestingSchedule({ key: vestingScheduleId })
   const vestingCharacteristics = useVestingCharacteristics()
 
   const fetchIfoData = useCallback(async () => {
@@ -97,7 +83,7 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
         taxAmountInLP,
       },
     }))
-  }, [pool, resources, userInfo, vestingSchedule])
+  }, [pool, userInfo, vestingCharacteristics])
 
   const resetIfoData = useCallback(() => {
     setState({ ...initialState })
