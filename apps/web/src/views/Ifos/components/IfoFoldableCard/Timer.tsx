@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import { Flex, Heading, PocketWatchIcon, Text, Skeleton, Link, TimerIcon } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
 import { differenceInHours } from 'date-fns'
-import useCurrentBlockTimestamp from '../../../../hooks/useCurrentBlockTimestamp'
 
 interface Props {
   publicIfoData: PublicIfoData
@@ -24,16 +24,24 @@ const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
 `
 
+const USE_BLOCK_TIMESTAMP_UNTIL = 3
+
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const { status, secondsUntilStart, startBlockNum } = publicIfoData
   const currentBlockTimestamp = useCurrentBlockTimestamp()
-  const timeUntil = getTimePeriods(
-    currentBlockTimestamp && publicIfoData.startTime
-      ? publicIfoData.startTime - currentBlockTimestamp.toNumber()
-      : secondsUntilStart,
-  )
+  const hoursLeft =
+    publicIfoData.startTime && currentBlockTimestamp
+      ? differenceInHours(publicIfoData.startTime * 1000, currentBlockTimestamp.toNumber() * 1000)
+      : 0
+  const fallbackToBlockTimestamp = hoursLeft > USE_BLOCK_TIMESTAMP_UNTIL
+  let timeUntil
+  if (fallbackToBlockTimestamp) {
+    timeUntil = getTimePeriods(publicIfoData.startTime - currentBlockTimestamp.toNumber())
+  } else {
+    timeUntil = getTimePeriods(secondsUntilStart)
+  }
 
   return (
     <Flex justifyContent="center" position="relative">
