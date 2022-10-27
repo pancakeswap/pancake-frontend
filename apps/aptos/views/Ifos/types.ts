@@ -30,7 +30,7 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   vestingStartTime?: number
 
-  fetchIfoData: (currentBlock: number) => Promise<void>
+  fetchIfoData: () => Promise<void>
   // [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
