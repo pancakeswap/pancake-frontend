@@ -8,6 +8,10 @@
     "build": "npx tsx scripts/build.ts"
   },
   "dependencies": {
-    "@pancakeswap/sdk": "^3.0.0"
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/tokens": "*",
+    "@pancakeswap/token-lists": "*",
+    "@pancakeswap/multicall": "*",
+    "@pancakeswap/utils": "*"
   }
 }
