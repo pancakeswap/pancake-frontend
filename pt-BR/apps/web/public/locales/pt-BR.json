@@ -1395,7 +1395,7 @@
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "O subgrafo está atualmente sofrendo atrasos devido a problemas de BSC. O desempenho pode ser afetado até que o subgrafo seja restaurado.",
   "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "O subgrafo está atualmente sofrendo atrasos devido a problemas de BSC. Os dados de classificação e de volume podem ficar imprecisos até que o subgrafo seja restaurado.",
   "No issues with the subgraph.": "Nenhum problema com o subgrafo.",
-  "Turn on NFT market subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Ligue o indicador de saúde do subgrafo do mercado de NFT o tempo todo. O padrão é que o indicador só seja mostrado quando a rede está com atraso",
+  "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed",
   "Subgraph Health Indicator": "Indicador de saúde do subgrafo",
   "Delay": "Atraso",
   "Add liquidity instead": "Em vez disso, adicionar liquidez",
@@ -2004,6 +2004,7 @@
   "Explorer": "Explorer",
   "Get in Touch": "Entre em contato",
   "Hello Aptos Project Teams!": "Olá, equipes de projeto Aptos!",
+  "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Order cancellation",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%"
 }
