@@ -2,7 +2,7 @@ import { useAccount } from '@pancakeswap/awgmi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { useMemo } from 'react'
-import { IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA } from 'views/Ifos/constants'
+import { IfoPoolKey, IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA } from 'views/Ifos/constants'
 import type { VestingCharacteristics } from 'views/Ifos/types'
 import {
   computeNextVestingScheduleIdForHolderAndPid,
@@ -19,7 +19,7 @@ export const useVestingCharacteristics = (): VestingCharacteristics & {
   const { account } = useAccount()
 
   const vestingScheduleId = useMemo(
-    () => (account?.address ? computeVestingScheduleId(account.address, 0) : undefined),
+    () => (account?.address ? computeVestingScheduleId(account.address, +IfoPoolKey.UNLIMITED) : undefined),
     [account?.address],
   )
 
@@ -50,5 +50,5 @@ export const useVestingCharacteristics = (): VestingCharacteristics & {
       vestingAmountTotal: vestingSchedule.data ? new BigNumber(vestingSchedule.data.amount_total) : BIG_ZERO,
       isVestingInitialized: !!vestingSchedule.data,
     }
-  }, [resources, pool, vestingSchedule])
+  }, [account?.address, resources, pool, vestingSchedule])
 }

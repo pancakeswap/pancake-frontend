@@ -4,12 +4,13 @@ import useSWR from 'swr'
 import { FAST_INTERVAL } from 'config/constants'
 import { ifos } from 'config/constants/ifo'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
+import { useFetchUserWalletIfoData } from './useFetchUserWalletIfoData'
 
 const allVestingIfo: Ifo[] = ifos.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
 
 const useFetchVestingData = () => {
   const { account } = useAccount()
+  const { fetchUserWalletIfoData } = useFetchUserWalletIfoData()
 
   const { data, mutate } = useSWR(
     account ? ['vestingData'] : null,
@@ -17,7 +18,7 @@ const useFetchVestingData = () => {
       const allData = account
         ? await Promise.all(
             allVestingIfo.map(async (ifo) => {
-              const response = await fetchUserWalletIfoData(ifo, account.address)
+              const response = await fetchUserWalletIfoData(ifo)
               return response
             }),
           )
