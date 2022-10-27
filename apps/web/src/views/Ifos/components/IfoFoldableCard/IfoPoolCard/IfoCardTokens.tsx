@@ -22,7 +22,7 @@ import { bscTokens } from '@pancakeswap/tokens'
 import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { EnableStatus } from '../types'
@@ -106,7 +106,11 @@ const OnSaleInfo = ({ token, saleAmount, distributionRatio }) => {
     <TokenSection primaryToken={token}>
       <Flex flexDirection="column">
         <Label textTransform="uppercase">{t('On sale')}</Label>
-        <Value>{saleAmount}</Value>
+        <Value>
+          {typeof saleAmount === 'string'
+            ? saleAmount
+            : `${formatNumber(getBalanceNumber(saleAmount), 0, 0)} ${token.symbol}`}
+        </Value>
         <Text fontSize="14px" color="textSubtle">
           {t('%ratio%% of total sale', { ratio: distributionRatio })}
         </Text>
@@ -172,7 +176,13 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       return <SkeletonCardTokens />
     }
     if (!account) {
-      return <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
+      return (
+        <OnSaleInfo
+          token={token}
+          distributionRatio={distributionRatio}
+          saleAmount={ifo.version >= 3 ? publicIfoData[poolId].offeringAmountPool : ifo[poolId].saleAmount}
+        />
+      )
     }
 
     let message
@@ -240,7 +250,11 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
     if (account && !hasProfile) {
       return (
         <>
-          <OnSaleInfo token={token} distributionRatio={distributionRatio} saleAmount={ifo[poolId].saleAmount} />
+          <OnSaleInfo
+            token={token}
+            distributionRatio={distributionRatio}
+            saleAmount={ifo.version >= 3 ? publicIfoData[poolId].offeringAmountPool : ifo[poolId].saleAmount}
+          />
           {message}
         </>
       )
@@ -253,7 +267,9 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         <>
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('On sale')}</Label>
-            <Value>{ifo[poolId].saleAmount}</Value>
+            <Value>{`${formatNumber(getBalanceNumber(publicIfoData[poolId].offeringAmountPool), 0, 0)} ${
+              token.symbol
+            }`}</Value>
           </TokenSection>
           <Text fontSize="14px" color="textSubtle" pl="48px">
             {t('%ratio%% of total sale', { ratio: distributionRatio })}
