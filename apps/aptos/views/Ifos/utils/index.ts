@@ -10,6 +10,22 @@ import { calculateTaxOverflow, computeVestingScheduleId, getUserAllocation } fro
 export * from './utils'
 
 /**
+ * get_pool_tax_rate_overflow
+ */
+export const getPoolTaxRateOverflow = (
+  pid: number,
+  data: {
+    ifo_pool: IFOPool
+  },
+): BigNumber => {
+  if (data.ifo_pool.has_tax) {
+    return calculateTaxOverflow(new BigNumber(data.ifo_pool.total_amount), new BigNumber(data.ifo_pool.raising_amount))
+  }
+
+  return BIG_ZERO
+}
+
+/**
  * compute_offering_and_refund_amount
  */
 export const computeOfferingAndRefundAmount = (user_info: UserInfo, ifo_pool: IFOPool) => {

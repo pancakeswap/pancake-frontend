@@ -6,6 +6,7 @@ import { useCakePrice } from 'hooks/useStablePrice'
 import { useState, useCallback, useMemo } from 'react'
 import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA } from 'views/Ifos/constants'
 import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
+import { getPoolTaxRateOverflow } from 'views/Ifos/utils'
 import { PoolCharacteristics, PublicIfoData, VestingInformation } from '../../types'
 import { getStatus } from '../helpers'
 import { useIfoPool } from '../useIfoPool'
@@ -23,8 +24,7 @@ const formatPool = (pool: IFOPool): PoolCharacteristics => ({
   raisingAmountPool: pool ? new BigNumber(pool.raising_amount.toString()) : BIG_ZERO,
   offeringAmountPool: pool ? new BigNumber(pool.offering_amount.toString()) : BIG_ZERO,
   limitPerUserInLP: pool ? new BigNumber(pool.limit_per_user.toString()) : BIG_ZERO,
-  // hasTax: pool ? pool.has_tax : false,
-  taxRate: 0, // TODO: Aptos. Tax rate currently comes from a view function.
+  taxRate: getPoolTaxRateOverflow(+pool.pid, { ifo_pool: pool }).toNumber(),
   totalAmountPool: pool ? new BigNumber(pool.total_amount.toString()) : BIG_ZERO,
   sumTaxesOverflow: pool ? new BigNumber(pool.sum_taxes_overflow.toString()) : BIG_ZERO,
   vestingInformation: pool ? formatVestingInfo(pool) : undefined,
