@@ -17,7 +17,7 @@ const useFetchVestingData = () => {
       const allData = account
         ? await Promise.all(
             allVestingIfo.map(async (ifo) => {
-              const response = await fetchUserWalletIfoData(ifo, account?.address)
+              const response = await fetchUserWalletIfoData(ifo, account.address)
               return response
             }),
           )

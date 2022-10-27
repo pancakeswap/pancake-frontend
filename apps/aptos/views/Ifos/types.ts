@@ -42,6 +42,16 @@ export interface VestingInformation {
   slicePeriodSeconds: number
 }
 
+export interface VestingCharacteristics {
+  vestingId: string
+  offeringAmountInToken: BigNumber
+  vestingReleased: BigNumber
+  vestingAmountTotal: BigNumber
+  vestingComputeReleasableAmount: BigNumber
+  vestingInformationPercentage: number
+  vestingInformationDuration: number
+}
+
 // User specific pool characteristics
 export interface UserPoolCharacteristics {
   amountTokenCommittedInLP: BigNumber // @contract: amountPool
@@ -52,6 +62,7 @@ export interface UserPoolCharacteristics {
   isPendingTx: boolean
   vestingReleased?: BigNumber
   vestingAmountTotal?: BigNumber
+  // Not in contract, compute this by checking if there is a vesting schedule for this user.
   isVestingInitialized?: boolean
   vestingId?: string
   vestingComputeReleasableAmount?: BigNumber
