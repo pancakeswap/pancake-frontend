@@ -1840,15 +1840,7 @@
   "Zap allows you to add liquidity with only 1 single token. Click": "Зап позволяет добавлять ликвидность всего одним токеном. Нажмите",
   "to try.": "и повторите попытку.",
   "%percentageVested%% of the purchased token will get vested and released linearly over a period of time. %percentageTgeRelease%% of the purchased token will be released immediately and available for claiming when IFO ends.": "Часть в %percentageVested%% купленных токенов будет вестирована и выпущена линейно в течение определенного периода. Часть в %percentageTgeRelease%% купленных токенов будет выпущена немедленно и доступна для получения по окончании IFO.",
-<<<<<<< HEAD
   "The vested tokens will be released linearly over a period of %days% days.": "Вестированные токены будут выпускаться линейно в течение %days% сут.",
-=======
-<<<<<<<< HEAD:public/locales/ru-RU.json
-  "The vested tokens will be released linearly over a period of %days% days.": "Вестированные токены будут выпускаться линейно в течение %days% сут.",
-========
-  "The vested tokens will be released linearly over a period of %weeks% weeks.": "Вестированные токены будут выпускаться линейно в течение %weeks% нед.",
->>>>>>>> origin/develop:apps/web/public/locales/ru-RU.json
->>>>>>> origin/develop
   "Yield Booster": "Бустер выручки",
   "Connect wallet to view booster": "Для просмотра бустера подключите кошелек",
   "An active fixed-term CAKE staking position is required for activating farm yield boosters.": "Для активации бустеров выручки фарма нужна активная позиция по вложению CAKE с фиксированным сроком.",
@@ -2000,15 +1992,10 @@
   "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.": "На основе метода продаж «избыток». Неизрасходованные %refundingAmount% %spentToken% можно получить после завершения продажи.",
   "New": "Новое",
   "Pot Open": "Призовой фонд открыт",
-<<<<<<< HEAD
-=======
-  "no provider found": "провайдеры не найдены",
->>>>>>> origin/develop
   "until the next pot lock": "до следующей блокировки призового фонда",
   "Withdrawable on %date%": "К выводу %date%",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "Для первоначальной настройки кроссчейн-фарминга CAKE потребуется небольшое количество %nativeToken%.",
   "For safety, cross-chain transactions will take around 30 minutes to confirm.": "Подтверждение кроссчейн-транзакций занимает около 30 минут (для обеспечения безопасности).",
-<<<<<<< HEAD
   "no provider found": "провайдеры не найдены",
   "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Используется подходящий NFT. Не удаляйте и не редактируйте аватар профиля до получения.",
   "Hourly Average": "Hourly Average",
@@ -2020,10 +2007,4 @@
   "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Order cancellation",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%"
-=======
-  "Using eligible NFT for entry. Do not remove or edit your profile avatar before claiming.": "Используется подходящий NFT. Не удаляйте и не редактируйте аватар профиля до получения.",
-  "Hourly Average": "Hourly Average",
-  "Get in Touch": "Get in Touch",
-  "Hello Aptos Project Teams!": "Hello Aptos Project Teams!"
->>>>>>> origin/develop
 }
