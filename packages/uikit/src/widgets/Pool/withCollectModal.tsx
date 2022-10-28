@@ -86,7 +86,7 @@ export const withCollectModal =
     earningTokenPrice,
     isLoading,
   }: WithHarvestActionsProps) => {
-    const earningTokenBalance = getBalanceNumber(earnings, earningTokenDecimals);
+    const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals);
 
     const formattedBalance = formatNumber(earningTokenBalance, 3, 3);
 
