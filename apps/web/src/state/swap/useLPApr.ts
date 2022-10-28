@@ -1,12 +1,12 @@
 import { gql } from 'graphql-request'
-import { Pair, ChainId } from '@pancakeswap/sdk'
+import { Pair } from '@pancakeswap/sdk'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
+import { getChainNameFromId } from 'utils/getChainNameFromId'
 import { SLOW_INTERVAL } from 'config/constants'
 import { LP_HOLDERS_FEE, WEEKS_IN_YEAR } from 'config/constants/info'
-import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../info/constant'
 
 interface PoolReserveVolume {
   reserveUSD: string
@@ -22,15 +22,9 @@ interface PoolReserveVolumeResponse {
 }
 
 export const useLPApr = (pair?: Pair) => {
-  const chainName = pair
-    ? pair.chainId === ChainId.BSC
-      ? 'BSC'
-      : pair.chainId === ChainId.ETHEREUM
-      ? 'ETH'
-      : null
-    : null
+  const chainName = getChainNameFromId(pair?.chainId)
   const { data: poolData } = useSWRImmutable(
-    chainName ? ['LP7dApr', pair.liquidityToken.address, chainName] : null,
+    chainName ? ['LP7dApr', pair.liquidityToken.address, pair.chainId] : null,
     async () => {
       const timestampsArray = getDeltaTimestamps()
       const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
