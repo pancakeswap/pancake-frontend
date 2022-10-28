@@ -274,14 +274,21 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
   const isWindowVisible = useIsWindowVisible()
 
   useSWRImmutable(
-    (isRecentlyActive || !isPublicIfoDataInitialized) && currentBlock && ['fetchPublicIfoData', currentBlock],
+    currentBlock &&
+      (isRecentlyActive
+        ? ['fetchPublicIfoData', currentBlock, ifo.id]
+        : !isPublicIfoDataInitialized
+        ? ['fetchPublicIfoData', ifo.id]
+        : null),
     async () => {
       fetchPublicIfoData(currentBlock)
     },
   )
 
   useSWRImmutable(
-    isWindowVisible && (isRecentlyActive || !isWalletDataInitialized) && account && 'fetchWalletIfoData',
+    isWindowVisible &&
+      (isRecentlyActive || !isWalletDataInitialized) &&
+      account && ['fetchWalletIfoData', account, ifo.id],
     async () => {
       fetchWalletIfoData()
     },
