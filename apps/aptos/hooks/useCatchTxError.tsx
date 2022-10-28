@@ -14,7 +14,7 @@ export type CatchTxErrorReturn = {
 
 interface TransactionReceipt {
   status: boolean
-  hash: string
+  transactionHash: string
 }
 
 type ErrorData = {
@@ -71,7 +71,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
           return {
             // @ts-ignore
             status: receipt?.success,
-            hash: receipt.hash,
+            transactionHash: receipt.hash,
           }
         }
         return null
