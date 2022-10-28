@@ -42,7 +42,7 @@ const ScrollToTopButtonV2 = () => {
       <Button
         width={48}
         height={48}
-        endIcon={<ArrowUpIcon color="white" style={{ marginLeft: 0 }} />}
+        endIcon={<ArrowUpIcon color="invertedContrast" style={{ marginLeft: 0 }} />}
         onClick={scrollToTop}
       />
     </FixedContainer>
