@@ -3,25 +3,10 @@
 // import { useAccount } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 // import { bscTokens } from '@pancakeswap/tokens'
-import {
-  BalanceInput,
-  Box,
-  Button,
-  Flex,
-  Image,
-  Link,
-  Message,
-  Modal,
-  ModalBody,
-  Text,
-  TooltipText,
-  // useToast,
-  useTooltip,
-} from '@pancakeswap/uikit'
-import { formatNumber, getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { BalanceInput, Box, Button, Flex, Image, Link, Message, Modal, ModalBody, Text } from '@pancakeswap/uikit'
+import { formatNumber, getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
-import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { Ifo, PoolIds } from 'config/constants/types'
 // import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 // import { useERC20 } from 'hooks/useContract'
@@ -43,7 +28,6 @@ interface Props {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   userCurrencyBalance: BigNumber
-  creditLeft: BigNumber
   onSuccess: (amount: BigNumber, txHash: string) => void
   onDismiss?: () => void
 }
@@ -97,19 +81,21 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   const [value, setValue] = useState('')
 
-  const valueWithTokenDecimals = new BigNumber(value).times(DEFAULT_TOKEN_DECIMAL)
+  const valueWithTokenDecimals = useMemo(
+    () => getDecimalAmount(new BigNumber(value), currency.decimals),
+    [currency.decimals, value],
+  )
   // const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
   const label = t('Max. token entry')
 
   const maximumTokenEntry = useMemo(() => {
-    // No concept of credit initially, max is the user's balance.
-    return userCurrencyBalance
-  }, [userCurrencyBalance])
+    return getDecimalAmount(limitPerUserInLP.minus(amountTokenCommittedInLP), currency.decimals)
+  }, [amountTokenCommittedInLP, currency.decimals, limitPerUserInLP])
 
   // include user balance for input
   const maximumTokenCommittable = useMemo(() => {
-    return maximumTokenEntry.isLessThanOrEqualTo(userCurrencyBalance) ? maximumTokenEntry : userCurrencyBalance
-  }, [maximumTokenEntry, userCurrencyBalance])
+    return userCurrencyBalance
+  }, [userCurrencyBalance])
 
   const isWarning =
     valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) || valueWithTokenDecimals.isGreaterThan(maximumTokenEntry)

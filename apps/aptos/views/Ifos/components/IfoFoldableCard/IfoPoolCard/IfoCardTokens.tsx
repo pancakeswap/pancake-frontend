@@ -1,6 +1,5 @@
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount } from '@pancakeswap/awgmi'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 // import { bscTokens } from '@pancakeswap/tokens'
@@ -15,13 +14,11 @@ import {
   BunnyPlaceholderIcon,
   Message,
   MessageText,
-  ErrorIcon,
 } from '@pancakeswap/uikit'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { Ifo, PoolIds } from 'config/constants/types'
 // import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-// import { useIfoCredit } from 'state/pools/hooks'
 import { MessageTextLink } from '../../IfoCardStyles'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
@@ -126,8 +123,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   const { currency, token, version } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
-  // const credit = useIfoCredit()
-  const credit = BIG_ZERO
 
   const renderTokenSection = () => {
     if (isLoading) {
