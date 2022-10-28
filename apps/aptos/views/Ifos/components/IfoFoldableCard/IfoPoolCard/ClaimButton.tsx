@@ -26,11 +26,11 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
         ? walletIfoData.contract.harvest()
         : walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
     })
-    if (receipt?.status) {
+    if (receipt?.hash) {
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+        <ToastDescriptionWithTx txHash={receipt.hash}>
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
