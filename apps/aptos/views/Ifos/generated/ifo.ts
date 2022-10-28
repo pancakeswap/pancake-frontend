@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0xce999e352e317a785c5c2724d5cae20cc34425c2ebc6a28611da25cc4d2b94c8' as const
+export const ADDRESS = '0x13c8a066f1a253983d4add357404f45f3d5e20501158224df72dde2269877443' as const
 
 export const IFO_MODULE_NAME = 'IFO' as const
 
@@ -61,197 +61,6 @@ export const ifoFinalWithdraw = (
   }
 }
 
-export const ifoGetMaxBufferTime = (): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: [],
-    arguments: [],
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_max_buffer_time`,
-  }
-}
-
-export const ifoGetNumPools = (): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: [],
-    arguments: [],
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_num_pools`,
-  }
-}
-
-export type IfoGetPoolInformationArgs = [bigint | string]
-
-export const ifoGetPoolInformation = (
-  args: IfoGetPoolInformationArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_pool_information`,
-  }
-}
-
-export type IfoGetPoolTaxRateOverflowArgs = [bigint | string]
-
-export const ifoGetPoolTaxRateOverflow = (
-  args: IfoGetPoolTaxRateOverflowArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_pool_tax_rate_overflow`,
-  }
-}
-
-export type IfoGetUserAllocationsArgs = [string, number[] | Uint8Array]
-
-export const ifoGetUserAllocations = (
-  args: IfoGetUserAllocationsArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_user_allocations`,
-  }
-}
-
-export type IfoGetUserInfosArgs = [string, number[] | Uint8Array]
-
-export const ifoGetUserInfos = (
-  args: IfoGetUserInfosArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_user_infos`,
-  }
-}
-
-export type IfoGetUserOfferingAndRefundAmountsArgs = [string, number[] | Uint8Array]
-
-export const ifoGetUserOfferingAndRefundAmounts = (
-  args: IfoGetUserOfferingAndRefundAmountsArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_user_offering_and_refund_amounts`,
-  }
-}
-
-export type IfoGetVestingInformationArgs = [bigint | string]
-
-export const ifoGetVestingInformation = (
-  args: IfoGetVestingInformationArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_vesting_information`,
-  }
-}
-
-export type IfoGetVestingScheduleByAddressAndIndexArgs = [string, bigint | string]
-
-export const ifoGetVestingScheduleByAddressAndIndex = (
-  args: IfoGetVestingScheduleByAddressAndIndexArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_vesting_schedule_by_address_and_index`,
-  }
-}
-
-export type IfoGetVestingScheduleByIdArgs = [number[] | Uint8Array]
-
-export const ifoGetVestingScheduleById = (
-  args: IfoGetVestingScheduleByIdArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_vesting_schedule_by_id`,
-  }
-}
-
-export const ifoGetVestingSchedulesCount = (
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: [],
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_vesting_schedules_count`,
-  }
-}
-
-export type IfoGetVestingSchedulesCountByBeneficiaryArgs = [string]
-
-export const ifoGetVestingSchedulesCountByBeneficiary = (
-  args: IfoGetVestingSchedulesCountByBeneficiaryArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_vesting_schedules_count_by_beneficiary`,
-  }
-}
-
-export const ifoGetVestingSchedulesTotalAmount = (
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: [],
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_vesting_schedules_total_amount`,
-  }
-}
-
-export type IfoGetVetingScheduleIdAtIndexArgs = [bigint | string]
-
-export const ifoGetVetingScheduleIdAtIndex = (
-  args: IfoGetVetingScheduleIdAtIndexArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_veting_schedule_id_at_index`,
-  }
-}
-
-export const ifoGetWithdrawableOfferingCoinAmount = (
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: [],
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::get_withdrawable_offering_coin_amount`,
-  }
-}
-
 export type IfoHarvestPoolArgs = [bigint | string]
 
 export const ifoHarvestPool = (
@@ -266,15 +75,6 @@ export const ifoHarvestPool = (
   }
 }
 
-export const ifoInit = (): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: [],
-    arguments: [],
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::init`,
-  }
-}
-
 export type IfoInitializePoolArgs = [string, bigint | string, bigint | string]
 
 export const ifoInitializePool = (
@@ -286,43 +86,6 @@ export const ifoInitializePool = (
     type_arguments: typeArgs,
     arguments: args,
     function: `${ADDRESS}::${IFO_MODULE_NAME}::initialize_pool`,
-  }
-}
-
-export const ifoIsIfoExist = (typeArgs: [string, string]): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: [],
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::is_ifo_exist`,
-  }
-}
-
-export type IfoIsPoolSetArgs = [bigint | string]
-
-export const ifoIsPoolSet = (
-  args: IfoIsPoolSetArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::is_pool_set`,
-  }
-}
-
-export type IfoIsQualifiedWhitelistArgs = [string]
-
-export const ifoIsQualifiedWhitelist = (
-  args: IfoIsQualifiedWhitelistArgs,
-  typeArgs: [string, string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${IFO_MODULE_NAME}::is_qualified_whitelist`,
   }
 }
 
