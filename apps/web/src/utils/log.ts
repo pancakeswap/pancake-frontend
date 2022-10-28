@@ -1,3 +1,3 @@
 export const logTx = ({ account, hash, chainId }: { account: string; hash: string; chainId: number }) => {
-  fetch(`/_log/${account}/${chainId}/${hash}`)
+  fetch(`/api/_log/${account}/${chainId}/${hash}`)
 }
