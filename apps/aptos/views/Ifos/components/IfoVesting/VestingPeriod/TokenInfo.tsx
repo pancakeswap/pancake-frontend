@@ -1,13 +1,13 @@
 import { BalanceWithLoading, Box, ChevronDownIcon, Flex, Text, useDelayedUnmount } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { useEffect, useState, useMemo } from 'react'
-import styled from 'styled-components'
 import { TokenImage } from 'components/TokenImage'
 import { PoolIds } from 'config/constants/types'
 import useStablePrice from 'hooks/useStablePrice'
-import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { useEffect, useState, useMemo } from 'react'
+import styled from 'styled-components'
 import { multiplyPriceByAmount } from 'utils/prices'
+import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import Expand from './Expand'
 
 const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`

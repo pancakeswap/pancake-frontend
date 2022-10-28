@@ -3,8 +3,8 @@ import { AutoRenewIcon, Button } from '@pancakeswap/uikit'
 // import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from 'config/constants/types'
 import useCatchTxError from 'hooks/useCatchTxError'
+import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 // import { useIfoV3Contract } from 'hooks/useContract'
-import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 
 interface Props {
   poolId: PoolIds

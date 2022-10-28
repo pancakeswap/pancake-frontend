@@ -1,9 +1,9 @@
-import { useRouter } from 'next/router'
-import styled, { keyframes, css } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text } from '@pancakeswap/uikit'
-import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
 import { PoolIds } from 'config/constants/types'
+import { useRouter } from 'next/router'
+import styled, { keyframes, css } from 'styled-components'
+import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import Info from './Info'
 
 const expandAnimation = keyframes`
