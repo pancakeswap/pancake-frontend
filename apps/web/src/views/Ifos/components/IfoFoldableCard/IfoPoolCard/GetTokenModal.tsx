@@ -1,4 +1,4 @@
-import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
+import { Modal, ModalBody, Text, Image, Button, Link, OpenNewIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -9,9 +9,11 @@ interface Props {
 
 const GetTokenModal: React.FC<React.PropsWithChildren<Partial<Props>>> = ({ currency, onDismiss }) => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
+
   return (
     <Modal title={t('%symbol% required', { symbol: currency.symbol })} onDismiss={onDismiss}>
-      <ModalBody maxWidth="288px">
+      <ModalBody maxWidth={isMobile ? '100%' : '288px'}>
         <Image src={`/images/tokens/${currency.address}.png`} width={72} height={72} margin="auto" mb="24px" />
         <Text mb="16px">
           {t('You’ll need %symbol% tokens to participate in the IFO!', { symbol: currency.symbol })}
