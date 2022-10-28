@@ -1,14 +1,7 @@
-import {
-  // useEffect,
-  // useCallback,
-  useState,
-  useMemo,
-  useRef,
-  createContext,
-} from 'react'
+import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from '@pancakeswap/localization'
-// import BigNumber from 'bignumber.js'
+import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
@@ -30,19 +23,18 @@ import {
   Farm as FarmUI,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-// import orderBy from 'lodash/orderBy'
+import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
 import ToggleView from 'components/ToggleView/ToggleView'
-import { useFarmViewMode, ViewMode } from 'state/user'
+import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
 import NoSSR from 'components/NoSSR'
 
-// import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
+// import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
 // import { useCakeVaultUserData } from 'state/pools/hooks'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 // import { DeserializedFarm } from 'state/types'
 // import { getFarmApr } from 'utils/apr'
-// import { latinise } from 'utils/latinise'
-// import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
+import { latinise } from 'utils/latinise'
 import Table from './FarmTable/FarmTable'
 // import { FarmWithStakedValue } from './components/types'
 
@@ -141,7 +133,7 @@ const StyledImage = styled(Image)`
   margin-top: 58px;
 `
 
-// const NUMBER_OF_FARMS_VISIBLE = 12
+const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
@@ -149,20 +141,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const cakePrice = useCakePriceAsBigNumber()
   const { pathname, query: urlQuery } = useRouter()
   const userDataLoaded = false // TODO: Aptos Farms
-  const stakedOnly = false // TODO: Aptos Farms
   const [viewMode, setViewMode] = useFarmViewMode()
+  const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
+  const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   // const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
-  // const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
+  const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
 
   const { account } = useAccount()
-  const [
-    ,
-    // sortOption
-    setSortOption,
-  ] = useState('hot')
+  const [sortOption, setSortOption] = useState('hot')
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)
 
@@ -174,11 +163,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // usePollFarmsWithUserData()
 
-  // // Users with no wallet connected should see 0 as Earned amount
-  // // Connected users should see loading indicator until first userData has loaded
+  // Users with no wallet connected should see 0 as Earned amount
+  // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded)
-
-  // const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
   // const activeFarms = farmsLP.filter(
   //   (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
@@ -187,25 +174,16 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   // const archivedFarms = farmsLP
 
   // const stakedOnlyFarms = activeFarms.filter(
-  //   (farm) =>
-  //     farm.userData &&
-  //     (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-  //       new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  //   (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
   // )
 
   const stakedInactiveFarms = []
   // const stakedInactiveFarms = inactiveFarms.filter(
-  //   (farm) =>
-  //     farm.userData &&
-  //     (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-  //       new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  //   (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
   // )
 
-  // const stakedArchivedFarms = archivedFarms.filter(
-  //   (farm) =>
-  //     farm.userData &&
-  //     (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-  //       new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  // const stakedArchivedFarms = archivedFarms.filter((farm) =>
+  //   farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
   // )
 
   // const farmsList = useCallback(
@@ -243,8 +221,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
   }
-
-  // const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
 
   // const chosenFarms = useMemo(() => {
   //   let chosenFs = []
@@ -305,16 +281,16 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // chosenFarmsLength.current = chosenFarmsMemoized.length
 
-  // useEffect(() => {
-  //   if (isIntersecting) {
-  //     setNumberOfFarmsVisible((farmsCurrentlyVisible) => {
-  //       if (farmsCurrentlyVisible <= chosenFarmsLength.current) {
-  //         return farmsCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
-  //       }
-  //       return farmsCurrentlyVisible
-  //     })
-  //   }
-  // }, [isIntersecting])
+  useEffect(() => {
+    if (isIntersecting) {
+      setNumberOfFarmsVisible((farmsCurrentlyVisible) => {
+        if (farmsCurrentlyVisible <= chosenFarmsLength.current) {
+          return farmsCurrentlyVisible + NUMBER_OF_FARMS_VISIBLE
+        }
+        return farmsCurrentlyVisible
+      })
+    }
+  }, [isIntersecting])
 
   const handleSortOptionChange = (option: OptionProps): void => {
     setSortOption(option.value)
@@ -345,7 +321,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 id="staked-only-farms"
                 scale="sm"
                 checked={stakedOnly}
-                // onChange={() => setStakedOnly(!stakedOnly)}
+                onChange={() => setStakedOnly(!stakedOnly)}
               />
               <Text>{t('Staked only')}</Text>
             </ToggleWrapper>
