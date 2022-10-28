@@ -3,7 +3,7 @@ import {
   // useCallback,
   useState,
   useMemo,
-  // useRef,
+  useRef,
   createContext,
 } from 'react'
 import { createPortal } from 'react-dom'
@@ -12,6 +12,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
+import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import {
   Image,
   Heading,
@@ -37,7 +38,7 @@ import NoSSR from 'components/NoSSR'
 
 // import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 // import { useCakeVaultUserData } from 'state/pools/hooks'
-// import useIntersectionObserver from 'hooks/useIntersectionObserver'
+import useIntersectionObserver from 'hooks/useIntersectionObserver'
 // import { DeserializedFarm } from 'state/types'
 // import { getFarmApr } from 'utils/apr'
 // import { latinise } from 'utils/latinise'
@@ -145,15 +146,12 @@ const StyledImage = styled(Image)`
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const isMounted = useIsMounted()
-  const {
-    // pathname,
-    query: urlQuery,
-  } = useRouter()
+  const cakePrice = useCakePriceAsBigNumber()
+  const { pathname, query: urlQuery } = useRouter()
   const userDataLoaded = false // TODO: Aptos Farms
   const stakedOnly = false // TODO: Aptos Farms
   const [viewMode, setViewMode] = useFarmViewMode()
   // const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
-  // const cakePrice = usePriceCakeBusd()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
@@ -165,12 +163,12 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     // sortOption
     setSortOption,
   ] = useState('hot')
-  // const { observerRef, isIntersecting } = useIntersectionObserver()
-  // const chosenFarmsLength = useRef(0)
+  const { observerRef, isIntersecting } = useIntersectionObserver()
+  const chosenFarmsLength = useRef(0)
 
-  // const isArchived = pathname.includes('archived')
-  // const isInactive = pathname.includes('history')
-  // const isActive = !isInactive && !isArchived
+  const isArchived = pathname.includes('archived')
+  const isInactive = pathname.includes('history')
+  const isActive = !isInactive && !isArchived
 
   // useCakeVaultUserData()
 
@@ -178,7 +176,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // // Users with no wallet connected should see 0 as Earned amount
   // // Connected users should see loading indicator until first userData has loaded
-  // const userDataReady = !account || (!!account && userDataLoaded)
+  const userDataReady = !account || (!!account && userDataLoaded)
 
   // const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
@@ -346,7 +344,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               <Toggle
                 id="staked-only-farms"
                 scale="sm"
-                // checked={stakedOnly}
+                checked={stakedOnly}
                 // onChange={() => setStakedOnly(!stakedOnly)}
               />
               <Text>{t('Staked only')}</Text>
@@ -392,7 +390,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </LabelWrapper>
           </FilterContainer>
         </ControlContainer>
-        <NoSSR>{viewMode === ViewMode.TABLE ? <Table /> : <FlexLayout>{children}</FlexLayout>}</NoSSR>
+        <NoSSR>
+          {viewMode === ViewMode.TABLE ? (
+            <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+          ) : (
+            <FlexLayout>{children}</FlexLayout>
+          )}
+        </NoSSR>
         {account && !userDataLoaded && stakedOnly && (
           <Flex justifyContent="center">
             <Loading />

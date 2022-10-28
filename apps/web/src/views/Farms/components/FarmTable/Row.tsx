@@ -10,13 +10,13 @@ import {
   FarmTableEarnedProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
+  FarmTableFarmTokenInfoProps,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser } from 'state/farms/hooks'
 
 import Apr, { AprProps } from './Apr'
-import Farm, { FarmProps } from './Farm'
-
+import Farm from './Farm'
 import ActionPanel from './Actions/ActionPanel'
 import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
@@ -27,7 +27,7 @@ const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 
 export interface RowProps {
   apr: AprProps
-  farm: FarmProps
+  farm: FarmTableFarmTokenInfoProps
   earned: FarmTableEarnedProps
   multiplier: FarmTableMultiplierProps
   liquidity: FarmTableLiquidityProps

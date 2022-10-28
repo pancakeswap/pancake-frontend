@@ -88,14 +88,14 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
   )
 
   const getFarmEarnings = (farm) => {
-    const earnings = new BigNumber(farm.userData.earnings)
+    const earnings = new BigNumber(farm?.userData?.earnings)
     return getBalanceNumber(earnings)
   }
 
   const generateRow = (farm) => {
     const { token, quoteToken } = farm
-    const tokenAddress = token.address
-    const quoteTokenAddress = quoteToken.address
+    const tokenAddress = token?.address
+    const quoteTokenAddress = quoteToken?.address
     const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
     const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
     const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
@@ -162,9 +162,9 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>
-              {/* {sortedRows.map((row) => (
+              {sortedRows.map((row) => (
                 <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} />
-              ))} */}
+              ))}
             </TableBody>
           </StyledTable>
         </TableWrapper>

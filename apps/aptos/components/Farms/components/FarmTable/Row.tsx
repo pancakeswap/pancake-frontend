@@ -10,13 +10,13 @@ import {
   FarmTableEarnedProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
+  FarmTableFarmTokenInfoProps,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 // import { useFarmUser } from 'state/farms/hooks'
 
 // import Apr, { AprProps } from './Apr'
-// import Farm, { FarmProps } from './Farm'
-
+import Farm from './Farm'
 // import ActionPanel from './Actions/ActionPanel'
 // import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 import { DesktopColumnSchema, MobileColumnSchema } from '../types'
@@ -26,7 +26,7 @@ const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 
 export interface RowProps {
   apr: any // AprProps
-  farm: any // FarmProps
+  farm: FarmTableFarmTokenInfoProps
   earned: FarmTableEarnedProps
   multiplier: FarmTableMultiplierProps
   liquidity: FarmTableLiquidityProps
@@ -41,7 +41,7 @@ interface RowPropsWithLoading extends RowProps {
 
 const cells = {
   // apr: Apr,
-  // farm: Farm,
+  farm: Farm,
   earned: Earned,
   details: Details,
   multiplier: Multiplier,
@@ -179,7 +179,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
         <tr style={{ cursor: 'pointer' }} onClick={toggleActionPanel}>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
-              {/* <Farm {...props.farm} /> */}
+              <Farm {...props.farm} />
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
