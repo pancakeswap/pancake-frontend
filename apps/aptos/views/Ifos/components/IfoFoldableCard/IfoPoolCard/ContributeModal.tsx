@@ -12,6 +12,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 // import { useERC20 } from 'hooks/useContract'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { usePrepareContribute } from 'views/Ifos/hooks/usePrepareContribute'
 // import { requiresApproval } from 'utils/requiresApproval'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
@@ -78,6 +79,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   // const raisingTokenContractReader = useERC20(currency.address, false)
   // const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
+  const { handleConfirm } = usePrepareContribute()
 
   const [value, setValue] = useState('')
 
@@ -103,8 +105,6 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const isConfirming = false
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   const handleApprove = () => {} // TODO: Aptos doesn't have approval.
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleConfirm = () => {}
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
@@ -197,7 +197,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
             }
             isConfirming={isConfirming}
             onApprove={handleApprove}
-            onConfirm={handleConfirm}
+            onConfirm={() => handleConfirm({ amount: valueWithTokenDecimals.toFixed() })}
           />
         </Box>
       </ModalBody>
