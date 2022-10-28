@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from "react";
 
-let coinInterval: number;
+let coinInterval: NodeJS.Timeout;
 
 interface SequencePlayerProps {
   images: string[];
@@ -52,7 +52,7 @@ export const SequencePlayer: React.FC<React.PropsWithChildren<SequencePlayerProp
     coinInterval = setInterval(() => {
       isPlaying.current = true;
       requestAnimationFrame(coinDrawer);
-    }, msPerFrame);
+    }, msPerFrame) as unknown as NodeJS.Timeout;
   }, [coinDrawer, msPerFrame, onPlayStart]);
 
   useEffect(() => {
