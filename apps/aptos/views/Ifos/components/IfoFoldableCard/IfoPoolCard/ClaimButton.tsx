@@ -26,7 +26,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, ifoVers
         ? walletIfoData.contract.harvest()
         : walletIfoData.contract.harvestPool(poolId === PoolIds.poolBasic ? 0 : 1)
     })
-    if (receipt?.success) {
+    if (receipt?.status) {
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(
         t('Success!'),

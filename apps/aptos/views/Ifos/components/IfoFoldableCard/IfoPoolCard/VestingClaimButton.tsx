@@ -35,7 +35,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+        <ToastDescriptionWithTx txHash={receipt.hash}>
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
