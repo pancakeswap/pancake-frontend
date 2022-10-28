@@ -8,8 +8,13 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 export type TxResponse = TransactionResponse | null
 
 export type CatchTxErrorReturn = {
-  fetchWithCatchTxError: (fn: () => Promise<TxResponse>) => Promise<TransactionResponse | null>
+  fetchWithCatchTxError: (fn: () => Promise<TxResponse>) => Promise<TransactionReceipt | null>
   loading: boolean
+}
+
+interface TransactionReceipt {
+  success: boolean
+  hash: string
 }
 
 type ErrorData = {
@@ -49,7 +54,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
   // )
 
   const fetchWithCatchTxError = useCallback(
-    async (_callTx: () => Promise<TxResponse>): Promise<TransactionResponse | null> => {
+    async (_callTx: () => Promise<TxResponse>): Promise<TransactionReceipt | null> => {
       let tx: TxResponse = null
 
       try {
@@ -61,7 +66,15 @@ export default function useCatchTxError(): CatchTxErrorReturn {
           toastSuccess(`${t('Transaction Submitted')}!`, <ToastDescriptionWithTx txHash={tx.hash} />)
         }
 
-        return tx
+        const receipt = await tx?.wait()
+        if (receipt) {
+          return {
+            // @ts-ignore
+            success: receipt?.success,
+            hash: receipt.hash,
+          }
+        }
+        return null
       } catch (error: any) {
         setLoading(false)
         const reason = error && error.code !== 4001 ? transactionErrorToUserReadableMessage(error) : undefined
