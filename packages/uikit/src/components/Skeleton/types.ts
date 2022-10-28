@@ -26,4 +26,5 @@ export interface SkeletonV2Props extends SpaceProps, LayoutProps, BorderRadiusPr
   wrapperProps?: SpaceProps & LayoutProps;
   skeletonTop?: string;
   skeletonLeft?: string;
+  style?: React.CSSProperties;
 }

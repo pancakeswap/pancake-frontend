@@ -1,6 +1,6 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { BinanceIcon } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
+import { BinanceIcon, SkeletonV2 } from '@pancakeswap/uikit'
+import { useState, useEffect } from 'react'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import styled from 'styled-components'
 import { useHttpLocations } from '@pancakeswap/hooks'
@@ -23,21 +23,19 @@ export default function CurrencyLogo({
   style?: React.CSSProperties
 }) {
   const uriLocations = useHttpLocations(currency instanceof WrappedTokenInfo ? currency.logoURI : undefined)
-
-  const srcs: string[] = useMemo(() => {
-    if (currency?.isNative) return []
-
-    if (currency?.isToken) {
-      const tokenLogoURL = getTokenLogoURL(currency)
-
-      if (currency instanceof WrappedTokenInfo) {
-        if (!tokenLogoURL) return [...uriLocations]
-        return [...uriLocations, tokenLogoURL]
-      }
-      if (!tokenLogoURL) return []
-      return [tokenLogoURL]
-    }
-    return []
+  const [srcs, setSrc] = useState<string[]>(null)
+  useEffect(() => {
+    if (currency?.isNative) setSrc([])
+    else if (currency?.isToken) {
+      // eslint-disable-next-line consistent-return
+      getTokenLogoURL(currency).then((tokenLogoURL) => {
+        if (currency instanceof WrappedTokenInfo) {
+          if (!tokenLogoURL) return [...uriLocations]
+          setSrc([...uriLocations, tokenLogoURL])
+        } else if (!tokenLogoURL) return setSrc([])
+        else setSrc([tokenLogoURL])
+      })
+    } else setSrc([])
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
@@ -47,5 +45,9 @@ export default function CurrencyLogo({
     return <StyledLogo size={size} srcs={[`/images/chains/${currency.chainId}.png`]} width={size} style={style} />
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return (
+    <SkeletonV2 height={size} width={size} isDataReady={Boolean(srcs)} borderRadius={size} style={style}>
+      <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+    </SkeletonV2>
+  )
 }

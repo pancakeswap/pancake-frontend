@@ -106,6 +106,7 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
   wrapperProps,
   skeletonTop = "0",
   skeletonLeft = "0",
+  style,
   width,
   height,
   mr,
@@ -115,7 +116,7 @@ export const SkeletonV2: React.FC<React.PropsWithChildren<SkeletonV2Props>> = ({
   const animationRef = useRef<HTMLDivElement>(null);
   const skeletonRef = useRef<HTMLDivElement>(null);
   return (
-    <SkeletonWrapper width={width} height={height} mr={mr} ml={ml} {...wrapperProps}>
+    <SkeletonWrapper width={width} height={height} mr={mr} ml={ml} {...wrapperProps} style={style}>
       <LazyMotion features={domAnimation}>
         <AnimatePresence>
           {isDataReady && (
