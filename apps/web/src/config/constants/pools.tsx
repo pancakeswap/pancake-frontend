@@ -35,7 +35,7 @@ export const vaultPoolConfig = {
     name: <Trans>Flexible CAKE</Trans>,
     description: <Trans>Flexible staking on the side.</Trans>,
     autoCompoundFrequency: 5000,
-    gasLimit: 600000,
+    gasLimit: 500000,
     tokenImage: {
       primarySrc: `/images/tokens/${bscTokens.cake.address}.svg`,
       secondarySrc: '/images/tokens/autorenew.svg',
