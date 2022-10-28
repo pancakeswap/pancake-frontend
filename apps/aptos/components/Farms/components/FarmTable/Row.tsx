@@ -15,7 +15,7 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 // import { useFarmUser } from 'state/farms/hooks'
 
-// import Apr, { AprProps } from './Apr'
+import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
 // import ActionPanel from './Actions/ActionPanel'
 // import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
@@ -25,7 +25,7 @@ const { FarmAuctionTag, CoreTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 
 export interface RowProps {
-  apr: any // AprProps
+  apr: AprProps
   farm: FarmTableFarmTokenInfoProps
   earned: FarmTableEarnedProps
   multiplier: FarmTableMultiplierProps
@@ -148,12 +148,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t('APR')}>
-                        {/* <Apr
-                          {...props.apr}
-                          hideButton={isSmallerScreen}
-                          strikethrough={props?.details?.boosted}
-                          boosted={props?.details?.boosted}
-                        /> */}
+                        <Apr {...props.apr} hideButton={isSmallerScreen} />
                       </CellLayout>
                     </CellInner>
                   </td>
