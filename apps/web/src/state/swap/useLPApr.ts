@@ -22,8 +22,15 @@ interface PoolReserveVolumeResponse {
 }
 
 export const useLPApr = (pair?: Pair) => {
+  const chainName = pair
+    ? pair.chainId === ChainId.BSC
+      ? 'BSC'
+      : pair.chainId === ChainId.ETHEREUM
+      ? 'ETH'
+      : null
+    : null
   const { data: poolData } = useSWRImmutable(
-    pair && pair.chainId === ChainId.BSC ? ['LP7dApr', pair.liquidityToken.address] : null,
+    chainName ? ['LP7dApr', pair.liquidityToken.address, chainName] : null,
     async () => {
       const timestampsArray = getDeltaTimestamps()
       const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
@@ -31,6 +38,7 @@ export const useLPApr = (pair?: Pair) => {
       const { error, data } = await fetchPoolVolumeAndReserveData(
         block7d.number,
         pair.liquidityToken.address.toLowerCase(),
+        chainName,
       )
       if (error) return null
       const current = parseFloat(data?.now[0]?.volumeUSD)
