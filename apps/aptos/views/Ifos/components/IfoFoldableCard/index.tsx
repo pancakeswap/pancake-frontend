@@ -1,25 +1,13 @@
 import { useAccount } from '@pancakeswap/awgmi'
-import { useTranslation } from '@pancakeswap/localization'
-import {
-  Box,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  ExpandableButton,
-  useMatchBreakpoints,
-  useToast,
-} from '@pancakeswap/uikit'
-import { Ifo, PoolIds } from 'config/constants/types'
-import useCatchTxError from 'hooks/useCatchTxError'
-// import { useERC20 } from 'hooks/useContract'
 import { useIsWindowVisible } from '@pancakeswap/hooks'
-import useSWRImmutable from 'swr/immutable'
+import { useTranslation } from '@pancakeswap/localization'
+import { Box, Card, CardBody, CardFooter, CardHeader, ExpandableButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { FAST_INTERVAL } from 'config/constants'
+import { Ifo, PoolIds } from 'config/constants/types'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-// import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
+import useSWRImmutable from 'swr/immutable'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { CardsWrapper } from '../IfoCardStyles'
 import IfoPoolCard from './IfoPoolCard'
@@ -233,8 +221,6 @@ export const IfoFoldableCard = ({
 }
 
 const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo, publicIfoData, walletIfoData }) => {
-  // const currentBlock = useCurrentBlock()
-  const currentBlock = 1
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized, secondsUntilEnd } = publicIfoData
   const {
     contract,
@@ -254,16 +240,11 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
         ((publicIfoData[PoolIds.poolBasic]?.vestingInformation?.percentage ?? -1) > 0 ||
           (publicIfoData[PoolIds.poolUnlimited].vestingInformation?.percentage ?? -1) > 0))) &&
     ifo.isActive
-  const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError } = useCatchTxError()
   const isWindowVisible = useIsWindowVisible()
 
-  useSWRImmutable(
-    (isRecentlyActive || !isPublicIfoDataInitialized) && currentBlock && ['fetchPublicIfoData', currentBlock],
-    async () => {
-      fetchPublicIfoData(currentBlock)
-    },
-  )
+  useSWRImmutable((isRecentlyActive || !isPublicIfoDataInitialized) && ['fetchPublicIfoData'], async () => {
+    fetchPublicIfoData()
+  })
 
   useSWRImmutable(
     isWindowVisible && (isRecentlyActive || !isWalletDataInitialized) && account && 'fetchWalletIfoData',
@@ -289,16 +270,6 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
           // singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
           singleCard
         >
-          {/* {publicIfoData.poolBasic && walletIfoData.poolBasic && (
-            <IfoPoolCard
-              poolId={PoolIds.poolBasic}
-              ifo={ifo}
-              publicIfoData={publicIfoData}
-              walletIfoData={walletIfoData}
-              onApprove={handleApprove}
-              enableStatus={enableStatus}
-            />
-          )} */}
           <IfoPoolCard
             poolId={PoolIds.poolUnlimited}
             ifo={ifo}
