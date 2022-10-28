@@ -35,13 +35,10 @@ const tryLogo = async (ImageSrc: string) => {
 export async function imageDecodeAsync(src: string) {
   const image = new Image()
   image.src = src
-
   if (image.decode) {
     await image.decode()
     return image
   }
-
-  // jest enter this block
   return new Promise<typeof image>((resolve, reject) => {
     image.onload = () => resolve(image)
     image.onerror = reject
