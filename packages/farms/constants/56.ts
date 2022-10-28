@@ -70,6 +70,13 @@ const farms: SerializedFarmConfig[] = [
     auctionHostingStartSeconds: 1666339200, // Fri Oct 21 2022 08:00:00 GMT+0000
   },
   {
+    pid: 129,
+    lpSymbol: 'MGP-BUSD LP',
+    lpAddress: '0x76B0d10A4540B6743aa086EA31DC48E8AB691c4d',
+    token: bscTokens.mgp,
+    quoteToken: bscTokens.busd,
+  },
+  {
     pid: 128,
     lpSymbol: 'WMX-BUSD LP',
     lpAddress: '0xe86eaAD81C32ffbb88B7ec9B325C8f75C8c9f1Ab',

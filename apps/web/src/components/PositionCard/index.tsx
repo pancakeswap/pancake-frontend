@@ -24,6 +24,7 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
+import { useLPApr } from 'state/swap/useLPApr'
 import { useTokenBalance } from '../../state/wallet/hooks'
 import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
@@ -35,7 +36,6 @@ import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'
 import Dots from '../Loader/Dots'
 import { formatAmount } from '../../utils/formatInfoNumbers'
-import { useLPApr } from '../../state/swap/hooks'
 
 const FixedHeightRow = styled(RowBetween)`
   height: 24px;

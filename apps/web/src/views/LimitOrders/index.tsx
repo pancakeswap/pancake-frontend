@@ -331,6 +331,7 @@ const LimitOrders = () => {
       <ClaimWarning />
       <Flex
         width="100%"
+        height="100%"
         justifyContent="center"
         position="relative"
         mb={isSideFooter ? null : '24px'}

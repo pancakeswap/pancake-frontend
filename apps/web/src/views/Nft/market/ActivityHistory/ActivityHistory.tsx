@@ -109,6 +109,83 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
     setActivitiesSlice(slice)
   }, [paginationData])
 
+  const marketHistoryNotFound =
+    paginationData.activity.length === 0 && nftMetadata.length === 0 && activitiesSlice.length === 0 && !isLoading
+
+  const pagination = marketHistoryNotFound ? null : (
+    <Container>
+      <Flex
+        borderTop={`1px ${theme.colors.cardBorder} solid`}
+        pt="24px"
+        flexDirection="column"
+        justifyContent="space-between"
+        height="100%"
+      >
+        <PageButtons>
+          <Arrow
+            onClick={() => {
+              if (paginationData.currentPage !== 1) {
+                setPaginationData((prevState) => ({
+                  ...prevState,
+                  currentPage: prevState.currentPage - 1,
+                }))
+              }
+            }}
+          >
+            <ArrowBackIcon color={paginationData.currentPage === 1 ? 'textDisabled' : 'primary'} />
+          </Arrow>
+          <Text>
+            {t('Page %page% of %maxPage%', {
+              page: paginationData.currentPage,
+              maxPage: paginationData.maxPage,
+            })}
+          </Text>
+          <Arrow
+            onClick={async () => {
+              if (paginationData.currentPage !== paginationData.maxPage) {
+                setPaginationData((prevState) => ({
+                  ...prevState,
+                  currentPage: prevState.currentPage + 1,
+                }))
+
+                if (
+                  paginationData.maxPage - paginationData.currentPage === 1 &&
+                  paginationData.activity.length === MAX_PER_QUERY * queryPage
+                ) {
+                  try {
+                    setIsLoading(true)
+                    const nftActivityFiltersParsed = JSON.parse(nftActivityFiltersString)
+                    const collectionActivity = await getCollectionActivity(
+                      collectionAddress.toLowerCase(),
+                      nftActivityFiltersParsed,
+                      MAX_PER_QUERY * (queryPage + 1),
+                    )
+                    const activity = sortActivity(collectionActivity)
+                    setPaginationData((prevState) => {
+                      return {
+                        ...prevState,
+                        activity,
+                        maxPage: Math.ceil(activity.length / MAX_PER_PAGE) || 1,
+                      }
+                    })
+                    setIsLoading(false)
+                    setQueryPage((prevState) => prevState + 1)
+                  } catch (error) {
+                    console.error('Failed to fetch collection activity', error)
+                  }
+                }
+              }
+            }}
+          >
+            <ArrowForwardIcon
+              color={paginationData.currentPage === paginationData.maxPage ? 'textDisabled' : 'primary'}
+            />
+          </Arrow>
+        </PageButtons>
+      </Flex>
+    </Container>
+  )
+
   return (
     <Box py="32px">
       <Container px={[0, null, '24px']}>
@@ -131,11 +208,8 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
           </Button>
         </Flex>
       </Container>
-      <Container style={{ overflowX: 'auto' }}>
-        {paginationData.activity.length === 0 &&
-        nftMetadata.length === 0 &&
-        activitiesSlice.length === 0 &&
-        !isLoading ? (
+      <Container style={{ overflowX: 'auto', verticalAlign: 'middle' }}>
+        {marketHistoryNotFound ? (
           <Flex p="24px" flexDirection="column" alignItems="center">
             <NoNftsImage />
             <Text pt="8px" bold>
@@ -183,78 +257,10 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
                 )}
               </tbody>
             </Table>
-            <Flex
-              borderTop={`1px ${theme.colors.cardBorder} solid`}
-              pt="24px"
-              flexDirection="column"
-              justifyContent="space-between"
-              height="100%"
-            >
-              <PageButtons>
-                <Arrow
-                  onClick={() => {
-                    if (paginationData.currentPage !== 1) {
-                      setPaginationData((prevState) => ({
-                        ...prevState,
-                        currentPage: prevState.currentPage - 1,
-                      }))
-                    }
-                  }}
-                >
-                  <ArrowBackIcon color={paginationData.currentPage === 1 ? 'textDisabled' : 'primary'} />
-                </Arrow>
-                <Text>
-                  {t('Page %page% of %maxPage%', {
-                    page: paginationData.currentPage,
-                    maxPage: paginationData.maxPage,
-                  })}
-                </Text>
-                <Arrow
-                  onClick={async () => {
-                    if (paginationData.currentPage !== paginationData.maxPage) {
-                      setPaginationData((prevState) => ({
-                        ...prevState,
-                        currentPage: prevState.currentPage + 1,
-                      }))
-
-                      if (
-                        paginationData.maxPage - paginationData.currentPage === 1 &&
-                        paginationData.activity.length === MAX_PER_QUERY * queryPage
-                      ) {
-                        try {
-                          setIsLoading(true)
-                          const nftActivityFiltersParsed = JSON.parse(nftActivityFiltersString)
-                          const collectionActivity = await getCollectionActivity(
-                            collectionAddress.toLowerCase(),
-                            nftActivityFiltersParsed,
-                            MAX_PER_QUERY * (queryPage + 1),
-                          )
-                          const activity = sortActivity(collectionActivity)
-                          setPaginationData((prevState) => {
-                            return {
-                              ...prevState,
-                              activity,
-                              maxPage: Math.ceil(activity.length / MAX_PER_PAGE) || 1,
-                            }
-                          })
-                          setIsLoading(false)
-                          setQueryPage((prevState) => prevState + 1)
-                        } catch (error) {
-                          console.error('Failed to fetch collection activity', error)
-                        }
-                      }
-                    }
-                  }}
-                >
-                  <ArrowForwardIcon
-                    color={paginationData.currentPage === paginationData.maxPage ? 'textDisabled' : 'primary'}
-                  />
-                </Arrow>
-              </PageButtons>
-            </Flex>
           </>
         )}
       </Container>
+      {pagination}
     </Box>
   )
 }

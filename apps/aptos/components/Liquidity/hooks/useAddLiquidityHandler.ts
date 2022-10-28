@@ -68,16 +68,27 @@ export default function useAddLiquidityHanlder({
     )
     console.info(payload, 'payload')
 
+    let results
     // eslint-disable-next-line consistent-return
-    return simulateTransactionAsync({ payload })
-      .then((results) => {
-        const result = Array.isArray(results) ? results[0] : { max_gas_amount: '0' }
-
-        return sendTransactionAsync({
-          payload,
-          options: { max_gas_amount: result.max_gas_amount },
+    try {
+      results = await simulateTransactionAsync({ payload })
+    } catch (error) {
+      if (error instanceof SimulateTransactionError) {
+        setLiquidityState({
+          attemptingTxn: false,
+          liquidityErrorMessage: transactionErrorToUserReadableMessage(error),
+          txHash: undefined,
         })
-      })
+      }
+    }
+
+    const options = Array.isArray(results) ? { max_gas_amount: results[0].max_gas_amount } : undefined
+
+    // eslint-disable-next-line consistent-return
+    return sendTransactionAsync({
+      payload,
+      options,
+    })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
         const symbolA = currencyA.symbol
@@ -98,7 +109,7 @@ export default function useAddLiquidityHanlder({
 
         let errorMsg = ''
 
-        if (err instanceof UserRejectedRequestError || err instanceof SimulateTransactionError) {
+        if (!(err instanceof UserRejectedRequestError)) {
           errorMsg = t('Add liquidity failed: %message%', {
             message: transactionErrorToUserReadableMessage(err),
           })

@@ -2385,4 +2385,12 @@ export const bscTokens = {
     'Wombex Token',
     'https://wombex.finance/',
   ),
+  mgp: new Token(
+    ChainId.BSC,
+    '0xD06716E1Ff2E492Cc5034c2E81805562dd3b45fa',
+    18,
+    'MGP',
+    'Magpie Token',
+    'https://www.magpiexyz.io/',
+  ),
 }
