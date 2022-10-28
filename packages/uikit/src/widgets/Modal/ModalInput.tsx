@@ -86,7 +86,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
           <Text fontSize="14px">{inputTitle}</Text>
           <Text fontSize="14px">{t("Balance: %balance%", { balance: displayBalance(max) })}</Text>
         </Flex>
-        <Flex alignItems="flex-end" justifyContent="space-around">
+        <Flex alignItems="flex-end" justifyContent="space-between">
           <StyledInput
             pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
             inputMode="decimal"
