@@ -208,7 +208,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
           </Button>
         </Flex>
       </Container>
-      <Container style={{ overflowX: 'auto', verticalAlign: 'middle' }}>
+      <Container style={{ overflowX: 'auto' }}>
         {marketHistoryNotFound ? (
           <Flex p="24px" flexDirection="column" alignItems="center">
             <NoNftsImage />
