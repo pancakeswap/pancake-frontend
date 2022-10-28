@@ -13,6 +13,7 @@ export * from "./widgets/WalletModal";
 export * from "./widgets/Swap";
 export * as Liquidity from "./widgets/Liquidity";
 export * from "./widgets/Farm";
+export * as Pool from "./widgets/Pool";
 
 // Theme
 export { default as ResetCSS } from "./ResetCSS";

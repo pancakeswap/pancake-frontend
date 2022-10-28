@@ -33,7 +33,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Deserialize
     <CollectModal
       formattedBalance={formattedBalance}
       fullBalance={fullBalance}
-      earningToken={earningToken}
+      earningTokenSymbol={earningToken.symbol}
       earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}

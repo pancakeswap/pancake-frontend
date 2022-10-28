@@ -49,7 +49,8 @@ const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool
           </Box>
           <HarvestActions
             earnings={earnings}
-            earningToken={earningToken}
+            earningTokenSymbol={earningToken.symbol}
+            earningTokenDecimals={earningToken.decimals}
             sousId={sousId}
             earningTokenPrice={earningTokenPrice}
             isBnbPool={isBnbPool}

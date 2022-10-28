@@ -40,7 +40,7 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
     <CollectModal
       formattedBalance={formattedBalance}
       fullBalance={fullBalance}
-      earningToken={earningToken}
+      earningTokenSymbol={earningToken.symbol}
       earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}
