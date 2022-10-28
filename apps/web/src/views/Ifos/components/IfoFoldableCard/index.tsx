@@ -19,7 +19,7 @@ import { useIsWindowVisible } from '@pancakeswap/hooks'
 import useSWRImmutable from 'swr/immutable'
 import { FAST_INTERVAL } from 'config/constants'
 import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
 import { requiresApproval } from 'utils/requiresApproval'
@@ -273,6 +273,18 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
   const { fetchWithCatchTxError } = useCatchTxError()
   const isWindowVisible = useIsWindowVisible()
 
+  const hasVesting = useMemo(() => {
+    return (
+      account &&
+      ifo.version >= 3.2 &&
+      publicIfoData.status === 'finished' &&
+      (publicIfoData[PoolIds.poolBasic].vestingInformation.percentage > 0 ||
+        publicIfoData[PoolIds.poolUnlimited].vestingInformation.percentage > 0) &&
+      (walletIfoData[PoolIds.poolBasic].amountTokenCommittedInLP.gt(0) ||
+        walletIfoData[PoolIds.poolUnlimited].amountTokenCommittedInLP.gt(0))
+    )
+  }, [account, ifo, publicIfoData, walletIfoData])
+
   useSWRImmutable(
     currentBlock &&
       (isRecentlyActive
@@ -287,14 +299,16 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
 
   useSWRImmutable(
     isWindowVisible &&
-      (isRecentlyActive || !isWalletDataInitialized) &&
+      (isRecentlyActive || !isWalletDataInitialized || hasVesting) &&
       account && ['fetchWalletIfoData', account, ifo.id],
     async () => {
       fetchWalletIfoData()
     },
-    {
-      refreshInterval: FAST_INTERVAL,
-    },
+    isRecentlyActive || hasVesting
+      ? {
+          refreshInterval: FAST_INTERVAL,
+        }
+      : {},
   )
 
   useEffect(() => {
