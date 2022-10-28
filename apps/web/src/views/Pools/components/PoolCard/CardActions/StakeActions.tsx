@@ -9,12 +9,12 @@ import {
   Skeleton,
   useTooltip,
   Balance,
+  NotEnoughTokensModal,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { DeserializedPool } from 'state/types'
-import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import StakeModal from '../../Modals/StakeModal'
 
 interface StakeActionsProps {
