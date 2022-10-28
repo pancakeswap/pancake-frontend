@@ -3,7 +3,6 @@ import { ChainId, Currency } from '@pancakeswap/sdk'
 import { Box, Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
-import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
 import { AppBody } from 'components/App'
 
 import { useCurrency } from '../../hooks/Tokens'
@@ -28,8 +27,6 @@ export default function Swap() {
   const [isChartExpanded, setIsChartExpanded] = useState(false)
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
-
-  useDefaultsFromURLSearch()
 
   useEffect(() => {
     setUserChartPreference(isChartDisplayed)
