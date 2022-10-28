@@ -1,5 +1,6 @@
 import { Token } from '@pancakeswap/sdk'
-import { useMemo } from 'react'
+import { SkeletonV2 } from '@pancakeswap/uikit'
+import { useEffect, useState } from 'react'
 import { multiChainId } from 'state/info/constant'
 import styled from 'styled-components'
 import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
@@ -21,11 +22,15 @@ export const CurrencyLogo: React.FC<
     chainName?: 'ETH' | 'BSC'
   }>
 > = ({ address, size = '24px', chainName = 'BSC', ...rest }) => {
-  const src = useMemo(() => {
-    return getTokenLogoURL(new Token(multiChainId[chainName], address, 18, ''))
+  const [src, setSrc] = useState<string>(null)
+  useEffect(() => {
+    getTokenLogoURL(new Token(multiChainId[chainName], address, 18, '')).then((url) => setSrc(url))
   }, [address, chainName])
-
-  return <StyledLogo size={size} src={src} alt="token logo" {...rest} />
+  return (
+    <SkeletonV2 width={size} height={size} isDataReady={Boolean(size)} borderRadius={`${size}`}>
+      <StyledLogo size={size} src={src} alt="token logo" {...rest} />
+    </SkeletonV2>
+  )
 }
 
 const DoubleCurrencyWrapper = styled.div`
