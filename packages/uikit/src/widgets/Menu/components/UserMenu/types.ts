@@ -1,3 +1,4 @@
+import { Placement } from "@popperjs/core";
 import { ReactElement, ReactNode } from "react";
 import { FlexProps } from "../../../../components/Box";
 
@@ -17,6 +18,7 @@ export interface UserMenuProps extends Omit<FlexProps, "children"> {
   variant?: Variant;
   disabled?: boolean;
   children?: (exposedProps: { isOpen: boolean }) => ReactElement;
+  placement?: Placement;
 }
 
 export interface UserMenuItemProps {

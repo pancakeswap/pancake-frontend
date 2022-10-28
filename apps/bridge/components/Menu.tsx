@@ -75,7 +75,7 @@ export function Menu() {
   return (
     <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={9}>
       <Flex>
-        <Logo isDark={theme.isDark} href="https://pancakeswap.finance" />
+        <Logo href="https://pancakeswap.finance" />
 
         <Flex pl={['25px', null, '50px']}>
           <Box display={['none', null, 'flex']}>
@@ -109,7 +109,7 @@ const UserMenuItems = ({ onShowTx }: { onShowTx: () => void }) => {
       <UserMenuDivider />
       {CHAINS_STARGATE.map((chain) => (
         <UserMenuItem key={chain.id} style={{ justifyContent: 'flex-start' }} onClick={() => switchNetwork(chain.id)}>
-          <Image width={24} height={24} src={`/chains/${chain.id}.png`} unoptimized />
+          <Image width={24} height={24} src={`/chains/${chain.id}.png`} unoptimized alt={`chain-${chain.name}`} />
           <Text pl="12px">{chain.name}</Text>
         </UserMenuItem>
       ))}
@@ -224,7 +224,13 @@ function RecentTransactionsModal({
               {txn.type === 'APPROVE' && (
                 <>
                   {`Approve ${txn?.input?.amount?.currency?.symbol ?? ''}`}{' '}
-                  <Image width={18} height={18} src={`/chains/${txnChain?.chain.id}.png`} unoptimized />
+                  <Image
+                    width={18}
+                    height={18}
+                    src={`/chains/${txnChain?.chain.id}.png`}
+                    unoptimized
+                    alt={`${txnChain?.chain.name}`}
+                  />
                 </>
               )}
               {txn.type === 'TRANSFER' && (
@@ -235,12 +241,14 @@ function RecentTransactionsModal({
                     height={18}
                     src={`/chains/${findChainByStargateId(txn.input.from.chainId)?.chain.id}.png`}
                     unoptimized
+                    alt={`chain-${findChainByStargateId(txn.input.from.chainId)?.chain.name}`}
                   />
                   to {txn.input.to.token.symbol}{' '}
                   <Image
                     width={18}
                     height={18}
                     src={`/chains/${findChainByStargateId(txn.input.to.chainId)?.chain.id}.png`}
+                    alt={`chain-${findChainByStargateId(txn.input.to.chainId)?.chain.name}`}
                     unoptimized
                   />
                 </>
@@ -342,9 +350,9 @@ function User() {
     })
   }, [])
 
-  const { account, chainId, active } = wallet || {}
+  const { account, chainId } = wallet || {}
 
-  const chain = CHAINS_STARGATE.find((c) => c.id === chainId)
+  const chain = findChainByStargateId(chainId)
 
   const isWrongNetwork = chainId && !chain
   const hasPendingTransactions = pending.length > 0
@@ -357,13 +365,13 @@ function User() {
     )
   }
 
-  if (active) {
+  if (account) {
     return (
       <UserMenu
         variant={hasPendingTransactions ? 'pending' : 'default'}
         account={account}
         text={hasPendingTransactions ? `${pending.length} Pending` : ''}
-        avatarSrc={chainId ? `/chains/${chainId}.png` : undefined}
+        avatarSrc={chain ? `/chains/${chain?.chain.id}.png` : undefined}
       >
         {() => <UserMenuItems onShowTx={() => showRecentTxModal()} />}
       </UserMenu>

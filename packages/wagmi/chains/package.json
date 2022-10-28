@@ -1,5 +1,5 @@
 {
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts"
+  "main": "../../dist/chains.js",
+  "module": "../../dist/chains.mjs",
+  "types": "../../dist/chains.d.ts"
 }

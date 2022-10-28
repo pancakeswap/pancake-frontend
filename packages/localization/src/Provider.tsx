@@ -2,6 +2,9 @@ import { createContext, useCallback, useEffect, useState } from 'react'
 import { Language } from '@pancakeswap/uikit'
 import { useLastUpdated } from '@pancakeswap/hooks'
 import memoize from 'lodash/memoize'
+import omitBy from 'lodash/omitBy'
+import reduce from 'lodash/reduce'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { EN, languages } from './config/languages'
 import { ContextApi, ProviderState, TranslateFunction } from './types'
 import { LS_KEY, fetchLocale, getLanguageCodeFromLS } from './helpers'
@@ -25,7 +28,7 @@ const getRegExpForDataKey = memoize((dataKey: string): RegExp => {
 const languageMap = new Map<Language['locale'], Record<string, string>>()
 languageMap.set(EN.locale, {})
 
-export const LanguageContext = createContext<ContextApi>(undefined)
+export const LanguageContext = createContext<ContextApi | undefined>(undefined)
 
 export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
@@ -101,12 +104,13 @@ export const LanguageProvider: React.FC<React.PropsWithChildren> = ({ children }
         // Check the existence of at least one combination of %%, separated by 1 or more non space characters
         const includesVariable = translatedTextIncludesVariable(key)
         if (includesVariable) {
-          let interpolatedText = translatedText
-          Object.keys(data).forEach((dataKey) => {
-            interpolatedText = interpolatedText.replace(getRegExpForDataKey(dataKey), data[dataKey].toString())
-          })
-
-          return interpolatedText
+          return reduce(
+            omitBy(data, isUndefinedOrNull),
+            (result, dataValue, dataKey) => {
+              return result.replace(getRegExpForDataKey(dataKey), dataValue.toString())
+            },
+            translatedText,
+          )
         }
       }
 

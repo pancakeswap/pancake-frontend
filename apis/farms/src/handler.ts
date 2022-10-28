@@ -89,7 +89,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     })
 
     const cakeBusdPrice = await getCakePrice(isTestnet)
-    const lpAprs = await handleLpAprs(chainId)
+    const lpAprs = await handleLpAprs(chainId, farmsConfig)
 
     const finalFarm = farmsWithPrice.map((f) => {
       return {
@@ -115,20 +115,27 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
   }
 }
 
-export async function handleLpAprs(chainId: number) {
+export async function handleLpAprs(chainId: number, farmsConfig?: SerializedFarmConfig[]) {
   let lpAprs = await FarmKV.getApr(chainId)
   if (!lpAprs) {
-    lpAprs = await saveLPsAPR(chainId)
+    lpAprs = await saveLPsAPR(chainId, farmsConfig)
   }
   return lpAprs || {}
 }
 
-export async function saveLPsAPR(chainId: number) {
+export async function saveLPsAPR(chainId: number, farmsConfig?: SerializedFarmConfig[]) {
   // TODO: add other chains
   if (chainId === 56) {
-    const value = await FarmKV.getFarms(chainId)
-    if (value && value.data) {
-      const aprMap = (await updateLPsAPR(chainId, Object.values(value.data))) || null
+    let data = farmsConfig
+    if (!data) {
+      const value = await FarmKV.getFarms(chainId)
+      if (value && value.data) {
+        // eslint-disable-next-line prefer-destructuring
+        data = value.data
+      }
+    }
+    if (data) {
+      const aprMap = (await updateLPsAPR(chainId, data)) || null
       FarmKV.saveApr(chainId, aprMap)
       return aprMap || null
     }

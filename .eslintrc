@@ -7,6 +7,7 @@
   "plugins": ["lodash"],
   "extends": ["@pancakeswap/eslint-config-pancake", "plugin:react/jsx-runtime", "plugin:@next/next/recommended"],
   "rules": {
+    "no-restricted-syntax": 0,
     "import/no-unresolved": 0,
     "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
     "no-plusplus": 0,

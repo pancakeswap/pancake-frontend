@@ -37,8 +37,8 @@ function Bridge() {
     customElements.whenDefined('stargate-widget').then(() => {
       setTimeout(() => {
         if (window.stargate) {
-          window.stargate.setDstChainId(2)
-          window.stargate.setConfig({ dstChainIdList: [2] })
+          window.stargate.setDstChainId(102)
+          window.stargate.setConfig({ dstChainIdList: [102] })
         }
       }, 600)
       console.info('stargate widget mount')

@@ -1,4 +1,4 @@
-import { SerializedWrappedToken } from '@pancakeswap/tokens'
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -28,18 +28,20 @@ export interface FarmConfigBaseProps {
   }
   boosted?: boolean
 }
+export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
+  stableSwapAddress?: string
+  infoStableSwapAddress?: string
+}
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   token: SerializedWrappedToken
   quoteToken: SerializedWrappedToken
 }
-export type SerializedFarmConfig = SerializedClassicFarmConfig | SerializedStableFarmConfig
 
-export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
-  stableSwapContract: string
-}
+export type SerializedFarmConfig = SerializedStableFarmConfig & SerializedClassicFarmConfig
 
 export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
+  lpTokenPrice?: string
   tokenPriceBusd?: string
   quoteTokenPriceBusd?: string
   tokenAmountTotal?: string
@@ -49,6 +51,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   tokenPriceVsQuote?: string
   poolWeight?: string
   boosted?: boolean
+  infoStableSwapAddress?: string
 }
 
 export interface AprMap {
@@ -56,5 +59,5 @@ export interface AprMap {
 }
 
 export function isStableFarm(farmConfig: SerializedFarmConfig): farmConfig is SerializedStableFarmConfig {
-  return 'stableSwapContract' in farmConfig && typeof farmConfig.stableSwapContract === 'string'
+  return 'stableSwapAddress' in farmConfig && typeof farmConfig.stableSwapAddress === 'string'
 }

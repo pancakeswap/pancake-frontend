@@ -9,45 +9,44 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
-      background-color: #eeeaf4;
-      border: 0;
+      background-color: var(--colors-input);
       border-radius: 16px;
-      box-shadow: inset 0px 2px 2px -1px rgba(74,74,104,0.1);
-      color: #280D5F;
+      box-shadow: var(--shadows-inset);
+      color: var(--colors-text);
       display: block;
       font-size: 16px;
       height: 40px;
       outline: 0;
       padding: 0 16px;
       width: 100%;
-      border: 1px solid #d7caec;
+      border: 1px solid var(--colors-inputSecondary);
     }
 
     .c0::-webkit-input-placeholder {
-      color: #7A6EAA;
+      color: var(--colors-textSubtle);
     }
 
     .c0::-moz-placeholder {
-      color: #7A6EAA;
+      color: var(--colors-textSubtle);
     }
 
     .c0:-ms-input-placeholder {
-      color: #7A6EAA;
+      color: var(--colors-textSubtle);
     }
 
     .c0::placeholder {
-      color: #7A6EAA;
+      color: var(--colors-textSubtle);
     }
 
     .c0:disabled {
-      background-color: #E9EAEB;
+      background-color: var(--colors-backgroundDisabled);
       box-shadow: none;
-      color: #BDC2C4;
+      color: var(--colors-textDisabled);
       cursor: not-allowed;
     }
 
     .c0:focus:not(:disabled) {
-      box-shadow: 0px 0px 0px 1px #7645D9,0px 0px 0px 4px rgba(118,69,217,0.6);
+      box-shadow: var(--shadows-focus);
     }
 
     <input

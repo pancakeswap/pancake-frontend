@@ -9,8 +9,8 @@ it("renders correctly", () => {
       .c0 {
       min-height: 20px;
       display: block;
-      background-color: #E9EAEB;
-      border-radius: 4px;
+      background-color: var(--colors-backgroundDisabled);
+      border-radius: var(--radii-small);
     }
 
     .c1 {
@@ -35,8 +35,8 @@ it("renders correctly avatar", () => {
       .c0 {
       min-height: 20px;
       display: block;
-      background-color: #E9EAEB;
-      border-radius: 50%;
+      background-color: var(--colors-backgroundDisabled);
+      border-radius: var(--radii-circle);
       width: 50px;
       height: 50px;
     }
@@ -65,8 +65,8 @@ it("renders correctly waves animation", () => {
       .c0 {
       min-height: 20px;
       display: block;
-      background-color: #E9EAEB;
-      border-radius: 4px;
+      background-color: var(--colors-backgroundDisabled);
+      border-radius: var(--radii-small);
       width: 50px;
       height: 50px;
     }

@@ -29,6 +29,7 @@ export const DropdownMenuItem = styled.button<StyledDropdownMenuItemProps & { $i
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "inherit")};
 
   &:is(button) {
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};

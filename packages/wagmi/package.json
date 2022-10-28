@@ -12,16 +12,14 @@
     "directory": "packages/wagmi"
   },
   "scripts": {
-    "build:src": "tsup src/index.ts --format esm,cjs --dts",
-    "build:mp": "tsup connectors/miniProgram/index.ts --format esm,cjs --dts --outDir connectors/miniProgram/dist",
-    "build:bsc": "tsup connectors/binanceWallet/index.ts --format esm,cjs --dts --outDir connectors/binanceWallet/dist",
-    "build:chains": "tsup chains/index.ts --format esm,cjs --dts --outDir chains/dist",
-    "build:all": "yarn build:src && yarn build:mp && yarn build:bsc && yarn build:chains",
-    "prepublishOnly": "yarn run build:all"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
     "swr": "^1.3.0",
-    "wagmi": "^0.6.0",
+    "wagmi": "^0.6.6",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
     "@ethersproject/bignumber": "^5.0.0",
@@ -46,19 +44,19 @@
       "require": "./dist/index.js"
     },
     "./connectors/miniProgram": {
-      "types": "./connectors/miniProgram/dist/index.d.ts",
-      "import": "./connectors/miniProgram/dist/index.mjs",
-      "require": "./connectors/miniProgram/dist/index.js"
+      "types": "./dist/connectors/miniProgram.d.ts",
+      "import": "./dist/connectors/miniProgram.mjs",
+      "require": "./dist/connectors/miniProgram.js"
     },
     "./connectors/binanceWallet": {
-      "types": "./connectors/binanceWallet/dist/index.d.ts",
-      "import": "./connectors/binanceWallet/dist/index.mjs",
-      "require": "./connectors/binanceWallet/dist/index.js"
+      "types": "./dist/connectors/binanceWallet.d.ts",
+      "import": "./dist/connectors/binanceWallet.mjs",
+      "require": "./dist/connectors/binanceWallet.js"
     },
     "./chains": {
-      "types": "./chains/dist/index.d.ts",
-      "import": "./chains/dist/index.mjs",
-      "require": "./chains/dist/index.js"
+      "types": "./dist/chains.d.ts",
+      "import": "./dist/chains.mjs",
+      "require": "./dist/chains.js"
     }
   }
 }

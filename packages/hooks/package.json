@@ -5,6 +5,7 @@
   "description": "Generic hooks used for common usecases",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
+  "private": true,
   "scripts": {},
   "dependencies": {
     "react": "^18.2.0"

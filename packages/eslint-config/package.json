@@ -9,7 +9,7 @@
   "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/eslint-config-pancake",
   "license": "MIT",
   "author": "RabbitDoge",
-  "private": false,
+  "private": true,
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",

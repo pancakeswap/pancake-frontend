@@ -40,7 +40,7 @@ export const lightColors = {
   inputSecondary: '#d7caec',
   tertiary: '#EFF4F5',
   text: '#280D5F',
-  text99: '##280D5F99',
+  text99: '#280D5F99',
   textDisabled: '#BDC2C4',
   textSubtle: '#7A6EAA',
   disabled: '#E9EAEB',
@@ -51,6 +51,7 @@ export const lightColors = {
   gradientViolet: 'linear-gradient(180deg, #E2C9FB 0%, #CDB8FA 100%)',
   gradientVioletAlt: 'linear-gradient(180deg, #CBD7EF 0%, #9A9FD0 100%)',
   gradientGold: 'linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)',
+  gradientBold: 'linear-gradient(#53DEE9, #7645D9)',
 }
 
 export const darkColors = {
@@ -83,4 +84,5 @@ export const darkColors = {
   gradientViolet: 'linear-gradient(180deg, #6C4999 0%, #6D4DB2 100%)',
   gradientVioletAlt: 'linear-gradient(180deg, #434575 0%, #66578D 100%)',
   gradientGold: 'linear-gradient(180deg, #FFD800 0%, #FDAB32 100%)',
+  gradientBold: 'linear-gradient(#53DEE9, #9A6AFF)',
 }

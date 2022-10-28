@@ -1,0 +1,13 @@
+{
+  "name": "Pancake Unsupported List",
+  "timestamp": "2021-01-05T20:47:02.923Z",
+  "version": {
+    "major": 1,
+    "minor": 0,
+    "patch": 0
+  },
+  "tags": {},
+  "logoURI": "https://pancakeswap.finance/logo.png",
+  "keywords": ["pancake", "unsupported"],
+  "tokens": []
+}

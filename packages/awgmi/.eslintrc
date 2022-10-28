@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "lines-between-class-members": 0,
+    "class-methods-use-this": 0
+  }
+}

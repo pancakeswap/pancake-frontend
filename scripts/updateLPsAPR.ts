@@ -4,12 +4,12 @@ import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import { sub, getUnixTime } from 'date-fns'
-import farmsConfig from '@pancakeswap/farms/constants/56'
+import { ChainId } from '@pancakeswap/sdk'
+import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT } from '../src/config/constants/endpoints'
-import { infoClient } from '../src/utils/graphql'
-
-const BLOCK_SUBGRAPH_ENDPOINT = BLOCKS_CLIENT
+import { BLOCKS_CLIENT_WITH_CHAIN } from '../src/config/constants/endpoints'
+import { infoClientWithChain, stableSwapClient } from '../src/utils/graphql'
 
 interface SingleFarmResponse {
   id: string
@@ -34,10 +34,10 @@ const getWeekAgoTimestamp = () => {
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429
 
-const getBlockAtTimestamp = async (timestamp: number) => {
+const getBlockAtTimestamp = async (timestamp: number, chainId = ChainId.BSC) => {
   try {
     const { blocks } = await request<BlockResponse>(
-      BLOCK_SUBGRAPH_ENDPOINT,
+      BLOCKS_CLIENT_WITH_CHAIN[chainId],
       `query getBlock($timestampGreater: Int!, $timestampLess: Int!) {
         blocks(first: 1, where: { timestamp_gt: $timestampGreater, timestamp_lt: $timestampLess }) {
           number
@@ -51,9 +51,9 @@ const getBlockAtTimestamp = async (timestamp: number) => {
   }
 }
 
-const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): Promise<AprMap> => {
+const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number, chainId: number): Promise<AprMap> => {
   try {
-    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClient.request<FarmsResponse>(
+    const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClientWithChain(chainId).request<FarmsResponse>(
       gql`
         query farmsBulk($addresses: [String]!, $blockWeekAgo: Int!) {
           farmsAtLatestBlock: pairs(first: 30, where: { id_in: $addresses }) {
@@ -95,26 +95,141 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number): P
   }
 }
 
-const fetchAndUpdateLPsAPR = async () => {
-  const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddress.toLowerCase())
-  console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
-  // Split it into chunks of 30 addresses to avoid gateway timeout
-  const addressesInGroups = chunk(lowerCaseAddresses, 30)
-  const weekAgoTimestamp = getWeekAgoTimestamp()
-  const blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp)
+// Copy paste of Stable farm logic
+export const bscProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://bsc-mainnet.nodereal.io/v1/5a516406afa140ffa546ee10af7c9b24',
+    skipFetchSetup: true,
+  },
+  56,
+)
 
-  let allAprs: AprMap = {}
-  // eslint-disable-next-line no-restricted-syntax
-  for (const groupOfAddresses of addressesInGroups) {
-    // eslint-disable-next-line no-await-in-loop
-    const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo)
-    allAprs = { ...allAprs, ...aprs }
+interface SplitFarmResult {
+  normalFarms: any[]
+  stableFarms: any[]
+}
+
+export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
+
+const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
+  const stableSwapAddress = stableFarm?.stableSwapAddress
+
+  try {
+    const dayAgo = sub(new Date(), { days: 1 })
+
+    const dayAgoTimestamp = getUnixTime(dayAgo)
+
+    const blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
+
+    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
+      gql`
+        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
+          virtualPriceAtLatestBlock: pairs(id: $stableSwapAddress) {
+            virtualPrice
+          }
+          virtualPriceOneDayAgo: pairs(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+            virtualPrice
+          }
+        }
+      `,
+      { stableSwapAddress, blockDayAgo },
+    )
+
+    const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice
+    const preVirtualPrice = virtualPriceOneDayAgo[0]?.virtualPrice
+
+    const current = new BigNumber(virtualPrice)
+    const prev = new BigNumber(preVirtualPrice)
+
+    return current.minus(prev).div(prev)
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
 
-  fs.writeFile(`src/config/constants/lpAprs/56.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
-    if (err) throw err
-    console.info(` ✅ - lpAprs.json has been updated!`)
-  })
+  return new BigNumber('0')
+}
+
+function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): SplitFarmResult {
+  const { normalFarms, stableFarms } = result
+
+  if (farm?.stableSwapAddress) {
+    return {
+      normalFarms,
+      stableFarms: [...stableFarms, farm],
+    }
+  }
+
+  return {
+    stableFarms,
+    normalFarms: [...normalFarms, farm],
+  }
+}
+// ====
+
+const FETCH_CHAIN_ID = [ChainId.BSC, ChainId.ETHEREUM]
+const fetchAndUpdateLPsAPR = async () => {
+  Promise.all(
+    FETCH_CHAIN_ID.map(async (chainId) => {
+      const farmsConfig = await getFarmConfig(chainId)
+      const { normalFarms, stableFarms }: SplitFarmResult = farmsConfig.reduce(splitNormalAndStableFarmsReducer, {
+        normalFarms: [],
+        stableFarms: [],
+      })
+
+      const lowerCaseAddresses = normalFarms.map((farm) => farm.lpAddress.toLowerCase())
+      console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)
+      // Split it into chunks of 30 addresses to avoid gateway timeout
+      const addressesInGroups = chunk(lowerCaseAddresses, 30)
+      const weekAgoTimestamp = getWeekAgoTimestamp()
+      const blockWeekAgo = await getBlockAtTimestamp(weekAgoTimestamp, chainId)
+
+      let allAprs: AprMap = {}
+      // eslint-disable-next-line no-restricted-syntax
+      for (const groupOfAddresses of addressesInGroups) {
+        // eslint-disable-next-line no-await-in-loop
+        const aprs = await getAprsForFarmGroup(groupOfAddresses, blockWeekAgo, chainId)
+        allAprs = { ...allAprs, ...aprs }
+      }
+
+      try {
+        if (stableFarms?.length) {
+          const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f)))
+
+          const stableAprsMap = stableAprs.reduce(
+            (result, apr, index) => ({
+              ...result,
+              [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
+            }),
+            {} as AprMap,
+          )
+
+          allAprs = { ...allAprs, ...stableAprsMap }
+        }
+      } catch (error) {
+        console.error(error, '[LP APR Update] getAprsForStableFarm error')
+      }
+
+      fs.writeFile(`src/config/constants/lpAprs/${chainId}.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
+        if (err) throw err
+        console.info(` ✅ - lpAprs.json has been updated!`)
+      })
+    }),
+  )
+}
+
+let logged = false
+export const getFarmConfig = async (chainId: ChainId) => {
+  try {
+    return (await import(`../packages/farms/constants/${chainId}`)).default.filter(
+      (f: SerializedFarmConfig) => f.pid !== null,
+    ) as SerializedFarmConfig[]
+  } catch (error) {
+    if (!logged) {
+      console.error('Cannot get farm config', error, chainId)
+      logged = true
+    }
+    return []
+  }
 }
 
 fetchAndUpdateLPsAPR()

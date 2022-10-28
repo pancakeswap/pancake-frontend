@@ -39,22 +39,22 @@ export async function fetchStableFarmData(
 ) {
   const calls: Call[] = farms.flatMap((f) => [
     {
-      address: f.stableSwapContract,
+      address: f.stableSwapAddress,
       name: 'balances',
       params: [0],
     },
     {
-      address: f.stableSwapContract,
+      address: f.stableSwapAddress,
       name: 'balances',
       params: [1],
     },
     {
-      address: f.stableSwapContract,
+      address: f.stableSwapAddress,
       name: 'get_dy',
       params: [0, 1, parseUnits('1', f.token.decimals)],
     },
     {
-      address: f.stableSwapContract,
+      address: f.stableSwapAddress,
       name: 'get_dy',
       params: [1, 0, parseUnits('1', f.quoteToken.decimals)],
     },

@@ -3,9 +3,12 @@
   "version": "0.63.1",
   "description": "Set of UI components for pancake projects",
   "main": "src/index.ts",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css.ts"
+  ],
   "repository": "https://github.com/pancakeswap/pancake-toolkit/tree/master/packages/pancake-uikit",
   "license": "MIT",
+  "private": true,
   "scripts": {
     "start": "yarn storybook",
     "build:rollup": "rm -rf ./dist && rollup -c && tsc -d --emitDeclarationOnly --declarationDir dist",
@@ -37,6 +40,7 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.1.7",
+    "@vanilla-extract/vite-plugin": "^3.6.1",
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.2.2",
     "babel-plugin-styled-components": "^1.12.0",
@@ -59,6 +63,9 @@
   "dependencies": {
     "@popperjs/core": "^2.9.2",
     "@types/styled-system": "^5.1.15",
+    "@pancakeswap/ui": "*",
+    "@vanilla-extract/recipes": "^0.2.5",
+    "@vanilla-extract/css": "^1.9.1",
     "framer-motion": "6.5.1",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",

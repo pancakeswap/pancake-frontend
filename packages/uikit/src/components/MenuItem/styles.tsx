@@ -29,6 +29,7 @@ const StyledMenuItem = styled.a<StyledMenuItemProps>`
   font-size: 16px;
   font-weight: ${({ $isActive }) => ($isActive ? "600" : "400")};
   opacity: ${({ $isDisabled }) => ($isDisabled ? 0.5 : 1)};
+  pointer-events: ${({ $isDisabled }) => ($isDisabled ? "none" : "inherit")};
 
   ${({ $statusColor, theme }) =>
     $statusColor &&

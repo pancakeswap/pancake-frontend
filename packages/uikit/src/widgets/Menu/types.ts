@@ -20,10 +20,10 @@ export interface NavProps {
   rightSide?: ReactNode;
   banner?: ReactElement;
   links: Array<MenuItemsType>;
-  subLinks: Array<SubMenuItemsType>;
+  subLinks?: Array<SubMenuItemsType>;
   footerLinks: Array<FooterLinkType>;
-  activeItem: string;
-  activeSubItem: string;
+  activeItem?: string;
+  activeSubItem?: string;
   isDark: boolean;
   toggleTheme: (isDark: boolean) => void;
   cakePriceUsd?: number;

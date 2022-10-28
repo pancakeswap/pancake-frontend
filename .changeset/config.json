@@ -1,0 +1,28 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.2.0/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "develop",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "@pancakeswap/eslint-config-pancake",
+    "@pancakeswap/farms",
+    "@pancakeswap/hooks",
+    "@pancakeswap/localization",
+    "@pancakeswap/multicall",
+    "@pancakeswap/tokens",
+    "@pancakeswap/token-lists",
+    "@pancakeswap/ui",
+    "@pancakeswap/ui-wallets",
+    "@pancakeswap/uikit",
+    "@pancakeswap/utils",
+    "farms-api",
+    "aptos-web",
+    "bridge",
+    "test",
+    "web"
+  ]
+}

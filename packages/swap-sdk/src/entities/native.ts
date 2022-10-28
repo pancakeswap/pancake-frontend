@@ -1,7 +1,5 @@
 import invariant from 'tiny-invariant'
-import { Currency } from './currency'
-import { NativeCurrency } from './nativeCurrency'
-import { Token } from './token'
+import { Currency, Token, NativeCurrency } from '@pancakeswap/swap-sdk-core'
 import { WNATIVE, NATIVE } from '../constants'
 
 /**

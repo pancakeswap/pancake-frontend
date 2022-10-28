@@ -11,6 +11,7 @@ export interface ImageProps extends ImgHTMLAttributes<HTMLImageElement>, SpacePr
   width: number;
   height: number;
   wrapperProps?: WrapperProps;
+  fallbackSrc?: string;
 }
 
 export interface BackgroundImageProps extends ImageProps {
