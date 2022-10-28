@@ -100,7 +100,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             {symbol}
           </Text>
         </Flex>
-        <Flex pl="32px" pt="3px">
+        <Flex pt="3px" justifyContent="flex-end">
           {onPercentInput &&
             [25, 50, 75].map((percent) => (
               <Button
@@ -116,7 +116,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
                 {percent}%
               </Button>
             ))}
-          <Button onClick={onSelectMax} scale="xs" mr="5px" variant="secondary" style={{ textTransform: "uppercase" }}>
+          <Button onClick={onSelectMax} scale="xs" variant="secondary" style={{ textTransform: "uppercase" }}>
             {t("Max")}
           </Button>
         </Flex>
