@@ -7,7 +7,6 @@ import burn from './burn/reducer'
 import farmsReducer from './farms'
 import farmsReducerV1 from './farmsV1'
 import { updateVersion } from './global/actions'
-import infoReducer from './info'
 import lotteryReducer from './lottery'
 import mint from './mint/reducer'
 import multicall from './multicall/reducer'
@@ -37,7 +36,6 @@ const persistedReducer = persistReducer(
     farmsV1: farmsReducerV1,
     pools: poolsReducer,
     lottery: lotteryReducer,
-    info: infoReducer,
     pottery: potteryReducer,
 
     limitOrders,

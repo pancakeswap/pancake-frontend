@@ -1,20 +1,14 @@
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { ChainId, Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
-import { SLOW_INTERVAL } from 'config/constants'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
-import useSWRImmutable from 'swr/immutable'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
 import { isAddress } from 'utils'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
-import { getChangeForPeriod } from 'utils/getChangeForPeriod'
-import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { CAKE, USDC } from '@pancakeswap/tokens'
@@ -37,7 +31,6 @@ import { PairDataTimeWindowEnum } from './types'
 import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
-import { fetchPoolData } from '../info/queries/pools/poolData'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -396,36 +389,4 @@ export const useFetchPairPrices = ({
     pairPrices = normalizedDerivedPairDataWithCurrentSwapPrice
   }
   return { pairPrices, pairId }
-}
-
-export const useLPApr = (pair?: Pair) => {
-  const { data: poolData } = useSWRImmutable(
-    pair && pair.chainId === ChainId.BSC ? ['LP7dApr', pair.liquidityToken.address] : null,
-    async () => {
-      const timestampsArray = getDeltaTimestamps()
-      const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
-      const [block24h, block48h, block7d, block14d] = blocks ?? []
-      const lowerCasedAddress = pair.liquidityToken.address.toLowerCase()
-      const { error, data } = await fetchPoolData(block24h.number, block48h.number, block7d.number, block14d.number, [
-        lowerCasedAddress,
-      ])
-      if (error) return null
-      const current = parseFloat(data?.now[0]?.volumeUSD)
-      const currentReserveUSD = parseFloat(data?.now[0]?.reserveUSD)
-      const oneDay = parseFloat(data?.oneDayAgo[0]?.volumeUSD)
-      const twoDays = parseFloat(data?.twoDaysAgo[0]?.volumeUSD)
-      const week = parseFloat(data?.oneWeekAgo[0]?.volumeUSD)
-      const twoWeeks = parseFloat(data?.twoWeeksAgo[0]?.volumeUSD)
-      const [volumeUSD] = getChangeForPeriod(current, oneDay, twoDays)
-      const [volumeUSDWeek] = getChangeForPeriod(current, week, twoWeeks)
-      const liquidityUSD = currentReserveUSD || 0
-      const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
-      return lpApr7d ? { lpApr7d } : null
-    },
-    {
-      refreshInterval: SLOW_INTERVAL,
-    },
-  )
-
-  return poolData
 }

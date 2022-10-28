@@ -90,6 +90,13 @@
     "wagmi": "^0.6.7",
     "@pancakeswap/wagmi": "*",
     "@pancakeswap/sdk": "*",
+    "@pancakeswap/uikit": "*",
+    "@pancakeswap/farms": "*",
+    "@pancakeswap/localization": "*",
+    "@pancakeswap/hooks": "*",
+    "@pancakeswap/multicall": "*",
+    "@pancakeswap/token-lists": "*",
+    "@pancakeswap/utils": "*",
     "@pancakeswap/tokens": "*"
   },
   "devDependencies": {

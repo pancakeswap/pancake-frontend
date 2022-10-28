@@ -1,4 +1,4 @@
-import { SetStateAction, useCallback, useEffect, useState, Dispatch, useContext } from 'react'
+import { useCallback, useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
@@ -67,13 +67,7 @@ const SwitchIconButton = styled(IconButton)`
   }
 `
 
-interface StableSwapForm {
-  isChartExpanded: boolean
-  isChartDisplayed: boolean
-  setIsChartDisplayed: Dispatch<SetStateAction<boolean>>
-}
-
-export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }) {
+export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed, isChartSupported }) {
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const { account } = useWeb3React()
@@ -213,6 +207,7 @@ export default function StableSwapForm({ setIsChartDisplayed, isChartDisplayed }
         subtitle={t('Trade tokens in an instant')}
         setIsChartDisplayed={setIsChartDisplayed}
         isChartDisplayed={isChartDisplayed}
+        isChartSupported={isChartSupported}
         hasAmount={hasAmount}
         onRefreshPrice={onRefreshPrice}
       />
