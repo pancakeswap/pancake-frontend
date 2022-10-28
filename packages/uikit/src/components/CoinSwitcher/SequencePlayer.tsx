@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from "react";
 
-let coinInterval: NodeJS.Timeout;
+let coinInterval: number;
 
 interface SequencePlayerProps {
   images: string[];
