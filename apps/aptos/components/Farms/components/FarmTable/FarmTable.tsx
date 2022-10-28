@@ -101,7 +101,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
     const row: RowProps = {
       apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+        value: getDisplayApr(farm.apr, farm.lpRewardsApr) || '0',
         pid: farm.pid,
         multiplier: farm.multiplier,
         lpLabel,

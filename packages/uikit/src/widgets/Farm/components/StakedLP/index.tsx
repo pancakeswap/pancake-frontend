@@ -14,8 +14,8 @@ interface StakedLPProps {
   lpTokenPrice: BigNumber;
   tokenAmountTotal: BigNumber;
   quoteTokenAmountTotal: BigNumber;
-  pendingFarmLength: number;
-  onClickLoadingIcon: () => void;
+  pendingFarmLength?: number;
+  onClickLoadingIcon?: () => void;
 }
 
 const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> = ({
@@ -37,7 +37,9 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
     <Flex flexDirection="column" alignItems="flex-start">
       <Flex>
         <Heading color={stakedBalance.eq(0) ? "textDisabled" : "text"}>{displayBalance}</Heading>
-        {pendingFarmLength > 0 && <RefreshIcon style={{ cursor: "pointer" }} spin onClick={onClickLoadingIcon} />}
+        {pendingFarmLength && pendingFarmLength > 0 && (
+          <RefreshIcon style={{ cursor: "pointer" }} spin onClick={onClickLoadingIcon} />
+        )}
       </Flex>
       {stakedBalance.gt(0) && lpTokenPrice.gt(0) && (
         <>

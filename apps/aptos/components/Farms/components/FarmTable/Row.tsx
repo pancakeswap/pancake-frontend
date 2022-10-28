@@ -17,7 +17,7 @@ import { useTranslation } from '@pancakeswap/localization'
 
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
-// import ActionPanel from './Actions/ActionPanel'
+import ActionPanel from './Actions/ActionPanel'
 // import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 import { DesktopColumnSchema, MobileColumnSchema } from '../types'
 
@@ -196,11 +196,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <td width="33%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
-                {/* <Apr
-                  {...props.apr}
-                  hideButton
-                  strikethrough={props?.details?.boosted}
-                /> */}
+                <Apr {...props.apr} hideButton />
               </CellLayout>
             </AprMobileCell>
           </td>
@@ -219,7 +215,9 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {handleRenderRow()}
       {shouldRenderChild && (
         <tr>
-          <td colSpan={7}>{/* <ActionPanel {...props} expanded={actionPanelExpanded} /> */}</td>
+          <td colSpan={7}>
+            <ActionPanel {...props} expanded={actionPanelExpanded} />
+          </td>
         </tr>
       )}
     </>
