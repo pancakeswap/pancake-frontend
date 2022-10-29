@@ -107,6 +107,13 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
     setVal(fullBalance);
   }, [fullBalance, setVal]);
 
+  const handlePercentInput = useCallback(
+    (percent: number) => {
+      setVal(fullBalanceNumber.dividedBy(100).multipliedBy(percent).toString());
+    },
+    [fullBalanceNumber, setVal]
+  );
+
   if (showRoiCalculator) {
     return (
       <ModalV2 isOpen={showRoiCalculator}>
@@ -136,6 +143,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         <ModalInput
           value={val}
           onSelectMax={handleSelectMax}
+          onPercentInput={handlePercentInput}
           onChange={handleChange}
           max={fullBalance}
           symbol={tokenName}

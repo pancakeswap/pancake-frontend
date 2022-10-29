@@ -12,6 +12,7 @@ interface ModalInputProps {
   max: string;
   symbol: string;
   onSelectMax?: () => void;
+  onPercentInput?: (percent: number) => void;
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
   value: string;
@@ -39,7 +40,7 @@ const StyledInput = styled(Input)`
   border: none;
 
   ${({ theme }) => theme.mediaQueries.xs} {
-    width: 80px;
+    width: 120px;
   }
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -60,6 +61,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   symbol,
   onChange,
   onSelectMax,
+  onPercentInput,
   value,
   addLiquidityUrl,
   inputTitle,
@@ -84,7 +86,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
           <Text fontSize="14px">{inputTitle}</Text>
           <Text fontSize="14px">{t("Balance: %balance%", { balance: displayBalance(max) })}</Text>
         </Flex>
-        <Flex alignItems="flex-end" justifyContent="space-around">
+        <Flex alignItems="flex-end" justifyContent="space-between">
           <StyledInput
             pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
             inputMode="decimal"
@@ -94,10 +96,29 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             placeholder="0"
             value={value}
           />
-          <Button scale="sm" onClick={onSelectMax} mr="8px">
+          <Text fontSize="16px" mb="8px">
+            {symbol}
+          </Text>
+        </Flex>
+        <Flex pt="3px" justifyContent="flex-end">
+          {onPercentInput &&
+            [25, 50, 75].map((percent) => (
+              <Button
+                key={`btn_quickCurrency${percent}`}
+                onClick={() => {
+                  onPercentInput(percent);
+                }}
+                scale="xs"
+                mr="5px"
+                variant="secondary"
+                style={{ textTransform: "uppercase" }}
+              >
+                {percent}%
+              </Button>
+            ))}
+          <Button onClick={onSelectMax} scale="xs" variant="secondary" style={{ textTransform: "uppercase" }}>
             {t("Max")}
           </Button>
-          <Text fontSize="16px">{symbol}</Text>
         </Flex>
       </StyledTokenInput>
       {isBalanceZero && (
