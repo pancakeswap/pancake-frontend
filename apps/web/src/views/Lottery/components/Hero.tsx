@@ -266,7 +266,7 @@ const Hero = () => {
         justifyContent="center"
       >
         <ButtonWrapper>
-          <StyledBuyTicketButton disabled={ticketBuyIsDisabled} />
+          <StyledBuyTicketButton disabled={ticketBuyIsDisabled} themeMode="light" />
         </ButtonWrapper>
         <TicketSvgWrapper>
           <TicketPurchaseCard width="100%" />
