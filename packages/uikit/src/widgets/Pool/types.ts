@@ -23,15 +23,16 @@ interface PoolConfigBaseProps {
 
 interface GenericToken {
   decimals: number;
+  symbol: string;
 }
 
 export interface SerializedPoolConfig<T> extends PoolConfigBaseProps {
-  earningToken: T;
+  earningToken: T & GenericToken;
   stakingToken: T & GenericToken;
 }
 
 export interface DeserializedPoolConfig<T> extends PoolConfigBaseProps {
-  earningToken: T;
+  earningToken: T & GenericToken;
   stakingToken: T & GenericToken;
 }
 
