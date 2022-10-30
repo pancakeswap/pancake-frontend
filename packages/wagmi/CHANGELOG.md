@@ -4,4 +4,3 @@
 
 ### Patch Changes
 
-- dfa7dd889: fix binance wallet package path
