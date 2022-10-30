@@ -1,24 +1,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState, ReactElement } from 'react'
 import styled from 'styled-components'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
-import { formatUnits } from '@ethersproject/units'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { Flex, Text, SearchInput, Select, OptionProps } from '@pancakeswap/uikit'
-import orderBy from 'lodash/orderBy'
+import { Flex, Text, SearchInput, Select, OptionProps, PoolHelpers } from '@pancakeswap/uikit'
 import partition from 'lodash/partition'
 import { useTranslation } from '@pancakeswap/localization'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { latinise } from 'utils/latinise'
-import { DeserializedPool, DeserializedPoolVault, VaultKey, DeserializedPoolLockedVault } from 'state/types'
+import { DeserializedPool, DeserializedPoolVault } from 'state/types'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import { useInitialBlock } from 'state/block/hooks'
 import { BSC_BLOCK_TIME } from 'config'
+import { Token } from '@pancakeswap/sdk'
 
 import PoolTabButtons from '../PoolTabButtons'
-import { getCakeVaultEarnings } from '../../helpers'
 
 const PoolControls = styled.div`
   display: flex;
@@ -63,70 +60,6 @@ const ControlStretch = styled(Flex)`
 `
 
 const NUMBER_OF_POOLS_VISIBLE = 12
-
-const sortPools = (account: string, sortOption: string, pools: DeserializedPool[], poolsToSort: DeserializedPool[]) => {
-  switch (sortOption) {
-    case 'apr':
-      // Ternary is needed to prevent pools without APR (like MIX) getting top spot
-      return orderBy(poolsToSort, (pool: DeserializedPool) => (pool.apr ? pool.apr : 0), 'desc')
-    case 'earned':
-      return orderBy(
-        poolsToSort,
-        (pool: DeserializedPool) => {
-          if (!pool.userData || !pool.earningTokenPrice) {
-            return 0
-          }
-
-          if (pool.vaultKey) {
-            const { userData, pricePerFullShare } = pool as DeserializedPoolVault
-            if (!userData || !userData.userShares) {
-              return 0
-            }
-            return getCakeVaultEarnings(
-              account,
-              userData.cakeAtLastUserAction,
-              userData.userShares,
-              pricePerFullShare,
-              pool.earningTokenPrice,
-              pool.vaultKey === VaultKey.CakeVault
-                ? (pool as DeserializedPoolLockedVault).userData.currentPerformanceFee.plus(
-                    (pool as DeserializedPoolLockedVault).userData.currentOverdueFee,
-                  )
-                : null,
-            ).autoUsdToDisplay
-          }
-          return pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
-        },
-        'desc',
-      )
-    case 'totalStaked': {
-      return orderBy(
-        poolsToSort,
-        (pool: DeserializedPool) => {
-          let totalStaked = Number.NaN
-          if (pool.vaultKey) {
-            const vault = pool as DeserializedPoolVault
-            if (pool.stakingTokenPrice && vault.totalCakeInVault.isFinite()) {
-              totalStaked =
-                +formatUnits(EthersBigNumber.from(vault.totalCakeInVault.toString()), pool.stakingToken.decimals) *
-                pool.stakingTokenPrice
-            }
-          } else if (pool.totalStaked?.isFinite() && pool.stakingTokenPrice) {
-            totalStaked =
-              +formatUnits(EthersBigNumber.from(pool.totalStaked.toString()), pool.stakingToken.decimals) *
-              pool.stakingTokenPrice
-          }
-          return Number.isFinite(totalStaked) ? totalStaked : 0
-        },
-        'desc',
-      )
-    }
-    case 'latest':
-      return orderBy(poolsToSort, (pool: DeserializedPool) => Number(pool.sousId), 'desc')
-    default:
-      return poolsToSort
-  }
-}
 
 const POOL_START_BLOCK_THRESHOLD = (60 / BSC_BLOCK_TIME) * 4
 
@@ -218,14 +151,14 @@ const PoolControlsView: React.FC<{
   }
 
   chosenPools = useMemo(() => {
-    const sortedPools = sortPools(account, sortOption, pools, chosenPools).slice(0, numberOfPoolsVisible)
+    const sortedPools = PoolHelpers.sortPools<Token>(account, sortOption, chosenPools).slice(0, numberOfPoolsVisible)
 
     if (searchQuery) {
       const lowercaseQuery = latinise(searchQuery.toLowerCase())
       return sortedPools.filter((pool) => latinise(pool.earningToken.symbol.toLowerCase()).includes(lowercaseQuery))
     }
     return sortedPools
-  }, [account, sortOption, pools, chosenPools, numberOfPoolsVisible, searchQuery])
+  }, [account, sortOption, chosenPools, numberOfPoolsVisible, searchQuery])
 
   chosenPoolsLength.current = chosenPools.length
 
