@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { React, useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useProfile } from 'state/profile/hooks'
 import { Flex, Box, useMatchBreakpoints } from '@pancakeswap/uikit'
@@ -43,6 +43,7 @@ import { useRegistrationClaimStatus } from './useRegistrationClaimStatus'
 import TeamRanksWithParticipants from './components/TeamRanks/TeamRanksWithParticipants'
 import MoDCakerBunny from './pngs/MoD-caker.png'
 import PrizesInfoSection from './components/PrizesInfoSection'
+import TabMenu from './components/TabMenu'
 
 const MoDCompetition = () => {
   const { account, chainId } = useActiveWeb3React()
@@ -158,6 +159,9 @@ const MoDCompetition = () => {
     <>
       <PageMeta />
       <CompetitionPage id="pcs-competition-page">
+        <Flex justifyContent="center" mt={isMobile ? '30px' : '28px'}>
+          <TabMenu />
+        </Flex>
         <PageSection
           style={{ paddingTop: '0px' }}
           innerProps={{ style: { paddingTop: isMobile ? '30px' : '28px' } }}

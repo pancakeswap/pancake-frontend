@@ -1,17 +1,31 @@
 import React from 'react'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FanTokenAllBunnies from './pngs/fan-token-all-bunnies.png'
 import MoboxAllBunnies from './pngs/mobox-all-bunnies.png'
-import SubMenu from './components/SubMenu'
 import FinishedCompetitionBanner from './components/FinishedCompetitionBanner'
+import { TRADINGCOMPETITIONBANNER } from './pageSectionStyles'
+import TabMenu from './components/TabMenu'
 
 const FinishedCompetitions: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
+
   return (
     <>
-      <SubMenu />
-      <Flex flexDirection="column" justifyContent="center" alignItems="center" px="3rem" mb="24px" mt="24px">
+      <Flex justifyContent="center" mt={isMobile ? '30px' : '28px'}>
+        <TabMenu />
+      </Flex>
+      <Flex
+        flexDirection="column"
+        justifyContent="flex-start"
+        alignItems="center"
+        px="3rem"
+        mb="24px"
+        pt="24px"
+        minHeight="calc(100vh - 64px)"
+        background={TRADINGCOMPETITIONBANNER}
+      >
         <FinishedCompetitionBanner
           title={t('Mobox Competition')}
           imgSrc={MoboxAllBunnies}

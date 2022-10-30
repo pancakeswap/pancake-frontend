@@ -1,12 +1,14 @@
 import { useMemo } from 'react'
 import { useRouter } from 'next/router'
-import SubMenu from '../../../views/TradingCompetition/components/SubMenu'
+import { Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import EasterCompetition from '../../../views/TradingCompetition/EasterCompetition'
 import MoboxCompetition from '../../../views/TradingCompetition/MoboxCompetition'
 import FanTokenCompetition from '../../../views/TradingCompetition/FanTokenCompetition'
+import TabMenu from '../../../views/TradingCompetition/components/TabMenu'
 
 const CompetitionPage = () => {
   const router = useRouter()
+  const { isMobile } = useMatchBreakpoints()
   const { competition: competitionId } = router.query
 
   const competitionPage = useMemo(() => {
@@ -27,7 +29,9 @@ const CompetitionPage = () => {
 
   return (
     <>
-      <SubMenu />
+      <Flex justifyContent="center" mt={isMobile ? '30px' : '28px'}>
+        <TabMenu />
+      </Flex>
       {competitionPage}
     </>
   )
