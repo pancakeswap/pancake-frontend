@@ -1,25 +1,23 @@
-import BigNumber from 'bignumber.js'
-
-import { CardBody, Flex, Text, CardRibbon, Skeleton } from '@pancakeswap/uikit'
-import ConnectWalletButton from 'components/ConnectWalletButton'
+import { CardBody, Flex, Text, CardRibbon, Skeleton, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { DeserializedPool } from 'state/types'
 import { TokenPairImage } from 'components/TokenImage'
-import AprRow from './AprRow'
+import { ReactElement } from 'react'
 import { StyledCard } from './StyledCard'
 import CardFooter from './CardFooter'
-import PoolCardHeader, { PoolCardHeaderTitle } from './PoolCardHeader'
-import CardActions from './CardActions'
 
-const PoolCard: React.FC<React.PropsWithChildren<{ pool: DeserializedPool; account: string }>> = ({
-  pool,
-  account,
-}) => {
-  const { sousId, stakingToken, earningToken, isFinished, userData, totalStaked } = pool
+const PoolCard: React.FC<
+  React.PropsWithChildren<{
+    pool: DeserializedPool
+    account: string
+    cardActions: ReactElement
+    connectButton: ReactElement
+    aprRow: ReactElement
+    isStaked: boolean
+  }>
+> = ({ pool, account, cardActions, connectButton, aprRow, isStaked }) => {
+  const { sousId, stakingToken, earningToken, isFinished, totalStaked } = pool
   const { t } = useTranslation()
-  const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
-  const accountHasStakedBalance = stakedBalance.gt(0)
 
   const isCakePool = earningToken.symbol === 'CAKE' && stakingToken.symbol === 'CAKE'
 
@@ -28,10 +26,10 @@ const PoolCard: React.FC<React.PropsWithChildren<{ pool: DeserializedPool; accou
       isFinished={isFinished && sousId !== 0}
       ribbon={isFinished && <CardRibbon variantColor="textDisabled" text={t('Finished')} />}
     >
-      <PoolCardHeader isStaking={accountHasStakedBalance} isFinished={isFinished && sousId !== 0}>
+      <Pool.PoolCardHeader isStaking={isStaked} isFinished={isFinished && sousId !== 0}>
         {totalStaked && totalStaked.gte(0) ? (
           <>
-            <PoolCardHeaderTitle
+            <Pool.PoolCardHeaderTitle
               title={isCakePool ? t('Manual') : t('Earn %asset%', { asset: earningToken.symbol })}
               subTitle={isCakePool ? t('Earn CAKE, stake CAKE') : t('Stake %symbol%', { symbol: stakingToken.symbol })}
             />
@@ -46,18 +44,18 @@ const PoolCard: React.FC<React.PropsWithChildren<{ pool: DeserializedPool; accou
             <Skeleton width={58} height={58} variant="circle" />
           </Flex>
         )}
-      </PoolCardHeader>
+      </Pool.PoolCardHeader>
       <CardBody>
-        <AprRow pool={pool} stakedBalance={stakedBalance} />
+        {aprRow}
         <Flex mt="24px" flexDirection="column">
           {account ? (
-            <CardActions pool={pool} stakedBalance={stakedBalance} />
+            cardActions
           ) : (
             <>
               <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
                 {t('Start earning')}
               </Text>
-              <ConnectWalletButton />
+              {connectButton}
             </>
           )}
         </Flex>

@@ -1,4 +1,4 @@
-import { Box, CardBody, CardProps, Flex, Text, TokenPairImage, FlexGap, Skeleton } from '@pancakeswap/uikit'
+import { Box, CardBody, CardProps, Flex, Text, TokenPairImage, FlexGap, Skeleton, Pool } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'
@@ -8,7 +8,6 @@ import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedCa
 import styled from 'styled-components'
 
 import CardFooter from '../PoolCard/CardFooter'
-import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'
 import { StyledCard } from '../PoolCard/StyledCard'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
@@ -132,10 +131,10 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
 
   return (
     <StyledCard isActive {...props}>
-      <PoolCardHeader isStaking={accountHasSharesStaked}>
+      <Pool.PoolCardHeader isStaking={accountHasSharesStaked}>
         {!showSkeleton || (totalStaked && totalStaked.gte(0)) ? (
           <>
-            <PoolCardHeaderTitle
+            <Pool.PoolCardHeaderTitle
               title={vaultPoolConfig[pool.vaultKey].name}
               subTitle={vaultPoolConfig[pool.vaultKey].description}
             />
@@ -150,7 +149,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
             <Skeleton width={58} height={58} variant="circle" />
           </Flex>
         )}
-      </PoolCardHeader>
+      </Pool.PoolCardHeader>
       <CakeVaultDetail
         isLoading={isLoading}
         account={account}

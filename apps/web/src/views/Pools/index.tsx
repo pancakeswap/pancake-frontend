@@ -17,8 +17,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
 import Page from 'components/Layout/Page'
 import { ViewMode } from 'state/user/actions'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 
 import PoolCard from './components/PoolCard'
+import CardActions from './components/PoolCard/CardActions'
+import AprRow from './components/PoolCard/AprRow'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import PoolControls from './components/PoolControls'
@@ -90,7 +93,15 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                     pool.vaultKey ? (
                       <CakeVaultCard key={pool.vaultKey} pool={pool} showStakedOnly={stakedOnly} />
                     ) : (
-                      <PoolCard key={pool.sousId} pool={pool} account={account} />
+                      <PoolCard
+                        key={pool.sousId}
+                        pool={pool}
+                        account={account}
+                        isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
+                        cardActions={<CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />}
+                        connectButton={<ConnectWalletButton />}
+                        aprRow={<AprRow pool={pool} stakedBalance={pool?.userData?.stakedBalance} />}
+                      />
                     ),
                   )}
                 </CardLayout>
