@@ -4,7 +4,7 @@
 
 import { init } from '@sentry/nextjs'
 
-const SENTRY_DSN = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN
+const SENTRY_DSN = "https://8f767afc3f434a81b448537271cf46c8@o1309927.ingest.sentry.io/4504060841820160"
 const ENV = process.env.VERCEL_ENV || process.env.NODE_ENV
 
 init({
