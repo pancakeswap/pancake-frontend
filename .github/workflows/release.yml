@@ -11,6 +11,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
