@@ -8,7 +8,6 @@ import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedCa
 import styled from 'styled-components'
 
 import CardFooter from '../PoolCard/CardFooter'
-import { StyledCard } from '../PoolCard/StyledCard'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
@@ -130,7 +129,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   }
 
   return (
-    <StyledCard isActive {...props}>
+    <Pool.StyledCard isActive {...props}>
       <Pool.PoolCardHeader isStaking={accountHasSharesStaked}>
         {!showSkeleton || (totalStaked && totalStaked.gte(0)) ? (
           <>
@@ -160,7 +159,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
         performanceFeeAsDecimal={performanceFeeAsDecimal}
         defaultFooterExpanded={defaultFooterExpanded}
       />
-    </StyledCard>
+    </Pool.StyledCard>
   )
 }
 

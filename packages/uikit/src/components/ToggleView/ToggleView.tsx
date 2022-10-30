@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import styled from "styled-components";
-import { ListViewIcon, CardViewIcon, IconButton } from "@pancakeswap/uikit";
+import IconButton from "../Button/IconButton";
+import { CardViewIcon, ListViewIcon } from "../Svg";
 
 export enum ViewMode {
   TABLE = "TABLE",
@@ -21,7 +22,7 @@ const Container = styled.div`
   }
 `;
 
-const ToggleView: React.FunctionComponent<React.PropsWithChildren<ToggleViewProps>> = ({
+export const ToggleView: React.FunctionComponent<React.PropsWithChildren<ToggleViewProps>> = ({
   idPrefix,
   viewMode,
   onToggle,
@@ -49,5 +50,3 @@ const ToggleView: React.FunctionComponent<React.PropsWithChildren<ToggleViewProp
     </Container>
   );
 };
-
-export default ToggleView;

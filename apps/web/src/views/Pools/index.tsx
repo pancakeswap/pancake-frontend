@@ -12,14 +12,16 @@ import {
   PageHeader,
   Loading,
   ScrollToTopButtonV2,
+  Pool,
+  ViewMode,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
 import Page from 'components/Layout/Page'
-import { ViewMode } from 'state/user/actions'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { Token } from '@pancakeswap/sdk'
+import { TokenPairImage } from 'components/TokenImage'
 
-import PoolCard from './components/PoolCard'
 import CardActions from './components/PoolCard/CardActions'
 import AprRow from './components/PoolCard/AprRow'
 import CardFooter from './components/PoolCard/CardFooter'
@@ -94,7 +96,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                     pool.vaultKey ? (
                       <CakeVaultCard key={pool.vaultKey} pool={pool} showStakedOnly={stakedOnly} />
                     ) : (
-                      <PoolCard
+                      <Pool.PoolCard<Token>
                         key={pool.sousId}
                         pool={pool}
                         isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
@@ -109,6 +111,14 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                               <ConnectWalletButton />
                             </>
                           )
+                        }
+                        tokenPairImage={
+                          <TokenPairImage
+                            primaryToken={pool.earningToken}
+                            secondaryToken={pool.stakingToken}
+                            width={64}
+                            height={64}
+                          />
                         }
                         cardFooter={<CardFooter pool={pool} account={account} />}
                         aprRow={<AprRow pool={pool} stakedBalance={pool?.userData?.stakedBalance} />}
