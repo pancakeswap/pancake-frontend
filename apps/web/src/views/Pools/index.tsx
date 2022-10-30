@@ -22,6 +22,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import PoolCard from './components/PoolCard'
 import CardActions from './components/PoolCard/CardActions'
 import AprRow from './components/PoolCard/AprRow'
+import CardFooter from './components/PoolCard/CardFooter'
 import CakeVaultCard from './components/CakeVaultCard'
 import PoolsTable from './components/PoolsTable/PoolsTable'
 import PoolControls from './components/PoolControls'
@@ -96,10 +97,20 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                       <PoolCard
                         key={pool.sousId}
                         pool={pool}
-                        account={account}
                         isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
-                        cardActions={<CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />}
-                        connectButton={<ConnectWalletButton />}
+                        cardContent={
+                          account ? (
+                            <CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                          ) : (
+                            <>
+                              <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
+                                {t('Start earning')}
+                              </Text>
+                              <ConnectWalletButton />
+                            </>
+                          )
+                        }
+                        cardFooter={<CardFooter pool={pool} account={account} />}
                         aprRow={<AprRow pool={pool} stakedBalance={pool?.userData?.stakedBalance} />}
                       />
                     ),

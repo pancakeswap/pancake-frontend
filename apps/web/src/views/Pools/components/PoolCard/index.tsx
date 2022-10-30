@@ -1,21 +1,19 @@
-import { CardBody, Flex, Text, CardRibbon, Skeleton, Pool } from '@pancakeswap/uikit'
+import { CardBody, Flex, CardRibbon, Skeleton, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { DeserializedPool } from 'state/types'
 import { TokenPairImage } from 'components/TokenImage'
 import { ReactElement } from 'react'
 import { StyledCard } from './StyledCard'
-import CardFooter from './CardFooter'
 
 const PoolCard: React.FC<
   React.PropsWithChildren<{
     pool: DeserializedPool
-    account: string
-    cardActions: ReactElement
-    connectButton: ReactElement
+    cardContent: ReactElement
     aprRow: ReactElement
+    cardFooter: ReactElement
     isStaked: boolean
   }>
-> = ({ pool, account, cardActions, connectButton, aprRow, isStaked }) => {
+> = ({ pool, cardContent, aprRow, isStaked, cardFooter }) => {
   const { sousId, stakingToken, earningToken, isFinished, totalStaked } = pool
   const { t } = useTranslation()
 
@@ -48,19 +46,10 @@ const PoolCard: React.FC<
       <CardBody>
         {aprRow}
         <Flex mt="24px" flexDirection="column">
-          {account ? (
-            cardActions
-          ) : (
-            <>
-              <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                {t('Start earning')}
-              </Text>
-              {connectButton}
-            </>
-          )}
+          {cardContent}
         </Flex>
       </CardBody>
-      <CardFooter pool={pool} account={account} />
+      {cardFooter}
     </StyledCard>
   )
 }
