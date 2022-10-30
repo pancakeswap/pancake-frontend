@@ -1991,7 +1991,7 @@
   "Unstake Error": "আনস্টেক এর ত্রুটি",
   "Based on \"overflow\" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.": "\"অতি\" বিক্রয় পদ্ধতির উপর ভিত্তি করে। বিক্রয় সম্পন্ন হওয়ার পরে দাবি করার জন্য%refundingAmount% অব্যয়িত %spentToken% রয়েছে।",
   "New": "নতুন",
-  "Pot Open": "পট খোলা",
+  "Pot Open": "পট চালু রয়েছে",
   "until the next pot lock": "পরবর্তী পট লক না হওয়া পর্যন্ত",
   "Withdrawable on %date%": "%date%-এ প্রত্যাহারযোগ্য",
   "A small amount of %nativeToken% is required for the first-time setup of cross-chain CAKE farming.": "ক্রস-চেইন CAKE চাষাবাদের প্রথমবারের সেটআপের জন্য অল্প পরিমাণ %nativeToken% প্রয়োজন।",
