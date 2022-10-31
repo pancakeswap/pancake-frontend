@@ -99,7 +99,7 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
     },
     {
-      "name": "Tether",
+      "name": "Tether USD",
       "symbol": "USDT",
       "chainId": 2,
       "decimals": 8,
@@ -131,7 +131,7 @@
       "logoURI": "https://raw.githubusercontent.com/hippospace/aptos-coin-list/main/icons/MOJO.svg"
     },
     {
-      "name": "LayerZero - USDT",
+      "name": "LayerZero - Tether USD",
       "symbol": "USDT",
       "chainId": 1,
       "decimals": 6,
@@ -145,6 +145,62 @@
       "decimals": 6,
       "address": "0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::WETH",
       "logoURI": "https://aptos.pancakeswap.finance/images/tokens/weth.png"
+    },
+    {
+      "name": "Celer - USD Coin",
+      "symbol": "USDC",
+      "chainId": 1,
+      "decimals": 6,
+      "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin",
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
+    },
+    {
+      "name": "Celer - Tether USD",
+      "symbol": "USDT",
+      "chainId": 1,
+      "decimals": 6,
+      "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdtCoin",
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x55d398326f99059fF775485246999027B3197955.png"
+    },
+    {
+      "name": "Celer - Dai Stablecoin",
+      "symbol": "DAI",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::DaiCoin",
+      "logoURI": "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3/logo.png"
+    },
+    {
+      "name": "Celer - Wrapped Ether",
+      "symbol": "WETH",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::WethCoin",
+      "logoURI": "https://aptos.pancakeswap.finance/images/tokens/weth.png"
+    },
+    {
+      "name": "Celer - Wrapped BTC",
+      "symbol": "WBTC",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::WbtcCoin",
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
+    },
+    {
+      "name": "Celer - Binance Coin",
+      "symbol": "BNB",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::BnbCoin",
+      "logoURI": "https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
+    },
+    {
+      "name": "Celer - Binance USD",
+      "symbol": "BUSD",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::BusdCoin",
+      "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
     }
   ]
 }
