@@ -14,6 +14,7 @@ import {
   Skeleton,
   Box,
   useToast,
+  Pool,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -30,19 +31,20 @@ import BigNumber from 'bignumber.js'
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { fetchCakeVaultUserData } from 'state/pools'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { VaultKey } from 'state/types'
 import { getInterestBreakdown } from '@pancakeswap/utils/compoundApyHelpers'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { Token } from '@pancakeswap/sdk'
 import { VaultRoiCalculatorModal } from '../Vault/VaultRoiCalculatorModal'
 import ConvertToLock from '../LockedPool/Common/ConvertToLock'
 import FeeSummary from './FeeSummary'
 import { MIN_LOCK_AMOUNT, convertCakeToShares } from '../../helpers'
 
 interface VaultStakeModalProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   stakingMax: BigNumber
   performanceFee?: number
   isRemovingStake?: boolean

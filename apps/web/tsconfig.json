@@ -9,10 +9,5 @@
     "target": "es5"
   },
   "exclude": ["node_modules"],
-  "include": [
-    "next-env.d.ts",
-    "./src/**/*.ts",
-    "./src/**/*.tsx",
-    "../../packages/uikit/src/widgets/Pool/StyledCard.tsx"
-  ]
+  "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"]
 }

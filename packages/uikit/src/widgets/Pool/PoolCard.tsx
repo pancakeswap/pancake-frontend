@@ -17,7 +17,7 @@ export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, t
   const { sousId, stakingToken, earningToken, isFinished, totalStaked } = pool;
   const { t } = useTranslation();
 
-  const isCakePool = earningToken.symbol === "CAKE" && stakingToken.symbol === "CAKE";
+  const isCakePool = earningToken?.symbol === "CAKE" && stakingToken?.symbol === "CAKE";
 
   return (
     <StyledCard
@@ -28,8 +28,10 @@ export function PoolCard<T>({ pool, cardContent, aprRow, isStaked, cardFooter, t
         {totalStaked && totalStaked.gte(0) ? (
           <>
             <Pool.PoolCardHeaderTitle
-              title={isCakePool ? t("Manual") : t("Earn %asset%", { asset: earningToken.symbol })}
-              subTitle={isCakePool ? t("Earn CAKE, stake CAKE") : t("Stake %symbol%", { symbol: stakingToken.symbol })}
+              title={isCakePool ? t("Manual") : t("Earn %asset%", { asset: earningToken?.symbol || "" })}
+              subTitle={
+                isCakePool ? t("Earn CAKE, stake CAKE") : t("Stake %symbol%", { symbol: stakingToken?.symbol || "" })
+              }
             />
             {tokenPairImage}
           </>

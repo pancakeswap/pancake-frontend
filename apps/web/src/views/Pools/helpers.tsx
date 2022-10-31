@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getApy } from '@pancakeswap/utils/compoundApyHelpers'
 import { getBalanceNumber, getFullDisplayBalance, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import memoize from 'lodash/memoize'
+import { Token } from '@pancakeswap/sdk'
+import { Pool } from '@pancakeswap/uikit'
 
 // min deposit and withdraw amount
 export const MIN_LOCK_AMOUNT = new BigNumber(10000000000000)
@@ -42,7 +43,7 @@ export const convertCakeToShares = (
 
 const MANUAL_POOL_AUTO_COMPOUND_FREQUENCY = 0
 
-export const getAprData = (pool: DeserializedPool, performanceFee: number) => {
+export const getAprData = (pool: Pool.DeserializedPool<Token>, performanceFee: number) => {
   const { vaultKey, apr } = pool
 
   //   Estimate & manual for now. 288 = once every 5 mins. We can change once we have a better sense of this
@@ -76,7 +77,7 @@ export const getCakeVaultEarnings = (
 }
 
 export const getPoolBlockInfo = memoize(
-  (pool: DeserializedPool, currentBlock: number) => {
+  (pool: Pool.DeserializedPool<Token>, currentBlock: number) => {
     const { startBlock, endBlock, isFinished } = pool
     const shouldShowBlockCountdown = Boolean(!isFinished && startBlock && endBlock)
     const blocksUntilStart = Math.max(startBlock - currentBlock, 0)

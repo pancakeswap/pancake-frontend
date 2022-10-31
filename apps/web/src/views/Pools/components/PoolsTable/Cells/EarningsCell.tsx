@@ -1,16 +1,16 @@
 import styled from 'styled-components'
-import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
+import { Skeleton, Text, Flex, Box, useModal, useMatchBreakpoints, Balance, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { PoolCategory } from 'config/constants/types'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
 import BaseCell, { CellContent } from './BaseCell'
 import CollectModal from '../../Modals/CollectModal'
 
 interface EarningsCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 

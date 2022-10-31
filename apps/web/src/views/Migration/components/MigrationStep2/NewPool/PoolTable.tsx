@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedPool } from 'state/types'
-import { Flex, Spinner } from '@pancakeswap/uikit'
+import { Flex, Spinner, Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import TableHeader from '../../MigrationTable/TableHeader'
 import EmptyText from '../../MigrationTable/EmptyText'
 import TableStyle from '../../MigrationTable/StyledTable'
 import PoolRow from './PoolRow'
 
 interface PoolsTableProps {
-  pools: DeserializedPool[]
+  pools: Pool.DeserializedPool<Token>[]
   userDataReady: boolean
   account: string
 }

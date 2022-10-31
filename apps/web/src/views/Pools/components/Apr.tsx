@@ -10,14 +10,15 @@ import {
   Button,
   RoiCalculatorModal,
   BalanceWithLoading,
+  Pool,
 } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCurrentBlock } from 'state/block/hooks'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
+import { Token } from '@pancakeswap/sdk'
 
 const AprLabelContainer = styled(Flex)`
   &:hover {
@@ -26,7 +27,7 @@ const AprLabelContainer = styled(Flex)`
 `
 
 interface AprProps extends FlexProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   stakedBalance: BigNumber
   showIcon: boolean
   performanceFee?: number

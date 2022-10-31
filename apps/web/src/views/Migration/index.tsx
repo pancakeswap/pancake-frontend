@@ -1,13 +1,14 @@
 import React, { memo, useState, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { Heading, Text, Button, ArrowForwardIcon, Link, PageHeader } from '@pancakeswap/uikit'
+import { Heading, Text, Button, ArrowForwardIcon, Link, PageHeader, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePollFarmsV1WithUserData } from 'state/farmsV1/hooks'
 import { VaultKey } from 'state/types'
 import { useFetchUserPools } from 'views/Migration/hook/V1/Pool/useFetchUserPools'
 import { useFetchPublicPoolsData } from 'views/Migration/hook/V1/Pool/useFetchPublicPoolsData'
 import Page from 'components/Layout/Page'
+import { Token } from '@pancakeswap/sdk'
 import ProgressSteps, { Step, ProgressStepsType } from './components/ProgressSteps'
 import MigrationSticky from './components/MigrationSticky'
 import OldPool from './components/MigrationStep1/OldPool'
@@ -47,7 +48,7 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
 
     return [ifoPoolVault, cakeAutoVault, cakePool]
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cakePool])
+  }, [cakePool]) as Pool.DeserializedPool<Token>[]
 
   const scrollToTop = (): void => {
     window.scrollTo({

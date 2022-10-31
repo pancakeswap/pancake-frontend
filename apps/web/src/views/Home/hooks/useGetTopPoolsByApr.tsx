@@ -3,18 +3,20 @@ import { useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { VaultKey } from 'state/types'
 import { fetchCakeVaultFees, fetchPoolsPublicDataAsync, fetchCakeVaultPublicData } from 'state/pools'
 import { usePoolsWithVault } from 'state/pools/hooks'
 import { useInitialBlock } from 'state/block/hooks'
 import { FetchStatus } from 'config/constants/types'
+import { Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 
 const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
   const { chainId } = useActiveWeb3React()
 
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.Idle)
-  const [topPools, setTopPools] = useState<DeserializedPool[]>([null, null, null, null, null])
+  const [topPools, setTopPools] = useState<Pool.DeserializedPool<Token>[]>([null, null, null, null, null])
   const initialBlock = useInitialBlock()
 
   const { pools } = usePoolsWithVault()
@@ -45,8 +47,8 @@ const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   useEffect(() => {
     const [cakePools, otherPools] = partition(pools, (pool) => pool.sousId === 0)
     const masterCakePool = cakePools.filter((cakePool) => cakePool.vaultKey === VaultKey.CakeVault)
-    const getTopPoolsByApr = (activePools: DeserializedPool[]) => {
-      const sortedByApr = orderBy(activePools, (pool: DeserializedPool) => pool.apr || 0, 'desc')
+    const getTopPoolsByApr = (activePools: Pool.DeserializedPool<Token>[]) => {
+      const sortedByApr = orderBy(activePools, (pool: Pool.DeserializedPool<Token>) => pool.apr || 0, 'desc')
       setTopPools([...masterCakePool, ...sortedByApr.slice(0, 4)])
     }
     if (fetchStatus === FetchStatus.Fetched && !topPools[0]) {

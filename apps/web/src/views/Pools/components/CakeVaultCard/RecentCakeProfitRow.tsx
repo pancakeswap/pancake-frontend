@@ -1,13 +1,14 @@
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Pool, Text } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedVaultUser } from 'state/types'
+import { VaultKey, DeserializedLockedVaultUser } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import RecentCakeProfitBalance from './RecentCakeProfitBalance'
 
-const RecentCakeProfitCountdownRow = ({ pool }: { pool: DeserializedPool }) => {
+const RecentCakeProfitCountdownRow = ({ pool }: { pool: Pool.DeserializedPool<Token> }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { pricePerFullShare, userData } = useVaultPoolByKey(pool.vaultKey)

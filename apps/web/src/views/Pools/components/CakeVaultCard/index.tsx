@@ -4,8 +4,9 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
+import { VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
 import styled from 'styled-components'
+import { Token } from '@pancakeswap/sdk'
 
 import CardFooter from '../PoolCard/CardFooter'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
@@ -20,7 +21,7 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
 `
 
 interface CakeVaultProps extends CardProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   showStakedOnly: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
@@ -30,7 +31,7 @@ interface CakeVaultProps extends CardProps {
 interface CakeVaultDetailProps {
   isLoading?: boolean
   account: string
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   vaultPool: DeserializedCakeVault
   accountHasSharesStaked: boolean
   defaultFooterExpanded?: boolean

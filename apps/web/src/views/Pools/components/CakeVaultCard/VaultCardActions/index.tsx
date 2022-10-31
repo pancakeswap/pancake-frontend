@@ -1,10 +1,11 @@
 import BigNumber from 'bignumber.js'
 
 import styled from 'styled-components'
-import { Flex, Text, Box } from '@pancakeswap/uikit'
+import { Flex, Text, Box, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedPool } from 'state/types'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { Token } from '@pancakeswap/sdk'
+
 import VaultApprovalAction from './VaultApprovalAction'
 import VaultStakeActions from './VaultStakeActions'
 import { useCheckVaultApprovalStatus } from '../../../hooks/useApprove'
@@ -15,7 +16,7 @@ const InlineText = styled(Text)`
 
 const CakeVaultCardActions: React.FC<
   React.PropsWithChildren<{
-    pool: DeserializedPool
+    pool: Pool.DeserializedPool<Token>
     accountHasSharesStaked: boolean
     isLoading: boolean
     performanceFee: number

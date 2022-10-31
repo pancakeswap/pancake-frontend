@@ -1,15 +1,16 @@
-import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box, Balance } from '@pancakeswap/uikit'
+import { Flex, Text, IconButton, AddIcon, MinusIcon, useModal, Skeleton, Box, Balance, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { VaultKey } from 'state/types'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
+import { Token } from '@pancakeswap/sdk'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import VaultStakeModal from '../VaultStakeModal'
 import ConvertToLock from '../../LockedPool/Common/ConvertToLock'
 
 interface HasStakeActionProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   stakingTokenBalance: BigNumber
   performanceFee: number
 }

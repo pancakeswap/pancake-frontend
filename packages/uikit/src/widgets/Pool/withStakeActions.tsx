@@ -46,20 +46,19 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
   }: StakeActionsPropsType<T>) => {
     const { stakingToken, stakingTokenPrice, stakingLimit, isFinished, userData } = pool;
     const { t } = useTranslation();
-    const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken.decimals);
-    const stakedTokenDollarBalance = getBalanceNumber(
-      stakedBalance.multipliedBy(stakingTokenPrice),
-      stakingToken.decimals
-    );
+    const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken?.decimals);
+    const stakedTokenDollarBalance = stakingTokenPrice
+      ? getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
+      : 0;
 
-    const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken.symbol} />);
+    const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken?.symbol || ""} />);
 
     const [onPresentStake] = useModal(
       <StakeModal
         isBnbPool={isBnbPool}
         pool={pool}
         stakingTokenBalance={stakingTokenBalance}
-        stakingTokenPrice={stakingTokenPrice}
+        stakingTokenPrice={stakingTokenPrice || 0}
       />
     );
 
@@ -68,7 +67,7 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
         stakingTokenBalance={stakingTokenBalance}
         isBnbPool={isBnbPool}
         pool={pool}
-        stakingTokenPrice={stakingTokenPrice}
+        stakingTokenPrice={stakingTokenPrice || 0}
         isRemovingStake
       />
     );
@@ -78,7 +77,7 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
       { placement: "bottom" }
     );
 
-    const reachStakingLimit = stakingLimit.gt(0) && userData.stakedBalance.gte(stakingLimit);
+    const reachStakingLimit = stakingLimit?.gt(0) && userData?.stakedBalance?.gte(stakingLimit);
 
     const renderStakeAction = () => {
       return isStaked ? (
