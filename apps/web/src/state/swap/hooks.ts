@@ -332,7 +332,12 @@ export const useFetchPairPrices = ({
           (pairTokenResults &&
             pairTokenResults[0]?.[0] &&
             pairTokenResults[1]?.[0] &&
-            normalizeChartData(data, pairTokenResults[0][0], pairTokenResults[1][0], timeWindow)) ||
+            normalizeChartData(
+              data,
+              pairTokenResults[0][0].toLowerCase(),
+              pairTokenResults[1][0].toLowerCase(),
+              timeWindow,
+            )) ||
           []
         if (newPairData.length > 0 && hasEnoughLiquidity) {
           dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
