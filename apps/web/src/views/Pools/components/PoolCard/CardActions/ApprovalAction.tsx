@@ -1,11 +1,11 @@
-import { Button, AutoRenewIcon, Skeleton } from '@pancakeswap/uikit'
+import { Button, AutoRenewIcon, Skeleton, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
-import { DeserializedPool } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 import { useApprovePool } from '../../../hooks/useApprove'
 
 interface ApprovalActionProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   isLoading?: boolean
 }
 

@@ -6,20 +6,10 @@ import { useAppDispatch } from 'state'
 import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { DeserializedPool } from 'state/types'
-import BigNumber from 'bignumber.js'
+import { Token } from '@pancakeswap/sdk'
 
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
-
-interface StakeModalContainerProps {
-  isBnbPool: boolean
-  pool: DeserializedPool
-  stakingTokenBalance: BigNumber
-  stakingTokenPrice: number
-  isRemovingStake?: boolean
-  onDismiss?: () => void
-}
 
 const StakeModalContainer = ({
   isBnbPool,
@@ -28,7 +18,7 @@ const StakeModalContainer = ({
   onDismiss,
   stakingTokenBalance,
   stakingTokenPrice,
-}: StakeModalContainerProps) => {
+}: Pool.StakeModalPropsType<Token>) => {
   const { t } = useTranslation()
 
   const {

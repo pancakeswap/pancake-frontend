@@ -118,7 +118,7 @@ interface CorePoolProps {
   endBlock?: number;
   apr?: number;
   rawApr?: number;
-  stakingTokenPrice?: number;
+  stakingTokenPrice: number;
   earningTokenPrice?: number;
   vaultKey?: VaultKey;
 }

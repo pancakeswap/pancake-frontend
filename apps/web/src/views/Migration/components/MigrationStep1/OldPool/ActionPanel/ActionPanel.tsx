@@ -1,9 +1,12 @@
 import React from 'react'
 import styled, { keyframes, css } from 'styled-components'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { VaultKey } from 'state/types'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
+import { Token } from '@pancakeswap/sdk'
+import { Pool } from '@pancakeswap/uikit'
+
 import Staked from './Stake'
 import AutoEarning from './AutoEarning'
 import Earning from './Earning'
@@ -68,7 +71,7 @@ const ActionContainer = styled.div`
 `
 
 interface ActionPanelProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
   expanded: boolean
 }
