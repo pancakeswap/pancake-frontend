@@ -60,9 +60,9 @@ export function useTableItem<TData = unknown>({
     onSuccess,
     select,
     keepPreviousData,
-    // refetchInterval: (data) => {
-    //   if (!data) return 6_000
-    //   return 0
-    // },
+    refetchInterval: (data) => {
+      if (!data) return 6_000
+      return 0
+    },
   })
 }
