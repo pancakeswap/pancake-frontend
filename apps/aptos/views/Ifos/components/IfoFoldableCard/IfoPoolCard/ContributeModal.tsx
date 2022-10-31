@@ -1,19 +1,20 @@
-// import { MaxUint256 } from '@ethersproject/constants'
-// import { parseUnits } from '@ethersproject/units'
-// import { useAccount } from '@pancakeswap/awgmi'
+import { Pair } from '@pancakeswap/aptos-swap-sdk'
+import { useSendTransaction } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
-// import { bscTokens } from '@pancakeswap/tokens'
 import { BalanceInput, Box, Button, Flex, Image, Link, Message, Modal, ModalBody, Text } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
+import { ConfirmButton } from 'components/ConfirmButton'
 import { Ifo, PoolIds } from 'config/constants/types'
-// import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
-// import { useERC20 } from 'hooks/useContract'
+import { useConfirmTransaction } from 'hooks/useConfirmTransaction'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { usePrepareContribute } from 'views/Ifos/hooks/usePrepareContribute'
-// import { requiresApproval } from 'utils/requiresApproval'
+import { IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
+import { ifoDeposit } from 'views/Ifos/generated/ifo'
+import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
+import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
+import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
+import { useIfoResources } from 'views/Ifos/hooks/useIfoResources'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 const MessageTextLink = styled(Link)`
@@ -64,7 +65,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   walletIfoData,
   userCurrencyBalance,
   onDismiss,
-  // onSuccess,
+  onSuccess,
 }) => {
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
@@ -79,7 +80,10 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   // const raisingTokenContractReader = useERC20(currency.address, false)
   // const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
-  const { handleConfirm } = usePrepareContribute()
+  const { sendTransactionAsync } = useSendTransaction()
+  const resources = useIfoResources()
+  const pool = useIfoPool()
+  // const { handleConfirm } = usePrepareContribute()
 
   const [value, setValue] = useState('')
 
@@ -99,12 +103,38 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
     return userCurrencyBalance
   }, [userCurrencyBalance])
 
-  const isWarning =
-    valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) || valueWithTokenDecimals.isGreaterThan(maximumTokenEntry)
-  const isConfirmed = false
-  const isConfirming = false
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const handleApprove = () => {} // TODO: Aptos doesn't have approval.
+  const isWarning = useMemo(() => {
+    return (
+      valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) ||
+      valueWithTokenDecimals.isGreaterThan(maximumTokenEntry)
+    )
+  }, [maximumTokenEntry, userCurrencyBalance, valueWithTokenDecimals])
+
+  const { isConfirmed, isConfirming, handleConfirm } = useConfirmTransaction({
+    onConfirm: () => {
+      const [raisingCoin, offeringCoin] = Pair.parseType(
+        (resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE] as IFOPoolStore).type,
+      )
+      // TODO: This should be `valueWithTokenDecimals` but the contract currently expects `value`.
+      const payload = ifoDeposit([value, (pool.data as IFOPool).pid], [raisingCoin, offeringCoin])
+      return sendTransactionAsync({ payload })
+    },
+    onSuccess: async ({ receipt }) => {
+      onSuccess(valueWithTokenDecimals, receipt.hash)
+      onDismiss?.()
+    },
+  })
+
+  const isConfirmDisabled = useMemo(() => {
+    return (
+      isConfirmed ||
+      valueWithTokenDecimals.isNaN() ||
+      valueWithTokenDecimals.eq(0) ||
+      isWarning ||
+      !pool.data ||
+      !resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
+    )
+  }, [isConfirmed, isWarning, pool, resources, valueWithTokenDecimals])
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
@@ -193,16 +223,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
               {t('Read more')}
             </Link>
           </Text>
-          <ApproveConfirmButtons
-            isApproveDisabled
-            isApproving={false}
-            isConfirmDisabled={
-              isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0) || isWarning
-            }
-            isConfirming={isConfirming}
-            onApprove={handleApprove}
-            onConfirm={() => handleConfirm({ amount: valueWithTokenDecimals.toFixed() })}
-          />
+          <ConfirmButton isConfirmDisabled={isConfirmDisabled} isConfirming={isConfirming} onConfirm={handleConfirm} />
         </Box>
       </ModalBody>
     </Modal>
