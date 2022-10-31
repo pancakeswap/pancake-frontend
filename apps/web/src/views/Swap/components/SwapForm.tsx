@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useState, useMemo, useContext } from 'react'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { Button, ArrowDownIcon, Box, Skeleton, Swap as SwapUI, Message, MessageText } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -34,8 +34,10 @@ import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
 import { ArrowWrapper, Wrapper } from './styleds'
 import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { isAddress } from '../../../utils'
+import { SwapFeaturesContext } from '../SwapFeaturesContext'
 
-export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAccessTokenSupported, isChartSupported }) {
+export default function SwapForm() {
+  const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const stableFarms = useStableFarms()
@@ -196,9 +198,6 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
       <CurrencyInputHeader
         title={t('Swap')}
         subtitle={t('Trade tokens in an instant')}
-        setIsChartDisplayed={setIsChartDisplayed}
-        isChartSupported={isChartSupported}
-        isChartDisplayed={isChartDisplayed}
         hasAmount={hasAmount}
         onRefreshPrice={onRefreshPrice}
       />
