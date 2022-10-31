@@ -309,20 +309,36 @@ export const useFetchPairPrices = ({
         // low liquidity pool might mean that the price is incorrect
         // in that case try to get derived price
         const hasEnoughLiquidity = pairHasEnoughLiquidity(data, timeWindow)
-        const [[token0], [token1]] = await multicallv2({
-          abi: IPancakePairABI,
-          calls: [
-            {
-              address: pairId,
-              name: 'token0',
-            },
-            {
-              address: pairId,
-              name: 'token1',
-            },
-          ],
-        })
-        const newPairData = normalizeChartData(data, token0.toLowerCase(), token1.toLowerCase(), timeWindow) || []
+        let pairTokenResults
+        try {
+          pairTokenResults = await multicallv2({
+            abi: IPancakePairABI,
+            calls: [
+              {
+                address: pairId,
+                name: 'token0',
+              },
+              {
+                address: pairId,
+                name: 'token1',
+              },
+            ],
+            options: { requireSuccess: false },
+          })
+        } catch (error) {
+          console.info('Error fetching tokenIds from pair')
+        }
+        const newPairData =
+          (pairTokenResults &&
+            pairTokenResults[0]?.[0] &&
+            pairTokenResults[1]?.[0] &&
+            normalizeChartData(
+              data,
+              pairTokenResults[0][0].toLowerCase(),
+              pairTokenResults[1][0].toLowerCase(),
+              timeWindow,
+            )) ||
+          []
         if (newPairData.length > 0 && hasEnoughLiquidity) {
           dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
           setIsLoading(false)
