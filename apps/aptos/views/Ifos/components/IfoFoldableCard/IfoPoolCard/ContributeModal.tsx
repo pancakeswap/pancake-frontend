@@ -168,7 +168,11 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
                 key={multiplierValue}
                 scale="xs"
                 variant="tertiary"
-                onClick={() => setValue(getBalanceAmount(maximumTokenCommittable.times(multiplierValue)).toString())}
+                onClick={() =>
+                  setValue(
+                    getBalanceAmount(maximumTokenCommittable, currency.decimals).times(multiplierValue).toFixed(),
+                  )
+                }
                 mr={index < multiplierValues.length - 1 ? '8px' : 0}
               >
                 {multiplierValue * 100}%
