@@ -36,9 +36,6 @@ interface Props {
 
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
 
-// Default value for transaction setting, tweak based on BSC network congestion.
-// const gasPrice = parseUnits('10', 'gwei').toString()
-
 const SmallAmountNotice: React.FC<React.PropsWithChildren<{ url: string }>> = ({ url }) => {
   const { t } = useTranslation()
 
@@ -71,19 +68,12 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const userPoolCharacteristics = walletIfoData[poolId]
 
   const { currency, articleUrl } = ifo
-  // const { toastSuccess } = useToast()
   const { limitPerUserInLP, vestingInformation } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
-  // const { contract } = walletIfoData
-  // const { account } = useAccount()
-  // const { callWithGasPrice } = useCallWithGasPrice()
-  // const raisingTokenContractReader = useERC20(currency.address, false)
-  // const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
   const { sendTransactionAsync } = useSendTransaction()
   const resources = useIfoResources()
   const pool = useIfoPool()
-  // const { handleConfirm } = usePrepareContribute()
 
   const [value, setValue] = useState('')
 
