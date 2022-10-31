@@ -112,6 +112,7 @@ const StakeModalContainer = ({
       pendingTx={pendingTx}
       account={account}
       handleConfirmClick={handleConfirmClick}
+      isRemovingStake={isRemovingStake}
     />
   )
 }
