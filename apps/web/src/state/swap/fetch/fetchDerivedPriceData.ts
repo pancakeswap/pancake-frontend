@@ -5,21 +5,26 @@ import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
 import { Block } from 'state/info/types'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
+import mapValues from 'lodash/mapValues'
 import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
 import { PairDataTimeWindowEnum } from '../types'
 
 const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
-  const prices: any | undefined = await multiQuery(
+  const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
     INFO_CLIENT,
     200,
   )
 
-  if (!prices) {
+  if (!rawPrices) {
     console.error('Price data failed to load')
     return null
   }
+
+  const prices = mapValues(rawPrices, (value) => {
+    return value[0]
+  })
 
   // format token BNB price results
   const tokenPrices: {
