@@ -192,7 +192,10 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
                 variant="tertiary"
                 onClick={() =>
                   setValue(
-                    getBalanceAmount(maximumTokenCommittable, currency.decimals).times(multiplierValue).toFixed(),
+                    getBalanceAmount(maximumTokenCommittable.times(multiplierValue), currency.decimals).toFixed(
+                      currency.decimals,
+                      BigNumber.ROUND_DOWN,
+                    ),
                   )
                 }
                 mr={index < multiplierValues.length - 1 ? '8px' : 0}
