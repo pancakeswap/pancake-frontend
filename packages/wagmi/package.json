@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/wagmi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "WAGMIT",
   "description": "wagmi adaptor for pancakeswap",
   "main": "./dist/index.js",
