@@ -4,15 +4,9 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Container, LinkExternal } from '@pancakeswap/uikit'
 import IfoLayout, { IfoLayoutWrapper } from './IfoLayout'
 import IfoPoolVaultCard from './IfoPoolVaultCard'
-// import IfoQuestions from './IfoQuestions'
-
-// const IfoStepBackground = styled(Box)`
-//   background: ${({ theme }) => theme.colors.gradientBubblegum};
-// `
 
 interface TypeProps {
   ifoSection: ReactElement
-  ifoSteps: ReactElement
 }
 
 const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection }) => {
@@ -26,11 +20,7 @@ const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection
           {ifoSection}
         </IfoLayoutWrapper>
       </Container>
-      {/* <IfoStepBackground>
-        <Container>{ifoSteps}</Container>
-      </IfoStepBackground> */}
       <Container>
-        {/* <IfoQuestions /> */}
         <LinkExternal
           href="https://docs.pancakeswap.finance/contact-us/business-partnerships#ifos-token-sales"
           mx="auto"

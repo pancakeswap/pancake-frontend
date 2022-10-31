@@ -6,7 +6,6 @@ import { Ifo } from 'config/constants/types'
 
 import { IfoCurrentCard } from './components/IfoFoldableCard'
 import IfoContainer from './components/IfoContainer'
-import IfoSteps from './components/IfoSteps'
 
 interface TypeProps {
   activeIfo: Ifo
@@ -26,14 +25,6 @@ const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo })
   return (
     <IfoContainer
       ifoSection={<IfoCurrentCard ifo={activeIfo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />}
-      ifoSteps={
-        <IfoSteps
-          isLive={publicIfoData.status === 'live'}
-          hasClaimed={poolUnlimited.hasClaimed}
-          isCommitted={isCommitted}
-          ifoCurrencyAddress={activeIfo.currency.address}
-        />
-      }
     />
   )
 }
