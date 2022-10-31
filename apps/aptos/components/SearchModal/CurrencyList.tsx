@@ -14,7 +14,7 @@ import { CurrencyLogo } from '../Logo'
 import ImportRow from './ImportRow'
 
 function currencyKey(currency: Currency): string {
-  return currency.isToken ? currency.address : APTOS_COIN
+  return currency?.isNative ? APTOS_COIN : currency?.address ?? ''
 }
 
 const StyledBalanceText = styled(Text)`
@@ -111,7 +111,7 @@ export default function CurrencyList({
   onCurrencySelect,
   otherCurrency,
   fixedListRef,
-  showBNB,
+  showNative,
   showImportView,
   setImportToken,
   breakIndex,
@@ -123,7 +123,7 @@ export default function CurrencyList({
   onCurrencySelect: (currency: Currency) => void
   otherCurrency?: Currency | null
   fixedListRef?: MutableRefObject<FixedSizeList | undefined>
-  showBNB: boolean
+  showNative: boolean
   showImportView: () => void
   setImportToken: (token: Token) => void
   breakIndex: number | undefined
@@ -131,14 +131,14 @@ export default function CurrencyList({
   const native = useNativeCurrency()
 
   const itemData: (Currency | undefined)[] = useMemo(() => {
-    let formatted: (Currency | undefined)[] = showBNB
+    let formatted: (Currency | undefined)[] = showNative
       ? [native, ...currencies, ...inactiveCurrencies]
       : [...currencies, ...inactiveCurrencies]
     if (breakIndex !== undefined) {
       formatted = [...formatted.slice(0, breakIndex), undefined, ...formatted.slice(breakIndex, formatted.length)]
     }
     return formatted
-  }, [breakIndex, currencies, inactiveCurrencies, showBNB, native])
+  }, [breakIndex, currencies, inactiveCurrencies, showNative, native])
 
   const { t } = useTranslation()
 
@@ -149,7 +149,7 @@ export default function CurrencyList({
       const otherSelected = Boolean(otherCurrency && currency && otherCurrency.equals(currency))
       const handleSelect = () => onCurrencySelect(currency)
 
-      const token = currency.wrapped
+      const token = currency?.wrapped
 
       const showImport = index > currencies.length
 

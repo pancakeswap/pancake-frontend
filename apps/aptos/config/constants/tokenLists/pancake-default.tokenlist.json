@@ -115,22 +115,6 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
     },
     {
-      "name": "Ditto Staked Aptos",
-      "symbol": "stAPT",
-      "chainId": 1,
-      "decimals": 8,
-      "address": "0xd11107bdf0d6d7040c6c0bfbdecb6545191fdf13e8d8d259952f53e1713f61b5::staked_coin::StakedAptos",
-      "logoURI": "https://raw.githubusercontent.com/hippospace/aptos-coin-list/main/icons/DittoStakedAptos.svg"
-    },
-    {
-      "name": "Mojito",
-      "symbol": "MOJO",
-      "chainId": 1,
-      "decimals": 8,
-      "address": "0x881ac202b1f1e6ad4efcff7a1d0579411533f2502417a19211cfc49751ddb5f4::coin::MOJO",
-      "logoURI": "https://raw.githubusercontent.com/hippospace/aptos-coin-list/main/icons/MOJO.svg"
-    },
-    {
       "name": "LayerZero - Tether USD",
       "symbol": "USDT",
       "chainId": 1,

@@ -1,23 +1,24 @@
 /* eslint-disable no-restricted-syntax */
 import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
-import { Box, Input, Text, useMatchBreakpoints, Column, AutoColumn, Row } from '@pancakeswap/uikit'
-import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useDebounce } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
+import { AutoColumn, Box, Column, Input, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { APTOS_COIN } from '@pancakeswap/awgmi'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { useAudioPlay } from 'state/user'
-import { WrappedCoinInfo } from 'utils/WrappedCoinInfo'
+
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
 import { createFilterToken, useSortedTokensByQuery } from './filtering'
+import ImportRow from './ImportRow'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
-
-import ImportRow from './ImportRow'
 
 interface CurrencySearchProps {
   selectedCurrency?: Currency | null
@@ -30,7 +31,7 @@ interface CurrencySearchProps {
   height?: number
 }
 
-function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedCoinInfo[] {
+function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
   const lists = useAllLists()
   const inactiveUrls = useInactiveListUrls()
   const { chainId } = useActiveWeb3React()
@@ -38,8 +39,8 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
     const filterToken = createFilterToken(search)
-    const exactMatches: WrappedCoinInfo[] = []
-    const rest: WrappedCoinInfo[] = []
+    const exactMatches: WrappedTokenInfo[] = []
+    const rest: WrappedTokenInfo[] = []
     const addressSet: { [address: string]: true } = {}
     const trimmedSearchQuery = search.toLowerCase().trim()
     for (const url of inactiveUrls) {
@@ -53,7 +54,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
           !addressSet[tokenInfo.address] &&
           filterToken(tokenInfo)
         ) {
-          const wrapped: WrappedCoinInfo = new WrappedCoinInfo(tokenInfo)
+          const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo)
           addressSet[wrapped.address] = true
           if (
             tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||
@@ -102,14 +103,16 @@ function CurrencySearch({
 
   const native = useNativeCurrency()
 
-  const showBNB: boolean | undefined = useMemo(() => {
+  const showNative: boolean | undefined = useMemo(() => {
     const s = debouncedQuery.toLowerCase().trim()
     return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
   }, [debouncedQuery, native])
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery)
-    return Object.values(allTokens).filter(filterToken)
+    return Object.values(allTokens)
+      .filter(filterToken)
+      .filter((token) => token.address !== APTOS_COIN)
   }, [allTokens, debouncedQuery])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
@@ -182,7 +185,7 @@ function CurrencySearch({
       <Box margin="24px -24px">
         <CurrencyList
           height={isMobile ? (showCommonBases ? height || 250 : height ? height + 80 : 350) : 390}
-          showBNB={showBNB}
+          showNative={showNative}
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
           breakIndex={
@@ -213,7 +216,7 @@ function CurrencySearch({
     searchTokenIsAdded,
     selectedCurrency,
     setImportToken,
-    showBNB,
+    showNative,
     showImportView,
     t,
     showCommonBases,

@@ -19,7 +19,7 @@ export function getBlockExploreLink(
       return `${chain.blockExplorers?.traceMove.url}/block/${data}`
     }
     case 'token': {
-      return `${chain.blockExplorers?.traceMove.url}/coin/${convertStructTagToAddress(data as string)}`
+      return `${chain.blockExplorers?.traceMove.url}/coin/${data}`
     }
     default: {
       return `${chain.blockExplorers?.traceMove.url}/search/${data}`
