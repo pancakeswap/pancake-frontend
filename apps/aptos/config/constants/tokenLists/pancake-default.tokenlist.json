@@ -166,7 +166,7 @@
       "name": "Celer - Dai Stablecoin",
       "symbol": "DAI",
       "chainId": 1,
-      "decimals": 6,
+      "decimals": 8,
       "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::DaiCoin",
       "logoURI": "https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3/logo.png"
     },
