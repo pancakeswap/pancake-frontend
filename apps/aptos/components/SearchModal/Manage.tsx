@@ -23,7 +23,7 @@ export default function Manage({
   setImportList: (list: TokenList) => void
   setListUrl: (url: string) => void
 }) {
-  const [showLists, setShowLists] = useState(false)
+  const [showLists, setShowLists] = useState(true)
 
   const { t } = useTranslation()
 
