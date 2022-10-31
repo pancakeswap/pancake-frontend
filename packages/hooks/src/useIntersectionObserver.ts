@@ -3,7 +3,7 @@ import { useEffect, useLayoutEffect, useState, useRef } from 'react'
 export const useIsomorphicEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect
 
 const useIntersectionObserver = () => {
-  const observerRef = useRef(null)
+  const [observerRefElement, setObserverRefElement] = useState<HTMLElement | null>(null)
   const intersectionObserverRef = useRef<IntersectionObserver | null>(null)
   const [isIntersecting, setIsIntersecting] = useState(false)
 
@@ -11,7 +11,7 @@ const useIntersectionObserver = () => {
     const isSupported = typeof window === 'object' && window.IntersectionObserver
 
     if (isSupported) {
-      if (!intersectionObserverRef.current && observerRef.current) {
+      if (!intersectionObserverRef.current && observerRefElement) {
         const checkObserverIsIntersecting = ([entry]: IntersectionObserverEntry[]) => {
           setIsIntersecting(entry.isIntersecting)
         }
@@ -20,10 +20,10 @@ const useIntersectionObserver = () => {
           rootMargin: '0px',
           threshold: 1,
         })
-        intersectionObserverRef.current.observe(observerRef.current)
+        intersectionObserverRef.current.observe(observerRefElement)
       }
 
-      if (intersectionObserverRef.current && !observerRef.current) {
+      if (intersectionObserverRef.current && !observerRefElement) {
         intersectionObserverRef.current.disconnect()
         setIsIntersecting(false)
       }
@@ -37,9 +37,9 @@ const useIntersectionObserver = () => {
         intersectionObserverRef.current.disconnect()
       }
     }
-  }, [observerRef])
+  }, [observerRefElement])
 
-  return { observerRef, isIntersecting }
+  return { observerRef: setObserverRefElement, isIntersecting }
 }
 
 export default useIntersectionObserver
