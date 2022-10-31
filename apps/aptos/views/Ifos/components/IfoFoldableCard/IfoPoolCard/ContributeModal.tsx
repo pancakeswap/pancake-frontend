@@ -85,8 +85,8 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const label = t('Max. token entry')
 
   const maximumTokenEntry = useMemo(() => {
-    return getDecimalAmount(limitPerUserInLP.minus(amountTokenCommittedInLP), currency.decimals)
-  }, [amountTokenCommittedInLP, currency.decimals, limitPerUserInLP])
+    return limitPerUserInLP.minus(amountTokenCommittedInLP)
+  }, [amountTokenCommittedInLP, limitPerUserInLP])
 
   // include user balance for input
   const maximumTokenCommittable = useMemo(() => {

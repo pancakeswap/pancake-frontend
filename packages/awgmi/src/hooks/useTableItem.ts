@@ -47,7 +47,7 @@ export function useTableItem<TData = unknown>({
     keepPreviousData,
     refetchInterval: (data) => {
       if (!data) return 6_000
-      return 0
+      return 3_000
     },
   })
 }

@@ -20,7 +20,7 @@ export const ifos: Ifo[] = [
     currency: AptosCoin.onChain(defaultChain.id),
     token: new Coin(
       ChainId.TESTNET,
-      '0xe0460dd421d26792c06dc75390fd6faf5c84f913948e7368670e0473fb5cd614::moon_coin::MoonCoin',
+      '0x92a84359ea3e34edbb19308290455179754aaa7a4b6931ed7e75fafa4ba2dc6e::moon_coin::MoonCoin',
       8,
       'MoonCoin',
     ),
