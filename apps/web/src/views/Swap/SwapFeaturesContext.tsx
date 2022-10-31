@@ -48,19 +48,25 @@ export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ childr
     setUserChartPreference(isChartDisplayed)
   }, [isChartDisplayed, setUserChartPreference])
 
-  return (
-    <SwapFeaturesContext.Provider
-      value={{
-        isChartSupported,
-        isStableSupported,
-        isAccessTokenSupported,
-        isChartDisplayed,
-        setIsChartDisplayed,
-        isChartExpanded,
-        setIsChartExpanded,
-      }}
-    >
-      {children}
-    </SwapFeaturesContext.Provider>
-  )
+  const value = useMemo(() => {
+    return {
+      isChartSupported,
+      isStableSupported,
+      isAccessTokenSupported,
+      isChartDisplayed,
+      setIsChartDisplayed,
+      isChartExpanded,
+      setIsChartExpanded,
+    }
+  }, [
+    isChartSupported,
+    isStableSupported,
+    isAccessTokenSupported,
+    isChartDisplayed,
+    setIsChartDisplayed,
+    isChartExpanded,
+    setIsChartExpanded,
+  ])
+
+  return <SwapFeaturesContext.Provider value={value}>{children}</SwapFeaturesContext.Provider>
 }
