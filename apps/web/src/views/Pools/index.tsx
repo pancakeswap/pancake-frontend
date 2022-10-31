@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useRouter } from 'next/router'
 
 import { useAccount } from 'wagmi'
 import { Heading, Flex, Image, Text, Link, FlexLayout, PageHeader, Loading, Pool, ViewMode } from '@pancakeswap/uikit'
@@ -35,11 +36,13 @@ const FinishedTextLink = styled(Link)`
 `
 
 const Pools: React.FC<React.PropsWithChildren> = () => {
+  const router = useRouter()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { pools, userDataLoaded } = usePoolsWithVault()
+  const fetchFinishedPools = router.pathname.includes('history')
 
-  usePoolsPageFetch(showFinishedPools)
+  usePoolsPageFetch(fetchFinishedPools)
 
   return (
     <>
