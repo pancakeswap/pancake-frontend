@@ -1,5 +1,16 @@
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
-import { Box, Card, CardBody, CardHeader, Flex, HelpIcon, Text, useTooltip, ExpandableLabel, CardFooter } from '@pancakeswap/uikit'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardHeader,
+  Flex,
+  HelpIcon,
+  Text,
+  useTooltip,
+  ExpandableLabel,
+  CardFooter,
+} from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useMemo, useState } from 'react'
@@ -146,7 +157,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
 
   const cardTitle = ifo.cIFO ? `${config.title} (cIFO)` : config.title
 
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <>
@@ -168,7 +179,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
               <IfoVestingCard ifo={ifo} poolId={poolId} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
               <StyledCardFooter>
                 <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)}>
-                  {isExpanded ? t("Hide") : t("Details")}
+                  {isExpanded ? t('Hide') : t('Details')}
                 </ExpandableLabel>
                 {isExpanded && (
                   <IfoCardDetails
