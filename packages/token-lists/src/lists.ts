@@ -1,7 +1,16 @@
 import { atomWithStorage, useReducerAtom } from 'jotai/utils'
 import localForage from 'localforage'
-import defaultStorage from 'redux-persist/lib/storage'
 import { ListsState } from './reducer'
+
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+function noop() {}
+const noopStorage = {
+  getItem: noop,
+  setItem: noop,
+  removeItem: noop,
+  keys: [],
+  getAllKeys: noop,
+}
 
 export const createListsAtom = (storeName: string, reducer, initialState) => {
   let gotOnce = false
@@ -35,7 +44,7 @@ export const createListsAtom = (storeName: string, reducer, initialState) => {
         delayInit: true,
       }
     }
-    return defaultStorage
+    return noopStorage
   }
 
   const listsAtom = atomWithStorage<ListsState>(

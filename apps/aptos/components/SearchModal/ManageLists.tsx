@@ -184,7 +184,7 @@ function ManageLists({
     setListUrlInput(e.target.value)
   }, [])
 
-  const fetchList = useFetchListCallback(listsAtom)
+  const fetchList = useFetchListCallback(listsAtom, true)
 
   const validUrl: boolean = useMemo(() => {
     return uriToHttp(listUrlInput).length > 0

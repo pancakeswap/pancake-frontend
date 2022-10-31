@@ -37,7 +37,9 @@ export default function Manage({
         mb="32px"
       >
         {[
-          // <ButtonMenuItem key="0" width="50%">{t('Lists')}</ButtonMenuItem>,
+          <ButtonMenuItem key="0" width="50%">
+            {t('Lists')}
+          </ButtonMenuItem>,
           <ButtonMenuItem key="1" width="50%">
             {t('Tokens')}
           </ButtonMenuItem>,
