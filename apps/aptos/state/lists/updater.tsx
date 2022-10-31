@@ -20,7 +20,7 @@ export default function Updater(): null {
     dispatch(updateListVersion())
   }, [dispatch])
 
-  const fetchList = useFetchListCallback(dispatch)
+  const fetchList = useFetchListCallback(dispatch, true)
   const fetchAllListsCallback = useCallback(() => {
     if (!isWindowVisible) return
     Object.keys(lists).forEach((url) =>

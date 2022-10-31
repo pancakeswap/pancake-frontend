@@ -1,10 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
-// eslint-disable-next-line import/no-unresolved
-import { TokenList } from '@uniswap/token-lists/dist/types'
-// import { DEFAULT_ACTIVE_LIST_URLS, UNSUPPORTED_LIST_URLS, DEFAULT_LIST_OF_LISTS } from '../../config/constants/lists'
+import { getVersionUpgrade, VersionUpgrade, TokenList } from '@uniswap/token-lists'
 
-// import { updateVersion } from '../global/actions'
 import {
   acceptListUpdate,
   addList,

@@ -38,7 +38,7 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
   const [confirmed, setConfirmed] = useState(false)
 
   const lists = useAllLists()
-  const fetchList = useFetchListCallback(listsAtom)
+  const fetchList = useFetchListCallback(dispatch, true)
 
   // monitor is list is loading
   const adding = Boolean(lists[listURL]?.loadingRequestId)

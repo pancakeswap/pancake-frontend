@@ -170,6 +170,7 @@ function ManageLists({
   const { t } = useTranslation()
 
   const lists = useAllLists()
+  const [, dispatch] = useListState()
 
   // sort by active but only if not visible
   const activeListUrls = useActiveListUrls()
@@ -184,7 +185,7 @@ function ManageLists({
     setListUrlInput(e.target.value)
   }, [])
 
-  const fetchList = useFetchListCallback(listsAtom)
+  const fetchList = useFetchListCallback(dispatch, true)
 
   const validUrl: boolean = useMemo(() => {
     return uriToHttp(listUrlInput).length > 0
