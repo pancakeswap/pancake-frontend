@@ -4,7 +4,7 @@ import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import ContributeButton from './ContributeButton'
-import ClaimButton from './ClaimButton'
+import { ClaimButton } from './ClaimButton'
 import { SkeletonCardActions } from './Skeletons'
 
 interface Props {
@@ -43,7 +43,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
       userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0))
 
   if (needClaim) {
-    return <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
+    return <ClaimButton poolId={poolId} walletIfoData={walletIfoData} />
   }
 
   if (ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible) {
