@@ -1,5 +1,7 @@
+import { Pair } from '@pancakeswap/aptos-swap-sdk'
 import { useAccountResources } from '@pancakeswap/awgmi'
 import { TxnBuilderTypes, TypeTagParser } from 'aptos'
+import { ifos } from 'config/constants/ifo'
 import {
   IFO_RESOURCE_ACCOUNT_ADDRESS,
   IFO_RESOURCE_ACCOUNT_TYPE_METADATA,
@@ -11,7 +13,10 @@ import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { RootObject as VestingMetadata } from 'views/Ifos/generated/VestingMetadata'
 
 export const useIfoResources = () => {
+  const ifo = ifos[0]
+
   return useAccountResources({
+    enabled: !!ifo,
     address: IFO_RESOURCE_ACCOUNT_ADDRESS,
     // watch: true,
     select: (data) => {
@@ -20,9 +25,16 @@ export const useIfoResources = () => {
         [IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?: IFOPoolStore
         [IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA]?: VestingMetadata
       } = {}
+
       for (const it of data) {
-        const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
-        res[parsedTypeTag.value.name.value] = it
+        try {
+          const [raisingCoin, offeringCoin] = Pair.parseType(it.type)
+          if (raisingCoin === ifo.currency.address && offeringCoin === ifo.token.address) {
+            const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
+            res[parsedTypeTag.value.name.value] = it
+          }
+          // eslint-disable-next-line no-empty
+        } catch {}
       }
       return res
     },
