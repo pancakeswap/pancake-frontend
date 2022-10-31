@@ -3,6 +3,8 @@ import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
+import { multicallv2 } from 'utils/multicall'
+import IPancakePairABI from 'config/abi/IPancakePair.json'
 import { useDispatch, useSelector } from 'react-redux'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
@@ -307,7 +309,20 @@ export const useFetchPairPrices = ({
         // low liquidity pool might mean that the price is incorrect
         // in that case try to get derived price
         const hasEnoughLiquidity = pairHasEnoughLiquidity(data, timeWindow)
-        const newPairData = normalizeChartData(data, timeWindow) || []
+        const [[token0], [token1]] = await multicallv2({
+          abi: IPancakePairABI,
+          calls: [
+            {
+              address: pairId,
+              name: 'token0',
+            },
+            {
+              address: pairId,
+              name: 'token1',
+            },
+          ],
+        })
+        const newPairData = normalizeChartData(data, token0.toLowerCase(), token1.toLowerCase(), timeWindow) || []
         if (newPairData.length > 0 && hasEnoughLiquidity) {
           dispatch(updatePairData({ pairData: newPairData, pairId, timeWindow }))
           setIsLoading(false)
