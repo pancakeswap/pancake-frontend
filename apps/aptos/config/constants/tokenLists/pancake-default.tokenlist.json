@@ -163,7 +163,7 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0x55d398326f99059fF775485246999027B3197955.png"
     },
     {
-      "name": "Celer - Dai Token",
+      "name": "Celer - Dai Stablecoin",
       "symbol": "DAI",
       "chainId": 1,
       "decimals": 6,
