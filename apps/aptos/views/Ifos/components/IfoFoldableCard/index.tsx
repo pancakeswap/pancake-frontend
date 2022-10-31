@@ -221,47 +221,6 @@ export const IfoFoldableCard = ({
 }
 
 const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo, publicIfoData, walletIfoData }) => {
-  const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized, secondsUntilEnd } = publicIfoData
-  const {
-    contract,
-    fetchIfoData: fetchWalletIfoData,
-    resetIfoData: resetWalletIfoData,
-    isInitialized: isWalletDataInitialized,
-  } = walletIfoData
-  const { t } = useTranslation()
-  const { account } = useAccount()
-  // const raisingTokenContract = useERC20(ifo.currency.address, false)
-  // Continue to fetch 2 more minutes / is vesting need get latest data
-  const isRecentlyActive =
-    (publicIfoData.status !== 'finished' ||
-      (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
-      (publicIfoData.status === 'finished' &&
-        ifo.version >= 3.2 &&
-        ((publicIfoData[PoolIds.poolBasic]?.vestingInformation?.percentage ?? -1) > 0 ||
-          (publicIfoData[PoolIds.poolUnlimited].vestingInformation?.percentage ?? -1) > 0))) &&
-    ifo.isActive
-  const isWindowVisible = useIsWindowVisible()
-
-  useSWRImmutable((isRecentlyActive || !isPublicIfoDataInitialized) && ['fetchPublicIfoData'], async () => {
-    fetchPublicIfoData()
-  })
-
-  useSWRImmutable(
-    isWindowVisible && (isRecentlyActive || !isWalletDataInitialized) && account && 'fetchWalletIfoData',
-    async () => {
-      fetchWalletIfoData()
-    },
-    {
-      refreshInterval: FAST_INTERVAL,
-    },
-  )
-
-  useEffect(() => {
-    if (!account && isWalletDataInitialized) {
-      resetWalletIfoData()
-    }
-  }, [account, isWalletDataInitialized, resetWalletIfoData])
-
   return (
     <>
       <StyledCardBody>

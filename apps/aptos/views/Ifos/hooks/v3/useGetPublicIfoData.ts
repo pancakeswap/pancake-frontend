@@ -35,12 +35,14 @@ const formatPool = (pool: IFOPool): PoolCharacteristics => ({
  */
 export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { releaseTime } = ifo
+
+  const resources = useIfoResources()
   const { data: cakePrice } = useCakePrice()
   // const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   // const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
   const currencyPriceInUSD = useMemo(() => new BigNumber(cakePrice), [cakePrice])
 
-  const [state, setState] = useState<Omit<PublicIfoData, 'currencyPriceInUSD' | 'fetchIfoData'>>({
+  const [state, setState] = useState<Omit<PublicIfoData, 'currencyPriceInUSD'>>({
     isInitialized: false,
     status: 'idle' as IfoStatus,
     timeRemaining: 0,
@@ -66,46 +68,48 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
     vestingStartTime: 0,
   })
 
-  const resources = useIfoResources()
-  const pool = useIfoPool()
+  const handleOnSuccess = useCallback(
+    (data: IFOPool) => {
+      if (!resources.data || !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]) {
+        return
+      }
 
-  const fetchIfoData = useCallback(async () => {
-    if (!pool.data || !resources.data || !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]) {
-      return
-    }
+      const { start_time, end_time, vesting_start_time } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA].data
+      const startTime = +start_time
+      const endTime = +end_time
+      const vestingStartTime = +vesting_start_time
 
-    const { start_time, end_time, vesting_start_time } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA].data
-    const startTime = +start_time
-    const endTime = +end_time
-    const vestingStartTime = +vesting_start_time
+      const poolUnlimited = formatPool(data)
 
-    const poolUnlimited = formatPool(pool.data)
+      const currentTime = Date.now() / 1000
 
-    const currentTime = Date.now() / 1000
+      const status = getStatus(currentTime, startTime, endTime)
+      const totalTime = endTime - startTime
+      const timeRemaining = endTime - currentTime
 
-    const status = getStatus(currentTime, startTime, endTime)
-    const totalTime = endTime - startTime
-    const timeRemaining = endTime - currentTime
+      const progress =
+        currentTime > startTime
+          ? ((currentTime - startTime) / totalTime) * 100
+          : ((currentTime - releaseTime) / (startTime - releaseTime)) * 100
 
-    const progress =
-      currentTime > startTime
-        ? ((currentTime - startTime) / totalTime) * 100
-        : ((currentTime - releaseTime) / (startTime - releaseTime)) * 100
+      setState((prev) => ({
+        ...prev,
+        isInitialized: true,
+        secondsUntilEnd: endTime - currentTime,
+        secondsUntilStart: startTime - currentTime,
+        poolUnlimited,
+        status,
+        progress,
+        timeRemaining,
+        startTime,
+        endTime,
+        vestingStartTime,
+      }))
+    },
+    [releaseTime, resources],
+  )
 
-    setState((prev) => ({
-      ...prev,
-      isInitialized: true,
-      secondsUntilEnd: endTime - currentTime,
-      secondsUntilStart: startTime - currentTime,
-      poolUnlimited,
-      status,
-      progress,
-      timeRemaining,
-      startTime,
-      endTime,
-      vestingStartTime,
-    }))
-  }, [pool, releaseTime, resources])
+  useIfoPool({ onSuccess: handleOnSuccess })
 
-  return { ...state, currencyPriceInUSD, fetchIfoData }
+  return { ...state, currencyPriceInUSD }
 }

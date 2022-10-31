@@ -34,7 +34,6 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
 
   // Refetch all the data, and display a message when fetching is done
   const handleContributeSuccess = async (amount: BigNumber, txHash: string) => {
-    await Promise.all([publicIfoData.fetchIfoData(), walletIfoData.fetchIfoData()])
     toastSuccess(
       t('Success!'),
       <ToastDescriptionWithTx txHash={txHash}>

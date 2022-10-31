@@ -30,7 +30,6 @@ export interface PublicIfoData {
   currencyPriceInUSD: BigNumber
   vestingStartTime?: number
 
-  fetchIfoData: () => Promise<void>
   // [PoolIds.poolBasic]?: PoolCharacteristics
   [PoolIds.poolUnlimited]: PoolCharacteristics
 }
@@ -80,6 +79,4 @@ export interface WalletIfoData extends WalletIfoState {
   contract: Contract // TODO: Aptos
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
-  fetchIfoData: () => Promise<void>
-  resetIfoData: () => void
 }
