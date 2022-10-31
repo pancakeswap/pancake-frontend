@@ -105,12 +105,14 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
       const [raisingCoin, offeringCoin] = Pair.parseType(
         (resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE] as IFOPoolStore).type,
       )
-      // TODO: This should be `valueWithTokenDecimals` but the contract currently expects `value`.
-      const payload = ifoDeposit([value, (pool.data as IFOPool).pid], [raisingCoin, offeringCoin])
+      const payload = ifoDeposit(
+        [valueWithTokenDecimals.toFixed(), (pool.data as IFOPool).pid],
+        [raisingCoin, offeringCoin],
+      )
       return sendTransactionAsync({ payload })
     },
-    onSuccess: async ({ receipt }) => {
-      onSuccess(valueWithTokenDecimals, receipt.hash)
+    onSuccess: async ({ response }) => {
+      onSuccess(valueWithTokenDecimals, response.hash)
       onDismiss?.()
     },
   })

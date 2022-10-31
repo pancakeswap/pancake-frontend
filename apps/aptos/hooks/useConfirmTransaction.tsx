@@ -38,12 +38,12 @@ const reducer = (state: State, actions: Action): State => {
 
 interface OnSuccessProps {
   state: State
-  receipt: TransactionResponse
+  response: TransactionResponse
 }
 
 interface ConfirmTransaction {
   onConfirm: () => Promise<TransactionResponse>
-  onSuccess: ({ state, receipt }: OnSuccessProps) => void
+  onSuccess: ({ state, response }: OnSuccessProps) => void
 }
 
 export const useConfirmTransaction = ({ onConfirm, onSuccess = noop }: ConfirmTransaction) => {
@@ -51,11 +51,11 @@ export const useConfirmTransaction = ({ onConfirm, onSuccess = noop }: ConfirmTr
 
   const handleConfirm = useCallback(async () => {
     dispatch({ type: 'confirm_sending' })
-    const receipt = await onConfirm()
+    const response = await onConfirm()
 
-    if (receipt.hash) {
+    if (response.hash) {
       dispatch({ type: 'confirm_receipt' })
-      onSuccess({ state, receipt })
+      onSuccess({ state, response })
     } else {
       dispatch({ type: 'confirm_error' })
     }
