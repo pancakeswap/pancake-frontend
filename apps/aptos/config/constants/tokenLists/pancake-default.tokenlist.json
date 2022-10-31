@@ -164,7 +164,7 @@
     },
     {
       "name": "Wormhole Solana - USDC",
-      "symbol": "USDTso",
+      "symbol": "USDCso",
       "chainId": 1,
       "decimals": 6,
       "address": "0xc91d826e29a3183eb3b6f6aa3a722089fdffb8e9642b94c5fcd4c48d035c0080::coin::T",
