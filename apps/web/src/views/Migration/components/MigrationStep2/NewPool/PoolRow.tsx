@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import NameCell from 'views/Pools/components/PoolsTable/Cells/NameCell'
@@ -10,13 +9,14 @@ import AutoAprCell from 'views/Pools/components/PoolsTable/Cells/AutoAprCell'
 import ActionPanel from 'views/Pools/components/PoolsTable/ActionPanel/ActionPanel'
 import ExpandActionCell from 'views/Pools/components/PoolsTable/Cells/ExpandActionCell'
 import AutoEarningsCell from 'views/Pools/components/PoolsTable/Cells/AutoEarningsCell'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import EarningsCell from '../../Pool/Cells/EarningsCell'
 import TotalStakedCell from '../../Pool/Cells/TotalStakedCell'
 import StakedCell from './Cells/StakedCell'
 
 interface PoolRowProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 

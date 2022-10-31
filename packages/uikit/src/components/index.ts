@@ -50,5 +50,6 @@ export * from "./NextLink";
 export * from "./ExpandableSectionButton";
 export * from "./RoiCalculatorModal";
 export * from "./Balance";
+export * from "./ToggleView";
 
 export type { DropdownMenuItems } from "./DropdownMenu";

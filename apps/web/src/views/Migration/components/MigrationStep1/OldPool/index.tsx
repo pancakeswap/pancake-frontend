@@ -1,10 +1,11 @@
+import { Token } from '@pancakeswap/sdk'
+import { Pool } from '@pancakeswap/uikit'
 import React from 'react'
-import { DeserializedPool } from 'state/types'
 import PoolsTable from './PoolTable'
 
 interface OldPoolProps {
   account: string
-  pools: DeserializedPool[]
+  pools: Pool.DeserializedPool<Token>[]
   userDataLoaded: boolean
 }
 

@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react'
-import { Flex, Text, Skeleton, Balance } from '@pancakeswap/uikit'
+import { Flex, Text, Skeleton, Balance, Pool } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
-import { DeserializedPool } from 'state/types'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
+import { Token } from '@pancakeswap/sdk'
 
 interface TotalStakedCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   totalCakeInVault: BigNumber
   cakeInVaults: BigNumber
 }

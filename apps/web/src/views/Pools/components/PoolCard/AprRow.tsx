@@ -1,11 +1,11 @@
-import { Flex, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Flex, TooltipText, useTooltip, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedPool } from 'state/types'
 import BigNumber from 'bignumber.js'
 import Apr from 'views/Pools/components/Apr'
+import { Token } from '@pancakeswap/sdk'
 
 interface AprRowProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   stakedBalance: BigNumber
   performanceFee?: number
   showIcon?: boolean

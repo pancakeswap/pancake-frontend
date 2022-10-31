@@ -1,11 +1,10 @@
-import { Token } from '@pancakeswap/sdk'
-import { Flex, Skeleton, Text, TooltipText, useTooltip, Balance } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text, TooltipText, useTooltip, Balance, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { DeserializedPool, DeserializedVaultUser } from 'state/types'
 import { isLocked, isStaked } from 'utils/cakePool'
+import { Token } from '@pancakeswap/sdk'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
 import Apr from './Apr'
 
@@ -19,7 +18,7 @@ const StatWrapper: FC<React.PropsWithChildren<{ label: ReactNode }>> = ({ childr
 }
 
 export const PerformanceFee: FC<
-  React.PropsWithChildren<{ userData?: DeserializedVaultUser; performanceFeeAsDecimal?: number }>
+  React.PropsWithChildren<{ userData?: Pool.DeserializedVaultUser; performanceFeeAsDecimal?: number }>
 > = ({ userData, performanceFeeAsDecimal }) => {
   const { t } = useTranslation()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
@@ -122,7 +121,7 @@ export const TotalStaked: FC<React.PropsWithChildren<{ totalStaked: BigNumber; s
   )
 }
 
-export const AprInfo: FC<React.PropsWithChildren<{ pool: DeserializedPool; stakedBalance: BigNumber }>> = ({
+export const AprInfo: FC<React.PropsWithChildren<{ pool: Pool.DeserializedPool<Token>; stakedBalance: BigNumber }>> = ({
   pool,
   stakedBalance,
 }) => {

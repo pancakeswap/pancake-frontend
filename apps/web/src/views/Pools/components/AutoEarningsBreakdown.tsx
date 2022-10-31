@@ -1,12 +1,13 @@
-import { Text, Box } from '@pancakeswap/uikit'
+import { Text, Box, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { differenceInHours } from 'date-fns'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedVaultUser } from 'state/types'
+import { VaultKey, DeserializedLockedVaultUser } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 import { getCakeVaultEarnings } from '../helpers'
 
 interface AutoEarningsBreakdownProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 

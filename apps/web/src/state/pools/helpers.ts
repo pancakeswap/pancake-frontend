@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
 import {
   SerializedFarm,
-  DeserializedPool,
   SerializedPool,
   SerializedCakeVault,
   DeserializedCakeVault,
@@ -12,9 +11,11 @@ import { deserializeToken } from '@pancakeswap/token-lists'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { isAddress } from 'utils'
 import { convertSharesToCake } from 'views/Pools/helpers'
+import { Token } from '@pancakeswap/sdk'
+import { Pool } from '@pancakeswap/uikit'
 
 type UserData =
-  | DeserializedPool['userData']
+  | Pool.DeserializedPool<Token>['userData']
   | {
       allowance: number | string
       stakingTokenBalance: number | string
@@ -42,7 +43,7 @@ const transformProfileRequirement = (profileRequirement?: { required: boolean; t
     : undefined
 }
 
-export const transformPool = (pool: SerializedPool): DeserializedPool => {
+export const transformPool = (pool: SerializedPool): Pool.DeserializedPool<Token> => {
   const {
     totalStaked,
     stakingLimit,

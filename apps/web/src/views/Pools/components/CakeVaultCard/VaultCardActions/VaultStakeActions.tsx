@@ -1,6 +1,7 @@
-import { Flex, Skeleton, useModal } from '@pancakeswap/uikit'
+import { Flex, Skeleton, useModal, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { VaultKey } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 import NotEnoughTokensModal from '../../Modals/NotEnoughTokensModal'
 import { VaultStakeButtonGroup } from '../../Vault/VaultStakeButtonGroup'
 import VaultStakeModal from '../VaultStakeModal'
@@ -8,7 +9,7 @@ import LockedStakeModal from '../../LockedPool/Modals/LockedStakeModal'
 import HasSharesActions from './HasSharesActions'
 
 interface VaultStakeActionsProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   stakingTokenBalance: BigNumber
   accountHasSharesStaked: boolean
   performanceFee: number

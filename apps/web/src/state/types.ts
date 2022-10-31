@@ -6,7 +6,6 @@ import BigNumber from 'bignumber.js'
 import {
   CampaignType,
   DeserializedFarmConfig,
-  DeserializedPoolConfig,
   FetchStatus,
   LotteryStatus,
   LotteryTicket,
@@ -29,9 +28,6 @@ export const GAS_PRICE_GWEI = {
   instant: parseUnits(GAS_PRICE.instant, 'gwei').toString(),
   testnet: parseUnits(GAS_PRICE.testnet, 'gwei').toString(),
 }
-
-export type DeserializedPoolVault = DeserializedPool & DeserializedCakeVault
-export type DeserializedPoolLockedVault = DeserializedPool & DeserializedLockedCakeVault
 
 export interface BigNumberToJson {
   type: 'BigNumber'
@@ -100,23 +96,6 @@ interface CorePoolProps {
   stakingTokenPrice?: number
   earningTokenPrice?: number
   vaultKey?: VaultKey
-}
-
-export interface DeserializedPool extends DeserializedPoolConfig, CorePoolProps {
-  totalStaked?: BigNumber
-  stakingLimit?: BigNumber
-  stakingLimitEndBlock?: number
-  profileRequirement?: {
-    required: boolean
-    thresholdPoints: BigNumber
-  }
-  userDataLoaded?: boolean
-  userData?: {
-    allowance: BigNumber
-    stakingTokenBalance: BigNumber
-    stakedBalance: BigNumber
-    pendingReward: BigNumber
-  }
 }
 
 export interface SerializedPool extends SerializedPoolConfig, CorePoolProps {

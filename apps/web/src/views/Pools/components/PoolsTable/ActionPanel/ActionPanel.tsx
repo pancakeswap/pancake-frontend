@@ -1,11 +1,12 @@
 import styled, { keyframes, css } from 'styled-components'
-import { Box, Flex, HelpIcon, Text, useTooltip, useMatchBreakpoints, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Box, Flex, HelpIcon, Text, useTooltip, useMatchBreakpoints, Farm as FarmUI, Pool } from '@pancakeswap/uikit'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import BigNumber from 'bignumber.js'
-import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedLockedVaultUser } from 'state/types'
+import { VaultKey, DeserializedLockedCakeVault, DeserializedLockedVaultUser } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { Token } from '@pancakeswap/sdk'
 import Harvest from './Harvest'
 import Stake from './Stake'
 import AutoHarvest from './AutoHarvest'
@@ -85,7 +86,7 @@ type MediaBreakpoints = {
 
 interface ActionPanelProps {
   account: string
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   expanded: boolean
   breakpoints: MediaBreakpoints
 }
