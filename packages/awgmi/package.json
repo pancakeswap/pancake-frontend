@@ -72,6 +72,11 @@
       "types": "./dist/connectors/fewcha.d.ts",
       "import": "./dist/connectors/fewcha.mjs",
       "default": "./dist/connectors/fewcha.js"
+    },
+    "./connectors/safePal": {
+      "types": "./dist/connectors/safePal.d.ts",
+      "import": "./dist/connectors/safePal.mjs",
+      "default": "./dist/connectors/safePal.js"
     }
   },
   "peerDependenciesMeta": {
