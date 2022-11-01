@@ -10,10 +10,20 @@ import _toNumber from 'lodash/toNumber'
 import _get from 'lodash/get'
 import { PoolResource } from './types'
 
+const SECONDS_IN_YEAR = 31536000 // 365 * 24 * 60 *60
+
 const getSecondsLeftFromNow = (timestamp: number) => {
   const now = Math.floor(Date.now() / 1000)
 
   return Number.isFinite(timestamp) && timestamp < now ? now - timestamp : 0
+}
+
+// In order to calculate, I need tokenPrice from farms
+export const getPoolApr = ({ rewardTokenPrice, stakingTokenPrice, tokenPerSecond, totalStaked }) => {
+  const totalRewardPricePerYear = new BigNumber(rewardTokenPrice).times(tokenPerSecond).times(SECONDS_IN_YEAR)
+  const totalStakingTokenInPool = new BigNumber(stakingTokenPrice).times(totalStaked)
+  const apr = totalRewardPricePerYear.div(totalStakingTokenInPool).times(100)
+  return apr.isNaN() || !apr.isFinite() ? null : apr.toNumber()
 }
 
 export const transformPool =

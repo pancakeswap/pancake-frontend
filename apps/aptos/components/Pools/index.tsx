@@ -13,6 +13,7 @@ import { usePoolsList } from 'state/pools/hooks'
 import NoSSR from '../NoSSR'
 import PoolControls from './components/PoolControls'
 import CardActions from './components/PoolCard/CardActions'
+import Apr from './components/PoolCard/Apr'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -22,7 +23,6 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const pools = usePoolsList()
-  // const { isSuccess: userDataLoaded } = usePoolsUserData()
 
   return (
     <>
@@ -47,7 +47,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
             {({ chosenPools }) => {
               return (
                 <CardLayout>
-                  {chosenPools.map((pool) => (
+                  {chosenPools.map((pool: Pool.DeserializedPool<Coin>) => (
                     <Pool.PoolCard<Coin>
                       key={pool.sousId}
                       pool={pool}
@@ -66,14 +66,14 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                       }
                       tokenPairImage={
                         <TokenPairImage
-                          primaryToken={pool.earningToken}
-                          secondaryToken={pool.stakingToken}
+                          primaryToken={pool.earningToken as Coin}
+                          secondaryToken={pool.stakingToken as Coin}
                           width={64}
                           height={64}
                         />
                       }
-                      cardFooter="Card Footer"
-                      aprRow="Apr"
+                      cardFooter={null}
+                      aprRow={<Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />}
                     />
                   ))}
                 </CardLayout>
