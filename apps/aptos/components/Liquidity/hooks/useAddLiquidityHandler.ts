@@ -1,6 +1,6 @@
 import { Router, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
 import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
-
+import { log } from 'next-axiom'
 import { useCallback, useContext, useMemo, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -73,6 +73,7 @@ export default function useAddLiquidityHanlder({
     try {
       results = await simulateTransactionAsync({ payload })
     } catch (error) {
+      log.error('Add Liquidity Simulation Error', { error, payload })
       if (error instanceof SimulateTransactionError) {
         setLiquidityState({
           attemptingTxn: false,
@@ -105,6 +106,7 @@ export default function useAddLiquidityHanlder({
         })
       })
       .catch((err) => {
+        log.error('Add Liquidity Error', { error: err, payload })
         console.error(`Add Liquidity failed`, { err }, payload)
 
         let errorMsg = ''
