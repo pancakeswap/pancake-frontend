@@ -8,7 +8,7 @@ import {
   Trade,
   TradeType,
 } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
+import { useAccount, useSendTransaction, useSimulateTransaction, useTableItem } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
