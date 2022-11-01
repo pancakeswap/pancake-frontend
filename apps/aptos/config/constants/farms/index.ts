@@ -1,17 +1,14 @@
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { ChainId } from '@pancakeswap/aptos-swap-sdk'
+import MainnetFarm from './1'
+import TestnetFarm from './2'
 
-let logged = false
-
-export const getFarmConfig = async (chainId: number) => {
-  try {
-    return (await import(`/${chainId}.ts`)).default.filter(
-      (f: SerializedFarmConfig) => f.pid !== null,
-    ) as SerializedFarmConfig[]
-  } catch (error) {
-    if (!logged) {
-      console.error('Cannot get farm config', error, chainId)
-      logged = true
-    }
-    return []
+export const getFarmConfig = (chainId: number) => {
+  switch (chainId) {
+    case ChainId.MAINNET:
+      return MainnetFarm
+    case ChainId.TESTNET:
+      return TestnetFarm
+    default:
+      return []
   }
 }

@@ -23,7 +23,7 @@ export interface FarmResource {
     cake_rate_to_regular: string
     cake_rate_to_special: string
     lp: Array<string>
-    pool_Info: FarmResourcePoolInfo[]
+    pool_info: FarmResourcePoolInfo[]
     signer_cap: {
       account: string
     }

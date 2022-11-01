@@ -1,88 +1,57 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import useSWR from 'swr'
-import { useAccountResource, useTableItem } from '@pancakeswap/awgmi'
+import { useMemo } from 'react'
+import useSWRImmutable from 'swr/immutable'
+import { useAccountResources } from '@pancakeswap/awgmi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getFarmConfig } from 'config/constants/farms'
-import { SerializedFarmConfig, SerializedFarmsState, DeserializedFarmsState } from '@pancakeswap/farms'
+import { DeserializedFarm } from '@pancakeswap/farms'
 import { deserializeFarm } from 'state/farms/utils/deserializeFarm'
-import { FARMS_ADDRESS, FARMS_MODULE_NAME, FARMS_NAME, FARMS_USER_INFO } from './constants'
-import { FarmResource } from './types'
+import { farmsPublicDataSelector, mapFarmList, transformFarm } from 'state/farms/utils/index'
+import { SLOW_INTERVAL } from 'config/constants'
+import { FARMS_ADDRESS } from './constants'
 
-const useFetchAllFarms = () => {
-  return useAccountResource({
-    address: FARMS_ADDRESS,
-    resourceType: `${FARMS_ADDRESS}::${FARMS_MODULE_NAME}::${FARMS_NAME}`,
+export const useFarms = (): any => {
+  const { account, chainId } = useActiveWeb3React()
+
+  const { data: farms } = useAccountResources({
     watch: true,
+    address: FARMS_ADDRESS,
+    select: (resources) => {
+      return resources.filter(farmsPublicDataSelector).map(mapFarmList)[0].map(transformFarm(chainId))
+    },
   })
+
+  const farmsData = useMemo(() => {
+    return farms?.map(deserializeFarm).filter((farm) => farm.token.chainId === chainId) as DeserializedFarm[]
+  }, [chainId, farms])
+
+  // const { data: balances } = useAccountResources({
+  //   address: account
+  // })
+
+  // if (balances?.length) {
+  //   console.log('balances', balances)
+  // }
+
+  return {
+    userDataLoaded: false,
+    poolLength: 0,
+    regularCakePerBlock: 0,
+    loadArchivedFarmsData: false,
+    data: farmsData,
+  }
 }
 
-const useFetchFarmUserInfo = ({ data }: FarmResource) => {
-  const { account, chainId } = useActiveWeb3React()
-  // console.log('data', data)
-  // "amount": "99900",
-  // "reward_debt": "4315680000"
-
+const useFetchFarmUserInfo = (lpAddress: string) => {
+  // const { account, chainId } = useActiveWeb3React()
   // const { data } = useTableItem({
-  //   handle: "0xebbc09bb6d14c930c1307291f37f2c224cf10b4a631177945e0f20aad5bf2d13",
+  //   handle: lpAddress,
   //   data: {
   //     key: account,
   //     keyType: "address",
   //     valueType: FARMS_USER_INFO
   //   }
   // })
-}
-
-const initialData = {
-  data: [],
-  loadArchivedFarmsData: false,
-  userDataLoaded: false,
-  loadingKeys: {},
-}
-
-export const useFarmsPageFetch = (): any => {
-  const { account, chainId } = useActiveWeb3React()
-  const [farmsConfig, setFarmsConfig] = useState<SerializedFarmConfig[]>([])
-  const [farmDataList, setFarmDataList] = useState<SerializedFarmsState>(initialData)
-
-  const { data: farmsList, isLoading, refetch } = useFetchAllFarms()
-  // useFetchFarmUserInfo(farmsList as FarmResource)
-
-  useEffect(() => {
-    const fetchInitFarmsData = async () => {
-      const response = await getFarmConfig(chainId)
-      setFarmsConfig(response)
-      setFarmDataList({
-        ...farmDataList,
-        chainId,
-      })
-    }
-    fetchInitFarmsData()
-  }, [chainId, farmDataList])
-
-  const initData = useMemo((): SerializedFarmsState => {
-    return {
-      ...initialData,
-      data: farmsConfig.map((farm) => ({
-        ...farm,
-        userData: {
-          allowance: '0',
-          tokenBalance: '0',
-          stakedBalance: '0',
-          earnings: '0',
-        },
-      })),
-    }
-  }, [farmsConfig])
-
-  // const regularCakePerBlock = useMemo(() => {
-  //   const cakePerSecond = (farmsData as FarmResource).data.cake_per_second
-  //   return Number(cakePerSecond)
-  // }, [farmsData])
-
-  return {
-    ...initData,
-    data: initData.data.map(deserializeFarm).filter((farm) => farm.token.chainId === chainId),
-  }
+  // "amount": "99900",
+  // "reward_debt": "4315680000"
 }
 
 // const test = {

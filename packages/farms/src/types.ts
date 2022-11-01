@@ -64,7 +64,7 @@ export function isStableFarm(farmConfig: SerializedFarmConfig): farmConfig is Se
   return 'stableSwapAddress' in farmConfig && typeof farmConfig.stableSwapAddress === 'string'
 }
 
-interface SerializedFarmUserData {
+export interface SerializedFarmUserData {
   allowance: string
   tokenBalance: string
   stakedBalance: string

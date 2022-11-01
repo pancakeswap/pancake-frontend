@@ -11,7 +11,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-// import { FarmWithStakedValue } from '../../types'
+import { FarmWithStakedValue } from '../../types'
 
 import Apr, { AprProps } from '../Apr'
 import { HarvestAction, HarvestActionContainer } from './HarvestAction'
@@ -23,7 +23,7 @@ export interface ActionPanelProps {
   apr: AprProps
   multiplier: FarmTableMultiplierProps
   liquidity: FarmTableLiquidityProps
-  details: any // FarmWithStakedValue
+  details: FarmWithStakedValue
   userDataReady: boolean
   expanded: boolean
 }

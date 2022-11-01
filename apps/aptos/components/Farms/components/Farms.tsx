@@ -30,7 +30,7 @@ import ToggleView from 'components/ToggleView/ToggleView'
 import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
 import NoSSR from 'components/NoSSR'
 
-import { useFarmsPageFetch } from 'state/farms/hook'
+import { useFarms } from 'state/farms/hook'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 // import { getFarmApr } from 'utils/apr'
 import { latinise } from 'utils/latinise'
@@ -144,7 +144,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarmsPageFetch()
+  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
@@ -163,27 +163,27 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const activeFarms = farmsLP.filter(
+  const activeFarms = farmsLP?.filter(
     (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
   )
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const inactiveFarms = farmsLP?.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
   const archivedFarms = farmsLP
 
-  const stakedOnlyFarms = activeFarms.filter(
+  const stakedOnlyFarms = activeFarms?.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
-  const stakedInactiveFarms = inactiveFarms.filter(
+  const stakedInactiveFarms = inactiveFarms?.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
-  const stakedArchivedFarms = archivedFarms.filter(
+  const stakedArchivedFarms = archivedFarms?.filter(
     (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
   )
 
   const farmsList = useCallback(
     (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
-      let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+      let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay?.map((farm) => {
         if (!farm.lpTotalInQuoteToken || !farm.quoteTokenPriceBusd) {
           return farm
         }
@@ -252,11 +252,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       switch (sortOption) {
         case 'apr':
           // @ts-ignore
-          return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr + farm.lpRewardsApr, 'desc')
+          return orderBy(farms, (farm: FarmWithStakedValue) => farm?.apr + farm?.lpRewardsApr, 'desc')
         case 'multiplier':
           return orderBy(
             farms,
-            (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
+            (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm?.multiplier.slice(0, -1)) : 0),
             'desc',
           )
         case 'earned':
@@ -274,10 +274,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       }
     }
 
-    return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
+    return sortFarms(chosenFarms)?.slice(0, numberOfFarmsVisible)
   }, [chosenFarms, sortOption, numberOfFarmsVisible])
 
-  chosenFarmsLength.current = chosenFarmsMemoized.length
+  chosenFarmsLength.current = chosenFarmsMemoized?.length
 
   useEffect(() => {
     if (isIntersecting) {
@@ -323,7 +323,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               />
               <Text>{t('Staked only')}</Text>
             </ToggleWrapper>
-            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
