@@ -1,5 +1,4 @@
 ---
-"aptos-web": patch
 "@pancakeswap/awgmi": patch
 ---
 
