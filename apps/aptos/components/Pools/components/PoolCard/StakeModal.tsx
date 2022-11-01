@@ -32,7 +32,12 @@ const StakeModalContainer = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
 
-  const { onUnstake } = useUnstakePool(sousId, enableEmergencyWithdraw)
+  const { onUnstake } = useUnstakePool({
+    sousId,
+    earningTokenAddress: earningToken?.address,
+    stakingTokenAddress: stakingToken?.address,
+    stakingTokenDecimals: stakingToken?.decimals,
+  })
   const { onStake } = useStakePool({
     sousId,
     earningTokenAddress: earningToken?.address,
@@ -51,7 +56,7 @@ const StakeModalContainer = ({
     async (stakeAmount: string) => {
       const receipt = await fetchWithCatchTxError(() => {
         if (isRemovingStake) {
-          return onUnstake(stakeAmount, stakingToken.decimals)
+          return onUnstake(stakeAmount)
         }
         return onStake(stakeAmount)
       })
