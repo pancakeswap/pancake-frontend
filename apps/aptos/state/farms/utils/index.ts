@@ -3,16 +3,16 @@ import _get from 'lodash/get'
 import { getFarmConfig } from 'config/constants/farms'
 import { SerializedFarm, SerializedFarmUserData, SerializedClassicFarmConfig } from '@pancakeswap/farms'
 import { mainnetTokens } from 'config/constants/tokens/index'
-import { FARMS_ADDRESS, FARMS_MODULE_NAME, FARMS_NAME } from '../constants'
-import { FarmResource } from '../types'
+import { FarmResource, MapFarmResource } from 'state/farms/types'
+import { FARMS_ADDRESS, FARMS_MODULE_NAME, FARMS_NAME } from 'state/farms/constants'
 
-export const mapFarmList = ({ data }: FarmResource) => {
+export const mapFarmList = ({ data }: FarmResource): MapFarmResource[] => {
   return data.lp.map((lpAddress, index) => ({
     ...data,
     pid: index,
     lpAddress,
-    poolInfo: data.pool_info[index],
-    userInfoAddress: data.user_info[index].inner.handle,
+    singlePoolInfo: data.pool_info[index],
+    singleUserInfo: data.user_info[index].inner.handle,
   }))
 }
 
