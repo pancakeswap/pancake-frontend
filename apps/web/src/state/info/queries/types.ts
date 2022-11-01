@@ -12,7 +12,7 @@ interface PairResponse {
 export interface MintResponse {
   id: string
   timestamp: string
-  pair: PairResponse
+  pair?: PairResponse
   to: string
   amount0: string
   amount1: string
@@ -22,7 +22,7 @@ export interface MintResponse {
 export interface SwapResponse {
   id: string
   timestamp: string
-  pair: PairResponse
+  pair?: PairResponse
   from: string
   amount0In: string
   amount1In: string
@@ -34,7 +34,7 @@ export interface SwapResponse {
 export interface BurnResponse {
   id: string
   timestamp: string
-  pair: PairResponse
+  pair?: PairResponse
   sender: string
   amount0: string
   amount1: string
