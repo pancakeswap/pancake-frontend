@@ -15,12 +15,12 @@
     "zustand": "^4.1.1"
   },
   "peerDependencies": {
-    "@blocto/sdk": "^0.3.0-beta.9",
+    "@blocto/sdk": "^0.3.1",
     "aptos": "^1.3.16",
     "react": "^18.0.0"
   },
   "devDependencies": {
-    "@blocto/sdk": "^0.3.0-beta.9",
+    "@blocto/sdk": "^0.3.1",
     "tsup": "^6.2.3",
     "aptos": "^1.3.16",
     "vitest": "^0.23.1"
