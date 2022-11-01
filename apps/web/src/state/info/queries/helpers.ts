@@ -253,6 +253,7 @@ export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' 
       abi: bep20Abi,
       calls: tokenCalls,
       options: { requireSuccess: false },
+      chainId: chainName === 'ETH' ? ChainId.ETHEREUM : ChainId.BSC,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')
