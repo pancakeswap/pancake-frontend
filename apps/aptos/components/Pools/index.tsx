@@ -1,64 +1,28 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, PageHeader, ScrollToTopButtonV2, Pool, Text } from '@pancakeswap/uikit'
-import { Coin, ChainId } from '@pancakeswap/aptos-swap-sdk'
+import { Flex, Heading, PageHeader, ScrollToTopButtonV2, Pool, Text, FlexLayout } from '@pancakeswap/uikit'
+import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import styled from 'styled-components'
 
-import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import Portal from 'components/Portal'
-import { useMemo } from 'react'
 import { TokenPairImage } from 'components/TokenImage'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import { usePoolsList } from 'state/pools/hooks'
 
 import NoSSR from '../NoSSR'
 import PoolControls from './components/PoolControls'
 import CardActions from './components/PoolCard/CardActions'
 
+const CardLayout = styled(FlexLayout)`
+  justify-content: center;
+`
+
 const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
-  // const { data: pools } = usePoolsList()
+  const pools = usePoolsList()
   // const { isSuccess: userDataLoaded } = usePoolsUserData()
-
-  const pools = useMemo(
-    () => [
-      {
-        apr: 0,
-        earningToken: new Coin(
-          ChainId.TESTNET,
-          '0x08c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB',
-          8,
-          'BNB',
-          'BNB coin',
-        ),
-        earningTokenPrice: 0,
-        isFinished: false,
-        poolCategory: 'Core',
-        profileRequirement: undefined,
-        sousId: 0,
-        stakingLimit: new BigNumber(0),
-        stakingLimitEndBlock: 0,
-        stakingToken: new Coin(
-          ChainId.TESTNET,
-          '0x08c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetETH',
-          8,
-          'ETH',
-          'ETH coin',
-        ),
-        stakingTokenPrice: 0,
-        startBlock: 0,
-        tokenPerBlock: '12.86',
-        totalStaked: new BigNumber(0),
-        userData: {
-          allowance: new BigNumber(0),
-          pendingReward: new BigNumber(0),
-          stakedBalance: new BigNumber(0),
-          stakingTokenBalance: new BigNumber(0),
-        },
-      },
-    ],
-    [],
-  )
 
   return (
     <>
@@ -81,35 +45,39 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
         <NoSSR>
           <PoolControls pools={pools}>
             {({ chosenPools }) => {
-              return chosenPools.map((pool) => (
-                <Pool.PoolCard<Coin>
-                  key={pool.sousId}
-                  pool={pool}
-                  isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
-                  cardContent={
-                    account ? (
-                      <CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
-                    ) : (
-                      <>
-                        <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
-                          {t('Start earning')}
-                        </Text>
-                        <ConnectWalletButton />
-                      </>
-                    )
-                  }
-                  tokenPairImage={
-                    <TokenPairImage
-                      primaryToken={pool.earningToken}
-                      secondaryToken={pool.stakingToken}
-                      width={64}
-                      height={64}
+              return (
+                <CardLayout>
+                  {chosenPools.map((pool) => (
+                    <Pool.PoolCard<Coin>
+                      key={pool.sousId}
+                      pool={pool}
+                      isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
+                      cardContent={
+                        account ? (
+                          <CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                        ) : (
+                          <>
+                            <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
+                              {t('Start earning')}
+                            </Text>
+                            <ConnectWalletButton />
+                          </>
+                        )
+                      }
+                      tokenPairImage={
+                        <TokenPairImage
+                          primaryToken={pool.earningToken}
+                          secondaryToken={pool.stakingToken}
+                          width={64}
+                          height={64}
+                        />
+                      }
+                      cardFooter="Card Footer"
+                      aprRow="Apr"
                     />
-                  }
-                  cardFooter="Card Footer"
-                  aprRow="Apr"
-                />
-              ))
+                  ))}
+                </CardLayout>
+              )
             }}
           </PoolControls>
         </NoSSR>

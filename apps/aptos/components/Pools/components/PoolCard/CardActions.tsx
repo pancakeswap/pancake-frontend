@@ -17,6 +17,7 @@ interface CardActionsProps {
   stakedBalance: BigNumber
 }
 
+// NOTE Philip: Move CardActions to widget
 const CardActions: React.FC<React.PropsWithChildren<CardActionsProps>> = ({ pool, stakedBalance }) => {
   const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool
 

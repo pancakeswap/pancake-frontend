@@ -1,3 +1,4 @@
-export default function HarvestActions() {
-  return 'Harvest Actions'
-}
+import { Pool } from '@pancakeswap/uikit'
+import CollectModal from './CollectModal'
+
+export default Pool.withCollectModal(CollectModal)

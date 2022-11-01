@@ -9,21 +9,14 @@ export interface Resource {
 export interface PoolResource {
   type: string
   data: {
-    acc_token_per_share: string
-    alive: boolean
-    bonus_end_timestamp: string
-    last_reward_timestamp: string
-    number_seconds_for_user_limit: string
-    pool_limit_per_user: string
-    precision_factor: string
-    reward_per_second: string
-    staking_limit_duration: string
+    end_timestamp: string
     start_timestamp: string
-    user_staking_limit: string
+    reward_per_second: string
+    pool_limit_per_user: string
   }
 }
 
-export interface PoolSyrupUserResource {
+export interface PoolUserDatarResource {
   type: string
   data: {
     amount: string
