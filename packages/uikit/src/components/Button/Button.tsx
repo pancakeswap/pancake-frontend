@@ -1,4 +1,4 @@
-import React, { cloneElement, ElementType, isValidElement } from "react";
+import { cloneElement, ElementType, isValidElement } from "react";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
 import StyledButton from "./StyledButton";
 import { ButtonProps, scales, variants } from "./types";

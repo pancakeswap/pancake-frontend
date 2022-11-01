@@ -80,7 +80,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   }, [max]);
 
   const lpTokensToStake = new BigNumber(val);
-  const fullBalanceNumber = new BigNumber(fullBalance);
+  const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);
 
   const usdToStake = lpTokensToStake.times(lpPrice);
 
