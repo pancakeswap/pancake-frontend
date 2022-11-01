@@ -54,7 +54,7 @@ const fetchPoolTransactions = async (
         address,
       },
     )
-    const pairTokenMap = await getPairTokenMap([address])
+    const pairTokenMap = await getPairTokenMap([address], chainName)
     const pairTokens = pairTokenMap[address]
     const pairResponse = pairTokens ? { pair: pairTokens } : {}
 

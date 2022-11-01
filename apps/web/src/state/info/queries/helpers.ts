@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/sdk'
 import fromPairs from 'lodash/fromPairs'
 import chunk from 'lodash/chunk'
 import uniq from 'lodash/uniq'
@@ -208,7 +209,7 @@ export const fetchChartDataWithAddress = async (
   }
 }
 
-export async function getPairTokenMap(poolAddresses: string[]) {
+export async function getPairTokenMap(poolAddresses: string[], chainName: 'ETH' | 'BSC') {
   let rawPairTokenResults: string[][]
   const calls = poolAddresses
     .map((poolAddress) => {
@@ -223,6 +224,7 @@ export async function getPairTokenMap(poolAddresses: string[]) {
       abi: IPancakePairABI,
       calls,
       options: { requireSuccess: false },
+      chainId: chainName === 'ETH' ? ChainId.ETHEREUM : ChainId.BSC,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')
