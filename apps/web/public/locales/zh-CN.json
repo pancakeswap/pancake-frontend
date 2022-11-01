@@ -1395,7 +1395,7 @@
   "Subgraph is currently experiencing delays due to BSC issues. Performance may suffer until subgraph is restored.": "由于BSC的原因，subgraph 延迟中。等 subgraph 归位后，您才能继续操作。",
   "Subgraph is currently experiencing delays due to BSC issues. Rank and volume data may be inaccurate until subgraph is restored.": "由于 BSC 的原因，subgraph 目前延迟中。在 subgraph 恢复之前，排名和交易量资料并不准确。",
   "No issues with the subgraph.": "Subgraph 状态正常。",
-  "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "始终开启子图健康指标。默认为仅在网络延迟时才显示该指标",
+  "Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed": "将 Subgraph 状态小工具维持开启状态。默认设置为网络延迟时该小工具自动显示。",
   "Subgraph Health Indicator": "Subgraph 状态小工具",
   "Delay": "延迟",
   "Add liquidity instead": "改为增加流动性",
