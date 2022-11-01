@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import {
   Image,
@@ -29,14 +30,13 @@ import ToggleView from 'components/ToggleView/ToggleView'
 import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
 import NoSSR from 'components/NoSSR'
 
-// import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
-// import { useCakeVaultUserData } from 'state/pools/hooks'
+import { useFarmsPageFetch } from 'state/farms/hook'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
-// import { DeserializedFarm } from 'state/types'
 // import { getFarmApr } from 'utils/apr'
 import { latinise } from 'utils/latinise'
+import { DeserializedFarm } from '@pancakeswap/farms'
 import Table from './FarmTable/FarmTable'
-// import { FarmWithStakedValue } from './components/types'
+import { FarmWithStakedValue } from './types'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -138,13 +138,13 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const isMounted = useIsMounted()
+  const { chainId } = useActiveWeb3React()
   const cakePrice = useCakePriceAsBigNumber()
   const { pathname, query: urlQuery } = useRouter()
-  const userDataLoaded = false // TODO: Aptos Farms
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
-  // const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
+  const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarmsPageFetch()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
@@ -159,127 +159,125 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const isInactive = pathname.includes('history')
   const isActive = !isInactive && !isArchived
 
-  // useCakeVaultUserData()
-
-  // usePollFarmsWithUserData()
-
   // Users with no wallet connected should see 0 as Earned amount
   // Connected users should see loading indicator until first userData has loaded
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  // const activeFarms = farmsLP.filter(
-  //   (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
-  // )
-  // const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
-  // const archivedFarms = farmsLP
+  const activeFarms = farmsLP.filter(
+    (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
+  )
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const archivedFarms = farmsLP
 
-  // const stakedOnlyFarms = activeFarms.filter(
-  //   (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
-  // )
+  const stakedOnlyFarms = activeFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  )
 
-  const stakedInactiveFarms = []
-  // const stakedInactiveFarms = inactiveFarms.filter(
-  //   (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
-  // )
+  const stakedInactiveFarms = inactiveFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  )
 
-  // const stakedArchivedFarms = archivedFarms.filter((farm) =>
-  //   farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)
-  // )
+  const stakedArchivedFarms = archivedFarms.filter(
+    (farm) => farm.userData && new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+  )
 
-  // const farmsList = useCallback(
-  //   (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
-  //     let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
-  //       if (!farm.lpTotalInQuoteToken || !farm.quoteTokenPriceBusd) {
-  //         return farm
-  //       }
-  //       const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
-  //       const { cakeRewardsApr, lpRewardsApr } = isActive
-  //         ? getFarmApr(
-  //             new BigNumber(farm.poolWeight),
-  //             cakePrice,
-  //             totalLiquidity,
-  //             farm.lpAddress,
-  //             regularCakePerBlock,
-  //           )
-  //         : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+  const farmsList = useCallback(
+    (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
+      let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay.map((farm) => {
+        if (!farm.lpTotalInQuoteToken || !farm.quoteTokenPriceBusd) {
+          return farm
+        }
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+        // const { cakeRewardsApr, lpRewardsApr } = isActive
+        //   ? getFarmApr(
+        //       new BigNumber(farm.poolWeight),
+        //       cakePrice,
+        //       totalLiquidity,
+        //       farm.lpAddress,
+        //       regularCakePerBlock,
+        //     )
+        //   : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+        const { cakeRewardsApr, lpRewardsApr } = isActive
+          ? { cakeRewardsApr: 0, lpRewardsApr: 0 }
+          : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
-  //       return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
-  //     })
+        return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
+      })
 
-  //     if (query) {
-  //       const lowercaseQuery = latinise(query.toLowerCase())
-  //       farmsToDisplayWithAPR = farmsToDisplayWithAPR.filter((farm: FarmWithStakedValue) => {
-  //         return latinise(farm.lpSymbol.toLowerCase()).includes(lowercaseQuery)
-  //       })
-  //     }
+      if (query) {
+        const lowercaseQuery = latinise(query.toLowerCase())
+        farmsToDisplayWithAPR = farmsToDisplayWithAPR.filter((farm: FarmWithStakedValue) => {
+          return latinise(farm.lpSymbol.toLowerCase()).includes(lowercaseQuery)
+        })
+      }
 
-  //     return farmsToDisplayWithAPR
-  //   },
-  //   [query, isActive, chainId, cakePrice, regularCakePerBlock],
-  // )
+      return farmsToDisplayWithAPR
+    },
+    [query, isActive, chainId, cakePrice, regularCakePerBlock],
+  )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)
   }
 
-  // const chosenFarms = useMemo(() => {
-  //   let chosenFs = []
-  //   if (isActive) {
-  //     chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
-  //   }
-  //   if (isInactive) {
-  //     chosenFs = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
-  //   }
-  //   if (isArchived) {
-  //     chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
-  //   }
+  const chosenFarms: FarmWithStakedValue[] = useMemo(() => {
+    let chosenFs: FarmWithStakedValue[] = []
+    if (isActive) {
+      chosenFs = stakedOnly ? farmsList(stakedOnlyFarms) : farmsList(activeFarms)
+    }
+    if (isInactive) {
+      chosenFs = stakedOnly ? farmsList(stakedInactiveFarms) : farmsList(inactiveFarms)
+    }
+    if (isArchived) {
+      chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
+    }
 
-  //   return chosenFs
-  // }, [
-  //   activeFarms,
-  //   farmsList,
-  //   inactiveFarms,
-  //   archivedFarms,
-  //   isActive,
-  //   isInactive,
-  //   isArchived,
-  //   stakedArchivedFarms,
-  //   stakedInactiveFarms,
-  //   stakedOnly,
-  //   stakedOnlyFarms,
-  // ])
+    return chosenFs
+  }, [
+    activeFarms,
+    farmsList,
+    inactiveFarms,
+    archivedFarms,
+    isActive,
+    isInactive,
+    isArchived,
+    stakedArchivedFarms,
+    stakedInactiveFarms,
+    stakedOnly,
+    stakedOnlyFarms,
+  ])
 
-  const chosenFarmsMemoized: any = [{}, {}]
-  // const chosenFarmsMemoized = useMemo(() => {
-  //   const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
-  //     switch (sortOption) {
-  //       case 'apr':
-  //         return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr + farm.lpRewardsApr, 'desc')
-  //       case 'multiplier':
-  //         return orderBy(
-  //           farms,
-  //           (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
-  //           'desc',
-  //         )
-  //       case 'earned':
-  //         return orderBy(
-  //           farms,
-  //           (farm: FarmWithStakedValue) => (farm.userData ? Number(farm.userData.earnings) : 0),
-  //           'desc',
-  //         )
-  //       case 'liquidity':
-  //         return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
-  //       case 'latest':
-  //         return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc')
-  //       default:
-  //         return farms
-  //     }
-  //   }
+  const chosenFarmsMemoized: any = useMemo(() => {
+    const sortFarms = (farms: FarmWithStakedValue[]): FarmWithStakedValue[] => {
+      switch (sortOption) {
+        case 'apr':
+          // @ts-ignore
+          return orderBy(farms, (farm: FarmWithStakedValue) => farm.apr + farm.lpRewardsApr, 'desc')
+        case 'multiplier':
+          return orderBy(
+            farms,
+            (farm: FarmWithStakedValue) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
+            'desc',
+          )
+        case 'earned':
+          return orderBy(
+            farms,
+            (farm: FarmWithStakedValue) => (farm.userData ? Number(farm.userData.earnings) : 0),
+            'desc',
+          )
+        case 'liquidity':
+          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.liquidity), 'desc')
+        case 'latest':
+          return orderBy(farms, (farm: FarmWithStakedValue) => Number(farm.pid), 'desc')
+        default:
+          return farms
+      }
+    }
 
-  //   return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
-  // }, [chosenFarms, sortOption, numberOfFarmsVisible])
+    return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
+  }, [chosenFarms, sortOption, numberOfFarmsVisible])
 
-  // chosenFarmsLength.current = chosenFarmsMemoized.length
+  chosenFarmsLength.current = chosenFarmsMemoized.length
 
   useEffect(() => {
     if (isIntersecting) {
@@ -378,7 +376,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <Loading />
           </Flex>
         )}
-        {/* {poolLength && <div ref={observerRef} />} */}
+        {poolLength && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
       {isMounted && createPortal(<ScrollToTopButtonV2 />, document.body)}

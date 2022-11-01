@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-// import { DeserializedFarm } from 'state/types'
+import { DeserializedFarm } from '@pancakeswap/farms'
 
 export type TableProps = {
   data?: TableDataTypes[]
@@ -102,8 +102,8 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
   },
 ]
 
-// export interface FarmWithStakedValue extends DeserializedFarm {
-//   apr?: number
-//   lpRewardsApr?: number
-//   liquidity?: BigNumber
-// }
+export interface FarmWithStakedValue extends DeserializedFarm {
+  apr?: number
+  lpRewardsApr?: number
+  liquidity?: BigNumber
+}
