@@ -18,7 +18,7 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:check:staged": "lint-staged",
     "integration-test": "start-server-and-test start http://localhost:3000 'turbo run integration-test --filter=test'",
-    "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk && NODE_PATH=./src ts-node --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
+    "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk && NODE_PATH=./apps/web/src ts-node --project ./apps/web/tsconfig.json --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "postinstall": "turbo run --filter=web postinstall",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
