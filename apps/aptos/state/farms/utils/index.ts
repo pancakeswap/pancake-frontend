@@ -1,5 +1,6 @@
 import { createAccountResourceFilter } from '@pancakeswap/awgmi/core'
-import _get from 'lodash/get'
+import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFarmConfig } from 'config/constants/farms'
 import { SerializedFarm, SerializedFarmUserData, SerializedClassicFarmConfig } from '@pancakeswap/farms'
 import { mainnetTokens } from 'config/constants/tokens/index'
@@ -19,6 +20,7 @@ export const mapFarmList = ({ data }: FarmResource): MapFarmResource[] => {
 export const transformFarm =
   (chainId) =>
   (farm): SerializedFarm => {
+    console.log('farm', farm)
     const farmConfig = getFarmConfig(chainId)
     const token = farmConfig.find(
       (config) => config.lpAddress.toLowerCase() === farm.lpAddress.toLowerCase(),
@@ -42,8 +44,14 @@ export const transformFarm =
       earnings: '0',
     } as SerializedFarmUserData
 
+    const totalRegularAllocPoint = farm.total_regular_alloc_point
+    const allocPoint = farm.singlePoolInfo ? new BigNumber(farm.singlePoolInfo.alloc_point) : BIG_ZERO
+    const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
+
     return {
       ...tokenInfo,
+      poolWeight: poolWeight.toJSON(),
+      multiplier: `${allocPoint.div(100).toString()}X`,
       userData,
     }
   }
