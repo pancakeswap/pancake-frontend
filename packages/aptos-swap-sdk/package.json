@@ -19,7 +19,7 @@
     "aptos"
   ],
   "scripts": {
-    "lint": "eslint src test",
+    "lint": "eslint src",
     "build": "tsup",
     "dev": "tsup --watch",
     "test": "vitest --run",

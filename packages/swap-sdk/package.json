@@ -19,7 +19,6 @@
   ],
   "module": "dist/index.mjs",
   "scripts": {
-    "lint": "eslint src test",
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "test": "jest",

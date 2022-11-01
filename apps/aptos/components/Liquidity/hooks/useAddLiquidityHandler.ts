@@ -18,7 +18,7 @@ interface UseAddLiquidityHandlerReturn extends LiquidityHandlerReturn {
   onAdd: () => void
 }
 
-export default function useAddLiquidityHanlder({
+export default function useAddLiquidityHandler({
   parsedAmounts,
   noLiquidity,
 }: {
