@@ -106,7 +106,7 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
       //
     }
 
-    const transaction = await provider.generateTransaction(account?.address || '', options)
+    const transaction = await provider.generateTransaction(account?.address || '', payload, options)
 
     if (!transaction) throw new Error('Failed to generate transaction')
 
