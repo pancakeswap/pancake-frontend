@@ -7,9 +7,9 @@ import { sub, getUnixTime } from 'date-fns'
 import { ChainId } from '@pancakeswap/sdk'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
 import { StaticJsonRpcProvider } from '@ethersproject/providers'
-import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT_WITH_CHAIN } from '../src/config/constants/endpoints'
-import { infoClientWithChain, stableSwapClient } from '../src/utils/graphql'
+import { BlockResponse } from 'web/src/components/SubgraphHealthIndicator'
+import { BLOCKS_CLIENT_WITH_CHAIN } from 'web/src/config/constants/endpoints'
+import { stableSwapClient, infoClientWithChain } from 'web/src/utils/graphql'
 
 interface SingleFarmResponse {
   id: string
@@ -209,10 +209,14 @@ const fetchAndUpdateLPsAPR = async () => {
         console.error(error, '[LP APR Update] getAprsForStableFarm error')
       }
 
-      fs.writeFile(`src/config/constants/lpAprs/${chainId}.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
-        if (err) throw err
-        console.info(` ✅ - lpAprs.json has been updated!`)
-      })
+      fs.writeFile(
+        `apps/web/src/config/constants/lpAprs/${chainId}.json`,
+        JSON.stringify(allAprs, null, 2) + os.EOL,
+        (err) => {
+          if (err) throw err
+          console.info(` ✅ - lpAprs.json has been updated!`)
+        },
+      )
     }),
   )
 }
