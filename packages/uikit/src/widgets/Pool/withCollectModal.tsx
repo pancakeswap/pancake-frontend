@@ -80,6 +80,8 @@ export const withCollectModal =
   ({
     earnings,
     earningTokenSymbol,
+    earningTokenAddress,
+    stakingTokenAddress,
     earningTokenDecimals,
     sousId,
     isBnbPool,
@@ -88,7 +90,7 @@ export const withCollectModal =
   }: WithHarvestActionsProps) => {
     const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals);
 
-    const formattedBalance = formatNumber(earningTokenBalance, 3, 3);
+    const formattedBalance = formatNumber(earningTokenBalance, 5, 5);
 
     const fullBalance = getFullDisplayBalance(earnings, earningTokenDecimals);
 
@@ -102,6 +104,8 @@ export const withCollectModal =
         earningsDollarValue={earningTokenDollarBalance}
         sousId={sousId}
         isBnbPool={isBnbPool}
+        earningTokenAddress={earningTokenAddress}
+        stakingTokenAddress={stakingTokenAddress}
       />
     );
 

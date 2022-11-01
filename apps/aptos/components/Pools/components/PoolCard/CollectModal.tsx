@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Pool, useToast } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 // import { useAppDispatch } from 'state'
@@ -11,16 +10,21 @@ import useHarvestPool from '../../hooks/useHarvestPool'
 export const CollectModalContainer = ({
   earningTokenSymbol,
   sousId,
-  isBnbPool,
   onDismiss,
+  stakingTokenAddress,
+  earningTokenAddress,
   ...rest
-}: React.PropsWithChildren<Pool.CollectModalProps>) => {
+}: React.PropsWithChildren<
+  Pool.CollectModalProps & {
+    earningTokenAddress: string
+    stakingTokenAddress: string
+  }
+>) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { account } = useWeb3React()
   // const dispatch = useAppDispatch()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { onReward } = useHarvestPool(sousId, isBnbPool)
+  const { onReward } = useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId })
 
   const handleHarvestConfirm = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
