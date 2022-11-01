@@ -12,8 +12,9 @@ import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { featureFarmApiAtom, useFeatureFlag } from 'hooks/useFeatureFlag'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
-import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, State } from '../types'
+import { State } from '../types'
 import {
   farmFromLpSymbolSelector,
   farmSelector,
