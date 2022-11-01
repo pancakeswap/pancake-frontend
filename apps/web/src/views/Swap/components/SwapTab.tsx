@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { SwapFeaturesContext } from '../SwapFeaturesContext'
 
 export enum SwapType {
   SWAP,
@@ -26,12 +27,13 @@ const Wrapper = styled.div`
   }
 `
 
-export default function SwapTab({ children, showStable }) {
+export default function SwapTab({ children }) {
+  const { isStableSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const [swapTypeState, setSwapType] = useState(SwapType.SWAP)
   const { theme } = useTheme()
 
-  if (showStable) {
+  if (isStableSupported) {
     return (
       <>
         <Wrapper>
