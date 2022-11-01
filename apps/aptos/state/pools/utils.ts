@@ -1,4 +1,6 @@
 /* eslint-disable camelcase */
+import { FixedNumber } from '@ethersproject/bignumber'
+
 import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
 import { Pool } from '@pancakeswap/uikit'
 import { HexString, TypeTagParser } from 'aptos'
@@ -7,6 +9,12 @@ import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import _get from 'lodash/get'
 import { PoolResource } from './types'
+
+const getSecondsLeftFromNow = (timestamp: number) => {
+  const now = Math.floor(Date.now() / 1000)
+
+  return Number.isFinite(timestamp) && timestamp < now ? now - timestamp : 0
+}
 
 export const transformPool =
   (account) =>
@@ -38,11 +46,36 @@ export const transformPool =
     if (account) {
       const stakedData = _get(resource, 'data.user_infos.data', []).find((user) => _get(user, 'key') === account)
 
-      if (stakedData) {
+      const stakedAmount = _get(stakedData, 'value.amount')
+
+      if (stakedData && stakedAmount) {
+        const userAmount = FixedNumber.from(stakedAmount)
+
+        const lastRewardTimestamp = _toNumber(_get(resource, 'data.last_reward_timestamp'))
+
+        // let multiplier = get_multiplier(pool_info.last_reward_timestamp, timestamp::now_seconds(), pool_info.end_timestamp);
+        const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
+
+        const rewardPerSecond = FixedNumber.from(_get(resource, 'data.reward_per_second'))
+
+        const rewardPendingToken = rewardPerSecond.mulUnsafe(multiplier)
+
+        const tokenPerShare = FixedNumber.from(_get(resource, 'data.acc_token_per_share'))
+        const precisionFactor = FixedNumber.from(_get(resource, 'data.precision_factor'))
+        const totalStake = FixedNumber.from(_get(resource, 'data.total_staked_token.value'))
+
+        const latestTokenPerShare = tokenPerShare.addUnsafe(
+          rewardPendingToken.mulUnsafe(precisionFactor).divUnsafe(totalStake),
+        )
+
+        const rewardDebt = FixedNumber.from(_get(stakedData, 'value.reward_debt'))
+
+        const pendingReward = userAmount.mulUnsafe(latestTokenPerShare).divUnsafe(precisionFactor).subUnsafe(rewardDebt)
+
         userData = {
           ...userData,
-          pendingReward: new BigNumber(_get(stakedData, 'value.reward_debt')),
-          stakedBalance: new BigNumber(_get(stakedData, 'value.amount')),
+          pendingReward: new BigNumber(pendingReward.toString()),
+          stakedBalance: new BigNumber(userAmount.toString()),
         }
       }
     }

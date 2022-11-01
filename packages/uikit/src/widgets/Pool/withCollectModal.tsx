@@ -34,7 +34,7 @@ const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = (
           <>
             {hasEarnings ? (
               <>
-                <Balance bold fontSize="20px" decimals={5} value={earningTokenBalance} />
+                <Balance bold fontSize="20px" decimals={8} value={earningTokenBalance} />
                 {earningTokenPrice > 0 && (
                   <Balance
                     display="inline"
@@ -90,7 +90,7 @@ export const withCollectModal =
   }: WithHarvestActionsProps) => {
     const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals);
 
-    const formattedBalance = formatNumber(earningTokenBalance, 5, 5);
+    const formattedBalance = formatNumber(earningTokenBalance, 8, 8);
 
     const fullBalance = getFullDisplayBalance(earnings, earningTokenDecimals);
 
