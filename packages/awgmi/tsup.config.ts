@@ -9,6 +9,7 @@ export default defineConfig({
     'connectors/petra': 'core/src/connectors/petra.ts',
     'connectors/fewcha': 'core/src/connectors/fewcha.ts',
     'connectors/pontem': 'core/src/connectors/pontem.ts',
+    'connectors/safePal': 'core/src/connectors/safePal.ts',
   },
   format: ['esm', 'cjs'],
   dts: true,

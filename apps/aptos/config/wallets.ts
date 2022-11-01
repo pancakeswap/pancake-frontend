@@ -8,6 +8,7 @@ export enum ConnectorNames {
   Fewcha = 'fewcha',
   Blocto = 'blocto',
   TrustWallet = 'trustWallet',
+  SafePal = 'safePal',
 }
 
 export const wallets: WalletConfigV2<ConnectorNames>[] = [
@@ -73,5 +74,14 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
       ? 'https://link.trustwallet.com/open_url?coin_id=637&url=https://aptos.pancakeswap.finance/'
       : undefined,
     connectorId: ConnectorNames.TrustWallet,
+  },
+  {
+    id: 'safePal',
+    title: 'SafePal',
+    icon: 'https://pancakeswap.finance/images/wallets/safepal.png',
+    get installed() {
+      return typeof window !== 'undefined' && Boolean(window.safePal) && Boolean((window.safePal as any)?.sfpPlatform)
+    },
+    connectorId: ConnectorNames.SafePal,
   },
 ]
