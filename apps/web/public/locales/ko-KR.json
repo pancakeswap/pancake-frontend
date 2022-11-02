@@ -988,6 +988,11 @@
   "1Y": "1년",
   "5Y": "5년",
   "Annual ROI at current rates": "현재 환율의 연간 ROI",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "카드와 차트에 표시된 가격이 다릅니다",
   "The price you see come from difference places": "표시되는 가격은 서로 다른 곳에서 가져옵니다",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "카드의 가격은 Chainlink의 검증 가능한 가격 오라클에서 가져옵니다.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "안녕하세요, Aptos 프로젝트 팀입니다!",
   "Meet the following requirement to join:": "가입하려면 다음 요구 사항을 충족하세요:",
   "Order cancellation": "주문 취소",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "주문 취소: %outputAmount% %outputTokenSymbol%에 대한 %inputAmount% %inputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "주문 취소: %outputAmount% %outputTokenSymbol%에 대한 %inputAmount% %inputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
