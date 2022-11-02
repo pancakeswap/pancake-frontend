@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
-import { useAccountResources, useProvider } from '@pancakeswap/awgmi'
+import { useAccountResources, useAccountResource, useProvider } from '@pancakeswap/awgmi'
 import { coinStoreResourcesFilter, unwrapTypeFromString } from '@pancakeswap/awgmi/core'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { DeserializedFarm, SerializedFarm } from '@pancakeswap/farms'
@@ -8,12 +8,22 @@ import { FetchStatus } from 'config/constants/types'
 import { deserializeFarm } from 'state/farms/utils/deserializeFarm'
 import { farmsPublicDataSelector, mapFarmList, transformFarm } from 'state/farms/utils/index'
 import { SLOW_INTERVAL } from 'config/constants'
-import { MapFarmResource, FarmUserInfoResponse } from 'state/farms/types'
-import { FARMS_ADDRESS, FARMS_USER_INFO } from 'state/farms/constants'
+import { MapFarmResource, FarmUserInfoResponse, FarmResource } from 'state/farms/types'
+import { FARMS_ADDRESS, FARMS_USER_INFO, FARMS_NAME_TAG } from 'state/farms/constants'
+
+export const useFarmsLength = (): number => {
+  const { data: farms } = useAccountResource({
+    watch: true,
+    address: FARMS_ADDRESS,
+    resourceType: FARMS_NAME_TAG,
+  })
+  return (farms as FarmResource)?.data.lp.length
+}
 
 export const useFarms = () => {
   const provider = useProvider()
   const { account, chainId } = useActiveWeb3React()
+  const poolLength = useFarmsLength()
 
   const { data: farms } = useAccountResources({
     watch: true,
@@ -92,13 +102,13 @@ export const useFarms = () => {
     const isFetching = status !== FetchStatus.Fetched
     return {
       userDataLoaded: isFetching,
-      poolLength: 0,
-      regularCakePerBlock: 0,
+      poolLength,
+      regularCakePerBlock: Number(farms?.[0].cake_per_second),
       loadArchivedFarmsData: false,
       data: farmsList?.map(deserializeFarm).filter((farm) => farm.token.chainId === chainId) as DeserializedFarm[],
       fetchUserFarmsData: mutate,
     }
-  }, [farmsList, chainId, status, mutate])
+  }, [farmsList, poolLength, farms, chainId, status, mutate])
 }
 
 // const test = {

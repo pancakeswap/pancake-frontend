@@ -20,7 +20,6 @@ export const mapFarmList = ({ data }: FarmResource): MapFarmResource[] => {
 export const transformFarm =
   (chainId) =>
   (farm): SerializedFarm => {
-    console.log('farm', farm)
     const farmConfig = getFarmConfig(chainId)
     const token = farmConfig.find(
       (config) => config.lpAddress.toLowerCase() === farm.lpAddress.toLowerCase(),

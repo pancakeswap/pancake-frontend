@@ -370,13 +370,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           ) : (
             <FlexLayout>{children}</FlexLayout>
           )}
+          {account && !userDataLoaded && stakedOnly && (
+            <Flex justifyContent="center">
+              <Loading />
+            </Flex>
+          )}
+          {poolLength && <div ref={observerRef} />}
         </NoSSR>
-        {account && !userDataLoaded && stakedOnly && (
-          <Flex justifyContent="center">
-            <Loading />
-          </Flex>
-        )}
-        {poolLength && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
       {isMounted && createPortal(<ScrollToTopButtonV2 />, document.body)}
