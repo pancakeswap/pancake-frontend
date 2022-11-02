@@ -23,6 +23,7 @@
       "outputs": ["list/**"]
     },
     "integration-test": {
+      "dependsOn": ["^build"],
       "outputs": [],
       "inputs": ["cypress/integration/**.test.ts"]
     },
