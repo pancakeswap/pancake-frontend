@@ -988,6 +988,11 @@
   "1Y": "1Y",
   "5Y": "5Y",
   "Annual ROI at current rates": "Taunang ROI sa kasaluyang mga rate",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "Ang mga presyo na ipinakita sa mga card at chart ay magkakaiba",
   "The price you see come from difference places": "Ang presyo na nakikita mo ay nagmumula sa magkakaibang lugar",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Ang mga presyo sa mga card ay nagmula sa napatunayan na presyo ng orakulo ng Chainlink.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Kumusta Mga Aptos Project Team!",
   "Meet the following requirement to join:": "Tugunan ang sumusunod na kinakailangan para makasali:",
   "Order cancellation": "Pagkansela ng order",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Pagkansela ng order: %inputAmount% %inputTokenSymbol% para sa %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Pagkansela ng order: %inputAmount% %inputTokenSymbol% para sa %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
