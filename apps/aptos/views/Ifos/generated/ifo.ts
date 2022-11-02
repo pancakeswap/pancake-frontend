@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0x13c8a066f1a253983d4add357404f45f3d5e20501158224df72dde2269877443' as const
+export const ADDRESS = '0x2f6371c25b109c60807a30d57004e4f697e4dcd2cfea16a5201fc99b957ed6af' as const
 
 export const IFO_MODULE_NAME = 'IFO' as const
 
@@ -44,6 +44,20 @@ export const ifoDeposit = (
     type_arguments: typeArgs,
     arguments: args,
     function: `${ADDRESS}::${IFO_MODULE_NAME}::deposit`,
+  }
+}
+
+export type IfoDepositOfferingCoinArgs = [bigint | string, bigint | string]
+
+export const ifoDepositOfferingCoin = (
+  args: IfoDepositOfferingCoinArgs,
+  typeArgs: [string, string],
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: typeArgs,
+    arguments: args,
+    function: `${ADDRESS}::${IFO_MODULE_NAME}::deposit_offering_coin`,
   }
 }
 
