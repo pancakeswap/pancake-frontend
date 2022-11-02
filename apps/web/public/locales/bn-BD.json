@@ -988,6 +988,11 @@
   "1Y": "1 বছর",
   "5Y": "5 বছর",
   "Annual ROI at current rates": "বর্তমান হারে বার্ষিক ROI",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "কার্ড এবং চার্টে প্রদর্শিত দাম ভিন্ন",
   "The price you see come from difference places": "আপনি যে দাম দেখছেন তা বিভিন্ন জায়গা থেকে এসেছে",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "কার্ডের দাম চেইনলিংক এর যাচাইযোগ্য দাম ওরাকল থেকে আসে।",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "হ্যালো Aptos প্রজেক্ট টিম!",
   "Meet the following requirement to join:": "যোগদান করতে নিচের শর্ত পূরণ করুন:",
   "Order cancellation": "অর্ডার বাতিলকরণ",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "অর্ডার বাতিলকরণ:  %outputAmount% %outputTokenSymbol%-এর জন্য %inputAmount% %inputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "অর্ডার বাতিলকরণ:  %outputAmount% %outputTokenSymbol%-এর জন্য %inputAmount% %inputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
