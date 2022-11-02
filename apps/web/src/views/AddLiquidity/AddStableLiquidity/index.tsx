@@ -33,7 +33,6 @@ import { AppHeader, AppBody } from '../../../components/App'
 import { RowBetween } from '../../../components/Layout/Row'
 import { MinimalPositionCard } from '../../../components/PositionCard'
 import { useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
-import { GAS_PRICE_GWEI } from '../../../state/types'
 
 export default function AddStableLiquidity({ currencyA, currencyB }) {
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()

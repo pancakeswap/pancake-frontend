@@ -65,7 +65,6 @@ import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import { CommonBasesType } from '../../components/SearchModal/types'
-import { GAS_PRICE_GWEI } from '../../state/types'
 
 enum Steps {
   Choose,

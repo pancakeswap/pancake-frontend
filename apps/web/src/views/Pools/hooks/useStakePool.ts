@@ -4,7 +4,6 @@ import { DEFAULT_TOKEN_DECIMAL, BOOSTED_FARM_GAS_LIMIT } from 'config'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
-import { GAS_PRICE_GWEI } from '../../../state/types'
 
 const options = {
   gasLimit: BOOSTED_FARM_GAS_LIMIT,
