@@ -1,5 +1,4 @@
-import { Flex, TooltipText, useTooltip, Pool } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Apr from 'views/Pools/components/Apr'
 import { Token } from '@pancakeswap/sdk'
@@ -9,6 +8,7 @@ interface AprRowProps {
   stakedBalance: BigNumber
   performanceFee?: number
   showIcon?: boolean
+  vaultKey?: boolean
 }
 
 const AprRow: React.FC<React.PropsWithChildren<AprRowProps>> = ({
@@ -17,21 +17,10 @@ const AprRow: React.FC<React.PropsWithChildren<AprRowProps>> = ({
   performanceFee = 0,
   showIcon = true,
 }) => {
-  const { t } = useTranslation()
-  const { vaultKey } = pool
-
-  const tooltipContent = vaultKey
-    ? t('APY includes compounding, APR doesn’t. This pool’s CAKE is compounded automatically, so we show APY.')
-    : t('This pool’s rewards aren’t compounded automatically, so we show APR')
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
-
   return (
-    <Flex alignItems="center" justifyContent="space-between">
-      {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef}>{vaultKey ? `${t('APY')}:` : `${t('APR')}:`}</TooltipText>
+    <Pool.AprRowWithToolTip isVaultKey={Boolean(pool.vaultKey)}>
       <Apr pool={pool} stakedBalance={stakedBalance} performanceFee={performanceFee} showIcon={showIcon} />
-    </Flex>
+    </Pool.AprRowWithToolTip>
   )
 }
 

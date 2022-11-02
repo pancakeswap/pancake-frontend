@@ -7,3 +7,5 @@ export * from "./PoolCardHeader";
 export * from "./PoolCard";
 export * from "./StyledCard";
 export * from "./withStakeActions";
+export * from "./AprRowWithToolTip";
+export * from "./Apr";
