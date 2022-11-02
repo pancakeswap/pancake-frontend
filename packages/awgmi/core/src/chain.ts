@@ -54,7 +54,7 @@ export const mainnet: Chain = {
 }
 
 export const devnet: Chain = {
-  id: 34, // note: devnet id changing constantly
+  id: 0, // note: devnet id changing constantly
   name: 'Devnet',
   network: 'devnet',
   nodeUrls: {

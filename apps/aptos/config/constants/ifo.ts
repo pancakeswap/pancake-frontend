@@ -17,9 +17,9 @@ export const ifos: Ifo[] = [
       cakeToBurn: '$0',
       distributionRatio: 0.6,
     },
-    currency: AptosCoin.onChain(defaultChain.id),
+    currency: AptosCoin.onChain(0),
     token: new Coin(
-      ChainId.TESTNET,
+      0,
       '0xb5e31e2dbe3311bb18401d682e0086a3c8b159146d19f66627622cd012495b4b::moon_coin::MoonCoin',
       8,
       'MoonCoin',
