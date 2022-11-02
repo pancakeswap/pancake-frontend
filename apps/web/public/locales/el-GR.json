@@ -988,6 +988,11 @@
   "1Y": "1 Ε",
   "5Y": "5 Ε",
   "Annual ROI at current rates": "Ετήσια ROI με τις τρέχουσες τιμές",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "Οι τιμές που εμφανίζονται στις κάρτες και στα γραφήματα είναι διαφορετικές",
   "The price you see come from difference places": "Η τιμή που βλέπετε προέρχεται από διαφορετικά μέρη",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Οι τιμές στις κάρτες προέρχονται από το επαληθευμένο oracle τιμών της Chainlink.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Καλωσορίζουμε τις ομάδες του Aptos Project!",
   "Meet the following requirement to join:": "Για να γίνετε μέλος πρέπει να πληροίτε τις ακόλουθες προϋποθέσεις:",
   "Order cancellation": "Ακύρωση εντολής",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Ακύρωση εντολής: %inputAmount% %inputTokenSymbol% για %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Ακύρωση εντολής: %inputAmount% %inputTokenSymbol% για %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
