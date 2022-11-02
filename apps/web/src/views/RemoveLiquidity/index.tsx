@@ -56,12 +56,13 @@ import Dots from '../../components/Loader/Dots'
 import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../state/burn/hooks'
 
 import { Field } from '../../state/burn/actions'
-import { useUserSlippageTolerance, useZapModeManager } from '../../state/user/hooks'
+import { useGasPrice, useUserSlippageTolerance, useZapModeManager } from '../../state/user/hooks'
 import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../utils/sentry'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import { GAS_PRICE_GWEI } from '../../state/types'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -82,6 +83,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const [tokenA, tokenB] = useMemo(() => [currencyA?.wrapped, currencyB?.wrapped], [currencyA, currencyB])
 
   const { t } = useTranslation()
+  const gasPrice = useGasPrice()
 
   const canZapOut = useMemo(() => zapSupportedChainId.includes(chainId) && zapMode, [chainId, zapMode])
   const zapModeStatus = useMemo(
@@ -285,7 +287,9 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       ]
     }
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    callWithEstimateGas(zapContract, methodName, args)
+    callWithEstimateGas(zapContract, methodName, args, {
+      gasPrice,
+    })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
         const amount = parsedAmounts[Field.LIQUIDITY].toSignificant(3)
@@ -437,6 +441,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
       await routerContract[methodName](...args, {
         gasLimit: safeGasEstimate,
+        gasPrice,
       })
         .then((response: TransactionResponse) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })

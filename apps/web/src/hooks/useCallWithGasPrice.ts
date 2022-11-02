@@ -1,10 +1,14 @@
 import { useCallback } from 'react'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Contract, CallOverrides } from '@ethersproject/contracts'
+import { useGasPrice } from 'state/user/hooks'
 import get from 'lodash/get'
 import { addBreadcrumb } from '@sentry/nextjs'
+import { GAS_PRICE_GWEI } from '../state/types'
 
-export function useCallWithMarketGasPrice() {
+export function useCallWithGasPrice() {
+  const gasPrice = useGasPrice()
+
   /**
    * Perform a contract call with a gas price returned from useGasPrice
    * @param contract Used to perform the call
@@ -13,7 +17,7 @@ export function useCallWithMarketGasPrice() {
    * @param overrides An overrides object to pass to the method. gasPrice passed in here will take priority over the price returned by useGasPrice
    * @returns https://docs.ethers.io/v5/api/providers/types/#providers-TransactionReceipt
    */
-  const callWithMarketGasPrice = useCallback(
+  const callWithGasPrice = useCallback(
     async (
       contract: Contract,
       methodName: string,
@@ -22,7 +26,8 @@ export function useCallWithMarketGasPrice() {
     ): Promise<TransactionResponse> => {
       addBreadcrumb({
         type: 'Transaction',
-        message: `Call with market gas price`,
+        message:
+          gasPrice === GAS_PRICE_GWEI.rpcDefault ? `Call with market gas price` : `Call with gas price: ${gasPrice}`,
         data: {
           contractAddress: contract.address,
           methodName,
@@ -32,7 +37,11 @@ export function useCallWithMarketGasPrice() {
       })
 
       const contractMethod = get(contract, methodName)
-      const tx = await contractMethod(...methodArgs, { ...overrides })
+      const hasManualGasPriceOverride = overrides?.gasPrice
+      const tx = await contractMethod(
+        ...methodArgs,
+        hasManualGasPriceOverride ? { ...overrides } : { ...overrides, gasPrice },
+      )
 
       if (tx) {
         addBreadcrumb({
@@ -49,8 +58,8 @@ export function useCallWithMarketGasPrice() {
 
       return tx
     },
-    [],
+    [gasPrice],
   )
 
-  return { callWithMarketGasPrice }
+  return { callWithGasPrice }
 }

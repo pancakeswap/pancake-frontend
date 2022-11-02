@@ -7,7 +7,7 @@ import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useERC20, useNftMarketContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance, { useGetBnbBalance } from 'hooks/useTokenBalance'
@@ -44,7 +44,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
   const [isPaymentCurrentInitialized, setIsPaymentCurrentInitialized] = useState(false)
   const { theme } = useTheme()
   const { t } = useTranslation()
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const { account, chainId } = useActiveWeb3React()
   const wbnbAddress = chainId === ChainId.BSC_TESTNET ? TESTNET_WBNB_NFT_ADDRESS : bscTokens.wbnb.address
@@ -84,7 +84,7 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
       return requiresApproval(wbnbContractReader, account, nftMarketContract.address)
     },
     onApprove: () => {
-      return callWithMarketGasPrice(wbnbContractApprover, 'approve', [nftMarketContract.address, MaxUint256])
+      return callWithGasPrice(wbnbContractApprover, 'approve', [nftMarketContract.address, MaxUint256])
     },
     onApproveSuccess: async ({ receipt }) => {
       toastSuccess(
@@ -95,16 +95,11 @@ const BuyModal: React.FC<React.PropsWithChildren<BuyModalProps>> = ({ nftToBuy, 
     onConfirm: () => {
       const payAmount = Number.isNaN(nftPrice) ? Zero : parseUnits(nftToBuy?.marketData?.currentAskPrice)
       if (paymentCurrency === PaymentCurrency.BNB) {
-        return callWithMarketGasPrice(
-          nftMarketContract,
-          'buyTokenUsingBNB',
-          [nftToBuy.collectionAddress, nftToBuy.tokenId],
-          {
-            value: payAmount,
-          },
-        )
+        return callWithGasPrice(nftMarketContract, 'buyTokenUsingBNB', [nftToBuy.collectionAddress, nftToBuy.tokenId], {
+          value: payAmount,
+        })
       }
-      return callWithMarketGasPrice(nftMarketContract, 'buyTokenUsingWBNB', [
+      return callWithGasPrice(nftMarketContract, 'buyTokenUsingWBNB', [
         nftToBuy.collectionAddress,
         nftToBuy.tokenId,
         payAmount,
