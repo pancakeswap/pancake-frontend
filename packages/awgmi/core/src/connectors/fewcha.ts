@@ -93,11 +93,14 @@ export class FewchaConnector extends Connector {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.TransactionPayload): Promise<ConnectorTransactionResponse> {
+  async signAndSubmitTransaction(
+    payload: Types.TransactionPayload,
+    options?: Types.SubmitTransactionRequest,
+  ): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
-    const generatedTx = await methodWrapper(provider.generateTransaction)(payload)
+    const generatedTx = await methodWrapper(provider.generateTransaction)(payload, options)
 
     const hash = await methodWrapper(provider.signAndSubmitTransaction)(generatedTx)
 
