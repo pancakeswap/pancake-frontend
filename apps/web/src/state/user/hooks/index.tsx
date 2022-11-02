@@ -404,7 +404,7 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
   )
 }
 
-export function useGasPrice(chainIdOverride?: number, resolveRpcDefault = true): string {
+export function useGasPrice(chainIdOverride?: number): string {
   const { chainId: chainId_, chain } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
   const chainId = chainIdOverride ?? chainId_
@@ -413,8 +413,7 @@ export function useGasPrice(chainIdOverride?: number, resolveRpcDefault = true):
     library &&
       library.provider &&
       chainId === ChainId.BSC &&
-      userGas === GAS_PRICE_GWEI.rpcDefault &&
-      resolveRpcDefault && ['bscProviderGasPrice', library.provider],
+      userGas === GAS_PRICE_GWEI.rpcDefault && ['bscProviderGasPrice', library.provider],
     async () => {
       const gasPrice = await library.getGasPrice()
       return gasPrice.toString()
@@ -430,7 +429,7 @@ export function useGasPrice(chainIdOverride?: number, resolveRpcDefault = true):
     watch: true,
   })
   if (chainId === ChainId.BSC) {
-    return userGas === GAS_PRICE_GWEI.rpcDefault && resolveRpcDefault ? bscProviderGasPrice : userGas
+    return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : userGas
   }
   if (chainId === ChainId.BSC_TESTNET) {
     return GAS_PRICE_GWEI.testnet
@@ -443,7 +442,7 @@ export function useGasPrice(chainIdOverride?: number, resolveRpcDefault = true):
 
 export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
   const dispatch = useAppDispatch()
-  const userGasPrice = useGasPrice(null, false)
+  const userGasPrice = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
 
   const setGasPrice = useCallback(
     (gasPrice: string) => {
