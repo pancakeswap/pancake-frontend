@@ -988,6 +988,11 @@
   "1Y": "1É",
   "5Y": "5É",
   "Annual ROI at current rates": "Éves ROI aktuális árfolyamon",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "A kártyákon és diagramokon feltüntetett árak eltérnek",
   "The price you see come from difference places": "A látható ár különböző helyekről származik",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "A kártyákon látható árak a Chainlink igazolható árjósától származnak.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Üdv az Aptos projektcsapatoknak!",
   "Meet the following requirement to join:": "A csatlakozáshoz teljesítse a következő feltételeket:",
   "Order cancellation": "Megrendelés lemondása",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Megrendelés törlése: %inputAmount% %inputTokenSymbol% ehhez: %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Megrendelés törlése: %inputAmount% %inputTokenSymbol% ehhez: %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
