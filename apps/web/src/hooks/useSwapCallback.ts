@@ -7,7 +7,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
-import { logTx } from 'utils/log'
+import { logSwap, logTx } from 'utils/log'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -173,7 +173,13 @@ export function useSwapCallback(
               },
               type: 'swap',
             })
-
+            logSwap({
+              chainId,
+              inputAmount,
+              outputAmount,
+              input: trade.inputAmount.currency,
+              output: trade.outputAmount.currency,
+            })
             logTx({ account, chainId, hash: response.hash })
 
             return response.hash
