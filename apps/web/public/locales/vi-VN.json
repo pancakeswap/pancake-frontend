@@ -988,6 +988,11 @@
   "1Y": "1 năm",
   "5Y": "5 năm",
   "Annual ROI at current rates": "ROI hằng năm theo tỷ giá hiện tại",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "Giá được hiển thị trên các thẻ và biểu đồ là khác nhau",
   "The price you see come from difference places": "Giá bạn thấy đến từ nhiều nguồn khác nhau",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Giá trên thẻ đến từ oracle giá dễ kiểm chứng của Chainlink.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Xin chào nhóm Aptos Project!",
   "Meet the following requirement to join:": "Đáp ứng yêu cầu sau để tham gia:",
   "Order cancellation": "Hủy đơn hàng",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Hủy đơn hàng: %inputAmount% %inputTokenSymbol% cho %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Hủy đơn hàng: %inputAmount% %inputTokenSymbol% cho %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
