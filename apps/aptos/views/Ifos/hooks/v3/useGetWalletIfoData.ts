@@ -61,38 +61,39 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
   const userInfo = useIfoUserInfo()
   const vestingCharacteristics = useVestingCharacteristics()
 
-  const handleOnSettled = useCallback(() => {
-    if (!account && state.isInitialized) {
-      setState(initialState)
-    }
-  }, [userInfo, vestingCharacteristics])
+  const handleOnSettled = useCallback(
+    (data?: IFOPool) => {
+      if (!account && state.isInitialized) {
+        setState(initialState)
+        return
+      }
 
-  const handleOnSuccess = useCallback(
-    (data: IFOPool) => {
-      const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } = userInfo.data
-        ? computeOfferingAndRefundAmount(userInfo.data, data)
-        : {
-            tax_amount: BIG_ZERO,
-            refunding_amount: BIG_ZERO,
-          }
+      if (data) {
+        const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } = userInfo.data
+          ? computeOfferingAndRefundAmount(userInfo.data, data)
+          : {
+              tax_amount: BIG_ZERO,
+              refunding_amount: BIG_ZERO,
+            }
 
-      setState((prevState) => ({
-        ...prevState,
-        isInitialized: true,
-        poolUnlimited: {
-          ...prevState.poolUnlimited,
-          ...vestingCharacteristics,
-          amountTokenCommittedInLP: userInfo.data ? new BigNumber(userInfo.data.amount) : BIG_ZERO,
-          hasClaimed: userInfo.data?.claimed ?? false,
-          refundingAmountInLP,
-          taxAmountInLP,
-        },
-      }))
+        setState((prevState) => ({
+          ...prevState,
+          isInitialized: true,
+          poolUnlimited: {
+            ...prevState.poolUnlimited,
+            ...vestingCharacteristics,
+            amountTokenCommittedInLP: userInfo.data ? new BigNumber(userInfo.data.amount) : BIG_ZERO,
+            hasClaimed: userInfo.data?.claimed ?? false,
+            refundingAmountInLP,
+            taxAmountInLP,
+          },
+        }))
+      }
     },
-    [userInfo, vestingCharacteristics],
+    [account, state, userInfo, vestingCharacteristics],
   )
 
-  useIfoPool({ onSettled: handleOnSettled, onSuccess: handleOnSuccess })
+  useIfoPool({ onSettled: handleOnSettled })
 
   return { ...state, contract, setPendingTx, setIsClaimed }
 }

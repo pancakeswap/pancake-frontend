@@ -1,5 +1,4 @@
-import { AptosCoin, ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { defaultChain } from '@pancakeswap/awgmi'
+import { AptosCoin, Coin } from '@pancakeswap/aptos-swap-sdk'
 import { Ifo } from './types'
 
 // export const ifos: Ifo[] = []

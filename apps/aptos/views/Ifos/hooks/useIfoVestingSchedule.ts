@@ -4,7 +4,7 @@ import { IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA } from 'views/Ifos/constants
 import { RootObject as VestingSchedule } from 'views/Ifos/generated/VestingSchedule'
 import { useIfoResources } from './useIfoResources'
 
-export const useIfoVestingSchedule = ({ key }: { key?: Uint8Array }) => {
+export const useIfoVestingSchedule = ({ key }: { key?: string }) => {
   const resources = useIfoResources()
 
   return useTableItem<VestingSchedule>({
