@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js'
-import { Contract } from '@ethersproject/contracts'
 
 import { IfoStatus, PoolIds } from 'config/constants/types'
 
@@ -76,7 +75,6 @@ export interface WalletIfoState {
 
 // Returned by useGetWalletIfoData
 export interface WalletIfoData extends WalletIfoState {
-  contract: Contract // TODO: Aptos
   setPendingTx: (status: boolean, poolId: PoolIds) => void
   setIsClaimed: (poolId: PoolIds) => void
 }

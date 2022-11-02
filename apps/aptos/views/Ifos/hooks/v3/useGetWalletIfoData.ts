@@ -1,5 +1,4 @@
 /* eslint-disable camelcase */
-import { Contract } from '@ethersproject/contracts'
 import { useAccount } from '@pancakeswap/awgmi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
@@ -37,8 +36,6 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
 
   const [state, setState] = useState<WalletIfoState>(initialState)
 
-  const contract = {} as Contract
-
   const setPendingTx = (status: boolean, poolId: PoolIds) =>
     setState((prevState) => ({
       ...prevState,
@@ -63,7 +60,7 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
 
   const handleOnSettled = useCallback(
     (data?: IFOPool) => {
-      if (!account && state.isInitialized) {
+      if (!account) {
         setState(initialState)
         return
       }
@@ -90,10 +87,10 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
         }))
       }
     },
-    [account, state, userInfo, vestingCharacteristics],
+    [account, userInfo, vestingCharacteristics],
   )
 
   useIfoPool({ onSettled: handleOnSettled })
 
-  return { ...state, contract, setPendingTx, setIsClaimed }
+  return { ...state, setPendingTx, setIsClaimed }
 }
