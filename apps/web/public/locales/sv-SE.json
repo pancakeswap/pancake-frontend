@@ -988,6 +988,11 @@
   "1Y": "1 år",
   "5Y": "5Å",
   "Annual ROI at current rates": "Årlig avkastning på investeringar med befintliga priser",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "Priserna som visas på kort och i diagram skiljer sig",
   "The price you see come from difference places": "Det pris du ser kommer från olika platser",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Priser på kort kommer från Chainlinks verifierbara prisorakel.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Hej Aptos projektteam!",
   "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Avbeställning av order",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Avbeställning av order: %inputAmount% %inputTokenSymbol% för %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Avbeställning av order: %inputAmount% %inputTokenSymbol% för %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
