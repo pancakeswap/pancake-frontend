@@ -988,6 +988,11 @@
   "1Y": "1年",
   "5Y": "5年",
   "Annual ROI at current rates": "現在のレートでの年間投資効率",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "カードとチャートに表示される価格は異なります",
   "The price you see come from difference places": "表示されている価格は異なる場所からのものです",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "カードの価格はChainlinkの検証可能な価格オラクルからのものです。",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Hello Aptos Project Teams!",
   "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Order cancellation",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
