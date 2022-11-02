@@ -1,6 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { WalletConnectorNotFoundError, WalletSwitchChainError } from '@pancakeswap/ui-wallets'
-import { connectorLocalStorageKey } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorNames } from 'config/wallet'
 import { useCallback } from 'react'
@@ -37,7 +36,6 @@ const useAuth = () => {
         }
         return connected
       } catch (error) {
-        window?.localStorage?.removeItem(connectorLocalStorageKey)
         if (error instanceof ConnectorNotFoundError) {
           throw new WalletConnectorNotFoundError()
         }
@@ -56,7 +54,7 @@ const useAuth = () => {
     } catch (error) {
       console.error(error)
     } finally {
-      clearUserStates(dispatch, { chainId: chain?.id, isDeactive: true })
+      clearUserStates(dispatch, { chainId: chain?.id })
     }
   }, [disconnectAsync, dispatch, chain?.id])
 
