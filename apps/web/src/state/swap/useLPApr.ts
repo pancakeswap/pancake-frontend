@@ -7,6 +7,7 @@ import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getChainNameFromId } from 'utils/getChainNameFromId'
 import { SLOW_INTERVAL } from 'config/constants'
 import { LP_HOLDERS_FEE, WEEKS_IN_YEAR } from 'config/constants/info'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../info/constant'
 
 interface PoolReserveVolume {
   reserveUSD: string
