@@ -1,5 +1,12 @@
 # @pancakeswap/awgmi
 
+## 0.0.8
+
+### Patch Changes
+
+- a584ca7aa: Consolidate Fewcha error
+- 229d07513: Add Fewcha tx options
+
 ## 0.0.7
 
 ### Patch Changes
