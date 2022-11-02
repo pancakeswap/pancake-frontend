@@ -42,18 +42,18 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
       desktop: 'https://chrome.google.com/webstore/detail/pontem-aptos-wallet/phkbamefinggmakgklpkljjmgibohnba',
     },
   },
-  // {
-  //   id: 'fewcha',
-  //   title: 'Fewcha',
-  //   icon: '/images/wallets/fewcha.png',
-  //   get installed() {
-  //     return typeof window !== 'undefined' && Boolean(window.fewcha)
-  //   },
-  //   connectorId: ConnectorNames.Fewcha,
-  //   downloadLink: {
-  //     desktop: 'https://fewcha.app/',
-  //   },
-  // },
+  {
+    id: 'fewcha',
+    title: 'Fewcha',
+    icon: '/images/wallets/fewcha.png',
+    get installed() {
+      return typeof window !== 'undefined' && Boolean(window.fewcha)
+    },
+    connectorId: ConnectorNames.Fewcha,
+    downloadLink: {
+      desktop: 'https://fewcha.app/',
+    },
+  },
   {
     id: 'blocto',
     title: 'Blocto',

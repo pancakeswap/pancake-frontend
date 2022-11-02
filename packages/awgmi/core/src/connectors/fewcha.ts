@@ -1,8 +1,7 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
-import { Connector, ConnectorTransactionResponse } from './base'
 import { ConnectorNotFoundError } from '../errors'
-import { Address } from '../types'
+import { Connector, ConnectorTransactionResponse } from './base'
 import { SignMessagePayload, SignMessageResponse } from './types'
 
 declare global {
@@ -10,6 +9,9 @@ declare global {
     fewcha?: any
   }
 }
+
+type NetworkEvent = { name: string; network: string }
+type AccountEvent = string
 
 function methodWrapper(promiseFn: any) {
   return async (...args: any) => {
@@ -40,12 +42,9 @@ export class FewchaConnector extends Connector {
     try {
       const provider = await this.getProvider()
       if (!provider) throw new ConnectorNotFoundError()
-      if (provider.onAccountChange) {
-        provider.onAccountChange(this.onAccountsChanged)
-      }
-      if (provider.onNetworkChange) {
-        provider.onNetworkChange(this.onNetworkChanged)
-      }
+
+      window.addEventListener('aptos#changeNetwork', this.onNetworkChanged)
+      window.addEventListener('aptos#changeAccount', this.onAccountsChanged)
 
       this.emit('message', { type: 'connecting' })
 
@@ -66,6 +65,8 @@ export class FewchaConnector extends Connector {
   async disconnect() {
     const provider = await this.getProvider()
     if (!provider) return
+    window.removeEventListener('aptos#changeNetwork', this.onNetworkChanged)
+    window.removeEventListener('aptos#changeAccount', this.onAccountsChanged)
     // eslint-disable-next-line consistent-return
     return provider.disconnect()
   }
@@ -118,19 +119,25 @@ export class FewchaConnector extends Connector {
     return response
   }
 
-  protected onAccountsChanged = async (address: Address) => {
-    if (!address) {
-      this.emit('disconnect')
-    } else {
-      this.emit('change', {
-        account: await this.account(),
-      })
+  protected onAccountsChanged = async (e: Event) => {
+    if (e instanceof CustomEvent) {
+      const address = (<CustomEvent<AccountEvent>>e).detail
+
+      if (!address) {
+        this.emit('disconnect')
+      } else {
+        this.emit('change', {
+          account: await this.account(),
+        })
+      }
     }
   }
 
-  protected onNetworkChanged = (network: string) => {
-    this.emit('change', {
-      network,
-    })
+  protected onNetworkChanged = (e: Event) => {
+    if (e instanceof CustomEvent) {
+      this.emit('change', {
+        network: (<CustomEvent<NetworkEvent>>e).detail.name,
+      })
+    }
   }
 }
