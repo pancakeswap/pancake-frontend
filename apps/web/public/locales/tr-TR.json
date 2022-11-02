@@ -988,6 +988,11 @@
   "1Y": "1 Yıl",
   "5Y": "5 Yıl",
   "Annual ROI at current rates": "Güncel oranlarda yatırım getirisi",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "Kartlarda ve grafiklerde gösterilen fiyatlar farklıdır",
   "The price you see come from difference places": "Gördüğün fiyat farklı yerlerden geliyor",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Kartlardaki fiyatlar, Chainlink'in doğrulanabilir fiyat tahmininden gelir.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Merhaba Aptos Proje Ekipleri!",
   "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Order cancellation",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
