@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
-import { ConnectorNotFoundError } from '../errors'
+import { ConnectorNotFoundError, ConnectorUnauthorizedError, UserRejectedRequestError } from '../errors'
 import { Connector, ConnectorTransactionResponse } from './base'
 import { SignMessagePayload, SignMessageResponse } from './types'
 
@@ -17,8 +17,11 @@ function methodWrapper(promiseFn: any) {
   return async (...args: any) => {
     const { data, status, method } = await promiseFn(...args)
 
+    if (status === 401) throw new UserRejectedRequestError(new Error())
+    if (status === 403) throw new ConnectorUnauthorizedError()
     if (status === 200) return data
 
+    // status 500
     throw new Error(`Fewcha ${method} method: ${data?.message || data}`)
   }
 }
