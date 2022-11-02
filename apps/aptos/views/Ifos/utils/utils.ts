@@ -61,7 +61,7 @@ const stripHexPrefix = (address: string) => {
  *
  * TODO: Add test.
  */
-export const computeVestingScheduleId = (beneficiary: string, index: number): Uint8Array => {
+export const computeVestingScheduleId = (beneficiary: string, index: number): string => {
   // The Move function expects no hex prefix.
   const bytesA = Buffer.from(stripHexPrefix(beneficiary), 'hex')
 
@@ -70,5 +70,5 @@ export const computeVestingScheduleId = (beneficiary: string, index: number): Ui
 
   const bytes = Buffer.concat([bytesA, bytesB])
 
-  return Buffer.from(stripHexPrefix(keccak256(bytes)), 'hex')
+  return stripHexPrefix(keccak256(bytes))
 }
