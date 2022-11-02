@@ -988,6 +988,11 @@
   "1Y": "1 A",
   "5Y": "5 A",
   "Annual ROI at current rates": "Randamentul anual al investiției la ratele curente",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "Prețurile afișate pe carduri și în grafice sunt diferite",
   "The price you see come from difference places": "Prețul pe care îl vezi vine din locuri diferite",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Prețurile de pe carduri provin de la oracolul de prețuri verificabile Chainlink.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Bună ziua echipelor proiectului Aptos!",
   "Meet the following requirement to join:": "Îndeplinește următoarea cerință pentru a te înscrie:",
   "Order cancellation": "Anulare comandă",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Anulare comandă: %inputAmount% %inputTokenSymbol% pentru %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Anulare comandă: %inputAmount% %inputTokenSymbol% pentru %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
