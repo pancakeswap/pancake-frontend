@@ -37,11 +37,12 @@ export const useFarms = () => {
   let farmsList = farmsData as SerializedFarm[]
 
   // PublicData
-  useSWRImmutable(farms && [farms, 'fetchPublicData'], async () => {
+  useSWRImmutable(farmsData && chainId ? [farms, chainId, 'fetchPublicData'] : null, async () => {
     for await (const farm of farms as MapFarmResource[]) {
       const { tokenAmountTotal, quoteTokenAmountTotal, lpTotalSupply, lpTotalInQuoteToken, tokenPriceVsQuote } =
         await fetchLpInfo({
           provider,
+          chainId,
           singlePoolInfo: farm.singlePoolInfo as FarmResourcePoolInfo,
           lpAddress: farm.lp[farm.pid as number],
         })

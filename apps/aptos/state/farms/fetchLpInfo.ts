@@ -1,20 +1,16 @@
 import { AptosClient } from 'aptos'
 import BigNumber from 'bignumber.js'
+import { SerializedClassicFarmConfig } from '@pancakeswap/farms'
+import { getFarmConfig } from 'config/constants/farms'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { SWAP_ADDRESS } from '@pancakeswap/aptos-swap-sdk'
-import {
-  fetchCoin,
-  FetchCoinResult,
-  coinStoreResourcesFilter,
-  unwrapTypeFromString,
-  wrapCoinInfoTypeTag,
-} from '@pancakeswap/awgmi/core'
-import { FARMS_ADDRESS } from 'state/farms/constants'
+import { SWAP_ADDRESS, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
+import { unwrapTypeFromString, wrapCoinInfoTypeTag } from '@pancakeswap/awgmi/core'
 import { FarmResourcePoolInfo } from 'state/farms/types'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 
 interface FetchLpInfoProps {
   provider: AptosClient
+  chainId: number
   singlePoolInfo: FarmResourcePoolInfo
   lpAddress: string
 }
@@ -27,40 +23,33 @@ interface LpInfo {
   tokenPriceVsQuote: string
 }
 
-export const fetchLpInfo = async ({ provider, singlePoolInfo, lpAddress }: FetchLpInfoProps): Promise<LpInfo> => {
+export const fetchLpInfo = async ({
+  provider,
+  chainId,
+  singlePoolInfo,
+  lpAddress,
+}: FetchLpInfoProps): Promise<LpInfo> => {
+  const farmConfig = getFarmConfig(chainId)
+  const token = farmConfig.find(
+    (config) => config.lpAddress.toLowerCase() === lpAddress.toLowerCase(),
+  ) as SerializedClassicFarmConfig
+
   const getLpTokenInfo = await provider.getAccountResources(SWAP_ADDRESS)
   const lpTokenInfo = getLpTokenInfo.filter(
     (lp) => lp.type.toLowerCase() === wrapCoinInfoTypeTag(lpAddress).toLowerCase(),
   )?.[0]?.data
   const lpTotalSupply = (lpTokenInfo as any)?.supply.vec[0].integer.vec[0].value
 
-  const pcsAddressList = await provider.getAccountResource(FARMS_ADDRESS, '0x1::code::PackageRegistry')
-  const pcsTokenAddress = (pcsAddressList as any).data.packages[0].deps.find(
-    (dep) => dep.package_name === 'PancakeCakeToken',
-  )?.account
-
-  const coinStore = await provider.getAccountResources(pcsTokenAddress)
-  const coinList = coinStore.filter(coinStoreResourcesFilter)
-
-  const coinInfo: FetchCoinResult[] = []
-  for await (const coin of coinList) {
-    const response = await fetchCoin({ coin: unwrapTypeFromString(coin.type) })
-    coinInfo.push({ ...response })
-  }
-
-  const tokenBalanceLP = BIG_ZERO
-  const quoteTokenBalanceLP = BIG_ZERO
-  let tokenDecimals = 0
-  let quoteTokenDecimals = 0
-  const lpTokens = unwrapTypeFromString(lpAddress)?.split(', ')
-
+  let tokenBalanceLP = BIG_ZERO
+  let quoteTokenBalanceLP = BIG_ZERO
+  const tokenDecimals = token.token.decimals
+  const quoteTokenDecimals = token.quoteToken.decimals
+  const lpTokens = unwrapTypeFromString(lpAddress)
   if (lpTokens) {
-    const quoteTokenAddress = lpTokens[0]
-    const tokenAddress = lpTokens[1]
-
-    quoteTokenDecimals =
-      coinInfo.find((coin) => coin.address.toLowerCase() === quoteTokenAddress.toLowerCase())?.decimals ?? 0
-    tokenDecimals = coinInfo.find((coin) => coin.address.toLowerCase() === tokenAddress.toLowerCase())?.decimals ?? 0
+    const pairReserveTag = `${PAIR_RESERVE_TYPE_TAG}<${lpTokens}>`
+    const tokenPairReserve = getLpTokenInfo.find((i) => i.type.toLowerCase() === pairReserveTag.toLowerCase())
+    quoteTokenBalanceLP = new BigNumber((tokenPairReserve as any)?.data?.reserve_x)
+    tokenBalanceLP = new BigNumber((tokenPairReserve as any)?.data?.reserve_y)
   }
 
   const lpTotalSupplyBN = new BigNumber(lpTotalSupply)

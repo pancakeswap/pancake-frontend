@@ -11,4 +11,12 @@ export const testnetTokens = {
     'Moon Coin',
     '',
   ),
+  cake: new Coin(
+    ChainId.TESTNET,
+    '0x8363d4fdb36f314a80027f1d2b22f25f19be1c8a070a5ee4cc3f08f4e4d9fc42::pancake::Cake',
+    8,
+    'CAKE',
+    'PancakeSwap Token',
+    '',
+  ),
 }
