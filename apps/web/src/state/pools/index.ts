@@ -78,6 +78,7 @@ export const initialIfoState = Object.freeze({
 
 const initialState: PoolsState = {
   data: [...poolsConfig],
+  publicDataLoaded: false,
   userDataLoaded: false,
   cakeVault: initialPoolVaultState,
   ifo: initialIfoState,
@@ -392,6 +393,7 @@ export const PoolsSlice = createSlice({
         const livePoolData = livePoolsSousIdMap[pool.sousId]
         return { ...pool, ...livePoolData }
       })
+      state.publicDataLoaded = true
     },
     // IFO
     setIfoUserCreditData: (state, action) => {

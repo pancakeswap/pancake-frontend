@@ -37,7 +37,7 @@ const FinishedTextLink = styled(Link)`
 const Pools: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { pools, userDataLoaded } = usePoolsWithVault()
+  const { pools, userDataLoaded, publicDataLoaded } = usePoolsWithVault()
 
   usePoolsPageFetch()
 
@@ -59,7 +59,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
         </Flex>
       </PageHeader>
       <Page>
-        <PoolControls pools={pools}>
+        <PoolControls pools={publicDataLoaded ? pools : pools.filter((pool) => pool.vaultKey)}>
           {({ chosenPools, viewMode, stakedOnly, normalizedUrlSearch, showFinishedPools }) => (
             <>
               {showFinishedPools && (

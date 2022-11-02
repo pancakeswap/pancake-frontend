@@ -9,6 +9,7 @@ import { getVaultPosition, VaultPosition } from '../../utils/cakePool'
 const selectPoolsData = (state: State) => state.pools.data
 const selectPoolData = (sousId) => (state: State) => state.pools.data.find((p) => p.sousId === sousId)
 const selectUserDataLoaded = (state: State) => state.pools.userDataLoaded
+const selectPublicDataLoaded = (state: State) => state.pools.publicDataLoaded
 const selectVault = (key: VaultKey) => (state: State) => key ? state.pools[key] : initialPoolVaultState
 const selectIfo = (state: State) => state.pools.ifo
 const selectIfoUserCredit = (state: State) => state.pools.ifo.credit ?? BIG_ZERO
@@ -19,9 +20,9 @@ export const makePoolWithUserDataLoadingSelector = (sousId) =>
   })
 
 export const poolsWithUserDataLoadingSelector = createSelector(
-  [selectPoolsData, selectUserDataLoaded],
-  (pools, userDataLoaded) => {
-    return { pools: pools.map(transformPool), userDataLoaded }
+  [selectPoolsData, selectUserDataLoaded, selectPublicDataLoaded],
+  (pools, userDataLoaded, publicDataLoaded) => {
+    return { pools: pools.map(transformPool), userDataLoaded, publicDataLoaded }
   },
 )
 
@@ -34,7 +35,7 @@ export const poolsWithVaultSelector = createSelector(
     makeVaultPoolByKey(VaultKey.CakeFlexibleSideVault),
   ],
   (poolsWithUserDataLoading, deserializedLockedCakeVault, deserializedFlexibleSideCakeVault) => {
-    const { pools, userDataLoaded } = poolsWithUserDataLoading
+    const { pools, userDataLoaded, publicDataLoaded } = poolsWithUserDataLoading
     const cakePool = pools.find((pool) => !pool.isFinished && pool.sousId === 0)
     const withoutCakePool = pools.filter((pool) => pool.sousId !== 0)
 
@@ -60,7 +61,11 @@ export const poolsWithVaultSelector = createSelector(
           ]
         : []
 
-    return { pools: [cakeAutoVault, ...cakeAutoFlexibleSideVault, ...withoutCakePool], userDataLoaded }
+    return {
+      pools: [cakeAutoVault, ...cakeAutoFlexibleSideVault, ...withoutCakePool],
+      userDataLoaded,
+      publicDataLoaded,
+    }
   },
 )
 

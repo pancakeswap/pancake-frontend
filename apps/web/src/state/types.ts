@@ -173,6 +173,7 @@ export interface PoolsState {
   cakeVault: SerializedLockedCakeVault
   cakeFlexibleSideVault: SerializedCakeVault
   userDataLoaded: boolean
+  publicDataLoaded: boolean
 }
 
 export type TeamsById = {
