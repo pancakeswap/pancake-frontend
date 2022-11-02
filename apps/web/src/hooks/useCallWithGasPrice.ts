@@ -1,3 +1,5 @@
+import { AppState } from 'state'
+import { useSelector } from 'react-redux'
 import { useCallback } from 'react'
 import { TransactionResponse } from '@ethersproject/providers'
 import { Contract, CallOverrides } from '@ethersproject/contracts'
@@ -8,6 +10,7 @@ import { GAS_PRICE_GWEI } from '../state/types'
 
 export function useCallWithGasPrice() {
   const gasPrice = useGasPrice()
+  const userGasPrice = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
 
   /**
    * Perform a contract call with a gas price returned from useGasPrice
@@ -27,7 +30,9 @@ export function useCallWithGasPrice() {
       addBreadcrumb({
         type: 'Transaction',
         message:
-          gasPrice === GAS_PRICE_GWEI.rpcDefault ? `Call with market gas price` : `Call with gas price: ${gasPrice}`,
+          userGasPrice === GAS_PRICE_GWEI.rpcDefault
+            ? `Call with market gas price`
+            : `Call with gas price: ${gasPrice}`,
         data: {
           contractAddress: contract.address,
           methodName,
@@ -58,7 +63,7 @@ export function useCallWithGasPrice() {
 
       return tx
     },
-    [gasPrice],
+    [gasPrice, userGasPrice],
   )
 
   return { callWithGasPrice }
