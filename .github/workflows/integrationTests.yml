@@ -35,7 +35,6 @@ jobs:
       - name: Cypress install
         run: yarn install --frozen-lockfile
       - run: yarn cypress install
-      - run: turbo run build --filter=web...[HEAD^1]
+      - run: yarn integration-test
         env:
           NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
-      - run: yarn integration-test

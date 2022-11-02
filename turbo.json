@@ -24,8 +24,7 @@
     },
     "integration-test": {
       "dependsOn": ["^build"],
-      "outputs": [],
-      "inputs": ["cypress/integration/**.test.ts"]
+      "outputs": []
     },
     "clean": {
       "cache": false
