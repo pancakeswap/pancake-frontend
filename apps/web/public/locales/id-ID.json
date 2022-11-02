@@ -988,6 +988,11 @@
   "1Y": "1 T",
   "5Y": "5 T",
   "Annual ROI at current rates": "ROI Tahunan pada kurs saat ini",
+  "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Standard (%gasPrice%)": "Standard (%gasPrice%)",
+  "Fast (%gasPrice%)": "Fast (%gasPrice%)",
+  "Instant (%gasPrice%)": "Instant (%gasPrice%)",
   "Prices shown on cards and charts are different": "Harga yang ditampilkan pada kartu dan bagan tidak sama",
   "The price you see come from difference places": "Harga yang Anda lihat berasal dari tempat yang berbeda",
   "Prices on cards come from Chainlink’s verifiable price oracle.": "Harga pada kartu berasal dari perkiraan harga Chainlink yang dapat diverifikasi.",
@@ -2006,5 +2011,6 @@
   "Hello Aptos Project Teams!": "Halo, Tim Proyek Aptos!",
   "Meet the following requirement to join:": "Penuhilah persyaratan berikut ini untuk bergabung dengan:",
   "Order cancellation": "Pembatalan order",
-  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Pembatalan order: %inputAmount% %inputTokenSymbol% dengan %outputAmount% %outputTokenSymbol%"
+  "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Pembatalan order: %inputAmount% %inputTokenSymbol% dengan %outputAmount% %outputTokenSymbol%",
+  "RPC Default": "RPC Default"
 }
