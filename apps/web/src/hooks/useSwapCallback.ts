@@ -15,7 +15,6 @@ import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, isAddress } from '../utils'
 import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
 import { basisPointsToPercent } from '../utils/exchange'
-import { GAS_PRICE_GWEI } from '../state/types'
 
 export enum SwapCallbackState {
   INVALID,

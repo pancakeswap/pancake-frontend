@@ -50,7 +50,6 @@ import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityM
 import { logError } from '../../../utils/sentry'
 import { CommonBasesType } from '../../../components/SearchModal/types'
 import { useStableDerivedBurnInfo } from './hooks/useStableDerivedBurnInfo'
-import { GAS_PRICE_GWEI } from '../../../state/types'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};

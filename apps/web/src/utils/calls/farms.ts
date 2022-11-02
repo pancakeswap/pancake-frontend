@@ -2,7 +2,6 @@ import { Contract } from '@ethersproject/contracts'
 import BigNumber from 'bignumber.js'
 import { BOOSTED_FARM_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getNonBscVaultContractFee, MessageTypes } from 'views/Farms/hooks/getNonBscVaultFee'
-import { GAS_PRICE_GWEI } from '../../state/types'
 
 const options = {
   gasLimit: BOOSTED_FARM_GAS_LIMIT,

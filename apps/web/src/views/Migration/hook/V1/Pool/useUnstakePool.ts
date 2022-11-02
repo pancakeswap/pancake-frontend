@@ -4,7 +4,6 @@ import { DEFAULT_GAS_LIMIT, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { parseUnits } from '@ethersproject/units'
 import { useMasterchefV1, useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
-import { GAS_PRICE_GWEI } from '../../../../../state/types'
 
 const sousUnstake = (sousChefContract: any, amount: string, decimals: number, gasPrice: string) => {
   const units = parseUnits(amount, decimals)

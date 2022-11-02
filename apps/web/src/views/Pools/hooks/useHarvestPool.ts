@@ -3,7 +3,6 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useSousChef } from 'hooks/useContract'
 import { BOOSTED_FARM_GAS_LIMIT } from 'config'
 import { useGasPrice } from 'state/user/hooks'
-import { GAS_PRICE_GWEI } from '../../../state/types'
 
 const options = {
   gasLimit: BOOSTED_FARM_GAS_LIMIT,
