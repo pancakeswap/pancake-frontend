@@ -2,7 +2,7 @@ import { createAccountResourceFilter } from '@pancakeswap/awgmi/core'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFarmConfig } from 'config/constants/farms'
-import { SerializedFarm, SerializedFarmUserData, SerializedClassicFarmConfig } from '@pancakeswap/farms'
+import { SerializedFarm, SerializedClassicFarmConfig } from '@pancakeswap/farms'
 import { mainnetTokens } from 'config/constants/tokens/index'
 import { FarmResource, MapFarmResource } from 'state/farms/types'
 import { FARMS_ADDRESS, FARMS_MODULE_NAME, FARMS_NAME } from 'state/farms/constants'
@@ -36,22 +36,20 @@ export const transformFarm =
 
     const tokenInfo = token ?? defaultToken
 
-    const userData = {
-      allowance: '0',
-      tokenBalance: '0',
-      stakedBalance: '0',
-      earnings: '0',
-    } as SerializedFarmUserData
-
-    const totalRegularAllocPoint = farm.total_regular_alloc_point
     const allocPoint = farm.singlePoolInfo ? new BigNumber(farm.singlePoolInfo.alloc_point) : BIG_ZERO
-    const poolWeight = totalRegularAllocPoint ? allocPoint.div(new BigNumber(totalRegularAllocPoint)) : BIG_ZERO
+    const totalAlloc = farm.singlePoolInfo.is_regular ? farm.total_regular_alloc_point : farm.total_special_alloc_point
+    const poolWeight = totalAlloc ? allocPoint.div(new BigNumber(totalAlloc)) : BIG_ZERO
 
     return {
       ...tokenInfo,
       poolWeight: poolWeight.toJSON(),
       multiplier: `${allocPoint.div(100).toString()}X`,
-      userData,
+      userData: {
+        allowance: '0',
+        tokenBalance: '0',
+        stakedBalance: '0',
+        earnings: '0',
+      },
     }
   }
 

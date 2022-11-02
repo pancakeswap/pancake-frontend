@@ -139,7 +139,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     return row
   }
 
-  const rowData = farms.map((farm) => generateRow(farm))
+  const rowData = farms?.map((farm) => generateRow(farm))
 
   const generateSortedRow = (row) => {
     // @ts-ignore
@@ -154,7 +154,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     return newRow
   }
 
-  const sortedRows = rowData.map(generateSortedRow)
+  const sortedRows = rowData?.map(generateSortedRow)
 
   return (
     <Container id="farms-table">
@@ -162,7 +162,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>
-              {sortedRows.map((row) => (
+              {sortedRows?.map((row) => (
                 <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} />
               ))}
             </TableBody>

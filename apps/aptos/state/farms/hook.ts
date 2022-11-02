@@ -8,8 +8,10 @@ import { FetchStatus } from 'config/constants/types'
 import { deserializeFarm } from 'state/farms/utils/deserializeFarm'
 import { farmsPublicDataSelector, mapFarmList, transformFarm } from 'state/farms/utils/index'
 import { SLOW_INTERVAL } from 'config/constants'
-import { MapFarmResource, FarmUserInfoResponse, FarmResource } from 'state/farms/types'
-import { FARMS_ADDRESS, FARMS_USER_INFO, FARMS_NAME_TAG } from 'state/farms/constants'
+import { MapFarmResource, FarmResource, FarmResourcePoolInfo } from 'state/farms/types'
+import { FARMS_ADDRESS, FARMS_NAME_TAG } from 'state/farms/constants'
+import { fetchFarmUserInfo } from 'state/farms/fetchFarmUserInfo'
+import { fetchLpInfo } from 'state/farms/fetchLpInfo'
 
 export const useFarmsLength = (): number => {
   const { data: farms } = useAccountResource({
@@ -34,61 +36,73 @@ export const useFarms = () => {
   const farmsData = useMemo(() => farms?.map(transformFarm(chainId)), [chainId, farms])
   let farmsList = farmsData as SerializedFarm[]
 
-  const fetchFarmUserInfo = async (address: string, userInfoAddress: string) => {
-    try {
-      const response: FarmUserInfoResponse = await provider.getTableItem(userInfoAddress, {
-        key_type: 'address',
-        value_type: FARMS_USER_INFO,
-        key: address,
-      })
+  // PublicData
+  useSWRImmutable(farms && [farms, 'fetchPublicData'], async () => {
+    for await (const farm of farms as MapFarmResource[]) {
+      const { tokenAmountTotal, quoteTokenAmountTotal, lpTotalSupply, lpTotalInQuoteToken, tokenPriceVsQuote } =
+        await fetchLpInfo({
+          provider,
+          singlePoolInfo: farm.singlePoolInfo as FarmResourcePoolInfo,
+          lpAddress: farm.lp[farm.pid as number],
+        })
 
-      return {
-        earnings: response.amount,
-        stakedBalance: response.reward_debt,
-      }
-    } catch (error) {
-      console.error('Aptos Fetch Farm User Info Error: ', error)
-      return {
-        earnings: '0',
-        stakedBalance: '0',
-      }
+      farmsList = farmsList?.map((singleFarm) => {
+        if (singleFarm.pid === farm.pid) {
+          return {
+            ...singleFarm,
+            tokenAmountTotal,
+            quoteTokenAmountTotal,
+            lpTotalSupply,
+            lpTotalInQuoteToken,
+            tokenPriceVsQuote,
+          }
+        }
+        return singleFarm
+      }) as SerializedFarm[]
     }
-  }
+  })
 
   // @ts-ignores
+  // UserData
   const { status, mutate } = useSWRImmutable(
     account && chainId && farmsData ? [account, chainId, farmsData, 'fetchFarmUser'] : null,
     async () => {
-      // Token Balance
-      const userBalances = await provider.getAccountResources(account as string)
-      const lpBalances = userBalances
-        .filter(coinStoreResourcesFilter)
-        .filter(({ data }) => data.coin.value !== '0')
-        .reduce(
-          (accumulator, value) => ({
-            ...accumulator,
-            [unwrapTypeFromString(value.type)?.toLowerCase() as string]: value.data.coin.value,
-          }),
-          {},
-        )
+      if (account) {
+        // Token Balance
+        const userBalances = await provider.getAccountResources(account as string)
+        const lpBalances = userBalances
+          .filter(coinStoreResourcesFilter)
+          .filter(({ data }) => data.coin.value !== '0')
+          .reduce(
+            (accumulator, value) => ({
+              ...accumulator,
+              [unwrapTypeFromString(value.type)?.toLowerCase() as string]: value.data.coin.value,
+            }),
+            {},
+          )
 
-      farmsList = farmsList?.map((farm) => {
-        const tokenBalance = lpBalances[farm.lpAddress.toLowerCase()]
-        if (tokenBalance) {
-          return { ...farm, userData: { ...farm.userData, tokenBalance } }
-        }
-        return farm
-      }) as SerializedFarm[]
-
-      // Staked Balance & earnings
-      for await (const farm of farms as MapFarmResource[]) {
-        const { earnings, stakedBalance } = await fetchFarmUserInfo(account as string, farm.singleUserInfo as string)
-        farmsList = farmsList?.map((singleFarm) => {
-          if (singleFarm.pid === farm.pid) {
-            return { ...singleFarm, userData: { ...singleFarm.userData, earnings, stakedBalance } }
+        farmsList = farmsList?.map((farm) => {
+          const tokenBalance = lpBalances[farm.lpAddress.toLowerCase()]
+          if (tokenBalance) {
+            return { ...farm, userData: { ...farm.userData, tokenBalance } }
           }
-          return singleFarm
+          return farm
         }) as SerializedFarm[]
+
+        // User staked balance, earnings
+        for await (const farm of farms as MapFarmResource[]) {
+          const { earnings, stakedBalance } = await fetchFarmUserInfo({
+            provider,
+            address: account as string,
+            userInfoAddress: farm.singleUserInfo as string,
+          })
+          farmsList = farmsList?.map((singleFarm) => {
+            if (singleFarm.pid === farm.pid) {
+              return { ...singleFarm, userData: { ...singleFarm.userData, earnings, stakedBalance } }
+            }
+            return singleFarm
+          }) as SerializedFarm[]
+        }
       }
 
       return farmsList
