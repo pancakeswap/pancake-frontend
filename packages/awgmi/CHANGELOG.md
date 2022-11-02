@@ -1,5 +1,11 @@
 # @pancakeswap/awgmi
 
+## 0.0.7
+
+### Patch Changes
+
+- 40ea8c1ee: Integrate Fewcha wallet event
+
 ## 0.0.6
 
 ### Patch Changes
