@@ -28,17 +28,17 @@ export const getPoolTaxRateOverflow = (
 /**
  * compute_offering_and_refund_amount
  */
-export const computeOfferingAndRefundAmount = (user_info: UserInfo['data'], ifo_pool: IFOPool) => {
+export const computeOfferingAndRefundAmount = (amount: string, ifo_pool: IFOPool) => {
   let offering_amount: BigNumber
   let refunding_amount: BigNumber
   let tax_amount: BigNumber = BIG_ZERO
 
   if (ifo_pool.total_amount > ifo_pool.raising_amount) {
-    const allocation = getUserAllocation(new BigNumber(ifo_pool.total_amount), new BigNumber(user_info.amount))
+    const allocation = getUserAllocation(new BigNumber(ifo_pool.total_amount), new BigNumber(amount))
 
     offering_amount = new BigNumber(ifo_pool.offering_amount).times(allocation.div('1000000000000'))
     const payment = new BigNumber(ifo_pool.raising_amount).times(allocation.div('1000000000000'))
-    refunding_amount = new BigNumber(user_info.amount).minus(payment)
+    refunding_amount = new BigNumber(amount).minus(payment)
     if (ifo_pool.has_tax) {
       const tax_overflow = calculateTaxOverflow(
         new BigNumber(ifo_pool.total_amount),
@@ -50,7 +50,7 @@ export const computeOfferingAndRefundAmount = (user_info: UserInfo['data'], ifo_
     }
   } else {
     refunding_amount = BIG_ZERO
-    offering_amount = new BigNumber(user_info.amount).times(ifo_pool.offering_amount).div(ifo_pool.raising_amount)
+    offering_amount = new BigNumber(amount).times(ifo_pool.offering_amount).div(ifo_pool.raising_amount)
   }
 
   return {

@@ -66,7 +66,7 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
       }
 
       const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } = userInfo?.data
-        ? computeOfferingAndRefundAmount(userInfo.data, data)
+        ? computeOfferingAndRefundAmount(userInfo.data.amount, data)
         : {
             tax_amount: BIG_ZERO,
             refunding_amount: BIG_ZERO,
