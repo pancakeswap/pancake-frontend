@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "Meet the following requirement to join:",
   "Order cancellation": "Order cancellation",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
