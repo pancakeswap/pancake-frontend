@@ -67,6 +67,8 @@ function usePairReservesQueries(pairAddresses: (string | undefined)[]) {
             return fetchAccountResource({ address: SWAP_ADDRESS, resourceType: pairAddress, networkName })
           },
           queryKey: accountResourceQueryKey({ address: SWAP_ADDRESS, resourceType: pairAddress, networkName }),
+          staleTime: Infinity,
+          refetchInterval: 3_000,
         })),
       [networkName, pairAddresses],
     ),
