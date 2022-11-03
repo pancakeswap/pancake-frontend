@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "Чтобы присоединиться, выполните следующие требования:",
   "Order cancellation": "Отмена ордера",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Отмена ордера: %inputAmount% %inputTokenSymbol% на %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
