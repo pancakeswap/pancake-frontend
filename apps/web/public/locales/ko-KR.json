@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "가입하려면 다음 요구 사항을 충족하세요:",
   "Order cancellation": "주문 취소",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "주문 취소: %outputAmount% %outputTokenSymbol%에 대한 %inputAmount% %inputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
