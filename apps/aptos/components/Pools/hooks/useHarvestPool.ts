@@ -1,5 +1,5 @@
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
-import { SmartChef } from '@pancakeswap/aptos-swap-sdk'
+import { SmartChef } from 'contracts/smartchef'
 
 export default function useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId }) {
   const { simulateTransactionAsync } = useSimulateTransaction()

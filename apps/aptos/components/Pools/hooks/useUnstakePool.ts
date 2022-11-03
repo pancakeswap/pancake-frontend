@@ -1,5 +1,5 @@
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
-import { SmartChef } from '@pancakeswap/aptos-swap-sdk'
+import { SmartChef } from 'contracts/smartchef'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 

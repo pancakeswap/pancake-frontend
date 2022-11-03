@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0x663d8a86456e7c714cdc541ff61af2841599964919227c809f5604b2f3ee16a4' as const
+export const ADDRESS = '0x8f596dbb195e1d37235f8e06323901890931413580024cea760a6bb31f333c46' as const
 
 export const SMART_CHEF_MODULE_NAME = 'smart_chef' as const
 
@@ -9,7 +9,7 @@ export type SmartChefAddRewardArgs = [bigint | string]
 
 export const smartChefAddReward = (
   args: SmartChefAddRewardArgs,
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -24,12 +24,12 @@ export type SmartChefCreatePoolArgs = [
   bigint | string,
   bigint | string,
   bigint | string,
-  bigint | string
+  bigint | string,
 ]
 
 export const smartChefCreatePool = (
   args: SmartChefCreatePoolArgs,
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -43,7 +43,7 @@ export type SmartChefDepositArgs = [bigint | string]
 
 export const smartChefDeposit = (
   args: SmartChefDepositArgs,
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -54,7 +54,7 @@ export const smartChefDeposit = (
 }
 
 export const smartChefEmergencyRewardWithdraw = (
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -65,7 +65,7 @@ export const smartChefEmergencyRewardWithdraw = (
 }
 
 export const smartChefEmergencyWithdraw = (
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -87,7 +87,7 @@ export const smartChefSetAdmin = (args: SmartChefSetAdminArgs): Types.Transactio
 }
 
 export const smartChefStopReward = (
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -101,7 +101,7 @@ export type SmartChefUpdatePoolLimitPerUserArgs = [boolean, bigint | string]
 
 export const smartChefUpdatePoolLimitPerUser = (
   args: SmartChefUpdatePoolLimitPerUserArgs,
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -115,7 +115,7 @@ export type SmartChefUpdateRewardPerSecondArgs = [bigint | string]
 
 export const smartChefUpdateRewardPerSecond = (
   args: SmartChefUpdateRewardPerSecondArgs,
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -129,7 +129,7 @@ export type SmartChefUpdateStartAndEndTimestampArgs = [bigint | string, bigint |
 
 export const smartChefUpdateStartAndEndTimestamp = (
   args: SmartChefUpdateStartAndEndTimestampArgs,
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -142,7 +142,7 @@ export const smartChefUpdateStartAndEndTimestamp = (
 export type SmartChefUpgradeContractArgs = [number[] | Uint8Array, number[] | Uint8Array]
 
 export const smartChefUpgradeContract = (
-  args: SmartChefUpgradeContractArgs
+  args: SmartChefUpgradeContractArgs,
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
@@ -156,7 +156,7 @@ export type SmartChefWithdrawArgs = [bigint | string]
 
 export const smartChefWithdraw = (
   args: SmartChefWithdrawArgs,
-  typeArgs: [string, string, string]
+  typeArgs: [string, string, string],
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
