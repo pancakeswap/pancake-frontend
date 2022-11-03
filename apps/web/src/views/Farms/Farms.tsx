@@ -15,7 +15,6 @@ import {
   Link,
   Box,
   Farm as FarmUI,
-  ScrollToTopButtonV2,
   Loading,
   SearchInput,
   Select,
@@ -456,7 +455,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         {poolLength && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
-      {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </FarmsContext.Provider>
   )
 }

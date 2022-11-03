@@ -19,7 +19,6 @@ import {
   Text,
   Flex,
   Box,
-  ScrollToTopButtonV2,
   PageHeader,
   FlexLayout,
   Select,
@@ -398,7 +397,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         {/* {poolLength && <div ref={observerRef} />} */}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
-      {isMounted && createPortal(<ScrollToTopButtonV2 />, document.body)}
     </FarmsContext.Provider>
   )
 }
