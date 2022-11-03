@@ -19,7 +19,6 @@ import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { Ifo, PoolIds } from 'config/constants/types'
 // import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
-import { MessageTextLink } from '../../IfoCardStyles'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
 import VestingAvailableToClaim from './VestingAvailableToClaim'
@@ -180,12 +179,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />
           <Text fontWeight={600}>{t('You didn’t participate in this sale!')}</Text>
-          <Text textAlign="center" fontSize="14px">
-            {t('To participate in the next IFO, lock some CAKE in the fixed-term staking CAKE pool!')}
-          </Text>
-          <MessageTextLink href="/ifo#ifo-how-to" textAlign="center">
-            {t('How does it work?')} »
-          </MessageTextLink>
         </Flex>
       ) : (
         <>
