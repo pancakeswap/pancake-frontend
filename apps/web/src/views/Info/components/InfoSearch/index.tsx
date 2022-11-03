@@ -26,8 +26,8 @@ const StyledInput = styled(Input)`
   border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
 `
 
-const Menu = styled.div<{ hide: boolean }>`
-  display: ${({ hide }) => (hide ? 'none' : 'flex')};
+const Menu = styled.div`
+  display: flex;
   flex-direction: column;
   z-index: 9999;
   width: 100%;
@@ -85,9 +85,9 @@ const Break = styled.div`
   margin: 16px 0;
 `
 
-const HoverText = styled.div<{ hide: boolean }>`
+const HoverText = styled.div`
   color: ${({ theme }) => theme.colors.secondary};
-  display: ${({ hide }) => (hide ? 'none' : 'block')};
+  display: block;
   margin-top: 16px;
   :hover {
     cursor: pointer;
@@ -275,138 +275,146 @@ const Search = () => {
             setShowMenu(true)
           }}
         />
-        <Menu hide={!showMenu} ref={menuRef}>
-          <Flex mb="16px">
-            <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
-              {t('Search')}
-            </OptionButton>
-            <OptionButton enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
-              {t('Watchlist')}
-            </OptionButton>
-          </Flex>
-          {error && <Text color="failure">{t('Error occurred, please try again')}</Text>}
+        {showMenu && (
+          <Menu ref={menuRef}>
+            <Flex mb="16px">
+              <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
+                {t('Search')}
+              </OptionButton>
+              <OptionButton enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
+                {t('Watchlist')}
+              </OptionButton>
+            </Flex>
+            {error && <Text color="failure">{t('Error occurred, please try again')}</Text>}
 
-          <ResponsiveGrid>
-            <Text bold color="secondary">
-              {t('Tokens')}
-            </Text>
-            {!isXs && !isSm && (
-              <Text textAlign="end" fontSize="12px">
-                {t('Price')}
+            <ResponsiveGrid>
+              <Text bold color="secondary">
+                {t('Tokens')}
               </Text>
-            )}
-            {!isXs && !isSm && (
-              <Text textAlign="end" fontSize="12px">
-                {t('Volume 24H')}
-              </Text>
-            )}
-            {!isXs && !isSm && (
-              <Text textAlign="end" fontSize="12px">
-                {t('Liquidity')}
-              </Text>
-            )}
-          </ResponsiveGrid>
-          {tokensForList.slice(0, tokensShown).map((token) => {
-            return (
-              <HoverRowLink
-                onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}${stableSwapQuery}`)}
-                key={`searchTokenResult${token.address}`}
+              {!isXs && !isSm && (
+                <Text textAlign="end" fontSize="12px">
+                  {t('Price')}
+                </Text>
+              )}
+              {!isXs && !isSm && (
+                <Text textAlign="end" fontSize="12px">
+                  {t('Volume 24H')}
+                </Text>
+              )}
+              {!isXs && !isSm && (
+                <Text textAlign="end" fontSize="12px">
+                  {t('Liquidity')}
+                </Text>
+              )}
+            </ResponsiveGrid>
+            {tokensForList.slice(0, tokensShown).map((token) => {
+              return (
+                <HoverRowLink
+                  onClick={() => handleItemClick(`/info${chainPath}/tokens/${token.address}${stableSwapQuery}`)}
+                  key={`searchTokenResult${token.address}`}
+                >
+                  <ResponsiveGrid>
+                    <Flex>
+                      <CurrencyLogo address={token.address} chainName={chainName} />
+                      <Text ml="10px">
+                        <Text>{`${token.name} (${token.symbol})`}</Text>
+                      </Text>
+                      <SaveIcon
+                        id="watchlist-icon"
+                        style={{ marginLeft: '8px' }}
+                        fill={savedTokens.includes(token.address)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          addSavedToken(token.address)
+                        }}
+                      />
+                    </Flex>
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.liquidityUSD)}</Text>}
+                  </ResponsiveGrid>
+                </HoverRowLink>
+              )
+            })}
+            {contentUnderTokenList()}
+            {tokensForList.length > tokensShown && (
+              <HoverText
+                onClick={() => {
+                  setTokensShown(tokensShown + 5)
+                }}
+                ref={showMoreRef}
               >
-                <ResponsiveGrid>
-                  <Flex>
-                    <CurrencyLogo address={token.address} chainName={chainName} />
-                    <Text ml="10px">
-                      <Text>{`${token.name} (${token.symbol})`}</Text>
-                    </Text>
-                    <SaveIcon
-                      id="watchlist-icon"
-                      style={{ marginLeft: '8px' }}
-                      fill={savedTokens.includes(token.address)}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        addSavedToken(token.address)
-                      }}
-                    />
-                  </Flex>
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.priceUSD)}</Text>}
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.volumeUSD)}</Text>}
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(token.liquidityUSD)}</Text>}
-                </ResponsiveGrid>
-              </HoverRowLink>
-            )
-          })}
-          {contentUnderTokenList()}
-          <HoverText
-            onClick={() => {
-              setTokensShown(tokensShown + 5)
-            }}
-            hide={tokensForList.length <= tokensShown}
-            ref={showMoreRef}
-          >
-            {t('See more...')}
-          </HoverText>
+                {t('See more...')}
+              </HoverText>
+            )}
 
-          <Break />
-          <ResponsiveGrid>
-            <Text bold color="secondary" mb="8px">
-              {t('Pools')}
-            </Text>
-            {!isXs && !isSm && (
-              <Text textAlign="end" fontSize="12px">
-                {t('Volume 24H')}
+            <Break />
+            <ResponsiveGrid>
+              <Text bold color="secondary" mb="8px">
+                {t('Pools')}
               </Text>
-            )}
-            {!isXs && !isSm && (
-              <Text textAlign="end" fontSize="12px">
-                {t('Volume 7D')}
-              </Text>
-            )}
-            {!isXs && !isSm && (
-              <Text textAlign="end" fontSize="12px">
-                {t('Liquidity')}
-              </Text>
-            )}
-          </ResponsiveGrid>
-          {poolForList.slice(0, poolsShown).map((p) => {
-            return (
-              <HoverRowLink
-                onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}${stableSwapQuery}`)}
-                key={`searchPoolResult${p.address}`}
+              {!isXs && !isSm && (
+                <Text textAlign="end" fontSize="12px">
+                  {t('Volume 24H')}
+                </Text>
+              )}
+              {!isXs && !isSm && (
+                <Text textAlign="end" fontSize="12px">
+                  {t('Volume 7D')}
+                </Text>
+              )}
+              {!isXs && !isSm && (
+                <Text textAlign="end" fontSize="12px">
+                  {t('Liquidity')}
+                </Text>
+              )}
+            </ResponsiveGrid>
+            {poolForList.slice(0, poolsShown).map((p) => {
+              return (
+                <HoverRowLink
+                  onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}${stableSwapQuery}`)}
+                  key={`searchPoolResult${p.address}`}
+                >
+                  <ResponsiveGrid>
+                    <Flex>
+                      <DoubleCurrencyLogo
+                        address0={p.token0.address}
+                        address1={p.token1.address}
+                        chainName={chainName}
+                      />
+                      <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
+                        <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
+                      </Text>
+                      <SaveIcon
+                        id="watchlist-icon"
+                        style={{ marginLeft: '10px' }}
+                        fill={savedPools.includes(p.address)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          addSavedPool(p.address)
+                        }}
+                      />
+                    </Flex>
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>}
+                    {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.liquidityUSD)}</Text>}
+                  </ResponsiveGrid>
+                </HoverRowLink>
+              )
+            })}
+            {contentUnderPoolList()}
+            {poolForList.length > poolsShown && (
+              <HoverText
+                onClick={() => {
+                  setPoolsShown(poolsShown + 5)
+                }}
+                ref={showMoreRef}
               >
-                <ResponsiveGrid>
-                  <Flex>
-                    <DoubleCurrencyLogo address0={p.token0.address} address1={p.token1.address} chainName={chainName} />
-                    <Text ml="10px" style={{ whiteSpace: 'nowrap' }}>
-                      <Text>{`${p.token0.symbol} / ${p.token1.symbol}`}</Text>
-                    </Text>
-                    <SaveIcon
-                      id="watchlist-icon"
-                      style={{ marginLeft: '10px' }}
-                      fill={savedPools.includes(p.address)}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        addSavedPool(p.address)
-                      }}
-                    />
-                  </Flex>
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSD)}</Text>}
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.volumeUSDWeek)}</Text>}
-                  {!isXs && !isSm && <Text textAlign="end">${formatAmount(p.liquidityUSD)}</Text>}
-                </ResponsiveGrid>
-              </HoverRowLink>
-            )
-          })}
-          {contentUnderPoolList()}
-          <HoverText
-            onClick={() => {
-              setPoolsShown(poolsShown + 5)
-            }}
-            hide={poolForList.length <= poolsShown}
-            ref={showMoreRef}
-          >
-            {t('See more...')}
-          </HoverText>
-        </Menu>
+                {t('See more...')}
+              </HoverText>
+            )}
+          </Menu>
+        )}
       </Container>
     </>
   )

@@ -1,7 +1,7 @@
 import { AutoRenewIcon, Button, Flex, Heading, Modal, Text, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import Image from 'next/image'
@@ -39,11 +39,11 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
     userDarRewards,
   })
   const achievement = getRewardGroupAchievements(modPrizes, userRewardGroup, userPointReward)
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
 
   const handleClaimClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithMarketGasPrice(tradingCompetitionContract, 'claimReward')
+      return callWithGasPrice(tradingCompetitionContract, 'claimReward')
     })
     if (receipt?.status) {
       toastSuccess(t('You have claimed your rewards!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)

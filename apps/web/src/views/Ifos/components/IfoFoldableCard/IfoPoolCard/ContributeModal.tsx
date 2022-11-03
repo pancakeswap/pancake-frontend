@@ -24,7 +24,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import { Ifo, PoolIds } from 'config/constants/types'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useERC20 } from 'hooks/useContract'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -94,7 +94,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { contract } = walletIfoData
   const [value, setValue] = useState('')
   const { account } = useWeb3React()
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const raisingTokenContractReader = useERC20(currency.address, false)
   const raisingTokenContractApprover = useERC20(currency.address)
   const { t } = useTranslation()
@@ -107,7 +107,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
         return requiresApproval(raisingTokenContractReader, account, contract.address)
       },
       onApprove: () => {
-        return callWithMarketGasPrice(raisingTokenContractApprover, 'approve', [contract.address, MaxUint256], {
+        return callWithGasPrice(raisingTokenContractApprover, 'approve', [contract.address, MaxUint256], {
           gasPrice,
         })
       },
@@ -120,7 +120,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
         )
       },
       onConfirm: () => {
-        return callWithMarketGasPrice(
+        return callWithGasPrice(
           contract,
           'depositPool',
           [valueWithTokenDecimals.toString(), poolId === PoolIds.poolBasic ? 0 : 1],

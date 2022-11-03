@@ -20,7 +20,7 @@ const TeamRanksSection: React.FC<React.PropsWithChildren<TeamRanksProps>> = ({
   return (
     <>
       <PageSection
-        containerProps={{ style: { marginTop: '-30px' } }}
+        containerProps={{ style: { marginTop: '-20px' } }}
         index={3}
         concaveDivider
         clipFill={{ light: theme.colors.background }}

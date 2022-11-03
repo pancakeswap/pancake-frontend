@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -33,7 +35,6 @@ jobs:
       - name: Cypress install
         run: yarn install --frozen-lockfile
       - run: yarn cypress install
-      - run: yarn build
+      - run: yarn e2e:ci
         env:
           NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
-      - run: yarn integration-test

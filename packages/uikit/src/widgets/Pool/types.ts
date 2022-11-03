@@ -24,6 +24,7 @@ interface PoolConfigBaseProps {
 interface GenericToken {
   decimals: number;
   symbol: string;
+  address: string;
 }
 
 export interface SerializedPoolConfig<T> extends PoolConfigBaseProps {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useState, useMemo, useContext } from 'react'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { Button, ArrowDownIcon, Box, Skeleton, Swap as SwapUI, Message, MessageText } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -34,8 +34,10 @@ import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
 import { ArrowWrapper, Wrapper } from './styleds'
 import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { isAddress } from '../../../utils'
+import { SwapFeaturesContext } from '../SwapFeaturesContext'
 
-export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAccessTokenSupported, isChartSupported }) {
+export default function SwapForm() {
+  const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const stableFarms = useStableFarms()
@@ -144,15 +146,19 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   const handleInputSelect = useCallback(
-    (currencyInput) => {
+    (newCurrencyInput) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
-      onCurrencySelection(Field.INPUT, currencyInput)
+      onCurrencySelection(Field.INPUT, newCurrencyInput)
 
-      warningSwapHandler(currencyInput)
+      warningSwapHandler(newCurrencyInput)
 
-      replaceBrowserHistory('inputCurrency', currencyId(currencyInput))
+      const newCurrencyInputId = currencyId(newCurrencyInput)
+      if (newCurrencyInputId === outputCurrencyId) {
+        replaceBrowserHistory('outputCurrency', inputCurrencyId)
+      }
+      replaceBrowserHistory('inputCurrency', newCurrencyInputId)
     },
-    [onCurrencySelection, warningSwapHandler],
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
   )
 
   const handleMaxInput = useCallback(() => {
@@ -162,14 +168,18 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
   }, [maxAmountInput, onUserInput])
 
   const handleOutputSelect = useCallback(
-    (currencyOutput) => {
-      onCurrencySelection(Field.OUTPUT, currencyOutput)
-      warningSwapHandler(currencyOutput)
+    (newCurrencyOutput) => {
+      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
+      warningSwapHandler(newCurrencyOutput)
 
-      replaceBrowserHistory('outputCurrency', currencyId(currencyOutput))
+      const newCurrencyOutputId = currencyId(newCurrencyOutput)
+      if (newCurrencyOutputId === inputCurrencyId) {
+        replaceBrowserHistory('inputCurrency', outputCurrencyId)
+      }
+      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
     },
 
-    [onCurrencySelection, warningSwapHandler],
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
   )
 
   const handlePercentInput = useCallback(
@@ -196,9 +206,6 @@ export default function SwapForm({ setIsChartDisplayed, isChartDisplayed, isAcce
       <CurrencyInputHeader
         title={t('Swap')}
         subtitle={t('Trade tokens in an instant')}
-        setIsChartDisplayed={setIsChartDisplayed}
-        isChartSupported={isChartSupported}
-        isChartDisplayed={isChartDisplayed}
         hasAmount={hasAmount}
         onRefreshPrice={onRefreshPrice}
       />

@@ -6,7 +6,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
 import ifoPoolAbi from 'config/abi/ifoPool.json'
 import { vaultPoolConfig } from 'config/constants/pools'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import React, { useMemo } from 'react'
 import { VaultKey } from 'state/types'
@@ -28,7 +28,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
   const { account } = useWeb3React()
   const { data: signer } = useSigner()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { fetchUserPoolsData } = useFetchUserPools(account)
 
@@ -56,7 +56,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
 
   const onPresentVaultUnstake = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithMarketGasPrice(vaultPoolContract, 'withdrawAll', undefined, {
+      return callWithGasPrice(vaultPoolContract, 'withdrawAll', undefined, {
         gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
       })
     })

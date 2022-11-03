@@ -18,7 +18,9 @@ import {
   useUserExpertModeAcknowledgementShow,
   useUserSingleHopOnly,
   useZapModeManager,
+  useUserUsernameVisibility,
 } from 'state/user/hooks'
+import { ChainId } from '@pancakeswap/sdk'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -26,6 +28,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
+import GasSettings from './GasSettings'
 import { SettingsMode } from './types'
 
 const ScrollableContainer = styled(Flex)`
@@ -69,6 +72,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
   const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
+  const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
 
@@ -130,6 +134,25 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   }}
                 />
               </Flex>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Show username')}</Text>
+                  <QuestionHelper
+                    text={t('Shows username of wallet instead of bunnies')}
+                    placement="top-start"
+                    ml="4px"
+                  />
+                </Flex>
+                <Toggle
+                  id="toggle-username-visibility"
+                  checked={userUsernameVisibility}
+                  scale="md"
+                  onChange={() => {
+                    setUserUsernameVisibility(!userUsernameVisibility)
+                  }}
+                />
+              </Flex>
+              {chainId === ChainId.BSC && <GasSettings />}
             </Flex>
           </>
         )}
@@ -139,6 +162,9 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
               <Text bold textTransform="uppercase" fontSize="18px" color="secondary" mb="24px">
                 {t('Swaps & Liquidity')}
               </Text>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                {chainId === ChainId.BSC && <GasSettings />}
+              </Flex>
               <TransactionSettings />
             </Flex>
             {SUPPORT_ZAP.includes(chainId) && (

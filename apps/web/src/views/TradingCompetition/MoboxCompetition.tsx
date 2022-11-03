@@ -232,7 +232,7 @@ const MoboxCompetition = () => {
         </PageSection>
         {currentPhase.state !== REGISTRATION && (
           <PageSection
-            containerProps={{ style: { marginTop: '-30px' } }}
+            containerProps={{ style: { marginTop: '-20px' } }}
             index={3}
             concaveDivider
             clipFill={{ light: theme.colors.background }}
