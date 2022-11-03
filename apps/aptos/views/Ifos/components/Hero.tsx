@@ -1,7 +1,6 @@
-import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Container, Flex, Heading, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useRouter } from 'next/router'
+import { Box, Container, Flex, Heading, Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 
 const StyledHero = styled(Box)`
   background-image: url('/images/ifos/assets/ifo-banner-${({ theme }) => (theme.isDark ? 'dark' : 'light')}.png');
@@ -18,23 +17,6 @@ const StyledHeading = styled(Heading)`
   }
 `
 
-const StyledButton = styled(Button)`
-  background-color: ${({ theme }) => theme.colors.tertiary};
-  color: ${({ theme }) => theme.colors.primary};
-  padding: 4px 13px;
-  height: auto;
-  text-transform: uppercase;
-  align-self: flex-start;
-  font-size: 12px;
-  box-shadow: ${({ theme }) => theme.shadows.inset};
-  border-radius: 8px;
-  margin-left: 8px;
-`
-
-const DesktopButton = styled(Button)`
-  align-self: flex-end;
-`
-
 const StyledSubTitle = styled(Text)`
   font-size: 16px;
 
@@ -44,18 +26,7 @@ const StyledSubTitle = styled(Text)`
 `
 
 const Hero = () => {
-  const router = useRouter()
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
-
-  const handleClick = () => {
-    const howToElem = document.getElementById('ifo-how-to')
-    if (howToElem != null) {
-      howToElem.scrollIntoView()
-    } else {
-      router.push('/ifo#ifo-how-to')
-    }
-  }
 
   return (
     <Box mb="8px">
@@ -74,14 +45,8 @@ const Hero = () => {
                 {/* {t('Buy new tokens launching on BNB Smart Chain')} */}
                 {/* TODO: Aptos */}
                 Buy new tokens launching on Aptos
-                {isMobile && <StyledButton onClick={handleClick}>{t('How does it work?')}</StyledButton>}
               </StyledSubTitle>
             </Box>
-            {!isMobile && (
-              <DesktopButton onClick={handleClick} variant="subtle">
-                {t('How does it work?')}
-              </DesktopButton>
-            )}
           </Flex>
         </Container>
       </StyledHero>
