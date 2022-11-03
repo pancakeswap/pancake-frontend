@@ -8,15 +8,15 @@ import { useMemo } from 'react'
 import { useCoins } from './Tokens'
 import { useActiveNetwork } from './useNetwork'
 
-export function usePairsFromAddresses(addresses: string[]) {
-  const pairReserves = usePairReservesQueries(addresses)
+export function usePairsFromAddresses(pairReservesAddresses: string[]) {
+  const pairReserves = usePairReservesQueries(pairReservesAddresses)
 
   const parsesAddress = useMemo(
     () =>
-      addresses.flatMap((addr) => {
+      pairReservesAddresses.flatMap((addr) => {
         return Pair.parseType(addr)
       }),
-    [addresses],
+    [pairReservesAddresses],
   )
 
   const coinsResults = useCoins(parsesAddress)
@@ -24,7 +24,7 @@ export function usePairsFromAddresses(addresses: string[]) {
   return useMemo(() => {
     const coins = coinsResults.map((coinResult) => coinResult.data)
 
-    return addresses.map((address) => {
+    return pairReservesAddresses.map((address) => {
       if (pairReserves?.[address]) {
         const [address0, address1] = Pair.parseType(address)
 
@@ -44,7 +44,7 @@ export function usePairsFromAddresses(addresses: string[]) {
       }
       return [PairState.NOT_EXISTS, null]
     })
-  }, [addresses, pairReserves, coinsResults])
+  }, [pairReservesAddresses, pairReserves, coinsResults])
 }
 
 export enum PairState {
@@ -54,13 +54,13 @@ export enum PairState {
   INVALID,
 }
 
-function usePairReservesQueries(pairAddresses: (string | undefined)[]) {
+export function usePairReservesQueries(pairReservesAddresses: (string | undefined)[]) {
   const { networkName } = useActiveNetwork()
 
   const pairReservesQueries = useQueries({
     queries: useMemo(
       () =>
-        pairAddresses.map((pairAddress) => ({
+        pairReservesAddresses.map((pairAddress) => ({
           enable: Boolean(pairAddress),
           queryFn: () => {
             if (!pairAddress) throw new Error('No pair address')
@@ -70,7 +70,7 @@ function usePairReservesQueries(pairAddresses: (string | undefined)[]) {
           staleTime: Infinity,
           refetchInterval: 3_000,
         })),
-      [networkName, pairAddresses],
+      [networkName, pairReservesAddresses],
     ),
   }) as UseQueryResult<{
     type: string
@@ -127,15 +127,15 @@ export function usePairs(currencies: [Currency | undefined, Currency | undefined
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) {
         return [PairState.INVALID, null]
       }
-      const pairAddress = Pair.getReservesAddress(tokenA, tokenB)
+      const pairReservesAddress = Pair.getReservesAddress(tokenA, tokenB)
 
-      if (pairReserves?.[pairAddress]) {
+      if (pairReserves?.[pairReservesAddress]) {
         const [token0, token1] = Pair.sortToken(tokenA, tokenB)
         return [
           PairState.EXISTS,
           new Pair(
-            CurrencyAmount.fromRawAmount(token0, pairReserves[pairAddress].data.reserve_x),
-            CurrencyAmount.fromRawAmount(token1, pairReserves[pairAddress].data.reserve_y),
+            CurrencyAmount.fromRawAmount(token0, pairReserves[pairReservesAddress].data.reserve_x),
+            CurrencyAmount.fromRawAmount(token1, pairReserves[pairReservesAddress].data.reserve_y),
           ),
         ]
       }
