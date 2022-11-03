@@ -1,10 +1,15 @@
+import { Pair } from '@pancakeswap/aptos-swap-sdk'
+import { useSendTransaction } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from 'config/constants/types'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'
+import { IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
+import { ifoRelease } from 'views/Ifos/generated/ifo'
+import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
+import { useIfoResources } from 'views/Ifos/hooks/useIfoResources'
 import { WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
@@ -17,7 +22,8 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError } = useCatchTxError()
+  const resources = useIfoResources()
+  const { sendTransactionAsync } = useSendTransaction()
 
   const setPendingTx = useCallback(
     (isPending: boolean) => {
@@ -27,21 +33,25 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
   )
 
   const handleClaim = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      setPendingTx(true)
-      return walletIfoData.contract.release(userPoolCharacteristics.vestingId)
-    })
-    if (receipt?.status) {
+    setPendingTx(true)
+
+    const [raisingCoin, offeringCoin] = Pair.parseType(
+      (resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE] as IFOPoolStore).type,
+    )
+    const payload = ifoRelease([userPoolCharacteristics.vestingId], [raisingCoin, offeringCoin])
+    const response = await sendTransactionAsync({ payload })
+
+    if (response.hash) {
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+        <ToastDescriptionWithTx txHash={response.hash}>
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
     }
     setPendingTx(false)
-  }, [poolId, walletIfoData, userPoolCharacteristics, t, fetchWithCatchTxError, setPendingTx, toastSuccess])
+  }, [poolId, resources, walletIfoData, userPoolCharacteristics, t, setPendingTx, toastSuccess])
 
   return (
     <Button
