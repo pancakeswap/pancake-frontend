@@ -7,3 +7,4 @@ export const APEX_DOMAIN = process.env.NEXT_PUBLIC_APEX_URL
 
 export const LOW_APT = 0.1
 export const DEFAULT_TOKEN_DECIMAL = getFullDecimalMultiplier(18)
+export const FARMS_DEFAULT_TOKEN_DECIMAL = getFullDecimalMultiplier(8)

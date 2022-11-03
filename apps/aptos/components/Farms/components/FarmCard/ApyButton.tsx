@@ -10,7 +10,6 @@ export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
   pid: number
   lpSymbol: string
-  lpTokenPrice: BigNumber
   lpLabel?: string
   multiplier: string
   cakePrice?: BigNumber
@@ -26,7 +25,6 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   variant,
   pid,
   lpLabel = '',
-  lpTokenPrice,
   lpSymbol,
   cakePrice = BIG_ZERO,
   apr = 0,

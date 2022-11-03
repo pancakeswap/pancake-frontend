@@ -10,19 +10,23 @@ import {
   useToast,
   Farm as FarmUI,
 } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
-// import { ToastDescriptionWithTx } from 'components/Toast'
+import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
-import { useState, useMemo } from 'react'
-// import { useAppDispatch } from 'state'
+import { useMemo } from 'react'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import styled from 'styled-components'
+import { DeserializedFarmUserData } from '@pancakeswap/farms'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { TransactionResponse } from '@pancakeswap/awgmi/core'
+import useCatchTxError from 'hooks/useCatchTxError'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import { FarmWithStakedValue } from '../../types'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -40,11 +44,18 @@ const StyledActionContainer = styled(ActionContainer)`
   }
 `
 
-export function useStakedActions(pid) {
-  // const { account, chainId } = useActiveWeb3React()
-  const { onStake } = useStakeFarms(pid)
-  const { onUnstake } = useUnstakeFarms(pid)
-  // const dispatch = useAppDispatch()
+interface StackedActionProps extends FarmWithStakedValue {
+  userDataReady: boolean
+  lpLabel?: string
+  displayApr?: string
+  onStake: (value: string) => Promise<TransactionResponse>
+  onUnstake: (value: string) => Promise<TransactionResponse>
+  onDone?: () => void
+}
+
+export function useStakedActions(pid, tokenType) {
+  const { onStake } = useStakeFarms(pid, tokenType)
+  const { onUnstake } = useUnstakeFarms(pid, tokenType)
 
   const onDone = () => console.info('onDone')
   // const onDone = useCallback(
@@ -60,7 +71,7 @@ export function useStakedActions(pid) {
 }
 
 export const StakedContainer = ({ children, ...props }) => {
-  const { onStake, onUnstake, onDone } = useStakedActions(props.pid)
+  const { onStake, onUnstake, onDone } = useStakedActions(props.pid, 'tokenType')
 
   return children({
     ...props,
@@ -70,34 +81,31 @@ export const StakedContainer = ({ children, ...props }) => {
   })
 }
 
-// const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({
-const Staked: React.FunctionComponent<React.PropsWithChildren<any>> = ({
+const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({
   pid,
   apr,
   multiplier,
   lpSymbol,
   lpLabel,
-  lpTokenPrice,
+  lpTokenPrice = BIG_ZERO,
   quoteToken,
   token,
   userDataReady,
   displayApr,
-  lpTotalSupply,
-  tokenAmountTotal,
-  quoteTokenAmountTotal,
+  lpTotalSupply = BIG_ZERO,
+  tokenAmountTotal = BIG_ZERO,
+  quoteTokenAmountTotal = BIG_ZERO,
   userData,
   onDone,
   onStake,
   onUnstake,
 }) => {
-  // const dispatch = useAppDispatch()
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const [pendingTx, setPendingTx] = useState(false)
-  // const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
+  const { fetchWithCatchTxError } = useCatchTxError()
   const { account } = useActiveWeb3React()
 
-  const { tokenBalance, stakedBalance } = userData || {}
+  const { tokenBalance, stakedBalance } = (userData as DeserializedFarmUserData) || {}
 
   const router = useRouter()
   const cakePrice = useCakePriceAsBigNumber()
@@ -113,28 +121,28 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<any>> = ({
   }, [router])
 
   const handleStake = async (amount: string) => {
-    // const receipt = await fetchWithCatchTxError(() => onStake(amount))
-    if (true) {
-      // toastSuccess(
-      //   `${t('Staked')}!`,
-      //   <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-      //     {t('Your funds have been staked in the farm')}
-      //   </ToastDescriptionWithTx>,
-      // )
-      onDone()
+    const receipt = await fetchWithCatchTxError(() => onStake(amount))
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Staked')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your funds have been staked in the farm')}
+        </ToastDescriptionWithTx>,
+      )
+      onDone?.()
     }
   }
 
   const handleUnstake = async (amount: string) => {
-    // const receipt = await fetchWithCatchTxError(() => onUnstake(amount))
-    if (true) {
-      // toastSuccess(
-      //   `${t('Unstaked')}!`,
-      //   <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-      //     {t('Your earnings have also been harvested to your wallet')}
-      //   </ToastDescriptionWithTx>,
-      // )
-      onDone()
+    const receipt = await fetchWithCatchTxError(() => onUnstake(amount))
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Unstaked')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your earnings have also been harvested to your wallet')}
+        </ToastDescriptionWithTx>,
+      )
+      onDone?.()
     }
   }
 
