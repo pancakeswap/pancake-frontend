@@ -4,7 +4,7 @@
 
 ```bash
 yarn build
-yarn integration-tests
+yarn integration-test
 ```
 
 ### Run just one test

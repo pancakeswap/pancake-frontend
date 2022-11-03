@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import styled from 'styled-components'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { Flex, Box, SwapVertIcon, IconButton } from '@pancakeswap/uikit'
+import { Flex, Box, SwapVertIcon, IconButton, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedPool } from 'state/types'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import useGetTopFarmsByApr from 'views/Home/hooks/useGetTopFarmsByApr'
 import useGetTopPoolsByApr from 'views/Home/hooks/useGetTopPoolsByApr'
@@ -55,7 +54,7 @@ const FarmsPoolsRow = () => {
     }
   }, [timer, isLoaded, startTimer])
 
-  const getPoolText = (pool: DeserializedPool) => {
+  const getPoolText = (pool: Pool.DeserializedPool<Token>) => {
     if (pool.vaultKey) {
       return vaultPoolConfig[pool.vaultKey].name
     }

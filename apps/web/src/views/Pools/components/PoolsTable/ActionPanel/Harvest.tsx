@@ -1,16 +1,16 @@
-import { Button, Text, useModal, Flex, Skeleton, Heading, Balance } from '@pancakeswap/uikit'
+import { Button, Text, useModal, Flex, Skeleton, Heading, Balance, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { PoolCategory } from 'config/constants/types'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { DeserializedPool } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 
 import { ActionContainer, ActionTitles, ActionContent } from './styles'
 import CollectModal from '../../Modals/CollectModal'
 
-const HarvestAction: React.FunctionComponent<React.PropsWithChildren<DeserializedPool>> = ({
+const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Pool.DeserializedPool<Token>>> = ({
   sousId,
   poolCategory,
   earningToken,
@@ -33,7 +33,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Deserialize
     <CollectModal
       formattedBalance={formattedBalance}
       fullBalance={fullBalance}
-      earningToken={earningToken}
+      earningTokenSymbol={earningToken.symbol}
       earningsDollarValue={earningTokenDollarBalance}
       sousId={sousId}
       isBnbPool={isBnbPool}

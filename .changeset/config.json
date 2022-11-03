@@ -22,7 +22,7 @@
     "farms-api",
     "aptos-web",
     "bridge",
-    "test",
+    "e2e",
     "web"
   ]
 }

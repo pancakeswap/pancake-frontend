@@ -5,9 +5,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import isZero from '@pancakeswap/utils/isZero'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
+import { useGasPrice } from 'state/user/hooks'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
-import { logTx } from 'utils/log'
+import { logSwap, logTx } from 'utils/log'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -49,6 +50,7 @@ export function useSwapCallback(
   swapCalls: SwapCall[],
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId } = useActiveWeb3React()
+  const gasPrice = useGasPrice()
 
   const { t } = useTranslation()
 
@@ -124,6 +126,7 @@ export function useSwapCallback(
 
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),
+          gasPrice,
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response: any) => {
@@ -173,7 +176,13 @@ export function useSwapCallback(
               },
               type: 'swap',
             })
-
+            logSwap({
+              chainId,
+              inputAmount,
+              outputAmount,
+              input: trade.inputAmount.currency,
+              output: trade.outputAmount.currency,
+            })
             logTx({ account, chainId, hash: response.hash })
 
             return response.hash
@@ -191,5 +200,5 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, t, addTransaction, allowedSlippage])
+  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, t, addTransaction, allowedSlippage])
 }

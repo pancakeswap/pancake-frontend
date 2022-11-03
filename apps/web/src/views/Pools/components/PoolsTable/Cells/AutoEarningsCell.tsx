@@ -1,14 +1,15 @@
 import styled from 'styled-components'
-import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
-import { DeserializedPool, VaultKey, DeserializedPoolLockedVault } from 'state/types'
+import { Skeleton, Text, useTooltip, HelpIcon, Flex, Box, useMatchBreakpoints, Balance, Pool } from '@pancakeswap/uikit'
+import { VaultKey } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
+import { Token } from '@pancakeswap/sdk'
 import BaseCell, { CellContent } from './BaseCell'
 import AutoEarningsBreakdown from '../../AutoEarningsBreakdown'
 
 interface AutoEarningsCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 
@@ -40,9 +41,9 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
     pricePerFullShare,
     earningTokenPrice,
     vaultKey === VaultKey.CakeVault
-      ? (vaultData as DeserializedPoolLockedVault).userData.currentPerformanceFee
-          .plus((vaultData as DeserializedPoolLockedVault).userData.currentOverdueFee)
-          .plus((vaultData as DeserializedPoolLockedVault).userData.userBoostedShare)
+      ? (vaultData as Pool.DeserializedPoolLockedVault<Token>).userData.currentPerformanceFee
+          .plus((vaultData as Pool.DeserializedPoolLockedVault<Token>).userData.currentOverdueFee)
+          .plus((vaultData as Pool.DeserializedPoolLockedVault<Token>).userData.userBoostedShare)
       : null,
   )
 

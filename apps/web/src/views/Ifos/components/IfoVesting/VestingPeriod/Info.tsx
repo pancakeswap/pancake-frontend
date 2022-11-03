@@ -48,9 +48,12 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
   const currentBlock = useCurrentBlock()
   const publicIfoData = useGetPublicIfoV3Data(data.ifo)
   const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized } = publicIfoData
-  useSWRImmutable(!isPublicIfoDataInitialized && currentBlock && ['fetchPublicIfoData', currentBlock], async () => {
-    fetchPublicIfoData(currentBlock)
-  })
+  useSWRImmutable(
+    !isPublicIfoDataInitialized && currentBlock && ['fetchPublicIfoData', currentBlock, data.ifo.id],
+    async () => {
+      fetchPublicIfoData(currentBlock)
+    },
+  )
 
   const { cliff } = publicIfoData[poolId]?.vestingInformation
   const currentTimeStamp = new Date().getTime()

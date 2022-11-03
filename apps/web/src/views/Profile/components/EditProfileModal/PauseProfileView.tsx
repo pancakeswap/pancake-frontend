@@ -5,7 +5,7 @@ import useGetProfileCosts from 'views/Profile/hooks/useGetProfileCosts'
 import { useProfile } from 'state/profile/hooks'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { useProfileContract } from 'hooks/useContract'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
 
@@ -21,7 +21,7 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
   } = useGetProfileCosts()
   const { t } = useTranslation()
   const pancakeProfileContract = useProfileContract()
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
 
@@ -29,7 +29,7 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
 
   const handleDeactivateProfile = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithMarketGasPrice(pancakeProfileContract, 'pauseProfile')
+      return callWithGasPrice(pancakeProfileContract, 'pauseProfile')
     })
     if (receipt?.status) {
       // Re-fetch profile

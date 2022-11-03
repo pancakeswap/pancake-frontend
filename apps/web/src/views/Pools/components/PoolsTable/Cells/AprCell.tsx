@@ -1,13 +1,14 @@
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { DeserializedPool } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
+
 import BaseCell, { CellContent } from './BaseCell'
 import Apr from '../../Apr'
 
 interface AprCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
 }
 
 const AprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) => {

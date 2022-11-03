@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-import { DeserializedPool } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
+import { Pool } from '@pancakeswap/uikit'
+
 import UnstakeButton from '../UnstakeButton'
 
 const Container = styled.div`
@@ -19,7 +21,7 @@ const Container = styled.div`
 `
 
 export interface UnstakeProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
 }
 
 const Unstake: React.FC<React.PropsWithChildren<UnstakeProps>> = ({ pool }) => {

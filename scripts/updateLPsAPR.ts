@@ -7,9 +7,9 @@ import { sub, getUnixTime } from 'date-fns'
 import { ChainId } from '@pancakeswap/sdk'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
 import { StaticJsonRpcProvider } from '@ethersproject/providers'
-import type { BlockResponse } from '../src/components/SubgraphHealthIndicator'
-import { BLOCKS_CLIENT_WITH_CHAIN } from '../src/config/constants/endpoints'
-import { infoClientWithChain, stableSwapClient } from '../src/utils/graphql'
+import { BlockResponse } from 'web/src/components/SubgraphHealthIndicator'
+import { BLOCKS_CLIENT_WITH_CHAIN } from 'web/src/config/constants/endpoints'
+import { stableSwapClient, infoClientWithChain } from 'web/src/utils/graphql'
 
 interface SingleFarmResponse {
   id: string
@@ -141,7 +141,7 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
     const current = new BigNumber(virtualPrice)
     const prev = new BigNumber(preVirtualPrice)
 
-    return current.minus(prev).div(prev)
+    return current.div(prev).pow(365).minus(1)
   } catch (error) {
     console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
@@ -198,7 +198,7 @@ const fetchAndUpdateLPsAPR = async () => {
           const stableAprsMap = stableAprs.reduce(
             (result, apr, index) => ({
               ...result,
-              [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
+              [stableFarms[index].lpAddress]: apr.decimalPlaces(5).toNumber(),
             }),
             {} as AprMap,
           )
@@ -209,10 +209,14 @@ const fetchAndUpdateLPsAPR = async () => {
         console.error(error, '[LP APR Update] getAprsForStableFarm error')
       }
 
-      fs.writeFile(`src/config/constants/lpAprs/${chainId}.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
-        if (err) throw err
-        console.info(` ✅ - lpAprs.json has been updated!`)
-      })
+      fs.writeFile(
+        `apps/web/src/config/constants/lpAprs/${chainId}.json`,
+        JSON.stringify(allAprs, null, 2) + os.EOL,
+        (err) => {
+          if (err) throw err
+          console.info(` ✅ - lpAprs.json has been updated!`)
+        },
+      )
     }),
   )
 }

@@ -14,6 +14,8 @@ import {
   fetchCakeFlexibleSideVaultFees,
 } from 'state/pools'
 import { batch } from 'react-redux'
+import { Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import PoolsTable from './PoolTable'
 
 const NewPool: React.FC<React.PropsWithChildren> = () => {
@@ -24,7 +26,7 @@ const NewPool: React.FC<React.PropsWithChildren> = () => {
   const stakedOnlyOpenPools = useMemo(
     () => pools.filter((pool) => pool.userData && pool.sousId === 0 && !pool.isFinished),
     [pools],
-  )
+  ) as Pool.DeserializedPool<Token>[]
 
   const userDataReady: boolean = !account || (!!account && !cakeVault.userData?.isLoading)
 

@@ -2,14 +2,14 @@ import { useState } from 'react'
 import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Farm as FarmUI } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
+import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Farm as FarmUI, Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import PoolStatsInfo from '../../PoolStatsInfo'
 
 const { CompoundingPoolTag, ManualPoolTag } = FarmUI.Tags
 
 interface FooterProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
   totalCakeInVault?: BigNumber
   defaultExpanded?: boolean

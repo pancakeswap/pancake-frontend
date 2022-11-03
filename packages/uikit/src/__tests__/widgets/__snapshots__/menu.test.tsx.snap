@@ -2031,7 +2031,7 @@ exports[`renders correctly 1`] = `
   height: 32px;
   padding: 0 16px;
   background-color: var(--colors-primary);
-  color: var(--colors-white);
+  color: var(--colors-invertedContrast);
 }
 
 .c56:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {

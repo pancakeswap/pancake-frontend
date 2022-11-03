@@ -1620,10 +1620,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@blocto/sdk@^0.3.0-beta.9":
-  version "0.3.0-beta.9"
-  resolved "https://registry.yarnpkg.com/@blocto/sdk/-/sdk-0.3.0-beta.9.tgz#87c74d36252afcabb64322c131b2eff3ee50bcf6"
-  integrity sha512-B+7s/oYdS+TWhDkEc/06nmS+4T0VsVy5T2V3yOUxS2iPuqdNcwRNJtC40JzB+OmrxJrST6zOE8VbW9ved95VOg==
+"@blocto/sdk@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/@blocto/sdk/-/sdk-0.3.1.tgz#ce27164a322b7aebe0634055a7c4dcc8920513de"
+  integrity sha512-vYZTq9QAgJyUQ15BljGhwVZzbrGLl1pEebRcLkoi7/UTyCsaU5p+oeVxyv1crCd8mARgbIcJGONdpOXLfpolaA==
   dependencies:
     bs58 "^4.0.1"
     buffer "^6.0.3"

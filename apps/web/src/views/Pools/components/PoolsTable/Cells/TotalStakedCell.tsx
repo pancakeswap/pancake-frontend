@@ -1,14 +1,14 @@
 import { useMemo } from 'react'
-import { Flex, Skeleton, Text, Balance } from '@pancakeswap/uikit'
+import { Flex, Skeleton, Text, Balance, Pool } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedPool } from 'state/types'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { Token } from '@pancakeswap/sdk'
 import BaseCell, { CellContent } from './BaseCell'
 
 interface TotalStakedCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
 }
 
 const StyledCell = styled(BaseCell)`

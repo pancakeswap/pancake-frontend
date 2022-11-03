@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import { Button, Heading, Text, Flex, Checkbox, AutoRenewIcon, useToast } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import { useTranslation } from '@pancakeswap/localization'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import { CompetitionProps } from '../../types'
 
 const StyledCheckbox = styled(Checkbox)`
@@ -26,11 +27,12 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
+  const { usernameWithVisibility } = useGetUsernameWithVisibility(profile)
 
   const handleConfirmClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithMarketGasPrice(tradingCompetitionContract, 'register')
+      return callWithGasPrice(tradingCompetitionContract, 'register')
     })
     if (receipt?.status) {
       toastSuccess(
@@ -44,7 +46,7 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
 
   return (
     <>
-      <Heading scale="md" mb="24px">{`@${profile.username}`}</Heading>
+      <Heading scale="md" mb="24px">{`@${usernameWithVisibility}`}</Heading>
       <Flex flexDirection="column">
         <Text bold>
           {t('Registering for the competition will make your wallet address publicly visible on the leaderboard.')}

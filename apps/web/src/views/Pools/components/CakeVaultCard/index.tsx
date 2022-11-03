@@ -1,15 +1,14 @@
-import { Box, CardBody, CardProps, Flex, Text, TokenPairImage, FlexGap, Skeleton } from '@pancakeswap/uikit'
+import { Box, CardBody, CardProps, Flex, Text, TokenPairImage, FlexGap, Skeleton, Pool } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
+import { VaultKey, DeserializedLockedCakeVault, DeserializedCakeVault } from 'state/types'
 import styled from 'styled-components'
+import { Token } from '@pancakeswap/sdk'
 
 import CardFooter from '../PoolCard/CardFooter'
-import PoolCardHeader, { PoolCardHeaderTitle } from '../PoolCard/PoolCardHeader'
-import { StyledCard } from '../PoolCard/StyledCard'
 import { VaultPositionTagWithLabel } from '../Vault/VaultPositionTag'
 import UnstakingFeeCountdownRow from './UnstakingFeeCountdownRow'
 import RecentCakeProfitRow from './RecentCakeProfitRow'
@@ -22,7 +21,7 @@ const StyledCardBody = styled(CardBody)<{ isLoading: boolean }>`
 `
 
 interface CakeVaultProps extends CardProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   showStakedOnly: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
@@ -32,7 +31,7 @@ interface CakeVaultProps extends CardProps {
 interface CakeVaultDetailProps {
   isLoading?: boolean
   account: string
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   vaultPool: DeserializedCakeVault
   accountHasSharesStaked: boolean
   defaultFooterExpanded?: boolean
@@ -131,11 +130,11 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   }
 
   return (
-    <StyledCard isActive {...props}>
-      <PoolCardHeader isStaking={accountHasSharesStaked}>
+    <Pool.StyledCard isActive {...props}>
+      <Pool.PoolCardHeader isStaking={accountHasSharesStaked}>
         {!showSkeleton || (totalStaked && totalStaked.gte(0)) ? (
           <>
-            <PoolCardHeaderTitle
+            <Pool.PoolCardHeaderTitle
               title={vaultPoolConfig[pool.vaultKey].name}
               subTitle={vaultPoolConfig[pool.vaultKey].description}
             />
@@ -150,7 +149,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
             <Skeleton width={58} height={58} variant="circle" />
           </Flex>
         )}
-      </PoolCardHeader>
+      </Pool.PoolCardHeader>
       <CakeVaultDetail
         isLoading={isLoading}
         account={account}
@@ -161,7 +160,7 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
         performanceFeeAsDecimal={performanceFeeAsDecimal}
         defaultFooterExpanded={defaultFooterExpanded}
       />
-    </StyledCard>
+    </Pool.StyledCard>
   )
 }
 

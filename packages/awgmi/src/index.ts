@@ -26,7 +26,11 @@ export {
 export * from './client'
 export * from './context'
 export * from './hooks/useAccount'
-export { useAccountResource, type UseAccountResourceConfig } from './hooks/useAccountResource'
+export {
+  useAccountResource,
+  type UseAccountResourceConfig,
+  queryKey as accountResourceQueryKey,
+} from './hooks/useAccountResource'
 export { useAccountResources, type UseAccountResourcesConfig } from './hooks/useAccountResources'
 export { useBalance, type UseBalanceArgs, type UseBalanceConfig } from './hooks/useBalance'
 export { useCoin, type UseCoinArgs } from './hooks/useCoin'

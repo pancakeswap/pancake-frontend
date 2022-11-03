@@ -5,6 +5,11 @@ import {
   Link,
   Button,
   useModal,
+  Grid,
+  Box,
+  Heading,
+  VisibilityOff,
+  VisibilityOn,
   NextLinkFromReactRouter as ReactRouterLink,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -14,10 +19,10 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useMemo } from 'react'
+import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import EditProfileAvatar from './EditProfileAvatar'
 import BannerHeader from '../../Nft/market/components/BannerHeader'
 import StatBox, { StatBoxItem } from '../../Nft/market/components/StatBox'
-import MarketPageTitle from '../../Nft/market/components/MarketPageTitle'
 import EditProfileModal from './EditProfileModal'
 import AvatarImage from '../../Nft/market/components/BannerHeader/AvatarImage'
 
@@ -45,6 +50,8 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { account } = useWeb3React()
+  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
+    useGetUsernameWithVisibility(profile)
   const [onEditProfileModal] = useModal(
     <EditProfileModal
       onSuccess={() => {
@@ -65,8 +72,14 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 
   const avatarImage = profile?.nft?.image?.thumbnail || '/images/nfts/no-profile-md.png'
   const profileTeamId = profile?.teamId
-  const profileUsername = profile?.username
+  const profileUsername = isConnectedAccount ? usernameWithVisibility : profile?.username
   const hasProfile = !!profile
+
+  const toggleUsernameVisibility = () => {
+    setUserUsernameVisibility(!userUsernameVisibility)
+  }
+
+  const Icon = userUsernameVisibility ? VisibilityOff : VisibilityOn
 
   const bannerImage = useMemo(() => {
     const imagePath = '/images/teams'
@@ -174,13 +187,29 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   return (
     <>
       <BannerHeader bannerImage={bannerImage} bannerAlt={t('User team banner')} avatar={avatar} />
-      <MarketPageTitle pb="48px" title={title} description={description}>
-        <StatBox>
-          <StatBoxItem title={t('NFT Collected')} stat={numNftCollected} />
-          <StatBoxItem title={t('Points')} stat={numPoints} />
-          <StatBoxItem title={t('Achievements')} stat={numAchievements} />
-        </StatBox>
-      </MarketPageTitle>
+      <Grid
+        pb="48px"
+        gridGap="16px"
+        alignItems="center"
+        gridTemplateColumns={['1fr', null, null, null, 'repeat(2, 1fr)']}
+      >
+        <Box>
+          <Heading as="h1" scale="xl" color="secondary" mb="16px">
+            {title}
+            {isConnectedAccount && profile?.username ? (
+              <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
+            ) : null}
+          </Heading>
+          {description}
+        </Box>
+        <Box>
+          <StatBox>
+            <StatBoxItem title={t('NFT Collected')} stat={numNftCollected} />
+            <StatBoxItem title={t('Points')} stat={numPoints} />
+            <StatBoxItem title={t('Achievements')} stat={numAchievements} />
+          </StatBox>
+        </Box>
+      </Grid>
     </>
   )
 }

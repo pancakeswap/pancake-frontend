@@ -1,15 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
+import { Text, Flex, useMatchBreakpoints, Balance, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
+import { Token } from '@pancakeswap/sdk'
 
 interface EarningsCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 

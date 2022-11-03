@@ -6,7 +6,7 @@ import { multicallv2 } from 'utils/multicall'
 import pancakeBunniesAbi from 'config/abi/pancakeBunnies.json'
 import useSWRImmutable from 'swr/immutable'
 import { FetchStatus } from 'config/constants/types'
-import fromPairs from 'lodash/fromPairs'
+import mapValues from 'lodash/mapValues'
 import { pancakeBunniesAddress } from '../constants'
 
 const useGetCollectionDistribution = (collectionAddress: string) => {
@@ -64,11 +64,10 @@ export const useGetCollectionDistributionPB = () => {
         })
       } catch (error) {
         // Use nft api data if on chain multicall fails
-        const tokenListResponse = fromPairs(
-          Object.entries(apiResponse.data).map(([tokenId, tokenData]) => {
-            return [tokenId, { ...tokenData, tokenCount: apiResponse.attributesDistribution[tokenId] }]
-          }),
-        )
+        const tokenListResponse = mapValues(apiResponse.data, (tokenData, tokenId) => ({
+          ...tokenData,
+          tokenCount: apiResponse.attributesDistribution[tokenId],
+        }))
         setState({ isFetching: false, data: tokenListResponse })
       }
     }

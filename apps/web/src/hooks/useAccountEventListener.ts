@@ -22,7 +22,7 @@ export const useAccountEventListener = () => {
       }
 
       const handleDeactiveEvent = () => {
-        clearUserStates(dispatch, { chainId, isDeactive: true })
+        clearUserStates(dispatch, { chainId })
       }
 
       connector.addListener('disconnect', handleDeactiveEvent)

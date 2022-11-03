@@ -1,10 +1,11 @@
+import { Token } from '@pancakeswap/sdk'
+import { Pool } from '@pancakeswap/uikit'
 import { useRef } from 'react'
 import styled from 'styled-components'
-import { DeserializedPool } from 'state/types'
 import PoolRow, { VaultPoolRow } from './PoolRow'
 
 interface PoolsTableProps {
-  pools: DeserializedPool[]
+  pools: Pool.DeserializedPool<Token>[]
   account: string
   urlSearch?: string
 }

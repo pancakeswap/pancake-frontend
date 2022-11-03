@@ -1,10 +1,10 @@
-import { TooltipText, useTooltip, Balance } from '@pancakeswap/uikit'
-import { DeserializedPool } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
+import { TooltipText, useTooltip, Balance, Pool } from '@pancakeswap/uikit'
 import AutoEarningsBreakdown from '../AutoEarningsBreakdown'
 
 interface RecentCakeProfitBalanceProps {
   cakeToDisplay: number
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 

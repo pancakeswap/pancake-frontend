@@ -11,14 +11,27 @@ declare global {
   }
 }
 
-export class MartianConnector extends Connector<Window['martian']> {
-  readonly id = 'martian'
-  readonly name = 'Martain'
+export type MartianConnectorOptions = {
+  /** Id of connector */
+  id?: string
+  /** Name of connector */
+  name?: string
+}
+
+export class MartianConnector extends Connector<Window['martian'], MartianConnectorOptions> {
+  readonly id: string
+  readonly name: string
   provider?: Window['martian']
 
   readonly ready = typeof window !== 'undefined' && !!window.martian
-  constructor(config: { chains?: Chain[] } = {}) {
+  constructor(config: { chains?: Chain[]; options?: MartianConnectorOptions } = {}) {
     super(config)
+
+    let name = 'Martian'
+    const overrideName = config.options?.name
+    if (typeof overrideName === 'string') name = overrideName
+    this.id = config.options?.id || 'martian'
+    this.name = name
   }
 
   async getProvider() {
@@ -87,9 +100,17 @@ export class MartianConnector extends Connector<Window['martian']> {
     const account = await this.account()
     if (!provider) throw new ConnectorNotFoundError()
 
-    await provider.cancelSubmittedTransactions()
+    try {
+      await provider.cancelSubmittedTransactions?.()
+    } catch {
+      //
+    }
 
-    const hash = await provider.generateSignAndSubmitTransaction(account?.address || '', payload, options)
+    const transaction = await provider.generateTransaction(account?.address || '', payload, options)
+
+    if (!transaction) throw new Error('Failed to generate transaction')
+
+    const hash = await provider.signAndSubmitTransaction(transaction)
 
     return { hash }
   }

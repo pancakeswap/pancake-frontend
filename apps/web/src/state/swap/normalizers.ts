@@ -5,6 +5,8 @@ import { DerivedPairDataNormalized, PairDataNormalized, PairDataTimeWindowEnum, 
 
 export const normalizeChartData = (
   data: PairHoursDatasResponse | PairDayDatasResponse | null,
+  token0Address: string,
+  token1Address: string,
   timeWindow: PairDataTimeWindowEnum,
 ) => {
   switch (timeWindow) {
@@ -12,8 +14,8 @@ export const normalizeChartData = (
     case PairDataTimeWindowEnum.WEEK:
       return (data as PairHoursDatasResponse)?.pairHourDatas?.map((fetchPairEntry) => ({
         time: fetchPairEntry.hourStartUnix,
-        token0Id: fetchPairEntry.pair.token0.id,
-        token1Id: fetchPairEntry.pair.token1.id,
+        token0Id: token0Address,
+        token1Id: token1Address,
         reserve0: parseFloat(fetchPairEntry.reserve0),
         reserve1: parseFloat(fetchPairEntry.reserve1),
       }))
@@ -21,8 +23,8 @@ export const normalizeChartData = (
     case PairDataTimeWindowEnum.YEAR:
       return (data as PairDayDatasResponse)?.pairDayDatas?.map((fetchPairEntry) => ({
         time: fetchPairEntry.date,
-        token0Id: fetchPairEntry.pairAddress.token0.id,
-        token1Id: fetchPairEntry.pairAddress.token1.id,
+        token0Id: token0Address,
+        token1Id: token1Address,
         reserve0: parseFloat(fetchPairEntry.reserve0),
         reserve1: parseFloat(fetchPairEntry.reserve1),
       }))

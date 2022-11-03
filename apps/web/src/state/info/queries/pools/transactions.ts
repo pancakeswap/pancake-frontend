@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request'
-import { mapBurns, mapMints, mapSwaps } from 'state/info/queries/helpers'
+import { mapBurns, mapMints, mapSwaps, getPairTokenMap } from 'state/info/queries/helpers'
 import { BurnResponse, MintResponse, SwapResponse } from 'state/info/queries/types'
 import { Transaction } from 'state/info/types'
 import { MultiChainName, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
@@ -11,16 +11,6 @@ const POOL_TRANSACTIONS = gql`
     mints(first: 35, orderBy: timestamp, orderDirection: desc, where: { pair: $address }) {
       id
       timestamp
-      pair {
-        token0 {
-          id
-          symbol
-        }
-        token1 {
-          id
-          symbol
-        }
-      }
       to
       amount0
       amount1
@@ -29,16 +19,6 @@ const POOL_TRANSACTIONS = gql`
     swaps(first: 35, orderBy: timestamp, orderDirection: desc, where: { pair: $address }) {
       id
       timestamp
-      pair {
-        token0 {
-          id
-          symbol
-        }
-        token1 {
-          id
-          symbol
-        }
-      }
       from
       amount0In
       amount1In
@@ -49,16 +29,6 @@ const POOL_TRANSACTIONS = gql`
     burns(first: 35, orderBy: timestamp, orderDirection: desc, where: { pair: $address }) {
       id
       timestamp
-      pair {
-        token0 {
-          id
-          symbol
-        }
-        token1 {
-          id
-          symbol
-        }
-      }
       sender
       amount0
       amount1
@@ -84,9 +54,13 @@ const fetchPoolTransactions = async (
         address,
       },
     )
-    const mints = data.mints.map(mapMints)
-    const burns = data.burns.map(mapBurns)
-    const swaps = data.swaps.map(mapSwaps)
+    const pairTokenMap = await getPairTokenMap([address], chainName)
+    const pairTokens = pairTokenMap[address]
+    const pairResponse = pairTokens ? { pair: pairTokens } : {}
+
+    const mints = data.mints.map((mint) => ({ ...mint, ...pairResponse })).map(mapMints)
+    const burns = data.burns.map((burn) => ({ ...burn, ...pairResponse })).map(mapBurns)
+    const swaps = data.swaps.map((swap) => ({ ...swap, ...pairResponse })).map(mapSwaps)
     return { data: [...mints, ...burns, ...swaps], error: false }
   } catch (error) {
     console.error(`Failed to fetch transactions for pool ${address}`, error)

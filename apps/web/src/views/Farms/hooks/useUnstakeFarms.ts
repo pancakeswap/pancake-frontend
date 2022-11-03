@@ -14,9 +14,9 @@ const useUnstakeFarms = (pid: number, vaultPid?: number) => {
 
   const handleUnstake = useCallback(
     async (amount: string) => {
-      return unstakeFarm(masterChefContract, pid, amount)
+      return unstakeFarm(masterChefContract, pid, amount, gasPrice)
     },
-    [masterChefContract, pid],
+    [masterChefContract, pid, gasPrice],
   )
 
   const handleUnstakeNonBsc = useCallback(
