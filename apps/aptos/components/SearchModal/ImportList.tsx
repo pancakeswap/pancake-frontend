@@ -7,7 +7,7 @@ import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import { enableList, removeList, useFetchListCallback } from '@pancakeswap/token-lists'
 import { useAllLists } from 'state/lists/hooks'
-import { listsAtom, useListState } from 'state/lists'
+import { useListState } from 'state/lists'
 import styled from 'styled-components'
 
 interface ImportProps {
@@ -38,7 +38,7 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
   const [confirmed, setConfirmed] = useState(false)
 
   const lists = useAllLists()
-  const fetchList = useFetchListCallback(listsAtom)
+  const fetchList = useFetchListCallback(dispatch, true)
 
   // monitor is list is loading
   const adding = Boolean(lists[listURL]?.loadingRequestId)

@@ -5,7 +5,7 @@ import { ContextApi } from '@pancakeswap/localization'
 import { Button, useModal, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useNftSaleContract } from 'hooks/useContract'
 import { useContext, useEffect, useState } from 'react'
 import { DefaultTheme } from 'styled-components'
@@ -53,7 +53,7 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
 }) => {
   const [txHashEnablingResult, setTxHashEnablingResult] = useState(null)
   const [txHashBuyingResult, setTxHashBuyingResult] = useState(null)
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const nftSaleContract = useNftSaleContract()
   const { toastSuccess } = useToast()
   const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
@@ -73,7 +73,7 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
         return requiresApproval(cakeContractReader, account, nftSaleContract.address)
       },
       onApprove: () => {
-        return callWithMarketGasPrice(cakeContractApprover, 'approve', [nftSaleContract.address, MaxUint256])
+        return callWithGasPrice(cakeContractApprover, 'approve', [nftSaleContract.address, MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(t('Transaction has succeeded!'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
@@ -81,7 +81,7 @@ const BuyTicketsButtons: React.FC<React.PropsWithChildren<BuyTicketsProps>> = ({
       },
       onConfirm: ({ ticketsNumber }) => {
         onPresentConfirmModal()
-        return callWithMarketGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [
+        return callWithGasPrice(nftSaleContract, isPreSale ? 'buyTicketsInPreSaleForGen0' : 'buyTickets', [
           ticketsNumber,
         ])
       },

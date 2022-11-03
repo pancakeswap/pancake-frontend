@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Text, TokenPairImage as UITokenPairImage, useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { DeserializedPool } from 'state/types'
+import { Token } from '@pancakeswap/sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { TokenPairImage } from 'components/TokenImage'
@@ -10,7 +10,7 @@ import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/B
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 interface NameCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
 }
 
 const StyledCell = styled(BaseCell)`

@@ -1,12 +1,12 @@
 import { gql } from 'graphql-request'
 import { Pair, ChainId } from '@pancakeswap/sdk'
 import useSWRImmutable from 'swr/immutable'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { getChangeForPeriod } from 'utils/getChangeForPeriod'
+import { SLOW_INTERVAL } from 'config/constants'
+import { LP_HOLDERS_FEE, WEEKS_IN_YEAR } from 'config/constants/info'
 import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../info/constant'
-import { getDeltaTimestamps } from '../../utils/getDeltaTimestamps'
-import { getBlocksFromTimestamps } from '../../utils/getBlocksFromTimestamps'
-import { getChangeForPeriod } from '../../utils/getChangeForPeriod'
-import { getLpFeesAndApr } from '../../utils/getLpFeesAndApr'
-import { SLOW_INTERVAL } from '../../config/constants'
 
 interface PoolReserveVolume {
   reserveUSD: string
@@ -27,25 +27,18 @@ export const useLPApr = (pair?: Pair) => {
     async () => {
       const timestampsArray = getDeltaTimestamps()
       const blocks = await getBlocksFromTimestamps(timestampsArray, 'desc', 1000)
-      const [block24h, block48h, block7d, block14d] = blocks ?? []
+      const [, , block7d] = blocks ?? []
       const { error, data } = await fetchPoolVolumeAndReserveData(
-        block24h.number,
-        block48h.number,
         block7d.number,
-        block14d.number,
         pair.liquidityToken.address.toLowerCase(),
       )
       if (error) return null
       const current = parseFloat(data?.now[0]?.volumeUSD)
       const currentReserveUSD = parseFloat(data?.now[0]?.reserveUSD)
-      const oneDay = parseFloat(data?.oneDayAgo[0]?.volumeUSD)
-      const twoDays = parseFloat(data?.twoDaysAgo[0]?.volumeUSD)
       const week = parseFloat(data?.oneWeekAgo[0]?.volumeUSD)
-      const twoWeeks = parseFloat(data?.twoWeeksAgo[0]?.volumeUSD)
-      const [volumeUSD] = getChangeForPeriod(current, oneDay, twoDays)
-      const [volumeUSDWeek] = getChangeForPeriod(current, week, twoWeeks)
+      const [volumeUSDWeek] = getChangeForPeriod(current, week)
       const liquidityUSD = currentReserveUSD || 0
-      const { lpApr7d } = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
+      const lpApr7d = liquidityUSD > 0 ? (volumeUSDWeek * LP_HOLDERS_FEE * WEEKS_IN_YEAR * 100) / liquidityUSD : 0
       return lpApr7d ? { lpApr7d } : null
     },
     {
@@ -56,22 +49,15 @@ export const useLPApr = (pair?: Pair) => {
   return poolData
 }
 const fetchPoolVolumeAndReserveData = async (
-  block24h: number,
-  block48h: number,
   block7d: number,
-  block14d: number,
   poolAddress: string,
   chainName: 'ETH' | 'BSC' = 'BSC',
 ) => {
-  const weeksQuery = chainName === 'BSC' ? `twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddress)}` : ''
   try {
     const query = gql`
       query pools {
         now: ${POOL_AT_BLOCK(chainName, null, poolAddress)}
-        oneDayAgo: ${POOL_AT_BLOCK(chainName, block24h, poolAddress)}
-        twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddress)}
         oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddress)}
-        ${weeksQuery}
       }
     `
 

@@ -1,8 +1,8 @@
-import { Box, Flex, Text, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useMatchBreakpoints, Balance, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
+import { Token } from '@pancakeswap/sdk'
 import React from 'react'
-import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -11,7 +11,7 @@ import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/B
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 interface StakedCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 

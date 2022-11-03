@@ -9,6 +9,8 @@ import { FAST_INTERVAL } from 'config/constants'
 import useSWRImmutable from 'swr/immutable'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { livePools } from 'config/constants/pools'
+import { Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 
 import {
   fetchPoolsPublicDataAsync,
@@ -25,7 +27,7 @@ import {
   fetchCakePoolUserDataAsync,
   fetchCakePoolPublicDataAsync,
 } from '.'
-import { DeserializedPool, VaultKey } from '../types'
+import { VaultKey } from '../types'
 import { fetchFarmsPublicDataAsync } from '../farms'
 import {
   makePoolWithUserDataLoadingSelector,
@@ -87,7 +89,7 @@ export const useFetchPublicPoolsData = () => {
   )
 }
 
-export const usePool = (sousId: number): { pool: DeserializedPool; userDataLoaded: boolean } => {
+export const usePool = (sousId: number): { pool: Pool.DeserializedPool<Token>; userDataLoaded: boolean } => {
   const poolWithUserDataLoadingSelector = useMemo(() => makePoolWithUserDataLoadingSelector(sousId), [sousId])
   return useSelector(poolWithUserDataLoadingSelector)
 }

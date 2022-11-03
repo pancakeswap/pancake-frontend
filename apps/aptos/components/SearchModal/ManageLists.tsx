@@ -20,7 +20,7 @@ import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
-import { listsAtom, useListState } from 'state/lists'
+import { useListState } from 'state/lists'
 import styled from 'styled-components'
 import { useFetchListCallback, acceptListUpdate, disableList, enableList, removeList } from '@pancakeswap/token-lists'
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
@@ -170,6 +170,7 @@ function ManageLists({
   const { t } = useTranslation()
 
   const lists = useAllLists()
+  const [, dispatch] = useListState()
 
   // sort by active but only if not visible
   const activeListUrls = useActiveListUrls()
@@ -184,7 +185,7 @@ function ManageLists({
     setListUrlInput(e.target.value)
   }, [])
 
-  const fetchList = useFetchListCallback(listsAtom)
+  const fetchList = useFetchListCallback(dispatch, true)
 
   const validUrl: boolean = useMemo(() => {
     return uriToHttp(listUrlInput).length > 0

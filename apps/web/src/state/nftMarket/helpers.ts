@@ -15,6 +15,8 @@ import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import fromPairs from 'lodash/fromPairs'
+import pickBy from 'lodash/pickBy'
+import lodashSize from 'lodash/size'
 import {
   ApiCollection,
   ApiCollections,
@@ -160,16 +162,14 @@ export const getNftsFromCollectionApi = async (
     const res = await fetch(requestPath)
     if (res.ok) {
       const data = await res.json()
-      const filteredAttributesDistribution = Object.entries(data.attributesDistribution).filter(([, value]) =>
-        Boolean(value),
-      )
-      const filteredData = Object.entries(data.data).filter(([, value]) => Boolean(value))
-      const filteredTotal = filteredData.length
+      const filteredAttributesDistribution = pickBy(data.attributesDistribution, Boolean)
+      const filteredData = pickBy(data.data, Boolean)
+      const filteredTotal = lodashSize(filteredData)
       return {
         ...data,
         total: filteredTotal,
-        attributesDistribution: fromPairs(filteredAttributesDistribution),
-        data: fromPairs(filteredData),
+        attributesDistribution: filteredAttributesDistribution,
+        data: filteredData,
       }
     }
     console.error(`API: Failed to fetch NFT tokens for ${collectionAddress} collection`, res.statusText)

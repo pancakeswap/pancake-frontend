@@ -8,14 +8,16 @@ import {
   useMatchBreakpoints,
   FlexGap,
   Balance,
+  Pool,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultApy } from 'hooks/useVaultApy'
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, DeserializedLockedVaultUser, VaultKey } from 'state/types'
+import { DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
+import { Token } from '@pancakeswap/sdk'
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
 import BaseCell, { CellContent } from './BaseCell'
 
@@ -26,7 +28,7 @@ const AprLabelContainer = styled(Flex)`
 `
 
 interface AprCellProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
 }
 
 const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) => {

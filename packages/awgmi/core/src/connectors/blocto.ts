@@ -17,7 +17,7 @@ const networkMapping: Record<string, number> = {
   testnet: 2,
 }
 
-export class BloctoConnector extends Connector<AptosProviderInterface, AptosProviderConfig> {
+export class BloctoConnector extends Connector<AptosProviderInterface, Partial<AptosProviderConfig>> {
   readonly id = 'blocto'
   readonly name = 'Blocto'
 
@@ -25,7 +25,7 @@ export class BloctoConnector extends Connector<AptosProviderInterface, AptosProv
 
   ready = typeof window !== 'undefined' && (window as any)?.bloctoAptos
 
-  constructor(config: { chains?: Chain[]; options?: AptosProviderConfig } = {}) {
+  constructor(config: { chains?: Chain[]; options?: Partial<AptosProviderConfig> } = {}) {
     super(config)
   }
 

@@ -33,7 +33,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   }, [max]);
 
   const valNumber = new BigNumber(val);
-  const fullBalanceNumber = new BigNumber(fullBalance);
+  const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {

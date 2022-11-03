@@ -21,7 +21,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { FetchStatus } from 'config/constants/types'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useCake, useLotteryV2Contract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -73,7 +73,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
       userTickets: { tickets: userCurrentTickets },
     },
   } = useLottery()
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const [ticketsToBuy, setTicketsToBuy] = useState('')
   const [discountValue, setDiscountValue] = useState('')
   const [totalCost, setTotalCost] = useState('')
@@ -247,7 +247,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
         return requiresApproval(cakeContractReader, account, lotteryContract.address)
       },
       onApprove: () => {
-        return callWithMarketGasPrice(cakeContractApprover, 'approve', [lotteryContract.address, MaxUint256])
+        return callWithGasPrice(cakeContractApprover, 'approve', [lotteryContract.address, MaxUint256])
       },
       onApproveSuccess: async ({ receipt }) => {
         toastSuccess(
@@ -257,7 +257,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
       },
       onConfirm: () => {
         const ticketsForPurchase = getTicketsForPurchase()
-        return callWithMarketGasPrice(lotteryContract, 'buyTickets', [currentLotteryId, ticketsForPurchase])
+        return callWithGasPrice(lotteryContract, 'buyTickets', [currentLotteryId, ticketsForPurchase])
       },
       onSuccess: async ({ receipt }) => {
         onDismiss?.()

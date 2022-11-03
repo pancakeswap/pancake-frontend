@@ -5,7 +5,7 @@
     "jest": true
   },
   "plugins": ["lodash"],
-  "extends": ["@pancakeswap/eslint-config-pancake", "plugin:react/jsx-runtime", "plugin:@next/next/recommended"],
+  "extends": ["@pancakeswap/eslint-config-pancake", "plugin:react/jsx-runtime"],
   "rules": {
     "no-restricted-syntax": 0,
     "import/no-unresolved": 0,

@@ -8,14 +8,6 @@ const pairDayDatasByIdsQuery = gql`
       reserve0
       reserve1
       reserveUSD
-      pairAddress {
-        token0 {
-          id
-        }
-        token1 {
-          id
-        }
-      }
     }
   }
 `

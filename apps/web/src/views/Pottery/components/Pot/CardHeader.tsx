@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { Flex, TokenPairImage } from '@pancakeswap/uikit'
-import { PoolCardHeaderTitle } from 'views/Pools/components/PoolCard/PoolCardHeader'
+import { Flex, TokenPairImage, Pool } from '@pancakeswap/uikit'
 
 const Container = styled(Flex)`
   align-items: center;
@@ -24,7 +23,7 @@ const CardHeader: React.FC<React.PropsWithChildren<CardHeaderProps>> = ({
 }) => {
   return (
     <Container>
-      <PoolCardHeaderTitle title={title} subTitle={subTitle} />
+      <Pool.PoolCardHeaderTitle title={title} subTitle={subTitle} />
       <TokenPairImage width={64} height={64} primarySrc={primarySrc} secondarySrc={secondarySrc} />
     </Container>
   )

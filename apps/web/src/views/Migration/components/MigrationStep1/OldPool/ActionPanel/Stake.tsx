@@ -1,14 +1,14 @@
 import React from 'react'
-import { DeserializedPool } from 'state/types'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Balance } from '@pancakeswap/uikit'
+import { Flex, Text, Balance, Pool } from '@pancakeswap/uikit'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
 import BigNumber from 'bignumber.js'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
+import { Token } from '@pancakeswap/sdk'
 import UnstakeButton from '../UnstakeButton'
 
 const Container = styled(ActionContainer)`
@@ -16,7 +16,7 @@ const Container = styled(ActionContainer)`
 `
 
 interface StackedActionProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
 }
 
 const Staked: React.FC<React.PropsWithChildren<StackedActionProps>> = ({ pool }) => {

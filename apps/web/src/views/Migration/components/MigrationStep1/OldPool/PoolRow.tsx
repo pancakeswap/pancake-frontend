@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import { DeserializedPool, VaultKey } from 'state/types'
+import { VaultKey } from 'state/types'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
+import { Token } from '@pancakeswap/sdk'
 import NameCell from './Cells/NameCell'
 import StakedCell from './Cells/StakedCell'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
@@ -16,7 +17,7 @@ import ExpandActionCell from '../../Cells/ExpandActionCell'
 import ActionPanel from './ActionPanel/ActionPanel'
 
 interface PoolRowProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
   account: string
 }
 

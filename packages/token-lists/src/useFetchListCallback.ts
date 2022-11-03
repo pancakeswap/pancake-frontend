@@ -3,7 +3,10 @@ import { TokenList } from '@uniswap/token-lists'
 import { useCallback } from 'react'
 import { fetchTokenList } from './actions'
 
-function useFetchListCallback(dispatch): (listUrl: string, sendDispatch?: boolean) => Promise<TokenList> {
+function useFetchListCallback(
+  dispatch,
+  isAptos = false,
+): (listUrl: string, sendDispatch?: boolean) => Promise<TokenList> {
   // note: prevent dispatch if using for list search or unsupported list
   return useCallback(
     async (listUrl: string, sendDispatch = true) => {
@@ -13,7 +16,7 @@ function useFetchListCallback(dispatch): (listUrl: string, sendDispatch?: boolea
       }
       // lazy load avj and token list schema
       const getTokenList = (await import('./getTokenList')).default
-      return getTokenList(listUrl)
+      return getTokenList(listUrl, isAptos)
         .then((tokenList) => {
           if (sendDispatch) {
             dispatch(fetchTokenList.fulfilled({ url: listUrl, tokenList, requestId }))

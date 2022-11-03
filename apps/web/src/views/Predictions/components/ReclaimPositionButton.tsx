@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, ButtonProps, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { useCallWithMarketGasPrice } from 'hooks/useCallWithMarketGasPrice'
+import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { usePredictionsContract } from 'hooks/useContract'
 import { ReactNode } from 'react'
@@ -23,13 +23,13 @@ const ReclaimPositionButton: React.FC<React.PropsWithChildren<ReclaimPositionBut
   const { address: predictionsAddress } = useConfig()
   const { token } = useConfig()
   const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
-  const { callWithMarketGasPrice } = useCallWithMarketGasPrice()
+  const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: isPendingTx } = useCatchTxError()
 
   const handleReclaim = async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithMarketGasPrice(predictionsContract, 'claim', [[epoch]])
+      return callWithGasPrice(predictionsContract, 'claim', [[epoch]])
     })
     if (receipt?.status) {
       await onSuccess?.()

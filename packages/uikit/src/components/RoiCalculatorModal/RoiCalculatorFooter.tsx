@@ -96,6 +96,16 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
       {isExpanded && (
         <Box px="8px">
           <Grid gridTemplateColumns="2.5fr 1fr" gridRowGap="8px" gridTemplateRows={`repeat(${gridRowCount}, auto)`}>
+            {!isFarm && (
+              <>
+                <Text color="textSubtle" small>
+                  {Number.isFinite(apy) && apy !== 0 ? t("APY") : t("APR")}
+                </Text>
+                <Text small textAlign="right">
+                  {Number.isFinite(apy) && apy !== 0 ? apy.toFixed(2) : apr.toFixed(2)}%
+                </Text>
+              </>
+            )}
             {isFarm && (
               <>
                 <Text color="textSubtle" small>
@@ -104,22 +114,12 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                 <Text small textAlign="right">
                   {displayApr}%
                 </Text>
-              </>
-            )}
-            {!Number.isFinite(apy) ? (
-              <Text color="textSubtle" small>
-                *{isFarm ? t("Base APR (CAKE yield only)") : t("APR")}
-              </Text>
-            ) : (
-              <Text color="textSubtle" small>
-                {t("APY")}
-              </Text>
-            )}
-            <Text small textAlign="right">
-              {(apy ?? apr).toFixed(2)}%
-            </Text>
-            {isFarm && (
-              <>
+                <Text color="textSubtle" small>
+                  *{t("Base APR (CAKE yield only)")}
+                </Text>
+                <Text small textAlign="right">
+                  {apr.toFixed(2)}%
+                </Text>
                 <Text color="textSubtle" small>
                   *{t("LP Rewards APR")}
                 </Text>

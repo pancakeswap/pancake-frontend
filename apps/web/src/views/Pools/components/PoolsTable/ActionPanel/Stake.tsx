@@ -13,6 +13,7 @@ import {
   SkeletonV2,
   useMatchBreakpoints,
   Balance,
+  Pool,
 } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import BigNumber from 'bignumber.js'
@@ -22,7 +23,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useERC20 } from 'hooks/useContract'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
-import { DeserializedPool, VaultKey, DeserializedLockedCakeVault } from 'state/types'
+import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -30,6 +31,7 @@ import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/form
 import { useProfileRequirement } from 'views/Pools/hooks/useProfileRequirement'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import useUserDataInVaultPresenter from 'views/Pools/components/LockedPool/hooks/useUserDataInVaultPresenter'
+import { Token } from '@pancakeswap/sdk'
 
 import { useApprovePool, useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 import VaultStakeModal from '../../CakeVaultCard/VaultStakeModal'
@@ -50,7 +52,7 @@ const IconButtonWrapper = styled.div`
 `
 
 interface StackedActionProps {
-  pool: DeserializedPool
+  pool: Pool.DeserializedPool<Token>
 }
 
 const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps>> = ({ pool }) => {

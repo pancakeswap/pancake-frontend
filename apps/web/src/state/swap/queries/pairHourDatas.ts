@@ -8,14 +8,6 @@ const pairHourDatas = gql`
       reserve0
       reserve1
       reserveUSD
-      pair {
-        token0 {
-          id
-        }
-        token1 {
-          id
-        }
-      }
     }
   }
 `

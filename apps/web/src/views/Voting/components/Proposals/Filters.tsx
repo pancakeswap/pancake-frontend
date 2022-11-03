@@ -12,7 +12,7 @@ interface FiltersProps {
 
 const StyledFilters = styled(Flex).attrs({ alignItems: 'center' })`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  padding: 16px 24px;
+  padding: 14px 0 14px 24px;
 `
 
 const FilterLabel = styled.label`
