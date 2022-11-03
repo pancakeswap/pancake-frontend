@@ -8,7 +8,7 @@ import { MultiChainName, multiChainQueryMainToken, getMultiChainQueryEndPointWit
 const POOLS_FOR_TOKEN = (chainName: MultiChainName) => {
   const transactionGT = chainName === 'ETH' ? 1 : 100
   return gql`
-  query poolsForToken($address: Bytes!, $blacklist: [String!]) {
+  query poolsForToken($address: String!, $blacklist: [String!]) {
     asToken0: pairs(
       first: 15
       orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
