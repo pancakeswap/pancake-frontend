@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "滿足以下需求即可加入：",
   "Order cancellation": "訂單取消",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "訂單取消：%inputAmount% %inputTokenSymbol% 兌換為 %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
