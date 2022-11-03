@@ -1,10 +1,10 @@
 import { useAccount } from '@pancakeswap/awgmi'
-import { useTranslation } from '@pancakeswap/localization'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { Ifo, PoolIds } from 'config/constants/types'
+import { useMemo } from 'react'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
-import ContributeButton from './ContributeButton'
 import { ClaimButton } from './ClaimButton'
+import ContributeButton from './ContributeButton'
 import { SkeletonCardActions } from './Skeletons'
 
 interface Props {
@@ -13,7 +13,6 @@ interface Props {
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
   isLoading: boolean
-  isEligible: boolean
 }
 
 const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
@@ -22,11 +21,18 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   publicIfoData,
   walletIfoData,
   isLoading,
-  isEligible,
 }) => {
-  const { t } = useTranslation()
   const { account } = useAccount()
   const userPoolCharacteristics = walletIfoData[poolId]
+
+  const needClaim = useMemo(() => {
+    return (
+      publicIfoData.status === 'finished' &&
+      !userPoolCharacteristics.hasClaimed &&
+      (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
+        userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0))
+    )
+  }, [publicIfoData.status, userPoolCharacteristics.hasClaimed])
 
   if (isLoading) {
     return <SkeletonCardActions />
@@ -36,18 +42,8 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
     return <ConnectWalletButton width="100%" />
   }
 
-  const needClaim =
-    publicIfoData.status === 'finished' &&
-    !userPoolCharacteristics.hasClaimed &&
-    (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
-      userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0))
-
   if (needClaim) {
     return <ClaimButton poolId={poolId} walletIfoData={walletIfoData} />
-  }
-
-  if (ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible) {
-    return null
   }
 
   return (
