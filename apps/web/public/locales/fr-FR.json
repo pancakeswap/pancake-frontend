@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "Remplissez les conditions suivantes pour adhérer :",
   "Order cancellation": "Annulation de la commande",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Annulation de la commande : %inputAmount% %inputTokenSymbol% pour %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
