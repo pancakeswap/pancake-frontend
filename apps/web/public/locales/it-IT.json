@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "Soddisfa il seguente requisito per partecipare:",
   "Order cancellation": "Annullamento ordine",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Annullamento ordine: %inputAmount% %inputTokenSymbol% per %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
