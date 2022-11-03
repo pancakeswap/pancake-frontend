@@ -1,9 +1,9 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, useMemo } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints, Flex, ListLogo, AutoColumn } from '@pancakeswap/uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
-import { useCombinedInactiveList } from 'state/lists/hooks'
+import { useInactiveListUrls, useAllLists } from 'state/lists/hooks'
 import styled from 'styled-components'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
 import { useTranslation } from '@pancakeswap/localization'
@@ -60,8 +60,22 @@ export default function ImportRow({
   const { t } = useTranslation()
 
   // check if token comes from list
-  const inactiveTokenList = useCombinedInactiveList()
-  const list = token?.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
+  const lists = useAllLists()
+  const inactiveUrls = useInactiveListUrls()
+  const tokenList = useMemo(() => {
+    let result
+    for (const url of inactiveUrls) {
+      const list = lists[url].current
+      const tokenInList = list?.tokens.some(
+        (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
+      )
+      if (tokenInList) {
+        result = list
+        break
+      }
+    }
+    return result
+  }, [token, inactiveUrls, lists])
 
   // check if already active on list or local storage tokens
   const isAdded = useIsUserAddedToken(token)
@@ -88,12 +102,12 @@ export default function ImportRow({
             </Text>
           </NameOverflow>
         </AutoRow>
-        {list && list.logoURI && (
+        {tokenList && tokenList.logoURI && (
           <RowFixed>
             <Text fontSize={isMobile ? '10px' : '14px'} mr="4px" color="textSubtle">
-              {t('via')} {list.name}
+              {t('via')} {tokenList.name}
             </Text>
-            <ListLogo logoURI={list.logoURI} size="12px" />
+            <ListLogo logoURI={tokenList.logoURI} size="12px" />
           </RowFixed>
         )}
       </AutoColumn>

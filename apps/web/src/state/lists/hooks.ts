@@ -91,44 +91,6 @@ const inactiveUrlAtom = atom((get) => {
   return Object.keys(lists).filter((url) => !urls?.includes(url) && !UNSUPPORTED_LIST_URLS.includes(url))
 })
 
-export const combinedTokenInfoMapFromInActiveUrlsAtom = atom((get) => {
-  const [lists, inactiveUrls] = [get(selectorByUrlsAtom), get(inactiveUrlAtom)]
-  return (
-    inactiveUrls
-      .slice()
-      // sort by priority so top priority goes last
-      .sort(sortByListPriority)
-      .reduce((allTokens, currentUrl) => {
-        const current = lists[currentUrl]?.current
-        if (!current) return allTokens
-        try {
-          const tokenInfoAddressMap = mapValues(
-            groupBy(
-              uniqBy(current.tokens, (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`),
-              'chainId',
-            ),
-            (tokenInfoList) =>
-              mapValues(keyBy(tokenInfoList, 'address'), (tokenInfo) => ({ token: tokenInfo, list: current })),
-          )
-
-          // add chain id item if not exist
-          enumKeys(ChainId).forEach((chainId) => {
-            if (!(ChainId[chainId] in tokenInfoAddressMap)) {
-              Object.defineProperty(tokenInfoAddressMap, ChainId[chainId], {
-                value: {},
-              })
-            }
-          })
-          const newTokens = Object.assign(tokenInfoAddressMap)
-          return combineMaps(allTokens, newTokens)
-        } catch (error) {
-          console.error('Could not show token list due to error', error)
-          return allTokens
-        }
-      }, EMPTY_LIST)
-  )
-})
-
 export const combinedTokenMapFromOfficialsUrlsAtom = atom((get) => {
   const lists = get(selectorByUrlsAtom)
   return combineTokenMapsWithDefault(lists, OFFICIAL_LISTS)
@@ -271,11 +233,6 @@ export function useInactiveListUrls() {
 export function useCombinedActiveList(): TokenAddressMap {
   const activeTokens = useAtomValue(combinedTokenMapFromActiveUrlsAtom)
   return activeTokens
-}
-
-// all tokens info from inactive lists
-export function useCombinedInactiveList() {
-  return useAtomValue(combinedTokenInfoMapFromInActiveUrlsAtom)
 }
 
 // list of tokens not supported on interface, used to show warnings and prevent swaps and adds

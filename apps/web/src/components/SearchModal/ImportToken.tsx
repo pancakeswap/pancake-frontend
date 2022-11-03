@@ -20,7 +20,7 @@ import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import useSWRImmutable from 'swr/immutable'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { useCombinedInactiveList } from 'state/lists/hooks'
+import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -46,8 +46,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
   const addToken = useAddUserToken()
 
-  // use for showing import source on inactive tokens
-  const inactiveTokenList = useCombinedInactiveList()
+  const lists = useAllLists()
+  const inactiveUrls = useInactiveListUrls()
 
   const { data: hasRiskToken } = useSWRImmutable(tokens && ['has-risks', tokens], async () => {
     const result = await Promise.all(tokens.map((token) => fetchRiskToken(token.address, token.chainId)))
@@ -76,19 +76,29 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       </Message>
 
       {tokens.map((token) => {
-        const list = token.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
+        let tokenList
+        for (const url of inactiveUrls) {
+          const list = lists[url].current
+          const tokenInList = list?.tokens.some(
+            (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
+          )
+          if (tokenInList) {
+            tokenList = list
+            break
+          }
+        }
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
           <Flex key={token.address} alignItems="center" justifyContent="space-between">
             <Grid gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px">
-              {list !== undefined ? (
+              {tokenList !== undefined ? (
                 <Tag
                   variant="success"
                   outline
                   scale="sm"
-                  startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                  startIcon={tokenList.logoURI && <ListLogo logoURI={tokenList.logoURI} size="12px" />}
                 >
-                  {t('via')} {list.name}
+                  {t('via')} {tokenList.name}
                 </Tag>
               ) : (
                 <Tag variant="failure" outline scale="sm" startIcon={<ErrorIcon color="failure" />}>
