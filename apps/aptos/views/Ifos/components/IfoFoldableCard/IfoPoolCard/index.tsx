@@ -107,7 +107,6 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, if
               />
               <Box mt="24px">
                 <IfoCardActions
-                  isEligible
                   poolId={poolId}
                   ifo={ifo}
                   publicIfoData={publicIfoData}
