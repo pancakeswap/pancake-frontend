@@ -1,24 +1,24 @@
-import { useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Heading, Skeleton, Text, useToast, Balance } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import BigNumber from 'bignumber.js'
+import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { ActionContainer, ActionContent, ActionTitles } from './styles'
+import { FarmWithStakedValue } from '../../types'
 
-// interface HarvestActionProps extends FarmWithStakedValue {
-//   userDataReady: boolean
-//   onReward?: () => Promise<TransactionResponse>
-//   onDone?: () => void
-// }
+interface HarvestActionProps extends FarmWithStakedValue {
+  userDataReady: boolean
+  onReward: () => Promise<TransactionResponse>
+  onDone?: () => void
+}
 
 export const HarvestActionContainer = ({ children, ...props }) => {
-  const { onReward } = useHarvestFarm(props.pid)
-  // const { account, chainId } = useActiveWeb3React()
-  // const dispatch = useAppDispatch()
+  const { onReward } = useHarvestFarm(props.pid, 'tokenType')
 
   const onDone = () => console.info('onDone')
   // const onDone = useCallback(
@@ -29,24 +29,16 @@ export const HarvestActionContainer = ({ children, ...props }) => {
   return children({ ...props, onDone, onReward })
 }
 
-// export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
-export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<any>> = ({
-  pid,
-  token,
-  quoteToken,
-  vaultPid,
+export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
   userData,
   userDataReady,
-  lpSymbol,
   onReward,
   onDone,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const [pendingTx, setPendingTx] = useState(false)
-  // const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  // const earningsBigNumber = new BigNumber(userData.earnings)
-  const earningsBigNumber = BIG_ZERO
+  const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
+  const earningsBigNumber = userData?.earnings ? new BigNumber(userData.earnings) : BIG_ZERO
   const cakePrice = useCakePriceAsBigNumber()
   let earnings = BIG_ZERO
   let earningsBusd = 0
@@ -60,13 +52,14 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<any>
   }
 
   const handleHarvest = async () => {
-    if (true) {
-      // toastSuccess(
-      //   `${t('Harvested')}!`,
-      //   <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-      //     {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-      //   </ToastDescriptionWithTx>,
-      // )
+    const receipt = await fetchWithCatchTxError(() => onReward())
+    if (receipt?.status) {
+      toastSuccess(
+        `${t('Harvested')}!`,
+        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+        </ToastDescriptionWithTx>,
+      )
       onDone?.()
     }
   }
