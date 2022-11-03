@@ -1,22 +1,25 @@
-/* eslint-disable camelcase */
-import { useAccount, useTableItem } from '@pancakeswap/awgmi'
-import { IFO_MODULE_NAME, IFO_RESOURCE_ACCOUNT_ADDRESS } from 'views/Ifos/constants'
+import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
+import { ifos } from 'config/constants/ifo'
+import { IFO_MODULE_NAME, IFO_ADDRESS } from 'views/Ifos/constants'
 import { RootObject as UserInfo } from 'views/Ifos/generated/UserInfo'
-import { useIfoPool } from './useIfoPool'
+
+const RAISING_COIN = ifos[0].currency.address
+const OFFERING_COIN = ifos[0].token.address
+const POOL_TYPE = `${IFO_ADDRESS}::${IFO_MODULE_NAME}::Pool0`
 
 export const useIfoUserInfo = () => {
   const { account } = useAccount()
-  const pool = useIfoPool()
 
-  return useTableItem<UserInfo>({
-    handle: pool.data?.user_infos.handle,
-    data:
-      !!account && pool.data?.user_infos.handle
-        ? {
-            key: account.address,
-            keyType: 'address',
-            valueType: `${IFO_RESOURCE_ACCOUNT_ADDRESS}::${IFO_MODULE_NAME}::UserInfo`,
-          }
-        : undefined,
+  return useAccountResources({
+    enabled: !!account && !!ifos[0],
+    address: account?.address,
+    watch: true,
+    select: (data) => {
+      return data.find((it) => {
+        return (
+          it.type === `${IFO_ADDRESS}::${IFO_MODULE_NAME}::UserInfo<${RAISING_COIN}, ${OFFERING_COIN}, ${POOL_TYPE}>`
+        )
+      }) as UserInfo | undefined
+    },
   })
 }
