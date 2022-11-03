@@ -28,7 +28,7 @@ export const getPoolTaxRateOverflow = (
 /**
  * compute_offering_and_refund_amount
  */
-export const computeOfferingAndRefundAmount = (user_info: UserInfo, ifo_pool: IFOPool) => {
+export const computeOfferingAndRefundAmount = (user_info: UserInfo['data'], ifo_pool: IFOPool) => {
   let offering_amount: BigNumber
   let refunding_amount: BigNumber
   let tax_amount: BigNumber = BIG_ZERO

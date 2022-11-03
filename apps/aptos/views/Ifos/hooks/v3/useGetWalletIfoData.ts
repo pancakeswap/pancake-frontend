@@ -55,37 +55,35 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
     }))
   }
 
-  const userInfo = useIfoUserInfo()
+  const { data: userInfo } = useIfoUserInfo()
   const vestingCharacteristics = useVestingCharacteristics()
 
   const handleOnSettled = useCallback(
     (data?: IFOPool) => {
-      if (!account) {
+      if (!account || !data) {
         setState(initialState)
         return
       }
 
-      if (data) {
-        const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } = userInfo.data
-          ? computeOfferingAndRefundAmount(userInfo.data, data)
-          : {
-              tax_amount: BIG_ZERO,
-              refunding_amount: BIG_ZERO,
-            }
+      const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } = userInfo?.data
+        ? computeOfferingAndRefundAmount(userInfo.data, data)
+        : {
+            tax_amount: BIG_ZERO,
+            refunding_amount: BIG_ZERO,
+          }
 
-        setState((prevState) => ({
-          ...prevState,
-          isInitialized: true,
-          poolUnlimited: {
-            ...prevState.poolUnlimited,
-            ...vestingCharacteristics,
-            amountTokenCommittedInLP: userInfo.data ? new BigNumber(userInfo.data.amount) : BIG_ZERO,
-            hasClaimed: userInfo.data?.claimed ?? false,
-            refundingAmountInLP,
-            taxAmountInLP,
-          },
-        }))
-      }
+      setState((prevState) => ({
+        ...prevState,
+        isInitialized: true,
+        poolUnlimited: {
+          ...prevState.poolUnlimited,
+          ...vestingCharacteristics,
+          amountTokenCommittedInLP: userInfo?.data ? new BigNumber(userInfo?.data.amount) : BIG_ZERO,
+          hasClaimed: userInfo?.data?.claimed ?? false,
+          refundingAmountInLP,
+          taxAmountInLP,
+        },
+      }))
     },
     [account, userInfo, vestingCharacteristics],
   )
