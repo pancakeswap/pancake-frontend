@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Text, Link } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { AutoColumn } from '../../../components/Layout/Column'
 import { RowBetween } from '../../../components/Layout/Row'
 import { getBlockExploreLink, getBlockExploreName } from '../../../utils'
@@ -77,7 +77,7 @@ export default function AddressInputPanel({
   // triggers whenever the typed value changes
   onChange: (value: string) => void
 }) {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
 

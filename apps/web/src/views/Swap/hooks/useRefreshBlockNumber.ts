@@ -1,6 +1,6 @@
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useState, useCallback, useEffect } from 'react'
 import { useSWRConfig } from 'swr'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const useRefreshBlockNumber = () => {
   const [isLoading, setFetch] = useState(false)
@@ -12,7 +12,7 @@ export const useRefreshBlockNumber = () => {
   }, [isLoading])
 
   const { mutate } = useSWRConfig()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   useEffect(() => {
     if (!isLoading) return

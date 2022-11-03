@@ -12,6 +12,7 @@ import { livePools } from 'config/constants/pools'
 import { Pool } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import {
   fetchPoolsPublicDataAsync,
   fetchPoolsUserDataAsync,
@@ -68,7 +69,7 @@ const getCakePriceFarms = async (chainId: number) => {
 
 export const useFetchPublicPoolsData = () => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useSlowRefreshEffect(

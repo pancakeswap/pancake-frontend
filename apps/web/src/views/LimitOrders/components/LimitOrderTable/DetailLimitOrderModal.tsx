@@ -18,7 +18,7 @@ import { FormattedOrderData } from 'views/LimitOrders/hooks/useFormattedOrderDat
 import useGelatoLimitOrdersHandlers from 'hooks/limitOrders/useGelatoLimitOrdersHandlers'
 import { Order } from '@gelatonetwork/limit-orders-lib'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'
 import LimitOrderDisclaimer from '../LimitOrderDisclaimer'
@@ -42,7 +42,7 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
   order,
   formattedOrder,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { theme } = useTheme()
   const { t } = useTranslation()
   const { handleLimitOrderCancellation } = useGelatoLimitOrdersHandlers()

@@ -12,7 +12,6 @@ import {
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
 import { BUSD, CAKE, USDC } from '@pancakeswap/tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import getLpAddress from 'utils/getLpAddress'
@@ -21,13 +20,14 @@ import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
 import { PairState, usePairs } from './usePairs'
+import { useActiveChainId } from './useActiveChainId'
 
 /**
  * Returns the price in BUSD of the input currency
  * @param currency currency to compute the BUSD price of
  */
 export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const wrapped = currency?.wrapped
   const wnative = WNATIVE[chainId]
   const stable = BUSD[chainId] || USDC[chainId]
@@ -166,7 +166,7 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
 export const useCakeBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet cake if chain is testnet
   const cake: Token = isTestnet ? CAKE[ChainId.BSC_TESTNET] : CAKE[ChainId.BSC]
@@ -177,7 +177,7 @@ export const useCakeBusdPrice = (
 export const useBNBBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet wbnb if chain is testnet
   const wbnb: Token = isTestnet ? WBNB[ChainId.BSC_TESTNET] : WBNB[ChainId.BSC]

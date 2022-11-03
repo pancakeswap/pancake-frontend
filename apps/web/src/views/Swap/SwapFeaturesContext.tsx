@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useMemo } from 'react'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
 import { useExchangeChartManager } from 'state/user/hooks'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export const SwapFeaturesContext = createContext<{
   isChartSupported: boolean
@@ -28,7 +28,7 @@ const STABLE_SUPPORT_CHAIN_IDS = [ChainId.BSC_TESTNET, ChainId.BSC]
 
 export const SwapFeaturesProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { isMobile } = useMatchBreakpoints()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartDisplayed, setIsChartDisplayed] = useState(userChartPreference)
   const [isChartExpanded, setIsChartExpanded] = useState(false)

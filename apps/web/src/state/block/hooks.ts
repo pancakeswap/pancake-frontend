@@ -4,6 +4,7 @@ import useSWR, { useSWRConfig, unstable_serialize } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProvider } from 'wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const REFRESH_BLOCK_INTERVAL = 6000
 
@@ -48,7 +49,7 @@ export const usePollBlockNumber = () => {
 }
 
 export const useCurrentBlock = (): number => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { data: currentBlock = 0 } = useSWRImmutable(['blockNumber', chainId])
   return currentBlock
 }
@@ -74,7 +75,7 @@ export const useChainCurrentBlock = (chainId: number): number => {
 }
 
 export const useInitialBlock = (): number => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { data: initialBlock = 0 } = useSWRImmutable(['initialBlockNumber', chainId])
   return initialBlock
 }
