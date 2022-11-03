@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "Για να γίνετε μέλος πρέπει να πληροίτε τις ακόλουθες προϋποθέσεις:",
   "Order cancellation": "Ακύρωση εντολής",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Ακύρωση εντολής: %inputAmount% %inputTokenSymbol% για %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
