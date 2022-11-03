@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "যোগদান করতে নিচের শর্ত পূরণ করুন:",
   "Order cancellation": "অর্ডার বাতিলকরণ",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "অর্ডার বাতিলকরণ:  %outputAmount% %outputTokenSymbol%-এর জন্য %inputAmount% %inputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
