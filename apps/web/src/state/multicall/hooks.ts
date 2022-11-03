@@ -3,12 +3,12 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import {
   useSWRConfig,
   // eslint-disable-next-line camelcase
   unstable_serialize,
 } from 'swr'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { AppState, useAppDispatch } from '../index'
 import {
   addMulticallListeners,
@@ -54,7 +54,7 @@ export const NEVER_RELOAD: ListenerOptions = {
 
 // the lowest level call for subscribing to contract data
 function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): CallResult[] {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const callResults = useSelector<AppState, AppState['multicall']['callResults']>(
     (state) => state.multicall.callResults,
   )
@@ -172,7 +172,7 @@ export function useSingleContractMultipleData(
   callInputs: OptionalMethodInputs[],
   options?: ListenerOptions,
 ): CallState[] {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
   const calls = useMemo(
@@ -230,7 +230,7 @@ export function useMultipleContractSingleData(
   )
 
   const results = useCallsData(calls, options)
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const { cache } = useSWRConfig()
 
@@ -261,7 +261,7 @@ export function useSingleCallResult(
 
   const result = useCallsData(calls, options)[0]
   const { cache } = useSWRConfig()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   return useMemo(() => {
     const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))

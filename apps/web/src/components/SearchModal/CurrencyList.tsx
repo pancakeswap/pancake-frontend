@@ -6,9 +6,9 @@ import { FixedSizeList } from 'react-window'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCombinedActiveList } from '../../state/lists/hooks'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import { useIsUserAddedToken } from '../../hooks/Tokens'
@@ -137,7 +137,7 @@ export default function CurrencyList({
     return formatted
   }, [breakIndex, currencies, inactiveCurrencies, showNative, native])
 
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
 

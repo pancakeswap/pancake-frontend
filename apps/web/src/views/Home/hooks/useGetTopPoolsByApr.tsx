@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useAppDispatch } from 'state'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import orderBy from 'lodash/orderBy'
 import partition from 'lodash/partition'
 import { VaultKey } from 'state/types'
@@ -10,10 +9,11 @@ import { useInitialBlock } from 'state/block/hooks'
 import { FetchStatus } from 'config/constants/types'
 import { Pool } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const useGetTopPoolsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const [fetchStatus, setFetchStatus] = useState(FetchStatus.Idle)
   const [topPools, setTopPools] = useState<Pool.DeserializedPool<Token>[]>([null, null, null, null, null])

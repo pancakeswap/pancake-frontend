@@ -13,6 +13,7 @@ import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { isAddress } from 'utils'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { replaceLimitOrdersState, selectCurrency, setRateType, switchCurrencies, typeInput } from './actions'
 import { Field, Rate, OrderState } from './types'
@@ -495,7 +496,7 @@ const queryParametersToSwapState = (parsedQs: ParsedUrlQuery): OrderState => {
 export const useDefaultsFromURLSearch = ():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
   const { query } = useRouter()
   const [result, setResult] = useState<

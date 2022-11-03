@@ -2,10 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Flex, Heading, PocketWatchIcon, Text, Skeleton, Link, TimerIcon } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 interface Props {
   publicIfoData: PublicIfoData
@@ -26,7 +26,7 @@ const FlexGap = styled(Flex)<{ gap: string }>`
 const USE_BLOCK_TIMESTAMP_UNTIL = 3
 
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { status, secondsUntilStart, startBlockNum } = publicIfoData
   const currentBlockTimestamp = useCurrentBlockTimestamp()
@@ -107,7 +107,7 @@ const LiveNowHeading = styled(EndInHeading)`
 `
 
 const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { status, secondsUntilEnd, endBlockNum } = publicIfoData
   const timeUntil = getTimePeriods(secondsUntilEnd)

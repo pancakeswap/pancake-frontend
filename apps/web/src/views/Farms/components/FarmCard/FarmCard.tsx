@@ -3,11 +3,11 @@ import { Card, Farm as FarmUI, Flex, Skeleton, Text, ExpandableSectionButton } f
 import BigNumber from 'bignumber.js'
 import { multiChainPaths } from 'state/info/constant'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FarmWithStakedValue } from '../types'
 import ApyButton from './ApyButton'
 import CardActionsContainer from './CardActionsContainer'
@@ -57,7 +57,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   originalLiquidity,
 }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
