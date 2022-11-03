@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { BLOCKS_PER_YEAR } from 'config'
+import { SECONDS_IN_YEAR } from 'config'
 import { ChainId } from '@pancakeswap/aptos-swap-sdk'
 import mainnetLpAprs from 'config/constants/lpAprs/1.json'
 
@@ -26,10 +26,10 @@ export const getFarmApr = (
   cakePriceUsd: BigNumber,
   poolLiquidityUsd: BigNumber,
   farmAddress: string,
-  regularCakePerBlock: number,
+  regularCakePerSeconds: number,
 ): { cakeRewardsApr: number; lpRewardsApr: number } => {
   const yearlyCakeRewardAllocation = poolWeight
-    ? poolWeight.times(BLOCKS_PER_YEAR * regularCakePerBlock)
+    ? poolWeight.times(SECONDS_IN_YEAR * regularCakePerSeconds)
     : new BigNumber(NaN)
   const cakeRewardsApr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100)
   let cakeRewardsAprAsNumber: null | number = null
