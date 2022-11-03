@@ -8,11 +8,10 @@ import { useRouter } from 'next/router'
 import { getDisplayApr } from '../getDisplayApr'
 
 import Row, { RowProps } from './Row'
-// import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
-import { DesktopColumnSchema } from '../types'
+import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 
 export interface ITableProps {
-  farms: any // FarmWithStakedValue[]
+  farms: FarmWithStakedValue[]
   userDataReady: boolean
   cakePrice: BigNumber
   sortColumn?: string
