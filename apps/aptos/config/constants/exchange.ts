@@ -1,5 +1,5 @@
 import { ChainId, ONE_HUNDRED_PERCENT, JSBI, Percent, Token, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { APT, USDC } from 'config/coins'
+import { APT, CE_USDC_MAINNET, USDC } from 'config/coins'
 import { ChainTokenList } from './types'
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
@@ -33,7 +33,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST = {
       'ETH',
     ),
   ],
-  [ChainId.MAINNET]: [APT[ChainId.MAINNET], USDC[ChainId.MAINNET]],
+  [ChainId.MAINNET]: [APT[ChainId.MAINNET], USDC[ChainId.MAINNET], CE_USDC_MAINNET],
 }
 
 /**
