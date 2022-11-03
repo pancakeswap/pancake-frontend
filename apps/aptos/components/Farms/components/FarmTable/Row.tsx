@@ -18,8 +18,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
 import ActionPanel from './Actions/ActionPanel'
-// import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
-import { DesktopColumnSchema, MobileColumnSchema } from '../types'
+import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 
 const { FarmAuctionTag, CoreTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
@@ -30,7 +29,7 @@ export interface RowProps {
   earned: FarmTableEarnedProps
   multiplier: FarmTableMultiplierProps
   liquidity: FarmTableLiquidityProps
-  details: any // FarmWithStakedValue
+  details: FarmWithStakedValue
   type: 'core' | 'community'
   initialActivity?: boolean
 }
@@ -40,7 +39,7 @@ interface RowPropsWithLoading extends RowProps {
 }
 
 const cells = {
-  // apr: Apr,
+  apr: Apr,
   farm: Farm,
   earned: Earned,
   details: Details,

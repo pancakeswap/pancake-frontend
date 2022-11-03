@@ -3,7 +3,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { FarmsPageLayout, FarmsContext } from 'components/Farms/components/index'
 import FarmCard from 'components/Farms/components/FarmCard/FarmCard'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
-// import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
+import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
+import { FarmWithStakedValue } from 'components/Farms/components/types'
 
 const FarmsPage = () => {
   const { account } = useActiveWeb3React()
@@ -12,12 +13,11 @@ const FarmsPage = () => {
 
   return (
     <>
-      {chosenFarmsMemoized?.map((farm: any) => (
+      {chosenFarmsMemoized?.map((farm: FarmWithStakedValue) => (
         <FarmCard
           key={farm.pid}
           farm={farm}
-          displayApr="3"
-          // displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+          displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr) as string}
           cakePrice={cakePrice}
           account={account}
           removed={false}
