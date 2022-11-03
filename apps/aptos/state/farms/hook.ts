@@ -1,4 +1,4 @@
-import { useMemo, useEffect, useState } from 'react'
+import { useMemo, useEffect, useState, useCallback } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import { useAccountResources, useAccountResource, useProvider } from '@pancakeswap/awgmi'
 import { coinStoreResourcesFilter, unwrapTypeFromString } from '@pancakeswap/awgmi/core'
@@ -13,13 +13,14 @@ import { fetchFarmUserInfo } from 'state/farms/fetchFarmUserInfo'
 import { fetchLpInfo } from 'state/farms/fetchLpInfo'
 import mockData from './mockData.json'
 
-export const useFarmsLength = (): number => {
-  const { data: farms } = useAccountResource({
+export const useFarmsLength = (): number | undefined => {
+  const { data: farmsLength } = useAccountResource({
     watch: true,
     address: FARMS_ADDRESS,
     resourceType: FARMS_NAME_TAG,
+    select: (d) => (d as FarmResource).data.lp.length,
   })
-  return (farms as FarmResource)?.data.lp.length
+  return farmsLength
 }
 
 export const useFarms = () => {
