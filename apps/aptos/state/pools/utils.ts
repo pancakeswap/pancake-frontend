@@ -51,6 +51,8 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
     stakingTokenBalance: new BigNumber(0),
   }
 
+  const totalStakedToken = _get(resource, 'data.total_staked_token.value', '0')
+
   if (balances?.length) {
     const resourceTypes = resource.type
     const foundStakedPoolBalance = balances.find(
@@ -83,7 +85,7 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
 
         const tokenPerShare = FixedNumber.from(_get(resource, 'data.acc_token_per_share'))
         const precisionFactor = FixedNumber.from(_get(resource, 'data.precision_factor'))
-        const totalStake = FixedNumber.from(_get(resource, 'data.total_staked_token.value'))
+        const totalStake = FixedNumber.from(totalStakedToken)
 
         const latestTokenPerShare = tokenPerShare.addUnsafe(
           rewardPendingToken.mulUnsafe(precisionFactor).divUnsafe(totalStake),
@@ -132,7 +134,7 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
     startBlock: _toNumber(resource.data.start_timestamp),
     tokenPerBlock: resource.data.reward_per_second,
     stakingLimit: resource.data.pool_limit_per_user ? new BigNumber(resource.data.pool_limit_per_user) : BIG_ZERO,
-    totalStaked: new BigNumber(resource.data.total_staked_token),
+    totalStaked: new BigNumber(totalStakedToken),
 
     userData,
 

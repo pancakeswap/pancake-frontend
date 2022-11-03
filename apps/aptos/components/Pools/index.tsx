@@ -14,6 +14,8 @@ import NoSSR from '../NoSSR'
 import PoolControls from './components/PoolControls'
 import CardActions from './components/PoolCard/CardActions'
 import Apr from './components/PoolCard/Apr'
+import CardFooter from './components/PoolCard/CardFooter'
+import PoolStatsInfo from './components/PoolCard/PoolStatsInfo'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -72,7 +74,11 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                           height={64}
                         />
                       }
-                      cardFooter={null}
+                      cardFooter={
+                        <CardFooter>
+                          <PoolStatsInfo account={account} pool={pool} />
+                        </CardFooter>
+                      }
                       aprRow={<Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />}
                     />
                   ))}
