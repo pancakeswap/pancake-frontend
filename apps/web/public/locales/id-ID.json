@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "Penuhilah persyaratan berikut ini untuk bergabung dengan:",
   "Order cancellation": "Pembatalan order",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Pembatalan order: %inputAmount% %inputTokenSymbol% dengan %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
