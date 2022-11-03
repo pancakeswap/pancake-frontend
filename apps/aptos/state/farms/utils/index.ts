@@ -13,7 +13,6 @@ export const mapFarmList = ({ data }: FarmResource): MapFarmResource[] => {
     pid: index,
     lpAddress,
     singlePoolInfo: data.pool_info[index],
-    singleUserInfo: data.user_info[index].inner.handle,
   }))
 }
 

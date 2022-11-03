@@ -22,7 +22,6 @@ export interface MapFarmResource {
   cake_rate_to_regular: string
   cake_rate_to_special: string
   lp: Array<string>
-  singlePoolInfo?: FarmResourcePoolInfo
   pool_info: FarmResourcePoolInfo[]
   signer_cap: {
     account: string

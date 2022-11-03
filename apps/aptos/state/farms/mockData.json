@@ -1,0 +1,96 @@
+[
+  {
+    "lpAddress": "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x9477f691050b3b2816993262827617e665bcb182cf23272557c2335a5bc16d90::moon_coin::MoonCoin>",
+    "lpSymbol": "APT-MOON LP",
+    "pid": 1,
+    "multiplier": "2X",
+    "isCommunity": false,
+    "token": {
+      "chainId": 2,
+      "decimals": 6,
+      "symbol": "MOON",
+      "name": "Moon Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x9477f691050b3b2816993262827617e665bcb182cf23272557c2335a5bc16d90::moon_coin::MoonCoin",
+      "projectLink": ""
+    },
+    "quoteToken": {
+      "chainId": 2,
+      "decimals": 8,
+      "symbol": "APT",
+      "name": "Aptos Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x1::aptos_coin::AptosCoin",
+      "projectLink": "https://aptoslabs.com/"
+    },
+    "userData": {
+      "allowance": "0",
+      "tokenBalance": "9999000",
+      "stakedBalance": "0",
+      "earnings": "0",
+      "proxy": {
+        "allowance": "0",
+        "tokenBalance": "0",
+        "stakedBalance": "0",
+        "earnings": "0"
+      }
+    },
+    "tokenAmountTotal": "0",
+    "quoteTokenAmountTotal": "0",
+    "lpTotalInQuoteToken": "0",
+    "lpTotalSupply": "0",
+    "lpTokenPrice": "0",
+    "tokenPriceVsQuote": "0",
+    "poolWeight": "0.5",
+    "isStable": false
+  },
+  {
+    "lpAddress": "0x1::aptos_coin::AptosCoin",
+    "lpSymbol": "APT",
+    "pid": 0,
+    "multiplier": "2X",
+    "isCommunity": false,
+    "token": {
+      "chainId": 1,
+      "decimals": 8,
+      "symbol": "APT",
+      "name": "Aptos Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x1::aptos_coin::AptosCoin",
+      "projectLink": "https://aptoslabs.com/"
+    },
+    "quoteToken": {
+      "chainId": 1,
+      "decimals": 8,
+      "symbol": "APT",
+      "name": "Aptos Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x1::aptos_coin::AptosCoin",
+      "projectLink": "https://aptoslabs.com/"
+    },
+    "userData": {
+      "allowance": "0",
+      "tokenBalance": "4893065000",
+      "stakedBalance": "0",
+      "earnings": "0",
+      "proxy": {
+        "allowance": "0",
+        "tokenBalance": "0",
+        "stakedBalance": "0",
+        "earnings": "0"
+      }
+    },
+    "tokenAmountTotal": "0",
+    "quoteTokenAmountTotal": "0",
+    "lpTotalInQuoteToken": "0",
+    "lpTotalSupply": "0",
+    "lpTokenPrice": "0",
+    "tokenPriceVsQuote": "0",
+    "poolWeight": "1",
+    "isStable": false
+  }
+]

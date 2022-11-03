@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0xec83f77c837d16ad3a2aeed76181d2d1674289067c4d06ddba1820adf49b46bb' as const
+export const ADDRESS = '0x76c12933deeb8ea17db811f75ef0327c30cb32a461456999a09c74a7ac6a255e' as const
 
 export const MASTERCHEF_MODULE_NAME = 'masterchef' as const
 
@@ -78,6 +78,20 @@ export const masterchefSetPool = (args: MasterchefSetPoolArgs): Types.Transactio
   }
 }
 
+export type MasterchefTransferCakeOwnerShipArgs = [string]
+
+export const masterchefTransferCakeOwnerShip = (
+  args: MasterchefTransferCakeOwnerShipArgs,
+  typeArgs: [string],
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: typeArgs,
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::transfer_cake_owner_ship`,
+  }
+}
+
 export type MasterchefUpdateCakePerSecondArgs = [bigint | string, boolean]
 
 export const masterchefUpdateCakePerSecond = (
@@ -112,6 +126,19 @@ export const masterchefUpdatePool = (args: MasterchefUpdatePoolArgs): Types.Tran
     type_arguments: [],
     arguments: args,
     function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::update_pool`,
+  }
+}
+
+export type MasterchefUpgradeMasterchefArgs = [number[] | Uint8Array, number[] | Uint8Array]
+
+export const masterchefUpgradeMasterchef = (
+  args: MasterchefUpgradeMasterchefArgs,
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::upgrade_masterchef`,
   }
 }
 
