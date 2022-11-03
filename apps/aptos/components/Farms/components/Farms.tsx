@@ -32,7 +32,7 @@ import NoSSR from 'components/NoSSR'
 
 import { useFarms } from 'state/farms/hook'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
-// import { getFarmApr } from 'utils/apr'
+import { getFarmApr } from 'utils/farmApr'
 import { latinise } from 'utils/latinise'
 import { DeserializedFarm } from '@pancakeswap/farms'
 import Table from './FarmTable/FarmTable'
@@ -188,17 +188,15 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           return farm
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
-        // const { cakeRewardsApr, lpRewardsApr } = isActive
-        //   ? getFarmApr(
-        //       new BigNumber(farm.poolWeight),
-        //       cakePrice,
-        //       totalLiquidity,
-        //       farm.lpAddress,
-        //       regularCakePerBlock,
-        //     )
-        //   : { cakeRewardsApr: 0, lpRewardsApr: 0 }
         const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? { cakeRewardsApr: 0, lpRewardsApr: 0 }
+          ? getFarmApr(
+              chainId,
+              new BigNumber(farm.poolWeight ?? 0),
+              cakePrice,
+              totalLiquidity,
+              farm.lpAddress,
+              regularCakePerBlock,
+            )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
