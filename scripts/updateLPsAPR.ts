@@ -141,7 +141,7 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
     const current = new BigNumber(virtualPrice)
     const prev = new BigNumber(preVirtualPrice)
 
-    return current.minus(prev).div(prev)
+    return current.div(prev).pow(365).minus(1)
   } catch (error) {
     console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
@@ -198,7 +198,7 @@ const fetchAndUpdateLPsAPR = async () => {
           const stableAprsMap = stableAprs.reduce(
             (result, apr, index) => ({
               ...result,
-              [stableFarms[index].lpAddress]: apr.decimalPlaces(2).toNumber(),
+              [stableFarms[index].lpAddress]: apr.decimalPlaces(5).toNumber(),
             }),
             {} as AprMap,
           )
