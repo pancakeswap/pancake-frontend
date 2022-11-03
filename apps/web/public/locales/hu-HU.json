@@ -2012,5 +2012,7 @@
   "Meet the following requirement to join:": "A csatlakozáshoz teljesítse a következő feltételeket:",
   "Order cancellation": "Megrendelés lemondása",
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Megrendelés törlése: %inputAmount% %inputTokenSymbol% ehhez: %outputAmount% %outputTokenSymbol%",
-  "RPC Default": "RPC Default"
+  "RPC Default": "RPC Default",
+  "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
+  "Show username": "Show username"
 }
