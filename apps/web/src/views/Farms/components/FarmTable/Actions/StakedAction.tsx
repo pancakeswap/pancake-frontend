@@ -386,16 +386,9 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!account) {
     return (
-      <StyledActionContainer>
-        <ActionTitles>
-          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-            {t('Start Farming')}
-          </Text>
-        </ActionTitles>
-        <ActionContent>
-          <ConnectWalletButton width="100%" />
-        </ActionContent>
-      </StyledActionContainer>
+      <FarmUI.FarmTable.AccountNotConnect>
+        <ConnectWalletButton width="100%" />
+      </FarmUI.FarmTable.AccountNotConnect>
     )
   }
 
@@ -437,21 +430,11 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     }
 
     return (
-      <StyledActionContainer>
-        <ActionTitles>
-          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
-            {t('Stake')}
-          </Text>
-          <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
-            {lpSymbol}
-          </Text>
-        </ActionTitles>
-        <ActionContent>
-          <Button width="100%" onClick={onPresentDeposit} variant="secondary" disabled={isStakeReady}>
-            {t('Stake LP')}
-          </Button>
-        </ActionContent>
-      </StyledActionContainer>
+      <FarmUI.FarmTable.StakeComponent
+        lpSymbol={lpSymbol}
+        isStakeReady={isStakeReady}
+        onPresentDeposit={onPresentDeposit}
+      />
     )
   }
 
