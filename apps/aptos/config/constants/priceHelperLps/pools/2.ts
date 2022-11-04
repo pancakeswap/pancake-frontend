@@ -1,5 +1,5 @@
 // import { serializeTokens } from '@pancakeswap/tokens/src/helpers'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import type { SerializedFarmConfig } from '@pancakeswap/farms'
 // import { testnetTokens } from 'config/constants/tokens'
 
 // const serializedTokens = serializeTokens(testnetTokens)

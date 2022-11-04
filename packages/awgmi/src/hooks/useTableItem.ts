@@ -1,20 +1,10 @@
 /* eslint-disable camelcase */
-import { getProvider } from '@pancakeswap/awgmi/core'
+import { FetchTableItemArgs, fetchTableItem } from '@pancakeswap/awgmi/core'
 import { Types } from 'aptos'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useNetwork } from './useNetwork'
 import { useQuery } from './utils/useQuery'
-
-export type FetchTableItemArgs = {
-  networkName?: string
-  handle: string
-  data: {
-    key: Types.TableItemRequest['key']
-    keyType: Types.TableItemRequest['key_type']
-    valueType: Types.TableItemRequest['value_type']
-  }
-}
 
 export type FetchTableItemResult = Types.MoveResource[]
 
@@ -26,12 +16,7 @@ export const queryKey = (params: { networkName?: string } & Partial<FetchTableIt
 const queryFn = ({ queryKey: [{ networkName, handle, data }] }: QueryFunctionArgs<typeof queryKey>) => {
   if (!handle || !data) throw new Error('Handle and data are required.')
 
-  const provider = getProvider({ networkName })
-  return provider.getTableItem(handle, {
-    key_type: data.keyType,
-    value_type: data.valueType,
-    key: data.key,
-  })
+  return fetchTableItem({ networkName, handle, data })
 }
 
 export function useTableItem<TData = unknown>({

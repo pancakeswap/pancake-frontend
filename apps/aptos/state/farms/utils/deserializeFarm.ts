@@ -4,7 +4,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import _isEmpty from 'lodash/isEmpty'
-import { SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '@pancakeswap/farms'
+import type { SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '@pancakeswap/farms'
 
 export const FARM_AUCTION_HOSTING_IN_SECONDS = 864000
 

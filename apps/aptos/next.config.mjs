@@ -18,7 +18,7 @@ const withTH = transpileModules([
   '@pancakeswap/utils',
   '@pancakeswap/token-lists',
   '@pancakeswap/tokens',
-  '@pancakeswap/farms/farmPrices',
+  '@pancakeswap/farms',
 ])
 
 const blocksPage =

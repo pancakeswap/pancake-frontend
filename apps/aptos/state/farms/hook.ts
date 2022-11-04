@@ -1,6 +1,11 @@
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
-import { useAccountResource, useCoins } from '@pancakeswap/awgmi'
-import { FetchCoinResult, unwrapTypeArgFromString } from '@pancakeswap/awgmi/core'
+import { useAccount, useAccountResource, useCoins, useQueries } from '@pancakeswap/awgmi'
+import {
+  FetchCoinResult,
+  unwrapTypeArgFromString,
+  fetchTableItem,
+  FetchAccountResourceResult,
+} from '@pancakeswap/awgmi/core'
 import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
@@ -12,8 +17,8 @@ import { useActiveNetwork } from 'hooks/useNetwork'
 import { usePairReservesQueries } from 'hooks/usePairs'
 import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
-import { FARMS_ADDRESS, FARMS_NAME_TAG } from 'state/farms/constants'
-import { FarmResource } from 'state/farms/types'
+import { FARMS_ADDRESS, FARMS_NAME_TAG, FARMS_USER_INFO_RESOURCE, FARMS_USER_INFO } from 'state/farms/constants'
+import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { deserializeFarm } from './utils/deserializeFarm'
@@ -142,6 +147,33 @@ export const useFarms = () => {
       },
     }
   }, [poolLength, masterChef?.data, farmsWithPrices])
+}
+
+export function useFarmsUserInfo() {
+  const { account } = useAccount()
+  const { networkName } = useActiveNetwork()
+  const { data } = useAccountResource<FetchAccountResourceResult<FarmUserInfoResource>>({
+    address: account?.address,
+    resourceType: FARMS_USER_INFO_RESOURCE,
+  })
+  useQueries({
+    queries:
+      data?.data.pids.map((pid) => ({
+        staleTime: Infinity,
+        enable: Boolean(pid) && Boolean(data.data.pid_to_user_info.inner.handle),
+        refetchInterval: 5_000,
+        queryFn: () =>
+          fetchTableItem({
+            networkName,
+            handle: data.data.pid_to_user_info.inner.handle,
+            data: {
+              keyType: 'u64',
+              key: pid,
+              valueType: FARMS_USER_INFO,
+            },
+          }),
+      })) ?? [],
+  })
 }
 
 const nativeStableLpMap = {

@@ -1,6 +1,6 @@
 import { useAccountBalance } from '@pancakeswap/awgmi'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
-import { DeserializedFarmUserData } from '@pancakeswap/farms'
+import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,

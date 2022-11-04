@@ -41,3 +41,13 @@ export interface FarmUserInfoResponse {
   amount: string
   reward_debt: string
 }
+
+export interface FarmUserInfoResource {
+  pid_to_user_info: {
+    inner: {
+      handle: string
+    }
+    length: string
+  }
+  pids: string[]
+}

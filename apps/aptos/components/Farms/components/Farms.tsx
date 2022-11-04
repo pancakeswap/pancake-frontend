@@ -34,7 +34,7 @@ import { useFarms } from 'state/farms/hook'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import { getFarmApr } from 'utils/farmApr'
 import { latinise } from 'utils/latinise'
-import { DeserializedFarm } from '@pancakeswap/farms'
+import type { DeserializedFarm } from '@pancakeswap/farms'
 import Table from './FarmTable/FarmTable'
 import { FarmWithStakedValue } from './types'
 

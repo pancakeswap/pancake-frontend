@@ -1,6 +1,6 @@
 // import { serializeTokens } from '@pancakeswap/tokens/src/helpers'
 import { ChainId, Pair } from '@pancakeswap/aptos-swap-sdk'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import type { SerializedFarmConfig } from '@pancakeswap/farms'
 import { APT, L0_USDC } from 'config/coins'
 
 const priceHelperLps: Omit<SerializedFarmConfig, 'pid'>[] = [

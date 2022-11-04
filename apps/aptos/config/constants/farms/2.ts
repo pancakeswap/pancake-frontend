@@ -1,4 +1,4 @@
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import type { SerializedFarmConfig } from '@pancakeswap/farms'
 import { testnetTokens } from 'config/constants/tokens'
 
 const farms: SerializedFarmConfig[] = [

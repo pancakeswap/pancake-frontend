@@ -1,6 +1,6 @@
 import { AptosClient } from 'aptos'
 import BigNumber from 'bignumber.js'
-import { SerializedClassicFarmConfig } from '@pancakeswap/farms'
+import type { SerializedClassicFarmConfig } from '@pancakeswap/farms'
 import { getFarmConfig } from 'config/constants/farms'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { SWAP_ADDRESS, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
