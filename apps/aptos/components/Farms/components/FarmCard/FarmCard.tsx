@@ -3,8 +3,6 @@ import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { Card, Flex, Text, Skeleton, ExpandableSectionButton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { getBlockExploreLink } from 'utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import CardHeading from './CardHeading'
 import CardActionsContainer from './CardActionsContainer'
@@ -52,7 +50,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   originalLiquidity,
 }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
 
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
@@ -72,7 +69,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     tokenAddress: farm.token?.address,
   })
   const addLiquidityUrl = `/add/${liquidityUrlPathParts}`
-  const { lpAddress } = farm
   const isPromotedFarm = farm.token?.symbol === 'CAKE'
 
   const toggleExpandableSection = useCallback(() => {
@@ -131,8 +127,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         {showExpandableSection && (
           <DetailsSection
             removed={removed}
-            scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={`/info/pool/${lpAddress}`}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}

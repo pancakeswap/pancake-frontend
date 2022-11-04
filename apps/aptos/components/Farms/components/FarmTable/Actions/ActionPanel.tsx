@@ -7,9 +7,7 @@ import {
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
 } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import styled, { css, keyframes } from 'styled-components'
-import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { FarmWithStakedValue } from '../../types'
 
@@ -118,10 +116,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   userDataReady,
   expanded,
 }) => {
-  const { chainId } = useActiveWeb3React()
-
   const farm = details
-
   const { isDesktop } = useMatchBreakpoints()
 
   const {
@@ -135,8 +130,6 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
     quoteTokenAddress: quoteToken?.address,
     tokenAddress: token?.address,
   })
-  const { lpAddress } = farm
-  const viewContractLink = getBlockExploreLink(lpAddress, 'address', chainId)
 
   return (
     <Container expanded={expanded}>
@@ -178,7 +171,6 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkExternal href={viewContractLink}>{t('View Contract')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>
         <HarvestActionContainer {...farm} userDataReady={userDataReady}>
