@@ -50,7 +50,10 @@ export const useFarms = () => {
   const farmConfig = useMemo(() => getFarmConfig(chainId).concat(farmsPriceHelpLpMap[chainId]), [chainId])
   const farmAddresses = useMemo(() => farmConfig.map((f) => f.lpAddress), [farmConfig])
   const lpReservesAddresses = useMemo(
-    () => farmAddresses.map((a) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeArgFromString(a)}>`),
+    () =>
+      farmAddresses
+        .map((a) => (unwrapTypeArgFromString(a) ? `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeArgFromString(a)}>` : null))
+        .filter(Boolean) as string[],
     [farmAddresses],
   )
 
@@ -111,10 +114,10 @@ export const useFarms = () => {
 
         return {
           ...config,
-          tokenAmountTotal: tokenAmountTotal.toString(),
-          quoteTokenAmountTotal: quoteTokenAmountTotal.toString(),
-          lpTotalSupply: lpTotalSupply.toString(),
-          lpTotalInQuoteToken: lpTotalInQuoteToken.toString(),
+          tokenAmountTotal: tokenAmountTotal.toFixed(6),
+          quoteTokenAmountTotal: quoteTokenAmountTotal.toFixed(6),
+          lpTotalSupply: lpTotalSupply.toFixed(6),
+          lpTotalInQuoteToken: lpTotalInQuoteToken.toFixed(6),
           tokenPriceVsQuote:
             !quoteTokenAmountTotal.isZero() && !tokenAmountTotal.isZero()
               ? quoteTokenAmountTotal.div(tokenAmountTotal).toFixed(6)
