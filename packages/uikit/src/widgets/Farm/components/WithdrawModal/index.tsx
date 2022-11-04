@@ -29,7 +29,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   const [pendingTx, setPendingTx] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max);
+    return getFullDisplayBalance(max, 8);
   }, [max]);
 
   const valNumber = new BigNumber(val);

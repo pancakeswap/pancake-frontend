@@ -16,7 +16,6 @@ const { FarmTableHarvestAction } = FarmUI.FarmTable
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
   onReward: () => Promise<TransactionResponse>
-  onDone?: () => void
 }
 
 export const HarvestActionContainer = ({ children, ...props }) => {
@@ -24,15 +23,8 @@ export const HarvestActionContainer = ({ children, ...props }) => {
 
   const earnings = useFarmEarning(props.pid)
 
-  const onDone = () => console.info('onDone')
-  // const onDone = useCallback(
-  //   () => dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid], chainId })),
-  //   [account, dispatch, chainId, props.pid],
-  // )
-
   return children({
     ...props,
-    onDone,
     onReward,
     userData: {
       earnings: new BigNumber(earnings),
@@ -44,7 +36,6 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   userData,
   userDataReady,
   onReward,
-  onDone,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -71,7 +62,6 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
           {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
         </ToastDescriptionWithTx>,
       )
-      onDone?.()
     }
   }
 
