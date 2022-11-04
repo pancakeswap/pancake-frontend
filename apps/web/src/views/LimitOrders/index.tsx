@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useState, useMemo, useContext } from 'react'
 import { useRouter } from 'next/router'
-import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent, ChainId } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import {
   Button,
@@ -12,7 +12,7 @@ import {
   useMatchBreakpoints,
   Swap as SwapUI,
 } from '@pancakeswap/uikit'
-
+import AccessRisk from 'views/Swap/components/AccessRisk'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn } from 'components/Layout/Column'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -329,6 +329,9 @@ const LimitOrders = () => {
 
   const isSideFooter = isChartExpanded || isChartDisplayed
 
+  const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+  const isAccessTokenSupported = ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId)
+
   return (
     <Page
       removePadding={isChartExpanded}
@@ -408,6 +411,11 @@ const LimitOrders = () => {
                       showCommonBases
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
+                    <Box>
+                      {isAccessTokenSupported && (
+                        <AccessRisk inputCurrency={currencies.input} outputCurrency={currencies.output} />
+                      )}
+                    </Box>
                     <LimitOrderPrice
                       id="limit-order-desired-rate-input"
                       value={formattedAmounts.price}
