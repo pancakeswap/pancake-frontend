@@ -6,7 +6,7 @@ import { PoolData, TokenData } from 'state/info/types'
 import { getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
 const TOKEN_SEARCH = gql`
-  query tokens($symbol: String, $name: String, $id: String) {
+  query tokens($symbol: String, $name: String, $id: ID) {
     asSymbol: tokens(first: 10, where: { symbol_contains: $symbol }, orderBy: tradeVolumeUSD, orderDirection: desc) {
       id
     }
