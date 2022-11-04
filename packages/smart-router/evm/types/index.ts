@@ -1,5 +1,7 @@
 import { Currency, Pair, Route, Trade, TradeType } from '@pancakeswap/sdk'
 
+export * from './chain'
+
 export interface StableSwapPair extends Pair {
   stableSwapAddress: string
 }

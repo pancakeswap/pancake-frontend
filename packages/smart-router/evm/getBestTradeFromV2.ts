@@ -1,6 +1,7 @@
 import { BestTradeOptions, Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
-import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from './constants'
 
+import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from './constants'
+import { getAllCommonPairs } from './getAllCommonPairs'
 import { isTradeBetter } from './utils/trade'
 
 export async function getBestTradeFromV2<TInput extends Currency, TOutput extends Currency>(
@@ -9,8 +10,7 @@ export async function getBestTradeFromV2<TInput extends Currency, TOutput extend
   options: BestTradeOptions = {},
 ): Promise<Trade<TInput, TOutput, TradeType> | null> {
   const { maxHops = 3 } = options
-  // TODO implementation
-  const allowedPairs: Pair[] = []
+  const allowedPairs = await getAllCommonPairs(amountIn.currency, output)
 
   if (maxHops === 1) {
     return Trade.bestTradeExactIn(allowedPairs, amountIn, output, options)[0] ?? null

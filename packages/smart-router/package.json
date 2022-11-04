@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@pancakeswap/sdk": "*",
+    "@pancakeswap/tokens": "*",
     "ethers": "^5.7.2",
     "lodash": "^4.17.21"
   },
