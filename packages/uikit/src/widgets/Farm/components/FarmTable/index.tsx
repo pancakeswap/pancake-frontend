@@ -6,6 +6,7 @@ import Multiplier from "./Multiplier";
 import FarmTokenInfo from "./FarmTokenInfo";
 import FarmTableHarvestAction from "./Actions/HarvestAction";
 import AccountNotConnect from "./Actions/AccountNotConnect";
+import StakeComponent from "./Actions/StakeComponent";
 
 const FarmTable = {
   CellLayout,
@@ -16,6 +17,7 @@ const FarmTable = {
   FarmTokenInfo,
   FarmTableHarvestAction,
   AccountNotConnect,
+  StakeComponent,
 };
 
 export default FarmTable;
