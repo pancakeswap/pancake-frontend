@@ -4,7 +4,7 @@ import { getBlockExploreLink } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import ExpandableCard from './ExpandableCard'
 
 interface DetailsCardProps {
@@ -28,7 +28,7 @@ const DetailsCard: React.FC<React.PropsWithChildren<DetailsCardProps>> = ({
   rarity,
 }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const ipfsLink = ipfsJson ? uriToHttp(ipfsJson)[0] : null
   const content = (
     <Box p="24px">

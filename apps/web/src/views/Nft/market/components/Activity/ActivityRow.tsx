@@ -14,8 +14,8 @@ import {
 import { Activity, NftToken } from 'state/nftMarket/types'
 import { Price, Currency } from '@pancakeswap/sdk'
 import { getBlockExploreLink, isAddress } from 'utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ProfileCell from 'views/Nft/market/components/ProfileCell'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import MobileModal from './MobileModal'
 import ActivityPrice from './ActivityPrice'
 import ActivityEventText from './ActivityEventText'
@@ -37,7 +37,7 @@ const ActivityRow: React.FC<React.PropsWithChildren<ActivityRowProps>> = ({
   isUserActivity = false,
   isNftActivity = false,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { isXs, isSm } = useMatchBreakpoints()
   const priceAsFloat = parseFloat(activity.price)
   const timestampAsMs = parseFloat(activity.timestamp) * 1000

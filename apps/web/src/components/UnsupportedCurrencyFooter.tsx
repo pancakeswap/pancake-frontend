@@ -5,9 +5,9 @@ import styled from 'styled-components'
 import { AutoRow } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useUnsupportedTokens } from '../hooks/Tokens'
 
 interface Props extends InjectedModalProps {
@@ -26,7 +26,7 @@ const DetailsFooter = styled.div`
 `
 
 const UnsupportedModal: React.FC<React.PropsWithChildren<Props>> = ({ currencies, onDismiss }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const tokens =
     chainId && currencies

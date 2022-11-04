@@ -318,7 +318,7 @@ export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: b
 }
 
 export function useWNativeContract(withSignerIfPossible?: boolean): Contract | null {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   return useContract<Weth>(chainId ? WNATIVE[chainId]?.address : undefined, WETH_ABI, withSignerIfPossible)
 }
 
@@ -331,7 +331,7 @@ export function usePairContract(pairAddress?: string, withSignerIfPossible?: boo
 }
 
 export function useMulticallContract() {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   return useContract<Multicall>(getMulticallAddress(chainId), multiCallAbi, false)
 }
 

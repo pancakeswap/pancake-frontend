@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 import { ChainId } from '@pancakeswap/sdk'
 import { ChainId as ChainIdType, GelatoLimitOrders } from '@gelatonetwork/limit-orders-lib'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { GELATO_HANDLER } from 'config/constants/exchange'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
+import { useActiveChainId } from '../useActiveChainId'
 
 const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const providerOrSigner = useProviderOrSigner()
 
   return useMemo(() => {

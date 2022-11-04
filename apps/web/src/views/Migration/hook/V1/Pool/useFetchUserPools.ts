@@ -4,9 +4,9 @@ import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { SerializedPool } from 'state/types'
 import { transformPool } from 'state/pools/helpers'
 import { getCakeContract } from 'utils/contractHelpers'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolCategory } from 'config/constants/types'
 import { bscTokens } from '@pancakeswap/tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { fetchUserStakeBalances, fetchUserPendingRewards } from './fetchPoolsUser'
 
 export interface PoolsState {
@@ -34,7 +34,7 @@ const initialData = {
 }
 
 export const useFetchUserPools = (account) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const [userPoolsData, setPoolsUserData] = useState<PoolsState>(initialData)
 
   const fetchUserPoolsData = useCallback(() => {
