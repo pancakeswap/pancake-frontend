@@ -834,6 +834,7 @@
   "Dismiss": "খারিজ করুন",
   "Latest": "সর্বশেষ",
   "Notice for trading %symbol%": "%symbol% ট্রেডিং এর জন্য নোটিশ",
+  "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.": "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "সতর্কতা: BONDLY এর বিষয়ে আপস করা হয়েছে। অনুগ্রহ করে পরবর্তী বিজ্ঞপ্তি না হওয়া পর্যন্ত লিকুইডিটি সরিয়ে দিন।",
   "Claimed": "দাবি করা হয়েছে",
   "Settings": "সেটিংস",
@@ -2014,5 +2015,6 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "অর্ডার বাতিলকরণ:  %outputAmount% %outputTokenSymbol%-এর জন্য %inputAmount% %inputTokenSymbol%",
   "RPC Default": "RPC Default",
   "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
-  "Show username": "Show username"
+  "Show username": "Show username",
+  "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter."
 }
