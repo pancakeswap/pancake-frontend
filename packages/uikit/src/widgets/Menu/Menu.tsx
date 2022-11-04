@@ -86,6 +86,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   activeSubItem,
   langs,
   buyCakeLabel,
+  isShowScrollToTopButton = true,
   children,
 }) => {
   const { isMobile } = useMatchBreakpoints();
@@ -208,7 +209,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
       <AtomBox display={{ xs: "block", md: "none" }}>
         <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
       </AtomBox>
-      {createPortal(<ScrollToTopButtonV2 />, document.body)}
+      {isShowScrollToTopButton && createPortal(<ScrollToTopButtonV2 />, document.body)}
     </MenuContext.Provider>
   );
 };
