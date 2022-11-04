@@ -2,7 +2,6 @@ import { formatEther } from '@ethersproject/units'
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { masterChefAddresses } from './const'
-import { FarmWithPrices, getFarmsPrices } from './farmPrices'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './fetchFarms'
 
 const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
@@ -49,6 +48,3 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
 export * from './apr'
 export * from './farmsPriceHelpers'
 export * from './types'
-export type { FarmWithPrices }
-
-export { getFarmsPrices }

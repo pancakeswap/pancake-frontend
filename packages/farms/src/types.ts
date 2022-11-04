@@ -1,6 +1,6 @@
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -31,8 +31,8 @@ export interface FarmConfigBaseProps {
   boosted?: boolean
 }
 export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
-  stableSwapAddress?: string
-  infoStableSwapAddress?: string
+  stableSwapAddress: string
+  infoStableSwapAddress: string
 }
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
@@ -40,7 +40,7 @@ export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   quoteToken: SerializedWrappedToken
 }
 
-export type SerializedFarmConfig = SerializedStableFarmConfig & SerializedClassicFarmConfig
+export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig
 
 export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   lpTokenPrice?: string

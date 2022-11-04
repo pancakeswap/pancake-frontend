@@ -1,7 +1,7 @@
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { useAccountResource, useCoins } from '@pancakeswap/awgmi'
 import { FetchCoinResult, unwrapTypeArgFromString } from '@pancakeswap/awgmi/core'
-import { getFarmsPrices } from '@pancakeswap/farms'
+import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'

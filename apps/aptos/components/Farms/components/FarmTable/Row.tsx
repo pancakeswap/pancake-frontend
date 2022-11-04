@@ -80,7 +80,7 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
-  const { details, initialActivity, multiplier } = props
+  const { details: _details, initialActivity, multiplier } = props
   const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = false
