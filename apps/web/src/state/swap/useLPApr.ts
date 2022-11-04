@@ -33,9 +33,11 @@ export const useLPApr = (pair?: Pair) => {
         pair.liquidityToken.address.toLowerCase(),
       )
       if (error) return null
-      const current = parseFloat(data?.now[0]?.volumeUSD)
-      const currentReserveUSD = parseFloat(data?.now[0]?.reserveUSD)
-      const week = parseFloat(data?.oneWeekAgo[0]?.volumeUSD)
+      const actualNow = data?.now?.pop()
+      const actualOneWeekAgo = data?.oneWeekAgo?.pop()
+      const current = parseFloat(actualNow?.volumeUSD)
+      const currentReserveUSD = parseFloat(actualNow?.reserveUSD)
+      const week = parseFloat(actualOneWeekAgo?.volumeUSD)
       const [volumeUSDWeek] = getChangeForPeriod(current, week)
       const liquidityUSD = currentReserveUSD || 0
       const lpApr7d = liquidityUSD > 0 ? (volumeUSDWeek * LP_HOLDERS_FEE * WEEKS_IN_YEAR * 100) / liquidityUSD : 0
