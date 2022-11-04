@@ -2,17 +2,7 @@ import { useAccountBalance } from '@pancakeswap/awgmi'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AddIcon,
-  Button,
-  Farm as FarmUI,
-  IconButton,
-  MinusIcon,
-  Skeleton,
-  Text,
-  useModal,
-  useToast,
-} from '@pancakeswap/uikit'
+import { AddIcon, Farm as FarmUI, IconButton, MinusIcon, Skeleton, Text, useModal, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
@@ -53,28 +43,20 @@ interface StackedActionProps extends FarmWithStakedValue {
   displayApr?: string
   onStake: (value: string) => Promise<TransactionResponse>
   onUnstake: (value: string) => Promise<TransactionResponse>
-  onDone?: () => void
 }
 
 export function useStakedActions(pid, tokenType) {
   const { onStake } = useStakeFarms(pid, tokenType)
   const { onUnstake } = useUnstakeFarms(pid, tokenType)
 
-  const onDone = () => console.info('onDone')
-  // const onDone = useCallback(
-  //   () => dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId })),
-  //   [account, pid, chainId, dispatch],
-  // )
-
   return {
     onStake,
     onUnstake,
-    onDone,
   }
 }
 
 export const StakedContainer = ({ children, ...props }) => {
-  const { onStake, onUnstake, onDone } = useStakedActions(props.pid, props.lpAddress)
+  const { onStake, onUnstake } = useStakedActions(props.pid, props.lpAddress)
   const { account } = useActiveWeb3React()
   const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
     watch: true,
@@ -95,7 +77,6 @@ export const StakedContainer = ({ children, ...props }) => {
     ...props,
     userData,
     onStake,
-    onDone,
     onUnstake,
   })
 }
@@ -115,7 +96,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   tokenAmountTotal = BIG_ZERO,
   quoteTokenAmountTotal = BIG_ZERO,
   userData,
-  onDone,
   onStake,
   onUnstake,
 }) => {
@@ -148,7 +128,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           {t('Your funds have been staked in the farm')}
         </ToastDescriptionWithTx>,
       )
-      onDone?.()
     }
   }
 
@@ -161,7 +140,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      onDone?.()
     }
   }
 
@@ -185,7 +163,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
+    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} decimals={8} />,
   )
 
   if (!account) {

@@ -24,7 +24,6 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
   displayApr?: string
   onStake: (value: string) => Promise<TransactionResponse>
   onUnstake: (value: string) => Promise<TransactionResponse>
-  onDone?: () => void
 }
 
 const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
@@ -44,7 +43,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   userData,
   onStake,
   onUnstake,
-  onDone,
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
@@ -63,7 +61,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {t('Your funds have been staked in the farm')}
         </ToastDescriptionWithTx>,
       )
-      onDone?.()
     }
   }
 
@@ -76,7 +73,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      onDone?.()
     }
   }
 
@@ -100,7 +96,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
+    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} decimals={8} />,
   )
 
   const renderStakingButtons = () => {

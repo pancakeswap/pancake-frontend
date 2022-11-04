@@ -26,7 +26,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
   lpTokenPrice,
   tokenAmountTotal,
   quoteTokenAmountTotal,
-  pendingFarmLength,
+  pendingFarmLength = 0,
   onClickLoadingIcon,
 }) => {
   const displayBalance = useMemo(() => {
@@ -37,9 +37,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
     <Flex flexDirection="column" alignItems="flex-start">
       <Flex>
         <Heading color={stakedBalance.eq(0) ? "textDisabled" : "text"}>{displayBalance}</Heading>
-        {pendingFarmLength && pendingFarmLength > 0 && (
-          <RefreshIcon style={{ cursor: "pointer" }} spin onClick={onClickLoadingIcon} />
-        )}
+        {pendingFarmLength > 0 && <RefreshIcon style={{ cursor: "pointer" }} spin onClick={onClickLoadingIcon} />}
       </Flex>
       {stakedBalance.gt(0) && lpTokenPrice.gt(0) && (
         <>
