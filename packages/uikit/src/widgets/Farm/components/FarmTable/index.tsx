@@ -5,6 +5,7 @@ import Liquidity from "./Liquidity";
 import Multiplier from "./Multiplier";
 import FarmTokenInfo from "./FarmTokenInfo";
 import FarmTableHarvestAction from "./Actions/HarvestAction";
+import AccountNotConnect from "./Actions/AccountNotConnect";
 
 const FarmTable = {
   CellLayout,
@@ -14,6 +15,7 @@ const FarmTable = {
   Multiplier,
   FarmTokenInfo,
   FarmTableHarvestAction,
+  AccountNotConnect,
 };
 
 export default FarmTable;

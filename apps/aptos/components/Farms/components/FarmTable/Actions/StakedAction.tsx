@@ -181,16 +181,9 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
 
   if (!account) {
     return (
-      <StyledActionContainer>
-        <ActionTitles>
-          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-            {t('Start Farming')}
-          </Text>
-        </ActionTitles>
-        <ActionContent>
-          <ConnectWalletButton width="100%" />
-        </ActionContent>
-      </StyledActionContainer>
+      <FarmUI.FarmTable.AccountNotConnect>
+        <ConnectWalletButton width="100%" />
+      </FarmUI.FarmTable.AccountNotConnect>
     )
   }
 
