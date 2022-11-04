@@ -834,6 +834,7 @@
   "Dismiss": "閉じる",
   "Latest": "最新",
   "Notice for trading %symbol%": "%symbol%のトレードに関する通知",
+  "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.": "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "警告: BONDLYはセキュリティ侵害を受けました。さらに通知があるまで流動性を削除してください。",
   "Claimed": "請求済み",
   "Settings": "設定",
@@ -2014,5 +2015,6 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%",
   "RPC Default": "RPC Default",
   "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
-  "Show username": "Show username"
+  "Show username": "Show username",
+  "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter."
 }
