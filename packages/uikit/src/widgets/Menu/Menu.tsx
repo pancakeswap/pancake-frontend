@@ -1,4 +1,3 @@
-import { createPortal } from "react-dom";
 import { useIsMounted } from "@pancakeswap/hooks";
 import { ScrollToTopButtonV2 } from "@pancakeswap/uikit";
 import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
@@ -209,7 +208,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
       <AtomBox display={{ xs: "block", md: "none" }}>
         <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
       </AtomBox>
-      {isShowScrollToTopButton && createPortal(<ScrollToTopButtonV2 />, document.body)}
+      {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
     </MenuContext.Provider>
   );
 };
