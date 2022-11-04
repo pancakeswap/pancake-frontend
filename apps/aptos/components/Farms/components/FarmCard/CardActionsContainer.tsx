@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import { useFarmEarning } from 'state/farms/hook'
 import styled from 'styled-components'
 import { HarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
 import { StakedContainer } from '../FarmTable/Actions/StakedAction'
@@ -28,7 +29,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { pid } = farm
-  const { earnings } = farm.userData || {}
+  const earnings = useFarmEarning(farm.pid)
   const isReady = farm.multiplier !== undefined
 
   return (

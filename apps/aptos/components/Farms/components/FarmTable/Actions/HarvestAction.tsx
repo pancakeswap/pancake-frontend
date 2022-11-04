@@ -1,15 +1,16 @@
+import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Heading, Skeleton, Text, useToast, Balance } from '@pancakeswap/uikit'
-import { ToastDescriptionWithTx } from 'components/Toast'
-import useCatchTxError from 'hooks/useCatchTxError'
+import { Balance, Button, Heading, Skeleton, Text, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
-import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import BigNumber from 'bignumber.js'
-import { TransactionResponse } from '@pancakeswap/awgmi/core'
+import { ToastDescriptionWithTx } from 'components/Toast'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
+import { useFarmEarning } from 'state/farms/hook'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { FarmWithStakedValue } from '../../types'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -20,13 +21,22 @@ interface HarvestActionProps extends FarmWithStakedValue {
 export const HarvestActionContainer = ({ children, ...props }) => {
   const { onReward } = useHarvestFarm(props.pid, props.lpAddress)
 
+  const earnings = useFarmEarning(props.pid)
+
   const onDone = () => console.info('onDone')
   // const onDone = useCallback(
   //   () => dispatch(fetchFarmUserDataAsync({ account, pids: [props.pid], chainId })),
   //   [account, dispatch, chainId, props.pid],
   // )
 
-  return children({ ...props, onDone, onReward })
+  return children({
+    ...props,
+    onDone,
+    onReward,
+    userData: {
+      earnings: new BigNumber(earnings),
+    },
+  })
 }
 
 export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
@@ -46,7 +56,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {
-    earnings = getBalanceAmount(earningsBigNumber)
+    earnings = getBalanceAmount(earningsBigNumber, 8)
     earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
     displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
   }
