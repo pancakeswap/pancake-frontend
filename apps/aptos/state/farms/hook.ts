@@ -1,129 +1,155 @@
-import { useMemo, useEffect, useState, useCallback } from 'react'
-import useSWRImmutable from 'swr/immutable'
-import { useAccountResources, useAccountResource, useProvider } from '@pancakeswap/awgmi'
-import { coinStoreResourcesFilter, unwrapTypeFromString } from '@pancakeswap/awgmi/core'
+import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
+import { useAccountResource, useCoins } from '@pancakeswap/awgmi'
+import { FetchCoinResult, unwrapTypeArgFromString } from '@pancakeswap/awgmi/core'
+import { getFarmsPrices } from '@pancakeswap/farms'
+import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import BigNumber from 'bignumber.js'
+import { APT, L0_USDC } from 'config/coins'
+import { getFarmConfig } from 'config/constants/farms'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { DeserializedFarm, SerializedFarm } from '@pancakeswap/farms'
-import { deserializeFarm } from 'state/farms/utils/deserializeFarm'
-import { farmsPublicDataSelector, mapFarmList, transformFarm } from 'state/farms/utils/index'
-import { SLOW_INTERVAL } from 'config/constants'
-import { MapFarmResource, FarmResource, FarmResourcePoolInfo } from 'state/farms/types'
+import { useActiveNetwork } from 'hooks/useNetwork'
+import { usePairReservesQueries } from 'hooks/usePairs'
+import fromPairs from 'lodash/fromPairs'
+import { useMemo } from 'react'
 import { FARMS_ADDRESS, FARMS_NAME_TAG } from 'state/farms/constants'
-import { fetchFarmUserInfo } from 'state/farms/fetchFarmUserInfo'
-import { fetchLpInfo } from 'state/farms/fetchLpInfo'
-import mockData from './mockData.json'
+import { FarmResource } from 'state/farms/types'
+import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
+import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
+import { deserializeFarm } from './utils/deserializeFarm'
+
+const farmsPriceHelpLpMap = {
+  [ChainId.MAINNET]: priceHelperLpsMainnet,
+  [ChainId.TESTNET]: priceHelperLpsTestnet,
+}
 
 export const useFarmsLength = (): number | undefined => {
-  const { data: farmsLength } = useAccountResource({
-    watch: true,
-    address: FARMS_ADDRESS,
-    resourceType: FARMS_NAME_TAG,
-    select: (d) => (d as FarmResource).data.lp.length,
-  })
+  const { data: farmsLength } = useMasterChefResource((s) => s.data.lp.length)
   return farmsLength
 }
 
-export const useFarms = () => {
-  const provider = useProvider()
-  const { account, chainId } = useActiveWeb3React()
-  const poolLength = useFarmsLength()
-  const [farmsDataList, setFarmsDataList] = useState<SerializedFarm[]>([])
-
-  const { data: farms } = useAccountResources({
+function useMasterChefResource<TData = FarmResource>(select?: ((data: FarmResource) => TData) | undefined) {
+  const { networkName } = useActiveNetwork()
+  return useAccountResource<TData>({
     watch: true,
+    networkName,
     address: FARMS_ADDRESS,
-    select: (resources) => resources.filter(farmsPublicDataSelector).map(mapFarmList)[0],
+    resourceType: FARMS_NAME_TAG,
+    // @ts-ignore
+    select,
+  })
+}
+
+export const useFarms = () => {
+  const { chainId } = useActiveWeb3React()
+  const poolLength = useFarmsLength()
+  const { networkName } = useActiveNetwork()
+
+  const { data: masterChef } = useMasterChefResource()
+
+  const farmConfig = useMemo(() => getFarmConfig(chainId).concat(farmsPriceHelpLpMap[chainId]), [chainId])
+  const farmAddresses = useMemo(() => farmConfig.map((f) => f.lpAddress), [farmConfig])
+  const lpReservesAddresses = useMemo(
+    () => farmAddresses.map((a) => `${PAIR_RESERVE_TYPE_TAG}<${unwrapTypeArgFromString(a)}>`),
+    [farmAddresses],
+  )
+
+  const stakeCoinsInfo = useCoins({
+    coins: farmAddresses,
+    networkName,
+    staleTime: 10_000,
   })
 
-  // const farmsData = useMemo(() => farms?.map(transformFarm(chainId)), [chainId, farms])
+  const stakeCoinsInfoMap = useMemo(() => {
+    return fromPairs(
+      stakeCoinsInfo.filter((c) => c.data).map((c) => [c.data?.address, c.data] as [string, FetchCoinResult]),
+    )
+  }, [stakeCoinsInfo])
 
-  // useEffect(() => {
-  //   setFarmsDataList(farmsData as SerializedFarm[])
-  // }, [farmsData])
+  const pairReserves = usePairReservesQueries(lpReservesAddresses)
 
-  // PublicData
-  // useSWRImmutable(farmsDataList && chainId ? [farmsDataList, chainId, 'fetchPublicData'] : null, async () => {
-  //   // for await (const farm of farms as MapFarmResource[]) {
-  //   //   const tokenInfoData = await fetchLpInfo({
-  //   //     provider,
-  //   //     chainId,
-  //   //     singlePoolInfo: farm.singlePoolInfo as FarmResourcePoolInfo,
-  //   //     lpAddress: farm.lp[farm.pid as number],
-  //   //   })
+  const lpInfo = useMemo(() => {
+    return farmConfig
+      .filter((f) => f.pid !== 0)
+      .concat()
+      .map((config) => {
+        const token = new Coin(config.token.chainId, config.token.address, config.token.decimals, config.token.symbol)
+        const quoteToken = new Coin(
+          config.quoteToken.chainId,
+          config.quoteToken.address,
+          config.quoteToken.decimals,
+          config.quoteToken.symbol,
+        )
+        const reservesAddress = Pair.getReservesAddress(token, quoteToken)
+        const lpReserveX = pairReserves?.[reservesAddress]?.data.reserve_x
+        const lpReserveY = pairReserves?.[reservesAddress]?.data.reserve_y
+        const tokenBalanceLP = lpReserveX ? new BigNumber(lpReserveX) : BIG_ZERO
+        const quoteTokenBalanceLP = lpReserveY ? new BigNumber(lpReserveY) : BIG_ZERO
+        const lpTotalSupply = stakeCoinsInfoMap[config.lpAddress]?.supply
+          ? new BigNumber(stakeCoinsInfoMap[config.lpAddress].supply as string)
+          : BIG_ZERO
 
-  //   //   setFarmsDataList(
-  //   //     farmsDataList.map((singleFarm) => {
-  //   //       if (singleFarm.pid === farm.pid) {
-  //   //         return { ...singleFarm, ...tokenInfoData }
-  //   //       }
-  //   //       return singleFarm
-  //   //     }) as SerializedFarm[],
-  //   //   )
-  //   // }
-  // })
+        const poolInfo = masterChef && masterChef.data.pool_info[config.pid]
 
-  // @ts-ignores
-  // UserData
-  const { mutate } = useSWRImmutable(
-    account && chainId && window && farmsDataList ? [account, chainId, farmsDataList, 'fetchFarmUser'] : null,
-    async () => {
-      // if (account) {
-      //   // Token Balance
-      //   const userBalances = await provider.getAccountResources(account as string)
-      //   const lpBalances = userBalances
-      //     .filter(coinStoreResourcesFilter)
-      //     .filter(({ data }) => data.coin.value !== '0')
-      //     .reduce(
-      //       (accumulator, value) => ({
-      //         ...accumulator,
-      //         [unwrapTypeFromString(value.type)?.toLowerCase() as string]: value.data.coin.value,
-      //       }),
-      //       {},
-      //     )
-      //   setFarmsDataList(
-      //     farmsDataList.map((farm) => {
-      //       const tokenBalance = lpBalances[farm.lpAddress.toLowerCase()]
-      //       if (tokenBalance) {
-      //         return { ...farm, userData: { ...farm.userData, tokenBalance } }
-      //       }
-      //       return farm
-      //     }) as SerializedFarm[],
-      //   )
-      //   // User staked balance, earnings
-      //   for await (const farm of farms as MapFarmResource[]) {
-      //     const { earnings, stakedBalance } = await fetchFarmUserInfo({
-      //       provider,
-      //       address: account as string,
-      //       userInfoAddress: farm.singleUserInfo as string,
-      //     })
-      //     setFarmsDataList(
-      //       farmsDataList.map((singleFarm) => {
-      //         if (singleFarm.pid === farm.pid) {
-      //           return { ...singleFarm, userData: { ...singleFarm.userData, earnings, stakedBalance } }
-      //         }
-      //         return singleFarm
-      //       }) as SerializedFarm[],
-      //     )
-      //   }
-      // }
-    },
-    {
-      refreshInterval: SLOW_INTERVAL,
-    },
-  )
+        const lpTokenRatio =
+          poolInfo && !lpTotalSupply.isZero()
+            ? new BigNumber(poolInfo.total_amount).div(new BigNumber(lpTotalSupply))
+            : BIG_ZERO
+        const tokenAmountTotal = new BigNumber(tokenBalanceLP).div(getFullDecimalMultiplier(token.decimals))
+        const quoteTokenAmountTotal = new BigNumber(quoteTokenBalanceLP).div(
+          getFullDecimalMultiplier(quoteToken.decimals),
+        )
+
+        const quoteTokenAmountMc = quoteTokenAmountTotal.times(lpTokenRatio)
+        const lpTotalInQuoteToken = quoteTokenAmountMc.times(BIG_TWO)
+
+        const allocPoint = poolInfo ? new BigNumber(poolInfo.alloc_point) : BIG_ZERO
+        const totalAlloc = poolInfo?.is_regular
+          ? masterChef?.data.total_regular_alloc_point
+          : masterChef?.data.total_special_alloc_point
+        const poolWeight = totalAlloc ? allocPoint.div(new BigNumber(totalAlloc)) : BIG_ZERO
+
+        return {
+          ...config,
+          tokenAmountTotal: tokenAmountTotal.toString(),
+          quoteTokenAmountTotal: quoteTokenAmountTotal.toString(),
+          lpTotalSupply: lpTotalSupply.toString(),
+          lpTotalInQuoteToken: lpTotalInQuoteToken.toString(),
+          tokenPriceVsQuote:
+            !quoteTokenAmountTotal.isZero() && !tokenAmountTotal.isZero()
+              ? quoteTokenAmountTotal.div(tokenAmountTotal).toFixed(6)
+              : '0',
+          poolWeight: poolWeight.toString(),
+          multiplier: `${allocPoint.div(100).toString()}X`,
+        }
+      })
+  }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])
+
+  const farmsWithPrices = getFarmsPrices(lpInfo, nativeStableLpMap[chainId])
 
   return useMemo(() => {
     return {
       userDataLoaded: true,
       poolLength,
-      regularCakePerBlock: Number(farms?.[0].cake_per_second),
+      regularCakePerBlock: masterChef?.data ? Number(masterChef.data.cake_per_second) : 0,
       loadArchivedFarmsData: false,
-      data: mockData?.map(deserializeFarm) as DeserializedFarm[],
-      fetchUserFarmsData: mutate,
+      data: farmsWithPrices.filter((f) => !!f.pid).map(deserializeFarm),
+      fetchUserFarmsData: () => {
+        //
+      },
     }
-  }, [poolLength, farms, mutate])
+  }, [poolLength, masterChef?.data, farmsWithPrices])
 }
 
-// lpTokenPrice: BIG_ZERO,
-// quoteTokenPriceBusd: BIG_ZERO,
-// tokenPriceBusd: BIG_ZERO,
+const nativeStableLpMap = {
+  [ChainId.MAINNET]: {
+    address: Pair.getAddress(APT[ChainId.MAINNET], L0_USDC[ChainId.MAINNET]),
+    wNative: 'APT',
+    stable: 'USDC',
+  },
+  [ChainId.TESTNET]: {
+    address: Pair.getAddress(APT[ChainId.TESTNET], L0_USDC[ChainId.TESTNET]),
+    wNative: 'APT',
+    stable: 'USDC',
+  },
+}

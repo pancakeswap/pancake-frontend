@@ -149,38 +149,41 @@ export type FarmWithPrices = FarmData & {
   lpTokenPrice: string
 }
 
-export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPrices[] => {
-  if (!nativeStableLpMap[chainId]) {
-    throw new Error(`chainId ${chainId} not supported`)
-  }
-
-  const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLpMap[chainId].address))
+export const getFarmsPrices = (
+  farms: FarmData[],
+  nativeStableLp: {
+    address: string
+    wNative: string
+    stable: string
+  },
+): FarmWithPrices[] => {
+  const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLp.address))
 
   const nativePriceUSD =
-    _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
+    nativeStableFarm && _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
       ? FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
       : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenAddress(farms, farm.quoteToken.address, [
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
+      nativeStableLp.wNative,
+      nativeStableLp.stable,
     ])
 
     const quoteTokenPriceBusd = getFarmQuoteTokenPrice(
       farm,
       quoteTokenFarm,
       nativePriceUSD,
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
+      nativeStableLp.wNative,
+      nativeStableLp.stable,
     )
 
     const tokenPriceBusd = getFarmBaseTokenPrice(
       farm,
       quoteTokenFarm,
       nativePriceUSD,
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
+      nativeStableLp.wNative,
+      nativeStableLp.stable,
       quoteTokenPriceBusd,
     )
     const lpTokenPrice = farm?.stableSwapAddress
@@ -209,7 +212,7 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
   return farmsWithPrices
 }
 
-const nativeStableLpMap = {
+export const evmNativeStableLpMap = {
   [ChainId.ETHEREUM]: {
     address: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
     wNative: 'WETH',

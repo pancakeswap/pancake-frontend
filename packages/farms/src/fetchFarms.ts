@@ -3,7 +3,7 @@ import { formatUnits } from '@ethersproject/units'
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { FIXED_TWO, FIXED_ZERO } from './const'
-import { getFarmsPrices } from './farmPrices'
+import { evmNativeStableLpMap, getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
 import { isStableFarm, SerializedFarmConfig } from './types'
@@ -90,7 +90,7 @@ export async function farmV2FetchFarms({
     }
   })
 
-  const farmsDataWithPrices = getFarmsPrices(farmsData, chainId)
+  const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId])
 
   return farmsDataWithPrices
 }
