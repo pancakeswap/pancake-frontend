@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useMemo, useContext } from 'react'
 import { useRouter } from 'next/router'
-import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent } from '@pancakeswap/sdk'
+import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent, ChainId } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import {
   Button,
@@ -329,6 +329,9 @@ const LimitOrders = () => {
 
   const isSideFooter = isChartExpanded || isChartDisplayed
 
+  const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
+  const isAccessTokenSupported = ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId)
+
   return (
     <Page
       removePadding={isChartExpanded}
@@ -409,7 +412,9 @@ const LimitOrders = () => {
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
                     <Box>
-                      <AccessRisk inputCurrency={currencies.input} outputCurrency={currencies.output} />
+                      {isAccessTokenSupported && (
+                        <AccessRisk inputCurrency={currencies.input} outputCurrency={currencies.output} />
+                      )}
                     </Box>
                     <LimitOrderPrice
                       id="limit-order-desired-rate-input"
