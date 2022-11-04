@@ -834,6 +834,7 @@
   "Dismiss": "Elutasítás",
   "Latest": "Legújabb",
   "Notice for trading %symbol%": "Értesítés %symbol% kereskedéséről",
+  "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.": "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Figyelmeztetés: BONDLY veszélybe került. Kérjük, hogy további intézkedésig távolítsa el a likviditást.",
   "Claimed": "Igényelve",
   "Settings": "Beállítások",
@@ -2014,5 +2015,6 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Megrendelés törlése: %inputAmount% %inputTokenSymbol% ehhez: %outputAmount% %outputTokenSymbol%",
   "RPC Default": "RPC Default",
   "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
-  "Show username": "Show username"
+  "Show username": "Show username",
+  "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter."
 }
