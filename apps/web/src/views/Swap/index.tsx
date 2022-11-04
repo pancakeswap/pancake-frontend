@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { Currency } from '@pancakeswap/sdk'
 import { Box, Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
+import { getBestTrade } from '@pancakeswap/smart-router/evm'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { AppBody } from 'components/App'
 
@@ -35,6 +36,7 @@ export default function Swap() {
   }
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
+  getBestTrade()
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
