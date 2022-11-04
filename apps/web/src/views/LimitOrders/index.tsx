@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo, useContext } from 'react'
+import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent, ChainId } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
