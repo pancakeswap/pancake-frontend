@@ -14,13 +14,14 @@ const msg: Record<VaultPosition, ReactNode> = {
   [VaultPosition.Locked]: null,
   [VaultPosition.LockedEnd]: (
     <Trans>
-      The lock period has ended. Convert to flexible staking or renew your position to start a new lock staking.
+      Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs,
+      voting power boosts, and so much more!
     </Trans>
   ),
   [VaultPosition.AfterBurning]: (
     <Trans>
-      The lock period has ended. To avoid more rewards being burned, convert to flexible staking or renew your position
-      to start a new lock staking.
+      The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying
+      the benefits from locked staking.
     </Trans>
   ),
 }
@@ -52,6 +53,7 @@ const AfterLockedActions: React.FC<React.PropsWithChildren<AfterLockedActionsPro
             variant="primary"
             mr={isDesktopView && '14px'}
             mb={!isDesktopView && '8px'}
+            isRenew
           >
             {t('Renew')}
           </ExtendButton>

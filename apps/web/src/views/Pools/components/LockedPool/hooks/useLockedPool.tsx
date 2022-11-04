@@ -22,6 +22,7 @@ interface HookArgs {
   stakingToken: Token
   onDismiss: () => void
   prepConfirmArg: PrepConfirmArg
+  defaultDuration?: number
 }
 
 interface HookReturn {
@@ -33,7 +34,7 @@ interface HookReturn {
 }
 
 export default function useLockedPool(hookArgs: HookArgs): HookReturn {
-  const { lockedAmount, stakingToken, onDismiss, prepConfirmArg } = hookArgs
+  const { lockedAmount, stakingToken, onDismiss, prepConfirmArg, defaultDuration = ONE_WEEK_DEFAULT } = hookArgs
 
   const dispatch = useAppDispatch()
 
@@ -44,7 +45,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const [duration, setDuration] = useState(ONE_WEEK_DEFAULT)
+  const [duration, setDuration] = useState(() => defaultDuration)
   const usdValueStaked = useBUSDCakeAmount(lockedAmount.toNumber())
 
   const handleDeposit = useCallback(

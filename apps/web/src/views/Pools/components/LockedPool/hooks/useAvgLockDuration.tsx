@@ -6,7 +6,7 @@ import { useCakeVault } from 'state/pools/hooks'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
-import formatSecondsToWeeks from '../../utils/formatSecondsToWeeks'
+import formatSecondsToWeeks, { secondsToWeeks } from '../../utils/formatSecondsToWeeks'
 
 export default function useAvgLockDuration() {
   const { totalLockedAmount, totalShares, totalCakeInVault, pricePerFullShare } = useCakeVault()
@@ -30,8 +30,14 @@ export default function useAvgLockDuration() {
     [avgLockDurationsInSeconds],
   )
 
+  const avgLockDurationsInWeeksNum = useMemo(
+    () => secondsToWeeks(avgLockDurationsInSeconds),
+    [avgLockDurationsInSeconds],
+  )
+
   return {
     avgLockDurationsInWeeks,
+    avgLockDurationsInWeeksNum,
     avgLockDurationsInSeconds: _toNumber(avgLockDurationsInSeconds),
   }
 }

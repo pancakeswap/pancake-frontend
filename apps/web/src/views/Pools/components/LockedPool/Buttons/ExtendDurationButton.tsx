@@ -13,6 +13,7 @@ const ExtendDurationButton: React.FC<React.PropsWithChildren<ExtendDurationButto
   lockEndTime,
   lockStartTime,
   children,
+  isRenew,
   ...rest
 }) => {
   const nowInSeconds = Math.floor(Date.now() / 1000)
@@ -31,6 +32,7 @@ const ExtendDurationButton: React.FC<React.PropsWithChildren<ExtendDurationButto
       currentLockedAmount={currentLockedAmount}
       currentDuration={currentDuration}
       currentDurationLeft={currentDurationLeft}
+      isRenew={isRenew}
     />,
     true,
     true,
