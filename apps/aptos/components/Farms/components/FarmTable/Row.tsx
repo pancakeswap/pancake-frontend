@@ -194,7 +194,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           </FarmMobileCell>
         </tr>
         <StyledTr onClick={toggleActionPanel}>
-          <td width="33%" id="hi">
+          <td width="33%">
             <EarnedMobileCell>
               <CellLayout label={t('Earned')}>
                 <Earned {...cellData.earned} userDataReady={!!userDataReady} />
@@ -217,7 +217,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       </>
     )
   }
-  console.log(cellData, 'cellData')
 
   return (
     <>
