@@ -834,6 +834,7 @@
   "Dismiss": "Ignora",
   "Latest": "Più recenti",
   "Notice for trading %symbol%": "Avviso per il trading di %symbol%",
+  "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.": "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "Avvertimento: BONDLY è stato compromesso. Rimuovi la liquidità fino a nuovo avviso.",
   "Claimed": "Richiesto",
   "Settings": "Impostazioni",
@@ -2014,5 +2015,6 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Annullamento ordine: %inputAmount% %inputTokenSymbol% per %outputAmount% %outputTokenSymbol%",
   "RPC Default": "RPC Default",
   "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
-  "Show username": "Show username"
+  "Show username": "Show username",
+  "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter."
 }
