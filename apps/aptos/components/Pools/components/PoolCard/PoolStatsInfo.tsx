@@ -6,7 +6,7 @@ import { AprInfo, TotalStaked } from './Stat'
 
 interface ExpandedFooterProps {
   pool: Pool.DeserializedPool<Token>
-  account: string
+  account?: string
   showTotalStaked?: boolean
   alignLinksToRight?: boolean
 }

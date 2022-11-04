@@ -20,6 +20,38 @@ const getSecondsLeftFromNow = (timestamp: number) => {
   return Number.isFinite(timestamp) && timestamp < now ? now - timestamp : 0
 }
 
+export function getFarmTokenPerSecond({
+  lastRewardTimestamp,
+  rewardPerSecond,
+  currentRewardDebt,
+  tokenPerShare,
+  precisionFactor,
+  totalStake,
+  userStakedAmount,
+}) {
+  if (!userStakedAmount) return '0'
+
+  const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
+  const rewardPendingToken = FixedNumber.from(rewardPerSecond).mulUnsafe(multiplier)
+
+  console.log('rewardPendingToken:', rewardPendingToken)
+
+  const fPrecisionFactor = FixedNumber.from(precisionFactor)
+
+  const rewardDebt = FixedNumber.from(currentRewardDebt)
+  const latestTokenPerShare = FixedNumber.from(tokenPerShare).addUnsafe(
+    rewardPendingToken.mulUnsafe(fPrecisionFactor).divUnsafe(FixedNumber.from(totalStake)),
+  )
+
+  const pendingReward = FixedNumber.from(userStakedAmount)
+    .mulUnsafe(latestTokenPerShare)
+    .divUnsafe(fPrecisionFactor)
+    .subUnsafe(rewardDebt)
+    .toString()
+
+  return pendingReward
+}
+
 // In order to calculate, I need tokenPrice from farms
 export const getPoolApr = ({ rewardTokenPrice, stakingTokenPrice, tokenPerSecond, totalStaked }) => {
   const totalRewardPricePerYear = new BigNumber(rewardTokenPrice).times(tokenPerSecond).times(SECONDS_IN_YEAR)
@@ -67,13 +99,11 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
         userData = { ...userData, stakingTokenBalance: new BigNumber(amount) }
       }
 
-      const stakedData = _get(foundStakedPoolBalance, 'data.reward_debt')
+      const currentRewardDebt = _get(foundStakedPoolBalance, 'data.reward_debt')
 
-      const stakedAmount = _get(foundStakedPoolBalance, 'data.amount')
+      const userStakedAmount = _get(foundStakedPoolBalance, 'data.amount')
 
-      if (stakedData && stakedAmount) {
-        const userAmount = FixedNumber.from(stakedAmount)
-
+      if (userStakedAmount) {
         const lastRewardTimestamp = _toNumber(_get(resource, 'data.last_reward_timestamp'))
 
         // let multiplier = get_multiplier(pool_info.last_reward_timestamp, timestamp::now_seconds(), pool_info.end_timestamp);
@@ -91,14 +121,17 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
           rewardPendingToken.mulUnsafe(precisionFactor).divUnsafe(totalStake),
         )
 
-        const rewardDebt = FixedNumber.from(stakedData)
+        const rewardDebt = FixedNumber.from(currentRewardDebt)
 
-        const pendingReward = userAmount.mulUnsafe(latestTokenPerShare).divUnsafe(precisionFactor).subUnsafe(rewardDebt)
+        const pendingReward = FixedNumber.from(userStakedAmount)
+          .mulUnsafe(latestTokenPerShare)
+          .divUnsafe(precisionFactor)
+          .subUnsafe(rewardDebt)
 
         userData = {
           ...userData,
           pendingReward: new BigNumber(pendingReward.toString()),
-          stakedBalance: new BigNumber(userAmount.toString()),
+          stakedBalance: new BigNumber(userStakedAmount),
         }
       }
     }
@@ -135,6 +168,70 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
     tokenPerBlock: resource.data.reward_per_second,
     stakingLimit: resource.data.pool_limit_per_user ? new BigNumber(resource.data.pool_limit_per_user) : BIG_ZERO,
     totalStaked: new BigNumber(totalStakedToken),
+
+    userData,
+
+    profileRequirement: undefined,
+  }
+}
+
+const CAKE_ADDRESS = '0x4517f79a25706e166d4d04362dfcdf4c366f8ed6093992cf2c9b8f6bf3af79f7::pancake::Cake'
+
+export const transformCakePool = ({ balances, cakePoolInfo }) => {
+  const rewardPerSecond = '10000'
+  const currentRewardDebt = 0
+  const ACC_CAKE_PRECISION = '100000000'
+  const userStakedAmount = 0
+
+  let userData = {
+    allowance: new BigNumber(0),
+    pendingReward: new BigNumber(0),
+    stakedBalance: new BigNumber(0),
+    stakingTokenBalance: new BigNumber(0),
+  }
+
+  const foundStakingBalance = balances.find((balance) => balance.type === `0x1::coin::CoinStore<${CAKE_ADDRESS}>`)
+  const amount = _get(foundStakingBalance, 'data.coin.value')
+
+  if (amount) {
+    userData = { ...userData, stakingTokenBalance: new BigNumber(amount) }
+  }
+
+  if (userStakedAmount) {
+    const pendingReward = getFarmTokenPerSecond({
+      lastRewardTimestamp: cakePoolInfo.last_reward_timestamp,
+      rewardPerSecond,
+      currentRewardDebt,
+      tokenPerShare: cakePoolInfo.acc_cake_per_share,
+      precisionFactor: ACC_CAKE_PRECISION,
+      totalStake: cakePoolInfo.total_amount,
+      userStakedAmount,
+    })
+
+    userData = {
+      ...userData,
+      pendingReward: new BigNumber(pendingReward.toString()),
+      stakedBalance: new BigNumber(userStakedAmount),
+    }
+  }
+
+  return {
+    sousId: 'cakePool',
+    contractAddress: {
+      [ChainId.TESTNET]: 'cakeAddress',
+    },
+    stakingToken: new Coin(ChainId.TESTNET, 'cakeAddress', 8, 'CAKE', `CAKE coin`),
+    earningToken: new Coin(ChainId.TESTNET, 'cakeAddress', 8, 'CAKE', `CAKE coin`),
+    apr: 0,
+    earningTokenPrice: 0,
+    stakingTokenPrice: 0,
+
+    isFinished: false,
+    poolCategory: PoolCategory.CORE,
+    startBlock: 0,
+    tokenPerBlock: rewardPerSecond,
+    stakingLimit: BIG_ZERO,
+    totalStaked: new BigNumber(cakePoolInfo.total_amount),
 
     userData,
 

@@ -1,14 +1,9 @@
 import { useState } from 'react'
-import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, CardFooter, ExpandableLabel, HelpIcon, useTooltip, Pool, Farm as FarmUI } from '@pancakeswap/uikit'
-import { Token } from '@pancakeswap/sdk'
 
 interface FooterProps {
-  pool: Pool.DeserializedPool<Token>
-  account: string
-  totalCakeInVault?: BigNumber
   defaultExpanded?: boolean
 }
 
