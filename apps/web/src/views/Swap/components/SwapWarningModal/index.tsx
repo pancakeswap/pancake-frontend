@@ -12,6 +12,7 @@ import CcarWarning from './CcarWarning'
 import BTTWarning from './BTTWarning'
 import RugPullWarning from './RugPullWarning'
 import FREEWarning from './FREEWarning'
+import GalaWarning from './GalaWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -59,6 +60,10 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
     [SwapWarningTokensConfig.free.address]: {
       symbol: SwapWarningTokensConfig.free.symbol,
       component: <FREEWarning />,
+    },
+    [SwapWarningTokensConfig.gala.address]: {
+      symbol: SwapWarningTokensConfig.gala.symbol,
+      component: <GalaWarning />,
     },
   }
 
