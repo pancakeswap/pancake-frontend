@@ -20,7 +20,7 @@ const TOKEN_SEARCH = gql`
 `
 
 const POOL_SEARCH = gql`
-  query pools($tokens: [Bytes]!, $id: String) {
+  query pools($tokens: [String!]!, $id: ID) {
     as0: pairs(first: 10, where: { token0_in: $tokens }) {
       id
     }
