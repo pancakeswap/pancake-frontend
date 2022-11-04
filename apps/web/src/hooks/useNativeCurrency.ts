@@ -1,9 +1,9 @@
 import { ChainId, Native, NativeCurrency } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-import useActiveWeb3React from './useActiveWeb3React'
+import { useActiveChainId } from './useActiveChainId'
 
 export default function useNativeCurrency(): NativeCurrency {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   return useMemo(() => {
     try {
       return Native.onChain(chainId)

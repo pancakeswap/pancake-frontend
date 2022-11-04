@@ -1,10 +1,10 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { Multicall } from 'config/abi/types'
 import { ResultStructOutput } from 'config/abi/types/Multicall'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useCurrentBlock } from 'state/block/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMulticallContract } from '../../hooks/useContract'
 import { AppState, useAppDispatch } from '../index'
 import {
@@ -150,7 +150,7 @@ export default function Updater(): null {
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const currentBlock = useCurrentBlock()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const multicallContract = useMulticallContract()
   const cancellations = useRef<{ blockNumber: number; cancellations: (() => void)[] }>()
 

@@ -7,12 +7,12 @@ import {
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
 } from '@pancakeswap/uikit'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useContext } from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { multiChainPaths } from 'state/info/constant'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FarmWithStakedValue } from '../../types'
 
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
@@ -123,7 +123,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   userDataReady,
   expanded,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
   const farm = details

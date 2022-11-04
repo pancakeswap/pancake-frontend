@@ -13,6 +13,7 @@ import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { featureFarmApiAtom, useFeatureFlag } from 'hooks/useFeatureFlag'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
 import {
@@ -25,7 +26,7 @@ import {
 } from './selectors'
 
 export function useFarmsLength() {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   return useSWRImmutable(chainId ? ['farmsLength', chainId] : null, async () => {
     const mc = getMasterchefContract(undefined, chainId)
     return (await mc.poolLength()).toNumber()
@@ -87,7 +88,7 @@ const coreFarmPIDs = {
 
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const farmFlag = useFeatureFlag(featureFarmApiAtom)
 
   useEffect(() => {
@@ -104,7 +105,7 @@ export const usePollCoreFarmData = () => {
 }
 
 export const useFarms = (): DeserializedFarmsState => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   return useSelector(useMemo(() => farmSelector(chainId), [chainId]))
 }
 

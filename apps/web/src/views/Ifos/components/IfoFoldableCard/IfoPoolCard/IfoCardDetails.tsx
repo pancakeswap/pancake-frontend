@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { bscTokens } from '@pancakeswap/tokens'
+import styled from 'styled-components'
 import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
@@ -24,6 +25,12 @@ export interface FooterEntryProps {
   value: ReactNode
   tooltipContent?: string
 }
+
+const StyledIfoCardDetails = styled(Flex)`
+  padding: 16px;
+  margin: 0 -12px -12px;
+  background-color: ${({ theme }) => theme.colors.background};
+`
 
 const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ label, value, tooltipContent }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
@@ -249,7 +256,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
 
     if (status === 'finished') {
       return (
-        <>
+        <StyledIfoCardDetails flexDirection="column">
           {(poolId === PoolIds.poolBasic || ifo.isActive) && tokenEntry}
           {poolId === PoolIds.poolUnlimited && <FooterEntry label={t('Additional fee:')} value={taxRate} />}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
@@ -267,13 +274,13 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
               value={pricePerTokenWithFee}
             />
           )}
-        </>
+        </StyledIfoCardDetails>
       )
     }
     return <SkeletonCardDetails />
   }
 
-  return <Box paddingTop="24px">{renderBasedOnIfoStatus()}</Box>
+  return <Box>{renderBasedOnIfoStatus()}</Box>
 }
 
 export default IfoCardDetails

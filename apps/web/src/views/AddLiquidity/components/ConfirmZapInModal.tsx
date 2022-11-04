@@ -13,7 +13,7 @@ import { Field } from 'state/burn/actions'
 import { CurrencyLogo } from 'components/Logo'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PairDistribution, AddLiquidityModalHeader } from './common'
 import { ZapErrorMessages } from './ZapErrorMessage'
 
@@ -70,7 +70,7 @@ const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & C
   toggleZapMode,
 }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const totalPoolTokens = useTotalSupply(pair.liquidityToken)
   const swapInCurrencyAmount = parsedAmounts[zapSwapTokenField]

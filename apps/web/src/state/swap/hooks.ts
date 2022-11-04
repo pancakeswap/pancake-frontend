@@ -6,7 +6,6 @@ import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constant
 import { multicallv2 } from 'utils/multicall'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
 import { useDispatch, useSelector } from 'react-redux'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useRouter } from 'next/router'
 import { useTranslation } from '@pancakeswap/localization'
@@ -17,6 +16,7 @@ import { CAKE, USDC } from '@pancakeswap/tokens'
 import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
@@ -228,7 +228,7 @@ export function queryParametersToSwapState(
 export function useDefaultsFromURLSearch():
   | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
   | undefined {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
   const { query } = useRouter()
