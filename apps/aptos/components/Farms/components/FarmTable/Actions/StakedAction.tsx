@@ -1,32 +1,34 @@
+import { useAccountBalance } from '@pancakeswap/awgmi'
+import { TransactionResponse } from '@pancakeswap/awgmi/core'
+import { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AddIcon,
   Button,
+  Farm as FarmUI,
   IconButton,
   MinusIcon,
   Skeleton,
   Text,
   useModal,
   useToast,
-  Farm as FarmUI,
 } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import BigNumber from 'bignumber.js'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useCatchTxError from 'hooks/useCatchTxError'
+import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import styled from 'styled-components'
-import { DeserializedFarmUserData } from '@pancakeswap/farms'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { TransactionResponse } from '@pancakeswap/awgmi/core'
-import useCatchTxError from 'hooks/useCatchTxError'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { FarmWithStakedValue } from '../../types'
+import { ActionContainer, ActionContent, ActionTitles } from './styles'
 
 const IconButtonWrapper = styled.div`
   display: flex;
@@ -71,7 +73,7 @@ export function useStakedActions(pid, tokenType) {
 }
 
 export const StakedContainer = ({ children, ...props }) => {
-  const { onStake, onUnstake, onDone } = useStakedActions(props.pid, 'tokenType')
+  const { onStake, onUnstake, onDone } = useStakedActions(props.pid, props.lpAddress)
 
   return children({
     ...props,
@@ -99,13 +101,21 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   onDone,
   onStake,
   onUnstake,
+  lpAddress,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { account } = useActiveWeb3React()
 
-  const { tokenBalance, stakedBalance } = (userData as DeserializedFarmUserData) || {}
+  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
+    watch: true,
+    address: account,
+    coin: lpAddress,
+    select: (d) => new BigNumber(d.value),
+  })
+
+  const { stakedBalance } = (userData as DeserializedFarmUserData) || {}
 
   const router = useRouter()
   const cakePrice = useCakePriceAsBigNumber()
