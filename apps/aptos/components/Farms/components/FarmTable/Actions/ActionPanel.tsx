@@ -137,7 +137,6 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   })
   const { lpAddress } = farm
   const viewContractLink = getBlockExploreLink(lpAddress, 'address', chainId)
-  // const info = `/info/pools/${lpAddress}`
 
   return (
     <Container expanded={expanded}>
@@ -180,7 +179,6 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
           </StakeContainer>
         )}
         <StyledLinkExternal href={viewContractLink}>{t('View Contract')}</StyledLinkExternal>
-        {/* <StyledLinkExternal href={info}>{t('See Pair Info')}</StyledLinkExternal> */}
       </InfoContainer>
       <ActionContainer>
         <HarvestActionContainer {...farm} userDataReady={userDataReady}>

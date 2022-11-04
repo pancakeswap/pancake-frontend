@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Heading, Skeleton, Text, useToast, Balance } from '@pancakeswap/uikit'
+import { Skeleton, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -8,8 +8,9 @@ import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import BigNumber from 'bignumber.js'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { FarmWithStakedValue } from '../../types'
+
+const { FarmTableHarvestAction } = FarmUI.FarmTable
 
 interface HarvestActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -65,27 +66,14 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   }
 
   return (
-    <ActionContainer style={{ minHeight: 124.5 }}>
-      <ActionTitles>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-          CAKE
-        </Text>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Earned')}
-        </Text>
-      </ActionTitles>
-      <ActionContent>
-        <div>
-          <Heading>{displayBalance}</Heading>
-          {earningsBusd > 0 && (
-            <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
-          )}
-        </div>
-        <Button ml="4px" disabled={earnings.eq(0) || pendingTx || !userDataReady} onClick={handleHarvest}>
-          {pendingTx ? t('Harvesting') : t('Harvest')}
-        </Button>
-      </ActionContent>
-    </ActionContainer>
+    <FarmTableHarvestAction
+      earnings={earnings}
+      earningsBusd={earningsBusd}
+      displayBalance={displayBalance}
+      pendingTx={pendingTx}
+      userDataReady={userDataReady}
+      handleHarvest={handleHarvest}
+    />
   )
 }
 
