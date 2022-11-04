@@ -86,7 +86,7 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number, ch
       }
       return {
         ...aprMap,
-        [farm.id]: lpApr.decimalPlaces(2).toNumber(),
+        [farm.id.toLowerCase()]: lpApr.decimalPlaces(2).toNumber(),
       }
     }, {})
     return aprs
