@@ -16,7 +16,7 @@
       "chainId": 34,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB",
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
     },
     {
       "name": "Bitcoin",
@@ -24,7 +24,7 @@
       "chainId": 34,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC",
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
     },
     {
       "name": "Dai",
@@ -32,7 +32,7 @@
       "chainId": 34,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetDAI",
-      "logoURI": "https://tokens.pancakeswap.finance/images/0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/dai.png"
     },
     {
       "name": "Ethereum",
@@ -48,7 +48,7 @@
       "chainId": 34,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetUSDC",
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
       "name": "Tether",
@@ -56,7 +56,7 @@
       "chainId": 34,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetUSDT",
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x55d398326f99059fF775485246999027B3197955.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
     },
     {
       "name": "BNB",
@@ -64,7 +64,7 @@
       "chainId": 2,
       "decimals": 8,
       "address": "0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB",
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
     },
     {
       "name": "Bitcoin",
