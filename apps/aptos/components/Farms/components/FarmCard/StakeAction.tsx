@@ -1,8 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { useAccountBalance } from '@pancakeswap/awgmi'
 import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -11,7 +9,6 @@ import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-// import { useLpTokenPrice } from 'state/farms/hooks'
 import { FarmWithStakedValue } from '../types'
 
 const IconButtonWrapper = styled.div`
@@ -32,7 +29,6 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
 
 const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   pid,
-  lpAddress,
   quoteToken,
   token,
   lpSymbol,
@@ -54,16 +50,9 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { account } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
-  const { stakedBalance } = userData as DeserializedFarmUserData
+  const { stakedBalance, tokenBalance } = (userData as DeserializedFarmUserData) || {}
   const cakePrice = useCakePriceAsBigNumber()
   const router = useRouter()
-
-  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
-    watch: true,
-    address: account,
-    coin: lpAddress,
-    select: (d) => new BigNumber(d.value),
-  })
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => onStake(amount))

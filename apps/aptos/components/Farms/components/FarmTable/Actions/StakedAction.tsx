@@ -23,6 +23,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
+import { useFarmUserInfoCache } from 'state/farms/hook'
 import styled from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useStakeFarms from '../../../hooks/useStakeFarms'
@@ -74,9 +75,25 @@ export function useStakedActions(pid, tokenType) {
 
 export const StakedContainer = ({ children, ...props }) => {
   const { onStake, onUnstake, onDone } = useStakedActions(props.pid, props.lpAddress)
+  const { account } = useActiveWeb3React()
+  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
+    watch: true,
+    address: account,
+    coin: props.lpAddress,
+    select: (d) => new BigNumber(d.value),
+  })
+  const { data: userInfo } = useFarmUserInfoCache(String(props.pid))
+
+  const userData = useMemo(() => {
+    return {
+      stakedBalance: userInfo?.amount ? new BigNumber(userInfo.amount) : BIG_ZERO,
+      tokenBalance,
+    }
+  }, [tokenBalance, userInfo?.amount])
 
   return children({
     ...props,
+    userData,
     onStake,
     onDone,
     onUnstake,
@@ -101,21 +118,13 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   onDone,
   onStake,
   onUnstake,
-  lpAddress,
 }) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { account } = useActiveWeb3React()
 
-  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
-    watch: true,
-    address: account,
-    coin: lpAddress,
-    select: (d) => new BigNumber(d.value),
-  })
-
-  const { stakedBalance } = (userData as DeserializedFarmUserData) || {}
+  const { stakedBalance, tokenBalance } = (userData as DeserializedFarmUserData) || {}
 
   const router = useRouter()
   const cakePrice = useCakePriceAsBigNumber()

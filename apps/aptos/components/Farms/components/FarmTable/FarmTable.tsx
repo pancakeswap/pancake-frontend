@@ -121,6 +121,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         isStable: farm.isStable,
       },
       earned: {
+        // TODO: remove
         earnings: getFarmEarnings(farm),
         pid: farm.pid,
       },
