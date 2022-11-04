@@ -1,5 +1,5 @@
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { createFarmFetcher } from '@pancakeswap/farms'
+import { createFarmFetcher, SerializedFarm, SerializedFarmsState } from '@pancakeswap/farms'
 import { ChainId } from '@pancakeswap/sdk'
 import { createAsyncThunk, createSlice, isAnyOf } from '@reduxjs/toolkit'
 import type {
@@ -21,7 +21,6 @@ import { chains } from 'utils/wagmi'
 import splitProxyFarms from 'views/Farms/components/YieldBooster/helpers/splitProxyFarms'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { resetUserState } from '../global/actions'
-import { SerializedFarm, SerializedFarmsState } from '../types'
 import fetchFarms from './fetchFarms'
 import {
   fetchFarmUserAllowances,

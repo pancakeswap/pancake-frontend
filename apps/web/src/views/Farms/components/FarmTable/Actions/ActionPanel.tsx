@@ -1,5 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { LinkExternal, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  LinkExternal,
+  Text,
+  useMatchBreakpoints,
+  Farm as FarmUI,
+  FarmTableLiquidityProps,
+  FarmTableMultiplierProps,
+} from '@pancakeswap/uikit'
 import { useContext } from 'react'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
@@ -11,16 +18,16 @@ import { FarmWithStakedValue } from '../../types'
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 import Apr, { AprProps } from '../Apr'
-import Liquidity, { LiquidityProps } from '../Liquidity'
-import Multiplier, { MultiplierProps } from '../Multiplier'
 import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
 import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
 import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from './styles'
 
+const { Multiplier, Liquidity } = FarmUI.FarmTable
+
 export interface ActionPanelProps {
   apr: AprProps
-  multiplier: MultiplierProps
-  liquidity: LiquidityProps
+  multiplier: FarmTableMultiplierProps
+  liquidity: FarmTableLiquidityProps
   details: FarmWithStakedValue
   userDataReady: boolean
   expanded: boolean

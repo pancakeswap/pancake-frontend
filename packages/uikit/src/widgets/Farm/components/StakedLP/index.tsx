@@ -14,8 +14,8 @@ interface StakedLPProps {
   lpTokenPrice: BigNumber;
   tokenAmountTotal: BigNumber;
   quoteTokenAmountTotal: BigNumber;
-  pendingFarmLength: number;
-  onClickLoadingIcon: () => void;
+  pendingFarmLength?: number;
+  onClickLoadingIcon?: () => void;
 }
 
 const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> = ({
@@ -26,7 +26,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
   lpTokenPrice,
   tokenAmountTotal,
   quoteTokenAmountTotal,
-  pendingFarmLength,
+  pendingFarmLength = 0,
   onClickLoadingIcon,
 }) => {
   const displayBalance = useMemo(() => {

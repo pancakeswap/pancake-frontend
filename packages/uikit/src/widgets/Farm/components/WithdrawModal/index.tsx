@@ -15,6 +15,7 @@ interface WithdrawModalProps {
   tokenName?: string;
   showActiveBooster?: boolean;
   showCrossChainFarmWarning?: boolean;
+  decimals?: number;
 }
 
 const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
@@ -24,13 +25,14 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   tokenName = "",
   showActiveBooster,
   showCrossChainFarmWarning,
+  decimals = 18,
 }) => {
   const [val, setVal] = useState("");
   const [pendingTx, setPendingTx] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max);
-  }, [max]);
+    return getFullDisplayBalance(max, decimals);
+  }, [max, decimals]);
 
   const valNumber = new BigNumber(val);
   const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);

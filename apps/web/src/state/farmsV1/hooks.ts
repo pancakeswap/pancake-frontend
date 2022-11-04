@@ -10,8 +10,9 @@ import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, SerializedFarm } from '@pancakeswap/farms'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
-import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, SerializedFarm, State } from '../types'
+import { State } from '../types'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
   return {

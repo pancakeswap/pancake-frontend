@@ -1,31 +1,36 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
-import { Box, Flex, useMatchBreakpoints, Skeleton, Farm as FarmUI } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  useMatchBreakpoints,
+  Skeleton,
+  Farm as FarmUI,
+  useDelayedUnmount,
+  FarmTableEarnedProps,
+  FarmTableLiquidityProps,
+  FarmTableMultiplierProps,
+  FarmTableFarmTokenInfoProps,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useFarmUser } from 'state/farms/hooks'
 
 import Apr, { AprProps } from './Apr'
-import Farm, { FarmProps } from './Farm'
-
-import Earned, { EarnedProps } from './Earned'
-import Details from './Details'
-import Multiplier, { MultiplierProps } from './Multiplier'
-import Liquidity, { LiquidityProps } from './Liquidity'
+import Farm from './Farm'
 import ActionPanel from './Actions/ActionPanel'
-import CellLayout from './CellLayout'
 import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, CoreTag } = FarmUI.Tags
+const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 
 export interface RowProps {
   apr: AprProps
-  farm: FarmProps
-  earned: EarnedProps
-  multiplier: MultiplierProps
-  liquidity: LiquidityProps
+  farm: FarmTableFarmTokenInfoProps
+  earned: FarmTableEarnedProps
+  multiplier: FarmTableMultiplierProps
+  liquidity: FarmTableLiquidityProps
   details: FarmWithStakedValue
   type: 'core' | 'community'
   initialActivity?: boolean

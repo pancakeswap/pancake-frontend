@@ -190,9 +190,11 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
               </li>
             )}
           </BulletList>
-          <Flex justifyContent="center" mt="24px">
-            <LinkExternal href={linkHref}>{linkLabel}</LinkExternal>
-          </Flex>
+          {linkHref && (
+            <Flex justifyContent="center" mt="24px">
+              <LinkExternal href={linkHref}>{linkLabel}</LinkExternal>
+            </Flex>
+          )}
         </Box>
       )}
     </Footer>

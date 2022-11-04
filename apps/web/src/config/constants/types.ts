@@ -69,11 +69,6 @@ export enum PoolCategory {
 
 export type { SerializedFarmConfig, FarmConfigBaseProps }
 
-export interface DeserializedFarmConfig extends FarmConfigBaseProps {
-  token: Token
-  quoteToken: Token
-}
-
 interface PoolConfigBaseProps {
   sousId: number
   contractAddress: Address
