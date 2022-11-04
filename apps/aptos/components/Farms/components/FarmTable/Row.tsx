@@ -13,8 +13,10 @@ import {
 } from '@pancakeswap/uikit'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
-import { useFarmEarning } from 'state/farms/hook'
+import { useFarmEarning, useFarmUserInfoCache } from 'state/farms/hook'
 import { DesktopColumnSchema, FarmWithStakedValue, MobileColumnSchema } from '../types'
 import ActionPanel from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
@@ -80,14 +82,17 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
-  const { details: _details, initialActivity, multiplier } = props
+  const { t } = useTranslation()
+  const { details: _details, initialActivity, multiplier, farm } = props
   const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
-  const hasStakedAmount = false
-  // const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
+
+  const { data: userInfo } = useFarmUserInfoCache(String(farm.pid))
+  const stakedBalance = userInfo?.amount ? new BigNumber(userInfo.amount) : BIG_ZERO
+  const hasStakedAmount = stakedBalance.gt(0)
+
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
-  const { t } = useTranslation()
 
   const toggleActionPanel = () => {
     setActionPanelExpanded(!actionPanelExpanded)

@@ -202,6 +202,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         </ActionTitles>
         <ActionContent>
           <FarmUI.StakedLP
+            decimals={8}
             stakedBalance={stakedBalance}
             quoteTokenSymbol={quoteToken.symbol}
             tokenSymbol={token.symbol}

@@ -15,6 +15,7 @@ interface StakedLPProps {
   tokenAmountTotal: BigNumber;
   quoteTokenAmountTotal: BigNumber;
   pendingFarmLength?: number;
+  decimals?: number;
   onClickLoadingIcon?: () => void;
 }
 
@@ -27,11 +28,12 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
   tokenAmountTotal,
   quoteTokenAmountTotal,
   pendingFarmLength = 0,
+  decimals = 18,
   onClickLoadingIcon,
 }) => {
   const displayBalance = useMemo(() => {
-    return formatLpBalance(stakedBalance);
-  }, [stakedBalance]);
+    return formatLpBalance(stakedBalance, decimals);
+  }, [stakedBalance, decimals]);
 
   return (
     <Flex flexDirection="column" alignItems="flex-start">

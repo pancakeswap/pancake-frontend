@@ -126,6 +126,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <FarmUI.StakedLP
+        decimals={8}
         stakedBalance={stakedBalance}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}
