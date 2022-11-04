@@ -1,10 +1,9 @@
 import { Pool } from '@pancakeswap/uikit'
-import useHarvestPool from '../../hooks/useHarvestPool'
+import useHarvestFarm from 'components/Farms/hooks/useHarvestFarm'
+import { CAKE_PID } from 'components/Pools/constants'
 import CollectModalContainer from './CollectModalContainer'
 
-export const CollectModal = ({
-  sousId,
-  stakingTokenAddress,
+const CakeCollectModal = ({
   earningTokenAddress,
   ...rest
 }: React.PropsWithChildren<
@@ -13,9 +12,9 @@ export const CollectModal = ({
     stakingTokenAddress: string
   }
 >) => {
-  const { onReward } = useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId })
+  const { onReward } = useHarvestFarm(CAKE_PID, earningTokenAddress)
 
   return <CollectModalContainer onReward={onReward} {...rest} />
 }
 
-export default CollectModal
+export default CakeCollectModal

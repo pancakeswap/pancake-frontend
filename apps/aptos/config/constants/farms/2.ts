@@ -17,6 +17,13 @@ const farms: SerializedFarmConfig[] = [
     token: testnetTokens.moon,
     quoteToken: testnetTokens.apt,
   },
+  {
+    pid: 2,
+    lpSymbol: 'CAKE',
+    lpAddress: '0x4517f79a25706e166d4d04362dfcdf4c366f8ed6093992cf2c9b8f6bf3af79f7::pancake::Cake',
+    token: testnetTokens.cake,
+    quoteToken: testnetTokens.cake,
+  },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default farms

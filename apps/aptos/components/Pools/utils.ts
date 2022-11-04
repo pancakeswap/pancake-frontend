@@ -32,9 +32,8 @@ export function getFarmTokenPerSecond({
   if (!userStakedAmount) return '0'
 
   const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
-  const rewardPendingToken = FixedNumber.from(rewardPerSecond).mulUnsafe(multiplier)
 
-  console.log('rewardPendingToken:', rewardPendingToken)
+  const rewardPendingToken = FixedNumber.from(rewardPerSecond).mulUnsafe(multiplier)
 
   const fPrecisionFactor = FixedNumber.from(precisionFactor)
 
@@ -175,13 +174,35 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
   }
 }
 
-const CAKE_ADDRESS = '0x4517f79a25706e166d4d04362dfcdf4c366f8ed6093992cf2c9b8f6bf3af79f7::pancake::Cake'
+export function getRewardPerSecondOfCakeFarm({
+  cakePerSecond,
+  specialRate,
+  regularRate,
+  allocPoint,
+  specialAllocPoint,
+}) {
+  const fSpecialRate = FixedNumber.from(specialRate)
+  const fRegularRate = FixedNumber.from(regularRate)
 
-export const transformCakePool = ({ balances, cakePoolInfo }) => {
-  const rewardPerSecond = '10000'
-  const currentRewardDebt = 0
+  const cakeRate = fSpecialRate.divUnsafe(fSpecialRate.addUnsafe(fRegularRate))
+
+  return FixedNumber.from(cakePerSecond)
+    .mulUnsafe(cakeRate.mulUnsafe(FixedNumber.from(allocPoint)).divUnsafe(FixedNumber.from(specialAllocPoint)))
+    .toString()
+}
+
+export const transformCakePool = ({ balances, cakePoolInfo, userInfo, masterChefData, cakeFarm, chainId }) => {
+  const currentRewardDebt = _get(userInfo, 'reward_debt', '0')
   const ACC_CAKE_PRECISION = '100000000'
-  const userStakedAmount = 0
+  const userStakedAmount = _get(userInfo, 'amount', '0')
+
+  const rewardPerSecond = getRewardPerSecondOfCakeFarm({
+    cakePerSecond: masterChefData.cake_per_second,
+    specialRate: masterChefData.cake_rate_to_special,
+    regularRate: masterChefData.cake_rate_to_regular,
+    allocPoint: cakePoolInfo.alloc_point,
+    specialAllocPoint: masterChefData.total_special_alloc_point,
+  })
 
   let userData = {
     allowance: new BigNumber(0),
@@ -190,16 +211,21 @@ export const transformCakePool = ({ balances, cakePoolInfo }) => {
     stakingTokenBalance: new BigNumber(0),
   }
 
-  const foundStakingBalance = balances.find((balance) => balance.type === `0x1::coin::CoinStore<${CAKE_ADDRESS}>`)
+  const foundStakingBalance = balances.find(
+    (balance) => balance.type === `0x1::coin::CoinStore<${cakeFarm.token.address}>`,
+  )
+
   const amount = _get(foundStakingBalance, 'data.coin.value')
 
   if (amount) {
     userData = { ...userData, stakingTokenBalance: new BigNumber(amount) }
   }
 
-  if (userStakedAmount) {
+  const totalStake = _get(cakePoolInfo, 'total_amount', '0')
+
+  if (_toNumber(userStakedAmount) && _toNumber(totalStake)) {
     const pendingReward = getFarmTokenPerSecond({
-      lastRewardTimestamp: cakePoolInfo.last_reward_timestamp,
+      lastRewardTimestamp: _toNumber(cakePoolInfo.last_reward_timestamp),
       rewardPerSecond,
       currentRewardDebt,
       tokenPerShare: cakePoolInfo.acc_cake_per_share,
@@ -216,12 +242,12 @@ export const transformCakePool = ({ balances, cakePoolInfo }) => {
   }
 
   return {
-    sousId: 'cakePool',
+    sousId: cakeFarm.pid,
     contractAddress: {
-      [ChainId.TESTNET]: 'cakeAddress',
+      [chainId]: cakeFarm.lpAddress,
     },
-    stakingToken: new Coin(ChainId.TESTNET, 'cakeAddress', 8, 'CAKE', `CAKE coin`),
-    earningToken: new Coin(ChainId.TESTNET, 'cakeAddress', 8, 'CAKE', `CAKE coin`),
+    stakingToken: cakeFarm.token,
+    earningToken: cakeFarm.token,
     apr: 0,
     earningTokenPrice: 0,
     stakingTokenPrice: 0,

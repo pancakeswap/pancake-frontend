@@ -8,7 +8,6 @@ import Page from 'components/Layout/Page'
 import Portal from 'components/Portal'
 import { TokenPairImage } from 'components/TokenImage'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
-import { usePoolsList } from 'state/pools/hooks'
 
 import NoSSR from '../NoSSR'
 import PoolControls from './components/PoolControls'
@@ -16,6 +15,9 @@ import CardActions from './components/PoolCard/CardActions'
 import Apr from './components/PoolCard/Apr'
 import CardFooter from './components/PoolCard/CardFooter'
 import PoolStatsInfo from './components/PoolCard/PoolStatsInfo'
+import CakeCardActions from './components/PoolCard/CakeCardActions'
+import { usePoolsList } from './hooks/usePoolsList'
+import { CAKE_PID } from './constants'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -56,7 +58,11 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                       isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
                       cardContent={
                         account ? (
-                          <CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                          pool?.sousId === CAKE_PID ? (
+                            <CakeCardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                          ) : (
+                            <CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                          )
                         ) : (
                           <>
                             <Text mb="10px" textTransform="uppercase" fontSize="12px" color="textSubtle" bold>
