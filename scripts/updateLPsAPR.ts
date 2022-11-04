@@ -55,7 +55,7 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number, ch
   try {
     const { farmsAtLatestBlock, farmsOneWeekAgo } = await infoClientWithChain(chainId).request<FarmsResponse>(
       gql`
-        query farmsBulk($addresses: [String]!, $blockWeekAgo: Int!) {
+        query farmsBulk($addresses: [ID!], $blockWeekAgo: Int!) {
           farmsAtLatestBlock: pairs(first: 30, where: { id_in: $addresses }) {
             id
             volumeUSD
