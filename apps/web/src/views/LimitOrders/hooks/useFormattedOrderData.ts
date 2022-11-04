@@ -3,9 +3,9 @@ import { Order } from '@gelatonetwork/limit-orders-lib'
 import { Currency, CurrencyAmount, Fraction, Token } from '@pancakeswap/sdk'
 import { useCurrency } from 'hooks/Tokens'
 import useGelatoLimitOrdersLib from 'hooks/limitOrders/useGelatoLimitOrdersLib'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
 import { useIsTransactionPending } from 'state/transactions/hooks'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import getPriceForOneToken from '../utils/getPriceForOneToken'
 import { LimitOrderStatus } from '../types'
 
@@ -40,7 +40,7 @@ const formatForDisplay = (amount: Fraction) => {
 
 // Transforms Gelato Order type into types ready to be displayed in UI
 const useFormattedOrderData = (order: Order): FormattedOrderData => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const gelatoLibrary = useGelatoLimitOrdersLib()
   const inputToken = useCurrency(order.inputToken)
   const outputToken = useCurrency(order.outputToken)

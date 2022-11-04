@@ -1,7 +1,7 @@
 import farms56 from '@pancakeswap/farms/constants/56'
 import farms1 from '@pancakeswap/farms/constants/1'
 import { Native } from '@pancakeswap/sdk'
-import { SerializedFarm } from 'state/types'
+import { SerializedFarm } from '@pancakeswap/farms'
 import { getLpContract } from 'utils/contractHelpers'
 
 // Test only against the last 10 farms, for performance concern

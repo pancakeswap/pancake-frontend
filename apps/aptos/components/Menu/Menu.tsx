@@ -50,10 +50,10 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
   {
     label: t('Earn'),
     href: '/farms',
-    disabled: true,
     icon: EarnIcon,
     fillIcon: EarnFillIcon,
     image: '/images/decorations/pe2.png',
+    disabled: true,
     items: [
       {
         label: t('Farms'),

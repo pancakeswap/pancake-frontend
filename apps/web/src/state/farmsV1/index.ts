@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { SerializedFarm, SerializedFarmsState } from '@pancakeswap/farms'
 import type {
   UnknownAsyncThunkFulfilledAction,
   UnknownAsyncThunkPendingAction,
@@ -18,7 +19,6 @@ import {
   fetchFarmUserTokenBalances,
   fetchFarmUserStakedBalances,
 } from './fetchFarmUser'
-import { SerializedFarmsState, SerializedFarm } from '../types'
 import { fetchMasterChefFarmPoolLength } from './fetchMasterChefData'
 
 const initialState: SerializedFarmsState = {

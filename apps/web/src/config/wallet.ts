@@ -102,6 +102,7 @@ const walletsConfig = ({
       icon: '/images/wallets/brave.png',
       connectorId: ConnectorNames.Injected,
       installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isBraveWallet),
+      downloadLink: 'https://brave.com/wallet/',
     },
     {
       id: 'math',

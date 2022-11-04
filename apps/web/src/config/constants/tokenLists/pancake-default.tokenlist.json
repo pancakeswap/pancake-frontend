@@ -16,7 +16,7 @@
       "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
     },
     {
       "name": "BUSD Token",
@@ -24,7 +24,7 @@
       "address": "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
     },
     {
       "name": "Ethereum Token",
@@ -40,7 +40,7 @@
       "address": "0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
     },
     {
       "name": "Tether USD",
@@ -48,7 +48,7 @@
       "address": "0x55d398326f99059fF775485246999027B3197955",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x55d398326f99059fF775485246999027B3197955.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
     },
     {
       "name": "PancakeSwap Token",
@@ -128,7 +128,7 @@
       "address": "0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
     },
     {
       "name": "BUSD Token",
@@ -136,7 +136,7 @@
       "address": "0x4e2442A6f7AeCE64Ca33d31756B5390860BF973E",
       "chainId": 4,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
     },
     {
       "name": "Wrapped Ether",
@@ -144,7 +144,7 @@
       "symbol": "WETH",
       "decimals": 18,
       "chainId": 4,
-      "logoURI": "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
     },
     {
       "name": "Wrapped Ether",
@@ -152,7 +152,7 @@
       "symbol": "WETH",
       "decimals": 18,
       "chainId": 5,
-      "logoURI": "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
     },
     {
       "name": "Wrapped Ether",
@@ -160,7 +160,7 @@
       "symbol": "WETH",
       "decimals": 18,
       "chainId": 1,
-      "logoURI": "https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
     },
     {
       "name": "USD Coin",
@@ -168,7 +168,7 @@
       "symbol": "USDC",
       "decimals": 6,
       "chainId": 1,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
       "name": "Test USD Coin",
@@ -176,7 +176,7 @@
       "symbol": "tUSDC",
       "decimals": 6,
       "chainId": 4,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
       "name": "Test USD Coin",
@@ -184,7 +184,7 @@
       "symbol": "tUSDC",
       "decimals": 6,
       "chainId": 5,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
     },
     {
       "name": "Tether USD",
@@ -192,7 +192,7 @@
       "symbol": "USDT",
       "decimals": 6,
       "chainId": 1,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x55d398326f99059fF775485246999027B3197955.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
     },
     {
       "name": "Wrapped BNB",
@@ -200,7 +200,7 @@
       "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
       "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
     },
     {
       "name": "Wrapped BTC",
@@ -208,7 +208,7 @@
       "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
       "chainId": 1,
       "decimals": 8,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c.png"
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
     }
   ]
 }

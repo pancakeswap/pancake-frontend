@@ -76,7 +76,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   const [showRoiCalculator, setShowRoiCalculator] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max);
+    return getFullDisplayBalance(max, 8);
   }, [max]);
 
   const lpTokensToStake = new BigNumber(val);

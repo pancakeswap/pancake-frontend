@@ -1,10 +1,10 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-await-in-loop */
 import { TokenList } from '@uniswap/token-lists'
+import uriToHttp from '@pancakeswap/utils/uriToHttp'
+import Ajv from 'ajv'
 import uniswapSchema from './schema/uniswap.json'
 import aptosSchema from './schema/aptos.json'
-import Ajv from 'ajv'
-import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
 const uniswapTokenListValidator = new Ajv({ allErrors: true }).compile(uniswapSchema)
 const aptosTokenListValidator = new Ajv({ allErrors: true }).compile(aptosSchema)
@@ -34,7 +34,7 @@ export default async function getTokenList(listUrl: string, isAptos: boolean): P
     }
 
     const json = await response.json()
-    let tokenListValidator = isAptos ? aptosTokenListValidator : uniswapTokenListValidator
+    const tokenListValidator = isAptos ? aptosTokenListValidator : uniswapTokenListValidator
     if (!tokenListValidator(json)) {
       const validationErrors: string =
         tokenListValidator.errors?.reduce<string>((memo, error) => {

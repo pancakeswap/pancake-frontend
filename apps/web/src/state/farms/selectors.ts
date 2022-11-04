@@ -6,7 +6,8 @@ import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { createSelector } from '@reduxjs/toolkit'
 import _isEmpty from 'lodash/isEmpty'
-import { State, SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '../types'
+import { SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '@pancakeswap/farms'
+import { State } from '../types'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../../config/constants'
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {

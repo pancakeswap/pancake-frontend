@@ -1,7 +1,6 @@
 {
   "name": "@pancakeswap/farms",
   "version": "0.0.1",
-  "main": "./src/index.ts",
   "sideEffects": false,
   "private": true,
   "scripts": {

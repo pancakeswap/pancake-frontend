@@ -17,11 +17,11 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 type ConfirmModalProps = {
   isLoading: boolean
@@ -43,7 +43,7 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
   loadingButtonLabel,
   successButtonLabel,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { theme } = useTheme()
 

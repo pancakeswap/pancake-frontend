@@ -1,25 +1,23 @@
 import { useContext } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { FarmsPageLayout, FarmsContext } from 'components/Farms/components/index'
-import BigNumber from 'bignumber.js'
 import FarmCard from 'components/Farms/components/FarmCard/FarmCard'
-// import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
-// import { usePriceCakeBusd } from 'state/farms/hooks'
+import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
+import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
+import { FarmWithStakedValue } from 'components/Farms/components/types'
 
 const FarmsHistoryPage = () => {
   const { account } = useActiveWeb3React()
   const { chosenFarmsMemoized } = useContext(FarmsContext)
-  const cakePrice = new BigNumber(20)
-  // const cakePrice = usePriceCakeBusd()
+  const cakePrice = useCakePriceAsBigNumber()
 
   return (
     <>
-      {chosenFarmsMemoized.map((farm: any) => (
+      {chosenFarmsMemoized?.map((farm: FarmWithStakedValue) => (
         <FarmCard
           key={farm.pid}
           farm={farm}
-          displayApr="3"
-          // displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
+          displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr) as string}
           cakePrice={cakePrice}
           account={account}
           removed

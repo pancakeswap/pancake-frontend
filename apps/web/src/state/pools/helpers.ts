@@ -1,12 +1,12 @@
 import BigNumber from 'bignumber.js'
 import {
-  SerializedFarm,
   SerializedPool,
   SerializedCakeVault,
   DeserializedCakeVault,
   SerializedLockedCakeVault,
   VaultKey,
 } from 'state/types'
+import { SerializedFarm } from '@pancakeswap/farms'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { isAddress } from 'utils'

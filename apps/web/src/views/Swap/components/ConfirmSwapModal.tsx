@@ -2,9 +2,9 @@ import { useCallback, memo } from 'react'
 import { Trade, Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
 import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
@@ -82,7 +82,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   openSettingModal,
   isStable,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {

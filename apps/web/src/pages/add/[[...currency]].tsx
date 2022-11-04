@@ -1,6 +1,5 @@
 import { CAKE, USDC } from '@pancakeswap/tokens'
 import { useCurrency } from 'hooks/Tokens'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
@@ -11,10 +10,11 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidity from 'views/AddLiquidity'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
 import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
 
   const native = useNativeCurrency()

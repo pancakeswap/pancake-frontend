@@ -5,11 +5,11 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { useTradeExactIn } from 'hooks/Trades'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { Rate } from 'state/limitOrders/types'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { GENERIC_GAS_LIMIT_ORDER_EXECUTION } from 'config/constants/exchange'
 import getPriceForOneToken from 'views/LimitOrders/utils/getPriceForOneToken'
 import { useGasPrice } from 'state/user/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useActiveChainId } from '../useActiveChainId'
 
 export default function useGasOverhead(
   inputAmount: CurrencyAmount<Currency> | undefined,
@@ -20,7 +20,7 @@ export default function useGasOverhead(
   realExecutionPriceAsString: string | undefined
   gasPrice: string | undefined
 } {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const native = useNativeCurrency()
 
   const gasPrice = useGasPrice()

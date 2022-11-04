@@ -6,8 +6,8 @@ import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getBlockExploreLink } from 'utils'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import ActivityEventText from './ActivityEventText'
 import NFTMedia from '../NFTMedia'
 
@@ -27,7 +27,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   onDismiss,
   isUserActivity = false,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const priceAsFloat = parseFloat(activity.price)

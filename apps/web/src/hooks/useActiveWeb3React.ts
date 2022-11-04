@@ -13,7 +13,7 @@ const getHashFromRouter = (router: NextRouter) => {
 }
 
 export function useNetworkConnectorUpdater() {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const previousChainIdRef = useRef(chainId)
   const [loading] = useSwitchNetworkLoading()
   const router = useRouter()

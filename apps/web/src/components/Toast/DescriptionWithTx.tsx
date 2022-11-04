@@ -1,8 +1,8 @@
 import { Link, Text } from '@pancakeswap/uikit'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 interface DescriptionWithTxProps {
   description?: string
@@ -15,7 +15,7 @@ const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps
   txChainId,
   children,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
 
   return (

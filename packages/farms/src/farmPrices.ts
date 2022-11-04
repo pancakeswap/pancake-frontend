@@ -1,8 +1,7 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
-import { ChainId } from '@pancakeswap/sdk'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import _toNumber from 'lodash/toNumber'
-import { SerializedFarmPublicData, FarmData } from './types'
+import { SerializedFarmPublicData, FarmData, isStableFarm } from './types'
 import { FIXED_ONE, FIXED_TEN_IN_POWER_18, FIXED_TWO, FIXED_ZERO } from './const'
 
 // Find BUSD price for token
@@ -149,41 +148,44 @@ export type FarmWithPrices = FarmData & {
   lpTokenPrice: string
 }
 
-export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPrices[] => {
-  if (!nativeStableLpMap[chainId]) {
-    throw new Error(`chainId ${chainId} not supported`)
-  }
-
-  const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLpMap[chainId].address))
+export const getFarmsPrices = (
+  farms: FarmData[],
+  nativeStableLp: {
+    address: string
+    wNative: string
+    stable: string
+  },
+): FarmWithPrices[] => {
+  const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLp.address))
 
   const nativePriceUSD =
-    _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
+    nativeStableFarm && _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
       ? FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
       : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
     const quoteTokenFarm = getFarmFromTokenAddress(farms, farm.quoteToken.address, [
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
+      nativeStableLp.wNative,
+      nativeStableLp.stable,
     ])
 
     const quoteTokenPriceBusd = getFarmQuoteTokenPrice(
       farm,
       quoteTokenFarm,
       nativePriceUSD,
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
+      nativeStableLp.wNative,
+      nativeStableLp.stable,
     )
 
     const tokenPriceBusd = getFarmBaseTokenPrice(
       farm,
       quoteTokenFarm,
       nativePriceUSD,
-      nativeStableLpMap[chainId].wNative,
-      nativeStableLpMap[chainId].stable,
+      nativeStableLp.wNative,
+      nativeStableLp.stable,
       quoteTokenPriceBusd,
     )
-    const lpTokenPrice = farm?.stableSwapAddress
+    const lpTokenPrice = isStableFarm(farm)
       ? getStableLpTokenPrice(
           FixedNumber.from(farm.lpTotalSupply),
           FixedNumber.from(farm.tokenAmountTotal),
@@ -207,27 +209,4 @@ export const getFarmsPrices = (farms: FarmData[], chainId: number): FarmWithPric
   })
 
   return farmsWithPrices
-}
-
-const nativeStableLpMap = {
-  [ChainId.ETHEREUM]: {
-    address: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
-    wNative: 'WETH',
-    stable: 'USDC',
-  },
-  [ChainId.GOERLI]: {
-    address: '0xf5bf0C34d3c428A74Ceb98d27d38d0036C587200',
-    wNative: 'WETH',
-    stable: 'tUSDC',
-  },
-  [ChainId.BSC]: {
-    address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
-    wNative: 'WBNB',
-    stable: 'BUSD',
-  },
-  [ChainId.BSC_TESTNET]: {
-    address: '0x4E96D2e92680Ca65D58A0e2eB5bd1c0f44cAB897',
-    wNative: 'WBNB',
-    stable: 'BUSD',
-  },
 }

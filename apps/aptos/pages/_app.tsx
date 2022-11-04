@@ -1,6 +1,7 @@
 import '@pancakeswap/ui/css/reset.css'
 import '../css/theme.css'
 
+import BigNumber from 'bignumber.js'
 import { PancakeTheme, ResetCSS, ToastListener } from '@pancakeswap/uikit'
 import { Analytics } from '@vercel/analytics/react'
 import { Menu } from 'components/Menu'
@@ -15,6 +16,12 @@ import { Fragment } from 'react'
 import ListsUpdater from 'state/lists/updater'
 import TransactionUpdater from 'state/transactions/updater'
 import { WrongNetworkModal } from 'components/WrongNetworkModal'
+
+// This config is required for number formatting
+BigNumber.config({
+  EXPONENTIAL_AT: 1000,
+  DECIMAL_PLACES: 80,
+})
 
 declare module 'styled-components' {
   /* eslint-disable @typescript-eslint/no-empty-interface */

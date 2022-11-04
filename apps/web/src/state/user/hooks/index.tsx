@@ -12,6 +12,7 @@ import { useFeeData } from 'wagmi'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import useSWR from 'swr'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { AppState, useAppDispatch } from '../../index'
 import {
   addSerializedPair,
@@ -485,7 +486,7 @@ export function toV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]): 
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
 export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const tokens = useOfficialsAndUserAddedTokens()
 
   // pinned pairs

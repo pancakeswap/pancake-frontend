@@ -14,11 +14,11 @@ import {
 import { CurrencyLogo } from 'components/Logo'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { memo } from 'react'
 import styled from 'styled-components'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import LimitOrderDisclaimer from './LimitOrderDisclaimer'
 
 const InfoCardWrapper = styled.div`
@@ -66,7 +66,7 @@ export const ConfirmLimitOrderModal: React.FC<React.PropsWithChildren<ConfirmLim
   customOnDismiss,
   swapErrorMessage,
 }) => {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const { t } = useTranslation()
   const { theme } = useTheme()
   const wrappedOutput = wrappedCurrency(currencies.output, chainId)

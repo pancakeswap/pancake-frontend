@@ -3,7 +3,6 @@ import { Currency, Token } from '@pancakeswap/sdk'
 import { Box, Input, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useDebounce } from '@pancakeswap/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { FixedSizeList } from 'react-window'
@@ -11,6 +10,7 @@ import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useAudioModeManager } from 'state/user/hooks'
 import { isAddress } from 'utils'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import Column, { AutoColumn } from '../Layout/Column'
 import Row from '../Layout/Row'
@@ -36,7 +36,7 @@ interface CurrencySearchProps {
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
   const lists = useAllLists()
   const inactiveUrls = useInactiveListUrls()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
   const activeTokens = useAllTokens()
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
@@ -84,7 +84,7 @@ function CurrencySearch({
   height,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()

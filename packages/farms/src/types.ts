@@ -1,4 +1,6 @@
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
+import BigNumber from 'bignumber.js'
+import { Token } from '@pancakeswap/swap-sdk-core'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -29,8 +31,8 @@ export interface FarmConfigBaseProps {
   boosted?: boolean
 }
 export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
-  stableSwapAddress?: string
-  infoStableSwapAddress?: string
+  stableSwapAddress: string
+  infoStableSwapAddress: string
 }
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
@@ -38,7 +40,7 @@ export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   quoteToken: SerializedWrappedToken
 }
 
-export type SerializedFarmConfig = SerializedStableFarmConfig & SerializedClassicFarmConfig
+export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig
 
 export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   lpTokenPrice?: string
@@ -60,4 +62,72 @@ export interface AprMap {
 
 export function isStableFarm(farmConfig: SerializedFarmConfig): farmConfig is SerializedStableFarmConfig {
   return 'stableSwapAddress' in farmConfig && typeof farmConfig.stableSwapAddress === 'string'
+}
+
+export interface SerializedFarmUserData {
+  allowance: string
+  tokenBalance: string
+  stakedBalance: string
+  earnings: string
+  proxy?: {
+    allowance: string
+    tokenBalance: string
+    stakedBalance: string
+    earnings: string
+  }
+}
+
+export interface SerializedFarm extends SerializedFarmPublicData {
+  userData?: SerializedFarmUserData
+}
+
+export interface SerializedFarmsState {
+  data: SerializedFarm[]
+  chainId?: number
+  loadArchivedFarmsData: boolean
+  userDataLoaded: boolean
+  loadingKeys: Record<string, boolean>
+  poolLength?: number
+  regularCakePerBlock?: number
+}
+
+export interface DeserializedFarmConfig extends FarmConfigBaseProps {
+  token: Token
+  quoteToken: Token
+}
+
+export interface DeserializedFarmUserData {
+  allowance: BigNumber
+  tokenBalance: BigNumber
+  stakedBalance: BigNumber
+  earnings: BigNumber
+  proxy?: {
+    allowance: BigNumber
+    tokenBalance: BigNumber
+    stakedBalance: BigNumber
+    earnings: BigNumber
+  }
+}
+
+export interface DeserializedFarm extends DeserializedFarmConfig {
+  tokenPriceBusd?: string
+  quoteTokenPriceBusd?: string
+  tokenAmountTotal?: BigNumber
+  quoteTokenAmountTotal?: BigNumber
+  lpTotalInQuoteToken?: BigNumber
+  lpTotalSupply?: BigNumber
+  lpTokenPrice?: BigNumber
+  tokenPriceVsQuote?: BigNumber
+  poolWeight?: BigNumber
+  userData?: DeserializedFarmUserData
+  boosted?: boolean
+  isStable?: boolean
+}
+
+export interface DeserializedFarmsState {
+  data: DeserializedFarm[]
+  loadArchivedFarmsData: boolean
+  userDataLoaded: boolean
+  poolLength?: number
+  regularCakePerBlock?: number
 }

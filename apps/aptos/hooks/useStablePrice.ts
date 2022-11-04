@@ -1,8 +1,10 @@
 import { Currency, JSBI, Price } from '@pancakeswap/aptos-swap-sdk'
-import { USDC } from 'config/coins'
+import { L0_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import useSWR from 'swr'
+import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
 import useNativeCurrency from './useNativeCurrency'
 import { PairState, usePairs } from './usePairs'
 
@@ -15,7 +17,7 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
   const native = useNativeCurrency()
   const wrapped = currency?.wrapped
   const wnative = native.wrapped
-  const stable = USDC[chainId]
+  const stable = L0_USDC[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
@@ -119,4 +121,9 @@ export const useCakePrice = () => {
       refreshInterval: 1_000 * 10,
     },
   )
+}
+
+export const useCakePriceAsBigNumber = () => {
+  const cakePrice = useCakePrice().data
+  return getDecimalAmount(new BigNumber(cakePrice))
 }

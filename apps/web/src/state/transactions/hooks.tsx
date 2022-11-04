@@ -10,6 +10,7 @@ import orderBy from 'lodash/orderBy'
 import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TransactionDetails } from './reducer'
 import {
   addTransaction,
@@ -121,7 +122,7 @@ export function useAllSortedRecentTransactions(): { [chainId: number]: { [txHash
 
 // returns all the transactions for the current chain
 export function useAllActiveChainTransactions(): { [txHash: string]: TransactionDetails } {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveChainId()
 
   return useAllChainTransactions(chainId)
 }
