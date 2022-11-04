@@ -1,6 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { useAccountBalance } from '@pancakeswap/awgmi'
 import { AddIcon, Button, Flex, IconButton, MinusIcon, useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -30,6 +32,7 @@ interface FarmCardActionsProps extends FarmWithStakedValue {
 
 const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   pid,
+  lpAddress,
   quoteToken,
   token,
   lpSymbol,
@@ -51,11 +54,16 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { account } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
-  const { tokenBalance, stakedBalance } = userData as DeserializedFarmUserData
+  const { stakedBalance } = userData as DeserializedFarmUserData
   const cakePrice = useCakePriceAsBigNumber()
   const router = useRouter()
-  const lpPrice = BIG_ZERO
-  // const lpPrice = useLpTokenPrice(lpSymbol)
+
+  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
+    watch: true,
+    address: account,
+    coin: lpAddress,
+    select: (d) => new BigNumber(d.value),
+  })
 
   const handleStake = async (amount: string) => {
     const receipt = await fetchWithCatchTxError(() => onStake(amount))
@@ -93,7 +101,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       onConfirm={handleStake}
       tokenName={lpSymbol}
       multiplier={multiplier}
-      lpPrice={lpPrice}
+      lpPrice={lpTokenPrice}
       lpLabel={lpLabel}
       apr={apr}
       displayApr={displayApr}
