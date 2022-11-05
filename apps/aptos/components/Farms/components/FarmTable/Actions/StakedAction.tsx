@@ -2,7 +2,7 @@ import { useAccountBalance } from '@pancakeswap/awgmi'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
-import { AddIcon, Farm as FarmUI, IconButton, MinusIcon, Skeleton, Text, useModal, useToast } from '@pancakeswap/uikit'
+import { Farm as FarmUI, useModal, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
@@ -14,29 +14,11 @@ import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useFarmUserInfoCache } from 'state/farms/hook'
-import styled from 'styled-components'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
 import { FarmWithStakedValue } from '../../types'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
-
-const IconButtonWrapper = styled.div`
-  display: flex;
-`
-
-const StyledActionContainer = styled(ActionContainer)`
-  &:nth-child(3) {
-    flex-basis: 100%;
-  }
-  min-height: 124.5px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    &:nth-child(3) {
-      margin-top: 16px;
-    }
-  }
-`
 
 interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -182,52 +164,28 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }
 
   if (!userDataReady) {
-    return (
-      <StyledActionContainer>
-        <ActionTitles>
-          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-            {t('Start Farming')}
-          </Text>
-        </ActionTitles>
-        <ActionContent>
-          <Skeleton width={180} marginBottom={28} marginTop={14} />
-        </ActionContent>
-      </StyledActionContainer>
-    )
+    return <FarmUI.FarmTable.StakeActionDataNotReady />
   }
 
   if (stakedBalance.gt(0)) {
     return (
-      <StyledActionContainer>
-        <ActionTitles>
-          <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-            {lpSymbol}
-          </Text>
-          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-            {t('Staked')}
-          </Text>
-        </ActionTitles>
-        <ActionContent>
-          <FarmUI.StakedLP
-            decimals={FARM_DEFAULT_DECIMALS}
-            stakedBalance={stakedBalance}
-            quoteTokenSymbol={quoteToken.symbol}
-            tokenSymbol={token.symbol}
-            lpTotalSupply={lpTotalSupply}
-            lpTokenPrice={lpTokenPrice}
-            tokenAmountTotal={tokenAmountTotal}
-            quoteTokenAmountTotal={quoteTokenAmountTotal}
-          />
-          <IconButtonWrapper>
-            <IconButton mr="6px" variant="secondary" onClick={onPresentWithdraw}>
-              <MinusIcon color="primary" width="14px" />
-            </IconButton>
-            <IconButton variant="secondary" onClick={onPresentDeposit} disabled={isStakeReady}>
-              <AddIcon color="primary" width="14px" />
-            </IconButton>
-          </IconButtonWrapper>
-        </ActionContent>
-      </StyledActionContainer>
+      <FarmUI.FarmTable.StakedActionComponent
+        lpSymbol={lpSymbol}
+        disabledPlusButton={isStakeReady}
+        onPresentWithdraw={onPresentWithdraw}
+        onPresentDeposit={onPresentDeposit}
+      >
+        <FarmUI.StakedLP
+          decimals={FARM_DEFAULT_DECIMALS}
+          stakedBalance={stakedBalance}
+          quoteTokenSymbol={quoteToken.symbol}
+          tokenSymbol={token.symbol}
+          lpTotalSupply={lpTotalSupply}
+          lpTokenPrice={lpTokenPrice}
+          tokenAmountTotal={tokenAmountTotal}
+          quoteTokenAmountTotal={quoteTokenAmountTotal}
+        />
+      </FarmUI.FarmTable.StakedActionComponent>
     )
   }
 

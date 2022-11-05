@@ -7,6 +7,9 @@ import FarmTokenInfo from "./FarmTokenInfo";
 import FarmTableHarvestAction from "./Actions/HarvestAction";
 import AccountNotConnect from "./Actions/AccountNotConnect";
 import StakeComponent from "./Actions/StakeComponent";
+import StakeActionDataNotReady from "./Actions/StakeActionDataNotReady";
+import EnableStakeAction from "./Actions/EnableStakeAction";
+import StakedActionComponent from "./Actions/StakedActionComponent";
 
 const FarmTable = {
   CellLayout,
@@ -18,6 +21,9 @@ const FarmTable = {
   FarmTableHarvestAction,
   AccountNotConnect,
   StakeComponent,
+  StakeActionDataNotReady,
+  EnableStakeAction,
+  StakedActionComponent,
 };
 
 export default FarmTable;
