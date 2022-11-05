@@ -3,13 +3,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Pool, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError, { TxResponse } from 'hooks/useCatchTxError'
-// import { useAppDispatch } from 'state'
-// import { updateUserBalance, updateUserPendingReward, updateUserStakedBalance } from 'state/pools'
 
 const CollectModalContainer = ({
   earningTokenSymbol,
   onDismiss,
   onReward,
+  onDone,
   ...rest
 }: React.PropsWithChildren<
   Pool.CollectModalProps & {
@@ -20,7 +19,6 @@ const CollectModalContainer = ({
 >) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  // const dispatch = useAppDispatch()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
 
   const handleHarvestConfirm = useCallback(async () => {
@@ -34,12 +32,12 @@ const CollectModalContainer = ({
           {t('Your %symbol% earnings have been sent to your wallet!', { symbol: earningTokenSymbol })}
         </ToastDescriptionWithTx>,
       )
-      // dispatch(updateUserStakedBalance({ sousId, account }))
-      // dispatch(updateUserPendingReward({ sousId, account }))
-      // dispatch(updateUserBalance({ sousId, account }))
+
+      if (onDone) onDone()
+
       onDismiss?.()
     }
-  }, [earningTokenSymbol, fetchWithCatchTxError, onDismiss, onReward, t, toastSuccess])
+  }, [earningTokenSymbol, fetchWithCatchTxError, onDismiss, onDone, onReward, t, toastSuccess])
 
   return (
     <Pool.CollectModal

@@ -14,21 +14,14 @@ const StakeModalContainer = ({
   stakingTokenPrice,
   onUnstake,
   onStake,
+  onDone,
 }: Pool.StakeModalPropsType<Coin>) => {
   const { t } = useTranslation()
+  const { account } = useActiveWeb3React()
 
   const { earningToken, stakingToken, earningTokenPrice, apr, userData, stakingLimit, enableEmergencyWithdraw } = pool
-  const { account } = useActiveWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-
-  // const dispatch = useAppDispatch()
-
-  const onDone = useCallback(() => {
-    // dispatch(updateUserStakedBalance({ sousId, account }))
-    // dispatch(updateUserPendingReward({ sousId, account }))
-    // dispatch(updateUserBalance({ sousId, account }))
-  }, [])
 
   const handleConfirmClick = useCallback(
     async (stakeAmount: string) => {
@@ -68,12 +61,14 @@ const StakeModalContainer = ({
     [
       fetchWithCatchTxError,
       isRemovingStake,
-      stakingToken?.symbol,
+      onStake,
+      onUnstake,
       onDone,
       onDismiss,
       toastSuccess,
       t,
       earningToken?.symbol,
+      stakingToken?.symbol,
     ],
   )
 

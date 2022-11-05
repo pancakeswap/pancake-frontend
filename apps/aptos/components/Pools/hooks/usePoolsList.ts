@@ -14,7 +14,6 @@ import { transformCakePool, transformPool } from '../utils'
 import { PoolResource } from '../types'
 import { CAKE_PID } from '../constants'
 
-// Philip TODO: optimize
 export const usePoolsList = () => {
   const { account, chainId } = useActiveWeb3React()
 
@@ -31,6 +30,7 @@ export const usePoolsList = () => {
     select: (resources) => {
       return resources
     },
+    watch: true,
   })
 
   const cakePool = useCakePool({ balances, chainId })

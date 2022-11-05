@@ -9,10 +9,10 @@ import _toNumber from 'lodash/toNumber'
 import _get from 'lodash/get'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { SECONDS_IN_YEAR } from 'config'
 
 import { PoolResource } from './types'
-
-const SECONDS_IN_YEAR = 31536000 // 365 * 24 * 60 *60
+import { ACC_CAKE_PRECISION } from './constants'
 
 const getSecondsLeftFromNow = (timestamp: number) => {
   const now = Math.floor(Date.now() / 1000)
@@ -102,7 +102,7 @@ export const transformPool = (resource: PoolResource, balances): Pool.Deserializ
 
       const userStakedAmount = _get(foundStakedPoolBalance, 'data.amount')
 
-      if (userStakedAmount) {
+      if (userStakedAmount && _toNumber(totalStakedToken)) {
         const lastRewardTimestamp = _toNumber(_get(resource, 'data.last_reward_timestamp'))
 
         // let multiplier = get_multiplier(pool_info.last_reward_timestamp, timestamp::now_seconds(), pool_info.end_timestamp);
@@ -193,7 +193,6 @@ export function getRewardPerSecondOfCakeFarm({
 
 export const transformCakePool = ({ balances, cakePoolInfo, userInfo, masterChefData, cakeFarm, chainId }) => {
   const currentRewardDebt = _get(userInfo, 'reward_debt', '0')
-  const ACC_CAKE_PRECISION = '100000000'
   const userStakedAmount = _get(userInfo, 'amount', '0')
 
   const rewardPerSecond = getRewardPerSecondOfCakeFarm({

@@ -1,4 +1,9 @@
+import { useCallback } from 'react'
 import { Pool } from '@pancakeswap/uikit'
+import { useQueryClient } from '@pancakeswap/awgmi'
+import { SMARTCHEF_ADDRESS } from 'contracts/smartchef/constants'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+
 import useHarvestPool from '../../hooks/useHarvestPool'
 import CollectModalContainer from './CollectModalContainer'
 
@@ -13,9 +18,21 @@ export const CollectModal = ({
     stakingTokenAddress: string
   }
 >) => {
+  const queryClient = useQueryClient()
+  const { account, networkName } = useActiveWeb3React()
+
   const { onReward } = useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId })
 
-  return <CollectModalContainer onReward={onReward} {...rest} />
+  const onDone = useCallback(() => {
+    queryClient.invalidateQueries({
+      queryKey: [{ entity: 'accountResources', networkName, address: SMARTCHEF_ADDRESS }],
+    })
+    queryClient.invalidateQueries({
+      queryKey: [{ entity: 'accountResources', networkName, address: account }],
+    })
+  }, [account, networkName, queryClient])
+
+  return <CollectModalContainer onDone={onDone} onReward={onReward} {...rest} />
 }
 
 export default CollectModal
