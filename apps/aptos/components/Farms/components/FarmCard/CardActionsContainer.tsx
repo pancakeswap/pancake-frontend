@@ -7,13 +7,14 @@ import { HarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
 import { StakedContainer } from '../FarmTable/Actions/StakedAction'
 import HarvestAction from './HarvestAction'
 import StakeAction from './StakeAction'
+import { FarmWithStakedValue } from '../types'
 
 const Action = styled.div`
   padding-top: 16px;
 `
 
 interface FarmCardActionsProps {
-  farm: any
+  farm: FarmWithStakedValue
   account?: string
   addLiquidityUrl?: string
   lpLabel?: string
@@ -28,8 +29,8 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   displayApr,
 }) => {
   const { t } = useTranslation()
-  const { pid } = farm
-  const earnings = useFarmEarning(farm.pid)
+  const { pid, lpAddress } = farm
+  const earnings = useFarmEarning(String(pid))
   const isReady = farm.multiplier !== undefined
 
   return (
@@ -42,7 +43,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {t('Earned')}
         </Text>
       </Flex>
-      <HarvestActionContainer earnings={earnings} pid={pid}>
+      <HarvestActionContainer earnings={earnings} pid={pid} lpAddress={lpAddress}>
         {(props) => <HarvestAction {...props} />}
       </HarvestActionContainer>
       {isReady ? (

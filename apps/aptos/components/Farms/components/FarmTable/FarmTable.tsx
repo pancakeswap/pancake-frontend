@@ -104,6 +104,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         pid: farm.pid,
         multiplier: farm.multiplier,
         lpLabel,
+        lpAddress: farm.lpAddress,
         lpSymbol: farm.lpSymbol,
         lpTokenPrice: farm.lpTokenPrice,
         tokenAddress,

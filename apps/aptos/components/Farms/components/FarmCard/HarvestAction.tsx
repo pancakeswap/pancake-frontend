@@ -23,7 +23,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const cakePrice = useCakePriceAsBigNumber()
-  const rawEarningsBalance = account ? getBalanceAmount(earnings as BigNumber) : BIG_ZERO
+  const rawEarningsBalance = account ? getBalanceAmount(earnings as BigNumber, 8) : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0
 

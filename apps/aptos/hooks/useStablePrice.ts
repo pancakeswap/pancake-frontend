@@ -125,5 +125,5 @@ export const useCakePrice = () => {
 
 export const useCakePriceAsBigNumber = () => {
   const cakePrice = useCakePrice().data
-  return getDecimalAmount(new BigNumber(cakePrice))
+  return getDecimalAmount(new BigNumber(cakePrice), 8)
 }

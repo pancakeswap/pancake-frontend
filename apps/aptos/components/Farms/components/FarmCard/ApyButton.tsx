@@ -4,11 +4,13 @@ import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-// import { useFarmUser } from 'state/farms/hooks'
+import { useFarmUserInfoCache } from 'state/farms/hook'
+import { useAccountBalance } from '@pancakeswap/awgmi'
 
 export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
   pid: number
+  lpAddress: string
   lpSymbol: string
   lpLabel?: string
   multiplier: string
@@ -27,6 +29,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   pid,
   lpLabel = '',
   lpSymbol,
+  lpAddress,
   lpTokenPrice,
   cakePrice = BIG_ZERO,
   apr = 0,
@@ -39,10 +42,18 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
+  const { data: userInfo } = useFarmUserInfoCache(String(pid))
+  const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
+    watch: true,
+    address: account,
+    coin: lpAddress,
+    select: (d) => new BigNumber(d.value),
+  })
 
-  // const { tokenBalance, stakedBalance } = useFarmUser(pid)
-  // const userBalanceInFarm = stakedBalance.plus(tokenBalance)
-  const userBalanceInFarm = BIG_ZERO
+  let userBalanceInFarm = BIG_ZERO
+  if (userInfo) {
+    userBalanceInFarm = new BigNumber(userInfo.amount).plus(tokenBalance)
+  }
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>

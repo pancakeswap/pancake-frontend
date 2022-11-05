@@ -93,6 +93,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                 <ApyButton
                   variant="text-and-button"
                   pid={farm.pid}
+                  lpAddress={farm.lpAddress}
                   lpTokenPrice={farm.lpTokenPrice}
                   lpSymbol={farm.lpSymbol}
                   multiplier={farm.multiplier}
