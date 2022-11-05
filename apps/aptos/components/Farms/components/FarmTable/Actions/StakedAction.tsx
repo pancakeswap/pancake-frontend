@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { useFarmUserInfoCache } from 'state/farms/hook'
 import styled from 'styled-components'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -159,11 +160,17 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       multiplier={multiplier}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
+      decimals={FARM_DEFAULT_DECIMALS}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} decimals={8} />,
+    <FarmUI.WithdrawModal
+      max={stakedBalance}
+      onConfirm={handleUnstake}
+      tokenName={lpSymbol}
+      decimals={FARM_DEFAULT_DECIMALS}
+    />,
   )
 
   if (!account) {
@@ -202,7 +209,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         </ActionTitles>
         <ActionContent>
           <FarmUI.StakedLP
-            decimals={8}
+            decimals={FARM_DEFAULT_DECIMALS}
             stakedBalance={stakedBalance}
             quoteTokenSymbol={quoteToken.symbol}
             tokenSymbol={token.symbol}

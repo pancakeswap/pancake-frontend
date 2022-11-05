@@ -9,6 +9,7 @@ import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { FarmWithStakedValue } from '../types'
 
 const IconButtonWrapper = styled.div`
@@ -92,11 +93,17 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       displayApr={displayApr}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
+      decimals={FARM_DEFAULT_DECIMALS}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} decimals={8} />,
+    <FarmUI.WithdrawModal
+      max={stakedBalance}
+      onConfirm={handleUnstake}
+      tokenName={lpSymbol}
+      decimals={FARM_DEFAULT_DECIMALS}
+    />,
   )
 
   const renderStakingButtons = () => {
@@ -126,7 +133,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <FarmUI.StakedLP
-        decimals={8}
+        decimals={FARM_DEFAULT_DECIMALS}
         stakedBalance={stakedBalance}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}
