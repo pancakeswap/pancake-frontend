@@ -12,6 +12,7 @@ import { LockedModalBodyPropsType, ModalValidator } from '../types'
 import Overview from './Overview'
 import LockDurationField from './LockDurationField'
 import useLockedPool from '../hooks/useLockedPool'
+import useAvgLockDuration from '../hooks/useAvgLockDuration'
 import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
@@ -27,14 +28,17 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
   prepConfirmArg,
   validator,
   customOverview,
+  isRenew,
 }) => {
   const { t } = useTranslation()
   const ceiling = useIfoCeiling()
+  const { avgLockDurationsInSeconds } = useAvgLockDuration()
   const { usdValueStaked, duration, setDuration, pendingTx, handleConfirmClick } = useLockedPool({
     stakingToken,
     onDismiss,
     lockedAmount,
     prepConfirmArg,
+    defaultDuration: isRenew && avgLockDurationsInSeconds,
   })
 
   const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(() => {

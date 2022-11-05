@@ -46,6 +46,7 @@ interface DepositModalProps {
   bCakeMultiplier?: number | null;
   showCrossChainFarmWarning?: boolean;
   crossChainWarningText?: string;
+  decimals?: number;
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
   onDismiss?: () => void;
   onConfirm: (amount: string) => void;
@@ -69,6 +70,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   bCakeMultiplier,
   showCrossChainFarmWarning,
   crossChainWarningText,
+  decimals = 18,
   bCakeCalculatorSlot,
 }) => {
   const [val, setVal] = useState("");
@@ -76,8 +78,8 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   const [showRoiCalculator, setShowRoiCalculator] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
-    return getFullDisplayBalance(max, 8);
-  }, [max]);
+    return getFullDisplayBalance(max, decimals);
+  }, [max, decimals]);
 
   const lpTokensToStake = new BigNumber(val);
   const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);

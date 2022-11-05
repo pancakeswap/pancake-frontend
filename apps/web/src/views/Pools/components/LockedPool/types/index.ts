@@ -33,6 +33,7 @@ export interface ExtendDurationModal {
   currentDurationLeft: number
   currentBalance?: BigNumber
   lockStartTime: string
+  isRenew?: boolean
 }
 
 export interface AddButtonProps {
@@ -83,6 +84,7 @@ export interface LockedModalBodyPropsType {
   prepConfirmArg?: PrepConfirmArg
   currentDuration?: number
   currentDurationLeft?: number
+  isRenew?: boolean
   validator?: (arg: ValidatorArg) => ModalValidator
   customOverview?: ({ isValidDuration, duration }: { isValidDuration: boolean; duration: number }) => React.ReactElement
 }
@@ -95,6 +97,7 @@ export interface ExtendDurationButtonPropsType {
   lockStartTime: string
   children: React.ReactNode
   modalTitle?: string
+  isRenew?: boolean
 }
 
 export interface AfterLockedActionsPropsType {

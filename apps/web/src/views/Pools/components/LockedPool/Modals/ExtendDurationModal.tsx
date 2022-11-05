@@ -25,6 +25,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   currentDurationLeft,
   currentBalance,
   lockStartTime,
+  isRenew,
 }) => {
   const { theme } = useTheme()
   const ceiling = useIfoCeiling()
@@ -105,6 +106,7 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
           validator={validator}
           prepConfirmArg={prepConfirmArg}
           customOverview={customOverview}
+          isRenew={isRenew}
         />
       </Modal>
     </RoiCalculatorModalProvider>
