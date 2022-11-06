@@ -12,6 +12,7 @@ import { getFarmConfig } from 'config/constants/farms'
 import { usePairs } from 'hooks/usePairs'
 import { APT, L0_USDC } from 'config/coins'
 import { deserializeToken } from '@pancakeswap/token-lists'
+import { Coin } from '@pancakeswap/aptos-swap-sdk'
 
 import { CAKE_PID } from '../constants'
 import { transformCakePool, transformPool } from '../utils'
@@ -48,15 +49,34 @@ export const usePoolsList = () => {
 export const useCakePool = ({ balances, chainId }) => {
   const cakeFarm = useMemo(() => getFarmConfig(chainId).find((f) => f.pid === CAKE_PID), [chainId])
 
-  const [[, stablePair], [, cakePair]] = usePairs([
-    [APT[chainId], L0_USDC[chainId]],
-    cakeFarm?.token ? [APT[chainId], deserializeToken(cakeFarm?.token)] : [],
-  ])
+  const pairs: [Coin, Coin][] = useMemo(() => {
+    if (!cakeFarm?.token) {
+      return []
+    }
 
-  const aptUSD = stablePair?.priceOf(APT[chainId])
-  const cakeVsApt = cakePair?.priceOf(deserializeToken(cakeFarm?.token))
+    return [
+      [APT[chainId], L0_USDC[chainId]],
+      [APT[chainId], deserializeToken(cakeFarm?.token)],
+    ]
+  }, [cakeFarm?.token, chainId])
 
-  const earningTokenPrice = cakeVsApt?.multiply(aptUSD).toSignificant()
+  const pairsWithInfo = usePairs(pairs)
+
+  const earningTokenPrice = useMemo(() => {
+    if (!pairsWithInfo?.length) {
+      return 0
+    }
+
+    const [[, stablePair], [, cakePair]] = pairsWithInfo
+
+    if (!cakeFarm || !stablePair || !cakePair) return 0
+
+    const cakeCoin = deserializeToken(cakeFarm?.token)
+    const aptUSD = stablePair.priceOf(APT[chainId])
+    const cakeVsApt = cakePair.priceOf(cakeCoin)
+
+    return cakeVsApt.multiply(aptUSD).toSignificant()
+  }, [cakeFarm, chainId, pairsWithInfo])
 
   const { data: masterChef } = useMasterChefResource()
 

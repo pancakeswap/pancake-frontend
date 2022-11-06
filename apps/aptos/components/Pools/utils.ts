@@ -51,7 +51,6 @@ export function getFarmTokenPerSecond({
   return pendingReward
 }
 
-// In order to calculate, I need tokenPrice from farms
 export const getPoolApr = ({ rewardTokenPrice, stakingTokenPrice, tokenPerSecond, totalStaked }) => {
   const totalRewardPricePerYear = new BigNumber(rewardTokenPrice).times(tokenPerSecond).times(SECONDS_IN_YEAR)
   const totalStakingTokenInPool = new BigNumber(stakingTokenPrice).times(totalStaked)
