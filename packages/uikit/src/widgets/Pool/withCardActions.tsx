@@ -12,7 +12,7 @@ const InlineText = styled(Text)`
 
 interface CardActionsProps<T> {
   pool: DeserializedPool<T>;
-  stakedBalance: BigNumber;
+  stakedBalance?: BigNumber;
 }
 
 export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
@@ -23,7 +23,7 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
     const { t } = useTranslation();
     const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO;
     const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO;
-    const isStaked = stakedBalance.gt(0);
+    const isStaked = stakedBalance?.gt(0);
     const isLoading = !userData;
 
     return (

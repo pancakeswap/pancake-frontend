@@ -12,6 +12,8 @@ export interface CollectModalProps {
   sousId: number;
   isBnbPool: boolean;
   onDismiss?: () => void;
+  earningTokenAddress?: string;
+  stakingTokenAddress?: string;
 }
 
 export interface CollectModalWithHandlerProps extends Omit<CollectModalProps, "isBnbPool" | "sousId"> {

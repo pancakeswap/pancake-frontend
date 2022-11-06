@@ -15,7 +15,11 @@ const StakeModalContainer = ({
   onUnstake,
   onStake,
   onDone,
-}: Pool.StakeModalPropsType<Coin>) => {
+}: Pool.StakeModalPropsType<Coin> & {
+  onDone: () => void
+  onStake: () => void
+  onUnstake: () => void
+}) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 

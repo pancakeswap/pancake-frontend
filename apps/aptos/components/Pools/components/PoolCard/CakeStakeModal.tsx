@@ -38,7 +38,7 @@ const CakeStakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
     })
   }, [account, networkName, queryClient])
 
-  return <StakeModalContainer onDone={onDone} onUnstake={onUnstake} onStake={onStake} pool={pool} {...rest} />
+  return <StakeModalContainer {...rest} onDone={onDone} onUnstake={onUnstake} onStake={onStake} pool={pool} />
 }
 
 export default CakeStakeModal

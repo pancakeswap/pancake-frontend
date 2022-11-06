@@ -73,6 +73,8 @@ interface WithHarvestActionsProps {
   earningTokenPrice: number;
   isLoading?: boolean;
   earningTokenDecimals: number;
+  earningTokenAddress?: string;
+  stakingTokenAddress?: string;
 }
 
 export const withCollectModal =

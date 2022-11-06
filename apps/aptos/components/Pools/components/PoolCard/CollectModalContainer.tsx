@@ -12,9 +12,8 @@ const CollectModalContainer = ({
   ...rest
 }: React.PropsWithChildren<
   Pool.CollectModalProps & {
-    earningTokenAddress: string
-    stakingTokenAddress: string
     onReward: () => Promise<TxResponse>
+    onDone: () => void
   }
 >) => {
   const { t } = useTranslation()

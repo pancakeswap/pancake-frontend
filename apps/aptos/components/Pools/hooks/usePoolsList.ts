@@ -15,8 +15,9 @@ import { deserializeToken } from '@pancakeswap/token-lists'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 
 import { CAKE_PID } from '../constants'
-import { transformCakePool, transformPool } from '../utils'
 import { PoolResource } from '../types'
+import transformCakePool from '../transformers/transformCakePool'
+import transformPool from '../transformers/transformPool'
 
 export const usePoolsList = () => {
   const { account, chainId } = useActiveWeb3React()

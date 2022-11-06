@@ -32,7 +32,7 @@ export const CollectModal = ({
     })
   }, [account, networkName, queryClient])
 
-  return <CollectModalContainer onDone={onDone} onReward={onReward} {...rest} />
+  return <CollectModalContainer {...rest} onDone={onDone} onReward={onReward} />
 }
 
 export default CollectModal
