@@ -48,6 +48,7 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
               earningTokenPrice={earningTokenPrice}
               isBnbPool={isBnbPool}
               isLoading={isLoading}
+              poolAddress={pool.contractAddress}
             />
           </>
           <Box display="inline">

@@ -6,26 +6,28 @@ import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { useQueryClient } from '@pancakeswap/awgmi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import poolRelatedQueries from 'components/Pools/utils/poolRelatedQueries'
+import splitTypeTag from 'components/Pools/utils/splitTypeTag'
 
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
 import StakeModalContainer from './StakeModalContainer'
 
 const StakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
-  const { sousId, earningToken, stakingToken } = pool
+  const { stakingToken, contractAddress } = pool
   const queryClient = useQueryClient()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
+  const [stakingTokenAddress, earningTokenAddress, uid] = splitTypeTag(contractAddress[chainId])
 
   const { onUnstake } = useUnstakePool({
-    sousId,
-    earningTokenAddress: earningToken?.address,
-    stakingTokenAddress: stakingToken?.address,
+    uid,
+    earningTokenAddress,
+    stakingTokenAddress,
     stakingTokenDecimals: stakingToken?.decimals,
   })
   const { onStake } = useStakePool({
-    sousId,
-    earningTokenAddress: earningToken?.address,
-    stakingTokenAddress: stakingToken?.address,
+    uid,
+    earningTokenAddress,
+    stakingTokenAddress,
     stakingTokenDecimals: stakingToken?.decimals,
   })
 

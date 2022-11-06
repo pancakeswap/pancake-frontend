@@ -3,7 +3,7 @@ import { SmartChef } from 'contracts/smartchef'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
 
-export default function useStakePool({ stakingTokenAddress, earningTokenAddress, sousId, stakingTokenDecimals }) {
+export default function useStakePool({ stakingTokenAddress, earningTokenAddress, uid, stakingTokenDecimals }) {
   const { simulateTransactionAsync } = useSimulateTransaction()
   const { sendTransactionAsync } = useSendTransaction()
 
@@ -13,7 +13,7 @@ export default function useStakePool({ stakingTokenAddress, earningTokenAddress,
 
       const payload = SmartChef.deposit({
         amount: stakeAmount,
-        uid: sousId,
+        uid,
         stakeTokenAddress: stakingTokenAddress,
         rewardTokenAddress: earningTokenAddress,
       })

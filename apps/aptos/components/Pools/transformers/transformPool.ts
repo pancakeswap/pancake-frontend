@@ -1,32 +1,20 @@
 /* eslint-disable camelcase */
-import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
+import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { Pool } from '@pancakeswap/uikit'
-import { HexString, TypeTagParser } from 'aptos'
 import { PoolCategory } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import _get from 'lodash/get'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import uuid from 'uuid'
 
 import { PoolResource } from '../types'
 import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'
+import splitTypeTag from '../utils/splitTypeTag'
 
-const transformPool = (resource: PoolResource, balances): Pool.DeserializedPool<Coin> => {
-  const parsedTypeTag = new TypeTagParser(resource.type).parseTypeTag()
-  const [typeArg0, typeArg1, typeArg3] = _get(parsedTypeTag, 'value.type_args', [])
-
-  const [stakingAddress, earningAddress, uidAddress] = [
-    `${HexString.fromUint8Array(typeArg0.value.address.address).toShortString()}::${
-      typeArg0.value.module_name.value
-    }::${typeArg0.value.name.value}`,
-    `${HexString.fromUint8Array(typeArg1.value.address.address).toShortString()}::${
-      typeArg1.value.module_name.value
-    }::${typeArg1.value.name.value}`,
-    `${HexString.fromUint8Array(typeArg3.value.address.address).toShortString()}::${
-      typeArg3.value.module_name.value
-    }::${typeArg3.value.name.value}`,
-  ]
+const transformPool = (resource: PoolResource, balances, chainId): Pool.DeserializedPool<Coin> => {
+  const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
   let userData = {
     allowance: new BigNumber(0),
@@ -92,28 +80,18 @@ const transformPool = (resource: PoolResource, balances): Pool.DeserializedPool<
   const now = Date.now()
 
   return {
-    sousId: uidAddress,
+    sousId: uuid.v4(),
     contractAddress: {
-      [ChainId.TESTNET]: resource.type,
+      [chainId]: resource.type,
     },
-    stakingToken: new Coin(
-      ChainId.TESTNET,
-      stakingAddress,
-      8,
-      typeArg0.value.name.value,
-      `${typeArg0.value.name.value} coin`,
-    ),
-    earningToken: new Coin(
-      ChainId.TESTNET,
-      earningAddress,
-      8,
-      typeArg1.value.name.value,
-      `${typeArg1.value.name.value} coin`,
-    ),
+    // Philip TODO: get Map coin by address
+    stakingToken: new Coin(chainId, stakingAddress, 8, 'Test', `Test coin`),
+    earningToken: new Coin(chainId, earningAddress, 8, 'Test', `Test coin`),
     apr: 0,
     earningTokenPrice: 0,
     stakingTokenPrice: 0,
 
+    // Philip TODO: remove ! logic
     isFinished: !(now > +resource.data.end_timestamp),
     poolCategory: PoolCategory.CORE,
     startBlock: _toNumber(resource.data.start_timestamp),

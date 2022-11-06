@@ -74,7 +74,6 @@ interface WithHarvestActionsProps {
   isLoading?: boolean;
   earningTokenDecimals: number;
   earningTokenAddress?: string;
-  stakingTokenAddress?: string;
 }
 
 export const withCollectModal =
@@ -83,7 +82,6 @@ export const withCollectModal =
     earnings,
     earningTokenSymbol,
     earningTokenAddress,
-    stakingTokenAddress,
     earningTokenDecimals,
     sousId,
     isBnbPool,
@@ -107,7 +105,6 @@ export const withCollectModal =
         sousId={sousId}
         isBnbPool={isBnbPool}
         earningTokenAddress={earningTokenAddress}
-        stakingTokenAddress={stakingTokenAddress}
       />
     );
 

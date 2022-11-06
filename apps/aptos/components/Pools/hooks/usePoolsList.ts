@@ -41,10 +41,10 @@ export const usePoolsList = () => {
   const cakePool = useCakePool({ balances, chainId })
 
   return useMemo(() => {
-    const syrupPools = pools ? pools.map((pool) => transformPool(pool as PoolResource, balances)) : []
+    const syrupPools = pools ? pools.map((pool) => transformPool(pool as PoolResource, balances, chainId)) : []
 
     return cakePool ? [cakePool, ...syrupPools] : syrupPools
-  }, [pools, balances, cakePool])
+  }, [pools, balances, cakePool, chainId])
 }
 
 export const useCakePool = ({ balances, chainId }) => {
