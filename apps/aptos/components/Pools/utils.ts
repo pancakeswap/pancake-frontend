@@ -191,7 +191,15 @@ export function getRewardPerSecondOfCakeFarm({
     .toString()
 }
 
-export const transformCakePool = ({ balances, cakePoolInfo, userInfo, masterChefData, cakeFarm, chainId }) => {
+export const transformCakePool = ({
+  balances,
+  cakePoolInfo,
+  userInfo,
+  masterChefData,
+  cakeFarm,
+  chainId,
+  earningTokenPrice,
+}) => {
   const currentRewardDebt = _get(userInfo, 'reward_debt', '0')
   const userStakedAmount = _get(userInfo, 'amount', '0')
 
@@ -240,6 +248,13 @@ export const transformCakePool = ({ balances, cakePoolInfo, userInfo, masterChef
     }
   }
 
+  const apr = getPoolApr({
+    rewardTokenPrice: _toNumber(earningTokenPrice),
+    stakingTokenPrice: _toNumber(earningTokenPrice),
+    tokenPerSecond: rewardPerSecond,
+    totalStaked: cakePoolInfo.total_amount,
+  })
+
   return {
     sousId: cakeFarm.pid,
     contractAddress: {
@@ -247,9 +262,9 @@ export const transformCakePool = ({ balances, cakePoolInfo, userInfo, masterChef
     },
     stakingToken: cakeFarm.token,
     earningToken: cakeFarm.token,
-    apr: 0,
-    earningTokenPrice: 0,
-    stakingTokenPrice: 0,
+    apr,
+    earningTokenPrice: _toNumber(earningTokenPrice),
+    stakingTokenPrice: _toNumber(earningTokenPrice),
 
     isFinished: false,
     poolCategory: PoolCategory.CORE,

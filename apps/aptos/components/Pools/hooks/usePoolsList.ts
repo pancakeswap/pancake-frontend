@@ -9,10 +9,13 @@ import { useMemo } from 'react'
 import { useMasterChefResource } from 'state/farms/hook'
 import { FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
 import { getFarmConfig } from 'config/constants/farms'
+import { usePairs } from 'hooks/usePairs'
+import { APT, L0_USDC } from 'config/coins'
+import { deserializeToken } from '@pancakeswap/token-lists'
 
+import { CAKE_PID } from '../constants'
 import { transformCakePool, transformPool } from '../utils'
 import { PoolResource } from '../types'
-import { CAKE_PID } from '../constants'
 
 export const usePoolsList = () => {
   const { account, chainId } = useActiveWeb3React()
@@ -45,6 +48,16 @@ export const usePoolsList = () => {
 export const useCakePool = ({ balances, chainId }) => {
   const cakeFarm = useMemo(() => getFarmConfig(chainId).find((f) => f.pid === CAKE_PID), [chainId])
 
+  const [[, stablePair], [, cakePair]] = usePairs([
+    [APT[chainId], L0_USDC[chainId]],
+    cakeFarm?.token ? [APT[chainId], deserializeToken(cakeFarm?.token)] : [],
+  ])
+
+  const aptUSD = stablePair?.priceOf(APT[chainId])
+  const cakeVsApt = cakePair?.priceOf(deserializeToken(cakeFarm?.token))
+
+  const earningTokenPrice = cakeVsApt?.multiply(aptUSD).toSignificant()
+
   const { data: masterChef } = useMasterChefResource()
 
   const poolUserInfo = balances?.find((balance) => balance.type.includes(FARMS_USER_INFO_RESOURCE))
@@ -71,6 +84,7 @@ export const useCakePool = ({ balances, chainId }) => {
       masterChefData: masterChef.data,
       cakeFarm,
       chainId,
+      earningTokenPrice,
     })
-  }, [masterChef, balances, userInfo, cakeFarm, chainId])
+  }, [masterChef, cakeFarm, balances, userInfo, chainId, earningTokenPrice])
 }
