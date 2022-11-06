@@ -148,7 +148,7 @@ export const NetworkSwitcher = () => {
   const symbol = NATIVE[foundChain?.id]?.symbol ?? foundChain?.nativeCurrency?.symbol
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t('Unable to switch network. Please try it on your wallet'),
-    { placement: 'auto' },
+    { placement: 'bottom' },
   )
 
   const cannotChangeNetwork = !canSwitch
