@@ -4,8 +4,8 @@ import { Pool } from '@pancakeswap/uikit'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 
 import { useQueryClient } from '@pancakeswap/awgmi'
-import { SMARTCHEF_ADDRESS } from 'contracts/smartchef/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import poolRelatedQueries from 'components/Pools/utils/poolRelatedQueries'
 
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'
@@ -14,7 +14,7 @@ import StakeModalContainer from './StakeModalContainer'
 const StakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
   const { sousId, earningToken, stakingToken } = pool
   const queryClient = useQueryClient()
-  const { account, networkName } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
 
   const { onUnstake } = useUnstakePool({
     sousId,
@@ -31,12 +31,9 @@ const StakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
 
   const onDone = useCallback(() => {
     queryClient.invalidateQueries({
-      queryKey: [{ entity: 'accountResources', networkName, address: SMARTCHEF_ADDRESS }],
+      predicate: poolRelatedQueries(account),
     })
-    queryClient.invalidateQueries({
-      queryKey: [{ entity: 'accountResources', networkName, address: account }],
-    })
-  }, [account, networkName, queryClient])
+  }, [account, queryClient])
 
   return <StakeModalContainer onDone={onDone} onUnstake={onUnstake} onStake={onStake} pool={pool} {...rest} />
 }

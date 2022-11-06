@@ -26,18 +26,10 @@ export default function useHarvestPool({ stakingTokenAddress, earningTokenAddres
 
       const options = Array.isArray(results) ? { max_gas_amount: results[0].max_gas_amount } : undefined
 
-      const res = await sendTransactionAsync({
+      return sendTransactionAsync({
         payload,
         options,
       })
-
-      return {
-        hash: res.hash,
-        wait: () => ({
-          success: true,
-          hash: res.hash,
-        }),
-      }
     },
   }
 }

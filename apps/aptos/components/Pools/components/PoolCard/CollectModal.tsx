@@ -7,17 +7,12 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useHarvestPool from '../../hooks/useHarvestPool'
 import CollectModalContainer from './CollectModalContainer'
 
-export const CollectModal = ({
+const CollectModal = ({
   sousId,
   stakingTokenAddress,
   earningTokenAddress,
   ...rest
-}: React.PropsWithChildren<
-  Pool.CollectModalProps & {
-    earningTokenAddress: string
-    stakingTokenAddress: string
-  }
->) => {
+}: React.PropsWithChildren<Pool.CollectModalProps>) => {
   const queryClient = useQueryClient()
   const { account, networkName } = useActiveWeb3React()
 
@@ -32,7 +27,7 @@ export const CollectModal = ({
     })
   }, [account, networkName, queryClient])
 
-  return <CollectModalContainer {...rest} onDone={onDone} onReward={onReward} />
+  return <CollectModalContainer {...rest} sousId={sousId} onDone={onDone} onReward={onReward} />
 }
 
 export default CollectModal

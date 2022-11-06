@@ -2,13 +2,12 @@ import { Pool } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
 
 import { Coin, ChainId } from '@pancakeswap/aptos-swap-sdk'
-
 import { CAKE_PID } from 'components/Pools/constants'
 import useUnstakeFarms from 'components/Farms/hooks/useUnstakeFarms'
 import useStakeFarms from 'components/Farms/hooks/useStakeFarms'
 import { useQueryClient } from '@pancakeswap/awgmi'
+import cakePoolRelatedQueries from 'components/Pools/utils/cakePoolRelatedQueries'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { FARMS_NAME_TAG, FARMS_USER_INFO } from 'state/farms/constants'
 import StakeModalContainer from './StakeModalContainer'
 
 const CakeStakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
@@ -21,17 +20,7 @@ const CakeStakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
 
   const onDone = useCallback(() => {
     queryClient.invalidateQueries({
-      predicate: (query) => {
-        const queryObject = query.queryKey[0]
-
-        const isMasterchefQuery =
-          queryObject?.entity === 'accountResource' && queryObject?.resourceType === FARMS_NAME_TAG
-
-        const isPoolUserInfoHandleQuery =
-          queryObject?.entity === 'tableItem' && queryObject?.data?.valueType === FARMS_USER_INFO
-
-        return isMasterchefQuery || isPoolUserInfoHandleQuery
-      },
+      predicate: cakePoolRelatedQueries(account),
     })
     queryClient.invalidateQueries({
       queryKey: [{ entity: 'accountResources', networkName, address: account }],

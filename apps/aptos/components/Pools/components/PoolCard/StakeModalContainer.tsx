@@ -5,6 +5,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import { TransactionResponse } from '@pancakeswap/awgmi/dist/core'
 
 const StakeModalContainer = ({
   pool,
@@ -17,8 +18,8 @@ const StakeModalContainer = ({
   onDone,
 }: Pool.StakeModalPropsType<Coin> & {
   onDone: () => void
-  onStake: () => void
-  onUnstake: () => void
+  onStake: (_amount: string) => Promise<TransactionResponse>
+  onUnstake: (_amount: string) => Promise<TransactionResponse>
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
