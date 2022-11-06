@@ -1,5 +1,4 @@
 import { useIsMounted } from "@pancakeswap/hooks";
-import { ScrollToTopButtonV2 } from "@pancakeswap/uikit";
 import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
 import throttle from "lodash/throttle";
 import React, { useEffect, useRef, useState } from "react";
@@ -208,7 +207,6 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
       <AtomBox display={{ xs: "block", md: "none" }}>
         <BottomNav items={links} activeItem={activeItem} activeSubItem={activeSubItem} />
       </AtomBox>
-      {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
     </MenuContext.Provider>
   );
 };
