@@ -14,7 +14,7 @@ import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'
 
 const transformPool = (resource: PoolResource, balances): Pool.DeserializedPool<Coin> => {
   const parsedTypeTag = new TypeTagParser(resource.type).parseTypeTag()
-  const [typeArg0, typeArg1, typeArg3] = parsedTypeTag.value.type_args
+  const [typeArg0, typeArg1, typeArg3] = _get(parsedTypeTag, 'value.type_args', [])
 
   const [stakingAddress, earningAddress, uidAddress] = [
     `${HexString.fromUint8Array(typeArg0.value.address.address).toShortString()}::${

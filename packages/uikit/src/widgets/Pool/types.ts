@@ -12,7 +12,7 @@ export enum PoolCategory {
 }
 
 interface PoolConfigBaseProps {
-  sousId: number;
+  sousId: number | string;
   contractAddress: Address;
   poolCategory: PoolCategory;
   tokenPerBlock: string;

@@ -12,7 +12,7 @@ interface ExpandedFooterProps {
 }
 
 const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({ pool, showTotalStaked = true }) => {
-  const { stakingToken, totalStaked, userData: poolUserData } = pool
+  const { stakingToken, totalStaked = BIG_ZERO, userData: poolUserData } = pool
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 

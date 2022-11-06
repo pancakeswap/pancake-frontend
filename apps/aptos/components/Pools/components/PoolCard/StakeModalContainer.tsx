@@ -6,6 +6,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { TransactionResponse } from '@pancakeswap/awgmi/dist/core'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 const StakeModalContainer = ({
   pool,
@@ -22,9 +23,17 @@ const StakeModalContainer = ({
   onUnstake: (_amount: string) => Promise<TransactionResponse>
 }) => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account = '' } = useActiveWeb3React()
 
-  const { earningToken, stakingToken, earningTokenPrice, apr, userData, stakingLimit, enableEmergencyWithdraw } = pool
+  const {
+    earningToken,
+    stakingToken,
+    earningTokenPrice = 0,
+    apr = 0,
+    userData,
+    stakingLimit = BIG_ZERO,
+    enableEmergencyWithdraw = false,
+  } = pool
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
 
@@ -89,8 +98,8 @@ const StakeModalContainer = ({
       stakingTokenAddress={stakingToken.address}
       stakingTokenBalance={stakingTokenBalance}
       apr={apr}
-      userDataStakedBalance={userData.stakedBalance}
-      userDataStakingTokenBalance={userData.stakingTokenBalance}
+      userDataStakedBalance={userData?.stakedBalance ? userData.stakedBalance : BIG_ZERO}
+      userDataStakingTokenBalance={userData?.stakingTokenBalance ? userData.stakingTokenBalance : BIG_ZERO}
       onDismiss={onDismiss}
       pendingTx={pendingTx}
       account={account}

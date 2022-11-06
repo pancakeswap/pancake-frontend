@@ -4,6 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { FC, ReactNode } from 'react'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 const StatWrapper: FC<React.PropsWithChildren<{ label: ReactNode }>> = ({ children, label }) => {
   return (
@@ -53,6 +54,7 @@ export const AprInfo: FC<React.PropsWithChildren<{ pool: Pool.DeserializedPool<C
   stakedBalance,
 }) => {
   const { t } = useTranslation()
+  const { account = '' } = useActiveWeb3React()
 
   return (
     <Flex justifyContent="space-between" alignItems="center">
@@ -64,6 +66,8 @@ export const AprInfo: FC<React.PropsWithChildren<{ pool: Pool.DeserializedPool<C
         stakedBalance={stakedBalance}
         performanceFee={0}
         fontSize="14px"
+        account={account}
+        autoCompoundFrequency={0}
       />
     </Flex>
   )
