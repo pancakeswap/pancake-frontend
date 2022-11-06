@@ -1,5 +1,5 @@
 import { Text, Flex, Skeleton, Heading, Box, useMatchBreakpoints, BalanceWithLoading, Pool } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
@@ -18,7 +18,7 @@ const AutoHarvestAction: React.FunctionComponent<React.PropsWithChildren<Pool.De
   vaultKey,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
 
   const vaultData = useVaultPoolByKey(vaultKey)

@@ -1,5 +1,5 @@
 import { useEffect, useReducer } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { BidderAuction } from 'config/constants/types'
 import { useFarmAuctionContract } from 'hooks/useContract'
@@ -79,7 +79,7 @@ const reclaimReducer = (state: ReclaimReducerState, action: { type: string; payl
  * This hook checks if user has participated in previous auctions and has some bids to claim back.
  */
 const useReclaimAuctionBid = (): [ReclaimableAuction | null, () => void] => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const [state, dispatch] = useReducer(reclaimReducer, initialState)
 

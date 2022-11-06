@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import NextLink from 'next/link'
 import { Flex, Skeleton, UserMenuItem } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 
 interface ProfileUserMenuItemProps {
@@ -22,7 +22,7 @@ const ProfileUserMenuItem: React.FC<React.PropsWithChildren<ProfileUserMenuItemP
   hasProfile,
   disabled,
 }) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
 
   if (isLoading) {

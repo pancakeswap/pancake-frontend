@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import sumBy from 'lodash/sumBy'
 import { useAppDispatch } from 'state'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Card, CardBody, CardHeader, Flex, Heading, PrizeIcon } from '@pancakeswap/uikit'
 import { useProfile } from 'state/profile/hooks'
 import { Achievement } from 'state/types'
@@ -14,7 +14,7 @@ const ClaimPointsCallout: React.FC<React.PropsWithChildren<{ onSuccess?: () => v
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { profile, refresh: refreshProfile } = useProfile()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   useEffect(() => {
     const fetchIfoClaims = async () => {

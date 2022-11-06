@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import {
   Image,
   Heading,
@@ -163,7 +163,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const query = normalizedUrlSearch && !_query ? normalizedUrlSearch : _query
 
   const [viewMode, setViewMode] = useUserFarmsViewMode()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const [sortOption, setSortOption] = useState('hot')
   const { observerRef, isIntersecting } = useIntersectionObserver()
   const chosenFarmsLength = useRef(0)

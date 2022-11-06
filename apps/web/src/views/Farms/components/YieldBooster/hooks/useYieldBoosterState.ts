@@ -8,7 +8,7 @@ import { useUserBoosterStatus } from 'views/Farms/hooks/useUserBoosterStatus'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import { useCallback } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 
 export enum YieldBoosterState {
   UNCONNECTED,
@@ -25,7 +25,7 @@ export enum YieldBoosterState {
 
 function useIsPoolActive(pid: number) {
   const farmBoosterContract = useBCakeFarmBoosterContract()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { data, mutate } = useSWRMulticall(
     farmBoosterAbi,

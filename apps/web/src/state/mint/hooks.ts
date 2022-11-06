@@ -26,7 +26,7 @@ import { useSelector } from 'react-redux'
 import { useGasPrice } from 'state/user/hooks'
 import { warningSeverity } from 'utils/exchange'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, typeInput } from './actions'
@@ -77,7 +77,7 @@ export function useDerivedMintInfo(
   error?: string
   addError?: string
 } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { t } = useTranslation()
 

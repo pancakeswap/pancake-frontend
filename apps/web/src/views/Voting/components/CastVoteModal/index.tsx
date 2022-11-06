@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Modal, useToast } from '@pancakeswap/uikit'
-import { useWeb3LibraryContext, useWeb3React } from '@pancakeswap/wagmi'
+import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
@@ -22,7 +23,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
 }) => {
   const [view, setView] = useState<ConfirmVoteView>(ConfirmVoteView.MAIN)
   const [isPending, setIsPending] = useState(false)
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const library = useWeb3LibraryContext()
   const { toastError } = useToast()

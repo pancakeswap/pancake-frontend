@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useGetLeaderboardFilters, useGetLeaderboardLoadingState } from 'state/predictions/hooks'
 import { filterLeaderboard } from 'state/predictions'
@@ -14,7 +14,7 @@ import Filters from './components/Filters'
 const Leaderboard = () => {
   const leaderboardLoadingState = useGetLeaderboardLoadingState()
   const filters = useGetLeaderboardFilters()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useLocalDispatch()
 
   useEffect(() => {

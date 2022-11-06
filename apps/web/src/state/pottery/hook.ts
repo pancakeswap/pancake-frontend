@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
@@ -8,7 +8,7 @@ import { potterDataSelector } from './selectors'
 import { State } from '../types'
 
 export const usePotteryFetch = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useAppDispatch()
   const potteryVaultAddress = useLatestVaultAddress()
 

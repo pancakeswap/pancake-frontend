@@ -14,7 +14,7 @@ import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -121,7 +121,7 @@ export function useStableLPDerivedMintInfo(
   error?: string
   addError?: string
 } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { t } = useTranslation()
 

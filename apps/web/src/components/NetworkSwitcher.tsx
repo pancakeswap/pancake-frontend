@@ -13,7 +13,7 @@ import {
   UserMenuItem,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount, useNetwork } from 'wagmi'
 import { useActiveChainId, useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useNetworkConnectorUpdater } from 'hooks/useActiveWeb3React'
 import { useHover } from 'hooks/useHover'
@@ -22,7 +22,6 @@ import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { chains } from 'utils/wagmi'
-import { useNetwork } from 'wagmi'
 import Image from 'next/future/image'
 
 import { ChainLogo } from './Logo/ChainLogo'
@@ -137,7 +136,7 @@ export const NetworkSwitcher = () => {
   const { chainId, isWrongNetwork, isNotMatched } = useActiveChainId()
   const { pendingChainId, isLoading, canSwitch, switchNetworkAsync } = useSwitchNetwork()
   const router = useRouter()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   useNetworkConnectorUpdater()
 

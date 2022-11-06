@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useSelector, batch } from 'react-redux'
 import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
@@ -26,7 +26,7 @@ export const useGetLotteryGraphDataById = (lotteryId: string) => {
 }
 
 export const useFetchLottery = (fetchPublicDataOnly = false) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useAppDispatch()
   const currentLotteryId = useGetCurrentLotteryId()
 

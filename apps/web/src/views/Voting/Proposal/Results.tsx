@@ -11,7 +11,7 @@ import {
   Tag,
   CheckmarkCircleIcon,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Vote } from 'state/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
@@ -28,7 +28,7 @@ interface ResultsProps {
 const Results: React.FC<React.PropsWithChildren<ResultsProps>> = ({ choices, votes, votesLoadingStatus }) => {
   const { t } = useTranslation()
   const results = calculateVoteResults(votes)
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const totalVotes = getTotalFromVotes(votes)
 
   return (

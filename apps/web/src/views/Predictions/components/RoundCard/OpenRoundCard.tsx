@@ -9,7 +9,7 @@ import {
   useToast,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useTheme from 'hooks/useTheme'
@@ -55,7 +55,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   const { t } = useTranslation()
   const { theme } = useTheme()
   const { toastSuccess } = useToast()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useLocalDispatch()
   const { token, displayedDecimals } = useConfig()
   const { lockTimestamp } = round ?? { lockTimestamp: null }

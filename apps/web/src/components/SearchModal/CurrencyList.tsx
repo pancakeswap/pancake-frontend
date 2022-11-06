@@ -6,7 +6,7 @@ import { FixedSizeList } from 'react-window'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { LightGreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useCombinedActiveList } from '../../state/lists/hooks'
@@ -69,7 +69,7 @@ function CurrencyRow({
   otherSelected: boolean
   style: CSSProperties
 }) {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const key = currencyKey(currency)
   const selectedTokenList = useCombinedActiveList()

@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useEffect, useState } from 'react'
 import { useErc721CollectionContract } from 'hooks/useContract'
 import { NftToken } from 'state/nftMarket/types'
@@ -8,7 +8,7 @@ import useSWR from 'swr'
 import { isAddress } from 'utils'
 
 const useNftOwner = (nft: NftToken, isOwnNft = false) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const [owner, setOwner] = useState(null)
   const [isLoadingOwner, setIsLoadingOwner] = useState(true)
   const { reader: collectionContract } = useErc721CollectionContract(nft.collectionAddress)

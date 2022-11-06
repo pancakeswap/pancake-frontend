@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, InjectedModalProps, Skeleton, Text, useToast } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount, useSigner } from 'wagmi'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
@@ -13,7 +13,6 @@ import { useProfile } from 'state/profile/hooks'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import SelectionCard from 'views/ProfileCreation/SelectionCard'
-import { useSigner } from 'wagmi'
 import { useNftsForAddress } from '../../../Nft/market/hooks/useNftsForAddress'
 
 interface ChangeProfilePicPageProps extends InjectedModalProps {
@@ -29,7 +28,7 @@ const ChangeProfilePicPage: React.FC<React.PropsWithChildren<ChangeProfilePicPag
     collectionAddress: null,
   })
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data: signer } = useSigner()
   const { isLoading: isProfileLoading, profile, refresh: refreshProfile } = useProfile()
   const { nfts, isLoading } = useNftsForAddress(account, profile, isProfileLoading)

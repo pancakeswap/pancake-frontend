@@ -1,5 +1,5 @@
 import { Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
 import { secondsToHours } from 'date-fns'
@@ -18,7 +18,7 @@ const UnstakingFeeCountdownRow: React.FC<React.PropsWithChildren<UnstakingFeeCou
   vaultKey,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const {
     userData: { lastDepositedTime, userShares },
     fees: { withdrawalFee, withdrawalFeePeriod },

@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { batch, useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
@@ -106,7 +106,7 @@ export const useDeserializedPoolByVaultKey = (vaultKey) => {
 }
 
 export const usePoolsPageFetch = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useAppDispatch()
   useFetchPublicPoolsData()
 
@@ -132,7 +132,7 @@ export const usePoolsPageFetch = () => {
 }
 
 export const useCakeVaultUserData = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useAppDispatch()
 
   useFastRefreshEffect(() => {

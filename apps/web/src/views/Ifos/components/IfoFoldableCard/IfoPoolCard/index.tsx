@@ -11,7 +11,7 @@ import {
   ExpandableLabel,
   CardFooter,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useMemo, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
@@ -116,7 +116,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({
   enableStatus,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { admissionProfile, pointThreshold, vestingInformation } = publicIfoData[poolId]
 

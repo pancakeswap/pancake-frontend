@@ -11,7 +11,7 @@ import {
   useTooltip,
   WaitIcon,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import styled from 'styled-components'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { Bet, PredictionStatus } from 'state/types'
@@ -62,7 +62,7 @@ const HistoricalBet: React.FC<React.PropsWithChildren<BetProps>> = ({ bet }) => 
   const status = useGetPredictionsStatus()
   const canClaim = useGetIsClaimable(bet.round.epoch)
   const dispatch = useLocalDispatch()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { displayedDecimals } = useConfig()
 
   const toggleOpen = () => setIsOpen(!isOpen)

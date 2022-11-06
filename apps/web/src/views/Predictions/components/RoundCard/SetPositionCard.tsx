@@ -19,7 +19,7 @@ import {
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { Zero } from '@ethersproject/constants'
 import { parseUnits } from '@ethersproject/units'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useGetMinBetAmount } from 'state/predictions/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePredictionsContract } from 'hooks/useContract'
@@ -92,7 +92,7 @@ const SetPositionCard: React.FC<React.PropsWithChildren<SetPositionCardProps>> =
   const [errorMessage, setErrorMessage] = useState(null)
   const [percent, setPercent] = useState(0)
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const minBetAmount = useGetMinBetAmount()
   const { t } = useTranslation()
   const { fetchWithCatchTxError, loading: isTxPending } = useCatchTxError()

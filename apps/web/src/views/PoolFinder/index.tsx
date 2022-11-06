@@ -1,6 +1,6 @@
 import { Currency, JSBI } from '@pancakeswap/sdk'
 import { AddIcon, Button, ChevronDownIcon, Text, useModal, NextLinkFromReactRouter } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -34,7 +34,7 @@ const StyledButton = styled(Button)`
 `
 
 export default function PoolFinder() {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const native = useNativeCurrency()
 
