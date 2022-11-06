@@ -2,6 +2,7 @@ import { useNetwork } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap/uikit'
+import { useSessionChainId } from 'hooks/useSessionChainId'
 
 import { APEX_DOMAIN } from 'config'
 import { defaultChain } from 'config/chains'
@@ -14,6 +15,7 @@ const evmChains = [
 
 const NetworkSelect = () => {
   const { t } = useTranslation()
+  const [, setSessionChainId] = useSessionChainId()
 
   return (
     <>
@@ -25,6 +27,7 @@ const NetworkSelect = () => {
         <UserMenuItem
           key={chain.id}
           style={{ justifyContent: 'flex-start' }}
+          onClick={() => setSessionChainId(chain.id)}
           as="a"
           target="_blank"
           href={`${APEX_DOMAIN}?chainId=${chain.id}`}
