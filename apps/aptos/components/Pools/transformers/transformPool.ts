@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
 import { Pool } from '@pancakeswap/uikit'
 import { PoolCategory } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
@@ -9,9 +9,20 @@ import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import uuid from 'uuid'
 
+import { testnetTokens, mainnetTokens } from 'config/constants/tokens'
+import _find from 'lodash/find'
+
 import { PoolResource } from '../types'
 import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'
 import splitTypeTag from '../utils/splitTypeTag'
+
+function getTokenByAddress({ chainId, address }) {
+  const tokenList = chainId === ChainId.MAINNET ? mainnetTokens : testnetTokens
+
+  const coin = _find(tokenList, (token) => token.address === address)
+
+  return coin
+}
 
 const transformPool = (resource: PoolResource, balances, chainId): Pool.DeserializedPool<Coin> => {
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
@@ -84,9 +95,8 @@ const transformPool = (resource: PoolResource, balances, chainId): Pool.Deserial
     contractAddress: {
       [chainId]: resource.type,
     },
-    // Philip TODO: get Map coin by address
-    stakingToken: new Coin(chainId, stakingAddress, 8, 'Test', `Test coin`),
-    earningToken: new Coin(chainId, earningAddress, 8, 'Test', `Test coin`),
+    stakingToken: getTokenByAddress({ chainId, address: stakingAddress }),
+    earningToken: getTokenByAddress({ chainId, address: earningAddress }),
     apr: 0,
     earningTokenPrice: 0,
     stakingTokenPrice: 0,

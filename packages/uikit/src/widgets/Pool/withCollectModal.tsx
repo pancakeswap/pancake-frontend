@@ -74,6 +74,9 @@ interface WithHarvestActionsProps {
   isLoading?: boolean;
   earningTokenDecimals: number;
   earningTokenAddress?: string;
+  poolAddress?: {
+    [index: number]: string;
+  };
 }
 
 export const withCollectModal =
@@ -87,6 +90,7 @@ export const withCollectModal =
     isBnbPool,
     earningTokenPrice,
     isLoading,
+    poolAddress,
   }: WithHarvestActionsProps) => {
     const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals);
 
@@ -105,6 +109,7 @@ export const withCollectModal =
         sousId={sousId}
         isBnbPool={isBnbPool}
         earningTokenAddress={earningTokenAddress}
+        poolAddress={poolAddress}
       />
     );
 
