@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useAccountResource, useCoins, useQueries, useQuery } from '@pancakeswap/awgmi'
 import {
@@ -136,7 +137,7 @@ export const useFarms = () => {
 
   const farmsWithPrices = getFarmsPrices(lpInfo, nativeStableLpMap[chainId])
 
-  useFarmsUserInfo()
+  const userInfos = useFarmsUserInfo()
 
   return useMemo(() => {
     return {
@@ -144,9 +145,19 @@ export const useFarms = () => {
       poolLength,
       regularCakePerBlock: masterChef?.data ? Number(masterChef.data.cake_per_second) : 0,
       loadArchivedFarmsData: false,
-      data: farmsWithPrices.filter((f) => !!f.pid).map(deserializeFarm),
+      data: farmsWithPrices
+        .filter((f) => !!f.pid)
+        .map(deserializeFarm)
+        .map((f) => {
+          return {
+            ...f,
+            userData: {
+              stakedBalance: userInfos[f.pid]?.amount,
+            },
+          }
+        }),
     }
-  }, [poolLength, masterChef?.data, farmsWithPrices])
+  }, [poolLength, masterChef?.data, farmsWithPrices, userInfos])
 }
 
 export function useFarmsUserInfo() {
@@ -157,15 +168,15 @@ export function useFarmsUserInfo() {
     resourceType: FARMS_USER_INFO_RESOURCE,
   })
 
-  useQueries({
+  const userInfoQueries = useQueries({
     queries:
       data?.data.pids.map((pid) => ({
         staleTime: Infinity,
         enable: Boolean(pid) && Boolean(account?.address) && Boolean(data.data.pid_to_user_info.inner.handle),
         refetchInterval: 5_000,
         queryKey: [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
-        queryFn: () =>
-          fetchTableItem({
+        queryFn: async () => {
+          const item = await fetchTableItem({
             networkName,
             handle: data.data.pid_to_user_info.inner.handle,
             data: {
@@ -173,9 +184,17 @@ export function useFarmsUserInfo() {
               key: pid,
               valueType: FARMS_USER_INFO,
             },
-          }),
+          })
+          return { ...item, pid }
+        },
       })) ?? [],
   })
+
+  const userInfos = useMemo(() => {
+    return fromPairs(userInfoQueries.filter((u) => !!u.data).map((u) => [(u as any).data.pid, u.data]))
+  }, [userInfoQueries])
+
+  return userInfos
 }
 
 const nativeStableLpMap = {
@@ -195,7 +214,6 @@ const nativeStableLpMap = {
 export function useFarmUserInfoCache(pid: string) {
   const { account } = useAccount()
   const { networkName } = useActiveNetwork()
-  // eslint-disable-next-line camelcase
   return useQuery<{ amount: string; reward_debt: string }>(
     [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
     {

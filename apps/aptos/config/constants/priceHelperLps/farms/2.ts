@@ -14,8 +14,8 @@ const priceHelperLps: Omit<SerializedFarmConfig, 'pid'>[] = [
   },
 ].map((p) => ({
   ...p,
-  token: p.token.serialize,
-  quoteToken: p.quoteToken.serialize,
+  token: Pair.sortToken(p.token, p.quoteToken)[1].serialize,
+  quoteToken: Pair.sortToken(p.token, p.quoteToken)[0].serialize,
   lpAddress: Pair.getAddress(p.token, p.quoteToken),
 }))
 

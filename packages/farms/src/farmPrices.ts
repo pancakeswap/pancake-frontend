@@ -158,9 +158,13 @@ export const getFarmsPrices = (
 ): FarmWithPrices[] => {
   const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLp.address))
 
+  const isNativeFirst = nativeStableFarm?.token.symbol === nativeStableLp.wNative
+
   const nativePriceUSD =
     nativeStableFarm && _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
-      ? FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
+      ? isNativeFirst
+        ? FixedNumber.from(nativeStableFarm.tokenPriceVsQuote)
+        : FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
       : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
