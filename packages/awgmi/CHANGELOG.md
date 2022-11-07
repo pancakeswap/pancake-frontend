@@ -1,5 +1,12 @@
 # @pancakeswap/awgmi
 
+## 0.0.9
+
+### Patch Changes
+
+- ae6ed2811: - Add getTableItem core
+  - parseVmStatusError vm in simulation error by default
+
 ## 0.0.8
 
 ### Patch Changes
