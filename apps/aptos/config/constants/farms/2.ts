@@ -1,3 +1,4 @@
+import { Pair } from '@pancakeswap/aptos-swap-sdk'
 import type { SerializedFarmConfig } from '@pancakeswap/farms'
 import { testnetTokens } from 'config/constants/tokens'
 
@@ -17,6 +18,12 @@ const farms: SerializedFarmConfig[] = [
     token: testnetTokens.moon,
     quoteToken: testnetTokens.apt,
   },
-].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
+].map((p) => ({
+  ...p,
+  token: p.token.equals(p.quoteToken) ? p.token.serialize : Pair.sortToken(p.token, p.quoteToken)[1].serialize,
+  quoteToken: p.token.equals(p.quoteToken)
+    ? p.quoteToken.serialize
+    : Pair.sortToken(p.token, p.quoteToken)[0].serialize,
+}))
 
 export default farms
