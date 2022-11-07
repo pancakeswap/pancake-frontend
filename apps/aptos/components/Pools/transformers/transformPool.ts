@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
+import { AptosCoin, Coin } from '@pancakeswap/aptos-swap-sdk'
 import { Pool } from '@pancakeswap/uikit'
 import { PoolCategory } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
@@ -9,22 +9,19 @@ import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import uuid from 'uuid'
 
-import { testnetTokens, mainnetTokens } from 'config/constants/tokens'
 import _find from 'lodash/find'
 
 import { PoolResource } from '../types'
 import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'
 import splitTypeTag from '../utils/splitTypeTag'
+import getTokenByAddress from '../utils/getTokenByAddress'
 
-function getTokenByAddress({ chainId, address }) {
-  const tokenList = chainId === ChainId.MAINNET ? mainnetTokens : testnetTokens
-
-  const coin = _find(tokenList, (token) => token.address === address)
-
-  return coin
-}
-
-const transformPool = (resource: PoolResource, balances, chainId): Pool.DeserializedPool<Coin> => {
+const transformPool = (
+  resource: PoolResource,
+  balances,
+  chainId,
+  addressesWithUSD,
+): Pool.DeserializedPool<Coin | AptosCoin> | undefined => {
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
   let userData = {
@@ -57,7 +54,6 @@ const transformPool = (resource: PoolResource, balances, chainId): Pool.Deserial
       if (userStakedAmount && _toNumber(totalStakedToken)) {
         const lastRewardTimestamp = _toNumber(_get(resource, 'data.last_reward_timestamp'))
 
-        // let multiplier = get_multiplier(pool_info.last_reward_timestamp, timestamp::now_seconds(), pool_info.end_timestamp);
         const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
 
         const rewardPerSecond = FixedNumber.from(_get(resource, 'data.reward_per_second'))
@@ -90,16 +86,24 @@ const transformPool = (resource: PoolResource, balances, chainId): Pool.Deserial
 
   const now = Date.now()
 
+  const stakingToken = getTokenByAddress({ chainId, address: stakingAddress })
+  const earningToken = getTokenByAddress({ chainId, address: earningAddress })
+
+  if (!stakingToken || !earningToken) return undefined
+
+  const earningTokenPrice = addressesWithUSD[earningAddress] || 0
+  const stakingTokenPrice = addressesWithUSD[stakingAddress] || 0
+
   return {
     sousId: uuid.v4(),
     contractAddress: {
       [chainId]: resource.type,
     },
-    stakingToken: getTokenByAddress({ chainId, address: stakingAddress }),
-    earningToken: getTokenByAddress({ chainId, address: earningAddress }),
+    stakingToken,
+    earningToken,
     apr: 0,
-    earningTokenPrice: 0,
-    stakingTokenPrice: 0,
+    earningTokenPrice,
+    stakingTokenPrice,
 
     // Philip TODO: remove ! logic
     isFinished: !(now > +resource.data.end_timestamp),

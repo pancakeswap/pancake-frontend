@@ -6,7 +6,7 @@ import _toString from 'lodash/toString'
 import { SMARTCHEF_ADDRESS, SMARTCHEF_POOL_INFO_TYPE_TAG } from 'contracts/smartchef/constants'
 import _toNumber from 'lodash/toNumber'
 import { useMemo } from 'react'
-import { useMasterChefResource } from 'state/farms/hook'
+import { useFarms, useMasterChefResource } from 'state/farms/hook'
 import { FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
 import { getFarmConfig } from 'config/constants/farms'
 import { usePairs } from 'hooks/usePairs'
@@ -18,9 +18,12 @@ import { CAKE_PID } from '../constants'
 import { PoolResource } from '../types'
 import transformCakePool from '../transformers/transformCakePool'
 import transformPool from '../transformers/transformPool'
+import convertFarmsWithPriceIntoUSD from '../utils/convertFarmsWithPriceIntoUSD'
 
 export const usePoolsList = () => {
   const { account, chainId } = useActiveWeb3React()
+
+  const { data: farmsWithPrices } = useFarms()
 
   const { data: pools } = useAccountResources({
     address: SMARTCHEF_ADDRESS,
@@ -40,11 +43,21 @@ export const usePoolsList = () => {
 
   const cakePool = useCakePool({ balances, chainId })
 
+  const addressesWithUSD = convertFarmsWithPriceIntoUSD(farmsWithPrices)
+
+  const addressesWithUSDStringify = JSON.stringify(addressesWithUSD)
+
   return useMemo(() => {
-    const syrupPools = pools ? pools.map((pool) => transformPool(pool as PoolResource, balances, chainId)) : []
+    const unwrapAddressesWithUSD = JSON.parse(addressesWithUSDStringify)
+
+    const syrupPools = pools
+      ? pools
+          .map((pool) => transformPool(pool as PoolResource, balances, chainId, unwrapAddressesWithUSD))
+          .filter(Boolean)
+      : []
 
     return cakePool ? [cakePool, ...syrupPools] : syrupPools
-  }, [pools, balances, cakePool, chainId])
+  }, [pools, balances, cakePool, chainId, addressesWithUSDStringify])
 }
 
 export const useCakePool = ({ balances, chainId }) => {

@@ -134,7 +134,7 @@ export const useFarms = () => {
       })
   }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])
 
-  const farmsWithPrices = getFarmsPrices(lpInfo, nativeStableLpMap[chainId])
+  const farmsWithPrices = useMemo(() => getFarmsPrices(lpInfo, nativeStableLpMap[chainId]), [chainId, lpInfo])
 
   useFarmsUserInfo()
 
