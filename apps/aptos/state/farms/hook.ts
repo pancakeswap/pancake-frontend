@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
+import { DeserializedFarmsState } from '@pancakeswap/farms'
 import { useAccount, useAccountResource, useCoins, useQueries, useQuery } from '@pancakeswap/awgmi'
 import {
   FetchCoinResult,
@@ -149,14 +150,18 @@ export const useFarms = () => {
         .filter((f) => !!f.pid)
         .map(deserializeFarm)
         .map((f) => {
+          const accCakePerShare = masterChef?.data && f.pid ? calcCakeReward(masterChef.data, String(f.pid)) : 0
+          const earningToken = pendingCake(userInfos[f.pid]?.amount, userInfos[f.pid]?.reward_debt, accCakePerShare)
+          const stakedBalance = new BigNumber(userInfos[f.pid]?.amount)
           return {
             ...f,
             userData: {
-              stakedBalance: userInfos[f.pid]?.amount,
+              earnings: earningToken.gte(0) ? earningToken : BIG_ZERO,
+              stakedBalance: stakedBalance.gte(0) ? stakedBalance : BIG_ZERO,
             },
           }
         }),
-    }
+    } as DeserializedFarmsState
   }, [poolLength, masterChef?.data, farmsWithPrices, userInfos])
 }
 
@@ -173,7 +178,7 @@ export function useFarmsUserInfo() {
       data?.data.pids.map((pid) => ({
         staleTime: Infinity,
         enable: Boolean(pid) && Boolean(account?.address) && Boolean(data.data.pid_to_user_info.inner.handle),
-        refetchInterval: 5_000,
+        refetchInterval: 3_000,
         queryKey: [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
         queryFn: async () => {
           const item = await fetchTableItem({
@@ -220,19 +225,4 @@ export function useFarmUserInfoCache(pid: string) {
       enabled: Boolean(account?.address),
     },
   )
-}
-
-export function useFarmEarning(pid: string) {
-  const { data: masterChef } = useMasterChefResource()
-
-  const { data: userInfo } = useFarmUserInfoCache(String(pid))
-
-  return useMemo(() => {
-    if (masterChef?.data && userInfo && userInfo.amount !== '0') {
-      const accCakePerShare = calcCakeReward(masterChef.data, pid)
-      return pendingCake(userInfo.amount, userInfo.reward_debt, accCakePerShare)
-    }
-
-    return 0
-  }, [masterChef?.data, pid, userInfo])
 }

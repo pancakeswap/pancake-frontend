@@ -7,7 +7,6 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useCakePrice } from 'hooks/useStablePrice'
-import { useFarmEarning } from 'state/farms/hook'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { FarmWithStakedValue } from '../../types'
@@ -22,15 +21,7 @@ interface HarvestActionProps extends FarmWithStakedValue {
 export const HarvestActionContainer = ({ children, ...props }) => {
   const { onReward } = useHarvestFarm(props.pid, props.lpAddress)
 
-  const earnings = useFarmEarning(String(props.pid))
-
-  return children({
-    ...props,
-    onReward,
-    userData: {
-      earnings: new BigNumber(earnings),
-    },
-  })
+  return children({ ...props, onReward })
 }
 
 export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({

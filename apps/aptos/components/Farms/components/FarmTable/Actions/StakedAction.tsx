@@ -13,7 +13,6 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { useFarmUserInfoCache } from 'state/farms/hook'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import useStakeFarms from '../../../hooks/useStakeFarms'
@@ -47,14 +46,14 @@ export const StakedContainer = ({ children, ...props }) => {
     coin: props.lpAddress,
     select: (d) => new BigNumber(d.value),
   })
-  const { data: userInfo } = useFarmUserInfoCache(String(props.pid))
 
-  const userData = useMemo(() => {
-    return {
-      stakedBalance: userInfo?.amount ? new BigNumber(userInfo.amount) : BIG_ZERO,
+  const userData = useMemo(
+    () => ({
+      ...props.userData,
       tokenBalance,
-    }
-  }, [tokenBalance, userInfo?.amount])
+    }),
+    [props.userData, tokenBalance],
+  )
 
   return children({
     ...props,

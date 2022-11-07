@@ -6,7 +6,7 @@ const TOTAL_CAKE_RATE_PRECISION = 100000
 
 export function pendingCake(userAmount, userRewardDebt, accCakePerShare) {
   // ((user_info.amount * acc_cake_per_share / ACC_CAKE_PRECISION - user_info.reward_debt) as u64)
-  return new BigNumber(userAmount).times(accCakePerShare).dividedBy(ACC_CAKE_PRECISION).minus(userRewardDebt).toNumber()
+  return new BigNumber(userAmount).times(accCakePerShare).dividedBy(ACC_CAKE_PRECISION).minus(userRewardDebt)
 }
 
 export function calcCakeReward(masterChef: MapFarmResource, pid: string) {

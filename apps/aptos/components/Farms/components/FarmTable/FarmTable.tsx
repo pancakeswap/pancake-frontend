@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { RowType } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { getDisplayApr } from '../getDisplayApr'
-
 import Row, { RowProps } from './Row'
 import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 
@@ -74,6 +75,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
                 return Number(a.original.apr.value) - Number(b.original.apr.value)
               }
               return 0
+            case 'earned':
+              return a.original.earned.earnings - b.original.earned.earnings
             default:
               return 1
           }
@@ -82,6 +85,11 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       })),
     [],
   )
+
+  const getFarmEarnings = (farm) => {
+    const earnings = new BigNumber(farm?.userData?.earnings)
+    return getBalanceNumber(earnings, FARM_DEFAULT_DECIMALS)
+  }
 
   const generateRow = (farm) => {
     const { token, quoteToken } = farm
@@ -115,6 +123,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       },
       earned: {
         pid: farm.pid,
+        earnings: getFarmEarnings(farm),
       },
       liquidity: {
         liquidity: farm?.liquidity,
