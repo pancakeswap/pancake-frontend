@@ -1,6 +1,9 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { getStableConfig } from '@pancakeswap/farms/constants'
+import { deserializeToken } from '@pancakeswap/token-lists'
 
 import { StableSwapPair } from './types'
+import { createStableSwapPair } from './stableSwap'
 
 export async function getStableSwapPairs(chainId: ChainId): Promise<StableSwapPair[]> {
   // Stable swap is only supported on BSC chain
@@ -8,43 +11,13 @@ export async function getStableSwapPairs(chainId: ChainId): Promise<StableSwapPa
     return []
   }
 
-  // TODO change to get stable swap pairs from config
-  // let pairs: Pair[] = [];
-  // let pairsPage = await getPairsFirstPage();
-  // pairs = pairs.concat(pairsPage);
+  const farms = await getStableConfig(chainId)
 
-  // while (pairsPage.length === 1000) {
-  //   pairsPage = await getPairsNextPages(
-  //     pairs[pairs.length - 1].trackedReserveBNB
-  //   );
-  //   pairs = pairs.concat(pairsPage);
-  // }
-
-  // return pairs.map(p => {
-  //   const pair = new SdkPair(
-  //     CurrencyAmount.fromRawAmount(
-  //       new Token(
-  //         chainId,
-  //         getAddress(p.token0.id),
-  //         Number(p.token0.decimals),
-  //         p.token0.symbol,
-  //         p.token0.name,
-  //       ),
-  //       '0',
-  //     ),
-  //     CurrencyAmount.fromRawAmount(
-  //       new Token(
-  //         chainId,
-  //         getAddress(p.token1.id),
-  //         Number(p.token1.decimals),
-  //         p.token1.symbol,
-  //         p.token1.name,
-  //       ),
-  //       '0',
-  //     ),
-  //   );
-  //   (pair as StableSwapPair).stableSwapAddress = p.id;
-  //   return pair as StableSwapPair;
-  // });
-  return []
+  return farms.map(({ token, quoteToken, stableSwapAddress }) => {
+    const pair = new Pair(
+      CurrencyAmount.fromRawAmount(deserializeToken(token), '0'),
+      CurrencyAmount.fromRawAmount(deserializeToken(quoteToken), '0'),
+    )
+    return createStableSwapPair(pair, stableSwapAddress)
+  })
 }

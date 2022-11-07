@@ -12,6 +12,10 @@ export async function getBestTradeFromV2<TInput extends Currency, TOutput extend
   const { maxHops = 3 } = options
   const allowedPairs = await getAllCommonPairs(amountIn.currency, output)
 
+  if (!allowedPairs.length) {
+    return null
+  }
+
   if (maxHops === 1) {
     return Trade.bestTradeExactIn(allowedPairs, amountIn, output, options)[0] ?? null
   }

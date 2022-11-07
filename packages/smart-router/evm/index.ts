@@ -8,7 +8,7 @@ import { TradeWithStableSwap } from './types'
 export async function getBestTrade<TInput extends Currency, TOutput extends Currency>(
   amountIn: CurrencyAmount<TInput>,
   output: TOutput,
-  options: BestTradeOptions,
+  options: BestTradeOptions = {},
 ): Promise<TradeWithStableSwap<TInput, TOutput, TradeType> | null> {
   // TODO invariant check input and output on the same chain
   const {

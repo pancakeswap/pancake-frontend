@@ -14,8 +14,10 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
+    "@pancakeswap/farms": "*",
     "@pancakeswap/sdk": "*",
     "@pancakeswap/tokens": "*",
+    "@pancakeswap/token-lists": "*",
     "ethers": "^5.7.2",
     "lodash": "^4.17.21"
   },
