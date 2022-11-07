@@ -225,8 +225,6 @@ export const fetchAllTokenDataByAddresses = async (
     tokenAddresses,
   )
 
-  console.log(data, tokenAddresses, 'tokenData')
-
   const parsed = parseTokenData(data?.now)
   const parsed24 = parseTokenData(data?.oneDayAgo)
   const parsed48 = parseTokenData(data?.twoDaysAgo)

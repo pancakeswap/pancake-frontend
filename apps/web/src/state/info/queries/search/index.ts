@@ -34,7 +34,7 @@ const POOL_SEARCH = gql`
 `
 
 interface SingleQueryResponse {
-  id: string[]
+  id: string
 }
 
 interface TokenSearchResponse {
@@ -96,7 +96,9 @@ const useFetchSearchResults = (
           name: searchString.charAt(0).toUpperCase() + searchString.slice(1),
           id: searchString.toLowerCase(),
         })
-        const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
+
+        const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName]).map((d) => d.toLowerCase())
+
         const pools = await queryClient.request<PoolSearchResponse>(poolQuery, {
           tokens: tokenIds,
           id: searchString.toLowerCase(),
