@@ -92,8 +92,8 @@ export const useFarms = () => {
         const reservesAddress = Pair.getReservesAddress(token, quoteToken)
         const lpReserveX = pairReserves?.[reservesAddress]?.data.reserve_x
         const lpReserveY = pairReserves?.[reservesAddress]?.data.reserve_y
-        const tokenBalanceLP = lpReserveX ? new BigNumber(lpReserveX) : BIG_ZERO
-        const quoteTokenBalanceLP = lpReserveY ? new BigNumber(lpReserveY) : BIG_ZERO
+        const tokenBalanceLP = lpReserveY ? new BigNumber(lpReserveY) : BIG_ZERO
+        const quoteTokenBalanceLP = lpReserveX ? new BigNumber(lpReserveX) : BIG_ZERO
         const lpTotalSupply = stakeCoinsInfoMap[config.lpAddress]?.supply
           ? new BigNumber(stakeCoinsInfoMap[config.lpAddress].supply as string)
           : BIG_ZERO
