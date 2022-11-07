@@ -2,6 +2,7 @@
   "extends": "tsconfig/react-library",
   "compilerOptions": {
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "isolatedModules": true,
     "skipLibCheck": true
   }

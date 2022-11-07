@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@pancakeswap/farms": "*",
+    "@pancakeswap/multicall": "*",
     "@pancakeswap/sdk": "*",
     "@pancakeswap/tokens": "*",
     "@pancakeswap/token-lists": "*",

@@ -4,6 +4,7 @@ import { Box, Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@p
 import { getBestTrade } from '@pancakeswap/smart-router/evm'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { AppBody } from 'components/App'
+import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
@@ -19,6 +20,7 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
+  const provider = useProviderOrSigner()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
     useContext(SwapFeaturesContext)
 
@@ -37,7 +39,7 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   if (inputCurrency && outputCurrency) {
-    getBestTrade(CurrencyAmount.fromRawAmount(inputCurrency, '0'), outputCurrency)
+    getBestTrade(CurrencyAmount.fromRawAmount(inputCurrency, '1'), outputCurrency, { provider: () => provider })
   }
 
   return (

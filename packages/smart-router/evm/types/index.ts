@@ -2,6 +2,8 @@ import { Currency, CurrencyAmount, Pair, Route, Trade, TradeType } from '@pancak
 
 export * from './chain'
 
+export * from './bestTrade'
+
 export interface StableSwapPair extends Pair {
   stableSwapAddress: string
 }

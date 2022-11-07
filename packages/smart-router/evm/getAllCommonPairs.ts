@@ -2,6 +2,8 @@ import { ChainId, Currency, Pair, Token } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from './config'
+import { getPairs } from './onchain'
+import { Provider } from './types'
 import { wrappedCurrency } from './utils/currency'
 
 export enum PairState {
@@ -11,8 +13,20 @@ export enum PairState {
   INVALID,
 }
 
-export async function getAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Promise<Pair[]> {
-  const chainId = 56
+interface Options {
+  provider: Provider
+}
+
+export async function getAllCommonPairs(
+  currencyA: Currency,
+  currencyB: Currency,
+  { provider }: Options,
+): Promise<Pair[]> {
+  // eslint-disable-next-line prefer-destructuring
+  const chainId: ChainId = currencyA.chainId
+  if (!chainId || chainId !== currencyB.chainId) {
+    return []
+  }
 
   const [tokenA, tokenB] = chainId
     ? [wrappedCurrency(currencyA, chainId), wrappedCurrency(currencyB, chainId)]
@@ -30,17 +44,13 @@ export async function getAllCommonPairs(currencyA?: Currency, currencyB?: Curren
 
   const allPairCombinations = getAllPairCombinations(tokenA, tokenB, bases, basePairs, chainId)
 
-  // TODO get pairs with reserve data on chain
-  // const allPairs = await getPairs(allPairCombinations, chainId)
-  const allPairs: [PairState, Pair | null][] = []
+  const allPairs = await getPairs(allPairCombinations, { chainId, provider })
 
   // only pass along valid pairs, non-duplicated pairs
   return Object.values(
     allPairs
-      // filter out invalid pairs
-      .filter((result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]))
       // filter out duplicated pairs
-      .reduce<{ [pairAddress: string]: Pair }>((memo, [, curr]) => {
+      .reduce<{ [pairAddress: string]: Pair }>((memo, curr) => {
         memo[curr.liquidityToken.address] = memo[curr.liquidityToken.address] ?? curr
         return memo
       }, {}),

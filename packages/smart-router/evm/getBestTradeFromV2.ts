@@ -1,23 +1,25 @@
-import { BestTradeOptions, Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from './constants'
 import { getAllCommonPairs } from './getAllCommonPairs'
+import { BestTradeOptions } from './types'
 import { isTradeBetter } from './utils/trade'
 
 export async function getBestTradeFromV2<TInput extends Currency, TOutput extends Currency>(
   amountIn: CurrencyAmount<TInput>,
   output: TOutput,
-  options: BestTradeOptions = {},
+  options: BestTradeOptions,
 ): Promise<Trade<TInput, TOutput, TradeType> | null> {
-  const { maxHops = 3 } = options
-  const allowedPairs = await getAllCommonPairs(amountIn.currency, output)
+  const { provider, ...restOptions } = options
+  const { maxHops = 3 } = restOptions
+  const allowedPairs = await getAllCommonPairs(amountIn.currency, output, { provider })
 
   if (!allowedPairs.length) {
     return null
   }
 
   if (maxHops === 1) {
-    return Trade.bestTradeExactIn(allowedPairs, amountIn, output, options)[0] ?? null
+    return Trade.bestTradeExactIn(allowedPairs, amountIn, output, restOptions)[0] ?? null
   }
 
   // search through trades with varying hops, find best trade out of them
@@ -25,7 +27,7 @@ export async function getBestTradeFromV2<TInput extends Currency, TOutput extend
   for (let i = 1; i <= maxHops; i++) {
     const currentTrade: Trade<TInput, TOutput, TradeType> | null =
       Trade.bestTradeExactIn(allowedPairs, amountIn, output, {
-        ...options,
+        ...restOptions,
         maxHops: i,
         maxNumResults: 1,
       })[0] ?? null

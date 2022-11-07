@@ -1,14 +1,14 @@
-import { Currency, CurrencyAmount, BestTradeOptions, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 
 import { getBestTradeFromV2 } from './getBestTradeFromV2'
 import { getBestTradeWithStableSwap } from './getBestTradeWithStableSwap'
 import { getStableSwapPairs } from './getStableSwapPairs'
-import { TradeWithStableSwap } from './types'
+import { TradeWithStableSwap, BestTradeOptions } from './types'
 
 export async function getBestTrade<TInput extends Currency, TOutput extends Currency>(
   amountIn: CurrencyAmount<TInput>,
   output: TOutput,
-  options: BestTradeOptions = {},
+  options: BestTradeOptions,
 ): Promise<TradeWithStableSwap<TInput, TOutput, TradeType> | null> {
   // TODO invariant check input and output on the same chain
   const {
