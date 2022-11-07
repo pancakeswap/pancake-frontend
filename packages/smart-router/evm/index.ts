@@ -21,11 +21,6 @@ export async function getBestTrade<TInput extends Currency, TOutput extends Curr
     return null
   }
 
-  const serializedBestRoute = bestTradeV2.route.pairs
-    .map((pair) => `${pair.token0.symbol}-${pair.token1.symbol}`)
-    .join(' ')
-  console.log(serializedBestRoute)
-
   const stableSwapPairs = await getStableSwapPairs(chainId)
   const bestTradeWithStableSwap = await getBestTradeWithStableSwap(bestTradeV2, stableSwapPairs, { provider })
   const { outputAmount: outputAmountWithStableSwap } = bestTradeWithStableSwap

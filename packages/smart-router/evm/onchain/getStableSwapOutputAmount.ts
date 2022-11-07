@@ -45,10 +45,5 @@ export async function getStableSwapOutputAmount(
     },
   })
 
-  console.log(
-    `${inputToken.name} to ${outputToken.name} found: ${inputRawAmount} ${inputToken.name} to ${result.toString()} ${
-      outputToken.name
-    }`,
-  )
   return CurrencyAmount.fromRawAmount(outputToken, result.toString())
 }
