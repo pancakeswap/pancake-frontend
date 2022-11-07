@@ -105,7 +105,7 @@ const useFetchSearchResults = (
         })
         setSearchResults({
           tokens: tokenIds,
-          pools: getIds([pools.asAddress, pools.as0, pools.as1]),
+          pools: getIds([pools.asAddress, pools.as0, pools.as1]).map((d) => d.toLowerCase()),
           loading: false,
           error: false,
         })
