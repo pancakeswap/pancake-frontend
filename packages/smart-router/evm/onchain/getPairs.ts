@@ -51,16 +51,14 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
   }))
 
   try {
-    console.log(reserveCalls)
     const results = await multicallv2<PairReserve[]>({
       abi: IPancakePairABI,
       calls: reserveCalls,
       chainId,
       options: {
-        requireSuccess: true,
+        requireSuccess: false,
       },
     })
-    console.log('Get results success', results)
 
     const resultWithState: [PairState, Pair | null][] = results.map((result, i) => {
       if (!result) return [PairState.NOT_EXISTS, null]
