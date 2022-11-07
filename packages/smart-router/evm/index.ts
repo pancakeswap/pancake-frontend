@@ -10,6 +10,7 @@ export async function getBestTrade<TInput extends Currency, TOutput extends Curr
   output: TOutput,
   options: BestTradeOptions,
 ): Promise<TradeWithStableSwap<TInput, TOutput, TradeType> | null> {
+  const { provider } = options
   // TODO invariant check input and output on the same chain
   const {
     currency: { chainId },
@@ -26,7 +27,7 @@ export async function getBestTrade<TInput extends Currency, TOutput extends Curr
   console.log(serializedBestRoute)
 
   const stableSwapPairs = await getStableSwapPairs(chainId)
-  const bestTradeWithStableSwap = await getBestTradeWithStableSwap(bestTradeV2, stableSwapPairs)
+  const bestTradeWithStableSwap = await getBestTradeWithStableSwap(bestTradeV2, stableSwapPairs, { provider })
   const { outputAmount: outputAmountWithStableSwap } = bestTradeWithStableSwap
 
   // If stable swap is not as good as best trade got from v2, then use v2

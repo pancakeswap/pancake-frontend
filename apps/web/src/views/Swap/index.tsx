@@ -39,7 +39,12 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   if (inputCurrency && outputCurrency) {
-    getBestTrade(CurrencyAmount.fromRawAmount(inputCurrency, '1'), outputCurrency, { provider: () => provider })
+    getBestTrade(CurrencyAmount.fromRawAmount(inputCurrency, '1'), outputCurrency, {
+      provider: (chainId) => {
+        console.log(chainId)
+        return provider
+      },
+    })
   }
 
   return (

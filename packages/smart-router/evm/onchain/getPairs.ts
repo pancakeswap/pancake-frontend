@@ -50,36 +50,43 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
     params: [],
   }))
 
-  const results = await multicallv2<PairReserve[]>({
-    abi: IPancakePairABI,
-    calls: reserveCalls,
-    chainId,
-    options: {
-      requireSuccess: true,
-    },
-  })
+  try {
+    console.log(reserveCalls)
+    const results = await multicallv2<PairReserve[]>({
+      abi: IPancakePairABI,
+      calls: reserveCalls,
+      chainId,
+      options: {
+        requireSuccess: true,
+      },
+    })
+    console.log('Get results success', results)
 
-  const resultWithState: [PairState, Pair | null][] = results.map((result, i) => {
-    if (!result) return [PairState.NOT_EXISTS, null]
+    const resultWithState: [PairState, Pair | null][] = results.map((result, i) => {
+      if (!result) return [PairState.NOT_EXISTS, null]
 
-    const tokenA = tokens[i][0]
-    const tokenB = tokens[i][1]
+      const tokenA = tokens[i][0]
+      const tokenB = tokens[i][1]
 
-    if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
+      if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
 
-    const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+      const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
 
-    const { reserve0, reserve1 } = result
-    return [
-      PairState.EXISTS,
-      new Pair(
-        CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
-        CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
-      ),
-    ]
-  })
-  const successfulResult: [PairState.EXISTS, Pair][] = resultWithState.filter(
-    (result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]),
-  )
-  return successfulResult.map(([, pair]) => pair)
+      const { reserve0, reserve1 } = result
+      return [
+        PairState.EXISTS,
+        new Pair(
+          CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+          CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
+        ),
+      ]
+    })
+    const successfulResult: [PairState.EXISTS, Pair][] = resultWithState.filter(
+      (result): result is [PairState.EXISTS, Pair] => Boolean(result[0] === PairState.EXISTS && result[1]),
+    )
+    return successfulResult.map(([, pair]) => pair)
+  } catch (e) {
+    console.error(`Get reserve failed`, e)
+    return []
+  }
 }
