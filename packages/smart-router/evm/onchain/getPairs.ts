@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Pair, Token } from '@pancakeswap/sdk'
 import { BigNumber } from 'ethers'
 import { createMulticall, Call } from '@pancakeswap/multicall'
 
@@ -27,24 +27,24 @@ interface Options {
 }
 
 export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainId }: Options): Promise<Pair[]> {
-  const tokens = currencyPairs.map(([currencyA, currencyB]) => [
+  const p = provider({ chainId })
+  const tokens: [Token | undefined, Token | undefined][] = currencyPairs.map(([currencyA, currencyB]) => [
     wrappedCurrency(currencyA, chainId),
     wrappedCurrency(currencyB, chainId),
   ])
 
-  const pairAddresses = tokens.map(([tokenA, tokenB]) => {
-    try {
-      return tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : undefined
-    } catch (error: any) {
-      // Debug Invariant failed related to this line
-      console.error(error.msg, `- pairAddresses: ${tokenA?.address}-${tokenB?.address}`, `chainId: ${tokenA?.chainId}`)
+  const addressChecks = await Promise.all(
+    tokens.map((tokenPair) => {
+      const addr = getPairAddress(tokenPair)
+      return p.getCode(addr)
+    }),
+  )
 
-      return undefined
-    }
-  })
+  const validTokenPairs = tokens.filter((_, index) => addressChecks[index] !== '0x')
+  const validPairAddresses = validTokenPairs.map(getPairAddress)
 
   const { multicallv2 } = createMulticall(provider)
-  const reserveCalls: Call[] = pairAddresses.map((address) => ({
+  const reserveCalls: Call[] = validPairAddresses.map((address) => ({
     address: address as string,
     name: 'getReserves',
     params: [],
@@ -63,8 +63,8 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
     const resultWithState: [PairState, Pair | null][] = results.map((result, i) => {
       if (!result) return [PairState.NOT_EXISTS, null]
 
-      const tokenA = tokens[i][0]
-      const tokenB = tokens[i][1]
+      const tokenA = validTokenPairs[i][0]
+      const tokenB = validTokenPairs[i][1]
 
       if (!tokenA || !tokenB || tokenA.equals(tokenB)) return [PairState.INVALID, null]
 
@@ -87,4 +87,15 @@ export async function getPairs(currencyPairs: CurrencyPair[], { provider, chainI
     console.error(`Get reserve failed`, e)
     return []
   }
+}
+
+function getPairAddress([tokenA, tokenB]: [Token | undefined, Token | undefined]): string {
+  let addr = ''
+  try {
+    addr = tokenA && tokenB && !tokenA.equals(tokenB) ? Pair.getAddress(tokenA, tokenB) : ''
+  } catch (error: any) {
+    // Debug Invariant failed related to this line
+    console.error(error.msg, `- pairAddresses: ${tokenA?.address}-${tokenB?.address}`, `chainId: ${tokenA?.chainId}`)
+  }
+  return addr
 }
