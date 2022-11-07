@@ -68,6 +68,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
           max={fullBalance}
           symbol={tokenName}
           inputTitle={t("Unstake")}
+          decimals={decimals}
         />
         {showActiveBooster ? (
           <Message variant="warning" mt="8px">

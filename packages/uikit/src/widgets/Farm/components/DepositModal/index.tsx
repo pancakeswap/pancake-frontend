@@ -151,6 +151,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           symbol={tokenName}
           addLiquidityUrl={addLiquidityUrl}
           inputTitle={t("Stake")}
+          decimals={decimals}
         />
         {showActiveBooster ? (
           <Message variant="warning" icon={<ErrorIcon width="24px" color="warning" />} mt="32px">
