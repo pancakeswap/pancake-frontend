@@ -52,9 +52,9 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      setVal(fullBalanceNumber.dividedBy(100).multipliedBy(percent).toString());
+      setVal(fullBalanceNumber.dividedBy(100).multipliedBy(percent).toFixed(decimals, BigNumber.ROUND_DOWN));
     },
-    [fullBalanceNumber, setVal]
+    [decimals, fullBalanceNumber]
   );
 
   return (

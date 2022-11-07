@@ -111,9 +111,9 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      setVal(fullBalanceNumber.dividedBy(100).multipliedBy(percent).toString());
+      setVal(fullBalanceNumber.dividedBy(100).multipliedBy(percent).toFixed(decimals, BigNumber.ROUND_DOWN));
     },
-    [fullBalanceNumber, setVal]
+    [decimals, fullBalanceNumber]
   );
 
   if (showRoiCalculator) {
