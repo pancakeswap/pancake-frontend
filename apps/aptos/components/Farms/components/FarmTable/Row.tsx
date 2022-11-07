@@ -15,7 +15,7 @@ import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useFarmEarning, useFarmUserInfoCache } from 'state/farms/hook'
 import { DesktopColumnSchema, FarmWithStakedValue, MobileColumnSchema } from '../types'
 import ActionPanel from './Actions/ActionPanel'
@@ -104,7 +104,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
 
   cellData.earned = {
     ...props.earned,
-    earnings,
+    earnings: getBalanceNumber(new BigNumber(earnings), 8),
   }
 
   useEffect(() => {

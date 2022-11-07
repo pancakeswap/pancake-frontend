@@ -3,7 +3,6 @@ import { latinise } from 'utils/latinise'
 import styled from 'styled-components'
 import { RowType } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useRouter } from 'next/router'
 import { getDisplayApr } from '../getDisplayApr'
 
@@ -86,11 +85,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     [],
   )
 
-  const getFarmEarnings = (farm) => {
-    const earnings = new BigNumber(farm?.userData?.earnings)
-    return getBalanceNumber(earnings)
-  }
-
   const generateRow = (farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token?.address
@@ -122,8 +116,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         isStable: farm.isStable,
       },
       earned: {
-        // TODO: remove
-        earnings: getFarmEarnings(farm),
+        earnings: 0,
         pid: farm.pid,
       },
       liquidity: {

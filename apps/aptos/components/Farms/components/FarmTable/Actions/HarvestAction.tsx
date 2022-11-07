@@ -8,6 +8,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import { useFarmEarning } from 'state/farms/hook'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
 import { FarmWithStakedValue } from '../../types'
 
@@ -48,7 +49,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
 
   // If user didn't connect wallet default balance will be 0
   if (!earningsBigNumber.isZero()) {
-    earnings = getBalanceAmount(earningsBigNumber, 8)
+    earnings = getBalanceAmount(earningsBigNumber, FARM_DEFAULT_DECIMALS)
     earningsBusd = earnings.multipliedBy(cakePrice).toNumber()
     displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
   }
