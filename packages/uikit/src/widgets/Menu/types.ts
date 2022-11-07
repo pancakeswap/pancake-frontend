@@ -29,7 +29,6 @@ export interface NavProps {
   cakePriceUsd?: number;
   currentLang: string;
   buyCakeLabel: string;
-  isShowScrollToTopButton?: boolean;
   langs: Language[];
   setLang: (lang: Language) => void;
 }

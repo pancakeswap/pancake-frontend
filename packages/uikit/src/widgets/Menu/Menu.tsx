@@ -84,7 +84,6 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   activeSubItem,
   langs,
   buyCakeLabel,
-  isShowScrollToTopButton = true,
   children,
 }) => {
   const { isMobile } = useMatchBreakpoints();
