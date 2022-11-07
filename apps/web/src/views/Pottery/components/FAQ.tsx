@@ -73,7 +73,7 @@ const FAQ = () => {
             </Text>
           </FoldableText>
           <FoldableText title={t('Where can I learn more about this new Pottery format?')} mt="24px">
-            <Text>
+            <Text fontSize="14px" color="textSubtle">
               {t('Please feel free to reach out to us on')}
               <InlineLink fontSize="14px" external href="https://t.me/pancakeswap">
                 {t('Telegram')}
