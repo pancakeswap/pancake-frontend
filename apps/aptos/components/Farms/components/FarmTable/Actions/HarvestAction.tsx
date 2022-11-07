@@ -6,7 +6,7 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
+import { useCakePrice } from 'hooks/useStablePrice'
 import { useFarmEarning } from 'state/farms/hook'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
@@ -42,7 +42,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = userData?.earnings ? new BigNumber(userData.earnings) : BIG_ZERO
-  const cakePrice = useCakePriceAsBigNumber()
+  const { data: cakePrice } = useCakePrice()
   let earnings = BIG_ZERO
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />
