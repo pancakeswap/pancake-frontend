@@ -3,7 +3,7 @@ import BigNumber from "bignumber.js";
 import { Token } from "@pancakeswap/sdk";
 
 export interface FarmTableEarnedProps {
-  earnings: number;
+  earnings?: number;
   pid: number;
 }
 

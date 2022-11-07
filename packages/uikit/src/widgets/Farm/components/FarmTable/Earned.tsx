@@ -13,7 +13,7 @@ const Amount = styled.span<{ earned: number }>`
 `;
 
 const Earned: React.FunctionComponent<React.PropsWithChildren<EarnedPropsWithLoading>> = ({
-  earnings,
+  earnings = 0,
   userDataReady,
 }) => {
   if (userDataReady) {

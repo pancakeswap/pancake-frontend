@@ -74,8 +74,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
                 return Number(a.original.apr.value) - Number(b.original.apr.value)
               }
               return 0
-            case 'earned':
-              return a.original.earned.earnings - b.original.earned.earnings
             default:
               return 1
           }
@@ -116,7 +114,6 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         isStable: farm.isStable,
       },
       earned: {
-        earnings: 0,
         pid: farm.pid,
       },
       liquidity: {

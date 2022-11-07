@@ -313,13 +313,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               <NoSSR>
                 <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
               </NoSSR>
-              <Toggle
+              {/* <Toggle
                 id="staked-only-farms"
                 scale="sm"
                 checked={stakedOnly}
                 onChange={() => setStakedOnly(!stakedOnly)}
               />
-              <Text>{t('Staked only')}</Text>
+              <Text>{t('Staked only')}</Text> */}
             </ToggleWrapper>
             <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
           </ViewControls>

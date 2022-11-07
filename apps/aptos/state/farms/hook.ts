@@ -145,9 +145,6 @@ export const useFarms = () => {
       regularCakePerBlock: masterChef?.data ? Number(masterChef.data.cake_per_second) : 0,
       loadArchivedFarmsData: false,
       data: farmsWithPrices.filter((f) => !!f.pid).map(deserializeFarm),
-      fetchUserFarmsData: () => {
-        //
-      },
     }
   }, [poolLength, masterChef?.data, farmsWithPrices])
 }
