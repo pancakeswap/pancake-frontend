@@ -8,14 +8,12 @@ import {
   Loading,
   OptionProps,
   PageHeader,
-  ScrollToTopButtonV2,
   SearchInput,
   Select,
   Text,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
-import Portal from 'components/Portal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useIntersectionObserver from 'hooks/useIntersectionObserver'
 import orderBy from 'lodash/orderBy'
@@ -292,9 +290,6 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
           height={184.5}
         />
       </Page>
-      <Portal>
-        <ScrollToTopButtonV2 />
-      </Portal>
     </>
   )
 }
