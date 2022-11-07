@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair, Route, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Route, TradeType } from '@pancakeswap/sdk'
 
 import { RouteWithStableSwap, StableSwapPair, TradeWithStableSwap } from './types'
 
@@ -30,14 +30,11 @@ export function createTradeWithStableSwap<
   tradeType,
 }: Options<TInput, TOutput, TTradeType>): TradeWithStableSwap<TInput, TOutput, TTradeType> {
   const route: RouteWithStableSwap<TInput, TOutput> = new Route(pairs, inputAmount.currency, outputAmount.currency)
-  const isExactIn = tradeType === TradeType.EXACT_INPUT
-  if (isExactIn) {
-    const trade: TradeWithStableSwap<TInput, TOutput, TradeType.EXACT_INPUT> = Trade.exactIn(route, inputAmount)
-    trade.outputAmount = outputAmount
-    return trade as TradeWithStableSwap<TInput, TOutput, TTradeType>
-  }
 
-  const trade: TradeWithStableSwap<TInput, TOutput, TradeType.EXACT_OUTPUT> = Trade.exactOut(route, outputAmount)
-  trade.inputAmount = inputAmount
-  return trade as TradeWithStableSwap<TInput, TOutput, TTradeType>
+  return {
+    tradeType,
+    inputAmount,
+    outputAmount,
+    route,
+  }
 }
