@@ -84,7 +84,7 @@ export const fetchPoolData = async (
   chainName: 'ETH' | 'BSC' = 'BSC',
 ) => {
   const pairTokenMap = await getPairTokenMap(poolAddresses, chainName)
-  const weeksQuery = chainName === 'BSC' ? `twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}` : ''
+
   try {
     const query = gql`
       query pools {
@@ -92,16 +92,15 @@ export const fetchPoolData = async (
         oneDayAgo: ${POOL_AT_BLOCK(chainName, block24h, poolAddresses)}
         twoDaysAgo: ${POOL_AT_BLOCK(chainName, block48h, poolAddresses)}
         oneWeekAgo: ${POOL_AT_BLOCK(chainName, block7d, poolAddresses)}
-        ${weeksQuery}
+        twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}
       }
     `
-
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<PoolsQueryResponse>(query)
     const dataWithTokenInfo = mapValues(data, (poolFieldsArray) => {
       return poolFieldsArray
         ? poolFieldsArray
             .map((poolFields) => {
-              const pairTokenResult = pairTokenMap[poolFields.id]
+              const pairTokenResult = pairTokenMap[poolFields.id.toLowerCase()]
               return pairTokenResult
                 ? {
                     ...poolFields,
@@ -126,7 +125,7 @@ export const parsePoolData = (pairs?: PoolFields[]) => {
   }
   return pairs.reduce((accum: { [address: string]: FormattedPoolFields }, poolData) => {
     const { volumeUSD, reserveUSD, reserve0, reserve1, token0Price, token1Price } = poolData
-    accum[poolData.id] = {
+    accum[poolData.id.toLowerCase()] = {
       ...poolData,
       volumeUSD: parseFloat(volumeUSD),
       reserveUSD: parseFloat(reserveUSD),
