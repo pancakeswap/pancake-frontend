@@ -100,7 +100,7 @@ export const fetchPoolData = async (
       return poolFieldsArray
         ? poolFieldsArray
             .map((poolFields) => {
-              const pairTokenResult = pairTokenMap[poolFields.id.toLowerCase()]
+              const pairTokenResult = pairTokenMap[poolFields.id.toLowerCase()] || pairTokenMap[poolFields.id]
               return pairTokenResult
                 ? {
                     ...poolFields,
