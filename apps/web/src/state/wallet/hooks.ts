@@ -92,7 +92,10 @@ export function useTokenBalances(
 
 // get the balance for a single token/account combo
 export function useTokenBalance(account?: string, token?: Token): CurrencyAmount<Token> | undefined {
-  const tokenBalances = useTokenBalances(account, [token])
+  const tokenBalances = useTokenBalances(
+    account,
+    useMemo(() => [token], [token]),
+  )
   if (!token) return undefined
   return tokenBalances[token.address]
 }
@@ -127,7 +130,10 @@ export function useCurrencyBalances(
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount<Currency> | undefined {
-  return useCurrencyBalances(account, [currency])[0]
+  return useCurrencyBalances(
+    account,
+    useMemo(() => [currency], [currency]),
+  )[0]
 }
 
 // mimics useAllBalances
