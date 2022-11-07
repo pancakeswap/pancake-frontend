@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useMemo } from 'react'
-import { Flex, Box, Text, Balance } from '@pancakeswap/uikit'
+import { Flex, Box, Text, Balance, SkeletonV2 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import StakeToWinButton from 'views/Pottery/components/Banner/StakeToWinButton'
@@ -111,7 +111,14 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
               {t('Pottery')}
             </OutlineText>
           </Flex>
-          <BalanceStyle bold prefix="$" value={prizeTotal || 0} decimals={0} fontSize={['40px', '64px']} />
+          <SkeletonV2
+            isDataReady={Boolean(prizeTotal)}
+            width={['144px', '240px']}
+            height={['60px', '97px']}
+            wrapperProps={{ marginBottom: '8px' }}
+          >
+            <BalanceStyle bold prefix="$" value={prizeTotal} decimals={0} fontSize={['40px', '64px']} />
+          </SkeletonV2>
           <DarkTextStyle m="-16px 0 0 0" fontSize={['32px', '40px']} bold>
             {t('To be won !')}
           </DarkTextStyle>
