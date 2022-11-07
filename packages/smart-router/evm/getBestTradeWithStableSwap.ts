@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop, no-continue */
 import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
 import { getBestTradeFromV2 } from './getBestTradeFromV2'
+import { createTradeWithStableSwap } from './stableSwap'
 
 import { StableSwapPair, TradeWithStableSwap } from './types'
 import { isSamePair } from './utils/pair'
@@ -9,7 +10,7 @@ export async function getBestTradeWithStableSwap<TInput extends Currency, TOutpu
   baseTrade: Trade<TInput, TOutput, TradeType>,
   stableSwapPairs: StableSwapPair[],
 ): Promise<TradeWithStableSwap<TInput, TOutput, TradeType>> {
-  const { inputAmount, route } = baseTrade
+  const { inputAmount, route, tradeType } = baseTrade
   // Early return if there's no stableswap available
   if (!stableSwapPairs.length) {
     return baseTrade
@@ -48,13 +49,13 @@ export async function getBestTradeWithStableSwap<TInput extends Currency, TOutpu
     pairsWithStableSwap.push(pair)
   }
 
-  // TODO create trade with stable swap by pairs and output
-  // return {
-  //   pairs: pairsWithStableSwap,
-  //   // TODO add invariant check to make sure output amount has the same currency as the baseTrade output
-  //   outputAmount: outputAmount as CurrencyAmount<TOutput>,
-  // }
-  return baseTrade
+  return createTradeWithStableSwap({
+    pairs: pairsWithStableSwap,
+    inputAmount,
+    // TODO add invariant check to make sure output amount has the same currency as the baseTrade output
+    outputAmount: outputAmount as CurrencyAmount<TOutput>,
+    tradeType,
+  })
 }
 
 async function getOutputAmountFromStableSwapPair(

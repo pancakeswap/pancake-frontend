@@ -1,4 +1,4 @@
-import { Currency, Pair, Route, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Route, Trade, TradeType } from '@pancakeswap/sdk'
 
 export * from './chain'
 
@@ -12,5 +12,8 @@ export interface RouteWithStableSwap<TInput extends Currency, TOutput extends Cu
 
 export interface TradeWithStableSwap<TInput extends Currency, TOutput extends Currency, TTradeType extends TradeType>
   extends Trade<TInput, TOutput, TTradeType> {
+  tradeType: TTradeType
   route: RouteWithStableSwap<TInput, TOutput>
+  inputAmount: CurrencyAmount<TInput>
+  outputAmount: CurrencyAmount<TOutput>
 }
