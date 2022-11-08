@@ -834,7 +834,7 @@
   "Dismiss": "取消",
   "Latest": "最新",
   "Notice for trading %symbol%": "交易 %symbol% 的注意事項",
-  "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.": "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.",
+  "Warning: The pGALA token pool is not a valid token trading pair - please stop buying.": "警告：此 pGALA 代幣的流動性池已廢棄 - 請停止購買！",
   "Warning: BONDLY has been compromised. Please remove liquidity until further notice.": "警告：BONDLY 已遭到攻擊，在得到進一步通知之前，請先移除流動性",
   "Claimed": "已領取",
   "Settings": "設定",
@@ -2016,5 +2016,5 @@
   "RPC Default": "RPC Default",
   "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
   "Show username": "Show username",
-  "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter."
+  "For more info, please see pGALA’s twitter.": "如欲了解詳情，請咨询 pGALA 官方 Twitter。"
 }
