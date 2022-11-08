@@ -45,6 +45,7 @@ export const usePoolsList = () => {
 
   const addressesWithUSD = convertFarmsWithPriceIntoUSD(farmsWithPrices)
 
+  // Stringify for memoize. FarmsWithPrices keep returning new reference
   const addressesWithUSDStringify = JSON.stringify(addressesWithUSD)
 
   return useMemo(() => {
