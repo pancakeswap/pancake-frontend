@@ -171,6 +171,7 @@ export function useFarmsUserInfo() {
   const { data } = useAccountResource<FetchAccountResourceResult<FarmUserInfoResource>>({
     address: account?.address,
     resourceType: FARMS_USER_INFO_RESOURCE,
+    watch: true,
   })
 
   const userInfoQueries = useQueries({
