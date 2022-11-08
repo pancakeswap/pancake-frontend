@@ -1,40 +1,68 @@
-import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from './constants'
 import { getAllCommonPairs } from './getAllCommonPairs'
 import { BestTradeOptions } from './types'
 import { isTradeBetter } from './utils/trade'
 
-export async function getBestTradeFromV2<TInput extends Currency, TOutput extends Currency>(
-  amountIn: CurrencyAmount<TInput>,
-  output: TOutput,
-  options: BestTradeOptions,
-): Promise<Trade<TInput, TOutput, TradeType> | null> {
-  const { provider, ...restOptions } = options
-  const { maxHops = 3 } = restOptions
-  const allowedPairs = await getAllCommonPairs(amountIn.currency, output, { provider })
+export const getBestTradeFromV2ExactIn = createGetBestTradeFromV2(TradeType.EXACT_INPUT)
 
-  if (!allowedPairs.length) {
-    return null
-  }
+export const getBestTradeFromV2ExactOut = createGetBestTradeFromV2(TradeType.EXACT_OUTPUT)
 
-  if (maxHops === 1) {
-    return Trade.bestTradeExactIn(allowedPairs, amountIn, output, restOptions)[0] ?? null
-  }
+export async function getBestTradeFromV2<
+  TInput extends Currency,
+  TOutput extends Currency,
+  TTradeType extends TradeType,
+>(amountIn: CurrencyAmount<TInput>, output: TOutput, tradeType: TTradeType, options: BestTradeOptions) {
+  const getBestTrade = tradeType === TradeType.EXACT_INPUT ? getBestTradeFromV2ExactIn : getBestTradeFromV2ExactOut
 
-  // search through trades with varying hops, find best trade out of them
-  let bestTradeSoFar: Trade<TInput, TOutput, TradeType> | null = null
-  for (let i = 1; i <= maxHops; i++) {
-    const currentTrade: Trade<TInput, TOutput, TradeType> | null =
-      Trade.bestTradeExactIn(allowedPairs, amountIn, output, {
-        ...restOptions,
-        maxHops: i,
-        maxNumResults: 1,
-      })[0] ?? null
-    // if current trade is best yet, save it
-    if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
-      bestTradeSoFar = currentTrade
+  return getBestTrade(amountIn, output, options)
+}
+
+function createGetBestTradeFromV2<TTradeType extends TradeType>(tradeType: TTradeType) {
+  function getBestTrade<In extends Currency, Out extends Currency>(
+    pairs: Pair[],
+    amountIn: CurrencyAmount<In>,
+    output: Out,
+    options: Omit<BestTradeOptions, 'provider'>,
+  ) {
+    if (tradeType === TradeType.EXACT_INPUT) {
+      return Trade.bestTradeExactIn(pairs, amountIn, output, options)
     }
+    return Trade.bestTradeExactOut(pairs, output, amountIn, options)
   }
-  return bestTradeSoFar
+
+  return async function bestTradeFromV2<In extends Currency, Out extends Currency>(
+    amountIn: CurrencyAmount<In>,
+    output: Out,
+    options: BestTradeOptions,
+  ) {
+    const { provider, ...restOptions } = options
+    const { maxHops = 3 } = restOptions
+    const allowedPairs = await getAllCommonPairs(amountIn.currency, output, { provider })
+
+    if (!allowedPairs.length) {
+      return null
+    }
+
+    if (maxHops === 1) {
+      return getBestTrade(allowedPairs, amountIn, output, restOptions)[0] ?? null
+    }
+
+    // search through trades with varying hops, find best trade out of them
+    let bestTradeSoFar: ReturnType<typeof getBestTrade<In, Out>>[number] | null = null
+    for (let i = 1; i <= maxHops; i++) {
+      const currentTrade: ReturnType<typeof getBestTrade<In, Out>>[number] | null =
+        getBestTrade(allowedPairs, amountIn, output, {
+          ...restOptions,
+          maxHops: i,
+          maxNumResults: 1,
+        })[0] ?? null
+      // if current trade is best yet, save it
+      if (isTradeBetter(bestTradeSoFar, currentTrade, BETTER_TRADE_LESS_HOPS_THRESHOLD)) {
+        bestTradeSoFar = currentTrade
+      }
+    }
+    return bestTradeSoFar
+  }
 }
