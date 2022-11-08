@@ -24,6 +24,7 @@ interface StakeActionsPropsType<T> {
   isBnbPool: boolean;
   isStaked: ConstrainBoolean;
   isLoading?: boolean;
+  hideLocateAddress?: boolean;
 }
 
 export interface StakeModalPropsType<T> {
@@ -43,6 +44,7 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
     isBnbPool,
     isStaked,
     isLoading = false,
+    hideLocateAddress = false,
   }: StakeActionsPropsType<T>) => {
     const { stakingToken, stakingTokenPrice, stakingLimit, isFinished, userData } = pool;
     const { t } = useTranslation();
@@ -51,7 +53,9 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
       ? getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
       : 0;
 
-    const [onPresentTokenRequired] = useModal(<NotEnoughTokensModal tokenSymbol={stakingToken?.symbol || ""} />);
+    const [onPresentTokenRequired] = useModal(
+      <NotEnoughTokensModal hideLocateAddress={hideLocateAddress} tokenSymbol={stakingToken?.symbol || ""} />
+    );
 
     const [onPresentStake] = useModal(
       <StakeModal

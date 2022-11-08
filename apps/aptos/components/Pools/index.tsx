@@ -58,9 +58,13 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                       cardContent={
                         account ? (
                           pool?.sousId === CAKE_PID ? (
-                            <CakeCardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                            <CakeCardActions
+                              hideLocateAddress
+                              pool={pool}
+                              stakedBalance={pool?.userData?.stakedBalance}
+                            />
                           ) : (
-                            <CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                            <CardActions hideLocateAddress pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
                           )
                         ) : (
                           <>
