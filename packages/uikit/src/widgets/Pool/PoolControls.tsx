@@ -75,6 +75,7 @@ interface PoolControlsPropsType<T> {
   setViewMode: (s: ViewMode) => void;
   account: string;
   threshHold: number;
+  hideViewMode?: boolean;
 }
 
 export function PoolControls<T>({
@@ -86,6 +87,7 @@ export function PoolControls<T>({
   setViewMode,
   account,
   threshHold,
+  hideViewMode = false,
 }: PoolControlsPropsType<T>) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -182,6 +184,7 @@ export function PoolControls<T>({
           hasStakeInFinishedPools={hasStakeInFinishedPools}
           viewMode={viewMode}
           setViewMode={setViewMode}
+          hideViewMode={hideViewMode}
         />
         <FilterContainer>
           <LabelWrapper>

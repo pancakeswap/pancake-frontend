@@ -13,7 +13,7 @@ export const testnetTokens = {
   ),
   cake: new Coin(
     ChainId.TESTNET,
-    '0x4517f79a25706e166d4d04362dfcdf4c366f8ed6093992cf2c9b8f6bf3af79f7::pancake::Cake',
+    '0x9460030cb9e68bf33ced3e65d48e8c62610acd9f13c1a6197740733d8b72be60::pancake::Cake',
     8,
     'CAKE',
     'PancakeSwap Token',
