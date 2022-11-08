@@ -12,6 +12,7 @@ import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
+import { CAKE_PID } from 'components/Pools/constants'
 import { APT, L0_USDC } from 'config/coins'
 import { getFarmConfig } from 'config/constants/farms'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -81,7 +82,7 @@ export const useFarms = () => {
 
   const lpInfo = useMemo(() => {
     return farmConfig
-      .filter((f) => f.pid !== 0)
+      .filter((f) => f.pid !== 0 && f.pid !== CAKE_PID)
       .concat()
       .map((config) => {
         const token = new Coin(config.token.chainId, config.token.address, config.token.decimals, config.token.symbol)
@@ -136,7 +137,7 @@ export const useFarms = () => {
       })
   }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])
 
-  const farmsWithPrices = getFarmsPrices(lpInfo, nativeStableLpMap[chainId])
+  const farmsWithPrices = useMemo(() => getFarmsPrices(lpInfo, nativeStableLpMap[chainId]), [chainId, lpInfo])
 
   const userInfos = useFarmsUserInfo()
 

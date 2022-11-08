@@ -13,7 +13,7 @@ import { getStatus } from '../helpers'
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { address, releaseBlockNumber } = ifo
+  const { address } = ifo
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const [state, setState] = useState({
     isInitialized: false,
@@ -52,10 +52,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       const blocksRemaining = endBlockNum - currentBlock
 
       // Calculate the total progress until finished or until start
-      const progress =
-        currentBlock > startBlockNum
-          ? ((currentBlock - startBlockNum) / totalBlocks) * 100
-          : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
+      const progress = status === 'live' ? ((currentBlock - startBlockNum) / totalBlocks) * 100 : null
 
       setState((prev) => ({
         ...prev,
@@ -74,7 +71,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         },
       }))
     },
-    [address, releaseBlockNumber],
+    [address],
   )
 
   return { ...state, currencyPriceInUSD: lpTokenPriceInUsd, fetchIfoData }

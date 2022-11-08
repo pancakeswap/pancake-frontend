@@ -60,6 +60,7 @@ const Menu = (props) => {
         activeItem={activeMenuItem?.href}
         activeSubItem={activeSubMenuItem?.href}
         buyCakeLabel={t('Buy CAKE')}
+        isShowScrollToTopButton
         {...props}
       />
     </>

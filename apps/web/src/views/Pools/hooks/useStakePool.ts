@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import { DEFAULT_TOKEN_DECIMAL, BOOSTED_FARM_GAS_LIMIT } from 'config'
+import { DEFAULT_TOKEN_DECIMAL, DEFAULT_GAS_LIMIT } from 'config'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
 
 const options = {
-  gasLimit: BOOSTED_FARM_GAS_LIMIT,
+  gasLimit: DEFAULT_GAS_LIMIT,
 }
 
 const sousStake = async (sousChefContract, amount, decimals = 18, gasPrice: string) => {

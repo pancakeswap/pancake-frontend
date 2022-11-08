@@ -89,7 +89,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     const returnData = await multi.callStatic.tryAggregate(requireSuccess, calldata, overrides)
     const res = returnData.map((call, i) => {
       const [result, data] = call
-      return result ? itf.decodeFunctionResult(calls[i].name, data) : null
+      return result && data !== '0x' ? itf.decodeFunctionResult(calls[i].name, data) : null
     })
 
     return res as any

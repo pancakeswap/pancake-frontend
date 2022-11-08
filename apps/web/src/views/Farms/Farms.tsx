@@ -1,5 +1,4 @@
 import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
-import { createPortal } from 'react-dom'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import { useWeb3React } from '@pancakeswap/wagmi'
@@ -14,7 +13,6 @@ import {
   Link,
   Box,
   Farm as FarmUI,
-  ScrollToTopButtonV2,
   Loading,
   SearchInput,
   Select,
@@ -456,7 +454,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         {poolLength && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
-      {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </FarmsContext.Provider>
   )
 }
