@@ -71,17 +71,23 @@ const UserMenu: React.FC<UserMenuProps> = ({
   children,
   disabled,
   placement = "bottom-end",
+  recalculatePopover,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
   const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
-  const { styles, attributes } = usePopper(targetRef, tooltipRef, {
+  const { styles, attributes, update } = usePopper(targetRef, tooltipRef, {
     strategy: "fixed",
     placement,
     modifiers: [{ name: "offset", options: { offset: [0, 0] } }],
   });
+
+  // recalculate the popover position
+  useEffect(() => {
+    if (recalculatePopover && isOpen && update) update();
+  }, [isOpen, update, recalculatePopover]);
 
   useEffect(() => {
     const showDropdownMenu = () => {

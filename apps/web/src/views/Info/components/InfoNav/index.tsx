@@ -107,6 +107,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
           t('Select a Network')
         )
       }
+      recalculatePopover
     >
       {() => <NetworkSelect chainId={multiChainId[chainName]} switchNetwork={switchNetwork} />}
     </UserMenu>
