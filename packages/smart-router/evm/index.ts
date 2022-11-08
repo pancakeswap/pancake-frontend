@@ -21,7 +21,7 @@ export async function getBestTrade<TInput extends Currency, TOutput extends Curr
     return null
   }
 
-  const stableSwapPairs = await getStableSwapPairs(chainId)
+  const stableSwapPairs = getStableSwapPairs(chainId)
   const bestTradeWithStableSwap = await getBestTradeWithStableSwap(bestTradeV2, stableSwapPairs, { provider })
   const { outputAmount: outputAmountWithStableSwap } = bestTradeWithStableSwap
 
