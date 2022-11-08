@@ -5,16 +5,21 @@ import { parseUnits } from '@ethersproject/units'
 import { useMasterchefV1, useSousChef } from 'hooks/useContract'
 import { useGasPrice } from 'state/user/hooks'
 
+const options = {
+  gasLimit: DEFAULT_GAS_LIMIT,
+}
+
 const sousUnstake = (sousChefContract: any, amount: string, decimals: number, gasPrice: string) => {
   const units = parseUnits(amount, decimals)
 
   return sousChefContract.withdraw(units.toString(), {
+    ...options,
     gasPrice,
   })
 }
 
 const sousEmergencyUnstake = (sousChefContract: any, gasPrice: string) => {
-  return sousChefContract.emergencyWithdraw({ gasPrice })
+  return sousChefContract.emergencyWithdraw({ ...options, gasPrice })
 }
 
 const useUnstakePool = (sousId: number, enableEmergencyWithdraw = false) => {
@@ -27,7 +32,7 @@ const useUnstakePool = (sousId: number, enableEmergencyWithdraw = false) => {
       if (sousId === 0) {
         const value = new BigNumber(amount).times(DEFAULT_TOKEN_DECIMAL).toString()
         return masterChefV1Contract.leaveStaking(value, {
-          gasLimit: DEFAULT_GAS_LIMIT,
+          ...options,
           gasPrice,
         })
       }

@@ -1,11 +1,11 @@
 import { useCallback } from 'react'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useSousChef } from 'hooks/useContract'
-import { BOOSTED_FARM_GAS_LIMIT } from 'config'
+import { DEFAULT_GAS_LIMIT } from 'config'
 import { useGasPrice } from 'state/user/hooks'
 
 const options = {
-  gasLimit: BOOSTED_FARM_GAS_LIMIT,
+  gasLimit: DEFAULT_GAS_LIMIT,
 }
 
 const harvestPool = async (sousChefContract, gasPrice) => {
