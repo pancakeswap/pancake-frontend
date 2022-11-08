@@ -147,7 +147,8 @@ const Search = () => {
 
   const inputRef = useRef<HTMLInputElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
-  const showMoreRef = useRef<HTMLDivElement>(null)
+  const showMoreTokenRef = useRef<HTMLDivElement>(null)
+  const showMorePoolRef = useRef<HTMLDivElement>(null)
 
   const [showMenu, setShowMenu] = useState(false)
   const [value, setValue] = useState('')
@@ -166,9 +167,10 @@ const Search = () => {
   const handleOutsideClick = (e: any) => {
     const menuClick = menuRef.current && menuRef.current.contains(e.target)
     const inputCLick = inputRef.current && inputRef.current.contains(e.target)
-    const showMoreClick = showMoreRef.current && showMoreRef.current.contains(e.target)
+    const showMoreTokenClick = showMoreTokenRef.current && showMoreTokenRef.current.contains(e.target)
+    const showMorePoolClick = showMorePoolRef.current && showMorePoolRef.current.contains(e.target)
 
-    if (!menuClick && !inputCLick && !showMoreClick) {
+    if (!menuClick && !inputCLick && !showMoreTokenClick && !showMorePoolClick) {
       setPoolsShown(3)
       setTokensShown(3)
       setShowMenu(false)
@@ -183,7 +185,6 @@ const Search = () => {
       document.removeEventListener('click', handleOutsideClick)
       document.querySelector('body').style.overflow = 'visible'
     }
-
     return () => {
       document.removeEventListener('click', handleOutsideClick)
     }
@@ -337,16 +338,17 @@ const Search = () => {
               )
             })}
             {contentUnderTokenList()}
-            {tokensForList.length > tokensShown && (
-              <HoverText
-                onClick={() => {
-                  setTokensShown(tokensShown + 5)
-                }}
-                ref={showMoreRef}
-              >
-                {t('See more...')}
-              </HoverText>
-            )}
+
+            <HoverText
+              onClick={() => {
+                if (tokensShown + 5 < tokensForList.length) setTokensShown(tokensShown + 5)
+                else setTokensShown(tokensForList.length)
+              }}
+              ref={showMoreTokenRef}
+              style={{ display: tokensForList.length <= tokensShown && 'none' }}
+            >
+              {t('See more...')}
+            </HoverText>
 
             <Break />
             <ResponsiveGrid>
@@ -403,16 +405,16 @@ const Search = () => {
               )
             })}
             {contentUnderPoolList()}
-            {poolForList.length > poolsShown && (
-              <HoverText
-                onClick={() => {
-                  setPoolsShown(poolsShown + 5)
-                }}
-                ref={showMoreRef}
-              >
-                {t('See more...')}
-              </HoverText>
-            )}
+            <HoverText
+              onClick={() => {
+                if (poolsShown + 5 < poolForList.length) setPoolsShown(poolsShown + 5)
+                else setPoolsShown(poolForList.length)
+              }}
+              ref={showMorePoolRef}
+              style={{ display: poolForList.length <= poolsShown && 'none' }}
+            >
+              {t('See more...')}
+            </HoverText>
           </Menu>
         )}
       </Container>
