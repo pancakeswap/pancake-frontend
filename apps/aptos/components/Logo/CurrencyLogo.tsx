@@ -11,9 +11,10 @@ import Logo from './Logo'
 const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && token.chainId === ChainId.MAINNET) {
-      return `https://assets-cdn.trustwallet.com/blockchains/aptos/assets/${encodeURIComponent(
-        token.address,
-      ).replaceAll('%3A', '%253A')}/logo.png` // hex encoding
+      return `https://assets-cdn.trustwallet.com/blockchains/aptos/assets/${token.address.replaceAll(
+        ':',
+        '%253A',
+      )}/logo.png` // hex encoding
     }
     return null
   },
