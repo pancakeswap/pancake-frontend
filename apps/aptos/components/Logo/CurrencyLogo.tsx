@@ -1,5 +1,6 @@
-import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, Token, ChainId } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN } from '@pancakeswap/awgmi'
+import memoize from 'lodash/memoize'
 import { useHttpLocations } from '@pancakeswap/hooks'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { AptosIcon } from '@pancakeswap/uikit'
@@ -7,7 +8,18 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import Logo from './Logo'
 
-const getTokenLogoURL = (_token?: Token) => null
+const getTokenLogoURL = memoize(
+  (token?: Token) => {
+    if (token && token.chainId === ChainId.MAINNET) {
+      return `https://assets-cdn.trustwallet.com/blockchains/aptos/assets/${token.address.replaceAll(
+        ':',
+        '%253A',
+      )}/logo.png` // hex encoding
+    }
+    return null
+  },
+  (t) => (t ? `${t.chainId}#${t.address}` : null),
+)
 
 const StyledLogo = styled(Logo)<{ size: string }>`
   width: ${({ size }) => size};
