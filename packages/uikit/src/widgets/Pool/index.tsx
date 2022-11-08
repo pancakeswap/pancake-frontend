@@ -9,3 +9,4 @@ export * from "./StyledCard";
 export * from "./withStakeActions";
 export * from "./AprRowWithToolTip";
 export * from "./Apr";
+export * from "./withCardActions";

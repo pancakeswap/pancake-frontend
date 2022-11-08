@@ -28,13 +28,13 @@ interface GenericToken {
 }
 
 export interface SerializedPoolConfig<T> extends PoolConfigBaseProps {
-  earningToken?: T & GenericToken;
-  stakingToken?: T & GenericToken;
+  earningToken: T & GenericToken;
+  stakingToken: T & GenericToken;
 }
 
 export interface DeserializedPoolConfig<T> extends PoolConfigBaseProps {
-  earningToken?: T & GenericToken;
-  stakingToken?: T & GenericToken;
+  earningToken: T & GenericToken;
+  stakingToken: T & GenericToken;
 }
 
 export interface DeserializedPool<T> extends DeserializedPoolConfig<T>, CorePoolProps {
