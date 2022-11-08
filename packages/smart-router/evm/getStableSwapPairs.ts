@@ -6,8 +6,8 @@ import { StableSwapPair } from './types'
 import { createStableSwapPair } from './stableSwap'
 
 export async function getStableSwapPairs(chainId: ChainId): Promise<StableSwapPair[]> {
-  // Stable swap is only supported on BSC chain
-  if (chainId !== ChainId.BSC) {
+  // Stable swap is only supported on BSC chain & BSC testnet
+  if (chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET) {
     return []
   }
 
