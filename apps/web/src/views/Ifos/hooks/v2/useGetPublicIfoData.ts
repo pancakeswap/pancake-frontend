@@ -29,7 +29,7 @@ const formatPool = (pool) => ({
  * Gets all public data of an IFO
  */
 const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { address, releaseBlockNumber } = ifo
+  const { address } = ifo
   const cakePriceUsd = usePriceCakeBusd()
   const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
@@ -115,10 +115,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       const blocksRemaining = endBlockNum - currentBlock
 
       // Calculate the total progress until finished or until start
-      const progress =
-        currentBlock > startBlockNum
-          ? ((currentBlock - startBlockNum) / totalBlocks) * 100
-          : ((currentBlock - releaseBlockNumber) / (startBlockNum - releaseBlockNumber)) * 100
+      const progress = status === 'live' ? ((currentBlock - startBlockNum) / totalBlocks) * 100 : null
 
       setState((prev) => ({
         ...prev,
@@ -139,7 +136,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         numberPoints: numberPoints ? numberPoints[0].toNumber() : 0,
       }))
     },
-    [releaseBlockNumber, address],
+    [address],
   )
 
   return { ...state, currencyPriceInUSD, fetchIfoData }
