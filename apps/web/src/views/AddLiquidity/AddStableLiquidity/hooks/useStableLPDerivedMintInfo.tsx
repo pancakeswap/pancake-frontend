@@ -147,7 +147,10 @@ export function useStableLPDerivedMintInfo(
     pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO))
 
   // balances
-  const balances = useCurrencyBalances(account ?? undefined, [currencyA, currencyB])
+  const balances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [currencyA, currencyB], [currencyA, currencyB]),
+  )
   const currencyBalances: { [field in Field]?: CurrencyAmount<Currency> } = {
     [Field.CURRENCY_A]: balances[0],
     [Field.CURRENCY_B]: balances[1],
