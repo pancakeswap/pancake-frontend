@@ -33,12 +33,15 @@ const walletsConfig = ({
   connect: (connectorID: ConnectorNames) => void
 }): WalletConfigV2<ConnectorNames>[] => {
   const qrCode = createQrCode(chainId, connect)
+
   return [
     {
       id: 'metamask',
       title: 'Metamask',
       icon: '/images/wallets/metamask.png',
-      installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready
+      },
       connectorId: ConnectorNames.MetaMask,
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
       qrCode,
@@ -48,7 +51,9 @@ const walletsConfig = ({
       id: 'binance',
       title: 'Binance Wallet',
       icon: '/images/wallets/binance.png',
-      installed: typeof window !== 'undefined' && Boolean(window.BinanceChain),
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.BinanceChain)
+      },
       connectorId: ConnectorNames.BSC,
       guide: {
         desktop: 'https://www.bnbchain.org/en/binance-wallet',
@@ -70,12 +75,15 @@ const walletsConfig = ({
       title: 'Trust Wallet',
       icon: '/images/wallets/trust.png',
       connectorId: ConnectorNames.Injected,
-      installed:
-        typeof window !== 'undefined' &&
-        !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
-        (Boolean(window.ethereum?.isTrust) ||
-          // @ts-ignore
-          Boolean(window.ethereum?.isTrustWallet)),
+      get installed() {
+        return (
+          typeof window !== 'undefined' &&
+          !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
+          (Boolean(window.ethereum?.isTrust) ||
+            // @ts-ignore
+            Boolean(window.ethereum?.isTrustWallet))
+        )
+      },
       deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
       downloadLink: {
         desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
@@ -93,7 +101,9 @@ const walletsConfig = ({
       title: 'Opera Wallet',
       icon: '/images/wallets/opera.png',
       connectorId: ConnectorNames.Injected,
-      installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isOpera),
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.ethereum?.isOpera)
+      },
       downloadLink: 'https://www.opera.com/crypto/next',
     },
     {
@@ -101,7 +111,9 @@ const walletsConfig = ({
       title: 'Brave Wallet',
       icon: '/images/wallets/brave.png',
       connectorId: ConnectorNames.Injected,
-      installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isBraveWallet),
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.ethereum?.isBraveWallet)
+      },
       downloadLink: 'https://brave.com/wallet/',
     },
     {
@@ -109,7 +121,9 @@ const walletsConfig = ({
       title: 'MathWallet',
       icon: '/images/wallets/mathwallet.png',
       connectorId: ConnectorNames.Injected,
-      installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet),
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet)
+      },
       qrCode,
     },
     {
@@ -117,7 +131,9 @@ const walletsConfig = ({
       title: 'TokenPocket',
       icon: '/images/wallets/tokenpocket.png',
       connectorId: ConnectorNames.Injected,
-      installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket),
+      get installed() {
+        return typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket)
+      },
       qrCode,
     },
     {
@@ -125,7 +141,9 @@ const walletsConfig = ({
       title: 'SafePal',
       icon: '/images/wallets/safepal.png',
       connectorId: ConnectorNames.Injected,
-      installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal),
+      get installed() {
+        return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal)
+      },
       qrCode,
     },
     {
@@ -133,9 +151,12 @@ const walletsConfig = ({
       title: 'Coin98',
       icon: '/images/wallets/coin98.png',
       connectorId: ConnectorNames.Injected,
-      installed:
-        typeof window !== 'undefined' &&
-        (Boolean((window.ethereum as ExtendEthereum)?.isCoin98) || Boolean(window.coin98)),
+      get installed() {
+        return (
+          typeof window !== 'undefined' &&
+          (Boolean((window.ethereum as ExtendEthereum)?.isCoin98) || Boolean(window.coin98))
+        )
+      },
       qrCode,
     },
     {
@@ -143,8 +164,9 @@ const walletsConfig = ({
       title: 'Blocto',
       icon: '/images/wallets/blocto.png',
       connectorId: ConnectorNames.Injected,
-      installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto),
-      qrCode,
+      get installed() {
+        return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
+      },
     },
   ]
 }
@@ -161,7 +183,9 @@ export const createWallets = (chainId: number, connect: any) => {
           title: 'Injected',
           icon: WalletFilledIcon,
           connectorId: ConnectorNames.Injected,
-          installed: typeof window !== 'undefined' && Boolean(window.ethereum),
+          get installed() {
+            return typeof window !== 'undefined' && Boolean(window.ethereum)
+          },
         },
       ]
 }
