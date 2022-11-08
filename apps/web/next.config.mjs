@@ -20,6 +20,7 @@ const withTM = NextTranspileModules([
   '@pancakeswap/token-lists',
   '@pancakeswap/utils',
   '@pancakeswap/tokens',
+  '@pancakeswap/smart-router',
 ])
 
 const withVanillaExtract = createVanillaExtractPlugin()

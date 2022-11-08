@@ -50,6 +50,7 @@
     "@pancakeswap/localization": "*",
     "@pancakeswap/multicall": "*",
     "@pancakeswap/sdk": "*",
+    "@pancakeswap/smart-router": "*",
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
     "@pancakeswap/uikit": "*",
