@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@ethersproject/providers": "^5.0.0",
+    "@ethersproject/bignumber": "^5.0.0",
     "@pancakeswap/farms": "*",
     "@pancakeswap/multicall": "*",
     "@pancakeswap/sdk": "*",
