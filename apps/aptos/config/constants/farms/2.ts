@@ -1,5 +1,6 @@
 import type { SerializedFarmConfig } from '@pancakeswap/farms'
 import { testnetTokens } from 'config/constants/tokens'
+import { CAKE_PID } from '..'
 
 const farms: SerializedFarmConfig[] = [
   {
@@ -18,9 +19,9 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: testnetTokens.apt,
   },
   {
-    pid: 2,
-    lpSymbol: 'CAKE',
-    lpAddress: '0x4517f79a25706e166d4d04362dfcdf4c366f8ed6093992cf2c9b8f6bf3af79f7::pancake::Cake',
+    pid: CAKE_PID,
+    lpSymbol: testnetTokens.cake.symbol,
+    lpAddress: testnetTokens.cake.address,
     token: testnetTokens.cake,
     quoteToken: testnetTokens.cake,
   },
