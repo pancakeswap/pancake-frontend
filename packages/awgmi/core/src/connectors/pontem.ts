@@ -1,6 +1,6 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
-import { ConnectorNotFoundError } from '../errors'
+import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
 import { Address } from '../types'
 import { Connector } from './base'
 import { SignMessagePayload, SignMessageResponse } from './types'
@@ -119,12 +119,19 @@ export class PontemConnector extends Connector<Window['pontem']> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
-    const response = await provider.signAndSubmit(payload)
+    let response
 
+    try {
+      response = await provider.signAndSubmit(payload)
+    } catch (error) {
+      if ((error as any)?.code === 1002) {
+        throw new UserRejectedRequestError(error)
+      }
+    }
     if (!response || !response.success) {
+      // TODO: unify WalletProviderError
       throw new Error('sign and submit failed')
     }
-
     return response.result
   }
 
