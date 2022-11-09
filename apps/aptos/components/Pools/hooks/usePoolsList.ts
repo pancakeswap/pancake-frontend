@@ -5,7 +5,7 @@ import _toString from 'lodash/toString'
 
 import { SMARTCHEF_ADDRESS, SMARTCHEF_POOL_INFO_TYPE_TAG } from 'contracts/smartchef/constants'
 import _toNumber from 'lodash/toNumber'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useFarms, useMasterChefResource } from 'state/farms/hook'
 import { FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
 import { getFarmConfig } from 'config/constants/farms'
@@ -14,13 +14,19 @@ import { APT, L0_USDC } from 'config/coins'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { CAKE_PID } from 'config/constants'
+import { useInterval, useLastUpdated } from '@pancakeswap/hooks'
 
 import { PoolResource } from '../types'
 import transformCakePool from '../transformers/transformCakePool'
 import transformPool from '../transformers/transformPool'
 import convertFarmsWithPriceIntoUSD from '../utils/convertFarmsWithPriceIntoUSD'
+import { POOL_RESET_INTERVAL } from '../constants'
 
 export const usePoolsList = () => {
+  // Since Aptos is timestamp-based update for earning, we will forcely refresh in 10 seconds.
+  const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
+  useInterval(refresh, POOL_RESET_INTERVAL)
+
   const { account, chainId } = useActiveWeb3React()
 
   const { data: farmsWithPrices } = useFarms()
@@ -41,7 +47,7 @@ export const usePoolsList = () => {
     watch: true,
   })
 
-  const cakePool = useCakePool({ balances, chainId })
+  const tranformCakePool = useCakePool({ balances, chainId })
 
   const addressesWithUSD = convertFarmsWithPriceIntoUSD(farmsWithPrices)
 
@@ -57,11 +63,16 @@ export const usePoolsList = () => {
           .filter(Boolean)
       : []
 
+    const cakePool = tranformCakePool()
+
     return cakePool ? [cakePool, ...syrupPools] : syrupPools
-  }, [pools, balances, cakePool, chainId, addressesWithUSDStringify])
+    // Disable exhaustive for lastUpdated
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pools, balances, chainId, addressesWithUSDStringify, tranformCakePool, lastUpdated])
 }
 
 export const useCakePool = ({ balances, chainId }) => {
+  // Since Aptos is timestamp-based update for earning, we will forcely refresh in 6 seconds.
   const cakeFarm = useMemo(() => getFarmConfig(chainId)?.find((f) => f.pid === CAKE_PID), [chainId])
 
   const pairs: [Coin, Coin][] = useMemo(() => {
@@ -108,7 +119,7 @@ export const useCakePool = ({ balances, chainId }) => {
     },
   })
 
-  return useMemo(() => {
+  return useCallback(() => {
     if (!masterChef || !cakeFarm) return undefined
     const cakePoolInfo = masterChef.data.pool_info[CAKE_PID]
 
