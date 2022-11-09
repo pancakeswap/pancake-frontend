@@ -307,10 +307,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Page title={t('Farms')}>
         <ControlContainer>
           <ViewControls>
+            <NoSSR>
+              <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+            </NoSSR>
             <ToggleWrapper>
-              <NoSSR>
-                <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
-              </NoSSR>
               <Toggle
                 id="staked-only-farms"
                 scale="sm"
