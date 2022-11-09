@@ -115,7 +115,7 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                 </CardLayout>
               ) : (
                 <Pool.PoolsTable>
-                  {pools.map((pool) =>
+                  {chosenPools.map((pool) =>
                     pool.vaultKey ? (
                       <VaultPoolRow
                         initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
