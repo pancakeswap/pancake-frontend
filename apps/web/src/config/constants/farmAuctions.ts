@@ -829,6 +829,22 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     tokenName: 'BIVE',
     projectSite: 'https://bizverse.io/',
   },
+  {
+    account: '0x469d342E4F3D9FFbEdCA2e2CA8ab268a6fe973C3',
+    farmName: 'DEXT-BNB',
+    tokenAddress: '0xe91a8D2c584Ca93C7405F15c22CdFE53C29896E3',
+    quoteToken: bscTokens.wbnb,
+    tokenName: 'DEXT',
+    projectSite: 'https://www.dextools.io/app/',
+  },
+  {
+    account: '0x1731C7Cf049632c083Ee6ff7d73E318ED1c9AA2A',
+    farmName: 'QUO-BUSD ',
+    tokenAddress: '0x08b450e4a48C04CDF6DB2bD4cf24057f7B9563fF',
+    quoteToken: bscTokens.busd,
+    tokenName: 'QUO',
+    projectSite: 'https://quoll.finance/',
+  },
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
