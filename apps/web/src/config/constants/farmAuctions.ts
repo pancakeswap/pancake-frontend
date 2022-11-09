@@ -830,7 +830,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     projectSite: 'https://bizverse.io/',
   },
   {
-    account: '0x469d342E4F3D9FFbEdCA2e2CA8ab268a6fe973C3',
+    account: '0x997Cc123cF292F46E55E6E63e806CD77714DB70f',
     farmName: 'DEXT-BNB',
     tokenAddress: '0xe91a8D2c584Ca93C7405F15c22CdFE53C29896E3',
     quoteToken: bscTokens.wbnb,
