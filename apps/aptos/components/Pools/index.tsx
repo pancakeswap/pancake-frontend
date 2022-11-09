@@ -1,13 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, PageHeader, ScrollToTopButtonV2, Pool, Text, FlexLayout } from '@pancakeswap/uikit'
+import { Flex, Heading, PageHeader, Pool, Text, FlexLayout } from '@pancakeswap/uikit'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import styled from 'styled-components'
 
 import Page from 'components/Layout/Page'
-import Portal from 'components/Portal'
 import { TokenPairImage } from 'components/TokenImage'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
+import { CAKE_PID } from 'config/constants'
 
 import NoSSR from '../NoSSR'
 import PoolControls from './components/PoolControls'
@@ -17,7 +17,6 @@ import CardFooter from './components/PoolCard/CardFooter'
 import PoolStatsInfo from './components/PoolCard/PoolStatsInfo'
 import CakeCardActions from './components/PoolCard/CakeCardActions'
 import { usePoolsList } from './hooks/usePoolsList'
-import { CAKE_PID } from './constants'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -59,9 +58,13 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                       cardContent={
                         account ? (
                           pool?.sousId === CAKE_PID ? (
-                            <CakeCardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                            <CakeCardActions
+                              hideLocateAddress
+                              pool={pool}
+                              stakedBalance={pool?.userData?.stakedBalance}
+                            />
                           ) : (
-                            <CardActions pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
+                            <CardActions hideLocateAddress pool={pool} stakedBalance={pool?.userData?.stakedBalance} />
                           )
                         ) : (
                           <>

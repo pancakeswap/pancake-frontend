@@ -21,7 +21,6 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   onDismiss,
 }) => {
   const [view, setView] = useState<ConfirmVoteView>(ConfirmVoteView.MAIN)
-  const [modalIsOpen, setModalIsOpen] = useState(true)
   const [isPending, setIsPending] = useState(false)
   const { account } = useWeb3React()
   const { t } = useTranslation()
@@ -40,7 +39,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     ifoPoolBalance,
     lockedCakeBalance,
     lockedEndTime,
-  } = useGetVotingPower(block, modalIsOpen)
+  } = useGetVotingPower(block)
 
   const isStartView = view === ConfirmVoteView.MAIN
   const handleBack = isStartView ? null : () => setView(ConfirmVoteView.MAIN)
@@ -52,7 +51,6 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   }
 
   const handleDismiss = () => {
-    setModalIsOpen(false)
     onDismiss()
   }
 

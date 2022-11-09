@@ -84,7 +84,7 @@ const transformPool = (
     }
   }
 
-  const now = Date.now()
+  const nowInSeconds = Math.floor(Date.now() / 1000)
 
   const stakingToken = getTokenByAddress({ chainId, address: stakingAddress })
   const earningToken = getTokenByAddress({ chainId, address: earningAddress })
@@ -105,8 +105,7 @@ const transformPool = (
     earningTokenPrice,
     stakingTokenPrice,
 
-    // Philip TODO: remove ! logic
-    isFinished: !(now > +resource.data.end_timestamp),
+    isFinished: nowInSeconds > +resource.data.end_timestamp,
     poolCategory: PoolCategory.CORE,
     startBlock: _toNumber(resource.data.start_timestamp),
     tokenPerBlock: resource.data.reward_per_second,

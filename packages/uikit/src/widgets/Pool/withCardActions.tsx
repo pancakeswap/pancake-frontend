@@ -13,10 +13,11 @@ const InlineText = styled(Text)`
 interface CardActionsProps<T> {
   pool: DeserializedPool<T>;
   stakedBalance?: BigNumber;
+  hideLocateAddress?: boolean;
 }
 
 export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
-  return ({ pool, stakedBalance }: CardActionsProps<T>) => {
+  return ({ pool, stakedBalance, hideLocateAddress = false }: CardActionsProps<T>) => {
     const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
 
     const isBnbPool = false;
@@ -66,6 +67,7 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
             stakedBalance={stakedBalance}
             isBnbPool={isBnbPool}
             isStaked={isStaked}
+            hideLocateAddress={hideLocateAddress}
           />
         </Flex>
       </Flex>

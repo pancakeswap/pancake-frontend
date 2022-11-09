@@ -265,10 +265,10 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
   )
 
   // Get user balance for selected Currencies
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ])
+  const relevantTokenBalances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [inputCurrency ?? undefined, outputCurrency ?? undefined], [inputCurrency, outputCurrency]),
+  )
   const currencyBalances = {
     input: relevantTokenBalances[0],
     output: relevantTokenBalances[1],

@@ -56,6 +56,7 @@ interface PoolTableButtonsPropsType {
   viewMode: ViewMode;
   setViewMode: (s: ViewMode) => void;
   hasStakeInFinishedPools: boolean;
+  hideViewMode?: boolean;
 }
 
 const PoolTabButtons = ({
@@ -64,6 +65,7 @@ const PoolTabButtons = ({
   hasStakeInFinishedPools,
   viewMode,
   setViewMode,
+  hideViewMode = false,
 }: PoolTableButtonsPropsType) => {
   const router = useRouter();
 
@@ -71,7 +73,9 @@ const PoolTabButtons = ({
 
   const isExact = router.pathname === "/pools" || router.pathname === "/_mp/pools";
 
-  const viewModeToggle = <ToggleView idPrefix="clickPool" viewMode={viewMode} onToggle={setViewMode} />;
+  const viewModeToggle = hideViewMode ? null : (
+    <ToggleView idPrefix="clickPool" viewMode={viewMode} onToggle={setViewMode} />
+  );
 
   const liveOrFinishedSwitch = (
     <Wrapper>
