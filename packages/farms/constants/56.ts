@@ -51,6 +51,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 130,
+    lpSymbol: 'XCAD-CAKE',
+    lpAddress: '0x50e4837Fc2eEFFD34EF78483A89c6Afb7Dd70c77',
+    token: bscTokens.xcad,
+    quoteToken: bscTokens.cake,
+  },
+  {
     pid: 106,
     lpSymbol: 'MHUNT-BNB LP',
     lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
