@@ -60,19 +60,19 @@ const transformCakePool = ({
     stakingTokenBalance: new BigNumber(0),
   }
 
-  const foundStakingBalance = balances.find(
+  const foundStakingBalance = balances?.find(
     (balance) => balance.type === `0x1::coin::CoinStore<${cakeFarm.token.address}>`,
   )
 
-  const amount = _get(foundStakingBalance, 'data.coin.value')
+  const amount = _toNumber(_get(foundStakingBalance, 'data.coin.value', '0'))
 
   if (amount) {
     userData = { ...userData, stakingTokenBalance: new BigNumber(amount) }
   }
 
-  const totalStake = _get(cakePoolInfo, 'total_amount', '0')
+  const totalStaked = _get(cakePoolInfo, 'total_amount', '0')
 
-  if (_toNumber(userStakedAmount) && _toNumber(totalStake)) {
+  if (_toNumber(userStakedAmount) && _toNumber(totalStaked)) {
     const pendingReward = getFarmTokenPerSecond({
       lastRewardTimestamp: _toNumber(cakePoolInfo.last_reward_timestamp),
       rewardPerSecond,
@@ -94,7 +94,7 @@ const transformCakePool = ({
     rewardTokenPrice: _toNumber(earningTokenPrice),
     stakingTokenPrice: _toNumber(earningTokenPrice),
     tokenPerSecond: rewardPerSecond,
-    totalStaked: cakePoolInfo.total_amount,
+    totalStaked,
   })
 
   return {

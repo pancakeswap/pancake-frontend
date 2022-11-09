@@ -62,7 +62,7 @@ export const usePoolsList = () => {
 }
 
 export const useCakePool = ({ balances, chainId }) => {
-  const cakeFarm = useMemo(() => getFarmConfig(chainId).find((f) => f.pid === CAKE_PID), [chainId])
+  const cakeFarm = useMemo(() => getFarmConfig(chainId)?.find((f) => f.pid === CAKE_PID), [chainId])
 
   const pairs: [Coin, Coin][] = useMemo(() => {
     if (!cakeFarm?.token) {
