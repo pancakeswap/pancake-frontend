@@ -1,4 +1,4 @@
-import { ConnectorNotFoundError, ProviderRpcError, UserRejectedRequestError } from '../errors'
+import { ConnectorNotFoundError, WalletProviderError, UserRejectedRequestError } from '../errors'
 import { getClient } from '../client'
 import { SignMessagePayload, SignMessageResponse } from '../connectors'
 
@@ -16,7 +16,7 @@ export async function signMessage(args: SignMessageArgs): Promise<SignMessageRes
     if (!activeConnector) throw new ConnectorNotFoundError()
     return activeConnector.signMessage(args.message)
   } catch (error) {
-    if ((error as ProviderRpcError).code === 4001) throw new UserRejectedRequestError(error)
+    if ((error as WalletProviderError).code === 4001) throw new UserRejectedRequestError(error)
     throw error
   }
 }

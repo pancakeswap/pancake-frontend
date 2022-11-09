@@ -77,7 +77,7 @@ export class RpcError<T = undefined> extends Error {
  * Error subclass implementing Ethereum Provider errors per EIP-1193.
  * @see https://eips.ethereum.org/EIPS/eip-1193
  */
-export class ProviderRpcError<T = undefined> extends RpcError<T> {
+export class WalletProviderError<T = undefined> extends RpcError<T> {
   /**
    * https://petra.app/docs/errors
    */
@@ -97,7 +97,7 @@ export class ProviderRpcError<T = undefined> extends RpcError<T> {
   }
 }
 
-export class UserRejectedRequestError extends ProviderRpcError {
+export class UserRejectedRequestError extends WalletProviderError {
   name = 'UserRejectedRequestError'
 
   constructor(error: unknown) {

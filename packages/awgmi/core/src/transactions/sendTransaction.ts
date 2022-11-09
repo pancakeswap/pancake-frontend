@@ -1,7 +1,7 @@
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import { Types } from 'aptos'
 import { getAccount } from '../accounts/account'
-import { ChainMismatchError, ConnectorNotFoundError, ProviderRpcError, UserRejectedRequestError } from '../errors'
+import { ChainMismatchError, ConnectorNotFoundError, WalletProviderError, UserRejectedRequestError } from '../errors'
 import { getNetwork } from '../network/network'
 import { getProvider } from '../providers'
 import { TransactionResponse } from './types'
@@ -46,7 +46,7 @@ export async function sendTransaction({
     }
     return response
   } catch (error) {
-    if ((<ProviderRpcError>error).code === 4001) throw new UserRejectedRequestError(error)
+    if ((<WalletProviderError>error).code === 4001) throw new UserRejectedRequestError(error)
     throw error
   }
 }
