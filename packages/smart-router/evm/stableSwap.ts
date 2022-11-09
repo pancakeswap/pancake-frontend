@@ -1,6 +1,7 @@
-import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token, TradeType } from '@pancakeswap/sdk'
 
 import { RouteWithStableSwap, StableSwapPair } from './types'
+import { getOutputToken } from './utils/pair'
 
 export function createStableSwapPair(pair: Pair, stableSwapAddress = ''): StableSwapPair {
   const newPair = new Pair(pair.reserve0, pair.reserve1)
@@ -19,12 +20,28 @@ export function isStableSwapPair(pair: any): pair is StableSwapPair {
   return !!(pair as StableSwapPair).stableSwapAddress
 }
 
-export function createRouteWithStableSwap<TInput extends Currency, TOutput extends Currency>(options: {
+export function createRouteWithStableSwap<TInput extends Currency, TOutput extends Currency>({
+  input,
+  pairs,
+  output,
+}: {
   pairs: (Pair | StableSwapPair)[]
   input: TInput
   output: TOutput
 }): RouteWithStableSwap<TInput, TOutput> {
-  return options
+  const wrappedInput = input.wrapped
+
+  const path: Token[] = [wrappedInput]
+  for (const [i, pair] of pairs.entries()) {
+    const out = getOutputToken(pair, path[i])
+    path.push(out)
+  }
+  return {
+    input,
+    output,
+    pairs,
+    path,
+  }
 }
 
 interface Options<TInput extends Currency, TOutput extends Currency, TTradeType extends TradeType> {

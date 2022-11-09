@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ERC20Token, Pair, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Pair, Token, TradeType } from '@pancakeswap/sdk'
 
 export interface StableSwapPair {
   token0: ERC20Token
@@ -13,6 +13,7 @@ export interface RouteWithStableSwap<TInput extends Currency, TOutput extends Cu
   pairs: (Pair | StableSwapPair)[]
   input: TInput
   output: TOutput
+  path: Token[]
 }
 
 export interface TradeWithStableSwap<TInput extends Currency, TOutput extends Currency, TTradeType extends TradeType> {
