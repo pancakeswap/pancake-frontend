@@ -24,7 +24,7 @@ const CardLayout = styled(FlexLayout)`
 
 const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const pools = usePoolsList()
 
   return (
@@ -52,7 +52,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                 <CardLayout>
                   {chosenPools.map((pool: Pool.DeserializedPool<Coin>) => (
                     <Pool.PoolCard<Coin>
-                      key={pool.sousId}
+                      key={pool.contractAddress[chainId]}
                       pool={pool}
                       isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
                       cardContent={
