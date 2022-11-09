@@ -6,7 +6,6 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatNumber, getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/sdk'
-import BaseCell, { CellContent } from './BaseCell'
 import CollectModal from '../../Modals/CollectModal'
 
 interface EarningsCellProps {
@@ -14,7 +13,7 @@ interface EarningsCellProps {
   account: string
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 4.5;
   ${({ theme }) => theme.mediaQueries.sm} {
     flex: 1 0 120px;
@@ -54,7 +53,7 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
@@ -95,7 +94,7 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
             </Flex>
           </>
         )}
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }
