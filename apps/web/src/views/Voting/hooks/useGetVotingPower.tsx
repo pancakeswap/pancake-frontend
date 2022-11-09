@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import useSWRImmutable from 'swr/immutable'
 import { getAddress } from 'utils/addressHelpers'
@@ -20,7 +20,7 @@ interface State {
 }
 
 const useGetVotingPower = (block?: number): State & { isLoading: boolean; isError: boolean } => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data, status, error } = useSWRImmutable(account ? [account, block, 'votingPower'] : null, async () => {
     const blockNumber = block || (await bscRpcProvider.getBlockNumber())
     const eligiblePools = await getActivePools(blockNumber)

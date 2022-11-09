@@ -8,7 +8,7 @@ import { StablePair, useStablePair } from 'views/AddLiquidity/AddStableLiquidity
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import useSWR from 'swr'
 import { useContext, useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 
 export function useGetRemovedTokenAmounts({ lpAmount }) {
   const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)
@@ -42,7 +42,7 @@ export function useStableDerivedBurnInfo(
   error?: string
   tokenToReceive?: string
 } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { independentField, typedValue } = useBurnState()
 

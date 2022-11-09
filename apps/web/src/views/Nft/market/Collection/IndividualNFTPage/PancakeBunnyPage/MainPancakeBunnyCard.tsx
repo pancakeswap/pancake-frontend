@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Flex, Box, Card, CardBody, Text, Button, BinanceIcon, Skeleton, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -25,7 +25,7 @@ const MainPancakeBunnyCard: React.FC<React.PropsWithChildren<MainPancakeBunnyCar
 }) => {
   const { t } = useTranslation()
   const bnbBusdPrice = useBNBBusdPrice()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const nftToDisplay = cheapestNft || nothingForSaleBunny
 

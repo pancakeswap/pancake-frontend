@@ -6,7 +6,7 @@ import { calculateCakeAmount } from 'views/Pottery/helpers'
 import BigNumber from 'bignumber.js'
 import { BIG_ONE } from '@pancakeswap/utils/bigNumber'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import YourDeposit from '../YourDeposit'
 import WalletNotConnected from './WalletNotConnected'
 import AvailableWithdraw from './AvailableWithdraw'
@@ -19,7 +19,7 @@ const Container = styled(Flex)`
 `
 
 const Claim: React.FC<React.PropsWithChildren> = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { publicData, userData } = usePotteryData()
 
   const allDeposit = userData.withdrawAbleData

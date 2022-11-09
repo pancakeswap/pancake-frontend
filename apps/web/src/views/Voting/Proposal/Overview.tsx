@@ -1,7 +1,7 @@
 import { ArrowBackIcon, Box, Button, Flex, Heading } from '@pancakeswap/uikit'
 import { PageMeta } from 'components/Layout/Page'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import useSWRImmutable from 'swr/immutable'
 import { ProposalState } from 'state/types'
 import Link from 'next/link'
@@ -24,7 +24,7 @@ const Overview = () => {
   const { query, isFallback } = useRouter()
   const id = query.id as string
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const {
     status: proposalLoadingStatus,

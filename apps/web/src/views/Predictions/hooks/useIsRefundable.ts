@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { getPredictionsContract } from 'utils/contractHelpers'
 import { useConfig } from '../context/ConfigProvider'
 
 const useIsRefundable = (epoch: number) => {
   const [isRefundable, setIsRefundable] = useState(false)
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { address } = useConfig()
 
   useEffect(() => {

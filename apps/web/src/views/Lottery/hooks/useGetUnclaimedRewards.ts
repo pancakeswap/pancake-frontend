@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useGetLotteriesGraphData, useGetUserLotteriesGraphData, useLottery } from 'state/lottery/hooks'
 import fetchUnclaimedUserRewards from 'state/lottery/fetchUnclaimedUserRewards'
 import { FetchStatus } from 'config/constants/types'
 
 const useGetUnclaimedRewards = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { isTransitioning, currentLotteryId } = useLottery()
   const userLotteryData = useGetUserLotteriesGraphData()
   const lotteriesData = useGetLotteriesGraphData()

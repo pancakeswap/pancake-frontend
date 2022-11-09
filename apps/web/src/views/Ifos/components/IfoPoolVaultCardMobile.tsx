@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import {
   Box,
   Card,
@@ -38,7 +38,7 @@ interface IfoPoolVaultCardMobileProps {
 
 const IfoPoolVaultCardMobile: React.FC<React.PropsWithChildren<IfoPoolVaultCardMobileProps>> = ({ pool }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const credit = useIfoCredit()
   const { isExpanded, setIsExpanded } = useConfig()
   const cakeAsNumberBalance = getBalanceNumber(credit)

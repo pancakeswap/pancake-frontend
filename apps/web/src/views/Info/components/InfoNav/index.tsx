@@ -19,7 +19,7 @@ import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
 import { multiChainId, multiChainPaths } from 'state/info/constant'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { bsc, mainnet } from '@pancakeswap/wagmi/chains'
 
 const NavWrapper = styled(Flex)`
@@ -38,7 +38,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const chainPath = useMultiChainPath()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const isPools = router.pathname === `/info${chainPath && `/[chainName]`}/pools`
   const isTokens = router.pathname === `/info${chainPath && `/[chainName]`}/tokens`

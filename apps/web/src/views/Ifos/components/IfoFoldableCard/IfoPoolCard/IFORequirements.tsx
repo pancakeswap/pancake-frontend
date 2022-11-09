@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Text, Flex, AccountIcon, TeamBattleIcon, Box, useTooltip, LinkExternal } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 
 import OkNFTIcon from './Icons/OkNFT'
@@ -34,7 +34,7 @@ const NotOkNFT = ({ admissionProfile }) => {
 }
 
 const NotOkProfilePoints = ({ pointThreshold }) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
 
   const keyword = '%Pancake Profile%'

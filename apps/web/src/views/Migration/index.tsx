@@ -1,6 +1,6 @@
 import React, { memo, useState, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Heading, Text, Button, ArrowForwardIcon, Link, PageHeader, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePollFarmsV1WithUserData } from 'state/farmsV1/hooks'
@@ -18,7 +18,7 @@ import NewFarm from './components/MigrationStep2/NewFarm'
 
 const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const [step, setStep] = useState<ProgressStepsType>(ProgressStepsType.STEP1)

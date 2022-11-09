@@ -9,7 +9,7 @@ import {
   Button,
   ChevronUpIcon,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from '@pancakeswap/localization'
 import { Vote } from 'state/types'
@@ -34,7 +34,7 @@ const parseVotePower = (incomingVote: Vote) => {
 const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoadingStatus, totalVotes }) => {
   const [showAll, setShowAll] = useState(false)
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc'])
   const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
   const isFetched = votesLoadingStatus === FetchStatus.Fetched

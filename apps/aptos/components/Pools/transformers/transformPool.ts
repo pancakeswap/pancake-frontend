@@ -7,8 +7,6 @@ import _toNumber from 'lodash/toNumber'
 import _get from 'lodash/get'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import uuid from 'uuid'
-
 import _find from 'lodash/find'
 
 import { PoolResource } from '../types'
@@ -95,7 +93,8 @@ const transformPool = (
   const stakingTokenPrice = addressesWithUSD[stakingAddress] || 0
 
   return {
-    sousId: uuid.v4(),
+    // Ignore sousId
+    sousId: 0,
     contractAddress: {
       [chainId]: resource.type,
     },

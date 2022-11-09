@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Heading, Flex, Image, Text, Link, FlexLayout, PageHeader, Loading, Pool, ViewMode } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
@@ -13,8 +13,8 @@ import CardActions from './components/PoolCard/CardActions'
 import AprRow from './components/PoolCard/AprRow'
 import CardFooter from './components/PoolCard/CardFooter'
 import CakeVaultCard from './components/CakeVaultCard'
-import PoolsTable from './components/PoolsTable/PoolsTable'
 import PoolControls from './components/PoolControls'
+import PoolRow, { VaultPoolRow } from './components/PoolsTable/PoolRow'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
@@ -36,7 +36,7 @@ const FinishedTextLink = styled(Link)`
 
 const Pools: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { pools, userDataLoaded } = usePoolsWithVault()
 
   usePoolsPageFetch()
@@ -114,7 +114,25 @@ const Pools: React.FC<React.PropsWithChildren> = () => {
                   )}
                 </CardLayout>
               ) : (
-                <PoolsTable urlSearch={normalizedUrlSearch} pools={chosenPools} account={account} />
+                <Pool.PoolsTable>
+                  {pools.map((pool) =>
+                    pool.vaultKey ? (
+                      <VaultPoolRow
+                        initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
+                        key={pool.vaultKey}
+                        vaultKey={pool.vaultKey}
+                        account={account}
+                      />
+                    ) : (
+                      <PoolRow
+                        initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
+                        key={pool.sousId}
+                        sousId={pool.sousId}
+                        account={account}
+                      />
+                    ),
+                  )}
+                </Pool.PoolsTable>
               )}
               <Image
                 mx="auto"

@@ -12,7 +12,7 @@ import {
   Skeleton,
   useModal,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useProfile } from 'state/profile/hooks'
 import { NftLocation, NftToken, Collection } from 'state/nftMarket/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -163,7 +163,7 @@ const ManageNFTsCard: React.FC<React.PropsWithChildren<ManageNftsCardProps>> = (
   onSuccess,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { isLoading: isProfileLoading, profile } = useProfile()
 
