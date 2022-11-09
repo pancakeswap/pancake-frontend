@@ -12,36 +12,38 @@ export function pendingCake(userAmount, userRewardDebt, accCakePerShare) {
 export function calcCakeReward(masterChef: MapFarmResource, pid: string) {
   const poolInfo: FarmResourcePoolInfo = masterChef.pool_info[pid]
   const currentTimestamp = new Date().getTime() / 1000
-  const lastRewardTimestamp = Number(poolInfo.last_reward_timestamp)
-  let cakeReward = 0
-  let accCakePerShare = Number(poolInfo.acc_cake_per_share)
+  if (poolInfo) {
+    const lastRewardTimestamp = Number(poolInfo.last_reward_timestamp)
+    let cakeReward = 0
+    let accCakePerShare = Number(poolInfo.acc_cake_per_share)
 
-  if (currentTimestamp > lastRewardTimestamp) {
-    let totalAllocPoint = 0
-    let cakeRate = 0
+    if (currentTimestamp > lastRewardTimestamp) {
+      let totalAllocPoint = 0
+      let cakeRate = 0
 
-    if (poolInfo.is_regular) {
-      totalAllocPoint = Number(masterChef.total_regular_alloc_point)
-      cakeRate = Number(masterChef.cake_rate_to_regular)
-    } else {
-      totalAllocPoint = Number(masterChef.total_special_alloc_point)
-      cakeRate = Number(masterChef.cake_rate_to_special)
+      if (poolInfo.is_regular) {
+        totalAllocPoint = Number(masterChef.total_regular_alloc_point)
+        cakeRate = Number(masterChef.cake_rate_to_regular)
+      } else {
+        totalAllocPoint = Number(masterChef.total_special_alloc_point)
+        cakeRate = Number(masterChef.cake_rate_to_special)
+      }
+
+      const supply = Number(poolInfo.total_amount)
+      const multiplier = currentTimestamp - lastRewardTimestamp
+
+      if (supply > 0 && totalAllocPoint > 0) {
+        const reward = new BigNumber(masterChef.cake_per_second)
+          .times(cakeRate)
+          .times(poolInfo.alloc_point)
+          .div(totalAllocPoint)
+        cakeReward = new BigNumber(multiplier).times(reward).div(TOTAL_CAKE_RATE_PRECISION).toNumber()
+
+        const cakePerShare = new BigNumber(cakeReward).times(ACC_CAKE_PRECISION).div(supply)
+        accCakePerShare = new BigNumber(poolInfo.acc_cake_per_share).plus(cakePerShare).toNumber()
+      }
     }
-
-    const supply = Number(poolInfo.total_amount)
-    const multiplier = currentTimestamp - lastRewardTimestamp
-
-    if (supply > 0 && totalAllocPoint > 0) {
-      const reward = new BigNumber(masterChef.cake_per_second)
-        .times(cakeRate)
-        .times(poolInfo.alloc_point)
-        .div(totalAllocPoint)
-      cakeReward = new BigNumber(multiplier).times(reward).div(TOTAL_CAKE_RATE_PRECISION).toNumber()
-
-      const cakePerShare = new BigNumber(cakeReward).times(ACC_CAKE_PRECISION).div(supply)
-      accCakePerShare = new BigNumber(poolInfo.acc_cake_per_share).plus(cakePerShare).toNumber()
-    }
+    return accCakePerShare
   }
-
-  return accCakePerShare
+  return 0
 }
