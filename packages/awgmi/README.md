@@ -99,14 +99,21 @@ const { data } = useAccountBalance({
 
 ### Send Transaction
 ```js
+import { UserRejectedRequestError } from '@pancakeswap/awgmi'
+
 const { sendTransactionAsync } = useSendTransaction()
 
-sendTransaction({
+sendTransactionAsync({
   payload: {
     type: 'entry_function_payload',
     function: '<address>::message::set_message',
     arguments: ['are we gonna make it?'],
     type_arguments: [],
   },
+}).catch(err => {
+  if (err instanceof UserRejectedRequestError) {
+    // handle user reject
+  }
+  // handle transaction error
 })
 ```
