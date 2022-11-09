@@ -32,19 +32,18 @@ const transformPool = (
   const totalStakedToken = _get(resource, 'data.total_staked_token.value', '0')
 
   if (balances?.length) {
+    const stakingTokenBalance = balances.find((balance) => balance.type === `0x1::coin::CoinStore<${stakingAddress}>`)
+    const amount = _get(stakingTokenBalance, 'data.coin.value')
+    if (amount) {
+      userData = { ...userData, stakingTokenBalance: new BigNumber(amount) }
+    }
+
     const resourceTypes = resource.type
     const foundStakedPoolBalance = balances.find(
       (balance) => balance.type === resourceTypes.replace('PoolInfo', 'UserInfo'),
     )
 
     if (foundStakedPoolBalance) {
-      const foundStakingBalance = balances.find((balance) => balance.type === `0x1::coin::CoinStore<${stakingAddress}>`)
-      const amount = _get(foundStakingBalance, 'data.coin.value')
-
-      if (amount) {
-        userData = { ...userData, stakingTokenBalance: new BigNumber(amount) }
-      }
-
       const currentRewardDebt = _get(foundStakedPoolBalance, 'data.reward_debt')
 
       const userStakedAmount = _get(foundStakedPoolBalance, 'data.amount')
