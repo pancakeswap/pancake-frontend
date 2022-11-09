@@ -1,6 +1,6 @@
+import { useDelayedUnmount } from "@pancakeswap/hooks";
 import React, { useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
-import useDelayedUnmount from "../../hooks/useDelayedUnmount";
 import { useMatchBreakpoints } from "../../contexts";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import getPortalRoot from "../../util/getPortalRoot";

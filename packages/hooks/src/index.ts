@@ -8,3 +8,4 @@ export { default as useDebouncedChangeHandler } from './useDebouncedChangeHandle
 export * from './useIsMounted'
 export { usePreloadImages } from './usePreloadImage'
 export { default as useIntersectionObserver } from './useIntersectionObserver'
+export { default as useDelayedUnmount } from './useDelayedUnmount'

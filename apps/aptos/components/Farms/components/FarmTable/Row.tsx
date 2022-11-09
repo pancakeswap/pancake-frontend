@@ -8,11 +8,11 @@ import {
   FarmTableMultiplierProps,
   Flex,
   Skeleton,
-  useDelayedUnmount,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
 
 import { useFarmEarning } from 'state/farms/hook'
 import { DesktopColumnSchema, FarmWithStakedValue, MobileColumnSchema } from '../types'

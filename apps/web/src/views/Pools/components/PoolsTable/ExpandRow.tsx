@@ -1,7 +1,7 @@
 import { useState, memo, ReactNode, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
-import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
 
 const StyledRow = styled.div`
   background-color: transparent;
