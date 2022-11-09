@@ -12,3 +12,4 @@ export * from "./Apr";
 export * from "./withCardActions";
 export * from "./PoolsTable";
 export * from "./Cells/BaseCell";
+export * from "./Cells/ExpandActionCell";

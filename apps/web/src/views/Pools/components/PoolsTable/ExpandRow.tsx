@@ -1,9 +1,7 @@
 import { useState, memo, ReactNode, useCallback, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import useDelayedUnmount from 'hooks/useDelayedUnmount'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
-
-import ExpandActionCell from './Cells/ExpandActionCell'
+import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 
 const StyledRow = styled.div`
   background-color: transparent;
@@ -34,7 +32,7 @@ const ExpandRow: React.FC<
     <>
       <StyledRow role="row" onClick={toggleExpanded}>
         {children}
-        <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
+        <Pool.ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
       </StyledRow>
       {shouldRenderActionPanel && panel}
     </>
