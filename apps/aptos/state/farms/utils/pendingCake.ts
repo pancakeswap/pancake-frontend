@@ -32,11 +32,14 @@ export function calcCakeReward(masterChef: MapFarmResource, pid: string) {
     const multiplier = currentTimestamp - lastRewardTimestamp
 
     if (supply > 0 && totalAllocPoint > 0) {
-      cakeReward =
-        (multiplier *
-          ((Number(masterChef.cake_per_second) * cakeRate * Number(poolInfo.alloc_point)) / totalAllocPoint)) /
-        TOTAL_CAKE_RATE_PRECISION
-      accCakePerShare = Number(poolInfo.acc_cake_per_share) + (cakeReward * ACC_CAKE_PRECISION) / supply
+      const reward = new BigNumber(masterChef.cake_per_second)
+        .times(cakeRate)
+        .times(poolInfo.alloc_point)
+        .div(totalAllocPoint)
+      cakeReward = new BigNumber(multiplier).times(reward).div(TOTAL_CAKE_RATE_PRECISION).toNumber()
+
+      const cakePerShare = new BigNumber(cakeReward).times(ACC_CAKE_PRECISION).div(supply)
+      accCakePerShare = new BigNumber(poolInfo.acc_cake_per_share).plus(cakePerShare).toNumber()
     }
   }
 
