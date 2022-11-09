@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Heading, Flex, Image, Text, Link, FlexLayout, PageHeader, Loading, Pool, ViewMode } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePoolsPageFetch, usePoolsWithVault } from 'state/pools/hooks'
@@ -36,7 +36,7 @@ const FinishedTextLink = styled(Link)`
 
 const Pools: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { pools, userDataLoaded } = usePoolsWithVault()
 
   usePoolsPageFetch()

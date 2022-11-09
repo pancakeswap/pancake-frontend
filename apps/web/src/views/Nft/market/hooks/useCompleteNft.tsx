@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { FetchStatus } from 'config/constants/types'
 import { useCallback } from 'react'
 import { useErc721CollectionContract } from 'hooks/useContract'
@@ -10,7 +10,7 @@ import { NOT_ON_SALE_SELLER } from 'config/constants'
 import { isAddress } from 'utils'
 
 const useNftOwn = (collectionAddress: string, tokenId: string, marketData?: TokenMarketData) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { reader: collectionContract } = useErc721CollectionContract(collectionAddress)
   const { isInitialized: isProfileInitialized, profile } = useProfile()
 

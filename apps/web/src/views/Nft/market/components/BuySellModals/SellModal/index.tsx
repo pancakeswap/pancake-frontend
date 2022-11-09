@@ -1,7 +1,7 @@
 import { parseUnits } from '@ethersproject/units'
 import { ContextApi, useTranslation } from '@pancakeswap/localization'
 import { InjectedModalProps, useToast } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -88,7 +88,7 @@ const SellModal: React.FC<React.PropsWithChildren<SellModalProps>> = ({
   const [confirmedTxHash, setConfirmedTxHash] = useState('')
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
   const { toastSuccess } = useToast()
   const { reader: collectionContractReader, signer: collectionContractSigner } = useErc721CollectionContract(

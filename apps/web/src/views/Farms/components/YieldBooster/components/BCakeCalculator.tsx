@@ -12,7 +12,7 @@ import {
   CalculatorMode,
   EditingCurrency,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
@@ -84,7 +84,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   const conversionValue = editingCurrency === EditingCurrency.TOKEN ? principalAsUSD : principalAsToken
   const onUserInput = editingCurrency === EditingCurrency.TOKEN ? setPrincipalFromTokenValue : setPrincipalFromUSDValue
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const tooltipContent = useBCakeTooltipContent()
 

@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { Pool, useToast } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useAppDispatch } from 'state'
@@ -17,7 +17,7 @@ export const CollectModalContainer = ({
 }: React.PropsWithChildren<Pool.CollectModalProps>) => {
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useAppDispatch()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { onReward } = useHarvestPool(sousId, isBnbPool)

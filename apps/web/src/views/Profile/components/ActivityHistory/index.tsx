@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { isAddress } from 'utils'
 import { useAppDispatch } from 'state'
 import { getUserActivity } from 'state/nftMarket/helpers'
@@ -19,7 +19,7 @@ import { fetchActivityNftMetadata } from '../../../Nft/market/ActivityHistory/ut
 const MAX_PER_PAGE = 8
 
 const ActivityHistory = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const dispatch = useAppDispatch()
   const accountAddress = useRouter().query.accountAddress as string
   const { theme } = useTheme()

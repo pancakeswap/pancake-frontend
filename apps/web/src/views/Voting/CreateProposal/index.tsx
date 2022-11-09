@@ -14,7 +14,7 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-import { useWeb3LibraryContext, useWeb3React } from '@pancakeswap/wagmi'
+import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import snapshot from '@snapshot-labs/snapshot.js'
 import isEmpty from 'lodash/isEmpty'
 import times from 'lodash/times'
@@ -32,6 +32,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { getBlockExploreLink } from 'utils'
 import { DatePicker, DatePickerPortal, TimePicker } from 'views/Voting/components/DatePicker'
+import { useAccount } from 'wagmi'
 import Layout from '../components/Layout'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
@@ -61,7 +62,7 @@ const CreateProposal = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [fieldsState, setFieldsState] = useState<{ [key: string]: boolean }>({})
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const initialBlock = useInitialBlock()
   const { push } = useRouter()
   const { toastSuccess, toastError } = useToast()

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import styled from 'styled-components'
 import {
   CardHeader,
@@ -55,7 +55,7 @@ const YourHistoryCard: React.FC<React.PropsWithChildren<YourHistoryCardProps>> =
     t,
     currentLanguage: { locale },
   } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const [shouldShowRoundDetail, setShouldShowRoundDetail] = useState(false)
   const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound>(null)
   const [selectedLotteryId, setSelectedLotteryId] = useState<string>(null)

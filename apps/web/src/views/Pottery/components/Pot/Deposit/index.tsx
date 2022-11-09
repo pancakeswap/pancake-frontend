@@ -13,7 +13,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { PotteryDepositStatus } from 'state/types'
 import { remainTimeToNextFriday, calculateCakeAmount } from 'views/Pottery/helpers'
 import { weeksToSeconds } from 'views/Pools/components/utils/formatSecondsToWeeks'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import YourDeposit from '../YourDeposit'
 import WinRate from '../WinRate'
 import DepositAction from './DepositAction'
@@ -31,7 +31,7 @@ const CardAction = styled(Flex)`
 
 const Deposit: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { getLockedApy } = useVaultApy()
   const { publicData, userData } = usePotteryData()
   const lastVaultAddress = useLatestVaultAddress()

@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Contract } from '@ethersproject/contracts'
 import { MaxUint256 } from '@ethersproject/constants'
 import { useAppDispatch } from 'state'
@@ -20,7 +20,7 @@ export const useApprovePool = (lpContract: Contract, sousId, earningTokenSymbol)
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
   const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const sousChefContract = useSousChef(sousId)
 
   const handleApprove = useCallback(async () => {

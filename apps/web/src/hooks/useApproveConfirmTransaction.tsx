@@ -1,6 +1,6 @@
 import { useEffect, useReducer, useRef, useCallback } from 'react'
 import noop from 'lodash/noop'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/providers'
 import useCatchTxError from './useCatchTxError'
 
@@ -81,7 +81,7 @@ const useApproveConfirmTransaction = ({
   onSuccess = noop,
   onApproveSuccess = noop,
 }: ApproveConfirmTransaction) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const [state, dispatch] = useReducer(reducer, initialState)
   const handlePreApprove = useRef(onRequiresApproval)
   const { fetchWithCatchTxError } = useCatchTxError()

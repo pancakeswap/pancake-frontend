@@ -17,7 +17,7 @@ import { getBlockExploreLink, isAddress } from 'utils'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { Achievement, Profile } from 'state/types'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
 import EditProfileAvatar from './EditProfileAvatar'
@@ -49,7 +49,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   onSuccess,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
     useGetUsernameWithVisibility(profile)
   const [onEditProfileModal] = useModal(

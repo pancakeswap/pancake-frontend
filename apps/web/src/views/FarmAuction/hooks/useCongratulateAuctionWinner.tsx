@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Auction, AuctionStatus, Bidder } from 'config/constants/types'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { processAuctionData, sortAuctionBidders } from '../helpers'
@@ -12,7 +12,7 @@ interface WonAuction {
 const useCongratulateAuctionWinner = (currentAuction: Auction, bidders: Bidder[]): WonAuction => {
   const [wonAuction, setWonAuction] = useState<WonAuction | null>(null)
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const farmAuctionContract = useFarmAuctionContract(false)
 

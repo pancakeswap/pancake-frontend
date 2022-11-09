@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -56,7 +56,7 @@ const MobileMenu = () => {
   const status = useGetPredictionsStatus()
   const activeIndex = getActiveIndex(isHistoryOpen, isChartOpen)
   const dispatch = useLocalDispatch()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const handleItemClick = (index: number) => {
     switch (index) {

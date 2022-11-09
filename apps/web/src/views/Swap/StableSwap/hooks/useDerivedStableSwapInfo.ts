@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { isAddress } from 'utils'
@@ -25,7 +25,7 @@ export function useDerivedStableSwapInfo(
   v2Trade: StableTrade | undefined
   inputError?: string
 } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
 
   const to: string | null = account ?? null

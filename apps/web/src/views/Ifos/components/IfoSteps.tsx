@@ -22,7 +22,7 @@ import {
   TooltipText,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 
 import { useTranslation } from '@pancakeswap/localization'
 import useTokenBalance from 'hooks/useTokenBalance'
@@ -169,7 +169,7 @@ const IfoSteps: React.FC<React.PropsWithChildren<TypeProps>> = ({
   ifoCurrencyAddress,
 }) => {
   const { hasActiveProfile } = useProfile()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const { balance } = useTokenBalance(ifoCurrencyAddress)
   const stepsValidationStatus = [hasActiveProfile, balance.isGreaterThan(0), isCommitted, hasClaimed]

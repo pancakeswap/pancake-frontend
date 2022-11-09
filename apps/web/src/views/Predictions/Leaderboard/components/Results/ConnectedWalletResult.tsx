@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Card, Heading, Table, Th, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import Container from 'components/Layout/Container'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { fetchAddressResult } from 'state/predictions'
@@ -11,7 +11,7 @@ import DesktopRow from './DesktopRow'
 import MobileRow from './MobileRow'
 
 const ConnectedWalletResult = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
   const accountResult = useGetOrFetchLeaderboardAddressResult(account)

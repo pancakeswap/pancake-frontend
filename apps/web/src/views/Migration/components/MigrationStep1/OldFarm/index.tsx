@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { getFarmApr } from 'utils/apr'
 import { useTranslation } from '@pancakeswap/localization'
 import { CAKE_PER_YEAR } from 'config'
@@ -12,7 +12,7 @@ import { DesktopColumnSchema } from '../../types'
 
 const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data: farmsLP, userDataLoaded } = useFarmsV1()
   const cakePrice = usePriceCakeBusd()
 

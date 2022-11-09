@@ -9,7 +9,7 @@ import keyBy from 'lodash/keyBy'
 import orderBy from 'lodash/orderBy'
 import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { TransactionDetails } from './reducer'
 import {
@@ -86,7 +86,7 @@ export function useTransactionAdder(): (
 
 // returns all the transactions
 export function useAllTransactions(): { [chainId: number]: { [txHash: string]: TransactionDetails } } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const state: {
     [chainId: number]: {
@@ -128,7 +128,7 @@ export function useAllActiveChainTransactions(): { [txHash: string]: Transaction
 }
 
 export function useAllChainTransactions(chainId: number): { [txHash: string]: TransactionDetails } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const state = useSelector<AppState, AppState['transactions']>((s) => s.transactions)
 

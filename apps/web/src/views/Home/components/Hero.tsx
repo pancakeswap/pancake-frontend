@@ -1,5 +1,5 @@
 import { Button, Flex, Heading, NextLinkFromReactRouter } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -89,7 +89,7 @@ const starsImage: CompositeImageProps = {
 
 const Hero = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   return (
     <>

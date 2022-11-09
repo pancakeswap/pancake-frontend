@@ -19,7 +19,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
@@ -96,7 +96,7 @@ const withLPValuesFactory =
   ({ useLPValuesHook, hookArgFn }) =>
   (Component) =>
   (props) => {
-    const { account } = useWeb3React()
+    const { address: account } = useAccount()
 
     const currency0 = props.showUnwrapped ? props.pair.token0 : unwrappedToken(props.pair.token0)
     const currency1 = props.showUnwrapped ? props.pair.token1 : unwrappedToken(props.pair.token1)

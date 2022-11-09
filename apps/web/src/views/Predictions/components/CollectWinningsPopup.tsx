@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import styled, { css, keyframes } from 'styled-components'
 import { Button, CloseIcon, IconButton, TrophyGoldIcon } from '@pancakeswap/uikit'
 import { CSSTransition } from 'react-transition-group'
@@ -124,7 +124,7 @@ const CollectWinningsPopup = () => {
   const { t } = useTranslation()
   const ref = useRef(null)
   const timer = useRef(null)
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const predictionStatus = useGetPredictionsStatus()
   const isHistoryPaneOpen = useIsHistoryPaneOpen()
   const dispatch = useLocalDispatch()
