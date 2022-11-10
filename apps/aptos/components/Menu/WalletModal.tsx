@@ -12,7 +12,7 @@ import {
   ModalTitle,
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
-import { useAccount, useBalance } from '@pancakeswap/awgmi'
+import { useAccount, useAccountBalance, APTOS_COIN } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 
@@ -49,7 +49,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
   const { account } = useAccount()
-  const { data } = useBalance({ address: account?.address })
+  const { data } = useAccountBalance({ address: account?.address, coin: APTOS_COIN })
   const hasLowNativeBalance = !!data?.formatted && Number(data.formatted) <= LOW_APT
 
   const handleClick = (newIndex: number) => {

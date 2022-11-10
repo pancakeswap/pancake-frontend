@@ -1,4 +1,4 @@
-import { useAccount, useBalance } from '@pancakeswap/awgmi'
+import { useAccount, useAccountBalance, APTOS_COIN } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import {
@@ -33,7 +33,7 @@ const UserMenu = () => {
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
 
-  const { data } = useBalance({ address: account?.address })
+  const { data } = useAccountBalance({ address: account?.address, coin: APTOS_COIN })
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
 
   const hasLowNativeBalance = data?.formatted && Number(data.formatted) <= LOW_APT
