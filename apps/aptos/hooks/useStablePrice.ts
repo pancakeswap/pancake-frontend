@@ -3,8 +3,8 @@ import { L0_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import useSWR from 'swr'
-import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import useNativeCurrency from './useNativeCurrency'
 import { PairState, usePairs } from './usePairs'
 
@@ -123,7 +123,7 @@ export const useCakePrice = () => {
   )
 }
 
-export const useCakePriceAsBigNumber = () => {
+export const usePriceCakeBusd = () => {
   const cakePrice = useCakePrice().data
-  return getDecimalAmount(new BigNumber(cakePrice), 8)
+  return useMemo(() => (cakePrice ? new BigNumber(cakePrice) : BIG_ZERO), [cakePrice])
 }
