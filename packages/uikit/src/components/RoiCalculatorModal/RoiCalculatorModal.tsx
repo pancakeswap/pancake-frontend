@@ -60,6 +60,7 @@ export interface RoiCalculatorModalProps {
   linkLabel: string;
   linkHref: string;
   stakingTokenBalance: BigNumber;
+  stakingTokenDecimals?: number;
   stakingTokenSymbol: string;
   stakingTokenPrice: number;
   earningTokenSymbol?: string;
@@ -100,6 +101,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   onBack,
   onDismiss,
   bCakeCalculatorSlot,
+  stakingTokenDecimals,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
@@ -224,7 +226,9 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               style={{ textTransform: "uppercase" }}
               disabled={isDisableMyBalance}
               onClick={() =>
-                setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice)).toString())
+                setPrincipalFromUSDValue(
+                  getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice), stakingTokenDecimals).toString()
+                )
               }
             >
               {t("My Balance")}
