@@ -25,8 +25,10 @@ interface RiskDisclaimerProps extends InjectedModalProps {
   onSuccess: () => void
   checks: CheckType[]
   header: string
+  modalHeader?: string
   id: string
   subtitle?: string
+  hideConfirm?: boolean
 }
 
 const GradientModalHeader = styled(ModalHeader)`
@@ -45,6 +47,8 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
   checks,
   header,
   subtitle,
+  hideConfirm,
+  modalHeader,
 }) => {
   const [checkState, setCheckState] = useState(checks || [])
   const { t } = useTranslation()
@@ -70,7 +74,7 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
   }, [onSuccess, onDismiss])
 
   return (
-    <ModalContainer title={t('Welcome!')} $minWidth="320px" id={id}>
+    <ModalContainer title={modalHeader || t('Welcome!')} $minWidth="320px" id={id}>
       <GradientModalHeader>
         <ModalTitle>
           <Heading scale="lg">{t('Welcome!')}</Heading>
@@ -106,14 +110,16 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
             </label>
           ))}
         </Box>
-        <Button
-          id={`${id}-continue`}
-          width="100%"
-          onClick={handleConfirm}
-          disabled={checkState.some((check) => !check.value)}
-        >
-          {t('Continue')}
-        </Button>
+        {!hideConfirm && (
+          <Button
+            id={`${id}-continue`}
+            width="100%"
+            onClick={handleConfirm}
+            disabled={checkState.some((check) => !check.value)}
+          >
+            {t('Continue')}
+          </Button>
+        )}
       </ModalBody>
     </ModalContainer>
   )
