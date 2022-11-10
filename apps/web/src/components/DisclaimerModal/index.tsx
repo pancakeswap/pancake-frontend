@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, ReactNode } from 'react'
 import {
   ModalContainer,
   ModalBody,
@@ -24,10 +24,10 @@ interface CheckType {
 interface RiskDisclaimerProps extends InjectedModalProps {
   onSuccess: () => void
   checks: CheckType[]
-  header: string
+  header: ReactNode
   modalHeader?: string
   id: string
-  subtitle?: string
+  subtitle?: ReactNode
   hideConfirm?: boolean
 }
 
