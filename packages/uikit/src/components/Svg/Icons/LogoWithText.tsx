@@ -8,10 +8,10 @@ const Logo: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
     <Svg 
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={75}
+      width={65}
       zoomAndPan="magnify"
       viewBox="0 0 375 374.999991"
-      height={75}
+      height={65}
       preserveAspectRatio="xMidYMid meet"
     {...props}
     >
