@@ -23,6 +23,7 @@ import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
 import { ChainId } from '@pancakeswap/sdk'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { useAccount } from 'wagmi'
+import { useIsBloctoETH } from 'views/Farms'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -140,6 +141,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const addTransaction = useTransactionAdder()
+  const isBloctoETH = useIsBloctoETH()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { account, chainId } = useActiveWeb3React()
 
@@ -370,7 +372,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         <FarmUI.FarmTable.StakedActionComponent
           lpSymbol={lpSymbol}
           disabledMinusButton={pendingFarm.length > 0}
-          disabledPlusButton={isStakeReady}
+          disabledPlusButton={isStakeReady || isBloctoETH}
           onPresentWithdraw={onPresentWithdraw}
           onPresentDeposit={onPresentDeposit}
         >
@@ -402,7 +404,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     return <FarmUI.FarmTable.StakeActionDataNotReady />
   }
 
-  return <FarmUI.FarmTable.EnableStakeAction pendingTx={pendingTx} handleApprove={handleApprove} />
+  return <FarmUI.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
 }
 
 export default Staked

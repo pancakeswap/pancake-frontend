@@ -1,6 +1,6 @@
-import { Currency, CurrencyAmount, Pair, Token, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade, TradeType } from '@pancakeswap/sdk'
 
-import { RouteWithStableSwap, StableSwapPair } from './types'
+import { RouteType, RouteWithStableSwap, StableSwapPair } from './types'
 import { getOutputToken } from './utils/pair'
 
 export function createStableSwapPair(pair: Pair, stableSwapAddress = ''): StableSwapPair {
@@ -21,10 +21,12 @@ export function isStableSwapPair(pair: any): pair is StableSwapPair {
 }
 
 export function createRouteWithStableSwap<TInput extends Currency, TOutput extends Currency>({
+  routeType,
   input,
   pairs,
   output,
 }: {
+  routeType: RouteType
   pairs: (Pair | StableSwapPair)[]
   input: TInput
   output: TOutput
@@ -37,6 +39,7 @@ export function createRouteWithStableSwap<TInput extends Currency, TOutput exten
     path.push(out)
   }
   return {
+    routeType,
     input,
     output,
     pairs,
@@ -45,6 +48,7 @@ export function createRouteWithStableSwap<TInput extends Currency, TOutput exten
 }
 
 interface Options<TInput extends Currency, TOutput extends Currency, TTradeType extends TradeType> {
+  routeType: RouteType
   pairs: (Pair | StableSwapPair)[]
   inputAmount: CurrencyAmount<TInput>
   outputAmount: CurrencyAmount<TOutput>
@@ -52,19 +56,36 @@ interface Options<TInput extends Currency, TOutput extends Currency, TTradeType 
 }
 
 export function createTradeWithStableSwap<TInput extends Currency, TOutput extends Currency>({
+  routeType,
   pairs,
   inputAmount,
   outputAmount,
   tradeType,
-}: Options<TInput, TOutput, TradeType.EXACT_INPUT> | Options<TOutput, TInput, TradeType.EXACT_OUTPUT>) {
+}: Options<TInput, TOutput, TradeType>) {
   return {
     tradeType,
     inputAmount,
     outputAmount,
     route: createRouteWithStableSwap({
+      routeType,
       pairs,
       input: inputAmount.currency,
       output: outputAmount.currency,
     }),
   }
+}
+
+export function createTradeWithStableSwapFromV2Trade<TIn extends Currency, TOut extends Currency>({
+  tradeType,
+  inputAmount,
+  outputAmount,
+  route: { pairs },
+}: Trade<TIn, TOut, TradeType>) {
+  return createTradeWithStableSwap({
+    routeType: RouteType.V2,
+    pairs,
+    inputAmount,
+    outputAmount,
+    tradeType,
+  })
 }

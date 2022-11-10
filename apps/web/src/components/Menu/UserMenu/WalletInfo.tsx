@@ -9,17 +9,17 @@ import {
   Text,
   CopyAddress,
 } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, WNATIVE } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
 import useAuth from 'hooks/useAuth'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useGetCakeBalance } from 'hooks/useTokenBalance'
+import useTokenBalance, { useGetCakeBalance } from 'hooks/useTokenBalance'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
-import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { formatBigNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useBalance } from 'wagmi'
 
 const COLORS = {
@@ -40,6 +40,10 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
   const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
   const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
   const native = useNativeCurrency()
+  const wNativeToken = !isBSC ? WNATIVE[chainId] : null
+  const wBNBToken = WNATIVE[ChainId.BSC]
+  const { balance: wNativeBalance, fetchStatus: wNativeFetchStatus } = useTokenBalance(wNativeToken?.address)
+  const { balance: wBNBBalance, fetchStatus: wBNBFetchStatus } = useTokenBalance(wBNBToken?.address, true)
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
   const { logout } = useAuth()
 
@@ -93,6 +97,18 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
               <Text>{formatBigNumber(nativeBalance.data.value, 6)}</Text>
             )}
           </Flex>
+          {wNativeBalance.gt(0) && (
+            <Flex alignItems="center" justifyContent="space-between">
+              <Text color="textSubtle">
+                {wNativeToken.symbol} {t('Balance')}
+              </Text>
+              {wNativeFetchStatus !== FetchStatus.Fetched ? (
+                <Skeleton height="22px" width="60px" />
+              ) : (
+                <Text>{getFullDisplayBalance(wNativeBalance, wNativeToken.decimals, 6)}</Text>
+              )}
+            </Flex>
+          )}
         </Box>
       )}
       <Box mb="24px">
@@ -115,6 +131,16 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
             <Text>{formatBigNumber(bnbBalance.data.value, 6)}</Text>
           )}
         </Flex>
+        {wBNBBalance.gt(0) && (
+          <Flex alignItems="center" justifyContent="space-between">
+            <Text color="textSubtle">WBNB {t('Balance')}</Text>
+            {wBNBFetchStatus !== FetchStatus.Fetched ? (
+              <Skeleton height="22px" width="60px" />
+            ) : (
+              <Text>{getFullDisplayBalance(wBNBBalance, wBNBToken.decimals, 6)}</Text>
+            )}
+          </Flex>
+        )}
         <Flex alignItems="center" justifyContent="space-between">
           <Text color="textSubtle">{t('CAKE Balance')}</Text>
           {cakeFetchStatus !== FetchStatus.Fetched ? (

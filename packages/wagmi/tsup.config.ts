@@ -5,6 +5,7 @@ export default defineConfig({
     index: 'src/index.ts',
     'connectors/miniProgram': 'connectors/miniProgram/index.ts',
     'connectors/binanceWallet': 'connectors/binanceWallet/index.ts',
+    'connectors/blocto': 'connectors/blocto/index.ts',
     chains: 'chains/index.ts',
   },
   format: ['esm', 'cjs'],
