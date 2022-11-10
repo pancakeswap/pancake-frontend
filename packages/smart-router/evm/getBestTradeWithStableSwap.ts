@@ -1,17 +1,17 @@
 /* eslint-disable no-await-in-loop, no-continue */
 import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
 
-import { getBestTradeFromV2 } from './getBestTradeFromV2'
+import { getBestTradeFromV2ExactIn } from './getBestTradeFromV2'
 import { getStableSwapOutputAmount } from './onchain'
 import { createTradeWithStableSwap } from './stableSwap'
 import { BestTradeOptions, StableSwapPair, TradeWithStableSwap } from './types'
 import { getOutputToken, isSamePair } from './utils/pair'
 
 export async function getBestTradeWithStableSwap<TInput extends Currency, TOutput extends Currency>(
-  baseTrade: Trade<TInput, TOutput, TradeType>,
+  baseTrade: Trade<TInput, TOutput, TradeType.EXACT_INPUT> | Trade<TOutput, TInput, TradeType.EXACT_OUTPUT>,
   stableSwapPairs: StableSwapPair[],
   options: BestTradeOptions,
-): Promise<TradeWithStableSwap<TInput, TOutput, TradeType>> {
+) {
   const { provider } = options
   const { inputAmount, route, tradeType } = baseTrade
   // Early return if there's no stableswap available
@@ -52,13 +52,20 @@ export async function getBestTradeWithStableSwap<TInput extends Currency, TOutpu
     pairsWithStableSwap.push(pair)
   }
 
+  if (tradeType === TradeType.EXACT_INPUT) {
+    return createTradeWithStableSwap({
+      pairs: pairsWithStableSwap,
+      inputAmount,
+      outputAmount,
+      tradeType,
+    }) as TradeWithStableSwap<TInput, TOutput, TradeType.EXACT_INPUT>
+  }
   return createTradeWithStableSwap({
     pairs: pairsWithStableSwap,
     inputAmount,
-    // TODO add invariant check to make sure output amount has the same currency as the baseTrade output
-    outputAmount: outputAmount as CurrencyAmount<TOutput>,
+    outputAmount,
     tradeType,
-  })
+  }) as TradeWithStableSwap<TOutput, TInput, TradeType.EXACT_OUTPUT>
 }
 
 async function getOutputAmountFromV2<TInput extends Currency, TOutput extends Currency>(
@@ -66,7 +73,9 @@ async function getOutputAmountFromV2<TInput extends Currency, TOutput extends Cu
   outputToken: TOutput,
   options: BestTradeOptions,
 ) {
-  const trade = await getBestTradeFromV2(inputAmount, outputToken, options)
+  // Since stable swap only supports exact in, we stick with exact in to
+  // calculate the estimated output when replacing pairs with stable swap pair
+  const trade = await getBestTradeFromV2ExactIn(inputAmount, outputToken, options)
 
   if (!trade) {
     throw new Error(`Cannot get valid trade from ${inputAmount.currency.name} to ${outputToken.name}`)

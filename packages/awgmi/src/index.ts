@@ -1,16 +1,3 @@
-import {
-  defaultChain,
-  defaultChains,
-  APTOS_COIN,
-  isHexStringEquals,
-  isAccountAddress,
-  isPendingTransaction,
-  isUserTransaction,
-  parseVmStatusError,
-  isStructTag,
-  getDefaultProviders,
-} from '@pancakeswap/awgmi/core'
-
 export {
   defaultChain,
   defaultChains,
@@ -22,7 +9,15 @@ export {
   parseVmStatusError,
   isStructTag,
   getDefaultProviders,
-}
+  UserRejectedRequestError,
+  SimulateTransactionError,
+  ConnectorNotFoundError,
+  ChainMismatchError,
+  ChainNotConfiguredError,
+  ConnectorUnauthorizedError,
+  ConnectorAlreadyConnectedError,
+} from '@pancakeswap/awgmi/core'
+
 export * from './client'
 export * from './context'
 export * from './hooks/useAccount'
