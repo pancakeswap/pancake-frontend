@@ -1,4 +1,5 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
+import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { bsc, bscTest, goerli, rinkeby, mainnet } from '@pancakeswap/wagmi/chains'
 import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
@@ -97,6 +98,14 @@ export const metaMaskConnector = new MetaMaskConnector({
   },
 })
 
+const bloctoConnector = new BloctoConnector({
+  chains,
+  options: {
+    defaultChainId: 56,
+    appId: 'e2f2f0cd-3ceb-4dec-b293-bb555f2ed5af',
+  },
+})
+
 export const bscConnector = new BinanceWalletConnector({ chains })
 
 export const client = createClient({
@@ -109,6 +118,7 @@ export const client = createClient({
     coinbaseConnector,
     walletConnectConnector,
     bscConnector,
+    bloctoConnector,
   ],
 })
 

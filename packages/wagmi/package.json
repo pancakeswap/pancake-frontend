@@ -20,6 +20,8 @@
   "peerDependencies": {
     "swr": "^1.3.0",
     "wagmi": "^0.6.6",
+    "@wagmi/core": "^0.5.7",
+    "@blocto/sdk": "^0.3.1",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
     "@ethersproject/bignumber": "^5.0.0",
@@ -33,8 +35,9 @@
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
+    "@blocto/sdk": "^0.3.1",
     "tsconfig": "*",
-    "tsup": "^5.10.1"
+    "tsup": "^6.2.3"
   },
   "exports": {
     "./package.json": "./package.json",
@@ -53,10 +56,23 @@
       "import": "./dist/connectors/binanceWallet.mjs",
       "require": "./dist/connectors/binanceWallet.js"
     },
+    "./connectors/blocto": {
+      "types": "./dist/connectors/blocto.d.ts",
+      "import": "./dist/connectors/blocto.mjs",
+      "require": "./dist/connectors/blocto.js"
+    },
     "./chains": {
       "types": "./dist/chains.d.ts",
       "import": "./dist/chains.mjs",
       "require": "./dist/chains.js"
+    }
+  },
+  "peerDependenciesMeta": {
+    "@blocto/sdk": {
+      "optional": true
+    },
+    "swr": {
+      "optional": true
     }
   }
 }
