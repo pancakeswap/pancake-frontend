@@ -3,12 +3,12 @@ import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/s
 
 import { getBestTradeFromV2ExactIn } from './getBestTradeFromV2'
 import { getStableSwapOutputAmount } from './onchain'
-import { createTradeWithStableSwap } from './stableSwap'
-import { BestTradeOptions, StableSwapPair, TradeWithStableSwap } from './types'
+import { createTradeWithStableSwap, createTradeWithStableSwapFromV2Trade } from './stableSwap'
+import { BestTradeOptions, RouteType, StableSwapPair } from './types'
 import { getOutputToken, isSamePair } from './utils/pair'
 
-export async function getBestTradeWithStableSwap<TInput extends Currency, TOutput extends Currency>(
-  baseTrade: Trade<TInput, TOutput, TradeType.EXACT_INPUT> | Trade<TOutput, TInput, TradeType.EXACT_OUTPUT>,
+export async function getBestTradeWithStableSwap(
+  baseTrade: Trade<Currency, Currency, TradeType>,
   stableSwapPairs: StableSwapPair[],
   options: BestTradeOptions,
 ) {
@@ -16,7 +16,7 @@ export async function getBestTradeWithStableSwap<TInput extends Currency, TOutpu
   const { inputAmount, route, tradeType } = baseTrade
   // Early return if there's no stableswap available
   if (!stableSwapPairs.length) {
-    return baseTrade
+    return createTradeWithStableSwapFromV2Trade(baseTrade)
   }
 
   const findStableSwapPair = (pair: Pair) => stableSwapPairs.find((p) => isSamePair(p, pair))
@@ -33,6 +33,10 @@ export async function getBestTradeWithStableSwap<TInput extends Currency, TOutpu
     return shouldRecalculateOutputAmount() ? getOutputAmountFromV2(outputAmount, outputToken, options) : outputAmount
   }
 
+  let routeType: RouteType | null = null
+  const setCurrentRouteType = (type: RouteType) => {
+    routeType = routeType === null || routeType === type ? type : RouteType.MIXED
+  }
   const pairsWithStableSwap: (Pair | StableSwapPair)[] = []
   for (const [index, pair] of route.pairs.entries()) {
     const stableSwapPair = findStableSwapPair(pair)
@@ -42,6 +46,7 @@ export async function getBestTradeWithStableSwap<TInput extends Currency, TOutpu
       outputAmount = await getStableSwapOutputAmount(stableSwapPair, outputAmount, { provider })
       outputToken = getOutputToken(stableSwapPair, outputToken)
       pairsWithStableSwap.push(stableSwapPair)
+      setCurrentRouteType(RouteType.STABLE_SWAP)
       continue
     }
 
@@ -50,22 +55,20 @@ export async function getBestTradeWithStableSwap<TInput extends Currency, TOutpu
       outputAmount = await getLatestOutputAmount()
     }
     pairsWithStableSwap.push(pair)
+    setCurrentRouteType(RouteType.V2)
   }
 
-  if (tradeType === TradeType.EXACT_INPUT) {
-    return createTradeWithStableSwap({
-      pairs: pairsWithStableSwap,
-      inputAmount,
-      outputAmount,
-      tradeType,
-    }) as TradeWithStableSwap<TInput, TOutput, TradeType.EXACT_INPUT>
+  if (routeType === null) {
+    throw new Error(`No valid route found`)
   }
+
   return createTradeWithStableSwap({
+    routeType,
     pairs: pairsWithStableSwap,
     inputAmount,
     outputAmount,
     tradeType,
-  }) as TradeWithStableSwap<TOutput, TInput, TradeType.EXACT_OUTPUT>
+  })
 }
 
 async function getOutputAmountFromV2<TInput extends Currency, TOutput extends Currency>(

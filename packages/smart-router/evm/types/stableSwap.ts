@@ -1,5 +1,7 @@
 import { Currency, CurrencyAmount, ERC20Token, Pair, Token, TradeType } from '@pancakeswap/sdk'
 
+import { RouteType } from './bestTrade'
+
 export interface StableSwapPair {
   token0: ERC20Token
   token1: ERC20Token
@@ -10,6 +12,7 @@ export interface StableSwapPair {
 }
 
 export interface RouteWithStableSwap<TInput extends Currency, TOutput extends Currency> {
+  routeType: RouteType
   pairs: (Pair | StableSwapPair)[]
   input: TInput
   output: TOutput

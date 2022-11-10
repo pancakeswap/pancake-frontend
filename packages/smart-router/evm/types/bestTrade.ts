@@ -6,3 +6,9 @@ export type Provider = ({ chainId }: { chainId?: ChainId }) => IProvider
 export interface BestTradeOptions extends BaseBestTradeOptions {
   provider: Provider
 }
+
+export enum RouteType {
+  V2,
+  STABLE_SWAP,
+  MIXED,
+}
