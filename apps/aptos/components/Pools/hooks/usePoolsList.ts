@@ -27,11 +27,12 @@ export const usePoolsList = () => {
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   useInterval(refresh, POOL_RESET_INTERVAL)
 
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, networkName } = useActiveWeb3React()
 
   const { data: farmsWithPrices } = useFarms()
 
   const { data: pools } = useAccountResources({
+    networkName,
     address: SMARTCHEF_ADDRESS,
     select: (resources) => {
       return resources.filter((resource) => resource.type.includes(SMARTCHEF_POOL_INFO_TYPE_TAG))
