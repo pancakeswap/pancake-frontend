@@ -47,7 +47,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
             fontSize="12px"
             color="textSubtle"
             decimals={2}
-            value={getBalanceNumber(lpTokenPrice.times(stakedBalance))}
+            value={getBalanceNumber(lpTokenPrice.times(stakedBalance), decimals)}
             unit=" USD"
             prefix="~"
           />

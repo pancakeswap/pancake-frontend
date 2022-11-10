@@ -2,7 +2,7 @@ import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import _toNumber from 'lodash/toNumber'
 import { SerializedFarmPublicData, FarmData, isStableFarm } from './types'
-import { FIXED_ONE, FIXED_TEN_IN_POWER_18, FIXED_TWO, FIXED_ZERO } from './const'
+import { FIXED_ONE, FIXED_TEN_IN_POWER_8, FIXED_TWO, FIXED_ZERO } from './const'
 
 // Find BUSD price for token
 // either via direct calculation if farm is X-BNB or X-BUSD
@@ -114,7 +114,7 @@ export const getStableLpTokenPrice = (
 
   const liquidity = valueOfBaseTokenInFarm.addUnsafe(valueOfQuoteTokenInFarm)
 
-  const totalLpTokens = lpTotalSupply.divUnsafe(FIXED_TEN_IN_POWER_18)
+  const totalLpTokens = lpTotalSupply.divUnsafe(FIXED_TEN_IN_POWER_8)
 
   return liquidity.divUnsafe(totalLpTokens)
 }
@@ -135,7 +135,7 @@ export const getLpTokenPrice = (
     // Double it to get overall value in LP
     const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.mulUnsafe(FIXED_TWO)
     // Divide total value of all tokens, by the number of LP tokens
-    const totalLpTokens = lpTotalSupply.divUnsafe(FIXED_TEN_IN_POWER_18)
+    const totalLpTokens = lpTotalSupply.divUnsafe(FIXED_TEN_IN_POWER_8)
     lpTokenPrice = overallValueOfAllTokensInFarm.divUnsafe(totalLpTokens)
   }
 
