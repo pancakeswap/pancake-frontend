@@ -14,7 +14,6 @@ import {
 } from "./styles";
 
 import { Button } from "../Button";
-import CakePrice from "../CakePrice/CakePrice";
 import LangSelector from "../LangSelector/LangSelector";
 import { ArrowForwardIcon, LogoWithTextIcon } from "../Svg";
 import { ThemeSwitcher } from "../ThemeSwitcher";
@@ -99,9 +98,6 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
             />
           </Flex>
           <Flex order={[1, null, 2]} mb={["24px", null, "0"]} justifyContent="space-between" alignItems="center">
-            <Box mr="20px">
-              <CakePrice cakePriceUsd={cakePriceUsd} color="textSubtle" />
-            </Box>
             <Button
               data-theme="light"
               as="a"

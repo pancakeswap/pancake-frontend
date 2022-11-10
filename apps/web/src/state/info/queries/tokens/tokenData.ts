@@ -85,7 +85,12 @@ const fetchTokenData = async (
         ${weeksQuery}
       }
     `
+
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
+
+
+    console.log(data);
+
     return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch token data', error)

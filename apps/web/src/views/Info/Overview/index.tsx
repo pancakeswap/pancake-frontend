@@ -70,10 +70,10 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <Page>
-      <Heading scale="lg" mb="16px" id="info-overview-title">
+      {/* <Heading scale="lg" mb="16px" id="info-overview-title">
         {t('PancakeSwap Info & Analytics')}
-      </Heading>
-      <ChartCardsContainer>
+      </Heading> */}
+      {/* <ChartCardsContainer>
         <Card>
           <HoverableChart
             chartData={chartData}
@@ -94,7 +94,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
             ChartComponent={BarChart}
           />
         </Card>
-      </ChartCardsContainer>
+      </ChartCardsContainer> */}
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Top Tokens')}
       </Heading>
