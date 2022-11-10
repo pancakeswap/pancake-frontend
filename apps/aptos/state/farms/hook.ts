@@ -22,6 +22,7 @@ import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import { FARMS_ADDRESS, FARMS_NAME_TAG, FARMS_USER_INFO_RESOURCE, FARMS_USER_INFO } from 'state/farms/constants'
 import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { deserializeFarm } from './utils/deserializeFarm'
@@ -137,7 +138,10 @@ export const useFarms = () => {
       })
   }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])
 
-  const farmsWithPrices = useMemo(() => getFarmsPrices(lpInfo, nativeStableLpMap[chainId]), [chainId, lpInfo])
+  const farmsWithPrices = useMemo(
+    () => getFarmsPrices(lpInfo, nativeStableLpMap[chainId], FARM_DEFAULT_DECIMALS),
+    [chainId, lpInfo],
+  )
 
   const userInfos = useFarmsUserInfo()
 
