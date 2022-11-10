@@ -71,6 +71,7 @@ export interface RoiCalculatorModalProps {
   initialValue?: string;
   strategy?: any;
   header?: React.ReactNode;
+  decimals?: number;
   onBack?: () => void;
   onDismiss?: () => void;
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
@@ -97,6 +98,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   strategy,
   header,
   children,
+  decimals = 18,
   onBack,
   onDismiss,
   bCakeCalculatorSlot,
@@ -193,6 +195,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
             placeholder="0.00"
             value={editingValue}
             unit={editingUnit}
+            decimals={decimals}
             onUserInput={onUserInput}
             switchEditingUnits={toggleEditingCurrency}
             onFocus={onBalanceFocus}
@@ -224,7 +227,9 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               style={{ textTransform: "uppercase" }}
               disabled={isDisableMyBalance}
               onClick={() =>
-                setPrincipalFromUSDValue(getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice)).toString())
+                setPrincipalFromUSDValue(
+                  getBalanceNumber(stakingTokenBalance.times(stakingTokenPrice), decimals).toString()
+                )
               }
             >
               {t("My Balance")}

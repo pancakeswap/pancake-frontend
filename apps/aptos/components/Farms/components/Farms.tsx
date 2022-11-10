@@ -3,7 +3,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
-import { useIsMounted } from '@pancakeswap/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
 import {
@@ -135,7 +134,6 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
-  const isMounted = useIsMounted()
   const { chainId } = useActiveWeb3React()
   const cakePrice = useCakePriceAsBigNumber()
   const { pathname, query: urlQuery } = useRouter()

@@ -17,7 +17,7 @@ const compoundingIndexToFrequency = {
   3: 0.033333333, // once every 30 days
 };
 
-const TOKEN_PRECISION = 10;
+const TOKEN_PRECISION = 8;
 const USD_PRECISION = 2;
 
 // Used to track/react which currency user is editing (i.e. USD amount or Token amount)
