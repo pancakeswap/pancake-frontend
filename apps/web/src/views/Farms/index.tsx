@@ -4,22 +4,25 @@ import DisclaimerModal from 'components/DisclaimerModal'
 import { ConnectorNames, getDocLink } from 'config/wallet'
 import { ExtendEthereum } from 'global'
 import { FC, useState } from 'react'
-import { useFarms } from 'state/farms/hooks'
 import { useAccount, useNetwork } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import Farms, { FarmsContext } from './Farms'
 
-// Blocto EVM address is different across chains
-function BloctoWarning() {
+export function useIsBloctoETH() {
   const { chain } = useNetwork()
   const { isConnected, connector } = useAccount()
-  const { userDataLoaded, data } = useFarms()
   const isETH = chain?.id === mainnet.id
-  const hasBloctoAndUserDataLoaded =
-    userDataLoaded &&
+  return (
     (connector?.id === ConnectorNames.Blocto ||
       (typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto))) &&
-    isConnected
+    isConnected &&
+    isETH
+  )
+}
+
+// Blocto EVM address is different across chains
+function BloctoWarning() {
+  const isBloctoETH = useIsBloctoETH()
   const {
     t,
     currentLanguage: { code },
@@ -27,11 +30,8 @@ function BloctoWarning() {
 
   const [close, setClose] = useState(false)
 
-  const hasBalance =
-    hasBloctoAndUserDataLoaded && data.some((f) => f.userData && f.userData.stakedBalance.isGreaterThan(0))
-
   return (
-    <ModalV2 isOpen={hasBloctoAndUserDataLoaded && isETH && !close} closeOnOverlayClick={false}>
+    <ModalV2 isOpen={isBloctoETH && !close} closeOnOverlayClick={false}>
       <DisclaimerModal
         id="blocto-eth"
         modalHeader={t('Unsupported Wallet')}
@@ -40,24 +40,19 @@ function BloctoWarning() {
             {t(
               'Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.',
             )}
-            <LinkExternal href={getDocLink(code)}>
+            <LinkExternal href={getDocLink(code)} mt="4px">
               {t('Check out our wallet guide for the list of supported wallets.')}
             </LinkExternal>
           </>
         }
         subtitle={t('If you have previously deposited any LP tokens, please unstake.')}
-        checks={
-          hasBalance
-            ? [
-                {
-                  key: '1',
-                  content: t('Understand'),
-                },
-              ]
-            : []
-        }
-        hideConfirm={!hasBalance}
-        onSuccess={() => setClose(false)}
+        checks={[
+          {
+            key: 'blocto-understand',
+            content: t('I understand'),
+          },
+        ]}
+        onSuccess={() => setClose(true)}
       />
     </ModalV2>
   )

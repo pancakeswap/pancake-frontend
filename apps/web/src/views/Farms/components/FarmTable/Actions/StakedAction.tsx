@@ -34,6 +34,7 @@ import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
 import { ChainId } from '@pancakeswap/sdk'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { useAccount } from 'wagmi'
+import { useIsBloctoETH } from 'views/Farms'
 import useApproveFarm from '../../../hooks/useApproveFarm'
 import useStakeFarms from '../../../hooks/useStakeFarms'
 import useUnstakeFarms from '../../../hooks/useUnstakeFarms'
@@ -168,6 +169,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const addTransaction = useTransactionAdder()
+  const isBloctoETH = useIsBloctoETH()
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { account, chainId } = useActiveWeb3React()
 
@@ -420,7 +422,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
               <IconButton mr="6px" variant="secondary" disabled={pendingFarm.length > 0} onClick={onPresentWithdraw}>
                 <MinusIcon color="primary" width="14px" />
               </IconButton>
-              <IconButton variant="secondary" onClick={onPresentDeposit} disabled={isStakeReady}>
+              <IconButton variant="secondary" onClick={onPresentDeposit} disabled={isStakeReady || isBloctoETH}>
                 <AddIcon color="primary" width="14px" />
               </IconButton>
             </IconButtonWrapper>
@@ -461,7 +463,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
         </Text>
       </ActionTitles>
       <ActionContent>
-        <Button width="100%" disabled={pendingTx} onClick={handleApprove} variant="secondary">
+        <Button width="100%" disabled={pendingTx || isBloctoETH} onClick={handleApprove} variant="secondary">
           {t('Enable')}
         </Button>
       </ActionContent>

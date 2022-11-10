@@ -70,14 +70,14 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
 
   const handleConfirm = useCallback(() => {
     onSuccess()
-    onDismiss()
+    onDismiss?.()
   }, [onSuccess, onDismiss])
 
   return (
     <ModalContainer title={modalHeader || t('Welcome!')} $minWidth="320px" id={id}>
       <GradientModalHeader>
         <ModalTitle>
-          <Heading scale="lg">{t('Welcome!')}</Heading>
+          <Heading scale="lg">{modalHeader || t('Welcome!')}</Heading>
         </ModalTitle>
       </GradientModalHeader>
       <ModalBody p="24px" maxWidth={['100%', '100%', '100%', '400px']}>
