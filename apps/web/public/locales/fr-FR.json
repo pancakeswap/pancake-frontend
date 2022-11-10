@@ -2016,5 +2016,9 @@
   "RPC Default": "RPC Default",
   "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
   "Show username": "Show username",
-  "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter."
+  "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter.",
+  "Unsupported Wallet": "Unsupported Wallet",
+  "Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.": "Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.",
+  "Check out our wallet guide for the list of supported wallets.": "Check out our wallet guide for the list of supported wallets.",
+  "If you have previously deposited any LP tokens, please unstake.": "If you have previously deposited any LP tokens, please unstake."
 }
