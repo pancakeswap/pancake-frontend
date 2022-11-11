@@ -230,12 +230,16 @@ export default function CurrencyInputPanel({
               }}
             />
           </LabelRow>
+          {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
+            <Flex justifyContent="flex-end" mr="1rem">
+              <Flex maxWidth="200px">
+                <Text fontSize="12px" color="textSubtle">
+                  ~{formatNumber(amountInDollar)} USD
+                </Text>
+              </Flex>
+            </Flex>
+          )}
           <InputRow selected={disableCurrencySelect}>
-            {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
-              <Text fontSize="12px" color="textSubtle" mr="12px">
-                ~{formatNumber(amountInDollar)} USD
-              </Text>
-            )}
             {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
                 {showQuickInputButton &&
