@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "aptos",
-  "title": "Aptos Token List",
-  "description": "Schema for lists of tokens compatible with the PancakeSwap Aptos Interface",
+  "$id": "pancakeswap",
+  "title": "PancakeSwap Token List",
+  "description": "Schema for lists of tokens compatible with the PancakeSwap Interface, including Uniswap standard and PancakeSwap Aptos",
   "definitions": {
     "Version": {
       "type": "object",
@@ -182,6 +182,67 @@
         "address": {
           "type": "string",
           "description": "The checksummed address of the token on the specified chain ID",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "examples": ["0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"]
+        },
+        "decimals": {
+          "type": "integer",
+          "description": "The number of decimals for the token balance",
+          "minimum": 0,
+          "maximum": 255,
+          "examples": [18]
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the token",
+          "minLength": 1,
+          "maxLength": 40,
+          "pattern": "^[ \\w.'+\\-%/À-ÖØ-öø-ÿ:&\\[\\]\\(\\)]+$",
+          "examples": ["USD Coin"]
+        },
+        "symbol": {
+          "type": "string",
+          "description": "The symbol for the token; must be alphanumeric",
+          "pattern": "^[a-zA-Z0-9+\\-%/$.]+$",
+          "minLength": 1,
+          "maxLength": 20,
+          "examples": ["USDC"]
+        },
+        "logoURI": {
+          "type": "string",
+          "description": "A URI to the token logo asset; if not set, interface will attempt to find a logo based on the token address; suggest SVG or PNG of size 64x64",
+          "format": "uri",
+          "examples": ["ipfs://QmXfzKRvjZz3u5JRgC4v5mGVbm9ahrUiB4DgzHBsnWbTMM"]
+        },
+        "tags": {
+          "type": "array",
+          "description": "An array of tag identifiers associated with the token; tags are defined at the list level",
+          "items": {
+            "$ref": "#/definitions/TagIdentifier"
+          },
+          "maxItems": 10,
+          "examples": ["stablecoin", "compound"]
+        },
+        "extensions": {
+          "$ref": "#/definitions/ExtensionMap"
+        }
+      },
+      "required": ["chainId", "address", "decimals", "name", "symbol"]
+    },
+    "AptosTokenInfo": {
+      "type": "object",
+      "description": "Metadata for a single token in a token list",
+      "additionalProperties": false,
+      "properties": {
+        "chainId": {
+          "type": "integer",
+          "description": "The chain ID of the Aptos network where this token is deployed, 0 is devent",
+          "minimum": 0,
+          "examples": [1, 42]
+        },
+        "address": {
+          "type": "string",
+          "description": "The address of the coin on the specified chain ID",
           "examples": ["0x1::aptos_coin::AptosCoin"]
         },
         "decimals": {
@@ -245,15 +306,15 @@
       "format": "date-time",
       "description": "The timestamp of this list version; i.e. when this immutable version of the list was created"
     },
+    "schema": {
+      "type": "string"
+    },
     "version": {
       "$ref": "#/definitions/Version"
     },
     "tokens": {
       "type": "array",
       "description": "The list of tokens included in the list",
-      "items": {
-        "$ref": "#/definitions/TokenInfo"
-      },
       "minItems": 1,
       "maxItems": 10000
     },
@@ -295,6 +356,36 @@
       "description": "A URI for the logo of the token list; prefer SVG or PNG of size 256x256",
       "format": "uri",
       "examples": ["ipfs://QmXfzKRvjZz3u5JRgC4v5mGVbm9ahrUiB4DgzHBsnWbTMM"]
+    }
+  },
+  "if": {
+    "properties": { "schema": { "const": "aptos" } },
+    "required": ["name", "timestamp", "version", "tokens", "schema"]
+  },
+  "then": {
+    "properties": {
+      "tokens": {
+        "items": {
+          "$ref": "#/definitions/AptosTokenInfo"
+        },
+        "type": "array",
+        "description": "The list of tokens included in the list",
+        "minItems": 1,
+        "maxItems": 10000
+      }
+    }
+  },
+  "else": {
+    "properties": {
+      "tokens": {
+        "items": {
+          "$ref": "#/definitions/TokenInfo"
+        },
+        "type": "array",
+        "description": "The list of tokens included in the list",
+        "minItems": 1,
+        "maxItems": 10000
+      }
     }
   },
   "required": ["name", "timestamp", "version", "tokens"]

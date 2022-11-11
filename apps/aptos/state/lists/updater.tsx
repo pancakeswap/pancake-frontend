@@ -1,7 +1,6 @@
 import { useInterval, useIsWindowVisible } from '@pancakeswap/hooks'
-import { useFetchListCallback } from '@pancakeswap/token-lists'
-import { acceptListUpdate, updateListVersion } from '@pancakeswap/token-lists/src/actions'
-import { getVersionUpgrade, VersionUpgrade } from '@uniswap/token-lists'
+import { useFetchListCallback, acceptListUpdate, updateListVersion } from '@pancakeswap/token-lists/react'
+import { getVersionUpgrade, VersionUpgrade } from '@pancakeswap/token-lists'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useCallback, useEffect } from 'react'
 import { useAllLists } from 'state/lists/hooks'
@@ -20,7 +19,7 @@ export default function Updater(): null {
     dispatch(updateListVersion())
   }, [dispatch])
 
-  const fetchList = useFetchListCallback(dispatch, true)
+  const fetchList = useFetchListCallback(dispatch)
   const fetchAllListsCallback = useCallback(() => {
     if (!isWindowVisible) return
     Object.keys(lists).forEach((url) =>

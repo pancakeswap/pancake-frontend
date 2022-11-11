@@ -1,13 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, CheckmarkIcon, CogIcon, Input, LinkExternal, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
-import { TokenList, Version } from '@uniswap/token-lists'
+import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists/lists'
 import styled from 'styled-components'
-import { useFetchListCallback, acceptListUpdate, disableList, enableList, removeList } from '@pancakeswap/token-lists'
+import {
+  useFetchListCallback,
+  acceptListUpdate,
+  disableList,
+  enableList,
+  removeList,
+} from '@pancakeswap/token-lists/react'
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
