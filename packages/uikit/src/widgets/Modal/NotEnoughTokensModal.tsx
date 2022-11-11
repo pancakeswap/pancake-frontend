@@ -6,6 +6,7 @@ import { Link, Text, Button, OpenNewIcon } from "../../components";
 
 interface NotEnoughTokensModalProps {
   tokenSymbol: string;
+  tokenAddress?: string;
   onDismiss?: () => void;
   hideLocateAddress?: boolean;
 }
@@ -16,6 +17,7 @@ const StyledLink = styled(Link)`
 
 const NotEnoughTokensModal: React.FC<React.PropsWithChildren<NotEnoughTokensModalProps>> = ({
   tokenSymbol,
+  tokenAddress,
   onDismiss,
   hideLocateAddress = false,
 }) => {
@@ -37,7 +39,7 @@ const NotEnoughTokensModal: React.FC<React.PropsWithChildren<NotEnoughTokensModa
           symbol: tokenSymbol,
         })}
       </Text>
-      <Button mt="24px" as="a" external href="/swap">
+      <Button mt="24px" as="a" external href={tokenAddress ? `/swap?outputCurrency=${tokenAddress}` : "/swap"}>
         {t("Buy")} {tokenSymbol}
       </Button>
       {hideLocateAddress ? null : (
