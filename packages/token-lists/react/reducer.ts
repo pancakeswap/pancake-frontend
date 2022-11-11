@@ -1,5 +1,4 @@
 import { createReducer } from '@reduxjs/toolkit'
-import { getVersionUpgrade, VersionUpgrade, TokenList } from '@uniswap/token-lists'
 
 import {
   acceptListUpdate,
@@ -10,6 +9,7 @@ import {
   disableList,
   updateListVersion,
 } from './actions'
+import { getVersionUpgrade, VersionUpgrade, TokenList } from '../src'
 
 export interface ListsState {
   readonly byUrl: {

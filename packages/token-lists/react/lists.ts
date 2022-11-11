@@ -12,13 +12,13 @@ const noopStorage = {
   getAllKeys: noop,
 }
 
-export const createListsAtom = (storeName: string, reducer, initialState) => {
+export const createListsAtom = (storeName: string, reducer: any, initialState: any) => {
   let gotOnce = false
   /**
    * Persist you redux state using IndexedDB
    * @param {string} dbName - IndexedDB database name
    */
-  function IndexedDBStorage(dbName) {
+  function IndexedDBStorage(dbName: string) {
     if (typeof window !== 'undefined') {
       const db = localForage.createInstance({
         name: dbName,
@@ -26,7 +26,7 @@ export const createListsAtom = (storeName: string, reducer, initialState) => {
       })
       return {
         db,
-        getItem: async (key) => {
+        getItem: async (key: string) => {
           const value = await db.getItem(key)
           gotOnce = true
           if (value) {
@@ -34,7 +34,7 @@ export const createListsAtom = (storeName: string, reducer, initialState) => {
           }
           return initialState
         },
-        setItem: (k, v) => {
+        setItem: (k: string, v: any) => {
           if (gotOnce) {
             return db.setItem(k, v)
           }
