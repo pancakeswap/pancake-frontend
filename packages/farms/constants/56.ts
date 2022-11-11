@@ -50,6 +50,16 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.wbnb,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
+
+  {
+    pid: 109,
+    lpSymbol: 'XCAD-BUSD LP',
+    lpAddress: '0x07C10ecFb0e1CF81E3e05ddb693Cc114C8EBe498',
+    token: bscTokens.xcad,
+    quoteToken: bscTokens.busd,
+    isCommunity: true,
+    auctionHostingStartSeconds: 1668153600, // Fri Nov 11 2022 08:00:00 GMT+0000
+  },
   {
     pid: 130,
     lpSymbol: 'XCAD-CAKE',
@@ -64,7 +74,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.mhunt,
     quoteToken: bscTokens.wbnb,
     isCommunity: true,
-    auctionHostingStartSeconds: 1666339200, // Fri Oct 21 2022 08:00:00 GMT+0000
   },
   {
     pid: 91,
@@ -74,7 +83,6 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.tinc,
     isCommunity: true,
     quoteToken: bscTokens.wbnb,
-    auctionHostingStartSeconds: 1666339200, // Fri Oct 21 2022 08:00:00 GMT+0000
   },
   {
     pid: 129,
@@ -166,14 +174,6 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x008604A38cD589680F7B8f085DC2D5B4F81151dB',
     token: bscTokens.happy,
     quoteToken: bscTokens.wbnb,
-    isCommunity: true,
-  },
-  {
-    pid: 109,
-    lpSymbol: 'XCAD-BUSD LP',
-    lpAddress: '0x07C10ecFb0e1CF81E3e05ddb693Cc114C8EBe498',
-    token: bscTokens.xcad,
-    quoteToken: bscTokens.busd,
     isCommunity: true,
   },
   {
