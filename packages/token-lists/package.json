@@ -2,6 +2,7 @@
   "name": "@pancakeswap/token-lists",
   "version": "0.0.1",
   "private": true,
+  "sideEffects": false,
   "main": "src/index.ts",
   "scripts": {
     "test": "vitest --run"
