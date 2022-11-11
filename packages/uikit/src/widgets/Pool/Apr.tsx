@@ -66,6 +66,7 @@ export function Apr<T>({
       earningTokenPrice={earningTokenPrice || 0}
       stakingTokenPrice={stakingTokenPrice || 0}
       stakingTokenBalance={stakedBalance.plus(stakingTokenBalance)}
+      stakingTokenDecimals={stakingToken.decimals}
       apr={vaultKey ? rawApr : apr}
       stakingTokenSymbol={stakingToken?.symbol || ""}
       linkLabel={t("Get %symbol%", { symbol: stakingToken?.symbol || "" })}

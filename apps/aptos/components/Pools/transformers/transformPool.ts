@@ -13,12 +13,13 @@ import { PoolResource } from '../types'
 import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'
 import splitTypeTag from '../utils/splitTypeTag'
 import getTokenByAddress from '../utils/getTokenByAddress'
+import { getPoolApr } from './transformCakePool'
 
 const transformPool = (
   resource: PoolResource,
   balances,
   chainId,
-  addressesWithUSD,
+  prices,
 ): Pool.DeserializedPool<Coin | AptosCoin> | undefined => {
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
@@ -30,6 +31,7 @@ const transformPool = (
   }
 
   const totalStakedToken = _get(resource, 'data.total_staked_token.value', '0')
+  const rewardPerSecond = _get(resource, 'data.reward_per_second')
 
   if (balances?.length) {
     const stakingTokenBalance = balances.find((balance) => balance.type === `0x1::coin::CoinStore<${stakingAddress}>`)
@@ -53,9 +55,9 @@ const transformPool = (
 
         const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
 
-        const rewardPerSecond = FixedNumber.from(_get(resource, 'data.reward_per_second'))
+        const frewardPerSecond = FixedNumber.from(rewardPerSecond)
 
-        const rewardPendingToken = rewardPerSecond.mulUnsafe(multiplier)
+        const rewardPendingToken = frewardPerSecond.mulUnsafe(multiplier)
 
         const tokenPerShare = FixedNumber.from(_get(resource, 'data.acc_token_per_share'))
         const precisionFactor = FixedNumber.from(_get(resource, 'data.precision_factor'))
@@ -88,8 +90,16 @@ const transformPool = (
 
   if (!stakingToken || !earningToken) return undefined
 
-  const earningTokenPrice = addressesWithUSD[earningAddress] || 0
-  const stakingTokenPrice = addressesWithUSD[stakingAddress] || 0
+  const earningTokenPrice = prices[earningAddress] || 0
+  const stakingTokenPrice = prices[stakingAddress] || 0
+
+  const apr =
+    getPoolApr({
+      rewardTokenPrice: _toNumber(earningTokenPrice),
+      stakingTokenPrice: _toNumber(earningTokenPrice),
+      tokenPerSecond: rewardPerSecond,
+      totalStaked: totalStakedToken,
+    }) || 0
 
   return {
     // Ignore sousId
@@ -99,7 +109,7 @@ const transformPool = (
     },
     stakingToken,
     earningToken,
-    apr: 0,
+    apr,
     earningTokenPrice,
     stakingTokenPrice,
 
