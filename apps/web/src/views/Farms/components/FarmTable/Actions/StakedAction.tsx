@@ -322,6 +322,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       bCakeCalculatorSlot={bCakeCalculatorSlot}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
       crossChainWarningText={crossChainWarningText}
+      decimals={18}
     />,
   )
 
@@ -331,6 +332,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       max={stakedBalance}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
+      decimals={18}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
     />,
   )
@@ -377,6 +379,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           onPresentDeposit={onPresentDeposit}
         >
           <FarmUI.StakedLP
+            decimals={18}
             stakedBalance={stakedBalance}
             quoteTokenSymbol={quoteToken.symbol}
             tokenSymbol={token.symbol}

@@ -15,7 +15,7 @@ interface WithdrawModalProps {
   tokenName?: string;
   showActiveBooster?: boolean;
   showCrossChainFarmWarning?: boolean;
-  decimals?: number;
+  decimals: number;
 }
 
 const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
@@ -25,7 +25,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   tokenName = "",
   showActiveBooster,
   showCrossChainFarmWarning,
-  decimals = 18,
+  decimals,
 }) => {
   const [val, setVal] = useState("");
   const [pendingTx, setPendingTx] = useState(false);

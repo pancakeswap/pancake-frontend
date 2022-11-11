@@ -46,7 +46,7 @@ interface DepositModalProps {
   bCakeMultiplier?: number | null;
   showCrossChainFarmWarning?: boolean;
   crossChainWarningText?: string;
-  decimals?: number;
+  decimals: number;
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
   onDismiss?: () => void;
   onConfirm: (amount: string) => void;
@@ -70,7 +70,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   bCakeMultiplier,
   showCrossChainFarmWarning,
   crossChainWarningText,
-  decimals = 18,
+  decimals,
   bCakeCalculatorSlot,
 }) => {
   const [val, setVal] = useState("");

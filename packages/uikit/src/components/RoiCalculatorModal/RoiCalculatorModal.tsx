@@ -60,7 +60,7 @@ export interface RoiCalculatorModalProps {
   linkLabel: string;
   linkHref: string;
   stakingTokenBalance: BigNumber;
-  stakingTokenDecimals?: number;
+  stakingTokenDecimals: number;
   stakingTokenSymbol: string;
   stakingTokenPrice: number;
   earningTokenSymbol?: string;
@@ -98,10 +98,10 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   strategy,
   header,
   children,
+  stakingTokenDecimals,
   onBack,
   onDismiss,
   bCakeCalculatorSlot,
-  stakingTokenDecimals = 18,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);

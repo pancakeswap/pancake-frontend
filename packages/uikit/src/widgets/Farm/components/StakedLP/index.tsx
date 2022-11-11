@@ -15,7 +15,7 @@ interface StakedLPProps {
   tokenAmountTotal: BigNumber;
   quoteTokenAmountTotal: BigNumber;
   pendingFarmLength?: number;
-  decimals?: number;
+  decimals: number;
   onClickLoadingIcon?: () => void;
 }
 

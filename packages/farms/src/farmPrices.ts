@@ -158,7 +158,7 @@ export const getFarmsPrices = (
     wNative: string
     stable: string
   },
-  decimals = 18,
+  decimals: number,
 ): FarmWithPrices[] => {
   const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLp.address))
 

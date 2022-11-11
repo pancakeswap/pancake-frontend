@@ -126,11 +126,12 @@ const StakeButton: React.FC<React.PropsWithChildren<StackedActionProps>> = ({
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       bCakeMultiplier={bCakeMultiplier}
+      decimals={18}
       bCakeCalculatorSlot={bCakeCalculatorSlot}
     />,
   )
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} />,
+    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} decimals={18} />,
   )
   const lpContract = useERC20(lpAddress)
   const dispatch = useAppDispatch()
