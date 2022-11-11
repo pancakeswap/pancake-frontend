@@ -7,13 +7,11 @@
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
-  "peerDependencies": {
-    "@pancakeswap/sdk": "^3.0.0"
-  },
   "dependencies": {
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/contracts": "^5.0.0",
-    "@ethersproject/providers": "^5.0.0"
+    "@ethersproject/providers": "^5.0.0",
+    "@pancakeswap/sdk": "^3.0.0"
   },
   "devDependencies": {
     "tsconfig": "*",
