@@ -1,7 +1,6 @@
 import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import erc20ABI from 'config/abi/erc20.json'
-import { SerializedPoolConfig } from 'config/constants/types'
 import multicall from 'utils/multicall'
 import { getAddress } from 'utils/addressHelpers'
 import { bscRpcProvider } from 'utils/providers'
@@ -10,13 +9,18 @@ import uniq from 'lodash/uniq'
 import fromPairs from 'lodash/fromPairs'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 
+import { Pool } from '@pancakeswap/uikit'
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
 const nonBnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol !== 'BNB')
 const bnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol === 'BNB')
 const nonMasterPools = poolsConfig.filter((pool) => pool.sousId !== 0)
 
-const filterPools = (p: SerializedPoolConfig, fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number) => {
+const filterPools = (
+  p: Pool.SerializedPoolConfig<SerializedWrappedToken>,
+  fetchPoolOrPools: 'finishedPools' | 'nonFinishedPools' | number,
+) => {
   if (!isUndefinedOrNull(fetchPoolOrPools)) {
     if (fetchPoolOrPools === 'finishedPools') {
       return p.isFinished
