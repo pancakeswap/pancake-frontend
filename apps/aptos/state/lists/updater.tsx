@@ -1,15 +1,14 @@
-import { useInterval, useIsWindowVisible } from '@pancakeswap/hooks'
-import { useFetchListCallback, acceptListUpdate, updateListVersion } from '@pancakeswap/token-lists/react'
 import { getVersionUpgrade, VersionUpgrade } from '@pancakeswap/token-lists'
+import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@pancakeswap/token-lists/react'
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useAllLists } from 'state/lists/hooks'
+import useSWRImuutable from 'swr/immutable'
 import { useActiveListUrls } from './hooks'
 import { useListState } from './index'
 
 export default function Updater(): null {
   const [, dispatch] = useListState()
-  const isWindowVisible = useIsWindowVisible()
 
   // get all loaded lists, and the active urls
   const lists = useAllLists()
@@ -20,25 +19,19 @@ export default function Updater(): null {
   }, [dispatch])
 
   const fetchList = useFetchListCallback(dispatch)
-  const fetchAllListsCallback = useCallback(() => {
-    if (!isWindowVisible) return
-    Object.keys(lists).forEach((url) =>
-      fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
-    )
-  }, [fetchList, isWindowVisible, lists])
 
-  // fetch all lists every 10 minutes, but only after we initialize library and page has currency input
-  useInterval(fetchAllListsCallback, 1000 * 60 * 10, true, true)
-
-  // whenever a list is not loaded and not loading, try again to load it
-  useEffect(() => {
-    Object.keys(lists).forEach((listUrl) => {
-      const list = lists[listUrl]
-      if (!list.current && !list.loadingRequestId && !list.error) {
-        fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
-      }
-    })
-  }, [fetchList, lists])
+  useSWRImuutable(
+    ['token-list'],
+    () => {
+      Object.keys(lists).forEach((url) =>
+        fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
+      )
+    },
+    {
+      dedupingInterval: 1000 * 60 * 10,
+      refreshInterval: 1000 * 60 * 10,
+    },
+  )
 
   // if any lists from unsupported lists are loaded, check them too (in case new updates since last visit)
   useEffect(() => {
