@@ -6,35 +6,37 @@ import _toString from 'lodash/toString'
 import { SMARTCHEF_ADDRESS, SMARTCHEF_POOL_INFO_TYPE_TAG } from 'contracts/smartchef/constants'
 import _toNumber from 'lodash/toNumber'
 import { useCallback, useMemo } from 'react'
-import { useFarms, useMasterChefResource } from 'state/farms/hook'
+import { useMasterChefResource } from 'state/farms/hook'
 import { FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
 import { getFarmConfig } from 'config/constants/farms'
-import { usePairs } from 'hooks/usePairs'
+import { PairState, usePairs } from 'hooks/usePairs'
 import { APT, L0_USDC } from 'config/coins'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { Coin } from '@pancakeswap/aptos-swap-sdk'
+import { Coin, Pair, PAIR_LP_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
 import { CAKE_PID } from 'config/constants'
 import { useInterval, useLastUpdated } from '@pancakeswap/hooks'
 
 import { PoolResource } from '../types'
 import transformCakePool from '../transformers/transformCakePool'
 import transformPool from '../transformers/transformPool'
-import convertFarmsWithPriceIntoUSD from '../utils/convertFarmsWithPriceIntoUSD'
 import { POOL_RESET_INTERVAL } from '../constants'
+import useAddressPriceMap, { getPriceInUSDC } from './useAddressPriceMap'
 
 export const usePoolsList = () => {
   // Since Aptos is timestamp-based update for earning, we will forcely refresh in 10 seconds.
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
   useInterval(refresh, POOL_RESET_INTERVAL)
 
-  const { account, chainId } = useActiveWeb3React()
-
-  const { data: farmsWithPrices } = useFarms()
+  const { account, chainId, networkName } = useActiveWeb3React()
 
   const { data: pools } = useAccountResources({
+    networkName,
     address: SMARTCHEF_ADDRESS,
     select: (resources) => {
-      return resources.filter((resource) => resource.type.includes(SMARTCHEF_POOL_INFO_TYPE_TAG))
+      return resources.filter(
+        // ignore LP Token Type for now
+        (resource) => resource.type.includes(SMARTCHEF_POOL_INFO_TYPE_TAG) && !resource.type.includes(PAIR_LP_TYPE_TAG),
+      )
     },
     watch: true,
   })
@@ -47,20 +49,13 @@ export const usePoolsList = () => {
     watch: true,
   })
 
+  const prices = useAddressPriceMap({ pools, chainId })
+
   const tranformCakePool = useCakePool({ balances, chainId })
 
-  const addressesWithUSD = convertFarmsWithPriceIntoUSD(farmsWithPrices)
-
-  // Stringify for memoize. FarmsWithPrices keep returning new reference
-  const addressesWithUSDStringify = JSON.stringify(addressesWithUSD)
-
   return useMemo(() => {
-    const unwrapAddressesWithUSD = JSON.parse(addressesWithUSDStringify)
-
     const syrupPools = pools
-      ? pools
-          .map((pool) => transformPool(pool as PoolResource, balances, chainId, unwrapAddressesWithUSD))
-          .filter(Boolean)
+      ? pools.map((pool) => transformPool(pool as PoolResource, balances, chainId, prices)).filter(Boolean)
       : []
 
     const cakePool = tranformCakePool()
@@ -68,23 +63,29 @@ export const usePoolsList = () => {
     return cakePool ? [cakePool, ...syrupPools] : syrupPools
     // Disable exhaustive for lastUpdated
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pools, balances, chainId, addressesWithUSDStringify, tranformCakePool, lastUpdated])
+  }, [pools, balances, chainId, prices, tranformCakePool, lastUpdated])
 }
 
 export const useCakePool = ({ balances, chainId }) => {
+  const usdcCoin = L0_USDC[chainId]
+  const aptCoin = APT[chainId]
+
   // Since Aptos is timestamp-based update for earning, we will forcely refresh in 6 seconds.
   const cakeFarm = useMemo(() => getFarmConfig(chainId)?.find((f) => f.pid === CAKE_PID), [chainId])
 
+  const cakeToken = useMemo(() => cakeFarm?.token && deserializeToken(cakeFarm?.token), [cakeFarm])
+
   const pairs: [Coin, Coin][] = useMemo(() => {
-    if (!cakeFarm?.token) {
+    if (!cakeToken) {
       return []
     }
 
     return [
-      [APT[chainId], L0_USDC[chainId]],
-      [APT[chainId], deserializeToken(cakeFarm?.token)],
+      [aptCoin, usdcCoin],
+      [aptCoin, cakeToken],
+      [usdcCoin, cakeToken],
     ]
-  }, [cakeFarm?.token, chainId])
+  }, [aptCoin, cakeToken, usdcCoin])
 
   const pairsWithInfo = usePairs(pairs)
 
@@ -93,16 +94,12 @@ export const useCakePool = ({ balances, chainId }) => {
       return 0
     }
 
-    const [[, stablePair], [, cakePair]] = pairsWithInfo
-
-    if (!cakeFarm || !stablePair || !cakePair) return 0
-
-    const cakeCoin = deserializeToken(cakeFarm?.token)
-    const aptUSD = stablePair.priceOf(APT[chainId])
-    const cakeVsApt = cakePair.priceOf(cakeCoin)
-
-    return cakeVsApt.multiply(aptUSD).toSignificant()
-  }, [cakeFarm, chainId, pairsWithInfo])
+    return getPriceInUSDC({
+      availablePairs: pairsWithInfo.filter(([status]) => status === PairState.EXISTS).map(([, pair]) => pair as Pair),
+      tokenIn: cakeToken,
+      usdcCoin,
+    })
+  }, [cakeToken, pairsWithInfo, usdcCoin])
 
   const { data: masterChef } = useMasterChefResource()
 

@@ -81,12 +81,12 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       stakingTokenBalance={userBalanceInFarm}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={lpTokenPrice.toNumber()}
+      stakingTokenDecimals={FARM_DEFAULT_DECIMALS}
       earningTokenPrice={cakePrice.toNumber()}
       apr={apr}
       multiplier={multiplier}
       displayApr={displayApr}
       linkHref={addLiquidityUrl}
-      decimals={FARM_DEFAULT_DECIMALS}
       isFarm
     />,
     false,

@@ -5,6 +5,7 @@
   "description": "Tokens for pancakeswap",
   "main": "src/index.ts",
   "private": true,
+  "sideEffects": false,
   "dependencies": {
     "@pancakeswap/sdk": "*"
   }

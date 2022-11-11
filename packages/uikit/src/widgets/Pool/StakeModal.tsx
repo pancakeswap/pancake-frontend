@@ -162,6 +162,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         account={account}
         earningTokenPrice={earningTokenPrice}
         stakingTokenPrice={stakingTokenPrice}
+        stakingTokenDecimals={stakingTokenDecimals}
         apr={apr}
         linkLabel={t("Get %symbol%", { symbol: stakingTokenSymbol })}
         linkHref={getTokenLink}

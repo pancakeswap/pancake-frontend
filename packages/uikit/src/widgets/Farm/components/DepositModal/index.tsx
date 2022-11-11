@@ -128,6 +128,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           account={account}
           linkLabel={t("Get %symbol%", { symbol: lpLabel })}
           stakingTokenBalance={stakedBalance.plus(max)}
+          stakingTokenDecimals={decimals}
           stakingTokenSymbol={tokenName}
           stakingTokenPrice={lpPrice.toNumber()}
           earningTokenPrice={cakePrice.toNumber()}
