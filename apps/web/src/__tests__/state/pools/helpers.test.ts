@@ -1,6 +1,7 @@
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
+import { Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import poolsConfig from 'config/constants/pools'
-import { SerializedPoolConfig } from 'config/constants/types'
 import { transformPool, transformUserData } from 'state/pools/helpers'
 import { SerializedPool } from 'state/types'
 
@@ -50,10 +51,9 @@ describe('transformUserData', () => {
 
 describe('transformPool', () => {
   // Transform pool object with the sous id for a label. For display purposes only.
-  const poolTable: [number, SerializedPoolConfig][] = poolsConfig.map((poolsConfigItem) => [
-    poolsConfigItem.sousId,
-    poolsConfigItem,
-  ])
+  const poolTable: [number, Pool.SerializedPoolConfig<SerializedWrappedToken>][] = poolsConfig.map(
+    (poolsConfigItem) => [poolsConfigItem.sousId, poolsConfigItem],
+  )
   it.each(poolTable)('transforms pool %d correctly', (sousId, config) => {
     const pool = {
       ...config,
@@ -78,7 +78,6 @@ describe('transformPool', () => {
     expect(transformedPool).toHaveProperty('earningToken.symbol')
     expect(transformedPool).toHaveProperty('earningToken.projectLink')
     expect(transformedPool).toHaveProperty('poolCategory')
-    expect(transformedPool).toHaveProperty('tokenPerBlock')
 
     expect(transformedPool).toHaveProperty('totalStaked')
     expect(transformedPool).toHaveProperty('stakingLimit')

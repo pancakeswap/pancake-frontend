@@ -2,16 +2,10 @@ import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { parseUnits } from '@ethersproject/units'
 import { SerializedFarmsState } from '@pancakeswap/farms'
 import { Token } from '@pancakeswap/sdk'
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
+import { Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import {
-  CampaignType,
-  FetchStatus,
-  LotteryStatus,
-  LotteryTicket,
-  SerializedPoolConfig,
-  Team,
-  TranslatableText,
-} from 'config/constants/types'
+import { CampaignType, FetchStatus, LotteryStatus, LotteryTicket, Team, TranslatableText } from 'config/constants/types'
 import { NftToken } from './nftMarket/types'
 
 export enum GAS_PRICE {
@@ -53,7 +47,7 @@ interface CorePoolProps {
   vaultKey?: VaultKey
 }
 
-export interface SerializedPool extends SerializedPoolConfig, CorePoolProps {
+export interface SerializedPool extends Pool.SerializedPoolConfig<SerializedWrappedToken>, CorePoolProps {
   totalStaked?: SerializedBigNumber
   stakingLimit?: SerializedBigNumber
   numberBlocksForUserLimit?: number
