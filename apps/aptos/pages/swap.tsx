@@ -76,6 +76,7 @@ const SwapPage = () => {
   const outputCurrency = useCurrency(outputCurrencyId)
 
   const isExactIn: boolean = independentField === Field.INPUT
+
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
