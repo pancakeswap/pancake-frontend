@@ -168,6 +168,7 @@ const farms: SerializedFarmConfig[] = [
     token: bscTokens.xcad,
     quoteToken: bscTokens.busd,
     isCommunity: true,
+    auctionHostingStartSeconds: 1668153600, // Fri Nov 11 2022 08:00:00 GMT+0000
   },
   {
     pid: 116,
