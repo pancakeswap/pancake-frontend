@@ -1,5 +1,13 @@
 # @pancakeswap/smart-router
 
+## 0.2.1
+
+### Patch Changes
+
+- 1e4a4b27c: Fix missing dependencies
+- Updated dependencies [1e4a4b27c]
+  - @pancakeswap/multicall@0.0.2
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/smart-router",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A SDK for getting best routes from AMM",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@ethersproject/providers": "^5.0.0",
     "@ethersproject/bignumber": "^5.0.0",
-    "@pancakeswap/multicall": "^0.0.1",
+    "@pancakeswap/multicall": "^0.0.2",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
