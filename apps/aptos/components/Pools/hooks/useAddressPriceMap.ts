@@ -51,7 +51,7 @@ function getPossibleLPAddresses({ pools, chainId }) {
 export function getPriceInUSDC({ availablePairs, tokenIn, usdcCoin }) {
   const tokenInAmount = tryParseAmount('1', tokenIn)
 
-  if (!tokenInAmount) {
+  if (!tokenInAmount || !availablePairs?.length) {
     return 0
   }
 
