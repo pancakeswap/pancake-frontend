@@ -69,6 +69,23 @@ export const fetchPoolsTotalStaking = async () => {
   }))
 }
 
+const poolsTokenPerBlockCalls = livePoolsWithEnd.map((poolConfig) => {
+  const contractAddress = getAddress(poolConfig.contractAddress)
+  return {
+    address: contractAddress,
+    name: 'rewardPerBlock',
+  }
+})
+
+export const fetchPoolsRewardPerBlock = async () => {
+  const poolsTokenPerBlock = await multicall(sousChefABI, poolsTokenPerBlockCalls)
+
+  return livePoolsWithEnd.map((p, index) => ({
+    sousId: p.sousId,
+    tokenPerBlock: new BigNumber(poolsTokenPerBlock[index]).toJSON(),
+  }))
+}
+
 export const fetchPoolsStakingLimits = async (
   poolsWithStakingLimit: number[],
 ): Promise<{ [key: string]: { stakingLimit: BigNumber; numberBlocksForUserLimit: number } }> => {
