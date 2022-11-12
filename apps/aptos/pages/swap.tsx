@@ -8,7 +8,7 @@ import {
   Trade,
   TradeType,
 } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
+import { APTOS_COIN, useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
@@ -23,6 +23,7 @@ import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/Set
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
+import { DOMAIN } from 'config'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useCurrency } from 'hooks/Tokens'
@@ -375,6 +376,13 @@ const SwapPage = () => {
           <CurrencyInputPanel
             onCurrencySelect={handleInputSelect}
             id="swap-currency-input"
+            shareLink={
+              inputCurrency && inputCurrency.isToken
+                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
+                    inputCurrency.address,
+                  )}`
+                : undefined
+            }
             currency={inputCurrency}
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
@@ -393,6 +401,13 @@ const SwapPage = () => {
           <CurrencyInputPanel
             showMaxButton={false}
             onCurrencySelect={handleOutputSelect}
+            shareLink={
+              outputCurrency && outputCurrency.isToken
+                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
+                    outputCurrency.address,
+                  )}`
+                : undefined
+            }
             id="swap-currency-output"
             value={formattedAmounts[Field.OUTPUT]}
             label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('to')}

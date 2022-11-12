@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ElementType, useState } from "react";
 import { CopyIcon, SvgProps } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { copyText } from "./copyText";
@@ -30,6 +30,7 @@ interface CopyButtonProps extends SvgProps {
   tooltipRight?: number;
   tooltipFontSize?: number;
   buttonColor?: string;
+  icon?: ElementType;
 }
 
 export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
@@ -40,6 +41,7 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
   tooltipRight,
   tooltipFontSize,
   buttonColor = "primary",
+  icon: Icon = CopyIcon,
   ...props
 }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false);
@@ -52,7 +54,7 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
   };
   return (
     <>
-      <CopyIcon
+      <Icon
         style={{ cursor: "pointer" }}
         color={buttonColor}
         width={width}
