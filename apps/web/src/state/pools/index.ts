@@ -29,7 +29,6 @@ import {
   fetchPoolsProfileRequirement,
   fetchPoolsStakingLimits,
   fetchPoolsTotalStaking,
-  fetchPoolsRewardPerBlock,
 } from './fetchPools'
 import {
   fetchPoolsAllowance,
@@ -137,17 +136,15 @@ export const fetchCakePoolUserDataAsync = (account: string) => async (dispatch) 
 export const fetchPoolsPublicDataAsync =
   (currentBlockNumber: number, chainId: number) => async (dispatch, getState) => {
     try {
-      const [blockLimits, totalStakings, tokenPerBlocks, profileRequirements, currentBlock] = await Promise.all([
+      const [blockLimits, totalStakings, profileRequirements, currentBlock] = await Promise.all([
         fetchPoolsBlockLimits(),
         fetchPoolsTotalStaking(),
-        fetchPoolsRewardPerBlock(),
         fetchPoolsProfileRequirement(),
         currentBlockNumber ? Promise.resolve(currentBlockNumber) : bscRpcProvider.getBlockNumber(),
       ])
 
       const blockLimitsSousIdMap = fromPairs(blockLimits.map((entry) => [entry.sousId, entry]))
       const totalStakingsSousIdMap = fromPairs(totalStakings.map((entry) => [entry.sousId, entry]))
-      const tokenPerBlocksSousIdMap = fromPairs(tokenPerBlocks.map((entry) => [entry.sousId, entry]))
 
       const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
       const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
@@ -181,7 +178,6 @@ export const fetchPoolsPublicDataAsync =
       const liveData = poolsConfig.map((pool) => {
         const blockLimit = blockLimitsSousIdMap[pool.sousId]
         const totalStaking = totalStakingsSousIdMap[pool.sousId]
-        const tokenPerBlock = tokenPerBlocksSousIdMap[pool.sousId]
         const isPoolEndBlockExceeded =
           currentBlock > 0 && blockLimit ? currentBlock > Number(blockLimit.endBlock) : false
         const isPoolFinished = pool.isFinished || isPoolEndBlockExceeded
@@ -196,11 +192,7 @@ export const fetchPoolsPublicDataAsync =
               stakingTokenPrice,
               earningTokenPrice,
               getBalanceNumber(new BigNumber(totalStaking.totalStaked), pool.stakingToken.decimals),
-              tokenPerBlock
-                ? getBalanceNumber(new BigNumber(tokenPerBlock.tokenPerBlock), pool.earningToken.decimals)
-                : pool.tokenPerBlock
-                ? parseFloat(pool.tokenPerBlock)
-                : 0,
+              parseFloat(pool.tokenPerBlock),
             )
           : 0
 

@@ -1,5 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { Token, ChainId } from '@pancakeswap/sdk'
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import type { SerializedFarmConfig, FarmConfigBaseProps } from '@pancakeswap/farms'
 
 // a list of tokens by chain
@@ -66,6 +67,26 @@ export enum PoolCategory {
 }
 
 export type { SerializedFarmConfig, FarmConfigBaseProps }
+
+interface PoolConfigBaseProps {
+  sousId: number
+  contractAddress: Address
+  poolCategory: PoolCategory
+  tokenPerBlock: string
+  isFinished?: boolean
+  enableEmergencyWithdraw?: boolean
+  version?: number
+}
+
+export interface SerializedPoolConfig extends PoolConfigBaseProps {
+  earningToken: SerializedWrappedToken
+  stakingToken: SerializedWrappedToken
+}
+
+export interface DeserializedPoolConfig extends PoolConfigBaseProps {
+  earningToken: Token
+  stakingToken: Token
+}
 
 export type Images = {
   lg: string
