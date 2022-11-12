@@ -5,13 +5,12 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
-import BaseCell, { CellContent } from './BaseCell'
 
 interface FinishCellProps {
   pool: Pool.DeserializedPool<Token>
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 2 0 100px;
 `
 
@@ -55,12 +54,12 @@ const EndsInCell: React.FC<React.PropsWithChildren<FinishCellProps>> = ({ pool }
   const showLoading = isLoadingPublicData && !isCakePool && !isFinished
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {hasPoolStarted || !shouldShowBlockCountdown ? t('Ends in') : t('Starts in')}
         </Text>
         {showLoading ? <Skeleton width="80px" height="16px" /> : renderBlocks}
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import { Token } from '@pancakeswap/sdk'
 
 interface TotalStakedCellProps {
@@ -13,7 +12,7 @@ interface TotalStakedCellProps {
   cakeInVaults: BigNumber
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   display: none;
   flex: 2 0 100px;
   ${({ theme }) => theme.mediaQueries.lg} {
@@ -44,7 +43,7 @@ const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> =
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('Total staked')}
         </Text>
@@ -55,7 +54,7 @@ const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> =
             <Skeleton width="80px" height="16px" />
           )}
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

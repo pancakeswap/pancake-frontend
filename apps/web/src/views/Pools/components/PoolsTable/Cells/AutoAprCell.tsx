@@ -19,7 +19,6 @@ import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
-import BaseCell, { CellContent } from './BaseCell'
 
 const AprLabelContainer = styled(Flex)`
   &:hover {
@@ -58,8 +57,8 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
   if (pool.vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None) {
     return (
       <>
-        <BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>
-          <CellContent>
+        <Pool.BaseCell role="cell" flex={['1 0 50px', '4.5', '1 0 120px', null, '2 0 100px']}>
+          <Pool.CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Flexible APY')}
             </Text>
@@ -91,10 +90,10 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
             ) : (
               <Skeleton width="80px" height="16px" />
             )}
-          </CellContent>
-        </BaseCell>
-        <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', null, '1 0 120px']}>
-          <CellContent>
+          </Pool.CellContent>
+        </Pool.BaseCell>
+        <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', null, '1 0 120px']}>
+          <Pool.CellContent>
             <Text fontSize="12px" color="textSubtle" textAlign="left">
               {t('Locked APY')}
             </Text>
@@ -131,15 +130,15 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
             ) : (
               <Skeleton width="80px" height="16px" />
             )}
-          </CellContent>
-        </BaseCell>
+          </Pool.CellContent>
+        </Pool.BaseCell>
       </>
     )
   }
 
   return (
-    <BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
-      <CellContent>
+    <Pool.BaseCell role="cell" flex={['1 0 50px', '1 0 50px', '2 0 100px', '2 0 100px', '1 0 120px']}>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('APY')}
         </Text>
@@ -168,8 +167,8 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
         ) : (
           <Skeleton width="80px" height="16px" />
         )}
-      </CellContent>
-    </BaseCell>
+      </Pool.CellContent>
+    </Pool.BaseCell>
   )
 }
 

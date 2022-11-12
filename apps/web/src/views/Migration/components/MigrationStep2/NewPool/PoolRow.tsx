@@ -1,16 +1,15 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import NameCell from 'views/Pools/components/PoolsTable/Cells/NameCell'
 import AprCell from 'views/Pools/components/PoolsTable/Cells/AprCell'
 import AutoAprCell from 'views/Pools/components/PoolsTable/Cells/AutoAprCell'
 import ActionPanel from 'views/Pools/components/PoolsTable/ActionPanel/ActionPanel'
-import ExpandActionCell from 'views/Pools/components/PoolsTable/Cells/ExpandActionCell'
 import AutoEarningsCell from 'views/Pools/components/PoolsTable/Cells/AutoEarningsCell'
 import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
 import EarningsCell from '../../Pool/Cells/EarningsCell'
 import TotalStakedCell from '../../Pool/Cells/TotalStakedCell'
 import StakedCell from './Cells/StakedCell'
@@ -51,7 +50,7 @@ const PoolRow: React.FC<React.PropsWithChildren<PoolRowProps>> = ({ pool, accoun
         )}
         {pool.vaultKey ? <AutoAprCell pool={pool} /> : <AprCell pool={pool} />}
         {isLargerScreen && <TotalStakedCell pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={BIG_ZERO} />}
-        <ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
+        <Pool.ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
       </StyledRow>
       {shouldRenderActionPanel && (
         <ActionPanel

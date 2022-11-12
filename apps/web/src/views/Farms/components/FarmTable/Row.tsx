@@ -6,7 +6,6 @@ import {
   useMatchBreakpoints,
   Skeleton,
   Farm as FarmUI,
-  useDelayedUnmount,
   FarmTableEarnedProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
@@ -14,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser } from 'state/farms/hooks'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
 
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'

@@ -1,12 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, HelpIcon, Text, useTooltip } from '@pancakeswap/uikit'
+import { Flex, HelpIcon, Text, Pool, useTooltip } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
-
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 1 0 100px;
 `
 
@@ -43,7 +41,7 @@ const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidit
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('Liquidity')}
         </Text>
@@ -56,7 +54,7 @@ const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidit
           </ReferenceElement>
           {tooltipVisible && tooltip}
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }
