@@ -88,11 +88,15 @@ describe('getFarmPrices tests', () => {
       },
     ]
 
-    const farmWithPrices: FarmWithPrices[] = getFarmsPrices(farms, {
-      address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
-      wNative: 'WBNB',
-      stable: 'BUSD',
-    })
+    const farmWithPrices: FarmWithPrices[] = getFarmsPrices(
+      farms,
+      {
+        address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+        wNative: 'WBNB',
+        stable: 'BUSD',
+      },
+      18,
+    )
     expect(farmWithPrices[0].tokenPriceBusd).toEqual('4.696250514367906823')
     expect(farmWithPrices[0].quoteTokenPriceBusd).toEqual('331.387574149367784825')
     expect(farmWithPrices[0].lpTokenPrice).toEqual('83.350538798823178681')
