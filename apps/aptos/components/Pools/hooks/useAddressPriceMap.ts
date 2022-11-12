@@ -7,11 +7,11 @@ import { useMemo } from 'react'
 
 import { PairState, usePairs } from 'hooks/usePairs'
 import { APT, L0_USDC } from 'config/coins'
-import { Pair, Trade } from '@pancakeswap/aptos-swap-sdk'
-import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { Pair } from '@pancakeswap/aptos-swap-sdk'
 
 import splitTypeTag from '../utils/splitTypeTag'
 import getTokenByAddress from '../utils/getTokenByAddress'
+import { getPriceInUSDC } from '../utils/getPriceInUSDC'
 
 function getPossibleLPAddresses({ pools, chainId }) {
   if (!pools?.length) return []
@@ -46,20 +46,6 @@ function getPossibleLPAddresses({ pools, chainId }) {
   )
 
   return pairs
-}
-
-export function getPriceInUSDC({ availablePairs, tokenIn, usdcCoin }) {
-  const tokenInAmount = tryParseAmount('1', tokenIn)
-
-  if (!tokenInAmount) {
-    return 0
-  }
-
-  const trade = Trade.bestTradeExactIn(availablePairs, tokenInAmount, usdcCoin, { maxHops: 3, maxNumResults: 1 })[0]
-
-  const usdcAmount = trade?.outputAmount?.toSignificant() || '0'
-
-  return _toNumber(usdcAmount)
 }
 
 export default function useAddressPriceMap({ pools, chainId }) {
