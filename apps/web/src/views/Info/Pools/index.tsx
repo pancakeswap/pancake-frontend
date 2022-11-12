@@ -35,7 +35,7 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
         )}
       </Card>
       <Heading scale="lg" mt="40px" mb="16px" id="info-pools-title">
-        {t('All Pools')}
+        {t('All Pairs')}
       </Heading>
       <PoolTable poolDatas={poolDatas} />
     </Page>
