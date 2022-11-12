@@ -41,7 +41,7 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
     <VaultStakeModal stakingMax={cakeAsBigNumber} pool={pool} isRemovingStake />,
     true,
     true,
-    'withdraw-vault',
+    `withdraw-vault-${pool.sousId}-${pool.vaultKey}`,
   )
 
   return (
@@ -65,7 +65,13 @@ const HasSharesActions: React.FC<React.PropsWithChildren<HasStakeActionProps>> =
           </Text>
         </Flex>
         <Flex>
-          <IconButton variant="secondary" onClick={onPresentUnstake} mr="6px">
+          <IconButton
+            variant="secondary"
+            onClick={() => {
+              onPresentUnstake()
+            }}
+            mr="6px"
+          >
             <MinusIcon color="primary" width="24px" />
           </IconButton>
           <IconButton variant="secondary" onClick={stakingTokenBalance.gt(0) ? onPresentStake : onPresentTokenRequired}>
