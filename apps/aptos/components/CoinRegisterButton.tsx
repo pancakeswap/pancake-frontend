@@ -35,10 +35,11 @@ export function CoinRegisterButton({ currency }: { currency: Currency }) {
               rec?.status && toastSuccess(t('Registered!'), <ToastDescriptionWithTx txHash={rec.transactionHash} />),
           )
         }}
+        style={{ width: 'auto' }}
         scale="sm"
         ref={targetRef}
       >
-        {!isLoading && !loading ? <WalletRegisterIcon color="primary" /> : <Loading />}
+        {isLoading && !loading ? <WalletRegisterIcon color="primary" /> : <Loading width="16px" height="16px" />}
       </IconButton>
       {tooltipVisible && tooltip}
     </>

@@ -2,10 +2,9 @@ import styled from "styled-components";
 import { Box } from "../Box";
 
 const Loading = styled(Box)`
-  border: 2px solid transparent;
   border-radius: 50%;
-  border-top: 2px solid #ddd;
-  border-right: 2px solid #ddd;
+  border-top: 2px solid ${({ theme }) => theme.colors.disabled};
+  border-right: 2px solid ${({ theme }) => theme.colors.disabled};
   border-bottom: 2px solid transparent;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
