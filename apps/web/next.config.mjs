@@ -159,8 +159,8 @@ const config = {
         permanent: true,
       },
       {
-        source: '/info/pairs',
-        destination: '/info/pools',
+        source: '/info/pools',
+        destination: '/info/pairs',
         permanent: true,
       },
     ]
