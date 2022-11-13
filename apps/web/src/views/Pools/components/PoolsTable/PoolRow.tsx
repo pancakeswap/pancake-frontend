@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import { usePool, useDeserializedPoolByVaultKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
 
@@ -12,7 +12,6 @@ import ActionPanel from './ActionPanel/ActionPanel'
 import AutoEarningsCell from './Cells/AutoEarningsCell'
 import AutoAprCell from './Cells/AutoAprCell'
 import StakedCell from './Cells/StakedCell'
-import ExpandRow from './ExpandRow'
 
 export const VaultPoolRow: React.FC<
   React.PropsWithChildren<{ vaultKey: VaultKey; account: string; initialActivity?: boolean }>
@@ -23,7 +22,7 @@ export const VaultPoolRow: React.FC<
   const pool = useDeserializedPoolByVaultKey(vaultKey)
 
   return (
-    <ExpandRow
+    <Pool.ExpandRow
       initialActivity={initialActivity}
       panel={
         <ActionPanel account={account} pool={pool} expanded breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }} />
@@ -34,7 +33,7 @@ export const VaultPoolRow: React.FC<
       {isXLargerScreen ? <StakedCell pool={pool} account={account} /> : null}
       <AutoAprCell pool={pool} />
       {isLargerScreen && <TotalStakedCell pool={pool} />}
-    </ExpandRow>
+    </Pool.ExpandRow>
   )
 })
 
@@ -48,7 +47,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
   const { pool } = usePool(sousId)
 
   return (
-    <ExpandRow
+    <Pool.ExpandRow
       initialActivity={initialActivity}
       panel={
         <ActionPanel account={account} pool={pool} expanded breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }} />
@@ -59,7 +58,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
       {isLargerScreen && <TotalStakedCell pool={pool} />}
       <AprCell pool={pool} />
       {isDesktop && <EndsInCell pool={pool} />}
-    </ExpandRow>
+    </Pool.ExpandRow>
   )
 }
 

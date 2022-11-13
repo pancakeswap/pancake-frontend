@@ -54,7 +54,11 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
       : 0;
 
     const [onPresentTokenRequired] = useModal(
-      <NotEnoughTokensModal hideLocateAddress={hideLocateAddress} tokenSymbol={stakingToken?.symbol || ""} />
+      <NotEnoughTokensModal
+        hideLocateAddress={hideLocateAddress}
+        tokenAddress={stakingToken.address}
+        tokenSymbol={stakingToken?.symbol || ""}
+      />
     );
 
     const [onPresentStake] = useModal(

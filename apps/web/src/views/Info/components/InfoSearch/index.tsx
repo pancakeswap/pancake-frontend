@@ -233,7 +233,7 @@ const Search = () => {
         {isLoading && <Skeleton />}
         {showMessage && <Text>{noTokensMessage}</Text>}
         {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search pools or tokens')}</Text>
+          <Text>{t('Search liquidity pairs or tokens')}</Text>
         )}
       </>
     )
@@ -251,7 +251,7 @@ const Search = () => {
         {isLoading && <Skeleton />}
         {showMessage && <Text>{noPoolsMessage}</Text>}
         {!showWatchlist && debouncedSearchTerm.length < MINIMUM_SEARCH_CHARACTERS && (
-          <Text>{t('Search pools or tokens')}</Text>
+          <Text>{t('Search liquidity pairs or tokens')}</Text>
         )}
       </>
     )
@@ -269,7 +269,7 @@ const Search = () => {
           onChange={(e) => {
             setValue(e.target.value)
           }}
-          placeholder={t('Search pools or tokens')}
+          placeholder={t('Search liquidity pairs or tokens')}
           ref={inputRef}
           onFocus={() => {
             setShowMenu(true)
@@ -351,7 +351,7 @@ const Search = () => {
             <Break />
             <ResponsiveGrid>
               <Text bold color="secondary" mb="8px">
-                {t('Pools')}
+                {t('Pairs')}
               </Text>
               {!isXs && !isSm && (
                 <Text textAlign="end" fontSize="12px">

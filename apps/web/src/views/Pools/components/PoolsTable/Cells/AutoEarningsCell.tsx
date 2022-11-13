@@ -5,7 +5,6 @@ import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { getCakeVaultEarnings } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
-import BaseCell, { CellContent } from './BaseCell'
 import AutoEarningsBreakdown from '../../AutoEarningsBreakdown'
 
 interface AutoEarningsCellProps {
@@ -13,7 +12,7 @@ interface AutoEarningsCellProps {
   account: string
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 4.5;
   ${({ theme }) => theme.mediaQueries.sm} {
     flex: 1 0 120px;
@@ -62,7 +61,7 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
@@ -109,7 +108,7 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
             </Flex>
           </>
         )}
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

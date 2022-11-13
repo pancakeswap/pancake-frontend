@@ -11,7 +11,7 @@ export enum PoolCategory {
   "AUTO" = "Auto",
 }
 
-interface PoolConfigBaseProps {
+export interface PoolConfigBaseProps {
   sousId: number;
   contractAddress: Address;
   poolCategory: PoolCategory;

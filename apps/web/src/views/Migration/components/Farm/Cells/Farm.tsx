@@ -1,12 +1,11 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Flex, Text } from '@pancakeswap/uikit'
+import { Flex, Text, Pool } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import { TokenPairImage } from 'components/TokenImage'
 import { FarmWithStakedValue } from 'views/Farms/components/types'
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 0;
   margin-left: 12px;
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -35,7 +34,7 @@ export interface FarmProps extends FarmWithStakedValue {
 const Farm: React.FC<React.PropsWithChildren<FarmProps>> = ({ token, quoteToken, label }) => {
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Flex>
           <TokenWrapper>
             <TokenPairImage
@@ -50,7 +49,7 @@ const Farm: React.FC<React.PropsWithChildren<FarmProps>> = ({ token, quoteToken,
             <Text bold>{label}</Text>
           </Flex>
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

@@ -10,13 +10,12 @@ import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getVaultPosition, VaultPosition, VaultPositionParams } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
-import BaseCell, { CellContent } from './BaseCell'
 
 interface NameCellProps {
   pool: Pool.DeserializedPool<Token>
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 5;
   flex-direction: row;
   padding-left: 12px;
@@ -63,7 +62,7 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
           ) : (
             <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
           )}
-          <CellContent>
+          <Pool.CellContent>
             {showStakedTag &&
               (vaultKey === VaultKey.CakeVault ? (
                 <StakedCakeStatus
@@ -84,15 +83,15 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
                 {subtitle}
               </Text>
             )}
-          </CellContent>
+          </Pool.CellContent>
         </>
       ) : (
         <>
           <Skeleton mr="8px" width={36} height={36} variant="circle" />
-          <CellContent>
+          <Pool.CellContent>
             <Skeleton width={30} height={12} mb="4px" />
             <Skeleton width={65} height={12} />
-          </CellContent>
+          </Pool.CellContent>
         </>
       )}
     </StyledCell>

@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import useDelayedUnmount from 'hooks/useDelayedUnmount'
 import Farm from 'views/Migration/components/Farm/Cells/Farm'
 import Staked from 'views/Migration/components/Farm/Cells/Staked'
 import Multiplier from 'views/Migration/components/Farm/Cells/Multiplier'
 import Liquidity from 'views/Migration/components/Farm/Cells/Liquidity'
-import ExpandActionCell from 'views/Migration/components/Cells/ExpandActionCell'
 import { useFarmUser } from 'state/farms/hooks'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
 import AprCell from './Cells/AprCell'
 import StakeButtonCells from './Cells/StakeButtonCells'
 import StakeButton from './StakeButton'
 import ActionPanel from './ActionPanel/ActionPanel'
 import { RowProps } from '../../types'
+import ExpandActionCell from '../../Cells/ExpandActionCell'
 
 const StyledRow = styled.div`
   display: flex;

@@ -230,7 +230,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
             {/* pools and transaction tables */}
             <Heading scale="lg" mb="16px" mt="40px">
-              {t('Pools')}
+              {t('Pairs')}
             </Heading>
 
             <PoolTable poolDatas={poolDatas} />

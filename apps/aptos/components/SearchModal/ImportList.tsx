@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Checkbox, Flex, Link, Message, Text, AutoColumn, RowBetween, RowFixed } from '@pancakeswap/uikit'
-import { TokenList } from '@uniswap/token-lists'
+import { TokenList } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
 import { ListLogo } from 'components/Logo'
 import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
-import { enableList, removeList, useFetchListCallback } from '@pancakeswap/token-lists'
+import { enableList, removeList, useFetchListCallback } from '@pancakeswap/token-lists/react'
 import { useAllLists } from 'state/lists/hooks'
 import { useListState } from 'state/lists'
 import styled from 'styled-components'
@@ -38,7 +38,7 @@ function ImportList({ listURL, list, onImport }: ImportProps) {
   const [confirmed, setConfirmed] = useState(false)
 
   const lists = useAllLists()
-  const fetchList = useFetchListCallback(dispatch, true)
+  const fetchList = useFetchListCallback(dispatch)
 
   // monitor is list is loading
   const adding = Boolean(lists[listURL]?.loadingRequestId)

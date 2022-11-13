@@ -5,13 +5,12 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
-import BaseCell, { CellContent } from './BaseCell'
 
 interface TotalStakedCellProps {
   pool: Pool.DeserializedPool<Token>
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 2 0 100px;
 `
 
@@ -30,7 +29,7 @@ const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> =
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('Total staked')}
         </Text>
@@ -41,7 +40,7 @@ const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> =
         ) : (
           <Skeleton width="80px" height="16px" />
         )}
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

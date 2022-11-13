@@ -1,8 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { Pool } from '@pancakeswap/uikit'
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
 import { bscTokens } from '@pancakeswap/tokens'
-import { SerializedPoolConfig, PoolCategory } from './types'
+import { PoolCategory } from './types'
 
 export const MAX_LOCK_DURATION = 31536000
 export const UNLOCK_FREE_DURATION = 604800
@@ -53,7 +55,7 @@ export const vaultPoolConfig = {
   },
 } as const
 
-export const livePools: SerializedPoolConfig[] = [
+export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
   {
     sousId: 0,
     stakingToken: bscTokens.cake,
@@ -3465,4 +3467,4 @@ const finishedPools = [
   earningToken: p.earningToken.serialize,
 }))
 
-export default [...livePools, ...finishedPools]
+export default [...livePools, ...finishedPools] as Pool.SerializedPoolConfig<SerializedWrappedToken>[]

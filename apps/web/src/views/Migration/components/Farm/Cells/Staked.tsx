@@ -1,12 +1,11 @@
 import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
-import { Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Text, useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 0;
   padding: 0 0 24px 0;
   margin-left: 48px;
@@ -36,7 +35,7 @@ const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedB
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
@@ -45,7 +44,7 @@ const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedB
             {displayBalance}
           </Text>
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

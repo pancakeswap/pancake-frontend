@@ -20,7 +20,8 @@ import { PoolResource } from '../types'
 import transformCakePool from '../transformers/transformCakePool'
 import transformPool from '../transformers/transformPool'
 import { POOL_RESET_INTERVAL } from '../constants'
-import useAddressPriceMap, { getPriceInUSDC } from './useAddressPriceMap'
+import useAddressPriceMap from './useAddressPriceMap'
+import { getPriceInUSDC } from '../utils/getPriceInUSDC'
 
 export const usePoolsList = () => {
   // Since Aptos is timestamp-based update for earning, we will forcely refresh in 10 seconds.
