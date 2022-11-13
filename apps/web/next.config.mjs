@@ -72,16 +72,12 @@ const config = {
         destination: '/info/pools/:address',
       },
       {
-        source: '/info/pair/:address',
+        source: '/info/pairs/:address',
         destination: '/info/pools/:address',
       },
       {
         source: '/info/pairs',
         destination: '/info/pools',
-      },
-      {
-        source: '/info/pairs/:address',
-        destination: '/info/pools/:address',
       },
     ]
   },
