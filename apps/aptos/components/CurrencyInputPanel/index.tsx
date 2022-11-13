@@ -120,7 +120,8 @@ export const CurrencyInputPanel = ({
             <Text
               onClick={!disabled ? onMax : undefined}
               color="textSubtle"
-              fontSize="14px"
+              fontSize="12px"
+              textAlign="right"
               style={{ display: 'inline', cursor: 'pointer' }}
             >
               {!hideBalance && !!currency
