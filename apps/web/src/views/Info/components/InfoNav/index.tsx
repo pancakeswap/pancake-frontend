@@ -40,7 +40,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const chainPath = useMultiChainPath()
   const { address: account } = useAccount()
 
-  const isPairs = router.pathname === `/info${chainPath && `/[chainName]`}/pools`
+  const isPairs = router.pathname === `/info${chainPath && `/[chainName]`}/pairs`
   const isTokens = router.pathname === `/info${chainPath && `/[chainName]`}/tokens`
   const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
   let activeIndex = 0
