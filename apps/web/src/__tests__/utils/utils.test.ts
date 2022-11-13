@@ -28,7 +28,7 @@ describe('getActiveMenuItem', () => {
 
   it('should not return an item that only includes pathname but not starts with', () => {
     // Given
-    const pathname = '/info/pools'
+    const pathname = '/info/pairs'
 
     // When
     const result = getActiveMenuItem({ pathname, menuConfig: menuConfig(mockT, false, undefined) })

@@ -372,7 +372,7 @@ const Search = () => {
             {poolForList.slice(0, poolsShown).map((p) => {
               return (
                 <HoverRowLink
-                  onClick={() => handleItemClick(`/info${chainPath}/pools/${p.address}${stableSwapQuery}`)}
+                  onClick={() => handleItemClick(`/info${chainPath}/pairs/${p.address}${stableSwapQuery}`)}
                   key={`searchPoolResult${p.address}`}
                 >
                   <ResponsiveGrid>

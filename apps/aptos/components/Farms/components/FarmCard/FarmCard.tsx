@@ -132,7 +132,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <DetailsSection
             removed={removed}
             scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={`/info/pool/${lpAddress}`}
+            infoAddress={`/info/pairs/${lpAddress}`}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
