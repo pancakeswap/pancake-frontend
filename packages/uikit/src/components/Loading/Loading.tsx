@@ -3,9 +3,8 @@ import { Box } from "../Box";
 
 const Loading = styled(Box)`
   border-radius: 50%;
-  border-top: 2px solid ${({ theme }) => theme.colors.disabled};
-  border-right: 2px solid ${({ theme }) => theme.colors.disabled};
-  border-bottom: 2px solid transparent;
+  border: 2px solid ${({ theme }) => theme.colors.disabled};
+  border-top: 2px solid transparent;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
   @-webkit-keyframes spin {

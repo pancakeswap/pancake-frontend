@@ -106,7 +106,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
 
   // Trigger = hover
   useEffect(() => {
-    if (targetElement === null || trigger !== "hover") return undefined;
+    if (targetElement === null || trigger !== "hover" || manualVisible) return undefined;
 
     if (isTouchDevice()) {
       targetElement.addEventListener("touchstart", showTooltip);
@@ -121,11 +121,11 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
       targetElement.removeEventListener("mouseenter", showTooltip);
       targetElement.removeEventListener("mouseleave", showTooltip);
     };
-  }, [trigger, targetElement, hideTooltip, showTooltip]);
+  }, [trigger, targetElement, hideTooltip, showTooltip, manualVisible]);
 
   // Keep tooltip open when cursor moves from the targetElement to the tooltip
   useEffect(() => {
-    if (tooltipElement === null || trigger !== "hover") return undefined;
+    if (tooltipElement === null || trigger !== "hover" || manualVisible) return undefined;
 
     tooltipElement.addEventListener("mouseenter", showTooltip);
     tooltipElement.addEventListener("mouseleave", hideTooltip);
@@ -133,7 +133,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
       tooltipElement.removeEventListener("mouseenter", showTooltip);
       tooltipElement.removeEventListener("mouseleave", hideTooltip);
     };
-  }, [trigger, tooltipElement, hideTooltip, showTooltip]);
+  }, [trigger, tooltipElement, hideTooltip, showTooltip, manualVisible]);
 
   // Trigger = click
   useEffect(() => {

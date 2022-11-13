@@ -18,29 +18,30 @@ export function CoinRegisterButton({ currency }: { currency: Currency }) {
 
   return (
     <>
-      <IconButton
-        variant="text"
-        onClick={() => {
-          fetchWithCatchTxError(() =>
-            sendTransactionAsync({
-              payload: {
-                type: 'entry_function_payload',
-                type_arguments: [currency.address],
-                arguments: [],
-                function: `0x1::managed_coin::register`,
-              },
-            }),
-          ).then(
-            (rec) =>
-              rec?.status && toastSuccess(t('Registered!'), <ToastDescriptionWithTx txHash={rec.transactionHash} />),
-          )
-        }}
-        style={{ width: 'auto' }}
-        scale="sm"
-        ref={targetRef}
-      >
-        {isLoading && !loading ? <WalletRegisterIcon color="primary" /> : <Loading width="16px" height="16px" />}
-      </IconButton>
+      <div ref={targetRef}>
+        <IconButton
+          variant="text"
+          onClick={() => {
+            fetchWithCatchTxError(() =>
+              sendTransactionAsync({
+                payload: {
+                  type: 'entry_function_payload',
+                  type_arguments: [currency.address],
+                  arguments: [],
+                  function: `0x1::managed_coin::register`,
+                },
+              }),
+            ).then(
+              (rec) =>
+                rec?.status && toastSuccess(t('Registered!'), <ToastDescriptionWithTx txHash={rec.transactionHash} />),
+            )
+          }}
+          style={{ width: 'auto' }}
+          scale="sm"
+        >
+          {!isLoading && !loading ? <WalletRegisterIcon color="primary" /> : <Loading width="16px" height="16px" />}
+        </IconButton>
+      </div>
       {tooltipVisible && tooltip}
     </>
   )
