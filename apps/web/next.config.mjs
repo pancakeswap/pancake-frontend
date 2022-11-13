@@ -70,7 +70,7 @@ const config = {
       {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
-      },      
+      },
     ]
   },
   async headers() {
@@ -149,6 +149,11 @@ const config = {
       {
         source: '/info/pools',
         destination: '/info/pairs',
+        permanent: true,
+      },
+      {
+        source: '/info/pools/:address',
+        destination: '/info/pairs/:address',
         permanent: true,
       },
     ]
