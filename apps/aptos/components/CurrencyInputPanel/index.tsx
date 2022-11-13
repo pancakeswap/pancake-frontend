@@ -88,7 +88,14 @@ export const CurrencyInputPanel = ({
       top={
         <>
           <AtomBox display="flex" flexWrap="wrap">
-            <Button variant="text" scale="sm" py={0} px="0.5rem" onClick={onPresentCurrencyModal}>
+            <Button
+              variant="text"
+              scale="sm"
+              py={0}
+              px="0.5rem"
+              onClick={onPresentCurrencyModal}
+              title={currency?.name}
+            >
               <SkeletonV2 isDataReady={isMounted} width="24px" height="24px" variant="circle" mr="8px">
                 <CurrencyLogo currency={currency} size="24px" />
               </SkeletonV2>
