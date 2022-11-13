@@ -49,23 +49,10 @@ function RegisterButton({ currency }: { currency: Currency }) {
   const { t } = useTranslation()
   const { tooltip, tooltipVisible, targetRef } = useTooltip(t('Register coin to receive transfers'), {
     placement: 'auto',
-  })
-
-  const { account } = useAccount()
-
-  // check is coin registered
-  const { data, isSuccess } = useAccountBalance({
-    address: account?.address,
-    coin: currency.address,
-    enabled: currency.isToken,
-    watch: true,
+    trigger: 'hover',
   })
 
   const { sendTransactionAsync, isLoading } = useSendTransaction()
-
-  if (isSuccess && data && account) {
-    return null
-  }
 
   return (
     <>
@@ -169,7 +156,7 @@ export const CurrencyInputPanel = ({
                     tooltipFontSize={12}
                   />
                 )}
-                {currency && <RegisterButton currency={currency} />}
+                {currency && account && !isLoading && !data && <RegisterButton currency={currency} />}
               </AtomBox>
             ) : null}
           </AtomBox>

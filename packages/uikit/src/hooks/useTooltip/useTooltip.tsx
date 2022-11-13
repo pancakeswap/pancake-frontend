@@ -77,8 +77,6 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
 
   const showTooltip = useCallback(
     (e: Event) => {
-      e.stopPropagation();
-      e.preventDefault();
       setVisible(true);
       if (trigger === "hover") {
         if (e.target === targetElement) {
@@ -89,6 +87,9 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
         if (e.target === tooltipElement) {
           isHoveringOverTooltip.current = true;
         }
+      } else {
+        e.stopPropagation();
+        e.preventDefault();
       }
     },
     [tooltipElement, targetElement, trigger]
