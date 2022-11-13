@@ -1,4 +1,5 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
+import { IFrameEthereumConnector } from '@ledgerhq/ledger-live-wagmi-connector'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { bsc, bscTest, goerli, rinkeby, mainnet } from '@pancakeswap/wagmi/chains'
 import { configureChains, createClient } from 'wagmi'
@@ -113,6 +114,8 @@ export const client = createClient({
   provider,
   connectors: [
     new SafeConnector({ chains }),
+    // @ts-ignore
+    new IFrameEthereumConnector({ chains, options: {} }),
     metaMaskConnector,
     injectedConnector,
     coinbaseConnector,

@@ -32,9 +32,16 @@ const Qrcode = lazy(() => import('./components/QRCode'))
 
 type LinkOfTextAndLink = string | { text: string; url: string }
 
+type LinkOfPromise = string | (() => Promise<string>)
+
 type DeviceLink = {
   desktop?: LinkOfTextAndLink
   mobile?: LinkOfTextAndLink
+}
+
+type DevicePromiseLink = {
+  desktop?: LinkOfPromise
+  mobile?: LinkOfPromise
 }
 
 type LinkOfDevice = string | DeviceLink
@@ -44,7 +51,7 @@ export type WalletConfigV2<T = unknown> = {
   title: string
   icon: string | FC<React.PropsWithChildren<SvgProps>>
   connectorId: T
-  deepLink?: string
+  deepLink?: LinkOfPromise | DevicePromiseLink
   installed?: boolean
   guide?: LinkOfDevice
   downloadLink?: LinkOfDevice
@@ -123,7 +130,12 @@ function MobileModal<T>({
     if (installedWallets.length) {
       return w.installed
     }
-    return w.installed !== false || w.deepLink
+    return (
+      w.installed !== false ||
+      typeof w.deepLink === 'string' ||
+      typeof w.deepLink === 'function' ||
+      typeof w.deepLink?.mobile !== 'undefined'
+    )
   })
 
   return (
@@ -155,8 +167,12 @@ function MobileModal<T>({
           wallets={walletsToShow}
           onClick={(wallet) => {
             connectWallet(wallet)
-            if (wallet.deepLink && wallet.installed === false) {
-              window.open(wallet.deepLink)
+            if (wallet.installed === false) {
+              getDeepLink(wallet.deepLink, 'mobile').then((uri) => {
+                if (uri) {
+                  window.open(uri, '_self')
+                }
+              })
             }
           }}
         />
@@ -338,6 +354,11 @@ function DesktopModal<T>({
                 setQrCode(uri)
               })
             }
+            getDeepLink(w.deepLink, 'desktop').then((uri) => {
+              if (uri) {
+                window.open(uri, '_self')
+              }
+            })
           }}
         />
       </AtomBox>
@@ -515,3 +536,25 @@ const getDesktopText = (linkDevice: LinkOfDevice, fallback: string) =>
     : typeof linkDevice.desktop === 'string'
     ? fallback
     : linkDevice.desktop?.text ?? fallback
+
+const getDeepLink = async (
+  deepLink?: LinkOfPromise | DevicePromiseLink,
+  type?: 'mobile' | 'desktop',
+): Promise<string | null> => {
+  if (!deepLink) return null
+
+  if (typeof deepLink === 'string') {
+    return deepLink
+  }
+  if (typeof deepLink === 'function') {
+    return deepLink()
+  }
+
+  if (type === 'mobile') {
+    getDeepLink(deepLink.mobile, type)
+  } else if (type === 'desktop') {
+    return getDeepLink(deepLink?.desktop, type)
+  }
+
+  return null
+}

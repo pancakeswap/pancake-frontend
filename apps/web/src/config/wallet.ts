@@ -11,6 +11,7 @@ export enum ConnectorNames {
   BSC = 'bsc',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
+  LedgerLive = 'ledgerLive',
 }
 
 const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
@@ -40,7 +41,9 @@ const walletsConfig = ({
       icon: '/images/wallets/metamask.png',
       installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
       connectorId: ConnectorNames.MetaMask,
-      deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
+      deepLink: {
+        mobile: 'https://metamask.app.link/dapp/pancakeswap.finance/',
+      },
       qrCode,
       downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
     },
@@ -74,7 +77,9 @@ const walletsConfig = ({
         typeof window !== 'undefined' &&
         !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
         (Boolean(window.ethereum?.isTrust) || Boolean((window.ethereum as ExtendEthereum)?.isTrustWallet)),
-      deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
+      deepLink: {
+        mobile: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
+      },
       downloadLink: {
         desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
       },
@@ -146,6 +151,13 @@ const walletsConfig = ({
           ? true
           : undefined // undefined to show SDK
       },
+    },
+    {
+      id: 'ledgerLive',
+      title: 'Ledger Live',
+      icon: '/images/wallets/ledgerLive.png',
+      connectorId: ConnectorNames.LedgerLive,
+      deepLink: () => qrCode().then((uri) => `ledgerlive://wc?uri=${encodeURIComponent(uri)}`),
     },
   ]
 }

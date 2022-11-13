@@ -2,19 +2,30 @@ import { useClient, useConnect } from 'wagmi'
 import { useEffect } from 'react'
 
 const SAFE_ID = 'safe'
+const isIframe = (): boolean => {
+  // Server-side
+  if (typeof window === 'undefined') return false
+
+  // Client-side: test if the app is within the iframe or not
+  return window.self !== window.top
+}
+
+const iframeConnectors = [SAFE_ID, 'ledgerLive']
 
 const useEagerConnect = () => {
   const client = useClient()
   const { connectAsync, connectors } = useConnect()
   useEffect(() => {
-    const connectorInstance = connectors.find((c) => c.id === SAFE_ID && c.ready)
     if (
-      connectorInstance &&
+      isIframe() &&
       // @ts-ignore
       !window.cy
     ) {
-      connectAsync({ connector: connectorInstance }).catch(() => {
-        client.autoConnect()
+      iframeConnectors.forEach((connector) => {
+        const connectorInstance = connectors.find((c) => c.id === connector && c.ready)
+        connectAsync({ connector: connectorInstance }).catch(() => {
+          client.autoConnect()
+        })
       })
     } else {
       client.autoConnect()
