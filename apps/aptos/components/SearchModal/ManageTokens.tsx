@@ -1,27 +1,29 @@
-import { useRef, RefObject, useCallback, useState, useMemo } from 'react'
-import { Token } from '@pancakeswap/aptos-swap-sdk'
+import { Coin, Token } from '@pancakeswap/aptos-swap-sdk'
+import { isStructTag, useAccount, useAccountBalance, useAccountBalances } from '@pancakeswap/awgmi'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
+  AddCircleIcon,
+  AptosIcon,
+  AutoColumn,
   Button,
-  CloseIcon,
+  Column,
+  DeleteOutlineIcon,
   IconButton,
-  LinkExternal,
   Input,
   Link,
+  Row,
   RowBetween,
   RowFixed,
-  Row,
-  Column,
-  AutoColumn,
+  Text,
 } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { useToken } from 'hooks/Tokens'
-import { useRemoveUserAddedToken, useUserAddedTokens } from 'state/user'
+import { CoinRegisterButton } from 'components/CoinRegisterButton'
 import { CurrencyLogo } from 'components/Logo'
-import { getBlockExploreLink } from 'utils'
-import { isStructTag } from '@pancakeswap/awgmi'
+import { useAllTokens, useToken } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useNetwork'
-import { useTranslation } from '@pancakeswap/localization'
+import { RefObject, useCallback, useMemo, useRef, useState } from 'react'
+import { useAddUserToken, useRemoveUserAddedToken, useUserAddedTokens } from 'state/user'
+import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
 import ImportRow from './ImportRow'
 import { CurrencyModalView } from './types'
 
@@ -40,6 +42,18 @@ const Footer = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+
+function CoinRegisterButtonWithHooks({ token }: { token: Token }) {
+  const { account } = useAccount()
+  const { data, isLoading } = useAccountBalance({
+    address: account?.address,
+    coin: token.address,
+    enabled: !!token,
+    watch: true,
+  })
+
+  return token && account && !isLoading && !data ? <CoinRegisterButton currency={token} /> : null
+}
 
 export default function ManageTokens({
   setModalView,
@@ -67,6 +81,7 @@ export default function ManageTokens({
   // all tokens for local list
   const userAddedTokens: Token[] = useUserAddedTokens()
   const removeToken = useRemoveUserAddedToken()
+  const addToken = useAddUserToken()
 
   const handleRemoveAll = useCallback(() => {
     if (chainId && userAddedTokens) {
@@ -75,6 +90,11 @@ export default function ManageTokens({
       })
     }
   }, [removeToken, userAddedTokens, chainId])
+
+  const { account } = useAccount()
+
+  const balances = useAccountBalances({ address: account?.address, watch: true })?.map((b) => b.data)
+  const allTokens = useAllTokens()
 
   const tokenList = useMemo(() => {
     return (
@@ -86,12 +106,20 @@ export default function ManageTokens({
             <Link external href={getBlockExploreLink(token.address, 'token', chainId)} color="textSubtle" ml="10px">
               {token.symbol}
             </Link>
+            <Text color="textSubtle" fontSize="14px" ml="8px">
+              {token.name}
+            </Text>
           </RowFixed>
           <RowFixed>
-            <IconButton variant="text" onClick={() => removeToken(chainId, token.address)}>
-              <CloseIcon />
+            <IconButton variant="text" scale="sm" onClick={() => removeToken(chainId, token.address)}>
+              <DeleteOutlineIcon color="textSubtle" />
             </IconButton>
-            <LinkExternal href={getBlockExploreLink(token.address, 'token', chainId)} />
+            <CoinRegisterButtonWithHooks token={token} />
+            <a href={getBlockExploreLink(token.address, 'token', chainId)} target="_blank" rel="noreferrer noopener">
+              <IconButton scale="sm" variant="text">
+                <AptosIcon color="textSubtle" width="16px" />
+              </IconButton>
+            </a>
           </RowFixed>
         </RowBetween>
       ))
@@ -100,9 +128,17 @@ export default function ManageTokens({
 
   const isAddressValid = searchQuery === '' || isStructTag(searchQuery)
 
+  const discoverRegisterTokens = useMemo(
+    () =>
+      balances
+        .filter((b) => b && b.value !== '0' && !allTokens[b.address])
+        .map((b) => b && new Coin(chainId, b.address, b.decimals, b.symbol, b.name)) as Coin[],
+    [allTokens, balances, chainId],
+  )
+
   return (
     <Wrapper>
-      <Column style={{ width: '100%', flex: '1 1' }}>
+      <Column gap="24px" style={{ width: '100%', flex: '1 1' }}>
         <AutoColumn gap="14px">
           <Row>
             <Input
@@ -126,7 +162,42 @@ export default function ManageTokens({
             />
           )}
         </AutoColumn>
-        {tokenList}
+        <AutoColumn gap="2">{tokenList}</AutoColumn>
+        <Text color="textSubtle">{t('Discovered from registered coins')}</Text>
+        <AutoColumn gap="2">
+          {discoverRegisterTokens.map((discoveredToken) => (
+            <RowBetween key={discoveredToken.address} width="100%">
+              <RowFixed>
+                <CurrencyLogo currency={discoveredToken} size="20px" />
+                <Link
+                  external
+                  href={getBlockExploreLink(discoveredToken.address, 'token', chainId)}
+                  color="textSubtle"
+                  ml="10px"
+                >
+                  {discoveredToken.symbol}
+                </Link>
+                <Text color="textSubtle" fontSize="14px" ml="8px">
+                  {discoveredToken.name}
+                </Text>
+              </RowFixed>
+              <RowFixed>
+                <IconButton variant="text" scale="sm" onClick={() => addToken(discoveredToken)}>
+                  <AddCircleIcon color="textSubtle" />
+                </IconButton>
+                <a
+                  href={getBlockExploreLink(discoveredToken.address, 'token', chainId)}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  <IconButton scale="sm" variant="text">
+                    <AptosIcon color="textSubtle" width="16px" />
+                  </IconButton>
+                </a>
+              </RowFixed>
+            </RowBetween>
+          ))}
+        </AutoColumn>
         <Footer>
           <Text bold color="textSubtle">
             {userAddedTokens?.length} {userAddedTokens.length === 1 ? t('Custom Token') : t('Custom Tokens')}

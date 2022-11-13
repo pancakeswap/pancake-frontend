@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Token, Currency } from '@pancakeswap/aptos-swap-sdk'
 import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid, AutoColumn } from '@pancakeswap/uikit'
-// import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -40,7 +39,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           )}
           <br />
           <br />
-          {t('If you purchase an arbitrary token, you may be unable to sell it back.')}
+          <strong>{t('If you purchase an arbitrary token, you may be unable to sell it back.')}</strong>
         </Text>
       </Message>
 

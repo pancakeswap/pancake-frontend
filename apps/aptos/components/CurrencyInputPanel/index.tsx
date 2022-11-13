@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountBalance, useSendTransaction } from '@pancakeswap/awgmi'
+import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
@@ -7,15 +7,13 @@ import {
   Button,
   ChevronDownIcon,
   CopyButton,
+  ShareIcon,
   SkeletonV2,
   Swap as SwapUI,
   Text,
   useModal,
-  ShareIcon,
-  WalletRegisterIcon,
-  useTooltip,
-  Loading,
 } from '@pancakeswap/uikit'
+import { CoinRegisterButton } from 'components/CoinRegisterButton'
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import styled from 'styled-components'
@@ -44,42 +42,6 @@ const InputRow = styled.div<{ selected: boolean }>`
   justify-content: flex-end;
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
 `
-
-function RegisterButton({ currency }: { currency: Currency }) {
-  const { t } = useTranslation()
-  const { tooltip, tooltipVisible, targetRef } = useTooltip(t('Register coin to receive transfers'), {
-    placement: 'auto',
-    trigger: 'hover',
-  })
-
-  const { sendTransactionAsync, isLoading } = useSendTransaction()
-
-  return (
-    <>
-      <AtomBox cursor="pointer" ref={targetRef}>
-        {!isLoading ? (
-          <WalletRegisterIcon
-            onClick={() => {
-              sendTransactionAsync({
-                payload: {
-                  type: 'entry_function_payload',
-                  type_arguments: [currency.address],
-                  arguments: [],
-                  function: `0x1::managed_coin::register`,
-                },
-              })
-            }}
-            color="primary"
-            width="16px"
-          />
-        ) : (
-          <Loading width="12px" height="12px" />
-        )}
-      </AtomBox>
-      {tooltipVisible && tooltip}
-    </>
-  )
-}
 
 export const CurrencyInputPanel = ({
   id,
@@ -140,9 +102,6 @@ export const CurrencyInputPanel = ({
                   buttonColor="textSubtle"
                   text={currency.address}
                   tooltipMessage={t('Token address copied')}
-                  tooltipTop={-20}
-                  tooltipRight={40}
-                  tooltipFontSize={12}
                 />
                 {shareLink && (
                   <CopyButton
@@ -151,12 +110,9 @@ export const CurrencyInputPanel = ({
                     buttonColor="textSubtle"
                     text={shareLink}
                     tooltipMessage={t('Sharing link copied')}
-                    tooltipTop={-20}
-                    tooltipRight={40}
-                    tooltipFontSize={12}
                   />
                 )}
-                {currency && account && !isLoading && !data && <RegisterButton currency={currency} />}
+                {currency && account && !isLoading && !data && <CoinRegisterButton currency={currency} />}
               </AtomBox>
             ) : null}
           </AtomBox>

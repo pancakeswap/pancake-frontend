@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { variant as systemVariant, space } from "styled-system";
-import { WarningIcon, ErrorIcon, CheckmarkCircleFillIcon } from "../Svg";
+import { WarningIcon, ErrorIcon, CheckmarkCircleFillIcon, InfoFilledIcon } from "../Svg";
 import { Text, TextProps } from "../Text";
 import { Box } from "../Box";
 import { MessageProps } from "./types";
@@ -13,6 +13,7 @@ const Icons = {
   warning: WarningIcon,
   danger: ErrorIcon,
   success: CheckmarkCircleFillIcon,
+  primary: InfoFilledIcon,
 };
 
 const MessageContainer = styled.div<MessageProps>`
@@ -36,6 +37,7 @@ const colors = {
   warning: "#D67E0A",
   success: "#129E7D",
   danger: "failure",
+  primary: "text",
 };
 
 export const MessageText: React.FC<React.PropsWithChildren<TextProps>> = ({ children, ...props }) => {

@@ -37,12 +37,13 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
     tooltipPadding = { left: 16, right: 16 },
     tooltipOffset = [0, 10],
     hideTimeout = 100,
+    manualVisible = false,
   } = options;
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [tooltipElement, setTooltipElement] = useState<HTMLElement | null>(null);
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(manualVisible);
   const isHoveringOverTooltip = useRef(false);
   const hideTimeoutRef = useRef<number>();
 
