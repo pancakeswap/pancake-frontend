@@ -163,41 +163,45 @@ export default function ManageTokens({
           )}
         </AutoColumn>
         <AutoColumn gap="2">{tokenList}</AutoColumn>
-        <Text color="textSubtle">{t('Discovered from registered coins')}</Text>
-        <AutoColumn gap="2">
-          {discoverRegisterTokens.map((discoveredToken) => (
-            <RowBetween key={discoveredToken.address} width="100%">
-              <RowFixed>
-                <CurrencyLogo currency={discoveredToken} size="20px" />
-                <Link
-                  external
-                  href={getBlockExploreLink(discoveredToken.address, 'token', chainId)}
-                  color="textSubtle"
-                  ml="10px"
-                >
-                  {discoveredToken.symbol}
-                </Link>
-                <Text color="textSubtle" fontSize="14px" ml="8px">
-                  {discoveredToken.name}
-                </Text>
-              </RowFixed>
-              <RowFixed>
-                <IconButton variant="text" scale="sm" onClick={() => addToken(discoveredToken)}>
-                  <AddCircleIcon color="textSubtle" />
-                </IconButton>
-                <a
-                  href={getBlockExploreLink(discoveredToken.address, 'token', chainId)}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                >
-                  <IconButton scale="sm" variant="text">
-                    <AptosIcon color="textSubtle" width="16px" />
-                  </IconButton>
-                </a>
-              </RowFixed>
-            </RowBetween>
-          ))}
-        </AutoColumn>
+        {Boolean(discoverRegisterTokens.length) && (
+          <>
+            <Text color="textSubtle">{t('Discovered from registered coins')}</Text>
+            <AutoColumn gap="2">
+              {discoverRegisterTokens.map((discoveredToken) => (
+                <RowBetween key={discoveredToken.address} width="100%">
+                  <RowFixed>
+                    <CurrencyLogo currency={discoveredToken} size="20px" />
+                    <Link
+                      external
+                      href={getBlockExploreLink(discoveredToken.address, 'token', chainId)}
+                      color="textSubtle"
+                      ml="10px"
+                    >
+                      {discoveredToken.symbol}
+                    </Link>
+                    <Text color="textSubtle" fontSize="14px" ml="8px">
+                      {discoveredToken.name}
+                    </Text>
+                  </RowFixed>
+                  <RowFixed>
+                    <IconButton variant="text" scale="sm" onClick={() => addToken(discoveredToken)}>
+                      <AddCircleIcon color="textSubtle" />
+                    </IconButton>
+                    <a
+                      href={getBlockExploreLink(discoveredToken.address, 'token', chainId)}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      <IconButton scale="sm" variant="text">
+                        <AptosIcon color="textSubtle" width="16px" />
+                      </IconButton>
+                    </a>
+                  </RowFixed>
+                </RowBetween>
+              ))}
+            </AutoColumn>
+          </>
+        )}
         <Footer>
           <Text bold color="textSubtle">
             {userAddedTokens?.length} {userAddedTokens.length === 1 ? t('Custom Token') : t('Custom Tokens')}
