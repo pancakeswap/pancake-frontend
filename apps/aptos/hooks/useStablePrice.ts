@@ -1,10 +1,13 @@
-import { Currency, JSBI, Price } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, JSBI, Price, Trade } from '@pancakeswap/aptos-swap-sdk'
 import { L0_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import { getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { useAllCommonPairs } from 'hooks/Trades'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import useNativeCurrency from './useNativeCurrency'
 import { PairState, usePairs } from './usePairs'
 
@@ -126,4 +129,21 @@ export const useCakePrice = () => {
 export const useCakePriceAsBigNumber = () => {
   const cakePrice = useCakePrice().data
   return getDecimalAmount(new BigNumber(cakePrice))
+}
+
+export const useTokenUsdcPrice = (currency?: Currency): BigNumber => {
+  const { chainId } = useActiveWeb3React()
+  const USDC = L0_USDC[chainId]
+
+  const allowedPairs = useAllCommonPairs(currency, USDC)
+  const tokenInAmount = tryParseAmount('1', currency)
+
+  if (!tokenInAmount || !allowedPairs?.length) {
+    return BIG_ZERO
+  }
+
+  const trade = Trade.bestTradeExactIn(allowedPairs, tokenInAmount, USDC, { maxHops: 3, maxNumResults: 1 })[0]
+  const usdcAmount = trade?.outputAmount?.toSignificant() || '0'
+
+  return new BigNumber(usdcAmount)
 }
