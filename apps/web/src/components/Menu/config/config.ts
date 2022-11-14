@@ -70,6 +70,7 @@ const config: (
         {
           label: t('Farms'),
           href: '/farms',
+          supportChainIds: SUPPORT_ONLY_BSC,
         },
         {
           label: t('Pools'),
@@ -83,7 +84,6 @@ const config: (
       href: '/prediction',
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,
-      supportChainIds: SUPPORT_ONLY_BSC,
       items: [
         {
           label: t('Launchpad'),
