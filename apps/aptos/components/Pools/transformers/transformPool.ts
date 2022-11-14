@@ -21,6 +21,12 @@ const transformPool = (
   chainId,
   prices,
 ): Pool.DeserializedPool<Coin | AptosCoin> | undefined => {
+  const startTime = _get(resource, 'resource.start_timestamp', '0')
+
+  const startYet = getSecondsLeftFromNow(startTime)
+
+  if (!startYet) return undefined
+
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
   let userData = {
