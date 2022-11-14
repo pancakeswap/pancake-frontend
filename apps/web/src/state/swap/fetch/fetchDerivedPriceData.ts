@@ -23,7 +23,7 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
   }
 
   const prices = mapValues(rawPrices, (value) => {
-    return value[0]
+    return value.derivedBNB
   })
 
   // format token BNB price results
@@ -40,10 +40,12 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
       tokenPrices.push({
         tokenAddress,
         timestamp,
-        derivedBNB: prices[priceKey]?.derivedBNB ? parseFloat(prices[priceKey].derivedBNB) : 0,
+        derivedBNB: prices[priceKey] ? parseFloat(prices[priceKey]) : 0,
       })
     }
   })
+
+  console.log(tokenPrices, 'tokenPrices')
 
   return orderBy(tokenPrices, (tokenPrice) => parseInt(tokenPrice.timestamp, 10))
 }
