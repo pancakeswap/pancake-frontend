@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { Currency } from '@pancakeswap/sdk'
-import { Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
+import { Flex, BottomDrawer, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 
 import { useCurrency } from '../../hooks/Tokens'
