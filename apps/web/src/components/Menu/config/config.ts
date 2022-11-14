@@ -79,12 +79,17 @@ const config: (
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
-      label: t('Win'),
+      label: t('Learn'),
       href: '/prediction',
       icon: TrophyIcon,
       fillIcon: TrophyFillIcon,
       supportChainIds: SUPPORT_ONLY_BSC,
       items: [
+        {
+          label: t('Launchpad'),
+          href: '/launchpad',
+          image: '/images/decorations/prediction.png',
+        },
         {
           label: t('Prediction (BETA)'),
           href: '/prediction',

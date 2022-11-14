@@ -44,6 +44,7 @@ export const useGetShuffledCollections = (): { data: Collection[]; status: Fetch
       return shuffle(collections)
     },
   )
+
   return { data: shuffledCollections, status }
 }
 

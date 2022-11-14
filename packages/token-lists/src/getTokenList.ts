@@ -19,6 +19,7 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
     const isLast = i === urls.length - 1
     let response
     try {
+      console.log(url)
       response = await fetch(url)
     } catch (error) {
       console.error('Failed to fetch list', listUrl, error)
