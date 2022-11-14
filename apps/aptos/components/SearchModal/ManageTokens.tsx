@@ -251,7 +251,7 @@ export default function ManageTokens({
         </Footer>
       </Column>
       <ModalV2 isOpen={Boolean(warningTokens.length)}>
-        <Modal title={t('Import Token')}>
+        <Modal title={t('Import Token')} onDismiss={() => setWarningTokens([])}>
           <div style={{ maxWidth: '380px' }}>
             <ImportToken tokens={warningTokens} handleCurrencySelect={() => setWarningTokens([])} />
           </div>
