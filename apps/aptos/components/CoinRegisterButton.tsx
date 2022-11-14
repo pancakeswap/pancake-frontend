@@ -39,7 +39,7 @@ export function CoinRegisterButton({ currency }: { currency: Currency }) {
           style={{ width: 'auto' }}
           scale="sm"
         >
-          {!isLoading && !loading ? <WalletRegisterIcon color="primary" /> : <Loading width="16px" height="16px" />}
+          {!isLoading && !loading ? <WalletRegisterIcon color="textSubtle" /> : <Loading width="16px" height="16px" />}
         </IconButton>
       </div>
       {tooltipVisible && tooltip}

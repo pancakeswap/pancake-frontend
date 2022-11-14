@@ -8,14 +8,20 @@ import { useMatchBreakpoints } from "../../contexts";
 
 export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
-export const ModalWrapper = ({ children, onDismiss, minWidth, ...props }: PropsWithChildren<ModalWrapperProps>) => {
+export const ModalWrapper = ({
+  children,
+  onDismiss,
+  minWidth,
+  hideCloseButton,
+  ...props
+}: PropsWithChildren<ModalWrapperProps>) => {
   const { isMobile } = useMatchBreakpoints();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   return (
     // @ts-ignore
     <ModalContainer
-      drag={isMobile ? "y" : false}
+      drag={isMobile && !hideCloseButton ? "y" : false}
       dragConstraints={{ top: 0, bottom: 600 }}
       dragElastic={{ top: 0 }}
       dragSnapToOrigin
@@ -47,7 +53,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
 }) => {
   const theme = useTheme();
   return (
-    <ModalWrapper minWidth={minWidth} onDismiss={onDismiss} {...props}>
+    <ModalWrapper minWidth={minWidth} onDismiss={onDismiss} hideCloseButton={hideCloseButton} {...props}>
       <ModalHeader background={getThemeValue(theme, `colors.${headerBackground}`, headerBackground)}>
         <ModalTitle>
           {onBack && <ModalBackButton onBack={onBack} />}

@@ -1,5 +1,5 @@
-import { Coin, Token } from '@pancakeswap/aptos-swap-sdk'
-import { isStructTag, useAccount, useAccountBalance, useAccountBalances } from '@pancakeswap/awgmi'
+import { Coin, PAIR_LP_TYPE_TAG, Token } from '@pancakeswap/aptos-swap-sdk'
+import { APTOS_COIN, isStructTag, useAccount, useAccountBalance, useAccountBalances } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   AddCircleIcon,
@@ -11,20 +11,27 @@ import {
   IconButton,
   Input,
   Link,
+  Modal,
+  ModalV2,
   Row,
   RowBetween,
   RowFixed,
   Text,
 } from '@pancakeswap/uikit'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { CoinRegisterButton } from 'components/CoinRegisterButton'
 import { CurrencyLogo } from 'components/Logo'
+import { L0_USDC } from 'config/coins'
 import { useAllTokens, useToken } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useNetwork'
+import { useRouter } from 'next/router'
 import { RefObject, useCallback, useMemo, useRef, useState } from 'react'
-import { useAddUserToken, useRemoveUserAddedToken, useUserAddedTokens } from 'state/user'
+import { Field, selectCurrency, useSwapState } from 'state/swap'
+import { useRemoveUserAddedToken, useUserAddedTokens } from 'state/user'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import ImportRow from './ImportRow'
+import ImportToken from './ImportToken'
 import { CurrencyModalView } from './types'
 
 const Wrapper = styled.div`
@@ -68,6 +75,9 @@ export default function ManageTokens({
 
   const [searchQuery, setSearchQuery] = useState<string>('')
 
+  // FIXME: better not including swap/liquidity hooks
+  const [, dispatch] = useSwapState()
+
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
   const handleInput = useCallback((event) => {
@@ -81,15 +91,31 @@ export default function ManageTokens({
   // all tokens for local list
   const userAddedTokens: Token[] = useUserAddedTokens()
   const removeToken = useRemoveUserAddedToken()
-  const addToken = useAddUserToken()
+
+  const { query } = useRouter()
+
+  const clearQuery = useCallback(
+    (address: string) => {
+      if (query.inputCurrency === address) {
+        replaceBrowserHistory('inputCurrency', APTOS_COIN)
+        dispatch(selectCurrency({ field: Field.INPUT, currencyId: APTOS_COIN }))
+      }
+      if (query.outputCurrency === address) {
+        replaceBrowserHistory('outputCurrency', L0_USDC[chainId]?.address)
+        dispatch(selectCurrency({ field: Field.OUTPUT, currencyId: L0_USDC[chainId]?.address }))
+      }
+    },
+    [chainId, dispatch, query.inputCurrency, query.outputCurrency],
+  )
 
   const handleRemoveAll = useCallback(() => {
     if (chainId && userAddedTokens) {
       userAddedTokens.forEach((token) => {
+        clearQuery(token.address)
         return removeToken(chainId, token.address)
       })
     }
-  }, [removeToken, userAddedTokens, chainId])
+  }, [chainId, userAddedTokens, clearQuery, removeToken])
 
   const { account } = useAccount()
 
@@ -111,10 +137,19 @@ export default function ManageTokens({
             </Text>
           </RowFixed>
           <RowFixed>
-            <IconButton variant="text" scale="sm" onClick={() => removeToken(chainId, token.address)}>
+            <CoinRegisterButtonWithHooks token={token} />
+            <IconButton
+              variant="text"
+              scale="sm"
+              onClick={() => {
+                clearQuery(token.address)
+                setTimeout(() => {
+                  removeToken(chainId, token.address)
+                })
+              }}
+            >
               <DeleteOutlineIcon color="textSubtle" />
             </IconButton>
-            <CoinRegisterButtonWithHooks token={token} />
             <a href={getBlockExploreLink(token.address, 'token', chainId)} target="_blank" rel="noreferrer noopener">
               <IconButton scale="sm" variant="text">
                 <AptosIcon color="textSubtle" width="16px" />
@@ -124,17 +159,19 @@ export default function ManageTokens({
         </RowBetween>
       ))
     )
-  }, [userAddedTokens, chainId, removeToken])
+  }, [chainId, userAddedTokens, removeToken, clearQuery])
 
   const isAddressValid = searchQuery === '' || isStructTag(searchQuery)
 
   const discoverRegisterTokens = useMemo(
     () =>
       balances
-        .filter((b) => b && b.value !== '0' && !allTokens[b.address])
+        .filter((b) => b && b.value !== '0' && !allTokens[b.address] && !b.address.includes(PAIR_LP_TYPE_TAG))
         .map((b) => b && new Coin(chainId, b.address, b.decimals, b.symbol, b.name)) as Coin[],
     [allTokens, balances, chainId],
   )
+
+  const [warningTokens, setWarningTokens] = useState<Token[]>([])
 
   return (
     <Wrapper>
@@ -184,7 +221,7 @@ export default function ManageTokens({
                     </Text>
                   </RowFixed>
                   <RowFixed>
-                    <IconButton variant="text" scale="sm" onClick={() => addToken(discoveredToken)}>
+                    <IconButton variant="text" scale="sm" onClick={() => setWarningTokens([discoveredToken])}>
                       <AddCircleIcon color="textSubtle" />
                     </IconButton>
                     <a
@@ -204,7 +241,7 @@ export default function ManageTokens({
         )}
         <Footer>
           <Text bold color="textSubtle">
-            {userAddedTokens?.length} {userAddedTokens.length === 1 ? t('Custom Token') : t('Custom Tokens')}
+            {userAddedTokens?.length} {userAddedTokens.length === 1 ? t('Imported Token') : t('Imported Tokens')}
           </Text>
           {userAddedTokens.length > 0 && (
             <Button variant="tertiary" onClick={handleRemoveAll}>
@@ -213,6 +250,13 @@ export default function ManageTokens({
           )}
         </Footer>
       </Column>
+      <ModalV2 isOpen={Boolean(warningTokens.length)}>
+        <Modal title={t('Import Token')}>
+          <div style={{ maxWidth: '380px' }}>
+            <ImportToken tokens={warningTokens} handleCurrencySelect={() => setWarningTokens([])} />
+          </div>
+        </Modal>
+      </ModalV2>
     </Wrapper>
   )
 }

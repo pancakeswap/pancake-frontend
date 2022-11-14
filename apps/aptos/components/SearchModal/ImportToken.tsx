@@ -31,15 +31,11 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       <Message variant="warning">
         <Text>
           {t(
-            'Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
-            {
-              standard: 'Aptos coin',
-              network: 'Aptos',
-            },
+            'Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.',
           )}
           <br />
           <br />
-          <strong>{t('If you purchase an arbitrary token, you may be unable to sell it back.')}</strong>
+          <strong>{t('If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.')}</strong>
         </Text>
       </Message>
 
