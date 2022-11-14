@@ -7,7 +7,7 @@ export interface BestTradeOptions extends BaseBestTradeOptions {
   provider: Provider
 
   // If not provided, will use the given provider to fetch pairs on chain
-  getAllCommonPairs?: (one: Currency, another: Currency) => Promise<Pair[]> | Pair[]
+  allCommonPairs?: Pair[] | ((one: Currency, another: Currency) => Promise<Pair[]> | Pair[])
 }
 
 export enum RouteType {

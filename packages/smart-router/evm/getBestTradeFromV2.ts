@@ -37,11 +37,14 @@ function createGetBestTradeFromV2<TTradeType extends TradeType>(tradeType: TTrad
     output: Out,
     options: BestTradeOptions,
   ) {
-    const { provider, getAllCommonPairs, ...restOptions } = options
+    const { provider, allCommonPairs, ...restOptions } = options
     const { maxHops = 3 } = restOptions
     const getAllowedPairs = async () => {
-      if (getAllCommonPairs) {
-        return getAllCommonPairs(amountIn.currency, output)
+      if (Array.isArray(allCommonPairs)) {
+        return allCommonPairs
+      }
+      if (allCommonPairs) {
+        return allCommonPairs(amountIn.currency, output)
       }
       return defaultGetAllCommonPairs(amountIn.currency, output, { provider })
     }
