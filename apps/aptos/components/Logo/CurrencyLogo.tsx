@@ -6,6 +6,7 @@ import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import Logo from './Logo'
+import { aptosLogoClass } from './CurrencyLogo.css'
 
 const getTokenLogoURL = memoize(
   (token?: Token) => {
@@ -25,6 +26,12 @@ const StyledLogo = styled(Logo)<{ size: string }>`
   height: ${({ size }) => size};
   border-radius: 50%;
 `
+
+const APT_SRCS = ['https://tokens.pancakeswap.finance/images/symbol/apt.png']
+
+export function AptosCoinLogo({ size = '24px', style }: { size?: string; style?: React.CSSProperties }) {
+  return <StyledLogo className={aptosLogoClass} srcs={APT_SRCS} alt="APT logo" style={style} size={size} />
+}
 
 export function CurrencyLogo({
   currency,
@@ -53,14 +60,7 @@ export function CurrencyLogo({
 
   // isNative of AptosCoin wrapped is false, using address comparison is safer
   if (currency?.isNative || currency?.address === APTOS_COIN) {
-    return (
-      <StyledLogo
-        srcs={['https://tokens.pancakeswap.finance/images/symbol/apt.png']}
-        alt="APT logo"
-        style={style}
-        size={size}
-      />
-    )
+    return <AptosCoinLogo />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />

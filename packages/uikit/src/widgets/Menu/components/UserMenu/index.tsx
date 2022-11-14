@@ -67,6 +67,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
   account,
   text,
   avatarSrc,
+  avatarClassName,
   variant = variants.DEFAULT,
   children,
   disabled,
@@ -118,7 +119,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
           setIsOpen((s) => !s);
         }}
       >
-        <MenuIcon avatarSrc={avatarSrc} variant={variant} />
+        <MenuIcon className={avatarClassName} avatarSrc={avatarSrc} variant={variant} />
         <LabelText title={typeof text === "string" ? text || account : account}>{text || accountEllipsis}</LabelText>
         {!disabled && <ChevronDownIcon color="text" width="24px" />}
       </StyledUserMenu>
