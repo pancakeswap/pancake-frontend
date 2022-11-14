@@ -75,8 +75,8 @@ export default function ManageTokens({
 
   const [searchQuery, setSearchQuery] = useState<string>('')
 
-  // FIXME: better not including swap/liquidity hooks
-  const [, dispatch] = useSwapState()
+  // FIXME: better not including swap/liquidity state
+  const [{ INPUT, OUTPUT }, dispatch] = useSwapState()
 
   // manage focus on modal show
   const inputRef = useRef<HTMLInputElement>()
@@ -96,16 +96,16 @@ export default function ManageTokens({
 
   const clearQuery = useCallback(
     (address: string) => {
-      if (query.inputCurrency === address) {
+      if (query.inputCurrency === address || INPUT.currencyId === address) {
         replaceBrowserHistory('inputCurrency', APTOS_COIN)
         dispatch(selectCurrency({ field: Field.INPUT, currencyId: APTOS_COIN }))
       }
-      if (query.outputCurrency === address) {
+      if (query.outputCurrency === address || OUTPUT.currencyId === address) {
         replaceBrowserHistory('outputCurrency', L0_USDC[chainId]?.address)
         dispatch(selectCurrency({ field: Field.OUTPUT, currencyId: L0_USDC[chainId]?.address }))
       }
     },
-    [chainId, dispatch, query.inputCurrency, query.outputCurrency],
+    [INPUT.currencyId, OUTPUT.currencyId, chainId, dispatch, query.inputCurrency, query.outputCurrency],
   )
 
   const handleRemoveAll = useCallback(() => {
@@ -166,7 +166,7 @@ export default function ManageTokens({
   const discoverRegisterTokens = useMemo(
     () =>
       balances
-        .filter((b) => b && b.value !== '0' && !allTokens[b.address] && !b.address.includes(PAIR_LP_TYPE_TAG))
+        .filter((b) => b && !allTokens[b.address] && b.address !== APTOS_COIN && !b.address.includes(PAIR_LP_TYPE_TAG))
         .map((b) => b && new Coin(chainId, b.address, b.decimals, b.symbol, b.name)) as Coin[],
     [allTokens, balances, chainId],
   )
