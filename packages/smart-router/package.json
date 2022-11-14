@@ -24,6 +24,8 @@
   },
   "devDependencies": {
     "@pancakeswap/sdk": "^3.1.0",
+    "@pancakeswap/tokens": "*",
+    "@pancakeswap/token-lists": "*",
     "@types/lodash": "^4.14.178",
     "tsconfig": "*",
     "tsup": "^5.10.1",
