@@ -823,8 +823,8 @@
   "Loaded": "로드됨",
   "Loading": "로드 중",
   "Enter valid token address": "유효한 토큰 주소 입력",
-  "Custom Token": "사용자 지정 토큰",
-  "Custom Tokens": "사용자 지정 토큰",
+  "Imported Token": "Imported Token",
+  "Imported Tokens": "Imported Tokens",
   "Select a currency": "통화 선택",
   "Search name or paste address": "이름 검색 또는 주소 붙여넣기",
   "Transaction Submitted": "트랜잭션 제출됨",
@@ -2020,5 +2020,10 @@
   "Unsupported Wallet": "Unsupported Wallet",
   "Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.": "Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.",
   "Check out our wallet guide for the list of supported wallets.": "Check out our wallet guide for the list of supported wallets.",
-  "If you have previously deposited any LP tokens, please unstake.": "If you have previously deposited any LP tokens, please unstake."
+  "If you have previously deposited any LP tokens, please unstake.": "If you have previously deposited any LP tokens, please unstake.",
+  "Discovered from registered coins": "Discovered from registered coins",
+  "Sharing link copied": "Sharing link copied",
+  "Register coin to receive transfers": "Register coin to receive transfers",
+  "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.",
+  "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds."
 }
