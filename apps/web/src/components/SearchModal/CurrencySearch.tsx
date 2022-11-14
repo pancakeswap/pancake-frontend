@@ -175,7 +175,12 @@ function CurrencySearch({
     if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
       return (
         <Column style={{ padding: '20px 0', height: '100%' }}>
-          <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+          <ImportRow
+            onCurrencySelect={handleCurrencySelect}
+            token={searchToken}
+            showImportView={showImportView}
+            setImportToken={setImportToken}
+          />
         </Column>
       )
     }
