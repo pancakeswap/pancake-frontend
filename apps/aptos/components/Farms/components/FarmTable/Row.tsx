@@ -15,7 +15,6 @@ import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 
-// import { useFarmEarning } from 'state/farms/hook'
 import { DesktopColumnSchema, FarmWithStakedValue, MobileColumnSchema } from '../types'
 import ActionPanel from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
@@ -82,10 +81,10 @@ const FarmMobileCell = styled.td`
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
   const { t } = useTranslation()
-  const { details: _details, initialActivity, multiplier } = props
+  const { details, initialActivity, multiplier } = props
   const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
-  const stakedBalance = props.details.userData ? props.details.userData.stakedBalance : BIG_ZERO
+  const stakedBalance = details.userData ? details.userData.stakedBalance : BIG_ZERO
   const hasStakedAmount = stakedBalance.gt(0)
 
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
