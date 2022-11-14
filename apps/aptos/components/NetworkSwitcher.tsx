@@ -6,6 +6,7 @@ import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap
 import { APEX_DOMAIN } from 'config'
 import { defaultChain } from 'config/chains'
 import Image from 'next/future/image'
+import { aptosLogoClass } from './Logo/CurrencyLogo.css'
 
 const evmChains = [
   { id: 56, name: 'BNB Smart Chain' },
@@ -56,7 +57,8 @@ export const NetworkSwitcher = () => {
     <UserMenu
       mr="8px"
       variant="default"
-      avatarSrc="/images/apt.png"
+      avatarSrc="https://tokens.pancakeswap.finance/images/symbol/apt.png"
+      avatarClassName={aptosLogoClass}
       placement="bottom"
       text={
         <>

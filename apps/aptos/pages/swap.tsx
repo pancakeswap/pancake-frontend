@@ -7,12 +7,14 @@ import {
   SWAP_ADDRESS_MODULE,
   Trade,
   TradeType,
+  Token,
 } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
+import { APTOS_COIN, useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
+import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, Card, Skeleton, Swap as SwapUI, useModal, Flex } from '@pancakeswap/uikit'
+import { AutoColumn, Card, Skeleton, Swap as SwapUI, useModal, Flex, ModalV2, Modal } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
@@ -20,13 +22,16 @@ import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import { PageMeta } from 'components/Layout/Page'
 import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
 import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/SettingsModal'
+import ImportToken from 'components/SearchModal/ImportToken'
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
+import { DOMAIN } from 'config'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
-import { useCurrency } from 'hooks/Tokens'
+import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
+import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -57,6 +62,22 @@ const isExpertMode = false
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
+function useWarningImport(currencies: (Currency | undefined)[]) {
+  const defaultTokens = useAllTokens()
+  const { isWrongNetwork } = useActiveNetwork()
+  const chainId = useActiveChainId()
+  const isMounted = useIsMounted()
+  const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
+  const importTokensNotInDefault =
+    !isWrongNetwork && urlLoadedTokens && isMounted
+      ? urlLoadedTokens.filter((token) => {
+          return !(token.address in defaultTokens) && token.chainId === chainId
+        })
+      : []
+
+  return importTokensNotInDefault
+}
+
 const SwapPage = () => {
   const [
     {
@@ -86,6 +107,10 @@ const SwapPage = () => {
 
   const { sendTransactionAsync } = useSendTransaction()
   const addTransaction = useTransactionAdder()
+
+  const warningTokens = useWarningImport(
+    useMemo(() => [inputCurrency, outputCurrency], [inputCurrency, outputCurrency]),
+  )
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
@@ -375,6 +400,13 @@ const SwapPage = () => {
           <CurrencyInputPanel
             onCurrencySelect={handleInputSelect}
             id="swap-currency-input"
+            shareLink={
+              inputCurrency && inputCurrency.isToken
+                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
+                    inputCurrency.address,
+                  )}`
+                : undefined
+            }
             currency={inputCurrency}
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
@@ -393,6 +425,13 @@ const SwapPage = () => {
           <CurrencyInputPanel
             showMaxButton={false}
             onCurrencySelect={handleOutputSelect}
+            shareLink={
+              outputCurrency && outputCurrency.isToken
+                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
+                    outputCurrency.address,
+                  )}`
+                : undefined
+            }
             id="swap-currency-output"
             value={formattedAmounts[Field.OUTPUT]}
             label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('to')}
@@ -439,6 +478,13 @@ const SwapPage = () => {
           </AtomBox>
         </AutoColumn>
         {trade && <AdvancedSwapDetailsDropdown trade={trade} />}
+        <ModalV2 isOpen={Boolean(warningTokens.length)}>
+          <Modal title={t('Import Token')} hideCloseButton>
+            <div style={{ maxWidth: '380px' }}>
+              <ImportToken tokens={warningTokens} />
+            </div>
+          </Modal>
+        </ModalV2>
       </Card>
     </>
   )

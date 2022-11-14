@@ -173,7 +173,14 @@ export default function CurrencyList({
 
       if (showImport && token) {
         return (
-          <ImportRow style={style} token={token} showImportView={showImportView} setImportToken={setImportToken} dim />
+          <ImportRow
+            onCurrencySelect={handleSelect}
+            style={style}
+            token={token}
+            showImportView={showImportView}
+            setImportToken={setImportToken}
+            dim
+          />
         )
       }
       return (

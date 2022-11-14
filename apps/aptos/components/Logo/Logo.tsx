@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { HelpIcon } from '@pancakeswap/uikit'
+import { HelpFilledIcon } from '@pancakeswap/uikit'
 
 export const BAD_SRCS: { [imageSrc: string]: true } = {}
 
@@ -29,7 +29,7 @@ const Logo: React.FC<React.PropsWithChildren<LogoProps>> = ({ srcs, alt, ...rest
     )
   }
 
-  return <HelpIcon {...rest} />
+  return <HelpFilledIcon color="textSubtle" {...rest} />
 }
 
 export default Logo
