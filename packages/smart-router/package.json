@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "test": "NODE_ENV=test jest --verbose --runInBand",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
@@ -23,13 +24,18 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@ethersproject/constants": "^5.0.0",
+    "@ethersproject/units": "^5.0.0",
     "@pancakeswap/sdk": "^3.1.0",
     "@pancakeswap/tokens": "*",
     "@pancakeswap/token-lists": "*",
+    "@types/jest": "^27.4.0",
     "@types/lodash": "^4.14.178",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.3",
     "tsconfig": "*",
     "tsup": "^5.10.1",
-    "typescript": "^4.5.3"
+    "typescript": "^4.8.4"
   },
   "exports": {
     "./evm": {
