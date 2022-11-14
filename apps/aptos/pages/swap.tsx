@@ -9,7 +9,7 @@ import {
   TradeType,
   Token,
 } from '@pancakeswap/aptos-swap-sdk'
-import { APTOS_COIN, useAccount, useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
+import { APTOS_COIN, useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
@@ -32,6 +32,7 @@ import { useCurrencyBalance } from 'hooks/Balances'
 import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -105,7 +106,6 @@ const SwapPage = () => {
 
   const trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
-  const { sendTransactionAsync } = useSendTransaction()
   const addTransaction = useTransactionAdder()
 
   const warningTokens = useWarningImport(
@@ -148,7 +148,7 @@ const SwapPage = () => {
     [Field.OUTPUT]: useCurrencyBalance(outputCurrencyId),
   }
 
-  const { simulateTransactionAsync } = useSimulateTransaction()
+  const executeTransaction = useSimulationAndSendTransaction()
 
   const [userAllowedSlippage] = useUserSlippage()
 
@@ -161,14 +161,8 @@ const SwapPage = () => {
         if (!payload) {
           throw new Error('Missing swap call')
         }
-        console.info(payload)
-        let result
-        try {
-          const results = await simulateTransactionAsync({
-            payload,
-          })
-          result = results[0]
-        } catch (error) {
+
+        return executeTransaction(payload, (error) => {
           if (error instanceof SimulateTransactionError) {
             console.info({ error })
             const parseError = parseVmStatusError(error.tx.vm_status)
@@ -186,11 +180,6 @@ const SwapPage = () => {
               ),
             )
           }
-        }
-
-        return sendTransactionAsync({
-          payload,
-          options: result ? { max_gas_amount: result.max_gas_amount } : undefined,
         }).then((tx) => {
           const inputSymbol = trade.inputAmount.currency.symbol
           const outputSymbol = trade.outputAmount.currency.symbol
@@ -234,7 +223,7 @@ const SwapPage = () => {
       }
     }
     return undefined
-  }, [addTransaction, allowedSlippage, sendTransactionAsync, simulateTransactionAsync, t, trade, userAllowedSlippage])
+  }, [addTransaction, allowedSlippage, executeTransaction, t, trade, userAllowedSlippage])
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)

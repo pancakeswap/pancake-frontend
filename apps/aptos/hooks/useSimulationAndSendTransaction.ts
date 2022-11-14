@@ -9,7 +9,7 @@ export default function useSimulationAndSendTransaction() {
   const { sendTransactionAsync } = useSendTransaction()
 
   const execute = useCallback(
-    async (payload) => {
+    async (payload, simulateError?: (err: any) => void) => {
       console.info('payload: ', payload)
 
       let results
@@ -18,6 +18,9 @@ export default function useSimulationAndSendTransaction() {
         results = await simulateTransactionAsync({ payload })
       } catch (error) {
         // ignore error
+        if (simulateError) {
+          simulateError(error)
+        }
       }
 
       let options
