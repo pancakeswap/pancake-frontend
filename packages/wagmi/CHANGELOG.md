@@ -1,5 +1,11 @@
 # @pancakeswap/wagmi
 
+## 0.0.5
+
+### Patch Changes
+
+- 1e9e18e20: fix Blocto request account popup unintentionally
+
 ## 0.0.4
 
 ### Patch Changes
