@@ -39,6 +39,8 @@ router.get('/:chainId', async ({ params }, event) => {
 
   const cached = KV_CACHE && (await FarmKV.getFarms(chainId))
 
+  console.log(cached);
+
   if (!cached || Date.now() - new Date(cached.updatedAt).getTime() > 2 * 1000 * 60) {
     if (KV_CACHE) {
       console.info('no cached found!')

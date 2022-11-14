@@ -69,6 +69,7 @@ const farmConfigApi = 'https://farms-config.pages.dev'
 export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEvent) {
   try {
     const isTestnet = farmFetcher.isTestnet(chainId)
+    console.log(`${farmConfigApi}/${chainId}.json`);
     const farmsConfig = await (await fetch(`${farmConfigApi}/${chainId}.json`)).json<SerializedFarmConfig[]>()
     let lpPriceHelpers: SerializedFarmConfig[] = []
     try {

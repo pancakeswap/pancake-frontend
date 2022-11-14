@@ -55,12 +55,6 @@ const config: (
           href: '/swap',
         },
         {
-          label: t('Limit'),
-          href: '/limit-orders',
-          supportChainIds: SUPPORT_ONLY_BSC,
-          image: '/images/decorations/3d-coin.png',
-        },
-        {
           label: t('Liquidity'),
           href: '/liquidity',
         }
