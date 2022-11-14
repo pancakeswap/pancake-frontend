@@ -87,7 +87,7 @@ export const formatLocalisedCompactNumber = (number: number): string => {
 
 export default formatLocalisedCompactNumber
 
-export const formatLpBalance = (balance: BigNumber, decimals = 18) => {
+export const formatLpBalance = (balance: BigNumber, decimals: number) => {
   const stakedBalanceBigNumber = getBalanceAmount(balance, decimals)
   if (stakedBalanceBigNumber.gt(0) && stakedBalanceBigNumber.lt(0.00001)) {
     return '< 0.00001'

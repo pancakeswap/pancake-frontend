@@ -114,7 +114,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const handleNonBscStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onStake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {
@@ -172,7 +172,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const handleNonBscUnStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onUnstake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {

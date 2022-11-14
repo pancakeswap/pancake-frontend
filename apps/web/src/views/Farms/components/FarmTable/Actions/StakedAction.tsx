@@ -191,7 +191,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const handleNonBscStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onStake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {
@@ -249,7 +249,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const handleNonBscUnStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onUnstake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {
