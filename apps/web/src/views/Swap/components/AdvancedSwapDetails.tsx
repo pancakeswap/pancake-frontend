@@ -1,13 +1,16 @@
-import { Trade, TradeType, Currency } from '@pancakeswap/sdk'
-import { Text, QuestionHelper } from '@pancakeswap/uikit'
-import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
+import { Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
+
+import { AutoColumn } from 'components/Layout/Column'
+import { RowBetween, RowFixed } from 'components/Layout/Row'
+import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
+import { useState } from 'react'
+import { Field } from 'state/swap/actions'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
-import { AutoColumn } from 'components/Layout/Column'
-import { TOTAL_FEE, LP_HOLDERS_FEE, TREASURY_FEE, BUYBACK_FEE } from 'config/constants/info'
-import { RowBetween, RowFixed } from 'components/Layout/Row'
 import FormattedPriceImpact from './FormattedPriceImpact'
+import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
 
 function TradeSummary({
@@ -98,8 +101,9 @@ export interface AdvancedSwapDetailsProps {
 export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippageTolerance()
+  const [isModalOpen, setIsModalOpen] = useState(() => false)
 
-  const showRoute = Boolean(trade && trade.route.path.length > 2)
+  const showRoute = Boolean(trade && trade.route.path.length > 1)
 
   return (
     <AutoColumn gap="0px">
@@ -120,6 +124,12 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
                   />
                 </span>
                 <SwapRoute trade={trade} />
+                <SearchIcon onClick={() => setIsModalOpen(true)} />
+                <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
+                  <Modal title={t('Route')} onDismiss={() => setIsModalOpen(false)}>
+                    <RouterViewer trade={trade} />
+                  </Modal>
+                </ModalV2>
               </RowBetween>
             </>
           )}
