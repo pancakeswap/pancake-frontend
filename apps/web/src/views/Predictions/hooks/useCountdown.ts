@@ -1,10 +1,9 @@
-import { getNow } from 'utils/getNow'
 import { accurateTimer } from 'utils/accurateTimer'
+import useServerTimestamp from 'hooks/useServerTimestamp'
 import { useCallback, useEffect, useState, useRef } from 'react'
 import { useIsWindowVisible } from '@pancakeswap/hooks'
 
-const getSecondsRemainingToNow = (timestamp: number) => {
-  const now = getNow()
+const getSecondsRemainingToNow = (now: number, timestamp: number) => {
   return Number.isFinite(timestamp) && timestamp > now ? timestamp - now : 0
 }
 
@@ -13,7 +12,8 @@ const getSecondsRemainingToNow = (timestamp: number) => {
  */
 const useCountdown = (timestamp: number) => {
   const timerCancelRef = useRef(null)
-  const [secondsRemaining, setSecondsRemaining] = useState(() => getSecondsRemainingToNow(timestamp))
+  const getNow = useServerTimestamp()
+  const [secondsRemaining, setSecondsRemaining] = useState(null)
   const [isPaused, setIsPaused] = useState(false)
   const isWindowVisible = useIsWindowVisible()
 
@@ -43,13 +43,13 @@ const useCountdown = (timestamp: number) => {
 
   // Pause the timer if the tab becomes inactive to avoid it becoming out of sync
   useEffect(() => {
-    if (isWindowVisible) {
-      setSecondsRemaining(getSecondsRemainingToNow(timestamp))
+    if (isWindowVisible && getNow) {
+      setSecondsRemaining(getSecondsRemainingToNow(getNow(), timestamp))
       unpause()
     } else {
       pause()
     }
-  }, [pause, unpause, timestamp, setSecondsRemaining, isWindowVisible])
+  }, [getNow, pause, unpause, timestamp, setSecondsRemaining, isWindowVisible])
 
   return { secondsRemaining, pause, unpause }
 }

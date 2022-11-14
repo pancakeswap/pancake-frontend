@@ -7,6 +7,7 @@ import { Bet } from 'state/types'
 import { fetchNodeHistory } from 'state/predictions'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import { useGetCurrentHistoryPage, useGetHasHistoryLoaded, useGetIsFetchingHistory } from 'state/predictions/hooks'
+import useServerTimestamp from 'hooks/useServerTimestamp'
 import HistoricalBet from './HistoricalBet'
 import V1ClaimCheck from '../v1/V1ClaimCheck'
 
@@ -22,10 +23,11 @@ const RoundsTab: React.FC<React.PropsWithChildren<RoundsTabProps>> = ({ hasBetHi
   const hasHistoryLoaded = useGetHasHistoryLoaded()
   const currentHistoryPage = useGetCurrentHistoryPage()
   const isFetchingHistory = useGetIsFetchingHistory()
+  const getNow = useServerTimestamp()
   const { token } = useConfig()
 
   const handleClick = () => {
-    dispatch(fetchNodeHistory({ account, page: currentHistoryPage + 1 }))
+    dispatch(fetchNodeHistory({ account, page: currentHistoryPage + 1, getNow }))
   }
 
   const v1Claim = token.symbol === 'BNB' ? <V1ClaimCheck /> : null

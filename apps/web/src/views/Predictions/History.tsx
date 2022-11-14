@@ -15,6 +15,7 @@ import {
   useGetIsFetchingHistory,
   useIsHistoryPaneOpen,
 } from 'state/predictions/hooks'
+import useServerTimestamp from 'hooks/useServerTimestamp'
 import { Header, HistoryTabs } from './components/History'
 import RoundsTab from './components/History/RoundsTab'
 import PnlTab from './components/History/PnlTab/PnlTab'
@@ -56,12 +57,13 @@ const History = () => {
   const { t } = useTranslation()
   const bets = useGetHistory()
   const [activeTab, setActiveTab] = useState(HistoryTabs.ROUNDS)
+  const getNow = useServerTimestamp()
 
   useEffect(() => {
-    if (account && isHistoryPaneOpen) {
-      dispatch(fetchNodeHistory({ account }))
+    if (account && isHistoryPaneOpen && getNow) {
+      dispatch(fetchNodeHistory({ account, getNow }))
     }
-  }, [account, currentEpoch, isHistoryPaneOpen, dispatch])
+  }, [account, currentEpoch, isHistoryPaneOpen, dispatch, getNow])
 
   const results = getFilteredBets(bets, historyFilter)
   const hasBetHistory = results && results.length > 0

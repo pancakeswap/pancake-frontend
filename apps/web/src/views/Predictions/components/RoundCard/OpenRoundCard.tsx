@@ -17,8 +17,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { fetchLedgerData } from 'state/predictions'
 import { ROUND_BUFFER } from 'state/predictions/config'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
-import { getNow } from 'utils/getNow'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import useServerTimestamp from 'hooks/useServerTimestamp'
 import { formatTokenv2 } from '../../helpers'
 import CardFlip from '../CardFlip'
 import { PrizePoolRow, RoundResultBox } from '../RoundResult'
@@ -61,6 +61,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   const { lockTimestamp } = round ?? { lockTimestamp: null }
   const { isSettingPosition, position } = state
   const [isBufferPhase, setIsBufferPhase] = useState(false)
+  const getNow = useServerTimestamp()
   const positionDisplay = useMemo(
     () => (position === BetPosition.BULL ? t('Up').toUpperCase() : t('Down').toUpperCase()),
     [t, position],
@@ -86,6 +87,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
   )
 
   useEffect(() => {
+    if (!getNow) return undefined
     const secondsToLock = lockTimestamp ? lockTimestamp - getNow() : 0
     if (secondsToLock > 0) {
       const setIsBufferPhaseTimeout = setTimeout(() => {
@@ -97,7 +99,7 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
       }
     }
     return undefined
-  }, [lockTimestamp])
+  }, [getNow, lockTimestamp])
 
   const getHasEnteredPosition = () => {
     if (hasEnteredUp || hasEnteredDown) {

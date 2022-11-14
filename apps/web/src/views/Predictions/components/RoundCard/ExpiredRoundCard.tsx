@@ -5,6 +5,7 @@ import { NodeRound, BetPosition, NodeLedger } from 'state/types'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { getHasRoundFailed } from 'state/predictions/helpers'
 import useTheme from 'hooks/useTheme'
+import useServerTimestamp from 'hooks/useServerTimestamp'
 import { getRoundPosition } from '../../helpers'
 import { RoundResult } from '../RoundResult'
 import MultiplierArrow from './MultiplierArrow'
@@ -50,7 +51,8 @@ const ExpiredRoundCard: React.FC<React.PropsWithChildren<ExpiredRoundCardProps>>
   const { epoch, lockPrice, closePrice } = round
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const bufferSeconds = useGetBufferSeconds()
-  const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
+  const getNow = useServerTimestamp()
+  const hasRoundFailed = getHasRoundFailed(getNow, round.oracleCalled, round.closeTimestamp, bufferSeconds)
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />

@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo } from 'react'
 import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
-import { getNow } from 'utils/getNow'
 import { useTranslation } from '@pancakeswap/localization'
 import { NodeRound, NodeLedger, BetPosition } from 'state/types'
+import useServerTimestamp from 'hooks/useServerTimestamp'
 import { useGetBufferSeconds } from 'state/predictions/hooks'
 import { getHasRoundFailed } from 'state/predictions/helpers'
 import usePollOraclePrice from 'views/Predictions/hooks/usePollOraclePrice'
@@ -43,26 +43,28 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   const { price, refresh } = usePollOraclePrice()
   const bufferSeconds = useGetBufferSeconds()
   const { displayedDecimals } = useConfig()
+  const getNow = useServerTimestamp()
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
   const isHouse = useMemo(() => {
     const secondsToClose = closeTimestamp ? closeTimestamp - getNow() : 0
     return lockPrice && price.eq(lockPrice) && secondsToClose <= SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE
-  }, [closeTimestamp, lockPrice, price])
+  }, [closeTimestamp, lockPrice, price, getNow])
 
   const isBull = lockPrice && price.gt(lockPrice)
 
   const betPosition = isHouse ? BetPosition.HOUSE : isBull ? BetPosition.BULL : BetPosition.BEAR
 
   const priceDifference = getPriceDifference(price, lockPrice)
-  const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
+  const hasRoundFailed = getHasRoundFailed(getNow, round.oracleCalled, round.closeTimestamp, bufferSeconds)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(t('Last price from Chainlink Oracle'), {
     placement: 'bottom',
   })
 
   useEffect(() => {
+    if (!getNow) return undefined
     const secondsToClose = closeTimestamp ? closeTimestamp - getNow() : 0
     if (secondsToClose > 0) {
       const refreshPriceTimeout = setTimeout(() => {
@@ -79,7 +81,7 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
       }
     }
     return undefined
-  }, [refresh, closeTimestamp])
+  }, [refresh, closeTimestamp, getNow])
 
   if (hasRoundFailed) {
     return <CanceledRoundCard round={round} />
@@ -97,7 +99,13 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
         title={t('Live')}
         epoch={round.epoch}
       />
-      <RoundProgress variant="flat" scale="sm" lockTimestamp={lockTimestamp} closeTimestamp={closeTimestamp} />
+      <RoundProgress
+        getNow={getNow}
+        variant="flat"
+        scale="sm"
+        lockTimestamp={lockTimestamp}
+        closeTimestamp={closeTimestamp}
+      />
       <CardBody p="16px">
         <MultiplierArrow
           betAmount={betAmount}

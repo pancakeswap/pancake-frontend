@@ -132,9 +132,9 @@ export const fetchLedgerData = createAsyncThunk<
 
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
-  { account: string; page?: number },
+  { account: string; page?: number; getNow?: () => number },
   { state: PredictionsState; extra: PredictionConfig }
->('predictions/fetchNodeHistory', async ({ account, page = 1 }, { getState, extra }) => {
+>('predictions/fetchNodeHistory', async ({ account, page = 1, getNow }, { getState, extra }) => {
   const userRoundsLength = await fetchUsersRoundsLength(account, extra.address)
   const emptyResult = { bets: [], claimableStatuses: {}, totalHistory: userRoundsLength.toNumber() }
   const maxPages = userRoundsLength.lte(ROUNDS_PER_PAGE) ? 1 : Math.ceil(userRoundsLength.toNumber() / ROUNDS_PER_PAGE)
@@ -209,6 +209,7 @@ export const fetchNodeHistory = createAsyncThunk<
           id: null,
           epoch: round.epoch.toNumber(),
           failed: getHasRoundFailed(
+            getNow || (() => Math.floor(Date.now() / 1000)),
             round.oracleCalled,
             round.closeTimestamp.eq(0) ? null : round.closeTimestamp.toNumber(),
             bufferSeconds,

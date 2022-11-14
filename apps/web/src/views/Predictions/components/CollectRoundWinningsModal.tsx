@@ -32,6 +32,7 @@ import { REWARD_RATE } from 'state/predictions/config'
 import { Bet } from 'state/types'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { multiplyPriceByAmount } from 'utils/prices'
+import useServerTimestamp from 'hooks/useServerTimestamp'
 import { getPayout } from './History/helpers'
 
 interface CollectRoundWinningsModalProps extends InjectedModalProps {
@@ -100,6 +101,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
   const { callWithGasPrice } = useCallWithGasPrice()
   const predictionsContract = usePredictionsContract(predictionsAddress, token.symbol)
   const bnbBusdPrice = useBUSDPrice(token)
+  const getNow = useServerTimestamp()
 
   const { epochs, total } = calculateClaimableRounds(history)
   const totalBnb = multiplyPriceByAmount(bnbBusdPrice, total)
@@ -108,10 +110,10 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<CollectRoundWi
 
   useEffect(() => {
     // Fetch history if they have not opened the history pane yet
-    if (history.length === 0 && !isV1Claim) {
-      dispatch(fetchNodeHistory({ account }))
+    if (history.length === 0 && !isV1Claim && getNow) {
+      dispatch(fetchNodeHistory({ account, getNow }))
     }
-  }, [account, history, dispatch, isV1Claim])
+  }, [account, getNow, history, dispatch, isV1Claim])
 
   const handleClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {

@@ -167,11 +167,16 @@ const defaultPredictionUserOptions = {
   orderDir: 'desc',
 }
 
-export const getHasRoundFailed = (oracleCalled: boolean, closeTimestamp: number, buffer: number) => {
+export const getHasRoundFailed = (
+  getNow: () => number,
+  oracleCalled: boolean,
+  closeTimestamp: number,
+  buffer: number,
+) => {
   if (!oracleCalled) {
     const closeTimestampMs = (closeTimestamp + buffer) * 1000
-    if (Number.isFinite(closeTimestampMs)) {
-      return Date.now() > closeTimestampMs
+    if (Number.isFinite(closeTimestampMs) && getNow) {
+      return getNow() * 1000 > closeTimestampMs
     }
   }
 
