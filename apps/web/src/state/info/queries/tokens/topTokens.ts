@@ -27,7 +27,7 @@ const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number
       : checkIsStableSwap()
       ? ''
       : `where: { dailyTxns_gt: 300, id_not_in: $blacklist, date_gt: ${timestamp24hAgo}}`
-  const firstCount = 30
+  const firstCount = 5
   try {
     const query = gql`
       query topTokens($blacklist: [String!]) {
@@ -41,6 +41,7 @@ const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number
         }
       }
     `
+    console.log(query)
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopTokensResponse>(query, {
       blacklist: multiChainTokenBlackList[chainName],
     })
