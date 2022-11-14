@@ -12,7 +12,7 @@ const useServerTimestamp = () => {
       const res = await fetch('https://worldtimeapi.org/api/timezone/Etc/UTC', { method: 'GET', cache: 'no-store' })
       if (res.ok) {
         const data = await res.json()
-        mutate('serverTimestampLastCheck', Date.now())
+        mutate('serverTimestampLastCheck', Date.now(), { revalidate: false })
         return data.unixtime
       }
       return null
