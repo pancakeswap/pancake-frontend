@@ -1,7 +1,7 @@
 import { memo, ReactNode } from "react";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { ButtonMenu, ButtonMenuItem, LinkExternal, Flex, Svg, Image, Button } from "../../components";
+import { LinkExternal, Flex, Svg, Image, Button } from "../../components";
 
 const Wrapper = styled.div<{ $isSide: boolean }>`
   width: 100%;
@@ -38,40 +38,30 @@ const BubbleWrapper = styled(Flex)`
 type FooterVariant = "default" | "side";
 
 const Footer: React.FC<
-  React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string; isEvm?: boolean; helpImage?: ReactNode }>
+  React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string; helpImage?: ReactNode; isBSC?: boolean }>
 > = ({
   variant = "default",
   helpUrl,
+  isBSC,
   helpImage = <Image src="https://cdn.pancakeswap.com/help/help.png" alt="Get some help" width={160} height={108} />,
-  isEvm = true,
 }) => {
   const { t } = useTranslation();
   const isSide = variant === "side";
   return (
     <Wrapper $isSide={isSide}>
-      <Flex flexDirection={isSide ? "column" : ["column", "column", "row"]} alignItems="center">
-        {isEvm ? (
-          <>
-            <ButtonMenu variant="subtle" scale="sm" activeIndex={0}>
-              <ButtonMenuItem>V2</ButtonMenuItem>
-              <ButtonMenuItem as="a" href="https://v1exchange.pancakeswap.finance/#/">
-                {t("V1 (old)")}
-              </ButtonMenuItem>
-            </ButtonMenu>
-            <LinkExternal
-              id="ercBridge"
-              href="https://docs.binance.org/smart-chain/guides/cross-chain.html"
-              ml={[0, 0, "40px"]}
-              mt={["20px", "20px", isSide ? "20px" : 0]}
-              mb={["8px", "8px", 0]}
-            >
-              {t("Convert ERC-20 to BEP-20")}
-            </LinkExternal>
-          </>
-        ) : (
-          <div />
-        )}
-      </Flex>
+      {isBSC && (
+        <Flex flexDirection={isSide ? "column" : ["column", "column", "row"]} alignItems="center">
+          <LinkExternal
+            id="ercBridge"
+            href="https://bridge.pancakeswap.finance/"
+            ml={[0, 0, "40px"]}
+            mt={["20px", "20px", isSide ? "20px" : 0]}
+            mb={["8px", "8px", 0]}
+          >
+            {t("Bridge assets to BNB Chain")}
+          </LinkExternal>
+        </Flex>
+      )}
       {isSide && <Flex flexGrow={1} />}
       {helpUrl && (
         <Flex
