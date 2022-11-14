@@ -101,7 +101,7 @@ const fetchDerivedPriceData = async (
       console.error('Error fetching blocks for timestamps', timestamps)
       return null
     }
-
+    blocks.pop() // the bsc graph is 32 block behind so pop the last
     const [token0DerivedBnb, token1DerivedBnb] = await Promise.all([
       getTokenDerivedBnbPrices(token0Address, blocks),
       getTokenDerivedBnbPrices(token1Address, blocks),
