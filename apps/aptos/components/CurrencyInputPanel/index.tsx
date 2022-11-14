@@ -119,7 +119,9 @@ export const CurrencyInputPanel = ({
                     tooltipMessage={t('Sharing link copied')}
                   />
                 )}
-                {currency && account && !isLoading && !data && <CoinRegisterButton currency={currency} />}
+                {currency && currency.isToken && account && !isLoading && !data && (
+                  <CoinRegisterButton currency={currency} />
+                )}
               </AtomBox>
             ) : null}
           </AtomBox>
