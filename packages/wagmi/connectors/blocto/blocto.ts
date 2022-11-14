@@ -111,9 +111,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
     try {
       const provider = await this.getProvider()
       if (!provider) throw new ConnectorNotFoundError()
-      const accounts = await provider.request({
-        method: 'eth_accounts',
-      })
+      const accounts = provider.accounts
       const account = accounts[0]
       return !!account
     } catch {
