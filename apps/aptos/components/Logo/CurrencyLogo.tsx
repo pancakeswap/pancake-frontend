@@ -54,7 +54,14 @@ export function CurrencyLogo({
 
   // isNative of AptosCoin wrapped is false, using address comparison is safer
   if (currency?.isNative || currency?.address === APTOS_COIN) {
-    return <AptosIcon width={size} style={style} />
+    return (
+      <StyledLogo
+        srcs={['https://tokens.pancakeswap.finance/images/symbol/apt.png']}
+        alt="APT logo"
+        style={style}
+        size={size}
+      />
+    )
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
