@@ -1,20 +1,20 @@
-import { useContext } from 'react'
 import { Currency } from '@pancakeswap/sdk'
-import { Flex, BottomDrawer, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BottomDrawer, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
+import { useContext } from 'react'
+import { useUserSmartRouter } from 'state/user/smartRouter'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
-import { useSwapState, useSingleTokenSwapInfo } from '../../state/swap/hooks'
+import { useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
-
 import SwapForm from './components/SwapForm'
+import SwapTab, { SwapType } from './components/SwapTab'
+import { SmartSwapForm } from './SmartSwap'
 import StableSwapFormContainer from './StableSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
-import SwapTab, { SwapType } from './components/SwapTab'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
-import { SmartSwapForm } from './SmartSwap'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -36,7 +36,7 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   // TODO read from global settings
-  const smartSwap = true
+  const [smartSwap] = useUserSmartRouter()
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
