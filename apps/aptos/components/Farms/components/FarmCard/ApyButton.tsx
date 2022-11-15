@@ -88,6 +88,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       displayApr={displayApr}
       linkHref={addLiquidityUrl}
       isFarm
+      rewardCakePerSecond
     />,
     false,
     true,

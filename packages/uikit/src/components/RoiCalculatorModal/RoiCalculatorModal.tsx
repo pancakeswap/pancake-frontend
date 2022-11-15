@@ -72,6 +72,7 @@ export interface RoiCalculatorModalProps {
   initialValue?: string;
   strategy?: any;
   header?: React.ReactNode;
+  rewardCakePerSecond?: boolean;
   onBack?: () => void;
   onDismiss?: () => void;
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
@@ -99,6 +100,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   header,
   children,
   stakingTokenDecimals,
+  rewardCakePerSecond,
   onBack,
   onDismiss,
   bCakeCalculatorSlot,
@@ -300,6 +302,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
         linkLabel={linkLabel}
         linkHref={linkHref}
         performanceFee={performanceFee}
+        rewardCakePerSecond={rewardCakePerSecond}
       />
     </StyledModal>
   );

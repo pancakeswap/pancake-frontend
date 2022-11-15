@@ -130,6 +130,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       },
       multiplier: {
         multiplier: farm.multiplier,
+        rewardCakePerSecond: true,
       },
       type: farm.isCommunity ? 'community' : 'core',
       details: farm,
