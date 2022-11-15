@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, Trade, TradeType, Pair, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 
 import { AutoColumn } from 'components/Layout/Column'
@@ -14,17 +14,25 @@ import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
 
 function TradeSummary({
-  trade,
-  allowedSlippage,
+  inputAmount,
+  outputAmount,
+  tradeType,
+  slippageAdjustedAmounts,
+  priceImpactWithoutFee,
+  realizedLPFee,
 }: {
-  trade: Trade<Currency, Currency, TradeType>
-  allowedSlippage: number
+  inputAmount?: CurrencyAmount<Currency>
+  outputAmount?: CurrencyAmount<Currency>
+  tradeType?: TradeType
+  slippageAdjustedAmounts: {
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
+  }
+  priceImpactWithoutFee: Percent
+  realizedLPFee: CurrencyAmount<Currency>
 }) {
   const { t } = useTranslation()
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
-  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
-
+  const isExactIn = tradeType === TradeType.EXACT_INPUT
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
   const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
   const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
@@ -48,9 +56,8 @@ function TradeSummary({
         <RowFixed>
           <Text fontSize="14px">
             {isExactIn
-              ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
-                '-'
-              : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ?? '-'}
+              ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${outputAmount.currency.symbol}` ?? '-'
+              : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${inputAmount.currency.symbol}` ?? '-'}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -87,7 +94,7 @@ function TradeSummary({
           />
         </RowFixed>
         <Text fontSize="14px">
-          {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
+          {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${inputAmount.currency.symbol}` : '-'}
         </Text>
       </RowBetween>
     </AutoColumn>
@@ -104,12 +111,21 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
   const [isModalOpen, setIsModalOpen] = useState(() => false)
 
   const showRoute = Boolean(trade && trade.route.path.length > 1)
-
+  const { pairs, path } = trade.route
+  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
   return (
     <AutoColumn gap="0px">
       {trade && (
         <>
-          <TradeSummary trade={trade} allowedSlippage={allowedSlippage} />
+          <TradeSummary
+            inputAmount={trade.inputAmount}
+            outputAmount={trade.outputAmount}
+            tradeType={trade.tradeType}
+            slippageAdjustedAmounts={slippageAdjustedAmounts}
+            priceImpactWithoutFee={priceImpactWithoutFee}
+            realizedLPFee={realizedLPFee}
+          />
           {showRoute && (
             <>
               <RowBetween style={{ padding: '0 16px' }}>
@@ -123,11 +139,11 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
                     placement="top-start"
                   />
                 </span>
-                <SwapRoute trade={trade} />
+                <SwapRoute path={path} />
                 <SearchIcon onClick={() => setIsModalOpen(true)} />
                 <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
                   <Modal title={t('Route')} onDismiss={() => setIsModalOpen(false)}>
-                    <RouterViewer trade={trade} />
+                    <RouterViewer pairs={pairs} />
                   </Modal>
                 </ModalV2>
               </RowBetween>

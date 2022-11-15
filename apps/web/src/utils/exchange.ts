@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Trade, TradeType } from '@pancakeswap/sdk'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import {
@@ -37,7 +37,7 @@ export function useRouterContract() {
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, TradeType> | null): {
+export function computeTradePriceBreakdown(trade: Trade<Currency, Currency, TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
   realizedLPFee: CurrencyAmount<Currency> | undefined | null
 } {
@@ -46,14 +46,15 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
   const realizedLPFee = !trade
     ? undefined
     : ONE_HUNDRED_PERCENT.subtract(
-        trade.route.pairs.reduce<Fraction>(
+        trade?.route?.pairs.reduce<Fraction>(
           (currentFee: Fraction): Fraction => currentFee.multiply(INPUT_FRACTION_AFTER_FEE),
           ONE_HUNDRED_PERCENT,
         ),
       )
 
   // remove lp fees from price impact
-  const priceImpactWithoutFeeFraction = trade && realizedLPFee ? trade.priceImpact.subtract(realizedLPFee) : undefined
+  const priceImpactWithoutFeeFraction =
+    trade.priceImpact && realizedLPFee ? trade.priceImpact.subtract(realizedLPFee) : undefined
 
   // the x*y=k impact
   const priceImpactWithoutFeePercent = priceImpactWithoutFeeFraction
@@ -63,7 +64,7 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
   // the amount of the input that accrues to LPs
   const realizedLPFeeAmount =
     realizedLPFee &&
-    trade &&
+    trade.inputAmount &&
     CurrencyAmount.fromRawAmount(
       trade.inputAmount.currency,
       realizedLPFee.multiply(trade.inputAmount.quotient).quotient,
@@ -73,14 +74,15 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
+
 export function computeSlippageAdjustedAmounts(
   trade: Trade<Currency, Currency, TradeType> | StableTrade | undefined,
   allowedSlippage: number,
 ): { [field in Field]?: CurrencyAmount<Currency> } {
   const pct = basisPointsToPercent(allowedSlippage)
   return {
-    [Field.INPUT]: trade?.maximumAmountIn(pct),
-    [Field.OUTPUT]: trade?.minimumAmountOut(pct),
+    [Field.INPUT]: trade.maximumAmountIn(pct),
+    [Field.OUTPUT]: trade.minimumAmountOut(pct),
   }
 }
 

@@ -1,7 +1,7 @@
-import { Flex, Box } from '@pancakeswap/uikit'
-import styled from 'styled-components'
+import { Currency, Pair } from '@pancakeswap/sdk'
+import { Box, Flex } from '@pancakeswap/uikit'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { Trade, TradeType, Currency } from '@pancakeswap/sdk'
+import styled from 'styled-components'
 
 const RouterBox = styled(Flex)`
   background-image: radial-gradient(${({ theme }) => theme.colors.textSubtle} 10%, transparent 10%);
@@ -16,20 +16,20 @@ const RouterPoolBox = styled(Box)`
 interface RouterViewerProps {
   inputCurrency?: Currency
   outputCurrency?: Currency
-  trade?: Trade<Currency, Currency, TradeType>
+  pairs?: Pair[]
 }
 
-export const RouterViewer: React.FC<RouterViewerProps> = ({ trade, inputCurrency, outputCurrency }) => {
+export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, inputCurrency, outputCurrency }) => {
   return (
     <RouterBox justifyContent="space-between">
-      <CurrencyLogo currency={inputCurrency || trade?.route?.input} />
-      {trade?.route &&
-        trade?.route.pairs.map((d) => (
+      <CurrencyLogo currency={inputCurrency} />
+      {pairs &&
+        pairs.map((d) => (
           <RouterPoolBox key={`tradingPairIds${d.liquidityToken.address}`}>
             <DoubleCurrencyLogo currency0={d.token0} currency1={d.token1} />
           </RouterPoolBox>
         ))}
-      <CurrencyLogo currency={outputCurrency || trade?.route?.output} />
+      <CurrencyLogo currency={outputCurrency} />
     </RouterBox>
   )
 }
