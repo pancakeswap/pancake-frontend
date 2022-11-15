@@ -2019,11 +2019,12 @@
   "For more info, please see pGALA’s twitter.": "További információért látogassa meg a pGALA twitter felületét.",
   "Unsupported Wallet": "Nem támogatott tárca",
   "Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.": "A láncközi (crosschain) gazdálkodás az Ethereumon NEM támogatja a Blocto pénztárcát, mivel nem tudja majd begyűjteni a CAKE jutalmakat.",
-  "Check out our wallet guide for the list of supported wallets.": "Check out our wallet guide for the list of supported wallets.",
-  "If you have previously deposited any LP tokens, please unstake.": "If you have previously deposited any LP tokens, please unstake.",
-  "Discovered from registered coins": "Discovered from registered coins",
-  "Sharing link copied": "Sharing link copied",
-  "Register coin to receive transfers": "Register coin to receive transfers",
-  "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.",
-  "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds."
+  "Check out our wallet guide for the list of supported wallets.": "A támogatott tárcák listáját megtekintheti pénztárca-útmutatónban.",
+  "If you have previously deposited any LP tokens, please unstake.": "Ha korábban letétbe helyezett LP zsetont, kérjük, vonja vissza a tétet.",
+  "Discovered from registered coins": "Regisztrált érmék között fedezték fel",
+  "Sharing link copied": "A megosztási hivatkozás kimásolva",
+  "Register coin to receive transfers": "Regisztráljon érmét az átutalások fogadásához",
+  "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Bárki létrehozhat érmét az Aptos blokkláncon, tetszőleges névvel, beleértve lézező érmék hamis verzióit vagy azokat, amelyekről azt állítják, hogy olyan projekteket képviselnek, amelyekhez nem tartozik érme.",
+  "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Ha hamis érmét vásárol, tartós pénzveszteségnek teheti ki magát.",
+  "Pancake Collectibles": "Pancake Collectibles"
 }
