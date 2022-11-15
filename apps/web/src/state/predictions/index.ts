@@ -431,27 +431,6 @@ export const predictionsSlice = createSlice({
       state.rounds = newRounds
     })
 
-    // Initialize predictions
-    builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, intervalSeconds, rounds, claimableStatuses, ledgers } = action.payload
-      const futureRounds: ReduxNodeRound[] = []
-      const currentRound = rounds[currentEpoch]
-
-      for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRound.startTimestamp + intervalSeconds * i))
-      }
-
-      return {
-        ...state,
-        status,
-        currentEpoch,
-        intervalSeconds,
-        claimableStatuses,
-        ledgers,
-        rounds: merge({}, rounds, makeRoundData(futureRounds)),
-      }
-    })
-
     // History from the node
     builder.addCase(fetchNodeHistory.pending, (state) => {
       state.isFetchingHistory = true
