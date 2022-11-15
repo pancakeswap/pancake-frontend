@@ -27,8 +27,6 @@ import {
   ROUND_BUFFER,
 } from './config'
 import {
-  getBetHistory,
-  transformBetResponse,
   makeFutureRoundResponse,
   makeRoundData,
   getRoundsData,
@@ -186,29 +184,6 @@ export const fetchLedgerData = createAsyncThunk<
 >('predictions/fetchLedgerData', async ({ account, epochs }, { extra }) => {
   const ledgers = await getLedgerData(account, epochs, extra.address)
   return makeLedgerData(account, ledgers, epochs)
-})
-
-export const fetchHistory = createAsyncThunk<
-  { account: string; bets: Bet[] },
-  { account: string; claimed?: boolean },
-  { extra: PredictionConfig }
->('predictions/fetchHistory', async ({ account, claimed }, { extra }) => {
-  const response = await getBetHistory(
-    {
-      user: account.toLowerCase(),
-      claimed,
-    },
-    undefined,
-    undefined,
-    extra.api,
-    extra.token.symbol,
-  )
-
-  const transformer = transformBetResponse(extra.token.symbol)
-
-  const bets = response.map(transformer)
-
-  return { account, bets }
 })
 
 export const fetchNodeHistory = createAsyncThunk<
@@ -534,20 +509,6 @@ export const predictionsSlice = createSlice({
         ledgers,
         rounds: merge({}, rounds, makeRoundData(futureRounds)),
       }
-    })
-
-    // Show History
-    builder.addCase(fetchHistory.pending, (state) => {
-      state.isFetchingHistory = true
-    })
-    builder.addCase(fetchHistory.rejected, (state) => {
-      state.isFetchingHistory = false
-    })
-    builder.addCase(fetchHistory.fulfilled, (state, action) => {
-      const { account, bets } = action.payload
-
-      state.isFetchingHistory = false
-      state.history[account] = merge([], state.history[account] ?? [], bets)
     })
 
     // History from the node
