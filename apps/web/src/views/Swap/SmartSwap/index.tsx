@@ -297,7 +297,11 @@ export function SmartSwapForm() {
                     <ShareIcon ml="5px" style={{ top: 3, position: 'relative' }} width={15} />
                   </Text>
                 </Box>
-                <RouterViewer inputCurrency={inputCurrency} outputCurrency={outputCurrency} trade={v2Trade} />
+                <RouterViewer
+                  inputCurrency={inputCurrency}
+                  outputCurrency={outputCurrency}
+                  pairs={v2Trade?.route?.pairs}
+                />
               </CardBody>
             </Card>
           </AutoColumn>
