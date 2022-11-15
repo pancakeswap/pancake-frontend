@@ -1,18 +1,20 @@
-import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { AppBody } from 'components/App'
 import { useContext } from 'react'
+import { Currency } from '@pancakeswap/sdk'
+import { Flex, BottomDrawer, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { AppBody } from 'components/App'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
-import { useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
+import { useSwapState, useSingleTokenSwapInfo } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 
 import SwapForm from './components/SwapForm'
-import useStableConfig, { StableConfigContext, useStableFarms } from './StableSwap/hooks/useStableConfig'
+import StableSwapFormContainer from './StableSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
+import SwapTab, { SwapType } from './components/SwapTab'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
+import { SmartSwapForm } from './components/SmartSwapForm'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -24,7 +26,6 @@ export default function Swap() {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
@@ -34,14 +35,8 @@ export default function Swap() {
   }
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
-
-  // stableSwap initialize
-  const stableFarms = useStableFarms()
-  const stableTokenPair = stableFarms?.length ? stableFarms[0] : null
-  const { stableSwapConfig, ...stableConfig } = useStableConfig({
-    tokenA: stableTokenPair?.token0,
-    tokenB: stableTokenPair?.token1,
-  })
+  // TODO read from global settings
+  const smartSwap = true
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -81,19 +76,15 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                {stableTokenPair ? (
-                  <StableConfigContext.Provider value={{ stableSwapConfig, ...stableConfig }}>
-                    <SwapForm />
-                  </StableConfigContext.Provider>
+                {smartSwap ? (
+                  <SmartSwapForm />
                 ) : (
-                  <SwapForm />
+                  <SwapTab>
+                    {(swapTypeState) =>
+                      swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <SwapForm />
+                    }
+                  </SwapTab>
                 )}
-
-                {/* <SwapTab>
-                  {(swapTypeState) =>
-                    swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <SwapForm />
-                  }
-                </SwapTab> */}
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
