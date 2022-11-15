@@ -60,7 +60,7 @@ export function CurrencyLogo({
 
   // isNative of AptosCoin wrapped is false, using address comparison is safer
   if (currency?.isNative || currency?.address === APTOS_COIN) {
-    return <AptosCoinLogo />
+    return <AptosCoinLogo size={size} style={style} />
   }
 
   return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
