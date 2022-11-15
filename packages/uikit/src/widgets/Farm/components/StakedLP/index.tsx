@@ -28,7 +28,7 @@ const StakedLP: React.FunctionComponent<React.PropsWithChildren<StakedLPProps>> 
   tokenAmountTotal,
   quoteTokenAmountTotal,
   pendingFarmLength = 0,
-  decimals = 18,
+  decimals,
   onClickLoadingIcon,
 }) => {
   const displayBalance = useMemo(() => {

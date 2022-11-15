@@ -27,9 +27,9 @@ interface StackedActionProps extends FarmWithStakedValue {
   onUnstake: (value: string) => Promise<TransactionResponse>
 }
 
-export function useStakedActions(pid, tokenType) {
-  const { onStake } = useStakeFarms(pid, tokenType)
-  const { onUnstake } = useUnstakeFarms(pid, tokenType)
+export function useStakedActions(tokenType) {
+  const { onStake } = useStakeFarms(tokenType)
+  const { onUnstake } = useUnstakeFarms(tokenType)
 
   return {
     onStake,
@@ -38,7 +38,7 @@ export function useStakedActions(pid, tokenType) {
 }
 
 export const StakedContainer = ({ children, ...props }) => {
-  const { onStake, onUnstake } = useStakedActions(props.pid, props.lpAddress)
+  const { onStake, onUnstake } = useStakedActions(props.lpAddress)
   const { account } = useActiveWeb3React()
   const { data: tokenBalance = BIG_ZERO } = useAccountBalance({
     watch: true,

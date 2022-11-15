@@ -19,7 +19,7 @@ interface HarvestActionProps extends FarmWithStakedValue {
 }
 
 export const HarvestActionContainer = ({ children, ...props }) => {
-  const { onReward } = useHarvestFarm(props.pid, props.lpAddress)
+  const { onReward } = useHarvestFarm(props.lpAddress)
 
   return children({ ...props, onReward })
 }

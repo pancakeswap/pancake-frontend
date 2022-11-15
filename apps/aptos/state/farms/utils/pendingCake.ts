@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { MapFarmResource, FarmResourcePoolInfo } from 'state/farms/types'
 
-const ACC_CAKE_PRECISION = 100000000
+const ACC_CAKE_PRECISION = 1000000000000
 const TOTAL_CAKE_RATE_PRECISION = 100000
 
 export function pendingCake(userAmount, userRewardDebt, accCakePerShare) {
@@ -12,8 +12,11 @@ export function pendingCake(userAmount, userRewardDebt, accCakePerShare) {
 export function calcCakeReward(masterChef: MapFarmResource, pid: string) {
   const poolInfo: FarmResourcePoolInfo = masterChef.pool_info[pid]
   const currentTimestamp = new Date().getTime() / 1000
+  const lastRewardTimestamp = Number(poolInfo.last_reward_timestamp)
+  const endTimestamp = Number(masterChef.end_timestamp)
+  const lastUpkeepTimestamp = Number(masterChef.last_upkeep_timestamp)
+
   if (poolInfo) {
-    const lastRewardTimestamp = Number(poolInfo.last_reward_timestamp)
     let cakeReward = 0
     let accCakePerShare = Number(poolInfo.acc_cake_per_share)
 
@@ -30,7 +33,15 @@ export function calcCakeReward(masterChef: MapFarmResource, pid: string) {
       }
 
       const supply = Number(poolInfo.total_amount)
-      const multiplier = currentTimestamp - lastRewardTimestamp
+      let multiplier = 0
+
+      if (endTimestamp <= lastRewardTimestamp) {
+        multiplier = 0
+      } else if (currentTimestamp <= endTimestamp) {
+        multiplier = new BigNumber(currentTimestamp).minus(max(lastRewardTimestamp, lastUpkeepTimestamp)).toNumber()
+      } else {
+        multiplier = new BigNumber(endTimestamp).minus(max(lastRewardTimestamp, lastUpkeepTimestamp)).toNumber()
+      }
 
       if (supply > 0 && totalAllocPoint > 0) {
         const reward = new BigNumber(masterChef.cake_per_second)
@@ -38,12 +49,15 @@ export function calcCakeReward(masterChef: MapFarmResource, pid: string) {
           .times(poolInfo.alloc_point)
           .div(totalAllocPoint)
         cakeReward = new BigNumber(multiplier).times(reward).div(TOTAL_CAKE_RATE_PRECISION).toNumber()
-
-        const cakePerShare = new BigNumber(cakeReward).times(ACC_CAKE_PRECISION).div(supply)
-        accCakePerShare = new BigNumber(poolInfo.acc_cake_per_share).plus(cakePerShare).toNumber()
+        const perShare = new BigNumber(cakeReward).times(ACC_CAKE_PRECISION).div(supply)
+        accCakePerShare = new BigNumber(poolInfo.acc_cake_per_share).plus(perShare).toNumber()
       }
+      return accCakePerShare
     }
-    return accCakePerShare
   }
   return 0
+}
+
+const max = (a: number, b: number): number => {
+  return a >= b ? a : b
 }

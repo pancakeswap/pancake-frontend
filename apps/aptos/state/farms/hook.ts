@@ -34,7 +34,7 @@ const farmsPriceHelpLpMap = {
 }
 
 export const useFarmsLength = (): number | undefined => {
-  const { data: farmsLength } = useMasterChefResource((s) => s.data.lp.length)
+  const { data: farmsLength } = useMasterChefResource((s) => s.data.lps.length)
   return farmsLength
 }
 
@@ -144,12 +144,14 @@ export const useFarms = () => {
   )
 
   const userInfos = useFarmsUserInfo()
+  const currentDate = new Date().getTime() / 1000
+  const showCakePerSecond = masterChef?.data && new BigNumber(currentDate).lte(masterChef.data.end_timestamp)
 
   return useMemo(() => {
     return {
       userDataLoaded: true,
       poolLength,
-      regularCakePerBlock: masterChef?.data ? Number(masterChef.data.cake_per_second) : 0,
+      regularCakePerBlock: showCakePerSecond ? Number(masterChef.data.cake_per_second) : 0,
       loadArchivedFarmsData: false,
       data: farmsWithPrices
         .filter((f) => !!f.pid)
@@ -167,7 +169,7 @@ export const useFarms = () => {
           }
         }),
     } as DeserializedFarmsState
-  }, [poolLength, masterChef?.data, farmsWithPrices, userInfos])
+  }, [poolLength, showCakePerSecond, masterChef?.data, farmsWithPrices, userInfos])
 }
 
 export function useFarmsUserInfo() {
