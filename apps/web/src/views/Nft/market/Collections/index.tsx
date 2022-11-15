@@ -34,8 +34,7 @@ import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
 import ToggleView from 'components/ToggleView/ToggleView'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
-import { CollectionCard } from '../components/CollectibleCard'
-import { BNBAmountLabel } from '../components/CollectibleCard/styles'
+import CollectionCardWithVolume from '../components/CollectibleCard/CollectionCardWithVolume'
 
 export const ITEMS_PER_PAGE = 9
 
@@ -334,22 +333,14 @@ const Collectible = () => {
               >
                 {sortedCollections.slice(ITEMS_PER_PAGE * (page - 1), page * ITEMS_PER_PAGE).map((collection) => {
                   return (
-                    <CollectionCard
+                    <CollectionCardWithVolume
                       key={collection.address}
                       bgSrc={collection.banner.small}
                       avatarSrc={collection.avatar}
                       collectionName={collection.name}
                       url={`${nftsBaseUrl}/collections/${collection.address}`}
-                    >
-                      <Flex alignItems="center">
-                        <Text fontSize="12px" color="textSubtle">
-                          {t('Volume')}
-                        </Text>
-                        <BNBAmountLabel
-                          amount={collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0}
-                        />
-                      </Flex>
-                    </CollectionCard>
+                      volume={collection.totalVolumeBNB ? parseFloat(collection.totalVolumeBNB) : 0}
+                    />
                   )
                 })}
               </Grid>
