@@ -254,8 +254,7 @@ export const fetchNodeHistory = createAsyncThunk<
 
   // Turn the data from the node into a Bet object that comes from the graph
   const bets: Bet[] = roundData.reduce((accum, round) => {
-    const reduxRound = serializePredictionsRoundsResponse(round)
-    const ledger = userRounds[reduxRound.epoch]
+    const ledger = userRounds[round.epoch.toNumber()]
     const ledgerAmount = BigNumber.from(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
     const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
@@ -290,7 +289,11 @@ export const fetchNodeHistory = createAsyncThunk<
         round: {
           id: null,
           epoch: round.epoch.toNumber(),
-          failed: getHasRoundFailed(reduxRound.oracleCalled, reduxRound.closeTimestamp, bufferSeconds),
+          failed: getHasRoundFailed(
+            round.oracleCalled,
+            round.closeTimestamp.eq(0) ? null : round.closeTimestamp.toNumber(),
+            bufferSeconds,
+          ),
           startBlock: null,
           startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
           startHash: null,
