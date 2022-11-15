@@ -23,7 +23,7 @@ const withTH = transpileModules([
 
 const blocksPage =
   process.env.NODE_ENV === 'production'
-    ? ['/ifo', '/ifo/history']
+    ? ['/farms', '/farms/history', '/ifo', '/ifo/history', '/pools', '/pools/history']
     : []
 
 /** @type {import('next').NextConfig} */
