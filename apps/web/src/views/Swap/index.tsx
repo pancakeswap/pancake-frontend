@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { Currency } from '@pancakeswap/sdk'
-import { Box, Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
-import { EXCHANGE_DOCS_URLS } from 'config/constants'
+import { Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 
 import { useCurrency } from '../../hooks/Tokens'
@@ -82,11 +81,6 @@ export default function Swap() {
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
-          {isChartExpanded && (
-            <Box display={['none', null, null, 'block']} width="100%" height="100%">
-              <SwapUI.Footer variant="side" helpUrl={EXCHANGE_DOCS_URLS} />
-            </Box>
-          )}
         </Flex>
       </Flex>
     </Page>

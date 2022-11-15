@@ -68,6 +68,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
 
       return { account, chain: { id, unsupported }, provider }
     } catch (error) {
+      this.disconnect()
       if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error)
       if ((<RpcError>error).code === -32002) throw new ResourceUnavailableError(error)
       throw error
@@ -110,9 +111,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
     try {
       const provider = await this.getProvider()
       if (!provider) throw new ConnectorNotFoundError()
-      const accounts = await provider.request({
-        method: 'eth_accounts',
-      })
+      const accounts = provider.accounts
       const account = accounts[0]
       return !!account
     } catch {

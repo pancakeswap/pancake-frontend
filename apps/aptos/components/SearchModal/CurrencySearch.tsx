@@ -49,6 +49,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
       if (!list) continue
       for (const tokenInfo of list.tokens) {
         if (
+          tokenInfo.address !== APTOS_COIN &&
           tokenInfo.chainId === chainId &&
           !(tokenInfo.address in activeTokens) &&
           !addressSet[tokenInfo.address] &&
@@ -111,8 +112,8 @@ function CurrencySearch({
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery)
     return Object.values(allTokens)
-      .filter(filterToken)
       .filter((token) => token.address !== APTOS_COIN)
+      .filter(filterToken)
   }, [allTokens, debouncedQuery])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
@@ -176,7 +177,12 @@ function CurrencySearch({
     if (searchToken && !searchTokenIsAdded && !hasFilteredInactiveTokens) {
       return (
         <Column style={{ padding: '20px 0', height: '100%' }}>
-          <ImportRow token={searchToken} showImportView={showImportView} setImportToken={setImportToken} />
+          <ImportRow
+            onCurrencySelect={handleCurrencySelect}
+            token={searchToken}
+            showImportView={showImportView}
+            setImportToken={setImportToken}
+          />
         </Column>
       )
     }
@@ -189,7 +195,9 @@ function CurrencySearch({
           currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
           breakIndex={
-            Boolean(filteredInactiveTokens?.length) && filteredSortedTokens ? filteredSortedTokens.length : undefined
+            hasFilteredInactiveTokens && filteredSortedTokens
+              ? filteredSortedTokens.length + (showNative ? 1 : 0)
+              : undefined
           }
           onCurrencySelect={handleCurrencySelect}
           otherCurrency={otherSelectedCurrency}

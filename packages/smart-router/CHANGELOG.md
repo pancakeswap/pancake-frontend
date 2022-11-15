@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 0.3.0
+
+### Minor Changes
+
+- 34edbd929: Allow to get all common pairs externally
+
 ## 0.2.1
 
 ### Patch Changes

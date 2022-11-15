@@ -1,7 +1,7 @@
 import { Router, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
-import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
@@ -25,8 +25,7 @@ export default function useRemoveLiquidityHandler({
   const { t } = useTranslation()
 
   const addTransaction = useTransactionAdder()
-  const { simulateTransactionAsync } = useSimulateTransaction()
-  const { sendTransactionAsync } = useSendTransaction()
+  const executeTransaction = useSimulationAndSendTransaction()
   const [allowedSlippage] = useUserSlippage() // custom from users
 
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
@@ -60,12 +59,7 @@ export default function useRemoveLiquidityHandler({
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
 
-    console.info(payload, 'payload')
-
-    let results
-    try {
-      results = await simulateTransactionAsync({ payload })
-    } catch (error) {
+    executeTransaction(payload, (error) => {
       if (error instanceof SimulateTransactionError) {
         setLiquidityState({
           attemptingTxn: false,
@@ -73,13 +67,6 @@ export default function useRemoveLiquidityHandler({
           txHash: undefined,
         })
       }
-    }
-
-    const options = Array.isArray(results) ? { max_gas_amount: results[0].max_gas_amount } : undefined
-
-    return sendTransactionAsync({
-      payload,
-      options,
     })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
@@ -111,16 +98,7 @@ export default function useRemoveLiquidityHandler({
           txHash: undefined,
         })
       })
-  }, [
-    currencyA,
-    currencyB,
-    parsedAmounts,
-    addTransaction,
-    simulateTransactionAsync,
-    sendTransactionAsync,
-    t,
-    amountsMin,
-  ])
+  }, [parsedAmounts, amountsMin, currencyA, currencyB, executeTransaction, addTransaction, t])
 
   return useMemo(
     () => ({

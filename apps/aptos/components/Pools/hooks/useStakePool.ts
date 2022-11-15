@@ -1,14 +1,14 @@
-import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { SmartChef } from 'contracts/smartchef'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
+import { useCallback } from 'react'
 
 export default function useStakePool({ stakingTokenAddress, earningTokenAddress, uid, stakingTokenDecimals }) {
-  const { simulateTransactionAsync } = useSimulateTransaction()
-  const { sendTransactionAsync } = useSendTransaction()
+  const executeTransaction = useSimulationAndSendTransaction()
 
-  return {
-    onStake: async (amount) => {
+  return useCallback(
+    (amount) => {
       const stakeAmount = new BigNumber(amount).times(getFullDecimalMultiplier(stakingTokenDecimals)).toString()
 
       const payload = SmartChef.deposit({
@@ -18,22 +18,8 @@ export default function useStakePool({ stakingTokenAddress, earningTokenAddress,
         rewardTokenAddress: earningTokenAddress,
       })
 
-      console.info('payload: ', payload)
-
-      let results
-
-      try {
-        results = await simulateTransactionAsync({ payload })
-      } catch (error) {
-        // ignore error
-      }
-
-      const options = Array.isArray(results) ? { max_gas_amount: results[0].max_gas_amount } : undefined
-
-      return sendTransactionAsync({
-        payload,
-        options,
-      })
+      return executeTransaction(payload)
     },
-  }
+    [earningTokenAddress, executeTransaction, stakingTokenAddress, stakingTokenDecimals, uid],
+  )
 }
