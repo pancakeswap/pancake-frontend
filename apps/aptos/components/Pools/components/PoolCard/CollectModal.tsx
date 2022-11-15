@@ -14,7 +14,7 @@ const CollectModal = ({ poolAddress = '', ...rest }: React.PropsWithChildren<Poo
 
   const [stakingTokenAddress, earningTokenAddress, sousId] = splitTypeTag(poolAddress[chainId])
 
-  const { onReward } = useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId })
+  const onReward = useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId })
 
   const onDone = useCallback(() => {
     queryClient.invalidateQueries({

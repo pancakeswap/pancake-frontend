@@ -10,6 +10,7 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { calculateSlippageAmount } from 'utils/exchange'
 import { useUserSlippage } from 'state/user'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 
 import { CurrencySelectorContext } from './useCurrencySelectRoute'
 import { Field, LiquidityHandlerReturn } from '../type'
@@ -28,9 +29,9 @@ export default function useAddLiquidityHandler({
   const { currencyA, currencyB } = useContext(CurrencySelectorContext)
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
-  const { simulateTransactionAsync } = useSimulateTransaction()
-  const { sendTransactionAsync } = useSendTransaction()
+
   const [allowedSlippage] = useUserSlippage() // custom from users
+  const executeTransaction = useSimulationAndSendTransaction()
 
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
     attemptingTxn: boolean
@@ -66,13 +67,8 @@ export default function useAddLiquidityHandler({
       currencyA.wrapped.address,
       currencyB.wrapped.address,
     )
-    console.info(payload, 'payload')
 
-    let results
-    // eslint-disable-next-line consistent-return
-    try {
-      results = await simulateTransactionAsync({ payload })
-    } catch (error) {
+    executeTransaction(payload, (error) => {
       log.error('Add Liquidity Simulation Error', { error, payload })
       if (error instanceof SimulateTransactionError) {
         setLiquidityState({
@@ -81,14 +77,6 @@ export default function useAddLiquidityHandler({
           txHash: undefined,
         })
       }
-    }
-
-    const options = Array.isArray(results) ? { max_gas_amount: results[0].max_gas_amount } : undefined
-
-    // eslint-disable-next-line consistent-return
-    return sendTransactionAsync({
-      payload,
-      options,
     })
       .then((response) => {
         setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
@@ -124,16 +112,15 @@ export default function useAddLiquidityHandler({
         })
       })
   }, [
-    addTransaction,
     currencyA,
     currencyB,
-    parsedAmounts,
-    sendTransactionAsync,
-    simulateTransactionAsync,
-    t,
+    parsedAAmount?.quotient,
+    parsedBAmount?.quotient,
     amountsMin,
-    parsedAAmount,
-    parsedBAmount,
+    executeTransaction,
+    parsedAmounts,
+    addTransaction,
+    t,
   ])
 
   return useMemo(

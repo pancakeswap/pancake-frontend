@@ -18,13 +18,13 @@ const StakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
   const { account, chainId } = useActiveWeb3React()
   const [stakingTokenAddress, earningTokenAddress, uid] = splitTypeTag(contractAddress[chainId])
 
-  const { onUnstake } = useUnstakePool({
+  const onUnstake = useUnstakePool({
     uid,
     earningTokenAddress,
     stakingTokenAddress,
     stakingTokenDecimals: stakingToken?.decimals,
   })
-  const { onStake } = useStakePool({
+  const onStake = useStakePool({
     uid,
     earningTokenAddress,
     stakingTokenAddress,

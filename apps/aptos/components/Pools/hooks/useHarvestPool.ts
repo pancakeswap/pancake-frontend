@@ -1,35 +1,18 @@
-import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { SmartChef } from 'contracts/smartchef'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
+import { useCallback } from 'react'
 
 export default function useHarvestPool({ stakingTokenAddress, earningTokenAddress, sousId }) {
-  const { simulateTransactionAsync } = useSimulateTransaction()
-  const { sendTransactionAsync } = useSendTransaction()
+  const executeTransaction = useSimulationAndSendTransaction()
 
-  return {
-    onReward: async () => {
-      const payload = SmartChef.deposit({
-        amount: '0',
-        uid: sousId,
-        stakeTokenAddress: stakingTokenAddress,
-        rewardTokenAddress: earningTokenAddress,
-      })
+  return useCallback(() => {
+    const payload = SmartChef.deposit({
+      amount: '0',
+      uid: sousId,
+      stakeTokenAddress: stakingTokenAddress,
+      rewardTokenAddress: earningTokenAddress,
+    })
 
-      console.info('payload: ', payload)
-
-      let results
-
-      try {
-        results = await simulateTransactionAsync({ payload })
-      } catch (error) {
-        // ignore error
-      }
-
-      const options = Array.isArray(results) ? { max_gas_amount: results[0].max_gas_amount } : undefined
-
-      return sendTransactionAsync({
-        payload,
-        options,
-      })
-    },
-  }
+    return executeTransaction(payload)
+  }, [earningTokenAddress, executeTransaction, sousId, stakingTokenAddress])
 }
