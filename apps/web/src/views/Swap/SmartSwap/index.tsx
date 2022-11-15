@@ -40,12 +40,12 @@ import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
-import AddressInputPanel from './AddressInputPanel'
-import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
-import CurrencyInputHeader from './CurrencyInputHeader'
-import { RouterViewer } from './RouterViewer'
-import { ArrowWrapper, Wrapper } from './styleds'
-import SwapCommitButton from './SwapCommitButton'
+import AddressInputPanel from '../components/AddressInputPanel'
+import AdvancedSwapDetailsDropdown from '../components/AdvancedSwapDetailsDropdown'
+import CurrencyInputHeader from '../components/CurrencyInputHeader'
+import { RouterViewer } from '../components/RouterViewer'
+import { ArrowWrapper, Wrapper } from '../components/styleds'
+import SwapCommitButton from '../components/SwapCommitButton'
 
 export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)

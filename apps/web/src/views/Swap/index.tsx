@@ -14,7 +14,7 @@ import StableSwapFormContainer from './StableSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import SwapTab, { SwapType } from './components/SwapTab'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
-import { SmartSwapForm } from './components/SmartSwapForm'
+import { SmartSwapForm } from './SmartSwap'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
