@@ -26,7 +26,7 @@ export default function useSimulationAndSendTransaction() {
       let options
 
       if (Array.isArray(results)) {
-        const maxGasAmount = results[0].gas_used * SAFE_FACTOR
+        const maxGasAmount = Math.ceil(results[0].gas_used * SAFE_FACTOR)
         const gasUnitPrice = results[0].gas_unit_price
 
         options = { max_gas_amount: maxGasAmount, gas_unit_price: gasUnitPrice }
