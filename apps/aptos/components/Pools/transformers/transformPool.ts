@@ -21,7 +21,7 @@ const transformPool = (
   chainId,
   prices,
 ): Pool.DeserializedPool<Coin | AptosCoin> | undefined => {
-  const startTime = _get(resource, 'resource.start_timestamp', '0')
+  const startTime = _toNumber(_get(resource, 'data.start_timestamp', '0'))
 
   const startYet = getSecondsLeftFromNow(startTime)
 
@@ -89,8 +89,6 @@ const transformPool = (
     }
   }
 
-  const nowInSeconds = Math.floor(Date.now() / 1000)
-
   const stakingToken = getTokenByAddress({ chainId, address: stakingAddress })
   const earningToken = getTokenByAddress({ chainId, address: earningAddress })
 
@@ -107,6 +105,8 @@ const transformPool = (
       totalStaked: totalStakedToken,
     }) || 0
 
+  const isFinished = getSecondsLeftFromNow(_toNumber(_get(resource, 'data.end_timestamp', '0')))
+
   return {
     // Ignore sousId
     sousId: 0,
@@ -119,7 +119,7 @@ const transformPool = (
     earningTokenPrice,
     stakingTokenPrice,
 
-    isFinished: nowInSeconds > +resource.data.end_timestamp,
+    isFinished: Boolean(isFinished),
     poolCategory: PoolCategory.CORE,
     startBlock: _toNumber(resource.data.start_timestamp),
     tokenPerBlock: resource.data.reward_per_second,
