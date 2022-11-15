@@ -3,7 +3,7 @@ import { Card, CardBody, Flex, Heading, ProfileAvatar, NextLinkFromReactRouter }
 import Image from 'next/image'
 import styled, { css } from 'styled-components'
 
-interface HotCollectionCardProps {
+interface CollectionCardProps {
   bgSrc: string
   avatarSrc?: string
   collectionName: string
@@ -18,7 +18,7 @@ export const CollectionAvatar = styled(ProfileAvatar)`
   border: 4px white solid;
 `
 
-const StyledHotCollectionCard = styled(Card)<{ disabled?: boolean }>`
+const StyledCollectionCard = styled(Card)<{ disabled?: boolean }>`
   border-radius: 8px;
   border-bottom-left-radius: 56px;
   transition: opacity 200ms;
@@ -45,7 +45,7 @@ const StyledImage = styled(Image)`
   border-radius: 4px;
 `
 
-const CollectionCard: React.FC<React.PropsWithChildren<HotCollectionCardProps>> = ({
+const CollectionCard: React.FC<React.PropsWithChildren<CollectionCardProps>> = ({
   bgSrc,
   avatarSrc,
   collectionName,
@@ -74,13 +74,13 @@ const CollectionCard: React.FC<React.PropsWithChildren<HotCollectionCardProps>> 
   )
 
   return (
-    <StyledHotCollectionCard disabled={disabled} data-test="hot-collection-card">
+    <StyledCollectionCard disabled={disabled} data-test="hot-collection-card">
       {url ? (
         <NextLinkFromReactRouter to={url}>{renderBody()}</NextLinkFromReactRouter>
       ) : (
         <div style={{ cursor: 'default' }}>{renderBody()}</div>
       )}
-    </StyledHotCollectionCard>
+    </StyledCollectionCard>
   )
 }
 
