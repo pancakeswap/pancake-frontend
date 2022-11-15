@@ -1,4 +1,6 @@
+/* eslint-disable camelcase */
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
+import { DeserializedFarmsState } from '@pancakeswap/farms'
 import { useAccount, useAccountResource, useCoins, useQueries, useQuery } from '@pancakeswap/awgmi'
 import {
   FetchCoinResult,
@@ -20,10 +22,11 @@ import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import { FARMS_ADDRESS, FARMS_NAME_TAG, FARMS_USER_INFO_RESOURCE, FARMS_USER_INFO } from 'state/farms/constants'
 import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { deserializeFarm } from './utils/deserializeFarm'
-import { pendingCake } from './utils/pendingCake'
+import { pendingCake, calcCakeReward } from './utils/pendingCake'
 
 const farmsPriceHelpLpMap = {
   [ChainId.MAINNET]: priceHelperLpsMainnet,
@@ -31,7 +34,7 @@ const farmsPriceHelpLpMap = {
 }
 
 export const useFarmsLength = (): number | undefined => {
-  const { data: farmsLength } = useMasterChefResource((s) => s.data.lp.length)
+  const { data: farmsLength } = useMasterChefResource((s) => s.data.lps.length)
   return farmsLength
 }
 
@@ -93,8 +96,8 @@ export const useFarms = () => {
         const reservesAddress = Pair.getReservesAddress(token, quoteToken)
         const lpReserveX = pairReserves?.[reservesAddress]?.data.reserve_x
         const lpReserveY = pairReserves?.[reservesAddress]?.data.reserve_y
-        const tokenBalanceLP = lpReserveX ? new BigNumber(lpReserveX) : BIG_ZERO
-        const quoteTokenBalanceLP = lpReserveY ? new BigNumber(lpReserveY) : BIG_ZERO
+        const tokenBalanceLP = lpReserveY ? new BigNumber(lpReserveY) : BIG_ZERO
+        const quoteTokenBalanceLP = lpReserveX ? new BigNumber(lpReserveX) : BIG_ZERO
         const lpTotalSupply = stakeCoinsInfoMap[config.lpAddress]?.supply
           ? new BigNumber(stakeCoinsInfoMap[config.lpAddress].supply as string)
           : BIG_ZERO
@@ -135,22 +138,38 @@ export const useFarms = () => {
       })
   }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])
 
-  const farmsWithPrices = useMemo(() => getFarmsPrices(lpInfo, nativeStableLpMap[chainId]), [chainId, lpInfo])
+  const farmsWithPrices = useMemo(
+    () => getFarmsPrices(lpInfo, nativeStableLpMap[chainId], FARM_DEFAULT_DECIMALS),
+    [chainId, lpInfo],
+  )
 
-  useFarmsUserInfo()
+  const userInfos = useFarmsUserInfo()
+  const currentDate = new Date().getTime() / 1000
+  const showCakePerSecond = masterChef?.data && new BigNumber(currentDate).lte(masterChef.data.end_timestamp)
 
   return useMemo(() => {
     return {
       userDataLoaded: true,
       poolLength,
-      regularCakePerBlock: masterChef?.data ? Number(masterChef.data.cake_per_second) : 0,
+      regularCakePerBlock: showCakePerSecond ? Number(masterChef.data.cake_per_second) : 0,
       loadArchivedFarmsData: false,
-      data: farmsWithPrices.filter((f) => !!f.pid).map(deserializeFarm),
-      fetchUserFarmsData: () => {
-        //
-      },
-    }
-  }, [poolLength, masterChef?.data, farmsWithPrices])
+      data: farmsWithPrices
+        .filter((f) => !!f.pid)
+        .map(deserializeFarm)
+        .map((f) => {
+          const accCakePerShare = masterChef?.data && f.pid ? calcCakeReward(masterChef.data, String(f.pid)) : 0
+          const earningToken = pendingCake(userInfos[f.pid]?.amount, userInfos[f.pid]?.reward_debt, accCakePerShare)
+          const stakedBalance = new BigNumber(userInfos[f.pid]?.amount)
+          return {
+            ...f,
+            userData: {
+              earnings: earningToken.gte(0) ? earningToken : BIG_ZERO,
+              stakedBalance: stakedBalance.gte(0) ? stakedBalance : BIG_ZERO,
+            },
+          }
+        }),
+    } as DeserializedFarmsState
+  }, [poolLength, showCakePerSecond, masterChef?.data, farmsWithPrices, userInfos])
 }
 
 export function useFarmsUserInfo() {
@@ -159,17 +178,18 @@ export function useFarmsUserInfo() {
   const { data } = useAccountResource<FetchAccountResourceResult<FarmUserInfoResource>>({
     address: account?.address,
     resourceType: FARMS_USER_INFO_RESOURCE,
+    watch: true,
   })
 
-  useQueries({
+  const userInfoQueries = useQueries({
     queries:
       data?.data.pids.map((pid) => ({
         staleTime: Infinity,
         enable: Boolean(pid) && Boolean(account?.address) && Boolean(data.data.pid_to_user_info.inner.handle),
-        refetchInterval: 5_000,
+        refetchInterval: 3_000,
         queryKey: [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
-        queryFn: () =>
-          fetchTableItem({
+        queryFn: async () => {
+          const item = await fetchTableItem({
             networkName,
             handle: data.data.pid_to_user_info.inner.handle,
             data: {
@@ -177,9 +197,17 @@ export function useFarmsUserInfo() {
               key: pid,
               valueType: FARMS_USER_INFO,
             },
-          }),
+          })
+          return { ...item, pid }
+        },
       })) ?? [],
   })
+
+  const userInfos = useMemo(() => {
+    return fromPairs(userInfoQueries.filter((u) => !!u.data).map((u) => [(u as any).data.pid, u.data]))
+  }, [userInfoQueries])
+
+  return userInfos
 }
 
 const nativeStableLpMap = {
@@ -199,29 +227,10 @@ const nativeStableLpMap = {
 export function useFarmUserInfoCache(pid: string) {
   const { account } = useAccount()
   const { networkName } = useActiveNetwork()
-  // eslint-disable-next-line camelcase
   return useQuery<{ amount: string; reward_debt: string }>(
     [{ entity: 'poolUserInfo', pid, networkName, address: account?.address }],
     {
       enabled: Boolean(account?.address),
     },
-  )
-}
-
-export function useFarmEarning(pid: string) {
-  const { data: masterChef } = useMasterChefResource()
-
-  const { data: userInfo } = useFarmUserInfoCache(String(pid))
-
-  return useMemo(
-    () =>
-      masterChef?.data.pool_info[pid].acc_cake_per_share && userInfo && userInfo.amount !== '0'
-        ? pendingCake(
-            userInfo.amount,
-            userInfo.reward_debt,
-            masterChef?.data.pool_info[pid].acc_cake_per_share,
-          ).toNumber()
-        : 0,
-    [masterChef?.data.pool_info, pid, userInfo],
   )
 }

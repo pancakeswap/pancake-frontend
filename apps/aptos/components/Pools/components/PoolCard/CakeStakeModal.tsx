@@ -7,7 +7,6 @@ import useStakeFarms from 'components/Farms/hooks/useStakeFarms'
 import { useQueryClient } from '@pancakeswap/awgmi'
 import cakePoolRelatedQueries from 'components/Pools/utils/cakePoolRelatedQueries'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { CAKE_PID } from 'config/constants'
 import StakeModalContainer from './StakeModalContainer'
 
 const CakeStakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
@@ -15,8 +14,8 @@ const CakeStakeModal = ({ pool, ...rest }: Pool.StakeModalPropsType<Coin>) => {
   const queryClient = useQueryClient()
   const { account, networkName } = useActiveWeb3React()
 
-  const { onUnstake } = useUnstakeFarms(CAKE_PID, contractAddress[ChainId.TESTNET])
-  const { onStake } = useStakeFarms(CAKE_PID, contractAddress[ChainId.TESTNET])
+  const { onUnstake } = useUnstakeFarms(contractAddress[ChainId.TESTNET])
+  const { onStake } = useStakeFarms(contractAddress[ChainId.TESTNET])
 
   const onDone = useCallback(() => {
     queryClient.invalidateQueries({

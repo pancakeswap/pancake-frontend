@@ -49,7 +49,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         <Flex justifyContent="center">
           {isStable ? <StableFarmTag mr="4px" /> : null}
           {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
-          {boosted && <BoostedTag ml="4px" />}
+          {isReady && boosted && <BoostedTag ml="4px" />}
           {isReady ? (
             <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
           ) : (

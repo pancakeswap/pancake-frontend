@@ -21,7 +21,7 @@ export interface MapFarmResource {
   cake_per_second: string
   cake_rate_to_regular: string
   cake_rate_to_special: string
-  lp: Array<string>
+  lps: Array<string>
   pool_info: FarmResourcePoolInfo[]
   signer_cap: {
     account: string
@@ -30,6 +30,8 @@ export interface MapFarmResource {
   total_special_alloc_point: string
   user_info: FarmResourceUserInfo[]
   singleUserInfo?: string
+  end_timestamp: string
+  last_upkeep_timestamp: string
 }
 
 export interface FarmResource {

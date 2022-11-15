@@ -4,16 +4,16 @@ import { masterchefDeposit } from 'config/constants/contracts/masterchef'
 import { FARMS_DEFAULT_TOKEN_DECIMAL } from 'config'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 
-const useStakeFarms = (_pid: number, tokenType: string) => {
+const useStakeFarms = (tokenType: string) => {
   const executeTransaction = useSimulationAndSendTransaction()
 
   const handleStake = useCallback(
     async (_amount: string) => {
       const value = new BigNumber(_amount).times(FARMS_DEFAULT_TOKEN_DECIMAL).toString()
-      const payload = masterchefDeposit([_pid.toString(), value], [tokenType])
+      const payload = masterchefDeposit([value], [tokenType])
       return executeTransaction(payload)
     },
-    [_pid, tokenType, executeTransaction],
+    [tokenType, executeTransaction],
   )
 
   return { onStake: handleStake }

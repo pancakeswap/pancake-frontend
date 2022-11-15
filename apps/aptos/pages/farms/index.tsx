@@ -2,14 +2,14 @@ import { useContext } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { FarmsPageLayout, FarmsContext } from 'components/Farms/components/index'
 import FarmCard from 'components/Farms/components/FarmCard/FarmCard'
-import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
+import { usePriceCakeBusd } from 'hooks/useStablePrice'
 import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
 import { FarmWithStakedValue } from 'components/Farms/components/types'
 
 const FarmsPage = () => {
   const { account } = useActiveWeb3React()
   const { chosenFarmsMemoized } = useContext(FarmsContext)
-  const cakePrice = useCakePriceAsBigNumber()
+  const cakePrice = usePriceCakeBusd()
 
   return (
     <>

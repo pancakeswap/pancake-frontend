@@ -13,6 +13,7 @@ export interface FarmTableLiquidityProps {
 
 export interface FarmTableMultiplierProps {
   multiplier: string;
+  rewardCakePerSecond?: boolean;
 }
 
 export interface FarmTableFarmTokenInfoProps {

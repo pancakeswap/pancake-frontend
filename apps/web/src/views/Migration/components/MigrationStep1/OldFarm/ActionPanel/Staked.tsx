@@ -18,7 +18,7 @@ const Staked: React.FC<React.PropsWithChildren<FarmProps>> = ({ pid, lpSymbol })
   const { stakedBalance } = useFarmUser(pid)
 
   const displayBalance = useMemo(() => {
-    return formatLpBalance(stakedBalance)
+    return formatLpBalance(stakedBalance, 18)
   }, [stakedBalance])
 
   return (

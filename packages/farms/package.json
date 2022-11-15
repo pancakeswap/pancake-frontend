@@ -4,7 +4,8 @@
   "sideEffects": false,
   "private": true,
   "scripts": {
-    "build": "npx tsx scripts/build.ts"
+    "build": "npx tsx scripts/build.ts",
+    "test": "vitest --run"
   },
   "dependencies": {
     "@pancakeswap/sdk": "*",

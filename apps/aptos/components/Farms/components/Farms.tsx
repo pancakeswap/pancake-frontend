@@ -3,9 +3,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
-import { useIsMounted } from '@pancakeswap/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
+import { usePriceCakeBusd } from 'hooks/useStablePrice'
 import {
   Image,
   Heading,
@@ -135,9 +134,8 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
-  const isMounted = useIsMounted()
   const { chainId } = useActiveWeb3React()
-  const cakePrice = useCakePriceAsBigNumber()
+  const cakePrice = usePriceCakeBusd()
   const { pathname, query: urlQuery } = useRouter()
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
@@ -193,7 +191,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               cakePrice,
               totalLiquidity,
               farm.lpAddress,
-              regularCakePerBlock,
+              regularCakePerBlock ?? 0,
             )
           : { cakeRewardsApr: 0, lpRewardsApr: 0 }
 
@@ -307,10 +305,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Page title={t('Farms')}>
         <ControlContainer>
           <ViewControls>
+            <NoSSR>
+              <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+            </NoSSR>
             <ToggleWrapper>
-              <NoSSR>
-                <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
-              </NoSSR>
               <Toggle
                 id="staked-only-farms"
                 scale="sm"

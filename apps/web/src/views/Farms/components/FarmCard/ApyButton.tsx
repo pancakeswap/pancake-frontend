@@ -64,6 +64,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
       pid={pid}
       linkLabel={t('Get %symbol%', { symbol: lpLabel })}
       stakingTokenBalance={userBalanceInFarm}
+      stakingTokenDecimals={18}
       stakingTokenSymbol={lpSymbol}
       stakingTokenPrice={lpTokenPrice.toNumber()}
       earningTokenPrice={cakePrice.toNumber()}
