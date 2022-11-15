@@ -48,6 +48,7 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
   const isHouse = useMemo(() => {
+    if (!getNow) return false
     const secondsToClose = closeTimestamp ? closeTimestamp - getNow() : 0
     return lockPrice && price.eq(lockPrice) && secondsToClose <= SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE
   }, [closeTimestamp, lockPrice, price, getNow])
