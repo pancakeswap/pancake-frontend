@@ -39,10 +39,8 @@ export const getInterestBreakdown = ({
     const principal = principalInUSD / earningTokenPrice
     let interestEarned = principal * aprAsDecimal * (days / 365)
     if (timesCompounded !== 0) {
-      const base = principal * (1 + aprAsDecimal / timesCompounded)
-
       // This is a translation of the typical mathematical compounding APY formula. Details here: https://www.calculatorsoup.com/calculators/financial/compound-interest-calculator.php
-      const accruedAmount = base > 0 ? base ** (timesCompounded * daysAsDecimalOfYear) : base
+      const accruedAmount = principal * (1 + aprAsDecimal / timesCompounded) ** (timesCompounded * daysAsDecimalOfYear)
       // To get the TOKEN amount earned, deduct the amount after compounding (accruedAmount) from the starting TOKEN balance (principal)
       interestEarned = accruedAmount - principal
       if (performanceFee) {
