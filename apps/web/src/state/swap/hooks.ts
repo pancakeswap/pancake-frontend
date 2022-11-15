@@ -26,6 +26,7 @@ import { AppState, useAppDispatch } from '../index'
 import { useUserSlippageTolerance } from '../user/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
+import { getBestPriceWithRouter, RequestBody } from './fetch/fetchBestPriceWithRouter'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import fetchPairPriceData from './fetch/fetchPairPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
@@ -224,20 +225,18 @@ export function useDerivedSwapInfoWithStableSwap(
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
+  const bestPriceFromApi = useGetBestPriceWithRouter(inputCurrency, outputCurrency, parsedAmount)
+
   const { data: bestTradeExactInData } = useSWR(
     parsedAmount && `Swap${inputCurrency.symbol}to${outputCurrency.symbol}In${parsedAmount?.numerator.toString()}}`,
     () => getBestTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined, { provider }),
     { refreshInterval: 5000 },
   )
   const { data: bestTradeExactOutData } = useSWR(
-    inputCurrency &&
-      parsedAmount &&
-      `Swap${inputCurrency.symbol}to${outputCurrency.symbol}Out${parsedAmount?.numerator.toString()}`,
+    parsedAmount && `Swap${inputCurrency.symbol}to${outputCurrency.symbol}Out${parsedAmount?.numerator.toString()}`,
     () => getBestTradeExactOut(!isExactIn ? parsedAmount : undefined, inputCurrency ?? undefined, { provider }),
     { refreshInterval: 5000 },
   )
-
-  console.log(bestTradeExactInData, bestTradeExactOutData, 'fetch result')
 
   const exactInRoute = bestTradeExactInData
     ? new Route(
@@ -264,23 +263,11 @@ export function useDerivedSwapInfoWithStableSwap(
     ? new Trade(exactOutRoute, bestTradeExactOutData.outputAmount, TradeType.EXACT_OUTPUT)
     : undefined
 
-  // console.log(newbestTradeExactIn, newbestTradeExactIn, 'new')
-
-  // const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
-  // const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
-  console.log(newbestTradeExactIn, newbestTradeExactOut, 'newbestTradeExact')
+  console.log(newbestTradeExactIn, newbestTradeExactOut, 'newbestTradeExactFromSDK')
   console.log(isMatchStableSwap, 'isMatchStableSwap')
+  console.log(bestPriceFromApi, 'bestPriceFromBEApi')
 
-  // const bestStableTradeExactIn = useStableTradeExactIn(
-  //   isExactIn ? parsedAmount : undefined,
-  //   outputCurrency ?? undefined,
-  // )
-  // const bestStableTradeExactOut = useStableTradeExactOut(
-  //   inputCurrency ?? undefined,
-  //   !isExactIn ? parsedAmount : undefined,
-  // )
-
-  const v2Trade = isExactIn ? newbestTradeExactIn : newbestTradeExactOut
+  const v2Trade = bestPriceFromApi || isExactIn ? newbestTradeExactIn : newbestTradeExactOut
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -587,4 +574,49 @@ export const useFetchPairPrices = ({
     pairPrices = normalizedDerivedPairDataWithCurrentSwapPrice
   }
   return { pairPrices, pairId }
+}
+
+const useGetBestPriceWithRouter = (
+  inputCurrency: Currency,
+  outputCurrency: Currency,
+  parsedAmount: CurrencyAmount<Currency>,
+) => {
+  const requestBody: RequestBody = {
+    networkId: inputCurrency?.chainId,
+    baseToken: isToken(inputCurrency) ? inputCurrency.address : inputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
+    baseTokenName: inputCurrency?.name,
+    baseTokenAmount: parsedAmount?.numerator.toString(),
+    baseTokenNumDecimals: inputCurrency?.decimals,
+    quoteToken: isToken(outputCurrency) ? outputCurrency.address : outputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
+    quoteTokenName: outputCurrency?.name,
+    quoteTokenNumDecimals: outputCurrency?.decimals,
+    trader: 'huan', // TODO: maybe use user Wallet address
+  }
+  const { data } = useSWR(
+    parsedAmount &&
+      `Swap${inputCurrency.symbol}to${outputCurrency.symbol}In${parsedAmount?.numerator.toString()}WithAPI`,
+    () => getBestPriceWithRouter(requestBody),
+    { refreshInterval: 5000 },
+  )
+  const pairs = data
+    ? data.route.pairs.map(({ token0, token1, reserve0, reserve1 }) => {
+        const token0Data = new Token(token0.chainId, token0.address, token0.decimals, token0.symbol)
+        const token1Data = new Token(token1.chainId, token1.address, token1.decimals, token1.symbol)
+        return new Pair(
+          CurrencyAmount.fromRawAmount(token0Data, reserve0),
+          CurrencyAmount.fromRawAmount(token1Data, reserve1),
+        )
+      })
+    : undefined
+  const route = pairs
+    ? new Route(
+        pairs, // if the path without stable swap it will work
+        inputCurrency,
+        outputCurrency,
+      )
+    : undefined
+
+  const v2TradeFromAPI = route ? new Trade(route, parsedAmount, TradeType.EXACT_INPUT) : undefined
+
+  return v2TradeFromAPI // TODO: for now v2 only and need to support TradeWithStableSwap
 }
