@@ -4,7 +4,6 @@ import { useTranslation } from '@pancakeswap/localization'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
-import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
