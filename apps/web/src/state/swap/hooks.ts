@@ -17,6 +17,7 @@ import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useInfoBucket } from 'hooks/useBucket'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
@@ -277,6 +278,8 @@ export const useFetchPairPrices = ({
   const derivedPairData = useSelector(derivedPairByDataIdSelector({ pairId, timeWindow }))
   const dispatch = useDispatch()
 
+  const [bucket] = useInfoBucket()
+
   useEffect(() => {
     const fetchDerivedData = async () => {
       console.info(
@@ -303,7 +306,7 @@ export const useFetchPairPrices = ({
 
     const fetchAndUpdatePairPrice = async () => {
       setIsLoading(true)
-      const { data } = await fetchPairPriceData({ pairId, timeWindow })
+      const { data } = await fetchPairPriceData({ pairId, timeWindow, isNR: bucket === 'nr' })
       if (data) {
         // Find out if Liquidity Pool has enough liquidity
         // low liquidity pool might mean that the price is incorrect
@@ -366,6 +369,7 @@ export const useFetchPairPrices = ({
     derivedPairData,
     dispatch,
     isLoading,
+    bucket,
   ])
 
   useEffect(() => {
