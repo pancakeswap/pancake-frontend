@@ -72,8 +72,10 @@ const transformCakePool = ({
   const totalStaked = _get(cakePoolInfo, 'total_amount', '0')
 
   if (_toNumber(userStakedAmount) && _toNumber(totalStaked)) {
+    const rewardDebt = _get(userInfo, 'reward_debt', '0')
+
     const accCakePerShare = calcRewardCakePerShare(masterChefData, CAKE_PID)
-    const pendingReward = calcPendingRewardCake(userStakedAmount, rewardPerSecond, accCakePerShare)
+    const pendingReward = calcPendingRewardCake(userStakedAmount, rewardDebt, accCakePerShare)
 
     userData = {
       ...userData,
