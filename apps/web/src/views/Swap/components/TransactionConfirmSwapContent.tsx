@@ -3,7 +3,7 @@ import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
 import { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/swap/actions'
-import { computeSlippageAdjustedAmounts } from 'utils/exchange'
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
 import StableSwapModalHeader from '../StableSwap/components/StableSwapModalHeader'
@@ -47,6 +47,8 @@ const TransactionConfirmSwapContent = ({
     [trade, allowedSlippage],
   )
 
+  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+
   const isEnoughInputBalance = useMemo(() => {
     if (trade?.tradeType !== TradeType.EXACT_OUTPUT) return null
 
@@ -68,7 +70,10 @@ const TransactionConfirmSwapContent = ({
 
     return trade ? (
       <SwapModalHead
-        trade={trade}
+        inputAmount={trade.inputAmount}
+        outputAmount={trade.outputAmount}
+        tradeType={trade.tradeType}
+        priceImpactWithoutFee={priceImpactWithoutFee}
         allowedSlippage={allowedSlippage}
         slippageAdjustedAmounts={slippageAdjustedAmounts}
         isEnoughInputBalance={isEnoughInputBalance}
@@ -78,6 +83,7 @@ const TransactionConfirmSwapContent = ({
       />
     ) : null
   }, [
+    priceImpactWithoutFee,
     allowedSlippage,
     onAcceptChanges,
     recipient,
