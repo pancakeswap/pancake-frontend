@@ -74,9 +74,9 @@ export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
-
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
-    blocks && chainName && [`info/pool/data/${name}`, chainName],
+    blocks && chainName && [`info/pool/data/${name}/${type}`, chainName],
     () => fetchAllPoolDataWithAddress(blocks, chainName, poolAddresses),
     SWR_SETTINGS,
   )
@@ -130,9 +130,9 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
-
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
-    blocks && chainName && [`info/token/data/${name}`, chainName],
+    blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
     () => fetchAllTokenDataByAddresses(chainName, blocks, addresses),
     SWR_SETTINGS,
   )
