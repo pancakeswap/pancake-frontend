@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, TradeType, ChainId } from '@pancakeswap/sdk'
-import { TradeWithStableSwap, Trade } from '@pancakeswap/smart-router/dist/evm'
+import { TradeWithStableSwap, Trade } from '@pancakeswap/smart-router/evm'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'

@@ -1,6 +1,14 @@
 import { Currency, CurrencyAmount, Pair, Route, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { deserializeToken } from '@pancakeswap/token-lists'
 import useSWR from 'swr'
-import { getBestTradeExactIn, getBestTradeExactOut } from '@pancakeswap/smart-router/evm'
+import {
+  getBestTradeExactIn,
+  getBestTradeExactOut,
+  createStableSwapPair,
+  TradeWithStableSwap,
+  RouteType,
+  StableSwapPair,
+} from '@pancakeswap/smart-router/evm'
 import { getBestPriceWithRouter, RequestBody } from 'state/swap/fetch/fetchBestPriceWithRouter'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
@@ -11,7 +19,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { isAddress } from 'utils'
 import { provider } from 'utils/wagmi'
-import { computeSlippageAdjustedAmounts } from 'utils/exchange'
+
+import { computeSlippageAdjustedAmounts } from '../utils/exchange'
 
 const isToken = (currency: Currency): currency is Token => {
   // @ts-ignore
@@ -23,10 +32,17 @@ const isToken = (currency: Currency): currency is Token => {
  * @param trade to check for the given address
  * @param checksummedAddress address to check in the pairs and tokens
  */
-function involvesAddress(trade: Trade<Currency, Currency, TradeType>, checksummedAddress: string): boolean {
+function involvesAddress(
+  trade: TradeWithStableSwap<Currency, Currency, TradeType>,
+  checksummedAddress: string,
+): boolean {
   return (
     trade.route.path.some((token) => token.address === checksummedAddress) ||
-    trade.route.pairs.some((pair) => pair.liquidityToken.address === checksummedAddress)
+    trade.route.pairs.some(
+      (pair) =>
+        (pair as StableSwapPair).stableSwapAddress === checksummedAddress ||
+        (pair as Pair).liquidityToken.address === checksummedAddress,
+    )
   )
 }
 
@@ -61,9 +77,9 @@ export function useDerivedSwapInfoWithStableSwap(
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmount: CurrencyAmount<Currency> | undefined
   v2Trade: Trade<Currency, Currency, TradeType> | undefined
+  trade: TradeWithStableSwap<Currency, Currency, TradeType> | null
   inputError?: string
 } {
-  const isMatchStableSwap = useMatchStableSwap(inputCurrency, outputCurrency)
   const { account } = useWeb3React()
   const { t } = useTranslation()
 
@@ -89,37 +105,12 @@ export function useDerivedSwapInfoWithStableSwap(
     () => getBestTradeExactOut(!isExactIn ? parsedAmount : undefined, inputCurrency ?? undefined, { provider }),
     { refreshInterval: 5000 },
   )
-
-  const exactInRoute = bestTradeExactInData
-    ? new Route(
-        bestTradeExactInData.route.pairs as Pair[], // if the path without stable swap it will work
-        bestTradeExactInData.route.input,
-        bestTradeExactInData.route.output,
-      )
-    : undefined
-
-  const exactOutRoute = bestTradeExactOutData
-    ? new Route(
-        bestTradeExactOutData.route.pairs as Pair[], // if the path without stable swap it will work
-        bestTradeExactOutData.route.input,
-        bestTradeExactOutData.route.output,
-      )
-    : undefined
-
-  const newbestTradeExactIn =
-    bestTradeExactInData && exactInRoute
-      ? new Trade(exactInRoute, bestTradeExactInData.inputAmount, TradeType.EXACT_INPUT)
+  const bestTradeWithStableSwap = bestPriceFromApi || isExactIn ? bestTradeExactInData : bestTradeExactOutData
+  const v2Trade =
+    bestTradeWithStableSwap?.route.routeType === RouteType.V2
+      ? createV2TradeFromTradeWithStableSwap(bestTradeWithStableSwap)
       : undefined
-
-  const newbestTradeExactOut = bestTradeExactOutData
-    ? new Trade(exactOutRoute, bestTradeExactOutData.outputAmount, TradeType.EXACT_OUTPUT)
-    : undefined
-
-  console.log(newbestTradeExactIn, newbestTradeExactOut, 'newbestTradeExactFromSDK')
-  console.log(isMatchStableSwap, 'isMatchStableSwap')
-  console.log(bestPriceFromApi, 'bestPriceFromBEApi')
-
-  const v2Trade = bestPriceFromApi || isExactIn ? newbestTradeExactIn : newbestTradeExactOut
+  // TODO add invariant make sure v2 trade has the same input & output amount as trade with stable swap
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -149,15 +140,17 @@ export function useDerivedSwapInfoWithStableSwap(
     inputError = inputError ?? t('Enter a recipient')
   } else if (
     BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (newbestTradeExactIn && involvesAddress(newbestTradeExactIn, formattedTo)) ||
-    (newbestTradeExactOut && involvesAddress(newbestTradeExactOut, formattedTo))
+    (bestTradeWithStableSwap && involvesAddress(bestTradeWithStableSwap, formattedTo))
   ) {
     inputError = inputError ?? t('Invalid recipient')
   }
 
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+  const slippageAdjustedAmounts =
+    bestTradeWithStableSwap &&
+    allowedSlippage &&
+    computeSlippageAdjustedAmounts(bestTradeWithStableSwap, allowedSlippage)
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
@@ -170,6 +163,7 @@ export function useDerivedSwapInfoWithStableSwap(
   }
 
   return {
+    trade: bestTradeWithStableSwap,
     currencies,
     currencyBalances,
     parsedAmount,
@@ -178,11 +172,12 @@ export function useDerivedSwapInfoWithStableSwap(
   }
 }
 
+// TODO support exact output
 const useGetBestPriceWithRouter = (
   inputCurrency: Currency,
   outputCurrency: Currency,
   parsedAmount: CurrencyAmount<Currency>,
-) => {
+): TradeWithStableSwap<Currency, Currency, TradeType> | null => {
   const requestBody: RequestBody = {
     networkId: inputCurrency?.chainId,
     baseToken: isToken(inputCurrency) ? inputCurrency.address : inputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
@@ -200,25 +195,44 @@ const useGetBestPriceWithRouter = (
     () => getBestPriceWithRouter(requestBody),
     { refreshInterval: 5000 },
   )
-  const pairs = data
-    ? data.route.pairs.map(({ token0, token1, reserve0, reserve1 }) => {
-        const token0Data = new Token(token0.chainId, token0.address, token0.decimals, token0.symbol)
-        const token1Data = new Token(token1.chainId, token1.address, token1.decimals, token1.symbol)
-        return new Pair(
-          CurrencyAmount.fromRawAmount(token0Data, reserve0),
-          CurrencyAmount.fromRawAmount(token1Data, reserve1),
-        )
-      })
-    : undefined
-  const route = pairs
-    ? new Route(
-        pairs, // if the path without stable swap it will work
-        inputCurrency,
-        outputCurrency,
-      )
-    : undefined
 
-  const v2TradeFromAPI = route ? new Trade(route, parsedAmount, TradeType.EXACT_INPUT) : undefined
+  if (!data) {
+    return null
+  }
 
-  return v2TradeFromAPI // TODO: for now v2 only and need to support TradeWithStableSwap
+  const input = deserializeToken(data.route.input)
+  const output = deserializeToken(data.route.output)
+  return {
+    tradeType: data.tradeType,
+    route: {
+      ...data.route,
+      input,
+      output,
+      pairs: data.route.pairs.map((p) => {
+        const token0 = deserializeToken(p.token0)
+        const token1 = deserializeToken(p.token1)
+        const reserve0 = CurrencyAmount.fromRawAmount(token0, p.reserve0)
+        const reserve1 = CurrencyAmount.fromRawAmount(token1, p.reserve1)
+        const pair = new Pair(reserve0, reserve1)
+        return p.stableSwapAddress ? createStableSwapPair(pair, p.stableSwapAddress) : pair
+      }),
+      path: data.route.path.map((t) => deserializeToken(t)),
+    },
+    inputAmount: parsedAmount,
+    outputAmount: CurrencyAmount.fromRawAmount(output, data.outputAmount),
+  }
+}
+
+function createV2TradeFromTradeWithStableSwap(
+  trade: TradeWithStableSwap<Currency, Currency, TradeType>,
+): Trade<Currency, Currency, TradeType> | undefined {
+  if (trade.route.routeType !== RouteType.V2) {
+    return undefined
+  }
+  const pairs: Pair[] = trade.route.pairs.map((pair) => new Pair(pair.reserve0, pair.reserve1))
+  const route = new Route(pairs, trade.inputAmount.currency, trade.outputAmount.currency)
+  if (trade.tradeType === TradeType.EXACT_INPUT) {
+    return Trade.exactIn(route, trade.inputAmount)
+  }
+  return Trade.exactOut(route, trade.outputAmount)
 }

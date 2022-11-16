@@ -1,9 +1,10 @@
 import { Currency, CurrencyAmount, Pair, Token, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { RouteType, RouteWithStableSwap, StableSwapPair } from './types'
+import { BasePair } from './types/pair'
 import { getOutputToken } from './utils/pair'
 
-export function createStableSwapPair(pair: Pair, stableSwapAddress = ''): StableSwapPair {
+export function createStableSwapPair(pair: BasePair, stableSwapAddress = ''): StableSwapPair {
   const newPair = new Pair(pair.reserve0, pair.reserve1)
 
   return {
