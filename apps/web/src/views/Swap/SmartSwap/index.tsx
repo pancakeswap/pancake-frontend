@@ -113,7 +113,7 @@ export function SmartSwapForm() {
   const trade = showWrap ? undefined : v2Trade
 
   const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage) : undefined
-  const { priceImpactWithoutFee, realizedLPFee } = trade ? computeTradePriceBreakdown(trade) : undefined
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
 
   const parsedAmounts = showWrap
     ? {

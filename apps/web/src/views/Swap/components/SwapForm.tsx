@@ -99,7 +99,7 @@ export default function SwapForm() {
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
   const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
-  const { priceImpactWithoutFee, realizedLPFee } = trade ? computeTradePriceBreakdown(v2Trade) : undefined
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(v2Trade)
 
   const parsedAmounts = showWrap
     ? {
