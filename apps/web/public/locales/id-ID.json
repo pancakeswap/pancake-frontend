@@ -264,7 +264,7 @@
   "To Top": "Ke Atas",
   "Total value of the funds in this farm’s liquidity pool": "Total nilai dana di dalam pool likuiditas farm ini",
   "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block.": "Pengganda mewakili proporsi hadiah CAKE yang diterima setiap farm, sebagai proporsi CAKE yang dihasilkan setiap blok.",
-  "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.": "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.",
+  "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.": "Pengganda mewakili proporsi hadiah CAKE yang diterima setiap farm, sebagai proporsi CAKE yang dihasilkan setiap detik.",
   "For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.": "Contoh: jika sebuah farm 1x menerima 1 CAKE per blok, sebuah farm 40x akan menerima 40 CAKE per blok.",
   "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.": "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.",
   "This amount is already included in all APR calculations for the farm.": "Jumlah ini sudah dimasukkan ke dalam semua penghitungan APR untuk farm tersebut.",
