@@ -1,18 +1,18 @@
-import { useCallback, useEffect, useState, useMemo, useContext } from 'react'
-import { Currency, CurrencyAmount, Percent, NATIVE } from '@pancakeswap/sdk'
-import { Button, ArrowDownIcon, Box, Skeleton, Swap as SwapUI, Message, MessageText } from '@pancakeswap/uikit'
-import { useIsTransactionUnsupported } from 'hooks/Trades'
-import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
+import { ArrowDownIcon, Box, Button, Message, MessageText, Skeleton, Swap as SwapUI } from '@pancakeswap/uikit'
+import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+import { useIsTransactionUnsupported } from 'hooks/Trades'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { CommonBasesType } from 'components/SearchModal/types'
-import { AutoRow } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
+import { AutoRow } from 'components/Layout/Row'
+import { CommonBasesType } from 'components/SearchModal/types'
 
 import { useCurrency } from 'hooks/Tokens'
 import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
@@ -26,17 +26,18 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
 
 import { useAtomValue } from 'jotai'
-import CurrencyInputHeader from './CurrencyInputHeader'
-import SwapCommitButton from './SwapCommitButton'
-import useWarningImport from '../hooks/useWarningImport'
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
+import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
+import { isAddress } from '../../../utils'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
+import useWarningImport from '../hooks/useWarningImport'
+import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
+import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import AddressInputPanel from './AddressInputPanel'
 import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
+import CurrencyInputHeader from './CurrencyInputHeader'
 import { ArrowWrapper, Wrapper } from './styleds'
-import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
-import { isAddress } from '../../../utils'
-import { SwapFeaturesContext } from '../SwapFeaturesContext'
-import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
+import SwapCommitButton from './SwapCommitButton'
 
 export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -97,6 +98,8 @@ export default function SwapForm() {
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
+  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(v2Trade)
 
   const parsedAmounts = showWrap
     ? {
@@ -331,7 +334,18 @@ export default function SwapForm() {
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
-        trade && <AdvancedSwapDetailsDropdown trade={trade} />
+        trade && (
+          <AdvancedSwapDetailsDropdown
+            pairs={trade?.route?.pairs}
+            path={trade?.route.path}
+            priceImpactWithoutFee={priceImpactWithoutFee}
+            realizedLPFee={realizedLPFee}
+            slippageAdjustedAmounts={slippageAdjustedAmounts}
+            inputAmount={trade?.inputAmount}
+            outputAmount={trade?.outputAmount}
+            tradeType={trade?.tradeType}
+          />
+        )
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}

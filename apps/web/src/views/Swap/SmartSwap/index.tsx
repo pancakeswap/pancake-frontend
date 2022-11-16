@@ -34,6 +34,7 @@ import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { currencyId } from 'utils/currencyId'
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
 import { isAddress } from '../../../utils'
 import AddressInputPanel from '../components/AddressInputPanel'
@@ -110,6 +111,9 @@ export function SmartSwapForm() {
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
+
+  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage) : undefined
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
 
   const parsedAmounts = showWrap
     ? {
@@ -370,7 +374,18 @@ export function SmartSwapForm() {
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
-        trade && <AdvancedSwapDetailsDropdown trade={trade} />
+        trade && (
+          <AdvancedSwapDetailsDropdown
+            pairs={trade?.route?.pairs}
+            path={trade?.route.path}
+            priceImpactWithoutFee={priceImpactWithoutFee}
+            realizedLPFee={realizedLPFee}
+            slippageAdjustedAmounts={slippageAdjustedAmounts}
+            inputAmount={trade?.inputAmount}
+            outputAmount={trade?.outputAmount}
+            tradeType={trade?.tradeType}
+          />
+        )
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
