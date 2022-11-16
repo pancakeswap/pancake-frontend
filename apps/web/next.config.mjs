@@ -71,6 +71,14 @@ const config = {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
       },
+      {
+        source: '/info/pair/:address',
+        destination: '/info/pools/:address',
+      },
+      {
+        source: '/smartRouter',
+        destination: 'https://monkfish-app-hmi3c.ondigitalocean.app/v1/best-trade',
+      },
     ]
   },
   async headers() {
