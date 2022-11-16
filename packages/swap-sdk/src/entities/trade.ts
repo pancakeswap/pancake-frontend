@@ -200,22 +200,6 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
     return CurrencyAmount.fromRawAmount(this.outputAmount.currency, slippageAdjustedAmountOut)
   }
 
-  public static minimumAmountOutWithOutputAmount<TOutput extends Currency>(
-    tradeType: TradeType,
-    outputAmount: CurrencyAmount<TOutput>,
-    slippageTolerance: Percent
-  ): CurrencyAmount<TOutput> {
-    invariant(!slippageTolerance.lessThan(ZERO), 'SLIPPAGE_TOLERANCE')
-    if (tradeType === TradeType.EXACT_OUTPUT) {
-      return outputAmount
-    }
-    const slippageAdjustedAmountOut = new Fraction(ONE)
-      .add(slippageTolerance)
-      .invert()
-      .multiply(outputAmount.quotient).quotient
-    return CurrencyAmount.fromRawAmount(outputAmount.currency, slippageAdjustedAmountOut)
-  }
-
   /**
    * Get the maximum amount in that can be spent via this trade for the given slippage tolerance
    * @param slippageTolerance tolerance of unfavorable slippage from the execution price of this trade
@@ -229,23 +213,6 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
       .add(slippageTolerance)
       .multiply(this.inputAmount.quotient).quotient
     return CurrencyAmount.fromRawAmount(this.inputAmount.currency, slippageAdjustedAmountIn)
-  }
-
-  /**
-   * Get the maximum amount in that can be spent via this trade for the given slippage tolerance
-   * @param slippageTolerance tolerance of unfavorable slippage from the execution price of this trade
-   */
-  public static maximumAmountInWithInputAmount<TInput extends Currency>(
-    tradeType: TradeType,
-    inputAmount: CurrencyAmount<TInput>,
-    slippageTolerance: Percent
-  ): CurrencyAmount<TInput> {
-    invariant(!slippageTolerance.lessThan(ZERO), 'SLIPPAGE_TOLERANCE')
-    if (tradeType === TradeType.EXACT_INPUT) {
-      return inputAmount
-    }
-    const slippageAdjustedAmountIn = new Fraction(ONE).add(slippageTolerance).multiply(inputAmount.quotient).quotient
-    return CurrencyAmount.fromRawAmount(inputAmount.currency, slippageAdjustedAmountIn)
   }
 
   /**
