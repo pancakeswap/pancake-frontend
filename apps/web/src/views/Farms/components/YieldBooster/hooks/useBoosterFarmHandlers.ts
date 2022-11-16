@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import _isEmpty from 'lodash/isEmpty'
+import { BOOSTED_FARM_GAS_LIMIT } from 'config'
 import { useBCakeFarmBoosterContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -12,7 +12,7 @@ const useBoosterFarmHandlers = (farmPid: number, onDone) => {
 
   const activate = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterContract, 'activate', [farmPid])
+      return callWithGasPrice(farmBoosterContract, 'activate', [farmPid], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
     })
 
     if (receipt?.status && onDone) {
@@ -22,7 +22,7 @@ const useBoosterFarmHandlers = (farmPid: number, onDone) => {
 
   const deactivate = useCallback(async () => {
     const receipt = await fetchWithCatchTxError(() => {
-      return callWithGasPrice(farmBoosterContract, 'deactive', [farmPid])
+      return callWithGasPrice(farmBoosterContract, 'deactive', [farmPid], { gasLimit: BOOSTED_FARM_GAS_LIMIT })
     })
 
     if (receipt?.status && onDone) {
