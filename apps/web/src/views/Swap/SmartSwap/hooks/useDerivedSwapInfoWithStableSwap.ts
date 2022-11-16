@@ -93,7 +93,12 @@ export function useDerivedSwapInfoWithStableSwap(
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
 
-  const bestPriceFromApi = useGetBestPriceWithRouter(inputCurrency, outputCurrency, parsedAmount)
+  const bestPriceFromApi = useGetBestPriceWithRouter(
+    inputCurrency,
+    outputCurrency,
+    parsedAmount,
+    isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
+  )
 
   const { data: bestTradeExactInData } = useSWR(
     parsedAmount && `Swap${inputCurrency.symbol}to${outputCurrency.symbol}In${parsedAmount?.numerator.toString()}}`,
@@ -105,7 +110,7 @@ export function useDerivedSwapInfoWithStableSwap(
     () => getBestTradeExactOut(!isExactIn ? parsedAmount : undefined, inputCurrency ?? undefined, { provider }),
     { refreshInterval: 5000 },
   )
-  const bestTradeWithStableSwap = bestPriceFromApi || isExactIn ? bestTradeExactInData : bestTradeExactOutData
+  const bestTradeWithStableSwap = bestPriceFromApi || (isExactIn ? bestTradeExactInData : bestTradeExactOutData)
   const v2Trade =
     bestTradeWithStableSwap?.route.routeType === RouteType.V2
       ? createV2TradeFromTradeWithStableSwap(bestTradeWithStableSwap)
@@ -177,14 +182,17 @@ const useGetBestPriceWithRouter = (
   inputCurrency: Currency,
   outputCurrency: Currency,
   parsedAmount: CurrencyAmount<Currency>,
+  tradeType: TradeType,
 ): TradeWithStableSwap<Currency, Currency, TradeType> | null => {
+  const rawAmount = parsedAmount?.quotient.toString()
   const requestBody: RequestBody = {
     networkId: inputCurrency?.chainId,
     baseToken: isToken(inputCurrency) ? inputCurrency.address : inputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
     baseTokenName: inputCurrency?.name,
-    baseTokenAmount: parsedAmount?.numerator.toString(),
+    baseTokenAmount: tradeType === TradeType.EXACT_INPUT ? rawAmount : undefined,
     baseTokenNumDecimals: inputCurrency?.decimals,
     quoteToken: isToken(outputCurrency) ? outputCurrency.address : outputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
+    quoteTokenAmount: tradeType === TradeType.EXACT_OUTPUT ? rawAmount : undefined,
     quoteTokenName: outputCurrency?.name,
     quoteTokenNumDecimals: outputCurrency?.decimals,
     trader: 'huan', // TODO: maybe use user Wallet address
@@ -218,7 +226,7 @@ const useGetBestPriceWithRouter = (
       }),
       path: data.route.path.map((t) => deserializeToken(t)),
     },
-    inputAmount: parsedAmount,
+    inputAmount: CurrencyAmount.fromRawAmount(input, data.inputAmount),
     outputAmount: CurrencyAmount.fromRawAmount(output, data.outputAmount),
   }
 }

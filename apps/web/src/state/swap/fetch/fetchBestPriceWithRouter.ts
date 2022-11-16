@@ -9,7 +9,8 @@ export interface RequestBody {
   quoteToken: string
   quoteTokenName: string
   quoteTokenNumDecimals: number
-  baseTokenAmount: string
+  baseTokenAmount?: string
+  quoteTokenAmount?: string
   trader: string
 }
 
@@ -39,6 +40,7 @@ export interface SmartRouterResponse {
     path: Token[]
   }
   outputAmount: string
+  inputAmount: string
 }
 
 // const body: RequestBody = {
