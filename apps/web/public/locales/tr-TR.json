@@ -2028,5 +2028,6 @@
   "Register coin to receive transfers": "Transferleri almak için para kaydedin",
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Aptos'ta herkes, mevcut paraların sahte sürümleri veya parası olmayan projeleri temsil ettiğini iddia edenler de dahil olmak üzere herhangi bir adla para oluşturabilir.",
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Sahte bir para satın alırsanız paranızı kalıcı olarak kaybedebilirsiniz.",
-  "Pancake Collectibles": "Pancake Collectibles"
+  "Pancake Collectibles": "Pancake Collectibles",
+  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date."
 }
