@@ -128,7 +128,7 @@ const transformPool = (
   const apr =
     getPoolApr({
       rewardTokenPrice: _toNumber(earningTokenPrice),
-      stakingTokenPrice: _toNumber(earningTokenPrice),
+      stakingTokenPrice: _toNumber(stakingTokenPrice),
       tokenPerSecond: rewardPerSecond,
       totalStaked: totalStakedToken,
     }) || 0

@@ -3,6 +3,7 @@ import _toString from 'lodash/toString'
 import _partition from 'lodash/partition'
 
 import _toNumber from 'lodash/toNumber'
+import _uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
 
 import { PairState, usePairs } from 'hooks/usePairs'
@@ -56,7 +57,11 @@ export default function useAddressPriceMap({ pools, chainId }) {
   const pairsInfo = usePairs(relevantPairs)
 
   const availablePairs = useMemo(
-    () => pairsInfo.filter(([status]) => status === PairState.EXISTS).map(([, pair]) => pair as Pair),
+    () =>
+      _uniqBy(
+        pairsInfo.filter(([status]) => status === PairState.EXISTS).map(([, pair]) => pair as Pair),
+        'liquidityToken.address',
+      ),
     [pairsInfo],
   )
 
