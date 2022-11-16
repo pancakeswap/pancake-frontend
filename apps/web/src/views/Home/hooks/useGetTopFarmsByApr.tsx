@@ -25,7 +25,7 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
     const fetchFarmData = async () => {
       const farmsConfig = await getFarmConfig(chainId)
       setFetchStatus(FetchStatus.Fetching)
-      const activeFarms = farmsConfig.filter((farm) => farm.pid !== 0)
+      const activeFarms = farmsConfig
       try {
         await dispatch(
           fetchFarmsPublicDataAsync({ pids: activeFarms.map((farm) => farm.pid), chainId, flag: farmFlag }),
@@ -48,7 +48,6 @@ const useGetTopFarmsByApr = (isIntersecting: boolean) => {
         (farm) =>
           farm.lpTotalInQuoteToken &&
           farm.quoteTokenPriceBusd &&
-          farm.pid !== 0 &&
           farm.multiplier &&
           farm.multiplier !== '0X',
       )

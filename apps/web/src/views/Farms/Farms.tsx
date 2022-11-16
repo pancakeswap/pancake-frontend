@@ -186,9 +186,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [boostedOnly, setBoostedOnly] = useState(false)
 
   const activeFarms = farmsLP.filter(
-    (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
+    (farm) => farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
   )
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')
   const archivedFarms = farmsLP
 
   const stakedOnlyFarms = activeFarms.filter(
@@ -341,6 +341,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <FarmH2 scale="lg" color="text">
               {t('Stake LP tokens to earn.')}
             </FarmH2>
+            {/*
             <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
               <Button p="0" variant="text">
                 <Text color="primary" bold fontSize="16px" mr="4px">
@@ -349,6 +350,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <ArrowForwardIcon color="primary" />
               </Button>
             </NextLinkFromReactRouter>
+            */}
           </Box>
           {chainId === ChainId.BSC && (
             <Box>
@@ -370,6 +372,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               />
               <Text> {t('Staked only')}</Text>
             </ToggleWrapper>
+            {/*
             <ToggleWrapper>
               <Toggle
                 id="staked-only-farms"
@@ -379,6 +382,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               />
               <Text> {t('Booster Available')}</Text>
             </ToggleWrapper>
+            */}
             <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
           </ViewControls>
           <FilterContainer>

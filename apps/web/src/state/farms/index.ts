@@ -35,20 +35,20 @@ import getFarmsPrices from './getFarmsPrices'
  * @deprecated
  */
 const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[SerializedFarm[], number, number]> => {
-  const [poolLength, [cakePerBlockRaw]] = await Promise.all([
+  const [poolLength, [icePerBlockRaw]] = await Promise.all([
     fetchMasterChefFarmPoolLength(chainId),
     multicall(masterchefABI, [
       {
         // BSC only
         address: getMasterChefAddress(ChainId.BSC),
-        name: 'cakePerBlock',
+        name: 'icePerBlock',
         params: [true],
       },
     ]),
   ])
 
   const poolLengthAsBigNumber = new BigNumber(poolLength)
-  const regularCakePerBlock = getBalanceAmount(new BigNumber(cakePerBlockRaw))
+  const regularCakePerBlock = getBalanceAmount(new BigNumber(icePerBlockRaw))
   const farmsConfig = await getFarmConfig(chainId)
   const farmsCanFetch = farmsConfig.filter(
     (farmConfig) => pids.includes(farmConfig.pid) && poolLengthAsBigNumber.gt(farmConfig.pid),
@@ -260,10 +260,8 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
         getBoostedFarmsStakeValue(farmsWithProxy, account, chainId, proxyAddress),
         getNormalFarmsStakeValue(normalFarms, account, chainId),
       ])
-
       return [...proxyAllowances, ...normalAllowances]
     }
-
     return getNormalFarmsStakeValue(farmsCanFetch, account, chainId)
   },
   {

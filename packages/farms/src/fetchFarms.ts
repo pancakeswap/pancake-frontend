@@ -10,25 +10,15 @@ import { isStableFarm, SerializedFarmConfig } from './types'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 const evmNativeStableLpMap = {
-  [ChainId.ETHEREUM]: {
-    address: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
-    wNative: 'WETH',
-    stable: 'USDC',
-  },
-  [ChainId.GOERLI]: {
-    address: '0xf5bf0C34d3c428A74Ceb98d27d38d0036C587200',
-    wNative: 'WETH',
-    stable: 'tUSDC',
-  },
   [ChainId.BSC]: {
     address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     wNative: 'WBNB',
     stable: 'BUSD',
   },
-  [ChainId.BSC_TESTNET]: {
-    address: '0x4E96D2e92680Ca65D58A0e2eB5bd1c0f44cAB897',
-    wNative: 'WBNB',
-    stable: 'BUSD',
+  [ChainId.BITGERT]: {
+    address: '0x8e7dd0d762f60942e0bd05b1114d6cedf4435a18',
+    wNative: 'WBRISE',
+    stable: 'USDTi',
   },
 }
 
@@ -40,7 +30,6 @@ export const getTokenAmount = (balance: FixedNumber, decimals: number) => {
 export type FetchFarmsParams = {
   farms: SerializedFarmConfig[]
   multicallv2: MultiCallV2
-  isTestnet: boolean
   masterChefAddress: string
   chainId: number
   totalRegularAllocPoint: BigNumber
@@ -50,7 +39,6 @@ export type FetchFarmsParams = {
 export async function farmV2FetchFarms({
   farms,
   multicallv2,
-  isTestnet,
   masterChefAddress,
   chainId,
   totalRegularAllocPoint,
@@ -60,7 +48,7 @@ export async function farmV2FetchFarms({
 
   const [stableFarmsResults, poolInfos, lpDataResults] = await Promise.all([
     fetchStableFarmData(stableFarms, chainId, multicallv2),
-    fetchMasterChefData(farms, isTestnet, multicallv2, masterChefAddress),
+    fetchMasterChefData(farms, chainId, multicallv2, masterChefAddress),
     fetchPublicFarmsData(farms, chainId, multicallv2, masterChefAddress),
   ])
 
@@ -112,9 +100,7 @@ export async function farmV2FetchFarms({
       throw error
     }
   })
-
   const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId])
-
   return farmsDataWithPrices
 }
 
@@ -123,7 +109,7 @@ const masterChefV2Abi = [
     inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     name: 'poolInfo',
     outputs: [
-      { internalType: 'uint256', name: 'accCakePerShare', type: 'uint256' },
+      { internalType: 'uint256', name: 'accIcePerShare', type: 'uint256' },
       { internalType: 'uint256', name: 'lastRewardBlock', type: 'uint256' },
       { internalType: 'uint256', name: 'allocPoint', type: 'uint256' },
       { internalType: 'uint256', name: 'totalBoostedShare', type: 'uint256' },
@@ -155,7 +141,7 @@ const masterChefV2Abi = [
   },
   {
     inputs: [{ internalType: 'bool', name: '_isRegular', type: 'bool' }],
-    name: 'cakePerBlock',
+    name: 'icePerBlock',
     outputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
@@ -176,7 +162,7 @@ const masterChefFarmCalls = (farm: SerializedFarmConfig, masterChefAddress: stri
 
 export const fetchMasterChefData = async (
   farms: SerializedFarmConfig[],
-  isTestnet: boolean,
+  chainId: ChainId,
   multicallv2: MultiCallV2,
   masterChefAddress: string,
 ): Promise<any[]> => {
@@ -187,7 +173,7 @@ export const fetchMasterChefData = async (
     const masterChefMultiCallResult = await multicallv2({
       abi: masterChefV2Abi,
       calls: masterChefAggregatedCalls,
-      chainId: isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC,
+      chainId,
     })
 
     let masterChefChunkedResultCounter = 0
@@ -206,16 +192,16 @@ export const fetchMasterChefData = async (
 }
 
 export const fetchMasterChefV2Data = async ({
-  isTestnet,
+  chainId,
   multicallv2,
   masterChefAddress,
 }: {
-  isTestnet: boolean
+  chainId: ChainId
   multicallv2: MultiCallV2
   masterChefAddress: string
 }) => {
   try {
-    const [[poolLength], [totalRegularAllocPoint], [totalSpecialAllocPoint], [cakePerBlock]] = await multicallv2<
+    const [[poolLength], [totalRegularAllocPoint], [totalSpecialAllocPoint], [icePerBlock]] = await multicallv2<
       [[BigNumber], [BigNumber], [BigNumber], [BigNumber]]
     >({
       abi: masterChefV2Abi,
@@ -234,18 +220,18 @@ export const fetchMasterChefV2Data = async ({
         },
         {
           address: masterChefAddress,
-          name: 'cakePerBlock',
+          name: 'icePerBlock',
           params: [true],
         },
       ],
-      chainId: isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC,
+      chainId,
     })
 
     return {
       poolLength,
       totalRegularAllocPoint,
       totalSpecialAllocPoint,
-      cakePerBlock,
+      icePerBlock,
     }
   } catch (error) {
     console.error('Get MasterChef data error', error)

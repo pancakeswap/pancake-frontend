@@ -18,7 +18,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const farms = farmsLP.filter((farm) => farm.pid !== 0)
+  const farms = farmsLP
 
   const stakedOrHasTokenBalance = farms.filter((farm) => {
     return (

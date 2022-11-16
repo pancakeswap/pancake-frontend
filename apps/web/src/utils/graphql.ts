@@ -1,4 +1,10 @@
-import { BIT_QUERY, INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
+import {
+  BIT_QUERY,
+  INFO_CLIENT,
+  STABLESWAP_SUBGRAPH_CLIENT,
+  INFO_CLIENT_ETH,
+  INFO_CLIENT_BITGERT
+} from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
 
@@ -26,6 +32,8 @@ export const infoClientWithChain = (chainId: number) => {
 }
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
+
+export const infoClientBITGERT = new GraphQLClient(INFO_CLIENT_BITGERT)
 
 export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)
 

@@ -1,9 +1,16 @@
-import { ChainId, Token, WBNB, ERC20Token } from '@pancakeswap/sdk'
-import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
+import { ChainId, Token, WETH9, ERC20Token } from '@pancakeswap/sdk'
 
 export const bscTokens = {
-  wbnb: WBNB[ChainId.BSC],
+  wbnb: WETH9[ChainId.BSC],
   // bnb here points to the wbnb contract. Wherever the currency BNB is required, conditional checks for the symbol 'BNB' can be used
+  ice: new ERC20Token(
+      ChainId.BSC,
+      '0xce6c9c70f91c6797873EFC80505f972290A88f5D',
+      18,
+      'ICE',
+      'IceCream',
+      'https://icecreamswap.com/',
+  ),
   bnb: new ERC20Token(
     ChainId.BSC,
     '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
@@ -12,7 +19,14 @@ export const bscTokens = {
     'BNB',
     'https://www.binance.com/',
   ),
-  cake: CAKE_MAINNET,
+  cake: new ERC20Token(
+      ChainId.BSC,
+      '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
+      18,
+      'CAKE',
+      'PancakeSwap Token',
+      'https://pancakeswap.finance/',
+  ),
   gmi: new ERC20Token(
     ChainId.BSC,
     '0x93D8d25E3C9A847a5Da79F79ecaC89461FEcA846',
@@ -85,7 +99,14 @@ export const bscTokens = {
     'ChainId.BSC Defi blue chips token',
     'https://powerpool.finance/',
   ),
-  busd: BUSD_BSC,
+  busd: new ERC20Token(
+      ChainId.BSC,
+      '0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56',
+      18,
+      'BUSD',
+      'Binance USD',
+      'https://www.paxos.com/busd/',
+  ),
   dai: new ERC20Token(
     ChainId.BSC,
     '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
@@ -94,7 +115,14 @@ export const bscTokens = {
     'Dai Stablecoin',
     'https://www.makerdao.com/',
   ),
-  usdt: USDT_BSC,
+  usdt: new ERC20Token(
+      ChainId.BSC,
+      '0x55d398326f99059fF775485246999027B3197955',
+      18,
+      'USDT',
+      'Tether USD',
+      'https://tether.to/',
+  ),
   btcb: new ERC20Token(
     ChainId.BSC,
     '0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',

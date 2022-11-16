@@ -1,14 +1,14 @@
 {
-  "name": "PancakeSwap Default List",
+  "name": "IcecreamSwap Default",
   "timestamp": "2022-01-26T11:45:09Z",
   "version": {
-    "major": 4,
+    "major": 1,
     "minor": 0,
     "patch": 0
   },
   "tags": {},
   "logoURI": "https://pancakeswap.finance/logo.png",
-  "keywords": ["pancake", "default"],
+  "keywords": ["icecreamswap", "default"],
   "tokens": [
     {
       "name": "Wrapped BNB",
@@ -115,100 +115,590 @@
       "logoURI": "https://pancakeswap.finance/images/tokens/0xA7f552078dcC247C2684336020c03648500C6d9F.png"
     },
     {
-      "name": "PancakeSwap Token",
-      "symbol": "CAKE",
-      "address": "0xFa60D973F7642B748046464e165A65B7323b0DEE",
-      "chainId": 97,
+      "name": "Wrapped Brise",
+      "address": "0x0eb9036cbE0f052386f36170c6b07eF0a0E3f710",
+      "symbol": "WBRISE",
       "decimals": 18,
-      "logoURI": "https://pancakeswap.finance/images/tokens/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82.png"
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x0eb9036cbE0f052386f36170c6b07eF0a0E3f710/logo.png"
     },
     {
-      "name": "BUSD Token",
-      "symbol": "BUSD",
-      "address": "0xaB1a4d4f1D656d2450692D237fdD6C7f9146e814",
-      "chainId": 97,
+      "name": "Sphynx BRISE",
+      "address": "0x0e11DCE06eF2FeD6f78CEF5144F970E1184b4298",
+      "symbol": "SPHYNX",
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x0e11DCE06eF2FeD6f78CEF5144F970E1184b4298/logo.png"
     },
     {
-      "name": "BUSD Token",
-      "symbol": "BUSD",
-      "address": "0x4e2442A6f7AeCE64Ca33d31756B5390860BF973E",
-      "chainId": 4,
-      "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
+      "name": "Brisepad",
+      "address": "0x71946a5C9dA7C95ee804a9BE561EC15A3F286A7D",
+      "symbol": "BPAD",
+      "decimals": 8,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x71946a5C9dA7C95ee804a9BE561EC15A3F286A7D/logo.png"
     },
     {
-      "name": "Wrapped Ether",
-      "address": "0xc778417E063141139Fce010982780140Aa0cD5Ab",
-      "symbol": "WETH",
+      "name": "BROGE",
+      "address": "0x41c5ae56681Fb19334eCF7d914919805DaE2Ec8f",
+      "symbol": "BROGE",
       "decimals": 18,
-      "chainId": 4,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x41c5ae56681Fb19334eCF7d914919805DaE2Ec8f/logo.png"
     },
     {
-      "name": "Wrapped Ether",
-      "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
-      "symbol": "WETH",
+      "name": "BriseZilla",
+      "address": "0x9b8535Dd9281e48484725bC9Eb6Ed2f66CEA2a36",
+      "symbol": "BRZILLA",
       "decimals": 18,
-      "chainId": 5,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x9b8535Dd9281e48484725bC9Eb6Ed2f66CEA2a36/logo.png"
     },
     {
-      "name": "Wrapped Ether",
-      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-      "symbol": "WETH",
+      "name": "BitsXT",
+      "address": "0x1A8a039007186d7640C1D7Cd7c2606e333D04e03",
+      "symbol": "BTXT",
       "decimals": 18,
-      "chainId": 1,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x1A8a039007186d7640C1D7Cd7c2606e333D04e03/logo.png"
     },
     {
-      "name": "USD Coin",
-      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-      "symbol": "USDC",
+      "name": "Graphen",
+      "address": "0xb860eCD8400600c13342a751408737235E177077",
+      "symbol": "ELTG",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xb860eCD8400600c13342a751408737235E177077/logo.png"
+    },
+    {
+      "name": "EVO",
+      "address": "0x267Ae4bA9CE5ef3c87629812596b0D89EcBD81dD",
+      "symbol": "EVO",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x267Ae4bA9CE5ef3c87629812596b0D89EcBD81dD/logo.png"
+    },
+    {
+      "name": "4D Twin Maps",
+      "address": "0x6D347fdCb302a5879545E01EceE7A176db23dCDa",
+      "symbol": "MAP",
+      "decimals": 2,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x6D347fdCb302a5879545E01EceE7A176db23dCDa/logo.png"
+    },
+    {
+      "name": "Miidas NFT",
+      "address": "0x5B534A2Df329195Fd7e5c9AcA1D9ffbdA14A4963",
+      "symbol": "Miidas",
       "decimals": 6,
-      "chainId": 1,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x5B534A2Df329195Fd7e5c9AcA1D9ffbdA14A4963/logo.png"
     },
     {
-      "name": "Test USD Coin",
-      "address": "0x4DBCdF9B62e891a7cec5A2568C3F4FAF9E8Abe2b",
-      "symbol": "tUSDC",
-      "decimals": 6,
-      "chainId": 4,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+      "name": "Mix Reality",
+      "address": "0x2468dad471fA7E03d8029F057cc41742F017D53d",
+      "symbol": "MIR",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x2468dad471fA7E03d8029F057cc41742F017D53d/logo.png"
     },
     {
-      "name": "Test USD Coin",
-      "address": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
-      "symbol": "tUSDC",
+      "name": "Numitor",
+      "address": "0x6718e47e74497d1564EE76d832309144b83Ef8E8",
+      "symbol": "NUMI",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x6718e47e74497d1564EE76d832309144b83Ef8E8/logo.png"
+    },
+    {
+      "name": "OmniaVerse",
+      "address": "0x5d4685c2C75581C67b9D6292A065a767bC214681",
+      "symbol": "OMNIA",
+      "decimals": 8,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x5d4685c2C75581C67b9D6292A065a767bC214681/logo.png"
+    },
+    {
+      "name": "Brise Paradise",
+      "address": "0x31226B28add9062c5064a9Bd35eA155F323C6ca6",
+      "symbol": "PRDS",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x31226B28add9062c5064a9Bd35eA155F323C6ca6/logo.png"
+    },
+    {
+      "name": "Rise Luna",
+      "address": "0x6660A7AF57fAE695D4a10D645088aBA9fb547728",
+      "symbol": "RLUNA",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x6660A7AF57fAE695D4a10D645088aBA9fb547728/logo.png"
+    },
+    {
+      "name": "Vefi Ecosystem Token",
+      "address": "0xD6447d2fA919811c41a064bDbdaB1E281F8de9B2",
+      "symbol": "VEF",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xD6447d2fA919811c41a064bDbdaB1E281F8de9B2/logo.png"
+    },
+    {
+      "name": "Whale Maker Fund",
+      "address": "0xc89fcd3E1CF5A355fc41E160d18BAC5f624610D4",
+      "symbol": "WMF",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xc89fcd3E1CF5A355fc41E160d18BAC5f624610D4/logo.png"
+    },
+    {
+      "name": "YOGO Token",
+      "address": "0xB361D5953e21Cfde5CD62B89FDf40bc21903A6bb",
+      "symbol": "YOGO",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xB361D5953e21Cfde5CD62B89FDf40bc21903A6bb/logo.png"
+    },
+    {
+      "name": "Young Parrot",
+      "address": "0x11203a00a9134Db8586381C4B2fca0816476b3FD",
+      "symbol": "YPC",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x11203a00a9134Db8586381C4B2fca0816476b3FD/logo.png"
+    },
+    {
+      "name": "IceCream",
+      "address": "0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D",
+      "symbol": "ICE",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D/logo.png"
+    },
+    {
+      "name": "Metaverse City Tokyo",
+      "address": "0x38EA4741d100cAe9700f66B194777F31919142Ee",
+      "symbol": "$Tokyo",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x38EA4741d100cAe9700f66B194777F31919142Ee/logo.png"
+    },
+    {
+      "name": "USDT old",
+      "address": "0xDe14b85cf78F2ADd2E867FEE40575437D5f10c06",
+      "symbol": "USDT-old",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xDe14b85cf78F2ADd2E867FEE40575437D5f10c06/logo.png"
+    },
+    {
+      "name": "USDC old",
+      "address": "0xcf2DF9377A4e3C10e9EA29fDB8879d74C27FCDE7",
+      "symbol": "USDC-old",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xcf2DF9377A4e3C10e9EA29fDB8879d74C27FCDE7/logo.png"
+    },
+    {
+      "name": "Alpha Trades",
+      "address": "0x4Fb3DBF9111169ff60fFB8a7be1c6Fd3D4E417bC",
+      "symbol": "WOLF",
+      "decimals": 19,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x4Fb3DBF9111169ff60fFB8a7be1c6Fd3D4E417bC/logo.png"
+    },
+    {
+      "name": "AIBRA",
+      "address": "0x9F7Bb6E8386ac9ad5e944d66fBa80F3F7231FA94",
+      "symbol": "ABR",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x9F7Bb6E8386ac9ad5e944d66fBa80F3F7231FA94/logo.png"
+    },
+    {
+      "name": "Brisecom",
+      "address": "0x6cd08bE8Aa9B705Ca86B4923B1784C0eE06E5220",
+      "symbol": "BASKOM",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x6cd08bE8Aa9B705Ca86B4923B1784C0eE06E5220/logo.png"
+    },
+    {
+      "name": "LunaGens",
+      "address": "0xc3b730dD10A7e9A69204bDf6cb5A426e4f1F09E3",
+      "symbol": "LUNG",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xc3b730dD10A7e9A69204bDf6cb5A426e4f1F09E3/logo.png"
+    },
+    {
+      "name": "Tether USD IcecreamSwap",
+      "address": "0xC7E6d7E08A89209F02af47965337714153c529F0",
+      "symbol": "USDTi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xC7E6d7E08A89209F02af47965337714153c529F0/logo.png"
+    },
+    {
+      "name": "3D City",
+      "address": "0x5feDA75eaB27814Cba0694C9711F7d4abEa5b0b5",
+      "symbol": "$3DC",
+      "decimals": 8,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x5feDA75eaB27814Cba0694C9711F7d4abEa5b0b5/logo.png"
+    },
+    {
+      "name": "Darrival",
+      "address": "0xeB18A16A08530b811523fA49310319809ac4c979",
+      "symbol": "DRV",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xeB18A16A08530b811523fA49310319809ac4c979/logo.png"
+    },
+    {
+      "name": "Ether IcecreamSwap",
+      "address": "0xeA61Dc96F105469522d39cBF7bD59b42393678F7",
+      "symbol": "ETHi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xeA61Dc96F105469522d39cBF7bD59b42393678F7/logo.png"
+    },
+    {
+      "name": "Dogecoin IcecreamSwap",
+      "address": "0x46a8E16dB8Bb241618873bCA21Ef02F120EA4125",
+      "symbol": "DOGEi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x46a8E16dB8Bb241618873bCA21Ef02F120EA4125/logo.png"
+    },
+    {
+      "name": "BNB IcecreamSwap",
+      "address": "0x74446a7418BFbFCDe3F1f6bCaFFA097d050a6dD8",
+      "symbol": "BNBi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x74446a7418BFbFCDe3F1f6bCaFFA097d050a6dD8/logo.png"
+    },
+    {
+      "name": "Shiba Inu IcecreamSwap",
+      "address": "0xADF3051f6fbC1f42ee20B2eDb47EA7f6CcaBe978",
+      "symbol": "SHIBi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xADF3051f6fbC1f42ee20B2eDb47EA7f6CcaBe978/logo.png"
+    },
+    {
+      "name": "Dai IcecreamSwap",
+      "address": "0x71Ef0A490E53Cc177F640169b0347Be4d0f23cc9",
+      "symbol": "DAIi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x71Ef0A490E53Cc177F640169b0347Be4d0f23cc9/logo.png"
+    },
+    {
+      "name": "USD Coin IcecreamSwap",
+      "address": "0xaEdD3Ff7b9Fc5fc4e44d140b80f0B1C7FdB6102c",
+      "symbol": "USDCi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xaEdD3Ff7b9Fc5fc4e44d140b80f0B1C7FdB6102c/logo.png"
+    },
+    {
+      "name": "BUSD IcecreamSwap",
+      "address": "0xd0CE781960c6356A7175988751bfC8d7cd28EA60",
+      "symbol": "BUSDi",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xd0CE781960c6356A7175988751bfC8d7cd28EA60/logo.png"
+    },
+    {
+      "name": "Ardiansyah Crypto",
+      "address": "0xbfa6394b9898566652276f1Fb40d65e75787D66f",
+      "symbol": "ARCO",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xbfa6394b9898566652276f1Fb40d65e75787D66f/logo.png"
+    },
+    {
+      "name": "DAI Multichain",
+      "address": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+      "symbol": "DAIm",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xfA9343C3897324496A05fC75abeD6bAC29f8A40f/logo.png"
+    },
+    {
+      "name": "Tether USD Multichain",
+      "address": "0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D",
+      "symbol": "USDTm",
       "decimals": 6,
-      "chainId": 5,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdc.png"
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xE3F5a90F9cb311505cd691a46596599aA1A0AD7D/logo.png"
+    },
+    {
+      "name": "USD Coin Multichain",
+      "address": "0x765277EebeCA2e31912C9946eAe1021199B39C61",
+      "symbol": "USDCm",
+      "decimals": 6,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x765277EebeCA2e31912C9946eAe1021199B39C61/logo.png"
+    },
+    {
+      "name": "BNB Multichain",
+      "address": "0x922D641a426DcFFaeF11680e5358F34d97d112E1",
+      "symbol": "BNBm",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x922D641a426DcFFaeF11680e5358F34d97d112E1/logo.png"
+    },
+    {
+      "name": "Ether Multichain",
+      "address": "0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8",
+      "symbol": "ETHm",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x6aB6d61428fde76768D7b45D8BFeec19c6eF91A8/logo.png"
+    },
+    {
+      "name": "Dogecoin Multichain",
+      "address": "0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844",
+      "symbol": "DOGEm",
+      "decimals": 8,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x80A16016cC4A2E6a2CACA8a4a498b1699fF0f844/logo.png"
+    },
+    {
+      "name": "BUSD Multichain",
+      "address": "0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b",
+      "symbol": "BUSDm",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b/logo.png"
+    },
+    {
+      "name": "Matic Multichain",
+      "address": "0xB44a9B6905aF7c801311e8F4E76932ee959c663C",
+      "symbol": "MATICm",
+      "decimals": 18,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xB44a9B6905aF7c801311e8F4E76932ee959c663C/logo.png"
+    },
+    {
+      "name": "Neorbit",
+      "address": "0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454",
+      "symbol": "NRB",
+      "decimals": 9,
+      "chainId": 32520,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xD67de0e0a0Fd7b15dC8348Bb9BE742F3c5850454/logo.png"
+    },
+
+    {
+      "name": "Wrapped DOGE",
+      "address": "0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101",
+      "symbol": "WDOGE",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0xb7ddc6414bf4f5515b52d8bdd69973ae205ff101/logo.png"
+    },
+    {
+      "name": "Dogechain Token",
+      "address": "0x7B4328c127B85369D9f82ca0503B000D09CF9180",
+      "symbol": "DC",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0x7B4328c127B85369D9f82ca0503B000D09CF9180/logo.png"
+    },
+    {
+      "name": "YodeDEX Token",
+      "address": "0x6FC4563460d5f45932C473334d5c1C5B4aEA0E01",
+      "symbol": "YODE",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0x6FC4563460d5f45932C473334d5c1C5B4aEA0E01/logo.png"
+    },
+    {
+      "name": "Atlantis",
+      "address": "0x338726dd694dB9e2230eC2bB8624a2d7F566C96d",
+      "symbol": "ATL",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0x338726dd694dB9e2230eC2bB8624a2d7F566C96d/logo.png"
+    },
+    {
+      "name": "IceCream",
+      "address": "0x81bCEa03678D1CEF4830942227720D542Aa15817",
+      "symbol": "ICE",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0x81bCEa03678D1CEF4830942227720D542Aa15817/logo.png"
     },
     {
       "name": "Tether USD",
-      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "address": "0xD2683b22287E63D22928CBe4514003a92507f474",
       "symbol": "USDT",
-      "decimals": 6,
-      "chainId": 1,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
-    },
-    {
-      "name": "Wrapped BNB",
-      "symbol": "WBNB",
-      "address": "0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd",
-      "chainId": 97,
       "decimals": 18,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/bnb.png"
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0xD2683b22287E63D22928CBe4514003a92507f474/logo.png"
     },
     {
-      "name": "Wrapped BTC",
-      "symbol": "WBTC",
-      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
-      "chainId": 1,
-      "decimals": 8,
-      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/wbtc.png"
+      "name": "Ether",
+      "address": "0xDC2393dc10734BF153153038943a5deB42b209cd",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0xDC2393dc10734BF153153038943a5deB42b209cd/logo.png"
+    },
+    {
+      "name": "BNB",
+      "address": "0xC7E6d7E08A89209F02af47965337714153c529F0",
+      "symbol": "BNB",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0xC7E6d7E08A89209F02af47965337714153c529F0/logo.png"
+    },
+    {
+      "name": "Shiba Inu",
+      "address": "0xB25cB6a275a8D6a613228FB161eB3627b50EB696",
+      "symbol": "SHIB",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0xB25cB6a275a8D6a613228FB161eB3627b50EB696/logo.png"
+    },
+    {
+      "name": "Dai",
+      "address": "0xc57F0eb99363e747D637B17BBdB4e1AB85e60631",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0xc57F0eb99363e747D637B17BBdB4e1AB85e60631/logo.png"
+    },
+    {
+      "name": "USD Coin",
+      "address": "0xce6c9c70f91c6797873EFC80505f972290A88f5D",
+      "symbol": "USDC",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0xce6c9c70f91c6797873EFC80505f972290A88f5D/logo.png"
+    },
+    {
+      "name": "BUSD",
+      "address": "0x905caAE1627856529BEd7b9572F02af5e5Ac6cA7",
+      "symbol": "BUSD",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0x905caAE1627856529BEd7b9572F02af5e5Ac6cA7/logo.png"
+    },
+    {
+      "name": "LunaGens",
+      "address": "0x876607adc4CC715CDE0183fdC49eA2539053f358",
+      "symbol": "LUNG",
+      "decimals": 18,
+      "chainId": 2000,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doge/assets/0x876607adc4CC715CDE0183fdC49eA2539053f358/logo.png"
+    },
+    {
+      "name": "IceCream",
+      "address": "0x54051D9DbE99687867090d95fe15C3D3E35512Ba",
+      "symbol": "ICE",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0x54051D9DbE99687867090d95fe15C3D3E35512Ba/logo.png"
+    },
+    {
+      "name": "BNB",
+      "address": "0x867f08A3ab824b42e8058a1B48e32E1dF205b092",
+      "symbol": "BNB",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0x867f08A3ab824b42e8058a1B48e32E1dF205b092/logo.png"
+    },
+    {
+      "name": "BUSD",
+      "address": "0x12AA82525DEfF84777fa78578A68ceB854A85f43",
+      "symbol": "BUSD",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0x12AA82525DEfF84777fa78578A68ceB854A85f43/logo.png"
+    },
+    {
+      "name": "Dai",
+      "address": "0x8687cD1d02A28098571067ddB18F33fEF667C929",
+      "symbol": "DAI",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0x8687cD1d02A28098571067ddB18F33fEF667C929/logo.png"
+    },
+    {
+      "name": "Dogecoin",
+      "address": "0xD2683b22287E63D22928CBe4514003a92507f474",
+      "symbol": "DOGE",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0xD2683b22287E63D22928CBe4514003a92507f474/logo.png"
+    },
+    {
+      "name": "Ether",
+      "address": "0xDC2393dc10734BF153153038943a5deB42b209cd",
+      "symbol": "ETH",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0xDC2393dc10734BF153153038943a5deB42b209cd/logo.png"
+    },
+    {
+      "name": "LunaGens",
+      "address": "0x669E7828dF230eccEc83f3a9a850b5A3F1141Af2",
+      "symbol": "LUNG",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0x669E7828dF230eccEc83f3a9a850b5A3F1141Af2/logo.png"
+    },
+    {
+      "name": "Shiba Inu",
+      "address": "0xC7E6d7E08A89209F02af47965337714153c529F0",
+      "symbol": "SHIB",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0xC7E6d7E08A89209F02af47965337714153c529F0/logo.png"
+    },
+    {
+      "name": "USD Coin",
+      "address": "0xB25cB6a275a8D6a613228FB161eB3627b50EB696",
+      "symbol": "USDC",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0xB25cB6a275a8D6a613228FB161eB3627b50EB696/logo.png"
+    },
+    {
+      "name": "Tether USD",
+      "address": "0x8e6dAa037b7F130020b30562f1E2a5D02233E6c5",
+      "symbol": "USDT",
+      "decimals": 18,
+      "chainId": 61916,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/doken/assets/0x8e6dAa037b7F130020b30562f1E2a5D02233E6c5/logo.png"
+    },
+
+    {
+      "name": "IceCream",
+      "address": "0x867f08A3ab824b42e8058a1B48e32E1dF205b092",
+      "symbol": "ICE",
+      "decimals": 18,
+      "chainId": 122,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D/logo.png"
+    },
+    {
+      "name": "Dogecoin",
+      "address": "0x12AA82525DEfF84777fa78578A68ceB854A85f43",
+      "symbol": "DOGE",
+      "decimals": 18,
+      "chainId": 122,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x46a8E16dB8Bb241618873bCA21Ef02F120EA4125/logo.png"
+    },
+    {
+      "name": "Shiba Inu",
+      "address": "0x8687cD1d02A28098571067ddB18F33fEF667C929",
+      "symbol": "SHIB",
+      "decimals": 18,
+      "chainId": 122,
+      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xADF3051f6fbC1f42ee20B2eDb47EA7f6CcaBe978/logo.png"
     }
   ]
 }

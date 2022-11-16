@@ -210,8 +210,12 @@ export const useGetChainName = () => {
   const path = window.location.href
 
   const getChain = useCallback(() => {
-    if (path.includes('eth') || path.includes('chainId=1')) return 'ETH'
-    return 'BSC'
+    if (path.includes('chainId=56')) return 'BSC'
+    if (path.includes('chainId=32520')) return 'BITGERT'
+    if (path.includes('chainId=2000')) return 'DOGECHAIN'
+    if (path.includes('chainId=61916')) return 'DOKEN'
+    if (path.includes('chainId=122')) return 'FUSE'
+    return 'BITGERT'
   }, [path])
   const [name, setName] = useState<MultiChainName | null>(getChain())
   const result = useMemo(() => name, [name])

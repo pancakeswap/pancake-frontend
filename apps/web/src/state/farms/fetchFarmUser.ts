@@ -16,8 +16,8 @@ export const fetchFarmUserAllowances = async (
   chainId: number,
   proxyAddress?: string,
 ) => {
-  const isBscNetwork = verifyBscNetwork(chainId)
-  const masterChefAddress = isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
+  // const isBscNetwork = verifyBscNetwork(chainId)
+  const masterChefAddress = getMasterChefAddress(chainId)  // isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
     const lpContractAddress = farm.lpAddress
@@ -58,8 +58,8 @@ export const fetchFarmUserStakedBalances = async (
   farmsToFetch: SerializedFarmConfig[],
   chainId: number,
 ) => {
-  const isBscNetwork = verifyBscNetwork(chainId)
-  const masterChefAddress = isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
+  // const isBscNetwork = verifyBscNetwork(chainId)
+  const masterChefAddress = getMasterChefAddress(chainId) // isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
     return {
@@ -70,7 +70,7 @@ export const fetchFarmUserStakedBalances = async (
   })
 
   const rawStakedBalances = await multicallv2({
-    abi: isBscNetwork ? masterchefABI : nonBscVault,
+    abi: masterchefABI, // isBscNetwork ? masterchefABI : nonBscVault,
     calls,
     chainId,
     options: { requireSuccess: false },
@@ -82,20 +82,19 @@ export const fetchFarmUserStakedBalances = async (
 }
 
 export const fetchFarmUserEarnings = async (account: string, farmsToFetch: SerializedFarmConfig[], chainId: number) => {
-  const isBscNetwork = verifyBscNetwork(chainId)
-  const multiCallChainId = farmFetcher.isTestnet(chainId) ? ChainId.BSC_TESTNET : ChainId.BSC
-  const userAddress = isBscNetwork ? account : await fetchCProxyAddress(account, multiCallChainId)
-  const masterChefAddress = getMasterChefAddress(multiCallChainId)
+  // const isBscNetwork = verifyBscNetwork(chainId)
+  const userAddress = account  // isBscNetwork ? account : await fetchCProxyAddress(account, chainId)
+  const masterChefAddress = getMasterChefAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
     return {
       address: masterChefAddress,
-      name: 'pendingCake',
+      name: 'pendingIce',
       params: [farm.pid, userAddress],
     }
   })
 
-  const rawEarnings = await multicallv2({ abi: masterchefABI, calls, chainId: multiCallChainId })
+  const rawEarnings = await multicallv2({ abi: masterchefABI, calls, chainId: chainId })
   const parsedEarnings = rawEarnings.map((earnings) => {
     return new BigNumber(earnings).toJSON()
   })

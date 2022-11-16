@@ -5,11 +5,11 @@ import { ChainId } from '@pancakeswap/sdk'
 import multicallAbi from './Multicall.json'
 
 export const multicallAddresses = {
-  1: '0xcA11bde05977b3631167028862bE2a173976CA11',
-  4: '0xcA11bde05977b3631167028862bE2a173976CA11',
-  5: '0xcA11bde05977b3631167028862bE2a173976CA11',
   56: '0xcA11bde05977b3631167028862bE2a173976CA11',
-  97: '0xcA11bde05977b3631167028862bE2a173976CA11',
+  32520: '0x2490b172F7de4f518713fB03E6D3f57B558c9964',
+  2000: '0x3d2e33eb61677869d87ac92d3c8891ec5c57fa5b',
+  61916: '0xb999ea90607a826a3e6e6646b404c3c7d11fa39d',
+  122: '0x43891084581fD07Ee1189f3a2f04e51c26a95B77',
 }
 
 export const getMulticallContract = (chainId: ChainId, provider) => {
@@ -38,7 +38,7 @@ export interface MulticallOptions extends CallOverrides {
 interface MulticallV2Params {
   abi: any[]
   calls: Call[]
-  chainId?: ChainId
+  chainId: ChainId
   options?: MulticallOptions
   provider?: Provider
 }
@@ -50,7 +50,7 @@ export interface CallV3 extends Call {
 
 interface MulticallV3Params {
   calls: CallV3[]
-  chainId?: ChainId
+  chainId: ChainId
   allowFailure?: boolean
   overrides?: CallOverrides
 }
@@ -59,7 +59,7 @@ export type MultiCallV2 = <T = any>(params: MulticallV2Params) => Promise<T>
 export type MultiCall = <T = any>(abi: any[], calls: Call[], chainId?: ChainId) => Promise<T>
 
 export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: number | undefined }) => TProvider) {
-  const multicall: MultiCall = async (abi: any[], calls: Call[], chainId = ChainId.BSC) => {
+  const multicall: MultiCall = async (abi: any[], calls: Call[], chainId: ChainId) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
     const itf = new Interface(abi)
@@ -75,7 +75,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     return res as any
   }
 
-  const multicallv2: MultiCallV2 = async ({ abi, calls, chainId = ChainId.BSC, options, provider: _provider }) => {
+  const multicallv2: MultiCallV2 = async ({ abi, calls, chainId, options, provider: _provider }) => {
     const { requireSuccess = true, ...overrides } = options || {}
     const multi = getMulticallContract(chainId, _provider || provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
@@ -95,7 +95,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     return res as any
   }
 
-  const multicallv3 = async ({ calls, chainId = ChainId.BSC, allowFailure, overrides }: MulticallV3Params) => {
+  const multicallv3 = async ({ calls, chainId, allowFailure, overrides }: MulticallV3Params) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
     const _calls = calls.map(({ abi, address, name, params, allowFailure: _allowFailure }) => {

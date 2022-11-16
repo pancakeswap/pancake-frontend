@@ -48,6 +48,10 @@ export const FarmTabButtons: React.FC<React.PropsWithChildren<FarmTabButtonsProp
       break;
   }
 
+  if (!hasStakeInFinishedFarms) {
+    return <></>
+  }
+
   return (
     <Wrapper>
       <ButtonMenu activeIndex={activeIndex} scale="sm" variant="subtle">

@@ -1,22 +1,13 @@
 import {
   MenuItemsType,
-  DropdownMenuItemType,
   SwapIcon,
   SwapFillIcon,
   EarnFillIcon,
   EarnIcon,
-  TrophyIcon,
-  TrophyFillIcon,
-  NftIcon,
-  NftFillIcon,
-  MoreIcon,
   DropdownMenuItems,
+  InfoIcon
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
-import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { perpLangMap } from 'utils/getPerpetualLanguageCode'
-import { perpTheme } from 'utils/getPerpetualTheme'
-import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
@@ -54,16 +45,19 @@ const config: (
           label: t('Swap'),
           href: '/swap',
         },
+          /*
         {
           label: t('Limit'),
           href: '/limit-orders',
           supportChainIds: SUPPORT_ONLY_BSC,
           image: '/images/decorations/3d-coin.png',
         },
+           */
         {
           label: t('Liquidity'),
           href: '/liquidity',
         },
+          /*
         {
           label: t('Perpetual'),
           href: `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT?theme=${perpTheme(
@@ -77,26 +71,39 @@ const config: (
           href: 'https://bridge.pancakeswap.finance/',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
+           */
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
     {
       label: t('Earn'),
       href: '/farms',
+      showItemsOnMobile: false,
       icon: EarnIcon,
       fillIcon: EarnFillIcon,
       image: '/images/decorations/pe2.png',
       items: [
+          /*
         {
           label: t('Farms'),
           href: '/farms',
         },
+           */
+          /*
         {
           label: t('Pools'),
           href: '/pools',
           supportChainIds: SUPPORT_ONLY_BSC,
         },
+           */
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
+    {
+      label: t('Bridge'),
+      href: 'https://bridge.icecreamswap.com',
+      showItemsOnMobile: false,
+      items: [],
+    },
+      /*
     {
       label: t('Win'),
       href: '/prediction',
@@ -127,6 +134,8 @@ const config: (
         },
       ],
     },
+       */
+      /*
     {
       label: t('NFT'),
       href: `${nftsBaseUrl}`,
@@ -149,6 +158,14 @@ const config: (
         },
       ],
     },
+       */
+    {
+      label: t('Info'),
+      href: '/info',
+      icon: InfoIcon,
+      items: [],
+    },
+      /*
     {
       label: '',
       href: '/info',
@@ -195,6 +212,7 @@ const config: (
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
+       */
   ].map((item) => addMenuItemSupported(item, chainId))
 
 export default config

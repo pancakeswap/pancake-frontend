@@ -91,10 +91,10 @@ export const masterchefUpdateCakePerSecond = (
   }
 }
 
-export type MasterchefUpdateCakeRateArgs = [bigint | string, bigint | string, boolean]
+export type MasterchefUpdateIceRateArgs = [bigint | string, bigint | string, boolean]
 
-export const masterchefUpdateCakeRate = (
-  args: MasterchefUpdateCakeRateArgs,
+export const masterchefUpdateIceRate = (
+  args: MasterchefUpdateIceRateArgs,
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',

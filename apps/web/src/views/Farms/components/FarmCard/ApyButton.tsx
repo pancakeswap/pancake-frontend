@@ -102,7 +102,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
         </Text>
       </Text>
       <Text ml="5px">
-        *{t('Base APR (CAKE yield only)')}:{' '}
+        *{t('Base APR (ICE yield only)')}:{' '}
         {strikethrough ? (
           <Text style={{ display: 'inline-block' }} color="secondary">{`${(apr * boostMultiplier).toFixed(2)}%`}</Text>
         ) : (

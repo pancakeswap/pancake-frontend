@@ -47,6 +47,8 @@ const Footer: React.FC<
 }) => {
   const { t } = useTranslation();
   const isSide = variant === "side";
+  return <Wrapper $isSide={isSide} />
+  /*
   return (
     <Wrapper $isSide={isSide}>
       <Flex flexDirection={isSide ? "column" : ["column", "column", "row"]} alignItems="center">
@@ -93,6 +95,7 @@ const Footer: React.FC<
       )}
     </Wrapper>
   );
+   */
 };
 
 export const SwapFooter = memo(Footer);

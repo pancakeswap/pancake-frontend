@@ -16,10 +16,10 @@ import { getIdsByTimeWindow, getPairSequentialId } from './utils'
 import pairDayDatas from '../queries/pairDayDatas'
 import pairHourDatasByIds from '../queries/pairHourDatasByIds'
 import lastPairHourId from '../queries/lastPairHourId'
+import {getMultiChainQueryEndPointWithStableSwap, multiChainQueryClient} from "../../info/constant";
 
-const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) => {
-  const client = infoClient
-
+const fetchPairPriceData = async ({ pairId, timeWindow, chainName }: fetchPairDataParams) => {
+  const client = getMultiChainQueryEndPointWithStableSwap(chainName)
   try {
     switch (timeWindow) {
       case PairDataTimeWindowEnum.DAY: {

@@ -4,6 +4,17 @@ import Svg from "../Svg";
 import { SvgProps } from "../types";
 
 const Logo: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
+
+  return (
+      <div {...props}>
+        <img src="images/icecream.png" alt="IceCream" width="32px" style={{verticalAlign: "middle"}}/>
+        <span style={{verticalAlign: "middle", fontSize: "1.2rem", fontWeight: "bold"}}>
+            IceCreamSwap
+        </span>
+      </div>
+  )
+
+    /*
   return (
     <Svg viewBox="0 0 1281 199" {...props}>
       <path
@@ -31,6 +42,7 @@ const Logo: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
       />
     </Svg>
   );
+     */
 };
 
 export default Logo;

@@ -35,7 +35,6 @@ export default function Swap() {
   }
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
-
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', , '100%']} height="100%" justifyContent="center" position="relative">

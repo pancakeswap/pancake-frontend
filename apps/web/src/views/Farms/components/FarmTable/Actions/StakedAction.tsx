@@ -346,7 +346,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       bCakeMultiplier={bCakeMultiplier}
       bCakeCalculatorSlot={bCakeCalculatorSlot}
-      showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
+      showCrossChainFarmWarning={false}
       crossChainWarningText={crossChainWarningText}
     />,
   )
@@ -357,7 +357,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       max={stakedBalance}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
-      showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
+      showCrossChainFarmWarning={false}
     />,
   )
 
@@ -437,7 +437,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       />
     )
   }
-
   if (!userDataReady) {
     return (
       <StyledActionContainer>

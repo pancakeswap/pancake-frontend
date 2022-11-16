@@ -7,16 +7,15 @@ import {
   Price,
   Token,
   WNATIVE,
-  WBNB,
   ERC20Token,
+  WETH9,
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
-import { BUSD, CAKE, USDC } from '@pancakeswap/tokens'
+import { USD, ICE, USDC } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
 import { PairState, usePairs } from './usePairs'
@@ -30,7 +29,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   const { chainId } = useActiveChainId()
   const wrapped = currency?.wrapped
   const wnative = WNATIVE[chainId]
-  const stable = BUSD[chainId] || USDC[chainId]
+  const stable = USD[chainId] || USDC[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
@@ -116,7 +115,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
 
 export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
-  const pairAddress = getLpAddress(tokenA, tokenB)
+  const pairAddress = getLpAddress(tokenA, tokenB, currencyA.chainId)
   const pairContract = usePairContract(pairAddress)
   const provider = useProvider({ chainId: currencyA.chainId })
 
@@ -166,20 +165,26 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
 export const useCakeBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
+  /*
   const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet cake if chain is testnet
   const cake: Token = isTestnet ? CAKE[ChainId.BSC_TESTNET] : CAKE[ChainId.BSC]
-  return usePriceByPairs(BUSD[cake.chainId], cake)
+  */
+  const cake: Token = ICE[ChainId.BITGERT]
+  return usePriceByPairs(USD[cake.chainId], cake)
 }
 
 // @Note: only fetch from one pair
 export const useBNBBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
+  /*
   const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet wbnb if chain is testnet
   const wbnb: Token = isTestnet ? WBNB[ChainId.BSC_TESTNET] : WBNB[ChainId.BSC]
-  return usePriceByPairs(BUSD[wbnb.chainId], wbnb)
+  */
+  const wbnb: Token = WETH9[ChainId.BSC]
+  return usePriceByPairs(USD[wbnb.chainId], wbnb)
 }

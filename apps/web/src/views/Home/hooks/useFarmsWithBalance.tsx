@@ -33,7 +33,7 @@ const useFarmsWithBalance = () => {
   ) => {
     const calls = farms.map((farm) => ({
       address: masterChefContract.address,
-      name: 'pendingCake',
+      name: 'pendingIce',
       params: [farm.pid, accountToCheck],
     }))
 

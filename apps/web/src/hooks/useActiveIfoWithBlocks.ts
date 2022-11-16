@@ -23,6 +23,7 @@ export const useActiveIfoWithBlocks = (): Ifo & { startBlock: number; endBlock: 
             name: 'endBlock',
           },
         ],
+        chainId,
         options: { requireSuccess: false },
       })
 

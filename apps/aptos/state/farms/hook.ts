@@ -22,7 +22,7 @@ import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { deserializeFarm } from './utils/deserializeFarm'
-import { pendingCake } from './utils/pendingCake'
+import { pendingIce } from './utils/pendingIce'
 
 const farmsPriceHelpLpMap = {
   [ChainId.MAINNET]: priceHelperLpsMainnet,
@@ -215,7 +215,7 @@ export function useFarmEarning(pid: string) {
   return useMemo(
     () =>
       masterChef?.data.pool_info[pid].acc_cake_per_share && userInfo && userInfo.amount !== '0'
-        ? pendingCake(
+        ? pendingIce(
             userInfo.amount,
             userInfo.reward_debt,
             masterChef?.data.pool_info[pid].acc_cake_per_share,

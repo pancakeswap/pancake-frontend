@@ -7,6 +7,7 @@ import { NftToken } from 'state/nftMarket/types'
 import { getNftApi } from 'state/nftMarket/helpers'
 import { multicallv2 } from 'utils/multicall'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
+import {ChainId} from "@pancakeswap/sdk";
 
 export interface GetProfileResponse {
   hasRegistered: boolean
@@ -53,6 +54,7 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
       abi: profileABI,
       calls: profileCalls,
       options: { requireSuccess: false },
+      chainId: ChainId.BSC,
     })
     const [[hasRegistered], profileResponse] = profileCallsResult
     if (!hasRegistered) {

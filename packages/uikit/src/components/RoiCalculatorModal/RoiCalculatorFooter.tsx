@@ -66,11 +66,11 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
     <>
       <Text>
         {t(
-          "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block."
+          "The Multiplier represents the proportion of ICE rewards each farm receives, as a proportion of the ICE distributed each block."
         )}
       </Text>
       <Text my="24px">
-        {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
+        {t("For example, if a 1x farm received 1 ICE per block, a 40x farm would receive 40 ICE per block.")}
       </Text>
       <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
     </>,
@@ -115,7 +115,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   {displayApr}%
                 </Text>
                 <Text color="textSubtle" small>
-                  *{t("Base APR (CAKE yield only)")}
+                  *{t("Base APR (ICE yield only)")}
                 </Text>
                 <Text small textAlign="right">
                   {apr.toFixed(2)}%
@@ -166,13 +166,15 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                 {t("Calculated based on current rates.")}
               </Text>
             </li>
-            {isFarm && (
+            {/*
+            isFarm && (
               <li>
                 <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
                   {t("LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.")}
                 </Text>
               </li>
-            )}
+            )
+            */}
             <li>
               <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
                 {t(

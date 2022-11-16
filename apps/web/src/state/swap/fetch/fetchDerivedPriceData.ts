@@ -1,5 +1,4 @@
 import orderBy from 'lodash/orderBy'
-import { INFO_CLIENT } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
@@ -8,12 +7,13 @@ import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import mapValues from 'lodash/mapValues'
 import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
 import { PairDataTimeWindowEnum } from '../types'
+import {MultiChainName, multiChainQueryEndPoint, multiChainQueryMainToken} from "../../info/constant";
 
-const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
+const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[], chainName: MultiChainName) => {
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
-    getDerivedPrices(tokenAddress, blocks),
-    INFO_CLIENT,
+    getDerivedPrices(tokenAddress, blocks, chainName),
+    multiChainQueryEndPoint[chainName],
     200,
   )
 
@@ -36,14 +36,16 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
   // Get Token prices in BNB
   Object.keys(prices).forEach((priceKey) => {
     const timestamp = priceKey.split('t')[1]
-    if (timestamp) {
+    const derivedKey = `derived${multiChainQueryMainToken[chainName]}`
+    if (timestamp && prices[priceKey]) {
       tokenPrices.push({
         tokenAddress,
         timestamp,
-        derivedBNB: prices[priceKey]?.derivedBNB ? parseFloat(prices[priceKey].derivedBNB) : 0,
+        derivedBNB: parseFloat(prices[priceKey][derivedKey]),
       })
     }
   })
+  console.info(tokenPrices)
 
   return orderBy(tokenPrices, (tokenPrice) => parseInt(tokenPrice.timestamp, 10))
 }
@@ -84,6 +86,7 @@ const fetchDerivedPriceData = async (
   token0Address: string,
   token1Address: string,
   timeWindow: PairDataTimeWindowEnum,
+  chainName: MultiChainName,
 ) => {
   const interval = getInterval(timeWindow)
   const endTimestamp = getUnixTime(new Date())
@@ -96,15 +99,15 @@ const fetchDerivedPriceData = async (
   }
 
   try {
-    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500)
+    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)
     if (!blocks || blocks.length === 0) {
       console.error('Error fetching blocks for timestamps', timestamps)
       return null
     }
 
     const [token0DerivedBnb, token1DerivedBnb] = await Promise.all([
-      getTokenDerivedBnbPrices(token0Address, blocks),
-      getTokenDerivedBnbPrices(token1Address, blocks),
+      getTokenDerivedBnbPrices(token0Address, blocks, chainName),
+      getTokenDerivedBnbPrices(token1Address, blocks, chainName),
     ])
     return { token0DerivedBnb, token1DerivedBnb }
   } catch (error) {

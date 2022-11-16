@@ -74,6 +74,7 @@ export interface RoiCalculatorModalProps {
   onBack?: () => void;
   onDismiss?: () => void;
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
+  showBooster?: boolean;
 }
 
 const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalProps>> = ({
@@ -100,6 +101,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   onBack,
   onDismiss,
   bCakeCalculatorSlot,
+  showBooster=false
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
@@ -248,7 +250,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
               </FullWidthButtonMenu>
             </>
           )}
-          {bCakeCalculatorSlot && bCakeCalculatorSlot(principalAsToken)}
+          {showBooster && bCakeCalculatorSlot && bCakeCalculatorSlot(principalAsToken)}
           {autoCompoundFrequency === 0 && (
             <>
               <Text mt="24px" color="secondary" bold fontSize="12px" textTransform="uppercase">

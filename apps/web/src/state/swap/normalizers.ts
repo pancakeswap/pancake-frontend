@@ -70,7 +70,7 @@ export const normalizePairDataByActiveToken = ({
     ?.map((pairPrice) => ({
       time: fromUnixTime(pairPrice.time),
       value:
-        activeToken === pairPrice?.token0Id
+        activeToken.toLowerCase() === pairPrice?.token0Id.toLowerCase()
           ? pairPrice.reserve1 / pairPrice.reserve0
           : pairPrice.reserve0 / pairPrice.reserve1,
     }))

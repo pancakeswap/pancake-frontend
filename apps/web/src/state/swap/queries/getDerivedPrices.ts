@@ -1,11 +1,12 @@
 import { gql } from 'graphql-request'
 import { Block } from 'state/info/types'
+import {MultiChainName, multiChainQueryMainToken} from "../../info/constant";
 
-export const getDerivedPrices = (tokenAddress: string, blocks: Block[]) =>
+export const getDerivedPrices = (tokenAddress: string, blocks: Block[], chainName: MultiChainName) =>
   blocks.map(
     (block) => `
     t${block.timestamp}:tokens(where: {id:"${tokenAddress}"} , block: { number: ${block.number} }, first: 1) { 
-        derivedBNB
+        derived${multiChainQueryMainToken[chainName]}
       }
     `,
   )

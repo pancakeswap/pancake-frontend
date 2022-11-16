@@ -6,8 +6,8 @@ import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 
 const useApproveFarm = (lpContract: Contract, chainId: number) => {
-  const isBscNetwork = verifyBscNetwork(chainId)
-  const contractAddress = isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
+  // const isBscNetwork = verifyBscNetwork(chainId)
+  const contractAddress = getMasterChefAddress(chainId)  // isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
 
   const { callWithGasPrice } = useCallWithGasPrice()
   const handleApprove = useCallback(async () => {

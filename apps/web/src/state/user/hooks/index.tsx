@@ -426,14 +426,11 @@ export function useGasPrice(chainIdOverride?: number): string {
   )
   const { data } = useFeeData({
     chainId,
-    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+    enabled: chainId !== ChainId.BSC,
     watch: true,
   })
   if (chainId === ChainId.BSC) {
     return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : userGas
-  }
-  if (chainId === ChainId.BSC_TESTNET) {
-    return GAS_PRICE_GWEI.testnet
   }
   if (chain?.testnet) {
     return data?.formatted?.maxPriorityFeePerGas
@@ -479,7 +476,7 @@ export function usePairAdder(): (pair: Pair) => void {
  * @param tokenB the other token
  */
 export function toV2LiquidityToken([tokenA, tokenB]: [ERC20Token, ERC20Token]): ERC20Token {
-  return new ERC20Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'Cake-LP', 'Pancake LPs')
+  return new ERC20Token(tokenA.chainId, Pair.getAddress(tokenA, tokenB), 18, 'ICELP', 'icecreamswap.com LP')
 }
 
 /**
@@ -496,7 +493,6 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
     const farms = await getFarmConfig(chainId)
 
     const fPairs: [ERC20Token, ERC20Token][] = farms
-      .filter((farm) => farm.pid !== 0)
       .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
 
     return fPairs

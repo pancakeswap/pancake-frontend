@@ -8,6 +8,14 @@ export const bscProvider = new StaticJsonRpcProvider(
   56,
 )
 
+export const bitgertProvider = new StaticJsonRpcProvider(
+    {
+        url: 'https://rpc.icecreamswap.com',
+        skipFetchSetup: true,
+    },
+    32520,
+)
+
 export const bscTestnetProvider = new StaticJsonRpcProvider(
   {
     url: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',

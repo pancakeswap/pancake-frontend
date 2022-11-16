@@ -21,8 +21,8 @@ const NewFarmStep2: React.FC<React.PropsWithChildren> = () => {
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const activeFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier !== '0X')
-  const activeFarmsV1 = farmsV1LP.filter((farm) => farm.pid !== 0)
+  const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X')
+  const activeFarmsV1 = farmsV1LP
 
   const v1StakedOrHasTokenBalance = activeFarmsV1.filter((farm) => {
     const hasStakedBalance = new BigNumber(farm.userData.stakedBalance).isGreaterThan(0)

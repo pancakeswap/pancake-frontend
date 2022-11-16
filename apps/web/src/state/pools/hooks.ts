@@ -47,7 +47,6 @@ const getActiveFarms = async (chainId: number) => {
   return farmsConfig
     .filter(
       ({ token, pid, quoteToken }) =>
-        pid !== 0 &&
         ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
           (token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB') ||
           lPoolAddresses.find((poolAddress) => poolAddress === token.address)),
@@ -60,7 +59,6 @@ const getCakePriceFarms = async (chainId: number) => {
   return farmsConfig
     .filter(
       ({ token, pid, quoteToken }) =>
-        pid !== 0 &&
         ((token.symbol === 'CAKE' && quoteToken.symbol === 'WBNB') ||
           (token.symbol === 'BUSD' && quoteToken.symbol === 'WBNB')),
     )

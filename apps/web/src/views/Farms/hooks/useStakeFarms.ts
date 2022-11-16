@@ -26,7 +26,8 @@ const useStakeFarms = (pid: number, vaultPid?: number) => {
     [nonBscVaultContract, vaultPid, gasPrice, account, oraclePrice, chainId],
   )
 
-  return { onStake: vaultPid ? handleStakeNonBsc : handleStake }
+  // return { onStake: vaultPid ? handleStakeNonBsc : handleStake }
+  return { onStake: handleStake }
 }
 
 export default useStakeFarms

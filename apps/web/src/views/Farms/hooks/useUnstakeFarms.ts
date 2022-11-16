@@ -26,7 +26,8 @@ const useUnstakeFarms = (pid: number, vaultPid?: number) => {
     [nonBscVaultContract, vaultPid, gasPrice, account, oraclePrice, chainId],
   )
 
-  return { onUnstake: vaultPid ? handleUnstakeNonBsc : handleUnstake }
+  // return { onUnstake: vaultPid ? handleUnstakeNonBsc : handleUnstake }
+  return { onUnstake: handleUnstake }
 }
 
 export default useUnstakeFarms

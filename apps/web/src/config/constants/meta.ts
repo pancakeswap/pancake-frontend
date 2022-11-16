@@ -36,16 +36,16 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/voting': { basePath: true, title: t('Voting') },
       '/voting/proposal': { title: t('Proposals') },
       '/voting/proposal/create': { title: t('Make a Proposal') },
-      '/info': { title: t('Overview'), description: 'View statistics for Pancakeswap exchanges.' },
-      '/info/pools': { title: t('Pools'), description: 'View statistics for Pancakeswap exchanges.' },
-      '/info/tokens': { title: t('Tokens'), description: 'View statistics for Pancakeswap exchanges.' },
+      '/info': { title: t('Overview'), description: 'View statistics for IcecreamSwap exchanges.' },
+      '/info/pools': { title: t('Pools'), description: 'View statistics for IcecreamSwap exchanges.' },
+      '/info/tokens': { title: t('Tokens'), description: 'View statistics for IcecreamSwap exchanges.' },
       '/nfts/collections': { basePath: true, title: t('Collections') },
       '/nfts/activity': { title: t('Activity') },
       '/profile': { basePath: true, title: t('Profile') },
       '/pancake-squad': { basePath: true, title: t('Pancake Squad') },
       '/pottery': { basePath: true, title: t('Pottery') },
     },
-    defaultTitleSuffix: t('PancakeSwap'),
+    defaultTitleSuffix: t('IcecreamSwap'),
   }
 }
 

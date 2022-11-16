@@ -185,6 +185,7 @@ export const getFarmsPrices = (
       nativeStableLp.stable,
       quoteTokenPriceBusd,
     )
+
     const lpTokenPrice = isStableFarm(farm)
       ? getStableLpTokenPrice(
           FixedNumber.from(farm.lpTotalSupply),

@@ -115,4 +115,92 @@ export const bscTest: Chain = {
   testnet: true,
 }
 
+export const bitgert: Chain = {
+  id: 32520,
+  name: 'Bitgert',
+  network: 'bitgert',
+  rpcUrls: {
+    public: 'https://rpc.icecreamswap.com',
+    default: 'https://rpc.icecreamswap.com',
+  },
+  blockExplorers: {
+    default: { name: 'Brisescan', url: 'https://brisescan.com' },
+  },
+  nativeCurrency: {
+    name: 'Brise',
+    symbol: 'BRISE',
+    decimals: 18,
+  },
+  multicall: {
+    address: '0x2490b172F7de4f518713fB03E6D3f57B558c9964',
+    blockCreated: 1541584,
+  },
+}
+
+export const dogechain: Chain = {
+  id: 2000,
+  name: 'Dogechain',
+  network: 'dogechain',
+  rpcUrls: {
+    public: 'https://rpc.dogechain.dog',
+    default: 'https://rpc.dogechain.dog',
+  },
+  blockExplorers: {
+    default: { name: 'Dogechain Explorer', url: 'https://explorer.dogechain.dog' },
+  },
+  nativeCurrency: {
+    name: 'Dogecoin',
+    symbol: 'DOGE',
+    decimals: 18,
+  },
+  multicall: {
+    address: '0x3d2e33eb61677869d87ac92d3c8891ec5c57fa5b',
+    blockCreated: 4308714,
+  },
+}
+
+export const dokenchain: Chain = {
+  id: 61916,
+  name: 'Dokenchain',
+  network: 'doken',
+  rpcUrls: {
+    public: 'https://nyrpc.doken.dev',
+    default: 'https://nyrpc.doken.dev',
+  },
+  blockExplorers: {
+    default: { name: 'Doken Explorer', url: 'https://explorer.doken.dev' },
+  },
+  nativeCurrency: {
+    name: 'Doken',
+    symbol: 'DKN',
+    decimals: 18,
+  },
+  multicall: {
+    address: '0xb999ea90607a826a3e6e6646b404c3c7d11fa39d',
+    blockCreated: 451563,
+  },
+}
+
+export const fuse: Chain = {
+  id: 122,
+  name: 'Fuse',
+  network: 'fuse',
+  rpcUrls: {
+    public: 'https://rpc.fuse.io',
+    default: 'https://rpc.fuse.io',
+  },
+  blockExplorers: {
+    default: { name: 'Fuse Explorer', url: 'https://explorer.fuse.io' },
+  },
+  nativeCurrency: {
+    name: 'Fuse',
+    symbol: 'FUSE',
+    decimals: 18,
+  },
+  multicall: {
+    address: '0x43891084581fD07Ee1189f3a2f04e51c26a95B77',
+    blockCreated: 20060779,
+  },
+}
+
 export { rinkeby, mainnet, goerli }

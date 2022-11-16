@@ -2,11 +2,11 @@ import { FixedNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { getFarmCakeRewardApr, SerializedFarmConfig } from '@pancakeswap/farms'
 import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
-import { BUSD, CAKE } from '@pancakeswap/tokens'
+import { USD, ICE } from '@pancakeswap/tokens'
 import { farmFetcher } from './helper'
 import { FarmKV, FarmResult } from './kv'
 import { updateLPsAPR } from './lpApr'
-import { bscProvider, bscTestnetProvider } from './provider'
+import {bitgertProvider, bscProvider, bscTestnetProvider} from './provider'
 
 const pairAbi = [
   {
@@ -36,24 +36,39 @@ const pairAbi = [
 
 const cakeBusdPairMap = {
   [ChainId.BSC]: {
-    address: Pair.getAddress(CAKE[ChainId.BSC], BUSD[ChainId.BSC]),
-    tokenA: CAKE[ChainId.BSC],
-    tokenB: BUSD[ChainId.BSC],
+    address: Pair.getAddress(ICE[ChainId.BSC], USD[ChainId.BSC]),
+    tokenA: ICE[ChainId.BSC],
+    tokenB: USD[ChainId.BSC],
   },
-  [ChainId.BSC_TESTNET]: {
-    address: Pair.getAddress(CAKE[ChainId.BSC_TESTNET], BUSD[ChainId.BSC_TESTNET]),
-    tokenA: CAKE[ChainId.BSC_TESTNET],
-    tokenB: BUSD[ChainId.BSC_TESTNET],
+  [ChainId.BITGERT]: {
+    address: Pair.getAddress(ICE[ChainId.BITGERT], USD[ChainId.BITGERT]),
+    tokenA: ICE[ChainId.BITGERT],
+    tokenB: USD[ChainId.BITGERT],
+  },
+  [ChainId.DOGE]: {
+    address: Pair.getAddress(ICE[ChainId.DOGE], USD[ChainId.DOGE]),
+    tokenA: ICE[ChainId.DOGE],
+    tokenB: USD[ChainId.DOGE],
+  },
+  [ChainId.DOKEN]: {
+    address: Pair.getAddress(ICE[ChainId.DOKEN], USD[ChainId.DOKEN]),
+    tokenA: ICE[ChainId.DOKEN],
+    tokenB: USD[ChainId.DOKEN],
+  },
+  [ChainId.FUSE]: {
+    address: Pair.getAddress(ICE[ChainId.FUSE], USD[ChainId.FUSE]),
+    tokenA: ICE[ChainId.FUSE],
+    tokenB: USD[ChainId.FUSE],
   },
 }
 
 const getCakePrice = async (isTestnet: boolean) => {
-  const pairConfig = cakeBusdPairMap[isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC]
-  const pairContract = new Contract(pairConfig.address, pairAbi, isTestnet ? bscTestnetProvider : bscProvider)
+  // const pairConfig = cakeBusdPairMap[isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC]
+  const pairConfig = cakeBusdPairMap[ChainId.BITGERT]
+  const pairContract = new Contract(pairConfig.address, pairAbi, bitgertProvider)
   const reserves = await pairContract.getReserves()
   const { reserve0, reserve1 } = reserves
   const { tokenA, tokenB } = pairConfig
-
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
 
   const pair = new Pair(
@@ -85,7 +100,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
       chainId,
       isTestnet,
-      farms: farmsConfig.filter((f) => f.pid !== 0).concat(lpPriceHelpers),
+      farms: farmsConfig.concat(lpPriceHelpers),
     })
 
     const cakeBusdPrice = await getCakePrice(isTestnet)

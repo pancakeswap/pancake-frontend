@@ -222,7 +222,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       onDone()
     }
   }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
-
   const bCakeCalculatorSlot = (calculatorBalance) => (
     <BCakeCalculator
       targetInputBalance={calculatorBalance}
@@ -251,7 +250,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       bCakeMultiplier={bCakeMultiplier}
       bCakeCalculatorSlot={bCakeCalculatorSlot}
-      showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
+      showCrossChainFarmWarning={false}
       crossChainWarningText={crossChainWarningText}
     />,
   )
@@ -262,7 +261,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       max={stakedBalance}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
-      showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
+      showCrossChainFarmWarning={false}
     />,
   )
 

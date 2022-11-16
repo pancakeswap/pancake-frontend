@@ -1,8 +1,11 @@
-import { PairDataTimeWindowEnum } from '../types'
+import {ChainId} from "@pancakeswap/sdk";
+import { PairDataTimeWindowEnum } from '../types';
+import {MultiChainName} from "../../info/constant";
 
 export type fetchPairDataParams = {
   pairId: string
   timeWindow: PairDataTimeWindowEnum
+  chainName: MultiChainName
 }
 
 export type LastPairHourIdResponse = {
