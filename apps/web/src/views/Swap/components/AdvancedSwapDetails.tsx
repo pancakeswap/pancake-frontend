@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, Trade, TradeType, Pair, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Token, TradeType } from '@pancakeswap/sdk'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 
 import { AutoColumn } from 'components/Layout/Column'
@@ -7,8 +7,6 @@ import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useState } from 'react'
 import { Field } from 'state/swap/actions'
-import { useUserSlippageTolerance } from 'state/user/hooks'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
@@ -102,26 +100,43 @@ function TradeSummary({
 }
 
 export interface AdvancedSwapDetailsProps {
-  trade?: Trade<Currency, Currency, TradeType>
+  tradeData: {
+    pairs?: Pair[]
+    path?: Token[]
+    priceImpactWithoutFee?: Percent
+    realizedLPFee?: CurrencyAmount<Currency>
+    slippageAdjustedAmounts?: {
+      INPUT?: CurrencyAmount<Currency>
+      OUTPUT?: CurrencyAmount<Currency>
+    }
+    inputAmount?: CurrencyAmount<Currency>
+    outputAmount?: CurrencyAmount<Currency>
+    tradeType?: TradeType
+  }
 }
 
-export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
+export function AdvancedSwapDetails({ tradeData }: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const {
+    pairs,
+    path,
+    priceImpactWithoutFee,
+    realizedLPFee,
+    slippageAdjustedAmounts,
+    inputAmount,
+    outputAmount,
+    tradeType,
+  } = tradeData
   const [isModalOpen, setIsModalOpen] = useState(() => false)
-
-  const showRoute = Boolean(trade && trade.route.path.length > 1)
-  const { pairs, path } = trade.route
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
+  const showRoute = Boolean(path && path.length > 1)
   return (
     <AutoColumn gap="0px">
-      {trade && (
+      {inputAmount && (
         <>
           <TradeSummary
-            inputAmount={trade.inputAmount}
-            outputAmount={trade.outputAmount}
-            tradeType={trade.tradeType}
+            inputAmount={inputAmount}
+            outputAmount={outputAmount}
+            tradeType={tradeType}
             slippageAdjustedAmounts={slippageAdjustedAmounts}
             priceImpactWithoutFee={priceImpactWithoutFee}
             realizedLPFee={realizedLPFee}
