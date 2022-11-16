@@ -40,11 +40,11 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
   const chainPath = useMultiChainPath()
   const { address: account } = useAccount()
 
-  const isPools = router.pathname === `/info${chainPath && `/[chainName]`}/pools`
+  const isPairs = router.pathname === `/info${chainPath && `/[chainName]`}/pairs`
   const isTokens = router.pathname === `/info${chainPath && `/[chainName]`}/tokens`
   const stableSwapQuery = isStableSwap ? '?type=stableSwap' : ''
   let activeIndex = 0
-  if (isPools) {
+  if (isPairs) {
     activeIndex = 1
   }
   if (isTokens) {
@@ -58,7 +58,7 @@ const InfoNav: React.FC<{ isStableSwap: boolean }> = ({ isStableSwap }) => {
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}${stableSwapQuery}`}>
               {t('Overview')}
             </ButtonMenuItem>
-            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/pools${stableSwapQuery}`}>
+            <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/pairs${stableSwapQuery}`}>
               {t('Pairs')}
             </ButtonMenuItem>
             <ButtonMenuItem as={NextLinkFromReactRouter} to={`/info${chainPath}/tokens${stableSwapQuery}`}>
@@ -86,7 +86,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const switchNetwork = useCallback(
     (chainPath: string) => {
       if (activeIndex === 0) router.push(`/info${chainPath}`)
-      if (activeIndex === 1) router.push(`/info${chainPath}/pools`)
+      if (activeIndex === 1) router.push(`/info${chainPath}/pairs`)
       if (activeIndex === 2) router.push(`/info${chainPath}/tokens`)
     },
     [router, activeIndex],

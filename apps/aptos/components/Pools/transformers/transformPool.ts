@@ -15,6 +15,37 @@ import splitTypeTag from '../utils/splitTypeTag'
 import getTokenByAddress from '../utils/getTokenByAddress'
 import { getPoolApr } from './transformCakePool'
 
+function calcPendingRewardToken({
+  lastRewardTimestamp,
+  totalStakedToken,
+  userStakedAmount,
+  rewardPerSecond,
+  currentRewardDebt,
+  tokenPerShare,
+  precisionFactor,
+}) {
+  const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
+
+  const rewardPendingToken = FixedNumber.from(rewardPerSecond).mulUnsafe(multiplier)
+
+  const totalStake = FixedNumber.from(totalStakedToken)
+
+  const precision = FixedNumber.from(precisionFactor)
+
+  const latestTokenPerShare = FixedNumber.from(tokenPerShare).addUnsafe(
+    rewardPendingToken.mulUnsafe(precision).divUnsafe(totalStake),
+  )
+
+  const rewardDebt = FixedNumber.from(currentRewardDebt)
+
+  const pendingReward = FixedNumber.from(userStakedAmount)
+    .mulUnsafe(latestTokenPerShare)
+    .divUnsafe(precision)
+    .subUnsafe(rewardDebt)
+
+  return pendingReward
+}
+
 const transformPool = (
   resource: PoolResource,
   balances,
@@ -26,6 +57,10 @@ const transformPool = (
   const startYet = getSecondsLeftFromNow(startTime)
 
   if (!startYet) return undefined
+
+  const endTime = _toNumber(_get(resource, 'data.end_timestamp', '0'))
+
+  const isFinished = getSecondsLeftFromNow(endTime)
 
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
@@ -52,33 +87,26 @@ const transformPool = (
     )
 
     if (foundStakedPoolBalance) {
-      const currentRewardDebt = _get(foundStakedPoolBalance, 'data.reward_debt')
-
       const userStakedAmount = _get(foundStakedPoolBalance, 'data.amount')
 
       if (userStakedAmount && _toNumber(totalStakedToken)) {
+        const currentRewardDebt = _get(foundStakedPoolBalance, 'data.reward_debt')
         const lastRewardTimestamp = _toNumber(_get(resource, 'data.last_reward_timestamp'))
+        const tokenPerShare = _get(resource, 'data.acc_token_per_share')
+        const precisionFactor = _get(resource, 'data.precision_factor')
 
-        const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
-
-        const frewardPerSecond = FixedNumber.from(rewardPerSecond)
-
-        const rewardPendingToken = frewardPerSecond.mulUnsafe(multiplier)
-
-        const tokenPerShare = FixedNumber.from(_get(resource, 'data.acc_token_per_share'))
-        const precisionFactor = FixedNumber.from(_get(resource, 'data.precision_factor'))
-        const totalStake = FixedNumber.from(totalStakedToken)
-
-        const latestTokenPerShare = tokenPerShare.addUnsafe(
-          rewardPendingToken.mulUnsafe(precisionFactor).divUnsafe(totalStake),
-        )
-
-        const rewardDebt = FixedNumber.from(currentRewardDebt)
-
-        const pendingReward = FixedNumber.from(userStakedAmount)
-          .mulUnsafe(latestTokenPerShare)
-          .divUnsafe(precisionFactor)
-          .subUnsafe(rewardDebt)
+        const pendingReward =
+          lastRewardTimestamp > endTime
+            ? '0'
+            : calcPendingRewardToken({
+                currentRewardDebt,
+                lastRewardTimestamp,
+                totalStakedToken,
+                userStakedAmount,
+                rewardPerSecond,
+                tokenPerShare,
+                precisionFactor,
+              })
 
         userData = {
           ...userData,
@@ -104,8 +132,6 @@ const transformPool = (
       tokenPerSecond: rewardPerSecond,
       totalStaked: totalStakedToken,
     }) || 0
-
-  const isFinished = getSecondsLeftFromNow(_toNumber(_get(resource, 'data.end_timestamp', '0')))
 
   return {
     // Ignore sousId

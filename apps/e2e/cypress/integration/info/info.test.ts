@@ -5,7 +5,7 @@ describe('Info Page', () => {
   })
 
   it('loads info pools page', () => {
-    cy.visit('/info/pools')
+    cy.visit('/info/pairs')
     cy.get('#info-pools-title').should('be.visible')
   })
 

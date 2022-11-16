@@ -97,7 +97,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               <NextLinkFromReactRouter to={`/info${chainPath}`}>
                 <Text color="primary">{t('Info')}</Text>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/info${chainPath}/pools`}>
+              <NextLinkFromReactRouter to={`/info${chainPath}/pairs`}>
                 <Text color="primary">{t('Pairs')}</Text>
               </NextLinkFromReactRouter>
               <Flex>

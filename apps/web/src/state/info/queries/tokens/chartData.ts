@@ -11,7 +11,7 @@ const getTokenChartData = async (
 ): Promise<{ data?: ChartEntry[]; error: boolean }> => {
   try {
     const query = gql`
-      query tokenDayDatas($startTime: Int!, $skip: Int!, $address: Bytes!) {
+      query tokenDayDatas($startTime: Int!, $skip: Int!, $address: String!) {
         tokenDayDatas(
           first: 1000
           skip: $skip

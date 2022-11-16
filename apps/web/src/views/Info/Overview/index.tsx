@@ -1,10 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Flex, Heading } from '@pancakeswap/uikit'
+import { Card, Flex, Heading, Message, MessageText } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
+import { checkIsStableSwap } from 'state/info/constant'
 import {
   useAllPoolDataSWR,
   useAllTokenDataSWR,
+  useGetChainName,
   useProtocolChartDataSWR,
   useProtocolDataSWR,
   useProtocolTransactionsSWR,
@@ -68,8 +70,17 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
     return poolDatas.some((pool) => !pool?.token0Price)
   }, [poolDatas])
 
+  const isStableSwap = checkIsStableSwap()
+  const chainName = useGetChainName()
   return (
     <Page>
+      {chainName === 'BSC' && !isStableSwap && (
+        <Message variant="warning" mb="10px">
+          <MessageText fontSize={16}>
+            {t('PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.')}
+          </MessageText>
+        </Message>
+      )}
       <Heading scale="lg" mb="16px" id="info-overview-title">
         {t('PancakeSwap Info & Analytics')}
       </Heading>
