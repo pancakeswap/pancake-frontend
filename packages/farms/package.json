@@ -6,6 +6,9 @@
   "scripts": {
     "build": "npx tsx scripts/build.ts"
   },
+  "devDependencies": {
+    "tsx": "^3.12.1"
+  },
   "dependencies": {
     "@pancakeswap/sdk": "*",
     "@pancakeswap/tokens": "*",

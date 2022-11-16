@@ -31,7 +31,7 @@ import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCall
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useAtomValue } from 'jotai'
 import { Field } from 'state/swap/actions'
-import { useSwapState } from 'state/swap/hooks'
+import { useSwapState, useDerivedSwapInfo } from 'state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { currencyId } from 'utils/currencyId'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
@@ -95,14 +95,15 @@ export function SmartSwapForm() {
     [inputCurrency, outputCurrency],
   )
 
+  const { v2Trade } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
   const {
-    v2Trade,
+    trade: tradeWithStableSwap,
     currencyBalances,
     parsedAmount,
     inputError: swapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
 
-  // console.log({ v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
+  console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
 
   const {
     wrapType,
@@ -110,20 +111,20 @@ export function SmartSwapForm() {
     inputError: wrapInputError,
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-  const trade = showWrap ? undefined : v2Trade
+  const trade = showWrap ? undefined : tradeWithStableSwap
 
-  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage) : undefined
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
+  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
+  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(v2Trade)
 
   const parsedAmounts = showWrap
     ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
+      [Field.INPUT]: parsedAmount,
+      [Field.OUTPUT]: parsedAmount,
+    }
     : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      }
+      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
 
@@ -156,8 +157,9 @@ export function SmartSwapForm() {
   //   'formattedAmounts???',
   // )
 
+  // TODO replace with duplicated hook
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, chainId)
+  const [approval, approveCallback] = useApproveCallbackFromTrade(v2Trade, allowedSlippage, chainId)
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -333,7 +335,7 @@ export function SmartSwapForm() {
                     {isLoading ? (
                       <Skeleton width="100%" ml="8px" height="24px" />
                     ) : (
-                      <SwapUI.TradePrice price={trade?.executionPrice} />
+                      <SwapUI.TradePrice price={v2Trade?.executionPrice} />
                     )}
                   </>
                 )
@@ -364,7 +366,7 @@ export function SmartSwapForm() {
             approvalSubmitted={approvalSubmitted}
             currencies={currencies}
             isExpertMode={isExpertMode}
-            trade={trade}
+            trade={v2Trade}
             swapInputError={swapInputError}
             currencyBalances={currencyBalances}
             recipient={recipient}
@@ -376,14 +378,14 @@ export function SmartSwapForm() {
       {!swapIsUnsupported ? (
         trade && (
           <AdvancedSwapDetailsDropdown
-            pairs={trade?.route?.pairs}
-            path={trade?.route.path}
+            pairs={v2Trade?.route?.pairs}
+            path={v2Trade?.route.path}
             priceImpactWithoutFee={priceImpactWithoutFee}
             realizedLPFee={realizedLPFee}
             slippageAdjustedAmounts={slippageAdjustedAmounts}
-            inputAmount={trade?.inputAmount}
-            outputAmount={trade?.outputAmount}
-            tradeType={trade?.tradeType}
+            inputAmount={v2Trade?.inputAmount}
+            outputAmount={v2Trade?.outputAmount}
+            tradeType={v2Trade?.tradeType}
           />
         )
       ) : (
