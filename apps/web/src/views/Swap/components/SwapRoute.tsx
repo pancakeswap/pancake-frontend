@@ -1,12 +1,12 @@
+import { Token } from '@pancakeswap/sdk'
+import { ChevronRightIcon, Flex, Text } from '@pancakeswap/uikit'
 import { Fragment, memo } from 'react'
-import { Trade, Currency, TradeType } from '@pancakeswap/sdk'
-import { Text, Flex, ChevronRightIcon } from '@pancakeswap/uikit'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 
-export default memo(function SwapRoute({ trade }: { trade: Trade<Currency, Currency, TradeType> }) {
+export default memo(function SwapRoute({ path }: { path: Token[] }) {
   return (
     <Flex flexWrap="wrap" width="100%" justifyContent="flex-end" alignItems="center">
-      {trade.route.path.map((token, i, path) => {
+      {path.map((token, i) => {
         const isLastItem: boolean = i === path.length - 1
         const currency = unwrappedToken(token)
         return (

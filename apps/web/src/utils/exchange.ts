@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Trade, TradeType } from '@pancakeswap/sdk'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import {
@@ -37,7 +37,7 @@ export function useRouterContract() {
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, TradeType> | null): {
+export function computeTradePriceBreakdown(trade: Trade<Currency, Currency, TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
   realizedLPFee: CurrencyAmount<Currency> | undefined | null
 } {
@@ -53,7 +53,7 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
       )
 
   // remove lp fees from price impact
-  const priceImpactWithoutFeeFraction = trade && realizedLPFee ? trade.priceImpact.subtract(realizedLPFee) : undefined
+  const priceImpactWithoutFeeFraction = trade && realizedLPFee ? trade?.priceImpact.subtract(realizedLPFee) : undefined
 
   // the x*y=k impact
   const priceImpactWithoutFeePercent = priceImpactWithoutFeeFraction
@@ -73,6 +73,7 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
+
 export function computeSlippageAdjustedAmounts(
   trade: Trade<Currency, Currency, TradeType> | StableTrade | undefined,
   allowedSlippage: number,
