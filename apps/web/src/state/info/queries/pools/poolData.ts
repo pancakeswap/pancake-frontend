@@ -1,17 +1,15 @@
 /* eslint-disable no-param-reassign */
 import { gql } from 'graphql-request'
 import { useEffect, useState } from 'react'
-import mapValues from 'lodash/mapValues'
-import { PoolData, Block } from 'state/info/types'
+import { Block, PoolData } from 'state/info/types'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
-import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../../constant'
 import { useGetChainName } from '../../hooks'
-import { MultiChainName, multiChainQueryMainToken, getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 import { fetchTopPoolAddresses } from './topPools'
-import { getPairTokenMap } from '../helpers'
 
 interface PoolFields {
   id: string
@@ -72,6 +70,16 @@ const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pools: s
     volumeUSD
     token0Price
     token1Price
+    token0 {
+      id
+      symbol
+      name
+    }
+    token1 {
+      id
+      symbol
+      name
+    }
   }`
 }
 
@@ -83,8 +91,6 @@ export const fetchPoolData = async (
   poolAddresses: string[],
   chainName: 'ETH' | 'BSC' = 'BSC',
 ) => {
-  const pairTokenMap = await getPairTokenMap(poolAddresses, chainName)
-
   try {
     const query = gql`
       query pools {
@@ -96,22 +102,7 @@ export const fetchPoolData = async (
       }
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<PoolsQueryResponse>(query)
-    const dataWithTokenInfo = mapValues(data, (poolFieldsArray) => {
-      return poolFieldsArray
-        ? poolFieldsArray
-            .map((poolFields) => {
-              const pairTokenResult = pairTokenMap[poolFields.id.toLowerCase()] || pairTokenMap[poolFields.id]
-              return pairTokenResult
-                ? {
-                    ...poolFields,
-                    ...pairTokenResult,
-                  }
-                : null
-            })
-            .filter(Boolean)
-        : null
-    })
-    return { data: dataWithTokenInfo, error: false }
+    return { data, error: false }
   } catch (error) {
     console.error('Failed to fetch pool data', error)
     return { error: true }
