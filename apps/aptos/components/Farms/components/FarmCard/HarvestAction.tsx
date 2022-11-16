@@ -6,7 +6,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-import { usePriceCakeBusd } from 'hooks/useStablePrice'
+import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 
@@ -22,7 +22,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { account } = useAccount()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUsdc()
   const rawEarningsBalance = account ? getBalanceAmount(earnings as BigNumber, FARM_DEFAULT_DECIMALS) : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.times(cakePrice ?? 0).toNumber() : 0
