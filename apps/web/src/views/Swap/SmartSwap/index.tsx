@@ -6,8 +6,6 @@ import {
   Button,
   Card,
   CardBody,
-  Message,
-  MessageText,
   ShareIcon,
   Skeleton,
   Swap as SwapUI,
@@ -36,7 +34,6 @@ import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks
 import { currencyId } from 'utils/currencyId'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
-import { isAddress } from '../../../utils'
 import AddressInputPanel from '../components/AddressInputPanel'
 import AdvancedSwapDetailsDropdown from '../components/AdvancedSwapDetailsDropdown'
 import CurrencyInputHeader from '../components/CurrencyInputHeader'
@@ -45,7 +42,6 @@ import { ArrowWrapper, Wrapper } from '../components/styleds'
 import SwapCommitButton from '../components/SwapCommitButton'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
-import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import { useDerivedSwapInfoWithStableSwap, useTradeInfo } from './hooks'
 
@@ -53,7 +49,6 @@ export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-  const stableFarms = useStableFarms()
   const warningSwapHandler = useWarningImport()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
@@ -75,17 +70,6 @@ export function SmartSwapForm() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-
-  const hasStableSwapAlternative = useMemo(() => {
-    return stableFarms.some((stableFarm) => {
-      const checkSummedToken0 = isAddress(stableFarm?.token0.address)
-      const checkSummedToken1 = isAddress(stableFarm?.token1.address)
-      return (
-        (checkSummedToken0 === inputCurrencyId || checkSummedToken0 === outputCurrencyId) &&
-        (checkSummedToken1 === outputCurrencyId || checkSummedToken1 === outputCurrencyId)
-      )
-    })
-  }, [stableFarms, inputCurrencyId, outputCurrencyId])
 
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
@@ -349,13 +333,6 @@ export function SmartSwapForm() {
           )}
         </AutoColumn>
 
-        {hasStableSwapAlternative && (
-          <AutoColumn>
-            <Message variant="warning" my="16px">
-              <MessageText>{t('Trade stablecoins in StableSwap with lower slippage and trading fees!')}</MessageText>
-            </Message>
-          </AutoColumn>
-        )}
         <Box mt="0.25rem">
           <SwapCommitButton
             swapIsUnsupported={swapIsUnsupported}
