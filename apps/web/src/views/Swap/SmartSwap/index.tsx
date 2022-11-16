@@ -27,7 +27,7 @@ import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow } from 'components/Layout/Row'
 import { CommonBasesType } from 'components/SearchModal/types'
 import { useCurrency } from 'hooks/Tokens'
-import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useAtomValue } from 'jotai'
 import { Field } from 'state/swap/actions'
@@ -47,7 +47,7 @@ import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
-import { useDerivedSwapInfoWithStableSwap } from './hooks'
+import { useDerivedSwapInfoWithStableSwap, useTradeInfo } from './hooks'
 
 export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -102,6 +102,12 @@ export function SmartSwapForm() {
     parsedAmount,
     inputError: swapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
+  const tradeInfo = useTradeInfo({
+    trade: tradeWithStableSwap,
+    v2Trade,
+    allowedSlippage,
+    chainId,
+  })
 
   console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
 
@@ -111,20 +117,19 @@ export function SmartSwapForm() {
     inputError: wrapInputError,
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-  const trade = showWrap ? undefined : tradeWithStableSwap
 
-  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
+  const slippageAdjustedAmounts = tradeInfo ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
   const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(v2Trade)
 
   const parsedAmounts = showWrap
     ? {
-      [Field.INPUT]: parsedAmount,
-      [Field.OUTPUT]: parsedAmount,
-    }
+        [Field.INPUT]: parsedAmount,
+        [Field.OUTPUT]: parsedAmount,
+      }
     : {
-      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-    }
+        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : tradeInfo?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : tradeInfo?.outputAmount,
+      }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
 
@@ -157,9 +162,8 @@ export function SmartSwapForm() {
   //   'formattedAmounts???',
   // )
 
-  // TODO replace with duplicated hook
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(v2Trade, allowedSlippage, chainId)
+  const [approval, approveCallback] = useApproveCallback(tradeInfo?.amountToApprove, tradeInfo?.routerAddress)
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -241,7 +245,7 @@ export function SmartSwapForm() {
       <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
         <AutoColumn gap="sm">
           <CurrencyInputPanel
-            label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
+            label={independentField === Field.OUTPUT && !showWrap && tradeInfo ? t('From (estimated)') : t('From')}
             value={formattedAmounts[Field.INPUT]}
             showMaxButton={!atMaxAmountInput}
             showQuickInputButton
@@ -277,7 +281,7 @@ export function SmartSwapForm() {
           <CurrencyInputPanel
             value={formattedAmounts[Field.OUTPUT]}
             onUserInput={handleTypeOutput}
-            label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
+            label={independentField === Field.INPUT && !showWrap && tradeInfo ? t('To (estimated)') : t('To')}
             showMaxButton={false}
             currency={currencies[Field.OUTPUT]}
             onCurrencySelect={handleOutputSelect}
@@ -329,13 +333,13 @@ export function SmartSwapForm() {
           {showWrap ? null : (
             <SwapUI.Info
               price={
-                Boolean(trade) && (
+                Boolean(tradeInfo) && (
                   <>
                     <SwapUI.InfoLabel>{t('Price')}</SwapUI.InfoLabel>
                     {isLoading ? (
                       <Skeleton width="100%" ml="8px" height="24px" />
                     ) : (
-                      <SwapUI.TradePrice price={v2Trade?.executionPrice} />
+                      <SwapUI.TradePrice price={tradeInfo?.executionPrice} />
                     )}
                   </>
                 )
@@ -376,7 +380,7 @@ export function SmartSwapForm() {
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
-        trade && (
+        tradeInfo && (
           <AdvancedSwapDetailsDropdown
             pairs={v2Trade?.route?.pairs}
             path={v2Trade?.route.path}
