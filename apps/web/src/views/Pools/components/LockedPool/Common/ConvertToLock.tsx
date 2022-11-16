@@ -23,7 +23,7 @@ const ConvertToLock: React.FC<React.PropsWithChildren<ConvertToLockProps>> = ({
   const { isMobile } = useMatchBreakpoints()
   const isTableView = isInline && !isMobile
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
-  const { lockedApy } = useVaultApy({ duration: avgLockDurationsInSeconds || MAX_LOCK_DURATION })
+  const { lockedApy } = useVaultApy({ duration: avgLockDurationsInSeconds })
 
   return (
     <Message
