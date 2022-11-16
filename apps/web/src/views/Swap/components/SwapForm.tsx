@@ -98,8 +98,8 @@ export default function SwapForm() {
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(v2Trade)
+  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
+  const { priceImpactWithoutFee, realizedLPFee } = trade ? computeTradePriceBreakdown(v2Trade) : undefined
 
   const parsedAmounts = showWrap
     ? {

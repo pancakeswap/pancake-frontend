@@ -112,8 +112,8 @@ export function SmartSwapForm() {
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
 
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
+  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage) : undefined
+  const { priceImpactWithoutFee, realizedLPFee } = trade ? computeTradePriceBreakdown(trade) : undefined
 
   const parsedAmounts = showWrap
     ? {
