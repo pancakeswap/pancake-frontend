@@ -100,33 +100,30 @@ function TradeSummary({
 }
 
 export interface AdvancedSwapDetailsProps {
-  tradeData: {
-    pairs?: Pair[]
-    path?: Token[]
-    priceImpactWithoutFee?: Percent
-    realizedLPFee?: CurrencyAmount<Currency>
-    slippageAdjustedAmounts?: {
-      INPUT?: CurrencyAmount<Currency>
-      OUTPUT?: CurrencyAmount<Currency>
-    }
-    inputAmount?: CurrencyAmount<Currency>
-    outputAmount?: CurrencyAmount<Currency>
-    tradeType?: TradeType
+  pairs?: Pair[]
+  path?: Token[]
+  priceImpactWithoutFee?: Percent
+  realizedLPFee?: CurrencyAmount<Currency>
+  slippageAdjustedAmounts?: {
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
   }
+  inputAmount?: CurrencyAmount<Currency>
+  outputAmount?: CurrencyAmount<Currency>
+  tradeType?: TradeType
 }
 
-export function AdvancedSwapDetails({ tradeData }: AdvancedSwapDetailsProps) {
+export function AdvancedSwapDetails({
+  pairs,
+  path,
+  priceImpactWithoutFee,
+  realizedLPFee,
+  slippageAdjustedAmounts,
+  inputAmount,
+  outputAmount,
+  tradeType,
+}: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
-  const {
-    pairs,
-    path,
-    priceImpactWithoutFee,
-    realizedLPFee,
-    slippageAdjustedAmounts,
-    inputAmount,
-    outputAmount,
-    tradeType,
-  } = tradeData
   const [isModalOpen, setIsModalOpen] = useState(() => false)
   const showRoute = Boolean(path && path.length > 1)
   return (

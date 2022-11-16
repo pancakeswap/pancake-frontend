@@ -336,16 +336,14 @@ export default function SwapForm() {
       {!swapIsUnsupported ? (
         trade && (
           <AdvancedSwapDetailsDropdown
-            tradeData={{
-              pairs: trade?.route?.pairs,
-              path: trade?.route.path,
-              priceImpactWithoutFee,
-              realizedLPFee,
-              slippageAdjustedAmounts,
-              inputAmount: trade?.inputAmount,
-              outputAmount: trade?.outputAmount,
-              tradeType: trade?.tradeType,
-            }}
+            pairs={trade?.route?.pairs}
+            path={trade?.route.path}
+            priceImpactWithoutFee={priceImpactWithoutFee}
+            realizedLPFee={realizedLPFee}
+            slippageAdjustedAmounts={slippageAdjustedAmounts}
+            inputAmount={trade?.inputAmount}
+            outputAmount={trade?.outputAmount}
+            tradeType={trade?.tradeType}
           />
         )
       ) : (
