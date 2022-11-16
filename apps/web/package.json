@@ -70,7 +70,7 @@
     "fast-json-stable-stringify": "^2.1.0",
     "graphql": "^16.6.0",
     "graphql-request": "^5.0.0",
-    "jotai": "^1.8.6",
+    "jotai": "^1.9.2",
     "js-cookie": "^3.0.1",
     "lightweight-charts": "^3.8.0",
     "local-storage": "^2.0.0",
