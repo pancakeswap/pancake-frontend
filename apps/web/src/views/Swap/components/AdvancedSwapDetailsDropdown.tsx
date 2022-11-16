@@ -15,12 +15,41 @@ const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   transition: transform 300ms ease-in-out;
 `
 
-export default function AdvancedSwapDetailsDropdown({ trade, ...rest }: AdvancedSwapDetailsProps) {
-  const lastTrade = useLastTruthy(trade)
+export default function AdvancedSwapDetailsDropdown({
+  pairs,
+  path,
+  priceImpactWithoutFee,
+  realizedLPFee,
+  slippageAdjustedAmounts,
+  inputAmount,
+  outputAmount,
+  tradeType,
+  ...rest
+}: AdvancedSwapDetailsProps) {
+  const lastTrade = useLastTruthy({
+    pairs,
+    path,
+    priceImpactWithoutFee,
+    realizedLPFee,
+    slippageAdjustedAmounts,
+    inputAmount,
+    outputAmount,
+    tradeType,
+  })
 
   return (
-    <AdvancedDetailsFooter show={Boolean(trade)}>
-      <AdvancedSwapDetails {...rest} trade={trade ?? lastTrade ?? undefined} />
+    <AdvancedDetailsFooter show={Boolean(inputAmount && priceImpactWithoutFee && slippageAdjustedAmounts)}>
+      <AdvancedSwapDetails
+        {...rest}
+        pairs={pairs ?? lastTrade.pairs ?? undefined}
+        path={path ?? lastTrade.path ?? undefined}
+        priceImpactWithoutFee={priceImpactWithoutFee ?? lastTrade.priceImpactWithoutFee ?? undefined}
+        realizedLPFee={realizedLPFee ?? lastTrade.realizedLPFee ?? undefined}
+        slippageAdjustedAmounts={slippageAdjustedAmounts ?? lastTrade.slippageAdjustedAmounts ?? undefined}
+        inputAmount={inputAmount ?? lastTrade.inputAmount ?? undefined}
+        outputAmount={outputAmount ?? lastTrade.outputAmount ?? undefined}
+        tradeType={tradeType ?? lastTrade.tradeType ?? undefined}
+      />
     </AdvancedDetailsFooter>
   )
 }
