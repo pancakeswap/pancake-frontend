@@ -58,7 +58,6 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }
           return fetchRiskToken(address, chainId)
         }),
       )
-      console.log('tokenRiskResults', tokenRiskResults)
 
       setState((prevState) => ({
         ...prevState,

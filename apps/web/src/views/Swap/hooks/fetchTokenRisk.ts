@@ -48,7 +48,6 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
     const riskApi = await fetchRiskApi(address, chainId)
     // eslint-disable-next-line camelcase
     const { risk_result, scanned_ts, risk_level, risk_level_description } = riskApi.data
-    console.log('riskApi', riskApi)
     return {
       isSuccess: true,
       address,
