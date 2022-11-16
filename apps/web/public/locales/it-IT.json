@@ -264,9 +264,9 @@
   "To Top": "In cima",
   "Total value of the funds in this farm’s liquidity pool": "Valore totale dei fondi nel pool di liquidità di questo farm",
   "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block.": "Il Moltiplicatore rappresenta la proporzione di CAKE premio che ogni farm riceve, come proporzione di CAKE prodotto da ogni blocco.",
-  "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.": "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.",
+  "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.": "Il Moltiplicatore rappresenta la proporzione di CAKE premio che ogni farm riceve, come proporzione di CAKE prodotto ogni secondo.",
   "For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.": "Ad esempio, se una farm 1x ha ricevuto 1 CAKE per blocco, una farm 40X avrebbe ricevuto 40 CAKE per blocco.",
-  "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.": "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.",
+  "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.": "Ad esempio, se una farm 1x ha ricevuto 1 CAKE per secondo, una farm 40X avrebbe ricevuto 40 CAKE per secondo.",
   "This amount is already included in all APR calculations for the farm.": "Questo importo è già incluso in tutti i calcoli APR per l'azienda.",
   "Hot": "Popolare",
   "Success!": "Riuscito!",
@@ -2028,5 +2028,5 @@
   "Register coin to receive transfers": "Registra la moneta per ricevere trasferimenti",
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Chiunque può creare una moneta su Aptos con qualsiasi nome, comprese le versioni false di monete esistenti o quelle che affermano di rappresentare progetti che non hanno una moneta.",
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Se acquisti una moneta fraudolenta, potresti essere esposto a una perdita permanente di fondi.",
-  "Pancake Collectibles": "Pancake Collectibles"
+  "Pancake Collectibles": "Pancake collezionabili"
 }
