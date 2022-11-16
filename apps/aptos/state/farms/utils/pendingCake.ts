@@ -4,12 +4,12 @@ import { MapFarmResource, FarmResourcePoolInfo } from 'state/farms/types'
 const ACC_CAKE_PRECISION = 1000000000000
 const TOTAL_CAKE_RATE_PRECISION = 100000
 
-export function pendingCake(userAmount, userRewardDebt, accCakePerShare) {
+export function calcPendingRewardCake(userAmount, userRewardDebt, accCakePerShare) {
   // ((user_info.amount * acc_cake_per_share / ACC_CAKE_PRECISION - user_info.reward_debt) as u64)
   return new BigNumber(userAmount).times(accCakePerShare).dividedBy(ACC_CAKE_PRECISION).minus(userRewardDebt)
 }
 
-export function calcCakeReward(masterChef: MapFarmResource, pid: string | number) {
+export function calcRewardCakePerShare(masterChef: MapFarmResource, pid: string | number) {
   const poolInfo: FarmResourcePoolInfo = masterChef.pool_info[pid]
   const currentTimestamp = new Date().getTime() / 1000
   const lastRewardTimestamp = Number(poolInfo.last_reward_timestamp)

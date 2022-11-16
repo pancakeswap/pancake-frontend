@@ -26,7 +26,7 @@ import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { deserializeFarm } from './utils/deserializeFarm'
-import { pendingCake, calcCakeReward } from './utils/pendingCake'
+import { calcPendingRewardCake, calcRewardCakePerShare } from './utils/pendingCake'
 
 const farmsPriceHelpLpMap = {
   [ChainId.MAINNET]: priceHelperLpsMainnet,
@@ -157,8 +157,12 @@ export const useFarms = () => {
         .filter((f) => !!f.pid)
         .map(deserializeFarm)
         .map((f) => {
-          const accCakePerShare = masterChef?.data && f.pid ? calcCakeReward(masterChef.data, String(f.pid)) : 0
-          const earningToken = pendingCake(userInfos[f.pid]?.amount, userInfos[f.pid]?.reward_debt, accCakePerShare)
+          const accCakePerShare = masterChef?.data && f.pid ? calcRewardCakePerShare(masterChef.data, String(f.pid)) : 0
+          const earningToken = calcPendingRewardCake(
+            userInfos[f.pid]?.amount,
+            userInfos[f.pid]?.reward_debt,
+            accCakePerShare,
+          )
           const stakedBalance = new BigNumber(userInfos[f.pid]?.amount)
           return {
             ...f,
