@@ -20,6 +20,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import TransactionsDetailModal from 'components/TransactionDetailModal'
+import ListsUpdater from '../state/lists/updater'
 import { Blocklist, Updaters } from '..'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
@@ -87,6 +88,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
           <ResetCSS />
           <GlobalStyle />
+          <ListsUpdater />
           <GlobalCheckClaimStatus excludeLocations={[]} />
           <PersistGate loading={null} persistor={persistor}>
             <Updaters />
