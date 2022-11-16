@@ -6,8 +6,8 @@ import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { SECONDS_IN_YEAR } from 'config'
 
-import { ACC_CAKE_PRECISION } from '../constants'
-import getFarmTokenPerSecond from '../utils/getFarmTokenPerSecond'
+import { CAKE_PID } from 'config/constants'
+import { calcCakeReward } from 'state/farms/utils/pendingCake'
 
 export const getPoolApr = ({ rewardTokenPrice, stakingTokenPrice, tokenPerSecond, totalStaked }) => {
   const totalRewardPricePerYear = new BigNumber(rewardTokenPrice).times(tokenPerSecond).times(SECONDS_IN_YEAR)
@@ -42,7 +42,6 @@ const transformCakePool = ({
   chainId,
   earningTokenPrice,
 }) => {
-  const currentRewardDebt = _get(userInfo, 'reward_debt', '0')
   const userStakedAmount = _get(userInfo, 'amount', '0')
 
   const rewardPerSecond = getRewardPerSecondOfCakeFarm({
@@ -73,15 +72,7 @@ const transformCakePool = ({
   const totalStaked = _get(cakePoolInfo, 'total_amount', '0')
 
   if (_toNumber(userStakedAmount) && _toNumber(totalStaked)) {
-    const pendingReward = getFarmTokenPerSecond({
-      lastRewardTimestamp: _toNumber(cakePoolInfo.last_reward_timestamp),
-      rewardPerSecond,
-      currentRewardDebt,
-      tokenPerShare: cakePoolInfo.acc_cake_per_share,
-      precisionFactor: ACC_CAKE_PRECISION,
-      totalStake: cakePoolInfo.total_amount,
-      userStakedAmount,
-    })
+    const pendingReward = calcCakeReward(masterChefData, CAKE_PID)
 
     userData = {
       ...userData,

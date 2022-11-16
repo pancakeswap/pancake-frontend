@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { Card, CardBody, Flex, PlayCircleOutlineIcon, Text, useTooltip } from '@pancakeswap/uikit'
 import { getNow } from 'utils/getNow'
 import { useTranslation } from '@pancakeswap/localization'
@@ -28,6 +28,8 @@ interface LiveRoundCardProps {
 
 const REFRESH_PRICE_BEFORE_SECONDS_TO_CLOSE = 2
 
+const SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE = 20
+
 const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
   round,
   betAmount,
@@ -44,7 +46,14 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
 
   const [isCalculatingPhase, setIsCalculatingPhase] = useState(false)
 
+  const isHouse = useMemo(() => {
+    const secondsToClose = closeTimestamp ? closeTimestamp - getNow() : 0
+    return lockPrice && price.eq(lockPrice) && secondsToClose <= SHOW_HOUSE_BEFORE_SECONDS_TO_CLOSE
+  }, [closeTimestamp, lockPrice, price])
+
   const isBull = lockPrice && price.gt(lockPrice)
+
+  const betPosition = isHouse ? BetPosition.HOUSE : isBull ? BetPosition.BULL : BetPosition.BEAR
 
   const priceDifference = getPriceDifference(price, lockPrice)
   const hasRoundFailed = getHasRoundFailed(round.oracleCalled, round.closeTimestamp, bufferSeconds)
@@ -94,17 +103,18 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
           betAmount={betAmount}
           multiplier={bullMultiplier}
           hasEntered={hasEnteredUp}
-          isActive={isBull}
+          isActive={isHouse ? false : isBull}
+          isHouse={isHouse}
         />
-        <RoundResultBox betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
+        <RoundResultBox betPosition={betPosition}>
           <Text color="textSubtle" fontSize="12px" bold textTransform="uppercase" mb="8px">
             {t('Last Price')}
           </Text>
           <Flex alignItems="center" justifyContent="space-between" mb="16px" height="36px">
             <div ref={targetRef}>
-              <LiveRoundPrice isBull={isBull} price={price} />
+              <LiveRoundPrice betPosition={betPosition} price={price} />
             </div>
-            <PositionTag betPosition={isBull ? BetPosition.BULL : BetPosition.BEAR}>
+            <PositionTag betPosition={betPosition}>
               {formatUsdv2(priceDifference, minPriceUsdDisplayed, displayedDecimals)}
             </PositionTag>
           </Flex>
@@ -116,7 +126,8 @@ const LiveRoundCard: React.FC<React.PropsWithChildren<LiveRoundCardProps>> = ({
           multiplier={bearMultiplier}
           betPosition={BetPosition.BEAR}
           hasEntered={hasEnteredDown}
-          isActive={!isBull}
+          isActive={isHouse ? false : !isBull}
+          isHouse={isHouse}
         />
       </CardBody>
       {tooltipVisible && tooltip}
