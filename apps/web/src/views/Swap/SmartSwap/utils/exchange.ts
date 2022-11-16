@@ -1,9 +1,27 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, TradeType, ChainId } from '@pancakeswap/sdk'
 import { TradeWithStableSwap, Trade } from '@pancakeswap/smart-router/dist/evm'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
+import PancakeSwapSmartRouterABI from 'config/abi/PancakeSwapSmartRouter.json'
+import { PancakeSwapSmartRouter } from 'config/abi/types/PancakeSwapSmartRouter'
+import { useContract } from 'hooks/useContract'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ChainMap } from 'config/constants/types'
+
+export const SMART_ROUTER_ADDRESS: ChainMap<string> = {
+  [ChainId.ETHEREUM]: '',
+  [ChainId.RINKEBY]: '',
+  [ChainId.GOERLI]: '',
+  [ChainId.BSC]: '0x003c734e7fF67ef87930Bfd86C6d975eF3A764AC',
+  [ChainId.BSC_TESTNET]: '0xCF457465fC0E98a50Bc3E1b3DDAAF1373622f059',
+}
+
+export function useSmartRouterContract() {
+  const { chainId } = useActiveChainId()
+  return useContract<PancakeSwapSmartRouter>(SMART_ROUTER_ADDRESS[chainId], PancakeSwapSmartRouterABI, true)
+}
 
 export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippage: number): [JSBI, JSBI] {
   if (slippage < 0 || slippage > 10000) {
