@@ -7,6 +7,9 @@
     "build": "npx tsx scripts/build.ts",
     "test": "vitest --run"
   },
+  "devDependencies": {
+    "tsx": "^3.12.1"
+  },
   "dependencies": {
     "@pancakeswap/sdk": "*",
     "@pancakeswap/tokens": "*",

@@ -1,4 +1,4 @@
-import { TradeType, Currency } from '@pancakeswap/sdk'
+import { TradeType } from '@pancakeswap/sdk'
 import { RouteType } from '@pancakeswap/smart-router/evm'
 
 export interface RequestBody {
@@ -9,7 +9,8 @@ export interface RequestBody {
   quoteToken: string
   quoteTokenName: string
   quoteTokenNumDecimals: number
-  baseTokenAmount: string
+  baseTokenAmount?: string
+  quoteTokenAmount?: string
   trader: string
 }
 
@@ -21,7 +22,8 @@ interface Token {
 }
 
 interface Pair {
-  liquidityToken: Token
+  liquidityToken?: Token
+  stableSwapAddress?: string
   token0: Token
   token1: Token
   reserve0: string
@@ -30,14 +32,15 @@ interface Pair {
 
 export interface SmartRouterResponse {
   tradeType: TradeType
-  input: Currency
-  output: Currency
   route: {
+    input: Token
+    output: Token
     routeType: RouteType
     pairs: Pair[]
     path: Token[]
   }
   outputAmount: string
+  inputAmount: string
 }
 
 // const body: RequestBody = {
