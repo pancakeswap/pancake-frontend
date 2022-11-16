@@ -1,5 +1,6 @@
 import orderBy from 'lodash/orderBy'
-import { INFO_CLIENT } from 'config/constants/endpoints'
+import { INFO_CLIENT, INFO_NR_CLIENT } from 'config/constants/endpoints'
+import Cookies from 'js-cookie'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
@@ -10,10 +11,11 @@ import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/g
 import { PairDataTimeWindowEnum } from '../types'
 
 const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
+  const bucketInfo = Cookies.get('bucket-info') // sf or nr
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    INFO_CLIENT,
+    bucketInfo === 'sf' ? INFO_CLIENT : INFO_NR_CLIENT,
     200,
   )
 
