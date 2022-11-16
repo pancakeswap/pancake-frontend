@@ -9,7 +9,7 @@ import {
   VisibilityOff,
   VisibilityOn,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import styled from 'styled-components'
 import { useProfile } from 'state/profile/hooks'
 import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
@@ -48,7 +48,7 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
 const UserDetail = () => {
   const { profile, isLoading } = useProfile()
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
   const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
     useGetUsernameWithVisibility(profile)

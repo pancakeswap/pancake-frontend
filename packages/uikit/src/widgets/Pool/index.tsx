@@ -9,3 +9,8 @@ export * from "./StyledCard";
 export * from "./withStakeActions";
 export * from "./AprRowWithToolTip";
 export * from "./Apr";
+export * from "./withCardActions";
+export * from "./PoolsTable";
+export * from "./Cells/BaseCell";
+export * from "./Cells/ExpandActionCell";
+export * from "./PoolsTable/ExpandRow";

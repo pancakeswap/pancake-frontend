@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { formatUnits } from '@ethersproject/units'
 import { Card, CardBody, Heading, Text, useToast } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useBunnyFactory } from 'hooks/useContract'
@@ -28,7 +28,7 @@ const Mint: React.FC<React.PropsWithChildren> = () => {
   const { actions, minimumCakeRequired, allowance } = useProfileCreation()
   const { toastSuccess } = useToast()
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
   const bunnyFactoryContract = useBunnyFactory()
   const { t } = useTranslation()

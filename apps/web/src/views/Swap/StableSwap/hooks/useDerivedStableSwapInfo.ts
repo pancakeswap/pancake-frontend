@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { isAddress } from 'utils'
@@ -8,6 +8,7 @@ import { Field } from 'state/swap/actions'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { useMemo } from 'react'
 import useStableTradeExactIn, { StableTrade } from './useStableTradeExactIn'
 import useStableTradeExactOut from './useStableTradeExactOut'
 
@@ -24,15 +25,15 @@ export function useDerivedStableSwapInfo(
   v2Trade: StableTrade | undefined
   inputError?: string
 } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
 
   const to: string | null = account ?? null
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ])
+  const relevantTokenBalances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [inputCurrency ?? undefined, outputCurrency ?? undefined], [inputCurrency, outputCurrency]),
+  )
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)

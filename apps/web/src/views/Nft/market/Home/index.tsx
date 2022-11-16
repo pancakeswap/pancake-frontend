@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Button, Flex, Heading, LinkExternal, PageHeader, NextLinkFromReactRouter } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
 import PageSection from 'components/PageSection'
@@ -51,7 +51,7 @@ const StyledHeaderInner = styled(Flex)`
 
 const Home = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { theme } = useTheme()
   const { data: collections, status } = useGetCollections()
 

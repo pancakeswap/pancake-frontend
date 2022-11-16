@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useMemo, useContext } from 'react'
-import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, NATIVE } from '@pancakeswap/sdk'
 import { Button, ArrowDownIcon, Box, Skeleton, Swap as SwapUI, Message, MessageText } from '@pancakeswap/uikit'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
@@ -25,6 +25,7 @@ import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
 
+import { useAtomValue } from 'jotai'
 import CurrencyInputHeader from './CurrencyInputHeader'
 import SwapCommitButton from './SwapCommitButton'
 import useWarningImport from '../hooks/useWarningImport'
@@ -35,6 +36,7 @@ import { ArrowWrapper, Wrapper } from './styleds'
 import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { isAddress } from '../../../utils'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
+import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
 
 export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -42,6 +44,7 @@ export default function SwapForm() {
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const stableFarms = useStableFarms()
   const warningSwapHandler = useWarningImport()
+  const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
   const { account, chainId } = useActiveWeb3React()
 
@@ -224,6 +227,7 @@ export default function SwapForm() {
             otherCurrency={currencies[Field.OUTPUT]}
             id="swap-currency-input"
             showCommonBases
+            showBUSD={!!tokenMap[chainId]?.[inputCurrencyId] || inputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
@@ -254,6 +258,7 @@ export default function SwapForm() {
             otherCurrency={currencies[Field.INPUT]}
             id="swap-currency-output"
             showCommonBases
+            showBUSD={!!tokenMap[chainId]?.[outputCurrencyId] || outputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 

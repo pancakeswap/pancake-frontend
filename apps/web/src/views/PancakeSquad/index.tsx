@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import nftSaleAbi from 'config/abi/nftSale.json'
 import { useProfile } from 'state/profile/hooks'
 import ArtistSection from './components/ArtistSection'
@@ -18,7 +18,7 @@ import { getUserStatus } from './utils'
 const REFRESH_INTERVAL = 4000
 
 const PancakeSquad: React.FC<React.PropsWithChildren> = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { hasProfile, isInitialized } = useProfile()
   const [eventInfos, setEventInfo] = useState<EventInfos>()
   const [userInfos, setUserInfos] = useState<UserInfos>()

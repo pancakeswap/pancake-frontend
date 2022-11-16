@@ -61,7 +61,15 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   )
 
   const customOverview = useCallback(
-    ({ isValidDuration, duration }) => (
+    ({
+      isValidDuration,
+      duration,
+      isMaxSelected,
+    }: {
+      isValidDuration: boolean
+      duration: number
+      isMaxSelected?: boolean
+    }) => (
       <Overview
         lockStartTime={
           currentDuration + duration > MAX_LOCK_DURATION ? Math.floor(Date.now() / 1000).toString() : lockStartTime
@@ -70,7 +78,11 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
         openCalculator={_noop}
         duration={currentDuration || duration}
         newDuration={
-          currentDuration + duration > MAX_LOCK_DURATION ? currentDurationLeft + duration : currentDuration + duration
+          isMaxSelected
+            ? MAX_LOCK_DURATION
+            : currentDuration + duration > MAX_LOCK_DURATION
+            ? currentDurationLeft + duration
+            : currentDuration + duration
         }
         lockedAmount={currentLockedAmount}
         usdValueStaked={usdValueStaked}

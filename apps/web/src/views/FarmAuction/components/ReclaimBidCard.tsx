@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useApproveConfirmTransaction from 'hooks/useApproveConfirmTransaction'
 import { useCake, useFarmAuctionContract } from 'hooks/useContract'
 import { requiresApproval } from 'utils/requiresApproval'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -20,7 +20,7 @@ const StyledReclaimBidCard = styled(Card)`
 
 const ReclaimBidCard: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const [reclaimableAuction, checkForNextReclaimableAuction] = useReclaimAuctionBid()

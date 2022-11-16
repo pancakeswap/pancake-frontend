@@ -2,7 +2,8 @@ import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
 import _toNumber from 'lodash/toNumber'
 import { SerializedFarmPublicData, FarmData, isStableFarm } from './types'
-import { FIXED_ONE, FIXED_TEN_IN_POWER_18, FIXED_TWO, FIXED_ZERO } from './const'
+import { FIXED_ONE, FIXED_TWO, FIXED_ZERO } from './const'
+import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 // Find BUSD price for token
 // either via direct calculation if farm is X-BNB or X-BUSD
@@ -105,6 +106,7 @@ export const getStableLpTokenPrice = (
   tokenPriceBusd: FixedNumber,
   quoteTokenAmountTotal: FixedNumber,
   quoteTokenInBusd: FixedNumber,
+  decimals: number,
 ) => {
   if (lpTotalSupply.isZero()) {
     return FIXED_ZERO
@@ -114,7 +116,7 @@ export const getStableLpTokenPrice = (
 
   const liquidity = valueOfBaseTokenInFarm.addUnsafe(valueOfQuoteTokenInFarm)
 
-  const totalLpTokens = lpTotalSupply.divUnsafe(FIXED_TEN_IN_POWER_18)
+  const totalLpTokens = lpTotalSupply.divUnsafe(FixedNumber.from(getFullDecimalMultiplier(decimals)))
 
   return liquidity.divUnsafe(totalLpTokens)
 }
@@ -124,6 +126,7 @@ export const getLpTokenPrice = (
   lpTotalInQuoteToken: FixedNumber,
   tokenAmountTotal: FixedNumber,
   tokenPriceBusd: FixedNumber,
+  decimals: number,
 ) => {
   // LP token price
   let lpTokenPrice = FIXED_ZERO
@@ -135,7 +138,7 @@ export const getLpTokenPrice = (
     // Double it to get overall value in LP
     const overallValueOfAllTokensInFarm = valueOfBaseTokenInFarm.mulUnsafe(FIXED_TWO)
     // Divide total value of all tokens, by the number of LP tokens
-    const totalLpTokens = lpTotalSupply.divUnsafe(FIXED_TEN_IN_POWER_18)
+    const totalLpTokens = lpTotalSupply.divUnsafe(FixedNumber.from(getFullDecimalMultiplier(decimals)))
     lpTokenPrice = overallValueOfAllTokensInFarm.divUnsafe(totalLpTokens)
   }
 
@@ -155,12 +158,17 @@ export const getFarmsPrices = (
     wNative: string
     stable: string
   },
+  decimals: number,
 ): FarmWithPrices[] => {
   const nativeStableFarm = farms.find((farm) => equalsIgnoreCase(farm.lpAddress, nativeStableLp.address))
 
+  const isNativeFirst = nativeStableFarm?.token.symbol === nativeStableLp.wNative
+
   const nativePriceUSD =
     nativeStableFarm && _toNumber(nativeStableFarm?.tokenPriceVsQuote) !== 0
-      ? FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
+      ? isNativeFirst
+        ? FixedNumber.from(nativeStableFarm.tokenPriceVsQuote)
+        : FIXED_ONE.divUnsafe(FixedNumber.from(nativeStableFarm.tokenPriceVsQuote))
       : FIXED_ZERO
 
   const farmsWithPrices = farms.map((farm) => {
@@ -193,12 +201,14 @@ export const getFarmsPrices = (
           FixedNumber.from(farm.quoteTokenAmountTotal),
           // Assume token is busd, tokenPriceBusd is tokenPriceVsQuote
           FixedNumber.from(farm.tokenPriceVsQuote),
+          decimals,
         )
       : getLpTokenPrice(
           FixedNumber.from(farm.lpTotalSupply),
           FixedNumber.from(farm.lpTotalInQuoteToken),
           FixedNumber.from(farm.tokenAmountTotal),
           tokenPriceBusd,
+          decimals,
         )
     return {
       ...farm,

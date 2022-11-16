@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Contract } from '@ethersproject/contracts'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 
 // Retrieve IFO allowance
 const useIfoAllowance = (tokenContract: Contract, spenderAddress: string, dependency?: any): BigNumber => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const [allowance, setAllowance] = useState(BIG_ZERO)
 
   useEffect(() => {

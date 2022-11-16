@@ -1,7 +1,7 @@
 import { Types } from 'aptos'
 import { Chain } from '../chain'
 import { Connector } from './base'
-import { ConnectorNotFoundError } from '../errors'
+import { ConnectorNotFoundError, UserRejectedRequestError } from '../errors'
 import { Address } from '../types'
 import { SignMessagePayload, SignMessageResponse } from './types'
 
@@ -110,9 +110,16 @@ export class MartianConnector extends Connector<Window['martian'], MartianConnec
 
     if (!transaction) throw new Error('Failed to generate transaction')
 
-    const hash = await provider.signAndSubmitTransaction(transaction)
+    try {
+      const hash = await provider.signAndSubmitTransaction(transaction)
 
-    return { hash }
+      return { hash }
+    } catch (error) {
+      if (error === 'User Rejected the request') {
+        throw new UserRejectedRequestError(error)
+      }
+      throw error
+    }
   }
 
   async signTransaction(payload: Types.TransactionPayload) {

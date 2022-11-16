@@ -1,7 +1,7 @@
 import { HexString, TxnBuilderTypes, Types } from 'aptos'
 import { getAccount } from '../accounts/account'
 import { getClient } from '../client'
-import { ProviderRpcError, SimulateTransactionError } from '../errors'
+import { WalletProviderError, SimulateTransactionError } from '../errors'
 import { getProvider } from '../providers'
 
 export type SimulateTransactionArgs = {
@@ -23,7 +23,7 @@ export async function simulateTransaction({
   const { account } = getAccount()
   const provider = getProvider({ networkName })
 
-  if (!account) throw new ProviderRpcError(4100, 'No Account')
+  if (!account) throw new WalletProviderError(4100, 'No Account')
 
   let { publicKey } = account
 
@@ -34,7 +34,7 @@ export async function simulateTransaction({
     publicKey = accountFromActiveConnector?.publicKey
   }
 
-  if (!publicKey) throw new ProviderRpcError(4100, 'Missing pubic key')
+  if (!publicKey) throw new WalletProviderError(4100, 'Missing pubic key')
 
   if (Array.isArray(publicKey)) {
     throw new Error('Multi sig not supported')

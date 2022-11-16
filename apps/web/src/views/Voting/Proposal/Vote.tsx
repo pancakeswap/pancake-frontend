@@ -12,7 +12,7 @@ import {
   useModal,
   useToast,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Proposal } from 'state/types'
 import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -51,7 +51,7 @@ const Vote: React.FC<React.PropsWithChildren<VoteProps>> = ({ proposal, onSucces
   const [vote, setVote] = useState<State>(null)
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const handleSuccess = async () => {
     toastSuccess(t('Vote cast!'))

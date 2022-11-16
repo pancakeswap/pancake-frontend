@@ -14,7 +14,7 @@ import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -121,7 +121,7 @@ export function useStableLPDerivedMintInfo(
   error?: string
   addError?: string
 } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { t } = useTranslation()
 
@@ -147,7 +147,10 @@ export function useStableLPDerivedMintInfo(
     pairState === PairState.NOT_EXISTS || Boolean(totalSupply && JSBI.equal(totalSupply.quotient, BIG_INT_ZERO))
 
   // balances
-  const balances = useCurrencyBalances(account ?? undefined, [currencyA, currencyB])
+  const balances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [currencyA, currencyB], [currencyA, currencyB]),
+  )
   const currencyBalances: { [field in Field]?: CurrencyAmount<Currency> } = {
     [Field.CURRENCY_A]: balances[0],
     [Field.CURRENCY_B]: balances[1],

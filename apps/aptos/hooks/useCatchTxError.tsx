@@ -1,4 +1,4 @@
-import { TransactionResponse } from '@pancakeswap/awgmi/core'
+import { TransactionResponse, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { useToast } from '@pancakeswap/uikit'
 import { useCallback, useState } from 'react'
@@ -17,15 +17,15 @@ interface TransactionReceipt {
   transactionHash: string
 }
 
-type ErrorData = {
-  code: number
-  message: string
-}
+// type ErrorData = {
+//   code: number
+//   message: string
+// }
 
-type TxError = {
-  data: ErrorData
-  error: string
-}
+// type TxError = {
+//   data: ErrorData
+//   error: string
+// }
 
 // -32000 is insufficient funds for gas * price + value
 // const isGasEstimationError = (err: TxError): boolean => err?.data?.code === -32000
@@ -67,6 +67,7 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         }
 
         const receipt = await tx?.wait()
+
         if (receipt) {
           return {
             // @ts-ignore
@@ -77,9 +78,12 @@ export default function useCatchTxError(): CatchTxErrorReturn {
         return null
       } catch (error: any) {
         setLoading(false)
-        const reason = error && error.code !== 4001 ? transactionErrorToUserReadableMessage(error) : undefined
-        const errorMessage = reason ? t('Transaction failed with error: %reason%', { reason }) : ''
-        toastError(`${t('Failed')}!`, errorMessage)
+
+        if (!(error instanceof UserRejectedRequestError)) {
+          const reason = transactionErrorToUserReadableMessage(error)
+          const errorMessage = reason ? t('Transaction failed with error: %reason%', { reason }) : ''
+          toastError(`${t('Failed')}!`, errorMessage)
+        }
       } finally {
         setLoading(false)
       }

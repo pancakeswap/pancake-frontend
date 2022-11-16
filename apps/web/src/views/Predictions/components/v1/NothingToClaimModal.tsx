@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import styled from 'styled-components'
 import {
   ModalContainer,
@@ -32,7 +32,7 @@ const CollectRoundWinningsModal: React.FC<React.PropsWithChildren<InjectedModalP
   const [isFetching, setIsFetching] = useState(false)
   const [history, setHistory] = useState([])
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const handleClick = () => {
     const header = [

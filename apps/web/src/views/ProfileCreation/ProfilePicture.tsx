@@ -11,7 +11,7 @@ import {
   useToast,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount, useSigner } from 'wagmi'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
 import { getErc721Contract } from 'utils/contractHelpers'
 import { useTranslation } from '@pancakeswap/localization'
@@ -21,7 +21,6 @@ import useCatchTxError from 'hooks/useCatchTxError'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import { NftLocation } from 'state/nftMarket/types'
 import { useProfile } from 'state/profile/hooks'
-import { useSigner } from 'wagmi'
 import SelectionCard from './SelectionCard'
 import NextStepButton from './NextStepButton'
 import { ProfileCreationContext } from './contexts/ProfileCreationProvider'
@@ -38,8 +37,9 @@ const NftWrapper = styled.div`
 `
 
 const ProfilePicture: React.FC = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const [isApproved, setIsApproved] = useState(false)
+  const [isProfileNftsLoading, setIsProfileNftsLoading] = useState(true)
   const [userProfileCreationNfts, setUserProfileCreationNfts] = useState(null)
   const { selectedNft, actions } = useContext(ProfileCreationContext)
   const profileContract = useProfileContract(false)
@@ -70,12 +70,18 @@ const ProfilePicture: React.FC = () => {
           setUserProfileCreationNfts(
             nfts.filter((nft) => collectionRoles[nftsByCollection.indexOf(nft.collectionAddress)]),
           )
+        } else {
+          setUserProfileCreationNfts(null)
         }
       } catch (e) {
         console.error(e)
+        setUserProfileCreationNfts(null)
+      } finally {
+        setIsProfileNftsLoading(false)
       }
     }
     if (!isUserNftLoading) {
+      setIsProfileNftsLoading(true)
       fetchUserPancakeCollectibles()
     }
   }, [nfts, profileContract, isUserNftLoading])
@@ -97,7 +103,7 @@ const ProfilePicture: React.FC = () => {
     }
   }
 
-  if (userProfileCreationNfts?.length === 0) {
+  if (!userProfileCreationNfts?.length && !isProfileNftsLoading) {
     return (
       <>
         <Heading scale="xl" mb="24px">
@@ -105,6 +111,12 @@ const ProfilePicture: React.FC = () => {
         </Heading>
         <Text bold fontSize="20px" mb="24px">
           {t('We couldn’t find any Pancake Collectibles in your wallet.')}
+        </Text>
+        <Text as="p" mb="24px">
+          {t('Only approved Pancake Collectibles can be used.')}
+          <Link to={`${nftsBaseUrl}/profile/pancake-collectibles`} style={{ marginLeft: '4px' }}>
+            {t('See the list >')}
+          </Link>
         </Text>
         <Text as="p">
           {t(
@@ -138,7 +150,7 @@ const ProfilePicture: React.FC = () => {
             </Link>
           </Text>
           <NftWrapper>
-            {userProfileCreationNfts?.length > 0 ? (
+            {userProfileCreationNfts?.length ? (
               userProfileCreationNfts
                 .filter((walletNft) => walletNft.location === NftLocation.WALLET)
                 .map((walletNft) => {

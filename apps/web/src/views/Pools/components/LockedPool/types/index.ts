@@ -86,7 +86,15 @@ export interface LockedModalBodyPropsType {
   currentDurationLeft?: number
   isRenew?: boolean
   validator?: (arg: ValidatorArg) => ModalValidator
-  customOverview?: ({ isValidDuration, duration }: { isValidDuration: boolean; duration: number }) => React.ReactElement
+  customOverview?: ({
+    isValidDuration,
+    duration,
+    isMaxSelected,
+  }: {
+    isValidDuration: boolean
+    duration: number
+    isMaxSelected?: boolean
+  }) => React.ReactElement
 }
 
 export interface ExtendDurationButtonPropsType {
@@ -129,6 +137,8 @@ export interface LockDurationFieldPropsType {
   isOverMax: boolean
   currentDuration?: number
   currentDurationLeft?: number
+  isMaxSelected: boolean
+  setIsMaxSelected: Dispatch<SetStateAction<boolean>>
 }
 
 export interface LockedStakingApyPropsType {

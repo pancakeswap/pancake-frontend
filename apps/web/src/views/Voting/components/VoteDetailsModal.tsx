@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { Box, Flex, InjectedModalProps, Modal, Button, Spinner } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
@@ -11,7 +10,6 @@ interface VoteDetailsModalProps extends InjectedModalProps {
 
 const VoteDetailsModal: React.FC<React.PropsWithChildren<VoteDetailsModalProps>> = ({ block, onDismiss }) => {
   const { t } = useTranslation()
-  const [modalIsOpen, setModalIsOpen] = useState(true)
   const {
     isLoading,
     total,
@@ -23,11 +21,10 @@ const VoteDetailsModal: React.FC<React.PropsWithChildren<VoteDetailsModalProps>>
     ifoPoolBalance,
     lockedCakeBalance,
     lockedEndTime,
-  } = useGetVotingPower(block, modalIsOpen)
+  } = useGetVotingPower(block)
   const { theme } = useTheme()
 
   const handleDismiss = () => {
-    setModalIsOpen(false)
     onDismiss()
   }
 

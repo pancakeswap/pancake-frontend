@@ -6,7 +6,9 @@ import { Link, Text, Button, OpenNewIcon } from "../../components";
 
 interface NotEnoughTokensModalProps {
   tokenSymbol: string;
+  tokenAddress?: string;
   onDismiss?: () => void;
+  hideLocateAddress?: boolean;
 }
 
 const StyledLink = styled(Link)`
@@ -15,7 +17,9 @@ const StyledLink = styled(Link)`
 
 const NotEnoughTokensModal: React.FC<React.PropsWithChildren<NotEnoughTokensModalProps>> = ({
   tokenSymbol,
+  tokenAddress,
   onDismiss,
+  hideLocateAddress = false,
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -35,15 +39,17 @@ const NotEnoughTokensModal: React.FC<React.PropsWithChildren<NotEnoughTokensModa
           symbol: tokenSymbol,
         })}
       </Text>
-      <Button mt="24px" as="a" external href="/swap">
+      <Button mt="24px" as="a" external href={tokenAddress ? `/swap?outputCurrency=${tokenAddress}` : "/swap"}>
         {t("Buy")} {tokenSymbol}
       </Button>
-      <StyledLink href="https://yieldwatch.net" external>
-        <Button variant="secondary" mt="8px" width="100%">
-          {t("Locate Assets")}
-          <OpenNewIcon color="primary" ml="4px" />
-        </Button>
-      </StyledLink>
+      {hideLocateAddress ? null : (
+        <StyledLink href="https://yieldwatch.net" external>
+          <Button variant="secondary" mt="8px" width="100%">
+            {t("Locate Assets")}
+            <OpenNewIcon color="primary" ml="4px" />
+          </Button>
+        </StyledLink>
+      )}
       <Button variant="text" onClick={onDismiss}>
         {t("Close Window")}
       </Button>

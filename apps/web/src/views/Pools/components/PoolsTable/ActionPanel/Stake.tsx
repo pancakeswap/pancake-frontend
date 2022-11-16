@@ -15,7 +15,7 @@ import {
   Balance,
   Pool,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { PoolCategory } from 'config/constants/types'
@@ -70,7 +70,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     userDataLoaded,
   } = pool
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { isMobile } = useMatchBreakpoints()
 
   const stakingTokenContract = useERC20(stakingToken.address || '')

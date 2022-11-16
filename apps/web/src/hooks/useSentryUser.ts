@@ -1,9 +1,9 @@
 import { setUser } from '@sentry/nextjs'
 import { useEffect } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 
 function useSentryUser() {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   useEffect(() => {
     if (account) {
       setUser({ account })

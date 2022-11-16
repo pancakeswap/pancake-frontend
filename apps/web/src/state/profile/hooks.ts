@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { getAchievements } from 'state/achievements/helpers'
 import { FetchStatus } from 'config/constants/types'
 import useSWR, { KeyedMutator } from 'swr'
@@ -56,7 +56,7 @@ export const useProfile = (): {
   isLoading: boolean
   refresh: KeyedMutator<GetProfileResponse>
 } => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data, status, mutate } = useSWRImmutable(account ? [account, 'profile'] : null, () => getProfile(account), {
     use: [localStorageMiddleware],
   })

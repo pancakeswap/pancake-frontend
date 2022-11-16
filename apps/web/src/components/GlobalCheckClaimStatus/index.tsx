@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { useModal, useToast } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useAnniversaryAchievementContract } from 'hooks/useContract'
 import useCatchTxError from 'hooks/useCatchTxError'
@@ -50,7 +50,7 @@ const GlobalCheckClaim: React.FC<React.PropsWithChildren<GlobalCheckClaimStatusP
     />,
   )
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { pathname } = useRouter()
   // Check claim status
   useEffect(() => {

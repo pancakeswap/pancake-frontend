@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
+import { Flex, Text, HelpIcon, useTooltip, Pool } from '@pancakeswap/uikit'
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   display: none;
   flex: 1 0 100px;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -55,7 +54,7 @@ const Multiplier: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multip
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {t('Multiplier')}
         </Text>
@@ -66,7 +65,7 @@ const Multiplier: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multip
           </ReferenceElement>
           {tooltipVisible && tooltip}
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

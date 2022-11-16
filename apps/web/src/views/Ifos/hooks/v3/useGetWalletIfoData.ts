@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useERC20, useIfoV3Contract } from 'hooks/useContract'
@@ -52,7 +52,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
 
   const { address, currency, version } = ifo
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const contract = useIfoV3Contract(address)
   const currencyContract = useERC20(currency.address, false)
   const allowance = useIfoAllowance(currencyContract, address)

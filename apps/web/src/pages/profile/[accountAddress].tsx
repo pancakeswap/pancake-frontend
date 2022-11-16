@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useRouter } from 'next/router'
 import { useProfileForAddress } from 'state/profile/hooks'
 import { NftProfileLayout } from 'views/Profile'
@@ -8,7 +8,7 @@ import UserNfts from 'views/Profile/components/UserNfts'
 import { useNftsForAddress } from 'views/Nft/market/hooks/useNftsForAddress'
 
 const NftProfilePage = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const accountAddress = useRouter().query.accountAddress as string
   const isConnectedProfile = account?.toLowerCase() === accountAddress?.toLowerCase()
   const {

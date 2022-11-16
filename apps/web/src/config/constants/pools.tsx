@@ -1,8 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { Pool } from '@pancakeswap/uikit'
+import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import Trans from 'components/Trans'
 import { VaultKey } from 'state/types'
 import { bscTokens } from '@pancakeswap/tokens'
-import { SerializedPoolConfig, PoolCategory } from './types'
+import { PoolCategory } from './types'
 
 export const MAX_LOCK_DURATION = 31536000
 export const UNLOCK_FREE_DURATION = 604800
@@ -53,7 +55,7 @@ export const vaultPoolConfig = {
   },
 } as const
 
-export const livePools: SerializedPoolConfig[] = [
+export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
   {
     sousId: 0,
     stakingToken: bscTokens.cake,
@@ -65,6 +67,18 @@ export const livePools: SerializedPoolConfig[] = [
     poolCategory: PoolCategory.CORE,
     tokenPerBlock: '10',
     isFinished: false,
+  },
+  {
+    sousId: 304,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.xcad,
+    contractAddress: {
+      56: '0x68Cc90351a79A4c10078FE021bE430b7a12aaA09',
+      97: '',
+    },
+    poolCategory: PoolCategory.CORE,
+    tokenPerBlock: '0.1102',
+    version: 3,
   },
   {
     sousId: 303,
@@ -138,6 +152,14 @@ export const livePools: SerializedPoolConfig[] = [
     tokenPerBlock: '2.411',
     version: 3,
   },
+].map((p) => ({
+  ...p,
+  stakingToken: p.stakingToken.serialize,
+  earningToken: p.earningToken.serialize,
+}))
+
+// known finished pools
+const finishedPools = [
   {
     sousId: 296,
     stakingToken: bscTokens.cake,
@@ -150,14 +172,6 @@ export const livePools: SerializedPoolConfig[] = [
     tokenPerBlock: '55.6446',
     version: 3,
   },
-].map((p) => ({
-  ...p,
-  stakingToken: p.stakingToken.serialize,
-  earningToken: p.earningToken.serialize,
-}))
-
-// known finished pools
-const finishedPools = [
   {
     sousId: 300,
     stakingToken: bscTokens.cake,
@@ -3453,4 +3467,4 @@ const finishedPools = [
   earningToken: p.earningToken.serialize,
 }))
 
-export default [...livePools, ...finishedPools]
+export default [...livePools, ...finishedPools] as Pool.SerializedPoolConfig<SerializedWrappedToken>[]

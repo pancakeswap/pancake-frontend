@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Box, Flex, Heading, Text, PrizeIcon, BlockIcon, LinkExternal, useTooltip, InfoIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
@@ -39,7 +39,7 @@ const Divider = styled.hr`
 const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, result }) => {
   const { t } = useTranslation()
   const dispatch = useLocalDispatch()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { isRefundable } = useIsRefundable(bet.round.epoch)
   const canClaim = useGetIsClaimable(bet.round.epoch)
   const { token, displayedDecimals } = useConfig()

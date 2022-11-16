@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import { Token } from '@pancakeswap/sdk'
 
 interface EarningsCellProps {
@@ -13,7 +12,7 @@ interface EarningsCellProps {
   account: string
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   display: none;
 
   ${({ theme }) => theme.mediaQueries.md} {
@@ -35,7 +34,7 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
@@ -48,7 +47,7 @@ const EarningsCell: React.FC<React.PropsWithChildren<EarningsCellProps>> = ({ po
             value={hasEarnings ? earningTokenBalance : 0}
           />
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

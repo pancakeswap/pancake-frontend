@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { ifosConfig, FAST_INTERVAL } from 'config/constants'
 import BigNumber from 'bignumber.js'
@@ -8,7 +8,7 @@ import { fetchUserWalletIfoData } from './fetchUserWalletIfoData'
 const allVestingIfo: Ifo[] = ifosConfig.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
 
 const useFetchVestingData = () => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { data, mutate } = useSWR(
     account ? ['vestingData'] : null,

@@ -1,5 +1,5 @@
 import '@pancakeswap/ui/css/reset.css'
-import { ResetCSS, ToastListener } from '@pancakeswap/uikit'
+import { ResetCSS, ToastListener, ScrollToTopButtonV2 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import { NetworkModal } from 'components/NetworkModal'
@@ -122,6 +122,7 @@ type NextPageWithLayout = NextPage & {
    * @default [ChainId.BSC]
    * */
   chains?: number[]
+  isShowScrollToTopButton?: true
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -138,6 +139,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   // Use the layout defined at the page level, if available
   const Layout = Component.Layout || Fragment
   const ShowMenu = Component.mp ? Fragment : Menu
+  const isShowScrollToTopButton = Component.isShowScrollToTopButton || true
 
   return (
     <ProductionErrorBoundary>
@@ -151,6 +153,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <FixedSubgraphHealthIndicator />
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
+      {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
     </ProductionErrorBoundary>
   )
 }

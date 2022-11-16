@@ -1,5 +1,5 @@
 import { Flex, Grid, Text, Button, Input, BinanceIcon, ErrorIcon } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { NftToken } from 'state/nftMarket/types'
 import { isAddress } from 'utils'
@@ -24,7 +24,7 @@ const TransferStage: React.FC<React.PropsWithChildren<TransferStageProps>> = ({
   continueToNextStage,
 }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const transferAddressEqualsConnectedAddress = isAddress(transferAddress) === isAddress(account)
   const getErrorText = () => {
     if (isInvalidTransferAddress) {

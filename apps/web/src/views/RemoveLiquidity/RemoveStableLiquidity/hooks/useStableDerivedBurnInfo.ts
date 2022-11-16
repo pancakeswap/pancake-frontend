@@ -7,8 +7,8 @@ import { useBurnState } from 'state/burn/hooks'
 import { StablePair, useStablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import useSWR from 'swr'
-import { useContext } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useContext, useMemo } from 'react'
+import { useAccount } from 'wagmi'
 
 export function useGetRemovedTokenAmounts({ lpAmount }) {
   const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)
@@ -42,7 +42,7 @@ export function useStableDerivedBurnInfo(
   error?: string
   tokenToReceive?: string
 } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const { independentField, typedValue } = useBurnState()
 
@@ -52,7 +52,10 @@ export function useStableDerivedBurnInfo(
   const { pair } = useStablePair(currencyA?.wrapped, currencyB?.wrapped)
 
   // balances
-  const relevantTokenBalances = useTokenBalances(account ?? undefined, [pair?.liquidityToken])
+  const relevantTokenBalances = useTokenBalances(
+    account ?? undefined,
+    useMemo(() => [pair?.liquidityToken], [pair?.liquidityToken]),
+  )
   const userLiquidity: undefined | CurrencyAmount<Token> = relevantTokenBalances?.[pair?.liquidityToken?.address ?? '']
 
   let percentToRemove: Percent = new Percent('0', '100')

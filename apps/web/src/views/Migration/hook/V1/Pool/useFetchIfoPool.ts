@@ -1,5 +1,5 @@
 import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import fetchIfoPoolUser from 'views/Migration/hook/V1/Pool/fetchIfoPoolUser'
 import { fetchPublicIfoPoolData, fetchIfoPoolFeesData } from 'views/Migration/hook/V1/Pool/fetchIfoPoolPublic'
 import { initialPoolVaultState } from 'state/pools/index'
@@ -100,7 +100,7 @@ const transformData = ({
 }
 
 export const useVaultPoolByKeyV1 = (key: VaultKey) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data, mutate } = useSWR(
     account ? [key, 'v1'] : null,
     async () => {

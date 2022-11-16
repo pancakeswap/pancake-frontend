@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast, Pool } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount, useSigner } from 'wagmi'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
@@ -13,7 +13,6 @@ import { VaultKey } from 'state/types'
 import { getContract } from 'utils/contractHelpers'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { cakeVaultAddress, ifoPoolV1Contract, useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
-import { useSigner } from 'wagmi'
 import { Token } from '@pancakeswap/sdk'
 import { useFetchUserPools } from '../../../hook/V1/Pool/useFetchUserPools'
 import useUnstakePool from '../../../hook/V1/Pool/useUnstakePool'
@@ -25,7 +24,7 @@ export interface UnstakeButtonProps {
 const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ pool }) => {
   const { sousId, stakingToken, earningToken, userData, vaultKey } = pool
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data: signer } = useSigner()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { callWithGasPrice } = useCallWithGasPrice()

@@ -9,6 +9,7 @@
   "tags": {},
   "logoURI": "https://pancakeswap.finance/logo.png",
   "keywords": ["pancake", "default", "aptos"],
+  "schema": "aptos",
   "tokens": [
     {
       "name": "BNB",

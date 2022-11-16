@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, JSBI, Native, Token } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import ERC20_INTERFACE from 'config/abi/erc20'
 import { useAllTokens } from 'hooks/Tokens'
 import { useMulticallContract } from 'hooks/useContract'
@@ -92,7 +92,10 @@ export function useTokenBalances(
 
 // get the balance for a single token/account combo
 export function useTokenBalance(account?: string, token?: Token): CurrencyAmount<Token> | undefined {
-  const tokenBalances = useTokenBalances(account, [token])
+  const tokenBalances = useTokenBalances(
+    account,
+    useMemo(() => [token], [token]),
+  )
   if (!token) return undefined
   return tokenBalances[token.address]
 }
@@ -127,12 +130,15 @@ export function useCurrencyBalances(
 }
 
 export function useCurrencyBalance(account?: string, currency?: Currency): CurrencyAmount<Currency> | undefined {
-  return useCurrencyBalances(account, [currency])[0]
+  return useCurrencyBalances(
+    account,
+    useMemo(() => [currency], [currency]),
+  )[0]
 }
 
 // mimics useAllBalances
 export function useAllTokenBalances(): { [tokenAddress: string]: CurrencyAmount<Token> | undefined } {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const allTokens = useAllTokens()
   const allTokensArray = useMemo(() => Object.values(allTokens ?? {}), [allTokens])
   const balances = useTokenBalances(account ?? undefined, allTokensArray)

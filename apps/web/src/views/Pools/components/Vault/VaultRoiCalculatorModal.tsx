@@ -50,6 +50,8 @@ export const VaultRoiCalculatorModal = ({
     return cakeVaultView === 0 ? flexibleApy : getLockedApy(duration)
   }, [cakeVaultView, getLockedApy, flexibleApy, duration])
 
+  const [isMaxSelected, setIsMaxSelected] = useState(false)
+
   return (
     <RoiCalculatorModal
       account={account}
@@ -67,6 +69,7 @@ export const VaultRoiCalculatorModal = ({
       stakingTokenBalance={
         pool.userData?.stakingTokenBalance ? cakeAsBigNumber.plus(pool.userData?.stakingTokenBalance) : cakeAsBigNumber
       }
+      stakingTokenDecimals={pool.stakingToken.decimals}
       autoCompoundFrequency={1}
       strategy={
         cakeVaultView
@@ -101,7 +104,13 @@ export const VaultRoiCalculatorModal = ({
     >
       {cakeVaultView && (
         <Box mt="16px">
-          <LockDurationField duration={duration} setDuration={setDuration} isOverMax={false} />
+          <LockDurationField
+            duration={duration}
+            setDuration={setDuration}
+            isOverMax={false}
+            isMaxSelected={isMaxSelected}
+            setIsMaxSelected={setIsMaxSelected}
+          />
         </Box>
       )}
     </RoiCalculatorModal>

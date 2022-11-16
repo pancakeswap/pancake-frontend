@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
@@ -40,6 +40,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
     prepConfirmArg,
     defaultDuration: isRenew && avgLockDurationsInSeconds,
   })
+  const [isMaxSelected, setIsMaxSelected] = useState(false)
 
   const { isValidAmount, isValidDuration, isOverMax }: ModalValidator = useMemo(() => {
     return typeof validator === 'function'
@@ -73,6 +74,8 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
               currentDurationLeft={currentDurationLeft}
               setDuration={setDuration}
               duration={duration}
+              isMaxSelected={isMaxSelected}
+              setIsMaxSelected={setIsMaxSelected}
             />
           </>
         )}
@@ -81,6 +84,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         customOverview({
           isValidDuration,
           duration,
+          isMaxSelected,
         })
       ) : (
         <Overview

@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0xbee20e5eb2bb21d4798d4d15406bc3bd16c4b1d9b8f09fe63431597e3803d162' as const
+export const ADDRESS = '0x3eae4f73fe95d9ecfcb0b8c353959f20cbb7239e1b1a1ca55893235c7a4d6d0c' as const
 
 export const MASTERCHEF_MODULE_NAME = 'masterchef' as const
 
@@ -19,7 +19,7 @@ export const masterchefAddPool = (
   }
 }
 
-export type MasterchefDepositArgs = [bigint | string, bigint | string]
+export type MasterchefDepositArgs = [bigint | string]
 
 export const masterchefDeposit = (
   args: MasterchefDepositArgs,
@@ -33,16 +33,11 @@ export const masterchefDeposit = (
   }
 }
 
-export type MasterchefEmergencyWithdrawArgs = [bigint | string]
-
-export const masterchefEmergencyWithdraw = (
-  args: MasterchefEmergencyWithdrawArgs,
-  typeArgs: [string],
-): Types.TransactionPayload_EntryFunctionPayload => {
+export const masterchefEmergencyWithdraw = (typeArgs: [string]): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
     type_arguments: typeArgs,
-    arguments: args,
+    arguments: [],
     function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::emergency_withdraw`,
   }
 }
@@ -78,16 +73,30 @@ export const masterchefSetPool = (args: MasterchefSetPoolArgs): Types.Transactio
   }
 }
 
-export type MasterchefUpdateCakePerSecondArgs = [bigint | string, boolean]
+export type MasterchefSetUpkeepAdminArgs = [string]
 
-export const masterchefUpdateCakePerSecond = (
-  args: MasterchefUpdateCakePerSecondArgs,
+export const masterchefSetUpkeepAdmin = (
+  args: MasterchefSetUpkeepAdminArgs,
 ): Types.TransactionPayload_EntryFunctionPayload => {
   return {
     type: 'entry_function_payload',
     type_arguments: [],
     arguments: args,
-    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::update_cake_per_second`,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::set_upkeep_admin`,
+  }
+}
+
+export type MasterchefTransferCakeOwnerShipArgs = [string]
+
+export const masterchefTransferCakeOwnerShip = (
+  args: MasterchefTransferCakeOwnerShipArgs,
+  typeArgs: [string],
+): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: typeArgs,
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::transfer_cake_owner_ship`,
   }
 }
 
@@ -128,7 +137,18 @@ export const masterchefUpgradeMasterchef = (
   }
 }
 
-export type MasterchefWithdrawArgs = [bigint | string, bigint | string]
+export type MasterchefUpkeepArgs = [bigint | string, bigint | string, boolean]
+
+export const masterchefUpkeep = (args: MasterchefUpkeepArgs): Types.TransactionPayload_EntryFunctionPayload => {
+  return {
+    type: 'entry_function_payload',
+    type_arguments: [],
+    arguments: args,
+    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::upkeep`,
+  }
+}
+
+export type MasterchefWithdrawArgs = [bigint | string]
 
 export const masterchefWithdraw = (
   args: MasterchefWithdrawArgs,

@@ -62,7 +62,7 @@ export const CopyAddress: React.FC<React.PropsWithChildren<CopyAddressProps>> = 
           <input type="text" readOnly value={account} />
         </Address>
         <Flex margin="12px">
-          <CopyButton width="24px" text={account} tooltipMessage={tooltipMessage} tooltipTop={-40} />
+          <CopyButton width="24px" text={account} tooltipMessage={tooltipMessage} />
         </Flex>
       </Wrapper>
     </Box>

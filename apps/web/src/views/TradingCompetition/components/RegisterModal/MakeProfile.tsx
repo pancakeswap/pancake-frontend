@@ -1,11 +1,11 @@
 import { Button, Heading, Text } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { CompetitionProps } from 'views/TradingCompetition/types'
 import { useRouter } from 'next/router'
 
 const MakeProfile: React.FC<React.PropsWithChildren<CompetitionProps>> = ({ onDismiss }) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const router = useRouter()
 

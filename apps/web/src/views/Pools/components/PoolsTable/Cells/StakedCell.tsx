@@ -4,18 +4,14 @@ import { useTranslation } from '@pancakeswap/localization'
 
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey } from 'state/types'
-import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
-import BaseCell, { CellContent } from './BaseCell'
 
 interface StakedCellProps {
   pool: Pool.DeserializedPool<Token>
   account: string
 }
-
-const StyledCell = styled(BaseCell)``
 
 const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, account }) => {
   const { t } = useTranslation()
@@ -54,7 +50,7 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, 
   const userDataLoading = pool.vaultKey ? isLoading : !pool.userDataLoaded
 
   return (
-    <StyledCell
+    <Pool.BaseCell
       role="cell"
       flex={
         pool.vaultKey === VaultKey.CakeFlexibleSideVault
@@ -64,7 +60,7 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, 
           : '2 0 100px'
       }
     >
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
@@ -109,8 +105,8 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool, 
             </Flex>
           </>
         )}
-      </CellContent>
-    </StyledCell>
+      </Pool.CellContent>
+    </Pool.BaseCell>
   )
 }
 

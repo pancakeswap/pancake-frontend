@@ -108,14 +108,14 @@ jest.mock('../../hooks/useActiveWeb3React', () => {
   }
 })
 
-var mockUseWeb3React: jest.Mock
+var mockAccount: jest.Mock
 
-jest.mock('@pancakeswap/wagmi', () => {
-  mockUseWeb3React = jest.fn().mockReturnValue({})
-  const original = jest.requireActual('@pancakeswap/wagmi') // Step 2.
+jest.mock('wagmi', () => {
+  mockAccount = jest.fn().mockReturnValue({})
+  const original = jest.requireActual('wagmi') // Step 2.
   return {
     ...original,
-    useWeb3React: mockUseWeb3React,
+    useAccount: mockAccount,
   }
 })
 
@@ -138,15 +138,15 @@ describe('#useDerivedSwapInfo', () => {
     )
     expect(result.current.inputError).toBe('Connect Wallet')
 
-    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockAccount.mockReturnValue({ address: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     rerender()
 
     expect(result.current.inputError).toBe('Enter an amount')
-    mockUseWeb3React.mockClear()
+    mockAccount.mockClear()
   })
 
   it('should show [Enter a recipient] Error', async () => {
-    mockUseWeb3React.mockReturnValue({ account: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
+    mockAccount.mockReturnValue({ address: '0x33edFBc4934baACc78f4d317bc07639119dd3e78' })
     const { result, rerender } = renderHook(
       () => {
         const {
@@ -174,7 +174,7 @@ describe('#useDerivedSwapInfo', () => {
     rerender()
 
     expect(result.current.inputError).toBe('Enter a recipient')
-    mockUseWeb3React.mockClear()
+    mockAccount.mockClear()
   })
 
   it('should return undefined when no pair', async () => {

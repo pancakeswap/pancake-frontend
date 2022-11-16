@@ -1,5 +1,5 @@
 import { appearAnimation, useIsomorphicEffect, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useState } from 'react'
 import styled from 'styled-components'
 import SwiperCore, { Autoplay, EffectFade, Pagination } from 'swiper'
@@ -90,7 +90,7 @@ const StyledSwiper = styled(Swiper)`
 
 const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   const bannerList = useMultipleBannerConfig()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { isDesktop, isTablet } = useMatchBreakpoints()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
 

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import Trans from 'components/Trans'
 import { Box, Card, CardBody, CardHeader, Flex, Text, Image, Pool } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { Token } from '@pancakeswap/sdk'
 import { VestingStatus } from './types'
 import NotTokens from './NotTokens'
@@ -65,7 +65,7 @@ interface IfoVestingProps {
 
 const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const [isFirstTime, setIsFirstTime] = useState(true)
   const { data, fetchUserVestingData } = useFetchVestingData()
 

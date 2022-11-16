@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { PageMeta } from 'components/Layout/Page'
-import { Box, ScrollToTopButtonV2 } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { usePotteryFetch } from 'state/pottery/hook'
 import Banner from 'views/Pottery/components/Banner/index'
 import Pot from 'views/Pottery/components/Pot/index'
@@ -35,7 +35,6 @@ const Pottery: React.FC<React.PropsWithChildren> = () => {
       <FAQ />
       {createPortal(
         <>
-          <ScrollToTopButtonV2 />
           <SubgraphHealthIndicator subgraphName="pancakeswap/pottery" />
         </>,
         document.body,

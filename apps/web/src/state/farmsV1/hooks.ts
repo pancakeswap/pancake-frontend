@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
@@ -48,7 +48,7 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
 
 export const usePollFarmsV1WithUserData = () => {
   const dispatch = useAppDispatch()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   useSlowRefreshEffect(() => {
     getFarmConfig(ChainId.BSC).then((farmsConfig) => {

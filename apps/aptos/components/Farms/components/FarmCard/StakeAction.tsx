@@ -4,11 +4,12 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCakePriceAsBigNumber } from 'hooks/useStablePrice'
+import { usePriceCakeBusd } from 'hooks/useStablePrice'
 import type { DeserializedFarmUserData } from '@pancakeswap/farms'
 import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { FarmWithStakedValue } from '../types'
 
 const IconButtonWrapper = styled.div`
@@ -49,7 +50,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError } = useCatchTxError()
   const { stakedBalance, tokenBalance } = (userData as DeserializedFarmUserData) || {}
-  const cakePrice = useCakePriceAsBigNumber()
+  const cakePrice = usePriceCakeBusd()
   const router = useRouter()
 
   const handleStake = async (amount: string) => {
@@ -92,11 +93,17 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       displayApr={displayApr}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
+      decimals={FARM_DEFAULT_DECIMALS}
     />,
   )
 
   const [onPresentWithdraw] = useModal(
-    <FarmUI.WithdrawModal max={stakedBalance} onConfirm={handleUnstake} tokenName={lpSymbol} decimals={8} />,
+    <FarmUI.WithdrawModal
+      max={stakedBalance}
+      onConfirm={handleUnstake}
+      tokenName={lpSymbol}
+      decimals={FARM_DEFAULT_DECIMALS}
+    />,
   )
 
   const renderStakingButtons = () => {
@@ -126,6 +133,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <FarmUI.StakedLP
+        decimals={FARM_DEFAULT_DECIMALS}
         stakedBalance={stakedBalance}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}

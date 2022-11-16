@@ -12,6 +12,7 @@ import { useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
+import { useIsBloctoETH } from 'views/Farms'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
@@ -79,6 +80,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { isFirstTime } = useFirstTimeCrossFarming(vaultPid)
+  const isBloctoETH = useIsBloctoETH()
 
   const crossChainWarningText = useMemo(() => {
     return isFirstTime
@@ -112,7 +114,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const handleNonBscStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onStake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {
@@ -170,7 +172,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const handleNonBscUnStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onUnstake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {
@@ -253,6 +255,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       bCakeCalculatorSlot={bCakeCalculatorSlot}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
       crossChainWarningText={crossChainWarningText}
+      decimals={18}
     />,
   )
 
@@ -263,6 +266,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
+      decimals={18}
     />,
   )
 
@@ -276,7 +280,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         <IconButton mr="6px" variant="tertiary" disabled={pendingFarm.length > 0} onClick={onPresentWithdraw}>
           <MinusIcon color="primary" width="14px" />
         </IconButton>
-        <IconButton variant="tertiary" onClick={onPresentDeposit} disabled={isStakeReady}>
+        <IconButton variant="tertiary" onClick={onPresentDeposit} disabled={isStakeReady || isBloctoETH}>
           <AddIcon color="primary" width="14px" />
         </IconButton>
       </IconButtonWrapper>
@@ -299,7 +303,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   // TODO: Move this out to prevent unnecessary re-rendered
   if (!isApproved) {
     return (
-      <Button mt="8px" width="100%" disabled={pendingTx} onClick={handleApprove}>
+      <Button mt="8px" width="100%" disabled={pendingTx || isBloctoETH} onClick={handleApprove}>
         {t('Enable Contract')}
       </Button>
     )
@@ -308,6 +312,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   return (
     <Flex justifyContent="space-between" alignItems="center">
       <FarmUI.StakedLP
+        decimals={18}
         stakedBalance={stakedBalance}
         quoteTokenSymbol={quoteToken.symbol}
         tokenSymbol={token.symbol}

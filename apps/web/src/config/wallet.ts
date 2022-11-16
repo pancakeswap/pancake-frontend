@@ -73,9 +73,7 @@ const walletsConfig = ({
       installed:
         typeof window !== 'undefined' &&
         !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
-        (Boolean(window.ethereum?.isTrust) ||
-          // @ts-ignore
-          Boolean(window.ethereum?.isTrustWallet)),
+        (Boolean(window.ethereum?.isTrust) || Boolean((window.ethereum as ExtendEthereum)?.isTrustWallet)),
       deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
       downloadLink: {
         desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
@@ -142,9 +140,12 @@ const walletsConfig = ({
       id: 'blocto',
       title: 'Blocto',
       icon: '/images/wallets/blocto.png',
-      connectorId: ConnectorNames.Injected,
-      installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto),
-      qrCode,
+      connectorId: ConnectorNames.Blocto,
+      get installed() {
+        return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
+          ? true
+          : undefined // undefined to show SDK
+      },
     },
   ]
 }
@@ -179,5 +180,5 @@ const docLangCodeMapping: Record<string, string> = {
 
 export const getDocLink = (code: string) =>
   docLangCodeMapping[code]
-    ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/connection-guide`
-    : `https://docs.pancakeswap.finance/get-started/connection-guide`
+    ? `https://docs.pancakeswap.finance/v/${docLangCodeMapping[code]}/get-started/wallet-guide`
+    : `https://docs.pancakeswap.finance/get-started/wallet-guide`

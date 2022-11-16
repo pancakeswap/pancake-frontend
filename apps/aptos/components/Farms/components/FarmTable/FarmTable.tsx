@@ -3,10 +3,10 @@ import { latinise } from 'utils/latinise'
 import styled from 'styled-components'
 import { RowType } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useRouter } from 'next/router'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import { getDisplayApr } from '../getDisplayApr'
-
 import Row, { RowProps } from './Row'
 import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 
@@ -88,7 +88,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
 
   const getFarmEarnings = (farm) => {
     const earnings = new BigNumber(farm?.userData?.earnings)
-    return getBalanceNumber(earnings)
+    return getBalanceNumber(earnings, FARM_DEFAULT_DECIMALS)
   }
 
   const generateRow = (farm) => {
@@ -104,6 +104,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         pid: farm.pid,
         multiplier: farm.multiplier,
         lpLabel,
+        lpAddress: farm.lpAddress,
         lpSymbol: farm.lpSymbol,
         lpTokenPrice: farm.lpTokenPrice,
         tokenAddress,
@@ -121,15 +122,15 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         isStable: farm.isStable,
       },
       earned: {
-        // TODO: remove
-        earnings: getFarmEarnings(farm),
         pid: farm.pid,
+        earnings: getFarmEarnings(farm),
       },
       liquidity: {
         liquidity: farm?.liquidity,
       },
       multiplier: {
         multiplier: farm.multiplier,
+        rewardCakePerSecond: true,
       },
       type: farm.isCommunity ? 'community' : 'core',
       details: farm,

@@ -11,11 +11,10 @@ import {
   ModalHeader as UIKitModalHeader,
   ModalTitle,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount, useBalance } from 'wagmi'
 import { useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { useBalance } from 'wagmi'
 import WalletInfo from './WalletInfo'
 import WalletTransactions from './WalletTransactions'
 import WalletWrongNetwork from './WalletWrongNetwork'
@@ -48,7 +47,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
 }) => {
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data, isFetched } = useBalance({ addressOrName: account })
   const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_NATIVE_BALANCE)
 

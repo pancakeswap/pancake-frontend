@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { NftToken, ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import useSWR from 'swr'
 import {
@@ -42,7 +42,7 @@ const fetchCheapestBunny = async (
 }
 
 export const usePancakeBunnyCheapestNft = (bunnyId: string, nftMetadata: ApiResponseCollectionTokens) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { data, status, mutate } = useSWR(
     nftMetadata && bunnyId ? ['cheapestBunny', bunnyId, account] : null,
     async () => {

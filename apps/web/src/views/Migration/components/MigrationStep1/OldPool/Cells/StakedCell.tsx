@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { convertSharesToCake } from 'views/Pools/helpers'
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 import { useVaultPoolByKeyV1 } from 'views/Migration/hook/V1/Pool/useFetchIfoPool'
 
 interface StakedCellProps {
@@ -15,7 +14,7 @@ interface StakedCellProps {
   account: string
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex: 0;
   padding: 0 0 24px 0;
   margin-left: 48px;
@@ -59,7 +58,7 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool }
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
@@ -74,7 +73,7 @@ const StakedCell: React.FC<React.PropsWithChildren<StakedCellProps>> = ({ pool }
             />
           </Box>
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

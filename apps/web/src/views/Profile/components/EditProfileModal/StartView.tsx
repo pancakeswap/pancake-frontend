@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { Button, Flex, Text, InjectedModalProps, Message, MessageText } from '@pancakeswap/uikit'
 import { getPancakeProfileAddress } from 'utils/addressHelpers'
@@ -43,7 +43,7 @@ const AvatarWrapper = styled.div`
 
 const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToApprove, goToChange, goToRemove }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { reader: cakeContract } = useCake()
   const { profile } = useProfile()
   const { balance: cakeBalance, fetchStatus } = useGetCakeBalance()

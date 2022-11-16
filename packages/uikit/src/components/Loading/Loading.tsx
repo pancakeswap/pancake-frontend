@@ -1,12 +1,10 @@
 import styled from "styled-components";
+import { Box } from "../Box";
 
-const Loading = styled.div`
-  border: 8px solid #f3f3f3;
+const Loading = styled(Box)`
   border-radius: 50%;
-  border-top: 8px solid #ddd;
-  border-bottom: 8px solid #ddd;
-  width: 20px;
-  height: 20px;
+  border: 2px solid ${({ theme }) => theme.colors.disabled};
+  border-top: 2px solid transparent;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
   @-webkit-keyframes spin {
@@ -27,5 +25,10 @@ const Loading = styled.div`
     }
   }
 `;
+
+Loading.defaultProps = {
+  width: "20px",
+  height: "20px",
+};
 
 export default Loading;

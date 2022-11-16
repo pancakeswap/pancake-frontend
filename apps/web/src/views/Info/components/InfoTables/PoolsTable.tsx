@@ -170,7 +170,7 @@ const PoolTable: React.FC<React.PropsWithChildren<PoolTableProps>> = ({ poolData
           #
         </Text>
         <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
-          {t('Pool')}
+          {t('Pair')}
         </Text>
         <ClickableColumnHeader
           color="secondary"

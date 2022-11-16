@@ -6,7 +6,6 @@ import {
   useMatchBreakpoints,
   Skeleton,
   Farm as FarmUI,
-  useDelayedUnmount,
   FarmTableEarnedProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
@@ -14,6 +13,7 @@ import {
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser } from 'state/farms/hooks'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
 
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
@@ -156,7 +156,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           strikethrough={props?.details?.boosted}
                           boosted={props?.details?.boosted}
                         />
-                        {props?.details?.boosted ? (
+                        {props?.details?.boosted && userDataReady ? (
                           <BoostedApr
                             lpRewardsApr={props?.apr?.lpRewardsApr}
                             apr={props?.apr?.originalValue}
@@ -225,7 +225,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   strikethrough={props?.details?.boosted}
                   boosted={props?.details?.boosted}
                 />
-                {props?.details?.boosted ? (
+                {props?.details?.boosted && userDataReady ? (
                   <BoostedApr
                     lpRewardsApr={props?.apr?.lpRewardsApr}
                     apr={props?.apr?.originalValue}

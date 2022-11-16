@@ -1,15 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, Flex, Box, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
+import { Text, Flex, Box, useMatchBreakpoints, Balance, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import BaseCell, { CellContent } from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
 interface AutoEarningsCellProps {
   hasEarnings: boolean
   earningTokenBalance: number
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   display: none;
   ${({ theme }) => theme.mediaQueries.md} {
     display: flex;
@@ -27,7 +26,7 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
 
   return (
     <StyledCell role="cell">
-      <CellContent>
+      <Pool.CellContent>
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
@@ -42,7 +41,7 @@ const AutoEarningsCell: React.FC<React.PropsWithChildren<AutoEarningsCellProps>>
             />
           </Box>
         </Flex>
-      </CellContent>
+      </Pool.CellContent>
     </StyledCell>
   )
 }

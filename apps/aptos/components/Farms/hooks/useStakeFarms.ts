@@ -1,19 +1,19 @@
 import { useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import { useSendTransaction } from '@pancakeswap/awgmi'
 import { masterchefDeposit } from 'config/constants/contracts/masterchef'
 import { FARMS_DEFAULT_TOKEN_DECIMAL } from 'config'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 
-const useStakeFarms = (_pid: number, tokenType: string) => {
-  const { sendTransactionAsync } = useSendTransaction()
+const useStakeFarms = (tokenType: string) => {
+  const executeTransaction = useSimulationAndSendTransaction()
 
   const handleStake = useCallback(
     async (_amount: string) => {
       const value = new BigNumber(_amount).times(FARMS_DEFAULT_TOKEN_DECIMAL).toString()
-      const payload = masterchefDeposit([_pid.toString(), value], [tokenType])
-      return sendTransactionAsync({ payload })
+      const payload = masterchefDeposit([value], [tokenType])
+      return executeTransaction(payload)
     },
-    [_pid, tokenType, sendTransactionAsync],
+    [tokenType, executeTransaction],
   )
 
   return { onStake: handleStake }

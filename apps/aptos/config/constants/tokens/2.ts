@@ -13,10 +13,26 @@ export const testnetTokens = {
   ),
   cake: new Coin(
     ChainId.TESTNET,
-    '0x8363d4fdb36f314a80027f1d2b22f25f19be1c8a070a5ee4cc3f08f4e4d9fc42::pancake::Cake',
+    '0xe0e5ad285cbcdb873b2ee15bb6bcac73d9d763bcb58395e894255eeecf3992cf::pancake::Cake',
     8,
     'CAKE',
     'PancakeSwap Token',
+    '',
+  ),
+  eth: new Coin(
+    ChainId.TESTNET,
+    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetETH',
+    8,
+    'ETH',
+    'ETH Token',
+    '',
+  ),
+  bnb: new Coin(
+    ChainId.TESTNET,
+    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBNB',
+    8,
+    'BNB',
+    'BNB Token',
     '',
   ),
 }

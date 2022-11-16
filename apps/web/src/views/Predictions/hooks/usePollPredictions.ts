@@ -1,4 +1,4 @@
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useGetPredictionsStatus } from 'state/predictions/hooks'
 import { fetchPredictionData } from 'state/predictions'
 import { PredictionStatus } from 'state/types'
@@ -9,7 +9,7 @@ const POLL_TIME_IN_SECONDS = 10
 
 const usePollPredictions = () => {
   const dispatch = useLocalDispatch()
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const status = useGetPredictionsStatus()
 
   useSWR(

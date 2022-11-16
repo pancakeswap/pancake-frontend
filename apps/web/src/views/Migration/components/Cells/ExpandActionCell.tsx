@@ -1,15 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Text, ChevronDownIcon } from '@pancakeswap/uikit'
+import { Text, ChevronDownIcon, Pool } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import BaseCell from 'views/Pools/components/PoolsTable/Cells/BaseCell'
 
 interface ExpandActionCellProps {
   expanded: boolean
   showExpandedText: boolean
 }
 
-const StyledCell = styled(BaseCell)`
+const StyledCell = styled(Pool.BaseCell)`
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;

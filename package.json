@@ -23,7 +23,7 @@
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release-packages": "turbo run build --filter=packages/* && changeset version && changeset publish"
+    "release-packages": "turbo run build --filter=./packages/* && changeset version && changeset publish"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -32,7 +32,6 @@
     "@changesets/cli": "^2.25.0",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "husky": "^7.0.0",
-    "lerna": "^4.0.0",
     "lint-staged": "^12.3.4",
     "prettier": "^2.7.1",
     "serve": "^12.0.0",

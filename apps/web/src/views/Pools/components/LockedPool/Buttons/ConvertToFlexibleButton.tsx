@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, ButtonProps, useToast } from '@pancakeswap/uikit'
 import { memo, useCallback } from 'react'
 
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
@@ -15,7 +15,7 @@ import { VaultKey } from 'state/types'
 const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = (props) => {
   const dispatch = useAppDispatch()
 
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
   const { callWithGasPrice } = useCallWithGasPrice()

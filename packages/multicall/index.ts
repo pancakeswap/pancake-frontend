@@ -2,6 +2,7 @@ import { Interface } from '@ethersproject/abi'
 import { CallOverrides, Contract } from '@ethersproject/contracts'
 import { Provider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
+
 import multicallAbi from './Multicall.json'
 
 export const multicallAddresses = {
@@ -12,7 +13,7 @@ export const multicallAddresses = {
   97: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
-export const getMulticallContract = (chainId: ChainId, provider) => {
+export const getMulticallContract = (chainId: ChainId, provider: Provider) => {
   if (multicallAddresses[chainId]) {
     return new Contract(multicallAddresses[chainId], multicallAbi, provider)
   }
@@ -58,7 +59,9 @@ interface MulticallV3Params {
 export type MultiCallV2 = <T = any>(params: MulticallV2Params) => Promise<T>
 export type MultiCall = <T = any>(abi: any[], calls: Call[], chainId?: ChainId) => Promise<T>
 
-export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: number | undefined }) => TProvider) {
+export function createMulticall<TProvider extends Provider>(
+  provider: ({ chainId }: { chainId?: number | undefined }) => TProvider,
+) {
   const multicall: MultiCall = async (abi: any[], calls: Call[], chainId = ChainId.BSC) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
@@ -70,7 +73,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     }))
     const { returnData } = await multi.callStatic.aggregate(calldata)
 
-    const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
+    const res = returnData.map((call: any, i: number) => itf.decodeFunctionResult(calls[i].name, call))
 
     return res as any
   }
@@ -87,9 +90,9 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     }))
 
     const returnData = await multi.callStatic.tryAggregate(requireSuccess, calldata, overrides)
-    const res = returnData.map((call, i) => {
+    const res = returnData.map((call: any, i: number) => {
       const [result, data] = call
-      return result ? itf.decodeFunctionResult(calls[i].name, data) : null
+      return result && data !== '0x' ? itf.decodeFunctionResult(calls[i].name, data) : null
     })
 
     return res as any
@@ -111,7 +114,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
 
     const result = await multi.callStatic.aggregate3([...[_calls], ...(overrides ? [overrides] : [])])
 
-    return result.map((call, i) => {
+    return result.map((call: any, i: number) => {
       const { returnData, success } = call
       if (!success || returnData === '0x') return null
       const { address, abi, name } = calls[i]

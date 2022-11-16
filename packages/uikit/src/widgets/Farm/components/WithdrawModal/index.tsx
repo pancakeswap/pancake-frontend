@@ -15,7 +15,7 @@ interface WithdrawModalProps {
   tokenName?: string;
   showActiveBooster?: boolean;
   showCrossChainFarmWarning?: boolean;
-  decimals?: number;
+  decimals: number;
 }
 
 const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
@@ -25,7 +25,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   tokenName = "",
   showActiveBooster,
   showCrossChainFarmWarning,
-  decimals = 18,
+  decimals,
 }) => {
   const [val, setVal] = useState("");
   const [pendingTx, setPendingTx] = useState(false);
@@ -52,9 +52,14 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      setVal(fullBalanceNumber.dividedBy(100).multipliedBy(percent).toString());
+      const totalAmount = fullBalanceNumber
+        .dividedBy(100)
+        .multipliedBy(percent)
+        .toNumber()
+        .toLocaleString(undefined, { maximumFractionDigits: decimals });
+      setVal(totalAmount);
     },
-    [fullBalanceNumber, setVal]
+    [decimals, fullBalanceNumber]
   );
 
   return (
@@ -68,6 +73,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
           max={fullBalance}
           symbol={tokenName}
           inputTitle={t("Unstake")}
+          decimals={decimals}
         />
         {showActiveBooster ? (
           <Message variant="warning" mt="8px">

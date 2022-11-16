@@ -16,7 +16,7 @@ import {
   useToast,
   Pool,
 } from '@pancakeswap/uikit'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
 
@@ -76,7 +76,7 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
 }) => {
   const dispatch = useAppDispatch()
   const { stakingToken, earningTokenPrice, vaultKey } = pool
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const vaultPoolContract = useVaultPoolContract(pool.vaultKey)
   const { callWithGasPrice } = useCallWithGasPrice()

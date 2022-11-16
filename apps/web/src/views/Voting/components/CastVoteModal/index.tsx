@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Modal, useToast } from '@pancakeswap/uikit'
-import { useWeb3LibraryContext, useWeb3React } from '@pancakeswap/wagmi'
+import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
@@ -21,9 +22,8 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   onDismiss,
 }) => {
   const [view, setView] = useState<ConfirmVoteView>(ConfirmVoteView.MAIN)
-  const [modalIsOpen, setModalIsOpen] = useState(true)
   const [isPending, setIsPending] = useState(false)
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const { t } = useTranslation()
   const library = useWeb3LibraryContext()
   const { toastError } = useToast()
@@ -40,7 +40,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
     ifoPoolBalance,
     lockedCakeBalance,
     lockedEndTime,
-  } = useGetVotingPower(block, modalIsOpen)
+  } = useGetVotingPower(block)
 
   const isStartView = view === ConfirmVoteView.MAIN
   const handleBack = isStartView ? null : () => setView(ConfirmVoteView.MAIN)
@@ -52,7 +52,6 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
   }
 
   const handleDismiss = () => {
-    setModalIsOpen(false)
     onDismiss()
   }
 

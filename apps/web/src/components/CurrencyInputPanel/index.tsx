@@ -9,7 +9,7 @@ import { useBUSDCurrencyAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
@@ -119,7 +119,7 @@ export default function CurrencyInputPanel({
   error,
   showBUSD,
 }: CurrencyInputPanelProps) {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
 
@@ -186,9 +186,6 @@ export default function CurrencyInputPanel({
                 buttonColor="textSubtle"
                 text={tokenAddress}
                 tooltipMessage={t('Token address copied')}
-                tooltipTop={-20}
-                tooltipRight={40}
-                tooltipFontSize={12}
               />
               <AddToWalletButton
                 variant="text"
@@ -230,12 +227,16 @@ export default function CurrencyInputPanel({
               }}
             />
           </LabelRow>
+          {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
+            <Flex justifyContent="flex-end" mr="1rem">
+              <Flex maxWidth="200px">
+                <Text fontSize="12px" color="textSubtle">
+                  ~{formatNumber(amountInDollar)} USD
+                </Text>
+              </Flex>
+            </Flex>
+          )}
           <InputRow selected={disableCurrencySelect}>
-            {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
-              <Text fontSize="12px" color="textSubtle" mr="12px">
-                ~{formatNumber(amountInDollar)} USD
-              </Text>
-            )}
             {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
                 {showQuickInputButton &&

@@ -5,7 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { useCurrencyBalance } from 'state/wallet/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import { useAccount } from 'wagmi'
 import { CurrencyLogo } from '../Logo'
 import { RowBetween, AutoRow } from '../Layout/Row'
 
@@ -59,7 +59,7 @@ export const CurrencySelect = ({
   hideBalance,
   ...props
 }: CurrencySelectProps) => {
-  const { account } = useWeb3React()
+  const { address: account } = useAccount()
 
   const selectedCurrencyBalance = useCurrencyBalance(
     account ?? undefined,
