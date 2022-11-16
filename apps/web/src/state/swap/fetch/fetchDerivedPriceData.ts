@@ -47,8 +47,6 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
     }
   })
 
-  console.log(tokenPrices, 'tokenPrices')
-
   return orderBy(tokenPrices, (tokenPrice) => parseInt(tokenPrice.timestamp, 10))
 }
 
