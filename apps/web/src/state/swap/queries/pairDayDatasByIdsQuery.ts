@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request'
 
 const pairDayDatasByIdsQuery = gql`
-  query pairDayDatasByIdsQuery($pairIds: [String]) {
+  query pairDayDatasByIdsQuery($pairIds: [ID!]) {
     pairDayDatas(where: { id_in: $pairIds }, orderBy: date, orderDirection: desc) {
       id
       date

@@ -18,6 +18,9 @@ export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancak
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
 
 export const INFO_CLIENT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
+export const INFO_NR_CLIENT =
+  process.env.NEXT_PUBLIC_NODE_REAL_GRAPHQL_API_ENDPOINT_BSC ??
+  'https://data-platform.nodereal.io/graph/v1/2f9e7753b78d4ab983e5d60c47d7fdfb/projects/pancakeswap'
 export const INFO_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth'
 export const BLOCKS_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
 export const BLOCKS_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks'
@@ -37,11 +40,11 @@ export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
 export const CELER_API = 'https://api.celerscan.com/scan'
 
 export const INFO_CLIENT_WITH_CHAIN = {
-  [ChainId.BSC]: 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2',
-  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
+  [ChainId.BSC]: INFO_NR_CLIENT,
+  [ChainId.ETHEREUM]: INFO_CLIENT_ETH,
 }
 
 export const BLOCKS_CLIENT_WITH_CHAIN = {
-  [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks',
-  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
+  [ChainId.BSC]: BLOCKS_CLIENT,
+  [ChainId.ETHEREUM]: BLOCKS_CLIENT_ETH,
 }

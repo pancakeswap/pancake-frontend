@@ -1,5 +1,6 @@
 import orderBy from 'lodash/orderBy'
-import { INFO_CLIENT } from 'config/constants/endpoints'
+import { INFO_CLIENT, INFO_NR_CLIENT } from 'config/constants/endpoints'
+import Cookies from 'js-cookie'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
@@ -10,10 +11,11 @@ import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/g
 import { PairDataTimeWindowEnum } from '../types'
 
 const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
+  const bucketInfo = Cookies.get('bucket-info') // sf or nr
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    INFO_CLIENT,
+    bucketInfo === 'sf' ? INFO_CLIENT : INFO_NR_CLIENT,
     200,
   )
 
@@ -23,7 +25,7 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
   }
 
   const prices = mapValues(rawPrices, (value) => {
-    return value[0]
+    return value.derivedBNB
   })
 
   // format token BNB price results
@@ -40,10 +42,12 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
       tokenPrices.push({
         tokenAddress,
         timestamp,
-        derivedBNB: prices[priceKey]?.derivedBNB ? parseFloat(prices[priceKey].derivedBNB) : 0,
+        derivedBNB: prices[priceKey] ? parseFloat(prices[priceKey]) : 0,
       })
     }
   })
+
+  console.log(tokenPrices, 'tokenPrices')
 
   return orderBy(tokenPrices, (tokenPrice) => parseInt(tokenPrice.timestamp, 10))
 }
@@ -101,7 +105,7 @@ const fetchDerivedPriceData = async (
       console.error('Error fetching blocks for timestamps', timestamps)
       return null
     }
-
+    blocks.pop() // the bsc graph is 32 block behind so pop the last
     const [token0DerivedBnb, token1DerivedBnb] = await Promise.all([
       getTokenDerivedBnbPrices(token0Address, blocks),
       getTokenDerivedBnbPrices(token1Address, blocks),

@@ -30,7 +30,7 @@ const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number
   const firstCount = 30
   try {
     const query = gql`
-      query topTokens($blacklist: [String!]) {
+      query topTokens($blacklist: [ID!]) {
         tokenDayDatas(
           first: ${firstCount}
           ${whereCondition}
