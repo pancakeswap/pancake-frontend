@@ -11,7 +11,7 @@ import { BlockResponse } from 'web/src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT_WITH_CHAIN } from 'web/src/config/constants/endpoints'
 import { stableSwapClient, infoClientWithChain } from 'web/src/utils/graphql'
 
-interface SingleFarmResponse {
+export interface SingleFarmResponse {
   id: string
   reserveUSD: string
   volumeUSD: string
@@ -22,7 +22,7 @@ interface FarmsResponse {
   farmsOneWeekAgo: SingleFarmResponse[]
 }
 
-interface AprMap {
+export interface AprMap {
   [key: string]: BigNumber
 }
 
@@ -31,8 +31,8 @@ const getWeekAgoTimestamp = () => {
   return getUnixTime(weekAgo)
 }
 
-const LP_HOLDERS_FEE = 0.0017
-const WEEKS_IN_A_YEAR = 52.1429
+export const LP_HOLDERS_FEE = 0.0017
+export const WEEKS_IN_A_YEAR = 52.1429
 
 const getBlockAtTimestamp = async (timestamp: number, chainId = ChainId.BSC) => {
   try {
