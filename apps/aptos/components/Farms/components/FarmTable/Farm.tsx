@@ -1,7 +1,8 @@
-// import { useFarmUser } from 'state/farms/hooks'
 import { Farm as FarmUI, FarmTableFarmTokenInfoProps } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { TokenPairImage } from 'components/TokenImage'
+import { useFarmUserInfoCache } from 'state/farms/hook'
 
 const { FarmTokenInfo } = FarmUI.FarmTable
 
@@ -13,8 +14,8 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
   isReady,
   isStable,
 }) => {
-  // const { stakedBalance } = useFarmUser(pid)
-  const stakedBalance = BIG_ZERO
+  const { data: userInfo } = useFarmUserInfoCache(String(pid))
+  const stakedBalance = userInfo?.amount ? new BigNumber(userInfo.amount) : BIG_ZERO
 
   return (
     <FarmTokenInfo

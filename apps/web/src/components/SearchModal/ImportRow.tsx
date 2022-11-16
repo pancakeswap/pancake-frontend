@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react'
-import { Token } from '@pancakeswap/sdk'
+import { Currency, Token } from '@pancakeswap/sdk'
 import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
@@ -44,12 +44,14 @@ export default function ImportRow({
   token,
   style,
   dim,
+  onCurrencySelect,
   showImportView,
   setImportToken,
 }: {
   token: Token
   style?: CSSProperties
   dim?: boolean
+  onCurrencySelect?: (currency: Currency) => void
   showImportView: () => void
   setImportToken: (token: Token) => void
 }) {
@@ -67,7 +69,16 @@ export default function ImportRow({
   const isActive = useIsTokenActive(token)
 
   return (
-    <TokenSection style={style}>
+    <TokenSection
+      style={style}
+      variant="text"
+      as={isActive && onCurrencySelect ? Button : 'a'}
+      onClick={() => {
+        if (isActive) {
+          onCurrencySelect?.(token)
+        }
+      }}
+    >
       <CurrencyLogo currency={token} size={isMobile ? '20px' : '24px'} style={{ opacity: dim ? '0.6' : '1' }} />
       <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
         <AutoRow>

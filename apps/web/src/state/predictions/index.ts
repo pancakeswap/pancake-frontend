@@ -27,8 +27,6 @@ import {
   ROUND_BUFFER,
 } from './config'
 import {
-  getBetHistory,
-  transformBetResponse,
   makeFutureRoundResponse,
   makeRoundData,
   getRoundsData,
@@ -188,29 +186,6 @@ export const fetchLedgerData = createAsyncThunk<
   return makeLedgerData(account, ledgers, epochs)
 })
 
-export const fetchHistory = createAsyncThunk<
-  { account: string; bets: Bet[] },
-  { account: string; claimed?: boolean },
-  { extra: PredictionConfig }
->('predictions/fetchHistory', async ({ account, claimed }, { extra }) => {
-  const response = await getBetHistory(
-    {
-      user: account.toLowerCase(),
-      claimed,
-    },
-    undefined,
-    undefined,
-    extra.api,
-    extra.token.symbol,
-  )
-
-  const transformer = transformBetResponse(extra.token.symbol)
-
-  const bets = response.map(transformer)
-
-  return { account, bets }
-})
-
 export const fetchNodeHistory = createAsyncThunk<
   { bets: Bet[]; claimableStatuses: PredictionsState['claimableStatuses']; page?: number; totalHistory: number },
   { account: string; page?: number },
@@ -254,8 +229,7 @@ export const fetchNodeHistory = createAsyncThunk<
 
   // Turn the data from the node into a Bet object that comes from the graph
   const bets: Bet[] = roundData.reduce((accum, round) => {
-    const reduxRound = serializePredictionsRoundsResponse(round)
-    const ledger = userRounds[reduxRound.epoch]
+    const ledger = userRounds[round.epoch.toNumber()]
     const ledgerAmount = BigNumber.from(ledger.amount)
     const closePrice = round.closePrice ? parseFloat(formatUnits(round.closePrice, 8)) : null
     const lockPrice = round.lockPrice ? parseFloat(formatUnits(round.lockPrice, 8)) : null
@@ -290,7 +264,11 @@ export const fetchNodeHistory = createAsyncThunk<
         round: {
           id: null,
           epoch: round.epoch.toNumber(),
-          failed: getHasRoundFailed(reduxRound.oracleCalled, reduxRound.closeTimestamp, bufferSeconds),
+          failed: getHasRoundFailed(
+            round.oracleCalled,
+            round.closeTimestamp.eq(0) ? null : round.closeTimestamp.toNumber(),
+            bufferSeconds,
+          ),
           startBlock: null,
           startAt: round.startTimestamp ? round.startTimestamp.toNumber() : null,
           startHash: null,
@@ -531,20 +509,6 @@ export const predictionsSlice = createSlice({
         ledgers,
         rounds: merge({}, rounds, makeRoundData(futureRounds)),
       }
-    })
-
-    // Show History
-    builder.addCase(fetchHistory.pending, (state) => {
-      state.isFetchingHistory = true
-    })
-    builder.addCase(fetchHistory.rejected, (state) => {
-      state.isFetchingHistory = false
-    })
-    builder.addCase(fetchHistory.fulfilled, (state, action) => {
-      const { account, bets } = action.payload
-
-      state.isFetchingHistory = false
-      state.history[account] = merge([], state.history[account] ?? [], bets)
     })
 
     // History from the node

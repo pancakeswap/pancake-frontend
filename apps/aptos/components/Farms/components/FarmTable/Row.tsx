@@ -12,9 +12,9 @@ import {
 } from '@pancakeswap/uikit'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 
-import { useFarmEarning } from 'state/farms/hook'
 import { DesktopColumnSchema, FarmWithStakedValue, MobileColumnSchema } from '../types'
 import ActionPanel from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
@@ -80,26 +80,18 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
-  const { details: _details, initialActivity, multiplier } = props
+  const { t } = useTranslation()
+  const { details, initialActivity, multiplier } = props
   const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
-  const hasStakedAmount = false
-  // const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
+  const stakedBalance = details.userData ? details.userData.stakedBalance : BIG_ZERO
+  const hasStakedAmount = stakedBalance.gt(0)
+
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)
   const shouldRenderChild = useDelayedUnmount(actionPanelExpanded, 300)
-  const { t } = useTranslation()
 
   const toggleActionPanel = () => {
     setActionPanelExpanded(!actionPanelExpanded)
-  }
-
-  const earnings = useFarmEarning(String(props.farm.pid))
-
-  const cellData = { ...props }
-
-  cellData.earned = {
-    ...props.earned,
-    earnings,
   }
 
   useEffect(() => {
@@ -166,7 +158,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     <CellInner>
                       <CellLayout label={t(tableSchema[columnIndex].label)}>
-                        {createElement(cells[key], { ...cellData[key], userDataReady })}
+                        {createElement(cells[key], { ...props[key], userDataReady })}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -197,7 +189,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <td width="33%">
             <EarnedMobileCell>
               <CellLayout label={t('Earned')}>
-                <Earned {...cellData.earned} userDataReady={!!userDataReady} />
+                <Earned {...props.earned} userDataReady={!!userDataReady} />
               </CellLayout>
             </EarnedMobileCell>
           </td>
@@ -224,7 +216,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {shouldRenderChild && (
         <tr>
           <td colSpan={7}>
-            <ActionPanel {...cellData} expanded={actionPanelExpanded} />
+            <ActionPanel {...props} expanded={actionPanelExpanded} />
           </td>
         </tr>
       )}

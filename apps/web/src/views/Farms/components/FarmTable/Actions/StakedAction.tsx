@@ -1,16 +1,6 @@
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
-import {
-  AddIcon,
-  Button,
-  IconButton,
-  MinusIcon,
-  Skeleton,
-  Text,
-  useModal,
-  useToast,
-  Farm as FarmUI,
-} from '@pancakeswap/uikit'
+import { useModal, useToast, Farm as FarmUI } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL, DEFAULT_TOKEN_DECIMAL } from 'config'
@@ -25,7 +15,6 @@ import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/tran
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
 import { usePriceCakeBusd } from 'state/farms/hooks'
-import styled from 'styled-components'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BigNumber from 'bignumber.js'
@@ -42,12 +31,7 @@ import { FarmWithStakedValue } from '../../types'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 import { YieldBoosterState } from '../../YieldBooster/hooks/useYieldBoosterState'
-import { ActionContainer, ActionContent, ActionTitles } from './styles'
 import { useFirstTimeCrossFarming } from '../../../hooks/useFirstTimeCrossFarming'
-
-const IconButtonWrapper = styled.div`
-  display: flex;
-`
 
 interface StackedActionProps extends FarmWithStakedValue {
   userDataReady: boolean
@@ -60,18 +44,6 @@ interface StackedActionProps extends FarmWithStakedValue {
   isApproved?: boolean
   shouldUseProxyFarm?: boolean
 }
-
-const StyledActionContainer = styled(ActionContainer)`
-  &:nth-child(3) {
-    flex-basis: 100%;
-  }
-  min-height: 124.5px;
-  ${({ theme }) => theme.mediaQueries.sm} {
-    &:nth-child(3) {
-      margin-top: 16px;
-    }
-  }
-`
 
 export function useStakedActions(lpContract, pid, vaultPid) {
   const { account, chainId } = useActiveWeb3React()
@@ -219,7 +191,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const handleNonBscStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onStake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {
@@ -277,7 +249,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const handleNonBscUnStake = async (amountValue: string) => {
     const receipt = await fetchTxResponse(() => onUnstake(amountValue))
     const amountAsBigNumber = new BigNumber(amountValue).times(DEFAULT_TOKEN_DECIMAL)
-    const amount = formatLpBalance(new BigNumber(amountAsBigNumber))
+    const amount = formatLpBalance(new BigNumber(amountAsBigNumber), 18)
 
     if (receipt) {
       addTransaction(receipt, {
@@ -350,6 +322,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       bCakeCalculatorSlot={bCakeCalculatorSlot}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
       crossChainWarningText={crossChainWarningText}
+      decimals={18}
     />,
   )
 
@@ -359,6 +332,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       max={stakedBalance}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
+      decimals={18}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
     />,
   )
@@ -397,37 +371,26 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   if (isApproved) {
     if (stakedBalance.gt(0)) {
       return (
-        <StyledActionContainer>
-          <ActionTitles>
-            <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
-              {lpSymbol}
-            </Text>
-            <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-              {t('Staked')}
-            </Text>
-          </ActionTitles>
-          <ActionContent>
-            <FarmUI.StakedLP
-              stakedBalance={stakedBalance}
-              quoteTokenSymbol={quoteToken.symbol}
-              tokenSymbol={token.symbol}
-              lpTotalSupply={lpTotalSupply}
-              lpTokenPrice={lpTokenPrice}
-              tokenAmountTotal={tokenAmountTotal}
-              quoteTokenAmountTotal={quoteTokenAmountTotal}
-              pendingFarmLength={pendingFarm.length}
-              onClickLoadingIcon={onClickLoadingIcon}
-            />
-            <IconButtonWrapper>
-              <IconButton mr="6px" variant="secondary" disabled={pendingFarm.length > 0} onClick={onPresentWithdraw}>
-                <MinusIcon color="primary" width="14px" />
-              </IconButton>
-              <IconButton variant="secondary" onClick={onPresentDeposit} disabled={isStakeReady || isBloctoETH}>
-                <AddIcon color="primary" width="14px" />
-              </IconButton>
-            </IconButtonWrapper>
-          </ActionContent>
-        </StyledActionContainer>
+        <FarmUI.FarmTable.StakedActionComponent
+          lpSymbol={lpSymbol}
+          disabledMinusButton={pendingFarm.length > 0}
+          disabledPlusButton={isStakeReady || isBloctoETH}
+          onPresentWithdraw={onPresentWithdraw}
+          onPresentDeposit={onPresentDeposit}
+        >
+          <FarmUI.StakedLP
+            decimals={18}
+            stakedBalance={stakedBalance}
+            quoteTokenSymbol={quoteToken.symbol}
+            tokenSymbol={token.symbol}
+            lpTotalSupply={lpTotalSupply}
+            lpTokenPrice={lpTokenPrice}
+            tokenAmountTotal={tokenAmountTotal}
+            quoteTokenAmountTotal={quoteTokenAmountTotal}
+            pendingFarmLength={pendingFarm.length}
+            onClickLoadingIcon={onClickLoadingIcon}
+          />
+        </FarmUI.FarmTable.StakedActionComponent>
       )
     }
 
@@ -441,34 +404,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   }
 
   if (!userDataReady) {
-    return (
-      <StyledActionContainer>
-        <ActionTitles>
-          <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-            {t('Start Farming')}
-          </Text>
-        </ActionTitles>
-        <ActionContent>
-          <Skeleton width={180} marginBottom={28} marginTop={14} />
-        </ActionContent>
-      </StyledActionContainer>
-    )
+    return <FarmUI.FarmTable.StakeActionDataNotReady />
   }
 
-  return (
-    <StyledActionContainer>
-      <ActionTitles>
-        <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-          {t('Enable Farm')}
-        </Text>
-      </ActionTitles>
-      <ActionContent>
-        <Button width="100%" disabled={pendingTx || isBloctoETH} onClick={handleApprove} variant="secondary">
-          {t('Enable')}
-        </Button>
-      </ActionContent>
-    </StyledActionContainer>
-  )
+  return <FarmUI.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
 }
 
 export default Staked

@@ -11,6 +11,7 @@ export interface AprProps {
   pid: number
   lpLabel: string
   lpSymbol: string
+  lpAddress: string
   lpRewardsApr: number
   lpTokenPrice: BigNumber
   tokenAddress?: string
@@ -48,6 +49,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   pid,
   lpLabel,
   lpSymbol,
+  lpAddress,
   lpTokenPrice,
   multiplier,
   tokenAddress = '',
@@ -67,6 +69,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           variant={hideButton ? 'text' : 'text-and-button'}
           pid={pid}
           lpSymbol={lpSymbol}
+          lpAddress={lpAddress}
           lpLabel={lpLabel}
           lpTokenPrice={lpTokenPrice}
           multiplier={multiplier}

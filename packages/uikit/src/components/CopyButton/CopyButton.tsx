@@ -1,48 +1,29 @@
-import { useState } from "react";
-import { CopyIcon, SvgProps } from "@pancakeswap/uikit";
-import styled from "styled-components";
+import { CopyIcon, IconButton, SvgProps, useTooltip } from "@pancakeswap/uikit";
+import { ElementType, useState } from "react";
 import { copyText } from "./copyText";
-
-const Tooltip = styled.div<{
-  isTooltipDisplayed: boolean;
-  tooltipTop: number;
-  tooltipRight?: number;
-  tooltipFontSize?: number;
-}>`
-  display: ${({ isTooltipDisplayed }) => (isTooltipDisplayed ? "inline" : "none")};
-  position: absolute;
-  padding: 8px;
-  top: ${({ tooltipTop }) => `${tooltipTop}px`};
-  right: ${({ tooltipRight }) => (tooltipRight ? `${tooltipRight}px` : 0)};
-  text-align: center;
-  font-size: ${({ tooltipFontSize }) => `${tooltipFontSize}px` ?? "100%"};
-  background-color: ${({ theme }) => theme.colors.contrast};
-  color: ${({ theme }) => theme.colors.invertedContrast};
-  border-radius: 16px;
-  opacity: 0.7;
-  width: max-content;
-`;
 
 interface CopyButtonProps extends SvgProps {
   text: string;
   tooltipMessage: string;
-  tooltipTop: number;
-  tooltipRight?: number;
-  tooltipFontSize?: number;
   buttonColor?: string;
+  icon?: ElementType;
 }
 
 export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
   text,
   tooltipMessage,
   width,
-  tooltipTop,
-  tooltipRight,
-  tooltipFontSize,
   buttonColor = "primary",
+  icon: Icon = CopyIcon,
   ...props
 }) => {
   const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false);
+
+  const { targetRef, tooltip } = useTooltip(tooltipMessage, {
+    placement: "auto",
+    manualVisible: true,
+    trigger: "hover",
+  });
 
   const displayTooltip = () => {
     setIsTooltipDisplayed(true);
@@ -52,21 +33,17 @@ export const CopyButton: React.FC<React.PropsWithChildren<CopyButtonProps>> = ({
   };
   return (
     <>
-      <CopyIcon
-        style={{ cursor: "pointer" }}
-        color={buttonColor}
-        width={width}
-        onClick={() => copyText(text, displayTooltip)}
-        {...props}
-      />
-      <Tooltip
-        isTooltipDisplayed={isTooltipDisplayed}
-        tooltipTop={tooltipTop}
-        tooltipRight={tooltipRight}
-        tooltipFontSize={tooltipFontSize}
-      >
-        {tooltipMessage}
-      </Tooltip>
+      <div ref={targetRef}>
+        <IconButton
+          onClick={() => copyText(text, displayTooltip)}
+          scale="sm"
+          variant="text"
+          style={{ width: "auto", position: "relative" }}
+        >
+          <Icon color={buttonColor} width={width} {...props} />
+        </IconButton>
+      </div>
+      {isTooltipDisplayed && tooltip}
     </>
   );
 };

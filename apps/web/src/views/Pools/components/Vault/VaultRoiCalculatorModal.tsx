@@ -69,6 +69,7 @@ export const VaultRoiCalculatorModal = ({
       stakingTokenBalance={
         pool.userData?.stakingTokenBalance ? cakeAsBigNumber.plus(pool.userData?.stakingTokenBalance) : cakeAsBigNumber
       }
+      stakingTokenDecimals={pool.stakingToken.decimals}
       autoCompoundFrequency={1}
       strategy={
         cakeVaultView

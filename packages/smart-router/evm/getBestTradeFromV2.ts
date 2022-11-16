@@ -1,7 +1,7 @@
 import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from './constants'
-import { getAllCommonPairs } from './getAllCommonPairs'
+import { getAllCommonPairs as defaultGetAllCommonPairs } from './getAllCommonPairs'
 import { BestTradeOptions } from './types'
 import { isTradeBetter } from './utils/trade'
 
@@ -24,7 +24,7 @@ function createGetBestTradeFromV2<TTradeType extends TradeType>(tradeType: TTrad
     pairs: Pair[],
     amountIn: CurrencyAmount<In>,
     output: Out,
-    options: Omit<BestTradeOptions, 'provider'>,
+    options: Omit<BestTradeOptions, 'provider' | 'getAllCommonPairs'>,
   ) {
     if (tradeType === TradeType.EXACT_INPUT) {
       return Trade.bestTradeExactIn(pairs, amountIn, output, options)
@@ -37,9 +37,18 @@ function createGetBestTradeFromV2<TTradeType extends TradeType>(tradeType: TTrad
     output: Out,
     options: BestTradeOptions,
   ) {
-    const { provider, ...restOptions } = options
+    const { provider, allCommonPairs, ...restOptions } = options
     const { maxHops = 3 } = restOptions
-    const allowedPairs = await getAllCommonPairs(amountIn.currency, output, { provider })
+    const getAllowedPairs = async () => {
+      if (Array.isArray(allCommonPairs)) {
+        return allCommonPairs
+      }
+      if (allCommonPairs) {
+        return allCommonPairs(amountIn.currency, output)
+      }
+      return defaultGetAllCommonPairs(amountIn.currency, output, { provider })
+    }
+    const allowedPairs = await getAllowedPairs()
 
     if (!allowedPairs.length) {
       return null

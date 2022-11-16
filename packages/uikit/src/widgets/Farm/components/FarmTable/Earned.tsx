@@ -16,8 +16,10 @@ const Earned: React.FunctionComponent<React.PropsWithChildren<EarnedPropsWithLoa
   earnings,
   userDataReady,
 }) => {
+  const amount = earnings > 0 ? earnings : 0;
+
   if (userDataReady) {
-    return <Amount earned={earnings}>{earnings.toLocaleString()}</Amount>;
+    return <Amount earned={amount}>{amount.toLocaleString()}</Amount>;
   }
   return (
     <Amount earned={0}>

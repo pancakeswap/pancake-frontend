@@ -207,8 +207,8 @@ function ManageLists({
         if (l1 && l2) {
           // Always make PancakeSwap list in top.
           const keyword = 'pancakeswap'
-          if (l1.name.toLowerCase().includes(keyword) || l2.name.toLowerCase().includes(keyword)) {
-            return -1
+          if (!l1.name.toLowerCase().includes(keyword) && l2.name.toLowerCase().includes(keyword)) {
+            return 1
           }
 
           return l1.name.toLowerCase() < l2.name.toLowerCase()

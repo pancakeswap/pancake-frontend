@@ -8,7 +8,7 @@ type SwapPageProps = AtomBoxProps & {
   hideFooterOnDesktop?: boolean;
   noMinHeight?: boolean;
   helpUrl?: string;
-  isEvm?: boolean;
+  isBSC?: boolean;
   helpImage?: ReactNode;
 };
 
@@ -18,7 +18,7 @@ export const SwapPage = ({
   children,
   hideFooterOnDesktop,
   helpUrl,
-  isEvm,
+  isBSC,
   helpImage,
   ...props
 }: SwapPageProps) => (
@@ -26,7 +26,7 @@ export const SwapPage = ({
     {children}
     <AtomBox display="flex" flexGrow={1} />
     <AtomBox display={["block", null, null, hideFooterOnDesktop ? "none" : "block"]} width="100%">
-      <SwapFooter isEvm={isEvm} helpUrl={helpUrl} helpImage={helpImage} />
+      <SwapFooter isBSC={isBSC} helpUrl={helpUrl} helpImage={helpImage} />
     </AtomBox>
   </AtomBox>
 );
