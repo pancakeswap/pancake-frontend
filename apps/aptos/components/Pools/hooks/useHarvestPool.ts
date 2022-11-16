@@ -6,7 +6,7 @@ export default function useHarvestPool({ stakingTokenAddress, earningTokenAddres
   const executeTransaction = useSimulationAndSendTransaction()
 
   return useCallback(() => {
-    const payload = SmartChef.deposit({
+    const payload = SmartChef.withdraw({
       amount: '0',
       uid: sousId,
       stakeTokenAddress: stakingTokenAddress,
