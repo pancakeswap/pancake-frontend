@@ -1,6 +1,6 @@
 export const INFO_BUCKETS = {
-  sf: 0.8,
-  nr: 0.2,
+  sf: 0.3,
+  nr: 0.7,
 }
 
 export function getBucket<T extends Record<string, number>>(buckets: T, defaultKey: keyof T): keyof T {
