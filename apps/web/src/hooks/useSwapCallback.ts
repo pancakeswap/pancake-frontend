@@ -1,21 +1,21 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { SwapParameters, Trade, Currency, TradeType } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
+import { SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { Trade as SmartTrade } from '@pancakeswap/smart-router/evm'
 import isZero from '@pancakeswap/utils/isZero'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useGasPrice } from 'state/user/hooks'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { logSwap, logTx } from 'utils/log'
-import { TradeWithStableSwap, Trade as SmartTrade } from '@pancakeswap/smart-router/evm'
+import { ITrade, isV2SwapOrStableSwap } from 'config/constants/types'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, isAddress } from '../utils'
-import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
 import { basisPointsToPercent } from '../utils/exchange'
+import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
 
 export enum SwapCallbackState {
   INVALID,
@@ -39,17 +39,6 @@ interface FailedCall extends SwapCallEstimate {
 interface SwapCallEstimate {
   call: SwapCall
 }
-
-const isV2SwapOrStableSwap = (trade: ITrade): trade is Trade<Currency, Currency, TradeType> | StableTrade => {
-  // @ts-ignore
-  return Boolean(trade?.maximumAmountIn)
-}
-
-type ITrade =
-  | Trade<Currency, Currency, TradeType>
-  | StableTrade
-  | TradeWithStableSwap<Currency, Currency, TradeType>
-  | undefined
 
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade

@@ -124,7 +124,7 @@ function swapCallParameters(
     methodName = 'swap'
     //     [srcToken,dstToken,amount,minReturn,flag]
     args = [path[0], path[1], amountIn, amountOut, flag]
-    value = amountIn
+    value = etherIn ? amountIn : ZERO_HEX
   }
   // multiHop
   else {
@@ -135,7 +135,7 @@ function swapCallParameters(
   }
   // (uint amountOutMin, address[] calldata path, address to, uint deadline)
   args = [amountOut, path, to, deadline]
-  value = amountIn
+  value = etherIn ? amountIn : ZERO_HEX
 
   return {
     methodName,

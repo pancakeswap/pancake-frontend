@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import styled from 'styled-components'
-import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
-import { Button, Text, AutoRenewIcon, QuestionHelper } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { Field } from 'state/swap/actions'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { AutoRenewIcon, Button, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
+import { useState } from 'react'
+import { Field } from 'state/swap/actions'
+import styled from 'styled-components'
 import { formatExecutionPrice } from 'utils/exchange'
+import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
@@ -25,7 +26,7 @@ export default function StableSwapModalFooter({
   swapErrorMessage,
   disabledConfirm,
 }: {
-  trade: Trade<Currency, Currency, TradeType>
+  trade: StableTrade
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   isEnoughInputBalance: boolean
   onConfirm: () => void

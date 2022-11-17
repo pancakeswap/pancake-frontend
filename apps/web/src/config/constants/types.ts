@@ -1,7 +1,8 @@
+import type { FarmConfigBaseProps, SerializedFarmConfig } from '@pancakeswap/farms'
+import { ChainId, Currency, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import BigNumber from 'bignumber.js'
-import { Token, ChainId } from '@pancakeswap/sdk'
-import type { SerializedFarmConfig, FarmConfigBaseProps } from '@pancakeswap/farms'
-
+import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 // a list of tokens by chain
 export type ChainMap<T> = {
   readonly [chainId in ChainId]: T
@@ -188,3 +189,26 @@ export enum FetchStatus {
   Fetched = 'FETCHED',
   Failed = 'FAILED',
 }
+
+export const isV2SwapOrStableSwap = (trade: ITrade): trade is Trade<Currency, Currency, TradeType> | StableTrade => {
+  // @ts-ignore
+  return Boolean(trade?.maximumAmountIn)
+}
+
+export const isStableSwap = (trade: ITrade): trade is StableTrade => {
+  // @ts-ignore
+  return Boolean(trade?.maximumAmountIn) && !trade?.route
+}
+
+export const isV2SwapOrMixSwap = (
+  trade: ITrade,
+): trade is Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType> => {
+  // @ts-ignore
+  return Boolean(trade?.route)
+}
+
+export type ITrade =
+  | Trade<Currency, Currency, TradeType>
+  | StableTrade
+  | TradeWithStableSwap<Currency, Currency, TradeType>
+  | undefined

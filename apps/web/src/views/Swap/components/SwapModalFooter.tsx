@@ -1,15 +1,21 @@
-import { useMemo, useState } from 'react'
-import styled from 'styled-components'
-import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
-import { Button, Text, AutoRenewIcon, QuestionHelper } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { Field } from 'state/swap/actions'
-import { computeTradePriceBreakdown, formatExecutionPrice, warningSeverity } from 'utils/exchange'
+import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { AutoRenewIcon, Button, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { TOTAL_FEE, LP_HOLDERS_FEE, TREASURY_FEE, BUYBACK_FEE } from 'config/constants/info'
+import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
+import { isV2SwapOrStableSwap } from 'config/constants/types'
+import { useMemo, useState } from 'react'
+import { Field } from 'state/swap/actions'
+import styled from 'styled-components'
+import { computeTradePriceBreakdown, formatExecutionPrice, warningSeverity } from 'utils/exchange'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
+import {
+  formatExecutionPrice as formatExecutionPriceForSmarRouter,
+  computeTradePriceBreakdown as computeTradePriceBreakdownForSmartRouter,
+} from '../SmartSwap/utils/exchange'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
@@ -27,7 +33,7 @@ export default function SwapModalFooter({
   swapErrorMessage,
   disabledConfirm,
 }: {
-  trade: Trade<Currency, Currency, TradeType>
+  trade: Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   isEnoughInputBalance: boolean
   onConfirm: () => void
@@ -36,7 +42,11 @@ export default function SwapModalFooter({
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee, realizedLPFee } = useMemo(
+    () =>
+      isV2SwapOrStableSwap(trade) ? computeTradePriceBreakdown(trade) : computeTradePriceBreakdownForSmartRouter(trade),
+    [trade],
+  )
   const severity = warningSeverity(priceImpactWithoutFee)
 
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
@@ -59,7 +69,9 @@ export default function SwapModalFooter({
               paddingLeft: '10px',
             }}
           >
-            {formatExecutionPrice(trade, showInverted)}
+            {isV2SwapOrStableSwap(trade)
+              ? formatExecutionPrice(trade, showInverted)
+              : formatExecutionPriceForSmarRouter(trade, showInverted)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <AutoRenewIcon width="14px" />
             </StyledBalanceMaxMini>

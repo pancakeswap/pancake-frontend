@@ -11,6 +11,8 @@ import {
   ONE_HUNDRED_PERCENT,
   ROUTER_ADDRESS,
 } from 'config/constants/exchange'
+import {} from 'config/constants/types'
+
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
 import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
@@ -93,7 +95,10 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   return 0
 }
 
-export function formatExecutionPrice(trade?: Trade<Currency, Currency, TradeType>, inverted?: boolean): string {
+export function formatExecutionPrice(
+  trade?: Trade<Currency, Currency, TradeType> | StableTrade,
+  inverted?: boolean,
+): string {
   if (!trade) {
     return ''
   }
