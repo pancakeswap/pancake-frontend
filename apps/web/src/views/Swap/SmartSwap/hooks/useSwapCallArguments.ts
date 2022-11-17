@@ -1,4 +1,3 @@
-import { getAddress } from '@ethersproject/address'
 import { Contract } from '@ethersproject/contracts'
 import {
   Currency,
@@ -11,14 +10,13 @@ import {
   TradeOptionsDeadline,
   TradeType,
 } from '@pancakeswap/sdk'
-import { Trade, TradeWithStableSwap, RouteType, isStableSwapPair } from '@pancakeswap/smart-router/evm'
+import { isStableSwapPair, Trade, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { BIPS_BASE } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
-import warning from 'tiny-warning'
 import { useSmartRouterContract } from '../utils/exchange'
 
 export interface SwapCall {
@@ -52,15 +50,6 @@ export function useSwapCallArguments(
 
     const swapMethods = []
     // TODO: parameter need to be fit the new contract
-    swapMethods.push(
-      swapCallParameters(trade, {
-        feeOnTransfer: false,
-        allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-        recipient,
-        deadline: deadline.toNumber(),
-      }),
-    )
-
     if (trade.tradeType === TradeType.EXACT_INPUT) {
       swapMethods.push(
         swapCallParameters(trade, {
