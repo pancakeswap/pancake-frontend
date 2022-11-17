@@ -253,6 +253,7 @@ export default function SwapForm() {
             onUserInput={handleTypeOutput}
             label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
             showMaxButton={false}
+            shareLink={window.location.href}
             currency={currencies[Field.OUTPUT]}
             onCurrencySelect={handleOutputSelect}
             otherCurrency={currencies[Field.INPUT]}

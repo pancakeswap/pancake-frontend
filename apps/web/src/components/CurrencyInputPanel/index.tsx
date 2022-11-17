@@ -1,5 +1,15 @@
 import { Currency, Pair } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
+import {
+  Button,
+  ChevronDownIcon,
+  Text,
+  useModal,
+  Flex,
+  Box,
+  NumericalInput,
+  CopyButton,
+  ShareIcon,
+} from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -73,6 +83,7 @@ type ZapStyle = 'noZap' | 'zap'
 
 interface CurrencyInputPanelProps {
   value: string
+  shareLink?: string
   onUserInput: (value: string) => void
   onInputBlur?: () => void
   onPercentInput?: (percent: number) => void
@@ -97,6 +108,7 @@ interface CurrencyInputPanelProps {
 }
 export default function CurrencyInputPanel({
   value,
+  shareLink,
   onUserInput,
   onInputBlur,
   onPercentInput,
@@ -187,6 +199,15 @@ export default function CurrencyInputPanel({
                 text={tokenAddress}
                 tooltipMessage={t('Token address copied')}
               />
+              {shareLink && (
+                <CopyButton
+                  icon={ShareIcon}
+                  width="16px"
+                  buttonColor="textSubtle"
+                  text={shareLink}
+                  tooltipMessage={t('Sharing link copied')}
+                />
+              )}
               <AddToWalletButton
                 variant="text"
                 p="0"
