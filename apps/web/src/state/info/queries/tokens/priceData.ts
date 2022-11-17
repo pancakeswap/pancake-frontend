@@ -15,10 +15,10 @@ import {
 const getPriceSubqueries = (chainName: MultiChainName, tokenAddress: string, blocks: any) =>
   blocks.map(
     (block: any) => `
-      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) { 
+      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }) {
         derived${multiChainQueryMainToken[chainName]}
       }
-      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) { 
+      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }) {
         ${multiChainQueryMainToken[chainName].toLowerCase()}Price
       }
     `,
@@ -47,7 +47,7 @@ const fetchTokenPriceData = async (
   // Construct timestamps to query against
   const endTimestamp = getUnixTime(new Date())
   const timestamps = []
-  const bucketInfo = Cookies.get('bucket-info') // sf or nr
+  const bucketInfo = Cookies.get('bucket-info-2') // sf or nr
   let time = startTimestamp
   while (time <= endTimestamp) {
     timestamps.push(time)
