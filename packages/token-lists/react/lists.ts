@@ -41,7 +41,7 @@ export const createListsAtom = (storeName: string, reducer: any, initialState: a
           return undefined
         },
         removeItem: db.removeItem,
-        delayInit: process.env.NODE_ENV === 'test',
+        delayInit: true,
       }
     }
     return noopStorage
