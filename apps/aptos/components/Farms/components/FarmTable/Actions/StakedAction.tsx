@@ -10,7 +10,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useCatchTxError from 'hooks/useCatchTxError'
-import { usePriceCakeBusd } from 'hooks/useStablePrice'
+import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
@@ -89,7 +89,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { stakedBalance, tokenBalance } = (userData as DeserializedFarmUserData) || {}
 
   const router = useRouter()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUsdc()
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
     quoteTokenAddress: quoteToken?.address,

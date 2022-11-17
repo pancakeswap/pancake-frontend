@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { usePriceCakeBusd } from 'hooks/useStablePrice'
+import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import {
   Image,
   Heading,
@@ -135,7 +135,7 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUsdc()
   const { pathname, query: urlQuery } = useRouter()
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
