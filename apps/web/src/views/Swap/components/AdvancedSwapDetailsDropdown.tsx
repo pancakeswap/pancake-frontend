@@ -45,7 +45,7 @@ export default function AdvancedSwapDetailsDropdown({
   const lastTrade = useLastTruthy(trade)
 
   return (
-    <AdvancedDetailsFooter show={Boolean(inputAmount && priceImpactWithoutFee && slippageAdjustedAmounts)}>
+    <AdvancedDetailsFooter show={Boolean(inputAmount && outputAmount)}>
       <AdvancedSwapDetails
         {...rest}
         pairs={pairs ?? lastTrade.pairs ?? undefined}
