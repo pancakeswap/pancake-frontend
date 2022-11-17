@@ -64,7 +64,7 @@ const fetchFarmsOneWeekAgo = async (farmsAtLatestBlock: SingleFarmResponse[]) =>
   farmsAtLatestBlock.forEach((farm) => {
     if (response[farm.id]) {
       if (response[farm.id].updateDate !== currentDate) {
-        const isMoreThanAWeek = response[farm.id].usdList.length >= 7
+        const isMoreThanAWeek = response[farm.id].usdList.length >= 8
         const usdList = [...response[farm.id]?.usdList]
 
         if (isMoreThanAWeek) {
@@ -98,14 +98,20 @@ const fetchFarmsOneWeekAgo = async (farmsAtLatestBlock: SingleFarmResponse[]) =>
     })
   }
 
-  const oneWeekData = hasNewData ? newDate : response
-  return Object.keys(oneWeekData)?.map((address: string): SingleFarmResponse => {
+  const responseData = hasNewData ? newDate : response
+  return Object.keys(responseData)?.map((address: string): SingleFarmResponse => {
     let volumeUSD = '0'
     let reserveUSD = '0'
-    const { usdList } = oneWeekData[address]
-    if (usdList.length > 0) {
-      volumeUSD = usdList.reduce((sum, single) => new BigNumber(sum).plus(single.volumeUSD).toNumber(), 0).toString()
-      reserveUSD = usdList.reduce((sum, single) => new BigNumber(sum).plus(single.reserveUSD).toNumber(), 0).toString()
+    const { usdList } = responseData[address]
+    const oneWeekData = usdList.slice(0, 7)
+
+    if (oneWeekData.length > 0) {
+      volumeUSD = oneWeekData
+        .reduce((sum, single) => new BigNumber(sum).plus(single.volumeUSD).toNumber(), 0)
+        .toString()
+      reserveUSD = oneWeekData
+        .reduce((sum, single) => new BigNumber(sum).plus(single.reserveUSD).toNumber(), 0)
+        .toString()
     }
     return { id: address, volumeUSD, reserveUSD }
   })
