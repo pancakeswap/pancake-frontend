@@ -55,10 +55,6 @@ export const createListsAtom = (storeName: string, reducer: any, initialState: a
     IndexedDBStorage('lists'),
   )
 
-  listsStorageAtom.onMount = (set) => {
-    set((prev) => (prev === EMPTY ? initialState : EMPTY))
-  }
-
   const defaultStateAtom = atom<ListsState, any>(
     (get) => {
       const got = get(listsStorageAtom)
