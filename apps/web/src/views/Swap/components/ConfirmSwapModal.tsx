@@ -4,6 +4,7 @@ import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
+import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
@@ -51,8 +52,11 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
 }
 
 interface ConfirmSwapModalProps {
-  trade?: Trade<Currency, Currency, TradeType> | StableTrade
-  originalTrade?: Trade<Currency, Currency, TradeType> | StableTrade
+  trade?: Trade<Currency, Currency, TradeType> | StableTrade | TradeWithStableSwap<Currency, Currency, TradeType>
+  originalTrade?:
+    | Trade<Currency, Currency, TradeType>
+    | StableTrade
+    | TradeWithStableSwap<Currency, Currency, TradeType>
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string

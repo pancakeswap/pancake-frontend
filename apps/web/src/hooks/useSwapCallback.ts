@@ -9,6 +9,7 @@ import { useGasPrice } from 'state/user/hooks'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { logSwap, logTx } from 'utils/log'
+import { TradeWithStableSwap, Trade as SmartTrade } from '@pancakeswap/smart-router/evm'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -39,7 +40,16 @@ interface SwapCallEstimate {
   call: SwapCall
 }
 
-type ITrade = Trade<Currency, Currency, TradeType> | StableTrade | undefined
+const isV2SwapOrStableSwap = (trade: ITrade): trade is Trade<Currency, Currency, TradeType> | StableTrade => {
+  // @ts-ignore
+  return Boolean(trade?.maximumAmountIn)
+}
+
+type ITrade =
+  | Trade<Currency, Currency, TradeType>
+  | StableTrade
+  | TradeWithStableSwap<Currency, Currency, TradeType>
+  | undefined
 
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
@@ -136,11 +146,15 @@ export function useSwapCallback(
             const inputAmount =
               trade.tradeType === TradeType.EXACT_INPUT
                 ? trade.inputAmount.toSignificant(3)
-                : trade.maximumAmountIn(pct).toSignificant(3)
+                : isV2SwapOrStableSwap(trade)
+                ? trade.maximumAmountIn(pct).toSignificant(3)
+                : SmartTrade.maximumAmountIn(trade, pct).toSignificant(3)
             const outputAmount =
               trade.tradeType === TradeType.EXACT_OUTPUT
                 ? trade.outputAmount.toSignificant(3)
-                : trade.minimumAmountOut(pct).toSignificant(3)
+                : isV2SwapOrStableSwap(trade)
+                ? trade.minimumAmountOut(pct).toSignificant(3)
+                : SmartTrade.maximumAmountIn(trade, pct).toSignificant(3)
 
             const base = `Swap ${
               trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''

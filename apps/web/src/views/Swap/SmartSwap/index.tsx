@@ -43,6 +43,7 @@ import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import { useDerivedSwapInfoWithStableSwap, useTradeInfo } from './hooks'
+import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 
 export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -133,13 +134,6 @@ export function SmartSwapForm() {
       ? parsedAmounts[independentField]?.toExact() ?? ''
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
-
-  // console.log(
-  //   parsedAmounts,
-  //   parsedAmounts[independentField]?.toExact(),
-  //   parsedAmounts[dependentField]?.toSignificant(6),
-  //   'formattedAmounts???',
-  // )
 
   const amountToApprove = tradeInfo?.slippageAdjustedAmounts[Field.INPUT]
   // check whether the user has approved the router on the input token
@@ -330,26 +324,49 @@ export function SmartSwapForm() {
         </AutoColumn>
 
         <Box mt="0.25rem">
-          <SwapCommitButton
-            swapIsUnsupported={swapIsUnsupported}
-            account={account}
-            showWrap={showWrap}
-            wrapInputError={wrapInputError}
-            onWrap={onWrap}
-            wrapType={wrapType}
-            parsedIndepentFieldAmount={parsedAmounts[independentField]}
-            approval={approval}
-            approveCallback={approveCallback}
-            approvalSubmitted={approvalSubmitted}
-            currencies={currencies}
-            isExpertMode={isExpertMode}
-            trade={v2Trade}
-            swapInputError={swapInputError}
-            currencyBalances={currencyBalances}
-            recipient={recipient}
-            allowedSlippage={allowedSlippage}
-            onUserInput={onUserInput}
-          />
+          {tradeInfo.fallbackV2 ? (
+            <SwapCommitButton
+              swapIsUnsupported={swapIsUnsupported}
+              account={account}
+              showWrap={showWrap}
+              wrapInputError={wrapInputError}
+              onWrap={onWrap}
+              wrapType={wrapType}
+              parsedIndepentFieldAmount={parsedAmounts[independentField]}
+              approval={approval}
+              approveCallback={approveCallback}
+              approvalSubmitted={approvalSubmitted}
+              currencies={currencies}
+              isExpertMode={isExpertMode}
+              trade={v2Trade}
+              swapInputError={swapInputError}
+              currencyBalances={currencyBalances}
+              recipient={recipient}
+              allowedSlippage={allowedSlippage}
+              onUserInput={onUserInput}
+            />
+          ) : (
+            <SmartSwapCommitButton
+              swapIsUnsupported={swapIsUnsupported}
+              account={account}
+              showWrap={showWrap}
+              wrapInputError={wrapInputError}
+              onWrap={onWrap}
+              wrapType={wrapType}
+              parsedIndepentFieldAmount={parsedAmounts[independentField]}
+              approval={approval}
+              approveCallback={approveCallback}
+              approvalSubmitted={approvalSubmitted}
+              currencies={currencies}
+              isExpertMode={isExpertMode}
+              trade={tradeWithStableSwap}
+              swapInputError={swapInputError}
+              currencyBalances={currencyBalances}
+              recipient={recipient}
+              allowedSlippage={allowedSlippage}
+              onUserInput={onUserInput}
+            />
+          )}
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
