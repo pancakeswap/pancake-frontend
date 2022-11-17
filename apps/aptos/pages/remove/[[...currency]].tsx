@@ -16,6 +16,7 @@ import { usePair } from 'hooks/usePairs'
 import { useMemo } from 'react'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
+import { SettingsMode } from 'components/Menu/Settings/types'
 
 const { LiquidityCard } = LiquidityUI
 
@@ -52,7 +53,7 @@ const RemoveLiquidityPage = () => {
             assetA: symbolA ?? '',
             assetB: symbolB ?? '',
           })}
-          config={<SettingsButton />}
+          config={<SettingsButton mode={SettingsMode.SWAP_LIQUIDITY} />}
         />
         <CardBody>
           <DetailToggler>

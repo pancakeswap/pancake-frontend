@@ -16,6 +16,7 @@ import { PairState } from 'hooks/usePairs'
 import { useCallback, useMemo, useState } from 'react'
 import { MinimalPositionCard } from 'components/Liquidity/components/PositionCard'
 import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
+import { SettingsMode } from 'components/Menu/Settings/types'
 
 enum Steps {
   Choose,
@@ -55,7 +56,7 @@ const AddLiquidityPage = () => {
           helper={t(
             'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
           )}
-          config={<SettingsButton />}
+          config={<SettingsButton mode={SettingsMode.SWAP_LIQUIDITY} />}
           backTo={showAddLiquidity ? goToChoose : '/liquidity'}
         />
         <MintPairContext.Provider value={mintPairState}>

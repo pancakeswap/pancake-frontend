@@ -20,6 +20,7 @@ import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
 import { ExchangeLayout } from 'components/Layout/ExchangeLayout'
 import { PageMeta } from 'components/Layout/Page'
 import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
+import { SettingsMode } from 'components/Menu/Settings/types'
 import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/SettingsModal'
 import ImportToken from 'components/SearchModal/ImportToken'
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
@@ -309,7 +310,10 @@ const SwapPage = () => {
 
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
   const [onPresentSettingsModal] = useModal(
-    <SettingsModalWithCustomDismiss customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)} />,
+    <SettingsModalWithCustomDismiss
+      customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
+      mode={SettingsMode.SWAP_LIQUIDITY}
+    />,
   )
 
   const [onPresentConfirmModal] = useModal(
@@ -381,7 +385,7 @@ const SwapPage = () => {
               <Flex flexDirection="column" alignItems="center" width="100%">
                 <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
               </Flex>
-              <SettingsButton />
+              <SettingsButton mode={SettingsMode.SWAP_LIQUIDITY} />
             </Flex>
           }
           subtitle={<CurrencyInputHeaderSubTitle>{t('Trade tokens in an instant')}</CurrencyInputHeaderSubTitle>}

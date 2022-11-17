@@ -22,6 +22,7 @@ import { usePhishingBanner } from 'state/user'
 import { footerLinks } from './footerConfig'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
+import { SettingsMode } from './Settings/types'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
 
@@ -142,7 +143,7 @@ export const Menu = ({ children }: { children: ReactNode }) => {
       banner={show ? <PhishingWarningBanner /> : undefined}
       rightSide={
         <>
-          <SettingsButton mr="8px" />
+          <SettingsButton mr="8px" mode={SettingsMode.GLOBAL} />
           <NetworkSwitcher />
           <UserMenu />
         </>

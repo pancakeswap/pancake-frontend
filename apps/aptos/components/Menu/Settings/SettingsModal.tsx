@@ -18,10 +18,20 @@ import { useCallback, useState } from 'react'
 import { useAudioPlay, useUserSlippage } from 'state/user'
 import { useUserSingleHopOnly } from 'state/user/singleHop'
 import styled from 'styled-components'
+import { SettingsMode } from './types'
 
 export const withCustomOnDismiss =
   (Component) =>
-  ({ onDismiss, customOnDismiss, ...props }: { onDismiss?: () => void; customOnDismiss: () => void }) => {
+  ({
+    onDismiss,
+    customOnDismiss,
+    mode,
+    ...props
+  }: {
+    onDismiss?: () => void
+    customOnDismiss: () => void
+    mode: SettingsMode
+  }) => {
     const handleDismiss = useCallback(() => {
       onDismiss?.()
       if (customOnDismiss) {
@@ -29,7 +39,7 @@ export const withCustomOnDismiss =
       }
     }, [customOnDismiss, onDismiss])
 
-    return <Component {...props} onDismiss={handleDismiss} />
+    return <Component {...props} mode={mode} onDismiss={handleDismiss} />
   }
 
 const ScrollableContainer = styled(Flex)`
@@ -172,7 +182,7 @@ const SlippageSetting = () => {
   )
 }
 
-export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
+export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss, mode }) => {
   const [audioPlay, setAudioPlay] = useAudioPlay()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
 
@@ -189,13 +199,19 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
       style={{ maxWidth: '420px' }}
     >
       <ScrollableContainer>
-        <Flex justifyContent="space-between" mb="24px">
-          <Text>{t('Dark mode')}</Text>
-          <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
-        </Flex>
-        <Flex pt="3px" flexDirection="column">
-          {/* TODO: aptos swap */}
-          {/* <Flex justifyContent="space-between" alignItems="center" mb="24px">
+        {mode === SettingsMode.GLOBAL && (
+          <>
+            <Flex justifyContent="space-between" mb="24px">
+              <Text>{t('Dark mode')}</Text>
+              <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
+            </Flex>
+          </>
+        )}
+        {mode === SettingsMode.SWAP_LIQUIDITY && (
+          <>
+            <Flex pt="3px" flexDirection="column">
+              {/* TODO: aptos swap */}
+              {/* <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>{t('Expert Mode')}</Text>
               <QuestionHelper
@@ -206,33 +222,35 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
             </Flex>
             <Toggle id="toggle-expert-mode-button" scale="md" checked={expertMode} onChange={handleExpertModeToggle} />
           </Flex> */}
-          <SlippageSetting />
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>{t('Disable Multihops')}</Text>
-              <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
+              <SlippageSetting />
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Disable Multihops')}</Text>
+                  <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
+                </Flex>
+                <Toggle
+                  id="toggle-disable-multihop-button"
+                  checked={singleHopOnly}
+                  scale="md"
+                  onChange={() => {
+                    setSingleHopOnly(!singleHopOnly)
+                  }}
+                />
+              </Flex>
+              <Flex justifyContent="space-between" alignItems="center" mb="24px">
+                <Flex alignItems="center">
+                  <Text>{t('Flippy sounds')}</Text>
+                  <QuestionHelper
+                    text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
+                    placement="top-start"
+                    ml="4px"
+                  />
+                </Flex>
+                <PancakeToggle checked={audioPlay} onChange={(e) => setAudioPlay(e.target.checked)} scale="md" />
+              </Flex>
             </Flex>
-            <Toggle
-              id="toggle-disable-multihop-button"
-              checked={singleHopOnly}
-              scale="md"
-              onChange={() => {
-                setSingleHopOnly(!singleHopOnly)
-              }}
-            />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>{t('Flippy sounds')}</Text>
-              <QuestionHelper
-                text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                placement="top-start"
-                ml="4px"
-              />
-            </Flex>
-            <PancakeToggle checked={audioPlay} onChange={(e) => setAudioPlay(e.target.checked)} scale="md" />
-          </Flex>
-        </Flex>
+          </>
+        )}
       </ScrollableContainer>
     </Modal>
   )
