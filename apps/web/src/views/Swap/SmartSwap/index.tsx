@@ -324,7 +324,7 @@ export function SmartSwapForm() {
         </AutoColumn>
 
         <Box mt="0.25rem">
-          {tradeInfo.fallbackV2 ? (
+          {tradeInfo?.fallbackV2 ? (
             <SwapCommitButton
               swapIsUnsupported={swapIsUnsupported}
               account={account}
