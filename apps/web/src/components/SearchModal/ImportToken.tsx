@@ -10,6 +10,7 @@ import { ListLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 
 interface ImportProps {
   tokens: Token[]
