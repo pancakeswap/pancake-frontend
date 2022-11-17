@@ -1,5 +1,5 @@
 import { Currency, JSBI, Price, Trade } from '@pancakeswap/aptos-swap-sdk'
-import { L0_USDC } from 'config/coins'
+import { L0_USDC, CAKE } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import useSWR from 'swr'
@@ -125,8 +125,9 @@ export const useCakePrice = () => {
   )
 }
 
-export const usePriceCakeBusd = () => {
-  const cakePrice = useCakePrice().data
+export const usePriceCakeUsdc = () => {
+  const { chainId } = useActiveWeb3React()
+  const cakePrice = useTokenUsdcPrice(CAKE[chainId])
   return useMemo(() => (cakePrice ? new BigNumber(cakePrice) : BIG_ZERO), [cakePrice])
 }
 
