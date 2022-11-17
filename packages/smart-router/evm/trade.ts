@@ -11,7 +11,7 @@ import {
   computePriceImpact,
 } from '@pancakeswap/sdk'
 
-import { TradeWithStableSwap } from './types'
+import { TradeWithStableSwap, RouteType } from './types'
 import { getMidPrice } from './utils/route'
 
 export const Trade = {
@@ -69,5 +69,9 @@ function priceImpact<TIn extends Currency, TOut extends Currency, TTradeType ext
   inputAmount,
   outputAmount,
 }: TradeWithStableSwap<TIn, TOut, TTradeType>) {
-  return computePriceImpact(getMidPrice(route), inputAmount, outputAmount)
+  if (route.routeType === RouteType.V2) {
+    return computePriceImpact(getMidPrice(route), inputAmount, outputAmount)
+  }
+  // TODO double check the price impact with stable swap
+  return new Percent(0, 1)
 }

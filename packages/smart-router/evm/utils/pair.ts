@@ -12,3 +12,7 @@ export function isSamePair(one: Pair | StableSwapPair, another: Pair | StableSwa
 export function getOutputToken(pair: Pair | StableSwapPair, inputToken: Currency) {
   return inputToken.equals(pair.token0) ? pair.token1 : pair.token0
 }
+
+export function isStableSwapPair(pair: Pair | StableSwapPair): pair is StableSwapPair {
+  return !!(pair as StableSwapPair).stableSwapAddress
+}

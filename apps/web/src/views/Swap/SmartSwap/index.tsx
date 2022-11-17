@@ -32,7 +32,6 @@ import { Field } from 'state/swap/actions'
 import { useSwapState, useDerivedSwapInfo } from 'state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { currencyId } from 'utils/currencyId'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
 import AddressInputPanel from '../components/AddressInputPanel'
 import AdvancedSwapDetailsDropdown from '../components/AdvancedSwapDetailsDropdown'
@@ -86,6 +85,7 @@ export function SmartSwapForm() {
     parsedAmount,
     inputError: swapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
+  console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
@@ -93,17 +93,12 @@ export function SmartSwapForm() {
     chainId,
   })
 
-  console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
-
   const {
     wrapType,
     execute: onWrap,
     inputError: wrapInputError,
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-
-  const slippageAdjustedAmounts = tradeInfo ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(v2Trade)
 
   const parsedAmounts = showWrap
     ? {
@@ -146,8 +141,9 @@ export function SmartSwapForm() {
   //   'formattedAmounts???',
   // )
 
+  const amountToApprove = tradeInfo?.slippageAdjustedAmounts[Field.INPUT]
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallback(tradeInfo?.amountToApprove, tradeInfo?.routerAddress)
+  const [approval, approveCallback] = useApproveCallback(amountToApprove, tradeInfo?.routerAddress)
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -294,7 +290,7 @@ export function SmartSwapForm() {
                 <RouterViewer
                   inputCurrency={inputCurrency}
                   outputCurrency={outputCurrency}
-                  pairs={v2Trade?.route?.pairs}
+                  pairs={tradeInfo?.route.pairs}
                 />
               </CardBody>
             </Card>
@@ -359,14 +355,14 @@ export function SmartSwapForm() {
       {!swapIsUnsupported ? (
         tradeInfo && (
           <AdvancedSwapDetailsDropdown
-            pairs={v2Trade?.route?.pairs}
-            path={v2Trade?.route.path}
-            priceImpactWithoutFee={priceImpactWithoutFee}
-            realizedLPFee={realizedLPFee}
-            slippageAdjustedAmounts={slippageAdjustedAmounts}
-            inputAmount={v2Trade?.inputAmount}
-            outputAmount={v2Trade?.outputAmount}
-            tradeType={v2Trade?.tradeType}
+            pairs={tradeInfo.route.pairs}
+            path={tradeInfo.route.path}
+            priceImpactWithoutFee={tradeInfo.priceImpactWithoutFee}
+            realizedLPFee={tradeInfo.realizedLPFee}
+            slippageAdjustedAmounts={tradeInfo.slippageAdjustedAmounts}
+            inputAmount={tradeInfo.inputAmount}
+            outputAmount={tradeInfo.outputAmount}
+            tradeType={tradeInfo.tradeType}
           />
         )
       ) : (

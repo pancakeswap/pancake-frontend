@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Pair, Percent, Token, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/sdk'
+import { Pair } from '@pancakeswap/smart-router/evm'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 
 import { AutoColumn } from 'components/Layout/Column'
