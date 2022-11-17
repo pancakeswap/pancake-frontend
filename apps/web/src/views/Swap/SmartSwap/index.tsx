@@ -86,13 +86,15 @@ export function SmartSwapForm() {
     parsedAmount,
     inputError: swapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
-  console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
+  // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
     allowedSlippage,
     chainId,
   })
+
+  console.log(tradeInfo?.fallbackV2, '????????')
 
   const {
     wrapType,
