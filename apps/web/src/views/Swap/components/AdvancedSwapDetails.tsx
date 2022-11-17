@@ -27,8 +27,8 @@ function TradeSummary({
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
-  priceImpactWithoutFee: Percent
-  realizedLPFee: CurrencyAmount<Currency>
+  priceImpactWithoutFee?: Percent
+  realizedLPFee?: CurrencyAmount<Currency>
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
@@ -60,42 +60,44 @@ function TradeSummary({
           </Text>
         </RowFixed>
       </RowBetween>
-      <RowBetween>
-        <RowFixed>
-          <Text fontSize="14px" color="textSubtle">
-            {t('Price Impact')}
-          </Text>
-          <QuestionHelper
-            text={t('The difference between the market price and estimated price due to trade size.')}
-            ml="4px"
-            placement="top-start"
-          />
-        </RowFixed>
-        <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
-      </RowBetween>
+      {priceImpactWithoutFee && (
+        <RowBetween>
+          <RowFixed>
+            <Text fontSize="14px" color="textSubtle">
+              {t('Price Impact')}
+            </Text>
+            <QuestionHelper
+              text={t('The difference between the market price and estimated price due to trade size.')}
+              ml="4px"
+              placement="top-start"
+            />
+          </RowFixed>
+          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+        </RowBetween>
+      )}
 
-      <RowBetween>
-        <RowFixed>
-          <Text fontSize="14px" color="textSubtle">
-            {t('Liquidity Provider Fee')}
-          </Text>
-          <QuestionHelper
-            text={
-              <>
-                <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
-                <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
-                <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
-                <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
-              </>
-            }
-            ml="4px"
-            placement="top-start"
-          />
-        </RowFixed>
-        <Text fontSize="14px">
-          {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${inputAmount.currency.symbol}` : '-'}
-        </Text>
-      </RowBetween>
+      {realizedLPFee && (
+        <RowBetween>
+          <RowFixed>
+            <Text fontSize="14px" color="textSubtle">
+              {t('Liquidity Provider Fee')}
+            </Text>
+            <QuestionHelper
+              text={
+                <>
+                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
+                  <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
+                  <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
+                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
+                </>
+              }
+              ml="4px"
+              placement="top-start"
+            />
+          </RowFixed>
+          <Text fontSize="14px">{`${realizedLPFee.toSignificant(4)} ${inputAmount.currency.symbol}`}</Text>
+        </RowBetween>
+      )}
     </AutoColumn>
   )
 }
