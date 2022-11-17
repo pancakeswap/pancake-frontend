@@ -98,7 +98,6 @@ const TransactionConfirmSwapContent = ({
         tradeType={trade.tradeType}
         priceImpactWithoutFee={priceImpactWithoutFee}
         allowedSlippage={allowedSlippage}
-        // @ts-ignore
         slippageAdjustedAmounts={slippageAdjustedAmounts}
         isEnoughInputBalance={isEnoughInputBalance}
         recipient={recipient}

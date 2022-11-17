@@ -82,17 +82,6 @@ function toHex(currencyAmount: CurrencyAmount<Currency>) {
 
 const ZERO_HEX = '0x0'
 
-function validateAndParseAddress(address: string): string {
-  try {
-    const checksummedAddress = getAddress(address)
-    warning(address === checksummedAddress, `${address} is not checksummed.`)
-    return checksummedAddress
-  } catch (error) {
-    invariant(false, `${address} is not a valid address.`)
-    return ''
-  }
-}
-
 function swapCallParameters(
   trade: TradeWithStableSwap<Currency, Currency, TradeType>,
   options: TradeOptions | TradeOptionsDeadline,
@@ -103,27 +92,22 @@ function swapCallParameters(
   invariant(!(etherIn && etherOut), 'ETHER_IN_OUT')
   invariant(!('ttl' in options) || options.ttl > 0, 'TTL')
 
-  const to: string = validateAndParseAddress(options.recipient)
   const amountIn: string = toHex(Trade.maximumAmountIn(trade, options.allowedSlippage))
   const amountOut: string = toHex(Trade.minimumAmountOut(trade, options.allowedSlippage))
   const path: string[] = trade.route.path.map((token: Token) => token.address)
-  const deadline =
-    'ttl' in options
-      ? `0x${(Math.floor(new Date().getTime() / 1000) + options.ttl).toString(16)}`
-      : `0x${options.deadline.toString(16)}`
 
   let methodName: string
   let args: (string | string[])[]
   let value: string
   const flag: string[] = trade.route.pairs.map((pair) => {
-    if (isStableSwapPair(pair)) return '0'
-    return '1'
+    if (isStableSwapPair(pair)) return '0x0'
+    return '0x1'
   })
   // singleHop
   if (path.length === 2) {
     methodName = 'swap'
     //     [srcToken,dstToken,amount,minReturn,flag]
-    args = [path[0], path[1], amountIn, amountOut, flag]
+    args = [path[0], path[1], amountIn, amountOut, flag[0]]
     value = etherIn ? amountIn : ZERO_HEX
   }
   // multiHop
@@ -131,12 +115,10 @@ function swapCallParameters(
     methodName = 'swapMulti'
     //     [tokens,amount,minReturn,flag]
     args = [path, amountIn, amountOut, flag]
-    value = amountIn
+    value = etherIn ? amountIn : ZERO_HEX
   }
-  // (uint amountOutMin, address[] calldata path, address to, uint deadline)
-  args = [amountOut, path, to, deadline]
-  value = etherIn ? amountIn : ZERO_HEX
 
+  console.log(methodName, args, value, 'yoyoyoy')
   return {
     methodName,
     args,
