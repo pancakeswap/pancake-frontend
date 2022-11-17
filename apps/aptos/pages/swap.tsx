@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN, useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
-import { useIsMounted } from '@pancakeswap/hooks'
+import { useDebounce, useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, Skeleton, Swap as SwapUI, useModal, Flex, ModalV2, Modal } from '@pancakeswap/uikit'
@@ -69,7 +69,8 @@ function useWarningImport(currencies: (Currency | undefined)[]) {
   const { isWrongNetwork } = useActiveNetwork()
   const chainId = useActiveChainId()
   const isMounted = useIsMounted()
-  const isReady = useListStateReady()
+  // isReady debounce in case loaded currency before token list ready
+  const isReady = useDebounce(useListStateReady(), 300)
   const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
   const importTokensNotInDefault = useMemo(() => {
     return !isWrongNetwork && urlLoadedTokens && isMounted && isReady
