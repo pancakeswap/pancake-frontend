@@ -24,8 +24,8 @@ function involvesAddress(
     trade.route.path.some((token) => token.address === checksummedAddress) ||
     trade.route.pairs.some(
       (pair) =>
-        (pair as StableSwapPair).stableSwapAddress === checksummedAddress ||
-        (pair as Pair).liquidityToken.address === checksummedAddress,
+        (pair as StableSwapPair)?.stableSwapAddress === checksummedAddress ||
+        (pair as Pair)?.liquidityToken?.address === checksummedAddress,
     )
   )
 }
