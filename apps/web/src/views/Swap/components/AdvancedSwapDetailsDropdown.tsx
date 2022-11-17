@@ -1,5 +1,8 @@
 import styled from 'styled-components'
+import { useMemo } from 'react'
+
 import useLastTruthy from 'hooks/useLast'
+
 import { AdvancedSwapDetails, AdvancedSwapDetailsProps } from './AdvancedSwapDetails'
 
 const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
@@ -26,16 +29,20 @@ export default function AdvancedSwapDetailsDropdown({
   tradeType,
   ...rest
 }: AdvancedSwapDetailsProps) {
-  const lastTrade = useLastTruthy({
-    pairs,
-    path,
-    priceImpactWithoutFee,
-    realizedLPFee,
-    slippageAdjustedAmounts,
-    inputAmount,
-    outputAmount,
-    tradeType,
-  })
+  const trade = useMemo(
+    () => ({
+      pairs,
+      path,
+      priceImpactWithoutFee,
+      realizedLPFee,
+      slippageAdjustedAmounts,
+      inputAmount,
+      outputAmount,
+      tradeType,
+    }),
+    [pairs, path, priceImpactWithoutFee, realizedLPFee, slippageAdjustedAmounts, inputAmount, outputAmount, tradeType],
+  )
+  const lastTrade = useLastTruthy(trade)
 
   return (
     <AdvancedDetailsFooter show={Boolean(inputAmount && priceImpactWithoutFee && slippageAdjustedAmounts)}>
