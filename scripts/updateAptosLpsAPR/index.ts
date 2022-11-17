@@ -64,10 +64,10 @@ const fetchFarmsOneWeekAgo = async (farmsAtLatestBlock: SingleFarmResponse[]) =>
   farmsAtLatestBlock.forEach((farm) => {
     if (response[farm.id]) {
       if (response[farm.id].updateDate !== currentDate) {
-        const isUsdListMoreThanSeven = response[farm.id].usdList.length >= 7
+        const isMoreThanAWeek = response[farm.id].usdList.length >= 7
         const usdList = [...response[farm.id]?.usdList]
 
-        if (isUsdListMoreThanSeven) {
+        if (isMoreThanAWeek) {
           usdList.shift()
         }
 
