@@ -1,31 +1,15 @@
-import { Currency, CurrencyAmount, Pair, Route, Token, Trade, TradeType } from '@pancakeswap/sdk'
-import { deserializeToken } from '@pancakeswap/token-lists'
-import useSWR from 'swr'
-import {
-  getBestTradeExactIn,
-  getBestTradeExactOut,
-  createStableSwapPair,
-  TradeWithStableSwap,
-  RouteType,
-  StableSwapPair,
-} from '@pancakeswap/smart-router/evm'
-import { getBestPriceWithRouter, RequestBody } from 'state/swap/fetch/fetchBestPriceWithRouter'
+import { Currency, CurrencyAmount, Pair, Route, Trade, TradeType } from '@pancakeswap/sdk'
+import { TradeWithStableSwap, RouteType, StableSwapPair } from '@pancakeswap/smart-router/evm'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { useStableFarms } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { isAddress } from 'utils'
-import { provider } from 'utils/wagmi'
 
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'
-
-const isToken = (currency: Currency): currency is Token => {
-  // @ts-ignore
-  return Boolean(currency?.address)
-}
+import { useBestTrade } from './useBestTrade'
 
 /**
  * Returns true if any of the pairs or tokens in a trade have the given checksummed address
@@ -53,19 +37,6 @@ const BAD_RECIPIENT_ADDRESSES: string[] = [
   '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // v2 router 02
 ]
 
-const useMatchStableSwap = (inputCurrency: Currency | undefined, outputCurrency: Currency | undefined) => {
-  let matchFarm
-  const stableFarms = useStableFarms()
-  if (isToken(inputCurrency) && isToken(outputCurrency)) {
-    matchFarm = stableFarms.find(
-      ({ token0, token1 }) =>
-        (token0.address === inputCurrency.address && token1.address === outputCurrency.address) ||
-        (token1.address === inputCurrency.address && token0.address === outputCurrency.address),
-    )
-  }
-  return Boolean(matchFarm)
-}
-
 export function useDerivedSwapInfoWithStableSwap(
   independentField: Field,
   typedValue: string,
@@ -91,26 +62,12 @@ export function useDerivedSwapInfoWithStableSwap(
   ])
 
   const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  const independentCurrency = isExactIn ? inputCurrency : outputCurrency
+  const dependentCurrency = isExactIn ? outputCurrency : inputCurrency
+  const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
 
-  const bestPriceFromApi = useGetBestPriceWithRouter(
-    inputCurrency,
-    outputCurrency,
-    parsedAmount,
-    isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
-  )
-
-  const { data: bestTradeExactInData } = useSWR(
-    parsedAmount && `Swap${inputCurrency.symbol}to${outputCurrency.symbol}In${parsedAmount?.numerator.toString()}}`,
-    () => getBestTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined, { provider }),
-    { refreshInterval: 5000 },
-  )
-  const { data: bestTradeExactOutData } = useSWR(
-    parsedAmount && `Swap${inputCurrency.symbol}to${outputCurrency.symbol}Out${parsedAmount?.numerator.toString()}`,
-    () => getBestTradeExactOut(!isExactIn ? parsedAmount : undefined, inputCurrency ?? undefined, { provider }),
-    { refreshInterval: 5000 },
-  )
-  const bestTradeWithStableSwap = bestPriceFromApi || (isExactIn ? bestTradeExactInData : bestTradeExactOutData)
+  const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
+  const bestTradeWithStableSwap = useBestTrade(parsedAmount, dependentCurrency, tradeType)
   const v2Trade =
     bestTradeWithStableSwap?.route.routeType === RouteType.V2
       ? createV2TradeFromTradeWithStableSwap(bestTradeWithStableSwap)
@@ -174,60 +131,6 @@ export function useDerivedSwapInfoWithStableSwap(
     parsedAmount,
     v2Trade: v2Trade ?? undefined,
     inputError,
-  }
-}
-
-// TODO support exact output
-const useGetBestPriceWithRouter = (
-  inputCurrency: Currency,
-  outputCurrency: Currency,
-  parsedAmount: CurrencyAmount<Currency>,
-  tradeType: TradeType,
-): TradeWithStableSwap<Currency, Currency, TradeType> | null => {
-  const rawAmount = parsedAmount?.quotient.toString()
-  const requestBody: RequestBody = {
-    networkId: inputCurrency?.chainId,
-    baseToken: isToken(inputCurrency) ? inputCurrency.address : inputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
-    baseTokenName: inputCurrency?.name,
-    baseTokenAmount: tradeType === TradeType.EXACT_INPUT ? rawAmount : undefined,
-    baseTokenNumDecimals: inputCurrency?.decimals,
-    quoteToken: isToken(outputCurrency) ? outputCurrency.address : outputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
-    quoteTokenAmount: tradeType === TradeType.EXACT_OUTPUT ? rawAmount : undefined,
-    quoteTokenName: outputCurrency?.name,
-    quoteTokenNumDecimals: outputCurrency?.decimals,
-    trader: 'huan', // TODO: maybe use user Wallet address
-  }
-  const { data } = useSWR(
-    parsedAmount &&
-      `Swap${inputCurrency.symbol}to${outputCurrency.symbol}In${parsedAmount?.numerator.toString()}WithAPI`,
-    () => getBestPriceWithRouter(requestBody),
-    { refreshInterval: 5000 },
-  )
-
-  if (!data) {
-    return null
-  }
-
-  const input = deserializeToken(data.route.input)
-  const output = deserializeToken(data.route.output)
-  return {
-    tradeType: data.tradeType,
-    route: {
-      ...data.route,
-      input,
-      output,
-      pairs: data.route.pairs.map((p) => {
-        const token0 = deserializeToken(p.token0)
-        const token1 = deserializeToken(p.token1)
-        const reserve0 = CurrencyAmount.fromRawAmount(token0, p.reserve0)
-        const reserve1 = CurrencyAmount.fromRawAmount(token1, p.reserve1)
-        const pair = new Pair(reserve0, reserve1)
-        return p.stableSwapAddress ? createStableSwapPair(pair, p.stableSwapAddress) : pair
-      }),
-      path: data.route.path.map((t) => deserializeToken(t)),
-    },
-    inputAmount: CurrencyAmount.fromRawAmount(input, data.inputAmount),
-    outputAmount: CurrencyAmount.fromRawAmount(output, data.outputAmount),
   }
 }
 
