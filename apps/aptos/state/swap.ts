@@ -5,9 +5,8 @@ import { L0_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
-import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
-import { useEffect, useState } from 'react'
+import { useDeferredValue, useEffect, useState } from 'react'
 
 export const selectCurrency = createAction<{ field: Field; currencyId: string }>('swap/selectCurrency')
 export const switchCurrencies = createAction<void>('swap/switchCurrencies')
@@ -151,19 +150,23 @@ export function queryParametersToSwapState(
   }
 }
 
-export function useDefaultsFromURLSearch():
-  | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
-  | undefined {
+function paramsToObject(entries) {
+  const result = {}
+  for (const [key, value] of entries) {
+    result[key] = value
+  }
+  return result
+}
+
+export function useDefaultsFromURLSearch() {
   const { chainId } = useActiveWeb3React()
   const [, dispatch] = useSwapState()
-  const { query } = useRouter()
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
+  const [isFirstLoaded, setIsFirstLoaded] = useState(false)
 
   useEffect(() => {
     if (!chainId) return
-    const parsed = queryParametersToSwapState(query, APTOS_COIN, L0_USDC[chainId]?.address)
+    const queryObject = paramsToObject(new URL(window.location.href).searchParams)
+    const parsed = queryParametersToSwapState(queryObject, APTOS_COIN, L0_USDC[chainId]?.address)
 
     dispatch(
       replaceSwapState({
@@ -174,8 +177,8 @@ export function useDefaultsFromURLSearch():
       }),
     )
 
-    setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
-  }, [dispatch, chainId, query])
+    setIsFirstLoaded(true)
+  }, [dispatch, chainId])
 
-  return result
+  return useDeferredValue(isFirstLoaded)
 }

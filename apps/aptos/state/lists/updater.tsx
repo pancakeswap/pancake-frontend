@@ -36,9 +36,11 @@ export default function Updater(): null {
 
   useSWRImuutable(
     isReady && listState !== initialState && ['token-list'],
-    () => {
-      Object.keys(lists).forEach((url) =>
-        fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
+    async () => {
+      return Promise.all(
+        Object.keys(lists).map((url) =>
+          fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
+        ),
       )
     },
     {
