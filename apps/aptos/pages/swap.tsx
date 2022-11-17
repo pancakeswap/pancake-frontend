@@ -70,7 +70,7 @@ function useWarningImport(currencies: (Currency | undefined)[]) {
   const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
   const isLoaded = !!loadedTokenList
   const importTokensNotInDefault = useMemo(() => {
-    return !isWrongNetwork && urlLoadedTokens && isMounted && isLoaded
+    return !isWrongNetwork && urlLoadedTokens && isLoaded
       ? urlLoadedTokens.filter((token) => {
           return !(token.address in defaultTokens) && token.chainId === chainId
         })
