@@ -39,7 +39,7 @@ export function computeTradePriceBreakdown(trade?: TradeWithStableSwap<Currency,
   realizedLPFee: CurrencyAmount<Currency> | undefined | null
 } {
   // TODO see how to get these two value for trade with stable swap
-  if (trade.route.routeType !== RouteType.V2) {
+  if (trade?.route?.routeType !== RouteType.V2) {
     return {
       priceImpactWithoutFee: undefined,
       realizedLPFee: undefined,
