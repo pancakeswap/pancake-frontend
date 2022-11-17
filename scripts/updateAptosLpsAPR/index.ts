@@ -30,27 +30,25 @@ interface FarmsOneWeekData {
 
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429
-const FETCH_URL =
-  'https://api.coinmarketcap.com/dexer/v3/dexer/pair-list?base-address=0x1::aptos_coin::AptosCoin&start=1&limit=6&platform-id=141'
+const FETCH_URL = 'https://api.coinmarketcap.com/dexer/v3/platformpage/pair-pages?platform-id=141&dexer-id=4788'
 
 const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse[]> => {
-  const infos = await (await fetch(FETCH_URL)).json()
-  const infoDataList = infos.data.filter((info) => info.dexerInfo.id === 4788)
+  const pairs = await (await fetch(FETCH_URL)).json()
 
   return addresses.map((address): SingleFarmResponse => {
     // eslint-disable-next-line array-callback-return, consistent-return
-    const farmPriceInfo = infoDataList.find((info) => {
-      const token = info.quoteToken.address.toLowerCase()
-      const quoteToken = info.baseToken.address.toLowerCase()
+    const farmPriceInfo = pairs.data.pageList.find((pair) => {
+      const token = pair.quotoTokenAddress.toLowerCase()
+      const quoteToken = pair.baseTokenAddress.toLowerCase()
       const [address0, address1] = Pair.parseType(address)
       if (address0 === quoteToken && address1 === token) {
-        return info
+        return pair
       }
     })
 
     return {
       id: address,
-      volumeUSD: farmPriceInfo.volume24h || '0',
+      volumeUSD: farmPriceInfo.volumeUsd24h || '0',
       reserveUSD: farmPriceInfo.liquidity || '0',
     }
   })
