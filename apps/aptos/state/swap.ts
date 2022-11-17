@@ -7,7 +7,7 @@ import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
-import { useEffect, useState } from 'react'
+import { useDeferredValue, useEffect, useState } from 'react'
 
 export const selectCurrency = createAction<{ field: Field; currencyId: string }>('swap/selectCurrency')
 export const switchCurrencies = createAction<void>('swap/switchCurrencies')
@@ -151,15 +151,11 @@ export function queryParametersToSwapState(
   }
 }
 
-export function useDefaultsFromURLSearch():
-  | { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined }
-  | undefined {
+export function useDefaultsFromURLSearch() {
   const { chainId } = useActiveWeb3React()
   const [, dispatch] = useSwapState()
   const { query } = useRouter()
-  const [result, setResult] = useState<
-    { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
-  >()
+  const [isFirstLoaded, setIsFirstLoaded] = useState(false)
 
   useEffect(() => {
     if (!chainId) return
@@ -174,8 +170,8 @@ export function useDefaultsFromURLSearch():
       }),
     )
 
-    setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
+    setIsFirstLoaded(true)
   }, [dispatch, chainId, query])
 
-  return result
+  return useDeferredValue(isFirstLoaded)
 }

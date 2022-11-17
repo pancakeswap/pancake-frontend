@@ -34,6 +34,7 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useListStateReady } from 'state/lists'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
@@ -68,13 +69,15 @@ function useWarningImport(currencies: (Currency | undefined)[]) {
   const { isWrongNetwork } = useActiveNetwork()
   const chainId = useActiveChainId()
   const isMounted = useIsMounted()
+  const isReady = useListStateReady()
   const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
-  const importTokensNotInDefault =
-    !isWrongNetwork && urlLoadedTokens && isMounted
+  const importTokensNotInDefault = useMemo(() => {
+    return !isWrongNetwork && urlLoadedTokens && isMounted && isReady
       ? urlLoadedTokens.filter((token) => {
           return !(token.address in defaultTokens) && token.chainId === chainId
         })
       : []
+  }, [chainId, defaultTokens, isMounted, isReady, isWrongNetwork, urlLoadedTokens])
 
   return importTokensNotInDefault
 }
@@ -90,7 +93,7 @@ const SwapPage = () => {
     dispatch,
   ] = useSwapState()
 
-  useDefaultsFromURLSearch()
+  const isLoaded = useDefaultsFromURLSearch()
 
   const { t } = useTranslation()
 
@@ -396,7 +399,7 @@ const SwapPage = () => {
                   )}`
                 : undefined
             }
-            currency={inputCurrency}
+            currency={isLoaded ? inputCurrency : undefined}
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
             onUserInput={(value) => dispatch(typeInput({ field: Field.INPUT, typedValue: value }))}
@@ -424,7 +427,7 @@ const SwapPage = () => {
             id="swap-currency-output"
             value={formattedAmounts[Field.OUTPUT]}
             label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('to')}
-            currency={outputCurrency}
+            currency={isLoaded ? outputCurrency : undefined}
             otherCurrency={inputCurrency}
             onUserInput={(value) => dispatch(typeInput({ field: Field.OUTPUT, typedValue: value }))}
           />
