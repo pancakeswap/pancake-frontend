@@ -5,7 +5,6 @@ import { L0_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
-import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useDeferredValue, useEffect, useState } from 'react'
 
@@ -151,15 +150,23 @@ export function queryParametersToSwapState(
   }
 }
 
+function paramsToObject(entries) {
+  const result = {}
+  for (const [key, value] of entries) {
+    result[key] = value
+  }
+  return result
+}
+
 export function useDefaultsFromURLSearch() {
   const { chainId } = useActiveWeb3React()
   const [, dispatch] = useSwapState()
-  const { query } = useRouter()
   const [isFirstLoaded, setIsFirstLoaded] = useState(false)
 
   useEffect(() => {
     if (!chainId) return
-    const parsed = queryParametersToSwapState(query, APTOS_COIN, L0_USDC[chainId]?.address)
+    const queryObject = paramsToObject(new URL(window.location.href).searchParams)
+    const parsed = queryParametersToSwapState(queryObject, APTOS_COIN, L0_USDC[chainId]?.address)
 
     dispatch(
       replaceSwapState({
@@ -171,7 +178,7 @@ export function useDefaultsFromURLSearch() {
     )
 
     setIsFirstLoaded(true)
-  }, [dispatch, chainId, query])
+  }, [dispatch, chainId])
 
   return useDeferredValue(isFirstLoaded)
 }
