@@ -104,7 +104,18 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           variant="danger"
           disabled={!confirmed}
           onClick={() => {
-            tokens.forEach((token) => addToken(token))
+            tokens.forEach((token) => {
+              const inactiveToken = chainId && inactiveTokenList?.[token.chainId]?.[token.address]
+              let tokenToAdd = token
+              if (inactiveToken) {
+                tokenToAdd = new WrappedTokenInfo({
+                  ...token,
+                  logoURI: inactiveToken.token.logoURI,
+                  name: token.name || inactiveToken.token.name,
+                })
+              }
+              addToken(tokenToAdd)
+            })
             if (handleCurrencySelect) {
               handleCurrencySelect(tokens[0])
             }
