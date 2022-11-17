@@ -12,7 +12,13 @@ export function SettingsButton({ color, mr = '8px', mode }: Props) {
 
   return (
     <Flex>
-      <IconButton onClick={onPresentSettingsModal} variant="text" scale="sm" id={`open-settings-dialog-button-${mode}`} mr={mr}>
+      <IconButton
+        onClick={onPresentSettingsModal}
+        variant="text"
+        scale="sm"
+        id={`open-settings-dialog-button-${mode}`}
+        mr={mr}
+      >
         <CogIcon height={24} width={24} color={color || 'textSubtle'} />
       </IconButton>
     </Flex>
