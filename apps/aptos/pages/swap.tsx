@@ -11,7 +11,6 @@ import {
 } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN, useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
-import { useDebounce, useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, Skeleton, Swap as SwapUI, useModal, Flex, ModalV2, Modal } from '@pancakeswap/uikit'
@@ -34,7 +33,6 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId, useActiveNetwork } from 'hooks/useNetwork'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useListStateReady } from 'state/lists'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
@@ -47,7 +45,7 @@ import {
 } from 'utils/exchange'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-
+import useSWRImuutable from 'swr/immutable'
 import { CommitButton } from '../components/CommitButton'
 
 const {
@@ -68,17 +66,16 @@ function useWarningImport(currencies: (Currency | undefined)[]) {
   const defaultTokens = useAllTokens()
   const { isWrongNetwork } = useActiveNetwork()
   const chainId = useActiveChainId()
-  const isMounted = useIsMounted()
-  // isReady debounce in case loaded currency before token list ready
-  const isReady = useDebounce(useListStateReady(), 300)
+  const { data: loadedTokenList } = useSWRImuutable(['token-list'])
   const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
+  const isLoaded = !!loadedTokenList
   const importTokensNotInDefault = useMemo(() => {
-    return !isWrongNetwork && urlLoadedTokens && isMounted && isReady
+    return !isWrongNetwork && urlLoadedTokens && isMounted && isLoaded
       ? urlLoadedTokens.filter((token) => {
           return !(token.address in defaultTokens) && token.chainId === chainId
         })
       : []
-  }, [chainId, defaultTokens, isMounted, isReady, isWrongNetwork, urlLoadedTokens])
+  }, [chainId, defaultTokens, isLoaded, isWrongNetwork, urlLoadedTokens])
 
   return importTokensNotInDefault
 }
