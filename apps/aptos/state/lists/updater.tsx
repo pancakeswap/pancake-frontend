@@ -5,23 +5,37 @@ import { useEffect } from 'react'
 import { useAllLists } from 'state/lists/hooks'
 import useSWRImuutable from 'swr/immutable'
 import { useActiveListUrls } from './hooks'
-import { useListState } from './index'
+import { useListState, initialState, useListStateReady } from './index'
 
 export default function Updater(): null {
-  const [, dispatch] = useListState()
+  const [listState, dispatch] = useListState()
 
   // get all loaded lists, and the active urls
   const lists = useAllLists()
   const activeListUrls = useActiveListUrls()
 
+  const isReady = useListStateReady()
+
   useEffect(() => {
-    dispatch(updateListVersion())
-  }, [dispatch])
+    if (isReady) {
+      dispatch(updateListVersion())
+    }
+  }, [dispatch, isReady])
 
   const fetchList = useFetchListCallback(dispatch)
 
+  // whenever a list is not loaded and not loading, try again to load it
+  useSWRImuutable(isReady && ['first-fetch-token-list', lists], () => {
+    Object.keys(lists).forEach((listUrl) => {
+      const list = lists[listUrl]
+      if (!list.current && !list.loadingRequestId && !list.error) {
+        fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
+      }
+    })
+  })
+
   useSWRImuutable(
-    ['token-list'],
+    isReady && listState !== initialState && ['token-list'],
     () => {
       Object.keys(lists).forEach((url) =>
         fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
@@ -35,16 +49,19 @@ export default function Updater(): null {
 
   // if any lists from unsupported lists are loaded, check them too (in case new updates since last visit)
   useEffect(() => {
-    Object.keys(UNSUPPORTED_LIST_URLS).forEach((listUrl) => {
-      const list = lists[listUrl]
-      if (!list || (!list.current && !list.loadingRequestId && !list.error)) {
-        fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
-      }
-    })
-  }, [fetchList, lists])
+    if (isReady) {
+      Object.keys(UNSUPPORTED_LIST_URLS).forEach((listUrl) => {
+        const list = lists[listUrl]
+        if (!list || (!list.current && !list.loadingRequestId && !list.error)) {
+          fetchList(listUrl).catch((error) => console.debug('list added fetching error', error))
+        }
+      })
+    }
+  }, [fetchList, lists, isReady])
 
   // automatically update lists if versions are minor/patch
   useEffect(() => {
+    if (!isReady) return
     Object.keys(lists).forEach((listUrl) => {
       const list = lists[listUrl]
       if (list.current && list.pendingUpdate) {
@@ -61,7 +78,7 @@ export default function Updater(): null {
         }
       }
     })
-  }, [dispatch, lists, activeListUrls])
+  }, [dispatch, lists, activeListUrls, isReady])
 
   return null
 }

@@ -30,7 +30,8 @@
       "cache": false
     },
     "postinstall": {
-      "outputs": []
+      "inputs": ["web/src/config/abi/*.json"],
+      "outputs": ["web/src/config/abi/types/**"]
     }
   }
 }
