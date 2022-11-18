@@ -1,3 +1,4 @@
+import { getAddress } from '@ethersproject/address'
 import { Contract } from '@ethersproject/contracts'
 import {
   Currency,
@@ -5,7 +6,6 @@ import {
   JSBI,
   Percent,
   SwapParameters,
-  Token,
   TradeOptions,
   TradeOptionsDeadline,
   TradeType,
@@ -18,6 +18,8 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
 import { useSmartRouterContract } from '../utils/exchange'
+
+const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
 export interface SwapCall {
   contract: Contract
@@ -49,7 +51,6 @@ export function useSwapCallArguments(
     }
 
     const swapMethods = []
-    // TODO: parameter need to be fit the new contract
     if (trade.tradeType === TradeType.EXACT_INPUT) {
       swapMethods.push(
         swapCallParameters(trade, {
@@ -83,7 +84,7 @@ function swapCallParameters(
 
   const amountIn: string = toHex(Trade.maximumAmountIn(trade, options.allowedSlippage))
   const amountOut: string = toHex(Trade.minimumAmountOut(trade, options.allowedSlippage))
-  const path: string[] = trade.route.path.map((token) => (token.isToken ? token.address : ''))
+  const path: string[] = trade.route.path.map((token) => (token.isToken ? token.address : NATIVE_CURRENCY_ADDRESS))
 
   let methodName: string
   let args: (string | string[])[]
@@ -106,8 +107,6 @@ function swapCallParameters(
     args = [path, amountIn, amountOut, flag]
     value = etherIn ? amountIn : ZERO_HEX
   }
-
-  console.log(methodName, args, value, 'yoyoyoy')
   return {
     methodName,
     args,
