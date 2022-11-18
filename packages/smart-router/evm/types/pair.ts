@@ -1,9 +1,9 @@
-import type { CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
+import type { CurrencyAmount, Currency } from '@pancakeswap/sdk'
 
 export interface BasePair {
-  token0: ERC20Token
-  token1: ERC20Token
-  reserve0: CurrencyAmount<ERC20Token>
-  reserve1: CurrencyAmount<ERC20Token>
-  involvesToken: (token: ERC20Token) => boolean
+  token0: Currency
+  token1: Currency
+  reserve0: CurrencyAmount<Currency>
+  reserve1: CurrencyAmount<Currency>
+  involvesToken: (token: Currency) => boolean
 }

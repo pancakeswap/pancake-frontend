@@ -21,11 +21,11 @@ function involvesAddress(
   checksummedAddress: string,
 ): boolean {
   return (
-    trade.route.path.some((token) => token.address === checksummedAddress) ||
+    trade.route.path.some((token) => token.isToken && token.address === checksummedAddress) ||
     trade.route.pairs.some(
       (pair) =>
         (pair as StableSwapPair).stableSwapAddress === checksummedAddress ||
-        (pair as Pair).liquidityToken.address === checksummedAddress,
+        (pair as Pair).liquidityToken?.address === checksummedAddress,
     )
   )
 }
@@ -140,7 +140,7 @@ function createV2TradeFromTradeWithStableSwap(
   if (trade.route.routeType !== RouteType.V2) {
     return undefined
   }
-  const pairs: Pair[] = trade.route.pairs.map((pair) => new Pair(pair.reserve0, pair.reserve1))
+  const pairs: Pair[] = trade.route.pairs.map((pair) => new Pair(pair.reserve0.wrapped, pair.reserve1.wrapped))
   const route = new Route(pairs, trade.inputAmount.currency, trade.outputAmount.currency)
   if (trade.tradeType === TradeType.EXACT_INPUT) {
     return Trade.exactIn(route, trade.inputAmount)

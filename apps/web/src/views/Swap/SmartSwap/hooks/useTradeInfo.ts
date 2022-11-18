@@ -1,4 +1,4 @@
-import { Token, Currency, CurrencyAmount, TradeType, Trade, Price, ChainId, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType, Trade, Price, ChainId, Percent } from '@pancakeswap/sdk'
 import { TradeWithStableSwap, RouteType, Trade as SmartRouterTrade, Pair } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
 
@@ -25,7 +25,7 @@ interface Info {
   outputAmount: CurrencyAmount<Currency>
   route: {
     pairs: Pair[]
-    path: Token[]
+    path: Currency[]
   }
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   executionPrice: Price<Currency, Currency>

@@ -12,7 +12,11 @@ export function wrappedCurrencyAmount(
   return token && currencyAmount ? CurrencyAmount.fromRawAmount(token, currencyAmount.quotient) : undefined
 }
 
-export function unwrappedToken(token: Token): Currency {
+export function unwrappedToken(token: Currency): Currency {
+  if (token.isNative) {
+    return token
+  }
+
   if (token.equals(WNATIVE[token.chainId])) return Native.onChain(token.chainId)
   return token
 }
