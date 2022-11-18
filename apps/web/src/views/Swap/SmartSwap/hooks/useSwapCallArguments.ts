@@ -83,7 +83,7 @@ function swapCallParameters(
 
   const amountIn: string = toHex(Trade.maximumAmountIn(trade, options.allowedSlippage))
   const amountOut: string = toHex(Trade.minimumAmountOut(trade, options.allowedSlippage))
-  const path: string[] = trade.route.path.map((token: Token) => token.address)
+  const path: string[] = trade.route.path.map((token) => (token.isToken ? token.address : ''))
 
   let methodName: string
   let args: (string | string[])[]
