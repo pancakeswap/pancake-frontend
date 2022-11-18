@@ -7,7 +7,7 @@ const BLOCK_COUNTRIES = { BY: 'BY', CU: 'CU', CD: 'CD', IR: 'IR', IQ: 'IQ', KP: 
 // Sanctioned Regions: Crimea
 const BLOCK_REGIONS = { 'UA-43': 'UA-43' }
 
-const INFO_BUCKETS_COOKIES = 'bucket-info'
+const INFO_BUCKETS_COOKIES = 'bucket-info-2'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()

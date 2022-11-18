@@ -1,19 +1,17 @@
-import { Router, Currency, CurrencyAmount } from '@pancakeswap/aptos-swap-sdk'
+import { Currency, CurrencyAmount, Router } from '@pancakeswap/aptos-swap-sdk'
 import { SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
+import { useTranslation } from '@pancakeswap/localization'
 import { log } from 'next-axiom'
 import { useCallback, useContext, useMemo, useState } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
 
-import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
-
-import { useTransactionAdder } from 'state/transactions/hooks'
-import { calculateSlippageAmount } from 'utils/exchange'
-import { useUserSlippage } from 'state/user'
-import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
+import { useTransactionAdder } from 'state/transactions/hooks'
+import { useUserSlippage } from 'state/user'
+import { calculateSlippageAmount } from 'utils/exchange'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 
-import { CurrencySelectorContext } from './useCurrencySelectRoute'
 import { Field, LiquidityHandlerReturn } from '../type'
+import { CurrencySelectorContext } from './useCurrencySelectRoute'
 
 interface UseAddLiquidityHandlerReturn extends LiquidityHandlerReturn {
   onAdd: () => void

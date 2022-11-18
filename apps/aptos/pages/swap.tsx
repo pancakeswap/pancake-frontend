@@ -11,7 +11,6 @@ import {
 } from '@pancakeswap/aptos-swap-sdk'
 import { APTOS_COIN, useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
-import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Card, Skeleton, Swap as SwapUI, useModal, Flex, ModalV2, Modal } from '@pancakeswap/uikit'
@@ -46,7 +45,7 @@ import {
 } from 'utils/exchange'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-
+import useSWRImuutable from 'swr/immutable'
 import { CommitButton } from '../components/CommitButton'
 
 const {
@@ -67,14 +66,16 @@ function useWarningImport(currencies: (Currency | undefined)[]) {
   const defaultTokens = useAllTokens()
   const { isWrongNetwork } = useActiveNetwork()
   const chainId = useActiveChainId()
-  const isMounted = useIsMounted()
+  const { data: loadedTokenList } = useSWRImuutable(['token-list'])
   const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
-  const importTokensNotInDefault =
-    !isWrongNetwork && urlLoadedTokens && isMounted
+  const isLoaded = !!loadedTokenList
+  const importTokensNotInDefault = useMemo(() => {
+    return !isWrongNetwork && urlLoadedTokens && isLoaded
       ? urlLoadedTokens.filter((token) => {
           return !(token.address in defaultTokens) && token.chainId === chainId
         })
       : []
+  }, [chainId, defaultTokens, isLoaded, isWrongNetwork, urlLoadedTokens])
 
   return importTokensNotInDefault
 }
@@ -90,7 +91,7 @@ const SwapPage = () => {
     dispatch,
   ] = useSwapState()
 
-  useDefaultsFromURLSearch()
+  const isLoaded = useDefaultsFromURLSearch()
 
   const { t } = useTranslation()
 
@@ -396,7 +397,7 @@ const SwapPage = () => {
                   )}`
                 : undefined
             }
-            currency={inputCurrency}
+            currency={isLoaded ? inputCurrency : undefined}
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
             onUserInput={(value) => dispatch(typeInput({ field: Field.INPUT, typedValue: value }))}
@@ -424,7 +425,7 @@ const SwapPage = () => {
             id="swap-currency-output"
             value={formattedAmounts[Field.OUTPUT]}
             label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('to')}
-            currency={outputCurrency}
+            currency={isLoaded ? outputCurrency : undefined}
             otherCurrency={inputCurrency}
             onUserInput={(value) => dispatch(typeInput({ field: Field.OUTPUT, typedValue: value }))}
           />

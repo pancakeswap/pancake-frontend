@@ -23,8 +23,19 @@ function calcPendingRewardToken({
   currentRewardDebt,
   tokenPerShare,
   precisionFactor,
-}) {
-  const multiplier = FixedNumber.from(getSecondsLeftFromNow(lastRewardTimestamp))
+  endTime,
+  isFinished,
+}): FixedNumber {
+  const pendingSeconds = Math.max(
+    isFinished ? endTime - lastRewardTimestamp : getSecondsLeftFromNow(lastRewardTimestamp),
+    0,
+  )
+
+  if (pendingSeconds === 0) {
+    return FixedNumber.from(0)
+  }
+
+  const multiplier = FixedNumber.from(pendingSeconds)
 
   const rewardPendingToken = FixedNumber.from(rewardPerSecond).mulUnsafe(multiplier)
 
@@ -87,7 +98,7 @@ const transformPool = (
     )
 
     if (foundStakedPoolBalance) {
-      const userStakedAmount = _get(foundStakedPoolBalance, 'data.amount')
+      const userStakedAmount = _toNumber(_get(foundStakedPoolBalance, 'data.amount', '0'))
 
       if (userStakedAmount && _toNumber(totalStakedToken)) {
         const currentRewardDebt = _get(foundStakedPoolBalance, 'data.reward_debt')
@@ -95,22 +106,21 @@ const transformPool = (
         const tokenPerShare = _get(resource, 'data.acc_token_per_share')
         const precisionFactor = _get(resource, 'data.precision_factor')
 
-        const pendingReward =
-          lastRewardTimestamp > endTime
-            ? '0'
-            : calcPendingRewardToken({
-                currentRewardDebt,
-                lastRewardTimestamp,
-                totalStakedToken,
-                userStakedAmount,
-                rewardPerSecond,
-                tokenPerShare,
-                precisionFactor,
-              })
+        const pendingReward = calcPendingRewardToken({
+          currentRewardDebt,
+          lastRewardTimestamp,
+          totalStakedToken,
+          userStakedAmount,
+          rewardPerSecond,
+          tokenPerShare,
+          precisionFactor,
+          endTime,
+          isFinished,
+        }).toString()
 
         userData = {
           ...userData,
-          pendingReward: new BigNumber(pendingReward.toString()),
+          pendingReward: new BigNumber(pendingReward),
           stakedBalance: new BigNumber(userStakedAmount),
         }
       }

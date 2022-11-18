@@ -11,7 +11,7 @@ import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/g
 import { PairDataTimeWindowEnum } from '../types'
 
 const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
-  const bucketInfo = Cookies.get('bucket-info') // sf or nr
+  const bucketInfo = Cookies.get('bucket-info-2') // sf or nr
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),

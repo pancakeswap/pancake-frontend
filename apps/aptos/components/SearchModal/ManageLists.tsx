@@ -99,7 +99,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <div>
       <Text>{list && listVersionLabel(list.version)}</Text>
-      <LinkExternal external href={`https://tokenlists.org/token-list?url=${listUrl}`}>
+      <LinkExternal external href={listUrl}>
         {t('See')}
       </LinkExternal>
       <Button variant="danger" scale="xs" onClick={handleRemoveList} disabled={Object.keys(listsByUrl).length === 1}>

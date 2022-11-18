@@ -87,9 +87,24 @@ const Deposit: React.FC<React.PropsWithChildren> = () => {
           <Text color="textSubtle">{t('APY')}</Text>
           <Text bold>{apyDisplay}</Text>
         </Flex>
-        {getStatus !== PotteryDepositStatus.BEFORE_LOCK && (
+        {getStatus === PotteryDepositStatus.BEFORE_LOCK ? (
           <Flex justifyContent="space-between">
-            <Text color="textSubtle">{t('Next draw date')}</Text>
+            <Text color="textSubtle">{t('Locked date')}</Text>
+            <Flex>
+              <Text bold as="span">
+                {t('in')}
+              </Text>
+              {days ? <Text bold as="span" ml="2px">{`${days}${t('d')}`}</Text> : null}
+              {hours ? <Text bold as="span" ml="2px">{`${hours}${t('h')}`}</Text> : null}
+              {minutes ? <Text bold as="span" ml="2px">{`${minutes}${t('m')}`}</Text> : null}
+            </Flex>
+          </Flex>
+        ) : (
+          <Flex justifyContent="space-between">
+            <Text color="textSubtle">
+              {t('Next draw date')}
+              {getStatus}
+            </Text>
             {tooltipVisible && tooltip}
             <TooltipText ref={targetRef}>
               <Text bold as="span">
