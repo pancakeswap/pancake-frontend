@@ -96,7 +96,11 @@ export function SmartSwapForm() {
     chainId,
   })
 
-  console.log(tradeInfo?.fallbackV2, 'isFallbackV2')
+  useEffect(() => {
+    if (tradeInfo && !tradeInfo.isWithStableBetter && allowUseSmartRouter) {
+      setAllowUseSmartRouter(false)
+    }
+  }, [tradeInfo, allowUseSmartRouter])
 
   const {
     wrapType,
@@ -266,7 +270,7 @@ export function SmartSwapForm() {
             otherCurrency={currencies[Field.INPUT]}
             id="swap-currency-output"
             showCommonBases
-            disabled={allowUseSmartRouter}
+            disabled={Boolean(tradeInfo) && !tradeInfo.fallbackV2}
             showBUSD={!!tokenMap[chainId]?.[outputCurrencyId] || outputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
@@ -277,25 +281,27 @@ export function SmartSwapForm() {
             </Box>
           )}
 
-          <AutoColumn>
-            {allowUseSmartRouter && (
-              <Message variant="warning" mb="8px">
-                <MessageText>{t('This route includes StableSwap and can’t edit output')}</MessageText>
-              </Message>
-            )}
-            <Flex alignItems="center" onClick={() => setAllowUseSmartRouter(!allowUseSmartRouter)}>
-              <Checkbox
-                scale="sm"
-                name="allowUseSmartRouter"
-                type="checkbox"
-                checked={allowUseSmartRouter}
-                onChange={() => setAllowUseSmartRouter(!allowUseSmartRouter)}
-              />
-              <Text ml="8px" style={{ userSelect: 'none' }}>
-                {t('Use StableSwap for better fees')}
-              </Text>
-            </Flex>
-          </AutoColumn>
+          {tradeInfo?.isWithStableBetter && (
+            <AutoColumn>
+              {allowUseSmartRouter && (
+                <Message variant="warning" mb="8px">
+                  <MessageText>{t('This route includes StableSwap and can’t edit output')}</MessageText>
+                </Message>
+              )}
+              <Flex alignItems="center" onClick={() => setAllowUseSmartRouter(!allowUseSmartRouter)}>
+                <Checkbox
+                  scale="sm"
+                  name="allowUseSmartRouter"
+                  type="checkbox"
+                  checked={allowUseSmartRouter}
+                  onChange={() => setAllowUseSmartRouter(!allowUseSmartRouter)}
+                />
+                <Text ml="8px" style={{ userSelect: 'none' }}>
+                  {t('Use StableSwap for better fees')}
+                </Text>
+              </Flex>
+            </AutoColumn>
+          )}
 
           {isExpertMode && recipient !== null && !showWrap ? (
             <>
