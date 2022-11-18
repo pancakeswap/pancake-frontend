@@ -158,7 +158,11 @@ export function AdvancedSwapDetails({
                 <SearchIcon onClick={() => setIsModalOpen(true)} />
                 <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
                   <Modal title={t('Route')} onDismiss={() => setIsModalOpen(false)}>
-                    <RouterViewer pairs={pairs} />
+                    <RouterViewer
+                      inputCurrency={inputAmount.currency}
+                      pairs={pairs}
+                      outputCurrency={outputAmount.currency}
+                    />
                   </Modal>
                 </ModalV2>
               </RowBetween>

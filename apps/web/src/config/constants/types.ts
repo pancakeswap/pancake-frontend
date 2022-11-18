@@ -191,20 +191,22 @@ export enum FetchStatus {
 }
 
 export const isV2SwapOrStableSwap = (trade: ITrade): trade is V2TradeAndStableSwap => {
-  // @ts-ignore
-  return Boolean(trade?.maximumAmountIn)
+  return Boolean((trade as V2TradeAndStableSwap)?.maximumAmountIn)
 }
 
 export const isStableSwap = (trade: ITrade): trade is StableTrade => {
-  // @ts-ignore
-  return Boolean(trade?.maximumAmountIn) && !trade?.route
+  return (
+    Boolean((trade as StableTrade)?.maximumAmountIn) &&
+    !(trade as Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType>)?.route
+  )
 }
 
 export const isV2SwapOrMixSwap = (
   trade: ITrade,
 ): trade is Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType> => {
-  // @ts-ignore
-  return Boolean(trade?.route)
+  return Boolean(
+    (trade as Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType>)?.route,
+  )
 }
 
 export type ITrade =
