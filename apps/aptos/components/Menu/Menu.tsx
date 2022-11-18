@@ -10,6 +10,7 @@ import {
   NextLinkFromReactRouter,
   SwapFillIcon,
   SwapIcon,
+  DropdownMenuItemType,
 } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
@@ -44,6 +45,11 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Liquidity'),
         href: '/liquidity',
+      },
+      {
+        label: t('Bridge'),
+        href: 'https://docs.pancakeswap.finance/get-started-aptos/aptos-coin-guide',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],
   },
