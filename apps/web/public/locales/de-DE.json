@@ -842,6 +842,7 @@
   "Claimed": "Beansprucht",
   "Settings": "Einstellungen",
   "Bridge assets to BNB Chain": "Überbrückung von Assets zur BNB Chain",
+  "Bridge assets to Aptos Chain": "Überbrückung von Assets zur Aptos Chain",
   "Need help ?": "Benötigen Sie Hilfe?",
   "Select a token": "Token wählen",
   "Enter a recipient": "Empfänger eingeben",
@@ -1750,7 +1751,7 @@
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Die CAKE-Einzahlung wird in den Pool für befristete Einsätze umgeleitet. Bitte beachten Sie, dass eingezahltes CAKE NUR nach 10 Wochen wieder abgehoben werden kann.",
   "Pottery draws on each Friday at 12 PM UTC!": "Die Pottery-Ziehungen finden jeden Freitag um 12 PM UTC statt!",
   "Next draw date": "Nächste Ziehung",
-  "Locked date": "Locked date",
+  "Locked date": "Sperrdatum",
   "in": "in",
   "Chance of winning next round": "Gewinnchancen für die nächste Runde",
   "Your": "Ihre",
@@ -2030,5 +2031,5 @@
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Jeder kann eine Coin auf Aptos mit einem beliebigen Namen erstellen, einschließlich der Erstellung von gefälschten Versionen bestehender Coins und Coins, die vorgeben, Projekte zu repräsentieren, für die es keine Coin gibt.",
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Wenn Sie eine gefälschte Coin kaufen, kann es sein, dass Sie Ihr Geld dauerhaft verlieren.",
   "Pancake Collectibles": "Pancake-Collectibles",
-  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date."
+  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info wird derzeit gewartet. Die Daten sind möglicherweise nicht genau oder aktuell."
 }
