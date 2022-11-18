@@ -64,28 +64,8 @@ export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, inputCurrency
         <CurrencyLogo size="44px" currency={inputCurrency} />
       </CurrencyLogoWrapper>
       {pairs &&
-        pairs.map((p, index) => {
+        pairs.map((p) => {
           const isStableSwap = isStableSwapPair(p)
-          if (index === 0) {
-            return (
-              <>
-                <RouterPoolBox
-                  key={`tradingPairIds${isStableSwap ? p.stableSwapAddress : p.liquidityToken.address}`}
-                  className={isStableSwap && 'isStableSwap'}
-                >
-                  <DoubleCurrencyLogo currency0={p.token0} currency1={p.token1} />
-                  <RouterTypeText>{isStableSwap ? t('StableSwap') : t('V2')}</RouterTypeText>
-                </RouterPoolBox>
-                <RouterPoolBox
-                  key={`tradingPairIds${isStableSwap ? p.stableSwapAddress : p.liquidityToken.address}`}
-                  className={isStableSwap && 'isStableSwap'}
-                >
-                  <DoubleCurrencyLogo currency0={p.token0} currency1={p.token1} />
-                  <RouterTypeText>{isStableSwap ? t('StableSwap') : t('V2')}</RouterTypeText>
-                </RouterPoolBox>
-              </>
-            )
-          }
           return (
             <RouterPoolBox
               key={`tradingPairIds${isStableSwap ? p.stableSwapAddress : p.liquidityToken.address}`}
