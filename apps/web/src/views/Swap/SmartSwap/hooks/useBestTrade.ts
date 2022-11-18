@@ -1,27 +1,40 @@
 import { useDeferredValue } from 'react'
 import useSWR from 'swr'
-import { CurrencyAmount, TradeType, Currency, Token, Pair } from '@pancakeswap/sdk'
+import { CurrencyAmount, TradeType, Currency, Pair } from '@pancakeswap/sdk'
 import { getBestTradeExactIn, getBestTradeExactOut, createStableSwapPair } from '@pancakeswap/smart-router/evm'
 import { deserializeToken } from '@pancakeswap/token-lists'
+import { getAddress } from '@ethersproject/address'
 
 import { laggyMiddleware } from 'hooks/useSWRContract'
+import { useAllCommonPairs } from 'hooks/Trades'
 import { provider } from 'utils/wagmi'
 import { getBestPriceWithRouter, RequestBody } from 'state/swap/fetch/fetchBestPriceWithRouter'
 
-function createUseBestTrade<T>(
-  key: string,
-  getBestTrade: (amount: CurrencyAmount<Currency>, currency: Currency, tradeType: TradeType) => Promise<T>,
-) {
+const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
+
+interface TradeOptions {
+  trader?: string
+  amount: CurrencyAmount<Currency>
+  currency: Currency
+  tradeType: TradeType
+  allCommonPairs: Pair[]
+}
+
+function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions) => Promise<T>) {
   return function useTrade(
     amount: CurrencyAmount<Currency> | undefined,
     currency: Currency,
     tradeType: TradeType,
   ): T | null {
+    const allCommonPairs = useAllCommonPairs(amount?.currency, currency)
     const deferQuotient = useDeferredValue(amount?.quotient.toString())
 
     const { data: trade } = useSWR(
-      amount ? [key, 'swap', amount.currency.chainId, amount.currency.symbol, currency.symbol, deferQuotient] : null,
-      () => getBestTrade(amount, currency, tradeType),
+      amount
+        ? [key, 'swap', tradeType, amount.currency.chainId, amount.currency.symbol, currency.symbol, deferQuotient]
+        : null,
+      // TODO: trader should use user Wallet address
+      () => getBestTrade({ amount, currency, tradeType, allCommonPairs, trader: '' }),
       {
         use: [laggyMiddleware],
       },
@@ -30,27 +43,22 @@ function createUseBestTrade<T>(
   }
 }
 
-const isToken = (currency: Currency): currency is Token => {
-  // @ts-ignore
-  return Boolean(currency?.address)
-}
-
 function createRequest(tradeType: TradeType) {
-  return function request(amount: CurrencyAmount<Currency>, currency: Currency) {
+  return function request(amount: CurrencyAmount<Currency>, currency: Currency, trader: string) {
     const inputCurrency = tradeType === TradeType.EXACT_INPUT ? amount.currency : currency
     const outputCurrency = tradeType === TradeType.EXACT_INPUT ? currency : amount.currency
     const rawAmount = amount.quotient.toString()
     const requestBody: RequestBody = {
       networkId: inputCurrency.chainId,
-      baseToken: isToken(inputCurrency) ? inputCurrency.address : inputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
+      baseToken: inputCurrency.isToken ? inputCurrency.address : NATIVE_CURRENCY_ADDRESS,
       baseTokenName: inputCurrency?.name,
       baseTokenAmount: tradeType === TradeType.EXACT_INPUT ? rawAmount : undefined,
       baseTokenNumDecimals: inputCurrency?.decimals,
-      quoteToken: isToken(outputCurrency) ? outputCurrency.address : outputCurrency?.wrapped.address, // TODO: support 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE as native
+      quoteToken: outputCurrency.isToken ? outputCurrency.address : NATIVE_CURRENCY_ADDRESS,
       quoteTokenAmount: tradeType === TradeType.EXACT_OUTPUT ? rawAmount : undefined,
       quoteTokenName: outputCurrency?.name,
       quoteTokenNumDecimals: outputCurrency?.decimals,
-      trader: 'huan', // TODO: maybe use user Wallet address
+      trader,
     }
     return getBestPriceWithRouter(requestBody)
   }
@@ -60,44 +68,52 @@ const getBestTradeExactInFromApi = createRequest(TradeType.EXACT_INPUT)
 
 const getBestTradeExactOutFromApi = createRequest(TradeType.EXACT_OUTPUT)
 
-export const useBestTradeFromChain = createUseBestTrade('tradeFromChain', (amount, currency, tradeType) => {
-  const bestTrade = tradeType === TradeType.EXACT_INPUT ? getBestTradeExactIn : getBestTradeExactOut
-  return bestTrade(amount, currency, { provider })
-})
+export const useBestTradeFromChain = createUseBestTrade(
+  'tradeFromChain',
+  async ({ amount, currency, tradeType, allCommonPairs }) => {
+    const bestTrade = tradeType === TradeType.EXACT_INPUT ? getBestTradeExactIn : getBestTradeExactOut
+    return bestTrade(amount, currency, { provider, allCommonPairs })
+  },
+)
 
-export const useBestTradeFromApi = createUseBestTrade('tradeFromApi', async (amount, currency, tradeType) => {
-  const bestTrade = tradeType === TradeType.EXACT_INPUT ? getBestTradeExactInFromApi : getBestTradeExactOutFromApi
-  const data = await bestTrade(amount, currency)
-  if (!data) {
-    return null
-  }
+export const useBestTradeFromApi = createUseBestTrade(
+  'tradeFromApi',
+  async ({ amount, currency, tradeType, trader }) => {
+    const bestTrade = tradeType === TradeType.EXACT_INPUT ? getBestTradeExactInFromApi : getBestTradeExactOutFromApi
+    const data = await bestTrade(amount, currency, trader)
+    if (!data) {
+      return null
+    }
 
-  const input = deserializeToken(data.route.input)
-  const output = deserializeToken(data.route.output)
-  return {
-    tradeType: data.tradeType,
-    route: {
-      ...data.route,
-      input,
-      output,
-      pairs: data.route.pairs.map((p) => {
-        const token0 = deserializeToken(p.token0)
-        const token1 = deserializeToken(p.token1)
-        const reserve0 = CurrencyAmount.fromRawAmount(token0, p.reserve0)
-        const reserve1 = CurrencyAmount.fromRawAmount(token1, p.reserve1)
-        const pair = new Pair(reserve0, reserve1)
-        return p.stableSwapAddress ? createStableSwapPair(pair, p.stableSwapAddress) : pair
-      }),
-      path: data.route.path.map((t) => deserializeToken(t)),
-    },
-    inputAmount: CurrencyAmount.fromRawAmount(input, data.inputAmount),
-    outputAmount: CurrencyAmount.fromRawAmount(output, data.outputAmount),
-  }
-})
+    const input = deserializeToken(data.route.input)
+    const output = deserializeToken(data.route.output)
+    return {
+      tradeType: data.tradeType,
+      route: {
+        ...data.route,
+        input,
+        output,
+        pairs: data.route.pairs.map((p) => {
+          const token0 = deserializeToken(p.token0)
+          const token1 = deserializeToken(p.token1)
+          const reserve0 = CurrencyAmount.fromRawAmount(token0, p.reserve0)
+          const reserve1 = CurrencyAmount.fromRawAmount(token1, p.reserve1)
+          const pair = new Pair(reserve0, reserve1)
+          return p.stableSwapAddress ? createStableSwapPair(pair, p.stableSwapAddress) : pair
+        }),
+        path: data.route.path.map((t) => deserializeToken(t)),
+      },
+      inputAmount: CurrencyAmount.fromRawAmount(input, data.inputAmount),
+      outputAmount: CurrencyAmount.fromRawAmount(output, data.outputAmount),
+    }
+  },
+)
 
 export function useBestTrade(amount: CurrencyAmount<Currency>, currency: Currency, tradeType: TradeType) {
   const bestTradeFromChain = useBestTradeFromChain(amount, currency, tradeType)
-  const bestTradeFromApi = useBestTradeFromApi(amount, currency, tradeType)
+  // Remove source from api for now until api is optimized
+  // const bestTradeFromApi = useBestTradeFromApi(amount, currency, tradeType)
 
-  return bestTradeFromApi || bestTradeFromChain
+  // return bestTradeFromApi || bestTradeFromChain
+  return bestTradeFromChain
 }

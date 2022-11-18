@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Percent, Token, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { Pair } from '@pancakeswap/smart-router/evm'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
 
@@ -104,7 +104,7 @@ function TradeSummary({
 
 export interface AdvancedSwapDetailsProps {
   pairs?: Pair[]
-  path?: Token[]
+  path?: Currency[]
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency>
   slippageAdjustedAmounts?: {
