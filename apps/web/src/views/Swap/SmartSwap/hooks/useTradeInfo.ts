@@ -1,5 +1,6 @@
-import { Currency, CurrencyAmount, TradeType, Trade, Price, ChainId, Percent } from '@pancakeswap/sdk'
-import { TradeWithStableSwap, RouteType, Trade as SmartRouterTrade, Pair } from '@pancakeswap/smart-router/evm'
+import { ChainId, Currency, CurrencyAmount, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { Pair, RouteType, Trade as SmartRouterTrade, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+
 import { useMemo } from 'react'
 
 import { Field } from 'state/swap/actions'
@@ -7,9 +8,8 @@ import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsForV2Trade,
   computeTradePriceBreakdown as computeTradePriceBreakdownForV2Trade,
 } from 'utils/exchange'
-import { ROUTER_ADDRESS } from 'config/constants/exchange'
 
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../utils/exchange'
+import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown, SMART_ROUTER_ADDRESS } from '../utils/exchange'
 
 interface Options {
   trade?: TradeWithStableSwap<Currency, Currency, TradeType> | null
@@ -59,7 +59,7 @@ export function useTradeInfo({
         outputAmount: v2Trade.outputAmount,
         slippageAdjustedAmounts: computeSlippageAdjustedAmountsForV2Trade(v2Trade, allowedSlippage),
         executionPrice: v2Trade.executionPrice,
-        routerAddress: ROUTER_ADDRESS[chainId],
+        routerAddress: SMART_ROUTER_ADDRESS[chainId],
         priceImpactWithoutFee,
         realizedLPFee,
       }
@@ -75,7 +75,7 @@ export function useTradeInfo({
       slippageAdjustedAmounts: computeSlippageAdjustedAmounts(trade, allowedSlippage),
       executionPrice: SmartRouterTrade.executionPrice(trade),
       // TODO should use the new router address
-      routerAddress: ROUTER_ADDRESS[chainId],
+      routerAddress: SMART_ROUTER_ADDRESS[chainId],
       priceImpactWithoutFee,
       realizedLPFee,
     }

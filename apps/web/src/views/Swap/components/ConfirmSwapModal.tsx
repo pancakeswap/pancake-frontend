@@ -4,11 +4,14 @@ import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
+import { isV2SwapOrStableSwap } from 'config/constants/types'
+import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import ConfirmationPendingContent from './ConfirmationPendingContent'
 import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
 import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
 import { StableTrade } from '../StableSwap/hooks/useStableTradeExactIn'
+import TransactionConfirmSwapContentWithSmartRouter from '../SmartSwap/components/TransactionConfirmSwapContent'
 
 const PancakeRouterSlippageErrorMsg =
   'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
@@ -51,8 +54,11 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
 }
 
 interface ConfirmSwapModalProps {
-  trade?: Trade<Currency, Currency, TradeType> | StableTrade
-  originalTrade?: Trade<Currency, Currency, TradeType> | StableTrade
+  trade?: Trade<Currency, Currency, TradeType> | StableTrade | TradeWithStableSwap<Currency, Currency, TradeType>
+  originalTrade?:
+    | Trade<Currency, Currency, TradeType>
+    | StableTrade
+    | TradeWithStableSwap<Currency, Currency, TradeType>
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
@@ -99,8 +105,19 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
           onDismiss={onDismiss}
           message={swapErrorMessage}
         />
-      ) : (
+      ) : isV2SwapOrStableSwap(trade) ? (
         <TransactionConfirmSwapContent
+          isStable={isStable}
+          trade={trade}
+          currencyBalances={currencyBalances}
+          originalTrade={originalTrade}
+          onAcceptChanges={onAcceptChanges}
+          allowedSlippage={allowedSlippage}
+          onConfirm={onConfirm}
+          recipient={recipient}
+        />
+      ) : (
+        <TransactionConfirmSwapContentWithSmartRouter
           isStable={isStable}
           trade={trade}
           currencyBalances={currencyBalances}
