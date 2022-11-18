@@ -33,11 +33,25 @@ const WEEKS_IN_A_YEAR = 52.1429
 const FETCH_URL = 'https://api.coinmarketcap.com/dexer/v3/platformpage/pair-pages?platform-id=141&dexer-id=4788'
 
 const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse[]> => {
-  const pairs = await (await fetch(FETCH_URL)).json()
+  const allPairs: any = []
+  const maxLoop = 20 // 50 * 20 = max get 1000 pair
+  for (let i = 0; i < maxLoop; i++) {
+    const offset = i === 0 ? 1 : 50 * i + 1
+    // eslint-disable-next-line no-await-in-loop
+    const result = await (await fetch(`${FETCH_URL}&offset=${offset}`)).json()
+
+    if (result.data.pageList.length > 0) {
+      allPairs.push(...result?.data?.pageList)
+    }
+
+    if (!result.data.hasNextPage) {
+      break
+    }
+  }
 
   return addresses.map((address): SingleFarmResponse => {
     // eslint-disable-next-line array-callback-return, consistent-return
-    const farmPriceInfo = pairs.data.pageList.find((pair) => {
+    const farmPriceInfo = allPairs.find((pair) => {
       const token = pair.quotoTokenAddress.toLowerCase()
       const quoteToken = pair.baseTokenAddress.toLowerCase()
       const [address0, address1] = Pair.parseType(address)
