@@ -55,6 +55,8 @@
     "@pancakeswap/uikit": "*",
     "@pancakeswap/utils": "*",
     "@pancakeswap/wagmi": "*",
+    "@pancakeswap/awgmi": "*",
+    "@pancakeswap/aptos-swap-sdk": "*",
     "@reduxjs/toolkit": "^1.8.6",
     "@sentry/nextjs": "^7.9.0",
     "@snapshot-labs/snapshot.js": "^0.4.40",

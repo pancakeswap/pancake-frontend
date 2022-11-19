@@ -146,6 +146,7 @@ export const getLedgerData = async (account: string, epochs: number[], address: 
     name: 'ledger',
     params: [epoch, account],
   }))
+  // @ts-ignore fix chainId support
   const response = await multicallv2<PredictionsLedgerResponse[]>({ abi: predictionsAbi, calls: ledgerCalls })
   return response
 }
@@ -229,6 +230,7 @@ export const getClaimStatuses = async (
     name: 'claimable',
     params: [epoch, account],
   }))
+  // @ts-ignore fix chainId support
   const claimableResponses = await multicallv2<[PredictionsClaimableResponse][]>({
     abi: predictionsAbi,
     calls: claimableCalls,
@@ -251,6 +253,7 @@ export const getPredictionData = async (address: string): Promise<MarketData> =>
     address,
     name: method,
   }))
+  // @ts-ignore fix chainId support
   const [[currentEpoch], [intervalSeconds], [minBetAmount], [paused]] = await multicallv2({
     abi: predictionsAbi,
     calls: staticCalls,
@@ -270,6 +273,7 @@ export const getRoundsData = async (epochs: number[], address: string): Promise<
     name: 'rounds',
     params: [epoch],
   }))
+  // @ts-ignore fix chainId support
   const response = await multicallv2<PredictionsRoundsResponse[]>({ abi: predictionsAbi, calls })
   return response
 }

@@ -10,6 +10,7 @@ export const fetchPublicVaultData = async (cakeVaultAddress: string) => {
       address: cakeVaultAddress,
       name: method,
     }))
+    // @ts-ignore fix chainId support
     const [[sharePrice], [shares], totalLockedAmount] = await multicallv2({
       abi: cakeVaultAbi,
       calls,

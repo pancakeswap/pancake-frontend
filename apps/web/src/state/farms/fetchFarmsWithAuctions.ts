@@ -12,6 +12,7 @@ const fetchFarmsWithAuctions = async (
 ): Promise<{ winnerFarms: string[]; auctionHostingEndDate: string }> => {
   const farmAuctionContract = getFarmAuctionContract()
   const currentAuctionId = await farmAuctionContract.currentAuctionId()
+  // @ts-ignore fix chainId support
   const [auctionData, [auctionBidders]] = await multicallv2({
     abi: farmAuctionAbi,
     calls: [

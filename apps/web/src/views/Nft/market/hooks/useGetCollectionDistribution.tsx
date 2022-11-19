@@ -51,6 +51,7 @@ export const useGetCollectionDistributionPB = () => {
         params: [tokenId],
       }))
       try {
+        // @ts-ignore fix chainId support
         const response = await multicallv2({ abi: pancakeBunniesAbi, calls: bunnyCountCalls })
         const tokenListResponse = response.reduce((obj, tokenCount, index) => {
           return {

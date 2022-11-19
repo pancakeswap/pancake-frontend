@@ -26,6 +26,7 @@ const useGetProfileCosts = () => {
         }))
         const [[numberCakeToReactivate], [numberCakeToRegister], [numberCakeToUpdate]] = await multicallv2<
           [[BigNumber], [BigNumber], [BigNumber]]
+          // @ts-ignore fix chainId support
         >({ abi: profileABI, calls })
 
         setCosts({

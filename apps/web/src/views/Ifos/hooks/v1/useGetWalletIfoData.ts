@@ -66,6 +66,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       params: [account],
     }))
 
+    // @ts-ignore fix chainId support
     const [offeringAmount, userInfoResponse, refundingAmount] = await multicallv2({ abi: ifoV1Abi, calls: ifoCalls })
     const parsedUserInfo: UserInfo = userInfoResponse
       ? {

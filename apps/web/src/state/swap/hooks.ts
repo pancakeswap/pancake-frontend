@@ -17,6 +17,7 @@ import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useActiveNetwork } from 'aptos-web/hooks/useNetwork'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
@@ -33,9 +34,8 @@ import { PairDataTimeWindowEnum } from './types'
 import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
-import {useGetChainName} from "../info/hooks";
-import {useActiveNetwork} from "aptos-web/hooks/useNetwork";
-import useActiveWeb3React from "../../hooks/useActiveWeb3React";
+import { useGetChainName } from '../info/hooks'
+import useActiveWeb3React from '../../hooks/useActiveWeb3React'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -373,7 +373,7 @@ export const useFetchPairPrices = ({
     dispatch,
     isLoading,
     chainId,
-    chainName
+    chainName,
   ])
 
   useEffect(() => {

@@ -56,6 +56,7 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
     }
   })
 
+  // @ts-ignore fix chainId support
   const claimStatuses = (await multicallv2({
     abi: pointCenterIfoABI,
     calls: claimStatusCalls,
@@ -63,6 +64,7 @@ export const getClaimableIfoData = async (account: string): Promise<Achievement[
   })) as [boolean][] | null
 
   // Get IFO data for all IFO's that are eligible to claim
+  // @ts-ignore fix chainId support
   const claimableIfoData = (await multicallv2({
     abi: pointCenterIfoABI,
     calls: claimStatuses.reduce((accum, claimStatusArr, index) => {

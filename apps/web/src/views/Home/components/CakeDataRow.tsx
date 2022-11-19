@@ -94,6 +94,7 @@ const CakeDataRow = () => {
         params: ['0x000000000000000000000000000000000000dEaD'],
       }
       const [tokenDataResultRaw, totalLockedAmount] = await Promise.all([
+        // @ts-ignore fix chainId support
         multicallv2({
           abi: cakeAbi,
           calls: [totalSupplyCall, burnedTokenCall],

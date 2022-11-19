@@ -1,6 +1,6 @@
 import {ChainId, NATIVE} from "@pancakeswap/sdk/src";
-import { BNB_ADDRESS } from './constants'
 import {WETH9} from "@pancakeswap/sdk";
+import { BNB_ADDRESS } from './constants'
 
 const MIN_VALUE_DISPLAYED = 0.001
 

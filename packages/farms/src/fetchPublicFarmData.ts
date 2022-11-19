@@ -76,6 +76,7 @@ export const fetchPublicFarmsData = async (
   masterChefAddress: string,
 ): Promise<any[]> => {
   try {
+    // @ts-ignore fix chainId support
     const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm, masterChefAddress, nonBSCVaultAddresses[chainId]))
     const chunkSize = farmCalls.length / farms.length
     const farmMultiCallResult = await multicall({ abi, calls: farmCalls, chainId })

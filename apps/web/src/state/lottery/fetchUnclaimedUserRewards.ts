@@ -31,6 +31,7 @@ const fetchCakeRewardsForTickets = async (
   })
 
   try {
+    // @ts-ignore fix chainId support
     const cakeRewards = await multicallv2({ abi: lotteryV2Abi, calls })
 
     const cakeTotal = cakeRewards.reduce((accum: BigNumber, cakeReward: EthersBigNumber[]) => {

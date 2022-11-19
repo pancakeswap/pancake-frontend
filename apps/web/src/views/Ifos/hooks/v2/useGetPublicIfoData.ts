@@ -66,6 +66,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const fetchIfoData = useCallback(
     async (currentBlock: number) => {
       const [startBlock, endBlock, poolBasic, poolUnlimited, taxRate, numberPoints, thresholdPoints] =
+        // @ts-ignore fix chainId support
         await multicallv2({
           abi: ifoV2Abi,
           calls: [

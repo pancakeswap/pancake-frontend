@@ -67,6 +67,7 @@ const fetchCollectionsTotalSupply = async (collections: ApiCollection[]): Promis
       name: 'totalSupply',
     }))
   if (totalSupplyCalls.length > 0) {
+    // @ts-ignore fix chainId support
     const totalSupplyRaw = await multicallv2({
       abi: erc721Abi,
       calls: totalSupplyCalls,
@@ -467,6 +468,7 @@ export const getAccountNftsOnChainMarketData = async (
       }
     })
 
+    // @ts-ignore fix chainId support
     const askCallsResultsRaw = await multicallv2({
       abi: nftMarketAbi,
       calls: askCalls,
@@ -936,6 +938,7 @@ export const fetchWalletTokenIdsForCollections = async (
     }
   })
 
+  // @ts-ignore fix chainId support
   const balanceOfCallsResultRaw = await multicallv2({
     abi: erc721Abi,
     calls: balanceOfCalls,
@@ -958,6 +961,7 @@ export const fetchWalletTokenIdsForCollections = async (
     })
     .flat()
 
+  // @ts-ignore fix chainId support
   const tokenIdResultRaw = await multicallv2({
     abi: erc721Abi,
     calls: tokenIdCalls,

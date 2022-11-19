@@ -42,6 +42,7 @@ export const getTeams = async (): Promise<TeamsById> => {
         params: [i],
       })
     }
+    // @ts-ignore fix chainId support
     const teamData = await multicallv2({ abi: profileABI, calls })
 
     const onChainTeamData = fromPairs(

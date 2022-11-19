@@ -87,6 +87,7 @@ export const fetchPoolsStakingLimits = async (
     })
     .flat()
 
+  // @ts-ignore fix chainId support
   const poolStakingResultRaw = await multicallv2({
     abi: sousChefV2,
     calls: poolStakingCalls,
@@ -122,6 +123,7 @@ export const fetchPoolsProfileRequirement = async (): Promise<{
     })
     .flat()
 
+  // @ts-ignore fix chainId support
   const poolProfileRequireResultRaw = await multicallv2({
     abi: sousChefV3,
     calls: poolProfileRequireCalls,

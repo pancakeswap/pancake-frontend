@@ -17,7 +17,7 @@ export const fetchFarmUserAllowances = async (
   proxyAddress?: string,
 ) => {
   // const isBscNetwork = verifyBscNetwork(chainId)
-  const masterChefAddress = getMasterChefAddress(chainId)  // isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
+  const masterChefAddress = getMasterChefAddress(chainId) // isBscNetwork ? getMasterChefAddress(chainId) : getNonBscVaultAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
     const lpContractAddress = farm.lpAddress
@@ -83,7 +83,7 @@ export const fetchFarmUserStakedBalances = async (
 
 export const fetchFarmUserEarnings = async (account: string, farmsToFetch: SerializedFarmConfig[], chainId: number) => {
   // const isBscNetwork = verifyBscNetwork(chainId)
-  const userAddress = account  // isBscNetwork ? account : await fetchCProxyAddress(account, chainId)
+  const userAddress = account // isBscNetwork ? account : await fetchCProxyAddress(account, chainId)
   const masterChefAddress = getMasterChefAddress(chainId)
 
   const calls = farmsToFetch.map((farm) => {
@@ -94,7 +94,7 @@ export const fetchFarmUserEarnings = async (account: string, farmsToFetch: Seria
     }
   })
 
-  const rawEarnings = await multicallv2({ abi: masterchefABI, calls, chainId: chainId })
+  const rawEarnings = await multicallv2({ abi: masterchefABI, calls, chainId })
   const parsedEarnings = rawEarnings.map((earnings) => {
     return new BigNumber(earnings).toJSON()
   })

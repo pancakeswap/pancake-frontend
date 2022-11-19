@@ -1,6 +1,6 @@
 import { Token } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
-import { multiChainId } from 'state/info/constant'
+import { multiChainId, MultiChainName } from 'state/info/constant'
 import styled from 'styled-components'
 import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
 import LogoLoader from './LogoLoader'
@@ -18,7 +18,7 @@ export const CurrencyLogo: React.FC<
   React.PropsWithChildren<{
     address?: string
     size?: string
-    chainName?: 'ETH' | 'BSC'
+    chainName?: MultiChainName
   }>
 > = ({ address, size = '24px', chainName = 'BSC', ...rest }) => {
   const src = useMemo(() => {
@@ -40,7 +40,7 @@ interface DoubleCurrencyLogoProps {
   address0?: string
   address1?: string
   size?: number
-  chainName?: 'ETH' | 'BSC'
+  chainName?: MultiChainName
 }
 
 export const DoubleCurrencyLogo: React.FC<React.PropsWithChildren<DoubleCurrencyLogoProps>> = ({

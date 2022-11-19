@@ -9,6 +9,7 @@ const fetchIfoPoolUser = async (account: string, ifoPoolAddress: string) => {
       name: method,
       params: [account],
     }))
+    // @ts-ignore fix chainId support
     const [userContractResponse, creditResponse] = await multicallv2({ abi: ifoPoolAbi, calls })
 
     return {
