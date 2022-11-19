@@ -69,6 +69,7 @@ export function useVaultApy({ duration = MAX_LOCK_DURATION }: { duration?: numbe
       },
     ]
 
+    // @ts-ignore fix chainId support
     const [[specialFarmsPerBlock], cakePoolInfo, [totalSpecialAllocPoint]] = await multicallv2({
       abi: masterChefAbi,
       calls,

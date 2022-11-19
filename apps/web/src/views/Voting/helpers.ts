@@ -124,6 +124,7 @@ export const getVotingPower = async (
     const cakeVaultAddress = getCakeVaultAddress()
     const version = blockNumber >= VOTING_POWER_BLOCK.v1 ? 'v1' : 'v0'
 
+    // @ts-ignore fix chainId support
     const [pricePerShare, { shares, lockEndTime, userBoostedShare }] = await multicallv2({
       abi: cakeVaultAbiV2,
       provider: nodeRealProvider,

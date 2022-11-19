@@ -831,7 +831,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   },
 ].map((bidderConfig) => ({
   ...bidderConfig,
-  lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken),
+  lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken, -1), // This is a teporary fix since farmActions is unused anyway
 }))
 
 const UNKNOWN_BIDDER: FarmAuctionBidderConfig = {

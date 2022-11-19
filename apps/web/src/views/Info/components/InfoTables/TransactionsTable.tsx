@@ -101,12 +101,9 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const abs1 = Math.abs(transaction.amountToken1)
   const outputTokenSymbol = transaction.amountToken0 < 0 ? transaction.token0Symbol : transaction.token1Symbol
   const inputTokenSymbol = transaction.amountToken1 < 0 ? transaction.token0Symbol : transaction.token1Symbol
-  const chainName = useGetChainName()
   return (
     <ResponsiveGrid>
-      <LinkExternal
-        href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && ChainId.ETHEREUM)}
-      >
+      <LinkExternal href={getBlockExploreLink(transaction.hash, 'transaction')}>
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
@@ -122,7 +119,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <LinkExternal href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && ChainId.ETHEREUM)}>
+      <LinkExternal href={getBlockExploreLink(transaction.sender, 'address')}>
         {truncateHash(transaction.sender)}
       </LinkExternal>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>

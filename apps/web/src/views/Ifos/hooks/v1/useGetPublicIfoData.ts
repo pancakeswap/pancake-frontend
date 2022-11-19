@@ -42,6 +42,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         name: method,
       }))
 
+      // @ts-ignore fix chainId support
       const [startBlock, endBlock, raisingAmount, totalAmount] = await multicallv2({ abi: ifoV1Abi, calls: ifoCalls })
 
       const startBlockNum = startBlock ? startBlock[0].toNumber() : 0

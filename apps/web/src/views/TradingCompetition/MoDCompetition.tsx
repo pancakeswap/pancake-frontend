@@ -87,6 +87,7 @@ const MoDCompetition = () => {
 
     const fetchUserContract = async () => {
       try {
+        // @ts-ignore fix chainId support
         const [user, [userClaimed]] = await multicallv2({
           abi: tradingCompetitionMoDAbi,
           calls: [

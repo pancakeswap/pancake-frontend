@@ -1,10 +1,10 @@
 import { useAccount, useNetwork } from '@pancakeswap/awgmi'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
-import { chains, defaultChain } from 'config/chains'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useMemo } from 'react'
-import { isChainSupported } from 'utils'
+import { isChainSupported } from '../utils'
+import { chains, defaultChain } from '../config/chains'
 
 const queryNetworkAtom = atom('')
 

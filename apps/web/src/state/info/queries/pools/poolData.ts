@@ -81,7 +81,7 @@ export const fetchPoolData = async (
   block7d: number,
   block14d: number,
   poolAddresses: string[],
-  chainName: 'ETH' | 'BSC' = 'BSC',
+  chainName: MultiChainName = 'BSC',
 ) => {
   const pairTokenMap = await getPairTokenMap(poolAddresses, chainName)
   const weeksQuery = chainName === 'BSC' ? `twoWeeksAgo: ${POOL_AT_BLOCK(chainName, block14d, poolAddresses)}` : ''

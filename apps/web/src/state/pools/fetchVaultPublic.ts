@@ -16,6 +16,7 @@ export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
     }))
 
     const [[[sharePrice], [shares], totalLockedAmount], totalCakeInVault] = await Promise.all([
+      // @ts-ignore fix chainId support
       multicallv2({
         abi: cakeVaultAbi,
         calls,
@@ -53,6 +54,7 @@ export const fetchPublicFlexibleSideVaultData = async (cakeVaultAddress = cakeFl
     }))
 
     const [[[sharePrice], [shares]], totalCakeInVault] = await Promise.all([
+      // @ts-ignore fix chainId support
       multicallv2({
         abi: cakeVaultAbi,
         calls,
@@ -84,6 +86,7 @@ export const fetchVaultFees = async (cakeVaultAddress = cakeVaultV2) => {
       name: method,
     }))
 
+    // @ts-ignore fix chainId support
     const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({ abi: cakeVaultAbi, calls })
 
     return {

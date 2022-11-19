@@ -5,9 +5,6 @@ import { Zero } from '@ethersproject/constants'
 
 const getOracleAddress = (chainId: number) => {
   switch (chainId) {
-    case ChainId.ETHEREUM:
-    case ChainId.GOERLI:
-      return '0x63D407F32Aa72E63C7209ce1c2F5dA40b3AaE726' // ETH/BNB pair
     default:
       return ''
   }

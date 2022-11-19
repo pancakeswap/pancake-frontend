@@ -89,6 +89,7 @@ export const fetchMultipleLotteries = async (lotteryIds: string[]): Promise<Lott
     params: [id],
   }))
   try {
+    // @ts-ignore fix chainId support
     const multicallRes = await multicallv2({ abi: lotteryV2Abi, calls, options: { requireSuccess: false } })
     const processedResponses = multicallRes.map((res, index) =>
       processViewLotterySuccessResponse(res[0], lotteryIds[index]),
@@ -110,6 +111,7 @@ export const fetchCurrentLotteryIdAndMaxBuy = async () => {
       address: getLotteryV2Address(),
       name: method,
     }))
+    // @ts-ignore fix chainId support
     const [[currentLotteryId], [maxNumberTicketsPerBuyOrClaim]] = (await multicallv2({
       abi: lotteryV2Abi,
       calls,

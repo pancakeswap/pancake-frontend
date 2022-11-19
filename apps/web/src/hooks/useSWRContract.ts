@@ -135,6 +135,7 @@ export const immutableMiddleware: Middleware = (useSWRNext) => (key, fetcher, co
 
 export function useSWRMulticall<Data>(abi: any[], calls: Call[], options?: MulticallOptions & SWRConfiguration) {
   const { requireSuccess = true, ...config } = options || {}
+  // @ts-ignore fix chainId support
   return useSWR<Data>(calls, () => multicallv2({ abi, calls, options: { requireSuccess } }), {
     revalidateIfStale: false,
     revalidateOnFocus: false,

@@ -1,4 +1,4 @@
-import { ERC20Token } from 'entities'
+import { ERC20Token } from './entities/token'
 
 export enum ChainId {
   BSC = 56,
@@ -28,41 +28,41 @@ export const INIT_CODE_HASH_MAP: Record<number, string> = {
 
 export const WETH9 = {
   [ChainId.BSC]: new ERC20Token(
-      ChainId.BSC,
-      '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
-      18,
-      'WBNB',
-      'Wrapped BNB',
-      'https://www.binance.org'
+    ChainId.BSC,
+    '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+    18,
+    'WBNB',
+    'Wrapped BNB',
+    'https://www.binance.org'
   ),
   [ChainId.BITGERT]: new ERC20Token(
-      ChainId.BITGERT,
-      '0x0eb9036cbE0f052386f36170c6b07eF0a0E3f710',
-      18,
-      'WBRISE',
-      'Wrapped Brise'
+    ChainId.BITGERT,
+    '0x0eb9036cbE0f052386f36170c6b07eF0a0E3f710',
+    18,
+    'WBRISE',
+    'Wrapped Brise'
   ),
   [ChainId.DOGE]: new ERC20Token(
-      ChainId.DOGE,
-      '0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101',
-      18,
-      'WDOGE',
-      'Wrapped Doge'
+    ChainId.DOGE,
+    '0xB7ddC6414bf4F5515b52D8BdD69973Ae205ff101',
+    18,
+    'WDOGE',
+    'Wrapped Doge'
   ),
   [ChainId.DOKEN]: new ERC20Token(
-      ChainId.DOKEN,
-      '0x27b45bCC26e01Ed50B4080A405D1c492FEe89d63',
-      18,
-      'WDKN',
-      'Wrapped DoKEN'
+    ChainId.DOKEN,
+    '0x27b45bCC26e01Ed50B4080A405D1c492FEe89d63',
+    18,
+    'WDKN',
+    'Wrapped DoKEN'
   ),
   [ChainId.FUSE]: new ERC20Token(
-      ChainId.FUSE,
-      '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629',
-      18,
-      'WFUSE',
-      'Wrapped Fuse'
-  )
+    ChainId.FUSE,
+    '0x0BE9e53fd7EDaC9F859882AfdDa116645287C629',
+    18,
+    'WFUSE',
+    'Wrapped Fuse'
+  ),
 }
 
 export const WNATIVE: Record<number, ERC20Token> = {
@@ -81,9 +81,9 @@ export const NATIVE: Record<
     decimals: number
   }
 > = {
-  [ChainId.BSC]: {name: 'Binance Chain Native Token', symbol: 'BNB', decimals: 18},
-  [ChainId.BITGERT]: {name: 'Brise', symbol: 'BRISE', decimals: 18},
-  [ChainId.DOGE]: {name: 'Doge', symbol: 'DOGE', decimals: 18},
-  [ChainId.DOKEN]: {name: 'DoKEN', symbol: 'DKN', decimals: 18},
-  [ChainId.FUSE]: {name: 'Fuse', symbol: 'FUSE', decimals: 18},
+  [ChainId.BSC]: { name: 'Binance Chain Native Token', symbol: 'BNB', decimals: 18 },
+  [ChainId.BITGERT]: { name: 'Brise', symbol: 'BRISE', decimals: 18 },
+  [ChainId.DOGE]: { name: 'Doge', symbol: 'DOGE', decimals: 18 },
+  [ChainId.DOKEN]: { name: 'DoKEN', symbol: 'DKN', decimals: 18 },
+  [ChainId.FUSE]: { name: 'Fuse', symbol: 'FUSE', decimals: 18 },
 }

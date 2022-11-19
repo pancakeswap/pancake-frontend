@@ -105,6 +105,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         vestingStartTime,
         basicVestingInformation,
         unlimitedVestingInformation,
+        // @ts-ignore fix chainId support
       ] = await multicallv2({
         abi,
         calls: [

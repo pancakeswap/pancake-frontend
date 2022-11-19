@@ -1,7 +1,7 @@
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { stringify } from 'querystring'
-import { chains, defaultChain } from 'config/chains'
-import { TokenAddressMap } from 'state/lists/hooks'
+import { chains, defaultChain } from '../config/chains'
+import { TokenAddressMap } from '../state/lists/hooks'
 import convertStructTagToAddress from './convertStructTagToAddress'
 
 export function getBlockExploreLink(

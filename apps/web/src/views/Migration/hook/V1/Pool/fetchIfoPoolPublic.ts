@@ -11,6 +11,7 @@ export const fetchPublicIfoPoolData = async (ifoPoolAddress: string) => {
       name: method,
     }))
 
+    // @ts-ignore fix chainId support
     const [[sharePrice], [shares], [startBlock], [endBlock]] = await multicallv2({ abi: ifoPoolAbi, calls })
 
     const totalSharesAsBigNumber = shares ? new BigNumber(shares.toString()) : BIG_ZERO
@@ -39,6 +40,7 @@ export const fetchIfoPoolFeesData = async (ifoPoolAddress: string) => {
       name: method,
     }))
 
+    // @ts-ignore fix chainId support
     const [[performanceFee], [withdrawalFee], [withdrawalFeePeriod]] = await multicallv2({ abi: ifoPoolAbi, calls })
 
     return {

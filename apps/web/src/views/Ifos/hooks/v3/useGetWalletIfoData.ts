@@ -86,6 +86,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     let basicId = null
     let unlimitedId = null
     if (version >= 3.2) {
+      // @ts-ignore fix chainId support
       const [[basicIdData], [unlimitedIdData]] = await multicallv2({
         abi: ifoV3Abi,
         calls: [
@@ -146,6 +147,7 @@ const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
       unlimitedSchedule,
       basicReleasableAmount,
       unlimitedReleasableAmount,
+      // @ts-ignore fix chainId support
     ] = await multicallv2({ abi: ifoV3Abi, calls: [...ifoCalls, ...ifov3Calls], options: { requireSuccess: false } })
 
     setState((prevState) => ({

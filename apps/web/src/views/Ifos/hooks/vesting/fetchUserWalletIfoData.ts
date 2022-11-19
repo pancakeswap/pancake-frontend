@@ -51,6 +51,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
   }
 
   if (account) {
+    // @ts-ignore fix chainId support
     const [[basicId], [unlimitedId]] = await multicallv2({
       abi: ifoV3Abi,
       calls: [
@@ -111,6 +112,7 @@ export const fetchUserWalletIfoData = async (ifo: Ifo, account: string): Promise
       basicVestingInformation,
       unlimitedVestingInformation,
       vestingStartTime,
+      // @ts-ignore fix chainId support
     ] = await multicallv2({ abi: ifoV3Abi, calls: ifov3Calls, options: { requireSuccess: false } })
 
     userVestingData = {

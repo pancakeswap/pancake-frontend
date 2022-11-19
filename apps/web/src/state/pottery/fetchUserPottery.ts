@@ -98,6 +98,7 @@ export const fetchWithdrawAbleData = async (account: string) => {
             params: [account],
           },
         ]
+        // @ts-ignore fix chainId support
         const [[previewRedeem], [totalSupply], [totalLockCake], [balanceOf]] = await multicallv2({
           abi: potteryVaultAbi,
           calls,

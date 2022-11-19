@@ -38,6 +38,7 @@ export { useConnect, type UseConnectArgs, type UseConnectConfig } from './hooks/
 export { useDisconnect, type UseDisconnectConfig } from './hooks/useDisconnect'
 export { useHealthy, type UseHealthyConfig } from './hooks/useHealthy'
 export { useLedger, type UseLedgerConfig } from './hooks/useLedger'
+export { useChainId } from './hooks/useChainId'
 export { useTableItem, type UseTableItemConfig } from './hooks/useTableItem'
 export { useNetwork } from './hooks/useNetwork'
 export * from './hooks/useProvider'
