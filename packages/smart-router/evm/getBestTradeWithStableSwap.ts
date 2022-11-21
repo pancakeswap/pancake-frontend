@@ -2,8 +2,8 @@
 import { Currency, CurrencyAmount, Pair, Price, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { getBestTradeFromV2ExactIn } from './getBestTradeFromV2'
-import { getStableSwapOutputAmount } from './onchain'
-import { createTradeWithStableSwap, createTradeWithStableSwapFromV2Trade } from './stableSwap'
+import { getStableSwapFee, getStableSwapOutputAmount } from './onchain'
+import { createTradeWithStableSwap, createTradeWithStableSwapFromV2Trade, getFeePercent } from './stableSwap'
 import { BestTradeOptions, RouteType, StableSwapPair } from './types'
 import { getOutputToken, isSamePair } from './utils/pair'
 
@@ -43,11 +43,19 @@ export async function getBestTradeWithStableSwap(
     if (stableSwapPair) {
       // Get latest output amount from v2 and use it as input to get output amount from stable swap
       const stableInputAmount = await getLatestOutputAmount()
-      outputAmount = await getStableSwapOutputAmount(stableSwapPair, stableInputAmount, { provider })
+      const results = await Promise.all([
+        getStableSwapOutputAmount(stableSwapPair, stableInputAmount, { provider }),
+        getStableSwapFee(stableSwapPair, stableInputAmount, { provider }),
+      ])
+      outputAmount = results[0]
+      const fees = results[1]
       outputToken = getOutputToken(stableSwapPair, outputToken)
+      const { fee, adminFee } = getFeePercent(stableInputAmount, outputAmount, fees)
       pairsWithStableSwap.push({
         ...stableSwapPair,
         price: new Price({ baseAmount: stableInputAmount, quoteAmount: outputAmount }),
+        fee,
+        adminFee,
       })
       setCurrentRouteType(RouteType.STABLE_SWAP)
       continue

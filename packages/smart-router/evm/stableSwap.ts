@@ -1,6 +1,7 @@
-import { Currency, CurrencyAmount, Pair, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import invariant from 'tiny-invariant'
 
-import { RouteType, RouteWithStableSwap, StableSwapPair } from './types'
+import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, StableSwapFeePercent } from './types'
 import { BasePair } from './types/pair'
 import { getOutputToken } from './utils/pair'
 
@@ -8,8 +9,10 @@ export function createStableSwapPair(pair: Omit<BasePair, 'involvesToken'>, stab
   return {
     ...pair,
     stableSwapAddress,
-    // default price is zero, need to get the actual price from chain
+    // default price & fees are zero, need to get the actual price from chain
     price: new Price(pair.token0, pair.token1, '0', '1'),
+    fee: new Percent(0),
+    adminFee: new Percent(0),
     involvesToken: (token) => token.equals(pair.token0) || token.equals(pair.token1),
   }
 }
@@ -86,4 +89,21 @@ export function createTradeWithStableSwapFromV2Trade<TIn extends Currency, TOut 
     outputAmount,
     tradeType,
   })
+}
+
+export function getFeePercent(
+  inputAmount: CurrencyAmount<Currency>,
+  outputAmount: CurrencyAmount<Currency>,
+  { fee, adminFee }: StableSwapFeeRaw,
+): StableSwapFeePercent {
+  invariant(fee.currency.equals(outputAmount.currency), 'FEE_CURRENCY_MATCH')
+  invariant(adminFee.currency.equals(outputAmount.currency), 'FEE_CURRENCY_MATCH')
+
+  const price = new Price({ baseAmount: outputAmount, quoteAmount: inputAmount })
+  const inputFee = price.quote(fee)
+  const inputAdminFee = price.quote(adminFee)
+  return {
+    fee: new Percent(inputFee.quotient, inputAmount.quotient),
+    adminFee: new Percent(inputAdminFee.quotient, inputAmount.quotient),
+  }
 }
