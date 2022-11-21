@@ -215,21 +215,21 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
               {cakeTooltipVisible && cakeTooltip}
             </Flex>
             <Flex mt="10px" flexDirection="row" alignItems="center">
-              <TooltipText ref={iCakeTargetRef} fontSize="16px" mr="auto">
+              <TooltipText ref={iCakeTargetRef} color="textSubtle" fontSize="16px" mr="auto">
                 iCake
               </TooltipText>
               {iCakeTooltipVisible && iCakeTooltip}
               {cakeBenefits?.iCake}
             </Flex>
             <Flex mt="10px" flexDirection="row" alignItems="center">
-              <TooltipText ref={bCakeTargetRef} fontSize="16px" mr="auto">
+              <TooltipText ref={bCakeTargetRef} color="textSubtle" fontSize="16px" mr="auto">
                 bCake
               </TooltipText>
               {bCakeTooltipVisible && bCakeTooltip}
               {t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
             </Flex>
             <Flex mt="10px" flexDirection="row" alignItems="center">
-              <TooltipText ref={vCakeTargetRef} fontSize="16px" mr="auto">
+              <TooltipText ref={vCakeTargetRef} color="textSubtle" fontSize="16px" mr="auto">
                 vCake
               </TooltipText>
               {vCakeTooltipVisible && vCakeTooltip}
