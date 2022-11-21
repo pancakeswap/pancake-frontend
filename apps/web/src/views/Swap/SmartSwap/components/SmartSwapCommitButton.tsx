@@ -195,7 +195,7 @@ export default function SwapCommitButton({
   }, [indirectlyOpenConfirmModalState, onPresentConfirmModal, setSwapState])
 
   // warnings on slippage
-  const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
+  const priceImpactSeverity = 1 || warningSeverity(priceImpactWithoutFee) // TODO: price impact will finish later
 
   if (swapIsUnsupported) {
     return (

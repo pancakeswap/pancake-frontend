@@ -4,12 +4,13 @@ import {
   ArrowDownIcon,
   Box,
   Button,
-  Card,
-  CardBody,
-  ShareIcon,
   Skeleton,
   Swap as SwapUI,
+  Checkbox,
   Text,
+  Flex,
+  Message,
+  MessageText,
 } from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -29,21 +30,20 @@ import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useAtomValue } from 'jotai'
 import { Field } from 'state/swap/actions'
-import { useSwapState, useDerivedSwapInfo } from 'state/swap/hooks'
+import { useDerivedSwapInfo, useSwapState } from 'state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 import { currencyId } from 'utils/currencyId'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
 import AddressInputPanel from '../components/AddressInputPanel'
 import AdvancedSwapDetailsDropdown from '../components/AdvancedSwapDetailsDropdown'
 import CurrencyInputHeader from '../components/CurrencyInputHeader'
-import { RouterViewer } from '../components/RouterViewer'
 import { ArrowWrapper, Wrapper } from '../components/styleds'
 import SwapCommitButton from '../components/SwapCommitButton'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
-import { useDerivedSwapInfoWithStableSwap, useTradeInfo } from './hooks'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
+import { useDerivedSwapInfoWithStableSwap, useTradeInfo, useIsSmartRouterBetter } from './hooks'
 
 export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -59,8 +59,10 @@ export function SmartSwapForm() {
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowUseSmartRouter, setAllowUseSmartRouter] = useState(() => false)
 
   // swap state & price data
+
   const {
     independentField,
     typedValue,
@@ -87,14 +89,16 @@ export function SmartSwapForm() {
     inputError: swapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
   // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
+
+  const isSmartROuterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
+
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
+    useSmartRouter: allowUseSmartRouter && isSmartROuterBetter,
     allowedSlippage,
     chainId,
   })
-
-  console.log(tradeInfo?.fallbackV2, '????????')
 
   const {
     wrapType,
@@ -264,6 +268,7 @@ export function SmartSwapForm() {
             otherCurrency={currencies[Field.INPUT]}
             id="swap-currency-output"
             showCommonBases
+            disabled={Boolean(tradeInfo) && !tradeInfo.fallbackV2}
             showBUSD={!!tokenMap[chainId]?.[outputCurrencyId] || outputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
@@ -274,23 +279,27 @@ export function SmartSwapForm() {
             </Box>
           )}
 
-          <AutoColumn>
-            <Card>
-              <CardBody>
-                <Box mb="20px">
-                  <Text>
-                    Smart Router
-                    <ShareIcon ml="5px" style={{ top: 3, position: 'relative' }} width={15} />
-                  </Text>
-                </Box>
-                <RouterViewer
-                  inputCurrency={inputCurrency}
-                  outputCurrency={outputCurrency}
-                  pairs={tradeInfo?.route.pairs}
+          {isSmartROuterBetter && (
+            <AutoColumn>
+              {allowUseSmartRouter && (
+                <Message variant="warning" mb="8px">
+                  <MessageText>{t('This route includes StableSwap and can’t edit output')}</MessageText>
+                </Message>
+              )}
+              <Flex alignItems="center" onClick={() => setAllowUseSmartRouter(!allowUseSmartRouter)}>
+                <Checkbox
+                  scale="sm"
+                  name="allowUseSmartRouter"
+                  type="checkbox"
+                  checked={allowUseSmartRouter}
+                  onChange={() => setAllowUseSmartRouter(!allowUseSmartRouter)}
                 />
-              </CardBody>
-            </Card>
-          </AutoColumn>
+                <Text ml="8px" style={{ userSelect: 'none' }}>
+                  {t('Use StableSwap for better fees')}
+                </Text>
+              </Flex>
+            </AutoColumn>
+          )}
 
           {isExpertMode && recipient !== null && !showWrap ? (
             <>
