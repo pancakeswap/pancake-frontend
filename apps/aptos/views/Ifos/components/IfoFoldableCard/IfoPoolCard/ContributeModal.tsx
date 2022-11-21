@@ -1,17 +1,16 @@
-import { Pair } from '@pancakeswap/aptos-swap-sdk'
 import { useSendTransaction } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { BalanceInput, Box, Button, Flex, Image, Link, Message, Modal, ModalBody, Text } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ConfirmButton } from 'components/ConfirmButton'
+import splitTypeTag from 'utils/splitTypeTag'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useConfirmTransaction } from 'hooks/useConfirmTransaction'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { ifoDeposit } from 'views/Ifos/generated/ifo'
-import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
 import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
 import { useIfoResources } from 'views/Ifos/hooks/useIfoResources'
@@ -81,7 +80,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
     () => getDecimalAmount(new BigNumber(value), currency.decimals),
     [currency.decimals, value],
   )
-  // const label = currency === bscTokens.cake ? t('Max. CAKE entry') : t('Max. token entry')
+
   const label = t('Max. token entry')
 
   const maximumTokenEntry = useMemo(() => {
@@ -102,13 +101,11 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   const { isConfirmed, isConfirming, handleConfirm } = useConfirmTransaction({
     onConfirm: () => {
-      const [raisingCoin, offeringCoin] = Pair.parseType(
+      const [raisingCoin, offeringCoin, uid] = splitTypeTag(
         (resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE] as IFOPoolStore).type,
       )
-      const payload = ifoDeposit(
-        [valueWithTokenDecimals.toFixed(), (pool.data as IFOPool).pid],
-        [raisingCoin, offeringCoin],
-      )
+      const payload = ifoDeposit([valueWithTokenDecimals.toFixed()], [raisingCoin, offeringCoin, uid])
+
       return sendTransactionAsync({ payload })
     },
     onSuccess: async ({ response }) => {
@@ -123,14 +120,14 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
       valueWithTokenDecimals.isNaN() ||
       valueWithTokenDecimals.eq(0) ||
       isWarning ||
-      !pool.data ||
+      !pool?.data ||
       !resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
     )
   }, [isConfirmed, isWarning, pool, resources, valueWithTokenDecimals])
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
-      <ModalBody maxWidth="360px">
+      <ModalBody maxWidth={['100%', '100%', '100%', '360px']}>
         <Box p="2px">
           <Flex justifyContent="space-between" mb="16px">
             <Text>{label}:</Text>

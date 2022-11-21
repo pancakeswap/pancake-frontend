@@ -133,7 +133,7 @@ export const usePriceCakeUsdc = () => {
 
 export const useTokenUsdcPrice = (currency?: Currency): BigNumber => {
   const { chainId } = useActiveWeb3React()
-  const USDC = L0_USDC[chainId]
+  const USDC = L0_USDC[currency?.chainId || chainId]
 
   const allowedPairs = useAllCommonPairs(currency, USDC)
   const tokenInAmount = tryParseAmount('1', currency)

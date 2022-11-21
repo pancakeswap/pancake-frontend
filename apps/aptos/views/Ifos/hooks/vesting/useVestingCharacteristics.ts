@@ -28,24 +28,29 @@ export const useVestingCharacteristics = (): VestingCharacteristics & {
   const vestingSchedule = useIfoVestingSchedule({ key: vestingScheduleId })
 
   return useMemo(() => {
+    // Philip TODO: calculate schedule pid
     const unlimitedId =
-      account?.address && pool.data && vestingSchedule.data
+      account?.address && pool?.data && vestingSchedule.data
         ? computeNextVestingScheduleIdForHolderAndPid(account.address, pool.data.pid, {
             vesting_schedule: vestingSchedule.data,
           })
         : undefined
 
     const vestingComputeReleasableAmount =
-      resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_METADATA] && pool.data && vestingSchedule.data
-        ? computeReleaseAmount(resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA].data, pool.data, vestingSchedule.data)
+      resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_METADATA] && pool?.data && vestingSchedule.data
+        ? computeReleaseAmount(
+            resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA].data,
+            pool?.data,
+            vestingSchedule.data,
+          )
         : BIG_ZERO
 
     return {
       vestingId: unlimitedId ? unlimitedId.toString() : '0',
-      offeringAmountInToken: pool.data ? new BigNumber(pool.data.offering_amount) : BIG_ZERO,
+      offeringAmountInToken: pool?.data?.offering_amount ? new BigNumber(pool.data?.offering_amount) : BIG_ZERO,
       vestingComputeReleasableAmount,
-      vestingInformationPercentage: pool.data ? +pool.data.vesting_percentage : 0,
-      vestingInformationDuration: pool.data ? +pool.data.vesting_duration : 0,
+      vestingInformationPercentage: pool?.data?.vesting_percentage ? +pool.data?.vesting_percentage : 0,
+      vestingInformationDuration: pool?.data?.vesting_duration ? +pool.data?.vesting_duration : 0,
       vestingReleased: vestingSchedule.data ? new BigNumber(vestingSchedule.data.amount_released) : BIG_ZERO,
       vestingAmountTotal: vestingSchedule.data ? new BigNumber(vestingSchedule.data.amount_total) : BIG_ZERO,
       isVestingInitialized: !!vestingSchedule.data,

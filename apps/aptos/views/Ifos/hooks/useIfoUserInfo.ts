@@ -1,13 +1,9 @@
 import { useAccount, useAccountResources } from '@pancakeswap/awgmi'
 import { ifos } from 'config/constants/ifo'
-import { IFO_MODULE_NAME, IFO_ADDRESS } from 'views/Ifos/constants'
 import { RootObject as UserInfo } from 'views/Ifos/generated/UserInfo'
+import { IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 
-const RAISING_COIN = ifos[0].currency.address
-const OFFERING_COIN = ifos[0].token.address
-const POOL_TYPE = `${IFO_ADDRESS}::${IFO_MODULE_NAME}::Pool0`
-
-export const useIfoUserInfo = () => {
+export const useIfoUserInfo = (poolType) => {
   const { account } = useAccount()
 
   return useAccountResources({
@@ -16,9 +12,7 @@ export const useIfoUserInfo = () => {
     watch: true,
     select: (data) => {
       return data.find((it) => {
-        return (
-          it.type === `${IFO_ADDRESS}::${IFO_MODULE_NAME}::UserInfo<${RAISING_COIN}, ${OFFERING_COIN}, ${POOL_TYPE}>`
-        )
+        return it.type === poolType?.replace(IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE, 'UserInfo')
       }) as UserInfo | undefined
     },
   })

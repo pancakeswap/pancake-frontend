@@ -1,4 +1,4 @@
-import { AptosCoin, Coin } from '@pancakeswap/aptos-swap-sdk'
+import { testnetTokens } from './tokens'
 import { Ifo } from './types'
 
 // export const ifos: Ifo[] = []
@@ -16,13 +16,8 @@ export const ifos: Ifo[] = [
       cakeToBurn: '$0',
       distributionRatio: 0.6,
     },
-    currency: AptosCoin.onChain(0),
-    token: new Coin(
-      0,
-      '0xb5e31e2dbe3311bb18401d682e0086a3c8b159146d19f66627622cd012495b4b::moon_coin::MoonCoin',
-      8,
-      'MoonCoin',
-    ),
+    currency: testnetTokens.eth,
+    token: testnetTokens.btc,
     releaseTime: 0,
     campaignId: '0',
     articleUrl: '',

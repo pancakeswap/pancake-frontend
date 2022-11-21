@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { useGetPublicIfoData } from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import { useGetWalletIfoData } from 'views/Ifos/hooks/v3/useGetWalletIfoData'
 
@@ -14,13 +13,6 @@ interface TypeProps {
 const CurrentIfo: React.FC<React.PropsWithChildren<TypeProps>> = ({ activeIfo }) => {
   const publicIfoData = useGetPublicIfoData(activeIfo)
   const walletIfoData = useGetWalletIfoData(activeIfo)
-
-  const { poolUnlimited } = walletIfoData
-
-  const isCommitted = useMemo(
-    () => poolUnlimited.amountTokenCommittedInLP.isGreaterThan(0),
-    [poolUnlimited.amountTokenCommittedInLP],
-  )
 
   return (
     <IfoContainer

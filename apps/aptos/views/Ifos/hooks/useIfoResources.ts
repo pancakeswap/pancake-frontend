@@ -1,6 +1,6 @@
-import { Pair } from '@pancakeswap/aptos-swap-sdk'
 import { useAccountResources } from '@pancakeswap/awgmi'
 import { TxnBuilderTypes, TypeTagParser } from 'aptos'
+import splitTypeTag from 'utils/splitTypeTag'
 import { ifos } from 'config/constants/ifo'
 import {
   IFO_ADDRESS,
@@ -28,9 +28,10 @@ export const useIfoResources = () => {
 
       for (const it of data) {
         try {
-          const [raisingCoin, offeringCoin] = Pair.parseType(it.type)
+          const [raisingCoin, offeringCoin] = splitTypeTag(it.type)
           if (raisingCoin === ifo.currency.address && offeringCoin === ifo.token.address) {
             const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
+
             res[parsedTypeTag.value.name.value] = it
           }
           // eslint-disable-next-line no-empty

@@ -35,4 +35,12 @@ export const testnetTokens = {
     'BNB Token',
     '',
   ),
+  btc: new Coin(
+    ChainId.TESTNET,
+    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetBTC',
+    8,
+    'BTC',
+    'BTC Token',
+    '',
+  ),
 }

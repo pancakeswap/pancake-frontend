@@ -11,7 +11,7 @@ import _find from 'lodash/find'
 
 import { PoolResource } from '../types'
 import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'
-import splitTypeTag from '../utils/splitTypeTag'
+import splitTypeTag from '../../../utils/splitTypeTag'
 import getTokenByAddress from '../utils/getTokenByAddress'
 import { getPoolApr } from './transformCakePool'
 

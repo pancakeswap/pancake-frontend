@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import useStablePrice from 'hooks/useStablePrice'
+import { useTokenUsdcPrice } from 'hooks/useStablePrice'
 import { DAY_IN_SECONDS } from 'utils/getTimePeriods'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
@@ -53,43 +53,22 @@ const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ labe
   )
 }
 
-const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
+const MaxTokenEntry = ({ maxToken, ifo }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
   // const isCurrencyCake = ifo.currency === bscTokens.cake
   const isCurrencyCake = true
   const isV3 = ifo.version >= 3
   const { t } = useTranslation()
 
-  const basicTooltipContent =
-    ifo.version >= 3.1
-      ? t(
-          'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
-        )
-      : t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the iCAKE, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the iCAKE',
-        )
+  const basicTooltipContent = t(
+    'For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+  )
 
-  const unlimitedToolipContent =
-    ifo.version >= 3.1 ? (
-      <Box>
-        <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
-        <Text bold display="inline">
-          {t('the number of iCAKE.')}{' '}
-        </Text>
-        <Text display="inline">
-          {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
-        </Text>
-      </Box>
-    ) : (
-      t(
-        'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the iCake. To increase the max entry, Stake more CAKE into the iCake',
-      )
-    )
-
-  const tooltipContent = poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent
+  const tooltipContent = basicTooltipContent
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
   const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
-  const price = useStablePrice(ifo.currency)
+
+  const price = useTokenUsdcPrice(ifo.currency)
 
   const dollarValueOfToken = price ? multiplyPriceByAmount(price, maxToken, ifo.currency.decimals) : 0
 
@@ -123,7 +102,6 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   poolId,
   ifo,
   publicIfoData,
-  walletIfoData,
 }) => {
   const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData

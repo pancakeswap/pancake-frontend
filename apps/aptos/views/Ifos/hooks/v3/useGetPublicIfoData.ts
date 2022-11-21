@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useCakePrice } from 'hooks/useStablePrice'
 import { useState, useCallback, useMemo } from 'react'
-import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA } from 'views/Ifos/constants'
+import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA, IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
 import { getPoolTaxRateOverflow } from 'views/Ifos/utils'
 import { PoolCharacteristics, PublicIfoData, VestingInformation } from '../../types'
@@ -30,6 +30,32 @@ const formatPool = (pool: IFOPool): PoolCharacteristics => ({
   vestingInformation: pool ? formatVestingInfo(pool) : undefined,
 })
 
+const initState = {
+  isInitialized: false,
+  status: 'idle' as IfoStatus,
+  timeRemaining: 0,
+  secondsUntilStart: 0,
+  progress: 5,
+  secondsUntilEnd: 0,
+  startTime: 0,
+  endTime: 0,
+  poolUnlimited: {
+    raisingAmountPool: BIG_ZERO,
+    offeringAmountPool: BIG_ZERO,
+    limitPerUserInLP: BIG_ZERO,
+    taxRate: 0,
+    totalAmountPool: BIG_ZERO,
+    sumTaxesOverflow: BIG_ZERO,
+    vestingInformation: {
+      percentage: 0,
+      cliff: 0,
+      duration: 0,
+      slicePeriodSeconds: 0,
+    },
+  },
+  vestingStartTime: 0,
+}
+
 /**
  * Gets all public data of an IFO
  */
@@ -37,79 +63,56 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const { releaseTime } = ifo
 
   const resources = useIfoResources()
+
   const { data: cakePrice } = useCakePrice()
   // const lpTokenPriceInUsd = useLpTokenPrice(ifo.currency.symbol)
   // const currencyPriceInUSD = ifo.currency === bscTokens.cake ? cakePriceUsd : lpTokenPriceInUsd
   const currencyPriceInUSD = useMemo(() => new BigNumber(cakePrice), [cakePrice])
 
-  const [state, setState] = useState<Omit<PublicIfoData, 'currencyPriceInUSD'>>({
-    isInitialized: false,
-    status: 'idle' as IfoStatus,
-    timeRemaining: 0,
-    secondsUntilStart: 0,
-    progress: 5,
-    secondsUntilEnd: 0,
-    startTime: 0,
-    endTime: 0,
-    poolUnlimited: {
-      raisingAmountPool: BIG_ZERO,
-      offeringAmountPool: BIG_ZERO,
-      limitPerUserInLP: BIG_ZERO,
-      taxRate: 0,
-      totalAmountPool: BIG_ZERO,
-      sumTaxesOverflow: BIG_ZERO,
-      vestingInformation: {
-        percentage: 0,
-        cliff: 0,
-        duration: 0,
-        slicePeriodSeconds: 0,
-      },
-    },
-    vestingStartTime: 0,
-  })
+  const finalState = useMemo(() => {
+    if (
+      !resources.data ||
+      !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA] ||
+      !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?.data
+    ) {
+      return initState
+    }
 
-  const handleOnSuccess = useCallback(
-    (data: IFOPool) => {
-      if (!resources.data || !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]) {
-        return
-      }
+    const { start_time, end_time, vesting_start_time } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA].data
 
-      const { start_time, end_time, vesting_start_time } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA].data
-      const startTime = +start_time
-      const endTime = +end_time
-      const vestingStartTime = +vesting_start_time
+    const { data } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
 
-      const poolUnlimited = formatPool(data)
+    const startTime = +start_time
+    const endTime = +end_time
+    const vestingStartTime = +vesting_start_time
 
-      const currentTime = Date.now() / 1000
+    const poolUnlimited = formatPool(data)
 
-      const status = getStatus(currentTime, startTime, endTime)
-      const totalTime = endTime - startTime
-      const timeRemaining = endTime - currentTime
+    const currentTime = Date.now() / 1000
 
-      const progress =
-        currentTime > startTime
-          ? ((currentTime - startTime) / totalTime) * 100
-          : ((currentTime - releaseTime) / (startTime - releaseTime)) * 100
+    const status = getStatus(currentTime, startTime, endTime)
+    const totalTime = endTime - startTime
+    const timeRemaining = endTime - currentTime
 
-      setState((prev) => ({
-        ...prev,
-        isInitialized: true,
-        secondsUntilEnd: endTime - currentTime,
-        secondsUntilStart: startTime - currentTime,
-        poolUnlimited,
-        status,
-        progress,
-        timeRemaining,
-        startTime,
-        endTime,
-        vestingStartTime,
-      }))
-    },
-    [releaseTime, resources],
-  )
+    const progress =
+      currentTime > startTime
+        ? ((currentTime - startTime) / totalTime) * 100
+        : ((currentTime - releaseTime) / (startTime - releaseTime)) * 100
 
-  useIfoPool({ onSuccess: handleOnSuccess })
+    return {
+      ...initState,
+      isInitialized: true,
+      secondsUntilEnd: endTime - currentTime,
+      secondsUntilStart: startTime - currentTime,
+      poolUnlimited,
+      status,
+      progress,
+      timeRemaining,
+      startTime,
+      endTime,
+      vestingStartTime,
+    }
+  }, [releaseTime, resources.data])
 
-  return { ...state, currencyPriceInUSD }
+  return { ...finalState, currencyPriceInUSD }
 }
