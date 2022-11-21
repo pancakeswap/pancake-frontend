@@ -43,7 +43,7 @@ import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
-import { useDerivedSwapInfoWithStableSwap, useTradeInfo } from './hooks'
+import { useDerivedSwapInfoWithStableSwap, useTradeInfo, useIsSmartRouterBetter } from './hooks'
 
 export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -62,6 +62,7 @@ export function SmartSwapForm() {
   const [allowUseSmartRouter, setAllowUseSmartRouter] = useState(() => false)
 
   // swap state & price data
+
   const {
     independentField,
     typedValue,
@@ -88,19 +89,16 @@ export function SmartSwapForm() {
     inputError: swapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
   // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
+
+  const isSmartROuterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
+
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
-    useSmartRouter: allowUseSmartRouter,
+    useSmartRouter: allowUseSmartRouter && isSmartROuterBetter,
     allowedSlippage,
     chainId,
   })
-
-  useEffect(() => {
-    if (tradeInfo && !tradeInfo.isWithStableBetter && allowUseSmartRouter) {
-      setAllowUseSmartRouter(false)
-    }
-  }, [tradeInfo, allowUseSmartRouter])
 
   const {
     wrapType,
@@ -281,7 +279,7 @@ export function SmartSwapForm() {
             </Box>
           )}
 
-          {tradeInfo?.isWithStableBetter && (
+          {isSmartROuterBetter && (
             <AutoColumn>
               {allowUseSmartRouter && (
                 <Message variant="warning" mb="8px">

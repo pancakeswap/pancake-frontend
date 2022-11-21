@@ -33,7 +33,6 @@ interface Info {
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency> | null
   fallbackV2: boolean
-  isWithStableBetter: boolean
 }
 
 export function useTradeInfo({
@@ -50,11 +49,6 @@ export function useTradeInfo({
       return null
     }
 
-    let isWithStableBetter = false
-    if (trade && v2Trade && trade.route.routeType !== RouteType.V2) {
-      if (trade.outputAmount.greaterThan(v2Trade.outputAmount)) isWithStableBetter = true
-    }
-
     if (fallbackV2) {
       const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdownForV2Trade(v2Trade)
       return {
@@ -68,7 +62,6 @@ export function useTradeInfo({
         routerAddress: SMART_ROUTER_ADDRESS[chainId],
         priceImpactWithoutFee,
         realizedLPFee,
-        isWithStableBetter,
       }
     }
 
@@ -84,7 +77,6 @@ export function useTradeInfo({
       // TODO should use the new router address
       routerAddress: SMART_ROUTER_ADDRESS[chainId],
       priceImpactWithoutFee,
-      isWithStableBetter,
       realizedLPFee,
     }
   }, [useSmartRouter, trade, v2Trade, allowedSlippage, chainId])
