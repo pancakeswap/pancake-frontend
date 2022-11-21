@@ -5,7 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import { REWARD_RATE } from 'state/predictions/config'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { formatBnbv2 } from '../../helpers'
+import { formatTokenv2 } from '../../helpers'
 
 interface EnteredTagProps {
   amount?: BigNumber
@@ -31,8 +31,8 @@ const EnteredTag: React.FC<React.PropsWithChildren<EnteredTagProps>> = ({ amount
     } else {
       tokenAmount = amount
     }
-    return formatBnbv2(tokenAmount, displayedDecimals)
-  }, [amount, displayedDecimals, hasClaimed, multiplier])
+    return formatTokenv2(tokenAmount, token.decimals, displayedDecimals)
+  }, [amount, displayedDecimals, hasClaimed, multiplier, token])
 
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
     <div style={{ whiteSpace: 'nowrap' }}>{`${formattedAmount} ${token.symbol}`}</div>,
