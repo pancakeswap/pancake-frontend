@@ -99,9 +99,9 @@ export function getFeePercent(
   invariant(fee.currency.equals(outputAmount.currency), 'FEE_CURRENCY_MATCH')
   invariant(adminFee.currency.equals(outputAmount.currency), 'FEE_CURRENCY_MATCH')
 
-  const price = new Price({ baseAmount: outputAmount, quoteAmount: inputAmount })
-  const inputFee = price.quote(fee)
-  const inputAdminFee = price.quote(adminFee)
+  const priceWithoutFee = new Price({ baseAmount: outputAmount.add(fee), quoteAmount: inputAmount })
+  const inputFee = priceWithoutFee.quote(fee)
+  const inputAdminFee = priceWithoutFee.quote(adminFee)
   return {
     fee: new Percent(inputFee.quotient, inputAmount.quotient),
     adminFee: new Percent(inputAdminFee.quotient, inputAmount.quotient),

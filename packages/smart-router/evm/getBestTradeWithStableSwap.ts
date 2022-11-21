@@ -53,7 +53,7 @@ export async function getBestTradeWithStableSwap(
       const { fee, adminFee } = getFeePercent(stableInputAmount, outputAmount, fees)
       pairsWithStableSwap.push({
         ...stableSwapPair,
-        price: new Price({ baseAmount: stableInputAmount, quoteAmount: outputAmount }),
+        price: new Price({ baseAmount: stableInputAmount, quoteAmount: outputAmount.add(fees.fee) }),
         fee,
         adminFee,
       })
