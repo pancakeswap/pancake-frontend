@@ -7,7 +7,7 @@ import { useActiveChainId } from '../useActiveChainId'
 
 const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
   const { chainId } = useActiveChainId()
-  const providerOrSigner = useProviderOrSigner()
+  const providerOrSigner = useProviderOrSigner(true, true)
 
   return useMemo(() => {
     if (!chainId || !providerOrSigner) {
