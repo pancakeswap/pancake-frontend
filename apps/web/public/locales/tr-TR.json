@@ -264,9 +264,9 @@
   "To Top": "En Üste",
   "Total value of the funds in this farm’s liquidity pool": "Bu farm'ın likidite havuzundaki toplam fon değeri",
   "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block.": "Çarpan, her blokta üretilen CAKE'e kıyasla her farm'ın aldığı CAKE ödüllerinin oranını temsil eder.",
-  "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.": "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.",
+  "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.": "Çarpan, her saniyede üretilen CAKE'e kıyasla her farm'ın aldığı CAKE ödüllerinin oranını temsil eder.",
   "For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.": "Örneğin; 1x farm, blok başına 1 CAKE aldıysa 40x farm, blok başına 40 CAKE alır.",
-  "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.": "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.",
+  "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.": "Örneğin 1x farm, saniye başına 1 CAKE aldıysa 40x farm, saniye başına 40 CAKE alır.",
   "This amount is already included in all APR calculations for the farm.": "Bu miktar, halihazırda farm'lardaki tüm APR hesaplamalarına dâhil edilmiştir.",
   "Hot": "Popüler",
   "Success!": "Başarılı!",
@@ -842,7 +842,7 @@
   "Claimed": "Alındı",
   "Settings": "Ayarlar",
   "Bridge assets to BNB Chain": "Varlıkları BNB Chain'e köprüleyin",
-  "Bridge assets to Aptos Chain": "Bridge assets to Aptos Chain",
+  "Bridge assets to Aptos Chain": "Varlıkları Aptos Chain'e köprüleyin",
   "Need help ?": "Yardıma mı ihtiyacın var?",
   "Select a token": "Token seç",
   "Enter a recipient": "Alıcı gir",
@@ -1751,7 +1751,7 @@
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "Yatırılan CAKE, sabit vadeli staking havuzuna yönlendirilir. Yatırılan CAKE'in SADECE 10 hafta sonra çekilebileceğini lütfen unutmayın.",
   "Pottery draws on each Friday at 12 PM UTC!": "Pottery çekilişleri her cuma saat TSİ 15.00'de gerçekleştirilir!",
   "Next draw date": "Sonraki çekiliş tarihi",
-  "Locked date": "Locked date",
+  "Locked date": "Kilitlenme tarihi",
   "in": "kalan süre:",
   "Chance of winning next round": "Sonraki turda kazanma ihtimali",
   "Your": " ",
@@ -2030,6 +2030,6 @@
   "Register coin to receive transfers": "Transferleri almak için para kaydedin",
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Aptos'ta herkes, mevcut paraların sahte sürümleri veya parası olmayan projeleri temsil ettiğini iddia edenler de dahil olmak üzere herhangi bir adla para oluşturabilir.",
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Sahte bir para satın alırsanız paranızı kalıcı olarak kaybedebilirsiniz.",
-  "Pancake Collectibles": "Pancake Collectibles",
-  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date."
+  "Pancake Collectibles": "Pancake Toplanabilir Öğeleri",
+  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Bilgisi şu anda bakımda. Veriler doğru veya güncel olmayabilir."
 }
