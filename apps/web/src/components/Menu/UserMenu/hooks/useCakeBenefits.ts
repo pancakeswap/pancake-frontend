@@ -55,7 +55,7 @@ const useCakeBenefits = () => {
       lockEndTime: userContractResponse.lockEndTime.toString(),
     })
     const lockedCake = [VaultPosition.None, VaultPosition.Flexible].includes(lockPosition)
-      ? '0'
+      ? '0.00'
       : convertSharesToCake(
           userSharesAsBignumber,
           sharePriceAsBigNumber,

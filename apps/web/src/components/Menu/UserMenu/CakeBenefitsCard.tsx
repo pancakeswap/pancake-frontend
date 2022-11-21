@@ -145,73 +145,102 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
     },
   )
 
-  return (
-    <CakeBenefitsCardWrapper>
-      <CakeBenefitsCardInner>
-        {cakeBenefitsFetchStatus === FetchStatus.Fetched ? (
-          <>
+  return cakeBenefitsFetchStatus === FetchStatus.Fetched ? (
+    <>
+      {[VaultPosition.None, VaultPosition.Flexible].includes(cakeBenefits?.lockPosition) ? (
+        <>
+          <Flex flexDirection="row" alignItems="center">
+            <Tag variant="secondary" mr="auto">
+              <Flex alignItems="center">
+                <Box as={LockIcon} mr="4px" />
+                {t('No CAKE locked')}
+              </Flex>
+            </Tag>
+            <Text fontSize="16px">{cakeBenefits?.lockedCake}</Text>
+          </Flex>
+          <Message mt="8px" mb="16px" variant="warning">
+            <MessageText maxWidth="200px">
+              {t(
+                'Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!',
+              )}{' '}
+              <NextLinkFromReactRouter
+                style={{ textDecoration: 'underline', fontWeight: 'bold' }}
+                to="/pools"
+                onClick={onDismiss}
+              >
+                {t('Go to Pools')}
+              </NextLinkFromReactRouter>
+            </MessageText>
+          </Message>
+        </>
+      ) : [VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(cakeBenefits?.lockPosition) ? (
+        <>
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Tag variant="failure" mr="auto">
+              <Flex alignItems="center">
+                <Box as={LockIcon} mr="4px" />
+                {t('CAKE staking expired')}
+              </Flex>
+            </Tag>
+            <Text fontSize="16px">{cakeBenefits?.lockedCake}</Text>
+          </Flex>
+          <Message mt="8px" mb="16px" variant="warning">
+            <MessageText maxWidth="200px">
+              {t(
+                'Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!',
+              )}{' '}
+              <NextLinkFromReactRouter
+                style={{ textDecoration: 'underline', fontWeight: 'bold' }}
+                to="/pools"
+                onClick={onDismiss}
+              >
+                {t('Go to Pools')}
+              </NextLinkFromReactRouter>
+            </MessageText>
+          </Message>
+        </>
+      ) : (
+        <CakeBenefitsCardWrapper>
+          <CakeBenefitsCardInner>
             <Flex flexDirection="row" alignItems="center">
               <Tag variant="secondary" mr="auto">
-                <Flex {...(cakeBenefits?.lockedCake !== '0' && { ref: cakeTargetRef })} alignItems="center">
+                <Flex alignItems="center">
                   <Box as={LockIcon} mr="4px" />
                   {t('CAKE locked')}
                 </Flex>
               </Tag>
+              <TooltipText ref={cakeTargetRef} bold fontSize="16px">
+                {cakeBenefits?.lockedCake}
+              </TooltipText>
               {cakeTooltipVisible && cakeTooltip}
-              {cakeBenefits?.lockedCake}
             </Flex>
-            {[VaultPosition.None, VaultPosition.Flexible].includes(cakeBenefits?.lockPosition) ? (
-              <Message marginTop="8px" variant="warning">
-                <MessageText maxWidth="200px">
-                  {t(
-                    'Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!',
-                  )}
-                </MessageText>
-              </Message>
-            ) : [VaultPosition.LockedEnd, VaultPosition.AfterBurning].includes(cakeBenefits?.lockPosition) ? (
-              <Message marginTop="8px" variant="warning">
-                <MessageText maxWidth="200px">
-                  {t(
-                    'Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!',
-                  )}
-                  <NextLinkFromReactRouter to="/pools" onClick={onDismiss}>
-                    <Text bold color="primary">
-                      {t('Go to Pools')}
-                    </Text>
-                  </NextLinkFromReactRouter>
-                </MessageText>
-              </Message>
-            ) : (
-              <>
-                <Flex mt="10px" flexDirection="row" alignItems="center">
-                  <TooltipText ref={iCakeTargetRef} fontSize="16px" mr="auto">
-                    iCake
-                  </TooltipText>
-                  {iCakeTooltipVisible && iCakeTooltip}
-                  {cakeBenefits?.iCake}
-                </Flex>
-                <Flex mt="10px" flexDirection="row" alignItems="center">
-                  <TooltipText ref={bCakeTargetRef} fontSize="16px" mr="auto">
-                    bCake
-                  </TooltipText>
-                  {bCakeTooltipVisible && bCakeTooltip}
-                  {t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
-                </Flex>
-                <Flex mt="10px" flexDirection="row" alignItems="center">
-                  <TooltipText ref={vCakeTargetRef} fontSize="16px" mr="auto">
-                    vCake
-                  </TooltipText>
-                  {vCakeTooltipVisible && vCakeTooltip}
-                  {cakeBenefits?.vCake?.vaultScore}
-                </Flex>
-              </>
-            )}
-          </>
-        ) : (
-          <Skeleton width="100%" height={130} borderRadius="16px" />
-        )}
-      </CakeBenefitsCardInner>
-    </CakeBenefitsCardWrapper>
+            <Flex mt="10px" flexDirection="row" alignItems="center">
+              <TooltipText ref={iCakeTargetRef} fontSize="16px" mr="auto">
+                iCake
+              </TooltipText>
+              {iCakeTooltipVisible && iCakeTooltip}
+              {cakeBenefits?.iCake}
+            </Flex>
+            <Flex mt="10px" flexDirection="row" alignItems="center">
+              <TooltipText ref={bCakeTargetRef} fontSize="16px" mr="auto">
+                bCake
+              </TooltipText>
+              {bCakeTooltipVisible && bCakeTooltip}
+              {t('Up to %boostMultiplier%x', { boostMultiplier: 2 })}
+            </Flex>
+            <Flex mt="10px" flexDirection="row" alignItems="center">
+              <TooltipText ref={vCakeTargetRef} fontSize="16px" mr="auto">
+                vCake
+              </TooltipText>
+              {vCakeTooltipVisible && vCakeTooltip}
+              {cakeBenefits?.vCake?.vaultScore}
+            </Flex>
+          </CakeBenefitsCardInner>
+        </CakeBenefitsCardWrapper>
+      )}
+    </>
+  ) : (
+    <Skeleton width="100%" height={146} borderRadius="16px" marginBottom={24} />
   )
 }
 
