@@ -19,7 +19,7 @@ import { ROUND_BUFFER } from 'state/predictions/config'
 import { BetPosition, NodeLedger, NodeRound } from 'state/types'
 import { getNow } from 'utils/getNow'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { formatBnbv2 } from '../../helpers'
+import { formatTokenv2 } from '../../helpers'
 import CardFlip from '../CardFlip'
 import { PrizePoolRow, RoundResultBox } from '../RoundResult'
 import CardHeader, { getBorderBackground } from './CardHeader'
@@ -79,7 +79,9 @@ const OpenRoundCard: React.FC<React.PropsWithChildren<OpenRoundCardProps>> = ({
     [hasEnteredUp, hasEnteredDown],
   )
   const { targetRef, tooltipVisible, tooltip } = useTooltip(
-    <div style={{ whiteSpace: 'nowrap' }}>{`${formatBnbv2(betAmount, displayedDecimals)} ${token.symbol}`}</div>,
+    <div style={{ whiteSpace: 'nowrap' }}>{`${formatTokenv2(betAmount, token.decimals, displayedDecimals)} ${
+      token.symbol
+    }`}</div>,
     { placement: 'top' },
   )
 

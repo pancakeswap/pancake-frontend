@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { formatRoundTime, padTime, formatBnbv2, formatUsdv2 } from 'views/Predictions/helpers'
+import { formatRoundTime, padTime, formatTokenv2, formatUsdv2 } from 'views/Predictions/helpers'
 
 describe('padTime', () => {
   it.each([
@@ -25,10 +25,10 @@ describe('formatRoundTime', () => {
 describe('formatUsdv2', () => {
   it.each`
     priceDifference | expectedPriceDifferenceFormatted
-    ${10}           | ${'<$0.0010'}
-    ${100}          | ${'<$0.0010'}
-    ${1000}         | ${'<$0.0010'}
-    ${10000}        | ${'<$0.0010'}
+    ${10}           | ${'<$0.0001'}
+    ${100}          | ${'<$0.0001'}
+    ${1000}         | ${'<$0.0001'}
+    ${10000}        | ${'$0.0001'}
     ${100000}       | ${'$0.0010'}
     ${1000000}      | ${'$0.0100'}
     ${10000000}     | ${'$0.1000'}
@@ -41,25 +41,23 @@ describe('formatUsdv2', () => {
     ${-10000000}    | ${'$-0.1000'}
     ${-1000000}     | ${'$-0.0100'}
     ${-100000}      | ${'$-0.0010'}
-    ${-10000}       | ${'<$-0.0010'}
-    ${-1000}        | ${'<$-0.0010'}
-    ${-100}         | ${'<$-0.0010'}
-    ${-10}          | ${'<$-0.0010'}
+    ${-10000}       | ${'$-0.0001'}
+    ${-1000}        | ${'<$-0.0001'}
+    ${-100}         | ${'<$-0.0001'}
+    ${-10}          | ${'<$-0.0001'}
   `(
     'should format $priceDifference to $expectedPriceDifferenceFormatted',
     ({ priceDifference, expectedPriceDifferenceFormatted }) =>
-      expect(formatUsdv2(BigNumber.from(priceDifference), BigNumber.from(100000), 4)).toEqual(
-        expectedPriceDifferenceFormatted,
-      ),
+      expect(formatUsdv2(BigNumber.from(priceDifference), 4)).toEqual(expectedPriceDifferenceFormatted),
   )
 })
 
-describe('formatBnbv2', () => {
+describe('formatTokenv2', () => {
   it.each`
     priceDifference             | expectedPriceDifferenceFormatted
-    ${'1000000000000'}          | ${'<0.0010'}
-    ${'10000000000000'}         | ${'<0.0010'}
-    ${'100000000000000'}        | ${'<0.0010'}
+    ${'1000000000000'}          | ${'<0.0001'}
+    ${'10000000000000'}         | ${'<0.0001'}
+    ${'100000000000000'}        | ${'0.0001'}
     ${'1000000000000000'}       | ${'0.0010'}
     ${'10000000000000000'}      | ${'0.0100'}
     ${'100000000000000000'}     | ${'0.1000'}
@@ -72,13 +70,13 @@ describe('formatBnbv2', () => {
     ${'-100000000000000000'}    | ${'-0.1000'}
     ${'-10000000000000000'}     | ${'-0.0100'}
     ${'-1000000000000000'}      | ${'-0.0010'}
-    ${'-100000000000000'}       | ${'<-0.0010'}
-    ${'-10000000000000'}        | ${'<-0.0010'}
-    ${'-1000000000000'}         | ${'<-0.0010'}
-    ${'-100000000000'}          | ${'<-0.0010'}
+    ${'-100000000000000'}       | ${'-0.0001'}
+    ${'-10000000000000'}        | ${'<-0.0001'}
+    ${'-1000000000000'}         | ${'<-0.0001'}
+    ${'-100000000000'}          | ${'<-0.0001'}
   `(
     'should format $priceDifference to $expectedPriceDifferenceFormatted',
     ({ priceDifference, expectedPriceDifferenceFormatted }) =>
-      expect(formatBnbv2(BigNumber.from(priceDifference), 4)).toEqual(expectedPriceDifferenceFormatted),
+      expect(formatTokenv2(BigNumber.from(priceDifference), 18, 4)).toEqual(expectedPriceDifferenceFormatted),
   )
 })

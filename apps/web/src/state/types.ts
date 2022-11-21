@@ -522,7 +522,6 @@ export interface PredictionConfig {
   address: string
   api: string
   chainlinkOracleAddress: string
-  minPriceUsdDisplayed: EthersBigNumber
   displayedDecimals: number
   token: Token
 }
