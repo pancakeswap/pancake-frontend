@@ -76,7 +76,7 @@ const useCakeBenefits = () => {
       const [cakeVaultBalance, total] = await getScores(
         PANCAKE_SPACE,
         [strategies.cakePoolBalanceStrategy('v1'), strategies.createTotalStrategy(poolAddresses, 'v1')],
-        '56',
+        ChainId.BSC.toString(),
         [account],
         currentBscBlock,
       )
