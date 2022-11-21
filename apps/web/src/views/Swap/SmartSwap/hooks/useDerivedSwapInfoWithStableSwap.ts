@@ -1,11 +1,11 @@
 import { Currency, CurrencyAmount, Pair, Route, Trade, TradeType } from '@pancakeswap/sdk'
-import { TradeWithStableSwap, RouteType, StableSwapPair } from '@pancakeswap/smart-router/evm'
+import { RouteType, StableSwapPair, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { useUserSlippageTolerance } from 'state/user/hooks'
 import { isAddress } from 'utils'
 
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'
@@ -24,8 +24,8 @@ function involvesAddress(
     trade.route.path.some((token) => token.isToken && token.address === checksummedAddress) ||
     trade.route.pairs.some(
       (pair) =>
-        (pair as StableSwapPair).stableSwapAddress === checksummedAddress ||
-        (pair as Pair).liquidityToken?.address === checksummedAddress,
+        (pair as StableSwapPair)?.stableSwapAddress === checksummedAddress ||
+        (pair as Pair)?.liquidityToken?.address === checksummedAddress,
     )
   )
 }
