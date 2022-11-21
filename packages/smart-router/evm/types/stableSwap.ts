@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair as V2Pair, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair as V2Pair, Price, TradeType } from '@pancakeswap/sdk'
 
 import { RouteType } from './bestTrade'
 import { BasePair } from './pair'
@@ -6,6 +6,7 @@ import { BaseRoute } from './route'
 
 export interface StableSwapPair extends BasePair {
   stableSwapAddress: string
+  price: Price<Currency, Currency>
 }
 
 export type Pair = V2Pair | StableSwapPair

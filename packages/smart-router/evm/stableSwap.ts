@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Price, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { RouteType, RouteWithStableSwap, StableSwapPair } from './types'
 import { BasePair } from './types/pair'
@@ -8,6 +8,8 @@ export function createStableSwapPair(pair: Omit<BasePair, 'involvesToken'>, stab
   return {
     ...pair,
     stableSwapAddress,
+    // default price is zero, need to get the actual price from chain
+    price: new Price(pair.token0, pair.token1, '0', '1'),
     involvesToken: (token) => token.equals(pair.token0) || token.equals(pair.token1),
   }
 }
