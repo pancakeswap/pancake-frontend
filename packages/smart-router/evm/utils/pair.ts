@@ -4,7 +4,7 @@ import { Pair, StableSwapPair } from '../types'
 
 export function involvesToken(pair: Pair, token: Currency) {
   const { token0, token1 } = pair
-  return token0.equals(token) || token1.equals(token)
+  return token0.wrapped.equals(token.wrapped) || token1.wrapped.equals(token.wrapped)
 }
 
 export function includesPair(pairs: Pair[], pair: Pair) {
@@ -16,7 +16,7 @@ export function isSamePair(one: Pair, another: Pair) {
 }
 
 export function getOutputToken(pair: Pair, inputToken: Currency) {
-  return inputToken.equals(pair.token0) ? pair.token1 : pair.token0
+  return inputToken.wrapped.equals(pair.token0.wrapped) ? pair.token1 : pair.token0
 }
 
 export function isStableSwapPair(pair: Pair): pair is StableSwapPair {
