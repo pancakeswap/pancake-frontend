@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair as V2Pair, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair as V2Pair, Percent, Price, TradeType } from '@pancakeswap/sdk'
 
 import { RouteType } from './bestTrade'
 import { BasePair } from './pair'
@@ -6,6 +6,9 @@ import { BaseRoute } from './route'
 
 export interface StableSwapPair extends BasePair {
   stableSwapAddress: string
+  price: Price<Currency, Currency>
+  fee: Percent
+  adminFee: Percent
 }
 
 export type Pair = V2Pair | StableSwapPair
@@ -20,4 +23,14 @@ export interface TradeWithStableSwap<TInput extends Currency, TOutput extends Cu
   route: RouteWithStableSwap<TInput, TOutput>
   inputAmount: CurrencyAmount<TInput>
   outputAmount: CurrencyAmount<TOutput>
+}
+
+export interface StableSwapFeeRaw {
+  fee: CurrencyAmount<Currency>
+  adminFee: CurrencyAmount<Currency>
+}
+
+export interface StableSwapFeePercent {
+  fee: Percent
+  adminFee: Percent
 }

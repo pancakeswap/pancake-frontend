@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, TradeType, ChainId } from '@pancakeswap/sdk'
-import { TradeWithStableSwap, Trade, RouteType } from '@pancakeswap/smart-router/evm'
+import { TradeWithStableSwap, Trade, isStableSwapPair } from '@pancakeswap/smart-router/evm'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
@@ -38,21 +38,16 @@ export function computeTradePriceBreakdown(trade?: TradeWithStableSwap<Currency,
   priceImpactWithoutFee: Percent | undefined
   realizedLPFee: CurrencyAmount<Currency> | undefined | null
 } {
-  // TODO see how to get these two value for trade with stable swap
-  if (trade?.route?.routeType !== RouteType.V2) {
-    return {
-      priceImpactWithoutFee: undefined,
-      realizedLPFee: undefined,
-    }
-  }
-
   // for each hop in our trade, take away the x*y=k price impact from 0.3% fees
   // e.g. for 3 tokens/2 hops: 1 - ((1 - .03) * (1-.03))
   const realizedLPFee = !trade
     ? undefined
     : ONE_HUNDRED_PERCENT.subtract(
         trade.route.pairs.reduce<Fraction>(
-          (currentFee: Fraction): Fraction => currentFee.multiply(INPUT_FRACTION_AFTER_FEE),
+          (currentFee: Fraction, pair): Fraction =>
+            currentFee.multiply(
+              isStableSwapPair(pair) ? ONE_HUNDRED_PERCENT.subtract(pair.fee) : INPUT_FRACTION_AFTER_FEE,
+            ),
           ONE_HUNDRED_PERCENT,
         ),
       )
