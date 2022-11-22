@@ -37,7 +37,7 @@ const FaqSection = () => {
                       transform: 'translateX(-50%) translateX(6px)',
                     }}
                   >
-                    🚀
+                    {roadblock.icon}
                   </span>
                 </div>
                 <Card marginY="8px" style={{ flexGrow: '1' }}>
