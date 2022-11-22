@@ -77,10 +77,11 @@ export default createReducer<SwapState>(initialState, (builder) =>
         [field]: { currencyId },
       }
     })
-    .addCase(switchCurrencies, (state) => {
+    .addCase(switchCurrencies, (state, { payload: { updateIndependentField } }) => {
+      const updatedIndependentField = state.independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
       return {
         ...state,
-        independentField: state.independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT,
+        independentField: updateIndependentField ? updatedIndependentField : state.independentField,
         [Field.INPUT]: { currencyId: state[Field.OUTPUT].currencyId },
         [Field.OUTPUT]: { currencyId: state[Field.INPUT].currencyId },
       }
