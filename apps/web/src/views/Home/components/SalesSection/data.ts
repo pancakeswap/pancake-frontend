@@ -11,7 +11,7 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: false,
   },
   secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/',
+    to: 'https://wiki.icecreamswap.com/getting-started/swap',
     text: t('Learn'),
     external: true,
   },
@@ -27,7 +27,7 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
 
 export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Earn passive income with crypto.'),
-  bodyText: t('PancakeSwap makes it easy to make your crypto work for you.'),
+  bodyText: t('IceCreamSwap makes it easy to make your crypto work for you.'),
   reverse: true,
   primaryButton: {
     to: '/farms',
@@ -35,7 +35,7 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: false,
   },
   secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/products/yield-farming',
+    to: 'https://wiki.icecreamswap.com/get-started/pool',
     text: t('Learn'),
     external: true,
   },
@@ -45,34 +45,6 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
       { src: 'pie', alt: t('Pie chart') },
       { src: 'stonks', alt: t('Stocks chart') },
       { src: 'folder', alt: t('Folder with cake token') },
-    ],
-  },
-})
-
-export const cakeSectionData = (t: TranslateFunction): SalesSectionProps => ({
-  headingText: t('CAKE makes our world go round.'),
-  bodyText: t(
-    'CAKE token is at the heart of the PancakeSwap ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
-  ),
-  reverse: false,
-  primaryButton: {
-    to: '/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56',
-    text: t('Buy CAKE'),
-    external: false,
-  },
-  secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/tokenomics/cake',
-    text: t('Learn'),
-    external: true,
-  },
-
-  images: {
-    path: '/images/home/cake/',
-    attributes: [
-      { src: 'bottom-right', alt: t('Small 3d pancake') },
-      { src: 'top-right', alt: t('Small 3d pancake') },
-      { src: 'coin', alt: t('CAKE token') },
-      { src: 'top-left', alt: t('Small 3d pancake') },
     ],
   },
 })

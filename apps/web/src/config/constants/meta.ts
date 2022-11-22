@@ -3,9 +3,9 @@ import { ContextApi } from '@pancakeswap/localization'
 import { PageMeta } from './types'
 
 export const DEFAULT_META: PageMeta = {
-  title: 'PancakeSwap',
+  title: 'Home - IceCreamSwap',
   description:
-    'The most popular AMM on BSC by user count! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust.',
+    'SWAP BRIDGE ROADMAP FAQ WIKI JOIN US Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad IceCream brings people together Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain. Start Now Life is better with IceCream With us you can Swap and Bridge your tokens on',
   image: 'https://pancakeswap.finance/images/hero.png',
 }
 
@@ -36,16 +36,16 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/voting': { basePath: true, title: t('Voting') },
       '/voting/proposal': { title: t('Proposals') },
       '/voting/proposal/create': { title: t('Make a Proposal') },
-      '/info': { title: t('Overview'), description: 'View statistics for IcecreamSwap exchanges.' },
-      '/info/pools': { title: t('Pools'), description: 'View statistics for IcecreamSwap exchanges.' },
-      '/info/tokens': { title: t('Tokens'), description: 'View statistics for IcecreamSwap exchanges.' },
+      '/info': { title: t('Overview'), description: 'View statistics for IceCreamSwap exchanges.' },
+      '/info/pools': { title: t('Pools'), description: 'View statistics for IceCreamSwap exchanges.' },
+      '/info/tokens': { title: t('Tokens'), description: 'View statistics for IceCreamSwap exchanges.' },
       '/nfts/collections': { basePath: true, title: t('Collections') },
       '/nfts/activity': { title: t('Activity') },
       '/profile': { basePath: true, title: t('Profile') },
       '/pancake-squad': { basePath: true, title: t('Pancake Squad') },
       '/pottery': { basePath: true, title: t('Pottery') },
     },
-    defaultTitleSuffix: t('IcecreamSwap'),
+    defaultTitleSuffix: t('IceCreamSwap'),
   }
 }
 

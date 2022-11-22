@@ -5,7 +5,6 @@ import Text from "../Text/Text";
 import { LinkProps } from "./types";
 
 const StyledLink = styled(Text)<LinkProps>`
-  display: flex;
   align-items: center;
   width: fit-content;
   &:hover {
@@ -21,6 +20,7 @@ const Link: React.FC<React.PropsWithChildren<LinkProps>> = ({ external, ...props
 /* eslint-disable react/default-props-match-prop-types */
 Link.defaultProps = {
   color: "primary",
+  display: "flex",
 };
 
 export default Link;

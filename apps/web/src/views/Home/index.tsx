@@ -6,18 +6,14 @@ import Container from 'components/Layout/Container'
 import { PageMeta } from 'components/Layout/Page'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/sdk'
+import FaqSection from 'views/PancakeSquad/components/FaqSection'
+import RoadmapSection from 'views/PancakeSquad/components/RoadmapSection'
 import Hero from './components/Hero'
-import { swapSectionData, earnSectionData, cakeSectionData } from './components/SalesSection/data'
+import { swapSectionData, earnSectionData } from './components/SalesSection/data'
 import MetricsSection from './components/MetricsSection'
 import SalesSection from './components/SalesSection'
-import WinSection from './components/WinSection'
-import FarmsPoolsRow from './components/FarmsPoolsRow'
 import Footer from './components/Footer'
-import CakeDataRow from './components/CakeDataRow'
 import { WedgeTopLeft, InnerWedgeWrapper, OuterWedgeWrapper, WedgeTopRight } from './components/WedgeSvgs'
-import UserBanner from './components/UserBanner'
-import MultipleBanner from './components/Banners/MultipleBanner'
 
 const StyledHeroSection = styled(PageSection)`
   padding-top: 16px;
@@ -45,8 +41,8 @@ const UserBannerWrapper = styled(Container)`
 
 const Home: React.FC<React.PropsWithChildren> = () => {
   const { theme } = useTheme()
-  const { account } = useWeb3React()
-  const { chainId } = useActiveChainId()
+  // const { account } = useWeb3React()
+  // const { chainId } = useActiveChainId()
 
   const HomeSectionContainerStyles = { margin: '0', width: '100%', maxWidth: '968px' }
 
@@ -89,12 +85,6 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        {account && chainId === ChainId.BSC && (
-          <UserBannerWrapper>
-            <UserBanner />
-          </UserBannerWrapper>
-        )}
-        <MultipleBanner />
         <Hero />
       </StyledHeroSection>
       <PageSection
@@ -135,18 +125,6 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           </InnerWedgeWrapper>
         </OuterWedgeWrapper>
         <SalesSection {...earnSectionData(t)} />
-        {/* TODO: until we are enable fetch multi-chain farms */}
-        {chainId === ChainId.BSC && <FarmsPoolsRow />}
-      </PageSection>
-      <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
-        containerProps={{
-          id: 'home-3',
-        }}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <WinSection />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
@@ -154,8 +132,8 @@ const Home: React.FC<React.PropsWithChildren> = () => {
         index={2}
         hasCurvedDivider={false}
       >
-        <SalesSection {...cakeSectionData(t)} />
-        <CakeDataRow />
+        <RoadmapSection />
+        <FaqSection />
       </PageSection>
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
