@@ -76,7 +76,7 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
     </>,
     {
       placement: 'bottom',
-      ...(isMobile && { hideTimeout: 1500 }),
+      ...(isMobile && { hideTimeout: 2000 }),
     },
   )
 
@@ -99,7 +99,7 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
     </>,
     {
       placement: 'bottom',
-      ...(isMobile && { hideTimeout: 1500 }),
+      ...(isMobile && { hideTimeout: 2000 }),
     },
   )
 
@@ -118,7 +118,7 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
     </>,
     {
       placement: 'bottom',
-      ...(isMobile && { hideTimeout: 1500 }),
+      ...(isMobile && { hideTimeout: 2000 }),
     },
   )
 
@@ -141,7 +141,7 @@ const CakeBenefitsCard: React.FC<React.PropsWithChildren<CakeBenefitsCardProps>>
     </>,
     {
       placement: 'bottom',
-      ...(isMobile && { hideTimeout: 500 }),
+      ...(isMobile && { hideTimeout: 2000 }),
     },
   )
 
