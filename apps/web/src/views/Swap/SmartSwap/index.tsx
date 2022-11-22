@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, NATIVE, Percent, TradeType } from '@pancakeswap/sdk'
 import {
   ArrowDownIcon,
   Box,
@@ -90,12 +90,12 @@ export function SmartSwapForm() {
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
   // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
 
-  const isSmartROuterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
+  const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
 
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
-    useSmartRouter: allowUseSmartRouter && isSmartROuterBetter,
+    useSmartRouter: allowUseSmartRouter && isSmartRouterBetter,
     allowedSlippage,
     chainId,
   })
@@ -214,6 +214,14 @@ export function SmartSwapForm() {
     }
   }, [hasAmount, refreshBlockNumber])
 
+  const smartRouterOn = !!tradeInfo && !tradeInfo.fallbackV2
+  const onUseSmartRouterChecked = useCallback(() => {
+    setAllowUseSmartRouter(!allowUseSmartRouter)
+    if (!allowUseSmartRouter && independentField === Field.OUTPUT && tradeInfo?.inputAmount) {
+      onUserInput(Field.INPUT, tradeInfo.inputAmount.toExact())
+    }
+  }, [onUserInput, allowUseSmartRouter, independentField, tradeInfo?.inputAmount])
+
   return (
     <>
       <CurrencyInputHeader
@@ -246,7 +254,10 @@ export function SmartSwapForm() {
               <SwapUI.SwitchButton
                 onClick={() => {
                   setApprovalSubmitted(false) // reset 2 step UI for approvals
-                  onSwitchTokens()
+                  onSwitchTokens(!smartRouterOn)
+                  if (smartRouterOn) {
+                    onUserInput(Field.INPUT, tradeInfo?.outputAmount.toExact())
+                  }
                   replaceBrowserHistory('inputCurrency', outputCurrencyId)
                   replaceBrowserHistory('outputCurrency', inputCurrencyId)
                 }}
@@ -268,7 +279,7 @@ export function SmartSwapForm() {
             otherCurrency={currencies[Field.INPUT]}
             id="swap-currency-output"
             showCommonBases
-            disabled={Boolean(tradeInfo) && !tradeInfo.fallbackV2}
+            disabled={smartRouterOn}
             showBUSD={!!tokenMap[chainId]?.[outputCurrencyId] || outputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
@@ -279,20 +290,20 @@ export function SmartSwapForm() {
             </Box>
           )}
 
-          {isSmartROuterBetter && (
+          {isSmartRouterBetter && (
             <AutoColumn>
               {allowUseSmartRouter && (
                 <Message variant="warning" mb="8px">
                   <MessageText>{t('This route includes StableSwap and can’t edit output')}</MessageText>
                 </Message>
               )}
-              <Flex alignItems="center" onClick={() => setAllowUseSmartRouter(!allowUseSmartRouter)}>
+              <Flex alignItems="center" onClick={onUseSmartRouterChecked}>
                 <Checkbox
                   scale="sm"
                   name="allowUseSmartRouter"
                   type="checkbox"
                   checked={allowUseSmartRouter}
-                  onChange={() => setAllowUseSmartRouter(!allowUseSmartRouter)}
+                  onChange={onUseSmartRouterChecked}
                 />
                 <Text ml="8px" style={{ userSelect: 'none' }}>
                   {t('Use StableSwap for better fees')}

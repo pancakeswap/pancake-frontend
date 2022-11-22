@@ -5,15 +5,18 @@ import { useAppDispatch } from '../index'
 
 export function useSwapActionHandlers(): {
   onCurrencySelection: (field: Field, currency: Currency) => void
-  onSwitchTokens: () => void
+  onSwitchTokens: (updateIndependentField?: boolean) => void
   onUserInput: (field: Field, typedValue: string) => void
   onChangeRecipient: (recipient: string | null) => void
 } {
   const dispatch = useAppDispatch()
 
-  const onSwitchTokens = useCallback(() => {
-    dispatch(switchCurrencies())
-  }, [dispatch])
+  const onSwitchTokens = useCallback(
+    (updateIndependentField = true) => {
+      dispatch(switchCurrencies({ updateIndependentField }))
+    },
+    [dispatch],
+  )
 
   const onCurrencySelection = useCallback(
     (field: Field, currency: Currency) => {

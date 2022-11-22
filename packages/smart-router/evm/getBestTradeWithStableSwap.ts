@@ -77,7 +77,12 @@ export async function getBestTradeWithStableSwap(
     routeType,
     pairs: pairsWithStableSwap,
     inputAmount,
-    outputAmount,
+    // Make sure the output currency is the same as the output currency of v2 trade
+    outputAmount: CurrencyAmount.fromFractionalAmount(
+      baseTrade.outputAmount.currency,
+      outputAmount.numerator,
+      outputAmount.denominator,
+    ),
     tradeType,
   })
 }
