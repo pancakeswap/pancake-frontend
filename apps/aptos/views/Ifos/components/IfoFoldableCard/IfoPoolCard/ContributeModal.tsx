@@ -97,7 +97,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   const { isConfirmed, isConfirming, handleConfirm } = useConfirmTransaction({
     onConfirm: () => {
-      const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool.type)
+      const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
       const payload = ifoDeposit([valueWithTokenDecimals.toFixed()], [raisingCoin, offeringCoin, uid])
 
       return executeTransaction(payload)

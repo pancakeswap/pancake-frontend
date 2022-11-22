@@ -25,19 +25,24 @@ export const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, 
   const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
 
   const handleClaim = async () => {
-    const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
-    const payload = ifoHarvestPool([raisingCoin, offeringCoin, uid])
-    const response = await executeTransaction(payload)
-    if (response.hash) {
-      walletIfoData.setIsClaimed(poolId)
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={response.hash}>
-          {t('You have successfully claimed available tokens.')}
-        </ToastDescriptionWithTx>,
-      )
+    setPendingTx(true)
+
+    try {
+      const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
+      const payload = ifoHarvestPool([raisingCoin, offeringCoin, uid])
+      const response = await executeTransaction(payload)
+      if (response.hash) {
+        walletIfoData.setIsClaimed(poolId)
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={response.hash}>
+            {t('You have successfully claimed available tokens.')}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    } finally {
+      setPendingTx(false)
     }
-    setPendingTx(false)
   }
 
   return (

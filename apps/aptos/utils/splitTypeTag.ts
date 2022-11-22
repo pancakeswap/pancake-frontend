@@ -3,6 +3,8 @@ import { HexString, TypeTagParser } from 'aptos'
 import _get from 'lodash/get'
 
 export default function splitTypeTag(resourceType) {
+  if (!resourceType) return []
+
   const parsedTypeTag = new TypeTagParser(resourceType).parseTypeTag()
 
   // If there is 2 args, assume it will be a pair
