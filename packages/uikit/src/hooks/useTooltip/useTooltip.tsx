@@ -28,7 +28,7 @@ const invertTheme = (currentTheme: DefaultTheme) => {
   return dark;
 };
 
-const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipRefs => {
+const useTooltip = (content: React.ReactNode, options?: TooltipOptions): TooltipRefs => {
   const { isDark } = useTheme();
   const {
     placement = "auto",
@@ -38,7 +38,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
     tooltipOffset = [0, 10],
     hideTimeout = 100,
     manualVisible = false,
-  } = options;
+  } = options || {};
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [tooltipElement, setTooltipElement] = useState<HTMLElement | null>(null);
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);

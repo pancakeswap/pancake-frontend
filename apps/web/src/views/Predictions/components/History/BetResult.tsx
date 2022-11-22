@@ -46,7 +46,6 @@ const BetResult: React.FC<React.PropsWithChildren<BetResultProps>> = ({ bet, res
   const bnbBusdPrice = useBUSDPrice(token)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text as="p">{t('Includes your original position and your winnings, minus the %fee% fee.', { fee: '3%' })}</Text>,
-    { placement: 'auto' },
   )
 
   const isWinner = result === Result.WIN
