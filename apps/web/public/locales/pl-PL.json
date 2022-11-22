@@ -2033,9 +2033,9 @@
   "Pancake Collectibles": "Obiekty kolekcjonerskie Pancake",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info jest obecnie w trakcie konserwacji. Dane mogą być niedokładne i nieaktualne.",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (w tym nagrody) zablokowano w puli CAKE do %lockedEndTime%",
-  "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.",
-  "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.",
-  "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.",
-  "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!",
-  "CAKE staking expired": "CAKE staking expired"
+  "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE umożliwia udział w publicznej sprzedaży IFO i zainwestowanie kwoty maksymalnie %iCake% CAKE.",
+  "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "bCAKE pozwala nawet dwukrotnie zwiększyć zysk w farmach PancakeSwap.",
+  "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE zwiększa Twoją siłę głosu do %totalScore% w zarządzaniu głosowaniem PancakeSwap.",
+  "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Zablokuj CAKE, aby cieszyć się zwiększeniem zysków z farmy, udziałem w IFO, zwiększeniem siły głosu i wieloma innymi korzyściami!",
+  "CAKE staking expired": "Stakowanie CAKE wygasło"
 }
