@@ -2031,5 +2031,11 @@
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Jeder kann eine Coin auf Aptos mit einem beliebigen Namen erstellen, einschließlich der Erstellung von gefälschten Versionen bestehender Coins und Coins, die vorgeben, Projekte zu repräsentieren, für die es keine Coin gibt.",
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Wenn Sie eine gefälschte Coin kaufen, kann es sein, dass Sie Ihr Geld dauerhaft verlieren.",
   "Pancake Collectibles": "Pancake-Collectibles",
-  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info wird derzeit gewartet. Die Daten sind möglicherweise nicht genau oder aktuell."
+  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info wird derzeit gewartet. Die Daten sind möglicherweise nicht genau oder aktuell.",
+  "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%",
+  "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.",
+  "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.",
+  "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.",
+  "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!",
+  "CAKE staking expired": "CAKE staking expired"
 }
