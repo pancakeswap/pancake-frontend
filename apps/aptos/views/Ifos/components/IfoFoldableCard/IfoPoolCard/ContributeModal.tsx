@@ -1,4 +1,3 @@
-import { useSendTransaction } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { BalanceInput, Box, Button, Flex, Image, Link, Message, Modal, ModalBody, Text } from '@pancakeswap/uikit'
 import { formatNumber, getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
@@ -12,6 +11,7 @@ import styled from 'styled-components'
 import { ifoDeposit } from 'views/Ifos/generated/ifo'
 import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 
 const MessageTextLink = styled(Link)`
   display: inline;
@@ -67,7 +67,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { limitPerUserInLP, vestingInformation } = publicPoolCharacteristics
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { t } = useTranslation()
-  const { sendTransactionAsync } = useSendTransaction()
+  const executeTransaction = useSimulationAndSendTransaction()
   const pool = useIfoPool()
 
   const [value, setValue] = useState('')
@@ -100,7 +100,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
       const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool.type)
       const payload = ifoDeposit([valueWithTokenDecimals.toFixed()], [raisingCoin, offeringCoin, uid])
 
-      return sendTransactionAsync({ payload })
+      return executeTransaction(payload)
     },
     onSuccess: async ({ response }) => {
       onSuccess(valueWithTokenDecimals, response.hash)

@@ -1,8 +1,8 @@
-import { useSendTransaction } from '@pancakeswap/awgmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { PoolIds } from 'config/constants/types'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import splitTypeTag from 'utils/splitTypeTag'
 import { ifoHarvestPool } from 'views/Ifos/generated/ifo'
 
@@ -16,9 +16,9 @@ interface Props {
 
 export const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, walletIfoData }) => {
   const userPoolCharacteristics = walletIfoData[poolId]
+  const executeTransaction = useSimulationAndSendTransaction()
 
   const { t } = useTranslation()
-  const { sendTransactionAsync } = useSendTransaction()
   const { toastSuccess } = useToast()
   const pool = useIfoPool()
 
@@ -27,7 +27,7 @@ export const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, 
   const handleClaim = async () => {
     const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
     const payload = ifoHarvestPool([raisingCoin, offeringCoin, uid])
-    const response = await sendTransactionAsync({ payload })
+    const response = await executeTransaction(payload)
     if (response.hash) {
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(

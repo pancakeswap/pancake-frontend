@@ -3,11 +3,13 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { RootObject as IFOMetadata } from 'views/Ifos/generated/IFOMetadata'
 import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
-import { RootObject as UserInfo } from 'views/Ifos/generated/UserInfo'
 import { RootObject as VestingSchedule } from 'views/Ifos/generated/VestingSchedule'
+import _toNumber from 'lodash/toNumber'
 import { calculateTaxOverflow, computeVestingScheduleId, getUserAllocation } from './utils'
 
 export * from './utils'
+
+const PRECISION = '1000000000000'
 
 /**
  * get_pool_tax_rate_overflow
@@ -33,24 +35,24 @@ export const computeOfferingAndRefundAmount = (amount: string, ifo_pool: IFOPool
   let refunding_amount: BigNumber
   let tax_amount: BigNumber = BIG_ZERO
 
-  if (ifo_pool.total_amount > ifo_pool.raising_amount) {
-    const allocation = getUserAllocation(new BigNumber(ifo_pool.total_amount), new BigNumber(amount))
+  const totalAmount = _toNumber(ifo_pool.total_amount)
+  const raisingAmount = _toNumber(ifo_pool.raising_amount)
 
-    offering_amount = new BigNumber(ifo_pool.offering_amount).times(allocation.div('1000000000000'))
-    const payment = new BigNumber(ifo_pool.raising_amount).times(allocation.div('1000000000000'))
+  if (totalAmount > raisingAmount) {
+    const allocation = getUserAllocation(new BigNumber(totalAmount), new BigNumber(amount))
+
+    offering_amount = new BigNumber(ifo_pool.offering_amount).times(allocation.div(PRECISION))
+    const payment = new BigNumber(raisingAmount).times(allocation.div(PRECISION))
     refunding_amount = new BigNumber(amount).minus(payment)
     if (ifo_pool.has_tax) {
-      const tax_overflow = calculateTaxOverflow(
-        new BigNumber(ifo_pool.total_amount),
-        new BigNumber(ifo_pool.raising_amount),
-      )
+      const tax_overflow = calculateTaxOverflow(new BigNumber(totalAmount), new BigNumber(raisingAmount))
 
-      tax_amount = refunding_amount.times(tax_overflow.div('1000000000000'))
+      tax_amount = refunding_amount.times(tax_overflow.div(PRECISION))
       refunding_amount = refunding_amount.minus(tax_amount)
     }
   } else {
     refunding_amount = BIG_ZERO
-    offering_amount = new BigNumber(amount).times(ifo_pool.offering_amount).div(ifo_pool.raising_amount)
+    offering_amount = new BigNumber(amount).times(ifo_pool.offering_amount).div(raisingAmount)
   }
 
   return {
