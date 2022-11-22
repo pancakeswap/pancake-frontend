@@ -1,21 +1,23 @@
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { useCallback, useMemo, memo } from 'react'
+import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
 import { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
-import { isStableSwap, isV2SwapOrMixSwap, ITrade, V2TradeAndStableSwap } from 'config/constants/types'
-import { memo, useCallback, useMemo } from 'react'
-import { Field } from 'state/swap/actions'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import StableSwapModalFooter from '../StableSwap/components/StableSwapModalFooter'
-import StableSwapModalHeader from '../StableSwap/components/StableSwapModalHeader'
+import { Field } from 'state/swap/actions'
+import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
+import StableSwapModalHeader from '../StableSwap/components/StableSwapModalHeader'
+import StableSwapModalFooter from '../StableSwap/components/StableSwapModalFooter'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
  * @param tradeA trade A
  * @param tradeB trade B
  */
-function tradeMeaningfullyDiffers(tradeA: ITrade, tradeB: ITrade): boolean {
+function tradeMeaningfullyDiffers(
+  tradeA: Trade<Currency, Currency, TradeType>,
+  tradeB: Trade<Currency, Currency, TradeType>,
+): boolean {
   return (
     tradeA.tradeType !== tradeB.tradeType ||
     !tradeA.inputAmount.currency.equals(tradeB.inputAmount.currency) ||
@@ -23,20 +25,6 @@ function tradeMeaningfullyDiffers(tradeA: ITrade, tradeB: ITrade): boolean {
     !tradeA.outputAmount.currency.equals(tradeB.outputAmount.currency) ||
     !tradeA.outputAmount.equalTo(tradeB.outputAmount)
   )
-}
-
-interface TransactionConfirmSwapContentProps {
-  trade: V2TradeAndStableSwap
-  originalTrade: ITrade | undefined
-  onAcceptChanges: () => void
-  allowedSlippage: number
-  onConfirm: () => void
-  recipient: string
-  currencyBalances: {
-    INPUT?: CurrencyAmount<Currency>
-    OUTPUT?: CurrencyAmount<Currency>
-  }
-  isStable: boolean
 }
 
 const TransactionConfirmSwapContent = ({
@@ -48,7 +36,7 @@ const TransactionConfirmSwapContent = ({
   recipient,
   currencyBalances,
   isStable,
-}: TransactionConfirmSwapContentProps) => {
+}) => {
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
     [originalTrade, trade],
@@ -56,10 +44,8 @@ const TransactionConfirmSwapContent = ({
 
   const slippageAdjustedAmounts = useMemo(
     () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
-    [allowedSlippage, trade],
+    [trade, allowedSlippage],
   )
-  // @ts-ignore
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
 
   const isEnoughInputBalance = useMemo(() => {
     if (trade?.tradeType !== TradeType.EXACT_OUTPUT) return null
@@ -82,10 +68,7 @@ const TransactionConfirmSwapContent = ({
 
     return trade ? (
       <SwapModalHead
-        inputAmount={trade.inputAmount}
-        outputAmount={trade.outputAmount}
-        tradeType={trade.tradeType}
-        priceImpactWithoutFee={priceImpactWithoutFee}
+        trade={trade}
         allowedSlippage={allowedSlippage}
         slippageAdjustedAmounts={slippageAdjustedAmounts}
         isEnoughInputBalance={isEnoughInputBalance}
@@ -95,7 +78,6 @@ const TransactionConfirmSwapContent = ({
       />
     ) : null
   }, [
-    priceImpactWithoutFee,
     allowedSlippage,
     onAcceptChanges,
     recipient,
@@ -107,26 +89,16 @@ const TransactionConfirmSwapContent = ({
   ])
 
   const modalBottom = useCallback(() => {
+    const SwapModalF = isStable ? StableSwapModalFooter : SwapModalFooter
+
     return trade ? (
-      isStable && isStableSwap(trade) ? (
-        <StableSwapModalFooter
-          onConfirm={onConfirm}
-          trade={trade}
-          disabledConfirm={showAcceptChanges}
-          slippageAdjustedAmounts={slippageAdjustedAmounts}
-          isEnoughInputBalance={isEnoughInputBalance}
-        />
-      ) : (
-        isV2SwapOrMixSwap(trade) && (
-          <SwapModalFooter
-            onConfirm={onConfirm}
-            trade={trade}
-            disabledConfirm={showAcceptChanges}
-            slippageAdjustedAmounts={slippageAdjustedAmounts}
-            isEnoughInputBalance={isEnoughInputBalance}
-          />
-        )
-      )
+      <SwapModalF
+        onConfirm={onConfirm}
+        trade={trade}
+        disabledConfirm={showAcceptChanges}
+        slippageAdjustedAmounts={slippageAdjustedAmounts}
+        isEnoughInputBalance={isEnoughInputBalance}
+      />
     ) : null
   }, [onConfirm, showAcceptChanges, trade, isEnoughInputBalance, slippageAdjustedAmounts, isStable])
 

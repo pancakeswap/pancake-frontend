@@ -21,10 +21,10 @@ import { warningSeverity } from 'utils/exchange'
 import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import confirmPriceImpactWithoutFee from '../../components/confirmPriceImpactWithoutFee'
-import ConfirmSwapModal from '../../components/ConfirmSwapModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
+import ConfirmSwapModal from './ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
