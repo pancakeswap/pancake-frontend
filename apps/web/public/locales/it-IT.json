@@ -2031,5 +2031,11 @@
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Chiunque può creare una moneta su Aptos con qualsiasi nome, comprese le versioni false di monete esistenti o quelle che affermano di rappresentare progetti che non hanno una moneta.",
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Se acquisti una moneta fraudolenta, potresti essere esposto a una perdita permanente di fondi.",
   "Pancake Collectibles": "Pancake collezionabili",
-  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info è attualmente in manutenzione. I dati potrebbero non essere accurati o aggiornati."
+  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info è attualmente in manutenzione. I dati potrebbero non essere accurati o aggiornati.",
+  "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%",
+  "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.",
+  "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.",
+  "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.",
+  "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!",
+  "CAKE staking expired": "CAKE staking expired"
 }
