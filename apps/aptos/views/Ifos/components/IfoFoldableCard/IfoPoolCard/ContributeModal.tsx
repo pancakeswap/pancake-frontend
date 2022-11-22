@@ -9,11 +9,8 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useConfirmTransaction } from 'hooks/useConfirmTransaction'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { ifoDeposit } from 'views/Ifos/generated/ifo'
-import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
-import { useIfoResources } from 'views/Ifos/hooks/useIfoResources'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 
 const MessageTextLink = styled(Link)`
@@ -71,7 +68,6 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { t } = useTranslation()
   const { sendTransactionAsync } = useSendTransaction()
-  const resources = useIfoResources()
   const pool = useIfoPool()
 
   const [value, setValue] = useState('')
@@ -101,9 +97,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
 
   const { isConfirmed, isConfirming, handleConfirm } = useConfirmTransaction({
     onConfirm: () => {
-      const [raisingCoin, offeringCoin, uid] = splitTypeTag(
-        (resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE] as IFOPoolStore).type,
-      )
+      const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool.type)
       const payload = ifoDeposit([valueWithTokenDecimals.toFixed()], [raisingCoin, offeringCoin, uid])
 
       return sendTransactionAsync({ payload })
@@ -115,15 +109,8 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   })
 
   const isConfirmDisabled = useMemo(() => {
-    return (
-      isConfirmed ||
-      valueWithTokenDecimals.isNaN() ||
-      valueWithTokenDecimals.eq(0) ||
-      isWarning ||
-      !pool?.data ||
-      !resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
-    )
-  }, [isConfirmed, isWarning, pool, resources, valueWithTokenDecimals])
+    return isConfirmed || valueWithTokenDecimals.isNaN() || valueWithTokenDecimals.eq(0) || isWarning || !pool?.data
+  }, [isConfirmed, isWarning, pool, valueWithTokenDecimals])
 
   return (
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
