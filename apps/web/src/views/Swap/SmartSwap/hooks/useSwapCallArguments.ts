@@ -84,8 +84,16 @@ function swapCallParameters(
 
   const amountIn: string = toHex(Trade.maximumAmountIn(trade, options.allowedSlippage))
   const amountOut: string = toHex(Trade.minimumAmountOut(trade, options.allowedSlippage))
-  const path: string[] = trade.route.path.map((token) => (token.isToken ? token.address : NATIVE_CURRENCY_ADDRESS))
 
+  const path: string[] = trade.route.path.map((token, index) => {
+    if (
+      // return the native address if input or output is native token
+      (index === 0 && trade.inputAmount.currency.isNative) ||
+      (index === trade.route.path.length - 1 && trade.outputAmount.currency.isNative)
+    )
+      return NATIVE_CURRENCY_ADDRESS
+    return token.isToken ? token.address : NATIVE_CURRENCY_ADDRESS
+  })
   let methodName: string
   let args: (string | string[])[]
   let value: string
