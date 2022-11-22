@@ -10,7 +10,6 @@ import {
   Zap,
 } from 'config/abi/types'
 import zapAbi from 'config/abi/zap.json'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
@@ -110,7 +109,7 @@ export const useERC721 = (address: string, withSignerIfPossible = true) => {
 }
 
 export const useCake = (): { reader: Cake; signer: Cake } => {
-  const providerOrSigner = useProviderOrSigner()
+  const providerOrSigner = useProviderOrSigner(true, true)
   return useMemo(
     () => ({
       reader: getCakeContract(null),
@@ -131,12 +130,12 @@ export const usePancakeBunnies = () => {
 }
 
 export const useProfileContract = (withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getProfileContract(providerOrSigner), [providerOrSigner])
 }
 
 export const useLotteryV2Contract = () => {
-  const providerOrSigner = useProviderOrSigner()
+  const providerOrSigner = useProviderOrSigner(true, true)
   return useMemo(() => getLotteryV2Contract(providerOrSigner), [providerOrSigner])
 }
 
@@ -172,22 +171,22 @@ export const useClaimRefundContract = () => {
 }
 
 export const useTradingCompetitionContractEaster = (withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getTradingCompetitionContractEaster(providerOrSigner), [providerOrSigner])
 }
 
 export const useTradingCompetitionContractFanToken = (withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getTradingCompetitionContractFanToken(providerOrSigner), [providerOrSigner])
 }
 
 export const useTradingCompetitionContractMobox = (withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getTradingCompetitionContractMobox(providerOrSigner), [providerOrSigner])
 }
 
 export const useTradingCompetitionContractMoD = (withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getTradingCompetitionContractMoD(providerOrSigner), [providerOrSigner])
 }
 
@@ -231,7 +230,7 @@ export const usePredictionsContract = (address: string, tokenSymbol: string) => 
 }
 
 export const useChainlinkOracleContract = (address, withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getChainlinkOracleContract(address, providerOrSigner), [providerOrSigner, address])
 }
 
@@ -256,7 +255,7 @@ export const useBunnySpecialXmasContract = () => {
 }
 
 export const useAnniversaryAchievementContract = (withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getAnniversaryAchievementContract(providerOrSigner), [providerOrSigner])
 }
 
@@ -271,7 +270,7 @@ export const usePancakeSquadContract = () => {
 }
 
 export const useFarmAuctionContract = (withSignerIfPossible = true) => {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getFarmAuctionContract(providerOrSigner), [providerOrSigner])
 }
 
@@ -301,9 +300,7 @@ export function useContract<T extends Contract = Contract>(
   ABI: any,
   withSignerIfPossible = true,
 ): T | null {
-  const { provider } = useActiveWeb3React()
-
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible) ?? provider
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
 
   const canReturnContract = useMemo(() => address && ABI && providerOrSigner, [address, ABI, providerOrSigner])
 
@@ -351,21 +348,22 @@ export const usePotterytDrawContract = () => {
 }
 
 export function useZapContract(withSignerIfPossible = true) {
-  return useContract<Zap>(getZapAddress(), zapAbi, withSignerIfPossible)
+  const { chainId } = useActiveChainId()
+  return useContract<Zap>(getZapAddress(chainId), zapAbi, withSignerIfPossible)
 }
 
 export function useBCakeFarmBoosterContract(withSignerIfPossible = true) {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getBCakeFarmBoosterContract(providerOrSigner), [providerOrSigner])
 }
 
 export function useBCakeFarmBoosterProxyFactoryContract(withSignerIfPossible = true) {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(() => getBCakeFarmBoosterProxyFactoryContract(providerOrSigner), [providerOrSigner])
 }
 
 export function useBCakeProxyContract(proxyContractAddress: string, withSignerIfPossible = true) {
-  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible, true)
   return useMemo(
     () => proxyContractAddress && getBCakeProxyContract(proxyContractAddress, providerOrSigner),
     [providerOrSigner, proxyContractAddress],
