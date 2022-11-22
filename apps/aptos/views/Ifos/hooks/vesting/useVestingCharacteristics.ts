@@ -28,7 +28,6 @@ export const useVestingCharacteristics = (): VestingCharacteristics & {
   const vestingSchedule = useIfoVestingSchedule({ key: vestingScheduleId })
 
   return useMemo(() => {
-    // Philip TODO: calculate schedule pid
     const unlimitedId =
       account?.address && pool?.data && vestingSchedule.data
         ? computeNextVestingScheduleIdForHolderAndPid(account.address, pool.data.pid, {
@@ -47,7 +46,6 @@ export const useVestingCharacteristics = (): VestingCharacteristics & {
 
     return {
       vestingId: unlimitedId ? unlimitedId.toString() : '0',
-      offeringAmountInToken: pool?.data?.offering_amount ? new BigNumber(pool.data?.offering_amount) : BIG_ZERO,
       vestingComputeReleasableAmount,
       vestingInformationPercentage: pool?.data?.vesting_percentage ? +pool.data?.vesting_percentage : 0,
       vestingInformationDuration: pool?.data?.vesting_duration ? +pool.data?.vesting_duration : 0,

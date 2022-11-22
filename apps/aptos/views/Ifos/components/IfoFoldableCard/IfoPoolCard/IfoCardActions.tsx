@@ -32,7 +32,12 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
       (userPoolCharacteristics.offeringAmountInToken.isGreaterThan(0) ||
         userPoolCharacteristics.refundingAmountInLP.isGreaterThan(0))
     )
-  }, [publicIfoData.status, userPoolCharacteristics.hasClaimed])
+  }, [
+    publicIfoData.status,
+    userPoolCharacteristics.hasClaimed,
+    userPoolCharacteristics.offeringAmountInToken,
+    userPoolCharacteristics.refundingAmountInLP,
+  ])
 
   if (isLoading) {
     return <SkeletonCardActions />

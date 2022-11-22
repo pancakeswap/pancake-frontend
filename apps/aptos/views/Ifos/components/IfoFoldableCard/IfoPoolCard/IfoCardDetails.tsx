@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
-import { useTokenUsdcPrice } from 'hooks/useStablePrice'
+import useStablePrice from 'hooks/useStablePrice'
 import { DAY_IN_SECONDS } from 'utils/getTimePeriods'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
@@ -54,7 +54,6 @@ const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ labe
 }
 
 const MaxTokenEntry = ({ maxToken, ifo }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
-  // const isCurrencyCake = ifo.currency === bscTokens.cake
   const isCurrencyCake = true
   const isV3 = ifo.version >= 3
   const { t } = useTranslation()
@@ -66,11 +65,13 @@ const MaxTokenEntry = ({ maxToken, ifo }: { maxToken: number; ifo: Ifo; poolId: 
   const tooltipContent = basicTooltipContent
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
-  const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = t('Max. token entry')
 
-  const price = useTokenUsdcPrice(ifo.currency)
+  const price = useStablePrice(ifo.currency)
 
   const dollarValueOfToken = price ? multiplyPriceByAmount(price, maxToken, ifo.currency.decimals) : 0
+
+  if (!maxToken) return null
 
   return (
     <>
@@ -106,7 +107,6 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const { t } = useTranslation()
   const { status, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
-  // const walletCharacteristic = walletIfoData[poolId]
 
   const version3MaxTokens = null
 
@@ -124,7 +124,9 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
     .times(100)
     .toFixed(2)
   const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
+
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
+
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
   const sumTaxesOverflow = poolCharacteristic.totalAmountPool.times(poolCharacteristic.taxRate).times(0.01)
@@ -135,7 +137,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const pricePerTokenWithFee = `~$${formatNumber(
     pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber(),
     0,
-    2,
+    3,
   )}`
 
   const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens

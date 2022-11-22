@@ -1,12 +1,13 @@
 /* eslint-disable camelcase */
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA } from 'views/Ifos/constants'
 import { VestingCharacteristics } from 'views/Ifos/types'
+import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
 import { useIfoPool } from '../useIfoPool'
 import { useIfoResources } from '../useIfoResources'
+import { useIfoUserInfo } from '../useIfoUserInfo'
 import { useVestingCharacteristics } from './useVestingCharacteristics'
 
 export interface VestingData {
@@ -21,6 +22,19 @@ export const useFetchUserWalletIfoData = () => {
   const resources = useIfoResources()
   const pool = useIfoPool()
   const vestingCharacteristics = useVestingCharacteristics()
+  const { data: userInfo } = useIfoUserInfo(pool?.type)
+
+  const { offering_amount: offeringAmountInToken } = useMemo(
+    () =>
+      userInfo?.data
+        ? computeOfferingAndRefundAmount(userInfo.data.amount, pool?.data)
+        : {
+            tax_amount: BIG_ZERO,
+            refunding_amount: BIG_ZERO,
+            offering_amount: BIG_ZERO,
+          },
+    [pool?.data, userInfo?.data],
+  )
 
   const fetchUserWalletIfoData = useCallback(
     async (ifo: Ifo): Promise<VestingData> => {
@@ -30,7 +44,7 @@ export const useFetchUserWalletIfoData = () => {
         vestingStartTime: metadata?.vesting_start_time ? +metadata.vesting_start_time : 0,
         [PoolIds.poolUnlimited]: {
           ...vestingCharacteristics,
-          offeringAmountInToken: pool.data ? new BigNumber(pool.data.offering_amount) : BIG_ZERO,
+          offeringAmountInToken,
         },
       }
 
@@ -39,7 +53,7 @@ export const useFetchUserWalletIfoData = () => {
         userVestingData,
       }
     },
-    [pool, resources, vestingCharacteristics],
+    [offeringAmountInToken, resources.data, vestingCharacteristics],
   )
 
   return { fetchUserWalletIfoData }

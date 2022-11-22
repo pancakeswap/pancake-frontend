@@ -3,13 +3,12 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { Ifo, IfoStatus } from 'config/constants/types'
 import { useCakePrice } from 'hooks/useStablePrice'
-import { useState, useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA, IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
 import { getPoolTaxRateOverflow } from 'views/Ifos/utils'
 import { PoolCharacteristics, PublicIfoData, VestingInformation } from '../../types'
 import { getStatus } from '../helpers'
-import { useIfoPool } from '../useIfoPool'
 import { useIfoResources } from '../useIfoResources'
 
 const formatVestingInfo = (pool: IFOPool): VestingInformation => ({
@@ -19,7 +18,6 @@ const formatVestingInfo = (pool: IFOPool): VestingInformation => ({
   slicePeriodSeconds: pool ? +pool.vesting_slice_period_seconds : 0,
 })
 
-// TODO: Can pool be undefined?
 const formatPool = (pool: IFOPool): PoolCharacteristics => ({
   raisingAmountPool: pool ? new BigNumber(pool.raising_amount.toString()) : BIG_ZERO,
   offeringAmountPool: pool ? new BigNumber(pool.offering_amount.toString()) : BIG_ZERO,

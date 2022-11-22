@@ -56,6 +56,23 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
   }
 
   const { data: userInfo } = useIfoUserInfo(pool?.type)
+
+  const {
+    tax_amount: taxAmountInLP,
+    refunding_amount: refundingAmountInLP,
+    offering_amount: offeringAmountInToken,
+  } = useMemo(
+    () =>
+      userInfo?.data
+        ? computeOfferingAndRefundAmount(userInfo.data.amount, pool?.data)
+        : {
+            tax_amount: BIG_ZERO,
+            refunding_amount: BIG_ZERO,
+            offering_amount: BIG_ZERO,
+          },
+    [pool?.data, userInfo?.data],
+  )
+
   const vestingCharacteristics = useVestingCharacteristics()
 
   const finalState = useMemo(() => {
@@ -63,26 +80,29 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
       return initialState
     }
 
-    const { tax_amount: taxAmountInLP, refunding_amount: refundingAmountInLP } = userInfo?.data
-      ? computeOfferingAndRefundAmount(userInfo.data.amount, pool?.data)
-      : {
-          tax_amount: BIG_ZERO,
-          refunding_amount: BIG_ZERO,
-        }
-
     return {
       ...state,
       isInitialized: true,
       poolUnlimited: {
         ...state.poolUnlimited,
         ...vestingCharacteristics,
+        offeringAmountInToken,
         amountTokenCommittedInLP: userInfo?.data ? new BigNumber(userInfo?.data.amount) : BIG_ZERO,
         hasClaimed: userInfo?.data?.claimed ?? false,
         refundingAmountInLP,
         taxAmountInLP,
       },
     }
-  }, [account, userInfo, pool, vestingCharacteristics, state])
+  }, [
+    account,
+    pool?.data,
+    state,
+    vestingCharacteristics,
+    offeringAmountInToken,
+    userInfo?.data,
+    refundingAmountInLP,
+    taxAmountInLP,
+  ])
 
   return { ...finalState, setPendingTx, setIsClaimed }
 }

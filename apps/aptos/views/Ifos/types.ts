@@ -42,7 +42,6 @@ export interface VestingInformation {
 
 export interface VestingCharacteristics {
   vestingId: string
-  offeringAmountInToken: BigNumber
   vestingReleased: BigNumber
   vestingAmountTotal: BigNumber
   vestingComputeReleasableAmount: BigNumber
