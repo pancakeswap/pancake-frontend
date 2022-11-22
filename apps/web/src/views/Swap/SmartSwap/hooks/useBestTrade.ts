@@ -18,6 +18,11 @@ interface TradeOptions {
   currency: Currency
   tradeType: TradeType
   allCommonPairs: Pair[]
+  maxHops?: number
+}
+
+interface UseTradeOptions {
+  maxHops?: number
 }
 
 function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions) => Promise<T>) {
@@ -25,16 +30,26 @@ function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions
     amount: CurrencyAmount<Currency> | undefined,
     currency: Currency,
     tradeType: TradeType,
+    { maxHops = 3 }: UseTradeOptions = {},
   ): T | null {
     const allCommonPairs = useAllCommonPairs(amount?.currency, currency)
     const deferQuotient = useDeferredValue(amount?.quotient.toString())
 
     const { data: trade } = useSWR(
       amount
-        ? [key, 'swap', tradeType, amount.currency.chainId, amount.currency.symbol, currency.symbol, deferQuotient]
+        ? [
+            key,
+            'swap',
+            tradeType,
+            amount.currency.chainId,
+            amount.currency.symbol,
+            currency.symbol,
+            deferQuotient,
+            maxHops,
+          ]
         : null,
       // TODO: trader should use user Wallet address
-      () => getBestTrade({ amount, currency, tradeType, allCommonPairs, trader: '' }),
+      () => getBestTrade({ amount, currency, tradeType, allCommonPairs, trader: '', maxHops }),
       {
         use: [laggyMiddleware],
       },
@@ -70,9 +85,9 @@ const getBestTradeExactOutFromApi = createRequest(TradeType.EXACT_OUTPUT)
 
 export const useBestTradeFromChain = createUseBestTrade(
   'tradeFromChain',
-  async ({ amount, currency, tradeType, allCommonPairs }) => {
+  async ({ amount, currency, tradeType, allCommonPairs, maxHops }) => {
     const bestTrade = tradeType === TradeType.EXACT_INPUT ? getBestTradeExactIn : getBestTradeExactOut
-    return bestTrade(amount, currency, { provider, allCommonPairs })
+    return bestTrade(amount, currency, { provider, allCommonPairs, maxHops })
   },
 )
 
@@ -109,8 +124,13 @@ export const useBestTradeFromApi = createUseBestTrade(
   },
 )
 
-export function useBestTrade(amount: CurrencyAmount<Currency>, currency: Currency, tradeType: TradeType) {
-  const bestTradeFromChain = useBestTradeFromChain(amount, currency, tradeType)
+export function useBestTrade(
+  amount: CurrencyAmount<Currency>,
+  currency: Currency,
+  tradeType: TradeType,
+  options?: UseTradeOptions,
+) {
+  const bestTradeFromChain = useBestTradeFromChain(amount, currency, tradeType, options)
   // Remove source from api for now until api is optimized
   // const bestTradeFromApi = useBestTradeFromApi(amount, currency, tradeType)
 
