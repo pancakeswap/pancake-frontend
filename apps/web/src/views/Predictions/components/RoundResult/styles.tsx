@@ -5,7 +5,7 @@ import { Box, Flex, FlexProps, Skeleton, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { BetPosition, NodeRound, Round } from 'state/types'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
-import { formatUsdv2, formatBnbv2, getRoundPosition, getPriceDifference } from '../../helpers'
+import { formatUsdv2, formatTokenv2, getRoundPosition, getPriceDifference } from '../../helpers'
 import { formatBnb, formatUsd } from '../History/helpers'
 import PositionTag from '../PositionTag'
 
@@ -14,12 +14,16 @@ interface PrizePoolRowProps extends FlexProps {
   totalAmount: NodeRound['totalAmount']
 }
 
-const getPrizePoolAmount = (totalAmount: PrizePoolRowProps['totalAmount'], displayedDecimals: number) => {
+const getPrizePoolAmount = (
+  totalAmount: PrizePoolRowProps['totalAmount'],
+  decimals: number,
+  displayedDecimals: number,
+) => {
   if (!totalAmount) {
     return '0'
   }
 
-  return formatBnbv2(totalAmount, displayedDecimals)
+  return formatTokenv2(totalAmount, decimals, displayedDecimals)
 }
 
 const Row = ({ children, ...props }) => {
@@ -37,7 +41,7 @@ export const PrizePoolRow: React.FC<React.PropsWithChildren<PrizePoolRowProps>> 
   return (
     <Row {...props}>
       <Text bold>{t('Prize Pool')}:</Text>
-      <Text bold>{`${getPrizePoolAmount(totalAmount, displayedDecimals)} ${token.symbol}`}</Text>
+      <Text bold>{`${getPrizePoolAmount(totalAmount, token.decimals, displayedDecimals)} ${token.symbol}`}</Text>
     </Row>
   )
 }
@@ -81,12 +85,12 @@ interface LockPriceRowProps extends FlexProps {
 
 export const LockPriceRow: React.FC<React.PropsWithChildren<LockPriceRowProps>> = ({ lockPrice, ...props }) => {
   const { t } = useTranslation()
-  const { displayedDecimals, minPriceUsdDisplayed } = useConfig()
+  const { displayedDecimals } = useConfig()
 
   return (
     <Row {...props}>
       <Text fontSize="14px">{t('Locked Price')}:</Text>
-      <Text fontSize="14px">{formatUsdv2(lockPrice, minPriceUsdDisplayed, displayedDecimals)}</Text>
+      <Text fontSize="14px">{formatUsdv2(lockPrice, displayedDecimals)}</Text>
     </Row>
   )
 }
@@ -158,7 +162,7 @@ interface RoundPriceProps {
 }
 
 export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({ lockPrice, closePrice }) => {
-  const { displayedDecimals, minPriceUsdDisplayed } = useConfig()
+  const { displayedDecimals } = useConfig()
   const betPosition = getRoundPosition(lockPrice, closePrice)
   const priceDifference = getPriceDifference(closePrice, lockPrice)
 
@@ -178,14 +182,12 @@ export const RoundPrice: React.FC<React.PropsWithChildren<RoundPriceProps>> = ({
     <Flex alignItems="center" justifyContent="space-between" mb="16px">
       {closePrice ? (
         <Text color={textColor} bold fontSize="24px">
-          {formatUsdv2(closePrice, minPriceUsdDisplayed, displayedDecimals)}
+          {formatUsdv2(closePrice, displayedDecimals)}
         </Text>
       ) : (
         <Skeleton height="34px" my="1px" />
       )}
-      <PositionTag betPosition={betPosition}>
-        {formatUsdv2(priceDifference, minPriceUsdDisplayed, displayedDecimals)}
-      </PositionTag>
+      <PositionTag betPosition={betPosition}>{formatUsdv2(priceDifference, displayedDecimals)}</PositionTag>
     </Flex>
   )
 }

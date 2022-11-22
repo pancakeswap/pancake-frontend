@@ -106,8 +106,8 @@ export const getPotteryDrawAddress = () => {
   return getAddress(addresses.potteryDraw)
 }
 
-export const getZapAddress = () => {
-  return getAddress(addresses.zap)
+export const getZapAddress = (chainId?: number) => {
+  return getAddress(addresses.zap, chainId)
 }
 export const getICakeAddress = () => {
   return getAddress(addresses.iCake)

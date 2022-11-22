@@ -1,5 +1,5 @@
-import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { APT } from 'config/coins'
+import { ChainId } from '@pancakeswap/aptos-swap-sdk'
+import { APT } from '../../coins'
 
 export const mainnetTokens = {
   apt: APT[ChainId.MAINNET],

@@ -38,27 +38,34 @@ const BubbleWrapper = styled(Flex)`
 type FooterVariant = "default" | "side";
 
 const Footer: React.FC<
-  React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string; helpImage?: ReactNode; isBSC?: boolean }>
+  React.PropsWithChildren<{
+    variant?: FooterVariant;
+    helpUrl?: string;
+    helpImage?: ReactNode;
+    externalText?: string;
+    externalLinkUrl?: string;
+  }>
 > = ({
   variant = "default",
   helpUrl,
-  isBSC,
+  externalText,
+  externalLinkUrl,
   helpImage = <Image src="https://cdn.pancakeswap.com/help/help.png" alt="Get some help" width={160} height={108} />,
 }) => {
   const { t } = useTranslation();
   const isSide = variant === "side";
   return (
     <Wrapper $isSide={isSide}>
-      {isBSC && (
+      {externalText && externalLinkUrl && (
         <Flex flexDirection={isSide ? "column" : ["column", "column", "row"]} alignItems="center">
           <LinkExternal
             id="ercBridge"
-            href="https://bridge.pancakeswap.finance/"
+            href={externalLinkUrl}
             ml={[0, 0, "40px"]}
             mt={["20px", "20px", isSide ? "20px" : 0]}
             mb={["8px", "8px", 0]}
           >
-            {t("Bridge assets to BNB Chain")}
+            {externalText}
           </LinkExternal>
         </Flex>
       )}

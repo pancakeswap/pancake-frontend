@@ -1,23 +1,16 @@
 import { describe, it, expect } from 'vitest'
 import { ChainId, Pair, Coin } from '@pancakeswap/aptos-swap-sdk'
 import { SerializedFarm } from '@pancakeswap/farms'
-import farms1 from '../constants/farms/1'
-import farms2 from '../constants/farms/2'
+import farms from '../constants/farms/1'
 import { CAKE_PID } from '../constants/index'
 
 // Test only against the last 10 farms, for performance concern
-const mainnetFarmsToTest: [number, SerializedFarm, number][] = farms1
+const mainnetFarmsToTest: [number, SerializedFarm, number][] = farms
   .filter((farm) => farm.pid !== 0 && farm.pid !== null)
   .slice(0, 10)
   .map((farm) => [farm.pid, farm, ChainId.MAINNET])
 
-const farms2ToTest: [number, SerializedFarm, number][] = farms2
-  .filter((farm) => farm.pid !== 0 && farm.pid !== null)
-  .slice(0, 10)
-  .map((farm) => [farm.pid, farm, ChainId.TESTNET])
-
 const getDuplicates = (key: 'pid' | 'lpAddress') => {
-  const farms = [...farms1, ...farms2]
   const keys = farms.map((farm) => farm[key])
   return keys.filter((data) => keys.indexOf(data) !== keys.lastIndexOf(data))
 }
@@ -33,7 +26,7 @@ describe('Config farms', () => {
     expect(duplicates).toHaveLength(0)
   })
 
-  it.each([...mainnetFarmsToTest, ...farms2ToTest])('Farm %d has the correct token addresses', async (pid, farm) => {
+  it.each(mainnetFarmsToTest)('Farm %d has the correct token addresses', async (pid, farm) => {
     const token = new Coin(farm.token.chainId, farm.token.address, farm.token.decimals, farm.token.symbol)
     const quoteToken = new Coin(
       farm.quoteToken.chainId,

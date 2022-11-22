@@ -3,8 +3,14 @@ import { BetPosition } from 'state/types'
 import { formatBigNumberToFixed } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from 'utils/getTimePeriods'
 import { NegativeOne, One, Zero } from '@ethersproject/constants'
+import memoize from 'lodash/memoize'
 
-const MIN_PRICE_BNB_DISPLAYED = BigNumber.from('1000000000000000')
+const calculateMinDisplayed = memoize(
+  (decimals: number, displayedDecimals: number): BigNumber => {
+    return BigNumber.from(10).pow(decimals).div(BigNumber.from(10).pow(displayedDecimals))
+  },
+  (decimals, displayedDecimals) => `${decimals}#${displayedDecimals}`,
+)
 
 type formatPriceDifferenceProps = {
   price?: BigNumber
@@ -30,17 +36,23 @@ const formatPriceDifference = ({
   return `${unitPrefix}${formatBigNumberToFixed(price, displayedDecimals, decimals)}`
 }
 
-export const formatUsdv2 = (usd: BigNumber, minPriceDisplayed: BigNumber, displayedDecimals: number) => {
-  return formatPriceDifference({ price: usd, minPriceDisplayed, unitPrefix: '$', displayedDecimals, decimals: 8 })
+export const formatUsdv2 = (usd: BigNumber, displayedDecimals: number) => {
+  return formatPriceDifference({
+    price: usd,
+    minPriceDisplayed: calculateMinDisplayed(8, displayedDecimals),
+    unitPrefix: '$',
+    displayedDecimals,
+    decimals: 8,
+  })
 }
 
-export const formatBnbv2 = (bnb: BigNumber, displayedDecimals: number) => {
+export const formatTokenv2 = (token: BigNumber, decimals: number, displayedDecimals: number) => {
   return formatPriceDifference({
-    price: bnb,
-    minPriceDisplayed: MIN_PRICE_BNB_DISPLAYED,
+    price: token,
+    minPriceDisplayed: calculateMinDisplayed(decimals, displayedDecimals),
     unitPrefix: '',
     displayedDecimals,
-    decimals: 18,
+    decimals,
   })
 }
 

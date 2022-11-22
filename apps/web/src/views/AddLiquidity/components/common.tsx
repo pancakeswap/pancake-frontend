@@ -139,7 +139,6 @@ export const AddLiquidityModalHeader = ({
     t('Output is estimated. If the price changes by more than %slippage%% your transaction will revert.', {
       slippage: allowedSlippage / 100,
     }),
-    { placement: 'auto' },
   )
 
   return (
