@@ -1,8 +1,9 @@
-import { TradeType, CurrencyAmount, Currency, Percent } from '@pancakeswap/sdk'
+import { useMemo } from 'react'
+import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
-import { warningSeverity } from 'utils/exchange'
+import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -10,10 +11,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 
 export default function SwapModalHeader({
-  inputAmount,
-  outputAmount,
-  tradeType,
-  priceImpactWithoutFee,
+  trade,
   slippageAdjustedAmounts,
   isEnoughInputBalance,
   recipient,
@@ -21,10 +19,7 @@ export default function SwapModalHeader({
   onAcceptChanges,
   allowedSlippage,
 }: {
-  inputAmount: CurrencyAmount<Currency>
-  outputAmount: CurrencyAmount<Currency>
-  tradeType: TradeType
-  priceImpactWithoutFee?: Percent
+  trade: Trade<Currency, Currency, TradeType>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   isEnoughInputBalance: boolean
   recipient: string | null
@@ -34,23 +29,25 @@ export default function SwapModalHeader({
 }) {
   const { t } = useTranslation()
 
+  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   const inputTextColor =
-    showAcceptChanges && tradeType === TradeType.EXACT_OUTPUT && isEnoughInputBalance
+    showAcceptChanges && trade.tradeType === TradeType.EXACT_OUTPUT && isEnoughInputBalance
       ? 'primary'
-      : tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance
+      : trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance
       ? 'failure'
       : 'text'
 
   const amount =
-    tradeType === TradeType.EXACT_INPUT
+    trade.tradeType === TradeType.EXACT_INPUT
       ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)
       : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)
-  const symbol = tradeType === TradeType.EXACT_INPUT ? outputAmount.currency.symbol : inputAmount.currency.symbol
+  const symbol =
+    trade.tradeType === TradeType.EXACT_INPUT ? trade.outputAmount.currency.symbol : trade.inputAmount.currency.symbol
 
   const tradeInfoText =
-    tradeType === TradeType.EXACT_INPUT
+    trade.tradeType === TradeType.EXACT_INPUT
       ? t('Output is estimated. You will receive at least or the transaction will revert.')
       : t('Input is estimated. You will sell at most or the transaction will revert.')
 
@@ -68,14 +65,14 @@ export default function SwapModalHeader({
     <AutoColumn gap="md">
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
-          <CurrencyLogo currency={inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
+          <CurrencyLogo currency={trade.inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color={inputTextColor}>
-            {inputAmount.toSignificant(6)}
+            {trade.inputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0px">
           <Text fontSize="24px" ml="10px">
-            {inputAmount.currency.symbol}
+            {trade.inputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -84,23 +81,23 @@ export default function SwapModalHeader({
       </RowFixed>
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
-          <CurrencyLogo currency={outputAmount.currency} size="24px" />
+          <CurrencyLogo currency={trade.outputAmount.currency} size="24px" />
           <TruncatedText
             fontSize="24px"
             color={
               priceImpactSeverity > 2
                 ? 'failure'
-                : showAcceptChanges && tradeType === TradeType.EXACT_INPUT
+                : showAcceptChanges && trade.tradeType === TradeType.EXACT_INPUT
                 ? 'primary'
                 : 'text'
             }
           >
-            {outputAmount.toSignificant(6)}
+            {trade.outputAmount.toSignificant(6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed>
           <Text fontSize="24px" ml="10px">
-            {outputAmount.currency.symbol}
+            {trade.outputAmount.currency.symbol}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -124,7 +121,7 @@ export default function SwapModalHeader({
             {`${allowedSlippage / 100}%`}
           </Text>
         </RowFixed>
-        {tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (
+        {trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (
           <Text small color="failure" textAlign="left" style={{ width: '100%' }}>
             {t('Insufficient input token balance. Your transaction may fail.')}
           </Text>

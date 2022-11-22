@@ -5,9 +5,8 @@ import { ITrade } from 'config/constants/types'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import SwapModalFooter from '../../components/SwapModalFooter'
-import SwapModalHeader from '../../components/SwapModalHeader'
-import StableSwapModalHeader from '../../StableSwap/components/StableSwapModalHeader'
+import SwapModalFooter from './SwapModalFooter'
+import SwapModalHeader from './SwapModalHeader'
 import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
   computeTradePriceBreakdown as computeTradePriceBreakdownWithSmartRouter,
@@ -39,7 +38,6 @@ interface TransactionConfirmSwapContentProps {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
-  isStable: boolean
 }
 
 const TransactionConfirmSwapContent = ({
@@ -50,7 +48,6 @@ const TransactionConfirmSwapContent = ({
   onConfirm,
   recipient,
   currencyBalances,
-  isStable,
 }: TransactionConfirmSwapContentProps) => {
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -80,10 +77,8 @@ const TransactionConfirmSwapContent = ({
   }, [currencyBalances, trade, slippageAdjustedAmounts])
 
   const modalHeader = useCallback(() => {
-    const SwapModalHead = isStable ? StableSwapModalHeader : SwapModalHeader
-
     return trade ? (
-      <SwapModalHead
+      <SwapModalHeader
         inputAmount={trade.inputAmount}
         outputAmount={trade.outputAmount}
         tradeType={trade.tradeType}
@@ -105,7 +100,6 @@ const TransactionConfirmSwapContent = ({
     trade,
     slippageAdjustedAmounts,
     isEnoughInputBalance,
-    isStable,
   ])
 
   const modalBottom = useCallback(() => {
