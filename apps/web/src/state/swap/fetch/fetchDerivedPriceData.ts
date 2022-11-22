@@ -1,6 +1,5 @@
-import { INFO_BUCKETS_COOKIES } from 'config/constants'
 import { INFO_CLIENT, INFO_NR_CLIENT } from 'config/constants/endpoints'
-import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
+import { ONE_DAY_UNIX, ONE_HOUR_SECONDS, INFO_BUCKETS_COOKIES } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
 import Cookies from 'js-cookie'
 import mapValues from 'lodash/mapValues'

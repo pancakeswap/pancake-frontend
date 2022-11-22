@@ -1,15 +1,20 @@
-import { infoClient, infoClientETH, infoStableSwapClient, infoNRClient } from 'utils/graphql'
 import {
-  INFO_CLIENT,
-  INFO_CLIENT_ETH,
   BLOCKS_CLIENT,
   BLOCKS_CLIENT_ETH,
+  INFO_CLIENT,
+  INFO_CLIENT_ETH,
   INFO_NR_CLIENT,
 } from 'config/constants/endpoints'
-import { INFO_BUCKETS_COOKIES } from 'config/constants'
+import { infoClient, infoClientETH, infoNRClient, infoStableSwapClient } from 'utils/graphql'
 
 import { ChainId } from '@pancakeswap/sdk'
-import { PCS_V2_START, PCS_ETH_START, ETH_TOKEN_BLACKLIST, TOKEN_BLACKLIST } from 'config/constants/info'
+import {
+  ETH_TOKEN_BLACKLIST,
+  PCS_ETH_START,
+  PCS_V2_START,
+  TOKEN_BLACKLIST,
+  INFO_BUCKETS_COOKIES,
+} from 'config/constants/info'
 import Cookies from 'js-cookie'
 
 export type MultiChainName = 'BSC' | 'ETH'

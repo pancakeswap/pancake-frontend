@@ -32,5 +32,3 @@ export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'
 
 export const EXCHANGE_DOCS_URLS = 'https://docs.pancakeswap.finance/products/pancakeswap-exchange'
 export const EXCHANGE_HELP_URLS = 'https://docs.pancakeswap.finance/help'
-
-export const INFO_BUCKETS_COOKIES = 'bucket-info-3'

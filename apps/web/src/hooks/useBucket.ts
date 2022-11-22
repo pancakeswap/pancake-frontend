@@ -1,7 +1,6 @@
-import Cookies from 'js-cookie'
-
+import { INFO_BUCKETS_COOKIES } from 'config/constants/info'
 import { atom, useAtom } from 'jotai'
-import { INFO_BUCKETS_COOKIES } from 'config/constants'
+import Cookies from 'js-cookie'
 
 const bucketInfoAtom = atom(() => Cookies.get(INFO_BUCKETS_COOKIES))
 

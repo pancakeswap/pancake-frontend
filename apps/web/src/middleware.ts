@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBucket, INFO_BUCKETS } from 'utils/buckets'
-import { INFO_BUCKETS_COOKIES } from 'config/constants'
+import { INFO_BUCKETS_COOKIES } from './config/constants/info'
 
 // Sanctioned Countries: Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe.
 const BLOCK_COUNTRIES = { BY: 'BY', CU: 'CU', CD: 'CD', IR: 'IR', IQ: 'IQ', KP: 'KP', SD: 'SD', SY: 'SY', ZW: 'ZW' }
