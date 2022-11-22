@@ -59,6 +59,7 @@ import {
   getTradingCompetitionContractMoD,
   getNonBscVaultContract,
   getCrossFarmingProxyContract,
+  getIfoCreditAddressContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -211,6 +212,10 @@ export const useVaultPoolContract = (vaultKey: VaultKey): CakeVaultV2 | CakeFlex
 export const useCakeVaultContract = (withSignerIfPossible = true) => {
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
   return useMemo(() => getCakeVaultV2Contract(providerOrSigner), [providerOrSigner])
+}
+
+export const useIfoCreditAddressContract = () => {
+  return useMemo(() => getIfoCreditAddressContract(), [])
 }
 
 export const usePredictionsContract = (address: string, tokenSymbol: string) => {
