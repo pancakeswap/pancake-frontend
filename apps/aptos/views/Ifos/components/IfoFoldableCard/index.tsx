@@ -1,13 +1,8 @@
-import { useAccount } from '@pancakeswap/awgmi'
-import { useIsWindowVisible } from '@pancakeswap/hooks'
-import { useTranslation } from '@pancakeswap/localization'
 import { Box, Card, CardBody, CardFooter, CardHeader, ExpandableButton, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { FAST_INTERVAL } from 'config/constants'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import useSWRImmutable from 'swr/immutable'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { CardsWrapper } from '../IfoCardStyles'
 import IfoPoolCard from './IfoPoolCard'
@@ -134,7 +129,6 @@ export const IfoCurrentCard = ({
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }) => {
-  const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
   const shouldShowBunny = publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon'
