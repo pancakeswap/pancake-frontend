@@ -7,9 +7,17 @@ interface Options {
 }
 
 export const useIsSmartRouterBetter = ({ trade, v2Trade }: Options) => {
-  let isSmartRouterBetter = false
-  if (trade && v2Trade && trade.route.routeType !== RouteType.V2) {
-    if (trade.outputAmount.greaterThan(v2Trade.outputAmount)) isSmartRouterBetter = true
+  if (!trade || !v2Trade) {
+    return false
   }
-  return isSmartRouterBetter
+
+  // trade might be outdated when currencies changed
+  if (
+    !trade.inputAmount.currency.equals(v2Trade.inputAmount.currency) ||
+    !trade.outputAmount.currency.equals(v2Trade.outputAmount.currency)
+  ) {
+    return false
+  }
+
+  return trade.route.routeType !== RouteType.V2 && trade.outputAmount.greaterThan(v2Trade.outputAmount)
 }

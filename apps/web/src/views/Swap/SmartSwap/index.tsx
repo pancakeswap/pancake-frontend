@@ -215,14 +215,19 @@ export function SmartSwapForm() {
   }, [hasAmount, refreshBlockNumber])
 
   const smartRouterOn = !!tradeInfo && !tradeInfo.fallbackV2
+
+  // Switch from exact out to exact in if smart router trade is better and user already allowed to use smart swap
+  useEffect(() => {
+    if (smartRouterOn && independentField === Field.OUTPUT && v2Trade) {
+      onUserInput(Field.INPUT, v2Trade.inputAmount.toSignificant(6))
+    }
+  }, [smartRouterOn, independentField, onUserInput, v2Trade])
+
   const onUseSmartRouterChecked = useCallback(() => {
     // Reset approval submit state after switch between old router and new router
     setApprovalSubmitted(false)
     setAllowUseSmartRouter(!allowUseSmartRouter)
-    if (!allowUseSmartRouter && independentField === Field.OUTPUT && tradeInfo?.inputAmount) {
-      onUserInput(Field.INPUT, tradeInfo.inputAmount.toExact())
-    }
-  }, [onUserInput, allowUseSmartRouter, independentField, tradeInfo?.inputAmount])
+  }, [onUserInput, allowUseSmartRouter])
 
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
 
@@ -258,10 +263,7 @@ export function SmartSwapForm() {
               <SwapUI.SwitchButton
                 onClick={() => {
                   setApprovalSubmitted(false) // reset 2 step UI for approvals
-                  onSwitchTokens(!smartRouterOn)
-                  if (smartRouterOn) {
-                    onUserInput(Field.INPUT, tradeInfo?.outputAmount.toExact())
-                  }
+                  onSwitchTokens()
                   replaceBrowserHistory('inputCurrency', outputCurrencyId)
                   replaceBrowserHistory('outputCurrency', inputCurrencyId)
                 }}
