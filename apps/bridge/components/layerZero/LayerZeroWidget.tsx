@@ -12,21 +12,19 @@ declare global {
 }
 
 export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
-  const themeText = theme.isDark ? 'dark' : 'light'
-  const themeColor = theme.isDark ? darkTheme : lightTheme
-
   useEffect(() => {
-    setTimeout(() => {
-      if (window.aptosBridge) {
-        document.body.classList.add(themeText)
-        document.querySelector('aptos-bridge').setTheme(themeColor)
-      }
-    }, 400)
+    const themeText = theme.isDark ? 'dark' : 'light'
+    const themeColor = theme.isDark ? darkTheme : lightTheme
+
+    if (window.aptosBridge) {
+      document.body.classList.add(themeText)
+      document.querySelector('aptos-bridge').setTheme(themeColor)
+    }
 
     return () => {
       document.body.classList.remove(themeText)
     }
-  }, [themeColor, themeText])
+  }, [theme])
 
   return (
     <Box width="100%">
@@ -36,7 +34,8 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
           border-radius: 18px;
         }
 
-        .css-twekd7 {
+        .css-twekd7,
+        .css-iv85qm {
           margin-top: 32px !important;
         }
 
@@ -56,8 +55,8 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
           fill: #d9d9d9;
         }
 
-        .css-9k6lzc-LzButton,
-        .css-1s9mcc4-LzButton {
+        .css-1ay9vb9 .css-9k6lzc-LzButton,
+        .css-1ay9vb9 .css-1s9mcc4-LzButton {
           border: 1px solid #1fc7d4;
           border-radius: 8px;
           color: #1fc7d4;

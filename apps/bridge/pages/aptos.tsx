@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import styled, { useTheme } from 'styled-components'
 import { Flex } from '@pancakeswap/uikit'
@@ -21,6 +22,13 @@ const Page = styled.div`
 
 const AptosBridge = () => {
   const theme = useTheme()
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    customElements.whenDefined('aptos-bridge').then(() => {
+      setShow(true)
+    })
+  }, [])
 
   return (
     <Page>
@@ -33,7 +41,7 @@ const AptosBridge = () => {
         alignItems="center"
         height="100%"
       >
-        <LayerZeroWidget theme={theme} />
+        {show && <LayerZeroWidget theme={theme} />}
       </Flex>
     </Page>
   )
