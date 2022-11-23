@@ -1,43 +1,80 @@
-import { Currency } from '@pancakeswap/sdk'
-import { Pair, isStableSwapPair } from '@pancakeswap/smart-router/evm'
-import { Box, Flex } from '@pancakeswap/uikit'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency } from '@pancakeswap/sdk'
+import { isStableSwapPair, Pair } from '@pancakeswap/smart-router/evm'
+import { Box, Flex } from '@pancakeswap/uikit'
+import { CurrencyLogo } from 'components/Logo'
+import styled from 'styled-components'
 
 const RouterBox = styled(Flex)`
   position: relative;
-  min-width: 400px;
+  flex-direction: column;
+  min-height: 450px;
   &:before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    border-top: 3px dotted ${({ theme }) => theme.colors.inputSecondary};
-    transform: translateY(-50%);
+    top: 0%;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    border-left: 3px dotted ${({ theme }) => theme.colors.backgroundDisabled};
+    transform: translateX(-50%);
     z-index: 1;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    min-width: 400px;
+    min-height: auto;
+    flex-direction: row;
+    &:before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      border-left: none;
+      border-top: 3px dotted ${({ theme }) => theme.colors.backgroundDisabled};
+      transform: translateY(-50%);
+      z-index: 1;
+    }
   }
 `
 const RouterPoolBox = styled(Box)`
   position: relative;
-  padding: 3px;
-  border-radius: 20px;
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 8px;
   background-color: ${({ theme }) => theme.colors.backgroundDisabled};
+  z-index: 2;
+  svg,
+  img {
+    &:first-child {
+      margin-bottom: 2px;
+      ${({ theme }) => theme.mediaQueries.md} {
+        margin-bottom: 0px;
+        margin-right: 2px;
+      }
+    }
+  }
   &.isStableSwap {
     background-color: ${({ theme }) => theme.colors.secondary};
   }
-  transform: scale(1.48);
-  z-index: 2;
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+  }
 `
 const RouterTypeText = styled.div`
   font-size: 16px;
+  line-height: 20px;
   color: ${({ theme }) => theme.colors.text};
   position: absolute;
-  left: 50%;
-  transform: translate(-50%) scale(0.6);
-  top: calc(100%);
+  top: 50%;
+  left: calc(100% + 10px);
+  transform: translateY(-50%);
+  ${({ theme }) => theme.mediaQueries.md} {
+    left: 50%;
+    transform: translateX(-50%);
+    top: calc(100% + 3px);
+  }
 `
 
 const CurrencyLogoWrapper = styled.div`
@@ -73,15 +110,12 @@ export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, path, inputCu
               key={`tradingPairIds${isStableSwap ? p.stableSwapAddress : p.liquidityToken.address}`}
               className={isStableSwap && 'isStableSwap'}
             >
-              <DoubleCurrencyLogo
-                currency0={index === 0 ? inputCurrency : path[index]}
-                currency1={index === pairs.length - 1 ? outputCurrency : path[index + 1]}
-              />
+              <CurrencyLogo size="32px" currency={index === 0 ? inputCurrency : path[index]} />
+              <CurrencyLogo size="32px" currency={index === pairs.length - 1 ? outputCurrency : path[index + 1]} />
               <RouterTypeText>{isStableSwap ? t('StableSwap') : t('V2')}</RouterTypeText>
             </RouterPoolBox>
           )
         })}
-
       <CurrencyLogoWrapper>
         <CurrencyLogo size="44px" currency={outputCurrency} />
       </CurrencyLogoWrapper>
