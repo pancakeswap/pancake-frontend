@@ -216,6 +216,8 @@ export function SmartSwapForm() {
 
   const smartRouterOn = !!tradeInfo && !tradeInfo.fallbackV2
   const onUseSmartRouterChecked = useCallback(() => {
+    // Reset approval submit state after switch between old router and new router
+    setApprovalSubmitted(false)
     setAllowUseSmartRouter(!allowUseSmartRouter)
     if (!allowUseSmartRouter && independentField === Field.OUTPUT && tradeInfo?.inputAmount) {
       onUserInput(Field.INPUT, tradeInfo.inputAmount.toExact())
