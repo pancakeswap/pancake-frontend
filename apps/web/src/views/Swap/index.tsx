@@ -15,6 +15,7 @@ import StableSwapFormContainer from './StableSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import SwapTab, { SwapType } from './components/SwapTab'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
+import AkkaSwapForm from './AkkaSwap/components/AkkaSwapForm'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -74,9 +75,9 @@ export default function Swap() {
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
                 <SwapTab>
-                  {(swapTypeState) =>
-                    swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <SwapForm />
-                  }
+                  {(swapTypeState) => (
+                    swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <AkkaSwapForm />
+                  )}
                 </SwapTab>
               </AppBody>
             </StyledInputCurrencyWrapper>

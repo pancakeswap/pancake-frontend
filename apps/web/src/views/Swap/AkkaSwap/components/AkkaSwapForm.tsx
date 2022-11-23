@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState, useContext } from 'react'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
-    Text,
-    ArrowDownIcon,
-    Box,
-    IconButton,
-    ArrowUpDownIcon,
-    Skeleton,
-    Flex,
-    Message,
-    MessageText,
-    Swap as SwapUI,
+  Text,
+  ArrowDownIcon,
+  Box,
+  IconButton,
+  ArrowUpDownIcon,
+  Skeleton,
+  Flex,
+  Message,
+  MessageText,
+  Swap as SwapUI,
 } from '@pancakeswap/uikit'
 import InfoTooltip from '@pancakeswap/uikit/src/components/Timeline/InfoTooltip'
 
@@ -38,6 +38,10 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import CurrencyInputHeader from '../../components/CurrencyInputHeader'
 import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
 import { Wrapper } from '../../components/styleds'
+import { useAkkaRouterRoute } from '../hooks/useAkkaRouterApi'
+import AkkaSwapCommitButton from './AkkaSwapCommitButton'
+import { useApproveCallbackFromAkkaTrade } from '../hooks/useApproveCallbackFromAkkaTrade'
+import { useDerivedAkkaSwapInfo } from '../hooks/useDerivedAkkaSwapInfo'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -64,194 +68,222 @@ const SwitchIconButton = styled(IconButton)`
 `
 
 const AkkaSwapForm = () => {
-    const { t } = useTranslation()
-    const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-    const { account } = useWeb3React()
+  const { t } = useTranslation()
+  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
+  const { account } = useWeb3React()
 
-    // for expert mode
-    const [isExpertMode] = useExpertModeManager()
+  // for expert mode
+  const [isExpertMode] = useExpertModeManager()
 
-    // get custom setting values for user
-    const [allowedSlippage] = useUserSlippageTolerance()
+  // get custom setting values for user
+  const [allowedSlippage] = useUserSlippageTolerance()
 
-    // swap state & price data
-    const {
-        independentField,
-        typedValue,
-        [Field.INPUT]: { currencyId: inputCurrencyId },
-        [Field.OUTPUT]: { currencyId: outputCurrencyId },
-    } = useSwapState()
-    const inputCurrency = useCurrency(inputCurrencyId)
-    const outputCurrency = useCurrency(outputCurrencyId)
+  // swap state & price data
+  const {
+    independentField,
+    typedValue,
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+  } = useSwapState()
+  const inputCurrency = useCurrency(inputCurrencyId)
+  const outputCurrency = useCurrency(outputCurrencyId)
 
-    const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers()
-    const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
-    const handleTypeInput = useCallback(
-        (value: string) => {
-            onUserInput(Field.INPUT, value)
-        },
-        [onUserInput],
-    )
-    const currencies: { [field in Field]?: Currency } = {
-        [Field.INPUT]: inputCurrency ?? undefined,
-        [Field.OUTPUT]: outputCurrency ?? undefined,
+  const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers()
+  const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
+  const handleTypeInput = useCallback(
+    (value: string) => {
+      onUserInput(Field.INPUT, value)
+    },
+    [onUserInput],
+  )
+  const currencies: { [field in Field]?: Currency } = {
+    [Field.INPUT]: inputCurrency ?? undefined,
+    [Field.OUTPUT]: outputCurrency ?? undefined,
+  }
+
+  const handleInputSelect = useCallback(
+    (newCurrencyInput) => {
+      onCurrencySelection(Field.INPUT, newCurrencyInput)
+
+      const newCurrencyInputId = currencyId(newCurrencyInput)
+      if (newCurrencyInputId === outputCurrencyId) {
+        replaceBrowserHistory('outputCurrency', inputCurrencyId)
+      }
+      replaceBrowserHistory('inputCurrency', newCurrencyInputId)
+    },
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection],
+  )
+
+  const {
+    v2Trade: trade,
+    currencyBalances,
+    parsedAmount,
+    inputError: swapInputError,
+  } = useDerivedAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency)
+
+  const parsedAmounts = {
+    [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : null,
+    [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : null,
+  }
+  const formattedAmounts = {
+    [independentField]: typedValue,
+    [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+  }
+  const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
+  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+
+  const handleMaxInput = useCallback(() => {
+    if (maxAmountInput) {
+      onUserInput(Field.INPUT, maxAmountInput.toExact())
     }
+  }, [maxAmountInput, onUserInput])
 
-    const handleInputSelect = useCallback(
-        (newCurrencyInput) => {
-            onCurrencySelection(Field.INPUT, newCurrencyInput)
+  const handleOutputSelect = useCallback(
+    (newCurrencyOutput) => {
+      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
 
-            const newCurrencyInputId = currencyId(newCurrencyInput)
-            if (newCurrencyInputId === outputCurrencyId) {
-                replaceBrowserHistory('outputCurrency', inputCurrencyId)
-            }
-            replaceBrowserHistory('inputCurrency', newCurrencyInputId)
-        },
-        [inputCurrencyId, outputCurrencyId, onCurrencySelection],
-    )
-    let parsedAmount: CurrencyAmount<Currency> | undefined
-    const currencyBalances = {}
+      const newCurrencyOutputId = currencyId(newCurrencyOutput)
+      if (newCurrencyOutputId === inputCurrencyId) {
+        replaceBrowserHistory('inputCurrency', outputCurrencyId)
+      }
+      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
+    },
 
-    const parsedAmounts = {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : null,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : null,
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection],
+  )
+  const handleTypeOutput = useCallback(
+    (value: string) => {
+      onUserInput(Field.OUTPUT, value)
+    },
+    [onUserInput],
+  )
+  const handlePercentInput = useCallback(
+    (percent) => {
+      if (maxAmountInput) {
+        onUserInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
+      }
+    },
+    [maxAmountInput, onUserInput],
+  )
+
+  const hasAmount = Boolean(parsedAmount)
+
+  const onRefreshPrice = useCallback(() => {
+    if (hasAmount) {
+      refreshBlockNumber()
     }
-    const formattedAmounts = {
-        [independentField]: typedValue,
-        [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
-    }
-    const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-    const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+  }, [hasAmount, refreshBlockNumber])
 
-    const handleMaxInput = useCallback(() => {
-        if (maxAmountInput) {
-            onUserInput(Field.INPUT, maxAmountInput.toExact())
+  // check whether the user has approved the router on the input token
+  const [approval, approveCallback] = useApproveCallbackFromAkkaTrade(inputCurrency, trade?.amountIn)
+
+  // check if user has gone through approval process, used to show two step buttons, reset on token change
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
+
+  // mark when a user has submitted an approval, reset onTokenSelection for input field
+  useEffect(() => {
+    if (approval === ApprovalState.PENDING) {
+      setApprovalSubmitted(true)
+    }
+  }, [approval, approvalSubmitted])
+  return (
+    <>
+      <CurrencyInputHeader
+        title={
+          <Flex>
+            {t('Akka')}
+            <InfoTooltip ml="4px" text={t('Akka')} />
+          </Flex>
         }
-    }, [maxAmountInput, onUserInput])
+        subtitle={t('Trade tokens in an instant')}
+        hasAmount={hasAmount}
+        onRefreshPrice={onRefreshPrice}
+      />
+      <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
+        <AutoColumn gap="sm">
+          <CurrencyInputPanel
+            label={independentField === Field.OUTPUT && t('From')}
+            value={formattedAmounts[Field.INPUT]}
+            showMaxButton={!atMaxAmountInput}
+            showQuickInputButton
+            currency={currencies[Field.INPUT]}
+            onUserInput={handleTypeInput}
+            onPercentInput={handlePercentInput}
+            onMax={handleMaxInput}
+            onCurrencySelect={handleInputSelect}
+            otherCurrency={currencies[Field.OUTPUT]}
+            id="swap-currency-input"
+            showCommonBases
+            commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+          />
 
-    const handleOutputSelect = useCallback(
-        (newCurrencyOutput) => {
-            onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
+          <AutoColumn justify="space-between">
+            <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
+              <SwitchIconButton
+                variant="light"
+                scale="sm"
+                onClick={() => {
+                  onSwitchTokens()
+                }}
+              >
+                <ArrowDownIcon
+                  className="icon-down"
+                  color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                />
+                <ArrowUpDownIcon
+                  className="icon-up-down"
+                  color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
+                />
+              </SwitchIconButton>
+            </AutoRow>
+          </AutoColumn>
+          <CurrencyInputPanel
+            value={formattedAmounts[Field.OUTPUT]}
+            onUserInput={handleTypeOutput}
+            label={independentField === Field.INPUT && t('To')}
+            showMaxButton={false}
+            currency={currencies[Field.OUTPUT]}
+            onCurrencySelect={handleOutputSelect}
+            otherCurrency={currencies[Field.INPUT]}
+            id="swap-currency-output"
+            showCommonBases
+            commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+          />
 
-            const newCurrencyOutputId = currencyId(newCurrencyOutput)
-            if (newCurrencyOutputId === inputCurrencyId) {
-                replaceBrowserHistory('inputCurrency', outputCurrencyId)
-            }
-            replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
-        },
-
-        [inputCurrencyId, outputCurrencyId, onCurrencySelection],
-    )
-    const handleTypeOutput = useCallback(
-        (value: string) => {
-            onUserInput(Field.OUTPUT, value)
-        },
-        [onUserInput],
-    )
-    const handlePercentInput = useCallback(
-        (percent) => {
-            if (maxAmountInput) {
-                onUserInput(Field.INPUT, maxAmountInput.multiply(new Percent(percent, 100)).toExact())
-            }
-        },
-        [maxAmountInput, onUserInput],
-    )
-
-    const hasAmount = Boolean(parsedAmount)
-
-    const onRefreshPrice = useCallback(() => {
-        if (hasAmount) {
-            refreshBlockNumber()
-        }
-    }, [hasAmount, refreshBlockNumber])
-    return (
-        <>
-            <CurrencyInputHeader
-                title={
-                    <Flex>
-                        {t('Akka')}
-                        <InfoTooltip
-                            ml="4px"
-                            text={t('Akka')}
-                        />
-                    </Flex>
-                }
-                subtitle={t('Trade tokens in an instant')}
-                hasAmount={hasAmount}
-                onRefreshPrice={onRefreshPrice}
-            />
-            <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
-                <AutoColumn gap="sm">
-                    <CurrencyInputPanel
-                        label={independentField === Field.OUTPUT && t('From')}
-                        value={formattedAmounts[Field.INPUT]}
-                        showMaxButton={!atMaxAmountInput}
-                        showQuickInputButton
-                        currency={currencies[Field.INPUT]}
-                        onUserInput={handleTypeInput}
-                        onPercentInput={handlePercentInput}
-                        onMax={handleMaxInput}
-                        onCurrencySelect={handleInputSelect}
-                        otherCurrency={currencies[Field.OUTPUT]}
-                        id="swap-currency-input"
-                        showCommonBases
-                        commonBasesType={CommonBasesType.SWAP_LIMITORDER}
-                    />
-
-                    <AutoColumn justify="space-between">
-                        <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
-                            <SwitchIconButton
-                                variant="light"
-                                scale="sm"
-                                onClick={() => {
-                                    onSwitchTokens()
-                                }}
-                            >
-                                <ArrowDownIcon
-                                    className="icon-down"
-                                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                                />
-                                <ArrowUpDownIcon
-                                    className="icon-up-down"
-                                    color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? 'primary' : 'text'}
-                                />
-                            </SwitchIconButton>
-                        </AutoRow>
-                    </AutoColumn>
-                    <CurrencyInputPanel
-                        value={formattedAmounts[Field.OUTPUT]}
-                        onUserInput={handleTypeOutput}
-                        label={independentField === Field.INPUT && t('To')}
-                        showMaxButton={false}
-                        currency={currencies[Field.OUTPUT]}
-                        onCurrencySelect={handleOutputSelect}
-                        otherCurrency={currencies[Field.INPUT]}
-                        id="swap-currency-output"
-                        showCommonBases
-                        commonBasesType={CommonBasesType.SWAP_LIMITORDER}
-                    />
-
-                    <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
-                        <RowBetween align="center">
-                            <Label>{t('Slippage Tolerance')}</Label>
-                            <Text bold color="primary">
-                                {allowedSlippage / 100}%
-                            </Text>
-                        </RowBetween>
-                    </AutoColumn>
-                    {typedValue ? null : (
-                        <AutoColumn>
-                            <Message variant="warning" mb="16px">
-                                <MessageText>{t('Akka fee')}</MessageText>
-                            </Message>
-                        </AutoColumn>
-                    )}
-                </AutoColumn>
-                <Box mt="0.25rem">
-                </Box>
-            </Wrapper>
-        </>
-    )
+          <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
+            <RowBetween align="center">
+              <Label>{t('Slippage Tolerance')}</Label>
+              <Text bold color="primary">
+                {allowedSlippage / 100}%
+              </Text>
+            </RowBetween>
+          </AutoColumn>
+          {typedValue ? null : (
+            <AutoColumn>
+              <Message variant="warning" mb="16px">
+                <MessageText>{t('Akka fee')}</MessageText>
+              </Message>
+            </AutoColumn>
+          )}
+        </AutoColumn>
+        <Box mt="0.25rem">
+          <AkkaSwapCommitButton
+            account={account}
+            approval={approval}
+            approveCallback={approveCallback}
+            approvalSubmitted={approvalSubmitted}
+            currencies={currencies}
+            isExpertMode={isExpertMode}
+            trade={trade}
+            swapInputError={swapInputError}
+            currencyBalances={currencyBalances}
+            allowedSlippage={allowedSlippage}
+            onUserInput={onUserInput}
+          />
+        </Box>
+      </Wrapper>
+    </>
+  )
 }
 
 export default AkkaSwapForm
