@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { Pair } from '@pancakeswap/smart-router/evm'
-import { Modal, ModalV2, QuestionHelper, SearchIcon, Text } from '@pancakeswap/uikit'
+import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex } from '@pancakeswap/uikit'
 
 import { AutoColumn } from 'components/Layout/Column'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -155,9 +155,21 @@ export function AdvancedSwapDetails({
                   />
                 </span>
                 <SwapRoute path={path} />
-                <SearchIcon onClick={() => setIsModalOpen(true)} />
+                <SearchIcon style={{ cursor: 'pointer' }} onClick={() => setIsModalOpen(true)} />
                 <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
-                  <Modal title={t('Route')} onDismiss={() => setIsModalOpen(false)}>
+                  <Modal
+                    title={
+                      <Flex justifyContent="center">
+                        {t('Route')}{' '}
+                        <QuestionHelper
+                          text={t('Routing through these tokens resulted in the best price for your trade.')}
+                          ml="4px"
+                          placement="top-start"
+                        />
+                      </Flex>
+                    }
+                    onDismiss={() => setIsModalOpen(false)}
+                  >
                     <RouterViewer
                       inputCurrency={inputAmount.currency}
                       pairs={pairs}
