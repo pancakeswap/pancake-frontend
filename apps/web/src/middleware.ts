@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getBucket, INFO_BUCKETS } from 'utils/buckets'
+import { INFO_BUCKETS_COOKIES } from './config/constants/info'
 
 // Sanctioned Countries: Belarus, Cuba, Democratic Republic of Congo, Iran, Iraq, North Korea, Sudan, Syria, Zimbabwe.
 const BLOCK_COUNTRIES = { BY: 'BY', CU: 'CU', CD: 'CD', IR: 'IR', IQ: 'IQ', KP: 'KP', SD: 'SD', SY: 'SY', ZW: 'ZW' }
 
 // Sanctioned Regions: Crimea
 const BLOCK_REGIONS = { 'UA-43': 'UA-43' }
-
-const INFO_BUCKETS_COOKIES = 'bucket-info-2'
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()

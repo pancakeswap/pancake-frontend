@@ -1,17 +1,17 @@
-import orderBy from 'lodash/orderBy'
 import { INFO_CLIENT, INFO_NR_CLIENT } from 'config/constants/endpoints'
-import Cookies from 'js-cookie'
-import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
-import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { ONE_DAY_UNIX, ONE_HOUR_SECONDS, INFO_BUCKETS_COOKIES } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
-import { Block } from 'state/info/types'
-import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
+import Cookies from 'js-cookie'
 import mapValues from 'lodash/mapValues'
+import orderBy from 'lodash/orderBy'
+import { Block } from 'state/info/types'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
 import { PairDataTimeWindowEnum } from '../types'
 
 const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
-  const bucketInfo = Cookies.get('bucket-info-2') // sf or nr
+  const bucketInfo = Cookies.get(INFO_BUCKETS_COOKIES) // sf or nr
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
