@@ -161,6 +161,7 @@ export function AdvancedSwapDetails({
                     <RouterViewer
                       inputCurrency={inputAmount.currency}
                       pairs={pairs}
+                      path={path}
                       outputCurrency={outputAmount.currency}
                     />
                   </Modal>

@@ -54,9 +54,10 @@ interface RouterViewerProps {
   inputCurrency?: Currency
   outputCurrency?: Currency
   pairs?: Pair[]
+  path?: Currency[]
 }
 
-export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, inputCurrency, outputCurrency }) => {
+export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, path, inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
   return (
     <RouterBox justifyContent="space-between" alignItems="center">
@@ -64,14 +65,18 @@ export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, inputCurrency
         <CurrencyLogo size="44px" currency={inputCurrency} />
       </CurrencyLogoWrapper>
       {pairs &&
-        pairs.map((p) => {
+        path &&
+        pairs.map((p, index) => {
           const isStableSwap = isStableSwapPair(p)
           return (
             <RouterPoolBox
               key={`tradingPairIds${isStableSwap ? p.stableSwapAddress : p.liquidityToken.address}`}
               className={isStableSwap && 'isStableSwap'}
             >
-              <DoubleCurrencyLogo currency0={p.token0} currency1={p.token1} />
+              <DoubleCurrencyLogo
+                currency0={index === 0 ? inputCurrency : path[index]}
+                currency1={index === pairs.length - 1 ? outputCurrency : path[index + 1]}
+              />
               <RouterTypeText>{isStableSwap ? t('StableSwap') : t('V2')}</RouterTypeText>
             </RouterPoolBox>
           )
