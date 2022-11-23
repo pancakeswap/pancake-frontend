@@ -224,6 +224,8 @@ export function SmartSwapForm() {
     }
   }, [onUserInput, allowUseSmartRouter, independentField, tradeInfo?.inputAmount])
 
+  const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
+
   return (
     <>
       <CurrencyInputHeader
@@ -264,7 +266,7 @@ export function SmartSwapForm() {
                   replaceBrowserHistory('outputCurrency', inputCurrencyId)
                 }}
               />
-              {recipient === null && !showWrap && isExpertMode ? (
+              {allowRecipient && recipient === null ? (
                 <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                   {t('+ Add a send (optional)')}
                 </Button>
@@ -314,7 +316,7 @@ export function SmartSwapForm() {
             </AutoColumn>
           )}
 
-          {isExpertMode && recipient !== null && !showWrap ? (
+          {allowRecipient && recipient !== null ? (
             <>
               <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
                 <ArrowWrapper clickable={false}>
