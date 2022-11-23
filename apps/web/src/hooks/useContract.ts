@@ -348,8 +348,7 @@ export const usePotterytDrawContract = () => {
 }
 
 export function useZapContract(withSignerIfPossible = true) {
-  const { chainId } = useActiveChainId()
-  return useContract<Zap>(getZapAddress(chainId), zapAbi, withSignerIfPossible)
+  return useContract<Zap>(getZapAddress(), zapAbi, withSignerIfPossible)
 }
 
 export function useBCakeFarmBoosterContract(withSignerIfPossible = true) {

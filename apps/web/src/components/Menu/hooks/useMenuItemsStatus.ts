@@ -6,14 +6,12 @@ import { PotteryDepositStatus } from 'state/types'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { usePotteryStatus } from './usePotteryStatus'
 import { useCompetitionStatus } from './useCompetitionStatus'
-import { useVotingStatus } from './useVotingStatus'
 
 export const useMenuItemsStatus = (): Record<string, string> => {
   const currentBlock = useChainCurrentBlock(ChainId.BSC)
   const activeIfo = useActiveIfoWithBlocks()
   const competitionStatus = useCompetitionStatus()
   const potteryStatus = usePotteryStatus()
-  const votingStatus = useVotingStatus()
 
   const ifoStatus =
     currentBlock && activeIfo && activeIfo.endBlock > currentBlock
@@ -27,9 +25,6 @@ export const useMenuItemsStatus = (): Record<string, string> => {
       ...(potteryStatus === PotteryDepositStatus.BEFORE_LOCK && {
         '/pottery': 'pot_open',
       }),
-      ...(votingStatus && {
-        '/voting': 'vote_now',
-      }),
     }
-  }, [competitionStatus, ifoStatus, potteryStatus, votingStatus])
+  }, [competitionStatus, ifoStatus, potteryStatus])
 }

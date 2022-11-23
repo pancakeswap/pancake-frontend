@@ -71,6 +71,8 @@ enum Steps {
   Add,
 }
 
+const zapAddress = getZapAddress()
+
 export default function AddLiquidity({ currencyA, currencyB }) {
   const router = useRouter()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
@@ -78,7 +80,6 @@ export default function AddLiquidity({ currencyA, currencyB }) {
   const addPair = usePairAdder()
   const [zapMode] = useZapModeManager()
   const expertMode = useIsExpertMode()
-  const zapAddress = getZapAddress(chainId)
 
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
 
@@ -345,7 +346,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
-  const zapContract = useZapContract()
+  const zapContract = useZapContract(true)
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal

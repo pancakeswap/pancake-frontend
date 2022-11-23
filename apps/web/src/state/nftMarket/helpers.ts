@@ -2,7 +2,6 @@ import { gql, request } from 'graphql-request'
 import { stringify } from 'querystring'
 import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
 import { multicallv2 } from 'utils/multicall'
-import { isAddress } from 'utils'
 import erc721Abi from 'config/abi/erc721.json'
 import range from 'lodash/range'
 import groupBy from 'lodash/groupBy'
@@ -10,13 +9,10 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { getNftMarketContract } from 'utils/contractHelpers'
 import { NOT_ON_SALE_SELLER } from 'config/constants'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
-import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { getNftMarketAddress } from 'utils/addressHelpers'
 import nftMarketAbi from 'config/abi/nftMarket.json'
 import fromPairs from 'lodash/fromPairs'
-import pickBy from 'lodash/pickBy'
-import lodashSize from 'lodash/size'
 import {
   ApiCollection,
   ApiCollections,
@@ -142,45 +138,6 @@ export const getCollectionApi = async (collectionAddress: string): Promise<ApiCo
 }
 
 /**
- * Fetch static data for all nfts in a collection using the API
- * @param collectionAddress
- * @param size
- * @param page
- * @returns
- */
-export const getNftsFromCollectionApi = async (
-  collectionAddress: string,
-  size = 100,
-  page = 1,
-): Promise<ApiResponseCollectionTokens> => {
-  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
-  const requestPath = `${API_NFT}/collections/${collectionAddress}/tokens${
-    !isPBCollection ? `?page=${page}&size=${size}` : ``
-  }`
-
-  try {
-    const res = await fetch(requestPath)
-    if (res.ok) {
-      const data = await res.json()
-      const filteredAttributesDistribution = pickBy(data.attributesDistribution, Boolean)
-      const filteredData = pickBy(data.data, Boolean)
-      const filteredTotal = lodashSize(filteredData)
-      return {
-        ...data,
-        total: filteredTotal,
-        attributesDistribution: filteredAttributesDistribution,
-        data: filteredData,
-      }
-    }
-    console.error(`API: Failed to fetch NFT tokens for ${collectionAddress} collection`, res.statusText)
-    return null
-  } catch (error) {
-    console.error(`API: Failed to fetch NFT tokens for ${collectionAddress} collection`, error)
-    return null
-  }
-}
-
-/**
  * Fetch a single NFT using the API
  * @param collectionAddress
  * @param tokenId
@@ -278,80 +235,6 @@ export const getCollectionsSg = async (): Promise<CollectionMarketDataBaseFields
   }
 }
 
-/**
- * Fetch market data for nfts in a collection using the Subgraph
- * @param collectionAddress
- * @param first
- * @param skip
- * @returns
- */
-export const getNftsFromCollectionSg = async (
-  collectionAddress: string,
-  first = 1000,
-  skip = 0,
-): Promise<TokenMarketData[]> => {
-  // Squad to be sorted by tokenId as this matches the order of the paginated API return. For PBs - get the most recent,
-  const isPBCollection = isAddress(collectionAddress) === pancakeBunniesAddress
-
-  try {
-    const res = await request(
-      GRAPH_API_NFTMARKET,
-      gql`
-        query getNftCollectionMarketData($collectionAddress: String!) {
-          collection(id: $collectionAddress) {
-            id
-            nfts(orderBy:${isPBCollection ? 'updatedAt' : 'tokenId'}, skip: $skip, first: $first) {
-             ${baseNftFields}
-            }
-          }
-        }
-      `,
-      { collectionAddress: collectionAddress.toLowerCase(), skip, first },
-    )
-    return res.collection.nfts
-  } catch (error) {
-    console.error('Failed to fetch NFTs from collection', error)
-    return []
-  }
-}
-
-/**
- * Fetch market data for PancakeBunnies NFTs by bunny id using the Subgraph
- * @param bunnyId - bunny id to query
- * @param existingTokenIds - tokens that are already loaded into redux
- * @returns
- */
-export const getNftsByBunnyIdSg = async (
-  bunnyId: string,
-  existingTokenIds: string[],
-  orderDirection: 'asc' | 'desc',
-): Promise<TokenMarketData[]> => {
-  try {
-    const where =
-      existingTokenIds.length > 0
-        ? { otherId: bunnyId, isTradable: true, tokenId_not_in: existingTokenIds }
-        : { otherId: bunnyId, isTradable: true }
-    const res = await request(
-      GRAPH_API_NFTMARKET,
-      gql`
-        query getNftsByBunnyIdSg($collectionAddress: String!, $where: NFT_filter, $orderDirection: String!) {
-          nfts(first: 30, where: $where, orderBy: currentAskPrice, orderDirection: $orderDirection) {
-            ${baseNftFields}
-          }
-        }
-      `,
-      {
-        collectionAddress: pancakeBunniesAddress.toLowerCase(),
-        where,
-        orderDirection,
-      },
-    )
-    return res.nfts
-  } catch (error) {
-    console.error(`Failed to fetch collection NFTs for bunny id ${bunnyId}`, error)
-    return []
-  }
-}
 
 /**
  * Fetch market data for PancakeBunnies NFTs by bunny id using the Subgraph
@@ -904,23 +787,6 @@ export const getPancakeBunniesAttributesField = (bunnyId: string) => {
       displayType: null,
     },
   ]
-}
-
-export const combineApiAndSgResponseToNftToken = (
-  apiMetadata: ApiSingleTokenData,
-  marketData: TokenMarketData,
-  attributes: NftAttribute[],
-) => {
-  return {
-    tokenId: marketData.tokenId,
-    name: apiMetadata.name,
-    description: apiMetadata.description,
-    collectionName: apiMetadata.collection.name,
-    collectionAddress: pancakeBunniesAddress,
-    image: apiMetadata.image,
-    marketData,
-    attributes,
-  }
 }
 
 export const fetchWalletTokenIdsForCollections = async (
