@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import useSWR from 'swr'
 import { useIfoCreditAddressContract } from 'hooks/useContract'
 import { ChainId } from '@pancakeswap/sdk'
-import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import { useChainCurrentBlock } from 'state/block/hooks'
 import { getVaultPosition, VaultPosition } from 'utils/cakePool'
@@ -62,13 +62,13 @@ const useCakeBenefits = () => {
           undefined,
           undefined,
           currentOverdueFeeAsBigNumber.plus(currentPerformanceFeeAsBigNumber).plus(userBoostedSharesAsBignumber),
-        ).cakeAsDisplayBalance
+        ).cakeAsNumberBalance.toLocaleString('en', { maximumFractionDigits: 3 })
 
     let iCake = ''
     let vCake = { vaultScore: '0', totalScore: '0' }
     if (lockPosition === VaultPosition.Locked) {
       const credit = await ifoCreditAddressContract.getUserCredit(account)
-      iCake = getFullDisplayBalance(new BigNumber(credit.toString()), 18, 3)
+      iCake = getBalanceNumber(new BigNumber(credit.toString())).toLocaleString('en', { maximumFractionDigits: 3 })
 
       const eligiblePools = await getActivePools(currentBscBlock)
       const poolAddresses = eligiblePools.map(({ contractAddress }) => getAddress(contractAddress, ChainId.BSC))
@@ -81,8 +81,10 @@ const useCakeBenefits = () => {
         currentBscBlock,
       )
       vCake = {
-        vaultScore: cakeVaultBalance[account] ? cakeVaultBalance[account].toFixed(3) : '0',
-        totalScore: total[account] ? total[account].toFixed(3) : '0',
+        vaultScore: cakeVaultBalance[account]
+          ? cakeVaultBalance[account].toLocaleString('en', { maximumFractionDigits: 3 })
+          : '0',
+        totalScore: total[account] ? total[account].toLocaleString('en', { maximumFractionDigits: 3 }) : '0',
       }
     }
 
