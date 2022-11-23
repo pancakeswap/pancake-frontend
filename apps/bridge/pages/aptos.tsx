@@ -27,7 +27,7 @@ const AptosBridge = () => {
       <Script crossOrigin="anonymous" src={LAYER_ZERO_JS.src} integrity={LAYER_ZERO_JS.integrity} />
       <Flex
         flexDirection="column"
-        width={['100%', null, '480px']}
+        width={['100%', null, '420px']}
         bg="backgroundAlt"
         borderRadius={[0, null, 24]}
         alignItems="center"
