@@ -42,6 +42,15 @@ const farms: SerializedFarmConfig[] = [
     boosted: true,
   },
   {
+    pid: 56,
+    v1pid: 442,
+    lpSymbol: 'TRX-BUSD LP',
+    lpAddress: '0xb5D108578Be3750209d1b3A8f45FFee8C5a75146',
+    token: bscTokens.trx,
+    quoteToken: bscTokens.busd,
+    boosted: true,
+  },
+  {
     pid: 3,
     v1pid: 252,
     lpSymbol: 'BUSD-BNB LP',
@@ -50,7 +59,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.wbnb,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
-
   {
     pid: 109,
     lpSymbol: 'XCAD-BUSD LP',
@@ -617,14 +625,6 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'RUSD-BUSD LP',
     lpAddress: '0x59FaC9e98479fc9979aE2a0C7422Af50bCBB9B26',
     token: bscTokens.rusd,
-    quoteToken: bscTokens.busd,
-  },
-  {
-    pid: 56,
-    v1pid: 442,
-    lpSymbol: 'TRX-BUSD LP',
-    lpAddress: '0xb5D108578Be3750209d1b3A8f45FFee8C5a75146',
-    token: bscTokens.trx,
     quoteToken: bscTokens.busd,
   },
   {
