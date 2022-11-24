@@ -68,7 +68,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const { amountTokenCommittedInLP } = userPoolCharacteristics
   const { t } = useTranslation()
   const executeTransaction = useSimulationAndSendTransaction()
-  const pool = useIfoPool()
+  const pool = useIfoPool(ifo)
 
   const [value, setValue] = useState('')
 
@@ -91,13 +91,14 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const isWarning = useMemo(() => {
     return (
       valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) ||
-      valueWithTokenDecimals.isGreaterThan(maximumTokenEntry)
+      (limitPerUserInLP.isGreaterThan(0) && valueWithTokenDecimals.isGreaterThan(maximumTokenEntry))
     )
-  }, [maximumTokenEntry, userCurrencyBalance, valueWithTokenDecimals])
+  }, [maximumTokenEntry, limitPerUserInLP, userCurrencyBalance, valueWithTokenDecimals])
 
   const { isConfirmed, isConfirming, handleConfirm } = useConfirmTransaction({
     onConfirm: () => {
       const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
+
       const payload = ifoDeposit([valueWithTokenDecimals.toFixed()], [raisingCoin, offeringCoin, uid])
 
       return executeTransaction(payload)

@@ -8,7 +8,7 @@ export const ifos: Ifo[] = [
     id: 'eth',
     cIFO: false,
     address: '',
-    isActive: true,
+    isActive: false,
     name: 'Moon',
     poolUnlimited: {
       saleAmount: '300,000,000 ETH',
