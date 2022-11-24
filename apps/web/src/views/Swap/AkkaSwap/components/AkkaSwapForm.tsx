@@ -42,6 +42,7 @@ import { useAkkaRouterArgs } from '../hooks/useAkkaRouterApi'
 import AkkaSwapCommitButton from './AkkaSwapCommitButton'
 import { useApproveCallbackFromAkkaTrade } from '../hooks/useApproveCallbackFromAkkaTrade'
 import { useAkkaSwapInfo } from '../hooks/useAkkaSwapInfo'
+import AkkaAdvancedSwapDetailsDropdown from './AkkaAdvancedSwapDetailsDropdown'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -88,7 +89,8 @@ const AkkaSwapForm = () => {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const { onSwitchTokens, onCurrencySelection, onUserInput } = useSwapActionHandlers()
+  const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
+
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
   const handleTypeInput = useCallback(
     (value: string) => {
@@ -100,7 +102,11 @@ const AkkaSwapForm = () => {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
   }
-
+  const onSwitchTokens = () => {
+    onCurrencySelection(Field.INPUT, outputCurrency)
+    onCurrencySelection(Field.OUTPUT, inputCurrency)
+    onUserInput(Field.INPUT, formattedAmounts[Field.OUTPUT])
+  }
   const handleInputSelect = useCallback(
     (newCurrencyInput) => {
       onCurrencySelection(Field.INPUT, newCurrencyInput)
@@ -119,7 +125,7 @@ const AkkaSwapForm = () => {
     currencyBalances,
     parsedAmount,
     inputError: swapInputError,
-  } = useAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency,allowedSlippage)
+  } = useAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, allowedSlippage)
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : null,
@@ -217,7 +223,7 @@ const AkkaSwapForm = () => {
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
-          <AutoColumn justify="space-between" >
+          <AutoColumn justify="space-between">
             <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
               <SwitchIconButton
                 variant="light"
@@ -283,6 +289,7 @@ const AkkaSwapForm = () => {
           />
         </Box>
       </Wrapper>
+      <AkkaAdvancedSwapDetailsDropdown route={akkaRouterTrade.route} />
     </>
   )
 }
