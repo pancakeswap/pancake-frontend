@@ -56,7 +56,7 @@ const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse
       const token = pair.quotoTokenAddress.toLowerCase()
       const quoteToken = pair.baseTokenAddress.toLowerCase()
       const [address0, address1] = Pair.parseType(address)
-      if (address0 === quoteToken && address1 === token) {
+      if ((address0 === quoteToken && address1 === token) || (address0 === token && address1 === quoteToken)) {
         return pair
       }
     })
@@ -174,10 +174,10 @@ const fetchAndUpdateAptosLPsAPR = async () => {
     allAprs = { ...allAprs, ...aprs }
   }
 
-  fs.writeFile(`apps/aptos/config/constants/lpAprs/1.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
-    if (err) throw err
-    console.info(` ✅ - lpAprs.json has been updated!`)
-  })
+  // fs.writeFile(`apps/aptos/config/constants/lpAprs/1.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
+  //   if (err) throw err
+  //   console.info(` ✅ - lpAprs.json has been updated!`)
+  // })
 }
 
 fetchAndUpdateAptosLPsAPR()
