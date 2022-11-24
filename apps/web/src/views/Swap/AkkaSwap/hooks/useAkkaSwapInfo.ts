@@ -5,11 +5,9 @@ import { isAddress } from 'utils'
 
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { Field } from 'state/swap/actions'
-import { computeSlippageAdjustedAmounts } from 'utils/exchange'
-import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType, AkkaRouterTrade } from './types'
-import { useAkkaRouterArgs, useAkkaRouterRouteWithArgs } from './useAkkaRouterApi'
+import { AkkaRouterTrade } from './types'
+import { useAkkaRouterRouteWithArgs } from './useAkkaRouterApi'
 
 // from the current swap inputs, compute the best trade and return it.
 export function useAkkaSwapInfo(

@@ -77,7 +77,6 @@ const AkkaSwapForm = () => {
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
-  console.log({allowedSlippage});
 
   // swap state & price data
   const {
@@ -218,7 +217,7 @@ const AkkaSwapForm = () => {
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
-          <AutoColumn justify="space-between">
+          <AutoColumn justify="space-between" >
             <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
               <SwitchIconButton
                 variant="light"
@@ -249,6 +248,7 @@ const AkkaSwapForm = () => {
             id="swap-currency-output"
             showCommonBases
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+            disabled
           />
 
           <AutoColumn gap="7px" style={{ padding: '0 16px' }}>

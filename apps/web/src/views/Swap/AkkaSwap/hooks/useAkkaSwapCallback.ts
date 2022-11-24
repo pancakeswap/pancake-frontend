@@ -1,45 +1,59 @@
-import { TransactionResponse } from '@ethersproject/providers'
-import { BigNumber, BigNumberish, BytesLike } from 'ethers'
-import { useEffect, useMemo } from 'react'
-import { useSelector } from 'react-redux'
-import { AkkaRouter, BridgeDescriptionStruct, SplitedPathDescriptionStruct } from 'config/abi/types/AkkaRouter'
+import { useMemo } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { useAkkaRouterContract } from 'utils/exchange'
-export function useAkkaBitgertAggrigatorSwapCallback(): {
-  multiPathSwap?:
-    | undefined
-    | ((
-        amountIn: BigNumberish,
-        amountOutMin: BigNumberish,
-        data: SplitedPathDescriptionStruct[],
-        bridge: BridgeDescriptionStruct[],
-        dstData: SplitedPathDescriptionStruct[],
-        to: string,
-      ) => Promise<TransactionResponse>)
+import { AkkaRouterTrade } from './types'
+import { useWeb3React } from '@pancakeswap/wagmi'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { useTranslation } from '@pancakeswap/localization'
+export function useAkkaRouterSwapCallback(trade: AkkaRouterTrade): {
+  multiPathSwap: () => Promise<string>
 } {
   const akkaContract = useAkkaRouterContract()
   const { callWithGasPrice } = useCallWithGasPrice()
   const addTransaction = useTransactionAdder()
 
+  const { account } = useWeb3React()
+
+  const { t } = useTranslation()
+
+
+  const { args } = trade
+
+
   return useMemo(() => {
+    const methodName = 'multiPathSwap'
     return {
-      multiPathSwap: async (amountIn, amountOutMin, data, bridge, dstData, to) => {
-        const tx = await callWithGasPrice(akkaContract, 'multiPathSwap', [
-          amountIn,
-          amountOutMin,
-          data,
-          bridge,
-          dstData,
-          to,
-        ])
+      multiPathSwap: args ? async () => {
+        const tx = await callWithGasPrice(
+          akkaContract,
+          methodName,
+          [
+            args.amountIn,
+            args.amountOutMin,
+            args.data,
+            args.bridge,
+            args.dstData,
+            account
+          ],
+
+        )
+          .catch((error: any) => {
+            // if the user rejected the tx, pass this along
+            if (error?.code === 4001) {
+              throw new Error('Transaction rejected.')
+            } else {
+              // otherwise, the error was unexpected and we need to convey that
+              console.error(`Swap failed`, error, methodName, args)
+              throw new Error(t('Swap failed: %message%', { message: transactionErrorToUserReadableMessage(error, t) }))
+            }
+          })
         addTransaction(tx, {
-          summary: `swap ${amountIn}`,
+          summary: `swap`,
           type: 'swap',
         })
-
-        return tx as TransactionResponse
-      },
+        return tx?.hash
+      } : null,
     }
-  }, [akkaContract, addTransaction])
+  }, [trade, akkaContract, addTransaction])
 }
