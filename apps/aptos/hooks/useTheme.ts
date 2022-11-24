@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useCallback, useMemo } from 'react'
 import Cookie from 'js-cookie'
 import { ThemeContext as StyledThemeContext } from 'styled-components'
 import { useTheme as useNextTheme } from 'next-themes'
@@ -10,16 +10,22 @@ const useTheme = () => {
   const { resolvedTheme, setTheme } = useNextTheme()
   const theme = useContext(StyledThemeContext)
 
-  const handleSwitchTheme = (themeValue: 'light' | 'dark') => {
-    try {
-      setTheme(themeValue)
-      Cookie.set(COOKIE_THEME_KEY, themeValue, { domain: THEME_DOMAIN })
-    } catch (err) {
-      // ignore set cookie error for perp theme
-    }
-  }
+  const handleSwitchTheme = useCallback(
+    (themeValue: 'light' | 'dark') => {
+      try {
+        setTheme(themeValue)
+        Cookie.set(COOKIE_THEME_KEY, themeValue, { domain: THEME_DOMAIN })
+      } catch (err) {
+        // ignore set cookie error for perp theme
+      }
+    },
+    [setTheme],
+  )
 
-  return { isDark: resolvedTheme === 'dark', theme, setTheme: handleSwitchTheme }
+  return useMemo(
+    () => ({ isDark: resolvedTheme === 'dark', theme, setTheme: handleSwitchTheme }),
+    [theme, resolvedTheme, handleSwitchTheme],
+  )
 }
 
 export default useTheme
