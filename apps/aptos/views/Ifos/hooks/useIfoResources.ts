@@ -1,7 +1,6 @@
 import { useAccountResources } from '@pancakeswap/awgmi'
 import { TxnBuilderTypes, TypeTagParser } from 'aptos'
 import splitTypeTag from 'utils/splitTypeTag'
-import { ifos } from 'config/constants/ifo'
 import {
   IFO_ADDRESS,
   IFO_RESOURCE_ACCOUNT_TYPE_METADATA,
@@ -11,10 +10,9 @@ import {
 import { RootObject as IFOMetadata } from 'views/Ifos/generated/IFOMetadata'
 import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { RootObject as VestingMetadata } from 'views/Ifos/generated/VestingMetadata'
+import { Ifo } from 'config/constants/types'
 
-export const useIfoResources = () => {
-  const ifo = ifos[0]
-
+export const useIfoResources = (ifo: Ifo) => {
   return useAccountResources({
     enabled: !!ifo,
     address: IFO_ADDRESS,

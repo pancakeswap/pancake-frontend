@@ -63,15 +63,14 @@ const IfoVesting = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isFirstTime, setIsFirstTime] = useState(true)
-  const { data, fetchUserVestingData } = useFetchVestingData()
+  const data = useFetchVestingData()
 
   useEffect(() => {
     // When switch account need init
     if (account) {
       setIsFirstTime(true)
-      fetchUserVestingData()
     }
-  }, [account, fetchUserVestingData, setIsFirstTime])
+  }, [account, setIsFirstTime])
 
   const cardStatus = useMemo(() => {
     if (account) {
@@ -83,8 +82,7 @@ const IfoVesting = () => {
 
   const handleFetchUserVesting = useCallback(() => {
     setIsFirstTime(false)
-    fetchUserVestingData()
-  }, [fetchUserVestingData])
+  }, [])
 
   return (
     <StyleVestingCard isActive>

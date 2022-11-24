@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import splitTypeTag from 'utils/splitTypeTag'
 import { ifoHarvestPool } from 'views/Ifos/generated/ifo'
@@ -12,15 +12,16 @@ import { WalletIfoData } from 'views/Ifos/types'
 interface Props {
   poolId: PoolIds
   walletIfoData: WalletIfoData
+  ifo: Ifo
 }
 
-export const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, walletIfoData }) => {
+export const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ ifo, poolId, walletIfoData }) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const executeTransaction = useSimulationAndSendTransaction()
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const pool = useIfoPool()
+  const pool = useIfoPool(ifo)
 
   const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
 

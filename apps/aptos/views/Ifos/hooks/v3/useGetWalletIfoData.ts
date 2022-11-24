@@ -32,7 +32,7 @@ const initialState = {
  */
 export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
   const { account } = useAccount()
-  const pool = useIfoPool()
+  const pool = useIfoPool(_ifo)
 
   const [state, setState] = useState<WalletIfoState>(initialState)
 
@@ -73,7 +73,7 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
     [pool?.data, userInfo?.data],
   )
 
-  const vestingCharacteristics = useVestingCharacteristics()
+  const vestingCharacteristics = useVestingCharacteristics(_ifo)
 
   const finalState = useMemo(() => {
     if (!account || !pool?.data) {

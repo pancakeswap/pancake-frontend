@@ -55,9 +55,10 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
         </Text>
         <Box mb="24px">
           {!userPool.isVestingInitialized ? (
-            <ClaimButton poolId={poolId} walletIfoData={walletIfoData} />
+            <ClaimButton ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
           ) : (
             <VestingClaimButton
+              ifo={ifo}
               poolId={poolId}
               amountAvailableToClaim={amountAvailableToClaim}
               walletIfoData={walletIfoData}

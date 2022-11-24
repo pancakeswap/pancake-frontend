@@ -2,11 +2,8 @@
 import { useTableItem } from '@pancakeswap/awgmi'
 import { IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA } from 'views/Ifos/constants'
 import { RootObject as VestingSchedule } from 'views/Ifos/generated/VestingSchedule'
-import { useIfoResources } from './useIfoResources'
 
-export const useIfoVestingSchedule = ({ key }: { key?: string }) => {
-  const resources = useIfoResources()
-
+export const useIfoVestingSchedule = ({ key, resources }: { key?: string; resources?: any }) => {
   return useTableItem<VestingSchedule>({
     handle: resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA]?.data.vesting_schedules.handle,
     data:

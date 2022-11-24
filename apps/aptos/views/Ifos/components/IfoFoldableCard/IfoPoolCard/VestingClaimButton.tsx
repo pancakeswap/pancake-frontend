@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { PoolIds } from 'config/constants/types'
+import { Ifo, PoolIds } from 'config/constants/types'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useCallback } from 'react'
 import splitTypeTag from 'utils/splitTypeTag'
@@ -14,14 +14,20 @@ interface Props {
   poolId: PoolIds
   amountAvailableToClaim: BigNumber
   walletIfoData: WalletIfoData
+  ifo: Ifo
 }
 
-const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountAvailableToClaim, walletIfoData }) => {
+const VestingClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
+  ifo,
+  poolId,
+  amountAvailableToClaim,
+  walletIfoData,
+}) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const executeTransaction = useSimulationAndSendTransaction()
-  const pool = useIfoPool()
+  const pool = useIfoPool(ifo)
 
   const setPendingTx = useCallback(
     (isPending: boolean) => {
@@ -71,4 +77,4 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
   )
 }
 
-export default ClaimButton
+export default VestingClaimButton
