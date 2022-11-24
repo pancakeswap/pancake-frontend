@@ -6,7 +6,7 @@ import { deserializeToken } from '@pancakeswap/token-lists'
 import _isEmpty from 'lodash/isEmpty'
 import type { SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '@pancakeswap/farms'
 
-export const FARM_AUCTION_HOSTING_IN_SECONDS = 864000
+export const FARM_AUCTION_HOSTING_IN_SECONDS = 691200
 
 export const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
   return {
