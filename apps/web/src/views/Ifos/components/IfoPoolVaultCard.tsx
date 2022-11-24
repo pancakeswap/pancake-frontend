@@ -20,7 +20,7 @@ const IfoPoolVaultCard = () => {
       {isSmallerThanXl ? (
         <IfoPoolVaultCardMobile pool={cakePool} />
       ) : (
-        <CakeVaultCard pool={cakePool} showSkeleton={false} showStakedOnly={false} showICake />
+        <CakeVaultCard pool={cakePool} showSkeleton={false} showStakedOnly={false} showICake showBCake showVCake />
       )}
       <IfoVesting pool={cakePool} />
     </Flex>

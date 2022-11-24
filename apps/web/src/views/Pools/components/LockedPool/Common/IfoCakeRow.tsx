@@ -8,8 +8,11 @@ import { getICakeWeekDisplay } from 'views/Pools/helpers'
 const InlineLink = styled(Link)`
   display: inline;
 `
+interface IfoCakeRowProps {
+  titleColor?: string
+}
 
-const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
+const IfoCakeRow: React.FC<React.PropsWithChildren<IfoCakeRowProps>> = ({ titleColor = 'textSubtle' }) => {
   const { t } = useTranslation()
   const credit = useIfoCredit()
   const ceiling = useIfoCeiling()
@@ -38,7 +41,7 @@ const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
       <TooltipText>
-        <Text ref={targetRef} color="textSubtle" bold fontSize="12px">
+        <Text ref={targetRef} color={titleColor} bold fontSize="12px">
           {t('iCAKE')}
         </Text>
       </TooltipText>

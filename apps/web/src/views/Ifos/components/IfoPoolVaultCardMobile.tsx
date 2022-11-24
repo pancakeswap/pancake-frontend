@@ -80,6 +80,8 @@ const IfoPoolVaultCardMobile: React.FC<React.PropsWithChildren<IfoPoolVaultCardM
       {isExpanded && (
         <CakeVaultDetail
           showICake
+          showBCake
+          showVCake
           isLoading={isLoading}
           account={account}
           pool={pool}

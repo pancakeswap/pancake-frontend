@@ -12,6 +12,9 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import { Token } from '@pancakeswap/sdk'
 import MaxStakeRow from './MaxStakeRow'
+import IfoCakeRow from './LockedPool/Common/IfoCakeRow'
+import BCakeRow from './LockedPool/Common/BCakeRow'
+import VCakeRow from './LockedPool/Common/VCakeRow'
 import { AprInfo, DurationAvg, PerformanceFee, TotalLocked, TotalStaked } from './Stat'
 
 interface ExpandedFooterProps {
@@ -82,6 +85,9 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       )}
       {vaultKey === VaultKey.CakeVault && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
       {vaultKey === VaultKey.CakeVault && <DurationAvg />}
+      {vaultKey === VaultKey.CakeVault && <IfoCakeRow titleColor="text" />}
+      {vaultKey === VaultKey.CakeVault && <BCakeRow titleColor="text" />}
+      {vaultKey === VaultKey.CakeVault && <VCakeRow titleColor="text" />}
       {!isFinished && stakingLimit && stakingLimit.gt(0) && (
         <MaxStakeRow
           small

@@ -14,11 +14,15 @@ import LockedActions from './Common/LockedActions'
 import YieldBoostRow from './Common/YieldBoostRow'
 import LockDurationRow from './Common/LockDurationRow'
 import IfoCakeRow from './Common/IfoCakeRow'
+import BCakeRow from './Common/BCakeRow'
+import VCakeRow from './Common/VCakeRow'
 import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 import { LockedStakingApyPropsType } from './types'
 
 interface LockedStakingApyProps extends LockedStakingApyPropsType {
   showICake?: boolean
+  showBCake?: boolean
+  showVCake?: boolean
 }
 
 const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>> = ({
@@ -26,6 +30,8 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
   stakingTokenBalance,
   userData,
   showICake,
+  showBCake,
+  showVCake,
 }) => {
   const { t } = useTranslation()
   const position = useMemo(
@@ -165,6 +171,8 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
         </Flex>
       )}
       {showICake && <IfoCakeRow />}
+      {showBCake && <BCakeRow />}
+      {showVCake && <VCakeRow />}
     </LightGreyCard>
   )
 }

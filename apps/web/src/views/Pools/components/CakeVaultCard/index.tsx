@@ -25,6 +25,8 @@ interface CakeVaultProps extends CardProps {
   showStakedOnly: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
+  showBCake?: boolean
+  showVCake?: boolean
   showSkeleton?: boolean
 }
 
@@ -36,6 +38,8 @@ interface CakeVaultDetailProps {
   accountHasSharesStaked: boolean
   defaultFooterExpanded?: boolean
   showICake?: boolean
+  showBCake?: boolean
+  showVCake?: boolean
   performanceFeeAsDecimal: number
 }
 
@@ -46,6 +50,8 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
   vaultPool,
   accountHasSharesStaked,
   showICake,
+  showBCake,
+  showVCake,
   performanceFeeAsDecimal,
   defaultFooterExpanded,
 }) => {
@@ -65,6 +71,8 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
             stakingToken={pool?.stakingToken}
             stakingTokenBalance={pool?.userData?.stakingTokenBalance}
             showICake={showICake}
+            showBCake={showBCake}
+            showVCake={showVCake}
           />
         ) : (
           <>
@@ -109,6 +117,8 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
   showStakedOnly,
   defaultFooterExpanded,
   showICake = false,
+  showBCake = false,
+  showVCake = false,
   showSkeleton = true,
   ...props
 }) => {
@@ -157,6 +167,8 @@ const CakeVaultCard: React.FC<React.PropsWithChildren<CakeVaultProps>> = ({
         vaultPool={vaultPool}
         accountHasSharesStaked={accountHasSharesStaked}
         showICake={showICake}
+        showBCake={showBCake}
+        showVCake={showVCake}
         performanceFeeAsDecimal={performanceFeeAsDecimal}
         defaultFooterExpanded={defaultFooterExpanded}
       />
