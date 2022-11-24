@@ -5,6 +5,7 @@ import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
 import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
@@ -15,9 +16,6 @@ import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import getLpAddress from 'utils/getLpAddress'
 import { multicallv2 } from 'utils/multicall'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useInfoBucket } from 'hooks/useBucket'
-
 import { useAccount } from 'wagmi'
 import { AppState, useAppDispatch } from '../index'
 import { useUserSlippageTolerance } from '../user/hooks'
@@ -279,8 +277,6 @@ export const useFetchPairPrices = ({
   const derivedPairData = useSelector(derivedPairByDataIdSelector({ pairId, timeWindow }))
   const dispatch = useDispatch()
 
-  const [bucket] = useInfoBucket()
-
   useEffect(() => {
     const fetchDerivedData = async () => {
       console.info(
@@ -307,7 +303,7 @@ export const useFetchPairPrices = ({
 
     const fetchAndUpdatePairPrice = async () => {
       setIsLoading(true)
-      const { data } = await fetchPairPriceData({ pairId, timeWindow, isNR: bucket === 'nr' })
+      const { data } = await fetchPairPriceData({ pairId, timeWindow })
       if (data) {
         // Find out if Liquidity Pool has enough liquidity
         // low liquidity pool might mean that the price is incorrect
@@ -370,7 +366,6 @@ export const useFetchPairPrices = ({
     derivedPairData,
     dispatch,
     isLoading,
-    bucket,
   ])
 
   useEffect(() => {
