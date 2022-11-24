@@ -3,7 +3,7 @@ import { defaultChain } from '@pancakeswap/awgmi'
 import { useMemo } from 'react'
 import { useActiveChainId } from './useNetwork'
 
-const useNativeCurrency = (chainId) => {
+const useNativeCurrency = (chainId?: number) => {
   const webChainId = useActiveChainId()
 
   return useMemo(() => {

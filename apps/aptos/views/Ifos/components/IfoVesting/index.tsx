@@ -4,7 +4,6 @@ import { useMemo, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import Trans from 'components/Trans'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { DeserializedPool } from 'state/types'
 import { VestingStatus } from './types'
 import NotTokens from './NotTokens'
 import TokenInfo from './VestingPeriod/TokenInfo'
@@ -60,11 +59,7 @@ const IfoVestingStatus = {
   },
 }
 
-interface IfoVestingProps {
-  pool: DeserializedPool
-}
-
-const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
+const IfoVesting = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isFirstTime, setIsFirstTime] = useState(true)
