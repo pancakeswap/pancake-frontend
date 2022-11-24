@@ -101,10 +101,7 @@ const Deposit: React.FC<React.PropsWithChildren> = () => {
           </Flex>
         ) : (
           <Flex justifyContent="space-between">
-            <Text color="textSubtle">
-              {t('Next draw date')}
-              {getStatus}
-            </Text>
+            <Text color="textSubtle">{t('Next draw date')}</Text>
             {tooltipVisible && tooltip}
             <TooltipText ref={targetRef}>
               <Text bold as="span">
