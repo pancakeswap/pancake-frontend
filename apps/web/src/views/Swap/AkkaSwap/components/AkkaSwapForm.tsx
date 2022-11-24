@@ -289,7 +289,7 @@ const AkkaSwapForm = () => {
           />
         </Box>
       </Wrapper>
-      <AkkaAdvancedSwapDetailsDropdown route={akkaRouterTrade.route} />
+      {akkaRouterTrade.route && <AkkaAdvancedSwapDetailsDropdown route={akkaRouterTrade.route} />}
     </>
   )
 }
