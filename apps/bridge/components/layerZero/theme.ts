@@ -19,7 +19,7 @@ export const darkTheme = {
     mode: 'dark',
     primary: {
       main: darkColors.primary,
-      contrastText: darkColors.contrast,
+      contrastText: darkColors.invertedContrast,
     },
     secondary: {
       main: darkColors.input,
