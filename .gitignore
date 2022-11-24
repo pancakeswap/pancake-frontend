@@ -15,6 +15,7 @@ cypress/fixtures/example.json
 .next/
 out/
 .idea/
+.vscode/
 
 # production
 build

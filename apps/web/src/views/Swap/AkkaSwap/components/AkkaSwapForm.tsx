@@ -38,10 +38,10 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import CurrencyInputHeader from '../../components/CurrencyInputHeader'
 import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
 import { Wrapper } from '../../components/styleds'
-import { useAkkaRouterRoute } from '../hooks/useAkkaRouterApi'
+import { useAkkaRouterArgs } from '../hooks/useAkkaRouterApi'
 import AkkaSwapCommitButton from './AkkaSwapCommitButton'
 import { useApproveCallbackFromAkkaTrade } from '../hooks/useApproveCallbackFromAkkaTrade'
-import { useDerivedAkkaSwapInfo } from '../hooks/useDerivedAkkaSwapInfo'
+import { useAkkaSwapInfo } from '../hooks/useAkkaSwapInfo'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -77,6 +77,7 @@ const AkkaSwapForm = () => {
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
+  console.log({allowedSlippage});
 
   // swap state & price data
   const {
@@ -115,11 +116,11 @@ const AkkaSwapForm = () => {
   )
 
   const {
-    v2Trade: trade,
+    trade: akkaRouterTrade,
     currencyBalances,
     parsedAmount,
     inputError: swapInputError,
-  } = useDerivedAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency)
+  } = useAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency,allowedSlippage)
 
   const parsedAmounts = {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : null,
@@ -175,7 +176,7 @@ const AkkaSwapForm = () => {
   }, [hasAmount, refreshBlockNumber])
 
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromAkkaTrade(inputCurrency, trade?.amountIn)
+  const [approval, approveCallback] = useApproveCallbackFromAkkaTrade(parsedAmounts[Field.INPUT])
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -274,7 +275,7 @@ const AkkaSwapForm = () => {
             approvalSubmitted={approvalSubmitted}
             currencies={currencies}
             isExpertMode={isExpertMode}
-            trade={trade}
+            trade={akkaRouterTrade}
             swapInputError={swapInputError}
             currencyBalances={currencyBalances}
             allowedSlippage={allowedSlippage}

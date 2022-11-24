@@ -8,26 +8,28 @@ import { Field } from 'state/swap/actions'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import { AkkaRouterRouteType } from './types'
-import { useAkkaRouterRoute } from './useAkkaRouterApi'
+import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType, AkkaRouterTrade } from './types'
+import { useAkkaRouterArgs, useAkkaRouterRouteWithArgs } from './useAkkaRouterApi'
 
 // from the current swap inputs, compute the best trade and return it.
-export function useDerivedAkkaSwapInfo(
+export function useAkkaSwapInfo(
   independentField: Field,
   typedValue: string,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
+  allowedSlippage: number,
 ): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmount: CurrencyAmount<Currency> | undefined
-  v2Trade: AkkaRouterRouteType | undefined
-  inputError?: string
+  trade: AkkaRouterTrade,
+  inputError?: string,
 } {
   const { account } = useWeb3React()
   const { t } = useTranslation()
 
   const to: string | null = account ?? null
+
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -36,7 +38,8 @@ export function useDerivedAkkaSwapInfo(
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
-  const v2Trade = useAkkaRouterRoute(inputCurrency, outputCurrency, typedValue)
+  const { route, args } = useAkkaRouterRouteWithArgs(inputCurrency, outputCurrency, typedValue, allowedSlippage)
+
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -65,12 +68,14 @@ export function useDerivedAkkaSwapInfo(
   if (!to || !formattedTo) {
     inputError = inputError ?? t('Enter a recipient')
   }
-
   return {
     currencies,
     currencyBalances,
     parsedAmount,
-    v2Trade: v2Trade ?? undefined,
+    trade: {
+      route: route ?? null,
+      args: args ?? null
+    },
     inputError,
   }
 }

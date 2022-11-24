@@ -19,12 +19,12 @@ import ConfirmSwapModal from '../../components/ConfirmSwapModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import useAkkaSwapCallArgs from '../hooks/useAkkaSwapCallArgs'
-import { AkkaRouterRouteType } from '../hooks/types'
+import { AkkaRouterArgsResponseType, AkkaRouterTrade } from '../hooks/types'
 import { useAkkaBitgertAggrigatorSwapCallback } from '../hooks/useAkkaSwapCallback'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
-interface StableSwapCommitButtonPropsType {
+interface AkkaRouterCommitButtonPropsType {
   account: string
   approval: ApprovalState
   approveCallback: () => Promise<void>
@@ -34,7 +34,7 @@ interface StableSwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  trade: AkkaRouterRouteType
+  trade: AkkaRouterTrade
   swapInputError: string
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
@@ -56,7 +56,7 @@ export default function AkkaSwapCommitButton({
   currencyBalances,
   allowedSlippage,
   onUserInput,
-}: StableSwapCommitButtonPropsType) {
+}: AkkaRouterCommitButtonPropsType) {
   const { t } = useTranslation()
   // the callback to execute the swap
   const { multiPathSwap } = useAkkaBitgertAggrigatorSwapCallback()

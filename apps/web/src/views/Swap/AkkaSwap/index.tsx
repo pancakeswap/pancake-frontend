@@ -1,5 +1,5 @@
 import SwapForm from "../components/SwapForm"
-import AkkaSwapForm from "./components/AkkaSwapForm"
+import AkkaSwapForm from "./components/useAkkaSwapInfo"
 
 const AkkaSwapFormContainer = () => {
     return <AkkaSwapForm />
