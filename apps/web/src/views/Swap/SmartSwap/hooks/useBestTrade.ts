@@ -46,6 +46,7 @@ function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions
             currency.symbol,
             deferQuotient,
             maxHops,
+            allCommonPairs,
           ]
         : null,
       // TODO: trader should use user Wallet address
