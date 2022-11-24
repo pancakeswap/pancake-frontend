@@ -15,11 +15,11 @@ import Text from "../../components/Text/Text";
 import { Modal, ModalProps, useModal } from "../Modal";
 import UserMenu from "./components/UserMenu";
 import { Variant, variants } from "./components/UserMenu/types";
-import { links, userMenulinks } from "./config";
 import Menu from "./Menu";
 import { Language, NavProps } from "./types";
 import BottomDrawer from "../../components/BottomDrawer/BottomDrawer";
-import { SubMenuItemsType } from "../../components/SubMenuItems";
+import { SubMenuItemsType } from "../../components";
+import { links, userMenulinks } from "./testConfig";
 
 export default {
   title: "Widgets/Menu",
