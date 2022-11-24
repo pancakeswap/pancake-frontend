@@ -36,7 +36,7 @@ const StyledMenuItem = styled.a<any>`
   font-size: 14px;
   font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')};
 
-  padding: 0 8px;
+  padding: 0 6px;
   height: 48px;
 
   &:hover {
@@ -89,7 +89,7 @@ export function Menu() {
       <Flex>
         <Logo href="https://pancakeswap.finance" />
 
-        <Flex pl={['25px', null, '50px']}>
+        <Flex pl={['10px', null, '50px']}>
           {MenuConfig.map((menu) => (
             <Box key={menu.title} display="flex">
               <NextLink href={menu.href} passHref>
