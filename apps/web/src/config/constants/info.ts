@@ -42,3 +42,4 @@ export const TOKEN_BLACKLIST = [
 ]
 
 export const ETH_TOKEN_BLACKLIST = ['0x72b169ad8af6c4fb53056b6a2a85602ad6863864']
+export const INFO_BUCKETS_COOKIES = 'bucket-info-4'

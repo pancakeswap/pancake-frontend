@@ -1,38 +1,39 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { useAccount } from 'wagmi'
 import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
-import { CAKE, USDC } from '@pancakeswap/tokens'
-import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
-import IPancakePairABI from 'config/abi/IPancakePair.json'
-import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
-import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { isAddress } from 'utils'
-import { computeSlippageAdjustedAmounts } from 'utils/exchange'
-import getLpAddress from 'utils/getLpAddress'
+import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { multicallv2 } from 'utils/multicall'
+import IPancakePairABI from 'config/abi/IPancakePair.json'
+import { useDispatch, useSelector } from 'react-redux'
+import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
+import { useRouter } from 'next/router'
+import { useTranslation } from '@pancakeswap/localization'
+import { isAddress } from 'utils'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { computeSlippageAdjustedAmounts } from 'utils/exchange'
+import { CAKE, USDC } from '@pancakeswap/tokens'
+import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
-import { useAccount } from 'wagmi'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useInfoBucket } from 'hooks/useBucket'
 import { AppState, useAppDispatch } from '../index'
-import { useUserSlippageTolerance } from '../user/hooks'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
-import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
+import { SwapState } from './reducer'
+import { useUserSlippageTolerance } from '../user/hooks'
 import fetchPairPriceData from './fetch/fetchPairPriceData'
-import { pairHasEnoughLiquidity } from './fetch/utils'
 import {
   normalizeChartData,
   normalizeDerivedChartData,
   normalizeDerivedPairDataByActiveToken,
   normalizePairDataByActiveToken,
 } from './normalizers'
-import { SwapState } from './reducer'
-import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
 import { PairDataTimeWindowEnum } from './types'
+import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
+import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
+import { pairHasEnoughLiquidity } from './fetch/utils'
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -277,6 +278,8 @@ export const useFetchPairPrices = ({
   const derivedPairData = useSelector(derivedPairByDataIdSelector({ pairId, timeWindow }))
   const dispatch = useDispatch()
 
+  const [bucket] = useInfoBucket()
+
   useEffect(() => {
     const fetchDerivedData = async () => {
       console.info(
@@ -303,7 +306,7 @@ export const useFetchPairPrices = ({
 
     const fetchAndUpdatePairPrice = async () => {
       setIsLoading(true)
-      const { data } = await fetchPairPriceData({ pairId, timeWindow })
+      const { data } = await fetchPairPriceData({ pairId, timeWindow, isNR: bucket === 'nr' })
       if (data) {
         // Find out if Liquidity Pool has enough liquidity
         // low liquidity pool might mean that the price is incorrect
@@ -366,6 +369,7 @@ export const useFetchPairPrices = ({
     derivedPairData,
     dispatch,
     isLoading,
+    bucket,
   ])
 
   useEffect(() => {
