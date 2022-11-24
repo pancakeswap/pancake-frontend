@@ -49,7 +49,7 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
     setPendingTx(false)
   }, [
     setPendingTx,
-    pool.type,
+    pool?.type,
     userPoolCharacteristics.vestingId,
     executeTransaction,
     walletIfoData,
