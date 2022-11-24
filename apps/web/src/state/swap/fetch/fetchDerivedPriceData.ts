@@ -1,4 +1,4 @@
-import { INFO_NR_CLIENT } from 'config/constants/endpoints'
+import { INFO_CLIENT } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
 import mapValues from 'lodash/mapValues'
@@ -13,7 +13,7 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    INFO_NR_CLIENT,
+    INFO_CLIENT,
     200,
   )
 

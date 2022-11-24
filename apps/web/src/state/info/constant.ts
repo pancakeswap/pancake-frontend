@@ -1,11 +1,5 @@
-import {
-  BLOCKS_CLIENT,
-  BLOCKS_CLIENT_ETH,
-  INFO_CLIENT,
-  INFO_CLIENT_ETH,
-  INFO_NR_CLIENT,
-} from 'config/constants/endpoints'
-import { infoClientETH, infoNRClient, infoStableSwapClient } from 'utils/graphql'
+import { BLOCKS_CLIENT, BLOCKS_CLIENT_ETH, INFO_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
+import { infoClientETH, infoClient, infoStableSwapClient } from 'utils/graphql'
 
 import { ChainId } from '@pancakeswap/sdk'
 import { ETH_TOKEN_BLACKLIST, PCS_ETH_START, PCS_V2_START, TOKEN_BLACKLIST } from 'config/constants/info'
@@ -38,12 +32,12 @@ export const multiChainPaths = {
 }
 
 export const multiChainQueryClient = {
-  BSC: infoNRClient,
+  BSC: infoClient,
   ETH: infoClientETH,
 }
 
 export const multiChainQueryEndPoint = {
-  BSC: INFO_NR_CLIENT,
+  BSC: INFO_CLIENT,
   ETH: INFO_CLIENT_ETH,
 }
 
