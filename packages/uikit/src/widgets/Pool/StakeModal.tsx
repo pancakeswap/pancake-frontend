@@ -57,7 +57,11 @@ interface StakeModalProps {
   stakingTokenBalance: BigNumber;
   stakingTokenPrice: number;
   isRemovingStake?: boolean;
+  needEnable?: boolean;
+  enablePendingTx?: boolean;
+  setAmount?: (value: string) => void;
   onDismiss?: () => void;
+  handleEnableApprove?: () => void;
   account: string;
   handleConfirmClick: any;
   pendingTx: boolean;
@@ -77,7 +81,11 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   userDataStakingTokenBalance,
   enableEmergencyWithdraw,
   isRemovingStake = false,
+  needEnable,
+  enablePendingTx,
+  setAmount,
   onDismiss,
+  handleEnableApprove,
   account,
   pendingTx,
   handleConfirmClick,
@@ -138,6 +146,9 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
       setPercent(Math.min(percentage, 100));
     } else {
       setPercent(0);
+    }
+    if (setAmount) {
+      setAmount(input);
     }
     setStakeAmount(input);
   };
@@ -221,6 +232,11 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           })}
         </Text>
       )}
+      {needEnable && (
+        <Text color="failure" textAlign="right" fontSize="12px" mt="8px">
+          {t('Insufficient token allowance. Click "Enable" to approve.')}
+        </Text>
+      )}
       <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         {t("Balance: %balance%", {
           balance: getFullDisplayBalance(
@@ -275,15 +291,26 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           </Text>
         </Flex>
       )}
-      <Button
-        isLoading={pendingTx}
-        endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-        onClick={() => handleConfirmClick(stakeAmount)}
-        disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit || userNotEnoughToken}
-        mt="24px"
-      >
-        {pendingTx ? t("Confirming") : t("Confirm")}
-      </Button>
+      {needEnable ? (
+        <Button
+          isLoading={enablePendingTx}
+          endIcon={enablePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={handleEnableApprove}
+          mt="24px"
+        >
+          {t("Enable")}
+        </Button>
+      ) : (
+        <Button
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={() => handleConfirmClick(stakeAmount)}
+          disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit || userNotEnoughToken}
+          mt="24px"
+        >
+          {pendingTx ? t("Confirming") : t("Confirm")}
+        </Button>
+      )}
       {!isRemovingStake && (
         <StyledLink external href={getTokenLink}>
           <Button width="100%" mt="8px" variant="secondary">
