@@ -2032,10 +2032,15 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Sahte bir para satın alırsanız paranızı kalıcı olarak kaybedebilirsiniz.",
   "Pancake Collectibles": "Pancake Toplanabilir Öğeleri",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Bilgisi şu anda bakımda. Veriler doğru veya güncel olmayabilir.",
+  "Smart Router (Beta)": "Akıllı Yönlendirici (Beta)",
+  "This route includes StableSwap and can’t edit output": "Bu yönlendirme, StableSwap'i içerir ve çıktıyı düzenleyemez",
+  "Use StableSwap for better fees": "Daha iyi ücretler için StableSwap kullanın",
+  "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (ödüller dahil), %lockedEndTime% tarihine kadar CAKE Havuzunda kilitlenir",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE, IFO herkese açık satışlarına katılıp %iCake% tutarına kadar CAKE yatırmanıza olanak tanır.",
   "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "bCAKE, PancakeSwap Farm'larındaki kazancınızı 2 kata kadar artırmanıza olanak tanır.",
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE, PancakeSwap oylama yönetiminde oylama gücünüzü %totalScore% değerine yükseltir.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Farm verimini artırmanın, IFO'lara katılmanın, oylama gücünü artırmanın ve çok daha fazlasının avantajlarından yararlanmaya devam etmek için CAKE kilitleyin!",
-  "CAKE staking expired": "CAKE fon yatırması sona erdi"
+  "CAKE staking expired": "CAKE fon yatırması sona erdi",
+  "Find out more": "Daha fazla bilgi edinin"
 }
