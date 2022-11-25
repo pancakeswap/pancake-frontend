@@ -69,7 +69,7 @@ export const useVestingCharacteristicsList = (resourcesList) => {
         account,
         vestingSchedule,
         pool: resourcesList[idx][IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE],
-        resourcesMetaData: resourcesList[idx][IFO_RESOURCE_ACCOUNT_TYPE_METADATA],
+        resourcesMetaData: resourcesList[idx][IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?.data,
       })
     })
   }, [account, resourcesList, vestingSchedules])
@@ -97,7 +97,7 @@ export const useVestingCharacteristics = (
       account,
       vestingSchedule,
       pool,
-      resourcesMetaData: resources?.data?.[IFO_RESOURCE_ACCOUNT_TYPE_METADATA],
+      resourcesMetaData: resources?.data?.[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?.data,
     })
   }, [account, vestingSchedule, pool, resources?.data])
 }

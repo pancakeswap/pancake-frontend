@@ -82,6 +82,7 @@ export const computeReleaseAmount = (
   const seconds_per_slice = +ifo_pool.vesting_slice_period_seconds
   const vested_slice_periods = time_since_start / seconds_per_slice
   const vested_seconds = vested_slice_periods * seconds_per_slice
+
   let vested_amount = new BigNumber(vesting_schedule.amount_total).times(vested_seconds).div(ifo_pool.vesting_duration)
   vested_amount = vested_amount.minus(vesting_schedule.amount_released)
 
