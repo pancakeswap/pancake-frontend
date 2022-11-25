@@ -2032,10 +2032,15 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Om du köper ett falskt mynt kan du riskera att förlora dina pengar permanent.",
   "Pancake Collectibles": "Pancake-samlarobjekt",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info genomgår för närvarande underhåll. Uppgifterna är kanske inte korrekta eller uppdaterade.",
+  "Smart Router (Beta)": "Smart Router (Beta)",
+  "This route includes StableSwap and can’t edit output": "This route includes StableSwap and can’t edit output",
+  "Use StableSwap for better fees": "Use StableSwap for better fees",
+  "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (inklusive belöningar) är låsta i CAKE-poolen tills %lockedEndTime%",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "Med iCAKE kan du delta i IFO:s offentliga försäljning och göra åtaganden för upp till %iCake% CAKE.",
   "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "Med bCAKE kan du öka din avkastning i PancakeSwap Farms med upp till 2x.",
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE ökar din röststyrka till %totalScore% i PancakeSwap-röstningen.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Lås CAKE för att få fördelarna med att öka avkastningen på farmen, delta i IFO:er, öka röststyrkan och mycket mer!",
-  "CAKE staking expired": "CAKE-placering som löpt ut"
+  "CAKE staking expired": "CAKE-placering som löpt ut",
+  "Find out more": "Find out more"
 }
