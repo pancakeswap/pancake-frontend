@@ -1,4 +1,5 @@
 import { Box, Card, CardBody, CardHeader, ExpandableButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import NoSSR from 'components/NoSSR'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
@@ -156,10 +157,14 @@ export const IfoCurrentCard = ({
           {!isMobile && (
             <>
               <Header $isCurrent ifoId={ifo.id} />
-              <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
+              <NoSSR>
+                <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
+              </NoSSR>
             </>
           )}
-          <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          <NoSSR>
+            <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          </NoSSR>
         </StyledCard>
       </Box>
     </>
