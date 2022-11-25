@@ -43,18 +43,6 @@ export interface SmartRouterResponse {
   inputAmount: string
 }
 
-// const body: RequestBody = {
-//   networkId: 56,
-//   baseToken: '0xa1faa113cbE53436Df28FF0aEe54275c13B40975',
-//   baseTokenName: 'APLA',
-//   baseTokenNumDecimals: 18,
-//   quoteToken: '0x0782b6d8c4551B9760e74c0545a9bCD90bdc41E5',
-//   quoteTokenName: 'HAY',
-//   quoteTokenNumDecimals: 18,
-//   baseTokenAmount: '1000000000000000000',
-//   trader: 'huan',
-// }
-
 const headers = {
   'Content-Type': 'application/json',
   Accept: 'application/json',

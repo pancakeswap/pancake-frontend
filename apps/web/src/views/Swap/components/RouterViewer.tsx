@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { isStableSwapPair, Pair } from '@pancakeswap/smart-router/evm'
-import { Box, Flex } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useTooltip } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'
 import styled from 'styled-components'
 
@@ -96,11 +96,22 @@ interface RouterViewerProps {
 
 export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, path, inputCurrency, outputCurrency }) => {
   const { t } = useTranslation()
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<Text>{inputCurrency.symbol}</Text>, {
+    placement: 'right',
+  })
+  const {
+    targetRef: outputTargetRef,
+    tooltip: outputTooltip,
+    tooltipVisible: outputTooltipVisible,
+  } = useTooltip(<Text>{outputCurrency.symbol}</Text>, {
+    placement: 'right',
+  })
   return (
     <RouterBox justifyContent="space-between" alignItems="center">
-      <CurrencyLogoWrapper>
+      <CurrencyLogoWrapper ref={targetRef}>
         <CurrencyLogo size="44px" currency={inputCurrency} />
       </CurrencyLogoWrapper>
+      {tooltipVisible && tooltip}
       {pairs &&
         path &&
         pairs.map((p, index) => {
@@ -116,9 +127,10 @@ export const RouterViewer: React.FC<RouterViewerProps> = ({ pairs, path, inputCu
             </RouterPoolBox>
           )
         })}
-      <CurrencyLogoWrapper>
+      <CurrencyLogoWrapper ref={outputTargetRef}>
         <CurrencyLogo size="44px" currency={outputCurrency} />
       </CurrencyLogoWrapper>
+      {outputTooltipVisible && outputTooltip}
     </RouterBox>
   )
 }
