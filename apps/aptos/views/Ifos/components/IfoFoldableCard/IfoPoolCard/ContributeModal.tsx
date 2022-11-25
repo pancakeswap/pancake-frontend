@@ -77,6 +77,8 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
     [currency.decimals, value],
   )
 
+  const hasLimit = limitPerUserInLP.isGreaterThan(0)
+
   const label = t('Max. token entry')
 
   const maximumTokenEntry = useMemo(() => {
@@ -91,9 +93,9 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   const isWarning = useMemo(() => {
     return (
       valueWithTokenDecimals.isGreaterThan(userCurrencyBalance) ||
-      (limitPerUserInLP.isGreaterThan(0) && valueWithTokenDecimals.isGreaterThan(maximumTokenEntry))
+      (hasLimit && valueWithTokenDecimals.isGreaterThan(maximumTokenEntry))
     )
-  }, [maximumTokenEntry, limitPerUserInLP, userCurrencyBalance, valueWithTokenDecimals])
+  }, [maximumTokenEntry, hasLimit, userCurrencyBalance, valueWithTokenDecimals])
 
   const { isConfirmed, isConfirming, handleConfirm } = useConfirmTransaction({
     onConfirm: () => {
@@ -117,12 +119,14 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
     <Modal title={t('Contribute %symbol%', { symbol: currency.symbol })} onDismiss={onDismiss}>
       <ModalBody maxWidth={['100%', '100%', '100%', '360px']}>
         <Box p="2px">
-          <Flex justifyContent="space-between" mb="16px">
-            <Text>{label}:</Text>
-            <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
-              ifo.currency.symbol
-            }`}</Text>
-          </Flex>
+          {hasLimit && (
+            <Flex justifyContent="space-between" mb="16px">
+              <Text>{label}:</Text>
+              <Text>{`${formatNumber(getBalanceAmount(maximumTokenEntry, currency.decimals).toNumber(), 3, 3)} ${
+                ifo.currency.symbol
+              }`}</Text>
+            </Flex>
+          )}
           <Flex justifyContent="space-between" mb="8px">
             <Text>{t('Commit')}:</Text>
             <Flex flexGrow={1} justifyContent="flex-end">

@@ -39,9 +39,14 @@ const BigCurve = styled(Box)<{ $status: PublicIfoData['status'] }>`
 
 export const IfoRibbon = ({ publicIfoData, releaseTime }: { publicIfoData: PublicIfoData; releaseTime: number }) => {
   const { startTime, endTime } = publicIfoData
+
   const currentTime = Date.now() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
+
+  if (!startTime || !endTime || status === 'idle') {
+    return null
+  }
 
   let Component
   if (status === 'finished') {
@@ -50,10 +55,6 @@ export const IfoRibbon = ({ publicIfoData, releaseTime }: { publicIfoData: Publi
     Component = <IfoRibbonLive publicIfoData={publicIfoData} />
   } else if (status === 'coming_soon') {
     Component = <IfoRibbonSoon publicIfoData={publicIfoData} />
-  }
-
-  if (status === 'idle') {
-    return null
   }
 
   const totalTime = endTime - startTime
