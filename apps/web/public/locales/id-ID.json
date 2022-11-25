@@ -2032,10 +2032,15 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Jika Anda membeli koin hasil penipuan, Anda mungkin berisiko kehilangan dana secara permanen.",
   "Pancake Collectibles": "Kolektibel Pancake",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "Info PancakeSwap sedang dalam pemeliharaan. Data mungkin tidak akurat atau terkini.",
+  "Smart Router (Beta)": "Smart Router (Beta)",
+  "This route includes StableSwap and can’t edit output": "This route includes StableSwap and can’t edit output",
+  "Use StableSwap for better fees": "Use StableSwap for better fees",
+  "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (termasuk hadiah) dikunci di Pool CAKE hingga %lockedEndTime%",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE memungkinkan Anda untuk berpartisipasi dalam penjualan publik IFO dan menggunakan hingga %iCake% jumlah CAKE.",
   "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "bCAKE memungkinkan Anda meningkatkan hasil di Farm PancakeSwap sebesar hingga 2x.",
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE meningkatkan kekuatan pemungutan suara Anda hingga %totalScore% dalam tata kelola pemungutan suara PancakeSwap.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Kunci CAKE agar dapat menikmati berbagai manfaat dari peningkatan hasil farm, partisipasi dalam IFO, peningkatan kekuatan pemungutan suara, dan masih banyak lagi!",
-  "CAKE staking expired": "Penumpukan CAKE telah kedaluwarsa"
+  "CAKE staking expired": "Penumpukan CAKE telah kedaluwarsa",
+  "Find out more": "Find out more"
 }
