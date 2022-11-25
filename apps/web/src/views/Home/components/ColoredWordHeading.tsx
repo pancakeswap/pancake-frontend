@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Colors, Heading, TextProps } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 
@@ -13,9 +14,12 @@ const ColoredWordHeading: React.FC<React.PropsWithChildren<HeadingProps>> = ({
   ...props
 }) => {
   const { theme } = useTheme()
-  const split = text.split(' ')
-  const firstWord = split[0]
-  const remainingWords = split.slice(1).join(' ')
+  const { firstWord, remainingWords } = useMemo(() => {
+    const split = text.split(' ')
+    const first = split[0]
+    const remaining = split.slice(1).join(' ')
+    return { firstWord: first, remainingWords: remaining }
+  }, [text])
   const displayedColor = (theme.colors[firstColor] as string) ?? theme.colors.secondary
 
   return (
