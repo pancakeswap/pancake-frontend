@@ -1,14 +1,14 @@
 import { useCallback, memo } from 'react'
-import { Trade, Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
+import { Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, LinkExternal, Text } from '@pancakeswap/uikit'
 import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
+import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import ConfirmationPendingContent from './ConfirmationPendingContent'
-import TransactionConfirmSwapContent from './TransactionConfirmSwapContent'
-import ConfirmSwapModalContainer from './ConfirmSwapModalContainer'
-import { StableTrade } from '../StableSwap/hooks/useStableTradeExactIn'
+import ConfirmationPendingContent from '../../components/ConfirmationPendingContent'
+import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
+import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSwapContent'
 
 const PancakeRouterSlippageErrorMsg =
   'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
@@ -51,8 +51,8 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
 }
 
 interface ConfirmSwapModalProps {
-  trade?: Trade<Currency, Currency, TradeType> | StableTrade
-  originalTrade?: Trade<Currency, Currency, TradeType> | StableTrade
+  trade?: TradeWithStableSwap<Currency, Currency, TradeType>
+  originalTrade?: TradeWithStableSwap<Currency, Currency, TradeType>
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
@@ -63,7 +63,6 @@ interface ConfirmSwapModalProps {
   swapErrorMessage?: string
   customOnDismiss?: () => void
   openSettingModal?: () => void
-  isStable?: boolean
 }
 
 const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
@@ -80,7 +79,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   attemptingTxn,
   txHash,
   openSettingModal,
-  isStable,
 }) => {
   const { chainId } = useActiveChainId()
 
@@ -100,8 +98,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
           message={swapErrorMessage}
         />
       ) : (
-        <TransactionConfirmSwapContent
-          isStable={isStable}
+        <TransactionConfirmSwapContentWithSmartRouter
           trade={trade}
           currencyBalances={currencyBalances}
           originalTrade={originalTrade}
@@ -112,7 +109,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
         />
       ),
     [
-      isStable,
       trade,
       originalTrade,
       onAcceptChanges,
@@ -131,7 +127,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   return (
     <ConfirmSwapModalContainer handleDismiss={handleDismiss}>
       {attemptingTxn ? (
-        <ConfirmationPendingContent inputAmount={trade?.inputAmount} outputAmount={trade?.outputAmount} />
+        <ConfirmationPendingContent inputAmount={trade.inputAmount} outputAmount={trade.outputAmount} />
       ) : txHash ? (
         <TransactionSubmittedContent
           chainId={chainId}

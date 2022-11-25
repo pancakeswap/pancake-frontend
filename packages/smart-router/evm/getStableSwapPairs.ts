@@ -1,4 +1,4 @@
-import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 
 import { StableSwapPair } from './types'
@@ -13,10 +13,16 @@ export function getStableSwapPairs(chainId: ChainId): StableSwapPair[] {
 
   const pools = getStableSwapPools(chainId)
   return pools.map(({ token, quoteToken, stableSwapAddress }) => {
-    const pair = new Pair(
-      CurrencyAmount.fromRawAmount(deserializeToken(token), '0'),
-      CurrencyAmount.fromRawAmount(deserializeToken(quoteToken), '0'),
+    const token0 = deserializeToken(token)
+    const token1 = deserializeToken(quoteToken)
+    return createStableSwapPair(
+      {
+        token0,
+        token1,
+        reserve0: CurrencyAmount.fromRawAmount(token0, '0'),
+        reserve1: CurrencyAmount.fromRawAmount(token1, '0'),
+      },
+      stableSwapAddress,
     )
-    return createStableSwapPair(pair, stableSwapAddress)
   })
 }

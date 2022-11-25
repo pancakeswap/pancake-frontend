@@ -1,6 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
-import { ArrowDownIcon, Box, Button, Message, MessageText, Skeleton, Swap as SwapUI } from '@pancakeswap/uikit'
+import { Currency, CurrencyAmount, NATIVE, Percent, TradeType } from '@pancakeswap/sdk'
+import {
+  ArrowDownIcon,
+  Box,
+  Button,
+  Skeleton,
+  Swap as SwapUI,
+  Checkbox,
+  Text,
+  Flex,
+  Message,
+  MessageText,
+} from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -9,41 +20,35 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow } from 'components/Layout/Row'
 import { CommonBasesType } from 'components/SearchModal/types'
-
 import { useCurrency } from 'hooks/Tokens'
-import { ApprovalState, useApproveCallbackFromTrade } from 'hooks/useApproveCallback'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
-
+import { useAtomValue } from 'jotai'
 import { Field } from 'state/swap/actions'
 import { useDerivedSwapInfo, useSwapState } from 'state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
-
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
-
-import { useAtomValue } from 'jotai'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
-import { isAddress } from '../../../utils'
+import AddressInputPanel from '../components/AddressInputPanel'
+import AdvancedSwapDetailsDropdown from '../components/AdvancedSwapDetailsDropdown'
+import CurrencyInputHeader from '../components/CurrencyInputHeader'
+import { ArrowWrapper, Wrapper } from '../components/styleds'
+import SwapCommitButton from '../components/SwapCommitButton'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
-import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
-import AddressInputPanel from './AddressInputPanel'
-import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
-import CurrencyInputHeader from './CurrencyInputHeader'
-import { ArrowWrapper, Wrapper } from './styleds'
-import SwapCommitButton from './SwapCommitButton'
+import SmartSwapCommitButton from './components/SmartSwapCommitButton'
+import { useDerivedSwapInfoWithStableSwap, useTradeInfo, useIsSmartRouterBetter } from './hooks'
 
-export default function SwapForm() {
+export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-  const stableFarms = useStableFarms()
   const warningSwapHandler = useWarningImport()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
@@ -54,8 +59,10 @@ export default function SwapForm() {
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowUseSmartRouter, setAllowUseSmartRouter] = useState(() => false)
 
   // swap state & price data
+
   const {
     independentField,
     typedValue,
@@ -65,16 +72,6 @@ export default function SwapForm() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-  const hasStableSwapAlternative = useMemo(() => {
-    return stableFarms.some((stableFarm) => {
-      const checkSummedToken0 = isAddress(stableFarm?.token0.address)
-      const checkSummedToken1 = isAddress(stableFarm?.token1.address)
-      return (
-        (checkSummedToken0 === inputCurrencyId || checkSummedToken0 === outputCurrencyId) &&
-        (checkSummedToken1 === outputCurrencyId || checkSummedToken1 === outputCurrencyId)
-      )
-    })
-  }, [stableFarms, inputCurrencyId, outputCurrencyId])
 
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
@@ -84,12 +81,24 @@ export default function SwapForm() {
     [inputCurrency, outputCurrency],
   )
 
+  const { v2Trade } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
   const {
-    v2Trade,
+    trade: tradeWithStableSwap,
     currencyBalances,
     parsedAmount,
     inputError: swapInputError,
-  } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
+  } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
+  // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
+
+  const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
+
+  const tradeInfo = useTradeInfo({
+    trade: tradeWithStableSwap,
+    v2Trade,
+    useSmartRouter: allowUseSmartRouter && isSmartRouterBetter,
+    allowedSlippage,
+    chainId,
+  })
 
   const {
     wrapType,
@@ -97,9 +106,6 @@ export default function SwapForm() {
     inputError: wrapInputError,
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
-  const trade = showWrap ? undefined : v2Trade
-  const slippageAdjustedAmounts = trade ? computeSlippageAdjustedAmounts(v2Trade, allowedSlippage) : undefined
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(v2Trade)
 
   const parsedAmounts = showWrap
     ? {
@@ -107,8 +113,8 @@ export default function SwapForm() {
         [Field.OUTPUT]: parsedAmount,
       }
     : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : tradeInfo?.inputAmount,
+        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : tradeInfo?.outputAmount,
       }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
@@ -135,8 +141,9 @@ export default function SwapForm() {
       : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
+  const amountToApprove = tradeInfo?.slippageAdjustedAmounts[Field.INPUT]
   // check whether the user has approved the router on the input token
-  const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, chainId)
+  const [approval, approveCallback] = useApproveCallback(amountToApprove, tradeInfo?.routerAddress)
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
@@ -207,6 +214,24 @@ export default function SwapForm() {
     }
   }, [hasAmount, refreshBlockNumber])
 
+  const smartRouterOn = !!tradeInfo && !tradeInfo.fallbackV2
+
+  // Switch from exact out to exact in if smart router trade is better and user already allowed to use smart swap
+  useEffect(() => {
+    if (smartRouterOn && independentField === Field.OUTPUT && v2Trade) {
+      onUserInput(Field.INPUT, v2Trade.inputAmount.toSignificant(6))
+    }
+  }, [smartRouterOn, independentField, onUserInput, v2Trade])
+
+  useEffect(() => {
+    // Reset approval submit state after switch between old router and new router
+    setApprovalSubmitted(false)
+  }, [smartRouterOn])
+
+  const onUseSmartRouterChecked = useCallback(() => setAllowUseSmartRouter(!allowUseSmartRouter), [allowUseSmartRouter])
+
+  const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
+
   return (
     <>
       <CurrencyInputHeader
@@ -218,7 +243,7 @@ export default function SwapForm() {
       <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
         <AutoColumn gap="sm">
           <CurrencyInputPanel
-            label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
+            label={independentField === Field.OUTPUT && !showWrap && tradeInfo ? t('From (estimated)') : t('From')}
             value={formattedAmounts[Field.INPUT]}
             showMaxButton={!atMaxAmountInput}
             showQuickInputButton
@@ -244,7 +269,7 @@ export default function SwapForm() {
                   replaceBrowserHistory('outputCurrency', inputCurrencyId)
                 }}
               />
-              {recipient === null && !showWrap && isExpertMode ? (
+              {allowRecipient && recipient === null ? (
                 <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
                   {t('+ Add a send (optional)')}
                 </Button>
@@ -254,13 +279,14 @@ export default function SwapForm() {
           <CurrencyInputPanel
             value={formattedAmounts[Field.OUTPUT]}
             onUserInput={handleTypeOutput}
-            label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
+            label={independentField === Field.INPUT && !showWrap && tradeInfo ? t('To (estimated)') : t('To')}
             showMaxButton={false}
             currency={currencies[Field.OUTPUT]}
             onCurrencySelect={handleOutputSelect}
             otherCurrency={currencies[Field.INPUT]}
             id="swap-currency-output"
             showCommonBases
+            disabled={smartRouterOn}
             showBUSD={!!tokenMap[chainId]?.[outputCurrencyId] || outputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
@@ -271,7 +297,29 @@ export default function SwapForm() {
             </Box>
           )}
 
-          {isExpertMode && recipient !== null && !showWrap ? (
+          {isSmartRouterBetter && (
+            <AutoColumn>
+              {allowUseSmartRouter && (
+                <Message variant="warning" mb="8px">
+                  <MessageText>{t('This route includes StableSwap and can’t edit output')}</MessageText>
+                </Message>
+              )}
+              <Flex alignItems="center" onClick={onUseSmartRouterChecked}>
+                <Checkbox
+                  scale="sm"
+                  name="allowUseSmartRouter"
+                  type="checkbox"
+                  checked={allowUseSmartRouter}
+                  onChange={onUseSmartRouterChecked}
+                />
+                <Text ml="8px" style={{ userSelect: 'none' }}>
+                  {t('Use StableSwap for better fees')}
+                </Text>
+              </Flex>
+            </AutoColumn>
+          )}
+
+          {allowRecipient && recipient !== null ? (
             <>
               <AutoRow justify="space-between" style={{ padding: '0 1rem' }}>
                 <ArrowWrapper clickable={false}>
@@ -288,13 +336,13 @@ export default function SwapForm() {
           {showWrap ? null : (
             <SwapUI.Info
               price={
-                Boolean(trade) && (
+                Boolean(tradeInfo) && (
                   <>
                     <SwapUI.InfoLabel>{t('Price')}</SwapUI.InfoLabel>
                     {isLoading ? (
                       <Skeleton width="100%" ml="8px" height="24px" />
                     ) : (
-                      <SwapUI.TradePrice price={trade?.executionPrice} />
+                      <SwapUI.TradePrice price={tradeInfo?.executionPrice} />
                     )}
                   </>
                 )
@@ -303,47 +351,64 @@ export default function SwapForm() {
             />
           )}
         </AutoColumn>
-        {hasStableSwapAlternative && (
-          <AutoColumn>
-            <Message variant="warning" my="16px">
-              <MessageText>{t('Trade stablecoins in StableSwap with lower slippage and trading fees!')}</MessageText>
-            </Message>
-          </AutoColumn>
-        )}
+
         <Box mt="0.25rem">
-          <SwapCommitButton
-            swapIsUnsupported={swapIsUnsupported}
-            account={account}
-            showWrap={showWrap}
-            wrapInputError={wrapInputError}
-            onWrap={onWrap}
-            wrapType={wrapType}
-            parsedIndepentFieldAmount={parsedAmounts[independentField]}
-            approval={approval}
-            approveCallback={approveCallback}
-            approvalSubmitted={approvalSubmitted}
-            currencies={currencies}
-            isExpertMode={isExpertMode}
-            trade={trade}
-            swapInputError={swapInputError}
-            currencyBalances={currencyBalances}
-            recipient={recipient}
-            allowedSlippage={allowedSlippage}
-            onUserInput={onUserInput}
-          />
+          {tradeInfo?.fallbackV2 ? (
+            <SwapCommitButton
+              swapIsUnsupported={swapIsUnsupported}
+              account={account}
+              showWrap={showWrap}
+              wrapInputError={wrapInputError}
+              onWrap={onWrap}
+              wrapType={wrapType}
+              parsedIndepentFieldAmount={parsedAmounts[independentField]}
+              approval={approval}
+              approveCallback={approveCallback}
+              approvalSubmitted={approvalSubmitted}
+              currencies={currencies}
+              isExpertMode={isExpertMode}
+              trade={v2Trade}
+              swapInputError={swapInputError}
+              currencyBalances={currencyBalances}
+              recipient={recipient}
+              allowedSlippage={allowedSlippage}
+              onUserInput={onUserInput}
+            />
+          ) : (
+            <SmartSwapCommitButton
+              swapIsUnsupported={swapIsUnsupported}
+              account={account}
+              showWrap={showWrap}
+              wrapInputError={wrapInputError}
+              onWrap={onWrap}
+              wrapType={wrapType}
+              parsedIndepentFieldAmount={parsedAmounts[independentField]}
+              approval={approval}
+              approveCallback={approveCallback}
+              approvalSubmitted={approvalSubmitted}
+              currencies={currencies}
+              isExpertMode={isExpertMode}
+              trade={tradeWithStableSwap}
+              swapInputError={swapInputError}
+              currencyBalances={currencyBalances}
+              recipient={recipient}
+              allowedSlippage={allowedSlippage}
+              onUserInput={onUserInput}
+            />
+          )}
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
-        trade && (
+        tradeInfo && (
           <AdvancedSwapDetailsDropdown
-            pairs={trade?.route?.pairs}
-            path={trade?.route.path}
-            priceImpactWithoutFee={priceImpactWithoutFee}
-            realizedLPFee={realizedLPFee}
-            slippageAdjustedAmounts={slippageAdjustedAmounts}
-            inputAmount={trade?.inputAmount}
-            outputAmount={trade?.outputAmount}
-            tradeType={trade?.tradeType}
+            pairs={tradeInfo.route.pairs}
+            path={tradeInfo.route.path}
+            priceImpactWithoutFee={tradeInfo.priceImpactWithoutFee}
+            realizedLPFee={tradeInfo.realizedLPFee}
+            slippageAdjustedAmounts={tradeInfo.slippageAdjustedAmounts}
+            inputAmount={tradeInfo.inputAmount}
+            outputAmount={tradeInfo.outputAmount}
+            tradeType={tradeInfo.tradeType}
           />
         )
       ) : (

@@ -10,6 +10,7 @@ import {
   ThemeSwitcher,
   Box,
   QuestionHelper,
+  Link,
 } from '@pancakeswap/uikit'
 import {
   useAudioModeManager,
@@ -20,6 +21,7 @@ import {
   useZapModeManager,
   useUserUsernameVisibility,
 } from 'state/user/hooks'
+import { useUserSmartRouter } from 'state/user/smartRouter'
 import { ChainId } from '@pancakeswap/sdk'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
@@ -75,6 +77,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
+  const [smartRouterOpen, setSmartRouterOpen] = useUserSmartRouter()
 
   const { t } = useTranslation()
   const { isDark, setTheme } = useTheme()
@@ -239,6 +242,29 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 />
               </Flex>
               <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex alignItems="center">
+                <Text>{t('Smart Router (Beta)')}</Text>
+                <QuestionHelper
+                  text={
+                    <Flex>
+                      <Text mr="5px">{t('Smart Router (Beta)')}</Text>
+                      <Link href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/smart-router">
+                        {t('Find out more')}
+                      </Link>
+                    </Flex>
+                  }
+                  placement="top-start"
+                  ml="4px"
+                />
+              </Flex>
+              <Toggle
+                id="toggle-disable-smartRouter-button"
+                checked={smartRouterOpen}
+                onChange={(e) => setSmartRouterOpen(e.target.checked)}
+                scale="md"
+              />
             </Flex>
           </>
         )}

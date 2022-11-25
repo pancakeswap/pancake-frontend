@@ -1,27 +1,37 @@
-import { Trade, TradeType, Currency } from '@pancakeswap/sdk'
-import { Text, QuestionHelper } from '@pancakeswap/uikit'
-import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
-import { useUserSlippageTolerance } from 'state/user/hooks'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
+import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
+import { Pair } from '@pancakeswap/smart-router/evm'
+import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex } from '@pancakeswap/uikit'
+
 import { AutoColumn } from 'components/Layout/Column'
-import { TOTAL_FEE, LP_HOLDERS_FEE, TREASURY_FEE, BUYBACK_FEE } from 'config/constants/info'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
+import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
+import { useState } from 'react'
+import { Field } from 'state/swap/actions'
 import FormattedPriceImpact from './FormattedPriceImpact'
+import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
 
 function TradeSummary({
-  trade,
-  allowedSlippage,
+  inputAmount,
+  outputAmount,
+  tradeType,
+  slippageAdjustedAmounts,
+  priceImpactWithoutFee,
+  realizedLPFee,
 }: {
-  trade: Trade<Currency, Currency, TradeType>
-  allowedSlippage: number
+  inputAmount?: CurrencyAmount<Currency>
+  outputAmount?: CurrencyAmount<Currency>
+  tradeType?: TradeType
+  slippageAdjustedAmounts: {
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
+  }
+  priceImpactWithoutFee?: Percent
+  realizedLPFee?: CurrencyAmount<Currency>
 }) {
   const { t } = useTranslation()
-  const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
-  const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
-  const slippageAdjustedAmounts = computeSlippageAdjustedAmounts(trade, allowedSlippage)
-
+  const isExactIn = tradeType === TradeType.EXACT_INPUT
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
   const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
   const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
@@ -45,67 +55,92 @@ function TradeSummary({
         <RowFixed>
           <Text fontSize="14px">
             {isExactIn
-              ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${trade.outputAmount.currency.symbol}` ??
-                '-'
-              : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${trade.inputAmount.currency.symbol}` ?? '-'}
+              ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${outputAmount.currency.symbol}` ?? '-'
+              : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${inputAmount.currency.symbol}` ?? '-'}
           </Text>
         </RowFixed>
       </RowBetween>
-      <RowBetween>
-        <RowFixed>
-          <Text fontSize="14px" color="textSubtle">
-            {t('Price Impact')}
-          </Text>
-          <QuestionHelper
-            text={t('The difference between the market price and estimated price due to trade size.')}
-            ml="4px"
-            placement="top-start"
-          />
-        </RowFixed>
-        <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
-      </RowBetween>
+      {priceImpactWithoutFee && (
+        <RowBetween>
+          <RowFixed>
+            <Text fontSize="14px" color="textSubtle">
+              {t('Price Impact')}
+            </Text>
+            <QuestionHelper
+              text={t('The difference between the market price and estimated price due to trade size.')}
+              ml="4px"
+              placement="top-start"
+            />
+          </RowFixed>
+          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+        </RowBetween>
+      )}
 
-      <RowBetween>
-        <RowFixed>
-          <Text fontSize="14px" color="textSubtle">
-            {t('Liquidity Provider Fee')}
-          </Text>
-          <QuestionHelper
-            text={
-              <>
-                <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
-                <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
-                <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
-                <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
-              </>
-            }
-            ml="4px"
-            placement="top-start"
-          />
-        </RowFixed>
-        <Text fontSize="14px">
-          {realizedLPFee ? `${realizedLPFee.toSignificant(4)} ${trade.inputAmount.currency.symbol}` : '-'}
-        </Text>
-      </RowBetween>
+      {realizedLPFee && (
+        <RowBetween>
+          <RowFixed>
+            <Text fontSize="14px" color="textSubtle">
+              {t('Liquidity Provider Fee')}
+            </Text>
+            <QuestionHelper
+              text={
+                <>
+                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
+                  <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
+                  <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
+                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
+                </>
+              }
+              ml="4px"
+              placement="top-start"
+            />
+          </RowFixed>
+          <Text fontSize="14px">{`${realizedLPFee.toSignificant(4)} ${inputAmount.currency.symbol}`}</Text>
+        </RowBetween>
+      )}
     </AutoColumn>
   )
 }
 
 export interface AdvancedSwapDetailsProps {
-  trade?: Trade<Currency, Currency, TradeType>
+  pairs?: Pair[]
+  path?: Currency[]
+  priceImpactWithoutFee?: Percent
+  realizedLPFee?: CurrencyAmount<Currency>
+  slippageAdjustedAmounts?: {
+    INPUT?: CurrencyAmount<Currency>
+    OUTPUT?: CurrencyAmount<Currency>
+  }
+  inputAmount?: CurrencyAmount<Currency>
+  outputAmount?: CurrencyAmount<Currency>
+  tradeType?: TradeType
 }
 
-export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
+export function AdvancedSwapDetails({
+  pairs,
+  path,
+  priceImpactWithoutFee,
+  realizedLPFee,
+  slippageAdjustedAmounts,
+  inputAmount,
+  outputAmount,
+  tradeType,
+}: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
-  const [allowedSlippage] = useUserSlippageTolerance()
-
-  const showRoute = Boolean(trade && trade.route.path.length > 2)
-
+  const [isModalOpen, setIsModalOpen] = useState(() => false)
+  const showRoute = Boolean(path && path.length > 1)
   return (
     <AutoColumn gap="0px">
-      {trade && (
+      {inputAmount && (
         <>
-          <TradeSummary trade={trade} allowedSlippage={allowedSlippage} />
+          <TradeSummary
+            inputAmount={inputAmount}
+            outputAmount={outputAmount}
+            tradeType={tradeType}
+            slippageAdjustedAmounts={slippageAdjustedAmounts}
+            priceImpactWithoutFee={priceImpactWithoutFee}
+            realizedLPFee={realizedLPFee}
+          />
           {showRoute && (
             <>
               <RowBetween style={{ padding: '0 16px' }}>
@@ -119,7 +154,30 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
                     placement="top-start"
                   />
                 </span>
-                <SwapRoute trade={trade} />
+                <SwapRoute path={path} />
+                <SearchIcon style={{ cursor: 'pointer' }} onClick={() => setIsModalOpen(true)} />
+                <ModalV2 closeOnOverlayClick isOpen={isModalOpen} onDismiss={() => setIsModalOpen(false)}>
+                  <Modal
+                    title={
+                      <Flex justifyContent="center">
+                        {t('Route')}{' '}
+                        <QuestionHelper
+                          text={t('Routing through these tokens resulted in the best price for your trade.')}
+                          ml="4px"
+                          placement="top-start"
+                        />
+                      </Flex>
+                    }
+                    onDismiss={() => setIsModalOpen(false)}
+                  >
+                    <RouterViewer
+                      inputCurrency={inputAmount.currency}
+                      pairs={pairs}
+                      path={path}
+                      outputCurrency={outputAmount.currency}
+                    />
+                  </Modal>
+                </ModalV2>
               </RowBetween>
             </>
           )}

@@ -1,22 +1,21 @@
-import { Currency, CurrencyAmount, ERC20Token, Pair, Token, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair as V2Pair, Percent, Price, TradeType } from '@pancakeswap/sdk'
 
 import { RouteType } from './bestTrade'
+import { BasePair } from './pair'
+import { BaseRoute } from './route'
 
-export interface StableSwapPair {
-  token0: ERC20Token
-  token1: ERC20Token
-  reserve0: CurrencyAmount<ERC20Token>
-  reserve1: CurrencyAmount<ERC20Token>
+export interface StableSwapPair extends BasePair {
   stableSwapAddress: string
-  involvesToken: (token: ERC20Token) => boolean
+  price: Price<Currency, Currency>
+  fee: Percent
+  adminFee: Percent
 }
 
-export interface RouteWithStableSwap<TInput extends Currency, TOutput extends Currency> {
+export type Pair = V2Pair | StableSwapPair
+
+export interface RouteWithStableSwap<TInput extends Currency, TOutput extends Currency>
+  extends BaseRoute<TInput, TOutput, Pair> {
   routeType: RouteType
-  pairs: (Pair | StableSwapPair)[]
-  input: TInput
-  output: TOutput
-  path: Token[]
 }
 
 export interface TradeWithStableSwap<TInput extends Currency, TOutput extends Currency, TTradeType extends TradeType> {
@@ -24,4 +23,14 @@ export interface TradeWithStableSwap<TInput extends Currency, TOutput extends Cu
   route: RouteWithStableSwap<TInput, TOutput>
   inputAmount: CurrencyAmount<TInput>
   outputAmount: CurrencyAmount<TOutput>
+}
+
+export interface StableSwapFeeRaw {
+  fee: CurrencyAmount<Currency>
+  adminFee: CurrencyAmount<Currency>
+}
+
+export interface StableSwapFeePercent {
+  fee: Percent
+  adminFee: Percent
 }

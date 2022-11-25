@@ -11,6 +11,7 @@ import {
   ONE_HUNDRED_PERCENT,
   ROUTER_ADDRESS,
 } from 'config/constants/exchange'
+
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
 import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
@@ -37,7 +38,7 @@ export function useRouterContract() {
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, TradeType> | null): {
+export function computeTradePriceBreakdown(trade: Trade<Currency, Currency, TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
   realizedLPFee: CurrencyAmount<Currency> | undefined | null
 } {
@@ -53,7 +54,7 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
       )
 
   // remove lp fees from price impact
-  const priceImpactWithoutFeeFraction = trade && realizedLPFee ? trade.priceImpact.subtract(realizedLPFee) : undefined
+  const priceImpactWithoutFeeFraction = trade && realizedLPFee ? trade?.priceImpact.subtract(realizedLPFee) : undefined
 
   // the x*y=k impact
   const priceImpactWithoutFeePercent = priceImpactWithoutFeeFraction
@@ -73,6 +74,7 @@ export function computeTradePriceBreakdown(trade?: Trade<Currency, Currency, Tra
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
+
 export function computeSlippageAdjustedAmounts(
   trade: Trade<Currency, Currency, TradeType> | StableTrade | undefined,
   allowedSlippage: number,
@@ -92,7 +94,10 @@ export function warningSeverity(priceImpact: Percent | undefined): 0 | 1 | 2 | 3
   return 0
 }
 
-export function formatExecutionPrice(trade?: Trade<Currency, Currency, TradeType>, inverted?: boolean): string {
+export function formatExecutionPrice(
+  trade?: Trade<Currency, Currency, TradeType> | StableTrade,
+  inverted?: boolean,
+): string {
   if (!trade) {
     return ''
   }

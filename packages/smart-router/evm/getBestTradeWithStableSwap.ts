@@ -1,9 +1,9 @@
 /* eslint-disable no-await-in-loop, no-continue */
-import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Price, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { getBestTradeFromV2ExactIn } from './getBestTradeFromV2'
-import { getStableSwapOutputAmount } from './onchain'
-import { createTradeWithStableSwap, createTradeWithStableSwapFromV2Trade } from './stableSwap'
+import { getStableSwapFee, getStableSwapOutputAmount } from './onchain'
+import { createTradeWithStableSwap, createTradeWithStableSwapFromV2Trade, getFeePercent } from './stableSwap'
 import { BestTradeOptions, RouteType, StableSwapPair } from './types'
 import { getOutputToken, isSamePair } from './utils/pair'
 
@@ -42,10 +42,21 @@ export async function getBestTradeWithStableSwap(
     const stableSwapPair = findStableSwapPair(pair)
     if (stableSwapPair) {
       // Get latest output amount from v2 and use it as input to get output amount from stable swap
-      outputAmount = await getLatestOutputAmount()
-      outputAmount = await getStableSwapOutputAmount(stableSwapPair, outputAmount, { provider })
+      const stableInputAmount = await getLatestOutputAmount()
+      const results = await Promise.all([
+        getStableSwapOutputAmount(stableSwapPair, stableInputAmount, { provider }),
+        getStableSwapFee(stableSwapPair, stableInputAmount, { provider }),
+      ])
+      outputAmount = results[0]
+      const fees = results[1]
       outputToken = getOutputToken(stableSwapPair, outputToken)
-      pairsWithStableSwap.push(stableSwapPair)
+      const { fee, adminFee } = getFeePercent(stableInputAmount, outputAmount, fees)
+      pairsWithStableSwap.push({
+        ...stableSwapPair,
+        price: new Price({ baseAmount: stableInputAmount, quoteAmount: outputAmount.add(fees.fee) }),
+        fee,
+        adminFee,
+      })
       setCurrentRouteType(RouteType.STABLE_SWAP)
       continue
     }
@@ -66,7 +77,12 @@ export async function getBestTradeWithStableSwap(
     routeType,
     pairs: pairsWithStableSwap,
     inputAmount,
-    outputAmount,
+    // Make sure the output currency is the same as the output currency of v2 trade
+    outputAmount: CurrencyAmount.fromFractionalAmount(
+      baseTrade.outputAmount.currency,
+      outputAmount.numerator,
+      outputAmount.denominator,
+    ),
     tradeType,
   })
 }
