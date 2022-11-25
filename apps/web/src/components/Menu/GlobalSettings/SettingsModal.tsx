@@ -10,6 +10,7 @@ import {
   ThemeSwitcher,
   Box,
   QuestionHelper,
+  Link,
 } from '@pancakeswap/uikit'
 import {
   useAudioModeManager,
@@ -244,8 +245,19 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
-                <Text>{t('Smart Router')}</Text>
-                <QuestionHelper text={t('Smart Router')} placement="top-start" ml="4px" />
+                <Text>{t('Smart Router (Beta)')}</Text>
+                <QuestionHelper
+                  text={
+                    <Flex>
+                      <Text mr="5px">{t('Smart Router (Beta)')}</Text>
+                      <Link href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/smart-router">
+                        {t('Find out more')}
+                      </Link>
+                    </Flex>
+                  }
+                  placement="top-start"
+                  ml="4px"
+                />
               </Flex>
               <Toggle
                 id="toggle-disable-smartRouter-button"
