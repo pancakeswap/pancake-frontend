@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { useIsBloctoETH } from 'views/Farms'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
@@ -314,8 +314,8 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       <FarmUI.StakedLP
         decimals={18}
         stakedBalance={stakedBalance}
-        quoteTokenSymbol={quoteToken.symbol}
-        tokenSymbol={token.symbol}
+        quoteTokenSymbol={WNATIVE[chainId]?.symbol === quoteToken.symbol ? NATIVE[chainId]?.symbol : quoteToken.symbol}
+        tokenSymbol={WNATIVE[chainId]?.symbol === token.symbol ? NATIVE[chainId]?.symbol : token.symbol}
         lpTotalSupply={lpTotalSupply}
         lpTokenPrice={lpTokenPrice}
         tokenAmountTotal={tokenAmountTotal}
