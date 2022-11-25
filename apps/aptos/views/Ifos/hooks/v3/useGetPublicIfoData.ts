@@ -69,6 +69,7 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
   const finalState = useMemo(() => {
     if (
+      resources?.isLoading ||
       !resources.data ||
       !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA] ||
       !resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?.data
@@ -110,7 +111,7 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       endTime,
       vestingStartTime,
     }
-  }, [releaseTime, resources.data])
+  }, [releaseTime, resources.data, resources?.isLoading])
 
   return { ...finalState, currencyPriceInUSD }
 }

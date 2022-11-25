@@ -11,6 +11,7 @@ import { RootObject as IFOMetadata } from 'views/Ifos/generated/IFOMetadata'
 import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { RootObject as VestingMetadata } from 'views/Ifos/generated/VestingMetadata'
 import { Ifo } from 'config/constants/types'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
 interface ResourceType {
   [IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?: IFOMetadata
@@ -19,7 +20,10 @@ interface ResourceType {
 }
 
 export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
+  const { networkName } = useActiveWeb3React()
+
   return useAccountResources({
+    networkName,
     enabled: Boolean(userInfoTypes?.length),
     address: IFO_ADDRESS,
     watch: true,
@@ -59,8 +63,11 @@ export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
 }
 
 export const useIfoResources = (ifo: Ifo) => {
+  const { networkName } = useActiveWeb3React()
+
   return useAccountResources({
     enabled: !!ifo,
+    networkName,
     address: IFO_ADDRESS,
     watch: true,
     select: (data) => {
