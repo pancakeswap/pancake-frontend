@@ -2032,10 +2032,15 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Wenn Sie eine gefälschte Coin kaufen, kann es sein, dass Sie Ihr Geld dauerhaft verlieren.",
   "Pancake Collectibles": "Pancake-Collectibles",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info wird derzeit gewartet. Die Daten sind möglicherweise nicht genau oder aktuell.",
-  "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%",
-  "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.",
-  "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.",
-  "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.",
-  "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!",
-  "CAKE staking expired": "CAKE staking expired"
+  "Smart Router (Beta)": "Smart Router (Beta)",
+  "This route includes StableSwap and can’t edit output": "Diese Route enthält StableSwap und kann die Ausgabe nicht bearbeiten",
+  "Use StableSwap for better fees": "Nutzen Sie StableSwap für bessere Gebühren",
+  "V2": "V2",
+  "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (inklusive Belohnungen) sind bis %lockedEndTime% im CAKE-Pool gesperrt",
+  "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "Mit iCAKE können Sie an den öffentlichen IFO-Verkäufen teilnehmen und bis zu %iCake% CAKE erwerben.",
+  "bCAKE allows you to boost your yield in PancakeSwap Farms by up to 2x.": "Mit bCAKE können Sie Ihren Ertrag in PancakeSwap-Farms bis zu 2x steigern.",
+  "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE erhöht bei PancakeSwap-Abstimmungen Ihre Stimmkraft auf %totalScore%.",
+  "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Sperren Sie CAKE, um von den Vorteilen der Ertragserhöhung, der Teilnahme an IFOs, der Erhöhung der Stimmkraft und vielem mehr zu profitieren!",
+  "CAKE staking expired": "CAKE-Einsatz abgelaufen",
+  "Find out more": "Mehr erfahren"
 }
