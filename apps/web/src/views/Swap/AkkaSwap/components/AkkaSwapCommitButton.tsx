@@ -15,7 +15,7 @@ import { useCallback, useEffect, useState } from 'react'
 import Column from 'components/Layout/Column'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 
-import ConfirmSwapModal from '../../components/ConfirmSwapModal'
+import AkkaConfirmSwapModal from './AkkaConfirmSwapModal'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useAkkaRouterContract } from 'utils/exchange'
@@ -59,7 +59,7 @@ export default function AkkaSwapCommitButton({
 }: AkkaSwapCommitButtonPropsType) {
   const { t } = useTranslation()
   // the callback to execute the swap
-  const {multiPathSwap} = useAkkaRouterSwapCallback(trade)
+  const { multiPathSwap } = useAkkaRouterSwapCallback(trade)
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: AkkaRouterTrade
     attemptingTxn: boolean
@@ -91,8 +91,34 @@ export default function AkkaSwapCommitButton({
         })
       })
   }, [multiPathSwap, tradeToConfirm, setSwapState])
-
-
+  const handleAcceptChanges = useCallback(() => {
+    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
+  }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
+  const handleConfirmDismiss = useCallback(() => {
+    setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onUserInput(Field.INPUT, '')
+    }
+  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
+  const [onPresentConfirmModal] = useModal(
+    <AkkaConfirmSwapModal
+      trade={trade}
+      originalTrade={tradeToConfirm}
+      currencyBalances={currencyBalances}
+      onAcceptChanges={handleAcceptChanges}
+      attemptingTxn={attemptingTxn}
+      txHash={txHash}
+      recipient={account}
+      allowedSlippage={allowedSlippage}
+      onConfirm={handleSwap}
+      swapErrorMessage={swapErrorMessage}
+      customOnDismiss={handleConfirmDismiss}
+    />,
+    true,
+    true,
+    'confirmSwapModal',
+  )
 
   const onSwapHandler = useCallback(() => {
     if (isExpertMode) {
@@ -104,9 +130,9 @@ export default function AkkaSwapCommitButton({
         swapErrorMessage: undefined,
         txHash: undefined,
       })
+      onPresentConfirmModal()
     }
   }, [isExpertMode, handleSwap, trade])
-
 
   if (!account) {
     return <ConnectWalletButton width="100%" />

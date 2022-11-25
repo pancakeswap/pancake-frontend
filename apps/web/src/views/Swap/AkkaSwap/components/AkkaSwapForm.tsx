@@ -105,7 +105,7 @@ const AkkaSwapForm = () => {
   const onSwitchTokens = () => {
     onCurrencySelection(Field.INPUT, outputCurrency)
     onCurrencySelection(Field.OUTPUT, inputCurrency)
-    onUserInput(Field.INPUT, formattedAmounts[Field.OUTPUT])
+    onUserInput(Field.INPUT, akkaRouterTrade.route && typedValue !== '' ? akkaRouterTrade.route.return_amount : '')
   }
   const handleInputSelect = useCallback(
     (newCurrencyInput) => {
@@ -157,11 +157,12 @@ const AkkaSwapForm = () => {
 
     [inputCurrencyId, outputCurrencyId, onCurrencySelection],
   )
+
   const handleTypeOutput = useCallback(
     (value: string) => {
-      onUserInput(Field.OUTPUT, value)
+      onUserInput(Field.OUTPUT, akkaRouterTrade?.route ? akkaRouterTrade?.route?.return_amount : '')
     },
-    [onUserInput],
+    [onUserInput, akkaRouterTrade?.route?.return_amount],
   )
   const handlePercentInput = useCallback(
     (percent) => {
@@ -192,13 +193,14 @@ const AkkaSwapForm = () => {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
+
   return (
     <>
       <CurrencyInputHeader
         title={
           <Flex>
-            {t('Akka')}
-            <InfoTooltip ml="4px" text={t('Akka')} />
+            {t('Swap')}
+            <InfoTooltip ml="4px" text={t('Swap using Akka smart route')} />
           </Flex>
         }
         subtitle={t('Trade tokens in an instant')}
@@ -230,6 +232,8 @@ const AkkaSwapForm = () => {
                 scale="sm"
                 onClick={() => {
                   onSwitchTokens()
+                  replaceBrowserHistory('inputCurrency', outputCurrencyId)
+                  replaceBrowserHistory('outputCurrency', inputCurrencyId)
                 }}
               >
                 <ArrowDownIcon
@@ -244,7 +248,7 @@ const AkkaSwapForm = () => {
             </AutoRow>
           </AutoColumn>
           <CurrencyInputPanel
-            value={formattedAmounts[Field.OUTPUT]}
+            value={akkaRouterTrade.route && typedValue !== '' ? akkaRouterTrade.route.return_amount : ''}
             onUserInput={handleTypeOutput}
             label={independentField === Field.INPUT && t('To')}
             showMaxButton={false}
@@ -265,13 +269,13 @@ const AkkaSwapForm = () => {
               </Text>
             </RowBetween>
           </AutoColumn>
-          {typedValue ? null : (
+          {/* {typedValue ? null : (
             <AutoColumn>
               <Message variant="warning" mb="16px">
                 <MessageText>{t('Akka fee')}</MessageText>
               </Message>
             </AutoColumn>
-          )}
+          )} */}
         </AutoColumn>
         <Box mt="0.25rem">
           <AkkaSwapCommitButton
