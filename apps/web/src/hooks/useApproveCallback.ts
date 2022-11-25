@@ -91,7 +91,7 @@ export function useApproveCallback(
       useExact = true
       return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString()).catch(() => {
         console.error('estimate gas failure')
-        toastError(t('Error'), t('Unexpected error. Could not estimate gas for the swap.'))
+        toastError(t('Error'), t('Unexpected error. Could not estimate gas for the approve.'))
         return null
       })
     })
