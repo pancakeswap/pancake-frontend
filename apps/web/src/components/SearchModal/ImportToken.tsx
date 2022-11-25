@@ -151,13 +151,24 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           disabled={!confirmed}
           onClick={() => {
             tokens.forEach((token) => {
-              const inactiveToken = chainId && inactiveTokenList?.[token.chainId]?.[token.address]
+              let tokenInList
+              for (const url of inactiveUrls) {
+                const list = lists[url].current
+                tokenInList = list?.tokens.find(
+                  (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
+                )
+                if (tokenInList) {
+                  break
+                }
+              }
+
+              const inactiveToken = chainId && tokenInList
               let tokenToAdd = token
               if (inactiveToken) {
                 tokenToAdd = new WrappedTokenInfo({
                   ...token,
-                  logoURI: inactiveToken.token.logoURI,
-                  name: token.name || inactiveToken.token.name,
+                  logoURI: inactiveToken.logoURI,
+                  name: token.name || inactiveToken.name,
                 })
               }
               addToken(tokenToAdd)
