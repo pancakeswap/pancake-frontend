@@ -16,7 +16,7 @@ import {
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useCombinedInactiveList } from 'state/lists/hooks'
+import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAddUserToken } from 'state/user'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
@@ -35,8 +35,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
   const addToken = useAddUserToken()
 
-  // use for showing import source on inactive tokens
-  const inactiveTokenList = useCombinedInactiveList()
+  const lists = useAllLists()
+  const inactiveUrls = useInactiveListUrls()
 
   return (
     <AutoColumn gap="lg">
@@ -52,18 +52,28 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       </Message>
 
       {tokens.map((token) => {
-        const list = chainId && inactiveTokenList?.[chainId]?.[token.address]?.list
+        let tokenList
+        for (const url of inactiveUrls) {
+          const list = lists[url].current
+          const tokenInList = list?.tokens.some(
+            (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
+          )
+          if (tokenInList) {
+            tokenList = list
+            break
+          }
+        }
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
           <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
-            {list !== undefined ? (
+            {tokenList !== undefined ? (
               <Tag
                 variant="success"
                 outline
                 scale="sm"
-                startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                startIcon={tokenList.logoURI && <ListLogo logoURI={tokenList.logoURI} size="12px" />}
               >
-                {t('via')} {list.name}
+                {t('via')} {tokenList.name}
               </Tag>
             ) : (
               <Tag variant="failure" outline scale="sm" startIcon={<ErrorIcon color="failure" />}>
@@ -74,10 +84,10 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
               <Text mr="8px">{token.name}</Text>
               <Text>({token.symbol})</Text>
             </Flex>
-            {chainId && (
+            {token.chainId && (
               <Flex justifyContent="space-between" width="100%">
                 <Text mr="4px">{address}</Text>
-                <LinkExternal isAptosScan href={getBlockExploreLink(token.address, 'token', chainId)}>
+                <LinkExternal isAptosScan href={getBlockExploreLink(token.address, 'token', token.chainId)}>
                   {t('View on %site%', {
                     site: t('Explorer'),
                   })}
@@ -106,13 +116,24 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           disabled={!confirmed}
           onClick={() => {
             tokens.forEach((token) => {
-              const inactiveToken = chainId && inactiveTokenList?.[token.chainId]?.[token.address]
+              let tokenInList
+              for (const url of inactiveUrls) {
+                const list = lists[url].current
+                tokenInList = list?.tokens.find(
+                  (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
+                )
+                if (tokenInList) {
+                  break
+                }
+              }
+
+              const inactiveToken = chainId && tokenInList
               let tokenToAdd = token
               if (inactiveToken) {
                 tokenToAdd = new WrappedTokenInfo({
                   ...token,
-                  logoURI: inactiveToken.token.logoURI,
-                  name: token.name || inactiveToken.token.name,
+                  logoURI: inactiveToken.logoURI,
+                  name: token.name || inactiveToken.name,
                 })
               }
               addToken(tokenToAdd)

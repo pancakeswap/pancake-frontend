@@ -193,16 +193,6 @@ export function useCombinedInactiveList(): TokenAddressMap {
   return useAtomValue(combinedTokenMapFromInActiveUrlsAtom)
 }
 
-// list of tokens not supported on interface, used to show warnings and prevent swaps and adds
-export function useUnsupportedTokenList(): TokenAddressMap {
-  return useAtomValue(combinedTokenMapFromUnsupportedUrlsAtom)
-}
-
-// list of warning tokens on interface, used to show warnings and prevent adds
-export function useWarningTokenList(): TokenAddressMap {
-  return useAtomValue(combinedTokenMapFromWarningUrlsAtom)
-}
-
 export function useIsListActive(url: string): boolean {
   const activeListUrls = useActiveListUrls()
   return useMemo(() => Boolean(activeListUrls?.includes(url)), [activeListUrls, url])
