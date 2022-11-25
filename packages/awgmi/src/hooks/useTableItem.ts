@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 import { FetchTableItemArgs, fetchTableItem } from '@pancakeswap/awgmi/core'
+import { useQueries } from '@tanstack/react-query'
 import { Types } from 'aptos'
+import { useMemo } from 'react'
+import { queryClientContext } from '../context'
 
 import { QueryConfig, QueryFunctionArgs } from '../types'
 import { useNetwork } from './useNetwork'
@@ -17,6 +20,39 @@ const queryFn = ({ queryKey: [{ networkName, handle, data }] }: QueryFunctionArg
   if (!handle || !data) throw new Error('Handle and data are required.')
 
   return fetchTableItem({ networkName, handle, data })
+}
+
+interface DataType {
+  keyType: string
+  valueType: string
+  key: any
+}
+
+export function useTableItems({
+  handles,
+  data: data_,
+  networkName: networkName_,
+}: {
+  handles: string[]
+  data: DataType[]
+  networkName: string
+}) {
+  const { chain } = useNetwork()
+
+  return useQueries({
+    context: queryClientContext,
+    queries: useMemo(
+      () =>
+        handles.map((handle, idx) => ({
+          handle,
+          queryFn,
+          queryKey: queryKey({ networkName: networkName_ ?? chain?.network, handle, data: data_[idx] }),
+          staleTime: Infinity,
+          refetchInterval: 3_000,
+        })),
+      [chain?.network, handles, networkName_, data_],
+    ),
+  })
 }
 
 export function useTableItem<TData = unknown>({

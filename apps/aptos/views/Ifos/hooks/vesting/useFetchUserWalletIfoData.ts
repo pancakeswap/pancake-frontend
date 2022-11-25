@@ -1,16 +1,18 @@
 /* eslint-disable camelcase */
 // import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
+import _toNumber from 'lodash/toNumber'
 import { Ifo, PoolIds } from 'config/constants/types'
-// import { useCallback, useMemo } from 'react'
-// import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA } from 'views/Ifos/constants'
+import { useMemo } from 'react'
+import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA, IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
+import { ifos } from 'config/constants/ifo'
+
 import { VestingCharacteristics } from 'views/Ifos/types'
-// import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
-// import { ifos } from 'config/constants/ifo'
-// import { useIfoPool } from '../useIfoPool'
-// import { useIfoResources } from '../useIfoResources'
-// import { useIfoUserInfo } from '../useIfoUserInfo'
-// import { useVestingCharacteristics } from './useVestingCharacteristics'
+import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
+import { useIfoResourcesListByUserInfoType } from '../useIfoResources'
+import { useIfoUserInfoList } from '../useIfoUserInfo'
+import { useVestingCharacteristicsList } from './useVestingCharacteristics'
 
 export interface VestingData {
   ifo: Ifo
@@ -24,45 +26,58 @@ export interface VestingData {
 
 // const allVestingIfo: Ifo[] = ifos.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
 
-export const useFetchUserWalletIfoData = () => {
-  // const resources = useIfoResources()
-  // const pool = useIfoPool()
-  // const vestingCharacteristics = useVestingCharacteristics()
-  // const { data: userInfo } = useIfoUserInfo(pool?.type)
+export const useFetchUserWalletIfoData = (): VestingData[] => {
+  const userIfoList = useIfoUserInfoList()
 
-  const ifoDataList: VestingData[] = []
+  const userIfoListWithAmount = userIfoList?.data?.filter(({ data }) => _toNumber(data.amount))
 
-  // const { offering_amount: offeringAmountInToken } = useMemo(
-  //   () =>
-  //     userInfo?.data
-  //       ? computeOfferingAndRefundAmount(userInfo.data.amount, pool?.data)
-  //       : {
-  //           tax_amount: BIG_ZERO,
-  //           refunding_amount: BIG_ZERO,
-  //           offering_amount: BIG_ZERO,
-  //         },
-  //   [pool?.data, userInfo?.data],
-  // )
+  const poolList = useIfoResourcesListByUserInfoType(userIfoListWithAmount?.map(({ type }) => type))
 
-  // const fetchUserWalletIfoData = useCallback(
-  //   async (ifo: Ifo): Promise<VestingData> => {
-  //     const metadata = resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?.data
+  const poolListArray = useMemo(() => {
+    const poolListData = poolList?.data || {}
 
-  //     const userVestingData = {
-  //       vestingStartTime: metadata?.vesting_start_time ? +metadata.vesting_start_time : 0,
-  //       [PoolIds.poolUnlimited]: {
-  //         ...vestingCharacteristics,
-  //         offeringAmountInToken,
-  //       },
-  //     }
+    return Object.keys(poolListData)?.map((k) => poolListData[k])
+  }, [poolList])
 
-  //     return {
-  //       ifo,
-  //       userVestingData,
-  //     }
-  //   },
-  //   [offeringAmountInToken, resources.data, vestingCharacteristics],
-  // )
+  const vestingCharacteristicsList = useVestingCharacteristicsList(poolListArray)
+
+  const ifoDataList = useMemo(() => {
+    if (!userIfoListWithAmount) return []
+
+    // Philip TODO: Find ifo by staking and offerring address
+    const ifo = ifos[0]
+
+    return vestingCharacteristicsList?.reduce((result: VestingData[], vestingCharacteristics, idx) => {
+      if (!vestingCharacteristics || !userIfoListWithAmount) return result
+
+      const resource = poolListArray[idx]
+
+      const pool = resource[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
+      const metadata = resource[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]
+
+      // Philip TODO: Ensure userIfoListWithAmount is ordered with poolListArray
+      const { offering_amount: offeringAmountInToken } = userIfoListWithAmount[idx]
+        ? computeOfferingAndRefundAmount(userIfoListWithAmount[idx]?.data?.amount, pool)
+        : {
+            offering_amount: BIG_ZERO,
+          }
+
+      const userVestingData = {
+        vestingStartTime: metadata?.vesting_start_time ? +metadata.vesting_start_time : 0,
+        [PoolIds.poolUnlimited]: {
+          ...vestingCharacteristics,
+          offeringAmountInToken,
+        },
+      }
+
+      result.push({
+        ifo,
+        userVestingData,
+      })
+
+      return result
+    }, [])
+  }, [poolListArray, userIfoListWithAmount, vestingCharacteristicsList])
 
   return ifoDataList
 }

@@ -12,6 +12,52 @@ import { RootObject as IFOPoolStore } from 'views/Ifos/generated/IFOPoolStore'
 import { RootObject as VestingMetadata } from 'views/Ifos/generated/VestingMetadata'
 import { Ifo } from 'config/constants/types'
 
+interface ResourceType {
+  [IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?: IFOMetadata
+  [IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?: IFOPoolStore
+  [IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA]?: VestingMetadata
+}
+
+export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
+  return useAccountResources({
+    enabled: Boolean(userInfoTypes?.length),
+    address: IFO_ADDRESS,
+    watch: true,
+    select: (data) => {
+      let resourcesList = {}
+
+      for (const it of data) {
+        const res: ResourceType = {}
+        const [raisingCoin, offeringCoin] = splitTypeTag(it.type)
+
+        const foundType = userInfoTypes?.find((type) => {
+          const [userRaisingCoin, userOfferingCoin] = splitTypeTag(type)
+
+          return raisingCoin === userRaisingCoin && offeringCoin === userOfferingCoin
+        })
+
+        if (foundType) {
+          const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
+
+          const key = parsedTypeTag.value.name.value
+
+          res[key] = it
+
+          resourcesList = {
+            ...resourcesList,
+            [foundType]: {
+              ...resourcesList[foundType],
+              [key]: it,
+            },
+          }
+        }
+      }
+
+      return resourcesList
+    },
+  })
+}
+
 export const useIfoResources = (ifo: Ifo) => {
   return useAccountResources({
     enabled: !!ifo,
@@ -25,15 +71,12 @@ export const useIfoResources = (ifo: Ifo) => {
       } = {}
 
       for (const it of data) {
-        try {
-          const [raisingCoin, offeringCoin] = splitTypeTag(it.type)
-          if (raisingCoin === ifo.currency.address && offeringCoin === ifo.token.address) {
-            const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
+        const [raisingCoin, offeringCoin] = splitTypeTag(it.type)
+        if (raisingCoin === ifo.currency.address && offeringCoin === ifo.token.address) {
+          const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
 
-            res[parsedTypeTag.value.name.value] = it
-          }
-          // eslint-disable-next-line no-empty
-        } catch {}
+          res[parsedTypeTag.value.name.value] = it
+        }
       }
       return res
     },
