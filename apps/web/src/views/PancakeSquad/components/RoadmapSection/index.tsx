@@ -10,19 +10,20 @@ const FaqSection = () => {
     <LandingBodyWrapper>
       <LandingBodyWrapper>
         <Flex flexDirection="column">
-          <Heading scale="xl" color="secondary" display="block">
+          <Heading scale="xl" color="secondary" display="block" marginLeft="40px">
             {t('Roadmap')}
           </Heading>
           <Flex flexDirection="column">
-            {config({ t }).map((roadblock) => (
+            {config({ t }).map((roadblock, i) => (
               <div style={{ display: 'flex', gap: '24px' }}>
                 <div
                   style={{
                     fontSize: '24px',
                     width: '12px',
-                    background: 'var(--colors-gradientCardHeader)',
+                    background: 'var(--colors-backgroundDisabled)',
                     display: 'flex',
                     alignItems: 'center',
+                    borderRadius: i === 0 ? '25% 25% 0 0' : i === config({ t }).length - 1 ? '0 0 25% 25%' : '0',
                   }}
                 >
                   <span

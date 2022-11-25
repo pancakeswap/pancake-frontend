@@ -60,9 +60,10 @@ const config = ({ t }: FAQsType) => [
   {
     title: t('Where can i verify the used contracts of the Swap?'),
     description: [
-      t(
-        'Everyone can see the verified Smart Contracts on https://brisescan.com, addresses are: Factory: 0x9E6d21E759A7A288b80eef94E4737D313D31c13f Router02: 0xBb5e1777A331ED93E07cF043363e48d320eb96c4 as you can verify yourself, the Contracts are the original UniswapV2 Contracts.',
-      ),
+      t('Everyone can see the verified Smart Contracts on https://brisescan.com, addresses are:'),
+      t('Factory: 0x9E6d21E759A7A288b80eef94E4737D313D31c13f'),
+      t('Router02: 0xBb5e1777A331ED93E07cF043363e48d320eb96c4'),
+      t('As you can verify yourself, the Contracts are the original UniswapV2 Contracts.'),
     ],
   },
 ]

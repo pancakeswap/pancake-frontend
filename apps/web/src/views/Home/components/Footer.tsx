@@ -92,16 +92,16 @@ const Footer = () => {
           <StyledSunburst />
         </Flex>
       </BgWrapper>
-      {(isTablet || isDesktop) && (
-        <FloatingPancakesWrapper>
-          <TopLeftImgWrapper>
-            <CompositeImage {...topLeftImage} maxHeight="256px" />
-          </TopLeftImgWrapper>
-          <BottomRightImgWrapper>
-            <CompositeImage {...bottomRightImage} maxHeight="256px" />
-          </BottomRightImgWrapper>
-        </FloatingPancakesWrapper>
-      )}
+      {/* {(isTablet || isDesktop) && ( */}
+      {/*   <FloatingPancakesWrapper> */}
+      {/*     <TopLeftImgWrapper> */}
+      {/*       <CompositeImage {...topLeftImage} maxHeight="256px" /> */}
+      {/*     </TopLeftImgWrapper> */}
+      {/*     <BottomRightImgWrapper> */}
+      {/*       <CompositeImage {...bottomRightImage} maxHeight="256px" /> */}
+      {/*     </BottomRightImgWrapper> */}
+      {/*   </FloatingPancakesWrapper> */}
+      {/* )} */}
       <Wrapper>
         <Heading mb="24px" scale="xl" color="white">
           {t('Join us on social media')}

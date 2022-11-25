@@ -5,7 +5,8 @@ import {
   EarnFillIcon,
   EarnIcon,
   DropdownMenuItems,
-  InfoIcon
+  InfoIcon,
+  BridgeIcon,
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
 
@@ -45,7 +46,7 @@ const config: (
           label: t('Swap'),
           href: '/swap',
         },
-          /*
+        /*
         {
           label: t('Limit'),
           href: '/limit-orders',
@@ -57,7 +58,7 @@ const config: (
           label: t('Liquidity'),
           href: '/liquidity',
         },
-          /*
+        /*
         {
           label: t('Perpetual'),
           href: `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT?theme=${perpTheme(
@@ -82,13 +83,13 @@ const config: (
       fillIcon: EarnFillIcon,
       image: '/images/decorations/pe2.png',
       items: [
-          /*
+        /*
         {
           label: t('Farms'),
           href: '/farms',
         },
            */
-          /*
+        /*
         {
           label: t('Pools'),
           href: '/pools',
@@ -101,9 +102,10 @@ const config: (
       label: t('Bridge'),
       href: 'https://bridge.icecreamswap.com',
       showItemsOnMobile: false,
+      icon: BridgeIcon,
       items: [],
     },
-      /*
+    /*
     {
       label: t('Win'),
       href: '/prediction',
@@ -135,7 +137,7 @@ const config: (
       ],
     },
        */
-      /*
+    /*
     {
       label: t('NFT'),
       href: `${nftsBaseUrl}`,
@@ -165,7 +167,7 @@ const config: (
       icon: InfoIcon,
       items: [],
     },
-      /*
+    /*
     {
       label: '',
       href: '/info',
