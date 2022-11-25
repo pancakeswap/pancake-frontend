@@ -223,11 +223,12 @@ export function SmartSwapForm() {
     }
   }, [smartRouterOn, independentField, onUserInput, v2Trade])
 
-  const onUseSmartRouterChecked = useCallback(() => {
+  useEffect(() => {
     // Reset approval submit state after switch between old router and new router
     setApprovalSubmitted(false)
-    setAllowUseSmartRouter(!allowUseSmartRouter)
-  }, [onUserInput, allowUseSmartRouter])
+  }, [smartRouterOn])
+
+  const onUseSmartRouterChecked = useCallback(() => setAllowUseSmartRouter(!allowUseSmartRouter), [allowUseSmartRouter])
 
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
 
