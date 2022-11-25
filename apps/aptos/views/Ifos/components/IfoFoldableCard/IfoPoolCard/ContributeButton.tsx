@@ -7,6 +7,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useMemo } from 'react'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import ContributeModal from './ContributeModal'
 import GetTokenModal from './GetTokenModal'
@@ -26,6 +27,11 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const currencyBalance = useCurrencyBalance(ifo.currency.address)
+  const { startTime, endTime } = publicIfoData
+
+  const currentTime = Date.now() / 1000
+
+  const status = getStatus(currentTime, startTime, endTime)
 
   const balance = useMemo(
     () => (currencyBalance ? new BigNumber(currencyBalance.quotient.toString()) : BIG_ZERO),
@@ -64,7 +70,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     !noNeedCredit ||
     (limitPerUserInLP.isGreaterThan(0) && amountTokenCommittedInLP.isGreaterThanOrEqualTo(limitPerUserInLP))
 
-  const isDisabled = isPendingTx || isMaxCommitted || publicIfoData.status !== 'live'
+  const isDisabled = isPendingTx || isMaxCommitted || status !== 'live'
 
   return (
     <Button
@@ -73,7 +79,7 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
       disabled={isDisabled}
     >
       {/* TODO: Text should support another token. */}
-      {isMaxCommitted && publicIfoData.status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
+      {isMaxCommitted && status === 'live' ? t('Max. Committed') : t('Commit CAKE')}
     </Button>
   )
 }

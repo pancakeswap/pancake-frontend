@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import useStablePrice from 'hooks/useStablePrice'
 import { DAY_IN_SECONDS } from 'utils/getTimePeriods'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
 
@@ -105,8 +106,12 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   publicIfoData,
 }) => {
   const { t } = useTranslation()
-  const { status, currencyPriceInUSD } = publicIfoData
+  const { startTime, endTime, currencyPriceInUSD } = publicIfoData
   const poolCharacteristic = publicIfoData[poolId]
+
+  const currentTime = Date.now() / 1000
+
+  const status = getStatus(currentTime, startTime, endTime)
 
   const version3MaxTokens = null
 

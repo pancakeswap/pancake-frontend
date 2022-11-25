@@ -1,14 +1,13 @@
 /* eslint-disable camelcase */
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { Ifo, IfoStatus } from 'config/constants/types'
+import { Ifo } from 'config/constants/types'
 import { useCakePrice } from 'hooks/useStablePrice'
 import { useMemo } from 'react'
 import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA, IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
 import { getPoolTaxRateOverflow } from 'views/Ifos/utils'
 import { PoolCharacteristics, PublicIfoData, VestingInformation } from '../../types'
-import { getStatus } from '../helpers'
 import { useIfoResources } from '../useIfoResources'
 
 const formatVestingInfo = (pool: IFOPool): VestingInformation => ({
@@ -30,10 +29,6 @@ const formatPool = (pool: IFOPool): PoolCharacteristics => ({
 
 const initState = {
   isInitialized: false,
-  status: 'idle' as IfoStatus,
-  timeRemaining: 0,
-  secondsUntilStart: 0,
-  progress: 5,
   secondsUntilEnd: 0,
   startTime: 0,
   endTime: 0,
@@ -58,11 +53,9 @@ const initState = {
  * Gets all public data of an IFO
  */
 export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
-  const { releaseTime } = ifo
-
   const resources = useIfoResources(ifo)
 
-  // Philip TODO: Currently we only support CAKE Price
+  // TODO: Currently we only support CAKE Price
   const { data: cakePrice } = useCakePrice()
 
   const currencyPriceInUSD = useMemo(() => new BigNumber(cakePrice), [cakePrice])
@@ -87,31 +80,15 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
     const poolUnlimited = formatPool(data)
 
-    const currentTime = Date.now() / 1000
-
-    const status = getStatus(currentTime, startTime, endTime)
-    const totalTime = endTime - startTime
-    const timeRemaining = endTime - currentTime
-
-    const progress =
-      currentTime > startTime
-        ? ((currentTime - startTime) / totalTime) * 100
-        : ((currentTime - releaseTime) / (startTime - releaseTime)) * 100
-
     return {
       ...initState,
       isInitialized: true,
-      secondsUntilEnd: endTime - currentTime,
-      secondsUntilStart: startTime - currentTime,
       poolUnlimited,
-      status,
-      progress,
-      timeRemaining,
       startTime,
       endTime,
       vestingStartTime,
     }
-  }, [releaseTime, resources.data, resources?.isLoading])
+  }, [resources.data, resources?.isLoading])
 
   return { ...finalState, currencyPriceInUSD }
 }

@@ -1,8 +1,9 @@
-import { Box, Card, CardBody, CardFooter, CardHeader, ExpandableButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, ExpandableButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { CardsWrapper } from '../IfoCardStyles'
 import IfoPoolCard from './IfoPoolCard'
@@ -70,12 +71,6 @@ export const StyledCardBody = styled(CardBody)`
   }
 `
 
-const StyledCardFooter = styled(CardFooter)`
-  padding: 0;
-  background: ${({ theme }) => theme.colors.backgroundAlt};
-  text-align: center;
-`
-
 const StyledNoHatBunny = styled.div<{ $isLive: boolean; $isCurrent?: boolean }>`
   position: absolute;
   left: -24px;
@@ -131,7 +126,13 @@ export const IfoCurrentCard = ({
 }) => {
   const { isMobile } = useMatchBreakpoints()
 
-  const shouldShowBunny = publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon'
+  const { startTime, endTime } = publicIfoData
+
+  const currentTime = Date.now() / 1000
+
+  const status = getStatus(currentTime, startTime, endTime)
+
+  const shouldShowBunny = status === 'live' || status === 'coming_soon'
 
   return (
     <>
@@ -145,17 +146,17 @@ export const IfoCurrentCard = ({
           maxWidth={['400px', '400px', '400px', '100%']}
         >
           <Header $isCurrent ifoId={ifo.id} />
-          <IfoRibbon publicIfoData={publicIfoData} />
-          {shouldShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
+          <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
+          {shouldShowBunny && <NoHatBunny isLive={status === 'live'} />}
         </Box>
       )}
       <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '400px', '400px', '100%']}>
-        {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
+        {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={status === 'live'} />}
         <StyledCard $isCurrent>
           {!isMobile && (
             <>
               <Header $isCurrent ifoId={ifo.id} />
-              <IfoRibbon publicIfoData={publicIfoData} />
+              <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
             </>
           )}
           <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
@@ -202,7 +203,7 @@ export const IfoFoldableCard = ({
           </Header>
           {isExpanded && (
             <>
-              <IfoRibbon publicIfoData={publicIfoData} />
+              <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
             </>
           )}
         </Box>

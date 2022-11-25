@@ -1,6 +1,6 @@
 import BigNumber from 'bignumber.js'
 
-import { IfoStatus, PoolIds } from 'config/constants/types'
+import { PoolIds } from 'config/constants/types'
 
 // PoolCharacteristics retrieved from the contract
 export interface PoolCharacteristics {
@@ -19,11 +19,6 @@ export interface PoolCharacteristics {
 // IFO data unrelated to the user returned by useGetPublicIfoData
 export interface PublicIfoData {
   isInitialized: boolean
-  status: IfoStatus
-  timeRemaining: number
-  secondsUntilStart: number
-  progress: number
-  secondsUntilEnd: number
   startTime: number
   endTime: number
   currencyPriceInUSD: BigNumber

@@ -2,7 +2,7 @@ import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount } from '@pancakeswap/awgmi'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
-// import { bscTokens } from '@pancakeswap/tokens'
+
 import {
   Text,
   Flex,
@@ -17,8 +17,8 @@ import {
 } from '@pancakeswap/uikit'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { Ifo, PoolIds } from 'config/constants/types'
-// import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import PercentageOfTotal from './PercentageOfTotal'
 import { SkeletonCardTokens } from './Skeletons'
 import VestingAvailableToClaim from './VestingAvailableToClaim'
@@ -67,9 +67,6 @@ const CommitTokenSection: React.FC<React.PropsWithChildren<TokenSectionProps & {
   commitToken,
   ...props
 }) => {
-  // if (commitToken.equals(cakeBnbLpToken)) {
-  //   return <TokenSection primaryToken={bscTokens.cake} secondaryToken={bscTokens.wbnb} {...props} />
-  // }
   return <TokenSection primaryToken={commitToken} {...props} />
 }
 
@@ -119,6 +116,12 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
 
+  const { startTime, endTime } = publicIfoData
+
+  const currentTime = Date.now() / 1000
+
+  const status = getStatus(currentTime, startTime, endTime)
+
   const { currency, token, version } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
@@ -133,7 +136,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 
     const message = null
 
-    if (publicIfoData.status === 'coming_soon') {
+    if (status === 'coming_soon') {
       return (
         <>
           <TokenSection primaryToken={ifo.token}>
@@ -147,7 +150,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         </>
       )
     }
-    if (publicIfoData.status === 'live') {
+    if (status === 'live') {
       return (
         <>
           <CommitTokenSection commitToken={ifo.currency} mb="24px">
@@ -174,7 +177,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
       )
     }
 
-    if (publicIfoData.status === 'finished') {
+    if (status === 'finished') {
       return userPoolCharacteristics.amountTokenCommittedInLP.isEqualTo(0) ? (
         <Flex flexDirection="column" alignItems="center">
           <BunnyPlaceholderIcon width={80} mb="16px" />

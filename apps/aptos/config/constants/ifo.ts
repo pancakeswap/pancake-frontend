@@ -5,11 +5,34 @@ import { Ifo } from './types'
 
 export const ifos: Ifo[] = [
   {
-    id: 'eth',
+    id: 'bnb',
     cIFO: false,
     address: '',
     isActive: true,
-    name: 'Moon',
+    name: 'BNB',
+    poolUnlimited: {
+      saleAmount: '300,000,000 BNB',
+      raiseAmount: '$123,456',
+      cakeToBurn: '$0',
+      distributionRatio: 0.6,
+    },
+    currency: testnetTokens.cake,
+    token: testnetTokens.bnb,
+    releaseTime: 0,
+    campaignId: '1',
+    articleUrl: '',
+    tokenOfferingPrice: 0.00004939,
+    version: 3.2,
+    twitterUrl: '',
+    description: 'Moon description',
+    vestingTitle: '$BNB - BNB vesting title.',
+  },
+  {
+    id: 'eth',
+    cIFO: false,
+    address: '',
+    isActive: false,
+    name: 'Eth',
     poolUnlimited: {
       saleAmount: '300,000,000 ETH',
       raiseAmount: '$123,456',
@@ -24,8 +47,8 @@ export const ifos: Ifo[] = [
     tokenOfferingPrice: 0.00004939,
     version: 3.2,
     twitterUrl: '',
-    description: 'Moon description',
-    vestingTitle: '$Moon - Moon vesting title.',
+    description: 'Eth description',
+    vestingTitle: '$ETH - ETH vesting title.',
   },
   {
     id: 'test',
