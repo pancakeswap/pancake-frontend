@@ -23,7 +23,7 @@ export const useIfoVestingSchedule = ({ key, resources }: { key?: string; resour
 export const useIfoVestingSchedules = ({ key, resourcesList }: { key?: string; resourcesList?: any[] }) => {
   const hasLength = Boolean(resourcesList?.length)
 
-  const { data: results } = useTableItems({
+  const results = useTableItems({
     handles: hasLength
       ? resourcesList?.map(
           (resources) => resources?.[IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA]?.data.vesting_schedules.handle,
@@ -45,5 +45,5 @@ export const useIfoVestingSchedules = ({ key, resourcesList }: { key?: string; r
       : [],
   })
 
-  return hasLength && results?.length && resourcesList?.length === results?.length ? resourcesList : []
+  return hasLength && results?.length && resourcesList?.length === results?.length ? results : []
 }

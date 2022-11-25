@@ -7,6 +7,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useMemo } from 'react'
 import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA, IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { ifos } from 'config/constants/ifo'
+import splitTypeTag from 'utils/splitTypeTag'
 
 import { VestingCharacteristics } from 'views/Ifos/types'
 import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
@@ -44,9 +45,6 @@ export const useFetchUserWalletIfoData = (): VestingData[] => {
   const ifoDataList = useMemo(() => {
     if (!userIfoListWithAmount) return []
 
-    // Philip TODO: Find ifo by staking and offerring address
-    const ifo = ifos[0]
-
     return vestingCharacteristicsList?.reduce((result: VestingData[], vestingCharacteristics, idx) => {
       if (!vestingCharacteristics || !userIfoListWithAmount) return result
 
@@ -55,9 +53,17 @@ export const useFetchUserWalletIfoData = (): VestingData[] => {
       const pool = resource[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
       const metadata = resource[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]
 
+      const [stakingTokenAddress, offeringTokenAddress] = splitTypeTag(metadata.type)
+
+      const ifo = ifos.find(
+        (i) => i.currency.address === stakingTokenAddress && i.token.address === offeringTokenAddress,
+      )
+
+      if (!ifo) return result
+
       // Philip TODO: Ensure userIfoListWithAmount is ordered with poolListArray
       const { offering_amount: offeringAmountInToken } = userIfoListWithAmount[idx]
-        ? computeOfferingAndRefundAmount(userIfoListWithAmount[idx]?.data?.amount, pool)
+        ? computeOfferingAndRefundAmount(userIfoListWithAmount[idx]?.data?.amount, pool?.data)
         : {
             offering_amount: BIG_ZERO,
           }

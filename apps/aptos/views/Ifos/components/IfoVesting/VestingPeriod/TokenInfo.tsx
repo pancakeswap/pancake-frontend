@@ -25,7 +25,7 @@ interface TokenInfoProps {
 const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, data, fetchUserVestingData }) => {
   const { vestingTitle, token } = data.ifo
   const { vestingComputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
-  const { vestingComputeReleasableAmount: basicReleaseAmount } = data.userVestingData[PoolIds.poolBasic]
+
   const [expanded, setExpanded] = useState(false)
   const shouldRenderExpand = useDelayedUnmount(expanded, 300)
 
@@ -40,9 +40,9 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
   }
 
   const amountAvailable = useMemo(() => {
-    const totalReleaseAmount = new BigNumber(vestingComputeReleasableAmount).plus(basicReleaseAmount)
+    const totalReleaseAmount = new BigNumber(vestingComputeReleasableAmount)
     return getBalanceNumber(totalReleaseAmount, token.decimals)
-  }, [token, vestingComputeReleasableAmount, basicReleaseAmount])
+  }, [token, vestingComputeReleasableAmount])
 
   const price = useStablePrice(token)
   const dollarValueOfToken = price ? multiplyPriceByAmount(price, amountAvailable, token.decimals) : 0

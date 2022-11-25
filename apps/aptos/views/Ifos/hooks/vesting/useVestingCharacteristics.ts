@@ -61,7 +61,7 @@ export const useVestingCharacteristicsList = (resourcesList) => {
 
   return useMemo(() => {
     return vestingSchedules?.map((vestingSchedule, idx) => {
-      if (!vestingSchedule?.data?.isSuccess) {
+      if (!vestingSchedule?.isSuccess) {
         return undefined
       }
 
