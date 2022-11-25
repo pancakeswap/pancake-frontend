@@ -5,7 +5,7 @@
   "homepage_url": "https://icecreamswap.com",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1FC7D4",
+  "theme_color": "#F8567F",
   "background_color": "#ffffff",
   "orientation": "portrait",
   "icons": [
@@ -20,5 +20,5 @@
       "sizes": "256x256"
     }
   ],
-  "iconPath": "/images/cake.svg"
+  "iconPath-disabled": "/images/cake.svg"
 }

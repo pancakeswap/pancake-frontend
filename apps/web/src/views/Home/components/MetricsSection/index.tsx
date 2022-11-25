@@ -57,29 +57,29 @@ const Stats = () => {
         {t('Will you join them?')}
       </Text>
 
-      <Flex flexDirection={['column', null, null, 'row']}>
-        <IconCard {...UsersCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
-          <StatCardContent
-            headingText={t('%users% users', { users })}
-            bodyText={t('in the last 30 days')}
-            highlightColor={theme.colors.secondary}
-          />
-        </IconCard>
-        <IconCard {...TradesCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
-          <StatCardContent
-            headingText={t('%trades% trades', { trades })}
-            bodyText={t('made in the last 30 days')}
-            highlightColor={theme.colors.primary}
-          />
-        </IconCard>
-        <IconCard {...StakedCardData}>
-          <StatCardContent
-            headingText={t('$%tvl% staked', { tvl: tvlString })}
-            bodyText={t('Total Value Locked')}
-            highlightColor={theme.colors.failure}
-          />
-        </IconCard>
-      </Flex>
+      {/* <Flex flexDirection={['column', null, null, 'row']}> */}
+      {/*   <IconCard {...UsersCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}> */}
+      {/*     <StatCardContent */}
+      {/*       headingText={t('%users% users', { users })} */}
+      {/*       bodyText={t('in the last 30 days')} */}
+      {/*       highlightColor={theme.colors.secondary} */}
+      {/*     /> */}
+      {/*   </IconCard> */}
+      {/*   <IconCard {...TradesCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}> */}
+      {/*     <StatCardContent */}
+      {/*       headingText={t('%trades% trades', { trades })} */}
+      {/*       bodyText={t('made in the last 30 days')} */}
+      {/*       highlightColor={theme.colors.primary} */}
+      {/*     /> */}
+      {/*   </IconCard> */}
+      {/*   <IconCard {...StakedCardData}> */}
+      {/*     <StatCardContent */}
+      {/*       headingText={t('$%tvl% staked', { tvl: tvlString })} */}
+      {/*       bodyText={t('Total Value Locked')} */}
+      {/*       highlightColor={theme.colors.failure} */}
+      {/*     /> */}
+      {/*   </IconCard> */}
+      {/* </Flex> */}
     </Flex>
   )
 }

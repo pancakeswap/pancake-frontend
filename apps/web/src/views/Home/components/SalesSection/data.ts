@@ -3,7 +3,9 @@ import { SalesSectionProps } from '.'
 
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Trade anything. No registration, no hassle.'),
-  bodyText: t('Trade any token on BNB Smart Chain in seconds, just by connecting your wallet.'),
+  bodyText: t(
+    'IcecreamSwap provides a unified DeFi experience in a safe and intuitive environment on multiple chains. The main focus is to remove all unnecesarry complexity to provide a straightforward and intuitive DeFi experience. Also security is a main part of the IcecreamSwap ecosystem, which is why we are using the original and audited Uniswap V2 smart contracts for our Swap and are building a second layer of security on top of our industry standard and broadly used bridge architecture.',
+  ),
   reverse: false,
   primaryButton: {
     to: '/swap',

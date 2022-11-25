@@ -6,7 +6,7 @@ export const DEFAULT_META: PageMeta = {
   title: 'Home - IceCreamSwap',
   description:
     'SWAP BRIDGE ROADMAP FAQ WIKI JOIN US Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad IceCream brings people together Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain. Start Now Life is better with IceCream With us you can Swap and Bridge your tokens on',
-  image: 'https://pancakeswap.finance/images/hero.png',
+  image: 'https://icecreamswap.com/images/hero.png',
 }
 
 interface PathList {
