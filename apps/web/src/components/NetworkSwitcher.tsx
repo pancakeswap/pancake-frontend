@@ -41,7 +41,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
       </Box>
       <UserMenuDivider />
       {chains
-        // .filter((chain) => !chain.testnet || chain.id === chainId) // TODO: open this before ship to prod
+        .filter((chain) => !chain.testnet || chain.id === chainId)
         .map((chain) => (
           <UserMenuItem
             key={chain.id}
