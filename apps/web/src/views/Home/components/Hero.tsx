@@ -118,9 +118,9 @@ const Hero = () => {
       <Flex
         position="relative"
         flexDirection={['column-reverse', null, null, 'row']}
-        alignItems={['flex-end', null, null, 'center']}
+        alignItems="center"
         justifyContent="center"
-        mt={[account ? '280px' : '50px', null, 0]}
+        mt={['50px', null, 0]}
         id="homepage-hero"
       >
         <Flex flex="1" flexDirection="column">
@@ -140,8 +140,8 @@ const Hero = () => {
           </Flex>
         </Flex>
         <Flex
-          height={['192px', null, null, '100%']}
-          width={['192px', null, null, '100%']}
+          height={['292px', null, null, '100%']}
+          width={['292px', null, null, '100%']}
           flex={[null, null, null, '1']}
           mb={['24px', null, null, '0']}
           position="relative"

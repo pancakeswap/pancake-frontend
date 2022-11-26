@@ -1,5 +1,8 @@
 import { TranslateFunction } from '@pancakeswap/localization'
 import { SalesSectionProps } from '.'
+import iceConeA from '../../../../../public/images/home/trade/iceconea.png'
+import iceConeB from '../../../../../public/images/home/trade/iceconeb.png'
+import earnIce from '../../../../../public/images/home/earn/ice.png'
 
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Trade anything. No registration, no hassle.'),
@@ -18,10 +21,9 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: true,
   },
   images: {
-    path: '/images/home/trade/',
     attributes: [
-      { src: 'iceconea', alt: '' },
-      { src: 'iceconeb', alt: '' },
+      { src: iceConeA, alt: '' },
+      { src: iceConeB, alt: '' },
     ],
   },
 })
@@ -41,7 +43,6 @@ export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: true,
   },
   images: {
-    path: '/images/home/earn/',
-    attributes: [{ src: 'ice', alt: '' }],
+    attributes: [{ src: earnIce, alt: '' }],
   },
 })
