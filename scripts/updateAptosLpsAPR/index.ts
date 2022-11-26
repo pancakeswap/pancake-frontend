@@ -174,10 +174,10 @@ const fetchAndUpdateAptosLPsAPR = async () => {
     allAprs = { ...allAprs, ...aprs }
   }
 
-  // fs.writeFile(`apps/aptos/config/constants/lpAprs/1.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
-  //   if (err) throw err
-  //   console.info(` ✅ - lpAprs.json has been updated!`)
-  // })
+  fs.writeFile(`apps/aptos/config/constants/lpAprs/1.json`, JSON.stringify(allAprs, null, 2) + os.EOL, (err) => {
+    if (err) throw err
+    console.info(` ✅ - lpAprs.json has been updated!`)
+  })
 }
 
 fetchAndUpdateAptosLPsAPR()
