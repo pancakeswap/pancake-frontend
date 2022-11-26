@@ -10,9 +10,11 @@ const AdvancedDetailsFooter = styled.div<{ show: boolean }>`
   max-width: 400px;
   border-radius: 20 nmj, .px;
   background-color: ${({ theme }) => theme.colors.invertedContrast};
-
   transform: ${({ show }) => (show ? 'translateY(0%)' : 'translateY(-100%)')};
   transition: transform 300ms ease-in-out;
+  @media (max-width: 768px) {
+    margin-bottom: ${({ show }) => (show ? '24px' : 0)};
+  }
 `
 
 export default function AkkaAdvancedSwapDetailsDropdown({ route, ...rest }: AdvancedSwapDetailsProps) {

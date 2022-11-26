@@ -59,7 +59,7 @@ export default function AkkaSwapModalHeader({
         <RowFixed gap="4px">
           <CurrencyLogo currency={inputCurrency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color={inputTextColor}>
-            {}
+            {trade.route.input_amount}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0px">

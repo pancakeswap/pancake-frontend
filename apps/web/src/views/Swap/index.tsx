@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { Box, Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
 import { AppBody } from 'components/App'
@@ -16,6 +16,8 @@ import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import SwapTab, { SwapType } from './components/SwapTab'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 import AkkaSwapForm from './AkkaSwap/components/AkkaSwapForm'
+import { chainId } from 'wagmi'
+import { useWeb3React } from '@pancakeswap/wagmi'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -34,7 +36,7 @@ export default function Swap() {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
   }
-
+  const { chainId: walletChainId } = useWeb3React()
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -75,9 +77,15 @@ export default function Swap() {
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
                 <SwapTab>
-                  {(swapTypeState) => (
-                    swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <AkkaSwapForm />
-                  )}
+                  {(swapTypeState) =>
+                    swapTypeState === SwapType.STABLE_SWAP ? (
+                      <StableSwapFormContainer />
+                    ) : walletChainId === ChainId.BITGERT ? (
+                      <AkkaSwapForm />
+                    ) : (
+                      <SwapForm />
+                    )
+                  }
                 </SwapTab>
               </AppBody>
             </StyledInputCurrencyWrapper>
