@@ -39,7 +39,8 @@ const VestingClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   const handleClaim = useCallback(async () => {
     setPendingTx(true)
 
-    const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool.type)
+    const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
+
     const payload = ifoRelease([userPoolCharacteristics.vestingId], [raisingCoin, offeringCoin, uid])
     const response = await executeTransaction(payload)
 

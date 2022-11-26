@@ -19,9 +19,18 @@ import {
 import { useIfoResources } from '../useIfoResources'
 import { useIfoVestingSchedule, useIfoVestingSchedules } from '../useIfoVestingSchedule'
 
-function mapVestingCharacteristics({ pool, account, vestingSchedule, resourcesMetaData }) {
-  const [_0, _1, uid] = splitTypeTag(pool?.type)
+function getPoolID(poolType?: string) {
+  if (!poolType) return '0'
+
+  const [_0, _1, uidTag] = splitTypeTag(poolType)
+  const [_2, _3, uid] = uidTag?.split('::') || []
   const pid = uid?.replace('U', '') || '0'
+
+  return pid
+}
+
+function mapVestingCharacteristics({ pool, account, vestingSchedule, resourcesMetaData }) {
+  const pid = getPoolID(pool?.type)
 
   const ifoPool = pool?.data as unknown as IFOPool
 
