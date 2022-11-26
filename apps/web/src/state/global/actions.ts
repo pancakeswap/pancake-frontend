@@ -15,3 +15,7 @@ export const pickFarmTransactionTx = createAction<{
   tx: string
   chainId: ChainId
 }>('transactions/pickFarmTransactionTx')
+
+export const akkaSwapStatus = createAction<{
+  isAkkaSwap: boolean
+}>('global/akkaSwapStatus')

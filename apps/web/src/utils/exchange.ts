@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType } from '@pancakeswap/sdk'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { AkkaRouter } from 'config/abi/types/AkkaRouter'
 import AKKA_BTGERT_ABI from '../config/abi/AkkaRouter.json'
@@ -35,11 +35,15 @@ export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippag
 
 export function useRouterContract() {
   const { chainId } = useActiveChainId()
-  return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId], IPancakeRouter02ABI, true)
+  if (chainId === ChainId.BITGERT) {
+    return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId][0], IPancakeRouter02ABI, true)
+  } else {
+    return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId], IPancakeRouter02ABI, true)
+  }
 }
 
 export function useAkkaRouterContract() {
-  return useContract<AkkaRouter>(ROUTER_ADDRESS[32520], AKKA_BTGERT_ABI, true)
+  return useContract<AkkaRouter>(ROUTER_ADDRESS[ChainId.BITGERT][1], AKKA_BTGERT_ABI, true)
 }
 
 // computes price breakdown for the trade

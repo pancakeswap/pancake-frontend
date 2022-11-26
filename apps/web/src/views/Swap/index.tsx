@@ -18,6 +18,7 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 import AkkaSwapForm from './AkkaSwap/components/AkkaSwapForm'
 import { chainId } from 'wagmi'
 import { useWeb3React } from '@pancakeswap/wagmi'
+import { useIsAkkaSwap } from 'state/global/hooks'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -31,7 +32,7 @@ export default function Swap() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-
+  const isAkkaSwapMode = useIsAkkaSwap()
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
@@ -81,7 +82,11 @@ export default function Swap() {
                     swapTypeState === SwapType.STABLE_SWAP ? (
                       <StableSwapFormContainer />
                     ) : walletChainId === ChainId.BITGERT ? (
-                      <AkkaSwapForm />
+                      isAkkaSwapMode ? (
+                        <AkkaSwapForm />
+                      ) : (
+                        <SwapForm />
+                      )
                     ) : (
                       <SwapForm />
                     )

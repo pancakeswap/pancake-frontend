@@ -6,6 +6,7 @@ import { useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useCallback, useMemo } from 'react'
+import { useIsAkkaSwap } from 'state/global/hooks'
 import { logError } from 'utils/sentry'
 import { Field } from '../state/swap/actions'
 import { useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks'
@@ -131,8 +132,15 @@ export function useApproveCallbackFromTrade(
     () => (trade ? computeSlippageAdjustedAmounts(trade, allowedSlippage)[Field.INPUT] : undefined),
     [trade, allowedSlippage],
   )
-
-  return useApproveCallback(amountToApprove, ROUTER_ADDRESS[chainId])
+  const isAkkaSwap = useIsAkkaSwap()
+  return useApproveCallback(
+    amountToApprove,
+    chainId === 32520 && isAkkaSwap
+      ? ROUTER_ADDRESS[32520][1]
+      : chainId === 32520 && !isAkkaSwap
+      ? ROUTER_ADDRESS[32520][0]
+      : ROUTER_ADDRESS[chainId],
+  )
 }
 
 // Wraps useApproveCallback in the context of a Gelato Limit Orders

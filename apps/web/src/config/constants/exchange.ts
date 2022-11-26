@@ -13,9 +13,9 @@ import {
 import { ChainMap, ChainTokenList } from './types'
 
 export const ROUTER_ADDRESS_COMMON = '0xBb5e1777A331ED93E07cF043363e48d320eb96c4'
-export const ROUTER_ADDRESS: ChainMap<string> = {
+export const ROUTER_ADDRESS: ChainMap<string | Array<string>> = {
   [ChainId.BSC]: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
-  [ChainId.BITGERT]: '0xA9b580d4D41482Eae21A8EAef05dDcEE5384Cc8D',
+  [ChainId.BITGERT]: [ROUTER_ADDRESS_COMMON, '0xA9b580d4D41482Eae21A8EAef05dDcEE5384Cc8D'],
   [ChainId.DOGE]: ROUTER_ADDRESS_COMMON,
   [ChainId.DOKEN]: ROUTER_ADDRESS_COMMON,
   [ChainId.FUSE]: ROUTER_ADDRESS_COMMON,
