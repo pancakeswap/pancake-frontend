@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-// import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
@@ -25,8 +23,6 @@ export interface VestingData {
   }
 }
 
-// const allVestingIfo: Ifo[] = ifos.filter((ifo) => ifo.version >= 3.2 && ifo.vestingTitle)
-
 export const useFetchUserWalletIfoData = (): VestingData[] => {
   const userIfoList = useIfoUserInfoList()
 
@@ -37,7 +33,7 @@ export const useFetchUserWalletIfoData = (): VestingData[] => {
   const poolListArray = useMemo(() => {
     const poolListData = poolList?.data || {}
 
-    return Object.keys(poolListData)?.map((k) => poolListData[k])
+    return Object.keys(poolListData)?.map((k) => ({ ...poolListData[k], type: k }))
   }, [poolList])
 
   const vestingCharacteristicsList = useVestingCharacteristicsList(poolListArray)
@@ -61,9 +57,10 @@ export const useFetchUserWalletIfoData = (): VestingData[] => {
 
       if (!ifo) return result
 
-      // Philip TODO: Ensure userIfoListWithAmount is ordered with poolListArray
-      const { offering_amount: offeringAmountInToken } = userIfoListWithAmount[idx]
-        ? computeOfferingAndRefundAmount(userIfoListWithAmount[idx]?.data?.amount, pool?.data)
+      const foundUserIfo = userIfoListWithAmount.find((userIfo) => userIfo.type === resource.type)
+
+      const { offering_amount: offeringAmountInToken } = foundUserIfo
+        ? computeOfferingAndRefundAmount(foundUserIfo?.data?.amount, pool?.data)
         : {
             offering_amount: BIG_ZERO,
           }

@@ -56,7 +56,6 @@ export const useVestingCharacteristicsList = (resourcesList) => {
     [account?.address],
   )
 
-  // Philip TODO: it's empty array, need to check if it works
   const vestingSchedules = useIfoVestingSchedules({ key: vestingScheduleId, resourcesList })
 
   return useMemo(() => {
