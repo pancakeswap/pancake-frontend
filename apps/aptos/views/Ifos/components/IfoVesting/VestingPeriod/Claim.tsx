@@ -9,6 +9,7 @@ import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
 import splitTypeTag from 'utils/splitTypeTag'
 import { useCallback } from 'react'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
+import { HexString } from 'aptos'
 
 interface Props {
   poolId: PoolIds
@@ -34,7 +35,10 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
     const { vestingId } = data.userVestingData[poolId]
 
     const [raisingCoin, offeringCoin, uid] = splitTypeTag(ifo?.type)
-    const payload = ifoRelease([vestingId], [raisingCoin, offeringCoin, uid])
+
+    const vestingScheduleIdInArray: number[] = Array.from(new HexString(vestingId).toUint8Array())
+
+    const payload = ifoRelease([vestingScheduleIdInArray], [raisingCoin, offeringCoin, uid])
     const response = await executeTransaction(payload)
 
     if (response.hash) {

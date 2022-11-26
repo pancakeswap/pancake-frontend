@@ -99,9 +99,8 @@ export const computeNextVestingScheduleIdForHolderAndPid = (
     vesting_schedule: VestingSchedule
   },
 ) => {
-  const vesting_id = computeVestingScheduleId(holder, 0)
   if (data.vesting_schedule.pid === pid) {
-    return vesting_id
+    return computeVestingScheduleId(holder, 0)
   }
   return computeVestingScheduleId(holder, 1)
 }

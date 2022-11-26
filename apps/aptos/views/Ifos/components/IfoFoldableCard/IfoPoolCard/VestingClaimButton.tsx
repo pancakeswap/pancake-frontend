@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
+import { HexString } from 'aptos'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -41,7 +42,11 @@ const VestingClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
 
     const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
 
-    const payload = ifoRelease([userPoolCharacteristics.vestingId], [raisingCoin, offeringCoin, uid])
+    const vestingScheduleIdInArray: number[] = Array.from(
+      new HexString(userPoolCharacteristics.vestingId).toUint8Array(),
+    )
+
+    const payload = ifoRelease([vestingScheduleIdInArray], [raisingCoin, offeringCoin, uid])
     const response = await executeTransaction(payload)
 
     if (response.hash) {
