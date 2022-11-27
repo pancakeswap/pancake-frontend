@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "गैस का अनुमान लगाने में अप्रत्याशित समस्या। कृपया फिर कोशिश करें।",
   "Swap failed: %message%": "स्वैप विफल रहा: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "अप्रत्याशित त्रुटि। स्वैप के लिए गैस का अनुमान नहीं लगाया जा सका।",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "फार्म नीलामी",
   "Farm Auction Winner, add liquidity at your own risk.": "फार्म नीलीमी के विजेता, अपने जोखिम पर लिक्विडिटी जोड़ें।",
   "Currently showing charts from Chainlink oracle": "फिलहाल Chainlink oracle के चार्ट दिखा रहे हैं",
