@@ -9,9 +9,9 @@ import keyBy from 'lodash/keyBy'
 import { EMPTY_LIST } from '@pancakeswap/tokens'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
-import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
-import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
-import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
+import DEFAULT_TOKEN_LIST from '../../../public/default.tokenlist.json'
+import UNSUPPORTED_TOKEN_LIST from '../../../public/unsupported.tokenlist.json'
+import WARNING_TOKEN_LIST from '../../../public/warning.tokenlist.json'
 import { listsAtom } from './lists'
 
 type TokenAddressMap = TTokenAddressMap<ChainId>
