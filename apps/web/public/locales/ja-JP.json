@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "ガスの見積もりに予期しない問題が発生しました。もう一度お試しください。",
   "Swap failed: %message%": "スワップに失敗しました: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "予期しないエラー: スワップのガスを見積もれませんでした。",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "ファームオークション",
   "Farm Auction Winner, add liquidity at your own risk.": "ファームオークション落札者は、自己のリスクで流動性を追加してください。",
   "Currently showing charts from Chainlink oracle": "現在、Chainlinkオラクルのチャートを表示中",
