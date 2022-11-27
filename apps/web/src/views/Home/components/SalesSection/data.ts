@@ -2,6 +2,8 @@ import { TranslateFunction } from '@pancakeswap/localization'
 import { SalesSectionProps } from '.'
 import iceConeA from '../../../../../public/images/home/trade/iceconea.png'
 import iceConeB from '../../../../../public/images/home/trade/iceconeb.png'
+import bridgeA from '../../../../../public/images/home/bridge/bridge_a.png'
+import bridgeB from '../../../../../public/images/home/bridge/bridge_b.png'
 import earnIce from '../../../../../public/images/home/earn/ice.png'
 
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
@@ -45,7 +47,10 @@ export const bridgeSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: true,
   },
   images: {
-    attributes: [{ src: earnIce, alt: '' }],
+    attributes: [
+      { src: bridgeA, alt: '' },
+      { src: bridgeB, alt: '' },
+    ],
   },
 })
 
