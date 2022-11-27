@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Có vấn đề ngoài dự kiến khi ước tính phí ga. Vui lòng thử lại.",
   "Swap failed: %message%": "Hoán đổi không thành công: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Lỗi ngoài dự kiến. Không thể ước tính phí ga cho giao dịch hoán đổi.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Đấu giá trang trại",
   "Farm Auction Winner, add liquidity at your own risk.": "Người thắng đấu giá trang trại, bạn tự chịu rủi ro khi bổ sung thanh khoản.",
   "Currently showing charts from Chainlink oracle": "Đang hiển thị biểu đồ từ oracle Chainlink",
