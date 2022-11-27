@@ -74,6 +74,18 @@ const config = {
         source: '/info/pair/:address',
         destination: '/info/pools/:address',
       },
+      {
+        source: "/bridge/:path*",
+        destination: "https://bridge.icecreamswap.com/:path*",
+      },
+      {
+        source: "/static/:path*",
+        destination: "https://bridge.icecreamswap.com/static/:path*",
+      },
+      {
+        source: "/chainbridge-runtime-config.js",
+        destination: "https://bridge.icecreamswap.com/chainbridge-runtime-config.js"
+      }
     ]
   },
   async headers() {
