@@ -1,16 +1,18 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Image from "next/image";
-import PancakeIcon from "./PancakeIcon";
 import IceCream from "../../img/icecream.png";
 import { SpinnerProps } from "./types";
 
 const rotate = keyframes`
-  from {
-    transform: rotate(0deg);
+  0% {
+    transform: scale(1);
   }
-  to {
-    transform: rotate(360deg);
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 `;
 
@@ -28,7 +30,7 @@ const float = keyframes`
 
 const Container = styled.div`
   position: relative;
-  height: 200px;
+  height: 180px;
 `;
 
 const IceImage = () => {
