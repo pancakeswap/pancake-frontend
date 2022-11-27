@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "ظهرت مشكلة غير متوقعة في تقدير الوقود. يُرجى إعادة المحاولة.",
   "Swap failed: %message%": "فشلت المبادلة: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "خطأ غير متوقع. لا يمكن تقدير الوقود المطلوب للمبادلة.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "مزاد المزرعة",
   "Farm Auction Winner, add liquidity at your own risk.": "الفائز في مزاد المزرعة، إضافة سيولة على مسؤوليتك الشخصية.",
   "Currently showing charts from Chainlink oracle": "عرض المخططات حاليًا من مقدر التكاليف Chainlink",
