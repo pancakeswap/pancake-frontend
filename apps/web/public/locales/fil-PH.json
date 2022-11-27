@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "May hindi inaasahang isyu sa pagtatantya ng gas. Pakisubukan ulit.",
   "Swap failed: %message%": "Hindi nakapag-swap: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Hindi inaasahang error. Hindi matantya ang gas para sa pag-swap.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Auction sa Farm",
   "Farm Auction Winner, add liquidity at your own risk.": "Panalo sa Auction sa Farm, magdagdag ng liquidity sa sarili mong panganib.",
   "Currently showing charts from Chainlink oracle": "Kasalukuyang nagpapakita ng mga chart mula sa Chainlink oracle",
