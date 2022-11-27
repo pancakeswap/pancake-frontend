@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "S-a produs o eroare neașteptată la estimarea cheltuielilor cu tranzacția. Încearcă din nou.",
   "Swap failed: %message%": "Schimbare eșuată: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Eroare neașteptată. Nu s-au putut estima cheltuielile cu tranzacția pentru schimbare.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Licitație fermă",
   "Farm Auction Winner, add liquidity at your own risk.": "Câștigătorul licitației de fermă, adaugă lichidități pe riscul tău.",
   "Currently showing charts from Chainlink oracle": "În prezent se afișează graficele pentru oracolul Chainlink",
