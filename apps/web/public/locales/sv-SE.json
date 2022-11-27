@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Ett oväntat fel uppstod när transaktionsavgiften skulle uppskattas. Försök igen.",
   "Swap failed: %message%": "Inväxling misslyckades: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Oväntat fel. Kunde inte uppskatta transaktionsavgift för inväxlingen.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Farmauktion",
   "Farm Auction Winner, add liquidity at your own risk.": "Vinnare av farmauktion. Lägg till likviditet på egen risk.",
   "Currently showing charts from Chainlink oracle": "Visar just nu diagram från Chainlinks orakel",
