@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Виникла неочікувана проблема під час оцінювання обсягу газу. Спробуйте ще раз.",
   "Swap failed: %message%": "Помилка обміну: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Сталася неочікувана помилка. Не вдалось оцінити обсяг газу для обміну.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Аукціон ферм",
   "Farm Auction Winner, add liquidity at your own risk.": "Переможець аукціону ферм, додавайте ліквідність на власний ризик.",
   "Currently showing charts from Chainlink oracle": "Зараз показано діаграми від оракула Chainlink",
