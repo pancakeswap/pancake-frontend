@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Ada masalah tak terduga dengan kegiatan estimasi biaya ini. Silakan coba kembali.",
   "Swap failed: %message%": "Pertukaran gagal: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Eror tak terduga. Tidak dapat mengestimasi biaya untuk pertukaran.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Lelang Farm",
   "Farm Auction Winner, add liquidity at your own risk.": "Pemenang Lelang Farm, tambahkan likuiditas dengan risiko sendiri.",
   "Currently showing charts from Chainlink oracle": "Saat ini menampilkan bagan dari oracle Chainlink",
