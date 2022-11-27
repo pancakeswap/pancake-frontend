@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Kaasun arvioimisessa on odottamaton ongelma. Yritä uudelleen.",
   "Swap failed: %message%": "Vaihto epäonnistui: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Odottamaton virhe. Kaasun arvioiminen vaihtoa varten ei onnistunut.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Viljelmähuutokauppa",
   "Farm Auction Winner, add liquidity at your own risk.": "Viljelmähuutokaupan voittaja, lisää likviditeettiä omalla riskilläsi.",
   "Currently showing charts from Chainlink oracle": "Tällä hetkellä näytetään kaavioita Chainlink-oraakkelista",
