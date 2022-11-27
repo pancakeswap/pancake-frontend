@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Váratlan probléma a gáz becslésével. Kérjük, próbálja meg újra.",
   "Swap failed: %message%": "A csere meghiúsult: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Váratlan hiba. Nem lehetett felbecsülni a cseréhez szükséges gázmennyiséget.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Hozamfarm árverés",
   "Farm Auction Winner, add liquidity at your own risk.": "Hozamfarm árverés nyertese, likviditás hozzáadása saját felelősségre.",
   "Currently showing charts from Chainlink oracle": "Jelenleg a Chainlink orákulum diagramjainak megjelenítése",
