@@ -66,17 +66,6 @@ const UserMenu = () => {
           {hasPendingTransactions && <RefreshIcon spin />}
         </UserMenuItem>
         <UserMenuDivider />
-        <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
-          <UserMenuItem as="a" disabled={isWrongNetwork || chainId !== ChainId.BSC}>
-            {t('Your NFTs')}
-          </UserMenuItem>
-        </NextLink>
-        <ProfileUserMenuItem
-          isLoading={isLoading}
-          hasProfile={hasProfile}
-          disabled={isWrongNetwork || chainId !== ChainId.BSC}
-        />
-        <UserMenuDivider />
         <UserMenuItem as="button" onClick={logout}>
           <Flex alignItems="center" justifyContent="space-between" width="100%">
             {t('Disconnect')}

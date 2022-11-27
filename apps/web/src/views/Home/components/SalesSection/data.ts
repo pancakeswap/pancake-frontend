@@ -28,10 +28,31 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
   },
 })
 
+export const bridgeSectionData = (t: TranslateFunction): SalesSectionProps => ({
+  headingText: t('Bridge anything. No registration, no hassle.'),
+  bodyText: t(
+    'IceCreamSwap bridges assets between multiple chains. It is a decentralized and trustless bridge that allows users to move assets between chains.',
+  ),
+  reverse: true,
+  primaryButton: {
+    to: 'https://bridge.icecreamswap.com',
+    text: 'Bridge Now',
+    external: false,
+  },
+  secondaryButton: {
+    to: 'https://wiki.icecreamswap.com/get-started/bridge',
+    text: t('Learn'),
+    external: true,
+  },
+  images: {
+    attributes: [{ src: earnIce, alt: '' }],
+  },
+})
+
 export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Earn passive income with crypto.'),
   bodyText: t('IceCreamSwap makes it easy to make your crypto work for you.'),
-  reverse: true,
+  reverse: false,
   primaryButton: {
     to: '/farms',
     text: t('Explore'),

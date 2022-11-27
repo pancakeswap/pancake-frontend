@@ -87,8 +87,9 @@ export const getSrcSet = (base: string, imageSrc: string, extension = '.png') =>
 const CompositeImage: React.FC<React.PropsWithChildren<ComponentProps>> = ({ attributes, maxHeight = '512px' }) => {
   return (
     <Wrapper maxHeight={maxHeight}>
-      {attributes.map((image) => (
-        <Image src={image.src} alt={image.alt} loading="lazy" layout="fill" />
+      {attributes.map((image, i) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <Image key={i} src={image.src} alt={image.alt} loading="lazy" layout="fill" />
       ))}
     </Wrapper>
   )

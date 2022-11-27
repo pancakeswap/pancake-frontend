@@ -33,6 +33,24 @@ const config = ({ t }: FAQsType) => [
   {
     title: t('Which Chains are supported?'),
     description: [
+      <Text as="p" color="textSubtle" fontSize="16px">
+        Currently we are supporting Binance Smart chain (BSC), Bitgert (Brise), Dogechain, Doken chain and Fuse chain.
+        For an always up to date list please take a look at our{' '}
+        <Link
+          display="inline-flex"
+          color="text"
+          title="IceCreamSwap Wiki"
+          href="https://wiki.icecreamswap.com/introduction/ice"
+        >
+          Wiki
+        </Link>
+        .
+      </Text>,
+    ],
+  },
+  {
+    title: t('What is the address of the IceCream token?'),
+    description: [
       t('The address for the IceCream token on Bitgert is: 0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D'),
       <Text as="p" color="textSubtle" fontSize="16px">
         A up to date list of all IceCream addresses for all supported chains can be found at our{' '}

@@ -49,7 +49,7 @@ const FaqSection = () => {
                   </CardHeader>
                   <CardBody>
                     {roadblock.description.map((description) => (
-                      <Text>🍦{description}</Text>
+                      <Text>- {description}</Text>
                     ))}
                     <Text textAlign="end" fontStyle="italic" color="textSubtle">
                       {roadblock.reached}

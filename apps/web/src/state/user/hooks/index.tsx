@@ -3,7 +3,7 @@ import { deserializeToken } from '@pancakeswap/token-lists'
 import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, createContext, PropsWithChildren, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -405,7 +405,17 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
   )
 }
 
-export function useGasPrice(chainIdOverride?: number): string {
+const GasPriceContext = createContext('')
+
+export const GasPriceProvider: React.FC<PropsWithChildren> = ({ children }) => {
+  return <GasPriceContext.Provider value={useGasPriceRaw()}>{children}</GasPriceContext.Provider>
+}
+
+export function useGasPrice(): string {
+  return useContext(GasPriceContext)
+}
+
+export function useGasPriceRaw(chainIdOverride?: number): string {
   const { chainId: chainId_, chain } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
   const chainId = chainIdOverride ?? chainId_
@@ -492,8 +502,10 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
   const { data: farmPairs = [] } = useSWRImmutable(chainId && ['track-farms-pairs', chainId], async () => {
     const farms = await getFarmConfig(chainId)
 
-    const fPairs: [ERC20Token, ERC20Token][] = farms
-      .map((farm) => [deserializeToken(farm.token), deserializeToken(farm.quoteToken)])
+    const fPairs: [ERC20Token, ERC20Token][] = farms.map((farm) => [
+      deserializeToken(farm.token),
+      deserializeToken(farm.quoteToken),
+    ])
 
     return fPairs
   })

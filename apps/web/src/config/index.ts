@@ -1,6 +1,6 @@
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 
-export const BSC_BLOCK_TIME = 3
+export const BITGERT_BLOCK_TIME = 15
 
 // CAKE_PER_BLOCK details
 // 40 CAKE is minted per block
@@ -10,7 +10,7 @@ export const BSC_BLOCK_TIME = 3
 // CAKE_PER_BLOCK in config/index.ts = 40 as we only change the amount sent to the burn pool which is effectively a farm.
 // CAKE/Block in src/views/Home/components/CakeDataRow.tsx = 15 (40 - Amount sent to burn pool)
 export const CAKE_PER_BLOCK = 40
-export const BLOCKS_PER_DAY = (60 / BSC_BLOCK_TIME) * 60 * 24
+export const BLOCKS_PER_DAY = (60 / BITGERT_BLOCK_TIME) * 60 * 24
 export const BLOCKS_PER_YEAR = BLOCKS_PER_DAY * 365 // 10512000
 export const CAKE_PER_YEAR = CAKE_PER_BLOCK * BLOCKS_PER_YEAR
 export const BASE_URL = 'https://pancakeswap.finance'
