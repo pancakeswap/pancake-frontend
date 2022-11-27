@@ -2,10 +2,10 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import { Pool } from '@pancakeswap/uikit'
 import { useUserPoolStakedOnly, useUserPoolsViewMode } from 'state/user/hooks'
 import { useInitialBlock } from 'state/block/hooks'
-import { BSC_BLOCK_TIME } from 'config'
+import { BITGERT_BLOCK_TIME } from 'config'
 import { Token } from '@pancakeswap/sdk'
 
-const POOL_START_BLOCK_THRESHOLD = (60 / BSC_BLOCK_TIME) * 4
+const POOL_START_BLOCK_THRESHOLD = (60 / BITGERT_BLOCK_TIME) * 4
 
 export default function PoolControlsContainer(props) {
   const [stakedOnly, setStakedOnly] = useUserPoolStakedOnly()

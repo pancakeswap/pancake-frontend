@@ -69,7 +69,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
   const [expertMode, toggleExpertMode] = useExpertModeManager()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
-  const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
+  // const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
   const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
@@ -131,24 +131,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   scale="md"
                   onChange={() => {
                     setSubgraphHealth(!subgraphHealth)
-                  }}
-                />
-              </Flex>
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Show username')}</Text>
-                  <QuestionHelper
-                    text={t('Shows username of wallet instead of bunnies')}
-                    placement="top-start"
-                    ml="4px"
-                  />
-                </Flex>
-                <Toggle
-                  id="toggle-username-visibility"
-                  checked={userUsernameVisibility}
-                  scale="md"
-                  onChange={() => {
-                    setUserUsernameVisibility(!userUsernameVisibility)
                   }}
                 />
               </Flex>
@@ -229,17 +211,17 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 }}
               />
             </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('Flippy sounds')}</Text>
-                <QuestionHelper
-                  text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                  placement="top-start"
-                  ml="4px"
-                />
-              </Flex>
-              <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
-            </Flex>
+            {/* <Flex justifyContent="space-between" alignItems="center" mb="24px"> */}
+            {/*   <Flex alignItems="center"> */}
+            {/*     <Text>{t('Flippy sounds')}</Text> */}
+            {/*     <QuestionHelper */}
+            {/*       text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')} */}
+            {/*       placement="top-start" */}
+            {/*       ml="4px" */}
+            {/*     /> */}
+            {/*   </Flex> */}
+            {/*   <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" /> */}
+            {/* </Flex> */}
           </>
         )}
       </ScrollableContainer>

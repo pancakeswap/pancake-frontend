@@ -1,4 +1,4 @@
-import { BSC_BLOCK_TIME } from 'config'
+import { BITGERT_BLOCK_TIME } from 'config'
 import { useTranslation, TranslateFunction } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Card, Flex, Box, InfoIcon, Text, useTooltip } from '@pancakeswap/uikit'
@@ -93,7 +93,7 @@ const SubgraphHealthIndicator: React.FC<
 
   const indicatorProps = indicator(t, customDescriptions)
 
-  const secondRemainingBlockSync = blockDifference * BSC_BLOCK_TIME
+  const secondRemainingBlockSync = blockDifference * BITGERT_BLOCK_TIME
 
   const indicatorValue = getIndicator(status)
 

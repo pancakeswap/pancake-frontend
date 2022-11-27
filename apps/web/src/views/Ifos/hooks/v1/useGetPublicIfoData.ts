@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import BigNumber from 'bignumber.js'
-import { BSC_BLOCK_TIME } from 'config'
+import { BITGERT_BLOCK_TIME } from 'config'
 import { Ifo, IfoStatus, PoolIds } from 'config/constants/types'
 import { useLpTokenPrice } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -63,9 +63,9 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         isInitialized: true,
         status,
         blocksRemaining,
-        secondsUntilStart: (startBlockNum - currentBlock) * BSC_BLOCK_TIME,
+        secondsUntilStart: (startBlockNum - currentBlock) * BITGERT_BLOCK_TIME,
         progress,
-        secondsUntilEnd: blocksRemaining * BSC_BLOCK_TIME,
+        secondsUntilEnd: blocksRemaining * BITGERT_BLOCK_TIME,
         startBlockNum,
         endBlockNum,
         [PoolIds.poolUnlimited]: {

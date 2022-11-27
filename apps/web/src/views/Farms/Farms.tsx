@@ -185,9 +185,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
   const [boostedOnly, setBoostedOnly] = useState(false)
 
-  const activeFarms = farmsLP.filter(
-    (farm) => farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
-  )
+  const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid))
   const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')
   const archivedFarms = farmsLP
 
@@ -352,11 +350,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </NextLinkFromReactRouter>
             */}
           </Box>
-          {chainId === ChainId.BSC && (
-            <Box>
-              <BCakeBoosterCard />
-            </Box>
-          )}
         </FarmFlexWrapper>
       </PageHeader>
       <Page>
@@ -458,7 +451,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Flex>
         )}
         {poolLength && <div ref={observerRef} />}
-        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
       {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </FarmsContext.Provider>

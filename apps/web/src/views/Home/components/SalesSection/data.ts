@@ -1,9 +1,14 @@
 import { TranslateFunction } from '@pancakeswap/localization'
 import { SalesSectionProps } from '.'
+import iceConeA from '../../../../../public/images/home/trade/iceconea.png'
+import iceConeB from '../../../../../public/images/home/trade/iceconeb.png'
+import earnIce from '../../../../../public/images/home/earn/ice.png'
 
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Trade anything. No registration, no hassle.'),
-  bodyText: t('Trade any token on BNB Smart Chain in seconds, just by connecting your wallet.'),
+  bodyText: t(
+    'IcecreamSwap provides a unified DeFi experience in a safe and intuitive environment on multiple chains. The main focus is to remove all unnecesarry complexity to provide a straightforward and intuitive DeFi experience. Also security is a main part of the IcecreamSwap ecosystem, which is why we are using the original and audited Uniswap V2 smart contracts for our Swap and are building a second layer of security on top of our industry standard and broadly used bridge architecture.',
+  ),
   reverse: false,
   primaryButton: {
     to: '/swap',
@@ -11,68 +16,54 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: false,
   },
   secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/',
+    to: 'https://wiki.icecreamswap.com/getting-started/swap',
     text: t('Learn'),
     external: true,
   },
   images: {
-    path: '/images/home/trade/',
     attributes: [
-      { src: 'BNB', alt: t('BNB token') },
-      { src: 'BTC', alt: t('BTC token') },
-      { src: 'CAKE', alt: t('CAKE token') },
+      { src: iceConeA, alt: '' },
+      { src: iceConeB, alt: '' },
     ],
+  },
+})
+
+export const bridgeSectionData = (t: TranslateFunction): SalesSectionProps => ({
+  headingText: t('Bridge anything. No registration, no hassle.'),
+  bodyText: t(
+    'IceCreamSwap bridges assets between multiple chains. It is a decentralized and trustless bridge that allows users to move assets between chains.',
+  ),
+  reverse: true,
+  primaryButton: {
+    to: 'https://bridge.icecreamswap.com',
+    text: 'Bridge Now',
+    external: false,
+  },
+  secondaryButton: {
+    to: 'https://wiki.icecreamswap.com/get-started/bridge',
+    text: t('Learn'),
+    external: true,
+  },
+  images: {
+    attributes: [{ src: earnIce, alt: '' }],
   },
 })
 
 export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Earn passive income with crypto.'),
-  bodyText: t('PancakeSwap makes it easy to make your crypto work for you.'),
-  reverse: true,
+  bodyText: t('IceCreamSwap makes it easy to make your crypto work for you.'),
+  reverse: false,
   primaryButton: {
     to: '/farms',
     text: t('Explore'),
     external: false,
   },
   secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/products/yield-farming',
+    to: 'https://wiki.icecreamswap.com/get-started/pool',
     text: t('Learn'),
     external: true,
   },
   images: {
-    path: '/images/home/earn/',
-    attributes: [
-      { src: 'pie', alt: t('Pie chart') },
-      { src: 'stonks', alt: t('Stocks chart') },
-      { src: 'folder', alt: t('Folder with cake token') },
-    ],
-  },
-})
-
-export const cakeSectionData = (t: TranslateFunction): SalesSectionProps => ({
-  headingText: t('CAKE makes our world go round.'),
-  bodyText: t(
-    'CAKE token is at the heart of the PancakeSwap ecosystem. Buy it, win it, farm it, spend it, stake it... heck, you can even vote with it!',
-  ),
-  reverse: false,
-  primaryButton: {
-    to: '/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56',
-    text: t('Buy CAKE'),
-    external: false,
-  },
-  secondaryButton: {
-    to: 'https://docs.pancakeswap.finance/tokenomics/cake',
-    text: t('Learn'),
-    external: true,
-  },
-
-  images: {
-    path: '/images/home/cake/',
-    attributes: [
-      { src: 'bottom-right', alt: t('Small 3d pancake') },
-      { src: 'top-right', alt: t('Small 3d pancake') },
-      { src: 'coin', alt: t('CAKE token') },
-      { src: 'top-left', alt: t('Small 3d pancake') },
-    ],
+    attributes: [{ src: earnIce, alt: '' }],
   },
 })
