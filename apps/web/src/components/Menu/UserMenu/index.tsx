@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
-import ProfileUserMenuItem from './ProfileUserMenuItem'
+// import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
 
@@ -30,11 +30,11 @@ const UserMenu = () => {
   const { chainId, isWrongNetwork } = useActiveChainId()
   const { logout } = useAuth()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
-  const { isInitialized, isLoading, profile } = useProfile()
+  const { profile } = useProfile()
   const [onPresentWalletModal] = useModal(<WalletModal initialView={WalletView.WALLET_INFO} />)
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
   const [onPresentWrongNetworkModal] = useModal(<WalletModal initialView={WalletView.WRONG_NETWORK} />)
-  const hasProfile = isInitialized && !!profile
+  // const hasProfile = isInitialized && !!profile
   const avatarSrc = profile?.nft?.image?.thumbnail
   const [userMenuText, setUserMenuText] = useState<string>('')
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
@@ -71,11 +71,11 @@ const UserMenu = () => {
             {t('Your NFTs')}
           </UserMenuItem>
         </NextLink>
-        <ProfileUserMenuItem
+        {/* <ProfileUserMenuItem
           isLoading={isLoading}
           hasProfile={hasProfile}
           disabled={isWrongNetwork || chainId !== ChainId.BSC}
-        />
+        /> */}
         <UserMenuDivider />
         <UserMenuItem as="button" onClick={logout}>
           <Flex alignItems="center" justifyContent="space-between" width="100%">
