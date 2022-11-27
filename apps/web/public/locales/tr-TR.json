@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Gas tahmininde beklenmeyen bir sorun meydana geldi. Lütfen tekrar deneyin.",
   "Swap failed: %message%": "Değiştirme başarısız: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Beklenmeyen hata. Değiştirme işlemi için gas tahmin edilemedi.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Farm Müzayedesi",
   "Farm Auction Winner, add liquidity at your own risk.": "Farm Müzayedesi Kazananı, riski size ait olmak üzere likidite ekleyin.",
   "Currently showing charts from Chainlink oracle": "Şu anda Chainlink tahmininden çizelgeler gösteriliyor",
