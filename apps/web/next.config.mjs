@@ -79,29 +79,13 @@ const config = {
         destination: "https://bridge.icecreamswap.com/:path*",
       },
       {
-        source: "/static/js/2.9db71598.chunk.js",
-        destination: "https://info.icecreamswap.com/static/js/2.9db71598.chunk.js",
-      },
-      {
-        source: "/static/js/main.282dd067.chunk.js",
-        destination: "https://info.icecreamswap.com/static/js/main.282dd067.chunk.js",
-      },
-      {
-        source: "/static/media/logo_white.aa4e7c28.svg",
-        destination: "https://info.icecreamswap.com/static/media/logo_white.aa4e7c28.svg",
-      },
-      {
         source: "/static/:path*",
         destination: "https://bridge.icecreamswap.com/static/:path*",
       },
       {
         source: "/chainbridge-runtime-config.js",
         destination: "https://bridge.icecreamswap.com/chainbridge-runtime-config.js"
-      },
-      {
-        source: "/info/:path*",
-        destination: "https://info.icecreamswap.com/:path*",
-      }
+     }
     ]
   },
   async headers() {

@@ -163,7 +163,7 @@ const config: (
        */
     {
       label: t('Info'),
-      href: '/info',
+      href: 'https://info.icecreamswap.com',
       icon: InfoIcon,
       items: [],
     },
