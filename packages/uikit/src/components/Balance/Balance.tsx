@@ -15,6 +15,15 @@ interface BalanceProps extends TextProps {
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
+const formatNumber = new Intl.NumberFormat("en", { notation: "compact", minimumFractionDigits: 1 }).format;
+
+const formatStringNumber = (value: string | number) => {
+  const number = Number(value);
+  if (Number.isNaN(number)) {
+    return String(value);
+  }
+  return String(formatNumber(number));
+};
 const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
   value,
   color = "text",
@@ -39,6 +48,7 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
       decimals={decimals}
       duration={1}
       separator=","
+      formattingFn={formatStringNumber}
     >
       {({ countUpRef }) => (
         <Text color={isDisabled ? "textDisabled" : color} onClick={onClick} {...props}>

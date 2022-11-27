@@ -264,6 +264,16 @@ function MinimalPositionCardView({
   )
 }
 
+const formatNumber = new Intl.NumberFormat('en', { notation: 'compact', minimumFractionDigits: 1 }).format
+
+const formatStringNumber = (value: string) => {
+  const number = Number(value)
+  if (Number.isNaN(number)) {
+    return value
+  }
+  return formatNumber(number)
+}
+
 function FullPositionCard({
   pair,
   currency0,
@@ -328,7 +338,7 @@ function FullPositionCard({
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                  <Text ml="6px">{formatStringNumber(token0Deposited?.toExact())}</Text>
                 </RowFixed>
               ) : (
                 '-'
@@ -346,7 +356,7 @@ function FullPositionCard({
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                  <Text ml="6px">{formatStringNumber(token1Deposited?.toExact())}</Text>
                 </RowFixed>
               ) : (
                 '-'
