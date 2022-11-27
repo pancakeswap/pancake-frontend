@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "估算 gas 時出現意外問題。請再試一次。",
   "Swap failed: %message%": "交換失敗：%message%",
   "Unexpected error. Could not estimate gas for the swap.": "意外錯誤。無法估算交換的 gas。",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "農場拍賣",
   "Farm Auction Winner, add liquidity at your own risk.": "農場拍賣贏家，增加流動性風險自負。",
   "Currently showing charts from Chainlink oracle": "目前正在顯示來自 Chainlink 預言機的圖表",
