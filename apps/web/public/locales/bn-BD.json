@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "গ্যাস অনুমানের ক্ষেত্রে অপ্রত্যাশিত সমস্যা। অনুগ্রহপূর্বক আবার চেষ্টা করুন।",
   "Swap failed: %message%": "সোয়াপ ব্যর্থ হয়েছে: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "অপ্রত্যাশিত ত্রুটি। সোয়াপের জন্য গ্যাস অনুমান করা যায়নি।",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "খামার নিলাম",
   "Farm Auction Winner, add liquidity at your own risk.": "খামার নিলাম বিজয়ী, আপনার নিজের ঝুঁকিতে লিকুইডিটি যোগ করুন।",
   "Currently showing charts from Chainlink oracle": "বর্তমানে চেইনলিঙ্ক ওরাকল থেকে চার্ট দেখাচ্ছে",
