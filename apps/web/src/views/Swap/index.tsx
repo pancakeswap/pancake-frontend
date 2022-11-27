@@ -19,6 +19,8 @@ import AkkaSwapForm from './AkkaSwap/components/AkkaSwapForm'
 import { chainId } from 'wagmi'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useIsAkkaSwap } from 'state/global/hooks'
+import { useAkkaBitgertTokenlistHandshake } from './AkkaSwap/hooks/useAkkaRouterApi'
+import AkkaSwapFormContainer from './AkkaSwap'
 
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
@@ -39,6 +41,7 @@ export default function Swap() {
   }
   const { chainId: walletChainId } = useWeb3React()
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
+  const tokenlistHandshake = useAkkaBitgertTokenlistHandshake()
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', , '100%']} height="100%" justifyContent="center" position="relative">
@@ -83,12 +86,12 @@ export default function Swap() {
                       <StableSwapFormContainer />
                     ) : walletChainId === ChainId.BITGERT ? (
                       isAkkaSwapMode ? (
-                        <AkkaSwapForm />
+                        <AkkaSwapFormContainer />
                       ) : (
                         <SwapForm />
                       )
                     ) : (
-                      <SwapForm />
+                      <AkkaSwapFormContainer />
                     )
                   }
                 </SwapTab>

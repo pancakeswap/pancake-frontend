@@ -1,6 +1,7 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useEffect, useState } from 'react'
+import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType } from './types'
 const setChainName = (chainId) => {
   switch (chainId) {
@@ -12,9 +13,26 @@ const setChainName = (chainId) => {
       return 'bitgert'
   }
 }
+export const useAkkaBitgertTokenlistHandshake = () => {
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://www.apiv2.akka.finance/tokens?chain=bitgert&limit=1`)
+        const responseData = await response.status
+        setData(responseData)
+      } catch (error) {
+        setData(400)
+      }
+    }
+    fetchData()
+  }, [setData])
+
+  return data
+}
 export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: string, slippage: number = 0.1) => {
   const [data, setData] = useState<AkkaRouterArgsResponseType>(null)
-
+  const [is,toggleSetAkkaMode]= useIsAkkaSwapModeStatus()
   useEffect(() => {
     const fetchData = async () => {
       if (Number(amount) > 0) {
@@ -28,7 +46,8 @@ export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: st
           )
           const responseData = (await response.json()) as AkkaRouterArgsResponseType
 
-          setData(responseData)
+          // setData(responseData)
+          toggleSetAkkaMode()
         } catch (error) {
           console.error('Unable to fetch data:', error)
         }

@@ -59,6 +59,7 @@ export default function SwapForm() {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
+  
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const hasStableSwapAlternative = useMemo(() => {
@@ -71,7 +72,7 @@ export default function SwapForm() {
       )
     })
   }, [stableFarms, inputCurrencyId, outputCurrencyId])
-
+  
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
       [Field.INPUT]: inputCurrency ?? undefined,
@@ -121,6 +122,11 @@ export default function SwapForm() {
     },
     [onUserInput],
   )
+  useEffect(() => {
+    if (typedValue) {
+      onUserInput(Field.INPUT, typedValue)
+    }
+  }, [onUserInput])
 
   const formattedAmounts = {
     [independentField]: typedValue,
@@ -200,7 +206,7 @@ export default function SwapForm() {
       refreshBlockNumber()
     }
   }, [hasAmount, refreshBlockNumber])
-
+  
   return (
     <>
       <CurrencyInputHeader
@@ -213,7 +219,7 @@ export default function SwapForm() {
         <AutoColumn gap="sm">
           <CurrencyInputPanel
             label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
-            value={formattedAmounts[Field.INPUT]}
+            value={typedValue ? typedValue : formattedAmounts[Field.INPUT]}
             showMaxButton={!atMaxAmountInput}
             showQuickInputButton
             currency={currencies[Field.INPUT]}

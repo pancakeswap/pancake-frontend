@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useContext } from 'react'
+import { useCallback, useEffect, useState, useContext, useMemo } from 'react'
 import styled from 'styled-components'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
@@ -43,6 +43,7 @@ import AkkaSwapCommitButton from './AkkaSwapCommitButton'
 import { useApproveCallbackFromAkkaTrade } from '../hooks/useApproveCallbackFromAkkaTrade'
 import { useAkkaSwapInfo } from '../hooks/useAkkaSwapInfo'
 import AkkaAdvancedSwapDetailsDropdown from './AkkaAdvancedSwapDetailsDropdown'
+import useWarningImport from 'views/Swap/hooks/useWarningImport'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -75,7 +76,7 @@ const AkkaSwapForm = () => {
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
-
+  const warningSwapHandler = useWarningImport()
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
 
@@ -98,19 +99,29 @@ const AkkaSwapForm = () => {
     },
     [onUserInput],
   )
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
+  // const currencies: { [field in Field]?: Currency } = {
+  //   [Field.INPUT]: inputCurrency ?? undefined,
+  //   [Field.OUTPUT]: outputCurrency ?? undefined,
+  // }
+
+  const currencies: { [field in Field]?: Currency } = useMemo(
+    () => ({
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined,
+    }),
+    [inputCurrency, outputCurrency],
+  )
   const onSwitchTokens = () => {
     onCurrencySelection(Field.INPUT, outputCurrency)
     onCurrencySelection(Field.OUTPUT, inputCurrency)
     onUserInput(Field.INPUT, akkaRouterTrade.route && typedValue !== '' ? akkaRouterTrade.route.return_amount : '')
+    replaceBrowserHistory('inputCurrency', outputCurrencyId)
+    replaceBrowserHistory('outputCurrency', inputCurrencyId)
   }
   const handleInputSelect = useCallback(
     (newCurrencyInput) => {
       onCurrencySelection(Field.INPUT, newCurrencyInput)
-
+      warningSwapHandler(newCurrencyInput)
       const newCurrencyInputId = currencyId(newCurrencyInput)
       if (newCurrencyInputId === outputCurrencyId) {
         replaceBrowserHistory('outputCurrency', inputCurrencyId)
@@ -147,7 +158,7 @@ const AkkaSwapForm = () => {
   const handleOutputSelect = useCallback(
     (newCurrencyOutput) => {
       onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
-
+      warningSwapHandler(newCurrencyOutput)
       const newCurrencyOutputId = currencyId(newCurrencyOutput)
       if (newCurrencyOutputId === inputCurrencyId) {
         replaceBrowserHistory('inputCurrency', outputCurrencyId)
@@ -193,13 +204,13 @@ const AkkaSwapForm = () => {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
-
+  console.log('dsads', currencies[Field.INPUT])
   return (
     <>
       <CurrencyInputHeader
         title={
           <Flex>
-            {t('Swap')}
+            {t('Akka')}
             <InfoTooltip ml="4px" text={t('Swap using Akka smart route')} />
           </Flex>
         }
@@ -232,8 +243,6 @@ const AkkaSwapForm = () => {
                 scale="sm"
                 onClick={() => {
                   onSwitchTokens()
-                  replaceBrowserHistory('inputCurrency', outputCurrencyId)
-                  replaceBrowserHistory('outputCurrency', inputCurrencyId)
                 }}
               >
                 <ArrowDownIcon
