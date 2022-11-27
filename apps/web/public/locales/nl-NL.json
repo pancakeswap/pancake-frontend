@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Onverwacht probleem met schatten van het gas. Probeer het opnieuw.",
   "Swap failed: %message%": "Swap mislukt: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Onverwachte fout. Kon gas voor de swap niet schatten.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "Farmveiling",
   "Farm Auction Winner, add liquidity at your own risk.": "Winnaar van farmveiling, voeg liquiditeit toe op eigen risico.",
   "Currently showing charts from Chainlink oracle": "Grafieken van Chainlink-orakel worden weergegeven",
