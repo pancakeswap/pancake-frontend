@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Flex, Heading, PocketWatchIcon, Text, Skeleton, Link, TimerIcon } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
 import { PublicIfoData } from 'views/Ifos/types'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 
 interface Props {
   publicIfoData: PublicIfoData
@@ -22,13 +23,15 @@ const FlexGap = styled(Flex)<{ gap: string }>`
 
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
-  const { status, startTime } = publicIfoData
+  const { startTime, endTime } = publicIfoData
 
   const currentTime = Date.now() / 1000
 
   const secondsUntilStart = startTime - currentTime
 
   const timeUntil = getTimePeriods(secondsUntilStart)
+
+  const status = getStatus(currentTime, startTime, endTime)
 
   return (
     <Flex justifyContent="center" position="relative">
@@ -96,11 +99,13 @@ const LiveNowHeading = styled(EndInHeading)`
 
 const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
-  const { status, endTime } = publicIfoData
+  const { endTime, startTime } = publicIfoData
 
   const currentTime = Date.now() / 1000
 
   const secondsUntilEnd = endTime - currentTime
+
+  const status = getStatus(currentTime, startTime, endTime)
 
   const timeUntil = getTimePeriods(secondsUntilEnd)
   return (

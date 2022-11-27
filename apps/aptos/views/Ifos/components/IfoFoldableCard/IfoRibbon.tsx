@@ -5,7 +5,7 @@ import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData } from '../../types'
 import LiveTimer, { SoonTimer } from './Timer'
 
-const BigCurve = styled(Box)<{ $status: PublicIfoData['status'] }>`
+const BigCurve = styled(Box)<{ $status }>`
   width: 150%;
   position: absolute;
   top: -150%;

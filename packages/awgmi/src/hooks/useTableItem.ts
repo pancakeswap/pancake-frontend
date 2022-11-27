@@ -22,7 +22,7 @@ const queryFn = ({ queryKey: [{ networkName, handle, data }] }: QueryFunctionArg
   return fetchTableItem({ networkName, handle, data })
 }
 
-interface DataType {
+export type PayloadTableItem = {
   keyType: string
   valueType: string
   key: any
@@ -33,9 +33,9 @@ export function useTableItems({
   data: data_,
   networkName: networkName_,
 }: {
-  handles: string[]
-  data: DataType[]
-  networkName: string
+  handles?: string[]
+  data?: PayloadTableItem[]
+  networkName?: string
 }) {
   const { chain } = useNetwork()
 
@@ -43,13 +43,15 @@ export function useTableItems({
     context: queryClientContext,
     queries: useMemo(
       () =>
-        handles.map((handle, idx) => ({
-          handle,
-          queryFn,
-          queryKey: queryKey({ networkName: networkName_ ?? chain?.network, handle, data: data_[idx] }),
-          staleTime: Infinity,
-          refetchInterval: 3_000,
-        })),
+        handles?.length && data_?.length
+          ? handles.map((handle, idx) => ({
+              handle,
+              queryFn,
+              queryKey: queryKey({ networkName: networkName_ ?? chain?.network, handle, data: data_[idx] }),
+              staleTime: Infinity,
+              refetchInterval: 3_000,
+            }))
+          : [],
       [chain?.network, handles, networkName_, data_],
     ),
   })

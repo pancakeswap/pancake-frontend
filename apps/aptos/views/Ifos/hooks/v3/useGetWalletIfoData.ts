@@ -5,6 +5,8 @@ import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useState, useMemo } from 'react'
 import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
+import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
+
 import { WalletIfoState, WalletIfoData } from '../../types'
 import { useIfoPool } from '../useIfoPool'
 import { useIfoUserInfo } from '../useIfoUserInfo'
@@ -64,7 +66,7 @@ export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
   } = useMemo(
     () =>
       userInfo?.data
-        ? computeOfferingAndRefundAmount(userInfo.data.amount, pool?.data)
+        ? computeOfferingAndRefundAmount(userInfo.data.amount, pool?.data as unknown as IFOPool)
         : {
             tax_amount: BIG_ZERO,
             refunding_amount: BIG_ZERO,

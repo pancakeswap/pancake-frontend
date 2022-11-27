@@ -76,13 +76,13 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
     const { start_time, end_time, vesting_start_time } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_METADATA].data
 
-    const { data } = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
+    const dataPool = resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?.data as unknown as IFOPool
 
     const startTime = +start_time
     const endTime = +end_time
     const vestingStartTime = +vesting_start_time
 
-    const poolUnlimited = formatPool(data)
+    const poolUnlimited = formatPool(dataPool)
 
     return {
       ...initState,
