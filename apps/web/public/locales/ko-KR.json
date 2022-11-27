@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "가스 추정에 예상치 못한 문제가 있습니다. 다시 시도해주세요.",
   "Swap failed: %message%": "스왑 실패: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "예상치 못한 오류입니다. 스왑을 위한 가스를 추정할 수 없습니다.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "팜 경매",
   "Farm Auction Winner, add liquidity at your own risk.": "팜 경매 당첨자. 유동성 추가 시, 그 책임은 사용자에게 있습니다.",
   "Currently showing charts from Chainlink oracle": "현재, Chainlink oracle의 차트를 표시하고 있습니다",
