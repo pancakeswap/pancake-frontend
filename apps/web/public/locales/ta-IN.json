@@ -1503,6 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "கேஸை மதிப்பிடுவதில் எதிர்பாராத சிக்கல். மீண்டும் முயற்சித்திடுங்கள்.",
   "Swap failed: %message%": "ஸ்வாப் தோல்வியுற்றது: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "எதிர்பாராத பிழை. ஸ்வாப்பிற்கான கேஸை மதிப்பிட முடியவில்லை.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
   "Farm Auction": "ஃபார்ம் ஏலம்",
   "Farm Auction Winner, add liquidity at your own risk.": "ஃபார்ம் ஏல வெற்றியாளர், உங்கள் சொந்த இடரில் லிக்விடிட்டியைச் சேர்க்கவும்.",
   "Currently showing charts from Chainlink oracle": "தற்போது செயின்லிங்க் ஆரக்கிளில் இருந்து விளக்கப்படங்களைக் காட்டுகிறது",
