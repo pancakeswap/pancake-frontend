@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { withSentryConfig } from '@sentry/nextjs'
 import { withAxiom } from 'next-axiom'
 import BundleAnalyzer from '@next/bundle-analyzer'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
@@ -24,6 +23,7 @@ const withTM = NextTranspileModules([
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
+/*
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
     ? {
@@ -41,6 +41,7 @@ const sentryWebpackPluginOptions =
         silent: true, // Suppresses all logs
         dryRun: !process.env.SENTRY_AUTH_TOKEN,
       }
+ */
 
 /** @type {import('next').NextConfig} */
 const config = {
