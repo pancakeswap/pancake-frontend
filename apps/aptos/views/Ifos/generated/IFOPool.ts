@@ -69,10 +69,6 @@ export interface ReleasedEvents {
   guid: Guid5
 }
 
-export interface UserInfos {
-  handle: string
-}
-
 export interface RootObject {
   create_vesting_schedule_events: CreateVestingScheduleEvents
   deposit_events: DepositEvents
@@ -86,7 +82,6 @@ export interface RootObject {
   released_events: ReleasedEvents
   sum_taxes_overflow: string
   total_amount: string
-  user_infos: UserInfos
   vesting_cliff: string
   vesting_duration: string
   vesting_percentage: string

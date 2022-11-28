@@ -4,6 +4,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { CardConfigReturn } from '../types'
 import IfoCardActions from './IfoCardActions'
@@ -57,6 +58,8 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, if
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
 
+  const { startTime, endTime } = publicIfoData
+
   const { vestingInformation } = publicIfoData[poolId]
 
   const config = cardConfig(t, poolId, {
@@ -65,17 +68,21 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, if
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
 
-  const isLoading = publicIfoData.status === 'idle'
+  const currentTime = Date.now() / 1000
+
+  const status = getStatus(currentTime, startTime, endTime)
+
+  const isLoading = status === 'idle'
 
   const isVesting = useMemo(() => {
     return (
       account &&
       ifo.version >= 3.2 &&
       vestingInformation.percentage > 0 &&
-      publicIfoData.status === 'finished' &&
+      status === 'finished' &&
       walletIfoData[poolId].amountTokenCommittedInLP.gt(0)
     )
-  }, [account, ifo, poolId, publicIfoData, vestingInformation, walletIfoData])
+  }, [account, ifo, poolId, status, vestingInformation, walletIfoData])
 
   const cardTitle = ifo.cIFO ? `${config.title} (cIFO)` : config.title
 
@@ -107,7 +114,6 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, if
               />
               <Box mt="24px">
                 <IfoCardActions
-                  isEligible
                   poolId={poolId}
                   ifo={ifo}
                   publicIfoData={publicIfoData}

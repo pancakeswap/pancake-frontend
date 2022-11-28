@@ -3,7 +3,7 @@ import { Pool } from '@pancakeswap/uikit'
 import { useQueryClient } from '@pancakeswap/awgmi'
 import { SMARTCHEF_ADDRESS } from 'contracts/smartchef/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import splitTypeTag from 'components/Pools/utils/splitTypeTag'
+import splitTypeTag from 'utils/splitTypeTag'
 
 import useHarvestPool from '../../hooks/useHarvestPool'
 import CollectModalContainer from './CollectModalContainer'

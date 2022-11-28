@@ -6,7 +6,7 @@ import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { useQueryClient } from '@pancakeswap/awgmi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import poolRelatedQueries from 'components/Pools/utils/poolRelatedQueries'
-import splitTypeTag from 'components/Pools/utils/splitTypeTag'
+import splitTypeTag from 'utils/splitTypeTag'
 
 import useStakePool from '../../hooks/useStakePool'
 import useUnstakePool from '../../hooks/useUnstakePool'

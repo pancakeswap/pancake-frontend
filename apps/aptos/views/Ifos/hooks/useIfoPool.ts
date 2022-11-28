@@ -1,23 +1,9 @@
-/* eslint-disable camelcase */
-import { useTableItem } from '@pancakeswap/awgmi'
-import { IfoPoolKey, IFO_RESOURCE_ACCOUNT_TYPE_POOL, IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
-import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
+import { Ifo } from 'config/constants/types'
+import { IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { useIfoResources } from './useIfoResources'
 
-export const useIfoPool = () => {
-  const resources = useIfoResources()
+export const useIfoPool = (ifo: Ifo) => {
+  const resources = useIfoResources(ifo)
 
-  return useTableItem<IFOPool>({
-    handle: resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]?.data.ifo_pools.handle,
-    data: resources.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
-      ? {
-          key: IfoPoolKey.UNLIMITED,
-          keyType: 'u64',
-          valueType: resources.data[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE].type.replace(
-            IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE,
-            IFO_RESOURCE_ACCOUNT_TYPE_POOL,
-          ),
-        }
-      : undefined,
-  })
+  return resources?.data?.[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
 }

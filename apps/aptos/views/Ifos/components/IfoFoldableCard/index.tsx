@@ -1,25 +1,10 @@
-import { useAccount } from '@pancakeswap/awgmi'
-import { useTranslation } from '@pancakeswap/localization'
-import {
-  Box,
-  Card,
-  CardBody,
-  CardFooter,
-  CardHeader,
-  ExpandableButton,
-  useMatchBreakpoints,
-  useToast,
-} from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, ExpandableButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import NoSSR from 'components/NoSSR'
 import { Ifo, PoolIds } from 'config/constants/types'
-import useCatchTxError from 'hooks/useCatchTxError'
-// import { useERC20 } from 'hooks/useContract'
-import { useIsWindowVisible } from '@pancakeswap/hooks'
-import useSWRImmutable from 'swr/immutable'
-import { FAST_INTERVAL } from 'config/constants'
 import { useRouter } from 'next/router'
 import { useEffect, useRef, useState } from 'react'
-// import { useCurrentBlock } from 'state/block/hooks'
 import styled from 'styled-components'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { CardsWrapper } from '../IfoCardStyles'
 import IfoPoolCard from './IfoPoolCard'
@@ -87,12 +72,6 @@ export const StyledCardBody = styled(CardBody)`
   }
 `
 
-const StyledCardFooter = styled(CardFooter)`
-  padding: 0;
-  background: ${({ theme }) => theme.colors.backgroundAlt};
-  text-align: center;
-`
-
 const StyledNoHatBunny = styled.div<{ $isLive: boolean; $isCurrent?: boolean }>`
   position: absolute;
   left: -24px;
@@ -146,10 +125,15 @@ export const IfoCurrentCard = ({
   publicIfoData: PublicIfoData
   walletIfoData: WalletIfoData
 }) => {
-  const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
 
-  const shouldShowBunny = publicIfoData.status === 'live' || publicIfoData.status === 'coming_soon'
+  const { startTime, endTime } = publicIfoData
+
+  const currentTime = Date.now() / 1000
+
+  const status = getStatus(currentTime, startTime, endTime)
+
+  const shouldShowBunny = status === 'live' || status === 'coming_soon'
 
   return (
     <>
@@ -163,20 +147,24 @@ export const IfoCurrentCard = ({
           maxWidth={['400px', '400px', '400px', '100%']}
         >
           <Header $isCurrent ifoId={ifo.id} />
-          <IfoRibbon publicIfoData={publicIfoData} />
-          {shouldShowBunny && <NoHatBunny isLive={publicIfoData.status === 'live'} />}
+          <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
+          {shouldShowBunny && <NoHatBunny isLive={status === 'live'} />}
         </Box>
       )}
       <Box position="relative" width="100%" maxWidth={['400px', '400px', '400px', '400px', '400px', '100%']}>
-        {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={publicIfoData.status === 'live'} />}
+        {!isMobile && shouldShowBunny && <NoHatBunny isCurrent isLive={status === 'live'} />}
         <StyledCard $isCurrent>
           {!isMobile && (
             <>
               <Header $isCurrent ifoId={ifo.id} />
-              <IfoRibbon publicIfoData={publicIfoData} />
+              <NoSSR>
+                <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
+              </NoSSR>
             </>
           )}
-          <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          <NoSSR>
+            <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          </NoSSR>
         </StyledCard>
       </Box>
     </>
@@ -220,7 +208,7 @@ export const IfoFoldableCard = ({
           </Header>
           {isExpanded && (
             <>
-              <IfoRibbon publicIfoData={publicIfoData} />
+              <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
             </>
           )}
         </Box>
@@ -233,54 +221,6 @@ export const IfoFoldableCard = ({
 }
 
 const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo, publicIfoData, walletIfoData }) => {
-  // const currentBlock = useCurrentBlock()
-  const currentBlock = 1
-  const { fetchIfoData: fetchPublicIfoData, isInitialized: isPublicIfoDataInitialized, secondsUntilEnd } = publicIfoData
-  const {
-    contract,
-    fetchIfoData: fetchWalletIfoData,
-    resetIfoData: resetWalletIfoData,
-    isInitialized: isWalletDataInitialized,
-  } = walletIfoData
-  const { t } = useTranslation()
-  const { account } = useAccount()
-  // const raisingTokenContract = useERC20(ifo.currency.address, false)
-  // Continue to fetch 2 more minutes / is vesting need get latest data
-  const isRecentlyActive =
-    (publicIfoData.status !== 'finished' ||
-      (publicIfoData.status === 'finished' && secondsUntilEnd >= -120) ||
-      (publicIfoData.status === 'finished' &&
-        ifo.version >= 3.2 &&
-        ((publicIfoData[PoolIds.poolBasic]?.vestingInformation?.percentage ?? -1) > 0 ||
-          (publicIfoData[PoolIds.poolUnlimited].vestingInformation?.percentage ?? -1) > 0))) &&
-    ifo.isActive
-  const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError } = useCatchTxError()
-  const isWindowVisible = useIsWindowVisible()
-
-  useSWRImmutable(
-    (isRecentlyActive || !isPublicIfoDataInitialized) && currentBlock && ['fetchPublicIfoData', currentBlock],
-    async () => {
-      fetchPublicIfoData(currentBlock)
-    },
-  )
-
-  useSWRImmutable(
-    isWindowVisible && (isRecentlyActive || !isWalletDataInitialized) && account && 'fetchWalletIfoData',
-    async () => {
-      fetchWalletIfoData()
-    },
-    {
-      refreshInterval: FAST_INTERVAL,
-    },
-  )
-
-  useEffect(() => {
-    if (!account && isWalletDataInitialized) {
-      resetWalletIfoData()
-    }
-  }, [account, isWalletDataInitialized, resetWalletIfoData])
-
   return (
     <>
       <StyledCardBody>
@@ -289,16 +229,6 @@ const IfoCard: React.FC<React.PropsWithChildren<IfoFoldableCardProps>> = ({ ifo,
           // singleCard={!publicIfoData.poolBasic || !walletIfoData.poolBasic}
           singleCard
         >
-          {/* {publicIfoData.poolBasic && walletIfoData.poolBasic && (
-            <IfoPoolCard
-              poolId={PoolIds.poolBasic}
-              ifo={ifo}
-              publicIfoData={publicIfoData}
-              walletIfoData={walletIfoData}
-              onApprove={handleApprove}
-              enableStatus={enableStatus}
-            />
-          )} */}
           <IfoPoolCard
             poolId={PoolIds.poolUnlimited}
             ifo={ifo}

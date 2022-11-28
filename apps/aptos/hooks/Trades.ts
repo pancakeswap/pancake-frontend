@@ -23,7 +23,9 @@ function useWarningTokens() {
 }
 
 export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
-  const { chainId } = useActiveWeb3React()
+  const { chainId: activeChainId } = useActiveWeb3React()
+
+  const chainId = currencyA?.chainId || activeChainId
 
   const [tokenA, tokenB] = chainId ? [currencyA?.wrapped, currencyB?.wrapped] : [undefined, undefined]
 

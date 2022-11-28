@@ -3,12 +3,12 @@ import { defaultChain } from '@pancakeswap/awgmi'
 import { useMemo } from 'react'
 import { useActiveChainId } from './useNetwork'
 
-const useNativeCurrency = () => {
-  const chainId = useActiveChainId()
+const useNativeCurrency = (chainId?: number) => {
+  const webChainId = useActiveChainId()
 
   return useMemo(() => {
-    return AptosCoin.onChain(chainId || defaultChain.id)
-  }, [chainId])
+    return AptosCoin.onChain(chainId || webChainId || defaultChain.id)
+  }, [chainId, webChainId])
 }
 
 export default useNativeCurrency

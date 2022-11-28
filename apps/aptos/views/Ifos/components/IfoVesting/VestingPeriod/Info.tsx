@@ -1,11 +1,11 @@
-import { useMemo } from 'react'
-import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, Progress, Tag } from '@pancakeswap/uikit'
-import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
-import { PoolIds } from 'config/constants/types'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
+import { PoolIds } from 'config/constants/types'
+import { useMemo } from 'react'
+import styled from 'styled-components'
+import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import Claim from './Claim'
 
 const WhiteCard = styled.div`
@@ -50,18 +50,18 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
 
   const received = useMemo(() => {
     const alreadyClaimed = new BigNumber(releasedAtSaleEnd).plus(vestingReleased)
-    return alreadyClaimed.gt(0) ? getFullDisplayBalance(alreadyClaimed, token.decimals, 4) : '0'
+    return alreadyClaimed.gt(0) ? getFullDisplayBalance(alreadyClaimed, token.decimals, 8) : '0'
   }, [token, releasedAtSaleEnd, vestingReleased])
 
   const claimable = useMemo(() => {
     return vestingComputeReleasableAmount.gt(0)
-      ? getFullDisplayBalance(vestingComputeReleasableAmount, token.decimals, 4)
+      ? getFullDisplayBalance(vestingComputeReleasableAmount, token.decimals, 8)
       : '0'
   }, [token, vestingComputeReleasableAmount])
 
   const remaining = useMemo(() => {
     const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
-    return remain.gt(0) ? getFullDisplayBalance(remain, token.decimals, 4) : '0'
+    return remain.gt(0) ? getFullDisplayBalance(remain, token.decimals, 8) : '0'
   }, [token, offeringAmountInToken, amountReleased])
 
   const percentage = useMemo(() => {

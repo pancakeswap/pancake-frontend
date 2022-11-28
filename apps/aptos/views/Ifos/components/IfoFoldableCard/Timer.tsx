@@ -2,9 +2,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { Flex, Heading, PocketWatchIcon, Text, Skeleton, Link, TimerIcon } from '@pancakeswap/uikit'
 import getTimePeriods from 'utils/getTimePeriods'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getBlockExploreLink } from 'utils'
 import { PublicIfoData } from 'views/Ifos/types'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 
 interface Props {
   publicIfoData: PublicIfoData
@@ -23,22 +22,23 @@ const FlexGap = styled(Flex)<{ gap: string }>`
 `
 
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
-  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { status, secondsUntilStart, startTime } = publicIfoData
+  const { startTime, endTime } = publicIfoData
+
+  const currentTime = Date.now() / 1000
+
+  const secondsUntilStart = startTime - currentTime
+
   const timeUntil = getTimePeriods(secondsUntilStart)
+
+  const status = getStatus(currentTime, startTime, endTime)
 
   return (
     <Flex justifyContent="center" position="relative">
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <Link
-          external
-          // href={getBlockExploreLink(startBlockNum, 'countdown', chainId)}
-          href="/"
-          color="secondary"
-        >
+        <Link external href="/" color="secondary">
           <FlexGap gap="8px" alignItems="center">
             <Heading as="h3" scale="lg" color="secondary">
               {t('Start in')}
@@ -98,21 +98,22 @@ const LiveNowHeading = styled(EndInHeading)`
 `
 
 const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
-  const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
-  const { status, secondsUntilEnd, endTime } = publicIfoData
+  const { endTime, startTime } = publicIfoData
+
+  const currentTime = Date.now() / 1000
+
+  const secondsUntilEnd = endTime - currentTime
+
+  const status = getStatus(currentTime, startTime, endTime)
+
   const timeUntil = getTimePeriods(secondsUntilEnd)
   return (
     <Flex justifyContent="center" position="relative">
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <Link
-          external
-          // href={getBlockExploreLink(endBlockNum, 'countdown', chainId)}
-          href="/"
-          color="white"
-        >
+        <Link external href="/" color="white">
           <PocketWatchIcon width="42px" mr="8px" />
           <FlexGap gap="8px" alignItems="center">
             <LiveNowHeading textTransform="uppercase" as="h3">{`${t('Live Now')}!`}</LiveNowHeading>
