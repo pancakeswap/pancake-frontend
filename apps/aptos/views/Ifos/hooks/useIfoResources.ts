@@ -32,12 +32,18 @@ export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
 
       for (const it of data) {
         const res: ResourceType = {}
-        const [raisingCoin, offeringCoin] = splitTypeTag(it.type)
+        const [raisingCoin, offeringCoin, uid] = splitTypeTag(it.type)
 
         const foundType = userInfoTypes?.find((type) => {
-          const [userRaisingCoin, userOfferingCoin] = splitTypeTag(type)
+          const [userRaisingCoin, userOfferingCoin, userUid] = splitTypeTag(type)
 
-          return raisingCoin === userRaisingCoin && offeringCoin === userOfferingCoin
+          if (raisingCoin === userRaisingCoin && offeringCoin === userOfferingCoin) {
+            if (uid && uid !== userUid) return false
+
+            return true
+          }
+
+          return false
         })
 
         if (foundType) {
@@ -64,6 +70,7 @@ export const useIfoResourcesListByUserInfoType = (userInfoTypes?: string[]) => {
 
 export const useIfoResources = (ifo: Ifo) => {
   const { networkName } = useActiveWeb3React()
+  const [ifoRaisingCoin, ifoOfferingCoin, ifoUid] = splitTypeTag(ifo.address)
 
   return useAccountResources({
     enabled: !!ifo,
@@ -78,13 +85,16 @@ export const useIfoResources = (ifo: Ifo) => {
       } = {}
 
       for (const it of data) {
-        const [raisingCoin, offeringCoin] = splitTypeTag(it.type)
-        if (raisingCoin === ifo.currency.address && offeringCoin === ifo.token.address) {
+        const [raisingCoin, offeringCoin, uid] = splitTypeTag(it.type)
+        if (ifoRaisingCoin === raisingCoin && ifoOfferingCoin === offeringCoin) {
+          if (uid && uid !== ifoUid) break
+
           const parsedTypeTag = new TypeTagParser(it.type).parseTypeTag() as TxnBuilderTypes.TypeTagStruct
 
           res[parsedTypeTag.value.name.value] = it
         }
       }
+
       return res
     },
   })
