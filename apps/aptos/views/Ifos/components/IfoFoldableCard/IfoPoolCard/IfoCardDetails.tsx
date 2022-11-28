@@ -107,6 +107,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
 }) => {
   const { t } = useTranslation()
   const { startTime, endTime, currencyPriceInUSD } = publicIfoData
+
   const poolCharacteristic = publicIfoData[poolId]
 
   const currentTime = Date.now() / 1000
@@ -124,10 +125,9 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
       : getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
   const taxRate = `${poolCharacteristic.taxRate}%`
 
-  const totalCommittedPercent = poolCharacteristic.totalAmountPool
-    .div(poolCharacteristic.raisingAmountPool)
-    .times(100)
-    .toFixed(2)
+  const totalCommittedPercent = poolCharacteristic.raisingAmountPool.gt(0)
+    ? poolCharacteristic.totalAmountPool.div(poolCharacteristic.raisingAmountPool).times(100).toFixed(2)
+    : 0
   const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
 
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)

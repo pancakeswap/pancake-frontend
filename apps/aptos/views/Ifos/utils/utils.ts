@@ -13,6 +13,7 @@ export const calculateTaxOverflow = (total_amount: BigNumber, raising_amount: Bi
   }
 
   const ratio_overflow = total_amount.div(raising_amount)
+
   if (ratio_overflow.gte(1500)) {
     return new BigNumber('250000000') // 0.025%
   }

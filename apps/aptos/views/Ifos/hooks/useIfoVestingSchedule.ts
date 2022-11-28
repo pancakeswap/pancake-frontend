@@ -35,14 +35,14 @@ export const useIfoVestingSchedules = ({ key, resourcesList }: { key?: string; r
       : [],
     data: hasLength
       ? resourcesList?.map((resources) => {
-          return resources[IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA]({
+          return {
             key,
             keyType: 'vector<u8>',
             valueType: resources[IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA].type.replace(
               IFO_RESOURCE_ACCOUNT_TYPE_VESTING_METADATA,
               'VestingSchedule',
             ),
-          } as PayloadTableItem)
+          } as PayloadTableItem
         })
       : [],
   })
