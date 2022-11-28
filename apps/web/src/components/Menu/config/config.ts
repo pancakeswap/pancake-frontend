@@ -100,7 +100,7 @@ const config: (
     },
     {
       label: t('Bridge'),
-      href: 'https://bridge.icecreamswap.com',
+      href: '/bridge',
       showItemsOnMobile: false,
       icon: BridgeIcon,
       items: [],
