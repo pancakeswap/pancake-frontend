@@ -12,7 +12,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { isAddress } from 'utils'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
-import { ICE, USDC } from '@pancakeswap/tokens'
+import { ICE, USD } from '@pancakeswap/tokens'
 import getLpAddress from 'utils/getLpAddress'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -242,7 +242,7 @@ export function useDefaultsFromURLSearch():
 
   useEffect(() => {
     if (!chainId || !native) return
-    const parsed = queryParametersToSwapState(query, native.symbol, ICE[chainId]?.address ?? USDC[chainId]?.address)
+    const parsed = queryParametersToSwapState(query, native.symbol, ICE[chainId]?.address ?? USD[chainId]?.address)
 
     dispatch(
       replaceSwapState({

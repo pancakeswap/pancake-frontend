@@ -1,7 +1,6 @@
 import BigNumber from 'bignumber.js'
 import { BIG_ONE, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { filterFarmsByQuoteToken, SerializedFarm } from '@pancakeswap/farms'
-import { bscTokens } from '@pancakeswap/tokens'
 
 const getFarmFromTokenSymbol = (
   farms: SerializedFarm[],
@@ -20,13 +19,13 @@ const getFarmBaseTokenPrice = (
 ): BigNumber => {
   const hasTokenPriceVsQuote = Boolean(farm.tokenPriceVsQuote)
 
-  if (farm.quoteToken.symbol === bscTokens.busd.symbol) {
-    return hasTokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
-  }
+  // if (farm.quoteToken.symbol === bscTokens.busd.symbol) {
+  //   return hasTokenPriceVsQuote ? new BigNumber(farm.tokenPriceVsQuote) : BIG_ZERO
+  // }
 
-  if (farm.quoteToken.symbol === bscTokens.wbnb.symbol) {
-    return hasTokenPriceVsQuote ? bnbPriceBusd.times(farm.tokenPriceVsQuote) : BIG_ZERO
-  }
+  // if (farm.quoteToken.symbol === bscTokens.wbnb.symbol) {
+  //   return hasTokenPriceVsQuote ? bnbPriceBusd.times(farm.tokenPriceVsQuote) : BIG_ZERO
+  // }
 
   // We can only calculate profits without a quoteTokenFarm for BUSD/BNB farms
   if (!quoteTokenFarm) {
@@ -38,19 +37,19 @@ const getFarmBaseTokenPrice = (
   // If the farm's quote token isn't BUSD or WBNB, we then use the quote token, of the original farm's quote token
   // i.e. for farm PNT - pBTC we use the pBTC farm's quote token - BNB, (pBTC - BNB)
   // from the BNB - pBTC price, we can calculate the PNT - BUSD price
-  if (quoteTokenFarm.quoteToken.symbol === bscTokens.wbnb.symbol) {
-    const quoteTokenInBusd = bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
-    return hasTokenPriceVsQuote && quoteTokenInBusd
-      ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
-      : BIG_ZERO
-  }
+  // if (quoteTokenFarm.quoteToken.symbol === bscTokens.wbnb.symbol) {
+  //   const quoteTokenInBusd = bnbPriceBusd.times(quoteTokenFarm.tokenPriceVsQuote)
+  //   return hasTokenPriceVsQuote && quoteTokenInBusd
+  //     ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
+  //     : BIG_ZERO
+  // }
 
-  if (quoteTokenFarm.quoteToken.symbol === bscTokens.busd.symbol) {
-    const quoteTokenInBusd = quoteTokenFarm.tokenPriceVsQuote
-    return hasTokenPriceVsQuote && quoteTokenInBusd
-      ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
-      : BIG_ZERO
-  }
+  // if (quoteTokenFarm.quoteToken.symbol === bscTokens.busd.symbol) {
+  //   const quoteTokenInBusd = quoteTokenFarm.tokenPriceVsQuote
+  //   return hasTokenPriceVsQuote && quoteTokenInBusd
+  //     ? new BigNumber(farm.tokenPriceVsQuote).times(quoteTokenInBusd)
+  //     : BIG_ZERO
+  // }
 
   // Catch in case token does not have immediate or once-removed BUSD/WBNB quoteToken
   return BIG_ZERO

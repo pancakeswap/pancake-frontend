@@ -1,10 +1,9 @@
 import getLpAddress from 'utils/getLpAddress'
-import { bscTokens } from '@pancakeswap/tokens'
 import { FarmAuctionBidderConfig } from './types'
 
 export const whitelistedBidders: FarmAuctionBidderConfig[] = [
   // Those farms changed their project wallet address.
-  {
+  /* {
     account: '0xA6D19C2A2EA13e9eF02d795155F6c335af764955', // Auction #19
     farmName: 'HAPPY-BNB',
     tokenAddress: '0xF5d8A096CcCb31b9D7bcE5afE812BE23e3D4690d',
@@ -828,7 +827,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
     quoteToken: bscTokens.usdt,
     tokenName: 'BIVE',
     projectSite: 'https://bizverse.io/',
-  },
+  }, */
 ].map((bidderConfig) => ({
   ...bidderConfig,
   lpAddress: getLpAddress(bidderConfig.tokenAddress, bidderConfig.quoteToken, -1), // This is a teporary fix since farmActions is unused anyway
@@ -837,6 +836,7 @@ export const whitelistedBidders: FarmAuctionBidderConfig[] = [
 const UNKNOWN_BIDDER: FarmAuctionBidderConfig = {
   account: '',
   tokenAddress: '',
+  // @ts-ignore
   quoteToken: bscTokens.wbnb,
   farmName: 'Unknown',
   tokenName: 'Unknown',
