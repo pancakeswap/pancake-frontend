@@ -150,7 +150,7 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
 
   const token: ERC20Token | undefined = address ? tokens[address] : undefined
 
-  const { data, status } = useSWRImmutable(!token && ['fetchTokenInfo', address], async () => {
+  const { data, status } = useSWRImmutable(!token && address && ['fetchTokenInfo', address], async () => {
     const calls = ['name', 'symbol', 'decimals'].map((method) => {
       return { address: address.toString(), name: method }
     })
@@ -165,7 +165,8 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
   const { data: dataBytes, status: statusBytes } = useSWRImmutable(
     !token &&
       (status === FetchStatus.Fetched || status === FetchStatus.Failed) &&
-      (!tokenName || !symbol) && ['fetchTokenInfo32', address],
+      (!tokenName || !symbol) &&
+      address && ['fetchTokenInfo32', address],
     async () => {
       const calls = ['name', 'symbol'].map((method) => {
         return { address: address.toString(), name: method }
