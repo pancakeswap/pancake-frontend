@@ -1,5 +1,4 @@
 import requestWithTimeout from 'utils/requestWithTimeout'
-import { infoClient } from 'utils/graphql'
 import lastPairDayId from '../queries/lastPairDayId'
 import pairHourDatas from '../queries/pairHourDatas'
 import pairDayDatasByIdsQuery from '../queries/pairDayDatasByIdsQuery'
@@ -16,7 +15,7 @@ import { getIdsByTimeWindow, getPairSequentialId } from './utils'
 import pairDayDatas from '../queries/pairDayDatas'
 import pairHourDatasByIds from '../queries/pairHourDatasByIds'
 import lastPairHourId from '../queries/lastPairHourId'
-import {getMultiChainQueryEndPointWithStableSwap, multiChainQueryClient} from "../../info/constant";
+import { getMultiChainQueryEndPointWithStableSwap, multiChainQueryClient } from '../../info/constant'
 
 const fetchPairPriceData = async ({ pairId, timeWindow, chainName }: fetchPairDataParams) => {
   const client = getMultiChainQueryEndPointWithStableSwap(chainName)
