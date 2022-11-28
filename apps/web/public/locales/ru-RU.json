@@ -2043,5 +2043,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "Токен vCAKE повышает влияние в голосовании в системе управления PancakeSwap максимум до %totalScore%.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Заблокировав CAKE, вы сможете пользоваться следующими преимуществами: повышение выручки фарма, участие в IFO, увеличенное влияние в голосовании и т. д.!",
   "CAKE staking expired": "Срок действия вложения CAKE истек",
-  "Find out more": "Подробнее"
+  "Find out more": "Подробнее",
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
 }
