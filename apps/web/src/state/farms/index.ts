@@ -39,8 +39,7 @@ const fetchFetchPublicDataOld = async ({ pids, chainId }): Promise<[SerializedFa
     fetchMasterChefFarmPoolLength(chainId),
     multicall(masterchefABI, [
       {
-        // BSC only
-        address: getMasterChefAddress(ChainId.BSC),
+        address: getMasterChefAddress(chainId),
         name: 'icePerBlock',
         params: [true],
       },
@@ -67,7 +66,6 @@ const fetchFarmPublicDataPkg = async ({ pids, chainId, chain }): Promise<[Serial
 
   const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
     chainId,
-    isTestnet: chain.testnet,
     farms: farmsCanFetch.concat(priceHelperLpsConfig),
   })
   return [farmsWithPrice, poolLength, regularCakePerBlock]
@@ -248,7 +246,7 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
     if (state.farms.chainId !== chainId) {
       await dispatch(fetchInitialFarmsData({ chainId }))
     }
-    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(ChainId.BSC))
+    const poolLength = state.farms.poolLength ?? (await fetchMasterChefFarmPoolLength(chainId))
     const farmsConfig = await getFarmConfig(chainId)
     const farmsCanFetch = farmsConfig.filter(
       (farmConfig) => pids.includes(farmConfig.pid) && poolLength > farmConfig.pid,

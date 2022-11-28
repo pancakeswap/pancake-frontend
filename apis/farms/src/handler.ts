@@ -34,12 +34,7 @@ const pairAbi = [
   },
 ]
 
-const cakeBusdPairMap = {
-  [ChainId.BSC]: {
-    address: Pair.getAddress(ICE[ChainId.BSC], USD[ChainId.BSC]),
-    tokenA: ICE[ChainId.BSC],
-    tokenB: USD[ChainId.BSC],
-  },
+const iceUsdPairMap = {
   [ChainId.BITGERT]: {
     address: Pair.getAddress(ICE[ChainId.BITGERT], USD[ChainId.BITGERT]),
     tokenA: ICE[ChainId.BITGERT],
@@ -62,9 +57,9 @@ const cakeBusdPairMap = {
   },
 }
 
-const getCakePrice = async (isTestnet: boolean) => {
-  // const pairConfig = cakeBusdPairMap[isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC]
-  const pairConfig = cakeBusdPairMap[ChainId.BITGERT]
+const getIcePrice = async () => {
+  // const pairConfig = iceUsdPairMap[isTestnet ? ChainId.BSC_TESTNET : ChainId.BSC]
+  const pairConfig = iceUsdPairMap[ChainId.BITGERT]
   const pairContract = new Contract(pairConfig.address, pairAbi, bitgertProvider)
   const reserves = await pairContract.getReserves()
   const { reserve0, reserve1 } = reserves
@@ -83,7 +78,6 @@ const farmConfigApi = 'https://farms-config.pages.dev'
 
 export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEvent) {
   try {
-    const isTestnet = farmFetcher.isTestnet(chainId)
     const farmsConfig = await (await fetch(`${farmConfigApi}/${chainId}.json`)).json<SerializedFarmConfig[]>()
     let lpPriceHelpers: SerializedFarmConfig[] = []
     try {
@@ -99,18 +93,17 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
     }
     const { farmsWithPrice, poolLength, regularCakePerBlock } = await farmFetcher.fetchFarms({
       chainId,
-      isTestnet,
       farms: farmsConfig.concat(lpPriceHelpers),
     })
 
-    const cakeBusdPrice = await getCakePrice(isTestnet)
+    const iceBusdPrice = await getIcePrice()
     const lpAprs = await handleLpAprs(chainId, farmsConfig)
 
     const finalFarm = farmsWithPrice.map((f) => {
       return {
         ...f,
         lpApr: lpAprs?.[f.lpAddress.toLowerCase()] || 0,
-        cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(cakeBusdPrice.toSignificant(3)), regularCakePerBlock),
+        cakeApr: getFarmCakeRewardApr(f, FixedNumber.from(iceBusdPrice.toSignificant(3)), regularCakePerBlock),
       }
     }) as FarmResult
 

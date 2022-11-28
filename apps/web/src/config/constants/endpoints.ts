@@ -17,11 +17,10 @@ export const GRAPH_API_POTTERY = 'https://api.thegraph.com/subgraphs/name/pancak
  */
 export const GRAPH_API_PREDICTION_V1 = 'https://api.thegraph.com/subgraphs/name/pancakeswap/prediction'
 
-export const INFO_CLIENT = 'https://bsc.streamingfast.io/subgraphs/name/pancakeswap/exchange-v2'
-export const INFO_CLIENT_ETH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth'
 export const INFO_CLIENT_BITGERT = 'https://graph.icecreamswap.com/subgraphs/name/simone1999/bitgert-uniswap'
-export const BLOCKS_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/blocks'
+
 export const BLOCKS_CLIENT_BITGERT = 'https://graph.icecreamswap.com/subgraphs/name/simone1999/bitgert-blocks'
+
 export const STABLESWAP_SUBGRAPH_CLIENT = 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-stableswap'
 export const GRAPH_API_NFTMARKET = 'https://api.thegraph.com/subgraphs/name/pancakeswap/nft-market'
 export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
@@ -38,11 +37,9 @@ export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
 export const CELER_API = 'https://api.celerscan.com/scan'
 
 export const INFO_CLIENT_WITH_CHAIN = {
-  [ChainId.BSC]: INFO_CLIENT,
   [ChainId.BITGERT]: INFO_CLIENT_BITGERT,
 }
 
 export const BLOCKS_CLIENT_WITH_CHAIN = {
-  [ChainId.BSC]: BLOCKS_CLIENT,
   [ChainId.BITGERT]: BLOCKS_CLIENT_BITGERT,
 }

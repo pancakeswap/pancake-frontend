@@ -1,8 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import Trans from 'components/Trans'
-import { VaultKey } from 'state/types'
-import { bscTokens } from '@pancakeswap/tokens'
-import { SerializedPoolConfig, PoolCategory } from './types'
+import { SerializedPoolConfig } from './types'
 
 export const MAX_LOCK_DURATION = 31536000
 export const UNLOCK_FREE_DURATION = 604800
@@ -11,6 +8,7 @@ export const BOOST_WEIGHT = BigNumber.from('20000000000000')
 export const DURATION_FACTOR = BigNumber.from('31536000')
 
 export const vaultPoolConfig = {
+  /*
   [VaultKey.CakeVaultV1]: {
     name: <Trans>Auto CAKE</Trans>,
     description: <Trans>Automatic restaking</Trans>,
@@ -51,9 +49,11 @@ export const vaultPoolConfig = {
       secondarySrc: `/images/tokens/ifo-pool-icon.svg`,
     },
   },
+  */
 } as const
 
 export const livePools: SerializedPoolConfig[] = [
+    /*
   {
     sousId: 0,
     stakingToken: bscTokens.cake,
@@ -150,6 +150,7 @@ export const livePools: SerializedPoolConfig[] = [
     tokenPerBlock: '55.6446',
     version: 3,
   },
+  */
 ].map((p) => ({
   ...p,
   stakingToken: p.stakingToken.serialize,
@@ -158,6 +159,7 @@ export const livePools: SerializedPoolConfig[] = [
 
 // known finished pools
 const finishedPools = [
+    /*
   {
     sousId: 300,
     stakingToken: bscTokens.cake,
@@ -3446,6 +3448,7 @@ const finishedPools = [
     enableEmergencyWithdraw: true,
     tokenPerBlock: '7.502',
   },
+  */
 ].map((p) => ({
   ...p,
   isFinished: true,

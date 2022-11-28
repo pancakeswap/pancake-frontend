@@ -298,7 +298,7 @@ function FullPositionCard({
   const [showMore, setShowMore] = useState(false)
 
   return (
-    <Card {...props}>
+    <Card {...props} style={{order: -Math.floor(totalUSDValue*1000)}}>
       <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">

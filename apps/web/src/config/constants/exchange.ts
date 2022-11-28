@@ -1,11 +1,10 @@
-import { ChainId, JSBI, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
-import {bscTokens, bitgertTokens, USDC, USDT, USD, dogechainTokens, dokenTokens, fuseTokens} from '@pancakeswap/tokens'
+import {bitgertTokens, dogechainTokens, dokenTokens, fuseTokens} from '@pancakeswap/tokens'
 import { ChainMap, ChainTokenList } from './types'
 
 export const ROUTER_ADDRESS_COMMON = '0xBb5e1777A331ED93E07cF043363e48d320eb96c4'
 export const ROUTER_ADDRESS: ChainMap<string> = {
-  [ChainId.BSC]: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
   [ChainId.BITGERT]: ROUTER_ADDRESS_COMMON,
   [ChainId.DOGE]: ROUTER_ADDRESS_COMMON,
   [ChainId.DOKEN]: ROUTER_ADDRESS_COMMON,
@@ -14,15 +13,6 @@ export const ROUTER_ADDRESS: ChainMap<string> = {
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  [ChainId.BSC]: [
-    bscTokens.wbnb,
-    bscTokens.cake,
-    bscTokens.busd,
-    bscTokens.usdt,
-    bscTokens.btcb,
-    bscTokens.eth,
-    bscTokens.usdc,
-  ],
   [ChainId.BITGERT]: [
     bitgertTokens.wbrise,
     bitgertTokens.ice,
@@ -49,10 +39,6 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
  * @example { [WBTC.address]: [renBTC], [renBTC.address]: [WBTC] }
  */
 export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.BSC]: {
-    // SNFTS-SFUND
-    [bscTokens.snfts.address]: [bscTokens.sfund],
-  },
 }
 
 /**
@@ -61,12 +47,10 @@ export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]
  * @example [AMPL.address]: [DAI, WNATIVE[ChainId.BSC]]
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.BSC]: {},
 }
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  [ChainId.BSC]: [bscTokens.busd, bscTokens.cake, bscTokens.btcb],
   [ChainId.BITGERT]: [bitgertTokens.ice, bitgertTokens.usdti],
   [ChainId.DOGE]: [dogechainTokens.ice],
   [ChainId.DOKEN]: [dokenTokens.ice],
@@ -75,7 +59,6 @@ export const SUGGESTED_BASES: ChainTokenList = {
 
 // used to construct the list of all pairs we consider by default in the frontend
 export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
-  [ChainId.BSC]: [bscTokens.wbnb, bscTokens.dai, bscTokens.busd, bscTokens.usdt, bscTokens.cake],
   [ChainId.BITGERT]: [bitgertTokens.wbrise, bitgertTokens.sphynx, bitgertTokens.bpad, bitgertTokens.broge, bitgertTokens.brzilla, bitgertTokens.btxt, bitgertTokens.eltg, bitgertTokens.evo, bitgertTokens.map, bitgertTokens.miidas, bitgertTokens.mir, bitgertTokens.numi, bitgertTokens.omnia, bitgertTokens.prds, bitgertTokens.rluna, bitgertTokens.vef, bitgertTokens.wmf, bitgertTokens.yogo, bitgertTokens.ypc, bitgertTokens.ice, bitgertTokens.tokyo, bitgertTokens.usdc, bitgertTokens.usdt, bitgertTokens.wolf, bitgertTokens.usdti, bitgertTokens.$3dc, bitgertTokens.darrival, bitgertTokens.ethi, bitgertTokens.dogei, bitgertTokens.bnbi, bitgertTokens.shibi, bitgertTokens.daii, bitgertTokens.usdc, bitgertTokens.busdi, bitgertTokens.baskom, bitgertTokens.abr, bitgertTokens.lung],
   [ChainId.DOGE]: [dogechainTokens.wdoge, dogechainTokens.ice],
   [ChainId.DOKEN]: [dokenTokens.wdkn, dokenTokens.ice, dokenTokens.usdt],
@@ -83,11 +66,6 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.BSC]: [
-    [bscTokens.cake, bscTokens.wbnb],
-    [bscTokens.busd, bscTokens.usdt],
-    [bscTokens.dai, bscTokens.usdt],
-  ],
   [ChainId.BITGERT]: [
       [bitgertTokens.wbrise, bitgertTokens.ice],
   ],

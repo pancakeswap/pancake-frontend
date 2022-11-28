@@ -71,7 +71,7 @@ const fetchFarmCalls = (farm: SerializedFarmPublicData, masterChefAddress: strin
 
 export const fetchPublicFarmsData = async (
   farms: SerializedFarmConfig[],
-  chainId = ChainId.BSC,
+  chainId,
   multicall: MultiCallV2,
   masterChefAddress: string,
 ): Promise<any[]> => {

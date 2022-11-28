@@ -1,11 +1,11 @@
 import { ERC20Token, ChainId } from '@pancakeswap/sdk'
-import { bscTokens } from '@pancakeswap/tokens'
 import { CAKE_BNB_LP_MAINNET } from './lp'
 import { Ifo } from './types'
 
-export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'CAKE-BNB LP')
+// export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 18, 'CAKE-BNB LP')
 
 const ifos: Ifo[] = [
+    /*
   {
     id: 'mgp',
     address: '0x3fe5a79d4264fe65a1a9e3938286428a0e2e214d',
@@ -631,6 +631,7 @@ const ifos: Ifo[] = [
     tokenOfferingPrice: null,
     version: 1,
   },
+  */
 ]
 
 export default ifos

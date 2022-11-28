@@ -9,16 +9,16 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import InfoNav from './components/InfoNav'
 
 export const InfoPageLayout = ({ children }) => {
-  const { account } = useWeb3React()
-  const { chainId } = useActiveChainId()
   const router = useRouter()
   const chainName = useGetChainName()
   const { t } = useTranslation()
 
+  /*
   useEffect(() => {
     if (account && chainId === ChainId.BSC && router.query.chainName === 'eth')
       router.replace('/info', undefined, { shallow: true })
   }, [chainId, account, chainName, router])
+  */
 
   const isStableSwap = router.query.type === 'stableSwap'
   return (

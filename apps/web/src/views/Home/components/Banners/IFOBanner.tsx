@@ -78,7 +78,7 @@ const IFOIconImage = styled.div<{ src: string }>`
 const IFOBanner = () => {
   const { t } = useTranslation()
   const headingRef = useRef<HTMLDivElement>(null)
-  const currentBlock = useChainCurrentBlock(ChainId.BSC)
+  const currentBlock = useChainCurrentBlock(ChainId.BITGERT)
 
   const activeIfoWithBlocks = useActiveIfoWithBlocks()
 

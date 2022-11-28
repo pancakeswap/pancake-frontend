@@ -1,14 +1,10 @@
 import BigNumber from 'bignumber.js'
-import { ChainId } from '@pancakeswap/sdk'
 import erc20ABI from 'config/abi/erc20.json'
 import masterchefABI from 'config/abi/masterchef.json'
-import nonBscVault from 'config/abi/nonBscVault.json'
 import multicall, { multicallv2 } from 'utils/multicall'
-import { getMasterChefAddress, getNonBscVaultAddress } from 'utils/addressHelpers'
+import { getMasterChefAddress } from 'utils/addressHelpers'
 import { SerializedFarmConfig } from 'config/constants/types'
-import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { getCrossFarmingReceiverContract } from 'utils/contractHelpers'
-import { farmFetcher } from 'state/farms'
 
 export const fetchFarmUserAllowances = async (
   account: string,

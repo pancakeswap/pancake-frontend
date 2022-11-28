@@ -123,7 +123,7 @@ const MoDCompetition = () => {
       }
     }
 
-    if (chainId === ChainId.BSC) {
+    if (chainId === ChainId.BITGERT) {
       fetchCompetitionInfoContract()
       if (account) {
         fetchUserContract()

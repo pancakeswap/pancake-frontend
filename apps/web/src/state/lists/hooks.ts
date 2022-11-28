@@ -176,13 +176,15 @@ export function useAllLists(): {
 }
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
+  return Object.values(ChainId).reduce(( acc, chainId) => ({...acc, [chainId]: { ...map1[chainId], ...map2[chainId] } }), {}) as TokenAddressMap
+  /*
   return {
-    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] },
     [ChainId.BITGERT]: { ...map1[ChainId.BITGERT], ...map2[ChainId.BITGERT] },
     [ChainId.DOGE]: { ...map1[ChainId.DOGE], ...map2[ChainId.DOGE] },
     [ChainId.DOKEN]: { ...map1[ChainId.DOKEN], ...map2[ChainId.DOKEN] },
     [ChainId.FUSE]: { ...map1[ChainId.FUSE], ...map2[ChainId.FUSE] },
   }
+  */
 }
 
 // filter out unsupported lists

@@ -16,7 +16,7 @@ export interface UnstakeButtonProps {
 
 const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ pid }) => {
   const { t } = useTranslation()
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { stakedBalance } = useFarmUser(pid)
@@ -40,7 +40,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
           {t('Your earnings have also been harvested to your wallet')}
         </ToastDescriptionWithTx>,
       )
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid] }))
+      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], chainId }))
     }
   }
 

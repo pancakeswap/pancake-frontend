@@ -11,7 +11,7 @@ import {
   WETH9,
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
-import { USD, ICE, USDC } from '@pancakeswap/tokens'
+import { USD, ICE } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import getLpAddress from 'utils/getLpAddress'
@@ -29,7 +29,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   const { chainId } = useActiveChainId()
   const wrapped = currency?.wrapped
   const wnative = WNATIVE[chainId]
-  const stable = USD[chainId] || USDC[chainId]
+  const stable = USD[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
@@ -179,12 +179,12 @@ export const useCakeBusdPrice = (
 export const useBNBBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
-  /*
   const { chainId } = useActiveChainId()
+  /*
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet wbnb if chain is testnet
   const wbnb: Token = isTestnet ? WBNB[ChainId.BSC_TESTNET] : WBNB[ChainId.BSC]
   */
-  const wbnb: Token = WETH9[ChainId.BSC]
+  const wbnb: Token = WETH9[chainId]
   return usePriceByPairs(USD[wbnb.chainId], wbnb)
 }

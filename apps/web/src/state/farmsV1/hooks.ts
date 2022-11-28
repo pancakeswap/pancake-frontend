@@ -13,6 +13,7 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData, SerializedFarm } from '@pancakeswap/farms'
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync } from '.'
 import { State } from '../types'
+import {useActiveChainId} from "../../hooks/useActiveChainId";
 
 const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
   return {
@@ -49,15 +50,16 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
 export const usePollFarmsV1WithUserData = () => {
   const dispatch = useAppDispatch()
   const { account } = useWeb3React()
+  const { chainId } = useActiveChainId()
 
   useSlowRefreshEffect(() => {
-    getFarmConfig(ChainId.BSC).then((farmsConfig) => {
+    getFarmConfig(chainId).then((farmsConfig) => {
       const pids = farmsConfig.filter((farmToFetch) => farmToFetch.v1pid).map((farmToFetch) => farmToFetch.v1pid)
 
-      dispatch(fetchFarmsPublicDataAsync(pids))
+      dispatch(fetchFarmsPublicDataAsync({pids, chainId}))
 
       if (account) {
-        dispatch(fetchFarmUserDataAsync({ account, pids }))
+        dispatch(fetchFarmUserDataAsync({ account, pids, chainId }))
       }
     })
   }, [dispatch, account])
@@ -70,9 +72,10 @@ export const usePollFarmsV1WithUserData = () => {
  */
 export const usePollCoreFarmData = () => {
   const dispatch = useAppDispatch()
+  const { chainId } = useActiveChainId()
 
   useFastRefreshEffect(() => {
-    dispatch(fetchFarmsPublicDataAsync([251, 252]))
+    dispatch(fetchFarmsPublicDataAsync({pids: [251, 252], chainId}))
   }, [dispatch])
 }
 

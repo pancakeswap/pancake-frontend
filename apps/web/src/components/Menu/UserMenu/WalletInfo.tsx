@@ -35,10 +35,9 @@ interface WalletInfoProps {
 
 const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss }) => {
   const { t } = useTranslation()
-  const { account, chainId, chain } = useActiveWeb3React()
-  const isBSC = chainId === ChainId.BSC
-  const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
-  const nativeBalance = useBalance({ addressOrName: account, enabled: !isBSC })
+  const { chain, chainId, account } = useActiveWeb3React()
+  // const bnbBalance = useBalance({ addressOrName: account, chainId: ChainId.BSC })
+  const nativeBalance = useBalance({ addressOrName: account })
   const native = useNativeCurrency()
   const { balance: cakeBalance, fetchStatus: cakeFetchStatus } = useGetCakeBalance()
   const { logout } = useAuth()
@@ -70,7 +69,8 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
           </Box>
         </Message>
       )}
-      {!isBSC && chain && (
+      {
+      chain && (
         <Box mb="12px">
           <Flex justifyContent="space-between" alignItems="center" mb="8px">
             <Flex bg={COLORS.ETH} borderRadius="16px" pl="4px" pr="8px" py="2px">
@@ -94,7 +94,8 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
             )}
           </Flex>
         </Box>
-      )}
+      )
+      }
       <Box mb="24px">
         <Flex alignItems="center" justifyContent="space-between">
           <Text color="textSubtle">{t('ICE Balance')}</Text>

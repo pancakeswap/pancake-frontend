@@ -15,6 +15,8 @@ import Page from '../Page'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
+  display: flex;
+  flex-direction: column;
 `
 
 export default function Pool() {

@@ -68,8 +68,8 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   const earnings = getBalanceAmount(earningsBigNumber)
   const displayBalance = earnings.toFixed(5, BigNumber.ROUND_DOWN)
 
-  const network = ChainId.BSC
-  const isBscNetwork = useMemo(() => chainId === network, [chainId, network])
+  const network = chainId
+  const isBscNetwork = false  // = useMemo(() => chainId === network, [chainId, network])
 
   const handleCancel = useCallback(() => {
     onDismiss?.()
@@ -113,7 +113,9 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
             {lpSymbol}
           </Text>
         </Flex>
-        {!isBscNetwork && (
+        {
+          /*
+        !isBscNetwork && (
           <Message mb="16px" variant="warning" icon={false} p="8px 12px">
             <MessageText>
               <FlexGap gap="12px">
@@ -125,7 +127,8 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
               </FlexGap>
             </MessageText>
           </Message>
-        )}
+        ) */
+        }
         <LightGreyCard padding="16px">
           <Box mb="8px">
             <Text fontSize="12px" color="secondary" bold as="span">

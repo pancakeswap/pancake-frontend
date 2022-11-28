@@ -34,7 +34,7 @@ const stableSwapAbi = [
 
 export async function fetchStableFarmData(
   farms: SerializedStableFarmConfig[],
-  chainId = ChainId.BSC,
+  chainId,
   multicallv2: MultiCallV2,
 ) {
   const calls: Call[] = farms.flatMap((f) => [
