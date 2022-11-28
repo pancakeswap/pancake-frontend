@@ -35,4 +35,17 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run ESLint
-        run: yarn lint
+        run: yarn lint:report
+
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@v2
+        with:
+            repo-token: "${{ secrets.GITHUB_TOKEN }}"
+            report-json: "eslint_report.json"
+            only-pr-files: false
+
+      - name: Upload ESLint report
+        uses: actions/upload-artifact@v2
+        with:
+            name: eslint_report
+            path: eslint_report.json
