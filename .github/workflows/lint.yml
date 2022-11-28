@@ -36,8 +36,21 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Diffset
+        id: diffset
+        uses: softprops/diffset@v1
+        with:
+            base: develop
+            special_files: |
+                **/*.ts
+                **/*.tsx
+                **/*.js
+                **/*.jsx
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run ESLint
-        run: yarn lint:report
+        run:  yarn lint:report ${{ steps.diffset.outputs.special_files }}
 
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2

@@ -15,7 +15,7 @@
     "test:config": "yarn workspace web run test:config",
     "test:ci": "yarn turbo run test --filter=[HEAD^1]",
     "lint": "turbo run lint --filter=web",
-    "lint:report": "eslint --output-file eslint_report.json --format json --no-error-on-unmatched-pattern $(git diff --name-only origin/develop..HEAD | grep -E '\\.(js|jsx|ts|tsx)$' | xargs)",
+    "lint:report": "eslint --output-file eslint_report.json --format json --no-error-on-unmatched-pattern",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:check:staged": "lint-staged",
     "e2e:ci": "turbo run integration-test --filter=e2e...[HEAD^1]",
