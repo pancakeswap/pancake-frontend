@@ -90,7 +90,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   stakingTokenPrice,
   multiplier,
   initialValue,
-  earningTokenSymbol = "CAKE",
+  earningTokenSymbol = "ICE",
   autoCompoundFrequency = 0,
   performanceFee = 0,
   isFarm = false,
@@ -101,7 +101,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   onBack,
   onDismiss,
   bCakeCalculatorSlot,
-  showBooster=false
+  showBooster = false,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);

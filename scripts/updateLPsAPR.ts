@@ -34,7 +34,7 @@ const getWeekAgoTimestamp = () => {
 const LP_HOLDERS_FEE = 0.0017
 const WEEKS_IN_A_YEAR = 52.1429
 
-const getBlockAtTimestamp = async (timestamp: number, chainId = ChainId.BSC) => {
+const getBlockAtTimestamp = async (timestamp: number, chainId: ChainId) => {
   try {
     const { blocks } = await request<BlockResponse>(
       BLOCKS_CLIENT_WITH_CHAIN[chainId],
@@ -111,7 +111,7 @@ interface SplitFarmResult {
 
 export const BLOCKS_PER_DAY = (60 / 3) * 60 * 24
 
-const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
+const getAprsForStableFarm = async (stableFarm: any, chainId: ChainId): Promise<BigNumber> => {
   const stableSwapAddress = stableFarm?.stableSwapAddress
 
   try {
@@ -119,7 +119,7 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
 
     const dayAgoTimestamp = getUnixTime(dayAgo)
 
-    const blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
+    const blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp, chainId)
 
     const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
       gql`
@@ -166,7 +166,7 @@ function splitNormalAndStableFarmsReducer(result: SplitFarmResult, farm: any): S
 }
 // ====
 
-const FETCH_CHAIN_ID = [ChainId.BSC, ChainId.ETHEREUM]
+const FETCH_CHAIN_ID = [ChainId.BITGERT]
 const fetchAndUpdateLPsAPR = async () => {
   Promise.all(
     FETCH_CHAIN_ID.map(async (chainId) => {
@@ -193,7 +193,7 @@ const fetchAndUpdateLPsAPR = async () => {
 
       try {
         if (stableFarms?.length) {
-          const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f)))
+          const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f, chainId)))
 
           const stableAprsMap = stableAprs.reduce(
             (result, apr, index) => ({

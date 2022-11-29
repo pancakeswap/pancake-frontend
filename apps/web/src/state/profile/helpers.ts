@@ -54,6 +54,7 @@ export const getProfile = async (address: string): Promise<GetProfileResponse> =
       abi: profileABI,
       calls: profileCalls,
       options: { requireSuccess: false },
+      // @ts-ignore
       chainId: ChainId.BSC,
     })
     const [[hasRegistered], profileResponse] = profileCallsResult

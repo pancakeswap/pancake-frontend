@@ -19,7 +19,6 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import { Token } from '@pancakeswap/sdk'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { bscTokens } from '@pancakeswap/tokens'
-import { cakeBnbLpToken } from 'config/constants/ifo'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -77,9 +76,9 @@ const CommitTokenSection: React.FC<React.PropsWithChildren<TokenSectionProps & {
   commitToken,
   ...props
 }) => {
-  if (commitToken.equals(cakeBnbLpToken)) {
-    return <TokenSection primaryToken={bscTokens.cake} secondaryToken={bscTokens.wbnb} {...props} />
-  }
+  // if (commitToken.equals(cakeBnbLpToken)) {
+  //   return <TokenSection primaryToken={bscTokens.cake} secondaryToken={bscTokens.wbnb} {...props} />
+  // }
   return <TokenSection primaryToken={commitToken} {...props} />
 }
 

@@ -69,7 +69,7 @@ const BorderCard = styled.div`
   padding: 16px;
 `
 
-const zapSupportedChainId = [ChainId.BSC]
+const zapSupportedChainId = []
 
 export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, currencyIdB }) {
   const router = useRouter()

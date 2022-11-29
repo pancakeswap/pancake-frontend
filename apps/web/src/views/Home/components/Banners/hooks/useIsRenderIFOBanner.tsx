@@ -3,7 +3,7 @@ import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
 import { ChainId } from '@pancakeswap/sdk'
 
 const useIsRenderIfoBanner = () => {
-  const currentBlock = useChainCurrentBlock(ChainId.BSC)
+  const currentBlock = useChainCurrentBlock(ChainId.BITGERT)
 
   const activeIfoWithBlocks = useActiveIfoWithBlocks()
 

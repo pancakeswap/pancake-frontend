@@ -1,4 +1,4 @@
-import { Text } from '@pancakeswap/uikit'
+import { Text, Link } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
 
 type FAQsType = {
@@ -7,54 +7,81 @@ type FAQsType = {
 
 const config = ({ t }: FAQsType) => [
   {
-    title: t('What’s the Smart Contract?'),
+    title: t('Is the Swap audited?'),
     description: [
-      <Text key={1} color="textSubtle">
-        {t('The smart contract address will be released soon before the sale starts.')}
+      t(
+        'The Swap uses the Uniswap V2 smart contracts which makes it inherit all security and audits from it. This basically means you have the security of Uniswap on all our supported chains.',
+      ),
+    ],
+  },
+  {
+    title: t('How is the Bridge secured?'),
+    description: [
+      t(
+        'The IceCream bridge builds on top of an industry standard and commonly used bridge architecture. In addition we are currently implementing a second layer of security on top of this bridge architecture. Basically these two layers will validate each other and therefore might create the most secure Bridge currently in the Crypto space. To our knowledge no other Bridge uses a completely seperated second layer of security.',
+      ),
+    ],
+  },
+  {
+    title: t('How much reward will I get for providing liquidity?'),
+    description: [
+      t(
+        'Many AirDrops and 5/6 of the trading fees will be distributed across all liquidity providers. The AirDrops started with 5% weekly, which is over 1200% APY. The amount of AirDrops slowly decreases over time, so be fast!',
+      ),
+    ],
+  },
+  {
+    title: t('Which Chains are supported?'),
+    description: [
+      <Text as="p" color="textSubtle" fontSize="16px">
+        Currently we are supporting Binance Smart chain (BSC), Bitgert (Brise), Dogechain, Doken chain and Fuse chain.
+        For an always up to date list please take a look at our{' '}
+        <Link
+          display="inline-flex"
+          color="text"
+          title="IceCreamSwap Wiki"
+          href="https://wiki.icecreamswap.com/introduction/ice"
+        >
+          Wiki
+        </Link>
+        .
       </Text>,
     ],
   },
   {
-    title: t('I can’t see my NFT’s picture!'),
+    title: t('What is the address of the IceCream token?'),
     description: [
+      t('The address for the IceCream token on Bitgert is: 0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D'),
+      <Text as="p" color="textSubtle" fontSize="16px">
+        An up to date list of all IceCream addresses for all supported chains can be found on our{' '}
+        <Link
+          display="inline-flex"
+          color="text"
+          title="IceCreamSwap Wiki"
+          href="https://wiki.icecreamswap.com/introduction/ice"
+        >
+          Wiki
+        </Link>
+        .
+      </Text>,
+    ],
+  },
+  {
+    title: t('Airdrops?'),
+    description: [
+      t('Yes!'),
       t(
-        'Wait for the reveal! After all 10,000 members of the Pancake Squad have been minted, their images will remain hidden for a few days. Just be patient :)',
+        'An Airdrop is a great way to reward liquidity providers, especially early ones, and distribute the token fairly. Currently we have weekly AirDrops for liquidity providers.',
       ),
     ],
   },
   {
-    title: t('How many can I mint?'),
+    title: t('Where can i verify the used contracts of the Swap?'),
     description: [
-      t('The max limit per wallet is 10 NFTs.'),
-      t(
-        'Users holding Gen 0 Pancake Bunny NFTs at the snapshot may also purchase one additional Pancake Squad NFT in the presale for each Pancake Bunny they hold.',
-      ),
-      t(
-        'For example, if you have 5 Gen 0 bunnies, you can buy 5 minting tickets in the presale, then max. 10 in the public sale.',
-      ),
-    ],
-  },
-  {
-    title: t('Where do the fees go?'),
-    description: [t('100% of CAKE spent on Pancake Squad NFTs will be burned as part of our weekly CAKE burn.')],
-  },
-  {
-    title: t('How are the NFTs randomly distributed?'),
-    description: [
-      t(
-        'Once all 10,000 Squad Tickets have been bought, Chainlink VRF will be used to randomly allocate the pre-generated NFTs to the purchased Tickets. Squad Tickets are allocated IDs numbered in order of their purchase.',
-      ),
-      t(
-        'Once all 10,000 have been sold, VRF will pick numbers from 0 to 9999, which will be used to shift the Squad Ticket ID. This will ensure that the distribution of rare NFTs will be randomized, and prevents “sniping” of specific NFTs during the pre-sale or public sale phases.',
-      ),
-    ],
-  },
-  {
-    title: t('What’s the value of each NFT?'),
-    description: [
-      t(
-        'Value is subjective, but since different traits have different levels of rarity, you can expect bunnies with rarer traits to trade for higher prices than others. If you’re planning to sell, check the NFT market for the price of bunnies with a similarly rare traits to yours.',
-      ),
+      t('Everyone can see the verified Smart Contracts on https://brisescan.com, addresses are:'),
+      t('Factory: 0x9E6d21E759A7A288b80eef94E4737D313D31c13f'),
+      t('Router02: 0xBb5e1777A331ED93E07cF043363e48d320eb96c4'),
+      t('As you can verify yourself, the Contracts are the original UniswapV2 Contracts.'),
     ],
   },
 ]

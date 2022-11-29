@@ -20,6 +20,7 @@ export const fetchVaultUser = async (account: string): Promise<SerializedLockedV
     const [userContractResponse, [currentPerformanceFee], [currentOverdueFee]] = await multicallv2({
       abi: cakeVaultAbi,
       calls,
+      // @ts-ignore
       chainId: ChainId.BSC,
     })
     return {

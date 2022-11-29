@@ -3,11 +3,11 @@ import { multicallv2 } from 'utils/multicall'
 import cakeVaultAbi from 'config/abi/cakeVaultV2.json'
 import { getCakeVaultAddress, getCakeFlexibleSideVaultAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { getCakeContract } from 'utils/contractHelpers'
+import { getIceContract } from 'utils/contractHelpers'
 
 const cakeVaultV2 = getCakeVaultAddress()
 const cakeFlexibleSideVaultV2 = getCakeFlexibleSideVaultAddress()
-const cakeContract = getCakeContract()
+const cakeContract = getIceContract()
 export const fetchPublicVaultData = async (cakeVaultAddress = cakeVaultV2) => {
   try {
     const calls = ['getPricePerFullShare', 'totalShares', 'totalLockedAmount'].map((method) => ({

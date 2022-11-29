@@ -4,14 +4,14 @@ import addresses from 'config/constants/contracts'
 import { VaultKey } from 'state/types'
 
 export const getAddress = (address: Pool.Address, chainId?: number): string => {
-  return address[chainId] ? address[chainId] : address[ChainId.BSC]
+  return address[chainId] ? address[chainId] : address[ChainId.BITGERT]
 }
 
 export const getMasterChefAddress = (chainId?: number) => {
   return getAddress(addresses.masterChef, chainId)
 }
 export const getMasterChefV1Address = () => {
-  return getAddress(addresses.masterChefV1)
+  return null // getAddress(addresses.masterChefV1)
 }
 export const getMulticallAddress = (chainId?: number) => {
   return getAddress(addresses.multiCall, chainId)

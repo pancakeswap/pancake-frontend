@@ -138,7 +138,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
             {
               step: 2,
               tx: '',
-              chainId: ChainId.BSC,
+              chainId,  // chainId: ChainId.BSC,
               status: FarmTransactionStatus.PENDING,
             },
           ],
@@ -194,7 +194,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
             },
             {
               step: 2,
-              chainId: ChainId.BSC,
+              chainId, // chainId: ChainId.BSC,
               tx: '',
               status: FarmTransactionStatus.PENDING,
             },

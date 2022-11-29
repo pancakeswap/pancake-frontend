@@ -23,7 +23,7 @@ export const useExtendEnable = () => {
 
   const parsedAmount = tryParseAmount(swapAmount, ICE[chainId])
 
-  const trade = useTradeExactOut(Native.onChain(ChainId.BSC), parsedAmount)
+  const trade = useTradeExactOut(Native.onChain(chainId), parsedAmount)
 
   const swapCalls = useSwapCallArguments(trade, INITIAL_ALLOWED_SLIPPAGE, null)
 

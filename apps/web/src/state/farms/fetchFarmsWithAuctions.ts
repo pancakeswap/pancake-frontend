@@ -3,7 +3,7 @@ import farmAuctionAbi from 'config/abi/farmAuction.json'
 import { getFarmAuctionContract } from 'utils/contractHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
-import { BSC_BLOCK_TIME } from 'config'
+import { BITGERT_BLOCK_TIME } from 'config'
 import { add, sub } from 'date-fns'
 import { sortAuctionBidders } from '../../views/FarmAuction/helpers'
 
@@ -31,7 +31,7 @@ const fetchFarmsWithAuctions = async (
   })
   const blocksSinceEnd = currentBlock - auctionData.endBlock.toNumber()
   if (blocksSinceEnd > 0) {
-    const secondsSinceEnd = blocksSinceEnd * BSC_BLOCK_TIME
+    const secondsSinceEnd = blocksSinceEnd * BITGERT_BLOCK_TIME
     if (secondsSinceEnd > FARM_AUCTION_HOSTING_IN_SECONDS) {
       return { winnerFarms: [], auctionHostingEndDate: null }
     }

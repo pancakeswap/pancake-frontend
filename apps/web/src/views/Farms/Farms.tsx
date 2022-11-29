@@ -185,9 +185,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
   const [boostedOnly, setBoostedOnly] = useState(false)
 
-  const activeFarms = farmsLP.filter(
-    (farm) => farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
-  )
+  const activeFarms = farmsLP.filter((farm) => farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid))
   const inactiveFarms = farmsLP.filter((farm) => farm.multiplier === '0X')
   const archivedFarms = farmsLP
 
@@ -339,7 +337,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               {t('Farms')}
             </FarmH1>
             <FarmH2 scale="lg" color="text">
-              {t('Stake LP tokens to earn.')}
+              {t('Are the changes not already enough for you? :D')} <br/>
+              {t('The Earn section will be released in the next days, join our Telegram to always be up to date.')}
+              {/* {t('Stake LP tokens to earn.')} */}
             </FarmH2>
             {/*
             <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
@@ -352,14 +352,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </NextLinkFromReactRouter>
             */}
           </Box>
-          {chainId === ChainId.BSC && (
-            <Box>
-              <BCakeBoosterCard />
-            </Box>
-          )}
         </FarmFlexWrapper>
       </PageHeader>
-      <Page>
+      { false && <Page>
         <ControlContainer>
           <ViewControls>
             <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
@@ -458,8 +453,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Flex>
         )}
         {poolLength && <div ref={observerRef} />}
-        <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
-      </Page>
+      </Page>}
       {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </FarmsContext.Provider>
   )

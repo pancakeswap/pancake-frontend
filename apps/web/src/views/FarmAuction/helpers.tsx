@@ -1,5 +1,5 @@
 import { toDate, add, differenceInHours } from 'date-fns'
-import { BSC_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
+import { BITGERT_BLOCK_TIME, DEFAULT_TOKEN_DECIMAL } from 'config'
 import { getBidderInfo } from 'config/constants/farmAuctions'
 import { bscRpcProvider } from 'utils/providers'
 import { AuctionsResponse, FarmAuctionContractStatus, BidsPerAuction } from 'utils/types'
@@ -90,7 +90,7 @@ const getDateForBlock = async (currentBlock: number, block: number) => {
     }
   }
   const blocksUntilBlock = block - currentBlock
-  const secondsUntilStart = blocksUntilBlock * BSC_BLOCK_TIME
+  const secondsUntilStart = blocksUntilBlock * BITGERT_BLOCK_TIME
   return add(new Date(), { seconds: secondsUntilStart })
 }
 

@@ -1,5 +1,4 @@
 import { JsonRpcProvider } from '@ethersproject/providers'
-import { bscTokens } from '@pancakeswap/tokens'
 import BigNumber from 'bignumber.js'
 import cakeVaultAbiV2 from 'config/abi/cakeVaultV2.json'
 import { SNAPSHOT_HUB_API } from 'config/constants/endpoints'
@@ -43,9 +42,6 @@ export interface Message {
   sig: string
 }
 
-const STRATEGIES = [
-  { name: 'cake', params: { symbol: 'CAKE', address: bscTokens.cake.address, decimals: 18, max: 300 } },
-]
 const NETWORK = '56'
 
 /**
@@ -55,7 +51,6 @@ export const generateMetaData = () => {
   return {
     plugins: {},
     network: 56,
-    strategies: STRATEGIES,
   }
 }
 
@@ -190,10 +185,8 @@ export const getVotingPower = async (
     }
   }
 
-  const [total] = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, [account], blockNumber)
-
   return {
-    total: total[account] ? total[account] : 0,
+    total: 0,
     voter: account,
   }
 }
@@ -225,18 +218,18 @@ export const getTotalFromVotes = (votes: Vote[]) => {
  * Get voting power by a list of voters, only total
  */
 export async function getVotingPowerByCakeStrategy(voters: string[], blockNumber: number) {
-  const strategyResponse = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, voters, blockNumber)
+  // const strategyResponse = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, voters, blockNumber)
 
-  const result = fromPairs(
-    voters.map((voter) => {
-      const defaultTotal = strategyResponse.reduce(
-        (total, scoreList) => total + (scoreList[voter] ? scoreList[voter] : 0),
-        0,
-      )
+  // const result = fromPairs(
+  //   voters.map((voter) => {
+  //     const defaultTotal = strategyResponse.reduce(
+  //       (total, scoreList) => total + (scoreList[voter] ? scoreList[voter] : 0),
+  //       0,
+  //     )
+  //
+  //     return [voter, defaultTotal]
+  //   }),
+  // )
 
-      return [voter, defaultTotal]
-    }),
-  )
-
-  return result
+  return {}
 }

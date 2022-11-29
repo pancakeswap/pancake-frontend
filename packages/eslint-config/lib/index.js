@@ -65,5 +65,6 @@ module.exports = {
         tsx: "never",
       },
     ],
+    "import/order": 0,
   },
 };

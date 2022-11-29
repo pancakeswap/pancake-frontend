@@ -10,11 +10,6 @@ import { isStableFarm, SerializedFarmConfig } from './types'
 import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
 
 const evmNativeStableLpMap = {
-  [ChainId.BSC]: {
-    address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
-    wNative: 'WBNB',
-    stable: 'BUSD',
-  },
   [ChainId.BITGERT]: {
     address: '0x8e7dd0d762f60942e0bd05b1114d6cedf4435a18',
     wNative: 'WBRISE',

@@ -9,9 +9,9 @@ import keyBy from 'lodash/keyBy'
 import { EMPTY_LIST } from '@pancakeswap/tokens'
 import uniqBy from 'lodash/uniqBy'
 import { useMemo } from 'react'
-import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-default.tokenlist.json'
-import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
-import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
+import DEFAULT_TOKEN_LIST from '../../../public/default.tokenlist.json'
+import UNSUPPORTED_TOKEN_LIST from '../../../public/unsupported.tokenlist.json'
+import WARNING_TOKEN_LIST from '../../../public/warning.tokenlist.json'
 import { listsAtom } from './lists'
 
 type TokenAddressMap = TTokenAddressMap<ChainId>
@@ -176,13 +176,15 @@ export function useAllLists(): {
 }
 
 function combineMaps(map1: TokenAddressMap, map2: TokenAddressMap): TokenAddressMap {
+  return Object.values(ChainId).reduce(( acc, chainId) => ({...acc, [chainId]: { ...map1[chainId], ...map2[chainId] } }), {}) as TokenAddressMap
+  /*
   return {
-    [ChainId.BSC]: { ...map1[ChainId.BSC], ...map2[ChainId.BSC] },
     [ChainId.BITGERT]: { ...map1[ChainId.BITGERT], ...map2[ChainId.BITGERT] },
     [ChainId.DOGE]: { ...map1[ChainId.DOGE], ...map2[ChainId.DOGE] },
     [ChainId.DOKEN]: { ...map1[ChainId.DOKEN], ...map2[ChainId.DOKEN] },
     [ChainId.FUSE]: { ...map1[ChainId.FUSE], ...map2[ChainId.FUSE] },
   }
+  */
 }
 
 // filter out unsupported lists

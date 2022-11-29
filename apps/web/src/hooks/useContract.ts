@@ -26,7 +26,7 @@ import {
   getBunnySpecialLotteryContract,
   getBunnySpecialPredictionContract,
   getBunnySpecialXmasContract,
-  getCakeContract,
+  getIceContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getCakeVaultV2Contract,
@@ -112,8 +112,8 @@ export const useCake = (): { reader: Cake; signer: Cake } => {
   const providerOrSigner = useProviderOrSigner()
   return useMemo(
     () => ({
-      reader: getCakeContract(null),
-      signer: getCakeContract(providerOrSigner),
+      reader: getIceContract(null),
+      signer: getIceContract(providerOrSigner),
     }),
     [providerOrSigner],
   )

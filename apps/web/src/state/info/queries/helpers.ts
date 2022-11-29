@@ -10,7 +10,7 @@ import { multicallv2 } from 'utils/multicall'
 import { getUnixTime } from 'date-fns'
 import { TransactionType } from 'state/info/types'
 import { ChartEntry } from '../types'
-import { MultiChainName, multiChainStartTime } from '../constant'
+import {multiChainId, MultiChainName, multiChainStartTime} from '../constant'
 import { MintResponse, SwapResponse, BurnResponse, TokenDayData, PairDayData, PancakeDayData } from './types'
 
 export const mapMints = (mint: MintResponse) => {
@@ -210,6 +210,7 @@ export const fetchChartDataWithAddress = async (
 }
 
 export async function getPairTokenMap(poolAddresses: string[], chainName: MultiChainName) {
+  const chainId = multiChainId[chainName]
   let rawPairTokenResults: string[][]
   const calls = poolAddresses
     .map((poolAddress) => {
@@ -224,7 +225,7 @@ export async function getPairTokenMap(poolAddresses: string[], chainName: MultiC
       abi: IPancakePairABI,
       calls,
       options: { requireSuccess: false },
-      chainId: ChainId.BSC,
+      chainId,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')
@@ -253,7 +254,7 @@ export async function getPairTokenMap(poolAddresses: string[], chainName: MultiC
       abi: bep20Abi,
       calls: tokenCalls,
       options: { requireSuccess: false },
-      chainId: ChainId.BSC,
+      chainId,
     })
   } catch (error) {
     console.info('Error fetching tokenIds from pair')

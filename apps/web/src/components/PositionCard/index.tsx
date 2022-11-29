@@ -255,13 +255,23 @@ function MinimalPositionCardView({
               🍦
             </span>{' '}
             {t(
-              "By adding liquidity you'll earn 0.25% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
+              "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
             )}
           </Text>
         </LightCard>
       )}
     </>
   )
+}
+
+const formatNumber = new Intl.NumberFormat('en', { notation: 'compact', minimumFractionDigits: 1 }).format
+
+const formatStringNumber = (value: string) => {
+  const number = Number(value)
+  if (Number.isNaN(number)) {
+    return value
+  }
+  return formatNumber(number)
 }
 
 function FullPositionCard({
@@ -288,7 +298,7 @@ function FullPositionCard({
   const [showMore, setShowMore] = useState(false)
 
   return (
-    <Card {...props}>
+    <Card {...props} style={{order: -Math.floor(totalUSDValue*1000)}}>
       <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">
@@ -328,7 +338,7 @@ function FullPositionCard({
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <Text ml="6px">{token0Deposited?.toSignificant(6)}</Text>
+                  <Text ml="6px">{formatStringNumber(token0Deposited?.toExact())}</Text>
                 </RowFixed>
               ) : (
                 '-'
@@ -346,7 +356,7 @@ function FullPositionCard({
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <Text ml="6px">{token1Deposited?.toSignificant(6)}</Text>
+                  <Text ml="6px">{formatStringNumber(token1Deposited?.toExact())}</Text>
                 </RowFixed>
               ) : (
                 '-'

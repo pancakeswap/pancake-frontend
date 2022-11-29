@@ -14,7 +14,7 @@ const useGelatoLimitOrdersLib = (): GelatoLimitOrders | undefined => {
       console.error('Could not instantiate GelatoLimitOrders: missing chainId or library')
       return undefined
     }
-    if (chainId !== ChainId.BSC) return undefined
+    return undefined // if (chainId !== ChainId.BSC) return undefined
     try {
       return new GelatoLimitOrders(chainId as ChainIdType, providerOrSigner, GELATO_HANDLER, false)
     } catch (error: any) {

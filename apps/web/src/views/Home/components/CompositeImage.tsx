@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { Box } from '@pancakeswap/uikit'
+import Image, { StaticImageData } from 'next/image'
 
 const floatingAnim = (x: string, y: string) => keyframes`
   from {
@@ -15,19 +16,20 @@ const floatingAnim = (x: string, y: string) => keyframes`
 
 const Wrapper = styled(Box)<{ maxHeight: string }>`
   position: relative;
+  flex-grow: 1;
   max-height: ${({ maxHeight }) => maxHeight};
 
-  & :nth-child(2) {
+  & :nth-child(4) {
     animation: ${floatingAnim('3px', '15px')} 3s ease-in-out infinite;
     animation-delay: 1s;
   }
 
-  & :nth-child(3) {
+  & :nth-child(1) {
     animation: ${floatingAnim('5px', '10px')} 3s ease-in-out infinite;
     animation-delay: 0.66s;
   }
 
-  & :nth-child(4) {
+  & :nth-child(2) {
     animation: ${floatingAnim('6px', '5px')} 3s ease-in-out infinite;
     animation-delay: 0.33s;
   }
@@ -49,10 +51,10 @@ const ImageWrapper = styled(Box)`
   top: 0;
   left: 0;
 
-  img {
-    max-height: 100%;
-    width: auto;
-  }
+  /* img { */
+  /*   max-height: 100%; */
+  /*   width: auto; */
+  /* } */
 `
 
 enum Resolution {
@@ -60,12 +62,11 @@ enum Resolution {
   LG = '2x',
 }
 interface ImageAttributes {
-  src: string
+  src: StaticImageData
   alt: string
 }
 
 export interface CompositeImageProps {
-  path: string
   attributes: ImageAttributes[]
 }
 
@@ -83,56 +84,12 @@ export const getSrcSet = (base: string, imageSrc: string, extension = '.png') =>
   ${getImageUrl(base, imageSrc, Resolution.LG, extension)} 1024w,`
 }
 
-const CompositeImage: React.FC<React.PropsWithChildren<ComponentProps>> = ({
-  path,
-  attributes,
-  maxHeight = '512px',
-}) => {
+const CompositeImage: React.FC<React.PropsWithChildren<ComponentProps>> = ({ attributes, maxHeight = '512px' }) => {
   return (
     <Wrapper maxHeight={maxHeight}>
-      <DummyImg
-        srcSet={getSrcSet(path, attributes[0].src, '.webp')}
-        maxHeight={maxHeight}
-        loading="lazy"
-        decoding="async"
-        onError={(e) => {
-          const fallbackSrcSet = getSrcSet(path, attributes[0].src)
-          if (e.currentTarget.srcset !== '' && e.currentTarget.srcset !== fallbackSrcSet) {
-            // eslint-disable-next-line no-param-reassign
-            e.currentTarget.srcset = fallbackSrcSet
-          } else {
-            const fallbackSrc = getImageUrl(path, attributes[0].src)
-            if (e.currentTarget.srcset !== '' && !e.currentTarget.src.endsWith(fallbackSrc)) {
-              // eslint-disable-next-line no-param-reassign
-              e.currentTarget.srcset = ''
-              // eslint-disable-next-line no-param-reassign
-              e.currentTarget.src = fallbackSrc
-            }
-          }
-        }}
-      />
-      {attributes.map((image) => (
-        <ImageWrapper key={image.src}>
-          <img
-            srcSet={getSrcSet(path, image.src, '.webp')}
-            alt={image.alt}
-            onError={(e) => {
-              const fallbackSrcSet = getSrcSet(path, image.src)
-              if (e.currentTarget.srcset !== '' && e.currentTarget.srcset !== fallbackSrcSet) {
-                // eslint-disable-next-line no-param-reassign
-                e.currentTarget.srcset = fallbackSrcSet
-              } else {
-                const fallbackSrc = getImageUrl(path, image.src)
-                if (e.currentTarget.srcset !== '' && !e.currentTarget.src.endsWith(fallbackSrc)) {
-                  // eslint-disable-next-line no-param-reassign
-                  e.currentTarget.srcset = ''
-                  // eslint-disable-next-line no-param-reassign
-                  e.currentTarget.src = fallbackSrc
-                }
-              }
-            }}
-          />
-        </ImageWrapper>
+      {attributes.map((image, i) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <Image key={i} src={image.src} alt={image.alt} loading="lazy" layout="fill" />
       ))}
     </Wrapper>
   )

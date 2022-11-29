@@ -66,17 +66,20 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         />
         <meta
           name="description"
-          content="Cheaper and faster than Uniswap? Discover PancakeSwap, the leading DEX on BNB Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
+          content="SWAP BRIDGE ROADMAP FAQ WIKI JOIN US Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad IceCream brings people together Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain. Start Now Life is better with IceCream With us you can Swap and Bridge your tokens on"
         />
-        <meta name="theme-color" content="#1FC7D4" />
-        <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />
+        <meta name="theme-color" content="#F8567F" />
+        <meta name="twitter:image" content="https://icecreamswap.com/images/hero.png" />
         <meta
           name="twitter:description"
-          content="The most popular AMM on BSC! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust."
+          content="SWAP BRIDGE ROADMAP FAQ WIKI JOIN US Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad IceCream brings people together Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain. Start Now Life is better with IceCream With us you can Swap and Bridge your tokens on"
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
-        <title>IcecreamSwap</title>
+        <meta
+          name="twitter:title"
+          content="🍦 IceCreamSwap - Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken and Fuse blockchain."
+        />
+        <title>IceCreamSwap</title>
         {(Component as NextPageWithLayout).mp && (
           // eslint-disable-next-line @next/next/no-sync-scripts
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
@@ -94,19 +97,19 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           </PersistGate>
         </Blocklist>
       </Providers>
-      <Script
-        strategy="afterInteractive"
-        id="google-tag"
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTAG}');
-          `,
-        }}
-      />
+      {/* <Script */}
+      {/*   strategy="afterInteractive" */}
+      {/*   id="google-tag" */}
+      {/*   dangerouslySetInnerHTML={{ */}
+      {/*     __html: ` */}
+      {/*       (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': */}
+      {/*       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], */}
+      {/*       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= */}
+      {/*       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); */}
+      {/*       })(window,document,'script','dataLayer', '${process.env.NEXT_PUBLIC_GTAG}'); */}
+      {/*     `, */}
+      {/*   }} */}
+      {/* /> */}
     </>
   )
 }

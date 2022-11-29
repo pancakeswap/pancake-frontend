@@ -7,9 +7,12 @@ import { getStatus } from 'views/Ifos/hooks/helpers'
 import { usePotteryStatus } from './usePotteryStatus'
 import { useCompetitionStatus } from './useCompetitionStatus'
 import { useVotingStatus } from './useVotingStatus'
+import { useChainId } from '@pancakeswap/awgmi/src'
+import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 
 export const useMenuItemsStatus = (): Record<string, string> => {
-  const currentBlock = useChainCurrentBlock(ChainId.BSC)
+  const { chainId } = useActiveWeb3React()
+  const currentBlock = useChainCurrentBlock(chainId)
   const activeIfo = useActiveIfoWithBlocks()
   const competitionStatus = useCompetitionStatus()
   const potteryStatus = usePotteryStatus()

@@ -4,12 +4,13 @@ import { BLOCKS_PER_YEAR } from 'config'
 import lpAprs56 from 'config/constants/lpAprs/56.json'
 
 const getLpApr = (chainId: number) => {
-  switch (chainId) {
-    case ChainId.BSC:
-      return lpAprs56
-    default:
-      return {}
-  }
+  // switch (chainId) {
+  //   case ChainId.BSC:
+  //     return lpAprs56
+  //   default:
+  //     return {}
+  // }
+  return {}
 }
 
 /**

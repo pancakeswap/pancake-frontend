@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Heading, Text, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, Link, useMatchBreakpoints, Button, TwitterIcon, TelegramIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
@@ -92,31 +92,46 @@ const Footer = () => {
           <StyledSunburst />
         </Flex>
       </BgWrapper>
-      {(isTablet || isDesktop) && (
-        <FloatingPancakesWrapper>
-          <TopLeftImgWrapper>
-            <CompositeImage {...topLeftImage} maxHeight="256px" />
-          </TopLeftImgWrapper>
-          <BottomRightImgWrapper>
-            <CompositeImage {...bottomRightImage} maxHeight="256px" />
-          </BottomRightImgWrapper>
-        </FloatingPancakesWrapper>
-      )}
+      {/* {(isTablet || isDesktop) && ( */}
+      {/*   <FloatingPancakesWrapper> */}
+      {/*     <TopLeftImgWrapper> */}
+      {/*       <CompositeImage {...topLeftImage} maxHeight="256px" /> */}
+      {/*     </TopLeftImgWrapper> */}
+      {/*     <BottomRightImgWrapper> */}
+      {/*       <CompositeImage {...bottomRightImage} maxHeight="256px" /> */}
+      {/*     </BottomRightImgWrapper> */}
+      {/*   </FloatingPancakesWrapper> */}
+      {/* )} */}
       <Wrapper>
         <Heading mb="24px" scale="xl" color="white">
-          {t('Start in seconds.')}
+          {t('Join us on social media')}
         </Heading>
-        <Text textAlign="center" color="white">
-          {t('Connect your crypto wallet to start using the app in seconds.')}
-        </Text>
-        <Text mb="24px" bold color="white">
-          {t('No registration needed.')}
+        <Text textAlign="center" color="white" mb="24px">
+          {t("Don't miss out on the latest news and updates")}
         </Text>
 
-        <Link external href="https://docs.pancakeswap.finance/">
-          {t('Learn how to start')}
-        </Link>
-        {!account && <ConnectWalletButton mt="24px" />}
+        <Flex mb="24px" style={{ gap: '12px' }}>
+          <Button
+            as="a"
+            title="IceCreamSwap Twitter"
+            href="https://twitter.com/icecream_swap"
+            variant="primary"
+            scale="md"
+            mr="8px"
+          >
+            <TwitterIcon color="currentColor" mr="8px" /> Twitter
+          </Button>
+          <Button
+            as="a"
+            title="IceCreamSwap Telegram"
+            href="https://t.me/Icecreamswap_com"
+            variant="primary"
+            scale="md"
+            mr="8px"
+          >
+            <TelegramIcon color="currentColor" mr="8px" /> Telegram
+          </Button>
+        </Flex>
       </Wrapper>
     </>
   )

@@ -70,7 +70,7 @@ const FarmsPoolsRow = () => {
       <Flex flexDirection="column" mt="24px">
         <Flex mb="24px">
           <RowHeading text={showFarms ? t('Top Farms') : t('Top Syrup Pools')} />
-          {chainId === ChainId.BSC && (
+          { /* chainId === ChainId.BSC && (
             <IconButton
               variant="text"
               height="100%"
@@ -83,7 +83,7 @@ const FarmsPoolsRow = () => {
             >
               <SwapVertIcon height="24px" width="24px" color="textSubtle" />
             </IconButton>
-          )}
+          ) */ }
         </Flex>
         <Box height={['240px', null, '80px']}>
           <Grid>
@@ -98,7 +98,7 @@ const FarmsPoolsRow = () => {
               />
             ))}
           </Grid>
-          {chainId === ChainId.BSC && (
+          { /* chainId === ChainId.BSC && (
             <Grid>
               {topPools.map((topPool, index) => (
                 <TopFarmPool
@@ -112,7 +112,7 @@ const FarmsPoolsRow = () => {
                 />
               ))}
             </Grid>
-          )}
+          ) */ }
         </Box>
       </Flex>
     </div>

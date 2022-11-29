@@ -1,6 +1,9 @@
 import { Svg, SvgProps } from '@pancakeswap/uikit'
+import Image from 'next/image'
+import ice from '../../../../public/images/icecream.png'
 
 const GradientLogo: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
+  return <Image src={ice} alt="IceCreamSwap" {...props} />
   return (
     <Svg viewBox="0 0 48 48" {...props}>
       <path

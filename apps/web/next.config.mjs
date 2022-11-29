@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { withSentryConfig } from '@sentry/nextjs'
 import { withAxiom } from 'next-axiom'
 import BundleAnalyzer from '@next/bundle-analyzer'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
@@ -24,6 +23,7 @@ const withTM = NextTranspileModules([
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
+/*
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
     ? {
@@ -41,6 +41,7 @@ const sentryWebpackPluginOptions =
         silent: true, // Suppresses all logs
         dryRun: !process.env.SENTRY_AUTH_TOKEN,
       }
+ */
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -74,6 +75,18 @@ const config = {
         source: '/info/pair/:address',
         destination: '/info/pools/:address',
       },
+      {
+        source: "/bridge/:path*",
+        destination: "https://bridge.icecreamswap.com/:path*",
+      },
+      {
+        source: "/static/:path*",
+        destination: "https://bridge.icecreamswap.com/static/:path*",
+      },
+      {
+        source: "/chainbridge-runtime-config.js",
+        destination: "https://bridge.icecreamswap.com/chainbridge-runtime-config.js"
+     }
     ]
   },
   async headers() {
@@ -164,5 +177,5 @@ const config = {
 }
 
 export default withBundleAnalyzer(
-  withVanillaExtract(withSentryConfig(withTM(withAxiom(config)), sentryWebpackPluginOptions)),
+  withVanillaExtract(withTM(withAxiom(config))),
 )

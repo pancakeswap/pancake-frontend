@@ -63,7 +63,7 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
     return {
       isSuccess: false,
       address: '',
-      chainId: ChainId.BSC,
+      chainId: ChainId.BITGERT,
       riskLevel: TokenRiskPhases[0],
       riskResult: '',
       scannedTs: 0,

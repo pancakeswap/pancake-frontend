@@ -12,7 +12,7 @@ const getOracleAddress = (chainId: number) => {
 
 export const useOraclePrice = (chainId: number) => {
   const tokenAddress = getOracleAddress(chainId)
-  const chainlinkOracleContract = getChainlinkOracleContract(tokenAddress, null, ChainId.BSC)
+  const chainlinkOracleContract = getChainlinkOracleContract(tokenAddress, null, chainId)
   // Can refactor to subscription later
   const { data: price } = useSWRContract([chainlinkOracleContract, 'latestAnswer'], {
     refreshWhenHidden: true,

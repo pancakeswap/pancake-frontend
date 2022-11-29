@@ -41,9 +41,6 @@ export default function CurrencyLogo({
   }, [currency, uriLocations])
 
   if (currency?.isNative) {
-    if (currency.chainId === ChainId.BSC) {
-      return <BinanceIcon width={size} style={style} />
-    }
     return <StyledLogo size={size} srcs={[`/images/chains/${currency.chainId}.png`]} width={size} style={style} />
   }
 

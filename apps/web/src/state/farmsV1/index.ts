@@ -31,20 +31,20 @@ const initialState: SerializedFarmsState = {
 // Async thunks
 export const fetchFarmsPublicDataAsync = createAsyncThunk<
   [SerializedFarm[], number],
-  number[],
+    {pids: number[], chainId: number},
   {
     state: AppState
   }
 >(
   'farmsV1/fetchFarmsPublicDataAsync',
-  async (pids) => {
-    const farmsConfig = await getFarmConfig(ChainId.BSC)
+  async ({pids, chainId}) => {
+    const farmsConfig = await getFarmConfig(chainId)
     const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.v1pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.v1pid))
 
     // Add price helper farms
-    const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(56)
+    const priceHelperLpsConfig = getFarmsPriceHelperLpFiles(chainId)
     const farmsWithPriceHelpers = farmsCanFetch.concat(priceHelperLpsConfig)
 
     const farms = await fetchFarms(farmsWithPriceHelpers)
@@ -79,14 +79,14 @@ interface FarmUserDataResponse {
 
 export const fetchFarmUserDataAsync = createAsyncThunk<
   FarmUserDataResponse[],
-  { account: string; pids: number[] },
+  { account: string; pids: number[], chainId: number },
   {
     state: AppState
   }
 >(
   'farmsV1/fetchFarmUserDataAsync',
-  async ({ account, pids }) => {
-    const farmsConfig = await getFarmConfig(ChainId.BSC)
+  async ({ account, pids , chainId}) => {
+    const farmsConfig = await getFarmConfig(chainId)
     const poolLength = await fetchMasterChefFarmPoolLength()
     const farmsToFetch = farmsConfig.filter((farmConfig) => pids.includes(farmConfig.v1pid))
     const farmsCanFetch = farmsToFetch.filter((f) => poolLength.gt(f.v1pid))

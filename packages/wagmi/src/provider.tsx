@@ -25,6 +25,7 @@ const Web3LibraryProvider: React.FC<React.PropsWithChildren> = (props) => {
   const { chain } = useNetwork()
   const { data: library } = useSWRImmutable(connector && ['web3-library', connector, chain], async () => {
     const provider = await connector?.getProvider()
+    console.log('provider', provider)
     return new Web3Provider(provider)
   })
 

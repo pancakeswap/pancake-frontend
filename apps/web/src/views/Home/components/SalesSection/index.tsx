@@ -24,7 +24,7 @@ const SalesSection: React.FC<React.PropsWithChildren<SalesSectionProps>> = (prop
     <Flex flexDirection="column">
       <Flex
         flexDirection={['column-reverse', null, null, reverse ? 'row-reverse' : 'row']}
-        alignItems={['flex-end', null, null, 'center']}
+        alignItems="center"
         justifyContent="center"
       >
         <Flex
@@ -32,7 +32,7 @@ const SalesSection: React.FC<React.PropsWithChildren<SalesSectionProps>> = (prop
           flex="1"
           ml={[null, null, null, reverse && '64px']}
           mr={[null, null, null, !reverse && '64px']}
-          alignSelf={['flex-start', null, null, 'center']}
+          alignSelf="center"
         >
           <ColoredWordHeading text={headingText} />
           <Text color="textSubtle" mb="24px">
@@ -64,8 +64,8 @@ const SalesSection: React.FC<React.PropsWithChildren<SalesSectionProps>> = (prop
           </Flex>
         </Flex>
         <Flex
-          height={['192px', null, null, '100%']}
-          width={['192px', null, null, '100%']}
+          height={['192px', null, null, '400px']}
+          width={['192px', null, null, '400px']}
           flex={[null, null, null, '1']}
           mb={['24px', null, null, '0']}
         >

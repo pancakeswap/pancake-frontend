@@ -1,7 +1,7 @@
-import { infoClient, infoClientBITGERT, infoStableSwapClient } from 'utils/graphql'
-import { INFO_CLIENT, INFO_CLIENT_BITGERT, BLOCKS_CLIENT, BLOCKS_CLIENT_BITGERT } from 'config/constants/endpoints'
+import { infoClientBITGERT, infoStableSwapClient } from 'utils/graphql'
+import { INFO_CLIENT_BITGERT, BLOCKS_CLIENT_BITGERT } from 'config/constants/endpoints'
 import { ChainId } from '@pancakeswap/sdk'
-import { PCS_V2_START, PCS_BITGERT_START, ETH_TOKEN_BLACKLIST, TOKEN_BLACKLIST } from 'config/constants/info'
+import { PCS_BITGERT_START } from 'config/constants/info'
 import { GraphQLClient } from 'graphql-request'
 
 export type MultiChainName = 'BSC' | 'BITGERT' | 'DOGECHAIN' | 'DOKEN' | 'FUSE'
@@ -12,38 +12,31 @@ export const multiChainQueryMainToken = {
 }
 
 export const multiChainBlocksClient = {
-  BSC: BLOCKS_CLIENT,
   BITGERT: BLOCKS_CLIENT_BITGERT,
 }
 
 export const multiChainStartTime = {
-  BSC: PCS_V2_START,
   BITERT: PCS_BITGERT_START,
 }
 
 export const multiChainId = {
-  BSC: ChainId.BSC,
   BITGERT: ChainId.BITGERT,
 }
 
 export const multiChainPaths = {
-  [ChainId.BSC]: '',
   [ChainId.BITGERT]: '',
 }
 
 // @ts-ignore fix missing queryClients
 export const multiChainQueryClient: Record<MultiChainName, GraphQLClient> = {
-  BSC: infoClient,
   BITGERT: infoClientBITGERT,
 }
 
 export const multiChainQueryEndPoint = {
-  BSC: INFO_CLIENT,
   BITGERT: INFO_CLIENT_BITGERT,
 }
 
 export const multiChainScan = {
-  BSC: 'BscScan',
   BITGERT: 'BriseScan',
   DOGECHAIN: 'DogeScan',
   DOKEN: 'DokenScan',
@@ -51,8 +44,7 @@ export const multiChainScan = {
 }
 
 export const multiChainTokenBlackList = {
-  BSC: TOKEN_BLACKLIST,
-  ETH: ETH_TOKEN_BLACKLIST,
+  // BSC: TOKEN_BLACKLIST,
 }
 
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName) => {

@@ -4,13 +4,7 @@ import { TokenAddressMap } from '@pancakeswap/token-lists'
 /**
  * An empty result, useful as a default.
  */
-export const EMPTY_LIST: TokenAddressMap<ChainId> = {
-  [ChainId.BSC]: {},
-  [ChainId.BITGERT]: {},
-  [ChainId.DOGE]: {},
-  [ChainId.DOKEN]: {},
-  [ChainId.FUSE]: {},
-}
+export const EMPTY_LIST: TokenAddressMap<ChainId> = Object.values(ChainId).reduce((acc, chainId) => ({...acc, [chainId]: {}}), {}) as TokenAddressMap<ChainId>
 
 export function serializeTokens(unserializedTokens) {
   const serializedTokens = Object.keys(unserializedTokens).reduce((accum, key) => {

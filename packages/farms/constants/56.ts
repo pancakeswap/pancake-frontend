@@ -1,12 +1,11 @@
 import { SerializedFarmConfig } from '@pancakeswap/farms'
-import { bscTokens } from '@pancakeswap/tokens'
 import { CAKE_BNB_LP_MAINNET } from './common'
 
 const farms: SerializedFarmConfig[] = [
   /**
    * These 3 farms (PID 0, 2, 3) should always be at the top of the file.
    */
-  {
+  /* {
     pid: 0,
     v1pid: 0,
     lpSymbol: 'CAKE',
@@ -1003,7 +1002,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x28415ff2C35b65B9E5c7de82126b4015ab9d031F',
     token: bscTokens.ada,
     quoteToken: bscTokens.wbnb,
-  },
+  }, */
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default farms

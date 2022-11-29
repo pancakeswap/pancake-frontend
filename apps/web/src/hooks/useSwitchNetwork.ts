@@ -1,6 +1,5 @@
 /* eslint-disable consistent-return */
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { useCallback, useMemo } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
@@ -14,7 +13,7 @@ export function useSwitchNetworkLocal() {
   return useCallback(
     (chainId: number) => {
       setSessionChainId(chainId)
-      replaceBrowserHistory('chainId', chainId === ChainId.BSC ? null : chainId)
+      replaceBrowserHistory('chainId', chainId)
     },
     [setSessionChainId],
   )
