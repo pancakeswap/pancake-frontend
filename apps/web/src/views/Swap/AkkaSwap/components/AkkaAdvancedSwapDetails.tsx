@@ -22,7 +22,7 @@ function TradeSummary({ route }: { route: AkkaRouterInfoResponseType }) {
           </Text>
         </RowFixed>
         <Text fontSize="14px" color="textSubtle">
-          {route.price_impact.toFixed(3)}%
+          {route?.price_impact?.toFixed(3)}%
         </Text>
       </RowBetween>
       <RowBetween>
@@ -32,7 +32,7 @@ function TradeSummary({ route }: { route: AkkaRouterInfoResponseType }) {
           </Text>
         </RowFixed>
         <Text fontSize="14px" color="textSubtle">
-          ${(route.return_amount_in_usd - route.best_alt).toFixed(3)}
+          ${(route?.return_amount_in_usd - route?.best_alt).toFixed(3)}
         </Text>
       </RowBetween>
     </AutoColumn>
@@ -45,7 +45,7 @@ export function AkkaAdvancedSwapDetails({ route }: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const showRoute = Boolean(route && route.routes.bitgert.length > 0)
+  const showRoute = Boolean(route && route?.routes?.bitgert.length > 0)
 
   return (
     <AutoColumn gap="0px">

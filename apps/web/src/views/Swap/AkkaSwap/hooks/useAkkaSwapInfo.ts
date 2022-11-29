@@ -20,14 +20,13 @@ export function useAkkaSwapInfo(
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmount: CurrencyAmount<Currency> | undefined
-  trade: AkkaRouterTrade,
-  inputError?: string,
+  trade: AkkaRouterTrade
+  inputError?: string
 } {
   const { account } = useWeb3React()
   const { t } = useTranslation()
 
   const to: string | null = account ?? null
-
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
@@ -37,7 +36,6 @@ export function useAkkaSwapInfo(
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
   const { route, args } = useAkkaRouterRouteWithArgs(inputCurrency, outputCurrency, typedValue, allowedSlippage)
-
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -71,8 +69,8 @@ export function useAkkaSwapInfo(
     currencyBalances,
     parsedAmount,
     trade: {
-      route: route ?? null,
-      args: args ?? null
+      route: route.data ?? null,
+      args: args.data ?? null,
     },
     inputError,
   }

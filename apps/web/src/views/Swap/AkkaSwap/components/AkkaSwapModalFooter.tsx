@@ -9,7 +9,7 @@ import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { TOTAL_FEE, LP_HOLDERS_FEE, TREASURY_FEE, BUYBACK_FEE } from 'config/constants/info'
 import { StyledBalanceMaxMini, SwapCallbackError } from './styleds'
-import { AkkaRouter } from 'config/abi/types'
+import { AkkaRouterTrade } from '../hooks/types'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
@@ -25,7 +25,7 @@ export default function AkkaSwapModalFooter({
   onConfirm,
   swapErrorMessage,
 }: {
-  trade: AkkaRouter
+  trade: AkkaRouterTrade
   isEnoughInputBalance: boolean
   onConfirm: () => void
   swapErrorMessage?: string | undefined
@@ -37,32 +37,42 @@ export default function AkkaSwapModalFooter({
   const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
   const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
   const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
+  console.log('routes', trade.route.routes.bitgert)
+  console.log('swap', trade.args.data)
+  const fee = trade.route.routes.bitgert.map((item, index) => {
+    return item.input_amount * item.routes[0].operations.length * 0.003
+  })
+  const realizedLPFee = fee.reduce((accumulator, value) => {
+    return accumulator + value
+  }, 0)
 
   return (
     <>
       <SwapModalFooterContainer>
-        <RowBetween align="center">
-          <Text fontSize="14px">{t('Price')}</Text>
-          <Text
-            fontSize="14px"
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              display: 'flex',
-              textAlign: 'right',
-              paddingLeft: '10px',
-            }}
-          >
-            {/* {formatExecutionPrice(trade, showInverted)} */}
-            <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
-              <AutoRenewIcon width="14px" />
-            </StyledBalanceMaxMini>
+        <RowBetween>
+          <RowFixed>
+            <Text fontSize="14px" color="textSubtle">
+              Price Impact
+            </Text>
+          </RowFixed>
+          <Text fontSize="14px" color="textSubtle">
+            {trade.route.price_impact.toFixed(3)}%
+          </Text>
+        </RowBetween>
+        <RowBetween>
+          <RowFixed>
+            <Text fontSize="14px" color="textSubtle">
+              You Save
+            </Text>
+          </RowFixed>
+          <Text fontSize="14px" color="textSubtle">
+            ${(trade.route.return_amount_in_usd - trade.route.best_alt).toFixed(3)}
           </Text>
         </RowBetween>
         <RowBetween>
           <RowFixed>
             <Text fontSize="14px">{t('Liquidity Provider Fee')}</Text>
-            <QuestionHelper
+            {/* <QuestionHelper
               text={
                 <>
                   <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
@@ -72,8 +82,15 @@ export default function AkkaSwapModalFooter({
                 </>
               }
               ml="4px"
-            />
+            /> */}
           </RowFixed>
+          <Text fontSize="14px">
+            {realizedLPFee
+              ? `${realizedLPFee?.toFixed(6)} ${
+                  trade.route.routes.bitgert[0].routes[0].operations_seperated[0].operations[0].offer_token[3]
+                }`
+              : '-'}
+          </Text>
         </RowBetween>
       </SwapModalFooterContainer>
 

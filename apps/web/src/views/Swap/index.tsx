@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useCallback, useContext } from 'react'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { Box, Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
@@ -21,7 +21,8 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import { useIsAkkaSwap } from 'state/global/hooks'
 import { useAkkaBitgertTokenlistHandshake } from './AkkaSwap/hooks/useAkkaRouterApi'
 import AkkaSwapFormContainer from './AkkaSwap'
-
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useSWR from 'swr'
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
@@ -40,8 +41,23 @@ export default function Swap() {
     [Field.OUTPUT]: outputCurrency ?? undefined,
   }
   const { chainId: walletChainId } = useWeb3React()
+  const { chainId: appChainId } = useActiveChainId()
+
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   const tokenlistHandshake = useAkkaBitgertTokenlistHandshake()
+
+  const setForm = useCallback(() => {
+    if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && isAkkaSwapMode) {
+      return <AkkaSwapFormContainer />
+    }
+    if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && !isAkkaSwapMode) {
+      return <SwapForm />
+    }
+    if (!(walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT)) {
+      return <SwapForm />
+    }
+  }, [appChainId, walletChainId, isAkkaSwapMode])
+
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', , '100%']} height="100%" justifyContent="center" position="relative">
@@ -82,17 +98,7 @@ export default function Swap() {
               <AppBody>
                 <SwapTab>
                   {(swapTypeState) =>
-                    swapTypeState === SwapType.STABLE_SWAP ? (
-                      <StableSwapFormContainer />
-                    ) : walletChainId === ChainId.BITGERT ? (
-                      isAkkaSwapMode ? (
-                        <AkkaSwapFormContainer />
-                      ) : (
-                        <SwapForm />
-                      )
-                    ) : (
-                      <AkkaSwapFormContainer />
-                    )
+                    swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : setForm()
                   }
                 </SwapTab>
               </AppBody>

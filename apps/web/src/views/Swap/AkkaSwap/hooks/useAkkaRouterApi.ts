@@ -1,7 +1,9 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { FAST_INTERVAL } from 'config/constants'
 import { useEffect, useState } from 'react'
 import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
+import useSWR, { Fetcher } from 'swr'
 import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType } from './types'
 const setChainName = (chainId) => {
   switch (chainId) {
@@ -14,80 +16,55 @@ const setChainName = (chainId) => {
   }
 }
 export const useAkkaBitgertTokenlistHandshake = () => {
-  const [data, setData] = useState(null)
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`https://www.apiv2.akka.finance/tokens?chain=bitgert&limit=1`)
-        const responseData = await response.status
-        setData(responseData)
-      } catch (error) {
-        setData(400)
-      }
-    }
-    fetchData()
-  }, [setData])
+  // const [data, setData] = useState(null)
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch(`https://www.apiv2.akka.finance/tokens?chain=bitgert&limit=1`)
+  //       const responseData = await response.status
+  //       setData(responseData)
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  //   fetchData()
+  // }, [setData])
+  const fetcher = (url) => fetch(url).then((r) => r.json())
+  const { data, error } = useSWR('https://www.apiv2.akka.finance/tokens?chain=bitgert&limit=10', fetcher, {
+    refreshInterval: 10000,
+  })
 
-  return data
+  return { data, error }
 }
 export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: string, slippage: number = 0.1) => {
-  const [data, setData] = useState<AkkaRouterArgsResponseType>(null)
-  const [is,toggleSetAkkaMode]= useIsAkkaSwapModeStatus()
-  useEffect(() => {
-    const fetchData = async () => {
-      if (Number(amount) > 0) {
-        try {
-          const response = await fetch(
-            `https://www.apiv2.akka.finance/swap?token0=${token0?.wrapped?.address}&chain0=${setChainName(
-              token0.chainId,
-            )}&token1=${token1?.wrapped?.address}&chain1=${setChainName(
-              token1.chainId,
-            )}&amount=${amount}&slipage=${slippage}&use_split=true`,
-          )
-          const responseData = (await response.json()) as AkkaRouterArgsResponseType
-
-          // setData(responseData)
-          toggleSetAkkaMode()
-        } catch (error) {
-          console.error('Unable to fetch data:', error)
-        }
-      }
-    }
-    if (token0 && token1 && amount) {
-      fetchData()
-    }
-  }, [setData, token0, token1, amount, slippage])
-
-  return data
+  const fetcher: Fetcher<AkkaRouterArgsResponseType> = (url) => fetch(url).then((r) => r.json())
+  const { data, error } = useSWR(
+    `https://www.apiv2.akka.finance/swap?token0=${token0?.wrapped?.address}&chain0=${setChainName(
+      token0?.chainId,
+    )}&token1=${token1?.wrapped?.address}&chain1=${setChainName(
+      token1?.chainId,
+    )}&amount=${amount}&slipage=${slippage}&use_split=true`,
+    fetcher,
+    {
+      refreshInterval: FAST_INTERVAL,
+    },
+  )
+  return { data, error }
 }
 export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: string, slippage: number = 0.1) => {
-  const [data, setData] = useState<AkkaRouterInfoResponseType>(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (Number(amount) > 0) {
-        try {
-          const response = await fetch(
-            `https://www.apiv2.akka.finance/route?token0=${token0?.wrapped?.address}&chain0=${setChainName(
-              token0.chainId,
-            )}&token1=${token1?.wrapped?.address}&chain1=${setChainName(
-              token1.chainId,
-            )}&amount=${amount}&slipage=${slippage}&use_split=true`,
-          )
-          const responseData = (await response.json()) as AkkaRouterInfoResponseType
-
-          setData(responseData)
-        } catch (error) {
-          console.error('Unable to fetch data:', error)
-        }
-      }
-    }
-    if (token0 && token1 && amount) {
-      fetchData()
-    }
-  }, [setData, token0, token1, amount, slippage])
-
-  return data
+  const fetcher: Fetcher<AkkaRouterInfoResponseType> = (url) => fetch(url).then((r) => r.json())
+  const { data, error } = useSWR(
+    `https://www.apiv2.akka.finance/route?token0=${token0?.wrapped?.address}&chain0=${setChainName(
+      token0?.chainId,
+    )}&token1=${token1?.wrapped?.address}&chain1=${setChainName(
+      token1?.chainId,
+    )}&amount=${amount}&slipage=${slippage}&use_split=true`,
+    fetcher,
+    {
+      refreshInterval: FAST_INTERVAL,
+    },
+  )
+  return { data, error }
 }
 export const useAkkaRouterRouteWithArgs = (
   token0: Currency,

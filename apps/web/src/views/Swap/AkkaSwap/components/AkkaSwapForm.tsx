@@ -204,7 +204,6 @@ const AkkaSwapForm = () => {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
-  console.log('dsads', currencies[Field.INPUT])
   return (
     <>
       <CurrencyInputHeader

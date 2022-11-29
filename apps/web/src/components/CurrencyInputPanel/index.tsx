@@ -15,6 +15,7 @@ import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -120,6 +121,7 @@ export default function CurrencyInputPanel({
   showBUSD,
 }: CurrencyInputPanelProps) {
   const { account, chainId } = useWeb3React()
+  const { chainId: appChainId } = useActiveChainId()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
 
@@ -228,7 +230,11 @@ export default function CurrencyInputPanel({
               onUserInput={(val) => {
                 onUserInput(val)
               }}
-              autoFocus={id === 'swap-currency-input' && chainId === ChainId.BITGERT ? true : false}
+              autoFocus={
+                id === 'swap-currency-input' && (chainId === ChainId.BITGERT || appChainId === ChainId.BITGERT)
+                  ? true
+                  : false
+              }
             />
           </LabelRow>
           <InputRow selected={disableCurrencySelect}>
