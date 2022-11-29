@@ -337,7 +337,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               {t('Farms')}
             </FarmH1>
             <FarmH2 scale="lg" color="text">
-              {t('Stake LP tokens to earn.')}
+              {t('Coming very soon, get the latest news on our Telegram.')}
+              {/* {t('Stake LP tokens to earn.')} */}
             </FarmH2>
             {/*
             <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
@@ -352,7 +353,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Box>
         </FarmFlexWrapper>
       </PageHeader>
-      <Page>
+      { false && <Page>
         <ControlContainer>
           <ViewControls>
             <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
@@ -451,7 +452,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </Flex>
         )}
         {poolLength && <div ref={observerRef} />}
-      </Page>
+      </Page>}
       {createPortal(<ScrollToTopButtonV2 />, document.body)}
     </FarmsContext.Provider>
   )
