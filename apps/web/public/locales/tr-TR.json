@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Gas tahmininde beklenmeyen bir sorun meydana geldi. Lütfen tekrar deneyin.",
   "Swap failed: %message%": "Değiştirme başarısız: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Beklenmeyen hata. Değiştirme işlemi için gas tahmin edilemedi.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "Beklenmeyen hata. Onaylama işlemi için gas tahmin edilemedi.",
   "Farm Auction": "Farm Müzayedesi",
   "Farm Auction Winner, add liquidity at your own risk.": "Farm Müzayedesi Kazananı, riski size ait olmak üzere likidite ekleyin.",
   "Currently showing charts from Chainlink oracle": "Şu anda Chainlink tahmininden çizelgeler gösteriliyor",
@@ -2044,5 +2044,5 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Farm verimini artırmanın, IFO'lara katılmanın, oylama gücünü artırmanın ve çok daha fazlasının avantajlarından yararlanmaya devam etmek için CAKE kilitleyin!",
   "CAKE staking expired": "CAKE fon yatırması sona erdi",
   "Find out more": "Daha fazla bilgi edinin",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Herkese açık satışta her uygun katılımcı, IFO oylama teklifi ile birlikte yayınlanan maksimum taahhüt limitine kadar herhangi bir miktarda CAKE taahhüt edebilecektir."
 }
