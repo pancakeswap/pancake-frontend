@@ -18,7 +18,7 @@ const config = ({ t }: FAQsType) => [
     title: t('How is the Bridge secured?'),
     description: [
       t(
-        'The IceCream bridge builds on top of a industry standard and commonly used bridge architecture. In addition we are currently implementing a second layer of security on top of this bridge architecture. Basically these two layers will validate each other and therefore might create the most secure Bridge currently in the Crypto space. To our knowledge no other Bridge uses a completely seperated second layer of security.',
+        'The IceCream bridge builds on top of an industry standard and commonly used bridge architecture. In addition we are currently implementing a second layer of security on top of this bridge architecture. Basically these two layers will validate each other and therefore might create the most secure Bridge currently in the Crypto space. To our knowledge no other Bridge uses a completely seperated second layer of security.',
       ),
     ],
   },
@@ -53,7 +53,7 @@ const config = ({ t }: FAQsType) => [
     description: [
       t('The address for the IceCream token on Bitgert is: 0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D'),
       <Text as="p" color="textSubtle" fontSize="16px">
-        A up to date list of all IceCream addresses for all supported chains can be found at our{' '}
+        An up to date list of all IceCream addresses for all supported chains can be found on our{' '}
         <Link
           display="inline-flex"
           color="text"

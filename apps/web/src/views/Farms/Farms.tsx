@@ -337,7 +337,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               {t('Farms')}
             </FarmH1>
             <FarmH2 scale="lg" color="text">
-              {t('Coming very soon, get the latest news on our Telegram.')}
+              {t('Are the changes not already enough for you? :D')} <br/>
+              {t('The Earn section will be released in the next days, join our Telegram to always be up to date.')}
               {/* {t('Stake LP tokens to earn.')} */}
             </FarmH2>
             {/*
