@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Απροσδόκητο πρόβλημα με την εκτίμηση της βενζίνης. Δοκιμάστε ξανά.",
   "Swap failed: %message%": "Η ανταλλαγή απέτυχε: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Απροσδόκητο σφάλμα. Δεν ήταν δυνατός ο υπολογισμός της βενζίνης για την ανταλλαγή.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "Απροσδόκητο σφάλμα. Δεν ήταν δυνατός ο υπολογισμός της βενζίνης για την έγκριση.",
   "Farm Auction": "Δημοπρασία Farm",
   "Farm Auction Winner, add liquidity at your own risk.": "Νικητή δημοπρασίας farm, προσθέστε ρευστότητα με δική σας ευθύνη.",
   "Currently showing charts from Chainlink oracle": "Αυτή τη στιγμή εμφανίζονται διαγράμματα από το Chainlink oracle",
@@ -2034,8 +2034,8 @@
   "Pancake Collectibles": "Συλλεκτικά Pancake",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "Το PancakeSwap Info είναι σε συντήρηση αυτή τη στιγμή. Τα δεδομένα ενδέχεται να μην είναι ακριβή ή ενημερωμένα.",
   "Smart Router (Beta)": "Smart Router (Beta)",
-  "This route includes StableSwap and can’t edit output": "This route includes StableSwap and can’t edit output",
-  "Use StableSwap for better fees": "Use StableSwap for better fees",
+  "This route includes StableSwap and can’t edit output": "Αυτή η διαδρομή περιλαμβάνει το StableSwap και δεν είναι δυνατή η επεξεργασία της εξόδου",
+  "Use StableSwap for better fees": "Χρησιμοποιήστε το StableSwap για καλύτερες χρεώσεις",
   "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (συμπεριλαμβανομένων των ανταμοιβών) είναι κλειδωμένα στη δεξαμενή CAKE έως τις %lockedEndTime%",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "Το iCAKE σας επιτρέπει να συμμετάσχετε στις δημόσιες πωλήσεις IFO και να δεσμεύσετε έως και %iCake% CAKE.",
@@ -2043,6 +2043,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "Το vCAKE αυξάνει τη δύναμη ψήφου σας σε %totalScore% στη διαδικασία ψηφοφορίας του PancakeSwap.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Κλειδώστε CAKE για απολαμβάνετε τα οφέλη από την αύξηση της απόδοσης της farm, τη συμμετοχή σε IFO, την αύξηση της δύναμης ψήφου και πολλά άλλα!",
   "CAKE staking expired": "Το staking CAKE έχει λήξει",
-  "Find out more": "Find out more",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "Find out more": "Μάθετε περισσότερα",
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Για την δημόσια πώληση, κάθε επιλέξιμος συμμετέχων θα μπορεί να δεσμεύσει οποιοδήποτε ποσό CAKE μέχρι το μέγιστο όριο δέσμευσης, το οποίο δημοσιεύεται μαζί με την πρόταση ψηφοφορίας IFO."
 }
