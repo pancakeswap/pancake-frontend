@@ -36,9 +36,14 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: jitterbit/get-changed-files@v1
+        uses: Ana06/get-changed-files@v2.1.0
         with:
             format: space-delimited
+            filter: |
+              **/*.ts
+              **/*.tsx
+              **/*.js
+              **/*.jsx
             token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run ESLint
