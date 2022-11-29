@@ -1,17 +1,11 @@
 import { getUnixTime } from 'date-fns'
 import { gql } from 'graphql-request'
-import Cookies from 'js-cookie'
 import orderBy from 'lodash/orderBy'
-import { INFO_BUCKETS_COOKIES } from 'config/constants/info'
+
 import { PriceChartEntry } from 'state/info/types'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-import {
-  MultiChainName,
-  multiChainQueryEndPoint,
-  multiChainQueryEndPointWithNR,
-  multiChainQueryMainToken,
-} from '../../constant'
+import { MultiChainName, multiChainQueryEndPoint, multiChainQueryMainToken } from '../../constant'
 
 const getPriceSubqueries = (chainName: MultiChainName, tokenAddress: string, blocks: any) =>
   blocks.map(
@@ -48,7 +42,6 @@ const fetchTokenPriceData = async (
   // Construct timestamps to query against
   const endTimestamp = getUnixTime(new Date())
   const timestamps = []
-  const bucketInfo = Cookies.get(INFO_BUCKETS_COOKIES) // sf or nr
   let time = startTimestamp
   while (time <= endTimestamp) {
     timestamps.push(time)
@@ -66,7 +59,7 @@ const fetchTokenPriceData = async (
     const prices: any | undefined = await multiQuery(
       priceQueryConstructor,
       getPriceSubqueries(chainName, address, blocks),
-      bucketInfo === 'sf' ? multiChainQueryEndPoint[chainName] : multiChainQueryEndPointWithNR[chainName],
+      multiChainQueryEndPoint[chainName],
       200,
     )
 
