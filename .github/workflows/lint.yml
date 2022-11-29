@@ -34,21 +34,18 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Diffset
-        id: diffset
-        uses: softprops/diffset@v1
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v34
         with:
-            base: develop
-            special_files: |
-                **/*.ts
-                **/*.tsx
-                **/*.js
-                **/*.jsx
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            **/*.ts
+            **/*.tsx
+            **/*.js
+            **/*.jsx
 
       - name: Run ESLint
-        run:  yarn lint:report ${{ steps.diffset.outputs.special_files }}
+        run:  yarn lint:report ${{ steps.changed-files.outputs.all_changed_files }}
 
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2
