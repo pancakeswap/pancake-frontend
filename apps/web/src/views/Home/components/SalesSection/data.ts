@@ -35,7 +35,7 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
 export const bridgeSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Bridge securely between many chains'),
   bodyText: t(
-    'IceCreamSwap allows direct bridging between manny chains. ' +
+    'IceCreamSwap allows direct bridging between many chains. ' +
       'A novel approach of a second (redundant) security layer will make the IceCream Bridge even more secure ' +
       'than the audited and battle tested code it is built on top of. ' +
       'All bridge reserves are transparent on chain and can be verified any time. ' +

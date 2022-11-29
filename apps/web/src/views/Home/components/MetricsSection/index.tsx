@@ -43,7 +43,7 @@ const Stats = () => {
       {/*   {t('Trusted with billions.')} */}
       {/* </Heading> */}
       <Text textAlign="center" color="textSubtle">
-        {t('Swap, Bridge, Farm, governance token (ICE) and LaunchPad')}<br/>
+        {t('Swap, Bridge, Farm and Launch')}<br/>
         {t('all in one place available on multiple chains.')}<br/>
         {t('Main DEX of Bitgert chain.')}
       </Text>

@@ -71,7 +71,7 @@ const config = ({ t }: FAQsType) => [
     description: [
       t('Yes!'),
       t(
-        'An Airdrop is an great way to reward liquidity providers, especially early ones, and distribute the token fairly. Currently we have weekly AirDrops for liquidity providers.',
+        'An Airdrop is a great way to reward liquidity providers, especially early ones, and distribute the token fairly. Currently we have weekly AirDrops for liquidity providers.',
       ),
     ],
   },

@@ -9,10 +9,10 @@ const config = ({ t }: FAQsType) => [
     icon: '🚀',
     title: t('Launch'),
     description: [
-      'Launch of the swapping and liquidity provision functionality.',
+      'Launch of the Swap and liquidity provision functionality.',
       'Provision of Icecream project token with multiple Icecream airdrops to the community',
       'Creation of end-point and support for all bridged token after the official stablecoin bridge is live',
-      'Create a analytics page for the swap to show all pools, their liquidity, volume and much more.',
+      'Create an analytics page for the swap to show all pools, their liquidity, volume and much more.',
     ],
     reached: '06-2022',
   },
@@ -22,9 +22,9 @@ const config = ({ t }: FAQsType) => [
     description: [
       'Partner up with other projects so that they can provide liquidity for their project token',
       'AMA sessions to spread the word and inform our users',
-      'Build a redundant infrastructure for maxuímal reliablility',
+      'Build a redundant infrastructure for maximal reliability',
       'Work even closer with the Bitgert blockchain team',
-      'More iceCream Airdrops',
+      'More IceCream Airdrops',
     ],
     reached: '07-2022',
   },
@@ -37,7 +37,7 @@ const config = ({ t }: FAQsType) => [
   {
     title: t('Massive expansion'),
     icon: '🚀',
-    description: ['Masive expansion to may chains', 'Second layer of bridge security', 'More AirDrops'],
+    description: ['Massive expansion to many chains', 'Second layer of bridge security', 'More AirDrops'],
     reached: '11-2022',
   },
   {
