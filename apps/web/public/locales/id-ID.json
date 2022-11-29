@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Ada masalah tak terduga dengan kegiatan estimasi biaya ini. Silakan coba kembali.",
   "Swap failed: %message%": "Pertukaran gagal: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Eror tak terduga. Tidak dapat mengestimasi biaya untuk pertukaran.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "Eror tak terduga. Tidak dapat mengestimasi biaya untuk persetujuan.",
   "Farm Auction": "Lelang Farm",
   "Farm Auction Winner, add liquidity at your own risk.": "Pemenang Lelang Farm, tambahkan likuiditas dengan risiko sendiri.",
   "Currently showing charts from Chainlink oracle": "Saat ini menampilkan bagan dari oracle Chainlink",
@@ -2033,9 +2033,9 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Jika Anda membeli koin hasil penipuan, Anda mungkin berisiko kehilangan dana secara permanen.",
   "Pancake Collectibles": "Kolektibel Pancake",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "Info PancakeSwap sedang dalam pemeliharaan. Data mungkin tidak akurat atau terkini.",
-  "Smart Router (Beta)": "Smart Router (Beta)",
-  "This route includes StableSwap and can’t edit output": "This route includes StableSwap and can’t edit output",
-  "Use StableSwap for better fees": "Use StableSwap for better fees",
+  "Smart Router (Beta)": "Perute Cerdas (Beta)",
+  "This route includes StableSwap and can’t edit output": "Rute ini mencakup StableSwap dan tidak dapat mengedit output",
+  "Use StableSwap for better fees": "Gunakan StableSwap untuk biaya yang lebih baik",
   "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (termasuk hadiah) dikunci di Pool CAKE hingga %lockedEndTime%",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE memungkinkan Anda untuk berpartisipasi dalam penjualan publik IFO dan menggunakan hingga %iCake% jumlah CAKE.",
@@ -2043,6 +2043,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE meningkatkan kekuatan pemungutan suara Anda hingga %totalScore% dalam tata kelola pemungutan suara PancakeSwap.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Kunci CAKE agar dapat menikmati berbagai manfaat dari peningkatan hasil farm, partisipasi dalam IFO, peningkatan kekuatan pemungutan suara, dan masih banyak lagi!",
   "CAKE staking expired": "Penumpukan CAKE telah kedaluwarsa",
-  "Find out more": "Find out more",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "Find out more": "Cari tahu lebih lanjut",
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Untuk penjualan publik, setiap peserta yang memenuhi syarat akan dapat menggunakan berapa pun jumlah CAKE hingga maksimum batas penggunaan, dan ini dipublikasikan bersama proposal pemungutan suara IFO."
 }
