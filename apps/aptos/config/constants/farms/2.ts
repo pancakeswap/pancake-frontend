@@ -39,14 +39,14 @@ const farms: SerializedFarmConfig[] = [
     token: L0_USDC[ChainId.TESTNET],
     quoteToken: testnetTokens.apt,
   },
-  {
-    pid: 2,
-    lpSymbol: 'APT-MOON LP',
-    lpAddress:
-      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x9477f691050b3b2816993262827617e665bcb182cf23272557c2335a5bc16d90::moon_coin::MoonCoin>',
-    token: testnetTokens.moon,
-    quoteToken: testnetTokens.apt,
-  },
+  // {
+  //   pid: 2,
+  //   lpSymbol: 'APT-MOON LP',
+  //   lpAddress:
+  //     '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x9477f691050b3b2816993262827617e665bcb182cf23272557c2335a5bc16d90::moon_coin::MoonCoin>',
+  //   token: testnetTokens.moon,
+  //   quoteToken: testnetTokens.apt,
+  // },
   {
     pid: 0,
     lpSymbol: 'MOON',
