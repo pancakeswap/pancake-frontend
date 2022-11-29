@@ -167,6 +167,7 @@ const config: (
       href: 'https://info.icecreamswap.com',
       type: DropdownMenuItemType.EXTERNAL_LINK,
       icon: InfoIcon,
+      showItemsOnMobile: false,
       items: [],
     },
     /*
