@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Ett oväntat fel uppstod när transaktionsavgiften skulle uppskattas. Försök igen.",
   "Swap failed: %message%": "Inväxling misslyckades: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Oväntat fel. Kunde inte uppskatta transaktionsavgift för inväxlingen.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "Oväntat fel. Kunde inte uppskatta transaktionsavgift för godkännandet.",
   "Farm Auction": "Farmauktion",
   "Farm Auction Winner, add liquidity at your own risk.": "Vinnare av farmauktion. Lägg till likviditet på egen risk.",
   "Currently showing charts from Chainlink oracle": "Visar just nu diagram från Chainlinks orakel",
@@ -2034,8 +2034,8 @@
   "Pancake Collectibles": "Pancake-samlarobjekt",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info genomgår för närvarande underhåll. Uppgifterna är kanske inte korrekta eller uppdaterade.",
   "Smart Router (Beta)": "Smart Router (Beta)",
-  "This route includes StableSwap and can’t edit output": "This route includes StableSwap and can’t edit output",
-  "Use StableSwap for better fees": "Use StableSwap for better fees",
+  "This route includes StableSwap and can’t edit output": "Den här rutten inkluderar StableSwap och kan inte redigera utkomst",
+  "Use StableSwap for better fees": "Använd StableSwap för bättre avgifter",
   "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (inklusive belöningar) är låsta i CAKE-poolen tills %lockedEndTime%",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "Med iCAKE kan du delta i IFO:s offentliga försäljning och göra åtaganden för upp till %iCake% CAKE.",
@@ -2043,6 +2043,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE ökar din röststyrka till %totalScore% i PancakeSwap-röstningen.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Lås CAKE för att få fördelarna med att öka avkastningen på farmen, delta i IFO:er, öka röststyrkan och mycket mer!",
   "CAKE staking expired": "CAKE-placering som löpt ut",
-  "Find out more": "Find out more",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "Find out more": "Ta reda på mer",
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Under den offentliga försäljningen kommer varje behörig deltagare att kunna avsätta valfritt antal CAKE-tokens upp till maxgränsen, som publiceras tillsammans med det inledande farmerbjudandets röstförslag."
 }
