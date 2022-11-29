@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "கேஸை மதிப்பிடுவதில் எதிர்பாராத சிக்கல். மீண்டும் முயற்சித்திடுங்கள்.",
   "Swap failed: %message%": "ஸ்வாப் தோல்வியுற்றது: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "எதிர்பாராத பிழை. ஸ்வாப்பிற்கான கேஸை மதிப்பிட முடியவில்லை.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "எதிர்பாராத பிழை. அங்கீகரிப்பிற்கான கேஸை மதிப்பிட முடியவில்லை.",
   "Farm Auction": "ஃபார்ம் ஏலம்",
   "Farm Auction Winner, add liquidity at your own risk.": "ஃபார்ம் ஏல வெற்றியாளர், உங்கள் சொந்த இடரில் லிக்விடிட்டியைச் சேர்க்கவும்.",
   "Currently showing charts from Chainlink oracle": "தற்போது செயின்லிங்க் ஆரக்கிளில் இருந்து விளக்கப்படங்களைக் காட்டுகிறது",
@@ -2033,9 +2033,9 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "நீங்கள் ஒரு மோசடி காயினை வாங்கினால், நீங்கள் நிரந்தர நிதி இழப்புக்கு ஆளாக நேரிடலாம்.",
   "Pancake Collectibles": "Pancake கலெக்டிபிள்கள்",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap தகவல் தற்போது பராமரிப்பில் உள்ளது. தரவு துல்லியமானதாகவோ புதுப்பித்ததாகவோ இல்லாதிருக்கலாம்.",
-  "Smart Router (Beta)": "Smart Router (Beta)",
-  "This route includes StableSwap and can’t edit output": "This route includes StableSwap and can’t edit output",
-  "Use StableSwap for better fees": "Use StableSwap for better fees",
+  "Smart Router (Beta)": "ஸ்மார்ட் ரவுட்டர் (பீட்டா)",
+  "This route includes StableSwap and can’t edit output": "இந்த வழியில் StableSwap உள்ளது, வெளியீட்டைத் திருத்த முடியாது",
+  "Use StableSwap for better fees": "சிறந்த கட்டணங்களுக்கு StableSwap பயன்படுத்தவும்",
   "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "%lockedCake% CAKE (வெகுமதிகள் உட்பட) %lockedEndTime% வரை CAKE பூலில் பூட்டப்படுகின்றன",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "iCAKE, நீங்கள் IFO பொது விற்பனையில் பங்கேற்பதற்கும், CAKEன் %iCake% தொகை வரை கமிட் செய்வதற்கும் அனுமதிக்கிறது.",
@@ -2043,6 +2043,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE, உங்கள் வாக்களிக்கும் ஆற்றலை PancakeSwap வாக்களிப்பு நிர்வாகத்தில் %totalScore% க்கு அதிகரிக்கிறது.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "ஃபார்ம் மகசூல் அதிகரிப்பு, IFOக்களில் பங்கேற்பது, வாக்களிக்கும் ஆற்றல் அதிகரிப்புகள் மற்றும் பலவற்றின் நன்மைகளை அனுபவிக்க CAKE-ஐப் பூட்டுங்கள்!",
   "CAKE staking expired": "CAKE ஸ்டேக்கிங் காலாவதியானது",
-  "Find out more": "Find out more",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "Find out more": "மேலும் அறிக",
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "பொது விற்பனைக்கு, ஒவ்வொரு தகுதியுடைய பங்கேற்பாளரும் அதிகபட்ச கமிட் வரம்பு வரை CAKE-இன் எத்தொகைக்கும் கமிட் செய்ய முடியும், இது IFO வாக்களிப்பு முன்மொழிவுடன் வெளியிடப்படுகிறது."
 }
