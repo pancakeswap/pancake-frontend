@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Kaasun arvioimisessa on odottamaton ongelma. Yritä uudelleen.",
   "Swap failed: %message%": "Vaihto epäonnistui: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Odottamaton virhe. Kaasun arvioiminen vaihtoa varten ei onnistunut.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "Odottamaton virhe. Kaasun arvioiminen hyväksyntää varten ei onnistunut.",
   "Farm Auction": "Viljelmähuutokauppa",
   "Farm Auction Winner, add liquidity at your own risk.": "Viljelmähuutokaupan voittaja, lisää likviditeettiä omalla riskilläsi.",
   "Currently showing charts from Chainlink oracle": "Tällä hetkellä näytetään kaavioita Chainlink-oraakkelista",
@@ -2044,5 +2044,5 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Lukitse CAKE, jotta voit saada viljelmän tuoton parannuksen etuja, osallistua IFO:ihin, äänestää tehostuksia ja paljon muuta!",
   "CAKE staking expired": "CAKEn panostaminen on erääntynyt",
   "Find out more": "Lue lisää",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Julkisessa kaupassa kukin kelpoinen osallistuja voi luovuttaa minkä tahansa CAKE-summan tahansa enimmäisluovutusrajaan saakka, mikä julkaistaan IFO-äänestysehdotuksen yhteydessä."
 }
