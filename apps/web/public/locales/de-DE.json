@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Unerwartetes Problem bei der Schätzung des Gases. Bitte versuchen Sie es erneut.",
   "Swap failed: %message%": "Swap fehlgeschlagen: %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Unerwarteter Fehler. Konnte das Gas für den Tausch nicht schätzen.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "Unerwarteter Fehler. Konnte das Gas für die Genehmigung nicht schätzen.",
   "Farm Auction": "Farm-Auktion",
   "Farm Auction Winner, add liquidity at your own risk.": "Gewinner der Farm-Auktion, fügen Sie auf eigenes Risiko Liquidität hinzu.",
   "Currently showing charts from Chainlink oracle": "Zeigt derzeit Charts von Chainlink Oracle",
@@ -2044,5 +2044,5 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Sperren Sie CAKE, um von den Vorteilen der Ertragserhöhung, der Teilnahme an IFOs, der Erhöhung der Stimmkraft und vielem mehr zu profitieren!",
   "CAKE staking expired": "CAKE-Einsatz abgelaufen",
   "Find out more": "Mehr erfahren",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Für den öffentlichen Verkauf kann jeder berechtigte Teilnehmer einen beliebigen Betrag an CAKE bis zum maximalen Commit-Limit, das zusammen mit dem IFO-Abstimmungsvorschlag veröffentlicht wird, festlegen."
 }
