@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "估算 gas 时出现意外问题。请重试。",
   "Swap failed: %message%": "兑换失败：%message%",
   "Unexpected error. Could not estimate gas for the swap.": "意外错误。无法估算兑换的 gas。",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "意外错误。无法估算批准的 gas。",
   "Farm Auction": "农场拍卖",
   "Farm Auction Winner, add liquidity at your own risk.": "农场拍卖赢家，增加流动性风险自负。",
   "Currently showing charts from Chainlink oracle": "当前正在显示来自 Chainlink 预言机的图表",
@@ -2044,5 +2044,5 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "锁仓 CAKE 以享受提高农场收益、参与 IFO、提高投票权等权益！",
   "CAKE staking expired": "CAKE 质押已过期",
   "Find out more": "了解更多",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "对于公开销售，符合条件的参与者都能提交 0 至最大限额之间任意数量的 CAKE。限额随 IFO 投票提案公布。"
 }
