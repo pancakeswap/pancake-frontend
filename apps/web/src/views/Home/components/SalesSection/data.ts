@@ -7,9 +7,11 @@ import bridgeB from '../../../../../public/images/home/bridge/bridge_b.png'
 import earnIce from '../../../../../public/images/home/earn/ice.png'
 
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
-  headingText: t('Trade anything. No registration, no hassle.'),
+  headingText: t('Trade anything anywhere, hassle free'),
   bodyText: t(
-    'IcecreamSwap provides a unified DeFi experience in a safe and intuitive environment on multiple chains. The main focus is to remove all unnecesarry complexity to provide a straightforward and intuitive DeFi experience. Also security is a main part of the IcecreamSwap ecosystem, which is why we are using the original and audited Uniswap V2 smart contracts for our Swap and are building a second layer of security on top of our industry standard and broadly used bridge architecture.',
+      'IceCreamSwap let\'s everyone trade any token on multiple chains. ' +
+      'A very intuitive UI lets both new and experienced DeFi users fully emerge in the world of crypto trading. ' +
+      'As the first DEX implementing route splitting, the best possible outputs with the lowest slippage is guaranteed. '
   ),
   reverse: false,
   primaryButton: {
@@ -31,9 +33,13 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
 })
 
 export const bridgeSectionData = (t: TranslateFunction): SalesSectionProps => ({
-  headingText: t('Bridge anything. No registration, no hassle.'),
+  headingText: t('Bridge securely between many chains'),
   bodyText: t(
-    'IceCreamSwap bridges assets between multiple chains. It is a decentralized and trustless bridge that allows users to move assets between chains.',
+    'IceCreamSwap allows direct bridging between manny chains. ' +
+      'A novel approach of a second (redundant) security layer will make the IceCream Bridge even more secure ' +
+      'than the audited and battle tested code it is built on top of. ' +
+      'All bridge reserves are transparent on chain and can be verified any time. ' +
+      'Due to it\'s universal implementation even raw data and NFT\'s will be supported by the Bridge.',
   ),
   reverse: true,
   primaryButton: {
@@ -55,8 +61,8 @@ export const bridgeSectionData = (t: TranslateFunction): SalesSectionProps => ({
 })
 
 export const earnSectionData = (t: TranslateFunction): SalesSectionProps => ({
-  headingText: t('Earn passive income with crypto.'),
-  bodyText: t('IceCreamSwap makes it easy to make your crypto work for you.'),
+  headingText: t('Earn, let your tokens work for you.'),
+  bodyText: t('Thanks to liquidity farming pools, you can earn passive income on top of your crypto tokens.'),
   reverse: false,
   primaryButton: {
     to: '/farms',
