@@ -5,7 +5,6 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useMemo } from 'react'
 import { IFO_RESOURCE_ACCOUNT_TYPE_METADATA, IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE } from 'views/Ifos/constants'
 import { ifos } from 'config/constants/ifo'
-import splitTypeTag from 'utils/splitTypeTag'
 
 import { VestingCharacteristics } from 'views/Ifos/types'
 import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
@@ -49,11 +48,7 @@ export const useFetchUserWalletIfoData = (): VestingData[] => {
       const pool = resource[IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE]
       const metadata = resource[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]
 
-      const [stakingTokenAddress, offeringTokenAddress] = splitTypeTag(metadata.type)
-
-      const ifo = ifos.find(
-        (i) => i.currency.address === stakingTokenAddress && i.token.address === offeringTokenAddress,
-      )
+      const ifo = ifos.find((i) => i.address === pool.type)
 
       if (!ifo) return result
 
@@ -66,7 +61,7 @@ export const useFetchUserWalletIfoData = (): VestingData[] => {
           }
 
       const userVestingData = {
-        vestingStartTime: metadata?.vesting_start_time ? +metadata.vesting_start_time : 0,
+        vestingStartTime: metadata?.data?.vesting_start_time ? +metadata?.data?.vesting_start_time : 0,
         [PoolIds.poolUnlimited]: {
           ...vestingCharacteristics,
           offeringAmountInToken,
