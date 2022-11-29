@@ -7,6 +7,7 @@ import {
   DropdownMenuItems,
   InfoIcon,
   BridgeIcon,
+  DropdownMenuItemType,
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
 
@@ -164,6 +165,7 @@ const config: (
     {
       label: t('Info'),
       href: 'https://info.icecreamswap.com',
+      type: DropdownMenuItemType.EXTERNAL_LINK,
       icon: InfoIcon,
       items: [],
     },
