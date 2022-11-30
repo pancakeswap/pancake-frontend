@@ -71,7 +71,7 @@ export default function SwapForm() {
       const checkSummedToken1 = isAddress(stableFarm?.token1.address)
       return (
         (checkSummedToken0 === inputCurrencyId || checkSummedToken0 === outputCurrencyId) &&
-        (checkSummedToken1 === outputCurrencyId || checkSummedToken1 === outputCurrencyId)
+        (checkSummedToken1 === inputCurrencyId || checkSummedToken1 === outputCurrencyId)
       )
     })
   }, [stableFarms, inputCurrencyId, outputCurrencyId])
