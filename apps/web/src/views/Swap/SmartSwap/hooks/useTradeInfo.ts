@@ -45,7 +45,7 @@ export function useTradeInfo({
   return useMemo(() => {
     const smartRouterAvailable = useSmartRouter && !!trade
     const fallbackV2 = !smartRouterAvailable || trade?.route.routeType === RouteType.V2
-    if (!trade && fallbackV2 && !v2Trade) {
+    if (!trade && !v2Trade) {
       return null
     }
 
