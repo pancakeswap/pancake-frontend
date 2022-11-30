@@ -1503,7 +1503,7 @@
   "Unexpected issue with estimating the gas. Please try again.": "Неожиданная проблема при оценке газа. Попробуйте еще раз.",
   "Swap failed: %message%": "Ошибка обмена. %message%",
   "Unexpected error. Could not estimate gas for the swap.": "Неожиданная ошибка. Не удалось оценить газ для обмена.",
-  "Unexpected error. Could not estimate gas for the approve.": "Unexpected error. Could not estimate gas for the approve.",
+  "Unexpected error. Could not estimate gas for the approve.": "Неожиданная ошибка. Не удалось оценить газ для подтверждения.",
   "Farm Auction": "Аукцион фарма",
   "Farm Auction Winner, add liquidity at your own risk.": "Победитель аукциона фарма — добавляйте ликвидность на свой страх и риск.",
   "Currently showing charts from Chainlink oracle": "Показаны диаграммы от оракула Chainlink",
@@ -2044,5 +2044,5 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Заблокировав CAKE, вы сможете пользоваться следующими преимуществами: повышение выручки фарма, участие в IFO, увеличенное влияние в голосовании и т. д.!",
   "CAKE staking expired": "Срок действия вложения CAKE истек",
   "Find out more": "Подробнее",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "При публичной продаже каждый соответствующий требованиям участник сможет выделить любое количество CAKE в рамках максимальной суммы, оглашаемой вместе с предложением голосования по IFO."
 }
