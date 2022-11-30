@@ -40,7 +40,7 @@ const AddLiquidityPage = () => {
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.currencyA, currencies?.currencyB)
   const addIsWarning = useIsTransactionWarning(currencies?.currencyA, currencies?.currencyB)
 
-  const showAddLiquidity = Boolean(currencies?.currencyA) && Boolean(currencies?.currencyA) && steps === Steps.Add
+  const showAddLiquidity = Boolean(currencies?.currencyA) && Boolean(currencies?.currencyB) && steps === Steps.Add
 
   const goToAdd = useCallback(() => setSteps(Steps.Add), [])
   const goToChoose = useCallback(() => setSteps(Steps.Choose), [])
