@@ -11,7 +11,7 @@ import TotalPurchased from './TotalPurchased'
 import TotalAvailableClaim from './TotalAvailableClaim'
 import ReleasedTokenInfo from './ReleasedTokenInfo'
 import IfoVestingFooter from './IfoVestingFooter'
-import ClaimButton from '../ClaimButton'
+import { ClaimButton } from '../ClaimButton'
 import VestingClaimButton from '../VestingClaimButton'
 
 interface IfoVestingCardProps {
@@ -55,9 +55,10 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
         </Text>
         <Box mb="24px">
           {!userPool.isVestingInitialized ? (
-            <ClaimButton poolId={poolId} ifoVersion={ifo.version} walletIfoData={walletIfoData} />
+            <ClaimButton ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
           ) : (
             <VestingClaimButton
+              ifo={ifo}
               poolId={poolId}
               amountAvailableToClaim={amountAvailableToClaim}
               walletIfoData={walletIfoData}

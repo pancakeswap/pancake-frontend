@@ -1,20 +1,20 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { SwapParameters, Trade, Currency, TradeType } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
+import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { V2TradeAndStableSwap } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useGasPrice } from 'state/user/hooks'
-import truncateHash from '@pancakeswap/utils/truncateHash'
-import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { logSwap, logTx } from 'utils/log'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
 import { calculateGasMargin, isAddress } from '../utils'
-import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
 import { basisPointsToPercent } from '../utils/exchange'
+import { transactionErrorToUserReadableMessage } from '../utils/transactionErrorToUserReadableMessage'
 
 export enum SwapCallbackState {
   INVALID,
@@ -39,12 +39,10 @@ interface SwapCallEstimate {
   call: SwapCall
 }
 
-type ITrade = Trade<Currency, Currency, TradeType> | StableTrade | undefined
-
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
-  trade: ITrade, // trade to execute, required
+  trade: V2TradeAndStableSwap, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: SwapCall[],
@@ -137,6 +135,7 @@ export function useSwapCallback(
               trade.tradeType === TradeType.EXACT_INPUT
                 ? trade.inputAmount.toSignificant(3)
                 : trade.maximumAmountIn(pct).toSignificant(3)
+
             const outputAmount =
               trade.tradeType === TradeType.EXACT_OUTPUT
                 ? trade.outputAmount.toSignificant(3)

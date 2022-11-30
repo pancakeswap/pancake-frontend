@@ -20,6 +20,8 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import styled from 'styled-components'
 import { harvestFarm } from 'utils/calls'
+import { getMasterChefAddress } from 'utils/addressHelpers'
+import { BOOSTED_FARM_GAS_LIMIT } from 'config'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
 
@@ -27,6 +29,8 @@ const StyledCard = styled(Card)`
   width: 100%;
   height: fit-content;
 `
+
+const masterChefAddress = getMasterChefAddress()
 
 const HarvestCard = () => {
   const { t } = useTranslation()
@@ -49,7 +53,12 @@ const HarvestCard = () => {
       const farmWithBalance = farmsWithStakedBalance[i]
       // eslint-disable-next-line no-await-in-loop
       const receipt = await fetchWithCatchTxError(() => {
-        return harvestFarm(farmWithBalance.contract, farmWithBalance.pid, gasPrice)
+        return harvestFarm(
+          farmWithBalance.contract,
+          farmWithBalance.pid,
+          gasPrice,
+          farmWithBalance.contract.address !== masterChefAddress ? BOOSTED_FARM_GAS_LIMIT : undefined,
+        )
       })
       if (receipt?.status) {
         toastSuccess(

@@ -1,23 +1,34 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
+import { HexString } from 'aptos'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
-import { PoolIds } from 'config/constants/types'
-import useCatchTxError from 'hooks/useCatchTxError'
+import { Ifo, PoolIds } from 'config/constants/types'
+import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { useCallback } from 'react'
+import splitTypeTag from 'utils/splitTypeTag'
+import { ifoRelease } from 'views/Ifos/generated/ifo'
+import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
 import { WalletIfoData } from 'views/Ifos/types'
 
 interface Props {
   poolId: PoolIds
   amountAvailableToClaim: BigNumber
   walletIfoData: WalletIfoData
+  ifo: Ifo
 }
 
-const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountAvailableToClaim, walletIfoData }) => {
+const VestingClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
+  ifo,
+  poolId,
+  amountAvailableToClaim,
+  walletIfoData,
+}) => {
   const userPoolCharacteristics = walletIfoData[poolId]
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
-  const { fetchWithCatchTxError } = useCatchTxError()
+  const executeTransaction = useSimulationAndSendTransaction()
+  const pool = useIfoPool(ifo)
 
   const setPendingTx = useCallback(
     (isPending: boolean) => {
@@ -27,21 +38,37 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
   )
 
   const handleClaim = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      setPendingTx(true)
-      return walletIfoData.contract.release(userPoolCharacteristics.vestingId)
-    })
-    if (receipt?.status) {
+    setPendingTx(true)
+
+    const [raisingCoin, offeringCoin, uid] = splitTypeTag(pool?.type)
+
+    const vestingScheduleIdInArray: number[] = Array.from(
+      new HexString(userPoolCharacteristics.vestingId).toUint8Array(),
+    )
+
+    const payload = ifoRelease([vestingScheduleIdInArray], [raisingCoin, offeringCoin, uid])
+    const response = await executeTransaction(payload)
+
+    if (response.hash) {
       walletIfoData.setIsClaimed(poolId)
       toastSuccess(
         t('Success!'),
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+        <ToastDescriptionWithTx txHash={response.hash}>
           {t('You have successfully claimed available tokens.')}
         </ToastDescriptionWithTx>,
       )
     }
     setPendingTx(false)
-  }, [poolId, walletIfoData, userPoolCharacteristics, t, fetchWithCatchTxError, setPendingTx, toastSuccess])
+  }, [
+    setPendingTx,
+    pool?.type,
+    userPoolCharacteristics.vestingId,
+    executeTransaction,
+    walletIfoData,
+    poolId,
+    toastSuccess,
+    t,
+  ])
 
   return (
     <Button
@@ -56,4 +83,4 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, amountA
   )
 }
 
-export default ClaimButton
+export default VestingClaimButton

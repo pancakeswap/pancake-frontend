@@ -131,7 +131,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   return (
     <ConfirmSwapModalContainer handleDismiss={handleDismiss}>
       {attemptingTxn ? (
-        <ConfirmationPendingContent trade={trade} />
+        <ConfirmationPendingContent inputAmount={trade?.inputAmount} outputAmount={trade?.outputAmount} />
       ) : txHash ? (
         <TransactionSubmittedContent
           chainId={chainId}

@@ -4,7 +4,6 @@ import { useMemo, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import Trans from 'components/Trans'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { DeserializedPool } from 'state/types'
 import { VestingStatus } from './types'
 import NotTokens from './NotTokens'
 import TokenInfo from './VestingPeriod/TokenInfo'
@@ -60,36 +59,30 @@ const IfoVestingStatus = {
   },
 }
 
-interface IfoVestingProps {
-  pool: DeserializedPool
-}
-
-const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
+const IfoVesting = () => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isFirstTime, setIsFirstTime] = useState(true)
-  const { data, fetchUserVestingData } = useFetchVestingData()
+  const vestingIfoList = useFetchVestingData()
 
   useEffect(() => {
     // When switch account need init
     if (account) {
       setIsFirstTime(true)
-      fetchUserVestingData()
     }
-  }, [account, fetchUserVestingData, setIsFirstTime])
+  }, [account, setIsFirstTime])
 
   const cardStatus = useMemo(() => {
     if (account) {
-      if (data.length > 0) return IfoVestingStatus[VestingStatus.HAS_TOKENS_CLAIM]
-      if (data.length === 0 && !isFirstTime) return IfoVestingStatus[VestingStatus.ENDED]
+      if (vestingIfoList.length > 0) return IfoVestingStatus[VestingStatus.HAS_TOKENS_CLAIM]
+      if (vestingIfoList.length === 0 && !isFirstTime) return IfoVestingStatus[VestingStatus.ENDED]
     }
     return IfoVestingStatus[VestingStatus.NOT_TOKENS_CLAIM]
-  }, [data, account, isFirstTime])
+  }, [vestingIfoList, account, isFirstTime])
 
   const handleFetchUserVesting = useCallback(() => {
     setIsFirstTime(false)
-    fetchUserVestingData()
-  }, [fetchUserVestingData])
+  }, [])
 
   return (
     <StyleVestingCard isActive>
@@ -117,7 +110,7 @@ const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
         {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && <NotTokens />}
         {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM && (
           <TokenInfoContainer>
-            {data.map((ifo, index) => (
+            {vestingIfoList.map((ifo, index) => (
               <TokenInfo key={ifo.ifo.id} index={index} data={ifo} fetchUserVestingData={handleFetchUserVesting} />
             ))}
           </TokenInfoContainer>

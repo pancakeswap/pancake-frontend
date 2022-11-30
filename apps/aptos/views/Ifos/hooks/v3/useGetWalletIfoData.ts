@@ -1,27 +1,19 @@
-import { Contract } from '@ethersproject/contracts'
+/* eslint-disable camelcase */
+import { useAccount } from '@pancakeswap/awgmi'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { Ifo, PoolIds } from 'config/constants/types'
-import { useState, useCallback } from 'react'
-// import { fetchCakeVaultUserData } from 'state/pools'
-// import { useIfoCredit } from 'state/pools/hooks'
+import { useState, useMemo } from 'react'
+import { computeOfferingAndRefundAmount } from 'views/Ifos/utils'
+import { RootObject as IFOPool } from 'views/Ifos/generated/IFOPool'
+
 import { WalletIfoState, WalletIfoData } from '../../types'
+import { useIfoPool } from '../useIfoPool'
+import { useIfoUserInfo } from '../useIfoUserInfo'
+import { useVestingCharacteristics } from '../vesting/useVestingCharacteristics'
 
 const initialState = {
   isInitialized: false,
-  poolBasic: {
-    amountTokenCommittedInLP: BIG_ZERO,
-    offeringAmountInToken: BIG_ZERO,
-    refundingAmountInLP: BIG_ZERO,
-    taxAmountInLP: BIG_ZERO,
-    hasClaimed: false,
-    isPendingTx: false,
-    vestingReleased: BIG_ZERO,
-    vestingAmountTotal: BIG_ZERO,
-    isVestingInitialized: false,
-    vestingId: '0',
-    vestingComputeReleasableAmount: BIG_ZERO,
-  },
   poolUnlimited: {
     amountTokenCommittedInLP: BIG_ZERO,
     offeringAmountInToken: BIG_ZERO,
@@ -40,12 +32,11 @@ const initialState = {
 /**
  * Gets all data from an IFO related to a wallet
  */
-export const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
-  const [state, setState] = useState<WalletIfoState>(initialState)
-  // const credit = useIfoCredit()
-  const credit = BIG_ZERO
+export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
+  const { account } = useAccount()
+  const pool = useIfoPool(_ifo)
 
-  const contract = {} as Contract
+  const [state, setState] = useState<WalletIfoState>(initialState)
 
   const setPendingTx = (status: boolean, poolId: PoolIds) =>
     setState((prevState) => ({
@@ -66,19 +57,54 @@ export const useGetWalletIfoData = (ifo: Ifo): WalletIfoData => {
     }))
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const fetchIfoData = useCallback(async () => {}, [])
+  const { data: userInfo } = useIfoUserInfo(pool?.type)
 
-  const resetIfoData = useCallback(() => {
-    setState({ ...initialState })
-  }, [])
+  const {
+    tax_amount: taxAmountInLP,
+    refunding_amount: refundingAmountInLP,
+    offering_amount: offeringAmountInToken,
+  } = useMemo(
+    () =>
+      userInfo?.data
+        ? computeOfferingAndRefundAmount(userInfo.data.amount, pool?.data as unknown as IFOPool)
+        : {
+            tax_amount: BIG_ZERO,
+            refunding_amount: BIG_ZERO,
+            offering_amount: BIG_ZERO,
+          },
+    [pool?.data, userInfo?.data],
+  )
 
-  const creditLeftWithNegative = credit.minus(state.poolUnlimited.amountTokenCommittedInLP)
+  const vestingCharacteristics = useVestingCharacteristics(_ifo)
 
-  const ifoCredit = {
-    credit,
-    creditLeft: BigNumber.maximum(BIG_ZERO, creditLeftWithNegative),
-  }
+  const finalState = useMemo(() => {
+    if (!account || !pool?.data) {
+      return initialState
+    }
 
-  return { ...state, contract, setPendingTx, setIsClaimed, fetchIfoData, resetIfoData, ifoCredit }
+    return {
+      ...state,
+      isInitialized: true,
+      poolUnlimited: {
+        ...state.poolUnlimited,
+        ...vestingCharacteristics,
+        offeringAmountInToken,
+        amountTokenCommittedInLP: userInfo?.data ? new BigNumber(userInfo?.data.amount) : BIG_ZERO,
+        hasClaimed: userInfo?.data?.claimed ?? false,
+        refundingAmountInLP,
+        taxAmountInLP,
+      },
+    }
+  }, [
+    account,
+    pool?.data,
+    state,
+    vestingCharacteristics,
+    offeringAmountInToken,
+    userInfo?.data,
+    refundingAmountInLP,
+    taxAmountInLP,
+  ])
+
+  return { ...finalState, setPendingTx, setIsClaimed }
 }

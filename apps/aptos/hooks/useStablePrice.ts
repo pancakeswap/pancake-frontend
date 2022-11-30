@@ -15,8 +15,11 @@ import { PairState, usePairs } from './usePairs'
  * @param currency currency to compute the stable price of
  */
 export default function useStablePrice(currency?: Currency): Price<Currency, Currency> | undefined {
-  const { chainId } = useActiveWeb3React()
-  const native = useNativeCurrency()
+  const { chainId: webChainId } = useActiveWeb3React()
+
+  const chainId = currency?.chainId || webChainId
+
+  const native = useNativeCurrency(chainId)
   const wrapped = currency?.wrapped
   const wnative = native.wrapped
   const stable = L0_USDC[chainId]
@@ -29,6 +32,7 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
     ],
     [wnative, stable, chainId, currency, wrapped],
   )
+
   const [[nativePairState, nativePair], [stablePairState, stablePair], [stableNativePairState, stableNativePair]] =
     usePairs(tokenPairs)
 
@@ -133,7 +137,7 @@ export const usePriceCakeUsdc = () => {
 
 export const useTokenUsdcPrice = (currency?: Currency): BigNumber => {
   const { chainId } = useActiveWeb3React()
-  const USDC = L0_USDC[chainId]
+  const USDC = L0_USDC[currency?.chainId || chainId]
 
   const allowedPairs = useAllCommonPairs(currency, USDC)
   const tokenInAmount = tryParseAmount('1', currency)

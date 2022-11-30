@@ -1,10 +1,11 @@
 import { Box, Flex, Heading, Progress, ProgressBar } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData } from '../../types'
 import LiveTimer, { SoonTimer } from './Timer'
 
-const BigCurve = styled(Box)<{ $status: PublicIfoData['status'] }>`
+const BigCurve = styled(Box)<{ $status }>`
   width: 150%;
   position: absolute;
   top: -150%;
@@ -36,8 +37,16 @@ const BigCurve = styled(Box)<{ $status: PublicIfoData['status'] }>`
   }}
 `
 
-export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) => {
-  const { status } = publicIfoData
+export const IfoRibbon = ({ publicIfoData, releaseTime }: { publicIfoData: PublicIfoData; releaseTime: number }) => {
+  const { startTime, endTime } = publicIfoData
+
+  const currentTime = Date.now() / 1000
+
+  const status = getStatus(currentTime, startTime, endTime)
+
+  if (!startTime || !endTime || status === 'idle') {
+    return null
+  }
 
   let Component
   if (status === 'finished') {
@@ -48,9 +57,12 @@ export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) =
     Component = <IfoRibbonSoon publicIfoData={publicIfoData} />
   }
 
-  if (status === 'idle') {
-    return null
-  }
+  const totalTime = endTime - startTime
+
+  const progress =
+    currentTime > startTime
+      ? ((currentTime - startTime) / totalTime) * 100
+      : ((currentTime - releaseTime) / (startTime - releaseTime)) * 100
 
   return (
     <>
@@ -59,7 +71,7 @@ export const IfoRibbon = ({ publicIfoData }: { publicIfoData: PublicIfoData }) =
           <ProgressBar
             $useDark
             $background="linear-gradient(273deg, #ffd800 -2.87%, #eb8c00 113.73%)"
-            style={{ width: `${Math.min(Math.max(publicIfoData.progress, 0), 100)}%` }}
+            style={{ width: `${Math.min(Math.max(progress, 0), 100)}%` }}
           />
         </Progress>
       )}

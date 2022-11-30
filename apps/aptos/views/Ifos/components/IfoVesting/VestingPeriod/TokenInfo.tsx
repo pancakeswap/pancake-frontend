@@ -1,14 +1,14 @@
 import { BalanceWithLoading, Box, ChevronDownIcon, Flex, Text } from '@pancakeswap/uikit'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
-import { useEffect, useState, useMemo } from 'react'
-import styled from 'styled-components'
 import { TokenImage } from 'components/TokenImage'
 import { PoolIds } from 'config/constants/types'
 import useStablePrice from 'hooks/useStablePrice'
-import { VestingData } from 'views/Ifos/hooks/vesting/fetchUserWalletIfoData'
+import { useEffect, useState, useMemo } from 'react'
+import styled from 'styled-components'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
+import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import Expand from './Expand'
 
 const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
@@ -25,7 +25,7 @@ interface TokenInfoProps {
 const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, data, fetchUserVestingData }) => {
   const { vestingTitle, token } = data.ifo
   const { vestingComputeReleasableAmount } = data.userVestingData[PoolIds.poolUnlimited]
-  const { vestingComputeReleasableAmount: basicReleaseAmount } = data.userVestingData[PoolIds.poolBasic]
+
   const [expanded, setExpanded] = useState(false)
   const shouldRenderExpand = useDelayedUnmount(expanded, 300)
 
@@ -40,9 +40,9 @@ const TokenInfo: React.FC<React.PropsWithChildren<TokenInfoProps>> = ({ index, d
   }
 
   const amountAvailable = useMemo(() => {
-    const totalReleaseAmount = new BigNumber(vestingComputeReleasableAmount).plus(basicReleaseAmount)
+    const totalReleaseAmount = new BigNumber(vestingComputeReleasableAmount)
     return getBalanceNumber(totalReleaseAmount, token.decimals)
-  }, [token, vestingComputeReleasableAmount, basicReleaseAmount])
+  }, [token, vestingComputeReleasableAmount])
 
   const price = useStablePrice(token)
   const dollarValueOfToken = price ? multiplyPriceByAmount(price, amountAvailable, token.decimals) : 0

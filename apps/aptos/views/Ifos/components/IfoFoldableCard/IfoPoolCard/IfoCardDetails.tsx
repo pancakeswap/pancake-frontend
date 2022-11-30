@@ -8,6 +8,7 @@ import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import useStablePrice from 'hooks/useStablePrice'
 import { DAY_IN_SECONDS } from 'utils/getTimePeriods'
+import { getStatus } from 'views/Ifos/hooks/helpers'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
 
@@ -53,45 +54,25 @@ const FooterEntry: React.FC<React.PropsWithChildren<FooterEntryProps>> = ({ labe
   )
 }
 
-const MaxTokenEntry = ({ maxToken, ifo, poolId }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
-  // const isCurrencyCake = ifo.currency === bscTokens.cake
+const MaxTokenEntry = ({ maxToken, ifo }: { maxToken: number; ifo: Ifo; poolId: PoolIds }) => {
   const isCurrencyCake = true
   const isV3 = ifo.version >= 3
   const { t } = useTranslation()
 
-  const basicTooltipContent =
-    ifo.version >= 3.1
-      ? t(
-          'For the private sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
-        )
-      : t(
-          'For the basic sale, Max CAKE entry is capped by minimum between your average CAKE balance in the iCAKE, or the pool’s hard cap. To increase the max entry, Stake more CAKE into the iCAKE',
-        )
+  const basicTooltipContent = t(
+    'For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.',
+  )
 
-  const unlimitedToolipContent =
-    ifo.version >= 3.1 ? (
-      <Box>
-        <Text display="inline">{t('For the public sale, Max CAKE entry is capped by')} </Text>
-        <Text bold display="inline">
-          {t('the number of iCAKE.')}{' '}
-        </Text>
-        <Text display="inline">
-          {t('Lock more CAKE for longer durations to increase the maximum number of CAKE you can commit to the sale.')}
-        </Text>
-      </Box>
-    ) : (
-      t(
-        'For the unlimited sale, Max CAKE entry is capped by your average CAKE balance in the iCake. To increase the max entry, Stake more CAKE into the iCake',
-      )
-    )
-
-  const tooltipContent = poolId === PoolIds.poolBasic ? basicTooltipContent : unlimitedToolipContent
+  const tooltipContent = basicTooltipContent
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
-  const label = isCurrencyCake ? t('Max. CAKE entry') : t('Max. token entry')
+  const label = t('Max. token entry')
+
   const price = useStablePrice(ifo.currency)
 
   const dollarValueOfToken = price ? multiplyPriceByAmount(price, maxToken, ifo.currency.decimals) : 0
+
+  if (!maxToken) return null
 
   return (
     <>
@@ -123,24 +104,17 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   poolId,
   ifo,
   publicIfoData,
-  walletIfoData,
 }) => {
   const { t } = useTranslation()
-  const { status, currencyPriceInUSD } = publicIfoData
+  const { startTime, endTime, currencyPriceInUSD } = publicIfoData
+
   const poolCharacteristic = publicIfoData[poolId]
-  const walletCharacteristic = walletIfoData[poolId]
 
-  let version3MaxTokens = walletIfoData.ifoCredit?.creditLeft
-    ? // if creditLeft > limit show limit else show creditLeft
-      walletIfoData.ifoCredit.creditLeft.gt(
-        poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP),
-      )
-      ? poolCharacteristic.limitPerUserInLP.minus(walletCharacteristic.amountTokenCommittedInLP)
-      : walletIfoData.ifoCredit.creditLeft
-    : null
+  const currentTime = Date.now() / 1000
 
-  // unlimited pool just show the credit left
-  version3MaxTokens = poolId === PoolIds.poolUnlimited ? walletIfoData.ifoCredit?.creditLeft ?? null : version3MaxTokens
+  const status = getStatus(currentTime, startTime, endTime)
+
+  const version3MaxTokens = null
 
   /* Format start */
   const maxLpTokens =
@@ -151,12 +125,13 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
       : getBalanceNumber(poolCharacteristic.limitPerUserInLP, ifo.currency.decimals)
   const taxRate = `${poolCharacteristic.taxRate}%`
 
-  const totalCommittedPercent = poolCharacteristic.totalAmountPool
-    .div(poolCharacteristic.raisingAmountPool)
-    .times(100)
-    .toFixed(2)
+  const totalCommittedPercent = poolCharacteristic.raisingAmountPool.gt(0)
+    ? poolCharacteristic.totalAmountPool.div(poolCharacteristic.raisingAmountPool).times(100).toFixed(2)
+    : 0
   const totalLPCommitted = getBalanceNumber(poolCharacteristic.totalAmountPool, ifo.currency.decimals)
+
   const totalLPCommittedInUSD = currencyPriceInUSD.times(totalLPCommitted)
+
   const totalCommitted = `~$${formatNumber(totalLPCommittedInUSD.toNumber(), 0, 0)} (${totalCommittedPercent}%)`
 
   const sumTaxesOverflow = poolCharacteristic.totalAmountPool.times(poolCharacteristic.taxRate).times(0.01)
@@ -167,7 +142,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   const pricePerTokenWithFee = `~$${formatNumber(
     pricePerTokenWithFeeToOriginalRatio.times(ifo.tokenOfferingPrice).toNumber(),
     0,
-    2,
+    3,
   )}`
 
   const maxToken = ifo.version >= 3.1 && poolId === PoolIds.poolBasic && !isEligible ? 0 : maxLpTokens

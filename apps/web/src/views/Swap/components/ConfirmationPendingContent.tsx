@@ -1,9 +1,8 @@
-import styled from 'styled-components'
-import { Text, Spinner } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { Spinner, Text } from '@pancakeswap/uikit'
 import { AutoColumn, ColumnCenter } from 'components/Layout/Column'
-import { Trade, Currency, TradeType } from '@pancakeswap/sdk'
-import { StableTrade } from '../StableSwap/hooks/useStableTradeExactIn'
+import styled from 'styled-components'
 
 const Wrapper = styled.div`
   width: 100%;
@@ -13,15 +12,21 @@ const ConfirmedIcon = styled(ColumnCenter)`
   padding: 24px 0;
 `
 
-function ConfirmationPendingContent({ trade }: { trade: Trade<Currency, Currency, TradeType> | StableTrade }) {
+function ConfirmationPendingContent({
+  inputAmount,
+  outputAmount,
+}: {
+  inputAmount?: CurrencyAmount<Currency>
+  outputAmount?: CurrencyAmount<Currency>
+}) {
   const { t } = useTranslation()
 
   // text to show while loading
   const pendingText = t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
-    amountA: trade?.inputAmount?.toSignificant(6) ?? '',
-    symbolA: trade?.inputAmount?.currency?.symbol ?? '',
-    amountB: trade?.outputAmount?.toSignificant(6) ?? '',
-    symbolB: trade?.outputAmount?.currency?.symbol ?? '',
+    amountA: inputAmount?.toSignificant(6) ?? '',
+    symbolA: inputAmount?.currency?.symbol ?? '',
+    amountB: outputAmount?.toSignificant(6) ?? '',
+    symbolB: outputAmount?.currency?.symbol ?? '',
   })
 
   return (
