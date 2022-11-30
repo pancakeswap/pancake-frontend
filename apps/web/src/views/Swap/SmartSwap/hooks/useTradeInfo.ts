@@ -43,26 +43,29 @@ export function useTradeInfo({
   chainId,
 }: Options): Info | null {
   return useMemo(() => {
-    const smartRouterAvailable = useSmartRouter && !!trade
-    const fallbackV2 = !smartRouterAvailable || trade?.route.routeType === RouteType.V2
     if (!trade && !v2Trade) {
       return null
     }
+    const smartRouterAvailable = useSmartRouter && !!trade
+    const fallbackV2 = !smartRouterAvailable || trade?.route.routeType === RouteType.V2
 
-    if (fallbackV2 && v2Trade) {
-      const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdownForV2Trade(v2Trade)
-      return {
-        tradeType: v2Trade.tradeType,
-        fallbackV2,
-        route: v2Trade.route,
-        inputAmount: v2Trade.inputAmount,
-        outputAmount: v2Trade.outputAmount,
-        slippageAdjustedAmounts: computeSlippageAdjustedAmountsForV2Trade(v2Trade, allowedSlippage),
-        executionPrice: v2Trade.executionPrice,
-        routerAddress: ROUTER_ADDRESS[chainId],
-        priceImpactWithoutFee,
-        realizedLPFee,
+    if (fallbackV2) {
+      if (v2Trade) {
+        const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdownForV2Trade(v2Trade)
+        return {
+          tradeType: v2Trade.tradeType,
+          fallbackV2,
+          route: v2Trade.route,
+          inputAmount: v2Trade.inputAmount,
+          outputAmount: v2Trade.outputAmount,
+          slippageAdjustedAmounts: computeSlippageAdjustedAmountsForV2Trade(v2Trade, allowedSlippage),
+          executionPrice: v2Trade.executionPrice,
+          routerAddress: ROUTER_ADDRESS[chainId],
+          priceImpactWithoutFee,
+          realizedLPFee,
+        }
       }
+      return null
     }
 
     const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
