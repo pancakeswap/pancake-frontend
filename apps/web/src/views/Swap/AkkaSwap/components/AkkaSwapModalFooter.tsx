@@ -37,8 +37,7 @@ export default function AkkaSwapModalFooter({
   const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
   const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
   const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
-  console.log('routes', trade.route.routes.bitgert)
-  console.log('swap', trade.args.data)
+
   const fee = trade.route.routes.bitgert.map((item, index) => {
     return item.input_amount * item.routes[0].operations.length * 0.003
   })

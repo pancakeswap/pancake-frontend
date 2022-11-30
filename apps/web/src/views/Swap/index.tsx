@@ -45,10 +45,10 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   const tokenlistHandshake = useAkkaBitgertTokenlistHandshake()
-
+  // Set form should be shown in Form Box (AKKA or Default swap)
   const setForm = useCallback(() => {
     if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && isAkkaSwapMode) {
-      return <AkkaSwapFormContainer />
+      return <SwapForm />
     }
     if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && !isAkkaSwapMode) {
       return <SwapForm />

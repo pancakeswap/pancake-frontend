@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useContext, useMemo } from 'react'
 import styled from 'styled-components'
-import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, JSBI, Percent } from '@pancakeswap/sdk'
 import {
   Text,
   ArrowDownIcon,
@@ -228,7 +228,7 @@ const AkkaSwapForm = () => {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
-
+  
   return (
     <>
       <CurrencyInputHeader
