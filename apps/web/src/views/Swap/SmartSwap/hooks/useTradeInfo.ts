@@ -17,6 +17,8 @@ interface Options {
   useSmartRouter?: boolean
   allowedSlippage: number
   chainId: ChainId
+  swapInputError: string
+  stableSwapInputError: string
 }
 
 interface Info {
@@ -33,6 +35,7 @@ interface Info {
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency> | null
   fallbackV2: boolean
+  inputError: string
 }
 
 export function useTradeInfo({
@@ -41,6 +44,8 @@ export function useTradeInfo({
   useSmartRouter = true,
   allowedSlippage = 0,
   chainId,
+  swapInputError,
+  stableSwapInputError,
 }: Options): Info | null {
   return useMemo(() => {
     if (!trade && !v2Trade) {
@@ -63,6 +68,7 @@ export function useTradeInfo({
           routerAddress: ROUTER_ADDRESS[chainId],
           priceImpactWithoutFee,
           realizedLPFee,
+          inputError: swapInputError,
         }
       }
       return null
@@ -80,6 +86,7 @@ export function useTradeInfo({
       routerAddress: SMART_ROUTER_ADDRESS[chainId],
       priceImpactWithoutFee,
       realizedLPFee,
+      inputError: stableSwapInputError,
     }
-  }, [useSmartRouter, trade, v2Trade, allowedSlippage, chainId])
+  }, [useSmartRouter, trade, v2Trade, allowedSlippage, chainId, stableSwapInputError, swapInputError])
 }
