@@ -3,8 +3,10 @@ import { Trade, Currency, TradeType } from '@pancakeswap/sdk'
 import { Text, Flex, ChevronRightIcon, Link } from '@pancakeswap/uikit'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AkkaRouterInfoResponseType } from '../hooks/types'
+import { uniqueId } from 'lodash'
 
 export default memo(function SwapRoute({ route }: { route: AkkaRouterInfoResponseType }) {
+  // Create better route object to filter routes to show in ui
   let bigtertRoute = route.routes.bitgert
   bigtertRoute.forEach((item) => {
     // delete item.input_amount;
@@ -73,7 +75,7 @@ export default memo(function SwapRoute({ route }: { route: AkkaRouterInfoRespons
     >
       {modifiedArray.map((item, index) => {
         return (
-          <Flex>
+          <Flex key={uniqueId()}>
             <Text fontSize={'12px'}>
               {(Number((item[2] / Number(route.input_amount)).toFixed(2)) * 100).toFixed()}%
             </Text>
@@ -96,7 +98,7 @@ export default memo(function SwapRoute({ route }: { route: AkkaRouterInfoRespons
         style={{ color: '#B8ADD2', fontSize: '12px', marginTop: '15px' }}
       >
         <svg width="109" height="15" viewBox="0 0 109 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <g clip-path="url(#clip0_2245_16474)">
+          <g clipPath="url(#clip0_2245_16474)">
             <path d="M73 2V12H70.9103V3.73367H69.8654L68.5884 5.66834L64.409 12H62L68.5884 2H73Z" fill="white" />
             <path d="M99 2V12H100.9V3.73367H101.876L103.011 5.66834L106.81 12H109L103.011 2H99Z" fill="white" />
             <path

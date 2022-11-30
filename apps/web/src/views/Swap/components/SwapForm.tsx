@@ -35,6 +35,8 @@ import { ArrowWrapper, Wrapper } from './styleds'
 import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { isAddress } from '../../../utils'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
+import { useAkkaSwapInfo } from '../AkkaSwap/hooks/useAkkaSwapInfo'
+import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 
 export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -59,7 +61,7 @@ export default function SwapForm() {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  
+
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const hasStableSwapAlternative = useMemo(() => {
@@ -72,7 +74,7 @@ export default function SwapForm() {
       )
     })
   }, [stableFarms, inputCurrencyId, outputCurrencyId])
-  
+
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
       [Field.INPUT]: inputCurrency ?? undefined,
@@ -122,6 +124,8 @@ export default function SwapForm() {
     },
     [onUserInput],
   )
+
+  // Fill from input with typedValue from redux when forms switch
   useEffect(() => {
     if (typedValue) {
       onUserInput(Field.INPUT, typedValue)
@@ -150,6 +154,24 @@ export default function SwapForm() {
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+
+  // Get akka router route
+  const { trade: akkaRouterTrade } = useAkkaSwapInfo(
+    independentField,
+    typedValue,
+    inputCurrency,
+    outputCurrency,
+    allowedSlippage,
+  )
+
+  // isAkkaSwapMode checks if this is akka router form or not from redux
+  const [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
+    useIsAkkaSwapModeStatus()
+
+  // Check if akka route is better than pancakeswap route
+  if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.return_amount)) {
+    toggleSetAkkaModeToTrue()
+  }
 
   const handleInputSelect = useCallback(
     (newCurrencyInput) => {
@@ -206,7 +228,7 @@ export default function SwapForm() {
       refreshBlockNumber()
     }
   }, [hasAmount, refreshBlockNumber])
-  
+
   return (
     <>
       <CurrencyInputHeader

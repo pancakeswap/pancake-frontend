@@ -28,7 +28,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { ApprovalState } from 'hooks/useApproveCallback'
 
 import { Field } from 'state/swap/actions'
-import { useSwapState } from 'state/swap/hooks'
+import { useDerivedSwapInfo, useSwapState } from 'state/swap/hooks'
 import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
@@ -44,6 +44,7 @@ import { useApproveCallbackFromAkkaTrade } from '../hooks/useApproveCallbackFrom
 import { useAkkaSwapInfo } from '../hooks/useAkkaSwapInfo'
 import AkkaAdvancedSwapDetailsDropdown from './AkkaAdvancedSwapDetailsDropdown'
 import useWarningImport from 'views/Swap/hooks/useWarningImport'
+import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -77,6 +78,7 @@ const AkkaSwapForm = () => {
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
   const warningSwapHandler = useWarningImport()
+
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
 
@@ -93,16 +95,13 @@ const AkkaSwapForm = () => {
   const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
 
   const dependentField: Field = independentField === Field.INPUT ? Field.OUTPUT : Field.INPUT
+
   const handleTypeInput = useCallback(
     (value: string) => {
       onUserInput(Field.INPUT, value)
     },
     [onUserInput],
   )
-  // const currencies: { [field in Field]?: Currency } = {
-  //   [Field.INPUT]: inputCurrency ?? undefined,
-  //   [Field.OUTPUT]: outputCurrency ?? undefined,
-  // }
 
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({
@@ -111,6 +110,8 @@ const AkkaSwapForm = () => {
     }),
     [inputCurrency, outputCurrency],
   )
+
+  // Switch Tokens and input values using backend return amount
   const onSwitchTokens = () => {
     onCurrencySelection(Field.INPUT, outputCurrency)
     onCurrencySelection(Field.OUTPUT, inputCurrency)
@@ -118,6 +119,7 @@ const AkkaSwapForm = () => {
     replaceBrowserHistory('inputCurrency', outputCurrencyId)
     replaceBrowserHistory('outputCurrency', inputCurrencyId)
   }
+
   const handleInputSelect = useCallback(
     (newCurrencyInput) => {
       onCurrencySelection(Field.INPUT, newCurrencyInput)
@@ -142,12 +144,33 @@ const AkkaSwapForm = () => {
     [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : null,
     [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : null,
   }
+
+  // Fill from input with typedValue from redux when forms switch
+  useEffect(() => {
+    if (typedValue) {
+      onUserInput(Field.INPUT, typedValue)
+    }
+  }, [onUserInput])
+
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
+
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
+
+  // isAkkaSwapMode checks if this is akka router form or not from redux
+  const [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
+    useIsAkkaSwapModeStatus()
+
+  // Get pancakeswap router route
+  const { v2Trade } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, account)
+
+  // Check if pancakeswap route is better than akka route
+  if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
+    toggleSetAkkaModeToFalse()
+  }
 
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
@@ -175,6 +198,7 @@ const AkkaSwapForm = () => {
     },
     [onUserInput, akkaRouterTrade?.route?.return_amount],
   )
+
   const handlePercentInput = useCallback(
     (percent) => {
       if (maxAmountInput) {
@@ -204,6 +228,7 @@ const AkkaSwapForm = () => {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
+
   return (
     <>
       <CurrencyInputHeader
@@ -221,7 +246,7 @@ const AkkaSwapForm = () => {
         <AutoColumn gap="sm">
           <CurrencyInputPanel
             label={independentField === Field.OUTPUT && t('From')}
-            value={formattedAmounts[Field.INPUT]}
+            value={typedValue ? typedValue : formattedAmounts[Field.INPUT]}
             showMaxButton={!atMaxAmountInput}
             showQuickInputButton
             currency={currencies[Field.INPUT]}

@@ -15,7 +15,7 @@ export function useIsAkkaSwap(): boolean {
   return useSelector<AppState, AppState['global']['isAkkaSwap']>((state) => state.global.isAkkaSwap)
 }
 
-export function useIsAkkaSwapModeStatus(): [boolean, () => void] {
+export function useIsAkkaSwapModeStatus(): [boolean, () => void, () => void, () => void] {
   const dispatch = useAppDispatch()
   const isAkkSwapMode = useIsAkkaSwap()
 
@@ -23,5 +23,13 @@ export function useIsAkkaSwapModeStatus(): [boolean, () => void] {
     dispatch(akkaSwapStatus({ isAkkaSwap: !isAkkSwapMode }))
   }, [isAkkSwapMode, dispatch])
 
-  return [isAkkSwapMode, toggleSetAkkaMode]
+  const toggleSetAkkaModeToFalse = useCallback(() => {
+    dispatch(akkaSwapStatus({ isAkkaSwap: false }))
+  }, [isAkkSwapMode, dispatch])
+
+  const toggleSetAkkaModeToTrue = useCallback(() => {
+    dispatch(akkaSwapStatus({ isAkkaSwap: true }))
+  }, [isAkkSwapMode, dispatch])
+
+  return [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue]
 }
