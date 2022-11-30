@@ -2033,9 +2033,9 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "إذا اشتريت عملة مزيفة، فقد تتعرض لخسارة دائمة لأموالك.",
   "Pancake Collectibles": "عناصر Pancake القابلة للتحصيل",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "معلومات PancakeSwap تخضع للصيانة حاليًا. قد لا تكون البيانات دقيقة أو حديثة.",
-  "Smart Router (Beta)": "وحدة التوجيه الذكية (Beta)",
+  "Smart Router (Beta)": "وحدة التوجيه الذكية (بيتا)",
   "This route includes StableSwap and can’t edit output": "يشتمل هذا المسار على StableSwap ولا يمكن تعديل الإخراج",
-  "Use StableSwap for better fees": "Use StableSwap for better fees",
+  "Use StableSwap for better fees": "استخدم StableSwap لتحقيق رسوم أفضل",
   "V2": "V2",
   "%lockedCake% CAKE (including rewards) are locked in the CAKE Pool until %lockedEndTime%": "تم تجميد %lockedCake% من CAKE (بما في ذلك المكافآت) في تجمع CAKE حتى %lockedEndTime%",
   "iCAKE allows you to participate in the IFO public sales and commit up to %iCake% amount of CAKE.": "يسمح iCAKE لك بالمشاركة في المبيعات العامة للعرض الأولي للمزرعة (IFO) وتخصيص ما يصل مقداره إلى %iCake% من CAKE.",
@@ -2043,6 +2043,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "يعزز vCAKE قدرتك التصويتية إلى %totalScore% في نظام حوكمة تصويت PancakeSwap.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "قم برهن CAKE الاستمتاع بفوائد تعزيز عائد المزرعة، والمشاركة في العروض الأولية للمزرعة (IFO)، ومعززات قوة التصويت وغير ذلك الكثير!",
   "CAKE staking expired": "انتهت صلاحية رهن CAKE",
-  "Find out more": "Find out more",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal."
+  "Find out more": "اكتشف المزيد",
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "وبالنسبة للبيع العام، سيتمكن كل مشارك مؤهل من تخصيص أي عدد من CAKE بما لا يتجاوز الحد الأقصى للتخصيص المنشور مع مقترح تصويت العرض الأولي للمزرعة (IFO)."
 }
