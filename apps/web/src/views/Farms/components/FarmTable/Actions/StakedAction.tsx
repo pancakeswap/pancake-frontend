@@ -145,7 +145,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { fetchWithCatchTxError, fetchTxResponse, loading: pendingTx } = useCatchTxError()
   const { account, chainId } = useActiveWeb3React()
 
-  const { tokenBalance, stakedBalance } = userData || {}
+  const { tokenBalance, stakedBalance, allowance } = userData || {}
 
   const router = useRouter()
   const cakePrice = usePriceCakeBusd()
@@ -301,6 +301,14 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     />
   )
 
+  const handleApprove = useCallback(async () => {
+    const receipt = await fetchWithCatchTxError(() => onApprove())
+    if (receipt?.status) {
+      toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
+      onDone()
+    }
+  }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
+
   const [onPresentDeposit] = useModal(
     <FarmUI.DepositModal
       account={account}
@@ -312,18 +320,24 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       apr={apr}
       displayApr={displayApr}
       stakedBalance={stakedBalance}
-      onConfirm={handleStake}
       tokenName={lpSymbol}
       multiplier={multiplier}
       addLiquidityUrl={addLiquidityUrl}
       cakePrice={cakePrice}
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       bCakeMultiplier={bCakeMultiplier}
-      bCakeCalculatorSlot={bCakeCalculatorSlot}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
       crossChainWarningText={crossChainWarningText}
       decimals={18}
+      allowance={allowance}
+      enablePendingTx={pendingTx}
+      onConfirm={handleStake}
+      handleApprove={handleApprove}
+      bCakeCalculatorSlot={bCakeCalculatorSlot}
     />,
+    true,
+    true,
+    'FarmDepositModal',
   )
 
   const [onPresentWithdraw] = useModal(
@@ -336,16 +350,6 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
     />,
   )
-
-  const handleApprove = useCallback(async () => {
-    const receipt = await fetchWithCatchTxError(() => {
-      return onApprove()
-    })
-    if (receipt?.status) {
-      toastSuccess(t('Contract Enabled'), <ToastDescriptionWithTx txHash={receipt.transactionHash} />)
-      onDone()
-    }
-  }, [onApprove, t, toastSuccess, fetchWithCatchTxError, onDone])
 
   const [onPresentTransactionModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
 
