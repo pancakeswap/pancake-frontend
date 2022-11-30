@@ -49,7 +49,7 @@ export function useTradeInfo({
       return null
     }
 
-    if (fallbackV2) {
+    if (fallbackV2 && v2Trade) {
       const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdownForV2Trade(v2Trade)
       return {
         tradeType: v2Trade.tradeType,
