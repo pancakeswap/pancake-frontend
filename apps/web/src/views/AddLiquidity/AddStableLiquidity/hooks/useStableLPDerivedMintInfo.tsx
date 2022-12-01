@@ -5,6 +5,7 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { PairState } from 'hooks/usePairs'
 
 import useTotalSupply from 'hooks/useTotalSupply'
+import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
 import { useContext, useMemo } from 'react'
 
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -111,6 +112,7 @@ export function useExpectedLPOutputWithoutFee(
   amountA: CurrencyAmount<Currency> | undefined,
   amountB: CurrencyAmount<Currency> | undefined,
 ): CurrencyAmount<Currency> | null {
+  const blockTime = useCurrentBlockTimestamp()
   const { stableSwapConfig, stableSwapInfoContract } = useContext(StableConfigContext)
   const wrappedCurrencyA = amountA?.currency.wrapped
   const wrappedCurrencyB = amountB?.currency.wrapped
@@ -123,7 +125,7 @@ export function useExpectedLPOutputWithoutFee(
   const stableSwapAddress = stableSwapConfig?.stableSwapAddress
 
   const isValid = !!stableSwapAddress && !!totalSupply && !!pair
-  const { data: balances } = useSWR(isValid ? ['stable_lp_balances', stableSwapAddress] : null, async () => {
+  const { data: balances } = useSWR(isValid ? ['stable_lp_balances', stableSwapAddress, blockTime] : null, async () => {
     const [amount0, amount1] = await stableSwapInfoContract.balances(stableSwapAddress)
     return [CurrencyAmount.fromRawAmount(pair.token0, amount0), CurrencyAmount.fromRawAmount(pair.token1, amount1)]
   })
