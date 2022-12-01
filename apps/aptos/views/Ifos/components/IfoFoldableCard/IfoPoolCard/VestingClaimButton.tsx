@@ -47,18 +47,21 @@ const VestingClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
     )
 
     const payload = ifoRelease([vestingScheduleIdInArray], [raisingCoin, offeringCoin, uid])
-    const response = await executeTransaction(payload)
+    try {
+      const response = await executeTransaction(payload)
 
-    if (response.hash) {
-      walletIfoData.setIsClaimed(poolId)
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={response.hash}>
-          {t('You have successfully claimed available tokens.')}
-        </ToastDescriptionWithTx>,
-      )
+      if (response.hash) {
+        walletIfoData.setIsClaimed(poolId)
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={response.hash}>
+            {t('You have successfully claimed available tokens.')}
+          </ToastDescriptionWithTx>,
+        )
+      }
+    } finally {
+      setPendingTx(false)
     }
-    setPendingTx(false)
   }, [
     setPendingTx,
     pool?.type,
