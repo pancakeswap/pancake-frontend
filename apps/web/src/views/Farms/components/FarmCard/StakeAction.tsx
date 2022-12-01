@@ -262,7 +262,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
     />,
     true,
     true,
-    'FarmDepositModal',
+    `farm-deposit-modal-${pid}`,
   )
 
   const [onPresentWithdraw] = useModal(

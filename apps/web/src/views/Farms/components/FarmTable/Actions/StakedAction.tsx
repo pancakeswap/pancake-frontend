@@ -337,7 +337,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     />,
     true,
     true,
-    'FarmDepositModal',
+    `farm-deposit-modal-${pid}`,
   )
 
   const [onPresentWithdraw] = useModal(
