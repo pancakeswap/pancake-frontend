@@ -6,6 +6,7 @@ import { PairState } from 'hooks/usePairs'
 
 import useTotalSupply from 'hooks/useTotalSupply'
 import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
+import { laggyMiddleware } from 'hooks/useSWRContract'
 import { useContext, useMemo } from 'react'
 
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -125,10 +126,14 @@ export function useExpectedLPOutputWithoutFee(
   const stableSwapAddress = stableSwapConfig?.stableSwapAddress
 
   const isValid = !!stableSwapAddress && !!totalSupply && !!pair
-  const { data: balances } = useSWR(isValid ? ['stable_lp_balances', stableSwapAddress, blockTime] : null, async () => {
-    const [amount0, amount1] = await stableSwapInfoContract.balances(stableSwapAddress)
-    return [CurrencyAmount.fromRawAmount(pair.token0, amount0), CurrencyAmount.fromRawAmount(pair.token1, amount1)]
-  })
+  const { data: balances } = useSWR(
+    isValid ? ['stable_lp_balances', stableSwapAddress, blockTime] : null,
+    async () => {
+      const [amount0, amount1] = await stableSwapInfoContract.balances(stableSwapAddress)
+      return [CurrencyAmount.fromRawAmount(pair.token0, amount0), CurrencyAmount.fromRawAmount(pair.token1, amount1)]
+    },
+    { use: [laggyMiddleware] },
+  )
   return useMemo(() => {
     if (!totalSupply || !balances || !amountA || !amountB) {
       return null
