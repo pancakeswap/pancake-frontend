@@ -237,7 +237,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     )
   }
 
-  if (needsApproval) {
+  if (needsApproval && !hasSharesStaked) {
     return (
       <ActionContainer>
         <ActionTitles>

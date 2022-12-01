@@ -104,9 +104,12 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const { handleApprove: handleCakeApprove, pendingTx: cakePendingTx } = useVaultApprove(vaultKey, setLastUpdated)
 
   const needEnable = useMemo(() => {
-    const amount = getDecimalAmount(new BigNumber(stakeAmount))
-    return amount.gt(allowance)
-  }, [allowance, stakeAmount])
+    if (!isRemovingStake) {
+      const amount = getDecimalAmount(new BigNumber(stakeAmount))
+      return amount.gt(allowance)
+    }
+    return false
+  }, [allowance, stakeAmount, isRemovingStake])
 
   const callOptions = {
     gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,

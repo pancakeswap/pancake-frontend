@@ -49,15 +49,15 @@ const CakeVaultCardActions: React.FC<
             {accountHasSharesStaked ? t('Staked') : `${stakingToken.symbol}`}
           </InlineText>
         </Box>
-        {isVaultApproved ? (
+        {!isVaultApproved && !accountHasSharesStaked ? (
+          <VaultApprovalAction vaultKey={pool.vaultKey} isLoading={isLoading} setLastUpdated={setLastUpdated} />
+        ) : (
           <VaultStakeActions
             pool={pool}
             stakingTokenBalance={stakingTokenBalance}
             accountHasSharesStaked={accountHasSharesStaked}
             performanceFee={performanceFee}
           />
-        ) : (
-          <VaultApprovalAction vaultKey={pool.vaultKey} isLoading={isLoading} setLastUpdated={setLastUpdated} />
         )}
       </Flex>
     </Flex>
