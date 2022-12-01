@@ -103,16 +103,16 @@ export function createMulticall<TProvider extends Provider>(
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
     const _calls = calls.map(({ abi, address, name, params, allowFailure: _allowFailure }) => {
       const contract = new Contract(address, abi)
-      const callData = contract.interface.encodeFunctionData(name, params ?? [])
       if (!contract[name]) console.error(`${name} missing on ${address}`)
+      const callData = contract.interface.encodeFunctionData(name, params ?? [])
       return {
-        target: address,
+        target: address.toLowerCase(),
         allowFailure: allowFailure || _allowFailure,
         callData,
       }
     })
 
-    const result = await multi.callStatic.aggregate3([...[_calls], ...(overrides ? [overrides] : [])])
+    const result = await multi.callStatic.aggregate3(_calls, ...(overrides ? [overrides] : []))
 
     return result.map((call: any, i: number) => {
       const { returnData, success } = call

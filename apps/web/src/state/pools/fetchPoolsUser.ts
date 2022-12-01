@@ -1,18 +1,20 @@
 import poolsConfig from 'config/constants/pools'
 import sousChefABI from 'config/abi/sousChef.json'
 import erc20ABI from 'config/abi/erc20.json'
-import multicall from 'utils/multicall'
-import { getAddress } from 'utils/addressHelpers'
-import { bscRpcProvider } from 'utils/providers'
+import multicall, { multicallv3 } from 'utils/multicall'
+import { getAddress, getMulticallAddress } from 'utils/addressHelpers'
 import BigNumber from 'bignumber.js'
 import uniq from 'lodash/uniq'
 import fromPairs from 'lodash/fromPairs'
+import multiCallAbi from 'config/abi/Multicall.json'
 
 // Pool 0, Cake / Cake is a different kind of contract (master chef)
 // BNB pools use the native BNB token (wrapping ? unwrapping is done at the contract level)
 const nonBnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol !== 'BNB')
 const bnbPools = poolsConfig.filter((pool) => pool.stakingToken.symbol === 'BNB')
 const nonMasterPools = poolsConfig.filter((pool) => pool.sousId !== 0)
+
+const multicallAddress = getMulticallAddress()
 
 export const fetchPoolsAllowance = async (account) => {
   const calls = nonBnbPools.map((pool) => ({
@@ -28,16 +30,21 @@ export const fetchPoolsAllowance = async (account) => {
 export const fetchUserBalances = async (account) => {
   // Non BNB pools
   const tokens = uniq(nonBnbPools.map((pool) => pool.stakingToken.address))
-  const calls = tokens.map((token) => ({
+  const tokenBalanceCalls = tokens.map((token) => ({
+    abi: erc20ABI,
     address: token,
     name: 'balanceOf',
     params: [account],
   }))
-  const [tokenBalancesRaw, bnbBalance] = await Promise.all([
-    multicall(erc20ABI, calls),
-    bscRpcProvider.getBalance(account),
-  ])
-  const tokenBalances = fromPairs(tokens.map((token, index) => [token, tokenBalancesRaw[index]]))
+  const bnbBalanceCall = {
+    abi: multiCallAbi,
+    address: multicallAddress,
+    name: 'getEthBalance',
+    params: [account],
+  }
+  const tokenBnbBalancesRaw = await multicallv3({ calls: [...tokenBalanceCalls, bnbBalanceCall] })
+  const bnbBalance = tokenBnbBalancesRaw.pop()
+  const tokenBalances = fromPairs(tokens.map((token, index) => [token, tokenBnbBalancesRaw[index]]))
 
   const poolTokenBalances = fromPairs(
     nonBnbPools
