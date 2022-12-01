@@ -27,6 +27,8 @@ import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from '
  *  2 = |   | Name |       |              | Volume 24H |     |
  *  On smallest screen Name is reduced to just symbol
  */
+
+type TableType = 'priceChange' | 'volume'
 const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
@@ -34,30 +36,24 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 20px 3fr repeat(4, 1fr);
+  grid-template-columns: 3fr 2fr 1fr;
 
   @media screen and (max-width: 900px) {
-    grid-template-columns: 20px 2fr repeat(3, 1fr);
+    grid-template-columns: 2fr repeat(2, 1fr);
     & :nth-child(4) {
       display: none;
     }
   }
 
   @media screen and (max-width: 800px) {
-    grid-template-columns: 20px 2fr repeat(2, 1fr);
+    grid-template-columns: 2fr repeat(2, 1fr);
     & :nth-child(6) {
       display: none;
     }
   }
 
   @media screen and (max-width: 670px) {
-    grid-template-columns: 1fr 1fr;
-    > *:first-child {
-      display: none;
-    }
-    > *:nth-child(3) {
-      display: none;
-    }
+    grid-template-columns: 1fr 1fr 1fr;
   }
 `
 
@@ -85,6 +81,9 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
       <Skeleton />
       <Skeleton />
       <Skeleton />
+      <Skeleton />
+      <Skeleton />
+      <Skeleton />
     </ResponsiveGrid>
   )
   return (
@@ -96,17 +95,17 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
   )
 }
 
-const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: number }>> = ({ tokenData, index }) => {
-  const { isXs, isSm, isMobile } = useMatchBreakpoints()
+const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: number; type: TableType }>> = ({
+  tokenData,
+  type,
+}) => {
+  const { isXs, isSm } = useMatchBreakpoints()
   const chainName = useGetChainName()
   const chianPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
   return (
     <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
-        <Flex>
-          <Text>{index + 1}</Text>
-        </Flex>
         <Flex alignItems="center">
           <ResponsiveLogo address={tokenData.address} chainName={chainName} />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
@@ -117,11 +116,13 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
             </Flex>
           )}
         </Flex>
-        <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
+        {type === 'priceChange' && (
+          <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
+        )}
         <Text fontWeight={400}>
           <Percent value={tokenData.priceUSDChange} fontWeight={400} />
         </Text>
-        <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>
+        {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
       </ResponsiveGrid>
     </LinkWrapper>
   )
@@ -143,8 +144,9 @@ const TokenTable: React.FC<
     tokenDatas: TokenData[] | undefined
     maxItems?: number
     defaultSortField?: string
+    type: TableType
   }>
-> = ({ tokenDatas, maxItems = MAX_ITEMS, defaultSortField = SORT_FIELD.volumeUSD }) => {
+> = ({ tokenDatas, maxItems = MAX_ITEMS, defaultSortField = SORT_FIELD.volumeUSD, type }) => {
   const [sortField, setSortField] = useState(SORT_FIELD[defaultSortField])
   const { isMobile } = useMatchBreakpoints()
   useEffect(() => {
@@ -201,9 +203,6 @@ const TokenTable: React.FC<
   return (
     <TableWrapper>
       <ResponsiveGrid>
-        <Text color="secondary" fontSize="12px" bold>
-          #
-        </Text>
         <ClickableColumnHeader
           color="secondary"
           fontSize="12px"
@@ -213,15 +212,17 @@ const TokenTable: React.FC<
         >
           {t('Token Name')} {arrow(SORT_FIELD.name)}
         </ClickableColumnHeader>
-        <ClickableColumnHeader
-          color="secondary"
-          fontSize="12px"
-          bold
-          onClick={() => handleSort(SORT_FIELD.priceUSD)}
-          textTransform="uppercase"
-        >
-          {t('Price')} {arrow(SORT_FIELD.priceUSD)}
-        </ClickableColumnHeader>
+        {type === 'priceChange' && (
+          <ClickableColumnHeader
+            color="secondary"
+            fontSize="12px"
+            bold
+            onClick={() => handleSort(SORT_FIELD.priceUSD)}
+            textTransform="uppercase"
+          >
+            {t('Price')} {arrow(SORT_FIELD.priceUSD)}
+          </ClickableColumnHeader>
+        )}
         <ClickableColumnHeader
           color="secondary"
           fontSize="12px"
@@ -231,24 +232,17 @@ const TokenTable: React.FC<
         >
           {t('Change')} {arrow(SORT_FIELD.priceUSDChange)}
         </ClickableColumnHeader>
-        <ClickableColumnHeader
-          color="secondary"
-          fontSize="12px"
-          bold
-          onClick={() => handleSort(SORT_FIELD.volumeUSD)}
-          textTransform="uppercase"
-        >
-          {t('Volume 24H')} {arrow(SORT_FIELD.volumeUSD)}
-        </ClickableColumnHeader>
-        {/* <ClickableColumnHeader
-          color="secondary"
-          fontSize="12px"
-          bold
-          onClick={() => handleSort(SORT_FIELD.liquidityUSD)}
-          textTransform="uppercase"
-        >
-          {t('Liquidity')} {arrow(SORT_FIELD.liquidityUSD)}
-        </ClickableColumnHeader> */}
+        {type === 'volume' && (
+          <ClickableColumnHeader
+            color="secondary"
+            fontSize="12px"
+            bold
+            onClick={() => handleSort(SORT_FIELD.volumeUSD)}
+            textTransform="uppercase"
+          >
+            {t('Volume 24H')} {arrow(SORT_FIELD.volumeUSD)}
+          </ClickableColumnHeader>
+        )}
       </ResponsiveGrid>
 
       <Break />
@@ -258,7 +252,7 @@ const TokenTable: React.FC<
             if (data) {
               return (
                 <Fragment key={data.address}>
-                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} />
+                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} type={type} />
                   <Break />
                 </Fragment>
               )

@@ -43,9 +43,19 @@ const HotTokenList: React.FC = () => {
         </ButtonMenu>
       </MenuWrapper>
       {index === 0 ? (
-        <TokenTable tokenDatas={formattedTokens} defaultSortField="priceUSDChange" maxItems={isMobile ? 100 : 6} />
+        <TokenTable
+          tokenDatas={formattedTokens}
+          type="priceChange"
+          defaultSortField="priceUSDChange"
+          maxItems={isMobile ? 100 : 6}
+        />
       ) : (
-        <TokenTable tokenDatas={formattedTokens} defaultSortField="volumeUSD" maxItems={isMobile ? 100 : 6} />
+        <TokenTable
+          tokenDatas={formattedTokens}
+          type="volume"
+          defaultSortField="volumeUSD"
+          maxItems={isMobile ? 100 : 6}
+        />
       )}
     </Wrapper>
   )
