@@ -85,13 +85,14 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     () => expectedOutputWithoutFee && calculateSlippageAmount(expectedOutputWithoutFee, allowedSlippage)[0],
     [expectedOutputWithoutFee, allowedSlippage],
   )
-  const executionSlippage = useMemo(
-    () =>
-      liquidityMinted && expectedOutputWithoutFee && liquidityMinted.lessThan(expectedOutputWithoutFee)
-        ? ONE_HUNDRED_PERCENT.subtract(new Percent(liquidityMinted.quotient, expectedOutputWithoutFee.quotient))
-        : new Percent(0),
-    [liquidityMinted, expectedOutputWithoutFee],
-  )
+  const executionSlippage = useMemo(() => {
+    if (!liquidityMinted) {
+      return null
+    }
+    return expectedOutputWithoutFee && liquidityMinted.lessThan(expectedOutputWithoutFee)
+      ? ONE_HUNDRED_PERCENT.subtract(new Percent(liquidityMinted.quotient, expectedOutputWithoutFee.quotient))
+      : new Percent(0)
+  }, [liquidityMinted, expectedOutputWithoutFee])
   const slippageSeverity = warningSeverity(executionSlippage)
 
   // get the max amounts user can add

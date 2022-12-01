@@ -8,7 +8,7 @@ import { ErrorText } from 'views/Swap/components/styleds'
  */
 export function FormattedSlippage({ slippage }: { slippage?: Percent }) {
   return (
-    <ErrorText fontSize="14px" severity={warningSeverity(slippage)}>
+    <ErrorText fontSize="14px" severity={slippage ? warningSeverity(slippage) : 0}>
       {slippage ? (slippage.lessThan(ONE_BIPS) ? '<0.01%' : `${slippage.toFixed(2)}%`) : '-'}
     </ErrorText>
   )
