@@ -143,9 +143,17 @@ const TokenTable: React.FC<
   React.PropsWithChildren<{
     tokenDatas: TokenData[] | undefined
     maxItems?: number
+    defaultSortField?: string
   }>
-> = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
-  const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
+> = ({ tokenDatas, maxItems = MAX_ITEMS, defaultSortField = SORT_FIELD.volumeUSD }) => {
+  const [sortField, setSortField] = useState(SORT_FIELD[defaultSortField])
+  useEffect(() => {
+    if (defaultSortField) {
+      setSortField(defaultSortField)
+      setPage(1)
+    }
+  }, [defaultSortField])
+
   const [sortDirection, setSortDirection] = useState<boolean>(true)
   const { t } = useTranslation()
 

@@ -49,15 +49,15 @@ const item: MotionVariants = {
 const HotTokenList: React.FC = () => {
   const allTokens = useAllTokenDataSWR()
   const [index, setIndex] = useState(0)
-  const topPriceIncrease = useMemo(() => {
-    return Object.values(allTokens)
-      .sort(({ data: a }, { data: b }) => {
-        return a && b ? (Math.abs(a?.priceUSDChange) > Math.abs(b?.priceUSDChange) ? -1 : 1) : -1
-      })
-      .slice(0, Math.min(20, Object.values(allTokens).length))
-      .filter((d) => d?.data?.exists)
-      .map((token) => token.data)
-  }, [allTokens])
+  // const topPriceIncrease = useMemo(() => {
+  //   return Object.values(allTokens)
+  //     .sort(({ data: a }, { data: b }) => {
+  //       return a && b ? (Math.abs(a?.priceUSDChange) > Math.abs(b?.priceUSDChange) ? -1 : 1) : -1
+  //     })
+  //     .slice(0, Math.min(20, Object.values(allTokens).length))
+  //     .filter((d) => d?.data?.exists)
+  //     .map((token) => token.data)
+  // }, [allTokens])
 
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)
@@ -86,9 +86,9 @@ const HotTokenList: React.FC = () => {
         </AnimatePresence>
       </LazyMotion> */}
       {index === 0 ? (
-        <TokenTable tokenDatas={topPriceIncrease} maxItems={6} />
+        <TokenTable tokenDatas={formattedTokens} defaultSortField="priceUSDChange" maxItems={6} />
       ) : (
-        <TokenTable tokenDatas={formattedTokens} maxItems={6} />
+        <TokenTable tokenDatas={formattedTokens} defaultSortField="volumeUSD" maxItems={8} />
       )}
     </Wrapper>
   )
