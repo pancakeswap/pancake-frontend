@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from 'react'
 import { CurrencyAmount, Token, WNATIVE, Percent } from '@pancakeswap/sdk'
-import { Button, Text, AddIcon, CardBody, Message, useModal } from '@pancakeswap/uikit'
+import { Button, Text, AddIcon, CardBody, Message, useModal, QuestionHelper } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -31,7 +31,7 @@ import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
 import { useCurrencySelectRoute } from '../useCurrencySelectRoute'
 import { CommonBasesType } from '../../../components/SearchModal/types'
 import { AppHeader, AppBody } from '../../../components/App'
-import { RowBetween } from '../../../components/Layout/Row'
+import { RowBetween, RowFixed } from '../../../components/Layout/Row'
 import { MinimalPositionCard } from '../../../components/PositionCard'
 import { useExpectedLPOutputWithoutFee, useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
 import { FormattedSlippage } from './components'
@@ -340,9 +340,19 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
               )}
 
               <RowBetween>
-                <Text bold fontSize="12px" color="secondary">
-                  {t('Slippage')}
-                </Text>
+                <RowFixed>
+                  <Text bold fontSize="12px" color="secondary">
+                    {t('Slippage')}
+                  </Text>
+                  <QuestionHelper
+                    text={t(
+                      'Based on % contributed to stable pool, fees will vary. Deposits with fees > 1% will be rejected',
+                    )}
+                    size="14px"
+                    ml="4px"
+                    placement="top-start"
+                  />
+                </RowFixed>
 
                 <FormattedSlippage slippage={executionSlippage} />
               </RowBetween>
