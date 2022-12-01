@@ -124,6 +124,7 @@ export const useAllTokenDataSWR = (): {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  console.log(chainName, type, blocks)
   const { data } = useSWRImmutable(blocks && chainName && [`info/token/data/${type}`, chainName], () =>
     fetchAllTokenData(chainName, blocks),
   )
