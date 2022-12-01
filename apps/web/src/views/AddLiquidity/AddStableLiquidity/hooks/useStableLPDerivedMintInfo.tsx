@@ -48,6 +48,9 @@ export function useStablePair(currencyA: Token, currencyB: Token): UseStablePair
   })
 
   const pair = useMemo(() => {
+    if (!currencyA || !currencyB) {
+      return undefined
+    }
     const isPriceValid = currencyAAmountQuotient && estimatedToken1Amount
 
     const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyB, '0')
@@ -102,6 +105,41 @@ function useMintedStabelLP({
       return stableSwapInfoContract.get_add_liquidity_mint_amount(stableSwapAddress, amounts)
     },
   )
+}
+
+export function useExpectedLPOutputWithoutFee(
+  amountA: CurrencyAmount<Currency> | undefined,
+  amountB: CurrencyAmount<Currency> | undefined,
+): CurrencyAmount<Currency> | null {
+  const { stableSwapConfig, stableSwapInfoContract } = useContext(StableConfigContext)
+  const wrappedCurrencyA = amountA?.currency.wrapped
+  const wrappedCurrencyB = amountB?.currency.wrapped
+  const [token0, token1] =
+    wrappedCurrencyA && wrappedCurrencyB && wrappedCurrencyA?.sortsBefore(wrappedCurrencyB)
+      ? [wrappedCurrencyA, wrappedCurrencyB]
+      : [wrappedCurrencyB, wrappedCurrencyA]
+  const { pair } = useStablePair(token0, token1)
+  const totalSupply = useTotalSupply(pair?.liquidityToken)
+  const stableSwapAddress = stableSwapConfig?.stableSwapAddress
+
+  const isValid = !!stableSwapAddress && !!totalSupply && !!pair
+  const { data: balances } = useSWR(isValid ? ['stable_lp_balances', stableSwapAddress] : null, async () => {
+    const [amount0, amount1] = await stableSwapInfoContract.balances(stableSwapAddress)
+    return [CurrencyAmount.fromRawAmount(pair.token0, amount0), CurrencyAmount.fromRawAmount(pair.token1, amount1)]
+  })
+  return useMemo(() => {
+    if (!totalSupply || !balances || !amountA || !amountB) {
+      return null
+    }
+    const totalValue = JSBI.add(balances[0].quotient, balances[1].quotient)
+    if (JSBI.equal(totalValue, BIG_INT_ZERO)) {
+      return null
+    }
+    return CurrencyAmount.fromRawAmount(
+      totalSupply.currency,
+      JSBI.divide(JSBI.multiply(totalSupply.quotient, JSBI.add(amountA.quotient, amountB.quotient)), totalValue),
+    )
+  }, [totalSupply, balances, amountA, amountB])
 }
 
 export function useStableLPDerivedMintInfo(
