@@ -1,16 +1,16 @@
 import BigNumber from 'bignumber.js'
-import multicall from 'utils/multicall'
+import { multicallv3 } from 'utils/multicall'
 import potteryVaultAbi from 'config/abi/potteryVaultAbi.json'
 import { getPotteryDrawAddress } from 'utils/addressHelpers'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { PotteryDepositStatus } from 'state/types'
 import { bscTokens } from '@pancakeswap/tokens'
-import { getPotteryDrawContract, getBep20Contract } from 'utils/contractHelpers'
+import { getBep20Contract } from 'utils/contractHelpers'
 import { request, gql } from 'graphql-request'
 import { GRAPH_API_POTTERY } from 'config/constants/endpoints'
+import potteryDrawAbi from 'config/abi/potteryDrawAbi.json'
 
 const potteryDrawAddress = getPotteryDrawAddress()
-const potteryDrawContract = getPotteryDrawContract()
 
 export const fetchLastVaultAddress = async () => {
   try {
@@ -45,13 +45,27 @@ export const fetchPublicPotteryValue = async (potteryVaultAddress: string) => {
       'getLockTime',
       'getMaxTotalDeposit',
     ].map((method) => ({
+      abi: potteryVaultAbi,
       address: potteryVaultAddress,
       name: method,
     }))
 
-    const [getStatus, [totalLockCake], [totalSupply], [lockStartTime], getLockTime, getMaxTotalDeposit] =
-      await multicall(potteryVaultAbi, calls)
-    const [lastDrawId, totalPrize] = await potteryDrawContract.getPot(potteryVaultAddress)
+    const getPotCall = {
+      abi: potteryDrawAbi,
+      address: potteryDrawAddress,
+      name: 'getPot',
+      params: [potteryVaultAddress],
+    }
+
+    const [
+      getStatus,
+      [totalLockCake],
+      [totalSupply],
+      [lockStartTime],
+      getLockTime,
+      getMaxTotalDeposit,
+      [[lastDrawId, totalPrize]],
+    ] = await multicallv3({ calls: [...calls, getPotCall] })
 
     return {
       lastDrawId: new BigNumber(lastDrawId.toString()).toJSON(),
