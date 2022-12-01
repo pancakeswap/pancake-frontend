@@ -1,5 +1,5 @@
-import { Currency, CurrencyAmount, Pair, Route, Trade, TradeType } from '@pancakeswap/sdk'
-import { RouteType, StableSwapPair, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
+import { StableSwapPair, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useTranslation } from '@pancakeswap/localization'
@@ -47,7 +47,6 @@ export function useDerivedSwapInfoWithStableSwap(
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmount: CurrencyAmount<Currency> | undefined
-  v2Trade: Trade<Currency, Currency, TradeType> | undefined
   trade: TradeWithStableSwap<Currency, Currency, TradeType> | null
   inputError?: string
 } {
@@ -71,10 +70,6 @@ export function useDerivedSwapInfoWithStableSwap(
   const bestTradeWithStableSwap = useBestTrade(parsedAmount, dependentCurrency, tradeType, {
     maxHops: singleHop ? 1 : 3,
   })
-  const v2Trade =
-    bestTradeWithStableSwap?.route.routeType === RouteType.V2
-      ? createV2TradeFromTradeWithStableSwap(bestTradeWithStableSwap)
-      : undefined
   // TODO add invariant make sure v2 trade has the same input & output amount as trade with stable swap
 
   const currencyBalances = {
@@ -132,21 +127,6 @@ export function useDerivedSwapInfoWithStableSwap(
     currencies,
     currencyBalances,
     parsedAmount,
-    v2Trade: v2Trade ?? undefined,
     inputError,
   }
-}
-
-function createV2TradeFromTradeWithStableSwap(
-  trade: TradeWithStableSwap<Currency, Currency, TradeType>,
-): Trade<Currency, Currency, TradeType> | undefined {
-  if (trade.route.routeType !== RouteType.V2) {
-    return undefined
-  }
-  const pairs: Pair[] = trade.route.pairs.map((pair) => new Pair(pair.reserve0.wrapped, pair.reserve1.wrapped))
-  const route = new Route(pairs, trade.inputAmount.currency, trade.outputAmount.currency)
-  if (trade.tradeType === TradeType.EXACT_INPUT) {
-    return Trade.exactIn(route, trade.inputAmount)
-  }
-  return Trade.exactOut(route, trade.outputAmount)
 }
