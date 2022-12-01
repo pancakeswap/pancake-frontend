@@ -372,46 +372,46 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     )
   }
 
-  if (isApproved) {
-    if (stakedBalance.gt(0)) {
-      return (
-        <FarmUI.FarmTable.StakedActionComponent
-          lpSymbol={lpSymbol}
-          disabledMinusButton={pendingFarm.length > 0}
-          disabledPlusButton={isStakeReady || isBloctoETH}
-          onPresentWithdraw={onPresentWithdraw}
-          onPresentDeposit={onPresentDeposit}
-        >
-          <FarmUI.StakedLP
-            decimals={18}
-            stakedBalance={stakedBalance}
-            quoteTokenSymbol={quoteToken.symbol}
-            tokenSymbol={token.symbol}
-            lpTotalSupply={lpTotalSupply}
-            lpTokenPrice={lpTokenPrice}
-            tokenAmountTotal={tokenAmountTotal}
-            quoteTokenAmountTotal={quoteTokenAmountTotal}
-            pendingFarmLength={pendingFarm.length}
-            onClickLoadingIcon={onClickLoadingIcon}
-          />
-        </FarmUI.FarmTable.StakedActionComponent>
-      )
-    }
-
-    return (
-      <FarmUI.FarmTable.StakeComponent
-        lpSymbol={lpSymbol}
-        isStakeReady={isStakeReady}
-        onPresentDeposit={onPresentDeposit}
-      />
-    )
+  if (!isApproved && stakedBalance.eq(0)) {
+    return <FarmUI.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
   }
 
   if (!userDataReady) {
     return <FarmUI.FarmTable.StakeActionDataNotReady />
   }
 
-  return <FarmUI.FarmTable.EnableStakeAction pendingTx={pendingTx || isBloctoETH} handleApprove={handleApprove} />
+  if (stakedBalance.gt(0)) {
+    return (
+      <FarmUI.FarmTable.StakedActionComponent
+        lpSymbol={lpSymbol}
+        disabledMinusButton={pendingFarm.length > 0}
+        disabledPlusButton={isStakeReady || isBloctoETH}
+        onPresentWithdraw={onPresentWithdraw}
+        onPresentDeposit={onPresentDeposit}
+      >
+        <FarmUI.StakedLP
+          decimals={18}
+          stakedBalance={stakedBalance}
+          quoteTokenSymbol={quoteToken.symbol}
+          tokenSymbol={token.symbol}
+          lpTotalSupply={lpTotalSupply}
+          lpTokenPrice={lpTokenPrice}
+          tokenAmountTotal={tokenAmountTotal}
+          quoteTokenAmountTotal={quoteTokenAmountTotal}
+          pendingFarmLength={pendingFarm.length}
+          onClickLoadingIcon={onClickLoadingIcon}
+        />
+      </FarmUI.FarmTable.StakedActionComponent>
+    )
+  }
+
+  return (
+    <FarmUI.FarmTable.StakeComponent
+      lpSymbol={lpSymbol}
+      isStakeReady={isStakeReady}
+      onPresentDeposit={onPresentDeposit}
+    />
+  )
 }
 
 export default Staked
