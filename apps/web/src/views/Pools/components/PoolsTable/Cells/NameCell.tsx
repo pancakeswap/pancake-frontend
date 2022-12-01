@@ -3,7 +3,7 @@ import BigNumber from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { vaultPoolConfig } from 'config/constants/pools'
 import { useTranslation } from '@pancakeswap/localization'
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { VaultKey, DeserializedLockedCakeVault } from 'state/types'
 import styled from 'styled-components'
@@ -53,9 +53,16 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
     subtitle = vaultPoolConfig[vaultKey].description
   }
 
+  const isLoaded = useMemo(() => {
+    if (pool.vaultKey) {
+      return totalCakeInVault && totalCakeInVault.gte(0)
+    }
+    return totalStaked && totalStaked.gte(0)
+  }, [pool.vaultKey, totalCakeInVault, totalStaked])
+
   return (
     <StyledCell role="cell">
-      {(totalStaked && totalStaked.gte(0)) || (totalCakeInVault && totalCakeInVault.gte(0)) ? (
+      {isLoaded ? (
         <>
           {vaultKey ? (
             <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} mr="8px" width={40} height={40} />
