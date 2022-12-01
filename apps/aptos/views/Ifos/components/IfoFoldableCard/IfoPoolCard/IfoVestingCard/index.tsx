@@ -31,11 +31,12 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   const { token } = ifo
   const userPool = walletIfoData[poolId]
 
-  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed } = useIfoVesting({
-    poolId,
-    publicIfoData,
-    walletIfoData,
-  })
+  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed, totalPurchased } =
+    useIfoVesting({
+      poolId,
+      publicIfoData,
+      walletIfoData,
+    })
 
   const amountClaimed = useMemo(
     () => (amountAlreadyClaimed.gt(0) ? getFullDisplayBalance(amountAlreadyClaimed, token.decimals, 4) : '0'),
@@ -46,7 +47,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
     <Flex flexDirection="column">
       <Box>
         <ProgressStepper poolId={poolId} publicIfoData={publicIfoData} />
-        <TotalPurchased ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
+        <TotalPurchased token={ifo.token} totalPurchased={totalPurchased} />
         <ReleasedTokenInfo ifo={ifo} amountReleased={amountReleased} amountInVesting={amountInVesting} />
         <Divider />
         <TotalAvailableClaim ifo={ifo} amountAvailableToClaim={amountAvailableToClaim} />
