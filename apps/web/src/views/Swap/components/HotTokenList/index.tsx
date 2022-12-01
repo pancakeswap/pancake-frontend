@@ -1,11 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
+import { ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { memo, useMemo, useState } from 'react'
 import { useAllTokenDataSWR } from 'state/info/hooks'
 import styled from 'styled-components'
 import TokenTable from './SwapTokenTable'
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
+  padding-top: 10px;
   ${({ theme }) => theme.mediaQueries.lg} {
     width: 725px;
     padding: 24px;
@@ -15,10 +16,17 @@ export const Wrapper = styled.div`
     border-radius: 32px;
   }
 `
+const MenuWrapper = styled.div`
+  padding: 0px 24px 12px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    margin-bottom: 24px;
+  }
+`
 
 const HotTokenList: React.FC = () => {
   const allTokens = useAllTokenDataSWR()
   const [index, setIndex] = useState(0)
+  const { isMobile } = useMatchBreakpoints()
 
   const formattedTokens = useMemo(() => {
     return Object.values(allTokens)
@@ -28,14 +36,16 @@ const HotTokenList: React.FC = () => {
   const { t } = useTranslation()
   return (
     <Wrapper>
-      <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle" mb="24px">
-        <ButtonMenuItem>{t('Price Change')}</ButtonMenuItem>
-        <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
-      </ButtonMenu>
+      <MenuWrapper>
+        <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
+          <ButtonMenuItem>{t('Price Change')}</ButtonMenuItem>
+          <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
+        </ButtonMenu>
+      </MenuWrapper>
       {index === 0 ? (
-        <TokenTable tokenDatas={formattedTokens} defaultSortField="priceUSDChange" maxItems={6} />
+        <TokenTable tokenDatas={formattedTokens} defaultSortField="priceUSDChange" maxItems={isMobile ? 100 : 6} />
       ) : (
-        <TokenTable tokenDatas={formattedTokens} defaultSortField="volumeUSD" maxItems={8} />
+        <TokenTable tokenDatas={formattedTokens} defaultSortField="volumeUSD" maxItems={isMobile ? 100 : 6} />
       )}
     </Wrapper>
   )
