@@ -34,7 +34,12 @@ const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
 `
 
-const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitle, hasAmount, onRefreshPrice }) => {
+const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
+  subtitle,
+  hasAmount,
+  onRefreshPrice,
+  title,
+}) => {
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
@@ -54,7 +59,16 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitl
           </Flex>
           <Flex width="100%" justifyContent="end">
             {isChartSupported && setIsChartDisplayed && (
-              <ColoredIconButton onClick={toggleChartDisplayed} variant="text" scale="sm">
+              <ColoredIconButton
+                onClick={() => {
+                  if (!isChartDisplayed && isSwapHotTokenDisplay) {
+                    setIsSwapHotTokenDisplay(false)
+                  }
+                  toggleChartDisplayed()
+                }}
+                variant="text"
+                scale="sm"
+              >
                 {isChartDisplayed ? (
                   <ChartDisableIcon color="textSubtle" />
                 ) : (
@@ -65,12 +79,17 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitl
             <ColoredIconButton
               variant="text"
               scale="sm"
-              onClick={() => setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)}
+              onClick={() => {
+                if (!isSwapHotTokenDisplay && isChartDisplayed) {
+                  toggleChartDisplayed()
+                }
+                setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)
+              }}
             >
               {isSwapHotTokenDisplay ? (
-                <HotIcon color="textSubtle" width="24px" />
-              ) : (
                 <HotDisableIcon color="textSubtle" width="24px" />
+              ) : (
+                <HotIcon color="textSubtle" width="24px" />
               )}
             </ColoredIconButton>
             <NotificationDot show={expertMode}>

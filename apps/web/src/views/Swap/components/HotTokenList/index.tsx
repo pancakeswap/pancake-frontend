@@ -11,7 +11,7 @@ const Wrapper = styled.div`
     width: 725px;
     padding: 24px;
     box-sizing: border-box;
-    background: rgba(255, 255, 255, 0.5);
+    background: ${({ theme }) => (theme.isDark ? 'rgba(39, 38, 44, 0.5)' : 'rgba(255, 255, 255, 0.5)')};
     border: 1px solid ${({ theme }) => theme.colors.cardBorder};
     border-radius: 32px;
   }
