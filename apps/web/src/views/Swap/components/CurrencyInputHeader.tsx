@@ -19,7 +19,6 @@ import { useExpertModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
-import HotTokenList from './HotTokenList'
 
 interface Props {
   title: string | ReactElement
@@ -35,12 +34,7 @@ const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
 `
 
-const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
-  title,
-  subtitle,
-  hasAmount,
-  onRefreshPrice,
-}) => {
+const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitle, hasAmount, onRefreshPrice }) => {
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
