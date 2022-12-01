@@ -335,7 +335,6 @@ const LimitOrders = () => {
   return (
     <Page
       removePadding={isChartExpanded}
-      hideFooterOnDesktop={isSideFooter}
       noMinHeight
       helpUrl={LIMIT_ORDERS_DOCS_URL}
     >

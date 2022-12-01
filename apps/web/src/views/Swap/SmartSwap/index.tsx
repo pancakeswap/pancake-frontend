@@ -81,18 +81,12 @@ export function SmartSwapForm() {
     [inputCurrency, outputCurrency],
   )
 
-  const { v2Trade, inputError: swapInputError } = useDerivedSwapInfo(
-    independentField,
-    typedValue,
-    inputCurrency,
-    outputCurrency,
-    recipient,
-  )
+  const { v2Trade } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
   const {
     trade: tradeWithStableSwap,
     currencyBalances,
     parsedAmount,
-    inputError: stableSwapInputError,
+    inputError: swapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
   // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
 
@@ -104,8 +98,6 @@ export function SmartSwapForm() {
     useSmartRouter: allowUseSmartRouter && isSmartRouterBetter,
     allowedSlippage,
     chainId,
-    swapInputError,
-    stableSwapInputError,
   })
 
   const {
@@ -376,7 +368,7 @@ export function SmartSwapForm() {
               currencies={currencies}
               isExpertMode={isExpertMode}
               trade={v2Trade}
-              swapInputError={tradeInfo.inputError}
+              swapInputError={swapInputError}
               currencyBalances={currencyBalances}
               recipient={recipient}
               allowedSlippage={allowedSlippage}

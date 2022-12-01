@@ -242,7 +242,6 @@ export default function SwapCommitButton({
     !(priceImpactSeverity > 3 && !isExpertMode)
 
   const isValid = !swapInputError
-  const approved = approval === ApprovalState.APPROVED
 
   if (showApproveFlow) {
     return (
@@ -258,7 +257,7 @@ export default function SwapCommitButton({
               <AutoRow gap="6px" justify="center">
                 {t('Enabling')} <CircleLoader stroke="white" />
               </AutoRow>
-            ) : approvalSubmitted && approved ? (
+            ) : approvalSubmitted && approval === ApprovalState.APPROVED ? (
               t('Enabled')
             ) : (
               t('Enable %asset%', { asset: currencies[Field.INPUT]?.symbol ?? '' })
@@ -271,7 +270,7 @@ export default function SwapCommitButton({
             }}
             width="48%"
             id="swap-button"
-            disabled={!isValid || !approved || (priceImpactSeverity > 3 && !isExpertMode)}
+            disabled={!isValid || approval !== ApprovalState.APPROVED || (priceImpactSeverity > 3 && !isExpertMode)}
           >
             {priceImpactSeverity > 3 && !isExpertMode
               ? t('Price Impact High')
@@ -297,7 +296,7 @@ export default function SwapCommitButton({
         }}
         id="swap-button"
         width="100%"
-        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || !approved}
+        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError}
       >
         {swapInputError ||
           (priceImpactSeverity > 3 && !isExpertMode

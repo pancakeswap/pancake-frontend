@@ -17,8 +17,6 @@ interface Options {
   useSmartRouter?: boolean
   allowedSlippage: number
   chainId: ChainId
-  swapInputError: string
-  stableSwapInputError: string
 }
 
 interface Info {
@@ -35,7 +33,6 @@ interface Info {
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency> | null
   fallbackV2: boolean
-  inputError: string
 }
 
 export function useTradeInfo({
@@ -44,34 +41,28 @@ export function useTradeInfo({
   useSmartRouter = true,
   allowedSlippage = 0,
   chainId,
-  swapInputError,
-  stableSwapInputError,
 }: Options): Info | null {
   return useMemo(() => {
-    if (!trade && !v2Trade) {
-      return null
-    }
     const smartRouterAvailable = useSmartRouter && !!trade
     const fallbackV2 = !smartRouterAvailable || trade?.route.routeType === RouteType.V2
+    if (!trade || (fallbackV2 && !v2Trade)) {
+      return null
+    }
 
     if (fallbackV2) {
-      if (v2Trade) {
-        const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdownForV2Trade(v2Trade)
-        return {
-          tradeType: v2Trade.tradeType,
-          fallbackV2,
-          route: v2Trade.route,
-          inputAmount: v2Trade.inputAmount,
-          outputAmount: v2Trade.outputAmount,
-          slippageAdjustedAmounts: computeSlippageAdjustedAmountsForV2Trade(v2Trade, allowedSlippage),
-          executionPrice: v2Trade.executionPrice,
-          routerAddress: ROUTER_ADDRESS[chainId],
-          priceImpactWithoutFee,
-          realizedLPFee,
-          inputError: swapInputError,
-        }
+      const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdownForV2Trade(v2Trade)
+      return {
+        tradeType: v2Trade.tradeType,
+        fallbackV2,
+        route: v2Trade.route,
+        inputAmount: v2Trade.inputAmount,
+        outputAmount: v2Trade.outputAmount,
+        slippageAdjustedAmounts: computeSlippageAdjustedAmountsForV2Trade(v2Trade, allowedSlippage),
+        executionPrice: v2Trade.executionPrice,
+        routerAddress: ROUTER_ADDRESS[chainId],
+        priceImpactWithoutFee,
+        realizedLPFee,
       }
-      return null
     }
 
     const { priceImpactWithoutFee, realizedLPFee } = computeTradePriceBreakdown(trade)
@@ -86,7 +77,6 @@ export function useTradeInfo({
       routerAddress: SMART_ROUTER_ADDRESS[chainId],
       priceImpactWithoutFee,
       realizedLPFee,
-      inputError: stableSwapInputError,
     }
-  }, [useSmartRouter, trade, v2Trade, allowedSlippage, chainId, stableSwapInputError, swapInputError])
+  }, [useSmartRouter, trade, v2Trade, allowedSlippage, chainId])
 }
