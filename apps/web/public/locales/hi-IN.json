@@ -202,6 +202,8 @@
   "Manual CAKE": "मैनुअल CAKE",
   "Auto CAKE": "ऑटो CAKE",
   "Claim": "क्लेम करें",
+  "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.": "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.",
+  "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.": "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.",
   "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "पुरस्कारों को आपकी स्टैकिंग शेष राशि में अपने आप वितरित और शामिल किया जाता है। आपके पुरस्कारों को मैनुअली कंपाउंड करने की ज़रूरत नहीं है।",
   "Total staked": "स्टेक पर लगाए गए कुल",
   "Just stake some tokens to earn.": "जीतने के लिए कुछ टोकन को स्टेक करें।",
