@@ -124,7 +124,7 @@ export const getBetHistory = async (
     api,
     gql`
       query getBetHistory($first: Int!, $skip: Int!, $where: Bet_filter) {
-        bets(first: $first, skip: $skip, where: $where, order: createdAt, orderDirection: desc) {
+        bets(first: $first, skip: $skip, where: $where, orderBy: createdAt, orderDirection: desc) {
           ${getBetBaseFields(tokenSymbol)}
           round {
             ${getRoundBaseFields(tokenSymbol)}
