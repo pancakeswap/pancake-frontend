@@ -997,13 +997,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.wbnb,
   },
   {
-    pid: 95,
-    lpSymbol: 'aBNBc-BNB LP',
-    lpAddress: '0x272c2CF847A49215A3A1D4bFf8760E503A06f880',
-    token: bscTokens.abnbc,
-    quoteToken: bscTokens.wbnb,
-  },
-  {
     pid: 121,
     lpSymbol: 'HAY-BUSD LP',
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
@@ -1011,6 +1004,13 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.busd,
     stableSwapAddress: '0x49079d07ef47449af808a4f36c2a8dec975594ec',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
+  },
+  {
+    pid: 95,
+    lpSymbol: 'aBNBc-BNB LP',
+    lpAddress: '0x272c2CF847A49215A3A1D4bFf8760E503A06f880',
+    token: bscTokens.abnbc,
+    quoteToken: bscTokens.wbnb,
   },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
