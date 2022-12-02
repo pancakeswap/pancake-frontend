@@ -2398,7 +2398,7 @@ export const bscTokens = {
     '0xa260E12d2B924cb899AE80BB58123ac3fEE1E2F0',
     18,
     'HOOK',
-    'HOOK Token',
+    'Hook Token',
     'https://hooked.io/',
   ),
 }
