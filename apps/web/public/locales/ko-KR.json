@@ -202,6 +202,8 @@
   "Manual CAKE": "수동 CAKE",
   "Auto CAKE": "자동 CAKE",
   "Claim": "클레임",
+  "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.": "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.",
+  "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.": "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.",
   "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "리워드는 자동으로 배분되고 예치 잔액에 포함됩니다. 리워드를 수동으로 혼합할 필요가 없습니다.",
   "Total staked": "총 스테이킹 금액",
   "Just stake some tokens to earn.": "획득할 토큰을 스테이킹하세요.",
