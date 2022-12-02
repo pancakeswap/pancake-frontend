@@ -5,16 +5,14 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { PairState } from 'hooks/usePairs'
 
 import useTotalSupply from 'hooks/useTotalSupply'
-import useCurrentBlockTimestamp from 'hooks/useCurrentBlockTimestamp'
-import { laggyMiddleware } from 'hooks/useSWRContract'
 import { useContext, useMemo } from 'react'
 
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { Field } from 'state/mint/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { useSingleCallResult } from 'state/multicall/hooks'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
-import useSWR from 'swr'
 import { useMintState } from 'state/mint/hooks'
 import { useAccount } from 'wagmi'
 
@@ -95,25 +93,27 @@ function useMintedStabelLP({
   const quotient0Str = currencyInputAmount?.toString()
   const quotient1Str = currencyOutputAmount?.toString()
 
-  const isValid = !!stableSwapAddress && !!quotient0Str && !!quotient1Str
-
-  return useSWR(
-    isValid ? ['get_add_liquidity_mint_amount', stableSwapAddress, quotient0Str, quotient1Str] : null,
-    async () => {
-      const isToken0 = stableSwapConfig?.token0?.address === currencyInput?.address
-
-      const amounts = isToken0 ? [quotient0Str, quotient1Str] : [quotient1Str, quotient0Str]
-
-      return stableSwapInfoContract.get_add_liquidity_mint_amount(stableSwapAddress, amounts)
-    },
+  const isToken0 = stableSwapConfig?.token0?.address === currencyInput?.address
+  const amounts = isToken0 ? [quotient0Str, quotient1Str] : [quotient1Str, quotient0Str]
+  const { result, error, loading, syncing } = useSingleCallResult(
+    stableSwapInfoContract,
+    'get_add_liquidity_mint_amount',
+    [stableSwapAddress, amounts],
   )
+  return {
+    data: result?.[0],
+    loading: loading || syncing,
+    error,
+  }
 }
 
 export function useExpectedLPOutputWithoutFee(
   amountA: CurrencyAmount<Currency> | undefined,
   amountB: CurrencyAmount<Currency> | undefined,
-): CurrencyAmount<Currency> | null {
-  const blockTime = useCurrentBlockTimestamp()
+): {
+  output: CurrencyAmount<Currency> | null
+  loading: boolean
+} {
   const { stableSwapConfig, stableSwapInfoContract } = useContext(StableConfigContext)
   const wrappedCurrencyA = amountA?.currency.wrapped
   const wrappedCurrencyB = amountB?.currency.wrapped
@@ -125,28 +125,42 @@ export function useExpectedLPOutputWithoutFee(
   const totalSupply = useTotalSupply(pair?.liquidityToken)
   const stableSwapAddress = stableSwapConfig?.stableSwapAddress
 
-  const isValid = !!stableSwapAddress && !!totalSupply && !!pair
-  const { data: balances } = useSWR(
-    isValid ? ['stable_lp_balances', stableSwapAddress, blockTime] : null,
-    async () => {
-      const [amount0, amount1] = await stableSwapInfoContract.balances(stableSwapAddress)
-      return [CurrencyAmount.fromRawAmount(pair.token0, amount0), CurrencyAmount.fromRawAmount(pair.token1, amount1)]
-    },
-    { use: [laggyMiddleware] },
+  const data = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress])
+  const { result, loading: load, syncing } = data
+  const loading = load || syncing
+  const [amount0, amount1] = result?.[0] || []
+  const balances = useMemo(
+    () =>
+      pair &&
+      amount0 &&
+      amount1 && [
+        CurrencyAmount.fromRawAmount(pair.token0, amount0),
+        CurrencyAmount.fromRawAmount(pair.token1, amount1),
+      ],
+    [pair, amount0, amount1],
   )
   return useMemo(() => {
     if (!totalSupply || !balances || !amountA || !amountB) {
-      return null
+      return {
+        loading,
+        output: null,
+      }
     }
     const totalValue = JSBI.add(balances[0].quotient, balances[1].quotient)
     if (JSBI.equal(totalValue, BIG_INT_ZERO)) {
-      return null
+      return {
+        loading,
+        output: null,
+      }
     }
-    return CurrencyAmount.fromRawAmount(
-      totalSupply.currency,
-      JSBI.divide(JSBI.multiply(totalSupply.quotient, JSBI.add(amountA.quotient, amountB.quotient)), totalValue),
-    )
-  }, [totalSupply, balances, amountA, amountB])
+    return {
+      loading,
+      output: CurrencyAmount.fromRawAmount(
+        totalSupply.currency,
+        JSBI.divide(JSBI.multiply(totalSupply.quotient, JSBI.add(amountA.quotient, amountB.quotient)), totalValue),
+      ),
+    }
+  }, [totalSupply, balances, amountA, amountB, loading])
 }
 
 export function useStableLPDerivedMintInfo(
@@ -161,6 +175,7 @@ export function useStableLPDerivedMintInfo(
   parsedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   price?: Price<Currency, Currency>
   noLiquidity?: boolean
+  loading?: boolean
   liquidityMinted?: CurrencyAmount<Token>
   poolTokenPercentage?: Percent
   error?: string
@@ -245,7 +260,11 @@ export function useStableLPDerivedMintInfo(
     return undefined
   }, [estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])
 
-  const { data: lpMinted } = useMintedStabelLP({
+  const {
+    data: lpMinted,
+    error: estimateLPError,
+    loading,
+  } = useMintedStabelLP({
     stableSwapAddress: stableSwapConfig?.stableSwapAddress,
     stableSwapInfoContract,
     stableSwapConfig,
@@ -305,8 +324,13 @@ export function useStableLPDerivedMintInfo(
     addError = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol })
   }
 
+  if (estimateLPError) {
+    addError = t('Unable to supply')
+  }
+
   return {
     dependentField,
+    loading,
     currencies,
     pair,
     pairState,

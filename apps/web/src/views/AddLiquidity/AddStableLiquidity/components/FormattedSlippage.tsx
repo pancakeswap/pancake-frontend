@@ -8,10 +8,13 @@ import { warningSeverity } from '../utils/slippage'
 /**
  * Formatted version of price impact text with warning colors
  */
-export function FormattedSlippage({ slippage }: { slippage?: Percent }) {
+export function FormattedSlippage({ slippage, loading = false }: { slippage?: Percent; loading?: boolean }) {
+  const slippageDisplay = slippage ? (slippage.lessThan(ONE_BIPS) ? '<0.01%' : `${slippage.toFixed(2)}%`) : '-'
+
+  const text = loading ? <CircleLoader /> : slippageDisplay
   return (
     <ErrorText fontSize="14px" severity={slippage ? warningSeverity(slippage) : 0}>
-      {slippage ? slippage.lessThan(ONE_BIPS) ? '<0.01%' : `${slippage.toFixed(2)}%` : <CircleLoader stroke="white" />}
+      {text}
     </ErrorText>
   )
 }
