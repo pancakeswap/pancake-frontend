@@ -997,13 +997,6 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.wbnb,
   },
   {
-    pid: 95,
-    lpSymbol: 'aBNBc-BNB LP',
-    lpAddress: '0x272c2CF847A49215A3A1D4bFf8760E503A06f880',
-    token: bscTokens.ankrbnb,
-    quoteToken: bscTokens.wbnb,
-  },
-  {
     pid: 121,
     lpSymbol: 'HAY-BUSD LP',
     lpAddress: '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae',
