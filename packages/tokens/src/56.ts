@@ -2192,6 +2192,14 @@ export const bscTokens = {
     'CEEK',
     'https://www.ceek.com/',
   ),
+  abnbc: new ERC20Token(
+    ChainId.BSC,
+    '0xE85aFCcDaFBE7F2B096f268e31ccE3da8dA2990A',
+    18,
+    'aBNBc',
+    'Ankr BNB Reward Bearing Certificate',
+    'https://www.ankr.com/',
+  ),
   ankr: new ERC20Token(
     ChainId.BSC,
     '0xf307910A4c7bbc79691fD374889b36d8531B08e3',

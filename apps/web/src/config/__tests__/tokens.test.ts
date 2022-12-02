@@ -8,12 +8,14 @@ import multicall from 'utils/multicall'
 // remove BNB because it's not a Bep20 token
 // remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
 // remove HERO because there are two tokens with the symbol HERO (StepHero and Hero)
+// remove aBNBc because the token has been exploited
 const tokensToTest = omitBy(
   bscTokens,
   (token) =>
     token.symbol.toLowerCase() === 'bnb' ||
     token.symbol.toLowerCase() === 'one' ||
     token.symbol.toLowerCase() === 'bttold' ||
+    token.symbol.toLowerCase() === 'abnbc' ||
     token.symbol.toLowerCase() === 'hero',
 )
 
