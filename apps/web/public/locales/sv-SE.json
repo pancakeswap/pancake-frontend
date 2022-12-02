@@ -202,6 +202,8 @@
   "Manual CAKE": "Manuell CAKE",
   "Auto CAKE": "Automatisk CAKE",
   "Claim": "Lös in",
+  "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.": "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.",
+  "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.": "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.",
   "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "Belöningar fördelas och ingår automatiskt i ditt insatssaldo. Du behöver inte slå ihop dina belöningar manuellt.",
   "Total staked": "Total insats",
   "Just stake some tokens to earn.": "Satsa helt enkelt några tokens för att tjäna.",
