@@ -202,6 +202,8 @@
   "Manual CAKE": "CAKE manual",
   "Auto CAKE": "CAKE automat",
   "Claim": "Recuperează",
+  "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.": "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.",
+  "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.": "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.",
   "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "Recompensele sunt distribuite și împărțite automat în soldul tău de investiții. Nu este nevoie să combini manual recompensele.",
   "Total staked": "Total investit",
   "Just stake some tokens to earn.": "Investește niște jetoane pentru a câștiga.",
