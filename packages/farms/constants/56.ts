@@ -1000,7 +1000,7 @@ const farms: SerializedFarmConfig[] = [
     pid: 95,
     lpSymbol: 'aBNBc-BNB LP',
     lpAddress: '0x272c2CF847A49215A3A1D4bFf8760E503A06f880',
-    token: bscTokens.abnbc,
+    token: bscTokens.ankrbnb,
     quoteToken: bscTokens.wbnb,
   },
   {
