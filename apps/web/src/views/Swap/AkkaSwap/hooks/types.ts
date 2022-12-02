@@ -5,6 +5,8 @@ export interface AkkaRouterArgsResponseType {
   data: []
   dstData: []
   to: string
+  value: string
+  value_hex: string
 }
 export interface AkkaRouterTrade {
   route: AkkaRouterInfoResponseType
