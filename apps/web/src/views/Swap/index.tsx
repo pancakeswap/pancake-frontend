@@ -1,4 +1,4 @@
-import { useCallback, useContext } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { Box, Flex, BottomDrawer, useMatchBreakpoints, Swap as SwapUI } from '@pancakeswap/uikit'
 import { EXCHANGE_DOCS_URLS } from 'config/constants'
@@ -18,7 +18,7 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 import AkkaSwapForm from './AkkaSwap/components/AkkaSwapForm'
 import { chainId } from 'wagmi'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useIsAkkaSwap } from 'state/global/hooks'
+import { useIsAkkaSwap, useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { useAkkaBitgertTokenlistHandshake } from './AkkaSwap/hooks/useAkkaRouterApi'
 import AkkaSwapFormContainer from './AkkaSwap'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -35,7 +35,6 @@ export default function Swap() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-  const isAkkaSwapMode = useIsAkkaSwap()
   const currencies: { [field in Field]?: Currency } = {
     [Field.INPUT]: inputCurrency ?? undefined,
     [Field.OUTPUT]: outputCurrency ?? undefined,
@@ -43,12 +42,19 @@ export default function Swap() {
   const { chainId: walletChainId } = useWeb3React()
   const { chainId: appChainId } = useActiveChainId()
 
-  const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
+  // isAkkaSwapMode checks if this is akka router form or not from redux
+  const [isAkkaSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
+    useIsAkkaSwapModeStatus()
+
+  // checks if akka router backend is up or not
   const tokenlistHandshake = useAkkaBitgertTokenlistHandshake()
+
+  const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
+
   // Set form should be shown in Form Box (AKKA or Default swap)
   const setForm = useCallback(() => {
     if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && isAkkaSwapMode) {
-      return <SwapForm />
+      return <AkkaSwapForm />
     }
     if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && !isAkkaSwapMode) {
       return <SwapForm />

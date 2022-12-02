@@ -38,7 +38,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import CurrencyInputHeader from '../../components/CurrencyInputHeader'
 import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
 import { Wrapper } from '../../components/styleds'
-import { useAkkaRouterArgs } from '../hooks/useAkkaRouterApi'
+import { useAkkaRouterArgs, useAkkaRouterRouteWithArgs } from '../hooks/useAkkaRouterApi'
 import AkkaSwapCommitButton from './AkkaSwapCommitButton'
 import { useApproveCallbackFromAkkaTrade } from '../hooks/useApproveCallbackFromAkkaTrade'
 import { useAkkaSwapInfo } from '../hooks/useAkkaSwapInfo'
@@ -164,13 +164,15 @@ const AkkaSwapForm = () => {
   const [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
     useIsAkkaSwapModeStatus()
 
+  useEffect(() => {
+    // Check if pancakeswap route is better than akka route
+    if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
+      toggleSetAkkaModeToFalse()
+    }
+  }, [typedValue, inputCurrency, outputCurrency, akkaRouterTrade])
+
   // Get pancakeswap router route
   const { v2Trade } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, account)
-
-  // Check if pancakeswap route is better than akka route
-  if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
-    toggleSetAkkaModeToFalse()
-  }
 
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
@@ -228,7 +230,7 @@ const AkkaSwapForm = () => {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
-  
+
   return (
     <>
       <CurrencyInputHeader

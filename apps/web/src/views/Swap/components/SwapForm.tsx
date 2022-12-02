@@ -167,11 +167,12 @@ export default function SwapForm() {
   // isAkkaSwapMode checks if this is akka router form or not from redux
   const [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
     useIsAkkaSwapModeStatus()
-
-  // Check if akka route is better than pancakeswap route
-  if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.return_amount)) {
-    toggleSetAkkaModeToTrue()
-  }
+  useEffect(() => {
+    // Check if akka route is better than pancakeswap route
+    if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.return_amount)) {
+      toggleSetAkkaModeToTrue()
+    }
+  }, [typedValue, inputCurrency, outputCurrency, akkaRouterTrade])
 
   const handleInputSelect = useCallback(
     (newCurrencyInput) => {

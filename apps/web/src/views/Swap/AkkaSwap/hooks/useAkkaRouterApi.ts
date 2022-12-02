@@ -1,30 +1,15 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { FAST_INTERVAL } from 'config/constants'
-import { useEffect, useState } from 'react'
-import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import useSWR, { Fetcher } from 'swr'
 import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType } from './types'
-// simple function to create right parameter text for backend api using chain id
-const setChainName = (chainId) => {
-  switch (chainId) {
-    case 56:
-      return 'bsc'
-    case 250:
-      return 'fantom'
-    case 32520:
-      return 'bitgert'
-  }
-}
 // Handshake api to test if backend in up ro down
 export const useAkkaBitgertTokenlistHandshake = () => {
-  const fetcher = (url) => fetch(url).then((r) => r.json())
-  const { data, error } = useSWR('https://www.apiv2.akka.finance/tokens?chain=bitgert&limit=10', fetcher, {
+  const fetcher: Fetcher = (url) => fetch(url).then((r) => r.json())
+  const { data, error } = useSWR('https://icecream.akka.finance/tokens?chain=bitgert&limit=1', fetcher, {
     refreshInterval: 10000,
   })
-
   return { data, error }
 }
 // Api for smart contract args (use this api to call akka contract easily)
@@ -37,12 +22,12 @@ export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: st
   } = useSwapState()
   const fetcher: Fetcher<AkkaRouterArgsResponseType> = (url) => fetch(url).then((r) => r.json())
   const { data, error } = useSWR(
-    `https://www.apiv2.akka.finance/swap?token0=${inputCurrencyId === "BRISE" ? "0x0000000000000000000000000000000000000000" : token0?.wrapped?.address}&chain0=${setChainName(
-      token0?.chainId,
-    )}&token1=${outputCurrencyId === "BRISE" ? "0x0000000000000000000000000000000000000000" : token1?.wrapped?.address}&chain1=${setChainName(
-      token1?.chainId,
-    )}&amount=${amount}&slipage=${slippage}&use_split=true&exchanges=icecreamswap`,
-    fetcher,
+    `https://icecream.akka.finance/swap?token0=${
+      inputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token0?.wrapped?.address
+    }&token1=${
+      outputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token1?.wrapped?.address
+    }&amount=${amount}&slipage=${slippage}&use_split=true`,
+    token0 && token1 && amount && slippage && fetcher,
     {
       refreshInterval: FAST_INTERVAL,
     },
@@ -59,12 +44,12 @@ export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: s
   } = useSwapState()
   const fetcher: Fetcher<AkkaRouterInfoResponseType> = (url) => fetch(url).then((r) => r.json())
   const { data, error } = useSWR(
-    `https://www.apiv2.akka.finance/route?token0=${inputCurrencyId === "BRISE" ? "0x0000000000000000000000000000000000000000" : token0?.wrapped?.address}&chain0=${setChainName(
-      token0?.chainId,
-    )}&token1=${outputCurrencyId === "BRISE" ? "0x0000000000000000000000000000000000000000" : token1?.wrapped?.address}&chain1=${setChainName(
-      token1?.chainId,
-    )}&amount=${amount}&slipage=${slippage}&use_split=true&exchanges=icecreamswap`,
-    fetcher,
+    `https://icecream.akka.finance/route?token0=${
+      inputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token0?.wrapped?.address
+    }&token1=${
+      outputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token1?.wrapped?.address
+    }&amount=${amount}&slipage=${slippage}&use_split=true`,
+    token0 && token1 && amount && slippage && fetcher,
     {
       refreshInterval: FAST_INTERVAL,
     },

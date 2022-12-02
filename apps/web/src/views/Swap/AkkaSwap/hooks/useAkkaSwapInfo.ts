@@ -8,6 +8,8 @@ import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { AkkaRouterTrade } from './types'
 import { useAkkaRouterRouteWithArgs } from './useAkkaRouterApi'
+import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
+import { useEffect } from 'react'
 
 // from the current swap inputs, compute the best trade and return it.
 export function useAkkaSwapInfo(
@@ -35,6 +37,7 @@ export function useAkkaSwapInfo(
 
   const isExactIn: boolean = independentField === Field.INPUT
   const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+
   const { route, args } = useAkkaRouterRouteWithArgs(inputCurrency, outputCurrency, typedValue, allowedSlippage)
 
   const currencyBalances = {
@@ -69,8 +72,8 @@ export function useAkkaSwapInfo(
     currencyBalances,
     parsedAmount,
     trade: {
-      route: route.data ?? null,
-      args: args.data ?? null,
+      route: route?.data ?? null,
+      args: args?.data ?? null,
     },
     inputError,
   }
