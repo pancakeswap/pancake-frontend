@@ -13,7 +13,7 @@ export interface GlobalState {
 }
 
 export const initialState: GlobalState = {
-  isAkkaSwap: true,
+  isAkkaSwap: false,
   showFarmTransactionModal: false,
   pickedFarmTransactionModalTx: {
     tx: '',

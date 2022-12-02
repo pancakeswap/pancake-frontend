@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
+import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import useSWR, { Fetcher } from 'swr'
@@ -20,7 +21,15 @@ export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: st
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const fetcher: Fetcher<AkkaRouterArgsResponseType> = (url) => fetch(url).then((r) => r.json())
+  const [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
+    useIsAkkaSwapModeStatus()
+  const fetcher: Fetcher<AkkaRouterArgsResponseType> = (url) =>
+    fetch(url).then((r) => {
+      if (r.status !== 200) {
+        toggleSetAkkaModeToFalse()
+      }
+      return r.json()
+    })
   const { data, error } = useSWR(
     `https://icecream.akka.finance/swap?token0=${
       inputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token0?.wrapped?.address
@@ -42,7 +51,15 @@ export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: s
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const fetcher: Fetcher<AkkaRouterInfoResponseType> = (url) => fetch(url).then((r) => r.json())
+  const [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
+    useIsAkkaSwapModeStatus()
+  const fetcher: Fetcher<AkkaRouterInfoResponseType> = (url) =>
+    fetch(url).then((r) => {
+      if (r.status !== 200) {
+        toggleSetAkkaModeToFalse()
+      }
+      return r.json()
+    })
   const { data, error } = useSWR(
     `https://icecream.akka.finance/route?token0=${
       inputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token0?.wrapped?.address

@@ -166,8 +166,10 @@ const AkkaSwapForm = () => {
 
   useEffect(() => {
     // Check if pancakeswap route is better than akka route
-    if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
-      toggleSetAkkaModeToFalse()
+    if (akkaRouterTrade?.route?.return_amount) {
+      if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
+        toggleSetAkkaModeToFalse()
+      }
     }
   }, [typedValue, inputCurrency, outputCurrency, akkaRouterTrade])
 
