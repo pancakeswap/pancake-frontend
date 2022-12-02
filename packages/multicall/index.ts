@@ -101,8 +101,16 @@ export function createMulticall<TProvider extends Provider>(
   const multicallv3 = async ({ calls, chainId = ChainId.BSC, allowFailure, overrides }: MulticallV3Params) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
+    const contractCache: { abi: any; contract: Contract }[] = []
     const _calls = calls.map(({ abi, address, name, params, allowFailure: _allowFailure }) => {
-      const contract = new Contract(address, abi)
+      let contract = contractCache.find(
+        (contractAbi) =>
+          contractAbi.abi === abi && contractAbi.contract.address.toLowerCase() === address.toLowerCase(),
+      )?.contract
+      if (!contract) {
+        contract = new Contract(address, abi)
+        contractCache.push({ abi, contract })
+      }
       if (!contract[name]) console.error(`${name} missing on ${address}`)
       const callData = contract.interface.encodeFunctionData(name, params ?? [])
       return {
@@ -118,8 +126,11 @@ export function createMulticall<TProvider extends Provider>(
       const { returnData, success } = call
       if (!success || returnData === '0x') return null
       const { address, abi, name } = calls[i]
-      const contract = new Contract(address, abi)
-      const decoded = contract.interface.decodeFunctionResult(name, returnData)
+      const contract = contractCache.find(
+        (contractAbi) =>
+          contractAbi.abi === abi && contractAbi.contract.address.toLowerCase() === address.toLowerCase(),
+      )?.contract
+      const decoded = contract?.interface.decodeFunctionResult(name, returnData)
       return decoded
     })
   }
