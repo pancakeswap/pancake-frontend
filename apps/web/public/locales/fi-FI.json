@@ -202,6 +202,8 @@
   "Manual CAKE": "Manuaalinen CAKE",
   "Auto CAKE": "Automaattinen CAKE",
   "Claim": "Lunasta",
+  "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.": "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.",
+  "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.": "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.",
   "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "Palkkiot jaetaan ja lisätään panostamissaldoosi automaattisesti. Sinun ei tarvitse kerryttää palkkioitasi ei manuaalisesti.",
   "Total staked": "Panostettu yhteensä",
   "Just stake some tokens to earn.": "Panosta poletteja ansaitaksesi.",
