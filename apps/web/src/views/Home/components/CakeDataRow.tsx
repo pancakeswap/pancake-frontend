@@ -7,11 +7,12 @@ import { useEffect, useState } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { formatBigNumber, formatLocalisedCompactNumber } from '@pancakeswap/utils/formatBalance'
-import { multicallv2 } from 'utils/multicall'
+import { multicallv3 } from 'utils/multicall'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
 import useSWR from 'swr'
 import { SLOW_INTERVAL } from 'config/constants'
+import cakeVaultV2Abi from 'config/abi/cakeVaultV2.json'
 import { BigNumber } from '@ethersproject/bignumber'
-import { getCakeVaultV2Contract } from 'utils/contractHelpers'
 
 const StyledColumn = styled(Flex)<{ noMobileBorder?: boolean; noDesktopBorder?: boolean }>`
   flex-direction: column;
@@ -72,7 +73,7 @@ const emissionsPerBlock = 11.16
  * https://bscscan.com/tx/0xd5ffea4d9925d2f79249a4ce05efd4459ed179152ea5072a2df73cd4b9e88ba7
  */
 const planetFinanceBurnedTokensWei = BigNumber.from('637407922445268000000000')
-const cakeVault = getCakeVaultV2Contract()
+const cakeVaultAddress = getCakeVaultAddress()
 
 const CakeDataRow = () => {
   const { t } = useTranslation()
@@ -87,24 +88,23 @@ const CakeDataRow = () => {
   } = useSWR(
     loadData ? ['cakeDataRow'] : null,
     async () => {
-      const totalSupplyCall = { address: bscTokens.cake.address, name: 'totalSupply' }
+      const totalSupplyCall = { abi: cakeAbi, address: bscTokens.cake.address, name: 'totalSupply' }
       const burnedTokenCall = {
+        abi: cakeAbi,
         address: bscTokens.cake.address,
         name: 'balanceOf',
         params: ['0x000000000000000000000000000000000000dEaD'],
       }
-      const [tokenDataResultRaw, totalLockedAmount] = await Promise.all([
-        multicallv2({
-          abi: cakeAbi,
-          calls: [totalSupplyCall, burnedTokenCall],
-          options: {
-            requireSuccess: false,
-          },
-        }),
-        cakeVault.totalLockedAmount(),
-      ])
-      const [totalSupply, burned] = tokenDataResultRaw.flat()
+      const cakeVaultCall = {
+        abi: cakeVaultV2Abi,
+        address: cakeVaultAddress,
+        name: 'totalLockedAmount',
+      }
 
+      const [[totalSupply], [burned], [totalLockedAmount]] = await multicallv3({
+        calls: [totalSupplyCall, burnedTokenCall, cakeVaultCall],
+        allowFailure: true,
+      })
       const totalBurned = planetFinanceBurnedTokensWei.add(burned)
       const circulating = totalSupply.sub(totalBurned.add(totalLockedAmount))
 

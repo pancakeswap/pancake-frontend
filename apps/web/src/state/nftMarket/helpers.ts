@@ -986,7 +986,7 @@ export const combineCollectionData = (
   collectionSgData: CollectionMarketDataBaseFields[],
 ): Record<string, Collection> => {
   const collectionsMarketObj: Record<string, CollectionMarketDataBaseFields> = fromPairs(
-    collectionSgData.map((current) => [current.id, current]),
+    collectionSgData.filter(Boolean).map((current) => [current.id, current]),
   )
 
   return fromPairs(

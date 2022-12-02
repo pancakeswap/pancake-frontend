@@ -47,6 +47,11 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
       return undefined
     }
 
+    // handle busd
+    if (wrapped.equals(stable)) {
+      return new Price(stable, stable, '1', '1')
+    }
+
     const isBUSDPairExist =
       busdPair &&
       busdPairState === PairState.EXISTS &&
@@ -60,10 +65,6 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
         return new Price(currency, stable, price.denominator, price.numerator)
       }
       return undefined
-    }
-    // handle busd
-    if (wrapped.equals(stable)) {
-      return new Price(stable, stable, '1', '1')
     }
 
     const isBnbPairExist =
