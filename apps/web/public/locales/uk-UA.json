@@ -202,6 +202,8 @@
   "Manual CAKE": "CAKE вручну",
   "Auto CAKE": "Авто-CAKE",
   "Claim": "Отримати",
+  "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.": "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.",
+  "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.": "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.",
   "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "Нагороди роздаються та потрапляють вам на баланс стейкінгу автоматично. Домішувати їх вручну не потрібно.",
   "Total staked": "Усього внесено",
   "Just stake some tokens to earn.": "Просто внесіть токени та заробляйте.",
