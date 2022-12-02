@@ -60,6 +60,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     poolTokenPercentage,
     error,
     addError,
+    loading: infoLoading,
   } = useStableLPDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(true)
@@ -77,7 +78,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
 
   // txn values
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
-  const expectedOutputWithoutFee = useExpectedLPOutputWithoutFee(
+  const { output: expectedOutputWithoutFee, loading } = useExpectedLPOutputWithoutFee(
     parsedAmounts[Field.CURRENCY_A],
     parsedAmounts[Field.CURRENCY_B],
   )
@@ -354,7 +355,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   />
                 </RowFixed>
 
-                <FormattedSlippage slippage={executionSlippage} />
+                <FormattedSlippage slippage={executionSlippage} loading={loading || infoLoading} />
               </RowBetween>
 
               <RowBetween>
