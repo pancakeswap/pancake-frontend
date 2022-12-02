@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 
-export default function LockedAprTooltipContent({ boostedYieldAmount }) {
+export default function LockedAprTooltipContent() {
   const { t } = useTranslation()
 
   return (
     <>
-      {t('Boosted yield applies to the original locked amount: %boostedYieldAmount%', { boostedYieldAmount })}
+      {t('Boosted yield applies to the original locked amount: {CAKE_LOCKED - RECENT_CAKE_PROFIT}')}
       <br />
       <br />
       {t(

@@ -60,11 +60,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
     return getBalanceNumber(currentLockedAmountAsBigNumber.minus(userData?.cakeAtLastUserAction))
   }, [currentLockedAmountAsBigNumber, userData?.cakeAtLastUserAction])
 
-  const boostedYieldAmount = useMemo(() => {
-    return getFullDisplayBalance(userData?.cakeAtLastUserAction, 18, 5)
-  }, [userData?.cakeAtLastUserAction])
-
-  const tooltipContent = <LockedAprTooltipContent boostedYieldAmount={boostedYieldAmount} />
+  const tooltipContent = <LockedAprTooltipContent />
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
   const tooltipContentOfBurn = t(
