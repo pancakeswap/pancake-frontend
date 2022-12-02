@@ -51,15 +51,15 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
 }) => {
   const { t } = useTranslation()
 
+  const isLocked = (vaultPool as DeserializedLockedCakeVault).userData.locked
+
   return (
     <>
       <StyledCardBody isLoading={isLoading}>
         {account && pool.vaultKey === VaultKey.CakeVault && (
           <VaultPositionTagWithLabel userData={(vaultPool as DeserializedLockedCakeVault).userData} />
         )}
-        {account &&
-        pool.vaultKey === VaultKey.CakeVault &&
-        (vaultPool as DeserializedLockedCakeVault).userData.locked ? (
+        {account && pool.vaultKey === VaultKey.CakeVault && isLocked ? (
           <LockedStakingApy
             userData={(vaultPool as DeserializedLockedCakeVault).userData}
             stakingToken={pool?.stakingToken}
@@ -99,7 +99,7 @@ export const CakeVaultDetail: React.FC<React.PropsWithChildren<CakeVaultDetailPr
           </>
         )}
       </StyledCardBody>
-      <CardFooter defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
+      <CardFooter isLocked={isLocked} defaultExpanded={defaultFooterExpanded} pool={pool} account={account} />
     </>
   )
 }

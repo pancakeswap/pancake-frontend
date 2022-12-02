@@ -61,7 +61,7 @@ const CakeVaultApr: React.FC<React.PropsWithChildren<CakeVaultAprProps>> = ({ po
         <Box marginX="8px" mb="8px">
           <Flex justifyContent="space-between">
             <Text fontSize="16px" color="textSubtle" textAlign="left">
-              {t('Locked APY')}
+              {t('Locked APR')}
             </Text>
             {lockedApy ? (
               <Flex alignItems="center" justifyContent="flex-start">
