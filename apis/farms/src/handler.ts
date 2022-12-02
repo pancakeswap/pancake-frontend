@@ -70,7 +70,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
   try {
     const isTestnet = farmFetcher.isTestnet(chainId)
     const farmsConfig = await (await fetch(`${farmConfigApi}/${chainId}.json`)).json<SerializedFarmConfig[]>()
-    let lpPriceHelpers: SerializedFarmConfig[] = []
+    const lpPriceHelpers: SerializedFarmConfig[] = []
     try {
       lpPriceHelpers = await (
         await fetch(`${farmConfigApi}/priceHelperLps/${chainId}.json`)
@@ -116,7 +116,7 @@ export async function saveFarms(chainId: number, event: ScheduledEvent | FetchEv
 }
 
 export async function handleLpAprs(chainId: number, farmsConfig?: SerializedFarmConfig[]) {
-  let lpAprs = await FarmKV.getApr(chainId)
+  const lpAprs = await FarmKV.getApr(chainId)
   if (!lpAprs) {
     lpAprs = await saveLPsAPR(chainId, farmsConfig)
   }
@@ -126,7 +126,7 @@ export async function handleLpAprs(chainId: number, farmsConfig?: SerializedFarm
 export async function saveLPsAPR(chainId: number, farmsConfig?: SerializedFarmConfig[]) {
   // TODO: add other chains
   if (chainId === 56) {
-    let data = farmsConfig
+    const data = farmsConfig
     if (!data) {
       const value = await FarmKV.getFarms(chainId)
       if (value && value.data) {
