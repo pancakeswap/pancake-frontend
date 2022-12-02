@@ -202,6 +202,8 @@
   "Manual CAKE": "CAKE thủ công",
   "Auto CAKE": "CAKE tự động",
   "Claim": "Nhận lấy",
+  "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.": "Warning: aBNB token from Ankr has been exploited. Please proceed with caution. We do not recommend users to trade the token.",
+  "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.": "Warning: HAY is currently depegged due to aBNB token exploits. Please proceed with caution.",
   "Rewards are distributed and included into your staking balance automatically. There’s no need to manually compound your rewards.": "Phần thưởng được phân phối tự động và được bao gồm trong số dư đặt cọc của bạn. Bạn không cần tính gộp phần thưởng của mình một cách thủ công.",
   "Total staked": "Tổng đã cọc",
   "Just stake some tokens to earn.": "Chỉ cần đặt cọc một số token để kiếm tiền.",
