@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-// TODO: Turn back to main address
-export const ADDRESS = '0xc3759f4182502a11cd79b1a6f44e5c488bad474214605799f09f9f0a81bf53ae' as const
+export const ADDRESS = 'fd1d8a523f1be89277ac0787ae3469312667e3d0b3f75a5f01bfc95530a2dc91' as const
 
 export const SMART_CHEF_MODULE_NAME = 'smart_chef' as const
 
