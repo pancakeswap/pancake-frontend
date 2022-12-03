@@ -160,22 +160,6 @@ const AkkaSwapForm = () => {
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
-  // isAkkaSwapMode checks if this is akka router form or not from redux
-  const [isAkkSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
-    useIsAkkaSwapModeStatus()
-
-  useEffect(() => {
-    // Check if pancakeswap route is better than akka route
-    if (akkaRouterTrade?.route?.return_amount) {
-      if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
-        toggleSetAkkaModeToFalse()
-      }
-    }
-  }, [typedValue, inputCurrency, outputCurrency, akkaRouterTrade])
-
-  // Get pancakeswap router route
-  const { v2Trade } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, account)
-
   const handleMaxInput = useCallback(() => {
     if (maxAmountInput) {
       onUserInput(Field.INPUT, maxAmountInput.toExact())

@@ -6,6 +6,8 @@ import { AkkaRouterTrade } from './types'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useTranslation } from '@pancakeswap/localization'
+import { Field } from 'state/swap/actions'
+import { useSwapState } from 'state/swap/hooks'
 export function useAkkaRouterSwapCallback(trade: AkkaRouterTrade): {
   multiPathSwap: () => Promise<string>
 } {
@@ -20,6 +22,12 @@ export function useAkkaRouterSwapCallback(trade: AkkaRouterTrade): {
 
   const { args } = trade
 
+  const {
+    independentField,
+    typedValue,
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+  } = useSwapState()
 
   return useMemo(() => {
     const methodName = 'multiPathSwap'
@@ -36,7 +44,9 @@ export function useAkkaRouterSwapCallback(trade: AkkaRouterTrade): {
             args.dstData,
             account
           ],
-
+          {
+            value: inputCurrencyId === 'BRISE' ? args.amountIn : '',
+          }
         )
           .catch((error: any) => {
             // if the user rejected the tx, pass this along

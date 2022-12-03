@@ -6,7 +6,7 @@ import { AppBody } from 'components/App'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
-import { useSwapState, useSingleTokenSwapInfo } from '../../state/swap/hooks'
+import { useSwapState, useSingleTokenSwapInfo, useDerivedSwapInfo } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 
@@ -23,13 +23,17 @@ import { useAkkaBitgertTokenlistHandshake } from './AkkaSwap/hooks/useAkkaRouter
 import AkkaSwapFormContainer from './AkkaSwap'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useSWR from 'swr'
+import { useAkkaSwapInfo } from './AkkaSwap/hooks/useAkkaSwapInfo'
+import { useUserSlippageTolerance } from 'state/user/hooks'
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
     useContext(SwapFeaturesContext)
-
+  const { account } = useWeb3React()
   // swap state & price data
   const {
+    independentField,
+    typedValue,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
@@ -45,7 +49,30 @@ export default function Swap() {
   // isAkkaSwapMode checks if this is akka router form or not from redux
   const [isAkkaSwapMode, toggleSetAkkaMode, toggleSetAkkaModeToFalse, toggleSetAkkaModeToTrue] =
     useIsAkkaSwapModeStatus()
+  // Get pancakeswap router route
+  const { v2Trade } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, account)
 
+  // get custom setting values for user
+  const [allowedSlippage] = useUserSlippageTolerance()
+  // Get akka router route
+  const { trade: akkaRouterTrade } = useAkkaSwapInfo(
+    independentField,
+    typedValue,
+    inputCurrency,
+    outputCurrency,
+    allowedSlippage,
+  )
+  useEffect(() => {
+    // Check if pancakeswap route is better than akka route
+    if (akkaRouterTrade?.route?.return_amount && v2Trade?.outputAmount?.toSignificant(6)) {
+      if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
+        toggleSetAkkaModeToFalse()
+      }
+      else if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.return_amount)) {
+        toggleSetAkkaModeToTrue()
+      }
+    }
+  }, [typedValue, akkaRouterTrade, inputCurrencyId, outputCurrencyId])
   // checks if akka router backend is up or not
   const tokenlistHandshake = useAkkaBitgertTokenlistHandshake()
 
@@ -54,7 +81,7 @@ export default function Swap() {
   // Set form should be shown in Form Box (AKKA or Default swap)
   const setForm = useCallback(() => {
     if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && isAkkaSwapMode) {
-      return <AkkaSwapForm />
+      return <SwapForm />
     }
     if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && !isAkkaSwapMode) {
       return <SwapForm />
