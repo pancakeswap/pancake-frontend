@@ -40,6 +40,7 @@ import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import AkkaSwapCommitButton from '../AkkaSwap/components/AkkaSwapCommitButton'
 import AkkaAdvancedSwapDetailsDropdown from '../AkkaSwap/components/AkkaAdvancedSwapDetailsDropdown'
 import styled from 'styled-components'
+import { useApproveCallbackFromAkkaTrade } from '../AkkaSwap/hooks/useApproveCallbackFromAkkaTrade'
 const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
@@ -91,24 +92,29 @@ export default function SwapForm() {
     }),
     [inputCurrency, outputCurrency],
   )
-
+  
+  // Take swap information from pancakeswap router
   const {
     v2Trade,
     currencyBalances,
     parsedAmount,
     inputError: swapInputError,
   } = useDerivedSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, recipient)
+
+  // Take swap information from AKKA router
   const {
     trade: akkaRouterTrade,
     currencyBalances: akkaCurrencyBalances,
     parsedAmount: akkaParsedAmount,
     inputError: akkaSwapInputError,
   } = useAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, allowedSlippage)
+
   const {
     wrapType,
     execute: onWrap,
     inputError: wrapInputError,
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
+
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
   const trade = showWrap ? undefined : v2Trade
 
@@ -148,9 +154,11 @@ export default function SwapForm() {
 
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallbackFromTrade(trade, allowedSlippage, chainId)
+  const [akkaApproval, akkaApproveCallback] = useApproveCallbackFromAkkaTrade(parsedAmounts[Field.INPUT])
 
   // check if user has gone through approval process, used to show two step buttons, reset on token change
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
+  const [akkaApprovalSubmitted, setAkkaApprovalSubmitted] = useState<boolean>(false)
 
   // mark when a user has submitted an approval, reset onTokenSelection for input field
   useEffect(() => {
@@ -158,6 +166,11 @@ export default function SwapForm() {
       setApprovalSubmitted(true)
     }
   }, [approval, approvalSubmitted])
+  useEffect(() => {
+    if (akkaApproval === ApprovalState.PENDING) {
+      setAkkaApprovalSubmitted(true)
+    }
+  }, [akkaApproval, akkaApprovalSubmitted])
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
@@ -332,9 +345,9 @@ export default function SwapForm() {
         <Box mt="0.25rem">
           {isAkkaSwapMode ? <AkkaSwapCommitButton
             account={account}
-            approval={approval}
-            approveCallback={approveCallback}
-            approvalSubmitted={approvalSubmitted}
+            approval={akkaApproval}
+            approveCallback={akkaApproveCallback}
+            approvalSubmitted={akkaApprovalSubmitted}
             currencies={currencies}
             isExpertMode={isExpertMode}
             trade={akkaRouterTrade}
