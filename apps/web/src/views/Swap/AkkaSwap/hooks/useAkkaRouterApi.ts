@@ -4,15 +4,8 @@ import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
 import useSWR, { Fetcher } from 'swr'
-import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType } from './types'
-// Handshake api to test if backend in up ro down
-export const useAkkaBitgertTokenlistHandshake = () => {
-  const fetcher: Fetcher = (url) => fetch(url).then((r) => r.json())
-  const { data, error } = useSWR('https://icecream.akka.finance/tokens?chain=bitgert&limit=1', fetcher, {
-    refreshInterval: 10000,
-  })
-  return { data, error }
-}
+import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType, TokenEnum } from './types'
+
 // Api for smart contract args (use this api to call akka contract easily)
 export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: string, slippage: number = 0.1) => {
   const {
@@ -31,10 +24,8 @@ export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: st
       return r.json()
     })
   const { data, error } = useSWR(
-    `https://icecream.akka.finance/swap?token0=${
-      inputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token0?.wrapped?.address
-    }&token1=${
-      outputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token1?.wrapped?.address
+    `https://icecream.akka.finance/swap?token0=${inputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token0?.wrapped?.address
+    }&token1=${outputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token1?.wrapped?.address
     }&amount=${amount}&slipage=${slippage}&use_split=true`,
     token0 && token1 && amount && slippage && fetcher,
     {
@@ -43,6 +34,7 @@ export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: st
   )
   return { data, error }
 }
+
 // Api with information for ui to show route
 export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: string, slippage: number = 0.1) => {
   const {
@@ -61,10 +53,8 @@ export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: s
       return r.json()
     })
   const { data, error } = useSWR(
-    `https://icecream.akka.finance/route?token0=${
-      inputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token0?.wrapped?.address
-    }&token1=${
-      outputCurrencyId === 'BRISE' ? '0x0000000000000000000000000000000000000000' : token1?.wrapped?.address
+    `https://icecream.akka.finance/route?token0=${inputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token0?.wrapped?.address
+    }&token1=${outputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token1?.wrapped?.address
     }&amount=${amount}&slipage=${slippage}&use_split=true`,
     token0 && token1 && amount && slippage && fetcher,
     {
@@ -73,6 +63,7 @@ export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: s
   )
   return { data, error }
 }
+
 // Call both apis route and args together in the same time
 export const useAkkaRouterRouteWithArgs = (
   token0: Currency,

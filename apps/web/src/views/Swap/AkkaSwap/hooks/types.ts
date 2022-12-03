@@ -79,3 +79,8 @@ export interface RouteOperationsSeparated {
   gas_fee?: number
   operations: Array<RouteRegularOperations>
 }
+
+export enum TokenEnum{
+  NativeToken = 'BRISE',
+  NativeTokenAdress = '0x0000000000000000000000000000000000000000'
+}
