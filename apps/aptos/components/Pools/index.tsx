@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Heading, PageHeader, Pool, Text, FlexLayout } from '@pancakeswap/uikit'
+import { Flex, Heading, PageHeader, Pool, Text, FlexLayout, ViewMode } from '@pancakeswap/uikit'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import styled from 'styled-components'
@@ -16,11 +16,15 @@ import Apr from './components/PoolCard/Apr'
 import CardFooter from './components/PoolCard/CardFooter'
 import PoolStatsInfo from './components/PoolCard/PoolStatsInfo'
 import CakeCardActions from './components/PoolCard/CakeCardActions'
+import VaultPoolRow from './components/PoolTable/VaultPoolRow'
+import PoolRow from './components/PoolTable/PoolRow'
 import { usePoolsList } from './hooks/usePoolsList'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
 `
+
+const isVaultPool = (pool) => pool?.sousId === CAKE_PID
 
 const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -47,8 +51,8 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
       <Page title={t('Pools')}>
         <NoSSR>
           <PoolControls pools={pools}>
-            {({ chosenPools }) => {
-              return (
+            {({ chosenPools, viewMode, normalizedUrlSearch }) => {
+              return viewMode === ViewMode.CARD ? (
                 <CardLayout>
                   {chosenPools.map((pool: Pool.DeserializedPool<Coin>) => (
                     <Pool.PoolCard<Coin>
@@ -57,7 +61,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                       isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
                       cardContent={
                         account ? (
-                          pool?.sousId === CAKE_PID ? (
+                          isVaultPool ? (
                             <CakeCardActions
                               hideLocateAddress
                               pool={pool}
@@ -88,10 +92,36 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                           <PoolStatsInfo account={account} pool={pool} />
                         </CardFooter>
                       }
-                      aprRow={<Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />}
+                      aprRow={
+                        <Pool.AprRowWithToolTip isVaultKey={false}>
+                          <Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />
+                        </Pool.AprRowWithToolTip>
+                      }
                     />
                   ))}
                 </CardLayout>
+              ) : (
+                <Pool.PoolsTable>
+                  {chosenPools.map((pool) =>
+                    isVaultPool(pool) ? (
+                      <VaultPoolRow
+                        initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
+                        key={pool.vaultKey}
+                        vaultKey={pool.vaultKey}
+                        account={account}
+                        pool={pool}
+                      />
+                    ) : (
+                      <PoolRow
+                        initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
+                        key={pool.sousId}
+                        sousId={pool.sousId}
+                        account={account}
+                        pool={pool}
+                      />
+                    ),
+                  )}
+                </Pool.PoolsTable>
               )
             }}
           </PoolControls>

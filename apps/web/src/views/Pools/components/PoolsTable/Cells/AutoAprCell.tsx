@@ -9,6 +9,8 @@ import {
   FlexGap,
   Balance,
   Pool,
+  useTooltip,
+  TooltipText,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -18,8 +20,11 @@ import { DeserializedLockedVaultUser, VaultKey } from 'state/types'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import { getVaultPosition, VaultPosition, isLocked } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
+import { useMemo } from 'react'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 
 import { VaultRoiCalculatorModal } from '../../Vault/VaultRoiCalculatorModal'
+import LockedAprTooltipContent from '../../LockedPool/Common/LockedAprTooltipContent'
 
 const AprLabelContainer = styled(Flex)`
   &:hover {
@@ -55,6 +60,13 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
     true,
     pool.vaultKey === VaultKey.CakeVault ? 'LockedVaultRoiCalculatorModal' : 'FlexibleSideVaultRoiCalculatorModal',
   )
+
+  const boostedYieldAmount = useMemo(() => {
+    return isLock ? getFullDisplayBalance(userData?.cakeAtLastUserAction, 18, 5) : 0
+  }, [isLock, userData?.cakeAtLastUserAction])
+
+  const tooltipContent = <LockedAprTooltipContent boostedYieldAmount={boostedYieldAmount} />
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
   if (pool.vaultKey === VaultKey.CakeVault && vaultPosition === VaultPosition.None) {
     return (
@@ -146,12 +158,31 @@ const AutoAprCell: React.FC<React.PropsWithChildren<AprCellProps>> = ({ pool }) 
         </Text>
         {flexibleApy ? (
           <AprLabelContainer alignItems="center" justifyContent="flex-start">
-            <Balance
-              fontSize="16px"
-              value={vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy) : parseFloat(flexibleApy)}
-              decimals={2}
-              unit="%"
-            />
+            {isLock ? (
+              <>
+                {tooltipVisible && tooltip}
+                <TooltipText
+                  ref={targetRef}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                  }}
+                >
+                  <Balance
+                    fontSize="16px"
+                    value={vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy) : parseFloat(flexibleApy)}
+                    decimals={2}
+                    unit="%"
+                  />
+                </TooltipText>
+              </>
+            ) : (
+              <Balance
+                fontSize="16px"
+                value={vaultPosition > VaultPosition.Flexible ? parseFloat(lockedApy) : parseFloat(flexibleApy)}
+                decimals={2}
+                unit="%"
+              />
+            )}
             <Button
               onClick={(e) => {
                 e.stopPropagation()
