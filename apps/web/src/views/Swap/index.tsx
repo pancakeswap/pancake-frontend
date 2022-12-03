@@ -15,7 +15,6 @@ import StableSwapFormContainer from './StableSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import SwapTab, { SwapType } from './components/SwapTab'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
-import AkkaSwapForm from './AkkaSwap/components/AkkaSwapForm'
 import { chainId } from 'wagmi'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useIsAkkaSwap, useIsAkkaSwapModeStatus } from 'state/global/hooks'
@@ -78,19 +77,6 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
 
-  // Set form should be shown in Form Box (AKKA or Default swap)
-  const setForm = useCallback(() => {
-    if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && isAkkaSwapMode) {
-      return <SwapForm />
-    }
-    if ((walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT) && !isAkkaSwapMode) {
-      return <SwapForm />
-    }
-    if (!(walletChainId === ChainId.BITGERT || appChainId === ChainId.BITGERT)) {
-      return <SwapForm />
-    }
-  }, [appChainId, walletChainId, isAkkaSwapMode])
-
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', , '100%']} height="100%" justifyContent="center" position="relative">
@@ -131,7 +117,7 @@ export default function Swap() {
               <AppBody>
                 <SwapTab>
                   {(swapTypeState) =>
-                    swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : setForm()
+                    swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <SwapForm />
                   }
                 </SwapTab>
               </AppBody>
