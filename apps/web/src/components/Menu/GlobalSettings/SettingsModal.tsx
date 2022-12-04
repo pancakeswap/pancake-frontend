@@ -76,6 +76,9 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
+  // isAkkaSwapActive checks if akka router is generally active or not
+  const [isAkkaSwapActive, toggleSetAkkaActive, toggleSetAkkaActiveToFalse, toggleSetAkkaActiveToTrue] =
+    useIsAkkaSwapModeActive()
 
   const { t } = useTranslation()
   const { isDark, setTheme } = useTheme()
@@ -102,20 +105,14 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
     }
   }
 
-  // isAkkaSwapActive checks if akka router is generally active or not
-  const [isAkkaSwapActive, toggleSetAkkaActive, toggleSetAkkaActiveToFalse, toggleSetAkkaActiveToTrue] =
-    useIsAkkaSwapModeActive()
-
   const handleAkkaModeToggle = () => {
     if (isAkkaSwapActive) {
       toggleSetAkkaActiveToFalse()
-    } else if (!isAkkaSwapActive) {
-      toggleSetAkkaActiveToTrue()
     } else {
-      toggleSetAkkaActive()
+      toggleSetAkkaActiveToTrue()
     }
   }
-  
+
   return (
     <Modal title={t('Settings')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
       <ScrollableContainer>

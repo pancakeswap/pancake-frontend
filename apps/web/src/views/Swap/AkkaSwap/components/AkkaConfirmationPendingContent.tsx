@@ -27,9 +27,9 @@ function AkkaConfirmationPendingContent({ trade }: { trade: AkkaRouterTrade }) {
   const outputCurrency = useCurrency(outputCurrencyId)
   // text to show while loading
   const pendingText = t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
-    amountA: trade?.route?.input_amount ?? '',
+    amountA: trade?.route?.inputAmount ?? '',
     symbolA: inputCurrency?.symbol ?? '',
-    amountB: trade?.route?.return_amount ?? '',
+    amountB: trade?.route?.returnAmount ?? '',
     symbolB: outputCurrency?.symbol ?? '',
   })
 

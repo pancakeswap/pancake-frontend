@@ -39,7 +39,7 @@ export default function AkkaSwapModalFooter({
   const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   const fee = trade.route.routes.bitgert.map((item, index) => {
-    return item.input_amount * item.routes[0].operations.length * 0.003
+    return item.inputAmount * item.routes[0].operations.length * 0.003
   })
   const realizedLPFee = fee.reduce((accumulator, value) => {
     return accumulator + value
@@ -55,7 +55,7 @@ export default function AkkaSwapModalFooter({
             </Text>
           </RowFixed>
           <Text fontSize="14px" color="textSubtle">
-            {trade.route.price_impact.toFixed(3)}%
+            {trade.route.priceImpact.toFixed(3)}%
           </Text>
         </RowBetween>
         <RowBetween>
@@ -65,7 +65,7 @@ export default function AkkaSwapModalFooter({
             </Text>
           </RowFixed>
           <Text fontSize="14px" color="textSubtle">
-            ${(trade.route.return_amount_in_usd - trade.route.best_alt).toFixed(3)}
+            ${(trade.route.returnAmountInUsd - trade.route.bestAlt).toFixed(3)}
           </Text>
         </RowBetween>
         <RowBetween>
@@ -86,7 +86,7 @@ export default function AkkaSwapModalFooter({
           <Text fontSize="14px">
             {realizedLPFee
               ? `${realizedLPFee?.toFixed(6)} ${
-                  trade.route.routes.bitgert[0].routes[0].operations_seperated[0].operations[0].offer_token[3]
+                  trade.route.routes.bitgert[0].routes[0].operationsSeperated[0].operations[0].offerToken[3]
                 }`
               : '-'}
           </Text>
@@ -94,7 +94,7 @@ export default function AkkaSwapModalFooter({
       </SwapModalFooterContainer>
 
       <AutoRow>
-        <Button variant={'primary'} onClick={onConfirm} mt="12px" id="confirm-swap-or-send" width="100%">
+        <Button variant="primary" onClick={onConfirm} mt="12px" id="confirm-swap-or-send" width="100%">
           {t('Confirm Swap')}
         </Button>
 

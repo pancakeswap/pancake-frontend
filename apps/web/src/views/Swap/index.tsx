@@ -18,11 +18,11 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 import { chainId } from 'wagmi'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { useIsAkkaSwap, useIsAkkaSwapModeStatus } from 'state/global/hooks'
-import AkkaSwapFormContainer from './AkkaSwap'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useSWR from 'swr'
 import { useAkkaSwapInfo } from './AkkaSwap/hooks/useAkkaSwapInfo'
 import { useUserSlippageTolerance } from 'state/user/hooks'
+
 export default function Swap() {
   const { isMobile } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
@@ -69,10 +69,10 @@ export default function Swap() {
 
   // Check if pancakeswap route is better than akka route or not
   useEffect(() => {
-    if (akkaRouterTrade?.route?.return_amount && v2Trade?.outputAmount?.toSignificant(6)) {
-      if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
+    if (akkaRouterTrade?.route?.returnAmount && v2Trade?.outputAmount?.toSignificant(6)) {
+      if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.returnAmount)) {
         toggleSetAkkaModeToFalse()
-      } else if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.return_amount)) {
+      } else if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.returnAmount)) {
         toggleSetAkkaModeToTrue()
       }
     }

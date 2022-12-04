@@ -38,7 +38,7 @@ export default function AkkaSwapModalHeader({
 
   const inputTextColor = 'text'
 
-  const amount = trade?.route?.input_amount
+  const amount = trade?.route?.inputAmount
   const symbol = inputCurrency.symbol
 
   const tradeInfoText = t('Output is estimated. You will receive at least or the transaction will revert.')
@@ -59,7 +59,7 @@ export default function AkkaSwapModalHeader({
         <RowFixed gap="4px">
           <CurrencyLogo currency={inputCurrency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color={inputTextColor}>
-            {trade.route.input_amount}
+            {trade.route.inputAmount}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0px">
@@ -74,8 +74,8 @@ export default function AkkaSwapModalHeader({
       <RowBetween align="flex-end">
         <RowFixed gap="4px">
           <CurrencyLogo currency={outputCurrency} size="24px" />
-          <TruncatedText fontSize="24px" color={'text'}>
-            {trade.route.return_amount}
+          <TruncatedText fontSize="24px" color='text'>
+            {trade.route.returnAmount}
           </TruncatedText>
         </RowFixed>
         <RowFixed>

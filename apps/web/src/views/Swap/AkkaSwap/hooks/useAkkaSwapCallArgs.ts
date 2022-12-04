@@ -8,17 +8,16 @@ import { useAkkaRouterContract } from 'utils/exchange'
 
 export default function useAkkaSwapCallArgs(trade): SwapCall[] {
   const { account } = useActiveWeb3React()
+  const {
+    independentField,
+    typedValue,
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+  } = useSwapState()
+  const swapContract = useAkkaRouterContract()
   const swapCalls = useMemo(() => {
     if (!trade) return []
-    const swapContract = useAkkaRouterContract()
     const args = [trade?.amountIn, trade?.amountOutMin, trade?.data, trade?.bridge, trade?.dstData, account]
-    const {
-      independentField,
-      typedValue,
-      [Field.INPUT]: { currencyId: inputCurrencyId },
-      [Field.OUTPUT]: { currencyId: outputCurrencyId },
-    } = useSwapState()
-
     return [
       {
         parameters: {

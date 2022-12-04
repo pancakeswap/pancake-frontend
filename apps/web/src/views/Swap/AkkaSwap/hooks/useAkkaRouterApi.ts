@@ -8,7 +8,7 @@ import useSWR, { Fetcher } from 'swr'
 import { AkkaRouterArgsResponseType, AkkaRouterInfoResponseType, TokenEnum } from './types'
 
 // Api for smart contract args (use this api to call akka contract easily)
-export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: string, slippage: number = 0.1) => {
+export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: string, slippage = 0.1) => {
   const {
     independentField,
     typedValue,
@@ -39,7 +39,7 @@ export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: st
 }
 
 // Api with information for ui to show route
-export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: string, slippage: number = 0.1) => {
+export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: string, slippage = 0.1) => {
   const {
     independentField,
     typedValue,
@@ -65,7 +65,7 @@ export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: s
     {
       refreshInterval: FAST_INTERVAL,
     },
-  )
+  )  
   return { data, error }
 }
 
@@ -74,7 +74,7 @@ export const useAkkaRouterRouteWithArgs = (
   token0: Currency,
   token1: Currency,
   amount: string,
-  slippage: number = 0.1,
+  slippage = 0.1,
 ) => {
   const route = useAkkaRouterRoute(token0, token1, amount, slippage)
   const args = useAkkaRouterArgs(token0, token1, amount, slippage)

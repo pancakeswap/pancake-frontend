@@ -232,8 +232,6 @@ export default function CurrencyInputPanel({
               }}
               autoFocus={
                 id === 'swap-currency-input' && (chainId === ChainId.BITGERT || appChainId === ChainId.BITGERT)
-                  ? true
-                  : false
               }
             />
           </LabelRow>

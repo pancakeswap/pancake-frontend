@@ -41,6 +41,7 @@ import AkkaSwapCommitButton from '../AkkaSwap/components/AkkaSwapCommitButton'
 import AkkaAdvancedSwapDetailsDropdown from '../AkkaSwap/components/AkkaAdvancedSwapDetailsDropdown'
 import styled from 'styled-components'
 import { useApproveCallbackFromAkkaTrade } from '../AkkaSwap/hooks/useApproveCallbackFromAkkaTrade'
+
 const Label = styled(Text)`
   font-size: 12px;
   font-weight: bold;
@@ -148,10 +149,10 @@ export default function SwapForm() {
     (value: string) => {
       onUserInput(
         Field.OUTPUT,
-        isAkkaSwapMode ? (akkaRouterTrade?.route ? akkaRouterTrade?.route?.return_amount : '') : value,
+        isAkkaSwapMode ? (akkaRouterTrade?.route ? akkaRouterTrade?.route?.returnAmount : '') : value,
       )
     },
-    [onUserInput, akkaRouterTrade?.route?.return_amount],
+    [onUserInput, akkaRouterTrade?.route?.returnAmount],
   )
 
   const formattedAmounts = {
@@ -252,7 +253,7 @@ export default function SwapForm() {
         <AutoColumn gap="sm">
           <CurrencyInputPanel
             label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
-            value={typedValue ? typedValue : formattedAmounts[Field.INPUT]}
+            value={typedValue || formattedAmounts[Field.INPUT]}
             showMaxButton={!atMaxAmountInput}
             showQuickInputButton
             currency={currencies[Field.INPUT]}
@@ -286,7 +287,7 @@ export default function SwapForm() {
           <CurrencyInputPanel
             value={
               isAkkaSwapMode && isAkkaSwapActive && akkaRouterTrade.route && typedValue !== ''
-                ? akkaRouterTrade.route.return_amount
+                ? akkaRouterTrade.route.returnAmount
                 : formattedAmounts[Field.OUTPUT]
             }
             onUserInput={handleTypeOutput}
@@ -298,7 +299,7 @@ export default function SwapForm() {
             id="swap-currency-output"
             showCommonBases
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
-            disabled={isAkkaSwapMode && isAkkaSwapActive ? true : false}
+            disabled={isAkkaSwapMode && isAkkaSwapActive}
           />
           {isAkkaSwapMode && isAkkaSwapActive && (
             <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
