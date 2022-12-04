@@ -78,12 +78,6 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
 
   return (
     <AtomBox position="relative" zIndex="modal" className={modalWrapperClass}>
-      <AtomBox position="absolute" style={{ top: '-50px' }}>
-        <TabMenu activeIndex={index} onItemClick={setIndex} gap="0px" isColorInverse>
-          <Tab>{t('Connect Wallet')}</Tab>
-          <Tab>{t('What’s a Web3 Wallet?')}</Tab>
-        </TabMenu>
-      </AtomBox>
       <AtomBox
         display="flex"
         position="relative"
@@ -97,7 +91,6 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
         width="full"
       >
         {index === 0 && children}
-        {index === 1 && <StepIntro docLink={docLink} docText={docText} />}
       </AtomBox>
     </AtomBox>
   )
@@ -353,7 +346,7 @@ function DesktopModal<T>({
         alignItems="center"
       >
         <AtomBox display="flex" flexDirection="column" alignItems="center" style={{ gap: '24px' }} textAlign="center">
-          {!selected && <Intro docLink={docLink} docText={docText} />}
+          {!selected && <Text>{t('Please select a wallet.')}</Text>}
           {selected && selected.installed !== false && (
             <>
               {typeof selected.icon === 'string' && <Image src={selected.icon} width={108} height={108} />}
