@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface, Fragment } from '@ethersproject/abi'
 import { CallOverrides, Contract } from '@ethersproject/contracts'
 import { Provider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
@@ -101,18 +101,16 @@ export function createMulticall<TProvider extends Provider>(
   const multicallv3 = async ({ calls, chainId = ChainId.BSC, allowFailure, overrides }: MulticallV3Params) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
-    const contractCache: { abi: any; contract: Contract }[] = []
+    const interfaceCache = new WeakMap()
     const _calls = calls.map(({ abi, address, name, params, allowFailure: _allowFailure }) => {
-      let contract = contractCache.find(
-        (contractAbi) =>
-          contractAbi.abi === abi && contractAbi.contract.address.toLowerCase() === address.toLowerCase(),
-      )?.contract
-      if (!contract) {
-        contract = new Contract(address, abi)
-        contractCache.push({ abi, contract })
+      let itf = interfaceCache.get(abi)
+      if (!itf) {
+        itf = new Interface(abi)
+        interfaceCache.set(abi, itf)
       }
-      if (!contract[name]) console.error(`${name} missing on ${address}`)
-      const callData = contract.interface.encodeFunctionData(name, params ?? [])
+      if (!itf.fragments.some((fragment: Fragment) => fragment.name === name))
+        console.error(`${name} missing on ${address}`)
+      const callData = itf.encodeFunctionData(name, params ?? [])
       return {
         target: address.toLowerCase(),
         allowFailure: allowFailure || _allowFailure,
@@ -125,12 +123,9 @@ export function createMulticall<TProvider extends Provider>(
     return result.map((call: any, i: number) => {
       const { returnData, success } = call
       if (!success || returnData === '0x') return null
-      const { address, abi, name } = calls[i]
-      const contract = contractCache.find(
-        (contractAbi) =>
-          contractAbi.abi === abi && contractAbi.contract.address.toLowerCase() === address.toLowerCase(),
-      )?.contract
-      const decoded = contract?.interface.decodeFunctionResult(name, returnData)
+      const { abi, name } = calls[i]
+      const itf = interfaceCache.get(abi)
+      const decoded = itf?.decodeFunctionResult(name, returnData)
       return decoded
     })
   }
