@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
+import { useEffect } from 'react'
 import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
@@ -24,8 +25,10 @@ export const useAkkaRouterArgs = (token0: Currency, token1: Currency, amount: st
       return r.json()
     })
   const { data, error } = useSWR(
-    `https://icecream.akka.finance/swap?token0=${inputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token0?.wrapped?.address
-    }&token1=${outputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token1?.wrapped?.address
+    `https://icecream.akka.finance/swap?token0=${
+      inputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token0?.wrapped?.address
+    }&token1=${
+      outputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token1?.wrapped?.address
     }&amount=${amount}&slipage=${slippage}&use_split=true`,
     token0 && token1 && amount && slippage && fetcher,
     {
@@ -53,8 +56,10 @@ export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: s
       return r.json()
     })
   const { data, error } = useSWR(
-    `https://icecream.akka.finance/route?token0=${inputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token0?.wrapped?.address
-    }&token1=${outputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token1?.wrapped?.address
+    `https://icecream.akka.finance/route?token0=${
+      inputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token0?.wrapped?.address
+    }&token1=${
+      outputCurrencyId === TokenEnum.NativeToken ? TokenEnum.NativeTokenAdress : token1?.wrapped?.address
     }&amount=${amount}&slipage=${slippage}&use_split=true`,
     token0 && token1 && amount && slippage && fetcher,
     {

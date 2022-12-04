@@ -30,6 +30,7 @@ import TransactionSettings from './TransactionSettings'
 import ExpertModal from './ExpertModal'
 import GasSettings from './GasSettings'
 import { SettingsMode } from './types'
+import { useIsAkkaSwapModeActive, useIsAkkaSwapModeStatus } from 'state/global/hooks'
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -101,6 +102,20 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
     }
   }
 
+  // isAkkaSwapActive checks if akka router is generally active or not
+  const [isAkkaSwapActive, toggleSetAkkaActive, toggleSetAkkaActiveToFalse, toggleSetAkkaActiveToTrue] =
+    useIsAkkaSwapModeActive()
+
+  const handleAkkaModeToggle = () => {
+    if (isAkkaSwapActive) {
+      toggleSetAkkaActiveToFalse()
+    } else if (!isAkkaSwapActive) {
+      toggleSetAkkaActiveToTrue()
+    } else {
+      toggleSetAkkaActive()
+    }
+  }
+  
   return (
     <Modal title={t('Settings')} headerBackground="gradientCardHeader" onDismiss={onDismiss}>
       <ScrollableContainer>
@@ -209,6 +224,18 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 onChange={() => {
                   setSingleHopOnly(!singleHopOnly)
                 }}
+              />
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex alignItems="center">
+                <Text>{t('Akka Router')}</Text>
+                <QuestionHelper text={t('You can toggle akka router splitting')} placement="top-start" ml="4px" />
+              </Flex>
+              <Toggle
+                id="toggle-expert-mode-button"
+                scale="md"
+                checked={isAkkaSwapActive}
+                onChange={handleAkkaModeToggle}
               />
             </Flex>
             {/* <Flex justifyContent="space-between" alignItems="center" mb="24px"> */}

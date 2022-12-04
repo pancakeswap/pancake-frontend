@@ -35,15 +35,11 @@ export function calculateSlippageAmount(value: CurrencyAmount<Currency>, slippag
 
 export function useRouterContract() {
   const { chainId } = useActiveChainId()
-  if (chainId === ChainId.BITGERT) {
-    return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId][0], IPancakeRouter02ABI, true)
-  } else {
-    return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId], IPancakeRouter02ABI, true)
-  }
+  return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId].Icecream, IPancakeRouter02ABI, true)
 }
 
 export function useAkkaRouterContract() {
-  return useContract<AkkaRouter>(ROUTER_ADDRESS[ChainId.BITGERT][1], AKKA_BTGERT_ABI, true)
+  return useContract<AkkaRouter>(ROUTER_ADDRESS[ChainId.BITGERT].Akka, AKKA_BTGERT_ABI, true)
 }
 
 // computes price breakdown for the trade

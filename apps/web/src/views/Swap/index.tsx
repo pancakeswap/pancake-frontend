@@ -67,17 +67,23 @@ export default function Swap() {
     allowedSlippage,
   )
 
+  // Check if pancakeswap route is better than akka route or not
   useEffect(() => {
-    // Check if pancakeswap route is better than akka route or not
     if (akkaRouterTrade?.route?.return_amount && v2Trade?.outputAmount?.toSignificant(6)) {
       if (Number(v2Trade?.outputAmount?.toSignificant(6)) > Number(akkaRouterTrade?.route?.return_amount)) {
         toggleSetAkkaModeToFalse()
-      }
-      else if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.return_amount)) {
+      } else if (Number(v2Trade?.outputAmount?.toSignificant(6)) < Number(akkaRouterTrade?.route?.return_amount)) {
         toggleSetAkkaModeToTrue()
       }
     }
   }, [typedValue, akkaRouterTrade, inputCurrencyId, outputCurrencyId])
+
+  // Check api bridge data is empty
+  useEffect(() => {
+    if (akkaRouterTrade?.args?.bridge?.length !== 0) {
+      toggleSetAkkaModeToFalse()
+    }
+  }, [akkaRouterTrade])
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
 

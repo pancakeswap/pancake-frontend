@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import { ChainId } from '@pancakeswap/sdk'
+import { BoxProps } from '@pancakeswap/uikit'
 
 // fired once when the app reloads but before the app renders
 // allows any updates to be applied to store data loaded from localStorage
@@ -19,3 +20,7 @@ export const pickFarmTransactionTx = createAction<{
 export const akkaSwapStatus = createAction<{
   isAkkaSwap: boolean
 }>('global/akkaSwapStatus')
+
+export const akkaSwapActive = createAction<{
+  isAkkaSwapActive: boolean
+}>('global/akkaSwapActive')
