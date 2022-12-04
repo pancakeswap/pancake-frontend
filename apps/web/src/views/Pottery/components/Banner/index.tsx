@@ -77,10 +77,8 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
   const prizeInBusd = publicData.totalPrize.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
-  const apyDisplay = useMemo(() => {
-    const apy = getLockedApy(weeksToSeconds(10))
-    return !Number.isNaN(apy) ? `${Number(apy).toFixed(2)}%` : '0%'
-  }, [getLockedApy])
+  const apy = useMemo(() => +getLockedApy(weeksToSeconds(10)), [getLockedApy])
+  const apyDisplay = useMemo(() => (!Number.isNaN(apy) ? `${Number(apy).toFixed(2)}%` : '0%'), [apy])
 
   return (
     <PotteryBanner>
@@ -138,9 +136,16 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
             <Text color="white" bold as="span">
               {t('to earn')}
             </Text>
-            <DarkTextStyle m="0 3px" bold as="span">
-              {apyDisplay}
-            </DarkTextStyle>
+            <SkeletonV2
+              isDataReady={!!apy}
+              width={52}
+              height={24}
+              wrapperProps={{ marginLeft: '3px', display: 'inline-block', verticalAlign: 'text-top' }}
+            >
+              <DarkTextStyle bold as="span">
+                {apyDisplay}
+              </DarkTextStyle>
+            </SkeletonV2>
             <Text color="white" bold as="span">
               {t('APY')}
             </Text>
