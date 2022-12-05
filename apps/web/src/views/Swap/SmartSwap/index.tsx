@@ -409,6 +409,7 @@ export function SmartSwapForm() {
       {!swapIsUnsupported ? (
         tradeInfo && (
           <AdvancedSwapDetailsDropdown
+            hasStablePair={smartRouterOn}
             pairs={tradeInfo.route.pairs}
             path={tradeInfo.route.path}
             priceImpactWithoutFee={tradeInfo.priceImpactWithoutFee}
