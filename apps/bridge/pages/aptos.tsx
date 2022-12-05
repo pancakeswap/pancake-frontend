@@ -64,14 +64,27 @@ const AptosBridge = () => {
   useEffect(() => {
     if (show) {
       const container = document.getElementsByClassName('css-5vb4lz')[0]
-      container.innerHTML += `
-        <div class="css-v2g2au" bis_skin_checked="1">
-          <div class="css-a70tuk css-1gvi1ws" bis_skin_checked="1">Daily limit</div>
-          <div class="css-1pqgq7d css-10ikypg daily-limit-amount" bis_skin_checked="1">0</div>
-        </div>
-      `
+      const srcCurrencySymbol = aptosBridgeForm.srcCurrency?.symbol
+      const dstCurrencySymbol = aptosBridgeForm.dstCurrency?.symbol
+
+      if (container.children.length === 3 || srcCurrencySymbol !== 'CAKE' || dstCurrencySymbol !== 'CAKE') {
+        container.children[2]?.remove()
+      }
+
+      if (
+        container &&
+        container.children.length === 2 &&
+        (srcCurrencySymbol === 'CAKE' || dstCurrencySymbol === 'CAKE')
+      ) {
+        container.innerHTML += `
+          <div class="css-v2g2au" bis_skin_checked="1">
+            <div class="css-a70tuk css-1gvi1ws" bis_skin_checked="1">Daily limit</div>
+            <div class="css-1pqgq7d css-10ikypg daily-limit-amount" bis_skin_checked="1">0</div>
+          </div>
+        `
+      }
     }
-  }, [show])
+  }, [aptosBridgeForm.dstCurrency?.symbol, aptosBridgeForm.srcCurrency?.symbol, show, theme])
 
   const isConnected = useMemo(() => {
     return !!aptosBridgeForm.evmAddress && !!aptosBridgeForm.aptosAddress
@@ -90,20 +103,24 @@ const AptosBridge = () => {
     const dailyLimitAmountAsBn = new BigNumber(limitAmount)
     const buttonDom = (document as any).querySelectorAll('.css-8fvar7')[0]?.querySelectorAll('button')[6]
 
-    // if (buttonDom) {
-    //   setTimeout(() => {
-    //     if (
-    //       isConnected &&
-    //       (buttonDom?.innerText.toLowerCase() === 'transfer' ||
-    //         buttonDom?.innerText.toLowerCase() === 'checking fee ...')
-    //     ) {
-    //       buttonDom.disabled = inputAmountAsBn.gt(dailyLimitAmountAsBn)
-    //     } else {
-    //       buttonDom.disabled = false
-    //     }
-    //   }, 0)
-    // }
-  }, [show, aptosBridgeForm, limitAmount, isConnected])
+    if (buttonDom) {
+      setTimeout(() => {
+        const isLimited = new BigNumber(aptosBridgeForm.inputAmount).gt(limitAmount)
+        if (paused || (!isWhitelistAddress && isLimited)) {
+          buttonDom.disabled = true
+        } else if (
+          isConnected &&
+          !isWhitelistAddress &&
+          (buttonDom?.innerText.toLowerCase() === 'transfer' ||
+            buttonDom?.innerText.toLowerCase() === 'checking fee ...')
+        ) {
+          buttonDom.disabled = inputAmountAsBn.gt(dailyLimitAmountAsBn)
+        } else {
+          buttonDom.disabled = false
+        }
+      }, 0)
+    }
+  }, [show, aptosBridgeForm, limitAmount, isConnected, paused, isWhitelistAddress])
 
   return (
     <Page>

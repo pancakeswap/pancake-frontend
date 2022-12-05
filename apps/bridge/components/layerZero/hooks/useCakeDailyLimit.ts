@@ -34,13 +34,12 @@ const useCakeDailyLimit = ({
   }
 
   const { data } = useSWR(
-    evmAddress && aptosAddress && inputAmount && srcCurrency?.symbol === 'CAKE' && dstCurrency?.symbol === 'CAKE'
+    evmAddress && aptosAddress && srcCurrency?.symbol === 'CAKE' && dstCurrency?.symbol === 'CAKE'
       ? ['AptosBridgeForm', inputAmount]
       : null,
     async () => {
       try {
         const isAptosInSrcInput = srcCurrency?.chainId === LayerZeroChainId.APTOS
-        const address = isAptosInSrcInput ? aptosAddress : evmAddress
         const [[paused], [isWhitelistAddress], [inputTokenAmount], [outputTokenAmount]] = await multicallv2({
           chainId: CHAIN_ID,
           abi: AptosBridgeAbi,
@@ -52,17 +51,17 @@ const useCakeDailyLimit = ({
             {
               address: contractAddress,
               name: 'whitelist',
-              params: [address],
+              params: [evmAddress],
             },
             {
               address: contractAddress,
               name: isAptosInSrcInput ? 'chainIdToInboundCap' : 'chainIdToOutboundCap',
-              params: [srcCurrency?.chainId],
+              params: [isAptosInSrcInput ? srcCurrency?.chainId : dstCurrency?.chainId],
             },
             {
               address: contractAddress,
               name: isAptosInSrcInput ? 'chainIdToReceivedTokenAmount' : 'chainIdToSentTokenAmount',
-              params: [dstCurrency?.chainId],
+              params: [isAptosInSrcInput ? srcCurrency?.chainId : dstCurrency?.chainId],
             },
           ],
         })
