@@ -76,4 +76,12 @@ export const testnetTokens = {
     'DAI Token',
     '',
   ),
+  usdc: new Coin(
+    ChainId.TESTNET,
+    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::devnet_coins::DevnetUSDC',
+    8,
+    'USDC',
+    'USDC Token',
+    '',
+  ),
 }

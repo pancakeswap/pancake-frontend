@@ -59,6 +59,8 @@ const initState = {
 export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
   const resources = useIfoResources(ifo)
 
+  console.log('resources: ', resources)
+
   // TODO: Currently we only support CAKE Price
   const { data: cakePrice } = useCakePrice()
 
