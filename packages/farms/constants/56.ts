@@ -51,6 +51,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 132,
+    lpSymbol: 'HFT-BUSD',
+    lpAddress: '0xC9853537DC498F4667f9E50bF2BE6aBeF9D53149',
+    token: bscTokens.hft,
+    quoteToken: bscTokens.busd,
+  },
+  {
     pid: 131,
     lpSymbol: 'HOOK-CAKE',
     lpAddress: '0x9e9b768174eF24233BF8AC2f4131F10ff5E72Dee',

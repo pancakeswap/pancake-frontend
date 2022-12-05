@@ -2401,4 +2401,12 @@ export const bscTokens = {
     'Hook Token',
     'https://hooked.io/',
   ),
+  hft: new Token(
+    ChainId.BSC,
+    '0x44Ec807ce2F4a6F2737A92e985f318d035883e47',
+    18,
+    'HFT',
+    'Hashflow',
+    'https://www.hashflow.com/',
+  ),
 }
