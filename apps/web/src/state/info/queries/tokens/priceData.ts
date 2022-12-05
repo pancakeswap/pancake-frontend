@@ -5,7 +5,7 @@ import orderBy from 'lodash/orderBy'
 import { PriceChartEntry } from 'state/info/types'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-import { MultiChainName, multiChainQueryEndPoint, multiChainQueryMainToken } from '../../constant'
+import { MultiChainName, multiChainQueryEndPoint, multiChainQueryMainToken, checkIsStableSwap } from '../../constant'
 
 const getPriceSubqueries = (chainName: MultiChainName, tokenAddress: string, blocks: any) =>
   blocks.map(
@@ -41,12 +41,17 @@ const fetchTokenPriceData = async (
 }> => {
   // Construct timestamps to query against
   const endTimestamp = getUnixTime(new Date())
-  const timestamps = []
+  let timestamps = []
   let time = startTimestamp
   while (time <= endTimestamp) {
     timestamps.push(time)
     time += interval
   }
+  if (chainName === 'BSC' && !checkIsStableSwap()) {
+    const latestBlock = await getBlocksFromTimestamps([endTimestamp], 'asc', 500, chainName)[0]
+    timestamps = timestamps.filter((t) => t < latestBlock - 32) // nodeReal will sync the the 32 block before latest
+  }
+
   try {
     const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)
     if (!blocks || blocks.length === 0) {
