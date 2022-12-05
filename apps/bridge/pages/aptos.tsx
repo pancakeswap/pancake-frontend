@@ -6,7 +6,8 @@ import { LAYER_ZERO_JS } from 'components/layerZero/config'
 import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
 import PoweredBy from 'components/layerZero/PoweredBy'
 import BigNumber from 'bignumber.js'
-import useCakeDailyLimit from 'components/layerZero/hooks/useCakeDailyLimit'
+import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
+import useCakeDailyLimit, { LZ_APTOS_CHAIN_ID } from 'components/layerZero/hooks/useCakeDailyLimit'
 import { AptosBridgeForm } from 'components/layerZero/types'
 
 const Page = styled.div`
@@ -34,7 +35,14 @@ const AptosBridge = () => {
     srcCurrency: null,
     dstCurrency: null,
   })
-  const { paused, isWhitelistAddress, limitAmount } = useCakeDailyLimit({ ...aptosBridgeForm })
+  const {
+    paused,
+    isWhitelistAddress,
+    chainIdToInboundCap,
+    chainIdToReceivedTokenAmount,
+    chainIdToOutboundCap,
+    chainIdToSentTokenAmount,
+  } = useCakeDailyLimit({ ...aptosBridgeForm })
 
   useEffect(() => {
     customElements.whenDefined('aptos-bridge').then(() => {
@@ -76,15 +84,31 @@ const AptosBridge = () => {
         container.children.length === 2 &&
         (srcCurrencySymbol === 'CAKE' || dstCurrencySymbol === 'CAKE')
       ) {
-        container.innerHTML += `
+        const limitAmountDom = document.createElement('div')
+        limitAmountDom.innerHTML += `
           <div class="css-v2g2au" bis_skin_checked="1">
             <div class="css-a70tuk css-1gvi1ws" bis_skin_checked="1">Daily limit</div>
             <div class="css-1pqgq7d css-10ikypg daily-limit-amount" bis_skin_checked="1">0</div>
           </div>
         `
+        container.append(limitAmountDom)
       }
     }
   }, [aptosBridgeForm.dstCurrency?.symbol, aptosBridgeForm.srcCurrency?.symbol, show, theme])
+
+  const limitAmount = useMemo(() => {
+    const isAptosInSrcInput = aptosBridgeForm.srcCurrency?.chainId === LZ_APTOS_CHAIN_ID
+    const aptosLimitAmount = new BigNumber(chainIdToInboundCap).minus(chainIdToReceivedTokenAmount)
+    const evmLimitAmount = new BigNumber(chainIdToOutboundCap).minus(chainIdToSentTokenAmount)
+    const totalLimitAmount = isAptosInSrcInput ? aptosLimitAmount : evmLimitAmount
+    return totalLimitAmount.div(BIG_TEN.pow(18)).toString()
+  }, [
+    aptosBridgeForm,
+    chainIdToInboundCap,
+    chainIdToReceivedTokenAmount,
+    chainIdToOutboundCap,
+    chainIdToSentTokenAmount,
+  ])
 
   const isConnected = useMemo(() => {
     return !!aptosBridgeForm.evmAddress && !!aptosBridgeForm.aptosAddress

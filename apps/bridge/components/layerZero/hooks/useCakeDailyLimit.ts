@@ -3,21 +3,19 @@ import { AptosBridgeForm } from 'components/layerZero/types'
 import multicallv2 from 'utils/multicall'
 import AptosBridgeAbi from 'config/constants/abi/aptosBridge.json'
 import { getAptosBridge } from 'utils/addressHelpers'
-import BigNumber from 'bignumber.js'
-import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
+import { ChainId } from '@pancakeswap/sdk'
 
 interface CakeDailyLimit {
   paused: boolean
   isWhitelistAddress: boolean
-  limitAmount: string
+  chainIdToInboundCap: string
+  chainIdToReceivedTokenAmount: string
+  chainIdToOutboundCap: string
+  chainIdToSentTokenAmount: string
 }
 
-enum LayerZeroChainId {
-  'BSC' = 10102,
-  'APTOS' = 10108,
-}
-
-const CHAIN_ID = 97
+const CHAIN_ID = ChainId.BSC_TESTNET
+export const LZ_APTOS_CHAIN_ID = 10108
 
 const useCakeDailyLimit = ({
   evmAddress,
@@ -30,7 +28,10 @@ const useCakeDailyLimit = ({
   const initState = {
     paused: false,
     isWhitelistAddress: false,
-    limitAmount: '0',
+    chainIdToInboundCap: '0',
+    chainIdToReceivedTokenAmount: '0',
+    chainIdToOutboundCap: '0',
+    chainIdToSentTokenAmount: '0',
   }
 
   const { data } = useSWR(
@@ -39,8 +40,14 @@ const useCakeDailyLimit = ({
       : null,
     async () => {
       try {
-        const isAptosInSrcInput = srcCurrency?.chainId === LayerZeroChainId.APTOS
-        const [[paused], [isWhitelistAddress], [inputTokenAmount], [outputTokenAmount]] = await multicallv2({
+        const [
+          [paused],
+          [isWhitelistAddress],
+          [chainIdToInboundCap],
+          [chainIdToReceivedTokenAmount],
+          [chainIdToOutboundCap],
+          [chainIdToSentTokenAmount],
+        ] = await multicallv2({
           chainId: CHAIN_ID,
           abi: AptosBridgeAbi,
           calls: [
@@ -55,26 +62,34 @@ const useCakeDailyLimit = ({
             },
             {
               address: contractAddress,
-              name: isAptosInSrcInput ? 'chainIdToInboundCap' : 'chainIdToOutboundCap',
-              params: [isAptosInSrcInput ? srcCurrency?.chainId : dstCurrency?.chainId],
+              name: 'chainIdToInboundCap',
+              params: [LZ_APTOS_CHAIN_ID],
             },
             {
               address: contractAddress,
-              name: isAptosInSrcInput ? 'chainIdToReceivedTokenAmount' : 'chainIdToSentTokenAmount',
-              params: [isAptosInSrcInput ? srcCurrency?.chainId : dstCurrency?.chainId],
+              name: 'chainIdToReceivedTokenAmount',
+              params: [LZ_APTOS_CHAIN_ID],
+            },
+            {
+              address: contractAddress,
+              name: 'chainIdToOutboundCap',
+              params: [LZ_APTOS_CHAIN_ID],
+            },
+            {
+              address: contractAddress,
+              name: 'chainIdToSentTokenAmount',
+              params: [LZ_APTOS_CHAIN_ID],
             },
           ],
         })
 
-        const limitAmount = new BigNumber(inputTokenAmount.toString())
-          .minus(outputTokenAmount.toString())
-          .div(BIG_TEN.pow(18))
-          .toString()
-
         return {
           paused,
           isWhitelistAddress,
-          limitAmount,
+          chainIdToInboundCap: chainIdToInboundCap.toString(),
+          chainIdToReceivedTokenAmount: chainIdToReceivedTokenAmount.toString(),
+          chainIdToOutboundCap: chainIdToOutboundCap.toString(),
+          chainIdToSentTokenAmount: chainIdToSentTokenAmount.toString(),
         }
       } catch (error) {
         console.error('Failed to get aptos bridge info', error)
