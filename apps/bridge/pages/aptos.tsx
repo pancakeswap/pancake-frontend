@@ -90,19 +90,19 @@ const AptosBridge = () => {
     const dailyLimitAmountAsBn = new BigNumber(limitAmount)
     const buttonDom = (document as any).querySelectorAll('.css-8fvar7')[0]?.querySelectorAll('button')[6]
 
-    if (buttonDom) {
-      setTimeout(() => {
-        if (
-          isConnected &&
-          (buttonDom?.innerText.toLowerCase() === 'transfer' ||
-            buttonDom?.innerText.toLowerCase() === 'checking fee ...')
-        ) {
-          buttonDom.disabled = inputAmountAsBn.gt(dailyLimitAmountAsBn)
-        } else {
-          buttonDom.disabled = false
-        }
-      }, 0)
-    }
+    // if (buttonDom) {
+    //   setTimeout(() => {
+    //     if (
+    //       isConnected &&
+    //       (buttonDom?.innerText.toLowerCase() === 'transfer' ||
+    //         buttonDom?.innerText.toLowerCase() === 'checking fee ...')
+    //     ) {
+    //       buttonDom.disabled = inputAmountAsBn.gt(dailyLimitAmountAsBn)
+    //     } else {
+    //       buttonDom.disabled = false
+    //     }
+    //   }, 0)
+    // }
   }, [show, aptosBridgeForm, limitAmount, isConnected])
 
   return (
