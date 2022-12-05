@@ -254,9 +254,13 @@ function MinimalPositionCardView({
             <span role="img" aria-label="pancake-icon">
               🥞
             </span>{' '}
-            {t(
-              "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
-            )}
+            {isStableLP
+              ? t(
+                  'By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.',
+                )
+              : t(
+                  "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
+                )}
           </Text>
         </LightCard>
       )}

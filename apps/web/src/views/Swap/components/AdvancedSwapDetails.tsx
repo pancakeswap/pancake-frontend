@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { Pair } from '@pancakeswap/smart-router/evm'
-import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex } from '@pancakeswap/uikit'
+import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link } from '@pancakeswap/uikit'
 
 import { AutoColumn } from 'components/Layout/Column'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -19,7 +19,9 @@ function TradeSummary({
   slippageAdjustedAmounts,
   priceImpactWithoutFee,
   realizedLPFee,
+  hasStablePair = false,
 }: {
+  hasStablePair?: boolean
   inputAmount?: CurrencyAmount<Currency>
   outputAmount?: CurrencyAmount<Currency>
   tradeType?: TradeType
@@ -85,10 +87,29 @@ function TradeSummary({
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
+                  <Text mb="12px">
+                    {hasStablePair
+                      ? t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })
+                      : t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}
+                  </Text>
                   <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
                   <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
                   <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
+                  {hasStablePair && (
+                    <>
+                      <Text mt="12px">
+                        {t('For each stableswap trade, refer to the fee table')}
+                        <Link
+                          style={{ display: 'inline' }}
+                          ml="4px"
+                          external
+                          href="https://docs.pancakeswap.finance/products/stableswap#stableswap-fees"
+                        >
+                          {t('here.')}
+                        </Link>
+                      </Text>
+                    </>
+                  )}
                 </>
               }
               ml="4px"
@@ -103,6 +124,7 @@ function TradeSummary({
 }
 
 export interface AdvancedSwapDetailsProps {
+  hasStablePair?: boolean
   pairs?: Pair[]
   path?: Currency[]
   priceImpactWithoutFee?: Percent
@@ -125,6 +147,7 @@ export function AdvancedSwapDetails({
   inputAmount,
   outputAmount,
   tradeType,
+  hasStablePair,
 }: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(() => false)
@@ -140,6 +163,7 @@ export function AdvancedSwapDetails({
             slippageAdjustedAmounts={slippageAdjustedAmounts}
             priceImpactWithoutFee={priceImpactWithoutFee}
             realizedLPFee={realizedLPFee}
+            hasStablePair={hasStablePair}
           />
           {showRoute && (
             <>
