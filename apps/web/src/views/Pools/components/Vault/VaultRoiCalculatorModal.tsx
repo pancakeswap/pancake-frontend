@@ -54,6 +54,7 @@ export const VaultRoiCalculatorModal = ({
 
   return (
     <RoiCalculatorModal
+      isLocked={cakeVaultView === 1}
       account={account}
       stakingTokenSymbol={pool.stakingToken.symbol}
       apy={+apy}

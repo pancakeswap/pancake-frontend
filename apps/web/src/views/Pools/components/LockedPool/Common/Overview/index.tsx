@@ -78,7 +78,7 @@ const Overview: React.FC<React.PropsWithChildren<OverviewPropsType>> = ({
           <BalanceRow title={t('Cake to be locked')} value={lockedAmount} newValue={newLockedAmount} decimals={2} />
           <BalanceRow title="iCake" decimals={2} value={formattediCake} newValue={newFormattediCake} />
           <BalanceRow
-            title="apy"
+            title="apr"
             unit="%"
             value={_toNumber(lockedApy)}
             decimals={2}
