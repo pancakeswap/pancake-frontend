@@ -31,15 +31,17 @@ const useIfoVesting = ({ poolId, publicIfoData, walletIfoData }: UseIfoVestingPr
 
   const amountReleased = useMemo(() => {
     return releasedAtSaleEnd.plus(userPool.vestingReleased).plus(userPool.vestingComputeReleasableAmount)
-  }, [userPool, releasedAtSaleEnd])
+  }, [userPool.vestingReleased, userPool.vestingComputeReleasableAmount, releasedAtSaleEnd])
 
   const amountInVesting = useMemo(() => {
-    return totalPurchased.minus(amountReleased)
+    const remaining = totalPurchased.minus(amountReleased)
+
+    return remaining.gt(0) ? remaining : BIG_ZERO
   }, [totalPurchased, amountReleased])
 
   const amountAvailableToClaim = useMemo(() => {
     return userPool.isVestingInitialized ? userPool.vestingComputeReleasableAmount : releasedAtSaleEnd
-  }, [userPool, releasedAtSaleEnd])
+  }, [userPool.isVestingInitialized, releasedAtSaleEnd, userPool.vestingComputeReleasableAmount])
 
   const amountAlreadyClaimed = useMemo(() => {
     const released = userPool.isVestingInitialized ? releasedAtSaleEnd : BIG_ZERO
