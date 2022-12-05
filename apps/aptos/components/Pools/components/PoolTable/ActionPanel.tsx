@@ -1,13 +1,13 @@
 import styled, { keyframes, css } from 'styled-components'
-import { Box, Flex, HelpIcon, Text, useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
+import { Box, Flex, Text, useMatchBreakpoints, Pool, Farm, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-
+import { useTranslation } from '@pancakeswap/localization'
+import _noop from 'lodash/noop'
 import PoolStatsInfo from '../PoolCard/PoolStatsInfo'
-// import PoolTypeTag from '../../PoolTypeTag'
 
-const Harvest = () => null
+const { ManualPoolTag } = Farm.Tags
 
 const Stake = () => null
 
@@ -101,11 +101,18 @@ const InfoSection = styled(Box)`
 const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ account, pool, expanded }) => {
   const { userData } = pool
   const { isMobile } = useMatchBreakpoints()
+  const { t } = useTranslation()
 
   const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO
   const stakedBalance = userData?.stakedBalance ? new BigNumber(userData.stakedBalance) : BIG_ZERO
 
   const poolStakingTokenBalance = stakedBalance.plus(stakingTokenBalance)
+
+  const manualTooltipText = t('You must harvest and compound your earnings from this pool manually.')
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(manualTooltipText, {
+    placement: 'bottom',
+  })
 
   return (
     <StyledActionPanel expanded={expanded}>
@@ -114,19 +121,17 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
           <PoolStatsInfo pool={pool} account={account} showTotalStaked={isMobile} alignLinksToRight={isMobile} />
         </Flex>
         <Flex alignItems="center">
-          {/* <PoolTypeTag vaultKey={vaultKey} isLocked={isLocked} account={account}>
-            {(tagTargetRef) => (
-              <Flex ref={tagTargetRef}>
-                <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
-              </Flex>
-            )}
-          </PoolTypeTag> */}
+          <ManualPoolTag />
+          {tooltipVisible && tooltip}
+          <Flex ref={targetRef}>
+            <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+          </Flex>
         </Flex>
       </InfoSection>
       <ActionContainer>
         <Box width="100%">
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            <Harvest {...pool} />
+            <Pool.HarvestAction<Coin> {...pool} account={account} onPresentCollect={_noop} />
             <Stake pool={pool} />
           </ActionContainer>
         </Box>

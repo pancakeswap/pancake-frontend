@@ -18,3 +18,4 @@ export * from "./Cells/ExpandActionCell";
 export * from "./Cells/TotalStakedCell";
 export * from "./Cells/AprCell";
 export * from "./PoolsTable/ExpandRow";
+export * from "./PoolsTable/HarvestAction";

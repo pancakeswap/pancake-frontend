@@ -48,7 +48,7 @@ export function EarningsCell<T>({ pool, account, onPresentCollect }: EarningsCel
         <Text fontSize="12px" color="textSubtle" textAlign="left">
           {labelText}
         </Text>
-        {!account ? (
+        {!pool && !account ? (
           <Skeleton width="80px" height="16px" />
         ) : (
           <>
