@@ -1,31 +1,28 @@
-import { Button, Text, Flex, Heading, Balance, Pool } from "@pancakeswap/uikit";
-import BigNumber from "bignumber.js";
-import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import { useTranslation } from "@pancakeswap/localization";
-import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+
+import { Button, Text, Flex, Heading, Balance } from "../../../components";
 
 import { ActionContainer, ActionTitles, ActionContent } from "./styles";
 
-export function HarvestAction<T>({
-  earningToken,
-  userData,
+import { HarvestActionsProps } from "../types";
+
+export function HarvestAction({
   earningTokenPrice,
   onPresentCollect,
   account,
-}: Pool.DeserializedPool<T> & { onPresentCollect: () => void }) {
+  earningTokenBalance,
+  earningTokenDollarBalance,
+  earningTokenSymbol,
+  earnings,
+}: HarvestActionsProps & { account: string; earningTokenSymbol: string }) {
   const { t } = useTranslation();
 
-  const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO;
-  const earningTokenBalance = getBalanceNumber(earnings, earningToken.decimals);
-  const earningTokenDollarBalance = earningTokenPrice
-    ? getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningToken.decimals)
-    : 0;
   const hasEarnings = earnings.gt(0);
 
   const actionTitle = (
     <>
       <Text fontSize="12px" bold color="secondary" as="span" textTransform="uppercase">
-        {earningToken.symbol}{" "}
+        {earningTokenSymbol}{" "}
       </Text>
       <Text fontSize="12px" bold color="textSubtle" as="span" textTransform="uppercase">
         {t("Earned")}

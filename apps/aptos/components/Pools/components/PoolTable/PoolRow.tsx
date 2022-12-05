@@ -7,11 +7,14 @@ import _noop from 'lodash/noop'
 import Apr from '../PoolCard/Apr'
 import ActionPanel from './ActionPanel'
 
-const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: string; initialActivity?: boolean }>> = ({
-  account,
-  initialActivity,
-  pool,
-}) => {
+const PoolRow: React.FC<
+  React.PropsWithChildren<{
+    sousId: number
+    account?: string
+    initialActivity?: boolean
+    pool: Pool.DeserializedPool<Coin>
+  }>
+> = ({ account, initialActivity, pool }) => {
   const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const { stakingToken, totalStaked } = pool

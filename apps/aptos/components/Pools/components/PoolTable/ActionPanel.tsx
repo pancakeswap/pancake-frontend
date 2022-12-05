@@ -4,8 +4,8 @@ import BigNumber from 'bignumber.js'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useTranslation } from '@pancakeswap/localization'
-import _noop from 'lodash/noop'
 import PoolStatsInfo from '../PoolCard/PoolStatsInfo'
+import CollectModal from '../PoolCard/CollectModal'
 
 const { ManualPoolTag } = Farm.Tags
 
@@ -77,7 +77,7 @@ type MediaBreakpoints = {
 }
 
 interface ActionPanelProps {
-  account: string
+  account?: string
   pool: Pool.DeserializedPool<Coin>
   expanded: boolean
   breakpoints: MediaBreakpoints
@@ -97,6 +97,8 @@ const InfoSection = styled(Box)`
     }
   }
 `
+
+const HarvestAction = Pool.withTableActions<Coin>(Pool.withCollectModalTableAction(CollectModal))
 
 const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ account, pool, expanded }) => {
   const { userData } = pool
@@ -131,7 +133,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
       <ActionContainer>
         <Box width="100%">
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            <Pool.HarvestAction<Coin> {...pool} account={account} onPresentCollect={_noop} />
+            <HarvestAction pool={pool} account={account} />
             <Stake pool={pool} />
           </ActionContainer>
         </Box>

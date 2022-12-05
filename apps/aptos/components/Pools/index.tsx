@@ -106,7 +106,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                     isVaultPool(pool) ? (
                       <VaultPoolRow
                         initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
-                        key={pool.vaultKey}
+                        key={pool.contractAddress[chainId]}
                         vaultKey={pool.vaultKey}
                         account={account}
                         pool={pool}
@@ -114,7 +114,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                     ) : (
                       <PoolRow
                         initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
-                        key={pool.sousId}
+                        key={pool.contractAddress[chainId]}
                         sousId={pool.sousId}
                         account={account}
                         pool={pool}

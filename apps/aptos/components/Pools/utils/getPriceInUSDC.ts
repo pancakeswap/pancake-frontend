@@ -16,7 +16,7 @@ export function getPriceInUSDC({ availablePairs, tokenIn, usdcCoin }) {
 
   const trades = Trade.bestTradeExactIn(availablePairs, tokenInAmount, usdcCoin, { maxHops: 3, maxNumResults: 3 })
 
-  const bestTrade = trades.reduce((bTrade, currenctTrade) => {
+  const bestTrade = trades?.reduce((bTrade, currenctTrade) => {
     if (bTrade && Trade.isTradeBetter(bTrade, currenctTrade)) return bTrade
 
     return currenctTrade
