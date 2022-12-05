@@ -1,6 +1,6 @@
 import { Card, CardBody, Flex, Heading, ProfileAvatar, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import styled, { css } from 'styled-components'
 
 interface CollectionCardProps {

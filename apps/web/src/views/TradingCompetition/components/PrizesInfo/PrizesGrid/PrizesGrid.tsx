@@ -12,7 +12,7 @@ import {
   TabMenu,
   Text,
 } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import Trans from 'components/Trans'
 import { Tiers, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from '@pancakeswap/localization'
