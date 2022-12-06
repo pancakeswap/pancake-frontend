@@ -26,18 +26,18 @@ const PoolTypeTag = ({ account, vaultKey, isLocked, children }) => {
 
   return (
     <>
-      {account ? (
-        vaultKey ? (
+      {vaultKey ? (
+        account ? (
           isLocked ? (
             <LockedPoolTag />
           ) : (
             <CompoundingPoolTag />
           )
         ) : (
-          <ManualPoolTag />
+          <LockedOrAutoPoolTag />
         )
       ) : (
-        <LockedOrAutoPoolTag />
+        <ManualPoolTag />
       )}
       {tooltipVisible && tooltip}
       {children(targetRef)}
