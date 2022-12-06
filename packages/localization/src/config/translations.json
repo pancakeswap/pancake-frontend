@@ -2054,5 +2054,7 @@
   "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click": "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click",
   "For each stableswap trade, refer to the fee table": "For each stableswap trade, refer to the fee table",
   "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid",
-  "Stable pair not found use Swap": "Stable pair not found use Swap"
+  "Stable pair not found use Swap": "Stable pair not found use Swap",
+  "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ": "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ",
+  "for the latest update.": "for the latest update."
 }

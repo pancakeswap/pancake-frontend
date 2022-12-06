@@ -1,7 +1,13 @@
 import Activity from 'views/Nft/market/Activity'
+import NftSubgraphWarning from 'views/Nft/market/NftSubgraphWarning'
 
 const ActivityPage = () => {
-  return <Activity />
+  return (
+    <>
+      <NftSubgraphWarning />
+      <Activity />
+    </>
+  )
 }
 
 export default ActivityPage
