@@ -18,7 +18,7 @@ import {
   UserMenuItem,
 } from '@pancakeswap/uikit'
 import { useTheme as useNextTheme } from 'next-themes'
-import Image from 'next/future/image'
+import Image from 'next/image'
 import NextLink from 'next/link'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'

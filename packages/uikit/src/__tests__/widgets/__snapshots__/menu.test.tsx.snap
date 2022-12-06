@@ -2,7 +2,7 @@
 
 exports[`renders correctly 1`] = `
 <DocumentFragment>
-  .c5 {
+  .c6 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -12,7 +12,7 @@ exports[`renders correctly 1`] = `
   flex-shrink: 0;
 }
 
-.c18 {
+.c19 {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   align-self: center;
@@ -44,7 +44,7 @@ exports[`renders correctly 1`] = `
   margin-right: 0.5rem;
 }
 
-.c15 {
+.c16 {
   color: var(--colors-failure);
   font-weight: 400;
   line-height: 1.5;
@@ -52,7 +52,7 @@ exports[`renders correctly 1`] = `
   font-size: 14px;
 }
 
-.c19 {
+.c20 {
   color: var(--colors-warning);
   font-weight: 400;
   line-height: 1.5;
@@ -186,20 +186,20 @@ exports[`renders correctly 1`] = `
   cursor: not-allowed;
 }
 
-.c6 {
+.c7 {
   margin-left: 24px;
 }
 
-.c7 {
+.c8 {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-.c22 {
+.c23 {
   width: 100%;
 }
 
-.c24 {
+.c25 {
   height: 100%;
 }
 
@@ -234,7 +234,18 @@ exports[`renders correctly 1`] = `
   display: flex;
 }
 
-.c23 {
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c24 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -247,17 +258,6 @@ exports[`renders correctly 1`] = `
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
-}
-
-.c25 {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .c38 {
@@ -293,7 +293,7 @@ exports[`renders correctly 1`] = `
   justify-content: flex-end;
 }
 
-.c13 {
+.c14 {
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -320,39 +320,39 @@ exports[`renders correctly 1`] = `
   pointer-events: inherit;
 }
 
-.c13:is(button) {
+.c14:is(button) {
   cursor: pointer;
 }
 
-.c13:hover:not(:disabled) {
+.c14:hover:not(:disabled) {
   background-color: var(--colors-tertiary);
 }
 
-.c13:active:not(:disabled) {
+.c14:active:not(:disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
   -ms-transform: translateY(1px);
   transform: translateY(1px);
 }
 
-.c11:first-child > .c12 {
+.c12:first-child .c13 {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
 
-.c11:last-child > .c12 {
+.c12:last-child .c13 {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
 
-.c21 {
+.c22 {
   border-color: var(--colors-cardBorder);
   border-style: solid;
   border-width: 1px 0 0;
   margin: 4px 0;
 }
 
-.c10 {
+.c11 {
   background-color: var(--colors-backgroundAlt);
   border: 1px solid var(--colors-cardBorder);
   border-radius: 16px;
@@ -367,7 +367,7 @@ exports[`renders correctly 1`] = `
   visibility: hidden;
 }
 
-.c16 {
+.c17 {
   border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
@@ -377,7 +377,7 @@ exports[`renders correctly 1`] = `
   margin-left: 8px;
 }
 
-.c20 {
+.c21 {
   border-radius: var(--radii-default);
   padding: 0 8px;
   border: 2px solid;
@@ -461,11 +461,11 @@ exports[`renders correctly 1`] = `
   border-radius: 8px;
 }
 
-.c8 {
+.c9 {
   position: relative;
 }
 
-.c9 {
+.c10 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -484,12 +484,12 @@ exports[`renders correctly 1`] = `
   height: 48px;
 }
 
-.c9:hover {
+.c10:hover {
   background: var(--colors-tertiary);
   border-radius: 16px;
 }
 
-.c14 {
+.c15 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -508,7 +508,7 @@ exports[`renders correctly 1`] = `
   height: 48px;
 }
 
-.c14:after {
+.c15:after {
   content: "";
   border-radius: 100%;
   background: var(--colors-failure);
@@ -517,12 +517,12 @@ exports[`renders correctly 1`] = `
   margin-left: 12px;
 }
 
-.c14:hover {
+.c15:hover {
   background: var(--colors-tertiary);
   border-radius: 16px;
 }
 
-.c17 {
+.c18 {
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -541,7 +541,7 @@ exports[`renders correctly 1`] = `
   height: 48px;
 }
 
-.c17:after {
+.c18:after {
   content: "";
   border-radius: 100%;
   background: var(--colors-warning);
@@ -550,7 +550,7 @@ exports[`renders correctly 1`] = `
   margin-left: 12px;
 }
 
-.c17:hover {
+.c18:hover {
   background: var(--colors-tertiary);
   border-radius: 16px;
 }
@@ -687,32 +687,28 @@ exports[`renders correctly 1`] = `
   scroll-snap-align: start;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
-.c4 .mobile-icon {
+.c5 .mobile-icon {
   width: 32px;
 }
 
-.c4 .desktop-icon {
+.c5 .desktop-icon {
   width: 160px;
   display: none;
 }
 
-.c4 .eye {
+.c5 .eye {
   -webkit-animation-delay: 20ms;
   animation-delay: 20ms;
 }
 
-.c4:hover .eye {
+.c5:hover .eye {
   -webkit-transform-origin: center 60%;
   -ms-transform-origin: center 60%;
   transform-origin: center 60%;
@@ -789,14 +785,14 @@ exports[`renders correctly 1`] = `
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c5 {
+  .c6 {
     -webkit-filter: none !important;
     filter: none !important;
   }
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-  .c18 {
+  .c19 {
     -webkit-filter: none !important;
     filter: none !important;
   }
@@ -989,13 +985,13 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:968px) {
-  .c4 .mobile-icon {
+  .c5 .mobile-icon {
     display: none;
   }
 }
 
 @media screen and (min-width:968px) {
-  .c4 .desktop-icon {
+  .c5 .desktop-icon {
     display: block;
   }
 }
@@ -1014,15 +1010,15 @@ exports[`renders correctly 1`] = `
           class="c3"
         >
           <div
-            class="c3"
+            class="c4"
           >
             <a
               aria-label="Pancake home page"
-              class="c4"
+              class="c5"
               href="/"
             >
               <svg
-                class="c5 mobile-icon"
+                class="c6 mobile-icon"
                 color="text"
                 viewBox="0 0 198 199"
                 width="20px"
@@ -1049,7 +1045,7 @@ exports[`renders correctly 1`] = `
                 />
               </svg>
               <svg
-                class="c5 desktop-icon"
+                class="c6 desktop-icon"
                 color="text"
                 viewBox="0 0 1281 199"
                 width="20px"
@@ -1085,19 +1081,19 @@ exports[`renders correctly 1`] = `
             class="reset__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_md__pkzlfc2"
           >
             <div
-              class="c6 c3"
+              class="c7 c3"
             >
               <div
-                class="c7"
+                class="c8"
               >
                 <div
                   class=""
                 >
                   <div
-                    class="c8"
+                    class="c9"
                   >
                     <a
-                      class="c9"
+                      class="c10"
                       href="/swap"
                     >
                       Trade
@@ -1105,24 +1101,24 @@ exports[`renders correctly 1`] = `
                   </div>
                 </div>
                 <div
-                  class="c10"
+                  class="c11"
                   style="position: fixed; left: 0px; top: 0px;"
                 >
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/swap"
                     >
                       Exchange
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/liquidity"
                     >
                       Liquidity
@@ -1131,16 +1127,16 @@ exports[`renders correctly 1`] = `
                 </div>
               </div>
               <div
-                class="c7"
+                class="c8"
               >
                 <div
                   class=""
                 >
                   <div
-                    class="c8"
+                    class="c9"
                   >
                     <a
-                      class="c9"
+                      class="c10"
                       href="/earn"
                     >
                       Earn
@@ -1148,34 +1144,34 @@ exports[`renders correctly 1`] = `
                   </div>
                 </div>
                 <div
-                  class="c10"
+                  class="c11"
                   style="position: fixed; left: 0px; top: 0px;"
                 >
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/earn"
                     >
                       Earn
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/farms"
                     >
                       Yield Farms
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/pools"
                     >
                       Syrup pools
@@ -1184,16 +1180,16 @@ exports[`renders correctly 1`] = `
                 </div>
               </div>
               <div
-                class="c7"
+                class="c8"
               >
                 <div
                   class=""
                 >
                   <div
-                    class="c8"
+                    class="c9"
                   >
                     <a
-                      class="c14"
+                      class="c15"
                       href="/"
                     >
                       Win
@@ -1201,29 +1197,29 @@ exports[`renders correctly 1`] = `
                   </div>
                 </div>
                 <div
-                  class="c10"
+                  class="c11"
                   style="position: fixed; left: 0px; top: 0px;"
                 >
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       Win
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       Predictions
                       <div
-                        class="c15 c16"
+                        class="c16 c17"
                         color="failure"
                         font-size="14px"
                       >
@@ -1232,10 +1228,10 @@ exports[`renders correctly 1`] = `
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       Lottery
@@ -1244,20 +1240,20 @@ exports[`renders correctly 1`] = `
                 </div>
               </div>
               <div
-                class="c7"
+                class="c8"
               >
                 <div
                   class=""
                 >
                   <div
-                    class="c8"
+                    class="c9"
                   >
                     <a
-                      class="c17"
+                      class="c18"
                       href="/"
                     >
                       <svg
-                        class="c18"
+                        class="c19"
                         color="textSubtle"
                         viewBox="0 0 24 24"
                         width="20px"
@@ -1271,29 +1267,29 @@ exports[`renders correctly 1`] = `
                   </div>
                 </div>
                 <div
-                  class="c10"
+                  class="c11"
                   style="position: fixed; left: 0px; top: 0px;"
                 >
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       Info & Analytics
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       IFO Token Sales
                       <div
-                        class="c19 c20"
+                        class="c20 c21"
                         color="warning"
                         font-size="14px"
                       >
@@ -1302,64 +1298,64 @@ exports[`renders correctly 1`] = `
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <hr
-                      class="c21"
+                      class="c22"
                     />
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       NFT Collectibles
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       Team Leaderboard
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <hr
-                      class="c21"
+                      class="c22"
                     />
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                     >
                       Blog
                     </a>
                   </div>
                   <div
-                    class="c11"
+                    class="c12"
                   >
                     <a
-                      class="c12 c13"
+                      class="c13 c14"
                       href="/"
                       target="_blank"
                     >
                       <div
-                        class="c22 c23"
+                        class="c23 c24"
                         width="100%"
                       >
                         Docs & Guides
                         <svg
-                          class="c18"
+                          class="c19"
                           color="textSubtle"
                           viewBox="0 0 24 24"
                           width="20px"
@@ -1378,7 +1374,7 @@ exports[`renders correctly 1`] = `
           </div>
         </div>
         <div
-          class="c24 c25"
+          class="c25 c4"
           height="100%"
         >
           <div
@@ -1630,7 +1626,7 @@ exports[`renders correctly 1`] = `
           class="c41 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
-            class="c5"
+            class="c6"
             color="text"
             viewBox="0 0 24 24"
             width="20px"
@@ -1645,7 +1641,7 @@ exports[`renders correctly 1`] = `
           class="c42 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
-            class="c5"
+            class="c6"
             color="text"
             viewBox="0 0 24 24"
             width="20px"
@@ -1663,7 +1659,7 @@ exports[`renders correctly 1`] = `
             class="c46 c47"
           >
             <div
-              class="c8"
+              class="c9"
             >
               <a
                 class="c48"
@@ -1677,7 +1673,7 @@ exports[`renders correctly 1`] = `
             class="c46 c47"
           >
             <div
-              class="c8"
+              class="c9"
             >
               <a
                 class="c48"
@@ -1696,7 +1692,7 @@ exports[`renders correctly 1`] = `
           class="c41 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
-            class="c5"
+            class="c6"
             color="text"
             viewBox="0 0 24 24"
             width="20px"
@@ -1711,7 +1707,7 @@ exports[`renders correctly 1`] = `
           class="c42 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
-            class="c5"
+            class="c6"
             color="text"
             viewBox="0 0 24 24"
             width="20px"
@@ -1729,7 +1725,7 @@ exports[`renders correctly 1`] = `
             class="c46 c47"
           >
             <div
-              class="c8"
+              class="c9"
             >
               <a
                 class="c48"
@@ -4034,12 +4030,12 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   transform: translateY(1px);
 }
 
-.c15:first-child > .c16 {
+.c15:first-child .c16 {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
 
-.c15:last-child > .c16 {
+.c15:last-child .c16 {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }

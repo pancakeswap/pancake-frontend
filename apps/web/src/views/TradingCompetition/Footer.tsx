@@ -1,5 +1,5 @@
 import { Flex } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import useTheme from 'hooks/useTheme'
 import PageSection from 'components/PageSection'
 import { StaticImageData } from 'next/dist/client/image'

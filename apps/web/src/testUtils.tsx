@@ -5,6 +5,7 @@
 import { render as rtlRender } from '@testing-library/react'
 import Provider from 'Providers'
 import { WagmiConfig } from 'wagmi'
+import noop from 'lodash/noop'
 import { initializeStore, makeStore } from 'state'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
 import { NextRouter } from 'next/router'
@@ -16,6 +17,7 @@ const mockRouter: NextRouter = {
   pathname: '/',
   route: '/',
   asPath: '/',
+  forward: noop,
   query: {},
   push: jest.fn(),
   replace: jest.fn(),
