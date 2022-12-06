@@ -109,12 +109,12 @@ const StakeModalContainer = ({
   )
 
   const needEnable = useMemo(() => {
-    if (!isRemovingStake) {
+    if (!isRemovingStake && !pendingTx) {
       const stakeAmount = getDecimalAmount(new BigNumber(amount))
       return stakeAmount.gt(singlePool.userData.allowance)
     }
     return false
-  }, [singlePool, amount, isRemovingStake])
+  }, [singlePool, amount, pendingTx, isRemovingStake])
 
   const handleEnableApprove = async () => {
     await handleApprove()
