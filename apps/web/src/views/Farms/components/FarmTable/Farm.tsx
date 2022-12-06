@@ -12,7 +12,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
   isReady,
   isStable,
 }) => {
-  const { stakedBalance, tokenBalance, proxy } = useFarmUser(pid)
+  const { stakedBalance, proxy } = useFarmUser(pid)
 
   return (
     <FarmTokenInfo
@@ -22,7 +22,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
       quoteToken={quoteToken}
       isReady={isReady}
       isStable={isStable}
-      stakedBalance={stakedBalance.plus(tokenBalance).gt(0) ? stakedBalance : proxy?.stakedBalance}
+      stakedBalance={proxy?.stakedBalance?.gt(0) ? proxy?.stakedBalance : stakedBalance}
     >
       <TokenPairImage width={40} height={40} variant="inverted" primaryToken={token} secondaryToken={quoteToken} />
     </FarmTokenInfo>
