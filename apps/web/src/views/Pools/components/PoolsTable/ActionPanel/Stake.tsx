@@ -319,7 +319,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
                 </Text>
                 <Text
                   lineHeight="1"
-                  mt="8px"
+                  mt="5px"
                   bold
                   fontSize="20px"
                   color={vaultPosition >= VaultPosition.LockedEnd ? '#D67E0A' : 'text'}
