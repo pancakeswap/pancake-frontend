@@ -115,7 +115,7 @@ export default function SwapForm() {
     parsedAmount: akkaParsedAmount,
     inputError: akkaSwapInputError,
   } = useAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, allowedSlippage)
-  
+
   const {
     wrapType,
     execute: onWrap,
@@ -147,12 +147,9 @@ export default function SwapForm() {
   )
   const handleTypeOutput = useCallback(
     (value: string) => {
-      onUserInput(
-        Field.OUTPUT,
-        isAkkaSwapMode ? (akkaRouterTrade?.route ? akkaRouterTrade?.route?.returnAmount : '') : value,
-      )
+      onUserInput(Field.OUTPUT, value)
     },
-    [onUserInput, akkaRouterTrade?.route?.returnAmount],
+    [onUserInput],
   )
 
   const formattedAmounts = {
@@ -253,7 +250,7 @@ export default function SwapForm() {
         <AutoColumn gap="sm">
           <CurrencyInputPanel
             label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
-            value={typedValue || formattedAmounts[Field.INPUT]}
+            value={formattedAmounts[Field.INPUT]}
             showMaxButton={!atMaxAmountInput}
             showQuickInputButton
             currency={currencies[Field.INPUT]}
