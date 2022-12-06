@@ -2053,5 +2053,6 @@
   "Unable to supply": "Unable to supply",
   "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click": "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click",
   "For each stableswap trade, refer to the fee table": "For each stableswap trade, refer to the fee table",
-  "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid"
+  "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid",
+  "Stable pair not found use Swap": "Stable pair not found use Swap"
 }
