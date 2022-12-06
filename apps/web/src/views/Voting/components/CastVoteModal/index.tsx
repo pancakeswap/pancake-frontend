@@ -4,7 +4,7 @@ import { useWeb3LibraryContext, useWeb3React } from '@pancakeswap/wagmi'
 import snapshot from '@snapshot-labs/snapshot.js'
 import useTheme from 'hooks/useTheme'
 import { useState } from 'react'
-import { PANCAKE_SPACE } from 'views/Voting/config'
+import { PANICE_SPACE } from 'views/Voting/config'
 import useGetVotingPower from '../../hooks/useGetVotingPower'
 import DetailsView from './DetailsView'
 import MainView from './MainView'
@@ -61,7 +61,7 @@ const CastVoteModal: React.FC<React.PropsWithChildren<CastVoteModalProps>> = ({
       setIsPending(true)
 
       await client.vote(library as any, account, {
-        space: PANCAKE_SPACE,
+        space: PANICE_SPACE,
         choice: vote.value,
         reason: '',
         type: 'single-choice',

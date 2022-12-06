@@ -5,7 +5,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import BigNumber from 'bignumber.js'
 
-const useProxyCAKEBalance = () => {
+const useProxyICEBalance = () => {
   const { account, chainId } = useActiveWeb3React()
   const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const cakeContract = getIceContract()
@@ -18,4 +18,4 @@ const useProxyCAKEBalance = () => {
   }
 }
 
-export default useProxyCAKEBalance
+export default useProxyICEBalance

@@ -169,7 +169,7 @@ export const useCakeBusdPrice = (
   const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet cake if chain is testnet
-  const cake: Token = isTestnet ? CAKE[ChainId.BSC_TESTNET] : CAKE[ChainId.BSC]
+  const cake: Token = isTestnet ? ICE[ChainId.BSC_TESTNET] : ICE[ChainId.BSC]
   */
   const cake: Token = ICE[ChainId.BITGERT]
   return usePriceByPairs(USD[cake.chainId], cake)

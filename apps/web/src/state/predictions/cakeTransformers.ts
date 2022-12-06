@@ -1,7 +1,7 @@
 import { Bet, BetPosition, Round, PredictionUser } from 'state/types'
 import numberOrNull from 'utils/numberOrNull'
 
-import { RoundResponseCAKE } from './cakeQueries'
+import { RoundResponseICE } from './cakeQueries'
 
 const getRoundPosition = (positionResponse: string) => {
   if (positionResponse === 'Bull') {
@@ -19,7 +19,7 @@ const getRoundPosition = (positionResponse: string) => {
   return null
 }
 
-export const transformBetResponseCAKE = (betResponse): Bet => {
+export const transformBetResponseICE = (betResponse): Bet => {
   const bet = {
     id: betResponse.id,
     hash: betResponse.hash,
@@ -30,24 +30,24 @@ export const transformBetResponseCAKE = (betResponse): Bet => {
     claimedAt: numberOrNull(betResponse.claimedAt),
     claimedBlock: numberOrNull(betResponse.claimedBlock),
     claimedHash: betResponse.claimedHash,
-    claimedBNB: betResponse.claimedCAKE ? parseFloat(betResponse.claimedCAKE) : 0,
-    claimedNetBNB: betResponse.claimedNetCAKE ? parseFloat(betResponse.claimedNetCAKE) : 0,
+    claimedBNB: betResponse.claimedICE ? parseFloat(betResponse.claimedICE) : 0,
+    claimedNetBNB: betResponse.claimedNetICE ? parseFloat(betResponse.claimedNetICE) : 0,
     createdAt: numberOrNull(betResponse.createdAt),
     updatedAt: numberOrNull(betResponse.updatedAt),
   } as Bet
 
   if (betResponse.user) {
-    bet.user = transformUserResponseCAKE(betResponse.user)
+    bet.user = transformUserResponseICE(betResponse.user)
   }
 
   if (betResponse.round) {
-    bet.round = transformRoundResponseCAKE(betResponse.round)
+    bet.round = transformRoundResponseICE(betResponse.round)
   }
 
   return bet
 }
 
-export const transformUserResponseCAKE = (userResponse): PredictionUser => {
+export const transformUserResponseICE = (userResponse): PredictionUser => {
   const {
     id,
     createdAt,
@@ -56,14 +56,14 @@ export const transformUserResponseCAKE = (userResponse): PredictionUser => {
     totalBets,
     totalBetsBull,
     totalBetsBear,
-    totalCAKE,
-    totalCAKEBull,
-    totalCAKEBear,
+    totalICE,
+    totalICEBull,
+    totalICEBear,
     totalBetsClaimed,
-    totalCAKEClaimed,
+    totalICEClaimed,
     winRate,
-    averageCAKE,
-    netCAKE,
+    averageICE,
+    netICE,
   } = userResponse || {}
 
   return {
@@ -74,18 +74,18 @@ export const transformUserResponseCAKE = (userResponse): PredictionUser => {
     totalBets: numberOrNull(totalBets),
     totalBetsBull: numberOrNull(totalBetsBull),
     totalBetsBear: numberOrNull(totalBetsBear),
-    totalBNB: totalCAKE ? parseFloat(totalCAKE) : 0,
-    totalBNBBull: totalCAKEBull ? parseFloat(totalCAKEBull) : 0,
-    totalBNBBear: totalCAKEBear ? parseFloat(totalCAKEBear) : 0,
+    totalBNB: totalICE ? parseFloat(totalICE) : 0,
+    totalBNBBull: totalICEBull ? parseFloat(totalICEBull) : 0,
+    totalBNBBear: totalICEBear ? parseFloat(totalICEBear) : 0,
     totalBetsClaimed: numberOrNull(totalBetsClaimed),
-    totalBNBClaimed: totalCAKEClaimed ? parseFloat(totalCAKEClaimed) : 0,
+    totalBNBClaimed: totalICEClaimed ? parseFloat(totalICEClaimed) : 0,
     winRate: winRate ? parseFloat(winRate) : 0,
-    averageBNB: averageCAKE ? parseFloat(averageCAKE) : 0,
-    netBNB: netCAKE ? parseFloat(netCAKE) : 0,
+    averageBNB: averageICE ? parseFloat(averageICE) : 0,
+    netBNB: netICE ? parseFloat(netICE) : 0,
   }
 }
 
-export const transformRoundResponseCAKE = (roundResponse: RoundResponseCAKE): Round => {
+export const transformRoundResponseICE = (roundResponse: RoundResponseICE): Round => {
   const {
     id,
     epoch,
@@ -137,6 +137,6 @@ export const transformRoundResponseCAKE = (roundResponse: RoundResponseCAKE): Ro
     bullAmount: bullAmount ? parseFloat(bullAmount) : 0,
     bearBets: numberOrNull(bearBets),
     bearAmount: bearAmount ? parseFloat(bearAmount) : 0,
-    bets: bets.map(transformBetResponseCAKE),
+    bets: bets.map(transformBetResponseICE),
   }
 }

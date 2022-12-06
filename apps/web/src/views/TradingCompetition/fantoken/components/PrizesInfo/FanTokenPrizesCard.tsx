@@ -28,10 +28,10 @@ const FanTokenPrizesCard = () => {
       <Box p="24px">
         <Text color="textSubtle" fontSize="14px">
           {t(
-            'Prizes to be distributed in CAKE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.',
+            'Prizes to be distributed in ICE, LAZIO, PORTO and SANTOS in a distribution of 3:1:1:1 and shared by all members of each respective tier.',
           )}{' '}
           {t(
-            'The price of token prizes (CAKE, LAZIO, PORTO and SANTOS) in USD will be determined as per their BUSD pair price during the tally period.',
+            'The price of token prizes (ICE, LAZIO, PORTO and SANTOS) in USD will be determined as per their BUSD pair price during the tally period.',
           )}
         </Text>
       </Box>
