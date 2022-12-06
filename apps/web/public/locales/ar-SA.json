@@ -2047,5 +2047,11 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "قم برهن CAKE الاستمتاع بفوائد تعزيز عائد المزرعة، والمشاركة في العروض الأولية للمزرعة (IFO)، ومعززات قوة التصويت وغير ذلك الكثير!",
   "CAKE staking expired": "انتهت صلاحية رهن CAKE",
   "Find out more": "اكتشف المزيد",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "وبالنسبة للبيع العام، سيتمكن كل مشارك مؤهل من تخصيص أي عدد من CAKE بما لا يتجاوز الحد الأقصى للتخصيص المنشور مع مقترح تصويت العرض الأولي للمزرعة (IFO)."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "وبالنسبة للبيع العام، سيتمكن كل مشارك مؤهل من تخصيص أي عدد من CAKE بما لا يتجاوز الحد الأقصى للتخصيص المنشور مع مقترح تصويت العرض الأولي للمزرعة (IFO).",
+  "Slippage": "Slippage",
+  "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected",
+  "Unable to supply": "Unable to supply",
+  "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click": "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click",
+  "For each stableswap trade, refer to the fee table": "For each stableswap trade, refer to the fee table",
+  "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid"
 }
