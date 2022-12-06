@@ -3,10 +3,33 @@ import { Ifo } from './types'
 
 export const ifos: Ifo[] = [
   {
+    id: 'cakeeth',
+    cIFO: false,
+    address: `0x6448039f3a6de9e862eb5b2347b583fab0c759c5e22ae1700d1b0569ee07b737::IFO::IFOPool<${testnetTokens.cake.address}, ${testnetTokens.eth.address}, 0xb664f557c71de85be5cf91563961c5bb05345ba2b33f361533d2c184577185b7::uints::U1>`,
+    isActive: true,
+    name: 'ETH',
+    poolUnlimited: {
+      saleAmount: '9 ETH',
+      raiseAmount: '$123,456',
+      cakeToBurn: '$0',
+      distributionRatio: 0,
+    },
+    currency: testnetTokens.cake,
+    token: testnetTokens.eth,
+    releaseTime: 0,
+    campaignId: '1',
+    articleUrl: '',
+    tokenOfferingPrice: 1,
+    version: 3.2,
+    twitterUrl: '',
+    description: 'ETH description',
+    vestingTitle: '$ETH -  vesting title.',
+  },
+  {
     id: 'aptbnb',
     cIFO: false,
     address: `0x6448039f3a6de9e862eb5b2347b583fab0c759c5e22ae1700d1b0569ee07b737::IFO::IFOPool<${testnetTokens.apt.address}, ${testnetTokens.bnb.address}, 0xb664f557c71de85be5cf91563961c5bb05345ba2b33f361533d2c184577185b7::uints::U1>`,
-    isActive: true,
+    isActive: false,
     name: 'BNB',
     poolUnlimited: {
       saleAmount: '9 BNB',
