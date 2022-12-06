@@ -40,7 +40,7 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
     <Modal title={t('Check your network')} hideCloseButton headerBackground="gradientCardHeader">
       <Grid style={{ gap: '16px' }} maxWidth="336px">
         <Text>
-          {t('Currently %feature% only supported in', { feature: typeof title === 'string' ? title : 'this page' })}{' '}
+          {t('Currently %feature% is only supported on', { feature: typeof title === 'string' ? title : 'this page' })}{' '}
           {supportedMainnetChains?.map((c) => c.name).join(', ')}
         </Text>
         <div style={{ textAlign: 'center' }}>
