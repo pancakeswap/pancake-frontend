@@ -1,21 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
-import { AutoRenewIcon, Button, QuestionHelper, Text } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, QuestionHelper, Text, Link } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
-import { isV2SwapOrStableSwap } from 'config/constants/types'
 import { useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
-import { computeTradePriceBreakdown, formatExecutionPrice, warningSeverity } from 'utils/exchange'
+import { warningSeverity } from 'utils/exchange'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
-import {
-  formatExecutionPrice as formatExecutionPriceForSmarRouter,
-  computeTradePriceBreakdown as computeTradePriceBreakdownForSmartRouter,
-} from '../utils/exchange'
+import { formatExecutionPrice, computeTradePriceBreakdown } from '../utils/exchange'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
@@ -33,7 +29,7 @@ export default function SwapModalFooter({
   swapErrorMessage,
   disabledConfirm,
 }: {
-  trade: Trade<Currency, Currency, TradeType> | TradeWithStableSwap<Currency, Currency, TradeType>
+  trade: TradeWithStableSwap<Currency, Currency, TradeType>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
   isEnoughInputBalance: boolean
   onConfirm: () => void
@@ -42,11 +38,7 @@ export default function SwapModalFooter({
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
-  const { priceImpactWithoutFee, realizedLPFee } = useMemo(
-    () =>
-      isV2SwapOrStableSwap(trade) ? computeTradePriceBreakdown(trade) : computeTradePriceBreakdownForSmartRouter(trade),
-    [trade],
-  )
+  const { priceImpactWithoutFee, realizedLPFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const severity = warningSeverity(priceImpactWithoutFee)
 
   const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
@@ -69,9 +61,7 @@ export default function SwapModalFooter({
               paddingLeft: '10px',
             }}
           >
-            {isV2SwapOrStableSwap(trade)
-              ? formatExecutionPrice(trade, showInverted)
-              : formatExecutionPriceForSmarRouter(trade, showInverted)}
+            {formatExecutionPrice(trade, showInverted)}
             <StyledBalanceMaxMini onClick={() => setShowInverted(!showInverted)}>
               <AutoRenewIcon width="14px" />
             </StyledBalanceMaxMini>
@@ -119,10 +109,23 @@ export default function SwapModalFooter({
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">{t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}</Text>
+                  <Text mb="12px">
+                    {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
+                  </Text>
                   <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
                   <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
                   <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
+                  <Text mt="12px">
+                    {t('For each stableswap trade, refer to the fee table')}
+                    <Link
+                      style={{ display: 'inline' }}
+                      ml="4px"
+                      external
+                      href="https://docs.pancakeswap.finance/products/stableswap#stableswap-fees"
+                    >
+                      {t('here.')}
+                    </Link>
+                  </Text>
                 </>
               }
               ml="4px"
