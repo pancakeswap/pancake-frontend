@@ -1,6 +1,6 @@
 import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
-import {bitgertTokens, dogechainTokens, dokenTokens, fuseTokens} from '@pancakeswap/tokens'
+import {bitgertTokens, dogechainTokens, dokenTokens, fuseTokens, xdcTokens} from '@pancakeswap/tokens'
 import { ChainMap, ChainTokenList } from './types'
 
 export const ROUTER_ADDRESS_COMMON = '0xBb5e1777A331ED93E07cF043363e48d320eb96c4'
@@ -9,6 +9,7 @@ export const ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.DOGE]: ROUTER_ADDRESS_COMMON,
   [ChainId.DOKEN]: ROUTER_ADDRESS_COMMON,
   [ChainId.FUSE]: ROUTER_ADDRESS_COMMON,
+  [ChainId.XDC]: ROUTER_ADDRESS_COMMON,
 }
 
 // used to construct intermediary pairs for trading
@@ -21,7 +22,8 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   ],
   [ChainId.DOGE]: [
     dogechainTokens.wdoge,
-    dogechainTokens.ice
+    dogechainTokens.ice,
+    dogechainTokens.usdt
   ],
   [ChainId.DOKEN]: [
     dokenTokens.wdkn,
@@ -31,6 +33,11 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.FUSE]: [
     fuseTokens.wfuse,
     fuseTokens.ice
+  ],
+  [ChainId.XDC]: [
+    xdcTokens.wxdc,
+    xdcTokens.ice,
+    xdcTokens.usdt
   ],
 }
 
@@ -54,7 +61,8 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.BITGERT]: [bitgertTokens.ice, bitgertTokens.usdti],
   [ChainId.DOGE]: [dogechainTokens.ice],
   [ChainId.DOKEN]: [dokenTokens.ice],
-  [ChainId.FUSE]: [fuseTokens.ice]
+  [ChainId.FUSE]: [fuseTokens.ice],
+  [ChainId.XDC]: [xdcTokens.ice]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -63,20 +71,27 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.DOGE]: [dogechainTokens.wdoge, dogechainTokens.ice],
   [ChainId.DOKEN]: [dokenTokens.wdkn, dokenTokens.ice, dokenTokens.usdt],
   [ChainId.FUSE]: [fuseTokens.wfuse, fuseTokens.ice, fuseTokens.doge, fuseTokens.shiba],
+  [ChainId.XDC]: [xdcTokens.wxdc, xdcTokens.ice, xdcTokens.usdt, xdcTokens.usdc],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
   [ChainId.BITGERT]: [
-      [bitgertTokens.wbrise, bitgertTokens.ice],
+    [bitgertTokens.wbrise, bitgertTokens.ice],
+    [bitgertTokens.usdti, bitgertTokens.ice],
   ],
   [ChainId.DOGE]: [
     [dogechainTokens.wdoge, dogechainTokens.ice],
+    [dogechainTokens.usdt, dogechainTokens.ice],
   ],
   [ChainId.DOKEN]: [
     [dokenTokens.wdkn, dokenTokens.ice],
   ],
   [ChainId.FUSE]: [
     [fuseTokens.wfuse, fuseTokens.ice],
+  ],
+  [ChainId.XDC]: [
+    [xdcTokens.wxdc, xdcTokens.ice],
+    [xdcTokens.usdt, xdcTokens.ice],
   ],
 }
 

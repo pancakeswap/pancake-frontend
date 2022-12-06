@@ -1,10 +1,11 @@
-import { ERC20Token } from './entities/token'
+import { ERC20Token } from 'entities'
 
 export enum ChainId {
   BITGERT = 32520,
   DOGE = 2000,
   DOKEN = 61916,
   FUSE = 122,
+  XDC = 50,
 }
 
 export const FACTORY_ADDRESS = '0x9E6d21E759A7A288b80eef94E4737D313D31c13f'
@@ -13,6 +14,7 @@ export const FACTORY_ADDRESS_MAP: Record<number, string> = {
   [ChainId.DOGE]: FACTORY_ADDRESS,
   [ChainId.DOKEN]: FACTORY_ADDRESS,
   [ChainId.FUSE]: FACTORY_ADDRESS,
+  [ChainId.XDC]: FACTORY_ADDRESS,
 }
 
 export const INIT_CODE_HASH = '0x58c1b429d0ffdb4407396ae8118c58fed54898473076d0394163ea2198f7c4a3'
@@ -21,6 +23,7 @@ export const INIT_CODE_HASH_MAP: Record<number, string> = {
   [ChainId.DOGE]: INIT_CODE_HASH,
   [ChainId.DOKEN]: INIT_CODE_HASH,
   [ChainId.FUSE]: INIT_CODE_HASH,
+  [ChainId.XDC]: INIT_CODE_HASH,
 }
 
 export const WETH9 = {
@@ -52,6 +55,13 @@ export const WETH9 = {
     'WFUSE',
     'Wrapped Fuse'
   ),
+  [ChainId.XDC]: new ERC20Token(
+      ChainId.XDC,
+      '0x951857744785E80e2De051c32EE7b25f9c458C42',
+      18,
+      'WXDC',
+      'Wrapped XDC'
+  ),
 }
 
 export const WNATIVE: Record<number, ERC20Token> = {
@@ -59,6 +69,7 @@ export const WNATIVE: Record<number, ERC20Token> = {
   [ChainId.DOGE]: WETH9[ChainId.DOGE],
   [ChainId.DOKEN]: WETH9[ChainId.DOKEN],
   [ChainId.FUSE]: WETH9[ChainId.FUSE],
+  [ChainId.XDC]: WETH9[ChainId.XDC],
 }
 
 export const NATIVE: Record<
@@ -73,4 +84,5 @@ export const NATIVE: Record<
   [ChainId.DOGE]: { name: 'Doge', symbol: 'DOGE', decimals: 18 },
   [ChainId.DOKEN]: { name: 'DoKEN', symbol: 'DKN', decimals: 18 },
   [ChainId.FUSE]: { name: 'Fuse', symbol: 'FUSE', decimals: 18 },
+  [ChainId.XDC]: { name: 'XDC', symbol: 'XDC', decimals: 18 },
 }

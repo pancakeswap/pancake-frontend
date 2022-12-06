@@ -203,4 +203,26 @@ export const fuse: Chain = {
   },
 }
 
+export const xdc: Chain = {
+  id: 50,
+  name: 'XinFin XDC Network',
+  network: 'xdc',
+  rpcUrls: {
+    public: 'https://erpc.xinfin.network',
+    default: 'https://erpc.xinfin.network',
+  },
+  blockExplorers: {
+    default: { name: 'XDC Explorer', url: 'https://xdcscan.io' },
+  },
+  nativeCurrency: {
+    name: 'XDC',
+    symbol: 'XDC',
+    decimals: 18,
+  },
+  multicall: {
+    address: '0xf3a3dAf360161B2f10c645EF039C709A3Fd4Ea62',
+    blockCreated: 53792616,
+  },
+}
+
 export { rinkeby, mainnet, goerli }

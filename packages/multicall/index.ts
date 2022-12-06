@@ -10,6 +10,7 @@ export const multicallAddresses = {
   2000: '0x3d2e33eb61677869d87ac92d3c8891ec5c57fa5b',
   61916: '0xb999ea90607a826a3e6e6646b404c3c7d11fa39d',
   122: '0x43891084581fD07Ee1189f3a2f04e51c26a95B77',
+  50: '0xf3a3dAf360161B2f10c645EF039C709A3Fd4Ea62',
 }
 
 export const getMulticallContract = (chainId: ChainId, provider) => {
@@ -116,8 +117,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
       if (!success || returnData === '0x') return null
       const { address, abi, name } = calls[i]
       const contract = new Contract(address, abi)
-      const decoded = contract.interface.decodeFunctionResult(name, returnData)
-      return decoded
+      return contract.interface.decodeFunctionResult(name, returnData)
     })
   }
 

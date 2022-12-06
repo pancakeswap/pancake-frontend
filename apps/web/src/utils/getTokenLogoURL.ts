@@ -5,8 +5,9 @@ import { ChainId, Token } from '@pancakeswap/sdk'
 const mapping = {
     [ChainId.BITGERT]: 'bitgert',
     [ChainId.DOGE]: 'doge',
-    [ChainId.FUSE]: 'fuse',
     [ChainId.DOKEN]: 'doken',
+    [ChainId.FUSE]: 'fuse',
+    [ChainId.XDC]: 'xdc',
 }
 
 const getTokenLogoURL = memoize(
