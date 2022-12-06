@@ -25,9 +25,17 @@ export const bscTestnetTokens = {
   wbtc: new ERC20Token(ChainId.BSC_TESTNET, '0xfC8bFbe9644e1BC836b8821660593e7de711e564', 8, 'WBTC', 'Wrapped BTC'),
   usdc: new ERC20Token(
     ChainId.BSC_TESTNET,
-    '0x2fB98DCc527c1403F92c6Bed05a50725d3005636',
+    '0xCA8eB2dec4Fe3a5abbFDc017dE48E461A936623D',
     18,
     'USDC',
     'Binance-Peg USD Coin',
+  ),
+  usdt: new ERC20Token(ChainId.BSC_TESTNET, '0x0fB5D7c73FA349A90392f873a4FA1eCf6a3d0a96', 18, 'USDT', 'Tether USD'),
+  mockBusd: new ERC20Token(
+    ChainId.BSC_TESTNET,
+    '0x3304dd20f6Fe094Cb0134a6c8ae07EcE26c7b6A7',
+    18,
+    'BUSD',
+    'Binance USD',
   ),
 }
