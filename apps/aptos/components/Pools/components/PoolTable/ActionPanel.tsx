@@ -4,12 +4,13 @@ import BigNumber from 'bignumber.js'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useTranslation } from '@pancakeswap/localization'
+import isVaultPool from 'components/Pools/utils/isVaultPool'
+
 import PoolStatsInfo from '../PoolCard/PoolStatsInfo'
-import CollectModal from '../PoolCard/CollectModal'
+import TableActions from './TableActions'
+import CakeTableActions from './CakeTableActions'
 
 const { ManualPoolTag } = Farm.Tags
-
-const Stake = () => null
 
 const expandAnimation = keyframes`
   from {
@@ -98,8 +99,6 @@ const InfoSection = styled(Box)`
   }
 `
 
-const HarvestAction = Pool.withTableActions<Coin>(Pool.withCollectModalTableAction(CollectModal))
-
 const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ account, pool, expanded }) => {
   const { userData } = pool
   const { isMobile } = useMatchBreakpoints()
@@ -115,6 +114,8 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
   const { targetRef, tooltip, tooltipVisible } = useTooltip(manualTooltipText, {
     placement: 'bottom',
   })
+
+  const Actions = isVaultPool(pool) ? CakeTableActions : TableActions
 
   return (
     <StyledActionPanel expanded={expanded}>
@@ -133,8 +134,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
       <ActionContainer>
         <Box width="100%">
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            <HarvestAction pool={pool} account={account} />
-            <Stake pool={pool} />
+            <Actions pool={pool} account={account} stakedBalance={stakedBalance} />
           </ActionContainer>
         </Box>
       </ActionContainer>

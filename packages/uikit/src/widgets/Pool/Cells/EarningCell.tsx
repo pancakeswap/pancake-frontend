@@ -12,7 +12,6 @@ import { CellContent, BaseCell } from "./BaseCell";
 interface EarningsCellProps<T> {
   pool: DeserializedPool<T>;
   account: string;
-  onPresentCollect: () => void;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -22,7 +21,7 @@ const StyledCell = styled(BaseCell)`
   }
 `;
 
-export function EarningsCell<T>({ pool, account, onPresentCollect }: EarningsCellProps<T>) {
+export function EarningsCell<T>({ pool, account }: EarningsCellProps<T>) {
   const { t } = useTranslation();
   const { isMobile } = useMatchBreakpoints();
   const { earningToken, userData, earningTokenPrice } = pool;
@@ -39,7 +38,6 @@ export function EarningsCell<T>({ pool, account, onPresentCollect }: EarningsCel
 
   const handleEarningsClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    onPresentCollect();
   };
 
   return (

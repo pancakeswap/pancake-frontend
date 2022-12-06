@@ -4,17 +4,17 @@ import { useTranslation } from "@pancakeswap/localization";
 import BigNumber from "bignumber.js";
 import { BaseCell, CellContent } from "./BaseCell";
 
-interface TotalStakedCellProps<T> {
+interface TotalStakedCellProps {
   totalStakedBalance: number;
-  stakingToken: T;
-  totalStaked: BigNumber;
+  stakingTokenSymbol: string;
+  totalStaked?: BigNumber;
 }
 
 const StyledCell = styled(BaseCell)`
   flex: 2 0 100px;
 `;
 
-export function TotalStakedCell<T>({ stakingToken, totalStaked, totalStakedBalance }: TotalStakedCellProps<T>) {
+export function TotalStakedCell({ stakingTokenSymbol, totalStaked, totalStakedBalance }: TotalStakedCellProps) {
   const { t } = useTranslation();
 
   return (
@@ -25,7 +25,7 @@ export function TotalStakedCell<T>({ stakingToken, totalStaked, totalStakedBalan
         </Text>
         {totalStaked && totalStaked.gte(0) ? (
           <Flex height="20px" alignItems="center">
-            <Balance fontSize="16px" value={totalStakedBalance} decimals={0} unit={` ${stakingToken.symbol}`} />
+            <Balance fontSize="16px" value={totalStakedBalance} decimals={0} unit={` ${stakingTokenSymbol}`} />
           </Flex>
         ) : (
           <Skeleton width="80px" height="16px" />

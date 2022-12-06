@@ -1,25 +1,18 @@
 import BigNumber from "bignumber.js";
 import { useTranslation } from "@pancakeswap/localization";
-import React, { createElement, type FunctionComponent, useMemo } from "react";
+import React, { useMemo, ReactNode } from "react";
 import styled from "styled-components";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
-import { DeserializedCakeVault, DeserializedPool } from "../types";
+import { DeserializedPool } from "../types";
 import { BaseCell, CellContent } from "./BaseCell";
 import { Text, Skeleton } from "../../../components";
 import useMatchBreakpoints from "../../../contexts/MatchBreakpoints/useMatchBreakpoints";
 
 interface NameCellProps<T> {
   pool: DeserializedPool<T>;
-  vaultData: DeserializedCakeVault;
   userShares?: BigNumber;
   totalCakeInVault?: BigNumber;
-  tokenPairImage: FunctionComponent<{
-    primaryToken: T;
-    secondaryToken: T;
-    mr: string;
-    width: number;
-    height: number;
-  }>;
+  tokenPairImage: ReactNode;
 }
 
 const StyledCell = styled(BaseCell)`
@@ -61,13 +54,7 @@ export function NameCell<T>({ pool, totalCakeInVault, userShares, tokenPairImage
     <StyledCell role="cell">
       {isLoaded ? (
         <>
-          {createElement(tokenPairImage, {
-            primaryToken: earningToken,
-            secondaryToken: stakingToken,
-            mr: "8px",
-            width: 40,
-            height: 40,
-          })}
+          {tokenPairImage}
           <CellContent>
             {showStakedTag && (
               <Text fontSize="12px" bold color={isFinished ? "failure" : "secondary"} textTransform="uppercase">

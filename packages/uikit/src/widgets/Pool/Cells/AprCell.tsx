@@ -8,7 +8,7 @@ interface AprCellProps<T> {
   pool: Pool.DeserializedPool<T>;
   aprComp: FunctionComponent<{
     pool: Pool.DeserializedPool<T>;
-    stakedBalance: number;
+    stakedBalance: BigNumber;
     showIcon: boolean;
   }>;
 }

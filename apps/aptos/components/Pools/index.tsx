@@ -7,7 +7,6 @@ import styled from 'styled-components'
 import Page from 'components/Layout/Page'
 import { TokenPairImage } from 'components/TokenImage'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
-import { CAKE_PID } from 'config/constants'
 
 import NoSSR from '../NoSSR'
 import PoolControls from './components/PoolControls'
@@ -16,15 +15,13 @@ import Apr from './components/PoolCard/Apr'
 import CardFooter from './components/PoolCard/CardFooter'
 import PoolStatsInfo from './components/PoolCard/PoolStatsInfo'
 import CakeCardActions from './components/PoolCard/CakeCardActions'
-import VaultPoolRow from './components/PoolTable/VaultPoolRow'
 import PoolRow from './components/PoolTable/PoolRow'
 import { usePoolsList } from './hooks/usePoolsList'
+import isVaultPool from './utils/isVaultPool'
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
 `
-
-const isVaultPool = (pool) => pool?.sousId === CAKE_PID
 
 const PoolsPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -102,25 +99,15 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                 </CardLayout>
               ) : (
                 <Pool.PoolsTable>
-                  {chosenPools.map((pool) =>
-                    isVaultPool(pool) ? (
-                      <VaultPoolRow
-                        initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
-                        key={pool.contractAddress[chainId]}
-                        vaultKey={pool.vaultKey}
-                        account={account}
-                        pool={pool}
-                      />
-                    ) : (
-                      <PoolRow
-                        initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
-                        key={pool.contractAddress[chainId]}
-                        sousId={pool.sousId}
-                        account={account}
-                        pool={pool}
-                      />
-                    ),
-                  )}
+                  {chosenPools.map((pool) => (
+                    <PoolRow
+                      initialActivity={normalizedUrlSearch.toLowerCase() === pool.earningToken.symbol?.toLowerCase()}
+                      key={pool.contractAddress[chainId]}
+                      sousId={pool.sousId}
+                      account={account}
+                      pool={pool}
+                    />
+                  ))}
                 </Pool.PoolsTable>
               )
             }}
