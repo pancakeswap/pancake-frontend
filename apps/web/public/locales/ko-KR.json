@@ -2047,5 +2047,11 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "CAKE을 잠그고 팜 일드 부스팅, IFO 참여, 투표권 강화 등의 혜택을 이용하세요!",
   "CAKE staking expired": "CAKE 스테이킹 만료됨",
   "Find out more": "자세히 알아보기",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "공개 판매의 경우 자격을 갖춘 각 참가자는 IFO 투표 제안과 함께 게시되는 최대 커밋 한도까지 CAKE을 얼마든지 커밋할 수 있습니다."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "공개 판매의 경우 자격을 갖춘 각 참가자는 IFO 투표 제안과 함께 게시되는 최대 커밋 한도까지 CAKE을 얼마든지 커밋할 수 있습니다.",
+  "Slippage": "Slippage",
+  "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected",
+  "Unable to supply": "Unable to supply",
+  "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click": "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click",
+  "For each stableswap trade, refer to the fee table": "For each stableswap trade, refer to the fee table",
+  "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid"
 }
