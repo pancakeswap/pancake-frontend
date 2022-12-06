@@ -11,6 +11,7 @@ import {
   TimerIcon,
   VerifiedIcon,
   VoteIcon,
+  LockIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -90,6 +91,24 @@ const ManualPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   );
 };
 
+const LockedOrAutoPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  const { t } = useTranslation();
+  return (
+    <Tag variant="success" outline {...props}>
+      {t("Auto")}/{t("Locked")}
+    </Tag>
+  );
+};
+
+const LockedPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  const { t } = useTranslation();
+  return (
+    <Tag variant="success" outline startIcon={<LockIcon width="18px" color="success" mr="4px" />} {...props}>
+      {t("Locked")}
+    </Tag>
+  );
+};
+
 const CompoundingPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
@@ -137,6 +156,8 @@ const Tags = {
   ClosedTag,
   CommunityTag,
   StableFarmTag,
+  LockedPoolTag,
+  LockedOrAutoPoolTag,
 };
 
 export default Tags;

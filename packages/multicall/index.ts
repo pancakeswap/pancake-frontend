@@ -1,4 +1,4 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface, Fragment } from '@ethersproject/abi'
 import { CallOverrides, Contract } from '@ethersproject/contracts'
 import { Provider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
@@ -101,25 +101,31 @@ export function createMulticall<TProvider extends Provider>(
   const multicallv3 = async ({ calls, chainId = ChainId.BSC, allowFailure, overrides }: MulticallV3Params) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
+    const interfaceCache = new WeakMap()
     const _calls = calls.map(({ abi, address, name, params, allowFailure: _allowFailure }) => {
-      const contract = new Contract(address, abi)
-      const callData = contract.interface.encodeFunctionData(name, params ?? [])
-      if (!contract[name]) console.error(`${name} missing on ${address}`)
+      let itf = interfaceCache.get(abi)
+      if (!itf) {
+        itf = new Interface(abi)
+        interfaceCache.set(abi, itf)
+      }
+      if (!itf.fragments.some((fragment: Fragment) => fragment.name === name))
+        console.error(`${name} missing on ${address}`)
+      const callData = itf.encodeFunctionData(name, params ?? [])
       return {
-        target: address,
+        target: address.toLowerCase(),
         allowFailure: allowFailure || _allowFailure,
         callData,
       }
     })
 
-    const result = await multi.callStatic.aggregate3([...[_calls], ...(overrides ? [overrides] : [])])
+    const result = await multi.callStatic.aggregate3(_calls, ...(overrides ? [overrides] : []))
 
     return result.map((call: any, i: number) => {
       const { returnData, success } = call
       if (!success || returnData === '0x') return null
-      const { address, abi, name } = calls[i]
-      const contract = new Contract(address, abi)
-      const decoded = contract.interface.decodeFunctionResult(name, returnData)
+      const { abi, name } = calls[i]
+      const itf = interfaceCache.get(abi)
+      const decoded = itf?.decodeFunctionResult(name, returnData)
       return decoded
     })
   }

@@ -26,13 +26,6 @@ export const footerLinks: (t: ContextApi['t']) => FooterLinkType[] = (t) => [
         label: t('Litepaper'),
         href: 'https://v2litepaper.pancakeswap.finance/',
       },
-      {
-        label: '—',
-      },
-      {
-        label: t('Online Store'),
-        href: 'https://pancakeswap.creator-spring.com/',
-      },
     ],
   },
   {

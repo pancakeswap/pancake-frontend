@@ -186,18 +186,17 @@ export function useIsTransactionUnsupported(currencyIn?: Currency, currencyOut?:
 }
 
 export function useIsTransactionWarning(currencyIn?: Currency, currencyOut?: Currency): boolean {
-  const unsupportedTokens: { [address: string]: Token } = useWarningTokens()
+  const warningTokens: { [address: string]: Token } = useWarningTokens()
   const { chainId } = useActiveChainId()
 
   const tokenIn = wrappedCurrency(currencyIn, chainId)
   const tokenOut = wrappedCurrency(currencyOut, chainId)
 
-  // if unsupported list loaded & either token on list, mark as unsupported
-  if (unsupportedTokens) {
-    if (tokenIn && Object.keys(unsupportedTokens).includes(tokenIn.address)) {
+  if (warningTokens) {
+    if (tokenIn && Object.keys(warningTokens).includes(tokenIn.address)) {
       return true
     }
-    if (tokenOut && Object.keys(unsupportedTokens).includes(tokenOut.address)) {
+    if (tokenOut && Object.keys(warningTokens).includes(tokenOut.address)) {
       return true
     }
   }

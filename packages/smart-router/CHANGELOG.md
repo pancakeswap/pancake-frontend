@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 0.4.0
+
+### Minor Changes
+
+- 7be222310: Add price & fee percent to stable swap pairs
+
 ## 0.3.0
 
 ### Minor Changes

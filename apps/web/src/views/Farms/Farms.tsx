@@ -183,10 +183,22 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
   const [boostedOnly, setBoostedOnly] = useState(false)
 
+  // NOTE: Temporarily inactive aBNBc-BNB LP on FE
   const activeFarms = farmsLP.filter(
-    (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!poolLength || poolLength > farm.pid),
+    (farm) =>
+      farm.lpAddress !== '0x272c2CF847A49215A3A1D4bFf8760E503A06f880' &&
+      farm.lpAddress !== '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' &&
+      farm.pid !== 0 &&
+      farm.multiplier !== '0X' &&
+      (!poolLength || poolLength > farm.pid),
   )
-  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+
+  const inactiveFarms = farmsLP.filter(
+    (farm) =>
+      farm.lpAddress === '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' ||
+      farm.lpAddress === '0x272c2CF847A49215A3A1D4bFf8760E503A06f880' ||
+      (farm.pid !== 0 && farm.multiplier === '0X'),
+  )
   const archivedFarms = farmsLP
 
   const stakedOnlyFarms = activeFarms.filter(

@@ -4,7 +4,7 @@ import { useAppDispatch } from 'state'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { fetchCakeVaultPublicData, fetchCakeVaultUserData } from 'state/pools'
 import { fetchLastVaultAddressAsync, fetchPublicPotteryDataAsync, fetchPotteryUserDataAsync } from './index'
-import { potterDataSelector } from './selectors'
+import { potteryDataSelector } from './selectors'
 import { State } from '../types'
 
 export const usePotteryFetch = () => {
@@ -29,7 +29,7 @@ export const usePotteryFetch = () => {
 }
 
 export const usePotteryData = () => {
-  return useSelector(potterDataSelector)
+  return useSelector(potteryDataSelector)
 }
 
 export const useLatestVaultAddress = () => {

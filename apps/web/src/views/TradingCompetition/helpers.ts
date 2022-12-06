@@ -121,7 +121,7 @@ export const getEasterRewardGroupAchievements = (userRewardGroup: string, teamRa
   const userGroup = easterPrizes[teamRank].filter((prizeGroup) => {
     return prizeGroup.group === userRewardGroup
   })[0]
-  return userGroup && userGroup.achievements
+  return userGroup?.achievements || {}
 }
 
 // given we have userPointReward and userRewardGroup, we can find the specific reward because no Rank has same two values.

@@ -2393,4 +2393,20 @@ export const bscTokens = {
     'Magpie Token',
     'https://www.magpiexyz.io/',
   ),
+  hook: new Token(
+    ChainId.BSC,
+    '0xa260E12d2B924cb899AE80BB58123ac3fEE1E2F0',
+    18,
+    'HOOK',
+    'Hook Token',
+    'https://hooked.io/',
+  ),
+  hft: new Token(
+    ChainId.BSC,
+    '0x44Ec807ce2F4a6F2737A92e985f318d035883e47',
+    18,
+    'HFT',
+    'Hashflow',
+    'https://www.hashflow.com/',
+  ),
 }

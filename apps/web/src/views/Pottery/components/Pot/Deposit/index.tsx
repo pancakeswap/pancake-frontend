@@ -46,8 +46,16 @@ const Deposit: React.FC<React.PropsWithChildren> = () => {
     return !Number.isNaN(apy) ? `${Number(apy).toFixed(2)}%` : '0%'
   }, [getLockedApy])
 
-  const secondsRemaining = remainTimeToNextFriday()
-  const { days, hours, minutes } = getTimePeriods(secondsRemaining)
+  const { days, hours, minutes } = useMemo(() => {
+    if (getStatus === PotteryDepositStatus.BEFORE_LOCK) {
+      return getTimePeriods(publicData.lockTime - Date.now() / 1000)
+    }
+    if (getStatus === PotteryDepositStatus.LOCK) {
+      const secondsRemaining = remainTimeToNextFriday()
+      return getTimePeriods(secondsRemaining)
+    }
+    return { minutes: 0, hours: 0, days: 0 }
+  }, [getStatus, publicData])
 
   const totalValueLocked = useMemo(() => {
     if (getStatus === PotteryDepositStatus.LOCK) {

@@ -1,21 +1,8 @@
-import {
-  BLOCKS_CLIENT,
-  BLOCKS_CLIENT_ETH,
-  INFO_CLIENT,
-  INFO_CLIENT_ETH,
-  INFO_NR_CLIENT,
-} from 'config/constants/endpoints'
-import { infoClient, infoClientETH, infoNRClient, infoStableSwapClient } from 'utils/graphql'
+import { BLOCKS_CLIENT, BLOCKS_CLIENT_ETH, INFO_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
+import { infoClientETH, infoClient, infoStableSwapClient } from 'utils/graphql'
 
 import { ChainId } from '@pancakeswap/sdk'
-import {
-  ETH_TOKEN_BLACKLIST,
-  PCS_ETH_START,
-  PCS_V2_START,
-  TOKEN_BLACKLIST,
-  INFO_BUCKETS_COOKIES,
-} from 'config/constants/info'
-import Cookies from 'js-cookie'
+import { ETH_TOKEN_BLACKLIST, PCS_ETH_START, PCS_V2_START, TOKEN_BLACKLIST } from 'config/constants/info'
 
 export type MultiChainName = 'BSC' | 'ETH'
 
@@ -49,18 +36,8 @@ export const multiChainQueryClient = {
   ETH: infoClientETH,
 }
 
-export const multiChainQueryClientWithNR = {
-  BSC: infoNRClient,
-  ETH: infoClientETH,
-}
-
 export const multiChainQueryEndPoint = {
   BSC: INFO_CLIENT,
-  ETH: INFO_CLIENT_ETH,
-}
-
-export const multiChainQueryEndPointWithNR = {
-  BSC: INFO_NR_CLIENT,
   ETH: INFO_CLIENT_ETH,
 }
 
@@ -76,9 +53,8 @@ export const multiChainTokenBlackList = {
 
 export const getMultiChainQueryEndPointWithStableSwap = (chainName: MultiChainName) => {
   const isStableSwap = checkIsStableSwap()
-  const bucketInfo = Cookies.get(INFO_BUCKETS_COOKIES) // sf or nr
   if (isStableSwap) return infoStableSwapClient
-  return bucketInfo === 'sf' ? multiChainQueryClient[chainName] : multiChainQueryClientWithNR[chainName]
+  return multiChainQueryClient[chainName]
 }
 
 export const checkIsStableSwap = () => window.location.href.includes('stableSwap')

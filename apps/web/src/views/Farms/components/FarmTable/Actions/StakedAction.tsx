@@ -20,7 +20,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BigNumber from 'bignumber.js'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { formatLpBalance } from '@pancakeswap/utils/formatBalance'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
 import WalletModal, { WalletView } from 'components/Menu/UserMenu/WalletModal'
 import { useAccount } from 'wagmi'
 import { useIsBloctoETH } from 'views/Farms'
@@ -381,8 +381,10 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
           <FarmUI.StakedLP
             decimals={18}
             stakedBalance={stakedBalance}
-            quoteTokenSymbol={quoteToken.symbol}
-            tokenSymbol={token.symbol}
+            quoteTokenSymbol={
+              WNATIVE[chainId]?.symbol === quoteToken.symbol ? NATIVE[chainId]?.symbol : quoteToken.symbol
+            }
+            tokenSymbol={WNATIVE[chainId]?.symbol === token.symbol ? NATIVE[chainId]?.symbol : token.symbol}
             lpTotalSupply={lpTotalSupply}
             lpTokenPrice={lpTokenPrice}
             tokenAmountTotal={tokenAmountTotal}
