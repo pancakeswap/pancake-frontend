@@ -31,7 +31,7 @@ const Header: React.FC<React.PropsWithChildren> = () => {
         {t('Show off your stats and collectibles with your unique profile')}
       </Heading>
       <Text color="textSubtle" mb="8px">
-        {t('Total cost: 1.5 CAKE')}
+        {t('Total cost: 1.5 ICE')}
       </Text>
       <Link href="/profile">
         <Button mb="24px" scale="sm" variant="secondary">

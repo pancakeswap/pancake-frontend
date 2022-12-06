@@ -61,14 +61,14 @@ const FAQ = () => {
           <FoldableText title={t('How is odds calculated?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {t(
-                "All CAKE deposits will be locked for the same duration, the odds of your address winning the prize pool is simply proportional to your CAKE deposit over the total CAKE deposit of the whole Pottery. Each week, eight (8) addresses are drawn randomly based on their odds. Simply put, if user A deposited 1 CAKE, user B deposited 2 CAKE, then user B's odds of winning is twice of user A's.",
+                "All ICE deposits will be locked for the same duration, the odds of your address winning the prize pool is simply proportional to your ICE deposit over the total ICE deposit of the whole Pottery. Each week, eight (8) addresses are drawn randomly based on their odds. Simply put, if user A deposited 1 ICE, user B deposited 2 ICE, then user B's odds of winning is twice of user A's.",
               )}
             </Text>
           </FoldableText>
           <FoldableText title={t('Is there any risk associated with depositing and playing Pottery?')} mt="24px">
             <Text fontSize="14px" color="textSubtle">
               {t(
-                "You will be locking your CAKE deposit for 10 weeks and you will not be able to withdraw early in any circumstances. Your principal (i.e. your deposit) will be returned to your 100% after 10 weeks. Only the staking rewards of your deposit will be used to fill and operate the Pottery. Simply put, you're only risking the staking rewards of your deposit.",
+                "You will be locking your ICE deposit for 10 weeks and you will not be able to withdraw early in any circumstances. Your principal (i.e. your deposit) will be returned to your 100% after 10 weeks. Only the staking rewards of your deposit will be used to fill and operate the Pottery. Simply put, you're only risking the staking rewards of your deposit.",
               )}
             </Text>
           </FoldableText>

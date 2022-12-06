@@ -33,7 +33,7 @@ const StakeVaultButton = (props) => {
 
   return (
     <Button {...props} onClick={handleClickButton}>
-      {t('Go to CAKE pool')}
+      {t('Go to ICE pool')}
     </Button>
   )
 }

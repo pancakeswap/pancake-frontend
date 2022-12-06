@@ -20,7 +20,7 @@ import {
 } from './styles'
 import { PancakeSquadHeaderType } from './types'
 
-const DEFAULT_CAKE_COST = 15
+const DEFAULT_ICE_COST = 15
 const DEFAULT_MAX_TICKETS = 10
 
 const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderType>> = ({
@@ -76,8 +76,8 @@ const PancakeSquadHeader: React.FC<React.PropsWithChildren<PancakeSquadHeaderTyp
         {`${t('Public Sale:')} 08:00 UTC, Oct. 7`}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>
-        {t('Mint Cost: %minCost% CAKE each', {
-          minCost: DEFAULT_CAKE_COST,
+        {t('Mint Cost: %minCost% ICE each', {
+          minCost: DEFAULT_ICE_COST,
         })}
       </Text>
       <Text color={lightColors.warning} textAlign="center" bold>

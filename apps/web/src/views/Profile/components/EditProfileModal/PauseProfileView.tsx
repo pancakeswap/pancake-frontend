@@ -55,7 +55,7 @@ const PauseProfilePage: React.FC<React.PropsWithChildren<PauseProfilePageProps>>
         )}
       </Text>
       <Text as="p" color="textSubtle" mb="24px">
-        {t('Cost to reactivate in the future: %cost% CAKE', { cost: formatBigNumber(numberCakeToReactivate) })}
+        {t('Cost to reactivate in the future: %cost% ICE', { cost: formatBigNumber(numberCakeToReactivate) })}
       </Text>
       <label htmlFor="acknowledgement" style={{ cursor: 'pointer', display: 'block', marginBottom: '24px' }}>
         <Flex alignItems="center">
