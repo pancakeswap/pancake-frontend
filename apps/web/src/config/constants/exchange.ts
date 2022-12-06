@@ -7,7 +7,7 @@ export const ROUTER_ADDRESS_COMMON = '0xBb5e1777A331ED93E07cF043363e48d320eb96c4
 export const ROUTER_ADDRESS: ChainMap<RouterAddressTypes> = {
   [ChainId.BITGERT]: {
     Icecream: ROUTER_ADDRESS_COMMON,
-    Akka: '0xA9b580d4D41482Eae21A8EAef05dDcEE5384Cc8D',
+    Akka: '0x9B13efdA353D1f2B127270A198e2960841e899B0',
   },
   [ChainId.DOGE]: {
     Icecream: ROUTER_ADDRESS_COMMON,
