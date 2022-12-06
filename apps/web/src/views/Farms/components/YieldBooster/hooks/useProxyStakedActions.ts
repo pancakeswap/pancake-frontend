@@ -7,7 +7,7 @@ import { harvestFarm, stakeFarm, unstakeFarm } from 'utils/calls/farms'
 import { fetchFarmUserDataAsync } from 'state/farms'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { useApproveBoostProxyFarm } from '../../../hooks/useApproveFarm'
-import useProxyCAKEBalance from './useProxyCAKEBalance'
+import useProxyICEBalance from './useProxyICEBalance'
 
 export default function useProxyStakedActions(pid, lpContract) {
   const { account, chainId } = useActiveWeb3React()
@@ -15,7 +15,7 @@ export default function useProxyStakedActions(pid, lpContract) {
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const dispatch = useAppDispatch()
   const gasPrice = useGasPrice()
-  const { proxyCakeBalance, refreshProxyCakeBalance } = useProxyCAKEBalance()
+  const { proxyCakeBalance, refreshProxyCakeBalance } = useProxyICEBalance()
 
   const onDone = useCallback(() => {
     refreshProxyCakeBalance()

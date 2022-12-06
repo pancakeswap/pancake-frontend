@@ -19,14 +19,14 @@ const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
     <Box>
       <Text>
         {t(
-          'The number of iCAKE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.',
+          'The number of iICE equals the locked staking amount if the staking duration is longer than %weeks% weeks. If the staking duration is less than %weeks% weeks, it will linearly decrease based on the staking duration.',
           {
             weeks: weeksDisplay,
           },
         )}
       </Text>
       <InlineLink external href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
-        {t('Learn more about iCAKE')}
+        {t('Learn more about iICE')}
       </InlineLink>
     </Box>,
     {
@@ -39,7 +39,7 @@ const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
       {tooltipVisible && tooltip}
       <TooltipText>
         <Text ref={targetRef} color="textSubtle" bold fontSize="12px">
-          {t('iCAKE')}
+          {t('iICE')}
         </Text>
       </TooltipText>
       <BalanceWithLoading color="text" bold fontSize="16px" decimals={3} value={getBalanceNumber(credit)} />

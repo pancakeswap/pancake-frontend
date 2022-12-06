@@ -48,7 +48,7 @@ const FanTokenUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInfor
         <tr>
           <BoldTd>
             <Flex flexDirection="column">
-              <Text bold>{cakeReward.toFixed(4)} CAKE</Text>
+              <Text bold>{cakeReward.toFixed(4)} ICE</Text>
               <Text bold>{lazioReward.toFixed(4)} LAZIO</Text>
               <Text bold>{portoReward.toFixed(4)} PORTO</Text>
               <Text bold>{santosReward.toFixed(4)} SANTOS</Text>

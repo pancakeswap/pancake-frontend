@@ -37,17 +37,14 @@ const BubbleWrapper = styled(Flex)`
 
 type FooterVariant = "default" | "side";
 
-const Footer: React.FC<
-  React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string; isEvm?: boolean; helpImage?: ReactNode }>
-> = ({
+const Footer: React.FC<React.PropsWithChildren<{ variant?: FooterVariant; helpUrl?: string; isEvm?: boolean }>> = ({
   variant = "default",
   helpUrl,
-  helpImage = <Image src="https://cdn.pancakeswap.com/help/help.png" alt="Get some help" width={160} height={108} />,
   isEvm = true,
 }) => {
   const { t } = useTranslation();
   const isSide = variant === "side";
-  return <Wrapper $isSide={isSide} />
+  return <Wrapper $isSide={isSide} />;
   /*
   return (
     <Wrapper $isSide={isSide}>

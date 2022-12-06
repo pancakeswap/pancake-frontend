@@ -63,7 +63,7 @@ const WinRateTvl: React.FC<React.PropsWithChildren<WinRateTvlProps>> = ({
         <Flex justifyContent="flex-end" mb="2px">
           <Balance textAlign="right" decimals={2} value={totalLockValue} />
           <Text ml="4px" color="textSubtle">
-            CAKE
+            ICE
           </Text>
         </Flex>
         <Balance

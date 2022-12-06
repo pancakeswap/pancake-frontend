@@ -8,7 +8,7 @@ import { Proposal, ProposalState, ProposalType, Vote } from 'state/types'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
 import { convertSharesToCake } from 'views/Pools/helpers'
-import { ADMINS, PANCAKE_SPACE, SNAPSHOT_VERSION } from './config'
+import { ADMINS, PANICE_SPACE, SNAPSHOT_VERSION } from './config'
 import { getScores } from './getScores'
 import * as strategies from './strategies'
 
@@ -61,7 +61,7 @@ export const generatePayloadData = () => {
   return {
     version: SNAPSHOT_VERSION,
     timestamp: (Date.now() / 1e3).toFixed(),
-    space: PANCAKE_SPACE,
+    space: PANICE_SPACE,
   }
 }
 
@@ -141,7 +141,7 @@ export const getVotingPower = async (
 
     const [cakeBalance, cakeBnbLpBalance, cakePoolBalance, cakeVaultBalance, poolsBalance, total, ifoPoolBalance] =
       await getScores(
-        PANCAKE_SPACE,
+        PANICE_SPACE,
         [
           strategies.cakeBalanceStrategy(version),
           strategies.cakeBnbLpBalanceStrategy(version),
@@ -218,7 +218,7 @@ export const getTotalFromVotes = (votes: Vote[]) => {
  * Get voting power by a list of voters, only total
  */
 export async function getVotingPowerByCakeStrategy(voters: string[], blockNumber: number) {
-  // const strategyResponse = await getScores(PANCAKE_SPACE, STRATEGIES, NETWORK, voters, blockNumber)
+  // const strategyResponse = await getScores(PANICE_SPACE, STRATEGIES, NETWORK, voters, blockNumber)
 
   // const result = fromPairs(
   //   voters.map((voter) => {

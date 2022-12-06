@@ -67,7 +67,7 @@ export const usePollFarmsV1WithUserData = () => {
 
 /**
  * Fetches the "core" farm data used globally
- * 251 = CAKE-BNB LP
+ * 251 = ICE-BNB LP
  * 252 = BUSD-BNB LP
  */
 export const usePollCoreFarmData = () => {
