@@ -23,7 +23,6 @@ import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { chains } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
-import Image from 'next/future/image'
 
 import { ChainLogo } from './Logo/ChainLogo'
 import chainName from "../config/constants/chainName";
