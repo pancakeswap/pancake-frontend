@@ -347,7 +347,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   </Text>
                   <QuestionHelper
                     text={t(
-                      'Based on % contributed to stable pool, fees will vary. Deposits with fees > 1% will be rejected',
+                      'Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected',
                     )}
                     size="14px"
                     ml="4px"
