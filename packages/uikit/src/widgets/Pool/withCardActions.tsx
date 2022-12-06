@@ -16,6 +16,55 @@ interface CardActionsProps<T> {
   hideLocateAddress?: boolean;
 }
 
+export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
+  return ({
+    pool,
+    stakedBalance,
+    ...rest
+  }: {
+    pool: DeserializedPool<T>;
+    account?: string;
+    stakedBalance?: BigNumber;
+  }) => {
+    const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
+
+    const isBnbPool = false;
+    const earnings = userData?.pendingReward ? new BigNumber(userData.pendingReward) : BIG_ZERO;
+    const isLoading = !userData;
+    const stakingTokenBalance = userData?.stakingTokenBalance ? new BigNumber(userData.stakingTokenBalance) : BIG_ZERO;
+    const isStaked = stakedBalance?.gt(0);
+
+    return (
+      <>
+        <HarvestActionsComp
+          earnings={earnings}
+          stakingTokenAddress={stakingToken.address}
+          earningTokenAddress={earningToken.address}
+          earningTokenSymbol={earningToken.symbol}
+          earningTokenDecimals={earningToken.decimals}
+          sousId={sousId}
+          earningTokenPrice={earningTokenPrice}
+          isBnbPool={isBnbPool}
+          isLoading={isLoading}
+          poolAddress={pool.contractAddress}
+          {...rest}
+        />
+        <StakeActionsComp
+          isLoading={isLoading}
+          pool={pool}
+          stakingTokenBalance={stakingTokenBalance}
+          stakedBalance={stakedBalance}
+          isBnbPool={isBnbPool}
+          isStaked={isStaked}
+          hideLocateAddress={false}
+          stakingTokenSymbol={stakingToken.symbol}
+          {...rest}
+        />
+      </>
+    );
+  };
+}
+
 export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: any) {
   return ({ pool, stakedBalance, hideLocateAddress = false }: CardActionsProps<T>) => {
     const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;

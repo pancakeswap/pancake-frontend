@@ -4,15 +4,8 @@ import { ReactElement } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { getFullDisplayBalance, getBalanceNumber, formatNumber } from "@pancakeswap/utils/formatBalance";
 import { CollectModalProps } from "./CollectModal";
-
-interface HarvestActionsProps {
-  earnings: BigNumber;
-  isLoading?: boolean;
-  onPresentCollect: any;
-  earningTokenPrice: number;
-  earningTokenBalance: number;
-  earningTokenDollarBalance: number;
-}
+import { HarvestAction as TableHarvestAction } from "./PoolsTable/HarvestAction";
+import { HarvestActionsProps } from "./types";
 
 const HarvestActions: React.FC<React.PropsWithChildren<HarvestActionsProps>> = ({
   earnings,
@@ -79,7 +72,8 @@ interface WithHarvestActionsProps {
   };
 }
 
-export const withCollectModal =
+const withCollectModalFactory =
+  (ActionComp: any) =>
   (CollectModalComponent: (props: CollectModalProps) => ReactElement) =>
   ({
     earnings,
@@ -91,6 +85,7 @@ export const withCollectModal =
     earningTokenPrice,
     isLoading,
     poolAddress,
+    ...props
   }: WithHarvestActionsProps) => {
     const earningTokenBalance: number = getBalanceNumber(earnings, earningTokenDecimals);
 
@@ -98,7 +93,9 @@ export const withCollectModal =
 
     const fullBalance = getFullDisplayBalance(earnings, earningTokenDecimals);
 
-    const earningTokenDollarBalance = getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningTokenDecimals);
+    const earningTokenDollarBalance = earnings
+      ? getBalanceNumber(earnings.multipliedBy(earningTokenPrice), earningTokenDecimals)
+      : 0;
 
     const [onPresentCollect] = useModal(
       <CollectModalComponent
@@ -114,13 +111,19 @@ export const withCollectModal =
     );
 
     return (
-      <HarvestActions
+      <ActionComp
         onPresentCollect={onPresentCollect}
         earnings={earnings}
         earningTokenPrice={earningTokenPrice}
         earningTokenDollarBalance={earningTokenDollarBalance}
         earningTokenBalance={earningTokenBalance}
         isLoading={isLoading}
+        earningTokenSymbol={earningTokenSymbol}
+        {...props}
       />
     );
   };
+
+export const withCollectModalTableAction = withCollectModalFactory(TableHarvestAction);
+
+export const withCollectModalCardAction = withCollectModalFactory(HarvestActions);

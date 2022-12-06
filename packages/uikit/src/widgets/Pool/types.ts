@@ -123,3 +123,12 @@ interface CorePoolProps {
   earningTokenPrice?: number;
   vaultKey?: VaultKey;
 }
+
+export interface HarvestActionsProps {
+  earnings: BigNumber;
+  isLoading?: boolean;
+  onPresentCollect: any;
+  earningTokenPrice: number;
+  earningTokenBalance: number;
+  earningTokenDollarBalance: number;
+}

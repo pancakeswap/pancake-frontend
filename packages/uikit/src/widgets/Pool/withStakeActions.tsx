@@ -50,7 +50,7 @@ export function withStakeActions<T>(StakeModal: (props: StakeModalPropsType<T>) 
     const { t } = useTranslation();
     const stakedTokenBalance = getBalanceNumber(stakedBalance, stakingToken?.decimals);
     const stakedTokenDollarBalance = stakingTokenPrice
-      ? getBalanceNumber(stakedBalance.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
+      ? getBalanceNumber(stakedBalance?.multipliedBy(stakingTokenPrice), stakingToken?.decimals)
       : 0;
 
     const [onPresentTokenRequired] = useModal(

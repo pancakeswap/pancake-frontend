@@ -15,7 +15,6 @@ export default function PoolControls(props) {
       {...props}
       stakedOnly={stakedOnly}
       setStakedOnly={setStakedOnly}
-      hideViewMode
       viewMode={viewMode}
       setViewMode={setViewMode}
       account={account}
