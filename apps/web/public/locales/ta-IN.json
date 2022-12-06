@@ -2047,5 +2047,11 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "ஃபார்ம் மகசூல் அதிகரிப்பு, IFOக்களில் பங்கேற்பது, வாக்களிக்கும் ஆற்றல் அதிகரிப்புகள் மற்றும் பலவற்றின் நன்மைகளை அனுபவிக்க CAKE-ஐப் பூட்டுங்கள்!",
   "CAKE staking expired": "CAKE ஸ்டேக்கிங் காலாவதியானது",
   "Find out more": "மேலும் அறிக",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "பொது விற்பனைக்கு, ஒவ்வொரு தகுதியுடைய பங்கேற்பாளரும் அதிகபட்ச கமிட் வரம்பு வரை CAKE-இன் எத்தொகைக்கும் கமிட் செய்ய முடியும், இது IFO வாக்களிப்பு முன்மொழிவுடன் வெளியிடப்படுகிறது."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "பொது விற்பனைக்கு, ஒவ்வொரு தகுதியுடைய பங்கேற்பாளரும் அதிகபட்ச கமிட் வரம்பு வரை CAKE-இன் எத்தொகைக்கும் கமிட் செய்ய முடியும், இது IFO வாக்களிப்பு முன்மொழிவுடன் வெளியிடப்படுகிறது.",
+  "Slippage": "Slippage",
+  "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected",
+  "Unable to supply": "Unable to supply",
+  "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click": "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click",
+  "For each stableswap trade, refer to the fee table": "For each stableswap trade, refer to the fee table",
+  "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid"
 }
