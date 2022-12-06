@@ -20,7 +20,7 @@ const ButtonMenu: React.FC<React.PropsWithChildren<ButtonMenuProps>> = ({
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
-      'Your chance of winning is proportional to the CAKE you deposit relative to the total CAKE deposit for Pottery. Currently, there is a cap to the total CAKE deposit size during the beta release.',
+      'Your chance of winning is proportional to the ICE you deposit relative to the total ICE deposit for Pottery. Currently, there is a cap to the total ICE deposit size during the beta release.',
     ),
     {
       placement: 'top-end',

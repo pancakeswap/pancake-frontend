@@ -1,5 +1,5 @@
 import { request, gql } from 'graphql-request'
-import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_CAKE } from 'config/constants/endpoints'
+import { GRAPH_API_PREDICTION_BNB, GRAPH_API_PREDICTION_ICE } from 'config/constants/endpoints'
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   Bet,
@@ -19,11 +19,11 @@ import { Zero } from '@ethersproject/constants'
 import { PredictionsClaimableResponse, PredictionsLedgerResponse, PredictionsRoundsResponse } from 'utils/types'
 import { getRoundBaseFields, getBetBaseFields, getUserBaseFields } from './queries'
 import { ROUNDS_PER_PAGE } from './config'
-import { transformBetResponseCAKE, transformUserResponseCAKE } from './cakeTransformers'
+import { transformBetResponseICE, transformUserResponseICE } from './cakeTransformers'
 import { transformBetResponseBNB, transformUserResponseBNB } from './bnbTransformers'
 import { BetResponse, UserResponse } from './responseType'
 import { BetResponseBNB } from './bnbQueries'
-import { BetResponseCAKE } from './cakeQueries'
+import { BetResponseICE } from './cakeQueries'
 
 export enum Result {
   WIN = 'win',
@@ -34,10 +34,10 @@ export enum Result {
 }
 
 export const transformBetResponse = (tokenSymbol) =>
-  tokenSymbol === 'CAKE' ? transformBetResponseCAKE : transformBetResponseBNB
+  tokenSymbol === 'ICE' ? transformBetResponseICE : transformBetResponseBNB
 
 export const transformUserResponse = (tokenSymbol) =>
-  tokenSymbol === 'CAKE' ? transformUserResponseCAKE : transformUserResponseBNB
+  tokenSymbol === 'ICE' ? transformUserResponseICE : transformUserResponseBNB
 
 export const getRoundResult = (bet: Bet, currentEpoch: number): Result => {
   const { round } = bet
@@ -79,8 +79,8 @@ const getTotalWonMarket = (market, tokenSymbol) => {
   return Math.max(total - totalTreasury, 0)
 }
 
-export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE: number }> => {
-  const [{ market: BNBMarket, market: CAKEMarket }] = await Promise.all([
+export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonICE: number }> => {
+  const [{ market: BNBMarket, market: ICEMarket }] = await Promise.all([
     request(
       GRAPH_API_PREDICTION_BNB,
       gql`
@@ -93,12 +93,12 @@ export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE
       `,
     ),
     request(
-      GRAPH_API_PREDICTION_CAKE,
+      GRAPH_API_PREDICTION_ICE,
       gql`
         query getTotalWonData {
           market(id: 1) {
-            totalCAKE
-            totalCAKETreasury
+            totalICE
+            totalICETreasury
           }
         }
       `,
@@ -106,9 +106,9 @@ export const getTotalWon = async (): Promise<{ totalWonBNB: number; totalWonCAKE
   ])
 
   const totalWonBNB = getTotalWonMarket(BNBMarket, 'BNB')
-  const totalWonCAKE = getTotalWonMarket(CAKEMarket, 'CAKE')
+  const totalWonICE = getTotalWonMarket(ICEMarket, 'ICE')
 
-  return { totalWonBNB, totalWonCAKE }
+  return { totalWonBNB, totalWonICE }
 }
 
 type WhereClause = Record<string, string | number | boolean | string[]>
@@ -119,7 +119,7 @@ export const getBetHistory = async (
   skip = 0,
   api: string,
   tokenSymbol: string,
-): Promise<Array<BetResponseBNB | BetResponseCAKE>> => {
+): Promise<Array<BetResponseBNB | BetResponseICE>> => {
   const response = await request(
     api,
     gql`

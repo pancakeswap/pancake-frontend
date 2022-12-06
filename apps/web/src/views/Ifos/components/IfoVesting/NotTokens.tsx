@@ -13,7 +13,7 @@ const NotTokens: React.FC<React.PropsWithChildren> = () => {
           {t('You have no tokens available for claiming')}
         </Text>
         <Text fontSize="14px" color="textSubtle" textAlign="center">
-          {t('Participate in our next IFO. and remember to lock your CAKE to increase your allocation!')}
+          {t('Participate in our next IFO. and remember to lock your ICE to increase your allocation!')}
         </Text>
         <MessageTextLink href="/ifo#ifo-how-to" color="primary" display="inline">
           {t('How does it work?')} »
