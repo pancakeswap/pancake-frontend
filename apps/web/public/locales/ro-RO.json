@@ -2047,5 +2047,11 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Blochează CAKE pentru a te bucura de beneficiile amplificării randamentului fermei, participând la IFO, votând amplificatoare de putere și multe altele!",
   "CAKE staking expired": "Investițiile CAKE au expirat",
   "Find out more": "Află mai multe",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Pentru o vânzare publică, fiecare participant eligibil va putea să angajeze orice sumă de CAKE până la limita maximă de angajare, care este publicată împreună cu propunerea de vot IFO."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Pentru o vânzare publică, fiecare participant eligibil va putea să angajeze orice sumă de CAKE până la limita maximă de angajare, care este publicată împreună cu propunerea de vot IFO.",
+  "Slippage": "Slippage",
+  "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected",
+  "Unable to supply": "Unable to supply",
+  "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click": "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click",
+  "For each stableswap trade, refer to the fee table": "For each stableswap trade, refer to the fee table",
+  "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid"
 }
