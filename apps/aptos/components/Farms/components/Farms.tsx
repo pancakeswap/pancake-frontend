@@ -350,10 +350,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                     label: t('Latest'),
                     value: 'latest',
                   },
-                  {
-                    label: t('StableSwap'),
-                    value: 'stableswap',
-                  },
                 ]}
                 onOptionChange={handleSortOptionChange}
               />
