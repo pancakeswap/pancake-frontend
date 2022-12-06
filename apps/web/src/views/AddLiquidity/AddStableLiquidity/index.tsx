@@ -248,7 +248,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     !isValid ||
     approvalA !== ApprovalState.APPROVED ||
     approvalB !== ApprovalState.APPROVED ||
-    (slippageSeverity > 3 && !expertMode)
+    (slippageSeverity > 2 && !expertMode)
 
   const showFieldAApproval = approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING
   const showFieldBApproval = approvalB === ApprovalState.NOT_APPROVED || approvalB === ApprovalState.PENDING

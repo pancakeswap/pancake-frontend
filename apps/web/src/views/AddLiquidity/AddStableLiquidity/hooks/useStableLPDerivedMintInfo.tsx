@@ -240,11 +240,13 @@ export function useStableLPDerivedMintInfo(
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
   const currencyAAmountQuotient = currencyAAmount?.quotient
+  const targetCurrency = currencyAAmountQuotient ? currencyA : currencyB
+  const targetAmount = tryParseAmount('1', targetCurrency)
   const currencyBAmountQuotient = currencyBAmount?.quotient
 
   const { data: estimatedOutputAmount } = useEstimatedAmount({
     estimatedCurrency: currencyAAmountQuotient ? currencyB : currencyA,
-    quotient: currencyAAmountQuotient ? currencyAAmountQuotient?.toString() : currencyBAmountQuotient?.toString(),
+    quotient: targetAmount?.quotient.toString(),
     stableSwapConfig,
     stableSwapContract,
   })
@@ -252,13 +254,18 @@ export function useStableLPDerivedMintInfo(
   const price = useMemo(() => {
     const isEstimatedOutputAmountZero = estimatedOutputAmount?.equalTo(0)
 
-    if ((currencyAAmountQuotient || currencyBAmountQuotient) && estimatedOutputAmount && !isEstimatedOutputAmountZero) {
+    if (
+      (currencyAAmountQuotient || currencyBAmountQuotient) &&
+      targetAmount &&
+      estimatedOutputAmount &&
+      !isEstimatedOutputAmountZero
+    ) {
       return currencyAAmountQuotient
-        ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedOutputAmount.quotient)
-        : new Price(currencyA, currencyB, estimatedOutputAmount.quotient, currencyBAmountQuotient)
+        ? new Price(currencyA, currencyB, targetAmount.quotient, estimatedOutputAmount.quotient)
+        : new Price(currencyA, currencyB, estimatedOutputAmount.quotient, targetAmount.quotient)
     }
     return undefined
-  }, [estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])
+  }, [targetAmount, estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])
 
   const {
     data: lpMinted,
