@@ -1,5 +1,5 @@
 import Collections from 'views/Nft/market/Collections'
-import NftSubgraphWarning from 'views/Nft/market/warning'
+import NftSubgraphWarning from 'views/Nft/market/NftSubgraphWarning'
 
 const CollectionsPage = () => {
   return (

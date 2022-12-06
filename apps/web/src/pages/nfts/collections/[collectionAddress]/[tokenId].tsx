@@ -4,7 +4,7 @@ import { getCollection, getNftApi } from 'state/nftMarket/helpers'
 import { NftToken } from 'state/nftMarket/types'
 // eslint-disable-next-line camelcase
 import { SWRConfig, unstable_serialize } from 'swr'
-import NftSubgraphWarning from 'views/Nft/market/warning'
+import NftSubgraphWarning from 'views/Nft/market/NftSubgraphWarning'
 
 const IndividualNFTPage = ({ fallback = {} }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
