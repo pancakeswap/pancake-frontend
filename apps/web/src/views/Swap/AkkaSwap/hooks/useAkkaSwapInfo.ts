@@ -10,6 +10,7 @@ import { AkkaRouterTrade } from './types'
 import { useAkkaRouterRouteWithArgs } from './useAkkaRouterApi'
 import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { useEffect } from 'react'
+import { keysToCamel } from 'utils/snakeToCamel'
 
 // from the current swap inputs, compute the best trade and return it.
 export function useAkkaSwapInfo(
@@ -68,16 +69,20 @@ export function useAkkaSwapInfo(
     inputError = inputError ?? t('Enter a recipient')
   }
 
-  if (currencyBalances[Field.INPUT] && args?.data?.amountIn && currencyBalances[Field.INPUT].lessThan(args?.data?.amountIn)) {
+  if (
+    currencyBalances[Field.INPUT] &&
+    args?.data?.amountIn &&
+    currencyBalances[Field.INPUT].lessThan(args?.data?.amountIn)
+  ) {
     inputError = t('Insufficient %symbol% balance', { symbol: inputCurrency.symbol })
   }
-  
+
   return {
     currencies,
     currencyBalances,
     parsedAmount,
     trade: {
-      route: route?.data ?? null,
+      route: keysToCamel(route?.data) ?? null,
       args: args?.data ?? null,
     },
     inputError,

@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
+import { keysToCamel } from 'utils/snakeToCamel'
 import { useEffect } from 'react'
 import { useIsAkkaSwapModeStatus } from 'state/global/hooks'
 import { Field } from 'state/swap/actions'
@@ -65,19 +66,15 @@ export const useAkkaRouterRoute = (token0: Currency, token1: Currency, amount: s
     {
       refreshInterval: FAST_INTERVAL,
     },
-  )  
+  )
   return { data, error }
 }
 
 // Call both apis route and args together in the same time
-export const useAkkaRouterRouteWithArgs = (
-  token0: Currency,
-  token1: Currency,
-  amount: string,
-  slippage = 0.1,
-) => {
+export const useAkkaRouterRouteWithArgs = (token0: Currency, token1: Currency, amount: string, slippage = 0.1) => {
   const route = useAkkaRouterRoute(token0, token1, amount, slippage)
-  const args = useAkkaRouterArgs(token0, token1, amount, slippage)
+  const args = useAkkaRouterArgs(token0, token1, amount, slippage)  
+  
   return {
     route,
     args,

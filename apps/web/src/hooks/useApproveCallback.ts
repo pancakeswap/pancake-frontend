@@ -1,7 +1,7 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 import { useToast } from '@pancakeswap/uikit'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
@@ -133,14 +133,7 @@ export function useApproveCallbackFromTrade(
     [trade, allowedSlippage],
   )
   const isAkkaSwap = useIsAkkaSwap()
-  return useApproveCallback(
-    amountToApprove,
-    chainId === 32520 && isAkkaSwap
-      ? ROUTER_ADDRESS[32520][1]
-      : chainId === 32520 && !isAkkaSwap
-      ? ROUTER_ADDRESS[32520][0]
-      : ROUTER_ADDRESS[chainId],
-  )
+  return useApproveCallback(amountToApprove, ROUTER_ADDRESS[chainId].Icecream)
 }
 
 // Wraps useApproveCallback in the context of a Gelato Limit Orders

@@ -115,7 +115,7 @@ export default function SwapForm() {
     parsedAmount: akkaParsedAmount,
     inputError: akkaSwapInputError,
   } = useAkkaSwapInfo(independentField, typedValue, inputCurrency, outputCurrency, allowedSlippage)
-
+  
   const {
     wrapType,
     execute: onWrap,

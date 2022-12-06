@@ -42,10 +42,10 @@ export default memo(function SwapRoute({ route }: { route: AkkaRouterInfoRespons
       let sum = 0
       for (let j = 0; j < arrayElements2.length; j++) {
         if (
-          JSON.stringify(JSON.parse(arrayElements[i]).routes[0].operations_seperated) ===
-          JSON.stringify(JSON.parse(arrayElements2[j]).routes[0].operations_seperated)
+          JSON.stringify(JSON.parse(arrayElements[i]).routes[0].operationsSeperated) ===
+          JSON.stringify(JSON.parse(arrayElements2[j]).routes[0].operationsSeperated)
         ) {
-          sum += JSON.parse(arrayElements2[j]).routes[0].input_amount
+          sum += JSON.parse(arrayElements2[j]).routes[0].inputAmount
           cnt++
         }
       }
@@ -62,11 +62,11 @@ export default memo(function SwapRoute({ route }: { route: AkkaRouterInfoRespons
           <Flex key={index}>
             <Text fontSize="12px">{(Number((item[2] / Number(route.inputAmount)).toFixed(2)) * 100).toFixed()}%</Text>
             <ChevronRightIcon width="16px" />
-            {JSON.parse(item[0]).routes[0].operations_seperated[0].operations.map((item2, index2, path) => {
+            {JSON.parse(item[0]).routes[0].operationsSeperated[0].operations.map((item2, index2, path) => {
               const isLastItem: boolean = index2 === path.length - 1
               return (
                 <>
-                  <Text fontSize="12px"> {item2.ask_token[3]} </Text>
+                  <Text fontSize="12px"> {item2.askToken[3]} </Text>
                   {!isLastItem && <ChevronRightIcon width="16px" />}
                 </>
               )
