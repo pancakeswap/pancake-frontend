@@ -2047,5 +2047,11 @@
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Mag-lock ng CAKE para ma-enjoy ang mga benepisyo ng pag-boost ng farm yield, pagsali sa mga IFO, pag-boost sa kapangyarihang bumoto, at higit pa!",
   "CAKE staking expired": "Nag-expire na ang pag-stake ng CAKE",
   "Find out more": "Alamin ang higit pa",
-  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Para sa pampublikong pagbebenta, magagawa ng mga bawat kwalipikadong kasali na mag-commit ng anumang halaga ng CAKE hanggang sa maximum na limitasyon sa pag-commit, na na-publish kasama ng mungkahi sa pagboto ng IFO."
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Para sa pampublikong pagbebenta, magagawa ng mga bawat kwalipikadong kasali na mag-commit ng anumang halaga ng CAKE hanggang sa maximum na limitasyon sa pag-commit, na na-publish kasama ng mungkahi sa pagboto ng IFO.",
+  "Slippage": "Slippage",
+  "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected",
+  "Unable to supply": "Unable to supply",
+  "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click": "By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pool. Fees are added to the pool, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click",
+  "For each stableswap trade, refer to the fee table": "For each stableswap trade, refer to the fee table",
+  "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid"
 }
