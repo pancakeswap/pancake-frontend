@@ -1,4 +1,4 @@
-import { ERC20Token } from 'entities'
+import { ERC20Token } from './entities/token'
 
 export enum ChainId {
   BITGERT = 32520,
@@ -56,11 +56,11 @@ export const WETH9 = {
     'Wrapped Fuse'
   ),
   [ChainId.XDC]: new ERC20Token(
-      ChainId.XDC,
-      '0x951857744785E80e2De051c32EE7b25f9c458C42',
-      18,
-      'WXDC',
-      'Wrapped XDC'
+    ChainId.XDC,
+    '0x951857744785E80e2De051c32EE7b25f9c458C42',
+    18,
+    'WXDC',
+    'Wrapped XDC'
   ),
 }
 
