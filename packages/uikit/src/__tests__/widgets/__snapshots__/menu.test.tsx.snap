@@ -2852,6 +2852,30 @@ exports[`renders correctly 1`] = `
               CAKE
             </a>
           </li>
+          <li
+            class="c11"
+          >
+            <span
+              class="c14"
+            >
+              —
+            </span>
+          </li>
+          <li
+            class="c11"
+          >
+            <a
+              class="c15 c13"
+              color="var(--colors-warning)"
+              data-theme="dark"
+              font-size="16px"
+              href="https://pancakeswap.creator-spring.com/"
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              Online Store
+            </a>
+          </li>
         </ul>
         <ul
           class="c10"
