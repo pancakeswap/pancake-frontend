@@ -31,7 +31,7 @@ export function EarningsCell<T>({ pool, account }: EarningsCellProps<T>) {
 
   const earningPrice = earningTokenPrice ? earnings.multipliedBy(earningTokenPrice) : BIG_ZERO;
 
-  const earningTokenDollarBalance = getBalanceNumber(earningPrice, earningToken.decimals);
+  const earningTokenDollarBalance: number = getBalanceNumber(earningPrice, earningToken.decimals);
   const hasEarnings = account && earnings.gt(0);
 
   const labelText = t("%asset% Earned", { asset: earningToken.symbol });
@@ -60,19 +60,17 @@ export function EarningsCell<T>({ pool, account }: EarningsCellProps<T>) {
                   decimals={hasEarnings ? 5 : 1}
                   value={hasEarnings ? earningTokenBalance : 0}
                 />
-                {hasEarnings ? (
+                {hasEarnings && Boolean(earningTokenDollarBalance) ? (
                   <>
-                    {earningTokenPrice && earningTokenPrice > 0 && (
-                      <Balance
-                        display="inline"
-                        fontSize="12px"
-                        color="textSubtle"
-                        decimals={2}
-                        prefix="~"
-                        value={earningTokenDollarBalance}
-                        unit=" USD"
-                      />
-                    )}
+                    <Balance
+                      display="inline"
+                      fontSize="12px"
+                      color="textSubtle"
+                      decimals={2}
+                      prefix="~"
+                      value={earningTokenDollarBalance}
+                      unit=" USD"
+                    />
                   </>
                 ) : (
                   <Text mt="4px" fontSize="12px" color="textDisabled">
