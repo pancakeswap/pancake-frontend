@@ -160,7 +160,9 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <DetailsSection
             removed={removed}
             scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={`/info${multiChainPaths[chainId]}/pairs/${lpAddress}`}
+            infoAddress={`/info${multiChainPaths[chainId]}/pairs/${lpAddress}${
+              farm.isStable ? '?type=stableSwap' : ''
+            }`}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
