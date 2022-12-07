@@ -757,7 +757,7 @@
   "Connect to a wallet to find pools": "Connect to a wallet to find pools",
   "Select a token to find your liquidity.": "Select a token to find your liquidity.",
   "No liquidity found.": "No liquidity found.",
-  "Don't see a pool you joined?": "Don't see a pool you joined?",
+  "Don't see a pair you joined?": "Don't see a pair you joined?",
   "Find other LP tokens": "Find other LP tokens",
   "Import Pool": "Import Pool",
   "Import an existing pool": "Import an existing pool",
