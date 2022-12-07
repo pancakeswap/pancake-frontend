@@ -8,7 +8,9 @@ export default function PricePoolShareSection({ farmPriceBar, noLiquidity }) {
   return (
     <LightCard padding="0px" borderRadius="20px">
       <RowBetween padding="1">
-        <Text fontSize="14px">{noLiquidity ? t('Initial prices and share in the pair') : t('Prices and shares of the pair')}</Text>
+        <Text fontSize="14px">
+          {noLiquidity ? t('Initial prices and share in the pair') : t('Prices and shares of the pair')}
+        </Text>
       </RowBetween>{' '}
       <LightCard padding="1rem" borderRadius="20px">
         {farmPriceBar}
