@@ -1,7 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { memo, useMemo, useState } from 'react'
-import { useAllTokenDataSWR } from 'state/info/hooks'
+import { memo, useState, useMemo } from 'react'
+import { useAtomValue } from 'jotai'
+import { selectorByUrlsAtom } from 'state/lists/hooks'
+
+import { useTokenDatasSWR } from 'state/info/hooks'
 import styled from 'styled-components'
 import TokenTable from './SwapTokenTable'
 
@@ -24,15 +27,16 @@ const MenuWrapper = styled.div`
 `
 
 const HotTokenList: React.FC = () => {
-  const allTokens = useAllTokenDataSWR()
+  const listsByUrl = useAtomValue(selectorByUrlsAtom)
+  const { current: list } = listsByUrl['https://tokens.pancakeswap.finance/pancakeswap-extended.json']
+  const whiteList = useMemo(() => {
+    return list.tokens.map((t) => t.address)
+  }, [list])
+  const allTokens = useTokenDatasSWR(whiteList.map((d) => d.toLowerCase()))
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
+  const formattedTokens = allTokens
 
-  const formattedTokens = useMemo(() => {
-    return Object.values(allTokens)
-      .map((token) => token.data)
-      .filter((token) => token)
-  }, [allTokens])
   const { t } = useTranslation()
   return (
     <Wrapper>

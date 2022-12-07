@@ -231,6 +231,8 @@ export const fetchAllTokenDataByAddresses = async (
   const parsed7d = parseTokenData(data?.oneWeekAgo)
   const parsed14d = parseTokenData(data?.twoWeeksAgo)
 
+  console.log()
+
   // Calculate data and format
   const formatted = tokenAddresses.reduce((accum: { [address: string]: { data: TokenData } }, address) => {
     const current: FormattedTokenFields | undefined = parsed[address]
@@ -275,7 +277,7 @@ export const fetchAllTokenDataByAddresses = async (
         priceUSDChangeWeek,
       },
     }
-
+    console.log()
     return accum
   }, {})
 
@@ -284,6 +286,7 @@ export const fetchAllTokenDataByAddresses = async (
 
 export const fetchAllTokenData = async (chainName: MultiChainName, blocks: Block[]) => {
   const tokenAddresses = await fetchTokenAddresses(chainName)
+  console.log(tokenAddresses, '????')
   const data = await fetchAllTokenDataByAddresses(chainName, blocks, tokenAddresses)
   return data
 }
