@@ -7,8 +7,9 @@ import { bCakeSupportedChainId } from '@pancakeswap/farms/src/index'
 export const useBCakeProxyContractAddress = (account?: string, chainId?: number) => {
   const bCakeFarmBoosterContract = useBCakeFarmBoosterContract()
   const isSupportedChain = bCakeSupportedChainId.includes(chainId)
-  const { data, status, mutate } = useSWR(account && isSupportedChain && ['proxyAddress', account], async () =>
-    bCakeFarmBoosterContract.proxyContract(account),
+  const { data, status, mutate } = useSWR(
+    account && isSupportedChain && ['bProxyAddress', account, chainId],
+    async () => bCakeFarmBoosterContract.proxyContract(account),
   )
   const isLoading = isSupportedChain ? status !== FetchStatus.Fetched : false
 
