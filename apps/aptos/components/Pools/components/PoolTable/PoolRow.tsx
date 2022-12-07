@@ -1,6 +1,5 @@
-import { memo, useMemo } from 'react'
+import { memo } from 'react'
 import { useMatchBreakpoints, Pool } from '@pancakeswap/uikit'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Coin } from '@pancakeswap/aptos-swap-sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import Apr from '../PoolCard/Apr'
@@ -18,10 +17,6 @@ const PoolRow: React.FC<
   const isLargerScreen = isLg || isXl || isXxl
   const { stakingToken, totalStaked, earningToken } = pool
 
-  const totalStakedBalance = useMemo(() => {
-    return totalStaked ? getBalanceNumber(totalStaked, stakingToken.decimals) : 0
-  }, [stakingToken.decimals, totalStaked])
-
   return (
     <Pool.ExpandRow
       initialActivity={initialActivity}
@@ -38,9 +33,9 @@ const PoolRow: React.FC<
       <Pool.EarningsCell<Coin> pool={pool} account={account} />
       {isLargerScreen && (
         <Pool.TotalStakedCell
+          stakingTokenDecimals={stakingToken?.decimals}
           stakingTokenSymbol={stakingToken?.symbol}
           totalStaked={totalStaked}
-          totalStakedBalance={totalStakedBalance}
         />
       )}
       <Pool.AprCell<Coin> pool={pool} aprComp={Apr} />
