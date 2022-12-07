@@ -95,7 +95,7 @@ export const PairDistribution = ({
                 <CurrencyLogo currency={currencyA} />
                 <Text>{currencyA?.symbol}</Text>
               </AutoRow>
-              <Text>{currencyAValue}</Text>
+              <Text>{currencyAValue || '0'}</Text>
             </RowBetween>
           )}
 
@@ -106,7 +106,7 @@ export const PairDistribution = ({
                 <CurrencyLogo currency={currencyB} />
                 <Text>{currencyB?.symbol}</Text>
               </AutoRow>
-              <Text>{currencyBValue}</Text>
+              <Text>{currencyBValue || '0'}</Text>
             </RowBetween>
           )}
         </AutoColumn>
