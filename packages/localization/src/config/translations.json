@@ -764,7 +764,7 @@
   "Select a Token": "Select a Token",
   "No pair found.": "No pair found.",
   "Create pair": "Create pair",
-  "Manage this pool": "Manage this pool",
+  "Manage this pair": "Manage this pair",
   "Invalid pair.": "Invalid pair.",
   "You don’t have liquidity in this pair yet.": "You don’t have liquidity in this pair yet.",
   "%assetA%/%assetB% Burned": "%assetA%/%assetB% Burned",

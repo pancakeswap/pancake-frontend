@@ -142,13 +142,13 @@ export default function PoolFinder() {
                 <>
                   <MinimalPositionCard pair={pair} />
                   <Button as={NextLinkFromReactRouter} to="/liquidity" variant="secondary" width="100%">
-                    {t('Manage this pool')}
+                    {t('Manage this pair')}
                   </Button>
                 </>
               ) : (
                 <LightCard padding="45px 10px">
                   <AutoColumn gap="sm" justify="center">
-                    <Text textAlign="center">{t('You don’t have liquidity in this pool yet.')}</Text>
+                    <Text textAlign="center">{t('You don’t have liquidity in this pair yet.')}</Text>
                     <Button
                       as={NextLinkFromReactRouter}
                       to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
@@ -162,13 +162,13 @@ export default function PoolFinder() {
             ) : validPairNoLiquidity ? (
               <LightCard padding="45px 10px">
                 <AutoColumn gap="sm" justify="center">
-                  <Text textAlign="center">{t('No pool found.')}</Text>
+                  <Text textAlign="center">{t('No pair found.')}</Text>
                   <Button
                     as={NextLinkFromReactRouter}
                     to={`/add/${currencyId(currency0)}/${currencyId(currency1)}`}
                     variant="secondary"
                   >
-                    {t('Create pool')}
+                    {t('Create pair')}
                   </Button>
                 </AutoColumn>
               </LightCard>
