@@ -88,16 +88,18 @@ function useMintedStabelLP({
   currencyInputAmount,
   currencyOutputAmount,
 }) {
-  const quotient0Str = currencyInputAmount?.toString()
-  const quotient1Str = currencyOutputAmount?.toString()
+  const quotient0Str = currencyInputAmount?.toString() || '0'
+  const quotient1Str = currencyOutputAmount?.toString() || '0'
 
   const isToken0 = stableSwapConfig?.token0?.address === currencyInput?.address
   const amounts = isToken0 ? [quotient0Str, quotient1Str] : [quotient1Str, quotient0Str]
+
   const { result, error, loading, syncing } = useSingleCallResult(
     stableSwapInfoContract,
     'get_add_liquidity_mint_amount',
     [stableSwapAddress, amounts],
   )
+
   return {
     data: result?.[0],
     loading: loading || syncing,
@@ -261,7 +263,10 @@ export function useStableLPDerivedMintInfo(
     error = error ?? t('No token balance')
   }
 
-  if (!parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]) {
+  const oneCurrencyRequired = !parsedAmounts[Field.CURRENCY_A] && !parsedAmounts[Field.CURRENCY_B]
+  const twoCurreniesRequired = !parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]
+
+  if (noLiquidity ? twoCurreniesRequired : oneCurrencyRequired) {
     addError = t('Enter an amount')
   }
 
