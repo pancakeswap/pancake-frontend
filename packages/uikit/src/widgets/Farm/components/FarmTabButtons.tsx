@@ -11,11 +11,6 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  a {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 16px;
   }
