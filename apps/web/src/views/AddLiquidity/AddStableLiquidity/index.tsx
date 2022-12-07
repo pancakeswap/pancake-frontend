@@ -216,7 +216,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
-      title={noLiquidity ? t('You are creating a pair') : t('You will receive')}
+      title={noLiquidity ? t('You are creating a trading pair') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}

@@ -213,7 +213,7 @@ function MinimalPositionCardView({
                 )}
                 <FixedHeightRow>
                   <Text color="textSubtle" small>
-                    {t('Share of Pair')}:
+                    {t('Share in Trading Pair')}:
                   </Text>
                   <Text>{poolTokenPercentage ? `${poolTokenPercentage.toFixed(6)}%` : '-'}</Text>
                 </FixedHeightRow>
@@ -383,7 +383,7 @@ function FullPositionCard({
           )}
 
           <FixedHeightRow>
-            <Text color="textSubtle">{t('Share of Pair')}</Text>
+            <Text color="textSubtle">{t('Share in Trading Pair')}</Text>
             <Text>
               {poolTokenPercentage
                 ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`
