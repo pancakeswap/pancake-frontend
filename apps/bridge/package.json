@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
-    "@pancakeswap/multicall": "^0.0.2",
     "@pancakeswap/sdk": "*",
     "@pancakeswap/uikit": "*",
     "@pancakeswap/wagmi": "*",
