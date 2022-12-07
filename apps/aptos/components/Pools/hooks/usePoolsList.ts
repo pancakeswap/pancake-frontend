@@ -56,7 +56,10 @@ export const usePoolsList = () => {
 
   return useMemo(() => {
     const syrupPools = pools
-      ? pools.map((pool) => transformPool(pool as PoolResource, balances, chainId, prices)).filter(Boolean)
+      ? pools
+          .map((pool) => transformPool(pool as PoolResource, balances, chainId, prices))
+          .filter(Boolean)
+          .filter((pool) => pool?.earningToken.symbol !== 'MOON')
       : []
 
     const cakePool = tranformCakePool()

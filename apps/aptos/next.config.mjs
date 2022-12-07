@@ -21,10 +21,7 @@ const withTH = transpileModules([
   '@pancakeswap/farms',
 ])
 
-const blocksPage =
-  process.env.NODE_ENV === 'production'
-    ? ['/farms', '/farms/history', '/ifo', '/ifo/history', '/pools', '/pools/history']
-    : []
+const blocksPage = process.env.NODE_ENV === 'production' ? ['/farms', '/farms/history', '/ifo', '/ifo/history'] : []
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
