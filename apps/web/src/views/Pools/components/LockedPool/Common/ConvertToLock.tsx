@@ -44,7 +44,7 @@ const ConvertToLock: React.FC<React.PropsWithChildren<ConvertToLockProps>> = ({
     >
       <SkeletonV2 isDataReady={!!(avgLockDurationsInSeconds && lockedApy)} wrapperProps={{ height: 'fit-content' }}>
         <MessageText>
-          {t('Lock staking users are earning an average of %amount%% APY. More benefits are coming soon.', {
+          {t('Lock staking users are earning an average of %amount%% APR. More benefits are coming soon.', {
             amount: lockedApy ? parseFloat(lockedApy).toFixed(2) : 0,
           })}
         </MessageText>
