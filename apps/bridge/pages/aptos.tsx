@@ -42,7 +42,7 @@ const AptosBridge = () => {
     const intervalId = setInterval(() => {
       if (window.aptosBridge) {
         const { dstCurrency, srcCurrency } = window.aptosBridge.bridge.form
-        const limitBridgeAmount = window.aptosBridge.bridge.limitAmount.toExact()
+        const limitBridgeAmount = window.aptosBridge.bridge.limitAmount?.toExact()
 
         setLimitAmount(limitBridgeAmount)
         setAptosBridgeForm({
