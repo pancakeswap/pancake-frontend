@@ -258,7 +258,7 @@ function MinimalPositionCardView({
             {isStableLP ? (
               <>
                 {t(
-                  'By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share of the pair. Fees are added to the pair, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click',
+                  'By adding liquidity, you’ll earn 50% from the fees of all trades on this pair, proportional to your share in the trading pair. Fees are added to the pair, accrue in real time, and can be claimed by withdrawing your liquidity. For more information on Stableswap fees click',
                 )}
                 <Link
                   style={{ display: 'inline' }}
@@ -271,7 +271,7 @@ function MinimalPositionCardView({
               </>
             ) : (
               t(
-                "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pair. Fees are added to the pair, accrue in real time and can be claimed by withdrawing your liquidity.",
+                "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share in the trading pair. Fees are added to the pair, accrue in real time and can be claimed by withdrawing your liquidity.",
               )
             )}
           </Text>

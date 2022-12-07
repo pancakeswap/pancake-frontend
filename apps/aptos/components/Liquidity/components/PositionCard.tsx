@@ -155,7 +155,7 @@ function MinimalPositionCardView({
               🥞
             </span>{' '}
             {t(
-              "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pair. Fees are added to the pair, accrue in real time and can be claimed by withdrawing your liquidity.",
+              "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share in the trading pair. Fees are added to the pair, accrue in real time and can be claimed by withdrawing your liquidity.",
             )}
           </Text>
         </LightCard>
