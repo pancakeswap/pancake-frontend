@@ -144,7 +144,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   })
   const { lpAddress } = farm
   const bsc = getBlockExploreLink(lpAddress, 'address', chainId)
-  const info = `/info${multiChainPaths[chainId]}/pairs/${lpAddress}`
+  const info = `/info${multiChainPaths[chainId]}/pairs/${lpAddress}${farm.isStable ? '?type=stableSwap' : ''}`
   const { stakedBalance, tokenBalance, proxy } = farm.userData
 
   return (
