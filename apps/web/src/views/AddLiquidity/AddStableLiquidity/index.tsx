@@ -325,7 +325,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   <LightCard padding="0px" borderRadius="20px">
                     <RowBetween padding="1rem">
                       <Text fontSize="14px">
-                        {noLiquidity ? t('Initial prices and share in the pair') : t('Prices and shares of the pair')}
+                        {noLiquidity ? t('Initial prices and share in the pair') : t('Prices and Share')}
                       </Text>
                     </RowBetween>{' '}
                     <LightCard padding="1rem" borderRadius="20px">
