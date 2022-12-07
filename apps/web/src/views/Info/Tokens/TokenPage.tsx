@@ -109,7 +109,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
           <Card>
             <Box p="16px">
               <Text>
-                {t('No pool has been created with this token yet. Create one')}
+                {t('No pair has been created with this token yet. Create one')}
                 <NextLinkFromReactRouter style={{ display: 'inline', marginLeft: '6px' }} to={`/add/${address}`}>
                   {t('here.')}
                 </NextLinkFromReactRouter>

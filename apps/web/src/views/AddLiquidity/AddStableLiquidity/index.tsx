@@ -216,7 +216,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
 
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
-      title={noLiquidity ? t('You are creating a pool') : t('You will receive')}
+      title={noLiquidity ? t('You are creating a trading pair') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
@@ -280,7 +280,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                       <Text bold mb="8px">
                         {t('You are the first liquidity provider.')}
                       </Text>
-                      <Text mb="8px">{t('The ratio of tokens you add will set the price of this pool.')}</Text>
+                      <Text mb="8px">{t('The ratio of tokens you add will set the price of this pair.')}</Text>
                       <Text>{t('Once you are happy with the rate click supply to review.')}</Text>
                     </div>
                   </Message>
@@ -325,7 +325,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   <LightCard padding="0px" borderRadius="20px">
                     <RowBetween padding="1rem">
                       <Text fontSize="14px">
-                        {noLiquidity ? t('Initial prices and pool share') : t('Prices and pool share')}
+                        {noLiquidity ? t('Initial prices and share in the pair') : t('Prices and Share')}
                       </Text>
                     </RowBetween>{' '}
                     <LightCard padding="1rem" borderRadius="20px">
@@ -347,7 +347,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   </Text>
                   <QuestionHelper
                     text={t(
-                      'Based on % contributed to stable pool, fees will vary. Deposits with fees >= 1% will be rejected',
+                      'Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected',
                     )}
                     size="14px"
                     ml="4px"

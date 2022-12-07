@@ -168,7 +168,7 @@ export const AddLiquidityModalHeader = ({
         </GreyCard>
       </AutoColumn>
       <RowBetween>
-        <Subtitle>{t('Your pool share')}</Subtitle>
+        <Subtitle>{t('Your share in the pair')}</Subtitle>
         <Text>{noLiquidity ? '100' : poolTokenPercentage?.toSignificant(4)}%</Text>
       </RowBetween>
       <AutoColumn gap="8px">{children}</AutoColumn>

@@ -38,7 +38,7 @@ const Liquidity: React.FC<React.PropsWithChildren<LiquidityProps>> = ({ liquidit
       ? `$${Number(liquidity).toLocaleString(undefined, { maximumFractionDigits: 0 })}`
       : '$0'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Total value of the funds in this farm’s liquidity pool'),
+    t('Total value of the funds in this farm’s liquidity pair'),
     { placement: 'top-end', tooltipOffset: [20, 10] },
   )
 

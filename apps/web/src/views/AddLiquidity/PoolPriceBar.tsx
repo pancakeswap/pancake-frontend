@@ -48,7 +48,7 @@ function PoolPriceBar({
             %
           </Text>
           <Text fontSize="14px" pt={1}>
-            {t('Share of Pool')}
+            {t('Share in Trading Pair')}
           </Text>
         </AutoColumn>
       </AutoRow>
