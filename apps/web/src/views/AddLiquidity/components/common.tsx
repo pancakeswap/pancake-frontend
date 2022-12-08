@@ -16,7 +16,7 @@ const Dot = styled(Box)<{ scale?: 'sm' | 'md' }>`
   border-radius: 50%;
 `
 
-const CircleSvg = ({ percent = 1, ...props }: SvgProps & { percent?: number }) => (
+const CircleSvg = ({ percent = 1, stroke = '#1FC7D4', ...props }: SvgProps & { percent?: number; stroke?: string }) => (
   <Svg width="60px" height="60px" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
     <g filter="url(#filter0_i_1147_113741)">
       <circle r="10" cx="10" cy="10" fill="#7645D9" />
@@ -25,7 +25,7 @@ const CircleSvg = ({ percent = 1, ...props }: SvgProps & { percent?: number }) =
         cx="10"
         cy="10"
         fill="transparent"
-        stroke="#1FC7D4"
+        stroke={stroke}
         strokeWidth="10"
         strokeDasharray={`calc(${percent * 100}px * 31.4 / 100) 31.4`}
         transform="rotate(-90) translate(-20)"
@@ -78,13 +78,19 @@ export const PairDistribution = ({
   currencyBValue?: string
   tooltipTargetRef?: any
 }) => {
+  let stroke
+
+  if (percent === 100) {
+    stroke = currencyAValue ? 'primary' : 'secondary'
+  }
+
   return (
     <AutoColumn gap="8px">
       <Subtitle>{title}</Subtitle>
       <Flex>
         {typeof percent !== 'undefined' && (
           <div ref={tooltipTargetRef}>
-            <CircleSvg percent={percent} mr="34px" />
+            <CircleSvg stroke={stroke} percent={percent} mr="34px" />
           </div>
         )}
         <AutoColumn style={{ width: '100%' }}>
