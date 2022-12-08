@@ -2036,7 +2036,6 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "În cazul în care cumperi o monedă frauduloasă, poți risca pierderea definitivă a fondurilor.",
   "Pancake Collectibles": "Colectibile Pancake",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "Informații PancakeSwap este momentan în curs de întreținere. Este posibil ca datele să nu fie exacte sau actualizate.",
-  "Smart Router (Beta)": "Router inteligent (beta)",
   "This route includes StableSwap and can’t edit output": "Această rută include StableSwap și nu poate edita rezultatul",
   "Use StableSwap for better fees": "Folosește StableSwap pentru comisioane mai mici",
   "V2": "V2",
@@ -2046,7 +2045,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE îți amplifică puterea de vot la %totalScore% în guvernarea votării PancakeSwap.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Blochează CAKE pentru a te bucura de beneficiile amplificării randamentului fermei, participând la IFO, votând amplificatoare de putere și multe altele!",
   "CAKE staking expired": "Investițiile CAKE au expirat",
-  "Find out more": "Află mai multe",
   "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Pentru o vânzare publică, fiecare participant eligibil va putea să angajeze orice sumă de CAKE până la limita maximă de angajare, care este publicată împreună cu propunerea de vot IFO.",
   "Slippage": "Slippage",
   "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected",
@@ -2056,5 +2054,7 @@
   "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid",
   "Stable pair not found use Swap": "Stable pair not found use Swap",
   "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ": "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ",
-  "for the latest update.": "for the latest update."
+  "for the latest update.": "for the latest update.",
+  "Use StableSwap by default": "Use StableSwap by default",
+  "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap"
 }
