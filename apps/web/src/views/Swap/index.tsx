@@ -2,17 +2,13 @@ import { Currency } from '@pancakeswap/sdk'
 import { BottomDrawer, Flex, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useContext } from 'react'
-import { useUserSmartRouter } from 'state/user/smartRouter'
 
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
 import { useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
-import SwapForm from './components/SwapForm'
-import SwapTab, { SwapType } from './components/SwapTab'
 import { SmartSwapForm } from './SmartSwap'
-import StableSwapFormContainer from './StableSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 
@@ -35,8 +31,6 @@ export default function Swap() {
   }
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
-  // TODO read from global settings
-  const [smartSwap] = useUserSmartRouter()
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -76,7 +70,8 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                {smartSwap ? (
+                <SmartSwapForm />
+                {/* {smartSwap ? (
                   <SmartSwapForm />
                 ) : (
                   <SwapTab>
@@ -84,7 +79,7 @@ export default function Swap() {
                       swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <SwapForm />
                     }
                   </SwapTab>
-                )}
+                )} */}
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>

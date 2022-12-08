@@ -21,7 +21,7 @@ import {
   useZapModeManager,
   useUserUsernameVisibility,
 } from 'state/user/hooks'
-import { useUserSmartRouter } from 'state/user/smartRouter'
+import { useStableSwapByDefault } from 'state/user/smartRouter'
 import { ChainId } from '@pancakeswap/sdk'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
@@ -77,7 +77,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
-  const [smartRouterOpen, setSmartRouterOpen] = useUserSmartRouter()
+  const [isStableSwapByDefault, setIsStableSwapByDefault] = useStableSwapByDefault()
 
   const { t } = useTranslation()
   const { isDark, setTheme } = useTheme()
@@ -245,14 +245,15 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
-                <Text>{t('Smart Router (Beta)')}</Text>
+                <Text>{t('Use StableSwap by default')}</Text>
                 <QuestionHelper
                   text={
                     <Flex>
-                      <Text mr="5px">{t('Smart Router (Beta)')}</Text>
-                      <Link href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/smart-router">
-                        {t('Find out more')}
-                      </Link>
+                      <Text mr="5px">
+                        {t(
+                          'Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap',
+                        )}
+                      </Text>
                     </Flex>
                   }
                   placement="top-start"
@@ -261,8 +262,8 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
               </Flex>
               <Toggle
                 id="toggle-disable-smartRouter-button"
-                checked={smartRouterOpen}
-                onChange={(e) => setSmartRouterOpen(e.target.checked)}
+                checked={isStableSwapByDefault}
+                onChange={(e) => setIsStableSwapByDefault(e.target.checked)}
                 scale="md"
               />
             </Flex>
