@@ -20,7 +20,7 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:check:staged": "lint-staged",
     "e2e:ci": "turbo run integration-test --filter=e2e...[HEAD^1]",
-    "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/farm && NODE_PATH=./apps/web/src ts-node --project ./apps/web/tsconfig.json --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
+    "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk --filter=@pancakeswap/farm --filter=@pancakeswap/token-lists && NODE_PATH=./apps/web/src ts-node --project ./apps/web/tsconfig.json --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "updateAptosLPsAPR": "yarn turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src ts-node --project ./apps/aptos/tsconfig.json --compiler-options '{\"module\":\"commonjs\"}' scripts/updateAptosLpsAPR/index.ts",
     "postinstall": "turbo run --filter=web postinstall",
     "clean": "turbo run clean && rm -rf node_modules",
