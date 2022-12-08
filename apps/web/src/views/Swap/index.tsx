@@ -71,15 +71,6 @@ export default function Swap() {
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
                 <SmartSwapForm />
-                {/* {smartSwap ? (
-                  <SmartSwapForm />
-                ) : (
-                  <SwapTab>
-                    {(swapTypeState) =>
-                      swapTypeState === SwapType.STABLE_SWAP ? <StableSwapFormContainer /> : <SwapForm />
-                    }
-                  </SwapTab>
-                )} */}
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
