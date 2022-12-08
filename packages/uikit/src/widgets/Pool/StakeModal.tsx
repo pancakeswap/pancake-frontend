@@ -149,7 +149,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent);
         const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingTokenDecimals, stakingTokenDecimals);
 
-        setStakeAmount(_toString(amountToStake * 1));
+        setStakeAmount(_toString(Number(amountToStake)));
       } else {
         setStakeAmount("");
       }
