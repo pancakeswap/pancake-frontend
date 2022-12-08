@@ -414,7 +414,7 @@
       "name": "USD Coin PolyNetwork",
       "address": "0xeE448bc6A8dC14D1Faa2Bfa567f1874f1B62C267",
       "symbol": "USDCp",
-      "decimals": 18,
+      "decimals": 6,
       "chainId": 32520,
       "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xaEdD3Ff7b9Fc5fc4e44d140b80f0B1C7FdB6102c/logo.png"
     },
