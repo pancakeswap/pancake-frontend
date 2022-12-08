@@ -55,9 +55,13 @@ const ConfirmAddLiquidityModal: React.FC<
   let percent = 0.5
 
   // Calculate distribution percentage for display
-  if (isStable && parsedAmounts[Field.CURRENCY_A] && parsedAmounts[Field.CURRENCY_B]) {
-    const amountCurrencyA = _toNumber(parsedAmounts[Field.CURRENCY_A].toSignificant(6))
-    const amountCurrencyB = _toNumber(parsedAmounts[Field.CURRENCY_B].toSignificant(6))
+  if ((isStable && parsedAmounts[Field.CURRENCY_A]) || parsedAmounts[Field.CURRENCY_B]) {
+    const amountCurrencyA = parsedAmounts[Field.CURRENCY_A]
+      ? _toNumber(parsedAmounts[Field.CURRENCY_A]?.toSignificant(6))
+      : 0
+    const amountCurrencyB = parsedAmounts[Field.CURRENCY_B]
+      ? _toNumber(parsedAmounts[Field.CURRENCY_B]?.toSignificant(6))
+      : 0
 
     percent = amountCurrencyA / (amountCurrencyA + amountCurrencyB)
   }
