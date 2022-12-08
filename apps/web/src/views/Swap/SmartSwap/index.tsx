@@ -4,19 +4,20 @@ import {
   ArrowDownIcon,
   Box,
   Button,
-  Skeleton,
-  Swap as SwapUI,
   Checkbox,
-  Text,
   Flex,
   Message,
   MessageText,
+  Skeleton,
+  Swap as SwapUI,
+  Text,
 } from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { useStableSwapByDefault } from 'state/user/smartRouter'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 
@@ -43,7 +44,7 @@ import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
-import { useDerivedSwapInfoWithStableSwap, useTradeInfo, useIsSmartRouterBetter } from './hooks'
+import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
 
 export function SmartSwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -80,6 +81,7 @@ export function SmartSwapForm() {
     }),
     [inputCurrency, outputCurrency],
   )
+  const [isStableSwapByDefault] = useStableSwapByDefault()
 
   const { v2Trade, inputError: swapInputError } = useDerivedSwapInfo(
     independentField,
@@ -101,7 +103,7 @@ export function SmartSwapForm() {
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
-    useSmartRouter: allowUseSmartRouter && isSmartRouterBetter,
+    useSmartRouter: (allowUseSmartRouter || isStableSwapByDefault) && isSmartRouterBetter,
     allowedSlippage,
     chainId,
     swapInputError,
@@ -305,7 +307,7 @@ export function SmartSwapForm() {
             </Box>
           )}
 
-          {isSmartRouterBetter && (
+          {isSmartRouterBetter && !isStableSwapByDefault && (
             <AutoColumn>
               {allowUseSmartRouter && (
                 <Message variant="warning" mb="8px">

@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
-const userSmartRouterAtom = atomWithStorage<boolean>('pcs:smartRouter', true)
+const userUseStableSwapAtom = atomWithStorage<boolean>('pcs:useStableSwap', true)
 
-export function useUserSmartRouter() {
-  return useAtom(userSmartRouterAtom)
+export function useStableSwapByDefault() {
+  return useAtom(userUseStableSwapAtom)
 }
