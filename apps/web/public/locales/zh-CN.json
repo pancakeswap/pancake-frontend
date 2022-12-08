@@ -2036,7 +2036,6 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "如果您购买了欺诈性代币，那么您可能会面临永久性的资金损失。",
   "Pancake Collectibles": "Pancake 收藏品",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap 信息目前正在维护中。数据可能不准确或者不是最新的。",
-  "Smart Router (Beta)": "智能路由器（测试版）",
   "This route includes StableSwap and can’t edit output": "此路由包含 StableSwap，无法编辑输出",
   "Use StableSwap for better fees": "使用 StableSwap 可以获得更划算的费用",
   "V2": "V2",
@@ -2046,7 +2045,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE 在 PancakeSwap 投票治理中将您的投票权提高到 %totalScore%。",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "锁仓 CAKE 以享受提高农场收益、参与 IFO、提高投票权等权益！",
   "CAKE staking expired": "CAKE 质押已过期",
-  "Find out more": "了解更多",
   "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "对于公开销售，符合条件的参与者都能提交 0 至最大限额之间任意数量的 CAKE。限额随 IFO 投票提案公布。",
   "Slippage": "Slippage",
   "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected",
@@ -2056,5 +2054,7 @@
   "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid",
   "Stable pair not found use Swap": "Stable pair not found use Swap",
   "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ": "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ",
-  "for the latest update.": "for the latest update."
+  "for the latest update.": "for the latest update.",
+  "Use StableSwap by default": "Use StableSwap by default",
+  "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap"
 }
