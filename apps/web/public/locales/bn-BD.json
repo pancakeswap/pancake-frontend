@@ -2036,7 +2036,6 @@
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "কোনো প্রতারণামূলক কয়েন ক্রয় করেলে আপনি তহবিলের স্থায়ী ক্ষতির সম্মুখীন হতে পারেন।",
   "Pancake Collectibles": "Pancake কলেক্টিবল",
   "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap তথ্য বর্তমানে রক্ষণাবেক্ষণাধীন। ডেটা সঠিক বা হালনাগাদ নাও হতে পারে।",
-  "Smart Router (Beta)": "স্মার্ট রাউটার (বিটা)",
   "This route includes StableSwap and can’t edit output": "এই রুটে StableSwap অন্তর্ভুক্ত রয়েছে এবং আউটপুট সম্পাদনা করা যায় না",
   "Use StableSwap for better fees": "ভালো ফি'র জন্য StableSwap ব্যবহার করুন",
   "V2": "V2",
@@ -2046,7 +2045,6 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "PancakeSwap ভোটিং গভর্নেন্সে আপনার ভোটিং পাওয়ারকে %totalScore%-এ বাড়িয়ে দেয় vCAKE।",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "খামারের ইল্ড বুস্টিং, IFO-এ অংশগ্রহণ, ভোটিং পাওয়ার বৃদ্ধি এবং আরো সুবিধা উপভোগ করতে CAKE লক করুন!",
   "CAKE staking expired": "CAKE স্টকিং-এর মেয়াদ শেষ",
-  "Find out more": "আরো অনুসন্ধান করুন",
   "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "পাবলিক সেল এর জন্য প্রত্যেক যোগ্য অংশগ্রহণকারী সর্বোচ্চ সীমা পর্যন্ত যেকনো পরিমাণ CAKE সমর্পণ করতে সক্ষম হবেন, যা IFO ভোটিং প্রস্তাবের সাথে প্রকাশিত হয়।",
   "Slippage": "Slippage",
   "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected",
@@ -2056,5 +2054,7 @@
   "For each non-stableswap trade, a %amount% fee is paid": "For each non-stableswap trade, a %amount% fee is paid",
   "Stable pair not found use Swap": "Stable pair not found use Swap",
   "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ": "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ",
-  "for the latest update.": "for the latest update."
+  "for the latest update.": "for the latest update.",
+  "Use StableSwap by default": "Use StableSwap by default",
+  "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap"
 }
