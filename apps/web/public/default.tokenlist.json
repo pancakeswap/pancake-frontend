@@ -219,22 +219,6 @@
       "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0x38EA4741d100cAe9700f66B194777F31919142Ee/logo.png"
     },
     {
-      "name": "USDT old",
-      "address": "0xDe14b85cf78F2ADd2E867FEE40575437D5f10c06",
-      "symbol": "USDT-old",
-      "decimals": 18,
-      "chainId": 32520,
-      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xDe14b85cf78F2ADd2E867FEE40575437D5f10c06/logo.png"
-    },
-    {
-      "name": "USDC old",
-      "address": "0xcf2DF9377A4e3C10e9EA29fDB8879d74C27FCDE7",
-      "symbol": "USDC-old",
-      "decimals": 18,
-      "chainId": 32520,
-      "logoURI": "https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/bitgert/assets/0xcf2DF9377A4e3C10e9EA29fDB8879d74C27FCDE7/logo.png"
-    },
-    {
       "name": "Alpha Trades",
       "address": "0x4Fb3DBF9111169ff60fFB8a7be1c6Fd3D4E417bC",
       "symbol": "WOLF",
