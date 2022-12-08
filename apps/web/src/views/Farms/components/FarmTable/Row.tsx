@@ -82,9 +82,8 @@ const FarmMobileCell = styled.td`
 `
 
 const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>> = (props) => {
-  const { details, initialActivity, multiplier } = props
+  const { details, initialActivity, userDataReady } = props
   const { stakedBalance, proxy, tokenBalance } = props.details.userData
-  const userDataReady = multiplier.multiplier !== undefined
   const hasSetInitialValue = useRef(false)
   const hasStakedAmount = !!useFarmUser(details.pid).stakedBalance.toNumber()
   const [actionPanelExpanded, setActionPanelExpanded] = useState(hasStakedAmount)

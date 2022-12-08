@@ -300,7 +300,6 @@ export const farmsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(resetUserState, (state) => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       state.data = state.data.map((farm) => {
         return {
           ...farm,
