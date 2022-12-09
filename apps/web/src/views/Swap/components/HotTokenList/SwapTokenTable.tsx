@@ -9,6 +9,8 @@ import {
   ArrowForwardIcon,
   useMatchBreakpoints,
   NextLinkFromReactRouter,
+  Button,
+  SortArrowIcon,
 } from '@pancakeswap/uikit'
 import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
@@ -36,7 +38,7 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 3fr 2fr 1fr;
+  grid-template-columns: 3fr 1fr 1fr;
 
   @media screen and (max-width: 900px) {
     grid-template-columns: 2fr repeat(2, 1fr);
@@ -69,6 +71,42 @@ const ResponsiveLogo = styled(CurrencyLogo)`
   @media screen and (max-width: 670px) {
     width: 16px;
     height: 16px;
+  }
+`
+const StyledClickableColumnHeader = styled(ClickableColumnHeader)`
+  display: flex;
+  align-items: center;
+  gap: 5px;
+`
+
+const SortButton = styled(Button)`
+  padding: 4px 8px;
+  border-radius: 8px;
+  width: 25px;
+  height: 25px;
+  margin-left: 3px;
+  border-color: ${({ theme }) => theme.colors.cardBorder};
+  background: ${({ theme }) => (theme.isDark ? theme.colors.backgroundDisabled : theme.colors.input)};
+  path {
+    fill: ${({ theme }) => (theme.isDark ? 'rgba(255, 255, 255, 0.2)' : '#B4ACCF')};
+  }
+  &.is-asc {
+    background: ${({ theme }) => (theme.isDark ? theme.colors.input : theme.colors.textSubtle)};
+    path:first-child {
+      fill: rgba(255, 255, 255, 1);
+    }
+    path:last-child {
+      fill: rgba(255, 255, 255, 0.3);
+    }
+  }
+  &.is-desc {
+    background: ${({ theme }) => (theme.isDark ? theme.colors.input : theme.colors.textSubtle)};
+    path:first-child {
+      fill: rgba(255, 255, 255, 0.3);
+    }
+    path:last-child {
+      fill: rgba(255, 255, 255, 1);
+    }
   }
 `
 
@@ -189,9 +227,9 @@ const TokenTable: React.FC<
     [sortDirection, sortField],
   )
 
-  const arrow = useCallback(
+  const arrowClassName = useCallback(
     (field: string) => {
-      const directionArrow = !sortDirection ? '↑' : '↓'
+      const directionArrow = !sortDirection ? 'is-asc' : 'is-desc'
       return sortField === field ? directionArrow : ''
     },
     [sortDirection, sortField],
@@ -203,45 +241,54 @@ const TokenTable: React.FC<
   return (
     <TableWrapper>
       <ResponsiveGrid>
-        <ClickableColumnHeader
+        <StyledClickableColumnHeader
           color="secondary"
           fontSize="12px"
           bold
           onClick={() => handleSort(SORT_FIELD.name)}
           textTransform="uppercase"
         >
-          {t('Token Name')} {arrow(SORT_FIELD.name)}
-        </ClickableColumnHeader>
+          {t('Token Name')}
+        </StyledClickableColumnHeader>
         {type === 'priceChange' && (
-          <ClickableColumnHeader
+          <StyledClickableColumnHeader
             color="secondary"
             fontSize="12px"
             bold
             onClick={() => handleSort(SORT_FIELD.priceUSD)}
             textTransform="uppercase"
           >
-            {t('Price')} {arrow(SORT_FIELD.priceUSD)}
-          </ClickableColumnHeader>
+            {t('Price')}{' '}
+            <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.priceUSD)}>
+              <SortArrowIcon />
+            </SortButton>
+          </StyledClickableColumnHeader>
         )}
-        <ClickableColumnHeader
+        <StyledClickableColumnHeader
           color="secondary"
           fontSize="12px"
           bold
           onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
           textTransform="uppercase"
         >
-          {t('Change')} {arrow(SORT_FIELD.priceUSDChange)}
-        </ClickableColumnHeader>
+          {t('Change')}{' '}
+          <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.priceUSDChange)}>
+            <SortArrowIcon />
+          </SortButton>
+        </StyledClickableColumnHeader>
         {type === 'volume' && (
-          <ClickableColumnHeader
+          <StyledClickableColumnHeader
             color="secondary"
             fontSize="12px"
             bold
             onClick={() => handleSort(SORT_FIELD.volumeUSD)}
             textTransform="uppercase"
           >
-            {t('Volume 24H')} {arrow(SORT_FIELD.volumeUSD)}
-          </ClickableColumnHeader>
+            {t('Volume 24H')}{' '}
+            <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.volumeUSD)}>
+              <SortArrowIcon />
+            </SortButton>
+          </StyledClickableColumnHeader>
         )}
       </ResponsiveGrid>
 

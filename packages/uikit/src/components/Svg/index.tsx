@@ -168,4 +168,5 @@ export { default as BraveIcon } from "./Icons/Brave";
 export { default as BloctoIcon } from "./Icons/Blocto";
 export { default as MartianWalletIcon } from "./Icons/MartianWallet";
 export { default as PetraWalletIcon } from "./Icons/PetraWallet";
+export { default as SortArrowIcon } from "./Icons/SortArrowIcon";
 export type { SvgProps } from "./types";
