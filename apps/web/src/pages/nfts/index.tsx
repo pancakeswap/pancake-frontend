@@ -1,13 +1,7 @@
 import NftMarket from 'views/Nft/market/Home'
-import NftSubgraphWarning from 'views/Nft/market/NftSubgraphWarning'
 
 const NftMarketPage = () => {
-  return (
-    <>
-      <NftSubgraphWarning />
-      <NftMarket />
-    </>
-  )
+  return <NftMarket />
 }
 
 export default NftMarketPage
