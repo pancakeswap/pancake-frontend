@@ -221,11 +221,11 @@ export default function AddLiquidity({ currencyA, currencyB }) {
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
-    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
+    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId].Icecream,
   )
   const [approvalB, approveBCallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_B],
-    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId],
+    preferZapInstead ? zapAddress : ROUTER_ADDRESS[chainId].Icecream,
   )
 
   const addTransaction = useTransactionAdder()
