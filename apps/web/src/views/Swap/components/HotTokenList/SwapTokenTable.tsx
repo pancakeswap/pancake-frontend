@@ -1,25 +1,29 @@
-import { useState, useMemo, useCallback, useEffect, Fragment } from 'react'
-import styled from 'styled-components'
+import { getAddress } from '@ethersproject/address'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Text,
-  Flex,
-  Box,
-  Skeleton,
   ArrowBackIcon,
   ArrowForwardIcon,
-  useMatchBreakpoints,
-  NextLinkFromReactRouter,
+  Box,
   Button,
+  Flex,
+  NextLinkFromReactRouter,
+  Skeleton,
   SortArrowIcon,
+  Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
-import { TokenData } from 'state/info/types'
-import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-import Percent from 'views/Info/components/Percent'
-import { useTranslation } from '@pancakeswap/localization'
+
+import Logo from 'components/Logo/Logo'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import orderBy from 'lodash/orderBy'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import { useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { TokenData } from 'state/info/types'
+import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
+import Percent from 'views/Info/components/Percent'
 
 /**
  *  Columns on different layouts
@@ -67,7 +71,9 @@ const LinkWrapper = styled(NextLinkFromReactRouter)`
   }
 `
 
-const ResponsiveLogo = styled(CurrencyLogo)`
+const ResponsiveLogo = styled(Logo)`
+  width: 24px;
+  height: 24px;
   @media screen and (max-width: 670px) {
     width: 16px;
     height: 16px;
@@ -138,14 +144,19 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
   type,
 }) => {
   const { isXs, isSm } = useMatchBreakpoints()
-  const chainName = useGetChainName()
   const chianPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
+  const { chainId } = useActiveChainId()
+  const address = getAddress(tokenData.address)
+  const tokenLogoURL = getTokenLogoURLByAddress(tokenData.address, chainId)
   return (
     <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
         <Flex alignItems="center">
-          <ResponsiveLogo address={tokenData.address} chainName={chainName} />
+          <ResponsiveLogo
+            sizes="24px"
+            srcs={[tokenLogoURL, `https://tokens.pancakeswap.finance/images/${address}.png`]}
+          />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
