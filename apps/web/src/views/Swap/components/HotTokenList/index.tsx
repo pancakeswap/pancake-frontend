@@ -30,7 +30,7 @@ const HotTokenList: React.FC = () => {
   const listsByUrl = useAtomValue(selectorByUrlsAtom)
   const { current: list } = listsByUrl['https://tokens.pancakeswap.finance/pancakeswap-extended.json']
   const whiteList = useMemo(() => {
-    return list.tokens.map((t) => t.address)
+    return list ? list.tokens.map((t) => t.address) : []
   }, [list])
   const allTokens = useTokenDatasSWR(whiteList.map((d) => d.toLowerCase()))
   const [index, setIndex] = useState(0)

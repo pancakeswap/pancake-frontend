@@ -1,9 +1,8 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, useMatchBreakpoints, Modal, ModalV2 } from '@pancakeswap/uikit'
+import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
 import { useContext } from 'react'
-import { useUserSmartRouter } from 'state/user/smartRouter'
-import { useTranslation } from '@pancakeswap/localization'
 
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useCurrency } from '../../hooks/Tokens'
@@ -12,8 +11,6 @@ import { useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import HotTokenList from './components/HotTokenList'
-import SwapForm from './components/SwapForm'
-import SwapTab, { SwapType } from './components/SwapTab'
 import { SmartSwapForm } from './SmartSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
@@ -42,7 +39,13 @@ export default function Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex width={['328px', , '100%']} height="100%" justifyContent="center" position="relative">
+      <Flex
+        width={['328px', , '100%']}
+        height="100%"
+        justifyContent="center"
+        position="relative"
+        alignItems="flex-start"
+      >
         {!isMobile && isChartSupported && (
           <PriceChartContainer
             inputCurrencyId={inputCurrencyId}

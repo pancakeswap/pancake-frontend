@@ -152,8 +152,6 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
     () => fetcher(addresses, chainName, blocks),
     SWR_SETTINGS,
   )
-  console.log(data, 'data!!?!?!?!??!?!?!s')
-
   const allData = useMemo(() => {
     return data && data.length > 0
       ? data.reduce((a, b) => {
@@ -161,7 +159,6 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
         }, {})
       : {}
   }, [data])
-  console.log(allData, 'alldata')
 
   const tokensWithData = useMemo(() => {
     if (!addresses && allData) {
