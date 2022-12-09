@@ -8,6 +8,11 @@ export type ChainMap<T> = {
   readonly [chainId in ChainId]: T
 }
 
+export interface RouterAddressTypes {
+  Icecream: string
+  Akka: string
+}
+
 export type ChainTokenList = ChainMap<Token[]>
 
 export type TranslatableText =

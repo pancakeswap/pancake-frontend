@@ -1,0 +1,601 @@
+[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountOutMin",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "srcAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dstMinAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isFromNative",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isToNative",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "srcToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "dstToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "pairAddr",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "fee",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "srcAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeSrc",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeDst",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct IAkkaRouter.PathDescription[]",
+						"name": "paths",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct IAkkaRouter.SplitedPathDescription[]",
+				"name": "data",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "srcToken",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "srcAnyToken",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "srcPool",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "dstPool",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "dstChain",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "routerAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "destinationAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "fee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "srcAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dstMinAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bridgeFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint16",
+						"name": "bridgeId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint8",
+						"name": "domainId",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "resourceId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "iceHandler",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "iceData",
+						"type": "bytes"
+					}
+				],
+				"internalType": "struct IAkkaRouter.BridgeDescription[]",
+				"name": "bridge",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "srcAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dstMinAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isFromNative",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isToNative",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "srcToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "dstToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "pairAddr",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "fee",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "srcAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeSrc",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeDst",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct IAkkaRouter.PathDescription[]",
+						"name": "paths",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct IAkkaRouter.SplitedPathDescription[]",
+				"name": "dstData",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "multiPathSwap",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amountOutMin",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "token",
+				"type": "address"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "srcAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dstMinAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isFromNative",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isToNative",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "srcToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "dstToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "pairAddr",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "fee",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "srcAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeSrc",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeDst",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct IAkkaRouter.PathDescription[]",
+						"name": "paths",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct IAkkaRouter.SplitedPathDescription[]",
+				"name": "data",
+				"type": "tuple[]"
+			}
+		],
+		"name": "multiPathSwapAfterBridge",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "WETH_",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "encodeIceBridgeData",
+		"outputs": [
+			{
+				"internalType": "bytes",
+				"name": "data",
+				"type": "bytes"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amountIn",
+				"type": "uint256"
+			},
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "srcToken",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "srcAnyToken",
+						"type": "address"
+					},
+					{
+						"internalType": "uint16",
+						"name": "srcPool",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "dstPool",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "dstChain",
+						"type": "uint16"
+					},
+					{
+						"internalType": "address",
+						"name": "routerAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "destinationAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "fee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "srcAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dstMinAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bridgeFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint16",
+						"name": "bridgeId",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint8",
+						"name": "domainId",
+						"type": "uint8"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "resourceId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "iceHandler",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "iceData",
+						"type": "bytes"
+					}
+				],
+				"internalType": "struct IAkkaRouter.BridgeDescription[]",
+				"name": "bridge",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "srcAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dstMinAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isFromNative",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "isToNative",
+						"type": "uint256"
+					},
+					{
+						"components": [
+							{
+								"internalType": "address",
+								"name": "srcToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "dstToken",
+								"type": "address"
+							},
+							{
+								"internalType": "address",
+								"name": "pairAddr",
+								"type": "address"
+							},
+							{
+								"internalType": "uint256",
+								"name": "fee",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "srcAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "dstMinAmount",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeSrc",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feeDst",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct IAkkaRouter.PathDescription[]",
+						"name": "paths",
+						"type": "tuple[]"
+					}
+				],
+				"internalType": "struct IAkkaRouter.SplitedPathDescription[]",
+				"name": "dstData",
+				"type": "tuple[]"
+			},
+			{
+				"internalType": "address",
+				"name": "from",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			}
+		],
+		"name": "getBridgeFee",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
