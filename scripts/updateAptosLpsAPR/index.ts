@@ -56,15 +56,15 @@ const fetchFarmLpsInfo = async (addresses: string[]): Promise<SingleFarmResponse
       const token = pair.quotoTokenAddress.toLowerCase()
       const quoteToken = pair.baseTokenAddress.toLowerCase()
       const [address0, address1] = Pair.parseType(address)
-      if (address0 === quoteToken && address1 === token) {
+      if ((address0 === quoteToken && address1 === token) || (address0 === token && address1 === quoteToken)) {
         return pair
       }
     })
 
     return {
       id: address,
-      volumeUSD: farmPriceInfo.volumeUsd24h || '0',
-      reserveUSD: farmPriceInfo.liquidity || '0',
+      volumeUSD: farmPriceInfo?.volumeUsd24h || '0',
+      reserveUSD: farmPriceInfo?.liquidity || '0',
     }
   })
 }
@@ -118,13 +118,10 @@ const fetchFarmsOneWeekAgo = async (farmsAtLatestBlock: SingleFarmResponse[]) =>
     const { usdList } = responseData[address]
     const oneWeekData = usdList.slice(0, 7)
 
-    if (oneWeekData.length > 0) {
-      volumeUSD = oneWeekData
-        .reduce((sum, single) => new BigNumber(sum).plus(single.volumeUSD).toNumber(), 0)
-        .toString()
-      reserveUSD = oneWeekData
-        .reduce((sum, single) => new BigNumber(sum).plus(single.reserveUSD).toNumber(), 0)
-        .toString()
+    if (oneWeekData.length === 7) {
+      const lastData = oneWeekData[0]
+      volumeUSD = lastData.volumeUSD.toString()
+      reserveUSD = lastData.reserveUSD.toString()
     }
     return { id: address, volumeUSD, reserveUSD }
   })
