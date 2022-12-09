@@ -81,13 +81,11 @@ export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
     SWR_SETTINGS,
   )
 
-  const poolsWithData = poolAddresses
+  return poolAddresses
     .map((address) => {
       return data?.[address]?.data
     })
     .filter((pool) => pool)
-
-  return poolsWithData
 }
 
 export const usePoolChartDataSWR = (address: string): ChartEntry[] | undefined => {
@@ -215,6 +213,7 @@ export const useGetChainName = () => {
     if (path.includes('chainId=2000')) return 'DOGECHAIN'
     if (path.includes('chainId=61916')) return 'DOKEN'
     if (path.includes('chainId=122')) return 'FUSE'
+    if (path.includes('chainId=50')) return 'XDC'
     return 'BITGERT'
   }, [path])
   const [name, setName] = useState<MultiChainName | null>(getChain())

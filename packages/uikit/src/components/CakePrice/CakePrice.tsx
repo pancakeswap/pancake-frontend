@@ -31,7 +31,7 @@ const CakePrice: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   return cakePriceUsd ? (
     <PriceLink
-      href="https://icecreamswap.com/swap?outputCurrency=0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D&chainId=56"
+      href="https://icecreamswap.com/swap?outputCurrency=0xB999Ea90607a826A3E6E6646B404c3C7d11fa39D&chainId=32520"
       target="_blank"
     >
       <LogoRound width="24px" mr="8px" />

@@ -46,7 +46,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const tooltipBalance = rawEarningsBalance.isGreaterThan(new BigNumber(0.00001)) ? displayBalance : '< 0.00001'
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     `${tooltipBalance} ${t(
-      `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
+      `ICE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`,
     )}`,
     {
       placement: 'bottom',
@@ -69,7 +69,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
       toastSuccess(
         `${t('Harvested')}!`,
         <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
+          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'ICE' })}
         </ToastDescriptionWithTx>,
       )
       onDone?.()

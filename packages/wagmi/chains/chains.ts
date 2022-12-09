@@ -117,7 +117,7 @@ export const bscTest: Chain = {
 
 export const bitgert: Chain = {
   id: 32520,
-  name: 'Bitgert',
+  name: 'Bitgert Mainnet',
   network: 'bitgert',
   rpcUrls: {
     public: 'https://rpc.icecreamswap.com',
@@ -128,7 +128,7 @@ export const bitgert: Chain = {
   },
   nativeCurrency: {
     name: 'Brise',
-    symbol: 'BRISE',
+    symbol: 'Brise',
     decimals: 18,
   },
   multicall: {
@@ -139,7 +139,7 @@ export const bitgert: Chain = {
 
 export const dogechain: Chain = {
   id: 2000,
-  name: 'Dogechain',
+  name: 'Dogechain Mainnet',
   network: 'dogechain',
   rpcUrls: {
     public: 'https://rpc.dogechain.dog',
@@ -161,7 +161,7 @@ export const dogechain: Chain = {
 
 export const dokenchain: Chain = {
   id: 61916,
-  name: 'Dokenchain',
+  name: 'DoKEN Super Chain Mainnet',
   network: 'doken',
   rpcUrls: {
     public: 'https://nyrpc.doken.dev',
@@ -183,7 +183,7 @@ export const dokenchain: Chain = {
 
 export const fuse: Chain = {
   id: 122,
-  name: 'Fuse',
+  name: 'Fuse Mainnet',
   network: 'fuse',
   rpcUrls: {
     public: 'https://rpc.fuse.io',
@@ -200,6 +200,28 @@ export const fuse: Chain = {
   multicall: {
     address: '0x43891084581fD07Ee1189f3a2f04e51c26a95B77',
     blockCreated: 20060779,
+  },
+}
+
+export const xdc: Chain = {
+  id: 50,
+  name: 'XinFin XDC Network',
+  network: 'xdc',
+  rpcUrls: {
+    public: 'https://erpc.xinfin.network',
+    default: 'https://erpc.xinfin.network',
+  },
+  blockExplorers: {
+    default: { name: 'XDC Explorer', url: 'https://xdcscan.io' },
+  },
+  nativeCurrency: {
+    name: 'XDC',
+    symbol: 'XDC',
+    decimals: 18,
+  },
+  multicall: {
+    address: '0xf3a3dAf360161B2f10c645EF039C709A3Fd4Ea62',
+    blockCreated: 53792616,
   },
 }
 

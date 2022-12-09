@@ -3,7 +3,7 @@ import Svg from "../Svg";
 import { SvgProps } from "../types";
 
 const Icon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
-  return <img src="images/icecream.png" alt="IceCream" {...props}/>
+  return <img src="/images/icecream.png" alt="IceCream" {...props} />;
 
   /*
   return (

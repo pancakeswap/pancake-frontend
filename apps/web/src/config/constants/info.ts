@@ -2,10 +2,10 @@ export const MINIMUM_SEARCH_CHARACTERS = 2
 
 export const WEEKS_IN_YEAR = 52.1429
 
-export const TOTAL_FEE = 0.0025
-export const LP_HOLDERS_FEE = 0.0017
-export const TREASURY_FEE = 0.000225
-export const BUYBACK_FEE = 0.000575
+export const TOTAL_FEE = 0.003
+export const LP_HOLDERS_FEE = 0.0025
+export const TREASURY_FEE = 0.0005
+export const BUYBACK_FEE = 0.
 
 export const PCS_BITGERT_START = 1654207200 // June 03, 2022
 export const ONE_DAY_UNIX = 86400 // 24h * 60m * 60s

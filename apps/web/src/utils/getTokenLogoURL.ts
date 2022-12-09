@@ -1,18 +1,13 @@
 import { getAddress } from '@ethersproject/address'
 import memoize from 'lodash/memoize'
-import { ChainId, Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/sdk'
+import chainName from "../config/constants/chainName";
 
-const mapping = {
-    [ChainId.BITGERT]: 'bitgert',
-    [ChainId.DOGE]: 'doge',
-    [ChainId.FUSE]: 'fuse',
-    [ChainId.DOKEN]: 'doken',
-}
 
 const getTokenLogoURL = memoize(
   (token?: Token) => {
-    if (token && mapping[token.chainId]) {
-      return `https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/${mapping[token.chainId]}/assets/${getAddress(
+    if (token && chainName[token.chainId]) {
+      return `https://raw.githubusercontent.com/simone1999/trustwallet-assets/master/blockchains/${chainName[token.chainId].toLowerCase()}/assets/${getAddress(
         token.address,
       )}/logo.png`
     }

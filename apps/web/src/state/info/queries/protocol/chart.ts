@@ -10,7 +10,7 @@ import { useGetChainName } from '../../hooks'
 /**
  * Data for displaying Liquidity and Volume charts on Overview page
  */
-const PANCAKE_DAY_DATAS = gql`
+const PANICE_DAY_DATAS = gql`
   query overviewCharts($startTime: Int!, $skip: Int!) {
     pancakeDayDatas(first: 1000, skip: $skip, where: { date_gt: $startTime }, orderBy: date, orderDirection: asc) {
       date
@@ -27,7 +27,7 @@ const getOverviewChartData = async (
   try {
     const { pancakeDayDatas } = await getMultiChainQueryEndPointWithStableSwap(
       chainName,
-    ).request<PancakeDayDatasResponse>(PANCAKE_DAY_DATAS, {
+    ).request<PancakeDayDatasResponse>(PANICE_DAY_DATAS, {
       startTime: multiChainStartTime[chainName],
       skip,
     })

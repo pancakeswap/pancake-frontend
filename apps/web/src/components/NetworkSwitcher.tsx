@@ -23,9 +23,9 @@ import { useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { chains } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
-import Image from 'next/future/image'
 
 import { ChainLogo } from './Logo/ChainLogo'
+import chainName from "../config/constants/chainName";
 
 const NetworkSelect = ({ switchNetwork, chainId }) => {
   const { t } = useTranslation()
@@ -46,7 +46,7 @@ const NetworkSelect = ({ switchNetwork, chainId }) => {
           >
             <ChainLogo chainId={chain.id} />
             <Text color={chain.id === chainId ? 'secondary' : 'text'} bold={chain.id === chainId} pl="12px">
-              {chain.name}
+              {chainName[chain.id]}
             </Text>
           </UserMenuItem>
         ))}
@@ -150,7 +150,7 @@ export const NetworkSwitcher = () => {
             t('Network')
           ) : foundChain ? (
             <>
-              <Box display={['none', null, null, null, null, 'block']}>{foundChain.name}</Box>
+              <Box display={['none', null, null, null, null, 'block']}>{chainName[foundChain.id]}</Box>
               <Box display={['block', null, null, null, null, 'none']}>{symbol}</Box>
             </>
           ) : (

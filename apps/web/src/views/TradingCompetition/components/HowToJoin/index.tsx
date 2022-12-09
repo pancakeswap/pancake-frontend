@@ -34,7 +34,7 @@ const HowToJoin = () => {
       <HowToCard number={2} title={t('Battle Time')}>
         <Text fontSize="14px" color="textSubtle">
           {t(
-            'Trade DAR/BNB, CAKE/BNB, and CAKE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.',
+            'Trade DAR/BNB, ICE/BNB, and ICE/BUSD during the battle period to raise both your and your team’s score. See the Rules section below for more.',
           )}
         </Text>
       </HowToCard>

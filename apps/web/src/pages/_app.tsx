@@ -14,7 +14,6 @@ import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
-import Script from 'next/script'
 import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
@@ -66,21 +65,22 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         />
         <meta
           name="description"
-          content="SWAP BRIDGE ROADMAP FAQ WIKI JOIN US Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad IceCream brings people together Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain. Start Now Life is better with IceCream With us you can Swap and Bridge your tokens on"
+          content="Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad. Trade, Bridge, Earn and Launch on Bitgert (Brise), Binance smart chain (BSC), XDC, Dogechain, Doken, Fuse and soon CORE blockchain"
         />
         <meta name="theme-color" content="#F8567F" />
         <meta name="twitter:image" content="https://icecreamswap.com/images/hero.png" />
         <meta
           name="twitter:description"
-          content="SWAP BRIDGE ROADMAP FAQ WIKI JOIN US Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad IceCream brings people together Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain. Start Now Life is better with IceCream With us you can Swap and Bridge your tokens on"
+          content="Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad. Trade, Bridge, Earn and Launch on Bitgert (Brise), Binance smart chain (BSC), XDC, Dogechain, Doken, Fuse and soon CORE blockchain"
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="🍦 IceCreamSwap - Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken and Fuse blockchain."
+          content="🍦 IceCreamSwap - Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), XDC, Dogechain, Doken and Fuse blockchain."
         />
         <title>IceCreamSwap</title>
         {(Component as NextPageWithLayout).mp && (
+          // todo: check what this is doing exactly
           // eslint-disable-next-line @next/next/no-sync-scripts
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
         )}

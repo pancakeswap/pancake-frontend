@@ -70,7 +70,7 @@ const IfoPoolVaultCardMobile: React.FC<React.PropsWithChildren<IfoPoolVaultCardM
           </StyledTokenContent>
           <StyledTokenContent flexDirection="column" flex={1}>
             <Text color="textSubtle" fontSize="12px">
-              {t('iCAKE')}
+              {t('iICE')}
             </Text>
             <Balance small bold decimals={3} value={cakeAsNumberBalance} />
           </StyledTokenContent>

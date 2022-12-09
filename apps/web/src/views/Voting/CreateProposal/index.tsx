@@ -34,7 +34,7 @@ import { getBlockExploreLink } from 'utils'
 import { DatePicker, DatePickerPortal, TimePicker } from 'views/Voting/components/DatePicker'
 import Layout from '../components/Layout'
 import VoteDetailsModal from '../components/VoteDetailsModal'
-import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
+import { ADMINS, PANICE_SPACE, VOTE_THRESHOLD } from '../config'
 import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormErrors, Label, SecondaryLabel } from './styles'
@@ -79,7 +79,7 @@ const CreateProposal = () => {
       setIsLoading(true)
 
       const data: any = await client.proposal(library as any, account, {
-        space: PANCAKE_SPACE,
+        space: PANICE_SPACE,
         type: 'single-choice',
         title: name,
         body,

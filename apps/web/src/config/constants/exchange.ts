@@ -1,6 +1,6 @@
 import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
-import { bitgertTokens, dogechainTokens, dokenTokens, fuseTokens } from '@pancakeswap/tokens'
+import { bitgertTokens, dogechainTokens, dokenTokens, fuseTokens, xdcTokens } from '@pancakeswap/tokens'
 import { ChainMap, ChainTokenList, RouterAddressTypes } from './types'
 
 export const ROUTER_ADDRESS_COMMON = '0xBb5e1777A331ED93E07cF043363e48d320eb96c4'
@@ -19,6 +19,10 @@ export const ROUTER_ADDRESS: ChainMap<RouterAddressTypes> = {
     Akka: '',
   },
   [ChainId.FUSE]: {
+    Icecream: ROUTER_ADDRESS_COMMON,
+    Akka: '',
+  },
+  [ChainId.XDC]: {
     Icecream: ROUTER_ADDRESS_COMMON,
     Akka: '',
   },
@@ -51,6 +55,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.DOGE]: [dogechainTokens.ice],
   [ChainId.DOKEN]: [dokenTokens.ice],
   [ChainId.FUSE]: [fuseTokens.ice],
+  [ChainId.XDC]: [xdcTokens.ice],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -97,6 +102,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.DOGE]: [dogechainTokens.wdoge, dogechainTokens.ice],
   [ChainId.DOKEN]: [dokenTokens.wdkn, dokenTokens.ice, dokenTokens.usdt],
   [ChainId.FUSE]: [fuseTokens.wfuse, fuseTokens.ice, fuseTokens.doge, fuseTokens.shiba],
+  [ChainId.XDC]: [xdcTokens.wxdc, xdcTokens.ice, xdcTokens.usdt, xdcTokens.usdc],
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
@@ -104,6 +110,7 @@ export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } 
   [ChainId.DOGE]: [[dogechainTokens.wdoge, dogechainTokens.ice]],
   [ChainId.DOKEN]: [[dokenTokens.wdkn, dokenTokens.ice]],
   [ChainId.FUSE]: [[fuseTokens.wfuse, fuseTokens.ice]],
+  [ChainId.XDC]: [xdcTokens.wxdc, xdcTokens.ice, xdcTokens.usdt, xdcTokens.usdc],
 }
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
@@ -133,7 +140,7 @@ export const INPUT_FRACTION_AFTER_FEE = ONE_HUNDRED_PERCENT.subtract(BASE_FEE)
 
 // BNB
 export const DEFAULT_INPUT_CURRENCY = 'BNB'
-// CAKE
+// ICE
 export const DEFAULT_OUTPUT_CURRENCY = '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82'
 
 // Handler string is passed to Gelato to use PCS router

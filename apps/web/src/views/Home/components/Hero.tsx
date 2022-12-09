@@ -5,7 +5,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
 import styled, { keyframes } from 'styled-components'
 import hero from '../../../../public/images/home/hero-home.png'
-import CompositeImage, { CompositeImageProps } from './CompositeImage'
 import { SlideSvgDark, SlideSvgLight } from './SlideSvg'
 
 const flyingAnim = () => keyframes`
@@ -20,17 +19,6 @@ const flyingAnim = () => keyframes`
   }
 `
 
-const fading = () => keyframes`
-  from {
-    opacity: 0.9;
-  }
-  50% {
-    opacity: 0.1;
-  }
-  to {
-    opacity: 0.9;
-  }
-`
 
 const BgWrapper = styled.div`
   z-index: -1;
@@ -38,8 +26,8 @@ const BgWrapper = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
 `
 
 const InnerWrapper = styled.div`
@@ -54,27 +42,6 @@ const BunnyWrapper = styled.div`
   will-change: transform;
   > span {
     overflow: visible !important; // make sure the next-image pre-build blur image not be cropped
-  }
-`
-
-const StarsWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  & :nth-child(2) {
-    animation: ${fading} 2s ease-in-out infinite;
-    animation-delay: 1s;
-  }
-
-  & :nth-child(3) {
-    animation: ${fading} 5s ease-in-out infinite;
-    animation-delay: 0.66s;
-  }
-
-  & :nth-child(4) {
-    animation: ${fading} 2.5s ease-in-out infinite;
-    animation-delay: 0.33s;
   }
 `
 
@@ -120,7 +87,7 @@ const Hero = () => {
           </Heading>
           <Heading scale="md" mb="24px">
             {t(
-              'Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain.',
+              'Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), XDC, Dogechain, Doken, Fuse and soon CORE blockchain.',
             )}
           </Heading>
           <Flex>

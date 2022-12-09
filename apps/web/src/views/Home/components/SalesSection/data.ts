@@ -9,9 +9,9 @@ import earnIce from '../../../../../public/images/home/earn/ice.png'
 export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
   headingText: t('Trade anything anywhere, hassle free'),
   bodyText: t(
-      'IceCreamSwap let\'s everyone trade any token on multiple chains. ' +
+      'IceCreamSwap lets everyone trade any token on multiple chains. ' +
       'A very intuitive UI lets both new and experienced DeFi users fully emerge in the world of crypto trading. ' +
-      'As the first DEX implementing route splitting, the best possible outputs with the lowest slippage is guaranteed. '
+      'As the first DEX implementing route splitting, the best possible output with the lowest slippage is guaranteed. '
   ),
   reverse: false,
   primaryButton: {
@@ -20,7 +20,7 @@ export const swapSectionData = (t: TranslateFunction): SalesSectionProps => ({
     external: false,
   },
   secondaryButton: {
-    to: 'https://wiki.icecreamswap.com/getting-started/swap',
+    to: 'https://wiki.icecreamswap.com/get-started/swap',
     text: t('Learn'),
     external: true,
   },
@@ -39,7 +39,7 @@ export const bridgeSectionData = (t: TranslateFunction): SalesSectionProps => ({
       'A novel approach of a second (redundant) security layer will make the IceCream Bridge even more secure ' +
       'than the audited and battle tested code it is built on top of. ' +
       'All bridge reserves are transparent on chain and can be verified any time. ' +
-      'Due to it\'s universal implementation even raw data and NFT\'s will be supported by the Bridge.',
+      'Due to its universal implementation even raw data and NFTs will be supported by the Bridge.',
   ),
   reverse: true,
   primaryButton: {

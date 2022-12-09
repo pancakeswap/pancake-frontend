@@ -3,9 +3,9 @@ import { ContextApi } from '@pancakeswap/localization'
 import { PageMeta } from './types'
 
 export const DEFAULT_META: PageMeta = {
-  title: 'Home - IceCreamSwap',
+  title: 'IceCreamSwap Multi-chain DeFi ecosystem, Swap, Bridge, LaunchPad',
   description:
-    'SWAP BRIDGE ROADMAP FAQ WIKI JOIN US Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad IceCream brings people together Trade, Earn, Bridge and Launch on Bitgert (Brise), Binance smart chain (BSC), Dogechain, Doken, Fuse and soon CORE blockchain. Start Now Life is better with IceCream With us you can Swap and Bridge your tokens on',
+    'Multi-chain DeFi ecosystem with Swap, Bridge and Launchpad. Trade, Bridge, Earn and Launch on Bitgert (Brise), Binance smart chain (BSC), XDC, Dogechain, Doken, Fuse and soon CORE blockchain',
   image: 'https://icecreamswap.com/images/hero.png',
 }
 
