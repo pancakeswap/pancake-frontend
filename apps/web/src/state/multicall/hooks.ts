@@ -114,7 +114,7 @@ function useCallsData(calls: (Call | undefined)[], options?: ListenerOptions): C
   )
 }
 
-interface CallState {
+export interface CallState {
   readonly valid: boolean
   // the result, or undefined if loading or errored/no data
   readonly result: Result | undefined
@@ -164,6 +164,61 @@ function toCallState(
     result,
     error: !success,
   }
+}
+
+export function useMultiContractsMultiMethods(
+  callInputs: {
+    contract: Contract | null | undefined
+    methodName: string
+    inputs?: OptionalMethodInputs
+  }[],
+  options?: ListenerOptions,
+) {
+  const { chainId } = useActiveChainId()
+
+  const { calls, fragments, contracts } = useMemo(() => {
+    if (!callInputs || !callInputs.length) {
+      return { calls: [], fragments: [], contracts: [] }
+    }
+    const validFragments: FunctionFragment[] = []
+    const validContracts: Contract[] = []
+    const validCalls: Call[] = []
+    for (const { methodName, inputs, contract } of callInputs) {
+      const fragment = contract?.interface.getFunction(methodName)
+      if (!contract || !fragment) {
+        // eslint-disable-next-line no-continue
+        continue
+      }
+      validFragments.push(fragment)
+      validContracts.push(contract)
+      validCalls.push({
+        address: contract.address,
+        callData: contract.interface.encodeFunctionData(fragment, inputs),
+      })
+    }
+    return { calls: validCalls, fragments: validFragments, contracts: validContracts }
+  }, [callInputs])
+
+  const results = useCallsData(calls, options)
+
+  const { cache } = useSWRConfig()
+
+  return useMemo(() => {
+    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))
+    return results.map((result, i) => toCallState(result, contracts[i]?.interface, fragments[i], currentBlockNumber))
+  }, [cache, chainId, results, fragments, contracts])
+}
+
+export function useSingleContractMultiMethods(
+  contract: Contract | null | undefined,
+  callInputs: {
+    methodName: string
+    inputs?: OptionalMethodInputs
+  }[],
+  options?: ListenerOptions,
+) {
+  const multiInputs = useMemo(() => callInputs.map((callInput) => ({ ...callInput, contract })), [callInputs, contract])
+  return useMultiContractsMultiMethods(multiInputs, options)
 }
 
 export function useSingleContractMultipleData(

@@ -1,20 +1,20 @@
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
+import { StableSwap } from '@pancakeswap/smart-router/evm'
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
 import { PairState } from 'hooks/usePairs'
-
 import useTotalSupply from 'hooks/useTotalSupply'
+import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useContext, useMemo } from 'react'
-
-import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { Field } from 'state/mint/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { useMintState } from 'state/mint/hooks'
-import { useAccount } from 'wagmi'
+import { useStableSwapInfo } from 'hooks/useStableSwapInfo'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -114,39 +114,45 @@ export function useExpectedLPOutputWithoutFee(
   output: CurrencyAmount<Currency> | null
   loading: boolean
 } {
-  const { stableSwapConfig, stableSwapInfoContract } = useContext(StableConfigContext)
+  const { stableSwapConfig } = useContext(StableConfigContext)
+  const { totalSupply, balances, amplifier, loading } = useStableSwapInfo(
+    stableSwapConfig?.stableSwapAddress,
+    stableSwapConfig?.liquidityToken.address,
+  )
   const wrappedCurrencyA = amountA?.currency.wrapped
   const wrappedCurrencyB = amountB?.currency.wrapped
   const [token0, token1] =
     wrappedCurrencyA && wrappedCurrencyB && wrappedCurrencyA?.sortsBefore(wrappedCurrencyB)
       ? [wrappedCurrencyA, wrappedCurrencyB]
       : [wrappedCurrencyB, wrappedCurrencyA]
-  const { pair } = useStablePair(token0, token1)
-  const totalSupply = useTotalSupply(pair?.liquidityToken)
-  const stableSwapAddress = stableSwapConfig?.stableSwapAddress
-
-  const data = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress])
-  const { result, loading: load, syncing } = data
-  const loading = load || syncing
-  const [amount0, amount1] = result?.[0] || []
-  const balances = useMemo(
+  const [amount0, amount1] =
+    wrappedCurrencyA && token0 && token0.equals(wrappedCurrencyA) ? [amountA, amountB] : [amountB, amountA]
+  const poolBalances = useMemo<[CurrencyAmount<Currency>, CurrencyAmount<Currency>] | undefined>(
     () =>
-      pair &&
-      amount0 &&
-      amount1 && [
-        CurrencyAmount.fromRawAmount(pair.token0, amount0),
-        CurrencyAmount.fromRawAmount(pair.token1, amount1),
+      token0 &&
+      token1 &&
+      balances[0] &&
+      balances[1] && [
+        CurrencyAmount.fromRawAmount(token0, balances[0]),
+        CurrencyAmount.fromRawAmount(token1, balances[1]),
       ],
-    [pair, amount0, amount1],
+    [balances, token0, token1],
+  )
+  const totalSupplyAmount = useMemo(
+    () =>
+      totalSupply &&
+      stableSwapConfig?.liquidityToken &&
+      CurrencyAmount.fromRawAmount(stableSwapConfig.liquidityToken, totalSupply),
+    [totalSupply, stableSwapConfig?.liquidityToken],
   )
   return useMemo(() => {
-    if (!totalSupply || !balances || !amountA || !amountB) {
+    if (!totalSupplyAmount || !poolBalances || !amount0 || !amount1) {
       return {
         loading,
         output: null,
       }
     }
-    const totalValue = JSBI.add(balances[0].quotient, balances[1].quotient)
+    const totalValue = JSBI.add(poolBalances[0].quotient, poolBalances[1].quotient)
     if (JSBI.equal(totalValue, BIG_INT_ZERO)) {
       return {
         loading,
@@ -155,12 +161,14 @@ export function useExpectedLPOutputWithoutFee(
     }
     return {
       loading,
-      output: CurrencyAmount.fromRawAmount(
-        totalSupply.currency,
-        JSBI.divide(JSBI.multiply(totalSupply.quotient, JSBI.add(amountA.quotient, amountB.quotient)), totalValue),
-      ),
+      output: StableSwap.getLPOutputWithoutFee({
+        amplifier,
+        balances: poolBalances,
+        totalSupply: totalSupplyAmount,
+        amounts: [amount0, amount1],
+      }),
     }
-  }, [totalSupply, balances, amountA, amountB, loading])
+  }, [totalSupplyAmount, poolBalances, amplifier, loading, amount0, amount1])
 }
 
 export function useStableLPDerivedMintInfo(
