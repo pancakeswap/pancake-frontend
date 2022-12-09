@@ -2045,6 +2045,7 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "PancakeSwap ভোটিং গভর্নেন্সে আপনার ভোটিং পাওয়ারকে %totalScore%-এ বাড়িয়ে দেয় vCAKE।",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "খামারের ইল্ড বুস্টিং, IFO-এ অংশগ্রহণ, ভোটিং পাওয়ার বৃদ্ধি এবং আরো সুবিধা উপভোগ করতে CAKE লক করুন!",
   "CAKE staking expired": "CAKE স্টকিং-এর মেয়াদ শেষ",
+  "Insufficient token allowance. Click \"Enable\" to approve.": "Insufficient token allowance. Click \"Enable\" to approve.",
   "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "পাবলিক সেল এর জন্য প্রত্যেক যোগ্য অংশগ্রহণকারী সর্বোচ্চ সীমা পর্যন্ত যেকনো পরিমাণ CAKE সমর্পণ করতে সক্ষম হবেন, যা IFO ভোটিং প্রস্তাবের সাথে প্রকাশিত হয়।",
   "Slippage": "Slippage",
   "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected",
