@@ -1,9 +1,9 @@
 import { Currency, CurrencyAmount, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
-import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, StableSwapFeePercent } from './types'
-import { BasePair } from './types/pair'
-import { getOutputToken } from './utils/pair'
+import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, StableSwapFeePercent } from '../types'
+import { BasePair } from '../types/pair'
+import { getOutputToken } from '../utils/pair'
 
 export function createStableSwapPair(pair: Omit<BasePair, 'involvesToken'>, stableSwapAddress = ''): StableSwapPair {
   return {
