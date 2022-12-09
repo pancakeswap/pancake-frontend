@@ -62,6 +62,28 @@ export const LayerZeroWidget = ({ theme }: { theme: PancakeTheme }) => {
           color: #1fc7d4;
           background: transparent;
         }
+
+        .dark [data-radix-popper-content-wrapper] {
+          background-color: #ffffff;
+          border-radius: 18px;
+        }
+        .dark [data-radix-popper-content-wrapper] div {
+          color: #280d5f;
+        }
+        .dark [data-radix-popper-content-wrapper] svg {
+          fill: #ffffff;
+        }
+
+        .light [data-radix-popper-content-wrapper] {
+          background-color: black;
+          border-radius: 18px;
+        }
+        .light [data-radix-popper-content-wrapper] div {
+          color: #ffffff;
+        }
+        .light [data-radix-popper-content-wrapper] svg {
+          fill: black;
+        }
       `}</style>
       {/* @ts-ignore */}
       <aptos-bridge class="aptos-bridge-container" />
