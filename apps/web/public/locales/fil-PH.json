@@ -2045,6 +2045,7 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "Binu-boost ng vCAKE ang iyong kapangyarihang bumoto sa %totalScore% sa pagboto para sa pamamahala sa PancakeSwap.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Mag-lock ng CAKE para ma-enjoy ang mga benepisyo ng pag-boost ng farm yield, pagsali sa mga IFO, pag-boost sa kapangyarihang bumoto, at higit pa!",
   "CAKE staking expired": "Nag-expire na ang pag-stake ng CAKE",
+  "Insufficient token allowance. Click \"Enable\" to approve.": "Insufficient token allowance. Click \"Enable\" to approve.",
   "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Para sa pampublikong pagbebenta, magagawa ng mga bawat kwalipikadong kasali na mag-commit ng anumang halaga ng CAKE hanggang sa maximum na limitasyon sa pag-commit, na na-publish kasama ng mungkahi sa pagboto ng IFO.",
   "Slippage": "Slippage",
   "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected",
