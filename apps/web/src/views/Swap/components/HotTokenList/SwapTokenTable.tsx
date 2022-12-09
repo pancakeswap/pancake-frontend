@@ -72,6 +72,7 @@ const LinkWrapper = styled(NextLinkFromReactRouter)`
 `
 
 const ResponsiveLogo = styled(Logo)`
+  border-radius: 50%;
   width: 24px;
   height: 24px;
   @media screen and (max-width: 670px) {
