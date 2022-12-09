@@ -2045,6 +2045,7 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "A vCAKE %totalScore% értékre növeli a szavazati erejét a PancakeSwap szavazáson.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Zárolja a CAKE-t, hogy kamatoztassa ennek előnyeit a gazdaságok hozamnövelésében, részvételben az IFO-kon, a szavazati erő növelésében és még sok egyéb lehetőségben!",
   "CAKE staking expired": "CAKE tét lejárt",
+  "Insufficient token allowance. Click \"Enable\" to approve.": "Insufficient token allowance. Click \"Enable\" to approve.",
   "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "A nyilvános értékesítés során minden jogosult résztvevő tetszőleges mennyiségű CAKE-t leköthet a maximális lekötési határértékig, amelyet az IFO szavazási javaslattal együtt tesznek közzé.",
   "Slippage": "Slippage",
   "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected",
