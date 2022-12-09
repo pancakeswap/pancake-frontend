@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit'
 import BigNumber from 'bignumber.js'
-import fromPairs from 'lodash/fromPairs'
+import keyBy from 'lodash/keyBy'
 import poolsConfig from 'config/constants/pools'
 import {
   PoolsState,
@@ -143,8 +143,8 @@ export const fetchPoolsPublicDataAsync =
         currentBlockNumber ? Promise.resolve(currentBlockNumber) : bscRpcProvider.getBlockNumber(),
       ])
 
-      const blockLimitsSousIdMap = fromPairs(blockLimits.map((entry) => [entry.sousId, entry]))
-      const totalStakingsSousIdMap = fromPairs(totalStakings.map((entry) => [entry.sousId, entry]))
+      const blockLimitsSousIdMap = keyBy(blockLimits, 'sousId')
+      const totalStakingsSousIdMap = keyBy(totalStakings, 'sousId')
 
       const priceHelperLpsConfig = getPoolsPriceHelperLpFiles(chainId)
       const activePriceHelperLpsConfig = priceHelperLpsConfig.filter((priceHelperLpConfig) => {
@@ -382,7 +382,7 @@ export const PoolsSlice = createSlice({
     },
     setPoolsPublicData: (state, action) => {
       const livePoolsData: SerializedPool[] = action.payload
-      const livePoolsSousIdMap = fromPairs(livePoolsData.map((entry) => [entry.sousId, entry]))
+      const livePoolsSousIdMap = keyBy(livePoolsData, 'sousId')
       state.data = state.data.map((pool) => {
         const livePoolData = livePoolsSousIdMap[pool.sousId]
         return { ...pool, ...livePoolData }
@@ -413,7 +413,7 @@ export const PoolsSlice = createSlice({
         >,
       ) => {
         const userData = action.payload
-        const userDataSousIdMap = fromPairs(userData.map((entry) => [entry.sousId, entry]))
+        const userDataSousIdMap = keyBy(userData, 'sousId')
         state.data = state.data.map((pool) => ({
           ...pool,
           userDataLoaded: true,
