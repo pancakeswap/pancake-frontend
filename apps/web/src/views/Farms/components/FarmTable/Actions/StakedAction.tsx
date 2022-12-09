@@ -136,7 +136,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const native = useNativeCurrency()
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
-  const { isFirstTime } = useFirstTimeCrossFarming(vaultPid)
+  const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
 
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
@@ -173,6 +173,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const handleStake = async (amount: string) => {
     if (vaultPid) {
       await handleNonBscStake(amount)
+      refreshFirstTime()
     } else {
       const receipt = await fetchWithCatchTxError(() => onStake(amount))
 

@@ -79,7 +79,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { boosterState } = useContext(YieldBoosterStateContext)
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
-  const { isFirstTime } = useFirstTimeCrossFarming(vaultPid)
+  const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
   const isBloctoETH = useIsBloctoETH()
 
   const crossChainWarningText = useMemo(() => {
@@ -97,6 +97,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const handleStake = async (amount: string) => {
     if (vaultPid) {
       await handleNonBscStake(amount)
+      refreshFirstTime()
     } else {
       const receipt = await fetchWithCatchTxError(() => onStake(amount))
       if (receipt?.status) {
