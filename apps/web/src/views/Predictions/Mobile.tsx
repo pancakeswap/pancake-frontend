@@ -60,7 +60,7 @@ const Mobile: React.FC<React.PropsWithChildren> = () => {
                 {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
                 <PowerLinkStyle>
                   <img
-                    src="/images/powered-by-chainlink.png"
+                    src="/images/powered-by-chainlink.svg"
                     alt="Powered by ChainLink"
                     style={{ width: '170px', maxHeight: '100%' }}
                   />
