@@ -2045,6 +2045,7 @@
   "vCAKE boosts your voting power to %totalScore% in the PancakeSwap voting governance.": "vCAKE tăng quyền lực bình chọn của bạn lên %totalScore% trong bình chọn quản trị PancakeSwap.",
   "Lock CAKE to enjoy the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Khóa CAKE để tận hưởng lợi ích của việc tăng lợi nhuận trang trại, tham gia vào các đợt IFO, tăng quyền lực bình chọn, v.v.!",
   "CAKE staking expired": "Đặt cọc CAKE đã hết hạn",
+  "Insufficient token allowance. Click \"Enable\" to approve.": "Insufficient token allowance. Click \"Enable\" to approve.",
   "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "Đối với đợt chào bán công khai, mỗi người tham gia đủ tiêu chuẩn sẽ có thể cam kết một lượng CAKE bất kỳ lên đến giới hạn cam kết tối đa, thông tin này được đăng cùng với đề xuất bỏ phiếu IFO.",
   "Slippage": "Slippage",
   "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected": "Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected",
