@@ -36,7 +36,10 @@ const HotTokenList: React.FC = () => {
   const allTokens = useTokenDatasSWR(whiteList, false)
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
-  const formattedTokens = useMemo(() => allTokens.filter((t) => t.priceUSD !== 0), [allTokens])
+  const formattedTokens = useMemo(
+    () => allTokens.filter((t) => t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0),
+    [allTokens],
+  )
 
   const { t } = useTranslation()
   return (
