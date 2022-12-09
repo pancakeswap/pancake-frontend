@@ -34,6 +34,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.DOGE]: [dogechainTokens.wdoge, dogechainTokens.ice],
   [ChainId.DOKEN]: [dokenTokens.wdkn, dokenTokens.ice, dokenTokens.usdt],
   [ChainId.FUSE]: [fuseTokens.wfuse, fuseTokens.ice],
+  [ChainId.XDC]: [xdcTokens.wxdc, xdcTokens.ice, xdcTokens.usdt],
 }
 
 /**
@@ -106,11 +107,20 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {
-  [ChainId.BITGERT]: [[bitgertTokens.wbrise, bitgertTokens.ice]],
-  [ChainId.DOGE]: [[dogechainTokens.wdoge, dogechainTokens.ice]],
+  [ChainId.BITGERT]: [
+    [bitgertTokens.wbrise, bitgertTokens.ice],
+    [bitgertTokens.usdti, bitgertTokens.ice],
+  ],
+  [ChainId.DOGE]: [
+    [dogechainTokens.wdoge, dogechainTokens.ice],
+    [dogechainTokens.usdt, dogechainTokens.ice],
+  ],
   [ChainId.DOKEN]: [[dokenTokens.wdkn, dokenTokens.ice]],
   [ChainId.FUSE]: [[fuseTokens.wfuse, fuseTokens.ice]],
-  [ChainId.XDC]: [xdcTokens.wxdc, xdcTokens.ice, xdcTokens.usdt, xdcTokens.usdc],
+  [ChainId.XDC]: [
+    [xdcTokens.wxdc, xdcTokens.ice],
+    [xdcTokens.usdt, xdcTokens.ice],
+  ],
 }
 
 export const BIG_INT_ZERO = JSBI.BigInt(0)
