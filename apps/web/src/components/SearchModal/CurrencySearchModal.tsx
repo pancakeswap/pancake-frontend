@@ -54,6 +54,8 @@ export interface CurrencySearchModalProps extends InjectedModalProps {
   otherSelectedCurrency?: Currency | null
   showCommonBases?: boolean
   commonBasesType?: string
+  showSearchInput?: boolean
+  tokensToShow?: Token[]
 }
 
 export default function CurrencySearchModal({
@@ -63,6 +65,8 @@ export default function CurrencySearchModal({
   otherSelectedCurrency,
   showCommonBases = true,
   commonBasesType,
+  showSearchInput,
+  tokensToShow,
 }: CurrencySearchModalProps) {
   const [modalView, setModalView] = useState<CurrencyModalView>(CurrencyModalView.search)
 
@@ -134,9 +138,11 @@ export default function CurrencySearchModal({
             otherSelectedCurrency={otherSelectedCurrency}
             showCommonBases={showCommonBases}
             commonBasesType={commonBasesType}
+            showSearchInput={showSearchInput}
             showImportView={() => setModalView(CurrencyModalView.importToken)}
             setImportToken={setImportToken}
             height={height}
+            tokensToShow={tokensToShow}
           />
         ) : modalView === CurrencyModalView.importToken && importToken ? (
           <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />

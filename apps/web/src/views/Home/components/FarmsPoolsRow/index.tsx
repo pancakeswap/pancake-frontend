@@ -107,7 +107,6 @@ const FarmsPoolsRow = () => {
                   title={topPool && getPoolText(topPool)}
                   percentage={topPool?.sousId === 0 ? +lockedApy : topPool?.apr}
                   index={index}
-                  isApy={topPool?.sousId === 0}
                   visible={!showFarms}
                 />
               ))}

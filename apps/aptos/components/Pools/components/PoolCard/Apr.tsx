@@ -11,14 +11,12 @@ const withShownApr = (AprComp) => (props) => {
   }
 
   return (
-    <Pool.AprRowWithToolTip isVaultKey={false}>
-      <AprComp
-        {...props}
-        shouldShowApr={hasPoolStarted || !shouldShowBlockCountdown}
-        account={account}
-        autoCompoundFrequency={0}
-      />
-    </Pool.AprRowWithToolTip>
+    <AprComp
+      {...props}
+      shouldShowApr={hasPoolStarted || !shouldShowBlockCountdown}
+      account={account}
+      autoCompoundFrequency={0}
+    />
   )
 }
 

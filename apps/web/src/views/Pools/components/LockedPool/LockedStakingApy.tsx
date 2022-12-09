@@ -16,6 +16,7 @@ import LockDurationRow from './Common/LockDurationRow'
 import IfoCakeRow from './Common/IfoCakeRow'
 import useUserDataInVaultPresenter from './hooks/useUserDataInVaultPresenter'
 import { LockedStakingApyPropsType } from './types'
+import LockedAprTooltipContent from './Common/LockedAprTooltipContent'
 
 interface LockedStakingApyProps extends LockedStakingApyPropsType {
   showICake?: boolean
@@ -59,9 +60,11 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
     return getBalanceNumber(currentLockedAmountAsBigNumber.minus(userData?.cakeAtLastUserAction))
   }, [currentLockedAmountAsBigNumber, userData?.cakeAtLastUserAction])
 
-  const tooltipContent = t(
-    'Calculated based on current rates and subject to change based on pool conditions. It is an estimate provided for your convenience only, and by no means represents guaranteed returns.',
-  )
+  const boostedYieldAmount = useMemo(() => {
+    return getFullDisplayBalance(userData?.cakeAtLastUserAction, 18, 5)
+  }, [userData?.cakeAtLastUserAction])
+
+  const tooltipContent = <LockedAprTooltipContent boostedYieldAmount={boostedYieldAmount} />
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, { placement: 'bottom-start' })
 
   const tooltipContentOfBurn = t(
@@ -126,7 +129,7 @@ const LockedStakingApy: React.FC<React.PropsWithChildren<LockedStakingApyProps>>
           {tooltipVisible && tooltip}
           <TooltipText>
             <Text ref={targetRef} color="textSubtle" textTransform="uppercase" bold fontSize="12px">
-              {t('APY')}
+              {t('APR')}
             </Text>
           </TooltipText>
           <BalanceWithLoading color="text" bold fontSize="16px" value={parseFloat(lockedApy)} decimals={2} unit="%" />

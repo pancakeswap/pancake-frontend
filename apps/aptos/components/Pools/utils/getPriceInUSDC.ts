@@ -16,11 +16,13 @@ export function getPriceInUSDC({ availablePairs, tokenIn, usdcCoin }) {
 
   const trades = Trade.bestTradeExactIn(availablePairs, tokenInAmount, usdcCoin, { maxHops: 3, maxNumResults: 3 })
 
-  const bestTrade = trades.reduce((bTrade, currenctTrade) => {
-    if (bTrade && Trade.isTradeBetter(bTrade, currenctTrade)) return bTrade
+  const bestTrade = trades?.length
+    ? trades.reduce((bTrade, currenctTrade) => {
+        if (bTrade && Trade.isTradeBetter(bTrade, currenctTrade)) return bTrade
 
-    return currenctTrade
-  })
+        return currenctTrade
+      })
+    : null
 
   const usdcAmount = bestTrade?.outputAmount?.toSignificant() || '0'
 

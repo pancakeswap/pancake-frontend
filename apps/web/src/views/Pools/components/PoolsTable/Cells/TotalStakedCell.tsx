@@ -1,31 +1,25 @@
-import { useMemo } from 'react'
 import { Flex, Skeleton, Text, Balance, Pool } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { useVaultPoolByKey } from 'state/pools/hooks'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
+import BigNumber from 'bignumber.js'
 
 interface TotalStakedCellProps {
-  pool: Pool.DeserializedPool<Token>
+  totalStakedBalance: number
+  stakingToken: Token
+  totalStaked: BigNumber
 }
 
 const StyledCell = styled(Pool.BaseCell)`
   flex: 2 0 100px;
 `
 
-const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> = ({ pool }) => {
+const TotalStakedCell: React.FC<React.PropsWithChildren<TotalStakedCellProps>> = ({
+  stakingToken,
+  totalStaked,
+  totalStakedBalance,
+}) => {
   const { t } = useTranslation()
-  const { stakingToken, totalStaked, vaultKey } = pool
-  const { totalCakeInVault } = useVaultPoolByKey(vaultKey)
-
-  const totalStakedBalance = useMemo(() => {
-    if (vaultKey) {
-      return getBalanceNumber(totalCakeInVault, stakingToken.decimals)
-    }
-
-    return getBalanceNumber(totalStaked, stakingToken.decimals)
-  }, [vaultKey, totalCakeInVault, totalStaked, stakingToken.decimals])
 
   return (
     <StyledCell role="cell">

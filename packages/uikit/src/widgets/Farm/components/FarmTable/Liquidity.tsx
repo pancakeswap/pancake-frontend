@@ -36,7 +36,7 @@ const Liquidity: React.FunctionComponent<React.PropsWithChildren<FarmTableLiquid
     );
   const { t } = useTranslation();
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t("Total value of the funds in this farm’s liquidity pool"),
+    t("Total value of the funds in this farm’s liquidity pair"),
     { placement: "top-end", tooltipOffset: [20, 10] }
   );
 

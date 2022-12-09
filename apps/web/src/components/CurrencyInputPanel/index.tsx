@@ -1,4 +1,4 @@
-import { Currency, Pair } from '@pancakeswap/sdk'
+import { Currency, Pair, Token } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
@@ -89,11 +89,13 @@ interface CurrencyInputPanelProps {
   id: string
   showCommonBases?: boolean
   commonBasesType?: string
+  showSearchInput?: boolean
   zapStyle?: ZapStyle
   beforeButton?: React.ReactNode
   disabled?: boolean
   error?: boolean
   showBUSD?: boolean
+  tokensToShow?: Token[]
 }
 export default function CurrencyInputPanel({
   value,
@@ -115,9 +117,11 @@ export default function CurrencyInputPanel({
   id,
   showCommonBases,
   commonBasesType,
+  showSearchInput,
   disabled,
   error,
   showBUSD,
+  tokensToShow,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -138,6 +142,8 @@ export default function CurrencyInputPanel({
       otherSelectedCurrency={otherCurrency}
       showCommonBases={showCommonBases}
       commonBasesType={commonBasesType}
+      showSearchInput={showSearchInput}
+      tokensToShow={tokensToShow}
     />,
   )
 

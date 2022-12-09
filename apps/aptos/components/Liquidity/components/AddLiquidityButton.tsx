@@ -53,7 +53,7 @@ export default function AddLiquidityButton({
   const [onPresentAddLiquidityModal] = useModal(
     <ConfirmAddLiquidityModal
       parsedAmounts={parsedAmounts}
-      title={noLiquidity ? t('You are creating a pool') : t('You will receive')}
+      title={noLiquidity ? t('You are creating a trading pair') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}

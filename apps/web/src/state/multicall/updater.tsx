@@ -128,12 +128,11 @@ export function outdatedListeningKeys(
   if (!results) return Object.keys(listeningKeys)
 
   return Object.keys(listeningKeys).filter((callKey) => {
-    const blocksPerFetch = listeningKeys[callKey]
-
     const data = callResults[chainId][callKey]
     // no data, must fetch
     if (!data) return true
 
+    const blocksPerFetch = listeningKeys[callKey]
     const minDataBlockNumber = currentBlock - (blocksPerFetch - 1)
 
     // already fetching it for a recent enough block, don't refetch it

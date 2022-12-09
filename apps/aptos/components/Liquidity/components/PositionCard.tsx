@@ -116,7 +116,7 @@ function MinimalPositionCardView({
                 )}
                 <FixedHeightRow>
                   <Text color="textSubtle" small>
-                    {t('Share of Pool')}:
+                    {t('Share in Trading Pair')}:
                   </Text>
                   <Text>{poolTokenPercentage ? `${poolTokenPercentage.toFixed(6)}%` : '-'}</Text>
                 </FixedHeightRow>
@@ -155,7 +155,7 @@ function MinimalPositionCardView({
               🥞
             </span>{' '}
             {t(
-              "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share of the pool. Fees are added to the pool, accrue in real time and can be claimed by withdrawing your liquidity.",
+              "By adding liquidity you'll earn 0.17% of all trades on this pair proportional to your share in the trading pair. Fees are added to the pair, accrue in real time and can be claimed by withdrawing your liquidity.",
             )}
           </Text>
         </LightCard>
@@ -255,7 +255,7 @@ function FullPositionCardView({
           )}
 
           <FixedHeightRow>
-            <Text color="textSubtle">{t('Share of Pool')}</Text>
+            <Text color="textSubtle">{t('Share in Trading Pair')}</Text>
             <Text>
               {poolTokenPercentage
                 ? `${poolTokenPercentage.toFixed(2) === '0.00' ? '<0.01' : poolTokenPercentage.toFixed(2)}%`

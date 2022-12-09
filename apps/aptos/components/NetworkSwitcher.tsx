@@ -5,7 +5,7 @@ import { Box, Text, UserMenu, UserMenuDivider, UserMenuItem } from '@pancakeswap
 
 import { APEX_DOMAIN } from 'config'
 import { defaultChain } from 'config/chains'
-import Image from 'next/future/image'
+import Image from 'next/image'
 import { aptosLogoClass } from './Logo/CurrencyLogo.css'
 
 const evmChains = [

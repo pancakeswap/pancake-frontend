@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import orderBy from 'lodash/orderBy'
 import { TeamRanksProps } from '../../types'
 import TopTradersCard from './TopTradersCard'

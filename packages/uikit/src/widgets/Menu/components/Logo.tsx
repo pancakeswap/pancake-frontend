@@ -15,7 +15,6 @@ const blink = keyframes`
 
 const StyledLink = styled("a")`
   display: flex;
-  align-items: center;
   .mobile-icon {
     width: 32px;
     ${({ theme }) => theme.mediaQueries.lg} {
@@ -53,7 +52,7 @@ const Logo: React.FC<React.PropsWithChildren<Props>> = ({ href }) => {
   );
 
   return (
-    <Flex>
+    <Flex alignItems="center">
       {isAbsoluteUrl ? (
         <StyledLink as="a" href={href} aria-label="Pancake home page">
           {innerLogo}

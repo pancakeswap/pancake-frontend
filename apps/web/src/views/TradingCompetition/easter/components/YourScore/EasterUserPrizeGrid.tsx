@@ -51,8 +51,8 @@ const EasterUserPrizeGrid: React.FC<React.PropsWithChildren<{ userTradingInforma
           </BoldTd>
           <Td>
             <Flex alignItems="center" flexWrap="wrap" justifyContent="center" width="100%">
-              {champion && <CrownIcon mr={[0, '4px']} />}
-              {teamPlayer && <TeamPlayerIcon mr={[0, '4px']} />}
+              {champion > 0 && <CrownIcon mr={[0, '4px']} />}
+              {teamPlayer > 0 && <TeamPlayerIcon mr={[0, '4px']} />}
               <TrophyGoldIcon mr={[0, '4px']} />
               <Text fontSize="12px" color="textSubtle" textTransform="lowercase">
                 + {userPointReward} {t('Points')}

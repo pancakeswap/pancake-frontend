@@ -2,7 +2,7 @@ import { Button, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/ui
 import { useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork, useSwitchNetworkLocal } from 'hooks/useSwitchNetwork'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import useAuth from 'hooks/useAuth'
 import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
 import { useRouter } from 'next/router'
@@ -46,8 +46,8 @@ export function UnsupportedNetworkModal({ pageSupportedChains }: { pageSupported
         <div style={{ textAlign: 'center' }}>
           <Image
             layout="fixed"
-            width="194px"
-            height="175px"
+            width={194}
+            height={175}
             src="/images/check-your-network.png"
             alt="check your network"
           />

@@ -44,6 +44,7 @@ interface RoiCalculatorFooterProps {
   linkHref: string;
   performanceFee: number;
   rewardCakePerSecond?: boolean;
+  isLocked?: boolean;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -57,6 +58,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   linkHref,
   performanceFee,
   rewardCakePerSecond,
+  isLocked = false,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -107,7 +109,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
             {!isFarm && (
               <>
                 <Text color="textSubtle" small>
-                  {Number.isFinite(apy) && apy !== 0 ? t("APY") : t("APR")}
+                  {Number.isFinite(apy) && apy !== 0 && !isLocked ? t("APY") : t("APR")}
                 </Text>
                 <Text small textAlign="right">
                   {Number.isFinite(apy) && apy !== 0 ? apy.toFixed(2) : apr?.toFixed(2)}%

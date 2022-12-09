@@ -43,7 +43,7 @@ export function ChoosePair({
         title={t('Add Liquidity')}
         subtitle={t('Receive LP tokens and earn 0.17% trading fees')}
         helper={t(
-          'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool.',
+          'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pair.',
         )}
         backTo="/liquidity"
       />

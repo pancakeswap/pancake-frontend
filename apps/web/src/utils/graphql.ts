@@ -8,12 +8,12 @@ import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
 export const getGQLHeaders = (endpoint: string) => {
   if (endpoint === INFO_CLIENT) {
     return {
-      'X-Sf':
-        process.env.NEXT_PUBLIC_SF_HEADER ||
+      origin:
+        process.env.NEXT_PUBLIC_NODE_REAL_HEADER ||
         // hack for inject CI secret on window
         (typeof window !== 'undefined' &&
           // @ts-ignore
-          window.sfHeader),
+          window.nrHeader),
     }
   }
   return undefined

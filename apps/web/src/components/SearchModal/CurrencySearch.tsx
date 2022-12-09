@@ -26,11 +26,13 @@ interface CurrencySearchProps {
   selectedCurrency?: Currency | null
   onCurrencySelect: (currency: Currency) => void
   otherSelectedCurrency?: Currency | null
+  showSearchInput?: boolean
   showCommonBases?: boolean
   commonBasesType?: string
   showImportView: () => void
   setImportToken: (token: Token) => void
   height?: number
+  tokensToShow?: Token[]
 }
 
 function useSearchInactiveTokenLists(search: string | undefined, minResults = 10): WrappedTokenInfo[] {
@@ -79,9 +81,11 @@ function CurrencySearch({
   otherSelectedCurrency,
   showCommonBases,
   commonBasesType,
+  showSearchInput = true,
   showImportView,
   setImportToken,
   height,
+  tokensToShow,
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
@@ -106,14 +110,15 @@ function CurrencySearch({
   const native = useNativeCurrency()
 
   const showNative: boolean = useMemo(() => {
+    if (tokensToShow) return false
     const s = debouncedQuery.toLowerCase().trim()
     return native && native.symbol?.toLowerCase?.()?.indexOf(s) !== -1
-  }, [debouncedQuery, native])
+  }, [debouncedQuery, native, tokensToShow])
 
   const filteredTokens: Token[] = useMemo(() => {
     const filterToken = createFilterToken(debouncedQuery)
-    return Object.values(allTokens).filter(filterToken)
-  }, [allTokens, debouncedQuery])
+    return Object.values(tokensToShow || allTokens).filter(filterToken)
+  }, [tokensToShow, allTokens, debouncedQuery])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
 
@@ -137,7 +142,7 @@ function CurrencySearch({
   const inputRef = useRef<HTMLInputElement>()
 
   useEffect(() => {
-    if (!isMobile) inputRef.current.focus()
+    if (!isMobile) inputRef.current?.focus()
   }, [isMobile])
 
   const handleInput = useCallback((event) => {
@@ -231,18 +236,20 @@ function CurrencySearch({
   return (
     <>
       <AutoColumn gap="16px">
-        <Row>
-          <Input
-            id="token-search-input"
-            placeholder={t('Search name or paste address')}
-            scale="lg"
-            autoComplete="off"
-            value={searchQuery}
-            ref={inputRef as RefObject<HTMLInputElement>}
-            onChange={handleInput}
-            onKeyDown={handleEnter}
-          />
-        </Row>
+        {showSearchInput && (
+          <Row>
+            <Input
+              id="token-search-input"
+              placeholder={t('Search name or paste address')}
+              scale="lg"
+              autoComplete="off"
+              value={searchQuery}
+              ref={inputRef as RefObject<HTMLInputElement>}
+              onChange={handleInput}
+              onKeyDown={handleEnter}
+            />
+          </Row>
+        )}
         {showCommonBases && (
           <CommonBases
             chainId={chainId}

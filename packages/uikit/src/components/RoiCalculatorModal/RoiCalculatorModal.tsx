@@ -76,6 +76,7 @@ export interface RoiCalculatorModalProps {
   onBack?: () => void;
   onDismiss?: () => void;
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
+  isLocked?: boolean;
 }
 
 const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalProps>> = ({
@@ -104,6 +105,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   onBack,
   onDismiss,
   bCakeCalculatorSlot,
+  isLocked = false,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
@@ -303,6 +305,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
         linkHref={linkHref}
         performanceFee={performanceFee}
         rewardCakePerSecond={rewardCakePerSecond}
+        isLocked={isLocked}
       />
     </StyledModal>
   );

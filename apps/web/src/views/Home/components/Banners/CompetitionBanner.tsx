@@ -1,6 +1,6 @@
 import { Flex, ArrowForwardIcon, Button, Text, useMatchBreakpoints, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { memo } from 'react'
 import styled from 'styled-components'
 import { modImage, modMobileImage, modWhiteLogo } from './images'
@@ -44,12 +44,7 @@ const CompetitionBanner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <Flex>
-            <Image
-              src={modWhiteLogo}
-              alt="ModLogo"
-              width={isMobile ? '68px' : '112px'}
-              height={isMobile ? '18px' : '33px'}
-            />
+            <Image src={modWhiteLogo} alt="ModLogo" width={isMobile ? 68 : 112} height={isMobile ? 18 : 33} />
             <TradingCompetition>{t('Trading Competition')}</TradingCompetition>
           </Flex>
           <Header width={['150px', '150px', 'auto']}>{t('$120,000 in Prizes!')}</Header>
