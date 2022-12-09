@@ -12,7 +12,7 @@ import masterchefABI from 'config/abi/masterchef.json'
 import { FARM_API } from 'config/constants/endpoints'
 import { getFarmsPriceHelperLpFiles } from 'config/constants/priceHelperLps'
 import stringify from 'fast-json-stable-stringify'
-import fromPairs from 'lodash/fromPairs'
+import keyBy from 'lodash/keyBy'
 import type { AppState } from 'state'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
@@ -323,7 +323,7 @@ export const farmsSlice = createSlice({
     // Update farms with live data
     builder.addCase(fetchFarmsPublicDataAsync.fulfilled, (state, action) => {
       const [farmPayload, poolLength, regularCakePerBlock] = action.payload
-      const farmPayloadPidMap = fromPairs(farmPayload.map((farmData) => [farmData.pid, farmData]))
+      const farmPayloadPidMap = keyBy(farmPayload, 'pid')
 
       state.data = state.data.map((farm) => {
         const liveFarmData = farmPayloadPidMap[farm.pid]
@@ -335,7 +335,7 @@ export const farmsSlice = createSlice({
 
     // Update farms with user data
     builder.addCase(fetchFarmUserDataAsync.fulfilled, (state, action) => {
-      const userDataMap = fromPairs(action.payload.map((userDataEl) => [userDataEl.pid, userDataEl]))
+      const userDataMap = keyBy(action.payload, 'pid')
       state.data = state.data.map((farm) => {
         const userDataEl = userDataMap[farm.pid]
         if (userDataEl) {
