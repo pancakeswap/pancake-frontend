@@ -39,13 +39,7 @@ export default function Swap() {
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
-      <Flex
-        width={['328px', , '100%']}
-        height="100%"
-        justifyContent="center"
-        position="relative"
-        alignItems="flex-start"
-      >
+      <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
         {!isMobile && isChartSupported && (
           <PriceChartContainer
             inputCurrencyId={inputCurrencyId}
