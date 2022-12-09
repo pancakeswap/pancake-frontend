@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import _toNumber from "lodash/toNumber";
 import { useTranslation } from "@pancakeswap/localization";
-import { getFullDisplayBalance, formatNumber } from "@pancakeswap/utils/formatBalance";
+import { getFullDisplayBalance, formatNumber, getDecimalAmount } from "@pancakeswap/utils/formatBalance";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { Modal, ModalV2, ModalBody, ModalActions, ModalInput } from "../../../Modal/index";
@@ -47,17 +47,18 @@ interface DepositModalProps {
   showCrossChainFarmWarning?: boolean;
   crossChainWarningText?: string;
   decimals: number;
-  bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
+  allowance?: BigNumber;
+  enablePendingTx?: boolean;
   onDismiss?: () => void;
   onConfirm: (amount: string) => void;
+  handleApprove?: () => void;
+  bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
 }
 
 const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   account,
   max,
   stakedBalance,
-  onConfirm,
-  onDismiss,
   tokenName = "",
   multiplier,
   displayApr,
@@ -71,6 +72,11 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   showCrossChainFarmWarning,
   crossChainWarningText,
   decimals,
+  allowance,
+  enablePendingTx,
+  onConfirm,
+  onDismiss,
+  handleApprove,
   bCakeCalculatorSlot,
 }) => {
   const [val, setVal] = useState("");
@@ -80,6 +86,14 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   const fullBalance = useMemo(() => {
     return getFullDisplayBalance(max, decimals);
   }, [max, decimals]);
+
+  const needEnable = useMemo(() => {
+    if (allowance) {
+      const amount = getDecimalAmount(new BigNumber(val), decimals);
+      return amount.gt(allowance);
+    }
+    return false;
+  }, [allowance, decimals, val]);
 
   const lpTokensToStake = new BigNumber(val);
   const fullBalanceNumber = useMemo(() => new BigNumber(fullBalance), [fullBalance]);
@@ -158,6 +172,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           addLiquidityUrl={addLiquidityUrl}
           inputTitle={t("Stake")}
           decimals={decimals}
+          needEnable={needEnable}
         />
         {showActiveBooster ? (
           <Message variant="warning" icon={<ErrorIcon width="24px" color="warning" />} mt="32px">
@@ -197,7 +212,16 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           <Button variant="secondary" onClick={onDismiss} width="100%" disabled={pendingTx}>
             {t("Cancel")}
           </Button>
-          {pendingTx ? (
+          {needEnable ? (
+            <Button
+              width="100%"
+              isLoading={enablePendingTx}
+              endIcon={enablePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+              onClick={handleApprove}
+            >
+              {t("Enable")}
+            </Button>
+          ) : pendingTx ? (
             <Button width="100%" isLoading={pendingTx} endIcon={<AutoRenewIcon spin color="currentColor" />}>
               {t("Confirming")}
             </Button>

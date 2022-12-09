@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import styled from 'styled-components'
 import {
   Modal,
@@ -23,7 +23,7 @@ import { useAppDispatch } from 'state'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useVaultPoolByKey } from 'state/pools/hooks'
 import { useVaultApy } from 'hooks/useVaultApy'
-
+import { useCheckVaultApprovalStatus, useVaultApprove } from 'views/Pools/hooks/useApprove'
 import { useVaultPoolContract } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import useWithdrawalFeeTimer from 'views/Pools/hooks/useWithdrawalFeeTimer'
@@ -99,8 +99,17 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
   const cakePriceBusd = usePriceCakeBusd()
   const usdValueStaked = new BigNumber(stakeAmount).times(cakePriceBusd)
   const formattedUsdValueStaked = cakePriceBusd.gt(0) && stakeAmount ? formatNumber(usdValueStaked.toNumber()) : ''
-
   const { flexibleApy } = useVaultApy()
+  const { allowance, setLastUpdated } = useCheckVaultApprovalStatus(vaultKey)
+  const { handleApprove: handleCakeApprove, pendingTx: cakePendingTx } = useVaultApprove(vaultKey, setLastUpdated)
+
+  const needEnable = useMemo(() => {
+    if (!isRemovingStake) {
+      const amount = getDecimalAmount(new BigNumber(stakeAmount))
+      return amount.gt(allowance)
+    }
+    return false
+  }, [allowance, stakeAmount, isRemovingStake])
 
   const callOptions = {
     gasLimit: vaultPoolConfig[pool.vaultKey].gasLimit,
@@ -242,11 +251,17 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
       </Flex>
       <BalanceInput
         value={stakeAmount}
+        isWarning={needEnable}
         onUserInput={handleStakeInputChange}
         currencyValue={cakePriceBusd.gt(0) && `~${formattedUsdValueStaked || 0} USD`}
         decimals={stakingToken.decimals}
       />
-      <Text mt="8px" ml="auto" color="textSubtle" fontSize="12px" mb="8px">
+      {needEnable && (
+        <Text color="failure" textAlign="right" fontSize="12px" mt="8px">
+          {t('Insufficient token allowance. Click "Enable" to approve.')}
+        </Text>
+      )}
+      <Text color="textSubtle" textAlign="right" fontSize="12px" m="8px 0">
         {t('Balance: %balance%', { balance: getFullDisplayBalance(stakingMax, stakingToken.decimals) })}
       </Text>
       <Slider
@@ -302,15 +317,26 @@ const VaultStakeModal: React.FC<React.PropsWithChildren<VaultStakeModalProps>> =
           <ConvertToLock stakingToken={stakingToken} currentStakedAmount={cakeAsNumberBalance} />
         </Box>
       ) : null}
-      <Button
-        isLoading={pendingTx}
-        endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-        onClick={handleConfirmClick}
-        disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || stakingMax.lt(convertedStakeAmount)}
-        mt="24px"
-      >
-        {pendingTx ? t('Confirming') : t('Confirm')}
-      </Button>
+      {needEnable ? (
+        <Button
+          isLoading={cakePendingTx}
+          endIcon={cakePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={handleCakeApprove}
+          mt="24px"
+        >
+          {t('Enable')}
+        </Button>
+      ) : (
+        <Button
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={handleConfirmClick}
+          disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || stakingMax.lt(convertedStakeAmount)}
+          mt="24px"
+        >
+          {pendingTx ? t('Confirming') : t('Confirm')}
+        </Button>
+      )}
       {!isRemovingStake && (
         <Button mt="8px" as="a" external href={getTokenLink} variant="secondary">
           {t('Get %symbol%', { symbol: stakingToken.symbol })}

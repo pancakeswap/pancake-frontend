@@ -71,7 +71,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const addTransaction = useTransactionAdder()
   const { account, chainId } = useActiveWeb3React()
   const native = useNativeCurrency()
-  const { tokenBalance, stakedBalance } = userData
+  const { tokenBalance, stakedBalance, allowance } = userData
   const cakePrice = usePriceCakeBusd()
   const router = useRouter()
   const { toastSuccess } = useToast()
@@ -241,7 +241,6 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       lpTotalSupply={lpTotalSupply}
       max={tokenBalance}
       stakedBalance={stakedBalance}
-      onConfirm={handleStake}
       tokenName={lpSymbol}
       multiplier={multiplier}
       lpPrice={lpTokenPrice}
@@ -252,11 +251,18 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       cakePrice={cakePrice}
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       bCakeMultiplier={bCakeMultiplier}
-      bCakeCalculatorSlot={bCakeCalculatorSlot}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}
       crossChainWarningText={crossChainWarningText}
       decimals={18}
+      allowance={allowance}
+      enablePendingTx={pendingTx}
+      onConfirm={handleStake}
+      handleApprove={handleApprove}
+      bCakeCalculatorSlot={bCakeCalculatorSlot}
     />,
+    true,
+    true,
+    `farm-deposit-modal-${pid}`,
   )
 
   const [onPresentWithdraw] = useModal(

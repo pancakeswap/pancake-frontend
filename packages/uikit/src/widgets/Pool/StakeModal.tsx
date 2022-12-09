@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 
 import BigNumber from "bignumber.js";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
 import _toString from "lodash/toString";
@@ -58,7 +58,11 @@ interface StakeModalProps {
   stakingTokenBalance: BigNumber;
   stakingTokenPrice: number;
   isRemovingStake?: boolean;
+  needEnable?: boolean;
+  enablePendingTx?: boolean;
+  setAmount?: (value: string) => void;
   onDismiss?: () => void;
+  handleEnableApprove?: () => void;
   account: string;
   handleConfirmClick: any;
   pendingTx: boolean;
@@ -78,7 +82,11 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   userDataStakingTokenBalance,
   enableEmergencyWithdraw,
   isRemovingStake = false,
+  needEnable,
+  enablePendingTx,
+  setAmount,
   onDismiss,
+  handleEnableApprove,
   account,
   pendingTx,
   handleConfirmClick,
@@ -158,6 +166,12 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
     [getCalculatedStakingLimit, stakingTokenDecimals]
   );
 
+  useMemo(() => {
+    if (setAmount) {
+      setAmount(Number(stakeAmount) > 0 ? stakeAmount : "0");
+    }
+  }, [setAmount, stakeAmount]);
+
   if (showRoiCalculator) {
     return (
       <RoiCalculatorModal
@@ -223,6 +237,11 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           })}
         </Text>
       )}
+      {needEnable && (
+        <Text color="failure" textAlign="right" fontSize="12px" mt="8px">
+          {t('Insufficient token allowance. Click "Enable" to approve.')}
+        </Text>
+      )}
       <Text ml="auto" color="textSubtle" fontSize="12px" mb="8px">
         {t("Balance: %balance%", {
           balance: getFullDisplayBalance(
@@ -277,15 +296,26 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
           </Text>
         </Flex>
       )}
-      <Button
-        isLoading={pendingTx}
-        endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-        onClick={() => handleConfirmClick(stakeAmount)}
-        disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit || userNotEnoughToken}
-        mt="24px"
-      >
-        {pendingTx ? t("Confirming") : t("Confirm")}
-      </Button>
+      {needEnable ? (
+        <Button
+          isLoading={enablePendingTx}
+          endIcon={enablePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={handleEnableApprove}
+          mt="24px"
+        >
+          {t("Enable")}
+        </Button>
+      ) : (
+        <Button
+          isLoading={pendingTx}
+          endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+          onClick={() => handleConfirmClick(stakeAmount)}
+          disabled={!stakeAmount || parseFloat(stakeAmount) === 0 || hasReachedStakeLimit || userNotEnoughToken}
+          mt="24px"
+        >
+          {pendingTx ? t("Confirming") : t("Confirm")}
+        </Button>
+      )}
       {!isRemovingStake && (
         <StyledLink external href={getTokenLink}>
           <Button width="100%" mt="8px" variant="secondary">
