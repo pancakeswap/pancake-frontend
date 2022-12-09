@@ -110,7 +110,7 @@ const Gutter = styled.div<{ isChartPaneOpen?: boolean }>`
 const PowerLinkStyle = styled.div`
   position: absolute;
   right: 16px;
-  top: -40px;
+  top: -60px;
 `
 
 const Desktop: React.FC<React.PropsWithChildren> = () => {
@@ -210,7 +210,7 @@ const Desktop: React.FC<React.PropsWithChildren> = () => {
             }}
           >
             <PowerLinkStyle>
-              <img src="/images/powered-by-chainlink.png" alt="Powered by ChainLink" width="170px" height="48px" />
+              <img src="/images/powered-by-chainlink.svg" alt="Powered by ChainLink" width="170px" height="48px" />
             </PowerLinkStyle>
             <ExpandButtonGroup>
               <TabToggle
