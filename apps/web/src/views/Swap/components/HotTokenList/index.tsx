@@ -3,6 +3,7 @@ import { ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/ui
 import { memo, useState, useMemo } from 'react'
 import { useAtomValue } from 'jotai'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
+import { PANCAKE_EXTENDED } from 'config/constants/lists'
 
 import { useTokenDatasSWR } from 'state/info/hooks'
 import styled from 'styled-components'
@@ -28,11 +29,11 @@ const MenuWrapper = styled.div`
 
 const HotTokenList: React.FC = () => {
   const listsByUrl = useAtomValue(selectorByUrlsAtom)
-  const { current: list } = listsByUrl['https://tokens.pancakeswap.finance/pancakeswap-extended.json']
+  const { current: list } = listsByUrl[PANCAKE_EXTENDED]
   const whiteList = useMemo(() => {
-    return list ? list.tokens.map((t) => t.address) : []
+    return list ? list.tokens.map((t) => t.address.toLowerCase()) : []
   }, [list])
-  const allTokens = useTokenDatasSWR(whiteList.map((d) => d.toLowerCase()))
+  const allTokens = useTokenDatasSWR(whiteList, false)
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
   const formattedTokens = allTokens

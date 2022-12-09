@@ -141,7 +141,7 @@ const fetcher = (addresses: string[], chainName: MultiChainName, blocks: Block[]
   return Promise.all(addressGroup.map((d) => fetchAllTokenDataByAddresses(chainName, blocks, d)))
 }
 
-export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined => {
+export const useTokenDatasSWR = (addresses?: string[], withSettings = true): TokenData[] | undefined => {
   const name = addresses.join('')
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
@@ -150,7 +150,7 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
   const { data } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
     () => fetcher(addresses, chainName, blocks),
-    SWR_SETTINGS,
+    withSettings ? SWR_SETTINGS : {},
   )
   const allData = useMemo(() => {
     return data && data.length > 0
