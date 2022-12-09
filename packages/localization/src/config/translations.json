@@ -2057,5 +2057,10 @@
   "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ": "Due to an ongoing Subgraph indexing issue from the underlying infrastructure provider. The PancakeSwap NFT marketplace is currently showing outdated data. Continuing trading may be subject to the risk of executing orders at unexpected prices and loss of funds. We recommend not to trade until the issue is resolved. Follow our ",
   "for the latest update.": "for the latest update.",
   "Use StableSwap by default": "Use StableSwap by default",
-  "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap"
+  "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap",
+  "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.": "For the public sale, each eligible participant will be able to commit any amount of CAKE up to the maximum commit limit, which is published along with the IFO voting proposal.",
+  "Volume (24H)": "Volume (24H)",
+  "Token Name": "Token Name",
+  "Change": "Change",
+  "Top Token": "Top Token"
 }

@@ -275,7 +275,6 @@ export const fetchAllTokenDataByAddresses = async (
         priceUSDChangeWeek,
       },
     }
-
     return accum
   }, {})
 

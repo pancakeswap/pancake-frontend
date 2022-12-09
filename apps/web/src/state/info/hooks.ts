@@ -13,7 +13,7 @@ import fetchPoolsForToken from 'state/info/queries/tokens/poolsForToken'
 import fetchTokenPriceData from 'state/info/queries/tokens/priceData'
 import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/queries/tokens/tokenData'
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
-import { Transaction } from 'state/info/types'
+import { Transaction, Block } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { SWRConfiguration } from 'swr'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
@@ -130,7 +130,18 @@ export const useAllTokenDataSWR = (): {
   return data ?? {}
 }
 
-export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined => {
+const graphPerPage = 50
+
+const fetcher = (addresses: string[], chainName: MultiChainName, blocks: Block[]) => {
+  const times = Math.ceil(addresses.length / graphPerPage)
+  const addressGroup = []
+  for (let i = 0; i < times; i++) {
+    addressGroup.push(addresses.slice(i * graphPerPage, (i + 1) * graphPerPage))
+  }
+  return Promise.all(addressGroup.map((d) => fetchAllTokenDataByAddresses(chainName, blocks, d)))
+}
+
+export const useTokenDatasSWR = (addresses?: string[], withSettings = true): TokenData[] | undefined => {
   const name = addresses.join('')
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
@@ -138,20 +149,27 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
-    () => fetchAllTokenDataByAddresses(chainName, blocks, addresses),
-    SWR_SETTINGS,
+    () => fetcher(addresses, chainName, blocks),
+    withSettings ? SWR_SETTINGS : {},
   )
+  const allData = useMemo(() => {
+    return data && data.length > 0
+      ? data.reduce((a, b) => {
+          return { ...a, ...b }
+        }, {})
+      : {}
+  }, [data])
 
   const tokensWithData = useMemo(() => {
-    if (!addresses) {
+    if (!addresses && allData) {
       return undefined
     }
     return addresses
       .map((a) => {
-        return data?.[a]?.data
+        return allData?.[a]?.data
       })
       .filter((d) => d && d.exists)
-  }, [addresses, data])
+  }, [addresses, allData])
 
   return tokensWithData ?? undefined
 }
