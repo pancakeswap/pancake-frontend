@@ -28,6 +28,7 @@ const AptosBridge = () => {
   useEffect(() => {
     customElements.whenDefined('aptos-bridge').then(() => {
       window.aptosBridge.config.setTokens(['CAKE', 'ETH', 'WETH', 'USDC', 'USDT'])
+      window.aptosBridge.config.setWallets(['MetaMask', 'CoinBase', 'Petra', 'Martian', 'Pontem', 'Fewcha'])
       setShow(true)
     })
   }, [])
