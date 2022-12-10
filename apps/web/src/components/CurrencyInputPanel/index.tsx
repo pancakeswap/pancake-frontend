@@ -1,4 +1,4 @@
-import { Currency, Pair } from '@pancakeswap/sdk'
+import { ChainId, Currency, Pair } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
@@ -15,6 +15,7 @@ import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
 
 import AddToWalletButton from '../AddToWallet/AddToWalletButton'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const InputRow = styled.div<{ selected: boolean }>`
   display: flex;
@@ -119,7 +120,8 @@ export default function CurrencyInputPanel({
   error,
   showBUSD,
 }: CurrencyInputPanelProps) {
-  const { account } = useWeb3React()
+  const { account, chainId } = useWeb3React()
+  const { chainId: appChainId } = useActiveChainId()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
   const { t } = useTranslation()
 
@@ -228,6 +230,9 @@ export default function CurrencyInputPanel({
               onUserInput={(val) => {
                 onUserInput(val)
               }}
+              autoFocus={
+                id === 'swap-currency-input' && (chainId === ChainId.BITGERT || appChainId === ChainId.BITGERT)
+              }
             />
           </LabelRow>
           <InputRow selected={disableCurrencySelect}>
