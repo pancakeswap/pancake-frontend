@@ -17,13 +17,13 @@
     "@pancakeswap/swap-sdk-core": "*"
   },
   "peerDependencies": {
-    "@reduxjs/toolkit": "^1.8.6",
+    "@reduxjs/toolkit": "^1.9.1",
     "localforage": "^1.10.0",
     "jotai": "^1.11.1",
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@reduxjs/toolkit": "^1.8.6",
+    "@reduxjs/toolkit": "^1.9.1",
     "react": "^18.2.0"
   },
   "exports": {
