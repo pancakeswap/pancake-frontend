@@ -69,9 +69,10 @@ const fetchPoolVolumeAndReserveData = async (
   }
 }
 const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pool: string) => {
+  const addressesString = `["${pool}"]`
   const blockString = block ? `block: {number: ${block}}` : ``
   return `pairs(
-    where: { id: "${pool}" }
+    where: { id_in: ${addressesString} }
     ${blockString}
     orderBy: trackedReserve${multiChainQueryMainToken[chainName]}
     orderDirection: desc
