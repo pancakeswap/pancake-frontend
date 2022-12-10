@@ -494,7 +494,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
-              <Text textTransform="uppercase">{t('Sort by')}</Text>
+              <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
+                {t('Sort by')}
+              </Text>
               <Select
                 options={[
                   {
@@ -526,7 +528,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text textTransform="uppercase">{t('Search')}</Text>
+              <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
+                {t('Search')}
+              </Text>
               <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search Farms" />
             </LabelWrapper>
           </FilterContainer>
