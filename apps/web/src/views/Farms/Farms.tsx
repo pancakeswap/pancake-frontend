@@ -427,7 +427,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                     isOpen={isOpen}
                     options={{ placement: 'top' }}
                   >
-                    <Box width="375px" ref={menuRef}>
+                    <Box width="345px" ref={menuRef}>
                       <FarmTypesWrapper alignItems="center" p="16px">
                         <Text fontSize={20} bold color="text" display="inline-block" ml="8px">
                           {t('Farm Types')}
