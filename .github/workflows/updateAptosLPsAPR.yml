@@ -27,7 +27,7 @@ jobs:
         run: yarn updateAptosLPsAPR
 
       - name: Format
-        run: yarn prettier --write "apps/aptos/src/config/constants/lpAprs/*.{ts,json}"
+        run: yarn prettier --write "apps/aptos/config/constants/lpAprs/*.{ts,json}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
