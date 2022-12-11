@@ -1,5 +1,5 @@
 import { Text, TextProps } from "@pancakeswap/uikit";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import CountUp from "react-countup";
 import _toNumber from "lodash/toNumber";
 import _isNaN from "lodash/isNaN";
@@ -36,6 +36,10 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
 }) => {
   const prefixProp = useMemo(() => (prefix ? { prefix } : {}), [prefix]);
   const suffixProp = useMemo(() => (unit ? { suffix: unit } : {}), [unit]);
+  const formattingFn = useCallback(
+    (val: number) => (prefixProp.prefix ?? "") + formatStringNumber(val) + (suffixProp.suffix ?? ""),
+    [prefixProp.prefix, suffixProp.suffix]
+  );
 
   return (
     <CountUp
@@ -43,12 +47,10 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
       preserveValue
       delay={0}
       end={value}
-      {...prefixProp}
-      {...suffixProp}
       decimals={decimals}
       duration={1}
       separator=","
-      formattingFn={formatStringNumber}
+      formattingFn={formattingFn}
     >
       {({ countUpRef }) => (
         <Text color={isDisabled ? "textDisabled" : color} onClick={onClick} {...props}>

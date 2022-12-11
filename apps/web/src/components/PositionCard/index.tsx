@@ -298,7 +298,7 @@ function FullPositionCard({
   const [showMore, setShowMore] = useState(false)
 
   return (
-    <Card {...props} style={{order: -Math.floor(totalUSDValue*1000)}}>
+    <Card {...props} style={{ order: -Math.floor(totalUSDValue * 1000) }}>
       <Flex justifyContent="space-between" role="button" onClick={() => setShowMore(!showMore)} p="16px">
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">
@@ -338,7 +338,7 @@ function FullPositionCard({
               </RowFixed>
               {token0Deposited ? (
                 <RowFixed>
-                  <Text ml="6px">{formatStringNumber(token0Deposited?.toExact())}</Text>
+                  <Text ml="6px">{`${formatStringNumber(token0Deposited?.toExact())}${token0Deposited.currency}`}</Text>
                 </RowFixed>
               ) : (
                 '-'
@@ -356,7 +356,7 @@ function FullPositionCard({
               </RowFixed>
               {token1Deposited ? (
                 <RowFixed>
-                  <Text ml="6px">{formatStringNumber(token1Deposited?.toExact())}</Text>
+                  <Text ml="6px">{`${formatStringNumber(token1Deposited?.toExact())}${token1Deposited.currency}`}</Text>
                 </RowFixed>
               ) : (
                 '-'
