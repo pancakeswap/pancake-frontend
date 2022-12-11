@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import styled from 'styled-components'
 import { modPrizes } from '../../../../config/constants/trading-competition/prizes'
 import { getRewardGroupAchievements, useModCompetitionRewards } from '../../helpers'
@@ -60,7 +60,12 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
         </Text>
         <Flex mt="16px" alignItems="center">
           {/* achievements */}
-          <Image src={`/images/achievements/${achievement.image}`} width={25} height={25} />
+          <Image
+            src={`/images/achievements/${achievement.image}`}
+            alt="achievement-claim-image"
+            width={25}
+            height={25}
+          />
           <Text ml={['4px', '8px']}>
             +{userPointReward} {t('Points')}
           </Text>
@@ -76,7 +81,7 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
         {canClaimSpecialNFT ? (
           <Flex alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={ModBunnyNft} width={128} height={168} />
+              <Image src={ModBunnyNft} alt="achievement-claim-helmet" width={128} height={168} />
             </ImageWrapper>
             <Text mt="8px">{t('Bunny Helmet NFT')}</Text>
           </Flex>
@@ -84,7 +89,7 @@ const ClaimModal: React.FC<React.PropsWithChildren<CompetitionProps>> = ({
         {canClaimNFT ? (
           <Flex mt="8px" alignItems="center" flexDirection="column" width="100%">
             <ImageWrapper>
-              <Image src={MoDAllBunnies} width={128} height={95} />
+              <Image src={MoDAllBunnies} alt="achievement-claim-pcs" width={128} height={95} />
             </ImageWrapper>
             <Text mt="8px">{t('PancakeSwap NFT')}</Text>
             <Text color="textSubtle" mt="8px" fontSize="12px" textAlign="center">

@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Button, Text, useMatchBreakpoints, Box, OpenNewIcon } from '@pancakeswap/uikit'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import styled from 'styled-components'
 import { Aptos, AptosXPancakeSwap } from './images'
 import * as S from './Styled'
