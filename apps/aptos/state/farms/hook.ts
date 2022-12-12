@@ -80,7 +80,6 @@ export const useFarms = () => {
   }, [stakeCoinsInfo])
 
   const pairReserves = usePairReservesQueries(lpReservesAddresses)
-
   const lpInfo = useMemo(() => {
     return farmConfig
       .filter((f) => f.pid !== 0 && f.pid !== CAKE_PID)
