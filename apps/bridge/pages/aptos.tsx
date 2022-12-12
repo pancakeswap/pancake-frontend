@@ -4,7 +4,8 @@ import styled, { useTheme } from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
 import { LAYER_ZERO_JS } from 'components/layerZero/config'
 import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
-import PoweredBy from 'components/layerZero/PoweredBy'
+import AptosBridgeMessage from 'components/layerZero/AptosBridgeMessage'
+import AptosBridgeFooter from 'components/layerZero/AptosBridgeFooter'
 
 const Page = styled.div`
   height: 100%;
@@ -39,6 +40,9 @@ const AptosBridge = () => {
       <link rel="stylesheet" href="https://unpkg.com/@layerzerolabs/aptos-bridge-widget@latest/element.css" />
       {show && (
         <>
+          <Box display={['none', null, 'block']}>
+            <AptosBridgeMessage />
+          </Box>
           <Flex
             flexDirection="column"
             width={['100%', null, '420px']}
@@ -47,13 +51,16 @@ const AptosBridge = () => {
             alignItems="center"
             height="100%"
           >
+            <Box display={['block', null, 'none']}>
+              <AptosBridgeMessage />
+            </Box>
             <LayerZeroWidget theme={theme} />
             <Box display={['block', null, 'none']}>
-              <PoweredBy />
+              <AptosBridgeFooter />
             </Box>
           </Flex>
           <Box display={['none', null, 'block']}>
-            <PoweredBy />
+            <AptosBridgeFooter />
           </Box>
         </>
       )}
