@@ -186,6 +186,22 @@
       "decimals": 8,
       "address": "0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::BusdCoin",
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
+    },
+    {
+      "name": "Wormhole - Binance USD",
+      "symbol": "BUSD",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0xccc9620d38c4f3991fa68a03ad98ef3735f18d04717cb75d7a1300dd8a7eed75::coin::T",
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/busd.png"
+    },
+    {
+      "name": "Wormhole - Wrapped Ether",
+      "symbol": "WETH",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0xcc8a89c8dce9693d354449f1f73e60e14e347417854f029db5bc8e7454008abb::coin::T",
+      "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
     }
   ]
 }
