@@ -49,6 +49,7 @@ const config = {
       '@pancakeswap/utils',
       '@pancakeswap/tokens',
       '@pancakeswap/smart-router',
+      '@gnosis.pm/safe-apps-wagmi',
     ],
   },
   reactStrictMode: true,

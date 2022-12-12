@@ -1,25 +1,24 @@
-import transpileModules from 'next-transpile-modules'
-import { withAxiom } from 'next-axiom'
 import { createVanillaExtractPlugin } from '@vanilla-extract/next-plugin'
+import { withAxiom } from 'next-axiom'
 
 const withVanillaExtract = createVanillaExtractPlugin()
-const withTH = transpileModules([
-  '@pancakeswap/uikit',
-  '@pancakeswap/wagmi',
-  '@pancakeswap/sdk',
-  '@pancakeswap/ui',
-  '@pancakeswap/hooks',
-  '@pancakeswap/localization',
-  '@pancakeswap/utils',
-])
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  experimental: {
+    transpilePackages: [
+      '@pancakeswap/uikit',
+      '@pancakeswap/ui',
+      '@pancakeswap/hooks',
+      '@pancakeswap/localization',
+      '@pancakeswap/utils',
+    ],
+  },
   compiler: {
     styledComponents: true,
   },
 }
 
-export default withTH(withAxiom(withVanillaExtract(nextConfig)))
+export default withAxiom(withVanillaExtract(nextConfig))

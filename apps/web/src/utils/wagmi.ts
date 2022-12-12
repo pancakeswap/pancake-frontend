@@ -8,7 +8,7 @@ import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
-import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
+import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi/src/index' // not support esm
 
 const CHAINS = [bsc, mainnet, bscTestnet, goerli]
 
