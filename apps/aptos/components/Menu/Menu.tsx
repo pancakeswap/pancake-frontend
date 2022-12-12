@@ -48,7 +48,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       },
       {
         label: t('Bridge'),
-        href: 'https://docs.pancakeswap.finance/get-started-aptos/aptos-coin-guide',
+        href: 'https://bridge.pancakeswap.finance/aptos',
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ],
