@@ -1,6 +1,6 @@
 import { Flex, Text } from '@pancakeswap/uikit'
 import { useTheme } from 'styled-components'
-import Image from 'next/future/image'
+import Image from 'next/image'
 
 const PoweredBy = () => {
   const { isDark } = useTheme()

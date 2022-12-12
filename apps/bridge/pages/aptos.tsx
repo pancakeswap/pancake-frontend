@@ -8,17 +8,13 @@ import AptosBridgeMessage from 'components/layerZero/AptosBridgeMessage'
 import AptosBridgeFooter from 'components/layerZero/AptosBridgeFooter'
 
 const Page = styled.div`
-  height: 100%;
   display: flex;
-  justify-content: center;
+  height: 100%;
   min-height: calc(100% - 56px);
-  align-items: center;
-  flex-direction: column;
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 
-  ${({ theme }) => theme.mediaQueries.sm} {
-    display: grid;
-    place-content: center;
+  ${({ theme }) => theme.mediaQueries.md} {
+    min-height: 1000px;
   }
 `
 
@@ -39,16 +35,16 @@ const AptosBridge = () => {
       <Script crossOrigin="anonymous" src={LAYER_ZERO_JS.src} integrity={LAYER_ZERO_JS.integrity} />
       <link rel="stylesheet" href="https://unpkg.com/@layerzerolabs/aptos-bridge-widget@latest/element.css" />
       {show && (
-        <>
+        <Box width={['100%', null, '420px']} height={['100%', '100%', 'fit-content']} m="auto">
           <Box display={['none', null, 'block']}>
             <AptosBridgeMessage />
           </Box>
           <Flex
             flexDirection="column"
-            width={['100%', null, '420px']}
             bg="backgroundAlt"
             borderRadius={[0, null, 24]}
             alignItems="center"
+            m="auto"
             height="100%"
           >
             <Box display={['block', null, 'none']}>
@@ -62,7 +58,7 @@ const AptosBridge = () => {
           <Box display={['none', null, 'block']}>
             <AptosBridgeFooter />
           </Box>
-        </>
+        </Box>
       )}
     </Page>
   )
