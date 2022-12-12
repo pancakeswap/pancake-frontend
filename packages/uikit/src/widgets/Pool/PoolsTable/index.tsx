@@ -9,6 +9,11 @@ const StyledTable = styled.div`
   > div:not(:last-child) {
     border-bottom: 2px solid ${({ theme }) => theme.colors.disabled};
   }
+
+  > div:last-child {
+    border-bottom-left-radius: ${({ theme }) => theme.radii.card};
+    border-bottom-right-radius: ${({ theme }) => theme.radii.card};
+  }
 `;
 
 const StyledTableBorder = styled.div`
