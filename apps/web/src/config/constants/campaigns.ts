@@ -402,6 +402,12 @@ const campaigns: Campaign[] = [
     badge: 'ifo-mgp.svg',
   },
   {
+    id: '512000000',
+    type: 'ifo',
+    title: 'SQUAD',
+    badge: 'ifo-squad.svg',
+  },
+  {
     id: '512030001',
     type: 'teambattle',
     title: 'Mobox Champion: Gold',

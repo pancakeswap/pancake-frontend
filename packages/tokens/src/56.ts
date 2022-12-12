@@ -2409,4 +2409,12 @@ export const bscTokens = {
     'Hashflow',
     'https://www.hashflow.com/',
   ),
+  squad: new Token(
+    ChainId.BSC,
+    '0x724A32dFFF9769A0a0e1F0515c0012d1fB14c3bd',
+    18,
+    'SQUAD',
+    'Token SQUAD',
+    'https://ssquad.games/',
+  ),
 }

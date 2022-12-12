@@ -7,9 +7,36 @@ export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 1
 
 const ifos: Ifo[] = [
   {
+    id: 'squad',
+    address: '0x57eb2e676863435a140f8bc2a0f0e955c36ed446',
+    isActive: true,
+    cIFO: true,
+    name: 'SQUAD',
+    plannedStartTime: 1671105600,
+    poolBasic: {
+      raiseAmount: '$350,000',
+      distributionRatio: 0.4,
+    },
+    poolUnlimited: {
+      raiseAmount: '$525,000',
+      distributionRatio: 0.6,
+    },
+    currency: bscTokens.cake,
+    token: bscTokens.squad,
+    campaignId: '512000000',
+    articleUrl:
+      'https://pancakeswap.finance/voting/proposal/0x5bbaee587df5b7e9b52e2b35f35f30afa08e15ab7098c73cb2503319c8d8ce44',
+    tokenOfferingPrice: 0.035,
+    version: 3.2,
+    twitterUrl: 'https://twitter.com/Superpow_Squad',
+    description:
+      'Superpower Squad a super-hero themed mobile shooter with 6 game play modes. It has undergone 3 years of game development from an established gaming studio with the help of crypto native partners.',
+    vestingTitle: "$SQUAD - Utility token in Superpower Squad's world, lock into SuperDao to participate Governance.",
+  },
+  {
     id: 'mgp',
     address: '0x3fe5a79d4264fe65a1a9e3938286428a0e2e214d',
-    isActive: true,
+    isActive: false,
     name: 'MGP',
     plannedStartTime: 1666872000,
     poolBasic: {
