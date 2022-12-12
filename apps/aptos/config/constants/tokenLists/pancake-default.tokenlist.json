@@ -202,6 +202,14 @@
       "decimals": 8,
       "address": "0xcc8a89c8dce9693d354449f1f73e60e14e347417854f029db5bc8e7454008abb::coin::T",
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/weth.png"
+    },
+    {
+      "name": "PancakeSwap Token",
+      "symbol": "CAKE",
+      "chainId": 1,
+      "decimals": 8,
+      "address": "0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::CakeOFT",
+      "logoURI": "https://tokens.pancakeswap.finance/images/aptos/0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::CakeOFT.png"
     }
   ]
 }

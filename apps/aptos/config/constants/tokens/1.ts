@@ -1,8 +1,9 @@
 import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { APT } from '../../coins'
+import { APT, CAKE } from '../../coins'
 
 export const mainnetTokens = {
   apt: APT[ChainId.MAINNET],
+  cake: CAKE[ChainId.MAINNET],
   l0usdc: new Coin(
     ChainId.MAINNET,
     '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC',
