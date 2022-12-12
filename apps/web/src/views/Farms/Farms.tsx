@@ -20,9 +20,6 @@ import {
   FlexLayout,
   PageHeader,
   NextLinkFromReactRouter,
-  InlineMenu,
-  RocketIcon,
-  CurrencyIcon,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Page from 'components/Layout/Page'
@@ -42,6 +39,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import Table from './components/FarmTable/FarmTable'
 import { FarmWithStakedValue } from './components/types'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
+import { FarmTypesFilter } from './components/FarmTypesFilter'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -152,16 +150,6 @@ const FinishedTextLink = styled(Link)`
   text-decoration: underline;
 `
 
-export const FarmTypesWrapper = styled(Flex)`
-  background: ${({ theme }) => theme.colors.dropdown};
-  border-radius: 24px 24px 0 0;
-`
-
-export const StyledItemRow = styled(Flex)`
-  cursor: pointer;
-  user-select: none;
-`
-
 const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -216,6 +204,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
   const archivedFarms = farmsLP
 
+  const boostedOrStableSwapFarms = farmsLP.filter(
+    (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
+  )
+
   const stakedOnlyFarms = activeFarms.filter(
     (farm) =>
       farm.userData &&
@@ -231,6 +223,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
 
   const stakedArchivedFarms = archivedFarms.filter(
+    (farm) =>
+      farm.userData &&
+      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  )
+
+  const stakedBoostedOrStableSwapFarms = boostedOrStableSwapFarms.filter(
     (farm) =>
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
@@ -290,7 +289,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     if (boostedOnly || stableSwapOnly) {
-      chosenFs = chosenFs.filter((f) => (boostedOnly && f.boosted) || (stableSwapOnly && f.isStable))
+      chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
     }
 
     return chosenFs
@@ -299,11 +298,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     farmsList,
     inactiveFarms,
     archivedFarms,
+    boostedOrStableSwapFarms,
     isActive,
     isInactive,
     isArchived,
     stakedArchivedFarms,
     stakedInactiveFarms,
+    stakedBoostedOrStableSwapFarms,
     stakedOnly,
     stakedOnlyFarms,
     boostedOnly,
@@ -356,30 +357,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     setSortOption(option.value)
   }
 
-  const [isOpen, setIsOpen] = useState(false)
-  const wrapperRef = useRef(null)
-  const menuRef = useRef(null)
-  const handleMenuClick = () => setIsOpen(!isOpen)
-
-  useEffect(() => {
-    const handleClickOutside = ({ target }: Event) => {
-      if (
-        wrapperRef.current &&
-        menuRef.current &&
-        !menuRef.current.contains(target) &&
-        !wrapperRef.current.contains(target)
-      ) {
-        setIsOpen(false)
-      }
-    }
-
-    document.addEventListener('click', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [setIsOpen, wrapperRef, menuRef])
-
   return (
     <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
       <PageHeader>
@@ -415,72 +392,14 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </Flex>
             <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
             <Flex mt="20px" ml="16px">
-              <Flex alignItems="center" mr="4px" mb="4px">
-                <Box ref={wrapperRef}>
-                  <InlineMenu
-                    component={
-                      <Button onClick={handleMenuClick} variant="light" scale="sm">
-                        {t('Farm Types')}
-                        {farmTypesEnableCount > 0 && `(${farmTypesEnableCount})`}
-                      </Button>
-                    }
-                    isOpen={isOpen}
-                    options={{ placement: 'top' }}
-                  >
-                    <Box width={['320px', '345px']} ref={menuRef}>
-                      <FarmTypesWrapper alignItems="center" p="16px">
-                        <Text fontSize={20} bold color="text" display="inline-block" ml="8px">
-                          {t('Farm Types')}
-                        </Text>
-                      </FarmTypesWrapper>
-                      <Box height="240px" overflowY="auto">
-                        <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
-                          <RocketIcon />
-                          <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
-                            {t('Booster Available')}
-                          </Text>
-                          <ToggleWrapper>
-                            <Toggle
-                              id="boosted-only-farms"
-                              checked={boostedOnly}
-                              onChange={() => {
-                                setFarmTypesEnableCount((count) => {
-                                  const totalFarmsEnableCount = count + (!boostedOnly ? 1 : -1)
-                                  return totalFarmsEnableCount
-                                })
-
-                                setBoostedOnly((prev) => !prev)
-                              }}
-                              scale="sm"
-                            />
-                          </ToggleWrapper>
-                        </StyledItemRow>
-                        <StyledItemRow alignItems="center" px="16px" py="8px" ml="8px" mt="8px">
-                          <CurrencyIcon />
-                          <Text fontSize={16} ml="10px" style={{ flex: 1 }} bold>
-                            {t('StableSwap')}
-                          </Text>
-                          <ToggleWrapper>
-                            <Toggle
-                              id="stableSwap-only-farms"
-                              checked={stableSwapOnly}
-                              onChange={() => {
-                                setFarmTypesEnableCount((count) => {
-                                  const totalFarmsEnableCount = count + (!stableSwapOnly ? 1 : -1)
-                                  return totalFarmsEnableCount
-                                })
-
-                                setStableSwapOnly((prev) => !prev)
-                              }}
-                              scale="sm"
-                            />
-                          </ToggleWrapper>
-                        </StyledItemRow>
-                      </Box>
-                    </Box>
-                  </InlineMenu>
-                </Box>
-              </Flex>
+              <FarmTypesFilter
+                boostedOnly={boostedOnly}
+                handleSetBoostedOnly={setBoostedOnly}
+                stableSwapOnly={stableSwapOnly}
+                handleSetStableSwapOnly={setStableSwapOnly}
+                farmTypesEnableCount={farmTypesEnableCount}
+                handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
+              />
               <ToggleWrapper>
                 <Toggle
                   id="staked-only-farms"
