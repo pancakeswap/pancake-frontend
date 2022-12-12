@@ -1,7 +1,7 @@
 import { APTOS_COIN } from '@pancakeswap/awgmi'
 import { createAction, createReducer } from '@reduxjs/toolkit'
 import { TxnBuilderTypes } from 'aptos'
-import { CAKE } from 'config/coins'
+import { L0_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { atom } from 'jotai'
 import { useReducerAtom } from 'jotai/utils'
@@ -166,7 +166,7 @@ export function useDefaultsFromURLSearch() {
   useEffect(() => {
     if (!chainId) return
     const queryObject = paramsToObject(new URL(window.location.href).searchParams)
-    const parsed = queryParametersToSwapState(queryObject, APTOS_COIN, CAKE[chainId]?.address)
+    const parsed = queryParametersToSwapState(queryObject, APTOS_COIN, L0_USDC[chainId]?.address)
 
     dispatch(
       replaceSwapState({
