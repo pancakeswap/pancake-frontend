@@ -15,11 +15,9 @@ const ifos: Ifo[] = [
     plannedStartTime: 1671105600,
     poolBasic: {
       raiseAmount: '$350,000',
-      distributionRatio: 0.4,
     },
     poolUnlimited: {
       raiseAmount: '$525,000',
-      distributionRatio: 0.6,
     },
     currency: bscTokens.cake,
     token: bscTokens.squad,
@@ -41,11 +39,9 @@ const ifos: Ifo[] = [
     plannedStartTime: 1666872000,
     poolBasic: {
       raiseAmount: '$437,500',
-      distributionRatio: 0.25,
     },
     poolUnlimited: {
       raiseAmount: '$1,312,500',
-      distributionRatio: 0.75,
     },
     currency: bscTokens.cake,
     token: bscTokens.mgp,
@@ -67,11 +63,9 @@ const ifos: Ifo[] = [
     name: 'WMX',
     poolBasic: {
       raiseAmount: '$300,000',
-      distributionRatio: 0.25,
     },
     poolUnlimited: {
       raiseAmount: '$900,000',
-      distributionRatio: 0.75,
     },
     currency: bscTokens.cake,
     token: bscTokens.wmx,
@@ -92,11 +86,9 @@ const ifos: Ifo[] = [
     name: 'KRS',
     poolBasic: {
       raiseAmount: '$420,000',
-      distributionRatio: 0.4,
     },
     poolUnlimited: {
       raiseAmount: '$630,000',
-      distributionRatio: 0.6,
     },
     currency: bscTokens.cake,
     token: bscTokens.krs,
@@ -116,11 +108,9 @@ const ifos: Ifo[] = [
     name: 'CO',
     poolBasic: {
       raiseAmount: '$367,500',
-      distributionRatio: 0.25,
     },
     poolUnlimited: {
       raiseAmount: '$1,102,500',
-      distributionRatio: 0.75,
     },
     currency: bscTokens.cake,
     token: bscTokens.co,
@@ -142,11 +132,9 @@ const ifos: Ifo[] = [
     name: 'HOOP',
     poolBasic: {
       raiseAmount: '$357,472.50',
-      distributionRatio: 0.3,
     },
     poolUnlimited: {
       raiseAmount: '$834,102.50',
-      distributionRatio: 0.7,
     },
     currency: bscTokens.cake,
     token: bscTokens.hoop,
@@ -166,11 +154,9 @@ const ifos: Ifo[] = [
     name: 'WOM',
     poolBasic: {
       raiseAmount: '$210,000',
-      distributionRatio: 0.1,
     },
     poolUnlimited: {
       raiseAmount: '$1,890,000',
-      distributionRatio: 0.9,
     },
     currency: bscTokens.cake,
     token: bscTokens.wom,
@@ -190,11 +176,9 @@ const ifos: Ifo[] = [
     name: 'Meta Apes ($PEEL)',
     poolBasic: {
       raiseAmount: '$400,000',
-      distributionRatio: 0.2,
     },
     poolUnlimited: {
       raiseAmount: '$1,600,000',
-      distributionRatio: 0.8,
     },
     currency: bscTokens.cake,
     token: bscTokens.peel,
@@ -215,11 +199,9 @@ const ifos: Ifo[] = [
     name: 'TRIVIA',
     poolBasic: {
       raiseAmount: '$350,000',
-      distributionRatio: 0.2,
     },
     poolUnlimited: {
       raiseAmount: '$1,400,000',
-      distributionRatio: 0.8,
     },
     currency: bscTokens.cake,
     token: bscTokens.trivia,
@@ -241,11 +223,9 @@ const ifos: Ifo[] = [
     name: 'DUET',
     poolBasic: {
       raiseAmount: '$360,000',
-      distributionRatio: 0.2,
     },
     poolUnlimited: {
       raiseAmount: '$1,440,000',
-      distributionRatio: 0.8,
     },
     currency: bscTokens.cake,
     token: bscTokens.duet,
@@ -265,11 +245,9 @@ const ifos: Ifo[] = [
     name: 'ERA (Game of Truth)',
     poolBasic: {
       raiseAmount: '$360,000',
-      distributionRatio: 0.2,
     },
     poolUnlimited: {
       raiseAmount: '$1,440,000',
-      distributionRatio: 0.8,
     },
     currency: bscTokens.cake,
     token: bscTokens.era,
@@ -289,11 +267,9 @@ const ifos: Ifo[] = [
     name: 'Froyo Games (FROYO)',
     poolBasic: {
       raiseAmount: '$1,200,000',
-      distributionRatio: 0.3,
     },
     poolUnlimited: {
       raiseAmount: '$2,800,000',
-      distributionRatio: 0.7,
     },
     currency: bscTokens.cake,
     token: bscTokens.froyo,
@@ -312,11 +288,9 @@ const ifos: Ifo[] = [
     name: 'Diviner Protocol (DPT)',
     poolBasic: {
       raiseAmount: '$180,000',
-      distributionRatio: 0.3,
     },
     poolUnlimited: {
       raiseAmount: '$420,000',
-      distributionRatio: 0.7,
     },
     currency: bscTokens.cake,
     token: bscTokens.dpt,

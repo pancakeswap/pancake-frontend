@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { useState, useCallback } from 'react'
 import { BSC_BLOCK_TIME } from 'config'
+import round from 'lodash/round'
 import ifoV2Abi from 'config/abi/ifoV2.json'
 import ifoV3Abi from 'config/abi/ifoV3.json'
 import { bscTokens } from '@pancakeswap/tokens'
@@ -55,6 +56,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       offeringAmountPool: BIG_ZERO,
       limitPerUserInLP: BIG_ZERO,
       taxRate: 0,
+      distributionRatio: 0,
       totalAmountPool: BIG_ZERO,
       sumTaxesOverflow: BIG_ZERO,
       pointThreshold: 0,
@@ -71,6 +73,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       offeringAmountPool: BIG_ZERO,
       limitPerUserInLP: BIG_ZERO,
       taxRate: 0,
+      distributionRatio: 0,
       totalAmountPool: BIG_ZERO,
       sumTaxesOverflow: BIG_ZERO,
       vestingInformation: {
@@ -178,6 +181,8 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
       // Calculate the total progress until finished or until start
       const progress = status === 'live' ? ((currentBlock - startBlockNum) / totalBlocks) * 100 : null
 
+      const totalOfferingAmount = poolBasicFormatted.offeringAmountPool.plus(poolUnlimitedFormatted.offeringAmountPool)
+
       setState((prev) => ({
         ...prev,
         isInitialized: true,
@@ -186,6 +191,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         poolBasic: {
           ...poolBasicFormatted,
           taxRate: 0,
+          distributionRatio: round(poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(), 1),
           pointThreshold: pointThreshold ? pointThreshold[0].toNumber() : 0,
           admissionProfile:
             Boolean(admissionProfile && admissionProfile[0]) && admissionProfile[0] !== NO_QUALIFIED_NFT_ADDRESS
@@ -196,6 +202,7 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         poolUnlimited: {
           ...poolUnlimitedFormatted,
           taxRate: taxRateNum,
+          distributionRatio: round(poolUnlimitedFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(), 1),
           vestingInformation: formatVestingInfo(unlimitedVestingInformation),
         },
         status,
