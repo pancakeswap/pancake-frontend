@@ -7,7 +7,7 @@ export const ExchangeLayout = ({ children }: React.PropsWithChildren) => {
     <Swap.Page
       helpUrl="https://docs.pancakeswap.finance/get-started-aptos"
       externalText={t('Bridge assets to Aptos Chain')}
-      externalLinkUrl="https://docs.pancakeswap.finance/get-started-aptos/aptos-coin-guide"
+      externalLinkUrl="https://bridge.pancakeswap.finance/aptos"
       helpImage={<Image src="/help.png" width={178} height={243} alt="Aptos help" />}
     >
       {children}
