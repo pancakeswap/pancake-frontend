@@ -80,7 +80,7 @@ export const FarmTypesFilter: React.FC<BCakeMigrateModalProps> = ({
             isOpen={isOpen}
             options={{ placement: 'top' }}
           >
-            <Box width={['320px', '345px']} ref={menuRef}>
+            <Box width={['100%', '345px']} ref={menuRef}>
               <FarmTypesWrapper alignItems="center" p="16px">
                 <Text fontSize={20} bold color="text" display="inline-block" ml="8px">
                   {t('Farm Types')}
