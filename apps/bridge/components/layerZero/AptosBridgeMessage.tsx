@@ -10,6 +10,7 @@ const AptosBridgeMessage = () => {
   return (
     <Box width={['100%', null, '420px']} padding={['24px 24px 0 24px', '24px 24px 0 24px', '0']}>
       <Message
+        mt={['24px', '24px', '24px', '0']}
         mb={['0', '0', '24px']}
         variant="warning"
         icon={<WarningIcon color="#D67E0A" style={{ minWidth: '24px' }} />}
