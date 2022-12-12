@@ -17,6 +17,7 @@ import {
   UserMenuDivider,
   UserMenuItem,
 } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { useTheme as useNextTheme } from 'next-themes'
 import Image from 'next/image'
 import NextLink from 'next/link'
@@ -32,14 +33,19 @@ const StyledMenuItem = styled.a<any>`
   align-items: center;
 
   color: ${({ theme, $isActive }) => ($isActive ? theme.colors.secondary : theme.colors.textSubtle)};
-  font-size: 16px;
+  font-size: 14px;
   font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')};
 
-  padding: 0 16px;
+  padding: 0 6px;
   height: 48px;
 
   &:hover {
     opacity: 0.65;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 16px;
+    padding: 0 16px;
   }
 `
 
@@ -68,21 +74,29 @@ const TxnLink = styled(Link)`
   }
 `
 
+const MenuConfig = [
+  { title: 'Bridge', href: '/' },
+  { title: 'Aptos', href: '/aptos' },
+]
+
 export function Menu() {
   const theme = useTheme()
   const { setTheme } = useNextTheme()
+  const nextRouter = useRouter()
 
   return (
     <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={9}>
       <Flex>
         <Logo href="https://pancakeswap.finance" />
 
-        <Flex pl={['25px', null, '50px']}>
-          <Box display={['none', null, 'flex']}>
-            <NextLink href="/" passHref>
-              <StyledMenuItem $isActive>Bridge</StyledMenuItem>
-            </NextLink>
-          </Box>
+        <Flex pl={['10px', null, '50px']}>
+          {MenuConfig.map((menu) => (
+            <Box key={menu.title} display="flex">
+              <NextLink href={menu.href} passHref>
+                <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
+              </NextLink>
+            </Box>
+          ))}
           <StyledMenuItem href="https://pancakeswap.finance/swap">Swap</StyledMenuItem>
         </Flex>
       </Flex>
@@ -90,7 +104,7 @@ export function Menu() {
         <Box mr="16px">
           <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
         </Box>
-        <User />
+        {nextRouter.pathname === '/' && <User />}
       </Flex>
     </Flex>
   )
