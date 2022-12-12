@@ -25,7 +25,7 @@ const ifos: Ifo[] = [
     token: bscTokens.squad,
     campaignId: '512000000',
     articleUrl:
-      'https://pancakeswap.finance/voting/proposal/0x5bbaee587df5b7e9b52e2b35f35f30afa08e15ab7098c73cb2503319c8d8ce44',
+      'https://pancakeswap.finance/voting/proposal/0x0557149d1dc2f12f4c97b68f9d214fc52acd64aa67b29bde91e19caef30a3153',
     tokenOfferingPrice: 0.035,
     version: 3.2,
     twitterUrl: 'https://twitter.com/Superpow_Squad',
