@@ -8,7 +8,7 @@ export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 1
 const ifos: Ifo[] = [
   {
     id: 'squad',
-    address: '0x1a553B57b05aAB7Bf390F4E9E96A7721CDc46CC0',
+    address: '0x57eb2e676863435a140f8bc2a0f0e955c36ed446',
     isActive: true,
     cIFO: true,
     name: 'SQUAD',
