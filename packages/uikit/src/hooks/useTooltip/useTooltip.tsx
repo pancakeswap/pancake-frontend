@@ -88,10 +88,9 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
         if (e.target === tooltipElement) {
           isHoveringOverTooltip.current = true;
         }
-      } else {
-        e.stopPropagation();
-        e.preventDefault();
       }
+      e.stopPropagation();
+      e.preventDefault();
     },
     [tooltipElement, targetElement, trigger]
   );
