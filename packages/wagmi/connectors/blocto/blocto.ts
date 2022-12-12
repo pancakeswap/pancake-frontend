@@ -80,7 +80,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
     if (!this.provider || chainId) {
       const rpc = this.chains.reduce(
         // eslint-disable-next-line @typescript-eslint/no-shadow
-        (rpc, chain) => ({ ...rpc, [chain.id]: chain.rpcUrls.default }),
+        (rpc, chain) => ({ ...rpc, [chain.id]: chain.rpcUrls.default.http[0] }),
         {} as Record<number, string>,
       )
 
@@ -90,7 +90,7 @@ export class BloctoConnector extends Connector<EthereumProviderInterface, { defa
         if (fallbackChainId && !this.isChainUnsupported(fallbackChainId)) targetChainId = fallbackChainId
       }
 
-      if (!targetChainId) throw new ChainNotConfiguredError()
+      if (!targetChainId) throw new ChainNotConfiguredError({ chainId: targetChainId || 0, connectorId: this.id })
 
       const BloctoSDK = (await import('@blocto/sdk')).default
       this.provider = new BloctoSDK({

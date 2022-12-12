@@ -1,6 +1,6 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
-import { bsc, bscTest, goerli, rinkeby, mainnet } from '@pancakeswap/wagmi/chains'
+import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
 import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -10,7 +10,7 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from '@gnosis.pm/safe-apps-wagmi'
 
-const CHAINS = [bsc, mainnet, bscTest, rinkeby, goerli]
+const CHAINS = [bsc, mainnet, bscTestnet, goerli]
 
 const getNodeRealUrl = (networkName: string) => {
   let host = null
@@ -19,11 +19,6 @@ const getNodeRealUrl = (networkName: string) => {
     case 'homestead':
       if (process.env.NEXT_PUBLIC_NODE_REAL_API_ETH) {
         host = `eth-mainnet.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_ETH}`
-      }
-      break
-    case 'rinkeby':
-      if (process.env.NEXT_PUBLIC_NODE_REAL_API_RINKEBY) {
-        host = `eth-rinkeby.nodereal.io/v1/${process.env.NEXT_PUBLIC_NODE_REAL_API_RINKEBY}`
       }
       break
     case 'goerli':
@@ -55,7 +50,7 @@ export const { provider, chains } = configureChains(CHAINS, [
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
         return { http: 'https://cloudflare-eth.com' }
       }
-      return getNodeRealUrl(chain.network) || { http: chain.rpcUrls.default }
+      return getNodeRealUrl(chain.network) || { http: chain.rpcUrls.default[0] }
     },
   }),
 ])
