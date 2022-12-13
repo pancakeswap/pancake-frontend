@@ -39,6 +39,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import Table from './components/FarmTable/FarmTable'
 import { FarmWithStakedValue } from './components/types'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
+import { FarmTypesFilter } from './components/FarmTypesFilter'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -182,6 +183,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
   const [boostedOnly, setBoostedOnly] = useState(false)
+  const [stableSwapOnly, setStableSwapOnly] = useState(false)
+  const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
   // NOTE: Temporarily inactive aBNBc-BNB LP on FE
   const activeFarms = farmsLP.filter(
@@ -201,6 +204,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
   const archivedFarms = farmsLP
 
+  const boostedOrStableSwapFarms = farmsLP.filter(
+    (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
+  )
+
   const stakedOnlyFarms = activeFarms.filter(
     (farm) =>
       farm.userData &&
@@ -216,6 +223,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
 
   const stakedArchivedFarms = archivedFarms.filter(
+    (farm) =>
+      farm.userData &&
+      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+  )
+
+  const stakedBoostedOrStableSwapFarms = boostedOrStableSwapFarms.filter(
     (farm) =>
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
@@ -274,8 +288,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       chosenFs = stakedOnly ? farmsList(stakedArchivedFarms) : farmsList(archivedFarms)
     }
 
-    if (boostedOnly) {
-      chosenFs = chosenFs.filter((f) => f.boosted)
+    if (boostedOnly || stableSwapOnly) {
+      chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
     }
 
     return chosenFs
@@ -284,14 +298,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     farmsList,
     inactiveFarms,
     archivedFarms,
+    boostedOrStableSwapFarms,
     isActive,
     isInactive,
     isArchived,
     stakedArchivedFarms,
     stakedInactiveFarms,
+    stakedBoostedOrStableSwapFarms,
     stakedOnly,
     stakedOnlyFarms,
     boostedOnly,
+    stableSwapOnly,
   ])
 
   const chosenFarmsMemoized = useMemo(() => {
@@ -370,30 +387,35 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Page>
         <ControlContainer>
           <ViewControls>
-            <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
-            <ToggleWrapper>
-              <Toggle
-                id="staked-only-farms"
-                checked={stakedOnly}
-                onChange={() => setStakedOnly(!stakedOnly)}
-                scale="sm"
-              />
-              <Text> {t('Staked only')}</Text>
-            </ToggleWrapper>
-            <ToggleWrapper>
-              <Toggle
-                id="staked-only-farms"
-                checked={boostedOnly}
-                onChange={() => setBoostedOnly((prev) => !prev)}
-                scale="sm"
-              />
-              <Text> {t('Booster Available')}</Text>
-            </ToggleWrapper>
+            <Flex mt="20px">
+              <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+            </Flex>
             <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms.length > 0} />
+            <Flex mt="20px" ml="16px">
+              <FarmTypesFilter
+                boostedOnly={boostedOnly}
+                handleSetBoostedOnly={setBoostedOnly}
+                stableSwapOnly={stableSwapOnly}
+                handleSetStableSwapOnly={setStableSwapOnly}
+                farmTypesEnableCount={farmTypesEnableCount}
+                handleSetFarmTypesEnableCount={setFarmTypesEnableCount}
+              />
+              <ToggleWrapper>
+                <Toggle
+                  id="staked-only-farms"
+                  checked={stakedOnly}
+                  onChange={() => setStakedOnly(!stakedOnly)}
+                  scale="sm"
+                />
+                <Text> {t('Staked only')}</Text>
+              </ToggleWrapper>
+            </Flex>
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>
-              <Text textTransform="uppercase">{t('Sort by')}</Text>
+              <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
+                {t('Sort by')}
+              </Text>
               <Select
                 options={[
                   {
@@ -425,7 +447,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               />
             </LabelWrapper>
             <LabelWrapper style={{ marginLeft: 16 }}>
-              <Text textTransform="uppercase">{t('Search')}</Text>
+              <Text textTransform="uppercase" color="textSubtle" fontSize="12px" bold>
+                {t('Search')}
+              </Text>
               <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search Farms" />
             </LabelWrapper>
           </FilterContainer>
