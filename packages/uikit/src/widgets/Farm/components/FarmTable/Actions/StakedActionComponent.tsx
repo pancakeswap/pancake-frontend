@@ -27,7 +27,7 @@ const StakedActionComponent: React.FunctionComponent<React.PropsWithChildren<Sta
   return (
     <StyledActionContainer>
       <ActionTitles>
-        <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
+        <Text bold color="secondary" fontSize="12px" pr="4px">
           {lpSymbol}
         </Text>
         <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
