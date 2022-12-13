@@ -1,8 +1,8 @@
 import { avalandche, fantomOpera } from '@pancakeswap/wagmi/chains'
 import { arbitrum, mainnet, optimism, polygon } from 'wagmi/chains'
 
-const VERSION = '0.0.25-mainnet.19'
-const SHA384 = 'qQJSEss4ErEoxG1BxX9kq5sOqbBAn475yj7Bz8ZqNxQKDR2tvk693RdhfA0blQEF'
+const VERSION = '0.0.25-mainnet.20'
+const SHA384 = 'RDYGBMTG+YS5OF8Kavau0Xdyq6j7e/5bFMF55lYu3Oz3gthIOqQSSJkcz96n6knF'
 export const PARTNER_ID = 0x0002
 export const FEE_COLLECTOR = '0x68C7ABB8b1c3D1cE467E28265770F3a7ECF32654'
 export const FEE_TENTH_BPS = '0'
