@@ -3,13 +3,13 @@ import { Box, Button, RocketIcon, CurrencyIcon, Flex, Text, InlineMenu, Toggle }
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
-interface BCakeMigrateModalProps {
+interface FarmTypesFilterProps {
   boostedOnly: boolean
-  handleSetBoostedOnly
+  handleSetBoostedOnly: any
   stableSwapOnly: boolean
-  handleSetStableSwapOnly
+  handleSetStableSwapOnly: any
   farmTypesEnableCount: number
-  handleSetFarmTypesEnableCount
+  handleSetFarmTypesEnableCount: any
 }
 
 export const FarmTypesWrapper = styled(Flex)`
@@ -32,7 +32,7 @@ const ToggleWrapper = styled.div`
   }
 `
 
-export const FarmTypesFilter: React.FC<BCakeMigrateModalProps> = ({
+export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
   boostedOnly,
   handleSetBoostedOnly,
   stableSwapOnly,
