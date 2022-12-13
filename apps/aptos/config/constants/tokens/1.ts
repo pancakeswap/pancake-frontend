@@ -4,54 +4,54 @@ import { APT, CAKE } from '../../coins'
 export const mainnetTokens = {
   apt: APT[ChainId.MAINNET],
   cake: CAKE[ChainId.MAINNET],
-  l0usdc: new Coin(
+  lzusdc: new Coin(
     ChainId.MAINNET,
     '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC',
     6,
     'LayerZero - USDC',
-    'USDC',
+    'lzUSDC',
   ),
-  l0usdt: new Coin(
+  lzusdt: new Coin(
     ChainId.MAINNET,
     '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDT',
     6,
     'LayerZero - Tether USD',
-    'USDT',
+    'lzUSDT',
   ),
-  l0weth: new Coin(
+  lzweth: new Coin(
     ChainId.MAINNET,
     '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::WETH',
     6,
     'LayerZero - Wrapped Ether',
-    'WETH',
+    'lzWETH',
   ),
-  celerusdc: new Coin(
+  ceusdc: new Coin(
     ChainId.MAINNET,
     '0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin',
     6,
     'Celer - USD Coin',
-    'USDC',
+    'ceUSDC',
   ),
-  celerusdt: new Coin(
+  ceusdt: new Coin(
     ChainId.MAINNET,
     '0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdtCoin',
     6,
     'Celer - Tether USD',
-    'USDT',
+    'ceUSDT',
   ),
-  celerweth: new Coin(
+  ceweth: new Coin(
     ChainId.MAINNET,
     '0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::WethCoin',
     8,
     'Celer - Wrapped Ether',
-    'WETH',
+    'ceWETH',
   ),
-  celerbnb: new Coin(
+  cebnb: new Coin(
     ChainId.MAINNET,
     '0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::BnbCoin',
     8,
     'Celer - Binance Coin',
-    'BNB',
+    'ceBNB',
   ),
   stapt: new Coin(
     ChainId.MAINNET,
