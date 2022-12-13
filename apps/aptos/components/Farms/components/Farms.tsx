@@ -28,7 +28,7 @@ import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
 import NoSSR from 'components/NoSSR'
 
 import { useFarms } from 'state/farms/hook'
-import useIntersectionObserver from 'hooks/useIntersectionObserver'
+import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { getFarmApr } from 'utils/farmApr'
 import { latinise } from 'utils/latinise'
 import type { DeserializedFarm } from '@pancakeswap/farms'

@@ -8,7 +8,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
 import useBUSDPrice from 'hooks/useBUSDPrice'
-import { DAY_IN_SECONDS } from 'utils/getTimePeriods'
+import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { SkeletonCardDetails } from './Skeletons'
 

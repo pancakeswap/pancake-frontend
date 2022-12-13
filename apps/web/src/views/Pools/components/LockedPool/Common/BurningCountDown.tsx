@@ -1,7 +1,7 @@
 import { useState, useCallback, memo, useMemo } from 'react'
 import { useInterval } from '@pancakeswap/hooks'
 
-import getTimePeriods from 'utils/getTimePeriods'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { UNLOCK_FREE_DURATION } from 'config/constants/pools'
 import addSeconds from 'date-fns/addSeconds'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
