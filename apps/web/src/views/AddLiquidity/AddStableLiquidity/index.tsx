@@ -167,9 +167,9 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
           const symbolA = currencies[Field.CURRENCY_A]?.symbol
-          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) || '0'
           const symbolB = currencies[Field.CURRENCY_B]?.symbol
-          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) || '0'
           addTransaction(response, {
             summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
             translatableSummary: {
