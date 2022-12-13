@@ -4,11 +4,11 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
 interface BCakeMigrateModalProps {
-  boostedOnly
+  boostedOnly: boolean
   handleSetBoostedOnly
-  stableSwapOnly
+  stableSwapOnly: boolean
   handleSetStableSwapOnly
-  farmTypesEnableCount
+  farmTypesEnableCount: number
   handleSetFarmTypesEnableCount
 }
 
