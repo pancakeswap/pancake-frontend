@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 0.5.0
+
+### Minor Changes
+
+- e11c44d86: Add stable swap lp token mint estimation
+
 ## 0.4.0
 
 ### Minor Changes
