@@ -159,14 +159,20 @@ export function useExpectedLPOutputWithoutFee(
         output: null,
       }
     }
-    return {
-      loading,
-      output: StableSwap.getLPOutputWithoutFee({
+    let output: CurrencyAmount<Currency> | null = null
+    try {
+      output = StableSwap.getLPOutputWithoutFee({
         amplifier,
         balances: poolBalances,
         totalSupply: totalSupplyAmount,
         amounts: [amount0, amount1],
-      }),
+      })
+    } catch (e) {
+      console.error(e)
+    }
+    return {
+      loading,
+      output,
     }
   }, [totalSupplyAmount, poolBalances, amplifier, loading, amount0, amount1])
 }
