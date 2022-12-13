@@ -1,8 +1,8 @@
-import { ChainId, Token, WBNB, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId, Token, WIDE, ERC20Token } from '@pancakeswap/sdk'
 import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
 
 export const bscTokens = {
-  wbnb: WBNB[ChainId.BSC],
+  wide: WIDE[ChainId.BSC],
   // bnb here points to the wbnb contract. Wherever the currency BNB is required, conditional checks for the symbol 'BNB' can be used
   bnb: new ERC20Token(
     ChainId.BSC,

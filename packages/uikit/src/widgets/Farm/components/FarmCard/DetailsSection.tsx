@@ -60,8 +60,8 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       {!removed && (
         <StyledLinkExternal href={addLiquidityUrl}>{t("Get %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
       )}
-      <StyledLinkExternal href={scanAddressLink}>{t("View Contract")}</StyledLinkExternal>
-      <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>
+      {scanAddressLink && <StyledLinkExternal href={scanAddressLink}>{t("View Contract")}</StyledLinkExternal>}
+      {infoAddress && <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>}
     </Wrapper>
   );
 };

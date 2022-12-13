@@ -264,7 +264,9 @@
   "To Top": "To Top",
   "Total value of the funds in this farm’s liquidity pool": "Total value of the funds in this farm’s liquidity pool",
   "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block.": "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block.",
+  "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.": "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second.",
   "For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.": "For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.",
+  "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.": "For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.",
   "This amount is already included in all APR calculations for the farm.": "This amount is already included in all APR calculations for the farm.",
   "Hot": "Hot",
   "Success!": "Success!",
@@ -840,6 +842,7 @@
   "Claimed": "Claimed",
   "Settings": "Settings",
   "Bridge assets to BNB Chain": "Bridge assets to BNB Chain",
+  "Bridge assets to Aptos Chain": "Bridge assets to Aptos Chain",
   "Need help ?": "Need help ?",
   "Select a token": "Select a token",
   "Enter a recipient": "Enter a recipient",
@@ -1748,6 +1751,7 @@
   "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.": "CAKE deposit will be diverted to the fixed-term staking pool. Please note that CAKE deposited can ONLY be withdrawn after 10 weeks.",
   "Pottery draws on each Friday at 12 PM UTC!": "Pottery draws on each Friday at 12 PM UTC!",
   "Next draw date": "Next draw date",
+  "Locked date": "Locked date",
   "in": "in",
   "Chance of winning next round": "Chance of winning next round",
   "Your": "Your",
@@ -2025,5 +2029,7 @@
   "Sharing link copied": "Sharing link copied",
   "Register coin to receive transfers": "Register coin to receive transfers",
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.",
-  "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds."
+  "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.",
+  "Pancake Collectibles": "Pancake Collectibles",
+  "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date.": "PancakeSwap Info is currently under maintenance. Data may not be accurate or up-to-date."
 }

@@ -88,7 +88,7 @@ const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => 
   const chainPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
   return (
-    <LinkWrapper to={`/info${chainPath}/pools/${poolData.address}${stableSwapPath}`}>
+    <LinkWrapper to={`/info${chainPath}/pairs/${poolData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
         <Text>{index + 1}</Text>
         <Flex>

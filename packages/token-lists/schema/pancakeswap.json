@@ -198,7 +198,7 @@
           "minLength": 1,
           "maxLength": 40,
           "pattern": "^[ \\w.'+\\-%/À-ÖØ-öø-ÿ:&\\[\\]\\(\\)]+$",
-          "examples": ["USD Coin"]
+          "examples": ["USDC"]
         },
         "symbol": {
           "type": "string",
@@ -258,7 +258,7 @@
           "minLength": 1,
           "maxLength": 40,
           "pattern": "^[ \\w.'+\\-%/À-ÖØ-öø-ÿ:&\\[\\]\\(\\)]+$",
-          "examples": ["USD Coin"]
+          "examples": ["USDC"]
         },
         "symbol": {
           "type": "string",

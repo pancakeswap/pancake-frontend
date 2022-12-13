@@ -10,14 +10,14 @@ import { ListLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 
 interface ImportProps {
   tokens: Token[]
   handleCurrencySelect?: (currency: Currency) => void
 }
 
-const getStandard = (chainId: ChainId) =>
-  chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET ? 'ERC20' : 'BEP20'
+const getStandard = () => 'ERC20'
 
 function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
   const { chainId } = useActiveChainId()
@@ -38,7 +38,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           {t(
             'Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
             {
-              standard: getStandard(chainId),
+              standard: getStandard(),
               network: chains.find((c) => c.id === chainId)?.name,
             },
           )}
@@ -104,7 +104,18 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           variant="danger"
           disabled={!confirmed}
           onClick={() => {
-            tokens.forEach((token) => addToken(token))
+            tokens.forEach((token) => {
+              const inactiveToken = chainId && inactiveTokenList?.[token.chainId]?.[token.address]
+              let tokenToAdd = token
+              if (inactiveToken) {
+                tokenToAdd = new WrappedTokenInfo({
+                  ...token,
+                  logoURI: inactiveToken.token.logoURI,
+                  name: token.name || inactiveToken.token.name,
+                })
+              }
+              addToken(tokenToAdd)
+            })
             if (handleCurrencySelect) {
               handleCurrencySelect(tokens[0])
             }

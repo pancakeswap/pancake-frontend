@@ -27,18 +27,27 @@ const Container = styled.div`
   align-items: center;
 `;
 
-const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMultiplierProps>> = ({ multiplier }) => {
+const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMultiplierProps>> = ({
+  multiplier,
+  rewardCakePerSecond,
+}) => {
   const displayMultiplier = multiplier ? multiplier.toLowerCase() : <Skeleton width={30} />;
   const { t } = useTranslation();
   const tooltipContent = (
     <>
       <Text>
-        {t(
-          "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block."
-        )}
+        {rewardCakePerSecond
+          ? t(
+              "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second."
+            )
+          : t(
+              "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block."
+            )}
       </Text>
       <Text my="24px">
-        {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
+        {rewardCakePerSecond
+          ? t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")
+          : t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
       </Text>
       <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
     </>

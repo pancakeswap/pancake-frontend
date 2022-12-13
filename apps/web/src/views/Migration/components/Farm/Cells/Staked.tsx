@@ -30,7 +30,7 @@ const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ label, stakedB
   const labelText = t('%asset% Staked', { asset: label })
 
   const displayBalance = useMemo(() => {
-    return formatLpBalance(stakedBalance)
+    return formatLpBalance(stakedBalance, 18)
   }, [stakedBalance])
 
   return (

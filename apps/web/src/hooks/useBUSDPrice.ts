@@ -7,7 +7,7 @@ import {
   Price,
   Token,
   WNATIVE,
-  WBNB,
+  WIDE,
   ERC20Token,
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
@@ -180,6 +180,6 @@ export const useBNBBusdPrice = (
   const { chainId } = useActiveChainId()
   const isTestnet = !forceMainnet && isChainTestnet(chainId)
   // Return bsc testnet wbnb if chain is testnet
-  const wbnb: Token = isTestnet ? WBNB[ChainId.BSC_TESTNET] : WBNB[ChainId.BSC]
-  return usePriceByPairs(BUSD[wbnb.chainId], wbnb)
+  const wide: Token = isTestnet ? WIDE[ChainId.BSC_TESTNET] : WIDE[ChainId.BSC]
+  return usePriceByPairs(BUSD[wide.chainId], wide)
 }

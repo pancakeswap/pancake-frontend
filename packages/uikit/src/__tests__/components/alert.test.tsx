@@ -101,6 +101,7 @@ it("renders correctly", () => {
             class="c6"
             color="text"
             font-size="16px"
+            style="word-break: break-all;"
           >
             Description
           </p>

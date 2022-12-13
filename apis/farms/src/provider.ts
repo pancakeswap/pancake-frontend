@@ -10,10 +10,10 @@ export const bscProvider = new StaticJsonRpcProvider(
 
 export const bscTestnetProvider = new StaticJsonRpcProvider(
   {
-    url: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
+    url: 'https://testrpc.opside.network',
     skipFetchSetup: true,
   },
-  97,
+  23118,
 )
 
 export const goerliProvider = new StaticJsonRpcProvider(

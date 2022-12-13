@@ -8,7 +8,7 @@ export const getProvider = ({ chainId }: { chainId?: number }) => {
   switch (chainId) {
     case 56:
       return bscProvider
-    case 97:
+    case 23118:
       return bscTestnetProvider
     case 5:
       return goerliProvider

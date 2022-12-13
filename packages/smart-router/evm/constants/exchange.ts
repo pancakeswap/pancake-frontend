@@ -1,4 +1,4 @@
-import { ChainId, Token, WBNB, WNATIVE } from '@pancakeswap/sdk'
+import { ChainId, Token, WIDE, WNATIVE } from '@pancakeswap/sdk'
 import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT } from '@pancakeswap/tokens'
 
 import { ChainMap, ChainTokenList } from '../types'
@@ -18,12 +18,12 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     USDC[ChainId.ETHEREUM],
     USDT[ChainId.ETHEREUM],
     BUSD[ChainId.ETHEREUM],
-    WBNB[ChainId.ETHEREUM],
+    WIDE[ChainId.ETHEREUM],
   ],
   [ChainId.RINKEBY]: [WNATIVE[ChainId.GOERLI], USDC[ChainId.GOERLI], BUSD[ChainId.GOERLI]],
   [ChainId.GOERLI]: [WNATIVE[ChainId.RINKEBY], USDC[ChainId.RINKEBY], BUSD[ChainId.RINKEBY]],
   [ChainId.BSC]: [
-    bscTokens.wbnb,
+    bscTokens.wide,
     bscTokens.cake,
     bscTokens.busd,
     bscTokens.usdt,
@@ -31,7 +31,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     bscTokens.eth,
     bscTokens.usdc,
   ],
-  [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
+  [ChainId.BSC_TESTNET]: [bscTestnetTokens.wide, bscTestnetTokens.usdc, bscTestnetTokens.usdt],
 }
 
 /**
@@ -60,11 +60,11 @@ export const CUSTOM_BASES: {
 
 // used for display in the default list when adding liquidity
 export const SUGGESTED_BASES: ChainTokenList = {
-  [ChainId.ETHEREUM]: [USDC[ChainId.ETHEREUM], WBNB[ChainId.ETHEREUM], BUSD[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM]],
+  [ChainId.ETHEREUM]: [USDC[ChainId.ETHEREUM], WIDE[ChainId.ETHEREUM], BUSD[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM]],
   [ChainId.RINKEBY]: [USDC[ChainId.RINKEBY], WNATIVE[ChainId.RINKEBY], BUSD[ChainId.RINKEBY]],
   [ChainId.GOERLI]: [USDC[ChainId.GOERLI], WNATIVE[ChainId.GOERLI], BUSD[ChainId.GOERLI]],
   [ChainId.BSC]: [bscTokens.busd, bscTokens.cake, bscTokens.btcb],
-  [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
+  [ChainId.BSC_TESTNET]: [bscTestnetTokens.wide, bscTestnetTokens.usdc, bscTestnetTokens.usdt],
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -74,12 +74,12 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
     WNATIVE[ChainId.ETHEREUM],
     BUSD[ChainId.ETHEREUM],
     USDT[ChainId.ETHEREUM],
-    WBNB[ChainId.ETHEREUM],
+    WIDE[ChainId.ETHEREUM],
   ],
   [ChainId.RINKEBY]: [USDC[ChainId.RINKEBY], WNATIVE[ChainId.RINKEBY], BUSD[ChainId.RINKEBY]],
   [ChainId.GOERLI]: [USDC[ChainId.GOERLI], WNATIVE[ChainId.GOERLI], BUSD[ChainId.GOERLI]],
-  [ChainId.BSC]: [bscTokens.wbnb, bscTokens.dai, bscTokens.busd, bscTokens.usdt, bscTokens.cake],
-  [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.cake, bscTestnetTokens.busd],
+  [ChainId.BSC]: [bscTokens.wide, bscTokens.dai, bscTokens.busd, bscTokens.usdt, bscTokens.cake],
+  [ChainId.BSC_TESTNET]: [bscTestnetTokens.wide, bscTestnetTokens.usdc, bscTestnetTokens.usdt],
 }
 
 export const PINNED_PAIRS: {
@@ -87,13 +87,13 @@ export const PINNED_PAIRS: {
 } = {
   [ChainId.ETHEREUM]: [
     [WNATIVE[ChainId.ETHEREUM], USDC[ChainId.ETHEREUM]],
-    [WBNB[ChainId.ETHEREUM], USDC[ChainId.ETHEREUM]],
-    [WBNB[ChainId.ETHEREUM], BUSD[ChainId.ETHEREUM]],
-    [WBNB[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM]],
-    [WBNB[ChainId.ETHEREUM], WNATIVE[ChainId.ETHEREUM]],
+    [WIDE[ChainId.ETHEREUM], USDC[ChainId.ETHEREUM]],
+    [WIDE[ChainId.ETHEREUM], BUSD[ChainId.ETHEREUM]],
+    [WIDE[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM]],
+    [WIDE[ChainId.ETHEREUM], WNATIVE[ChainId.ETHEREUM]],
   ],
   [ChainId.BSC]: [
-    [bscTokens.cake, bscTokens.wbnb],
+    [bscTokens.cake, bscTokens.wide],
     [bscTokens.busd, bscTokens.usdt],
     [bscTokens.dai, bscTokens.usdt],
   ],

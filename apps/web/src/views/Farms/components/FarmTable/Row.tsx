@@ -156,7 +156,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                           strikethrough={props?.details?.boosted}
                           boosted={props?.details?.boosted}
                         />
-                        {props?.details?.boosted ? (
+                        {props?.details?.boosted && userDataReady ? (
                           <BoostedApr
                             lpRewardsApr={props?.apr?.lpRewardsApr}
                             apr={props?.apr?.originalValue}
@@ -225,7 +225,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   strikethrough={props?.details?.boosted}
                   boosted={props?.details?.boosted}
                 />
-                {props?.details?.boosted ? (
+                {props?.details?.boosted && userDataReady ? (
                   <BoostedApr
                     lpRewardsApr={props?.apr?.lpRewardsApr}
                     apr={props?.apr?.originalValue}

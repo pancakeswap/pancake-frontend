@@ -12,7 +12,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'CAKE',
     lpAddress: '0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',
     token: bscTokens.syrup,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 2,
@@ -20,7 +20,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'CAKE-BNB LP',
     lpAddress: CAKE_BNB_LP_MAINNET,
     token: bscTokens.cake,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     boosted: true,
   },
   {
@@ -47,7 +47,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BUSD-BNB LP',
     lpAddress: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
     token: bscTokens.busd,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
 
@@ -72,7 +72,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'MHUNT-BNB LP',
     lpAddress: '0x58aED290F42963A502626774Bd8fa03f33c9B71f',
     token: bscTokens.mhunt,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     isCommunity: true,
   },
   {
@@ -82,7 +82,7 @@ const farms: SerializedFarmConfig[] = [
     lpAddress: '0x0d5b9A0f4315a4bcE36D1Ea7d6B6d3123167aFAa',
     token: bscTokens.tinc,
     isCommunity: true,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 129,
@@ -110,7 +110,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ARV-BNB LP',
     lpAddress: '0xA63E32FeEFC6590bBf869070Fd2e706Eb7881bd2',
     token: bscTokens.arv,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
 
   {
@@ -119,7 +119,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'PEX-BNB LP',
     lpAddress: '0x5ca96E8bDe0Bc587DaC9e02422Fd205b1102DAa4',
     token: bscTokens.pex,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     isCommunity: true,
   },
   {
@@ -127,7 +127,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'SPIN-BNB LP',
     lpAddress: '0x89c68051543Fa135B31c2CE7BD8Cdf392345FF01',
     token: bscTokens.spin,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     isCommunity: true,
   },
   {
@@ -158,7 +158,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'MONI-BNB LP',
     lpAddress: '0xbcfd0d4a37fEb4dceAAeFa9da28CD833E5f04e9f',
     token: bscTokens.moni,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 118,
@@ -173,7 +173,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'HAPPY-BNB',
     lpAddress: '0x008604A38cD589680F7B8f085DC2D5B4F81151dB',
     token: bscTokens.happy,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     isCommunity: true,
   },
   {
@@ -195,7 +195,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'aBNBc-BNB LP',
     lpAddress: '0x272c2CF847A49215A3A1D4bFf8760E503A06f880',
     token: bscTokens.abnbc,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 59,
@@ -203,7 +203,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'SFUND-BNB LP',
     lpAddress: '0x74fA517715C4ec65EF01d55ad5335f90dce7CC87',
     token: bscTokens.sfund,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 111,
@@ -218,7 +218,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'stkBNB-BNB LP',
     lpAddress: '0xaA2527ff1893e0D40d4a454623d362B79E8bb7F1',
     token: bscTokens.stkbnb,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 113,
@@ -264,7 +264,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'HOTCROSS-BNB LP',
     lpAddress: '0xF23BAD605E94dE0e3B60c9718a43A94A5aF43915',
     token: bscTokens.hotcross,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 108,
@@ -278,7 +278,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'TRIVIA-BNB LP',
     lpAddress: '0xEF642c40EebBc964881dD7Bd1A0b50e90441E73A',
     token: bscTokens.trivia,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 105,
@@ -300,7 +300,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BBT-BNB LP',
     lpAddress: '0x3D5A3E3824da092851026fCda3D8a0B7438c4573',
     token: bscTokens.bbt,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     isCommunity: true,
   },
   {
@@ -308,7 +308,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'PEAK-BNB LP',
     lpAddress: '0x41140a1650372Fb8cb2f71e335448ab8cfc1c4f3',
     token: bscTokens.peak,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     isCommunity: true,
   },
   {
@@ -339,14 +339,14 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'METIS-BNB LP',
     lpAddress: '0x69AFe59e88614501c3fDEb7480f12DBA0A414032',
     token: bscTokens.metis,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 99,
     lpSymbol: 'XCN-BNB LP',
     lpAddress: '0xF01eD80d46759c0cf6A3e9c66856017d81284962',
     token: bscTokens.xcn,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
     isCommunity: true,
   },
   {
@@ -354,7 +354,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'GAL-BNB LP',
     lpAddress: '0xbe6A4f74fdDc88853612C50D7404E059b37692D8',
     token: bscTokens.gal,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 97,
@@ -369,7 +369,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'CEEK-BNB',
     lpAddress: '0x046A9B3A9b743340eE2Bc4C6dDD35543E237C6c2',
     token: bscTokens.ceek,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 89,
@@ -377,7 +377,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'GMI-BNB LP',
     lpAddress: '0x58d4B61983Ca0aFE6E352e90719F403E24e016F4',
     token: bscTokens.gmi,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 88,
@@ -393,7 +393,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BSW-BNB LP',
     lpAddress: '0x8CA3fF14A52b080C54A6d1a405eecA02959d39fE',
     token: bscTokens.bsw,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 86,
@@ -417,7 +417,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ERA-BNB LP',
     lpAddress: '0x53a63ac301D6410915385294527f947aFf616599',
     token: bscTokens.era,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 83,
@@ -449,7 +449,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ERTHA-BNB LP',
     lpAddress: '0x70531B39E2Bb4d8dA59E2Ce41a98eBA2990F8497',
     token: bscTokens.ertha,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 79,
@@ -457,7 +457,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'FUSE-BNB LP',
     lpAddress: '0x6483F166b9E4310A165a55FEa04F867499aded06',
     token: bscTokens.fuse,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 78,
@@ -465,7 +465,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'FROYO-BNB LP',
     lpAddress: '0x1Ce76390Dd210B9C9ae28373FDf79714206ECb73',
     token: bscTokens.froyo,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 77,
@@ -481,7 +481,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BCOIN-BNB',
     lpAddress: '0x2Eebe0C34da9ba65521E98CBaA7D97496d05f489',
     token: bscTokens.bcoin,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 75,
@@ -497,7 +497,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'WOOP-BNB LP',
     lpAddress: '0x2AE94A6C768D59f5DDc25bd7f12C7cBE1D51dc04',
     token: bscTokens.woop,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 72,
@@ -505,7 +505,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'DPT-BNB LP',
     lpAddress: '0x141e9558f66Cc21c93628400cCa7d830c15c2c24',
     token: bscTokens.dpt,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 71,
@@ -513,7 +513,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'THG-BNB LP',
     lpAddress: '0x486697ae24469cB1122F537924Aa46E705B142Aa',
     token: bscTokens.thg,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 70,
@@ -529,7 +529,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'SANTOS-BNB LP',
     lpAddress: '0x06043B346450BbCfdE066ebc39fdc264FdFFeD74',
     token: bscTokens.santos,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 68,
@@ -537,7 +537,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'QI-BNB',
     lpAddress: '0xf924E642f05ACC57fc3b14990c2B1a137683b201',
     token: bscTokens.qi,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 67,
@@ -545,7 +545,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'PORTO-BNB LP',
     lpAddress: '0x0A292e96ABb35297786a38fDD67Dc4f82689E670',
     token: bscTokens.porto,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 66,
@@ -561,7 +561,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'DAR-BNB LP',
     lpAddress: '0x062f88E2B4896e823ac78Ac314468c29eEC4186d',
     token: bscTokens.dar,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 64,
@@ -577,7 +577,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'DKT-BNB LP',
     lpAddress: '0x365c3F921b2915a480308D0b1C04aEF7B99c2876',
     token: bscTokens.dkt,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 62,
@@ -585,7 +585,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'LAZIO-BNB LP',
     lpAddress: '0x11c0b2BB4fbB430825d07507A9E24e4c32f7704D',
     token: bscTokens.lazio,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 61,
@@ -593,7 +593,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BETA-BNB LP',
     lpAddress: '0x88a02D94F437799f06f8c256ff07Aa397E6D0016',
     token: bscTokens.beta,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 60,
@@ -601,7 +601,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'NFT-BNB LP',
     lpAddress: '0x0ecc84c9629317a494f12Bc56aA2522475bF32e8',
     token: bscTokens.nft,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 58,
@@ -609,7 +609,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BP-BNB LP',
     lpAddress: '0x2bF2dEB40639201C9A94c9e33b4852D9AEa5fd2D',
     token: bscTokens.bp,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 57,
@@ -641,7 +641,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'SPS-BNB LP',
     lpAddress: '0xFdFde3aF740A22648B9dD66D05698e5095940850',
     token: bscTokens.sps,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 53,
@@ -649,7 +649,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'C98-BNB LP',
     lpAddress: '0x92247860A03F48d5c6425c7CA35CDcFCB1013AA1',
     token: bscTokens.c98,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 52,
@@ -657,7 +657,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'AXS-BNB LP',
     lpAddress: '0xC2d00De94795e60FB76Bc37d899170996cBdA436',
     token: bscTokens.axs,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 51,
@@ -673,7 +673,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ONE-BNB LP',
     lpAddress: '0x9D2296e2Fe3CdBf2EB3e3e2CA8811BaFA42eeDFF',
     token: bscTokens.harmony,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 49,
@@ -681,7 +681,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'DVI-BNB LP',
     lpAddress: '0x89EBF9cD99864f6E51bd7a578965922029cAB977',
     token: bscTokens.dvi,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 48,
@@ -697,7 +697,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BSCPAD-BNB LP',
     lpAddress: '0xba01662E978DE7d67F8FfC937726215eb8995d17',
     token: bscTokens.bscpad,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 45,
@@ -705,7 +705,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'WOO-BNB LP',
     lpAddress: '0x89eE0491CE55d2f7472A97602a95426216167189',
     token: bscTokens.woo,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 44,
@@ -729,7 +729,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'MBOX-BNB LP',
     lpAddress: '0x8FA59693458289914dB0097F5F366d771B7a7C3F',
     token: bscTokens.mbox,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 41,
@@ -745,7 +745,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'DOGE-BNB LP',
     lpAddress: '0xac109C8025F272414fd9e2faA805a583708A017f',
     token: bscTokens.doge,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 36,
@@ -769,7 +769,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'TLM-BNB LP',
     lpAddress: '0xE6b421a4408c82381b226Ab5B6F8C4b639044359',
     token: bscTokens.tlm,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 33,
@@ -777,7 +777,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'EPS-BNB LP',
     lpAddress: '0xddE420cbB3794ebD8FFC3Ac69F9c78e5d1411870',
     token: bscTokens.eps,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 32,
@@ -785,7 +785,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'TKO-BNB LP',
     lpAddress: '0xFFd4B200d3C77A0B691B5562D804b3bd54294e6e',
     token: bscTokens.tko,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 31,
@@ -793,7 +793,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BIFI-BNB LP',
     lpAddress: '0x3f1A9f3D9aaD8bD339eD4853F345d2eF89fbfE0c',
     token: bscTokens.bifi,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 30,
@@ -801,7 +801,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ALICE-BNB LP',
     lpAddress: '0xcAD7019D6d84a3294b0494aEF02e73BD0f2572Eb',
     token: bscTokens.alice,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 29,
@@ -809,7 +809,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BELT-BNB LP',
     lpAddress: '0xF3Bc6FC080ffCC30d93dF48BFA2aA14b869554bb',
     token: bscTokens.belt,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 28,
@@ -841,7 +841,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'SFP-BNB LP',
     lpAddress: '0x942b294e59a8c47a0F7F20DF105B082710F7C305',
     token: bscTokens.sfp,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 24,
@@ -865,7 +865,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BTCST-BNB LP',
     lpAddress: '0xB2678C414ebC63c9CC6d1a0fC45f43E249B50fdE',
     token: bscTokens.btcst,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 21,
@@ -873,7 +873,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'LTC-BNB LP',
     lpAddress: '0x71b01eBdDD797c8E9E0b003ea2f4FD207fBF46cC',
     token: bscTokens.ltc,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 20,
@@ -905,7 +905,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'SXP-BNB LP',
     lpAddress: '0xD8E2F8b6Db204c405543953Ef6359912FE3A88d6',
     token: bscTokens.sxp,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 16,
@@ -913,7 +913,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'INJ-BNB LP',
     lpAddress: '0x1BdCebcA3b93af70b58C41272AEa2231754B23ca',
     token: bscTokens.inj,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 15,
@@ -921,7 +921,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'UNI-BNB LP',
     lpAddress: '0x014608E87AF97a054C9a49f81E1473076D51d9a3',
     token: bscTokens.uni,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 14,
@@ -929,7 +929,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'XRP-BNB LP',
     lpAddress: '0x03F18135c44C64ebFdCBad8297fe5bDafdBbdd86',
     token: bscTokens.xrp,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 13,
@@ -937,7 +937,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'USDT-BNB LP',
     lpAddress: '0x16b9a82891338f9bA80E2D6970FddA79D1eb0daE',
     token: bscTokens.usdt,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 12,
@@ -945,7 +945,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ALPHA-BNB LP',
     lpAddress: '0xACF47CBEaab5c8A6Ee99263cfE43995f89fB3206',
     token: bscTokens.alpha,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 11,
@@ -953,7 +953,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'BTCB-BNB LP',
     lpAddress: '0x61EB789d75A95CAa3fF50ed7E47b96c132fEc082',
     token: bscTokens.btcb,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 10,
@@ -961,7 +961,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ETH-BNB LP',
     lpAddress: '0x74E4716E431f45807DCF19f284c7aA99F18a4fbc',
     token: bscTokens.eth,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 9,
@@ -969,7 +969,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'XVS-BNB LP',
     lpAddress: '0x7EB5D86FD78f3852a3e0e064f2842d45a3dB6EA2',
     token: bscTokens.xvs,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 8,
@@ -977,7 +977,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'TWT-BNB LP',
     lpAddress: '0x3DcB1787a95D2ea0Eb7d00887704EeBF0D79bb13',
     token: bscTokens.twt,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 7,
@@ -993,7 +993,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'LINK-BNB LP',
     lpAddress: '0x824eb9faDFb377394430d2744fa7C42916DE3eCe',
     token: bscTokens.link,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 5,
@@ -1001,7 +1001,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'DOT-BNB LP',
     lpAddress: '0xDd5bAd8f8b360d76d12FdA230F8BAF42fe0022CF',
     token: bscTokens.dot,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
   {
     pid: 4,
@@ -1009,7 +1009,7 @@ const farms: SerializedFarmConfig[] = [
     lpSymbol: 'ADA-BNB LP',
     lpAddress: '0x28415ff2C35b65B9E5c7de82126b4015ab9d031F',
     token: bscTokens.ada,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.wide,
   },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 

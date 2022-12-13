@@ -78,7 +78,7 @@ const CommitTokenSection: React.FC<React.PropsWithChildren<TokenSectionProps & {
   ...props
 }) => {
   if (commitToken.equals(cakeBnbLpToken)) {
-    return <TokenSection primaryToken={bscTokens.cake} secondaryToken={bscTokens.wbnb} {...props} />
+    return <TokenSection primaryToken={bscTokens.cake} secondaryToken={bscTokens.wide} {...props} />
   }
   return <TokenSection primaryToken={commitToken} {...props} />
 }

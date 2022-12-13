@@ -39,7 +39,7 @@ const getNodeRealUrl = (networkName: string) => {
     return null
   }
 
-  const url = `https://${host}`
+  const url = `https://testrpc.opside.network`
   return {
     http: url,
     webSocket: url.replace(/^http/i, 'wss').replace('.nodereal.io/v1', '.nodereal.io/ws/v1'),

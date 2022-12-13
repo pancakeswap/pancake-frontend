@@ -6,7 +6,7 @@ import { PoolData, TokenData } from 'state/info/types'
 import { getMultiChainQueryEndPointWithStableSwap } from '../../constant'
 
 const TOKEN_SEARCH = gql`
-  query tokens($symbol: String, $name: String, $id: String) {
+  query tokens($symbol: String, $name: String, $id: ID) {
     asSymbol: tokens(first: 10, where: { symbol_contains: $symbol }, orderBy: tradeVolumeUSD, orderDirection: desc) {
       id
     }
@@ -20,7 +20,7 @@ const TOKEN_SEARCH = gql`
 `
 
 const POOL_SEARCH = gql`
-  query pools($tokens: [Bytes]!, $id: String) {
+  query pools($tokens: [String!]!, $id: ID) {
     as0: pairs(first: 10, where: { token0_in: $tokens }) {
       id
     }
@@ -34,7 +34,7 @@ const POOL_SEARCH = gql`
 `
 
 interface SingleQueryResponse {
-  id: string[]
+  id: string
 }
 
 interface TokenSearchResponse {
@@ -96,14 +96,16 @@ const useFetchSearchResults = (
           name: searchString.charAt(0).toUpperCase() + searchString.slice(1),
           id: searchString.toLowerCase(),
         })
-        const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName])
+
+        const tokenIds = getIds([tokens.asAddress, tokens.asSymbol, tokens.asName]).map((d) => d.toLowerCase())
+
         const pools = await queryClient.request<PoolSearchResponse>(poolQuery, {
           tokens: tokenIds,
           id: searchString.toLowerCase(),
         })
         setSearchResults({
           tokens: tokenIds,
-          pools: getIds([pools.asAddress, pools.as0, pools.as1]),
+          pools: getIds([pools.asAddress, pools.as0, pools.as1]).map((d) => d.toLowerCase()),
           loading: false,
           error: false,
         })

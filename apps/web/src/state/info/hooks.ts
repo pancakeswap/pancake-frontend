@@ -15,6 +15,7 @@ import { fetchAllTokenData, fetchAllTokenDataByAddresses } from 'state/info/quer
 import fetchTokenTransactions from 'state/info/queries/tokens/transactions'
 import { Transaction } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
+import { SWRConfiguration } from 'swr'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { MultiChainName, checkIsStableSwap } from './constant'
@@ -22,7 +23,11 @@ import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from '
 // Protocol hooks
 
 const refreshIntervalForInfo = 15000 // 15s
-const SWR_SETTINGS = { refreshInterval: refreshIntervalForInfo }
+const SWR_SETTINGS: SWRConfiguration = {
+  refreshInterval: refreshIntervalForInfo,
+  errorRetryCount: 3,
+  errorRetryInterval: 3000,
+}
 
 export const useProtocolDataSWR = (): ProtocolData | undefined => {
   const chainName = useGetChainName()
@@ -74,9 +79,9 @@ export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
-
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
-    blocks && chainName && [`info/pool/data/${name}`, chainName],
+    blocks && chainName && [`info/pool/data/${name}/${type}`, chainName],
     () => fetchAllPoolDataWithAddress(blocks, chainName, poolAddresses),
     SWR_SETTINGS,
   )
@@ -130,9 +135,9 @@ export const useTokenDatasSWR = (addresses?: string[]): TokenData[] | undefined 
   const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
-
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
   const { data } = useSWRImmutable(
-    blocks && chainName && [`info/token/data/${name}`, chainName],
+    blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
     () => fetchAllTokenDataByAddresses(chainName, blocks, addresses),
     SWR_SETTINGS,
   )

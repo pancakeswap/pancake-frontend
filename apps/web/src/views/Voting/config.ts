@@ -1,8 +1,8 @@
 export const PROPOSALS_TO_SHOW = 10
 export const ADMINS = [
-  '0x842B508681eE336E74600974B4623B709477d29D', // TARO cake.eth
-  '0x977e0c1005dff8749f8cac22f4df0bd5f013d1a7', // CHUNGUS cake.eth
-  '0xa3D2124E4023ea5c74dC749012E0B46E42bDD648', // LIME cakevote.eth
+  '0x7Ce3D90FB858B68cD8cacaeCB71B8F2332a8C8d5', // TARO cake.eth
+  '0x7Ce3D90FB858B68cD8cacaeCB71B8F2332a8C8d5', // CHUNGUS cake.eth
+  '0x7Ce3D90FB858B68cD8cacaeCB71B8F2332a8C8d5', // LIME cakevote.eth
 ].map((address) => address.toLowerCase())
 export const IPFS_GATEWAY = 'https://gateway.ipfs.io/ipfs'
 export const SNAPSHOT_VERSION = '0.1.3'

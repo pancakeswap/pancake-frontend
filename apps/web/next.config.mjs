@@ -71,10 +71,6 @@ const config = {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
       },
-      {
-        source: '/info/pair/:address',
-        destination: '/info/pools/:address',
-      },
     ]
   },
   async headers() {
@@ -148,6 +144,16 @@ const config = {
       {
         source: '/collectibles',
         destination: '/nfts',
+        permanent: true,
+      },
+      {
+        source: '/info/pools',
+        destination: '/info/pairs',
+        permanent: true,
+      },
+      {
+        source: '/info/pools/:address',
+        destination: '/info/pairs/:address',
         permanent: true,
       },
     ]

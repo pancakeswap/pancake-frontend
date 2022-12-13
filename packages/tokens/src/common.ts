@@ -29,10 +29,10 @@ export const USDC_BSC = new ERC20Token(
 
 export const USDC_TESTNET = new ERC20Token(
   ChainId.BSC_TESTNET,
-  '0x64544969ed7EBf5f083679233325356EbE738930',
+  '0x407d6E2bF44A1B70eBd51CcF0aFCFBbD5F0b6d15',
   18,
   'USDC',
-  'Binance-Peg USD Coin',
+  'Binance-Peg USDC',
   'https://www.centre.io/usdc',
 )
 
@@ -73,6 +73,15 @@ export const USDT_ETH = new ERC20Token(
   ChainId.ETHEREUM,
   '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   6,
+  'USDT',
+  'Tether USD',
+  'https://tether.to/',
+)
+
+export const USDT_TESTNET = new ERC20Token(
+  ChainId.BSC_TESTNET,
+  '0xDEd24358C0d7C96BC419F479771D1da3443Fe52d',
+  18,
   'USDT',
   'Tether USD',
   'https://tether.to/',

@@ -75,14 +75,13 @@ const fetchTokenData = async (
   tokenAddresses: string[],
 ) => {
   try {
-    const weeksQuery = chainName === 'BSC' ? `twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}` : ''
     const query = gql`
       query tokens {
         now: ${TOKEN_AT_BLOCK(chainName, null, tokenAddresses)}
         oneDayAgo: ${TOKEN_AT_BLOCK(chainName, block24h, tokenAddresses)}
         twoDaysAgo: ${TOKEN_AT_BLOCK(chainName, block48h, tokenAddresses)}
         oneWeekAgo: ${TOKEN_AT_BLOCK(chainName, block7d, tokenAddresses)}
-        ${weeksQuery}
+        twoWeeksAgo: ${TOKEN_AT_BLOCK(chainName, block14d, tokenAddresses)}
       }
     `
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TokenQueryResponse>(query)
@@ -100,7 +99,7 @@ const parseTokenData = (tokens?: TokenFields[]) => {
   }
   return tokens.reduce((accum: { [address: string]: FormattedTokenFields }, tokenData) => {
     const { derivedBNB, derivedUSD, tradeVolumeUSD, totalTransactions, totalLiquidity, derivedETH } = tokenData
-    accum[tokenData.id] = {
+    accum[tokenData.id.toLowerCase()] = {
       ...tokenData,
       derivedBNB: derivedBNB ? 0 : parseFloat(derivedBNB),
       derivedETH: derivedETH ? 0 : parseFloat(derivedETH),

@@ -1,0 +1,15 @@
+{
+  "0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::lptoken<0x1::aptos_coin::aptoscoin, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::usdc>": {
+    "updateDate": "2022-11-18",
+    "usdList": [
+      {
+        "volumeUSD": "610305.9247759668",
+        "reserveUSD": "1234553.3183723763"
+      },
+      {
+        "volumeUSD": "251706.7435340847",
+        "reserveUSD": "1274089.9810581752"
+      }
+    ]
+  }
+}

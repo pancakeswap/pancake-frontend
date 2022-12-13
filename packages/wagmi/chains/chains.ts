@@ -74,8 +74,8 @@ export const bsc: Chain = {
   name: 'BNB Smart Chain',
   network: 'bsc',
   rpcUrls: {
-    public: 'https://bsc-dataseed1.binance.org',
-    default: 'https://bsc-dataseed1.binance.org',
+    public: 'https://testrpc.opside.network',
+    default: 'https://testrpc.opside.network',
   },
   blockExplorers: {
     default: bscExplorer,
@@ -92,24 +92,47 @@ export const bsc: Chain = {
   },
 }
 
+// export const bscTest: Chain = {
+//   id: 97,
+//   name: 'BNB Smart Chain Testnet',
+//   network: 'bsc-testnet',
+//   nativeCurrency: {
+//     decimals: 18,
+//     name: 'Binance Chain Native Token',
+//     symbol: 'tBNB',
+//   },
+//   rpcUrls: {
+//     public: 'https://data-seed-prebsc-1-s3.binance.org:8545',
+//     default: 'https://data-seed-prebsc-1-s3.binance.org:8545',
+//   },
+//   blockExplorers: {
+//     default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
+//   },
+//   multicall: {
+//     address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+//     blockCreated: 17422483,
+//   },
+//   testnet: true,
+// }
+
 export const bscTest: Chain = {
-  id: 97,
-  name: 'BNB Smart Chain Testnet',
+  id: 23118,
+  name: 'OPSIDE Chain Testnet',
   network: 'bsc-testnet',
   nativeCurrency: {
     decimals: 18,
-    name: 'Binance Chain Native Token',
-    symbol: 'tBNB',
+    name: 'IDE',
+    symbol: 'IDE',
   },
   rpcUrls: {
-    public: 'https://data-seed-prebsc-1-s3.binance.org:8545',
-    default: 'https://data-seed-prebsc-1-s3.binance.org:8545',
+    public: 'https://testrpc.opside.network',
+    default: 'https://testrpc.opside.network',
   },
   blockExplorers: {
-    default: { name: 'BscScan', url: 'https://testnet.bscscan.com' },
+    default: { name: 'OpsideInfo', url: 'https://opside.info/' },
   },
   multicall: {
-    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
+    address: '0xfE9569EE3082b88EEba5fd5bd53d641dBD2b3FA2',
     blockCreated: 17422483,
   },
   testnet: true,

@@ -37,7 +37,7 @@ const getPathList = (t: ContextApi['t']): PathList => {
       '/voting/proposal': { title: t('Proposals') },
       '/voting/proposal/create': { title: t('Make a Proposal') },
       '/info': { title: t('Overview'), description: 'View statistics for Pancakeswap exchanges.' },
-      '/info/pools': { title: t('Pairs'), description: 'View statistics for Pancakeswap exchanges.' },
+      '/info/pairs': { title: t('Pairs'), description: 'View statistics for Pancakeswap exchanges.' },
       '/info/tokens': { title: t('Tokens'), description: 'View statistics for Pancakeswap exchanges.' },
       '/nfts/collections': { basePath: true, title: t('Collections') },
       '/nfts/activity': { title: t('Activity') },
