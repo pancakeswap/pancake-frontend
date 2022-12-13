@@ -50,7 +50,8 @@ export const { provider, chains } = configureChains(CHAINS, [
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
         return { http: 'https://cloudflare-eth.com' }
       }
-      return getNodeRealUrl(chain.network) || { http: chain.rpcUrls.default[0] }
+
+      return getNodeRealUrl(chain.network) || { http: chain.rpcUrls.default.http[0] }
     },
   }),
 ])
