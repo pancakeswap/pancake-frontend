@@ -39,7 +39,6 @@ const TableWrapper = styled.div`
 const StyledTable = styled.table`
   border-collapse: collapse;
   font-size: 14px;
-  border-radius: 4px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
@@ -51,7 +50,15 @@ const TableBody = styled.tbody`
       font-size: 16px;
       vertical-align: middle;
     }
-  }
+
+    :last-child {
+      td[colspan="7"] {
+        > div {
+          border-bottom-left-radius: 16px;
+          border-bottom-right-radius: 16px;
+        }
+      }
+    }
 `
 
 const TableContainer = styled.div`
