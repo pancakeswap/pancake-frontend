@@ -330,8 +330,7 @@ export const useFetchPairPrices = ({
           // in that case try to get derived price
           const hasEnoughLiquidity = pairHasEnoughLiquidity(data, timeWindow)
           const newPairData =
-            (pairTokenResults &&
-              pairTokenResults[0]?.[0] &&
+            (pairTokenResults[0]?.[0] &&
               pairTokenResults[1]?.[0] &&
               normalizeChartData(
                 data,
