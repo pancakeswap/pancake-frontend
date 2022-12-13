@@ -204,10 +204,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
   const archivedFarms = farmsLP
 
-  const boostedOrStableSwapFarms = farmsLP.filter(
-    (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
-  )
-
   const stakedOnlyFarms = activeFarms.filter(
     (farm) =>
       farm.userData &&
@@ -223,13 +219,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   )
 
   const stakedArchivedFarms = archivedFarms.filter(
-    (farm) =>
-      farm.userData &&
-      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
-        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
-  )
-
-  const stakedBoostedOrStableSwapFarms = boostedOrStableSwapFarms.filter(
     (farm) =>
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
@@ -289,6 +278,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     if (boostedOnly || stableSwapOnly) {
+      const boostedOrStableSwapFarms = chosenFs.filter(
+        (farm) => (boostedOnly && farm.boosted) || (stableSwapOnly && farm.isStable),
+      )
+
+      const stakedBoostedOrStableSwapFarms = chosenFs.filter(
+        (farm) =>
+          farm.userData &&
+          (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+            new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
+      )
+
       chosenFs = stakedOnly ? farmsList(stakedBoostedOrStableSwapFarms) : farmsList(boostedOrStableSwapFarms)
     }
 
@@ -298,13 +298,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     farmsList,
     inactiveFarms,
     archivedFarms,
-    boostedOrStableSwapFarms,
     isActive,
     isInactive,
     isArchived,
     stakedArchivedFarms,
     stakedInactiveFarms,
-    stakedBoostedOrStableSwapFarms,
     stakedOnly,
     stakedOnlyFarms,
     boostedOnly,
