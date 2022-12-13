@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
 import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
+import removeTrailingZeros from "@pancakeswap/utils/removeTrailingZeros";
 
 import PercentageButton from "./PercentageButton";
 import getThemeValue from "../../util/getThemeValue";
@@ -66,8 +67,6 @@ interface StakeModalProps {
   handleConfirmClick: any;
   pendingTx: boolean;
 }
-
-const removeTrailingZerosRegex = new RegExp(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/, "g");
 
 export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   stakingTokenDecimals,
@@ -158,7 +157,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent);
         const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingTokenDecimals, stakingTokenDecimals);
 
-        setStakeAmount(amountToStake.replace(removeTrailingZerosRegex, "$1"));
+        setStakeAmount(removeTrailingZeros(amountToStake));
       } else {
         setStakeAmount("");
       }
