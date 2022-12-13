@@ -4,7 +4,6 @@ import BigNumber from "bignumber.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
-import trimEnd from "lodash/trimEnd";
 import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
 
 import PercentageButton from "./PercentageButton";
@@ -67,6 +66,8 @@ interface StakeModalProps {
   handleConfirmClick: any;
   pendingTx: boolean;
 }
+
+const removeTrailingZerosRegex = new RegExp(/([0-9]+(\.[0-9]+[1-9])?)(\.?0+$)/, "g");
 
 export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   stakingTokenDecimals,
@@ -157,7 +158,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent);
         const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingTokenDecimals, stakingTokenDecimals);
 
-        setStakeAmount(trimEnd(amountToStake, "0"));
+        setStakeAmount(amountToStake.replace(removeTrailingZerosRegex, "$1"));
       } else {
         setStakeAmount("");
       }
