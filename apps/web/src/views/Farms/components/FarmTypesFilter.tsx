@@ -5,11 +5,11 @@ import { useTranslation } from '@pancakeswap/localization'
 
 interface FarmTypesFilterProps {
   boostedOnly: boolean
-  handleSetBoostedOnly: any
+  handleSetBoostedOnly: (value: boolean) => void
   stableSwapOnly: boolean
-  handleSetStableSwapOnly: any
+  handleSetStableSwapOnly: (value: boolean) => void
   farmTypesEnableCount: number
-  handleSetFarmTypesEnableCount: any
+  handleSetFarmTypesEnableCount: (value: number) => void
 }
 
 export const FarmTypesWrapper = styled(Flex)`
@@ -97,12 +97,10 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                       id="boosted-only-farms"
                       checked={boostedOnly}
                       onChange={() => {
-                        handleSetFarmTypesEnableCount((count) => {
-                          const totalFarmsEnableCount = count + (!boostedOnly ? 1 : -1)
-                          return totalFarmsEnableCount
-                        })
+                        const totalFarmsEnableCount = farmTypesEnableCount + (!boostedOnly ? 1 : -1)
+                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
 
-                        handleSetBoostedOnly((prev) => !prev)
+                        handleSetBoostedOnly(!boostedOnly)
                       }}
                       scale="sm"
                     />
@@ -118,12 +116,10 @@ export const FarmTypesFilter: React.FC<FarmTypesFilterProps> = ({
                       id="stableSwap-only-farms"
                       checked={stableSwapOnly}
                       onChange={() => {
-                        handleSetFarmTypesEnableCount((count) => {
-                          const totalFarmsEnableCount = count + (!stableSwapOnly ? 1 : -1)
-                          return totalFarmsEnableCount
-                        })
+                        const totalFarmsEnableCount = farmTypesEnableCount + (!stableSwapOnly ? 1 : -1)
+                        handleSetFarmTypesEnableCount(totalFarmsEnableCount)
 
-                        handleSetStableSwapOnly((prev) => !prev)
+                        handleSetStableSwapOnly(!stableSwapOnly)
                       }}
                       scale="sm"
                     />
