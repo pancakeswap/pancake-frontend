@@ -29,7 +29,7 @@ export function TotalStakedCell({ stakingTokenSymbol, totalStaked, stakingTokenD
             <Balance
               fontSize="16px"
               value={getBalanceNumber(totalStaked, stakingTokenDecimals)}
-              decimals={0}
+              decimals={3}
               unit={` ${stakingTokenSymbol}`}
             />
           </Flex>
