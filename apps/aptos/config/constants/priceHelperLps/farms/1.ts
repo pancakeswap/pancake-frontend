@@ -1,6 +1,6 @@
 import { ChainId, Pair } from '@pancakeswap/aptos-swap-sdk'
 import type { SerializedFarmConfig } from '@pancakeswap/farms'
-import { APT } from 'config/coins'
+import { APT, CAKE } from 'config/coins'
 import { mainnetTokens } from 'config/constants/tokens'
 
 const priceHelperLps: Omit<SerializedFarmConfig, 'pid'>[] = [
@@ -9,6 +9,12 @@ const priceHelperLps: Omit<SerializedFarmConfig, 'pid'>[] = [
     lpSymbol: 'APT-stAPT LP',
     quoteToken: APT[ChainId.MAINNET],
     token: mainnetTokens.stapt,
+  },
+  {
+    pid: null,
+    lpSymbol: 'APT-CAKE LP',
+    quoteToken: APT[ChainId.MAINNET],
+    token: CAKE[ChainId.MAINNET],
   },
   {
     pid: null,
