@@ -108,7 +108,7 @@
       "logoURI": "https://tokens.pancakeswap.finance/images/symbol/usdt.png"
     },
     {
-      "name": "LayerZero - USDC",
+      "name": "LayerZero - USD coin",
       "symbol": "lzUSDC",
       "chainId": 1,
       "decimals": 6,
