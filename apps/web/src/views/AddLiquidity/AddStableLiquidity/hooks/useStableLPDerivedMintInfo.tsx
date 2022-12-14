@@ -1,6 +1,5 @@
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { StableSwap } from '@pancakeswap/smart-router/evm'
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
@@ -14,7 +13,6 @@ import { useSingleCallResult } from 'state/multicall/hooks'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { useMintState } from 'state/mint/hooks'
-import { useStableSwapInfo } from 'hooks/useStableSwapInfo'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -105,76 +103,6 @@ function useMintedStabelLP({
     loading: loading || syncing,
     error,
   }
-}
-
-export function useExpectedLPOutputWithoutFee(
-  amountA: CurrencyAmount<Currency> | undefined,
-  amountB: CurrencyAmount<Currency> | undefined,
-): {
-  output: CurrencyAmount<Currency> | null
-  loading: boolean
-} {
-  const { stableSwapConfig } = useContext(StableConfigContext)
-  const { totalSupply, balances, amplifier, loading } = useStableSwapInfo(
-    stableSwapConfig?.stableSwapAddress,
-    stableSwapConfig?.liquidityToken.address,
-  )
-  const wrappedCurrencyA = amountA?.currency.wrapped
-  const wrappedCurrencyB = amountB?.currency.wrapped
-  const [token0, token1] =
-    wrappedCurrencyA && wrappedCurrencyB && wrappedCurrencyA?.sortsBefore(wrappedCurrencyB)
-      ? [wrappedCurrencyA, wrappedCurrencyB]
-      : [wrappedCurrencyB, wrappedCurrencyA]
-  const [amount0, amount1] =
-    wrappedCurrencyA && token0 && token0.equals(wrappedCurrencyA) ? [amountA, amountB] : [amountB, amountA]
-  const poolBalances = useMemo<[CurrencyAmount<Currency>, CurrencyAmount<Currency>] | undefined>(
-    () =>
-      token0 &&
-      token1 &&
-      balances[0] &&
-      balances[1] && [
-        CurrencyAmount.fromRawAmount(token0, balances[0]),
-        CurrencyAmount.fromRawAmount(token1, balances[1]),
-      ],
-    [balances, token0, token1],
-  )
-  const totalSupplyAmount = useMemo(
-    () =>
-      totalSupply &&
-      stableSwapConfig?.liquidityToken &&
-      CurrencyAmount.fromRawAmount(stableSwapConfig.liquidityToken, totalSupply),
-    [totalSupply, stableSwapConfig?.liquidityToken],
-  )
-  return useMemo(() => {
-    if (!totalSupplyAmount || !poolBalances || !amount0 || !amount1) {
-      return {
-        loading,
-        output: null,
-      }
-    }
-    const totalValue = JSBI.add(poolBalances[0].quotient, poolBalances[1].quotient)
-    if (JSBI.equal(totalValue, BIG_INT_ZERO)) {
-      return {
-        loading,
-        output: null,
-      }
-    }
-    let output: CurrencyAmount<Currency> | null = null
-    try {
-      output = StableSwap.getLPOutputWithoutFee({
-        amplifier,
-        balances: poolBalances,
-        totalSupply: totalSupplyAmount,
-        amounts: [amount0, amount1],
-      })
-    } catch (e) {
-      console.error(e)
-    }
-    return {
-      loading,
-      output,
-    }
-  }, [totalSupplyAmount, poolBalances, amplifier, loading, amount0, amount1])
 }
 
 export function useStableLPDerivedMintInfo(
@@ -276,7 +204,7 @@ export function useStableLPDerivedMintInfo(
     ) {
       return currencyAAmountQuotient
         ? new Price(currencyA, currencyB, targetAmount.quotient, estimatedOutputAmount.quotient)
-        : new Price(currencyA, currencyB, estimatedOutputAmount.quotient, targetAmount.quotient)
+        : new Price(currencyB, currencyA, estimatedOutputAmount.quotient, targetAmount.quotient)
     }
     return undefined
   }, [targetAmount, estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])

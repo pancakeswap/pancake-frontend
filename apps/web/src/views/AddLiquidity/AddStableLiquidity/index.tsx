@@ -33,7 +33,8 @@ import { CommonBasesType } from '../../../components/SearchModal/types'
 import { AppHeader, AppBody } from '../../../components/App'
 import { RowBetween, RowFixed } from '../../../components/Layout/Row'
 import { MinimalPositionCard } from '../../../components/PositionCard'
-import { useExpectedLPOutputWithoutFee, useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
+import { useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
+import { useDerivedLPInfo } from './hooks/useDerivedLPInfo'
 import { FormattedSlippage } from './components'
 import { warningSeverity } from './utils/slippage'
 
@@ -54,7 +55,6 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     pairState,
     currencyBalances,
     parsedAmounts,
-    price,
     noLiquidity,
     liquidityMinted,
     poolTokenPercentage,
@@ -78,10 +78,11 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
 
   // txn values
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
-  const { output: expectedOutputWithoutFee, loading } = useExpectedLPOutputWithoutFee(
-    parsedAmounts[Field.CURRENCY_A],
-    parsedAmounts[Field.CURRENCY_B],
-  )
+  const {
+    lpOutputWithoutFee: expectedOutputWithoutFee,
+    loading,
+    price,
+  } = useDerivedLPInfo(parsedAmounts[Field.CURRENCY_A], parsedAmounts[Field.CURRENCY_B])
   const minLPOutput = useMemo(
     () => expectedOutputWithoutFee && calculateSlippageAmount(expectedOutputWithoutFee, allowedSlippage)[0],
     [expectedOutputWithoutFee, allowedSlippage],
@@ -353,7 +354,10 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   />
                 </RowFixed>
 
-                <FormattedSlippage slippage={executionSlippage} loading={loading || infoLoading} />
+                <FormattedSlippage
+                  slippage={executionSlippage}
+                  loading={!executionSlippage && (loading || infoLoading)}
+                />
               </RowBetween>
 
               <RowBetween>
