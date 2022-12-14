@@ -210,7 +210,7 @@ export const getFarmsPrices = (
           tokenPriceBusd,
           decimals,
         )
-    // console.log(farm.pid, tokenPriceBusd.toString(), quoteTokenPriceBusd.toString(), lpTokenPrice.toString())
+
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),
