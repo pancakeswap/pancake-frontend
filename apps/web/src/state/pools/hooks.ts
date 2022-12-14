@@ -171,7 +171,7 @@ export const useFetchIfo = () => {
   )
 
   useSWRImmutable(
-    account && 'fetchIfoUserData',
+    account && ['fetchIfoUserData', account],
     async () => {
       batch(() => {
         dispatch(fetchCakePoolUserDataAsync(account))
