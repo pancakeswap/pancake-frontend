@@ -15,6 +15,10 @@ const getDuplicates = (key: 'pid' | 'lpAddress') => {
   return keys.filter((data) => keys.indexOf(data) !== keys.lastIndexOf(data))
 }
 
+const hasProblemListFarmLps = [
+  '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::CakeOFT, 0x1::aptos_coin::AptosCoin>',
+]
+
 describe('Config farms', () => {
   it('All farm has an unique pid', () => {
     const duplicates = getDuplicates('pid')
@@ -36,7 +40,7 @@ describe('Config farms', () => {
     )
 
     // Skip CAKE
-    if (pid !== CAKE_PID) {
+    if (pid !== CAKE_PID && !hasProblemListFarmLps.includes(farm.lpAddress)) {
       const reservesAddress = Pair.getReservesAddress(token, quoteToken)
       const lpAddress = Pair.parseType(reservesAddress)
       const token0Address = lpAddress[0].toLowerCase()
