@@ -4,8 +4,8 @@ import BigNumber from "bignumber.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
-import _toString from "lodash/toString";
 import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
+import removeTrailingZeros from "@pancakeswap/utils/removeTrailingZeros";
 
 import PercentageButton from "./PercentageButton";
 import getThemeValue from "../../util/getThemeValue";
@@ -157,7 +157,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
         const percentageOfStakingMax = getCalculatedStakingLimit().dividedBy(100).multipliedBy(sliderPercent);
         const amountToStake = getFullDisplayBalance(percentageOfStakingMax, stakingTokenDecimals, stakingTokenDecimals);
 
-        setStakeAmount(_toString(Number(amountToStake)));
+        setStakeAmount(removeTrailingZeros(amountToStake));
       } else {
         setStakeAmount("");
       }

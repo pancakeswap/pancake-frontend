@@ -87,12 +87,10 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     [expectedOutputWithoutFee, allowedSlippage],
   )
   const executionSlippage = useMemo(() => {
-    if (!liquidityMinted) {
+    if (!liquidityMinted || !expectedOutputWithoutFee) {
       return null
     }
-    return expectedOutputWithoutFee && liquidityMinted.lessThan(expectedOutputWithoutFee)
-      ? ONE_HUNDRED_PERCENT.subtract(new Percent(liquidityMinted.quotient, expectedOutputWithoutFee.quotient))
-      : new Percent(0)
+    return ONE_HUNDRED_PERCENT.subtract(new Percent(liquidityMinted.quotient, expectedOutputWithoutFee.quotient))
   }, [liquidityMinted, expectedOutputWithoutFee])
   const slippageSeverity = warningSeverity(executionSlippage)
 
@@ -347,7 +345,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   </Text>
                   <QuestionHelper
                     text={t(
-                      'Based on % contributed to stable pair, fees will vary. Deposits with fees >= 1% will be rejected',
+                      'Based on % contributed to stable pair, fees will vary. Deposits with fees >= 0.15% will be rejected',
                     )}
                     size="14px"
                     ml="4px"
