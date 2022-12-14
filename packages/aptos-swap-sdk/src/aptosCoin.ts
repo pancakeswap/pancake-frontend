@@ -37,9 +37,8 @@ export class AptosCoin extends NativeCurrency {
     return new Coin(this.chainId, this.address, this.decimals, this.symbol, this.name, this.projectLink)
   }
 
-  // eslint-disable-next-line class-methods-use-this
-  public sortsBefore(_other: Currency): boolean {
-    return true
+  public sortsBefore(other: Currency): boolean {
+    return this.address.toLowerCase() < other.address.toLowerCase()
   }
 
   public get serialize(): SerializedToken {
