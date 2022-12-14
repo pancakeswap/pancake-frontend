@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 
 import BigNumber from "bignumber.js";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled, { useTheme } from "styled-components";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
 import { formatNumber, getDecimalAmount, getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
@@ -166,7 +166,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
     [getCalculatedStakingLimit, stakingTokenDecimals]
   );
 
-  useMemo(() => {
+  useEffect(() => {
     if (setAmount) {
       setAmount(Number(stakeAmount) > 0 ? stakeAmount : "0");
     }
