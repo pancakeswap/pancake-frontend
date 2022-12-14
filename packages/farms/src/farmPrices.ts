@@ -83,6 +83,7 @@ const getFarmFromTokenAddress = (
   tokenAddress: string,
   preferredQuoteTokens?: string[],
 ): SerializedFarmPublicData => {
+  console.log(farms, preferredQuoteTokens)
   const farmsWithTokenSymbol = farms.filter((farm) => equalsIgnoreCase(farm.token.address, tokenAddress))
   const filteredFarm = filterFarmsByQuoteToken(farmsWithTokenSymbol, preferredQuoteTokens)
   return filteredFarm
@@ -210,6 +211,7 @@ export const getFarmsPrices = (
           tokenPriceBusd,
           decimals,
         )
+    // console.log(farm.pid, tokenPriceBusd.toString(), quoteTokenPriceBusd.toString(), lpTokenPrice.toString())
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),
