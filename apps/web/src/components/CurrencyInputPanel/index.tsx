@@ -257,7 +257,11 @@ export default function CurrencyInputPanel({
                       }}
                       scale="xs"
                       mr="5px"
-                      variant={maxAmount && value === maxAmount.multiply(new Percent(percent, 100)).toExact() ? 'primary' : 'secondary'}
+                      variant={
+                        maxAmount && value === maxAmount.multiply(new Percent(percent, 100)).toExact()
+                          ? 'primary'
+                          : 'secondary'
+                      }
                       style={{ textTransform: 'uppercase' }}
                     >
                       {percent}%
