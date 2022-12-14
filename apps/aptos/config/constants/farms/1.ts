@@ -89,7 +89,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 5,
-    lpSymbol: 'ceBNB-ceUSDC LP',
+    lpSymbol: 'APT-ceUSDC LP',
     lpAddress:
       '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin>',
     token: mainnetTokens.ceusdc,
