@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Box, Flex, Text, Heading } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Divider from 'components/Divider'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 
 const PrizeFundsContainer = styled(Flex)`
   width: 100%;
@@ -80,7 +80,7 @@ const PoolAllocations = () => {
     <StyledStepCard width={['100%', '280px', '330px', '380px']}>
       <StepCardInner height="auto">
         <Flex mb="34px" justifyContent="center">
-          <Image width={103} height={103} src="/images/pottery/chart.svg" />
+          <Image alt="pottery-prize-chart" width={103} height={103} src="/images/pottery/chart.svg" />
         </Flex>
         <AllocationGrid>
           <AllocationMatch color="#D750B2" text={t('Prize Pool')} />
