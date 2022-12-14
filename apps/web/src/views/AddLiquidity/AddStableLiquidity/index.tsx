@@ -284,6 +284,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                 }}
                 showMaxButton
+                maxAmount={maxAmounts[Field.CURRENCY_A]}
                 currency={currencies[Field.CURRENCY_A]}
                 id="add-liquidity-input-tokena"
                 showCommonBases
@@ -302,6 +303,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                 }}
                 showMaxButton
+                maxAmount={maxAmounts[Field.CURRENCY_B]}
                 currency={currencies[Field.CURRENCY_B]}
                 id="add-liquidity-input-tokenb"
                 showCommonBases

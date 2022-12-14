@@ -220,6 +220,7 @@ export default function SwapForm() {
             label={independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')}
             value={formattedAmounts[Field.INPUT]}
             showMaxButton
+            maxAmount={maxAmountInput}
             showQuickInputButton
             currency={currencies[Field.INPUT]}
             onUserInput={handleTypeInput}

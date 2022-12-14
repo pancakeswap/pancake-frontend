@@ -637,6 +637,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                   }}
                   showQuickInputButton
                   showMaxButton
+                  maxAmount={maxAmounts[Field.CURRENCY_A]}
                   currency={currencies[Field.CURRENCY_A]}
                   id="add-liquidity-input-tokena"
                   showCommonBases
@@ -676,6 +677,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                   }}
                   showQuickInputButton
                   showMaxButton
+                  maxAmount={maxAmounts[Field.CURRENCY_B]}
                   currency={currencies[Field.CURRENCY_B]}
                   id="add-liquidity-input-tokenb"
                   showCommonBases

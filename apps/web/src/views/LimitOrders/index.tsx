@@ -383,6 +383,7 @@ const LimitOrders = () => {
                       value={formattedAmounts.input}
                       showQuickInputButton
                       showMaxButton
+                      maxAmount={maxAmountInput}
                       currency={currencies.input}
                       onUserInput={handleTypeInput}
                       onPercentInput={handlePercentInput}

@@ -1,4 +1,4 @@
-import { Currency, Pair, Token } from '@pancakeswap/sdk'
+import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
@@ -79,6 +79,7 @@ interface CurrencyInputPanelProps {
   onMax?: () => void
   showQuickInputButton?: boolean
   showMaxButton: boolean
+  maxAmount?: CurrencyAmount<Currency>
   label?: string
   onCurrencySelect?: (currency: Currency) => void
   currency?: Currency | null
@@ -105,6 +106,7 @@ export default function CurrencyInputPanel({
   onMax,
   showQuickInputButton = false,
   showMaxButton,
+  maxAmount,
   label,
   onCurrencySelect,
   currency,
@@ -255,7 +257,7 @@ export default function CurrencyInputPanel({
                       }}
                       scale="xs"
                       mr="5px"
-                      variant="secondary"
+                      variant={maxAmount && value === maxAmount.multiply(new Percent(percent, 100)).toExact() ? 'primary' : 'secondary'}
                       style={{ textTransform: 'uppercase' }}
                     >
                       {percent}%
@@ -269,7 +271,7 @@ export default function CurrencyInputPanel({
                       onMax?.()
                     }}
                     scale="xs"
-                    variant="secondary"
+                    variant={maxAmount && value === maxAmount.toExact() ? 'primary' : 'secondary'}
                     style={{ textTransform: 'uppercase' }}
                   >
                     {t('Max')}
