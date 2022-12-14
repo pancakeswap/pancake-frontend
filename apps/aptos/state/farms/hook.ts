@@ -145,15 +145,14 @@ export const useFarms = () => {
   const userInfos = useFarmsUserInfo()
   const currentDate = new Date().getTime() / 1000
   const showCakePerSecond = masterChef?.data && new BigNumber(currentDate).lte(masterChef.data.end_timestamp)
+  const regularCakePerSeconds = showCakePerSecond
+    ? new BigNumber(masterChef?.data?.cake_per_second)
+        .times(masterChef.data.cake_rate_to_regular)
+        .div(new BigNumber(masterChef.data.cake_rate_to_regular).plus(masterChef.data.cake_rate_to_special))
+        .toNumber()
+    : 0
 
   return useMemo(() => {
-    const regularCakePerSeconds = showCakePerSecond
-      ? new BigNumber(masterChef?.data?.cake_per_second)
-          .times(masterChef.data.cake_rate_to_regular)
-          .div(new BigNumber(masterChef.data.cake_rate_to_regular).plus(masterChef.data.cake_rate_to_special))
-          .toNumber()
-      : 0
-
     return {
       userDataLoaded: true,
       poolLength,
@@ -179,7 +178,7 @@ export const useFarms = () => {
           }
         }),
     } as DeserializedFarmsState
-  }, [poolLength, showCakePerSecond, masterChef?.data, farmsWithPrices, userInfos])
+  }, [poolLength, regularCakePerSeconds, farmsWithPrices, masterChef, userInfos])
 }
 
 export function useFarmsUserInfo() {
