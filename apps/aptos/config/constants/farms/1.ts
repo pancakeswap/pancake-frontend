@@ -24,6 +24,78 @@ const farms: SerializedFarmConfig[] = [
   },
   // * By order of release
   {
+    pid: 13,
+    lpSymbol: 'APT-whUSDC LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T>',
+    token: mainnetTokens.wheth,
+    quoteToken: mainnetTokens.whusdc,
+  },
+  {
+    pid: 12,
+    lpSymbol: 'whUSDC-whETH LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T, 0xcc8a89c8dce9693d354449f1f73e60e14e347417854f029db5bc8e7454008abb::coin::T>',
+    token: mainnetTokens.wheth,
+    quoteToken: mainnetTokens.whusdc,
+  },
+  {
+    pid: 11,
+    lpSymbol: 'CAKE-ceUSDC LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::CakeOFT, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin>',
+    token: mainnetTokens.ceusdc,
+    quoteToken: mainnetTokens.cake,
+  },
+  {
+    pid: 10,
+    lpSymbol: 'CAKE-lzUSDC LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::CakeOFT, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC>',
+    token: mainnetTokens.lzusdc,
+    quoteToken: mainnetTokens.cake,
+  },
+  {
+    pid: 9,
+    lpSymbol: 'CAKE-APT LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x159df6b7689437016108a019fd5bef736bac692b6d4a1f10c941f6fbb9a74ca6::oft::CakeOFT, 0x1::aptos_coin::AptosCoin>',
+    token: mainnetTokens.apt,
+    quoteToken: mainnetTokens.cake,
+  },
+  {
+    pid: 8,
+    lpSymbol: 'ceUSDC-ceWETH LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::WethCoin>',
+    token: mainnetTokens.ceweth,
+    quoteToken: mainnetTokens.ceusdc,
+  },
+  {
+    pid: 7,
+    lpSymbol: 'ceUSDC-ceUSDT LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdtCoin>',
+    token: mainnetTokens.ceusdt,
+    quoteToken: mainnetTokens.ceusdc,
+  },
+  {
+    pid: 6,
+    lpSymbol: 'stAPT-lzUSDC LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0xd11107bdf0d6d7040c6c0bfbdecb6545191fdf13e8d8d259952f53e1713f61b5::staked_coin::StakedAptos, 0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC>',
+    token: mainnetTokens.lzusdc,
+    quoteToken: mainnetTokens.stapt,
+  },
+  {
+    pid: 5,
+    lpSymbol: 'ceBNB-ceUSDC LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin>',
+    token: mainnetTokens.ceusdc,
+    quoteToken: mainnetTokens.apt,
+  },
+  {
     pid: 4,
     lpSymbol: 'ceBNB-ceUSDC LP',
     lpAddress:
