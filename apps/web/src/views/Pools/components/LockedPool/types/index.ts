@@ -6,7 +6,7 @@ import { DeserializedLockedVaultUser } from 'state/types'
 
 type VoidFn = () => void
 
-export type PrepConfirmArg = (arg: ValidatorArg) => ValiratorReturn
+export type PrepConfirmArg = (arg: ValidatorArg) => ValidatorReturn
 
 export interface GenericModalProps {
   onDismiss?: VoidFn
@@ -19,7 +19,7 @@ export interface ValidatorArg {
   duration: number
 }
 
-export interface ValiratorReturn {
+export interface ValidatorReturn {
   finalLockedAmount?: number
   finalDuration?: number
 }
