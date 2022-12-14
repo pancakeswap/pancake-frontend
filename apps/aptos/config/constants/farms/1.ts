@@ -24,6 +24,22 @@ const farms: SerializedFarmConfig[] = [
   },
   // * By order of release
   {
+    pid: 4,
+    lpSymbol: 'ceBNB-ceUSDC LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::BnbCoin, 0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::UsdcCoin>',
+    token: mainnetTokens.ceusdc,
+    quoteToken: mainnetTokens.cebnb,
+  },
+  {
+    pid: 3,
+    lpSymbol: 'whUSDC-whBUSD LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T, 0xccc9620d38c4f3991fa68a03ad98ef3735f18d04717cb75d7a1300dd8a7eed75::coin::T>',
+    token: mainnetTokens.whbusd,
+    quoteToken: mainnetTokens.whusdc,
+  },
+  {
     pid: 1,
     lpSymbol: 'lzUSDC-lzWETH LP',
     lpAddress:

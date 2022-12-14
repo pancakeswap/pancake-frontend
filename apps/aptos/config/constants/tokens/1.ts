@@ -60,4 +60,18 @@ export const mainnetTokens = {
     'Ditto Staked Aptos',
     'stAPT',
   ),
+  whusdc: new Coin(
+    ChainId.MAINNET,
+    '0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T',
+    6,
+    'Wormhole - USD Coin',
+    'whUSDC',
+  ),
+  whbusd: new Coin(
+    ChainId.MAINNET,
+    '0xccc9620d38c4f3991fa68a03ad98ef3735f18d04717cb75d7a1300dd8a7eed75::coin::T',
+    8,
+    'Wormhole - Binance USD',
+    'whBUSD',
+  ),
 }
