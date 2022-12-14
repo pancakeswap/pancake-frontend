@@ -369,8 +369,6 @@ const SwapPage = () => {
 
   const isValid = !inputError
 
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
-
   return (
     <>
       <PageMeta title={t('Exchange')} />
@@ -401,7 +399,7 @@ const SwapPage = () => {
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
             onUserInput={(value) => dispatch(typeInput({ field: Field.INPUT, typedValue: value }))}
-            showMaxButton={!atMaxAmountInput}
+            showMaxButton
             onMax={handleMaxInput}
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
           />
