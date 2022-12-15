@@ -54,6 +54,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   poolWeight?: string
   boosted?: boolean
   infoStableSwapAddress?: string
+  stableSwapAddress?: string
 }
 
 export interface AprMap {
@@ -122,6 +123,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   userData?: DeserializedFarmUserData
   boosted?: boolean
   isStable?: boolean
+  stableSwapAddress?: string
 }
 
 export interface DeserializedFarmsState {

@@ -3,7 +3,7 @@ import { Card, Farm as FarmUI, Flex, Skeleton, Text, ExpandableSectionButton } f
 import BigNumber from 'bignumber.js'
 import { multiChainPaths } from 'state/info/constant'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
-import { useCallback, useState } from 'react'
+import { useCallback, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
@@ -78,9 +78,16 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     chainId,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  const { lpAddress } = farm
+  const { lpAddress, stableSwapAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
   const { stakedBalance, proxy, tokenBalance } = farm.userData
+
+  const infoUrl = useMemo(() => {
+    if (farm.isStable) {
+      return `/info${multiChainPaths[chainId]}/pairs/${stableSwapAddress}?type=stableSwap`
+    }
+    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}`
+  }, [chainId, farm.isStable, lpAddress, stableSwapAddress])
 
   const toggleExpandableSection = useCallback(() => {
     setShowExpandableSection((prev) => !prev)
@@ -160,9 +167,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <DetailsSection
             removed={removed}
             scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
-            infoAddress={`/info${multiChainPaths[chainId]}/pairs/${lpAddress}${
-              farm.isStable ? '?type=stableSwap' : ''
-            }`}
+            infoAddress={infoUrl}
             totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
