@@ -207,16 +207,6 @@ export default function AddLiquidity({ currencyA, currencyB }) {
     ],
   )
 
-  const atMaxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-      }
-    },
-    {},
-  )
-
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(
     parsedAmounts[Field.CURRENCY_A],
@@ -646,7 +636,8 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                     onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                   }}
                   showQuickInputButton
-                  showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                  showMaxButton
+                  maxAmount={maxAmounts[Field.CURRENCY_A]}
                   currency={currencies[Field.CURRENCY_A]}
                   id="add-liquidity-input-tokena"
                   showCommonBases
@@ -685,7 +676,8 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                     onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                   }}
                   showQuickInputButton
-                  showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                  showMaxButton
+                  maxAmount={maxAmounts[Field.CURRENCY_B]}
                   currency={currencies[Field.CURRENCY_B]}
                   id="add-liquidity-input-tokenb"
                   showCommonBases

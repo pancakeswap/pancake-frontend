@@ -117,16 +117,6 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     [dependentField, independentField, otherTypedValue, typedValue],
   )
 
-  const atMaxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-      }
-    },
-    {},
-  )
-
   const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
 
   // check whether the user has approved tokens for addling LPs
@@ -294,7 +284,8 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                 onMax={() => {
                   onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                 }}
-                showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                showMaxButton
+                maxAmount={maxAmounts[Field.CURRENCY_A]}
                 currency={currencies[Field.CURRENCY_A]}
                 id="add-liquidity-input-tokena"
                 showCommonBases
@@ -312,7 +303,8 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                 onMax={() => {
                   onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                 }}
-                showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                showMaxButton
+                maxAmount={maxAmounts[Field.CURRENCY_B]}
                 currency={currencies[Field.CURRENCY_B]}
                 id="add-liquidity-input-tokenb"
                 showCommonBases

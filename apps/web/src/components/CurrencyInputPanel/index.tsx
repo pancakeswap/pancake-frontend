@@ -1,4 +1,5 @@
-import { Currency, Pair, Token } from '@pancakeswap/sdk'
+import { useMemo } from 'react'
+import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
@@ -79,6 +80,8 @@ interface CurrencyInputPanelProps {
   onMax?: () => void
   showQuickInputButton?: boolean
   showMaxButton: boolean
+  maxAmount?: CurrencyAmount<Currency>
+  lpPercent?: string
   label?: string
   onCurrencySelect?: (currency: Currency) => void
   currency?: Currency | null
@@ -105,6 +108,8 @@ export default function CurrencyInputPanel({
   onMax,
   showQuickInputButton = false,
   showMaxButton,
+  maxAmount,
+  lpPercent,
   label,
   onCurrencySelect,
   currency,
@@ -146,6 +151,17 @@ export default function CurrencyInputPanel({
       tokensToShow={tokensToShow}
     />,
   )
+
+  const percentAmount = useMemo(
+    () => ({
+      25: maxAmount ? maxAmount.multiply(new Percent(25, 100)).toExact() : undefined,
+      50: maxAmount ? maxAmount.multiply(new Percent(50, 100)).toExact() : undefined,
+      75: maxAmount ? maxAmount.multiply(new Percent(75, 100)).toExact() : undefined,
+    }),
+    [maxAmount],
+  )
+
+  const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
   return (
     <Box position="relative" id={id}>
@@ -247,20 +263,25 @@ export default function CurrencyInputPanel({
               <Flex alignItems="right" justifyContent="right">
                 {showQuickInputButton &&
                   onPercentInput &&
-                  [25, 50, 75].map((percent) => (
-                    <Button
-                      key={`btn_quickCurrency${percent}`}
-                      onClick={() => {
-                        onPercentInput(percent)
-                      }}
-                      scale="xs"
-                      mr="5px"
-                      variant="secondary"
-                      style={{ textTransform: 'uppercase' }}
-                    >
-                      {percent}%
-                    </Button>
-                  ))}
+                  [25, 50, 75].map((percent) => {
+                    const isAtCurrentPercent =
+                      (maxAmount && value === percentAmount[percent]) || (lpPercent && lpPercent === percent.toString())
+
+                    return (
+                      <Button
+                        key={`btn_quickCurrency${percent}`}
+                        onClick={() => {
+                          onPercentInput(percent)
+                        }}
+                        scale="xs"
+                        mr="5px"
+                        variant={isAtCurrentPercent ? 'primary' : 'secondary'}
+                        style={{ textTransform: 'uppercase' }}
+                      >
+                        {percent}%
+                      </Button>
+                    )
+                  })}
                 {showMaxButton && (
                   <Button
                     onClick={(e) => {
@@ -269,7 +290,7 @@ export default function CurrencyInputPanel({
                       onMax?.()
                     }}
                     scale="xs"
-                    variant="secondary"
+                    variant={isAtPercentMax ? 'primary' : 'secondary'}
                     style={{ textTransform: 'uppercase' }}
                   >
                     {t('Max')}

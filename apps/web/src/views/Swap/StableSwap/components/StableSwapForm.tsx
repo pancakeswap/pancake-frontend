@@ -158,7 +158,6 @@ export default function StableSwapForm() {
   }, [approval, approvalSubmitted])
 
   const maxAmountInput: CurrencyAmount<Currency> | undefined = maxAmountSpend(currencyBalances[Field.INPUT])
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
   const handleInputSelect = useCallback(
     (newCurrencyInput) => {
@@ -232,7 +231,8 @@ export default function StableSwapForm() {
           <CurrencyInputPanel
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
             value={formattedAmounts[Field.INPUT]}
-            showMaxButton={!atMaxAmountInput}
+            showMaxButton
+            maxAmount={maxAmountInput}
             showQuickInputButton
             currency={currencies[Field.INPUT]}
             onUserInput={handleTypeInput}

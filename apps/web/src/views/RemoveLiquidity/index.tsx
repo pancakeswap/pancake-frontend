@@ -143,8 +143,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       independentField === Field.CURRENCY_B ? typedValue : parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
   }
 
-  const atMaxAmount = parsedAmounts[Field.LIQUIDITY_PERCENT]?.equalTo(new Percent('1'))
-
   // pair contract
   const pairContractRead: Contract | null = usePairContract(pair?.liquidityToken?.address, false)
 
@@ -712,7 +710,8 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                   onUserInput(Field.LIQUIDITY_PERCENT, '100')
                 }}
                 showQuickInputButton
-                showMaxButton={!atMaxAmount}
+                showMaxButton
+                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 disableCurrencySelect
                 currency={pair?.liquidityToken}
                 pair={pair}
@@ -742,7 +741,8 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onCurrencyAInput}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
-                showMaxButton={!atMaxAmount}
+                showMaxButton
+                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 currency={currencyA}
                 label={t('Output')}
                 onCurrencySelect={handleSelectCurrencyA}
