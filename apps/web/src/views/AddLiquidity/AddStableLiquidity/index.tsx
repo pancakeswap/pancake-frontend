@@ -131,10 +131,10 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
 
-    const requiredOneCurrency = !parsedAmountA && !parsedAmountB
-    const requiredTwoCurrency = !parsedAmountA || !parsedAmountB
+    const atLeastOneCurrencyProvided = parsedAmountA?.greaterThan(0) || parsedAmountB?.greaterThan(0)
+    const allCurrenciesProvided = parsedAmountA?.greaterThan(0) && parsedAmountB?.greaterThan(0)
 
-    if (noLiquidity ? requiredTwoCurrency : requiredOneCurrency) {
+    if (noLiquidity ? !allCurrenciesProvided : !atLeastOneCurrencyProvided) {
       return
     }
 
@@ -244,7 +244,8 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
   const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
 
   const notApprovalYet =
-    (parsedAmountA && approvalA !== ApprovalState.APPROVED) || (parsedAmountB && approvalB !== ApprovalState.APPROVED)
+    (parsedAmountA?.greaterThan(0) && approvalA !== ApprovalState.APPROVED) ||
+    (parsedAmountB?.greaterThan(0) && approvalB !== ApprovalState.APPROVED)
 
   const buttonDisabled = !isValid || notApprovalYet || (slippageSeverity > 2 && !expertMode)
 
