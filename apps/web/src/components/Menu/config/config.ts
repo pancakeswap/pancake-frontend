@@ -12,11 +12,9 @@ import {
   MoreIcon,
   DropdownMenuItems,
 } from '@pancakeswap/uikit'
-import { ChainId } from '@pancakeswap/sdk'
 import { ContextApi } from '@pancakeswap/localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { perpLangMap } from 'utils/getPerpetualLanguageCode'
-import { perpTheme } from 'utils/getPerpetualTheme'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
@@ -42,13 +40,8 @@ const config: (
   isDark: boolean,
   languageCode?: string,
   chainId?: number,
-) => ConfigMenuItemsType[] = (t, isDark, languageCode, chainId) => {
-  const perpChain = chainId === ChainId.ETHEREUM ? 'ethereum' : 'bnbchain'
-  const perpetualUrl = `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT?theme=${perpTheme(
-    isDark,
-  )}&chain=${perpChain}`
-
-  return [
+) => ConfigMenuItemsType[] = (t, isDark, languageCode, chainId) =>
+  [
     {
       label: t('Trade'),
       icon: SwapIcon,
@@ -72,7 +65,11 @@ const config: (
         },
         {
           label: t('Perpetual'),
-          href: perpetualUrl,
+          href: getPerpetualUrl({
+            chainId,
+            languageCode,
+            isDark,
+          }),
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
@@ -199,6 +196,5 @@ const config: (
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
   ].map((item) => addMenuItemSupported(item, chainId))
-}
 
 export default config

@@ -3,9 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import { memo, useMemo, useRef } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { perpLangMap } from 'utils/getPerpetualLanguageCode'
-import { perpTheme } from 'utils/getPerpetualTheme'
-import { ChainId } from '@pancakeswap/sdk'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { perpetualImage, perpetualMobileImage } from './images'
 import * as S from './Styled'
@@ -45,13 +43,7 @@ const PerpetualBanner = () => {
   const { isDark } = useTheme()
   const { chainId } = useActiveChainId()
 
-  const perpetualUrl = useMemo(() => {
-    const perpChain = chainId === ChainId.ETHEREUM ? 'ethereum' : 'bnbchain'
-    return `https://perp.pancakeswap.finance/${perpLangMap(code)}/futures/BTCUSDT?theme=${perpTheme(
-      isDark,
-    )}&chain=${perpChain}`
-  }, [chainId, code, isDark])
-
+  const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
   const headerRef = useRef<HTMLDivElement>(null)
 
   useIsomorphicEffect(() => {
