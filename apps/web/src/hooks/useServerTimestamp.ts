@@ -1,7 +1,6 @@
 import useSWRImmutable from 'swr/immutable'
 import useSWR, { useSWRConfig } from 'swr'
 import { useCallback } from 'react'
-import { laggyMiddleware } from './useSWRContract'
 
 const useServerTimestamp = () => {
   const { mutate } = useSWRConfig()
@@ -19,7 +18,7 @@ const useServerTimestamp = () => {
       throw new Error('Error when fetching api')
     },
     {
-      use: [laggyMiddleware],
+      keepPreviousData: true,
       revalidateIfStale: false,
       focusThrottleInterval: 60000,
     },
