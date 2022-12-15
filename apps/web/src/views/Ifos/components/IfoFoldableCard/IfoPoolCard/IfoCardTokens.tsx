@@ -147,7 +147,8 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 
   const { currency, token, version } = ifo
   const { hasClaimed } = userPoolCharacteristics
-  const distributionRatio = ifo[poolId].distributionRatio * 100
+  const distributionRatio =
+    (ifo.version >= 3 ? publicIfoData[poolId].distributionRatio : ifo[poolId].distributionRatio) * 100
   const credit = useIfoCredit()
 
   const tooltipContentOfSpent = t(

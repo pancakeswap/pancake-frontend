@@ -35,7 +35,7 @@ interface IfoPoolInfo {
   saleAmount?: string
   raiseAmount: string
   cakeToBurn?: string
-  distributionRatio: number // Range [0-1]
+  distributionRatio?: number // Range [0-1]
 }
 
 export interface Ifo {
