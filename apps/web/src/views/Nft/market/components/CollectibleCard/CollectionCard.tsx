@@ -1,6 +1,6 @@
 import { Card, CardBody, Flex, Heading, ProfileAvatar, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import styled, { css } from 'styled-components'
 
 interface CollectionCardProps {
@@ -55,7 +55,7 @@ const CollectionCard: React.FC<React.PropsWithChildren<CollectionCardProps>> = (
 }) => {
   const renderBody = () => (
     <CardBody p="8px">
-      <StyledImage src={bgSrc} alt={`nft-collection-card-${collectionName}`} height={125} width={375} />
+      <StyledImage src={bgSrc} height={125} width={375} />
       <Flex
         position="relative"
         height="65px"

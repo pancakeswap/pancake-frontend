@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { StaticImageData } from 'next/dist/client/image'
 import { Flex, Box, Text, Skeleton, AccountFilledIcon } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import orderBy from 'lodash/orderBy'
 import { useTranslation } from '@pancakeswap/localization'
 import { TeamRanksProps } from '../../types'
@@ -118,7 +118,7 @@ const TeamRanksWithParticipants: React.FC<React.PropsWithChildren<TeamRanksWithP
             </Flex>
           </TotalParticipantsCloud>
           <BunnyImageWrapper mt="24px">
-            <Image src={image} alt="team-ranks-with-participants-image" width={292} height={234} />
+            <Image src={image} width={292} height={234} />
           </BunnyImageWrapper>
         </TotalParticipantsWrapper>
       </StyledPodiumWrapper>
