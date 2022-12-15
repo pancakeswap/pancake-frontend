@@ -1,5 +1,11 @@
 # @pancakeswap/smart-router
 
+## 0.6.0
+
+### Minor Changes
+
+- e63258cf9: Add swap output amount estimation
+
 ## 0.5.0
 
 ### Minor Changes
