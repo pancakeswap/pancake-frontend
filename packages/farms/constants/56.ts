@@ -53,7 +53,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 138,
     lpSymbol: 'SQUAD-CAKE LP',
-    lpAddress: '0x724A32dFFF9769A0a0e1F0515c0012d1fB14c3bd',
+    lpAddress: '0x54cd9d6Ce45cEF4fCc1AC568329254661B28711d',
     token: bscTokens.squad,
     quoteToken: bscTokens.cake,
   },
