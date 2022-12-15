@@ -1,5 +1,5 @@
 import { Flex } from '@pancakeswap/uikit'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import useTheme from 'hooks/useTheme'
 import PageSection from 'components/PageSection'
 import { StaticImageData } from 'next/dist/client/image'
@@ -39,7 +39,7 @@ const Footer: React.FC<
       >
         <Flex alignItems="center">
           <BottomBunnyWrapper>
-            <Image src={image} width={254} height={227} />
+            <Image src={image} alt="trading-competition-footer" width={254} height={227} />
           </BottomBunnyWrapper>
           {shouldHideCta ? null : (
             <Flex height="fit-content">

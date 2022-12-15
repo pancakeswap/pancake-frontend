@@ -2,7 +2,7 @@ import { Button, Grid, Message, MessageText, Modal, Text } from '@pancakeswap/ui
 import { useLocalNetworkChain } from 'hooks/useActiveChainId'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSwitchNetwork, useSwitchNetworkLocal } from 'hooks/useSwitchNetwork'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import useAuth from 'hooks/useAuth'
 import { useMenuItems } from 'components/Menu/hooks/useMenuItems'
 import { useRouter } from 'next/router'
