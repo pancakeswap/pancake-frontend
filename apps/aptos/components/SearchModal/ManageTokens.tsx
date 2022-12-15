@@ -13,7 +13,7 @@ import {
   Link,
   Modal,
   ModalV2,
-  Row,
+  Flex,
   RowBetween,
   RowFixed,
   Text,
@@ -177,7 +177,7 @@ export default function ManageTokens({
     <Wrapper>
       <Column gap="24px" style={{ width: '100%', flex: '1 1' }}>
         <AutoColumn gap="14px">
-          <Row>
+          <Flex width="96%" justifyContent="center" ml="2%">
             <Input
               id="token-search-input"
               scale="lg"
@@ -188,7 +188,7 @@ export default function ManageTokens({
               onChange={handleInput}
               isWarning={!isAddressValid}
             />
-          </Row>
+          </Flex>
           {!isAddressValid && <Text color="failure">{t('Enter valid token address')}</Text>}
           {searchToken && (
             <ImportRow
