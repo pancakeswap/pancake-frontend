@@ -12,7 +12,7 @@ import {
   TabMenu,
   Text,
 } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import Trans from 'components/Trans'
 import { Tiers, PrizesConfig } from 'config/constants/trading-competition/prizes'
 import { useTranslation } from '@pancakeswap/localization'
@@ -120,12 +120,7 @@ const PrizesGrid: React.FC<React.PropsWithChildren<PrizesGridProps>> = ({ prizes
                   </BoldTd>
                   <Td>
                     <Flex alignItems="center" flexWrap="wrap" justifyContent="flex-start" width="100%">
-                      <Image
-                        src={`/images/achievements/${row.achievements.image}`}
-                        alt={`achievement-image-${row.rank}`}
-                        width={38}
-                        height={38}
-                      />
+                      <Image src={`/images/achievements/${row.achievements.image}`} width={38} height={38} />
                       <Text ml="8px" fontSize="12px" color="textSubtle">
                         {`+${row.achievements.points.toLocaleString(undefined, {
                           minimumFractionDigits: 0,

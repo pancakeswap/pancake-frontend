@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { StaticImageData } from 'next/dist/client/image'
 import { Flex, Heading, useMatchBreakpoints, NextLinkFromReactRouter } from '@pancakeswap/uikit'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
 const Wrapper = styled(Flex)<{ background: string }>`
   position: relative;
@@ -89,15 +89,9 @@ const FinishedCompetitionBanner: React.FC<React.PropsWithChildren<FinishedCompet
           </LeftWrapper>
           <RightWrapper>
             {isDesktop ? (
-              <Image src={imgSrc} alt={`finished-competition-${title}`} width={300} height={200} />
+              <Image src={imgSrc} width={300} height={200} />
             ) : (
-              <Image
-                className="mobile"
-                alt={`finished-competition-${title}`}
-                src={imgSrc}
-                width={190}
-                style={{ height: '100%' }}
-              />
+              <Image className="mobile" src={imgSrc} width={190} style={{ height: '100%' }} />
             )}
           </RightWrapper>
         </Flex>
