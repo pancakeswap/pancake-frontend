@@ -44,4 +44,4 @@ jobs:
 
             [1]: https://github.com/peter-evans/create-pull-request
           labels: automerge
-          branch: update-lp-aprs-for-farms
+          branch: update-aptos-lp-aprs-for-farms
