@@ -8,6 +8,8 @@ import {
   routerSwapExactOutput,
   routerSwapExactOutputDoublehop,
   routerSwapExactOutputTriplehop,
+  routerSwapExactInputQuadruplehop,
+  routerSwapExactOutputQuadruplehop,
 } from './generated/swap'
 import { Trade } from './trade'
 import { Currency } from './currency'
@@ -42,6 +44,14 @@ export abstract class Router {
             trade.route.path[2].address,
             trade.route.path[3].address,
           ])
+        case 5:
+          return routerSwapExactInputQuadruplehop(args, [
+            trade.route.path[0].address,
+            trade.route.path[1].address,
+            trade.route.path[2].address,
+            trade.route.path[3].address,
+            trade.route.path[4].address,
+          ])
         default:
           return undefined
       }
@@ -62,6 +72,14 @@ export abstract class Router {
             trade.route.path[1].address,
             trade.route.path[2].address,
             trade.route.path[3].address,
+          ])
+        case 5:
+          return routerSwapExactOutputQuadruplehop(args, [
+            trade.route.path[0].address,
+            trade.route.path[1].address,
+            trade.route.path[2].address,
+            trade.route.path[3].address,
+            trade.route.path[4].address,
           ])
         default:
           return undefined
