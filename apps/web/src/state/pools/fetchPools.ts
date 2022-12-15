@@ -104,7 +104,7 @@ export const fetchPoolsStakingLimits = async (
   )
 }
 
-const livePoolsWithV3 = poolsConfig.filter((pool) => pool?.version === 3 && pool?.isFinished === false)
+const livePoolsWithV3 = poolsConfig.filter((pool) => pool?.version === 3 && !pool?.isFinished)
 
 export const fetchPoolsProfileRequirement = async (): Promise<{
   [key: string]: {
