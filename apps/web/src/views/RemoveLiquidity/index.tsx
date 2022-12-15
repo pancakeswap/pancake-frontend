@@ -147,7 +147,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
 
   // pair contract
   const pairContractRead: Contract | null = usePairContract(pair?.liquidityToken?.address, false)
-  const pairContract: Contract | null = usePairContract(pair?.liquidityToken?.address)
 
   // allowance handling
   const [signatureData, setSignatureData] = useState<{ v: number; r: string; s: string; deadline: number } | null>(null)
@@ -157,7 +156,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   )
 
   async function onAttemptToApprove() {
-    if (!pairContract || !pairContractRead || !pair || !library || !deadline) throw new Error('missing dependencies')
+    if (!pairContractRead || !pair || !library || !deadline) throw new Error('missing dependencies')
     const liquidityAmount = parsedAmounts[Field.LIQUIDITY]
     if (!liquidityAmount) {
       toastError(t('Error'), t('Missing liquidity amount'))
