@@ -161,15 +161,14 @@ export function useStableLPDerivedMintInfo(
   }
 
   // amounts
-  const independentAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(
-    typedValue,
-    currencies[independentField],
-  )
+  const independentCurrency = currencies[independentField]
+  const independentAmount: CurrencyAmount<Currency> | undefined =
+    (independentCurrency && tryParseAmount(typedValue, independentCurrency)) ||
+    CurrencyAmount.fromRawAmount(independentCurrency, '0')
 
-  const dependentAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(
-    otherTypedValue,
-    currencies[dependentField],
-  )
+  const dependentCurrency = currencies[dependentField]
+  const dependentAmount: CurrencyAmount<Currency> | undefined =
+    tryParseAmount(otherTypedValue, dependentCurrency) || CurrencyAmount.fromRawAmount(dependentCurrency, '0')
 
   const parsedAmounts: { [field in Field]: CurrencyAmount<Currency> | undefined } = useMemo(
     () => ({
@@ -263,8 +262,10 @@ export function useStableLPDerivedMintInfo(
     error = error ?? t('No token balance')
   }
 
-  const oneCurrencyRequired = !parsedAmounts[Field.CURRENCY_A] && !parsedAmounts[Field.CURRENCY_B]
-  const twoCurreniesRequired = !parsedAmounts[Field.CURRENCY_A] || !parsedAmounts[Field.CURRENCY_B]
+  const oneCurrencyRequired =
+    !parsedAmounts[Field.CURRENCY_A]?.greaterThan(0) && !parsedAmounts[Field.CURRENCY_B]?.greaterThan(0)
+  const twoCurreniesRequired =
+    !parsedAmounts[Field.CURRENCY_A]?.greaterThan(0) || !parsedAmounts[Field.CURRENCY_B]?.greaterThan(0)
 
   if (noLiquidity ? twoCurreniesRequired : oneCurrencyRequired) {
     addError = t('Enter an amount')
