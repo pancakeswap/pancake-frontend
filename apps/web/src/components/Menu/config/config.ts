@@ -14,8 +14,7 @@ import {
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
-import { perpLangMap } from 'utils/getPerpetualLanguageCode'
-import { perpTheme } from 'utils/getPerpetualTheme'
+import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 
 export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
@@ -66,10 +65,11 @@ const config: (
         },
         {
           label: t('Perpetual'),
-          href: `https://perp.pancakeswap.finance/${perpLangMap(languageCode)}/futures/BTCUSDT?theme=${perpTheme(
+          href: getPerpetualUrl({
+            chainId,
+            languageCode,
             isDark,
-          )}`,
-          supportChainIds: SUPPORT_ONLY_BSC,
+          }),
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
