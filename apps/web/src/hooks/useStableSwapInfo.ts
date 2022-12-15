@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { JSBI } from '@pancakeswap/sdk'
+import { JSBI, Percent } from '@pancakeswap/sdk'
 
 import StableSwapABI from 'config/abi/stableSwap.json'
 import LPTokenABI from 'config/abi/lpToken.json'
@@ -11,6 +11,8 @@ function parseCallStates(states: CallState[]) {
   let balance1: JSBI | undefined
   let amplifier: JSBI | undefined
   let totalSupply: JSBI | undefined
+  let feeNumerator: JSBI | undefined
+  let feeDenominator: JSBI | undefined
   let loading = false
   let error = false
   let valid = true
@@ -29,6 +31,12 @@ function parseCallStates(states: CallState[]) {
       case 3:
         totalSupply = result && JSBI.BigInt(result[0].toString())
         break
+      case 4:
+        feeNumerator = result && JSBI.BigInt(result[0].toString())
+        break
+      case 5:
+        feeDenominator = result && JSBI.BigInt(result[0].toString())
+        break
       default:
         break
     }
@@ -40,6 +48,7 @@ function parseCallStates(states: CallState[]) {
     balances: [balance0, balance1],
     amplifier,
     totalSupply,
+    fee: feeNumerator && feeDenominator && new Percent(feeNumerator, feeDenominator),
     valid,
     error,
     loading,
@@ -68,6 +77,14 @@ export function useStableSwapInfo(stableSwapAddress: string | undefined, lpAddre
       {
         contract: lpTokenContract,
         methodName: 'totalSupply',
+      },
+      {
+        contract: stableSwapContract,
+        methodName: 'fee',
+      },
+      {
+        contract: stableSwapContract,
+        methodName: 'FEE_DENOMINATOR',
       },
     ],
     [stableSwapContract, lpTokenContract],
