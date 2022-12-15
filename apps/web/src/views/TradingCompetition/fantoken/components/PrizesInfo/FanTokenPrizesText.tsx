@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Flex, Text, Heading } from '@pancakeswap/uikit'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import { useTranslation } from '@pancakeswap/localization'
 import FanTokenFlipperBunny from '../../../pngs/fan-token-flippers.png'
 
