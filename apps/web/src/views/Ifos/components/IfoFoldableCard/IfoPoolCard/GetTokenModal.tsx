@@ -25,7 +25,7 @@ const GetTokenModal: React.FC<React.PropsWithChildren<Partial<Props>>> = ({ curr
           as={Link}
           external
           href={`/swap?outputCurrency=${currency.address}`}
-          endIcon={<OpenNewIcon color="white" />}
+          endIcon={<OpenNewIcon color="invertedContrast" />}
           minWidth="100%" // Bypass the width="fit-content" on Links
         >
           {t('Get %symbol%', { symbol: currency.symbol })}

@@ -196,7 +196,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
           <Link href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px" external>
             <Button mt="8px" width="100%">
               {t('View Reclaimed & Won')}
-              <OpenNewIcon color="white" ml="4px" />
+              <OpenNewIcon color="invertedContrast" ml="4px" />
             </Button>
           </Link>
         </Flex>
