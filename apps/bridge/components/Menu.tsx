@@ -23,7 +23,7 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { getTimePeriods } from './getTimePeriods'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { CHAINS_STARGATE } from './stargate/config'
 import { findChainByStargateId } from './stargate/network'
 

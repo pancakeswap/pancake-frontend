@@ -3,7 +3,7 @@ import { Button, Checkbox, Flex, Link, Message, Text, AutoColumn, RowBetween, Ro
 import { TokenList } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
 import { ListLogo } from 'components/Logo'
-import useTheme from 'hooks/useTheme'
+import { useTheme } from '@pancakeswap/hooks'
 import { useCallback, useState } from 'react'
 import { enableList, removeList, useFetchListCallback } from '@pancakeswap/token-lists/react'
 import { useAllLists } from 'state/lists/hooks'

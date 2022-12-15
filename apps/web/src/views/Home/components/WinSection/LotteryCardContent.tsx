@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Flex, Text, Skeleton, Button, ArrowForwardIcon, Balance, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import useIntersectionObserver from 'hooks/useIntersectionObserver'
+import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { fetchLottery, fetchCurrentLotteryId } from 'state/lottery/helpers'

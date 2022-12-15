@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { isAfter, differenceInSeconds } from 'date-fns'
 import { Text, Flex, PocketWatchIcon, Skeleton } from '@pancakeswap/uikit'
 import { Auction, AuctionStatus } from 'config/constants/types'
-import getTimePeriods from 'utils/getTimePeriods'
+import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { useTranslation } from '@pancakeswap/localization'
 
 const AuctionCountDown = styled(Flex)`
