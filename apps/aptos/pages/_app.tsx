@@ -10,6 +10,7 @@ import { NextPage } from 'next'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import Script from 'next/script'
+import GlobalStyle from 'style/Global'
 import { DefaultSeo } from 'next-seo'
 import { SEO } from 'next-seo.config'
 import { Fragment } from 'react'
@@ -55,6 +56,7 @@ function MyApp(props: AppProps) {
       <Providers>
         <GlobalHooks />
         <ResetCSS />
+        <GlobalStyle />
         <Updaters />
         <App {...props} />
         <ToastListener />
