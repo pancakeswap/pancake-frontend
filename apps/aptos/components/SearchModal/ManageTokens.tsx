@@ -135,6 +135,11 @@ export default function ManageTokens({
             <Text color="textSubtle" fontSize="14px" ml="8px">
               {token.name}
             </Text>
+            <a href={getBlockExploreLink(token.address, 'token', chainId)} target="_blank" rel="noreferrer noopener">
+              <IconButton scale="sm" variant="text">
+                <AptosIcon color="textSubtle" width="16px" />
+              </IconButton>
+            </a>
           </RowFixed>
           <RowFixed>
             <CoinRegisterButtonWithHooks token={token} />
@@ -150,11 +155,6 @@ export default function ManageTokens({
             >
               <DeleteOutlineIcon color="textSubtle" />
             </IconButton>
-            <a href={getBlockExploreLink(token.address, 'token', chainId)} target="_blank" rel="noreferrer noopener">
-              <IconButton scale="sm" variant="text">
-                <AptosIcon color="textSubtle" width="16px" />
-              </IconButton>
-            </a>
           </RowFixed>
         </RowBetween>
       ))

@@ -76,12 +76,12 @@ export default function ManageTokens({
             <Link external href={getBlockExploreLink(token.address, 'address', chainId)} color="textSubtle" ml="10px">
               {token.symbol}
             </Link>
+            <LinkExternal href={getBlockExploreLink(token.address, 'address', chainId)} />
           </RowFixed>
           <RowFixed>
             <IconButton variant="text" onClick={() => removeToken(chainId, token.address)}>
               <CloseIcon />
             </IconButton>
-            <LinkExternal href={getBlockExploreLink(token.address, 'address', chainId)} />
           </RowFixed>
         </RowBetween>
       ))
