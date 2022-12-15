@@ -712,6 +712,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 }}
                 showQuickInputButton
                 showMaxButton
+                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 disableCurrencySelect
                 currency={pair?.liquidityToken}
                 pair={pair}
@@ -742,6 +743,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 onUserInput={onCurrencyAInput}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                 showMaxButton
+                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 currency={currencyA}
                 label={t('Output')}
                 onCurrencySelect={handleSelectCurrencyA}

@@ -440,6 +440,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                   onUserInput(Field.LIQUIDITY_PERCENT, '100')
                 }}
                 showMaxButton
+                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 disableCurrencySelect
                 currency={pair?.liquidityToken}
                 pair={pair}
@@ -457,6 +458,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                 onUserInput={onCurrencyAInput}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                 showMaxButton
+                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 currency={currencyA}
                 label={t('Output')}
                 onCurrencySelect={handleSelectCurrencyA}
@@ -473,6 +475,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                 onUserInput={onCurrencyBInput}
                 onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
                 showMaxButton
+                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 currency={currencyB}
                 label={t('Output')}
                 onCurrencySelect={handleSelectCurrencyB}
