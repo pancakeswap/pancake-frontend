@@ -6,7 +6,6 @@ import { Profile } from 'state/types'
 import { getCompleteAccountNftData } from 'state/nftMarket/helpers'
 import useSWR from 'swr'
 import { FetchStatus } from 'config/constants/types'
-import { laggyMiddleware } from 'hooks/useSWRContract'
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { isAddress } from 'utils'
 
@@ -48,7 +47,9 @@ export const useCollectionsNftsForAddress = (
   const { status, data, mutate, resetLaggy } = useSWR(
     !isProfileFetching && !isEmpty(collections) && isAddress(account) ? [account, 'userNfts'] : null,
     async () => getCompleteAccountNftData(account, collections, profileNftWithCollectionAddress),
-    { use: [laggyMiddleware] },
+    {
+      keepPreviousData: true,
+    },
   )
 
   resetLaggyRef.current = resetLaggy

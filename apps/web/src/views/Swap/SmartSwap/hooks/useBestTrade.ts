@@ -5,7 +5,6 @@ import { getBestTradeExactIn, getBestTradeExactOut, createStableSwapPair } from 
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { getAddress } from '@ethersproject/address'
 
-import { laggyMiddleware } from 'hooks/useSWRContract'
 import { useAllCommonPairs } from 'hooks/Trades'
 import { provider } from 'utils/wagmi'
 import { getBestPriceWithRouter, RequestBody } from 'state/swap/fetch/fetchBestPriceWithRouter'
@@ -52,7 +51,7 @@ function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions
       // TODO: trader should use user Wallet address
       () => getBestTrade({ amount, currency, tradeType, allCommonPairs, trader: '', maxHops }),
       {
-        use: [laggyMiddleware],
+        keepPreviousData: true,
       },
     )
     return trade

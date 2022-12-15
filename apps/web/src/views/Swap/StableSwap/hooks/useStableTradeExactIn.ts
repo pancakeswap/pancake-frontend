@@ -1,5 +1,4 @@
 import { CurrencyAmount, Price, Percent, TradeType, Fraction, ONE, Currency } from '@pancakeswap/sdk'
-import { laggyMiddleware } from 'hooks/useSWRContract'
 import { useCallback, useMemo, useContext, useDeferredValue } from 'react'
 import useSWR from 'swr'
 import { StableConfigContext } from './useStableConfig'
@@ -110,7 +109,7 @@ export function useEstimatedAmount({ estimatedCurrency, stableSwapConfig, quotie
       return CurrencyAmount.fromRawAmount(estimatedCurrency, estimatedAmount)
     },
     {
-      use: [laggyMiddleware],
+      keepPreviousData: true,
     },
   )
 }
