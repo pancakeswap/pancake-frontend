@@ -196,6 +196,7 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
             volumeUSD,
             volumeUSDWeek,
             liquidityUSD,
+            address,
           )
 
           if (current) {
@@ -293,6 +294,7 @@ export const fetchAllPoolDataWithAddress = async (
       volumeUSD,
       volumeUSDWeek,
       liquidityUSD,
+      address,
     )
 
     if (current) {

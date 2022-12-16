@@ -79,7 +79,7 @@ describe('info/utils/infoDataHelpers', () => {
   `(
     'getLpFeesAndApr returns expected fees and APR for $volumeUSD, $volumeUSDWeek and $liquidityUSD',
     ({ volumeUSD, volumeUSDWeek, liquidityUSD, expected }) => {
-      const actual = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD)
+      const actual = getLpFeesAndApr(volumeUSD, volumeUSDWeek, liquidityUSD, '')
       // Round actual to avoid rounding errors during comparison
       Object.keys(actual).forEach((key) => {
         actual[key] = parseFloat(actual[key].toFixed(2))

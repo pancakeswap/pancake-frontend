@@ -5,7 +5,7 @@ import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { SLOW_INTERVAL } from 'config/constants'
-import { LP_HOLDERS_FEE, WEEKS_IN_YEAR } from 'config/constants/info'
+import { LP_HOLDERS_FEE, LP_HOLDERS_FEE_STABLE_AND_LP, WEEKS_IN_YEAR } from 'config/constants/info'
 import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../info/constant'
 
 interface PoolReserveVolume {
@@ -38,7 +38,8 @@ export const useLPApr = (pair?: Pair) => {
       const week = parseFloat(data?.oneWeekAgo[0]?.volumeUSD)
       const [volumeUSDWeek] = getChangeForPeriod(current, week)
       const liquidityUSD = currentReserveUSD || 0
-      const lpApr7d = liquidityUSD > 0 ? (volumeUSDWeek * LP_HOLDERS_FEE * WEEKS_IN_YEAR * 100) / liquidityUSD : 0
+      const lpRewardFee = LP_HOLDERS_FEE_STABLE_AND_LP[pair.liquidityToken.address.toLowerCase()] ?? LP_HOLDERS_FEE
+      const lpApr7d = liquidityUSD > 0 ? (volumeUSDWeek * lpRewardFee * WEEKS_IN_YEAR * 100) / liquidityUSD : 0
       return lpApr7d ? { lpApr7d } : null
     },
     {

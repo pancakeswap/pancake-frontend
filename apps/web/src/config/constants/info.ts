@@ -13,6 +13,16 @@ export const ONE_DAY_UNIX = 86400 // 24h * 60m * 60s
 export const ONE_HOUR_SECONDS = 3600
 
 export const ITEMS_PER_INFO_TABLE_PAGE = 10
+export const LP_HOLDERS_FEE_STABLE_AND_LP = {
+  '0x169f653a54acd441ab34b73da9946e2c451787ef': 0.00075, // USDT/BUSD StableSwap
+  '0x36842f8fb99d55477c0da638af5ceb6bbf86aa98': 0.00075, // USDT/BUSD LP
+  '0xc2f5b9a3d9138ab2b74d581fc11346219ebf43fe': 0.00075, // USDC/BUSD StableSwap
+  '0x1a77c359d0019cd8f4d36b7cdf5a88043d801072': 0.00075, // USDC/BUSD LP
+  '0x3efebc418efb585248a0d2140cfb87afcc2c63dd': 0.00075, // USDT/USDC StableSwap
+  '0xee1bcc9f1692e81a281b3a302a4b67890ba4be76': 0.00075, // USDT/USDC LP
+  '0x49079d07ef47449af808a4f36c2a8dec975594ec': 0.0002, // HAY/BUSD StableSwap
+  '0xb6040a9f294477ddadf5543a24e5463b8f2423ae': 0.0002, // HAY/BUSD LP
+}
 
 // These tokens are either incorrectly priced or have some other issues that spoil the query data
 // None of them present any interest as they have almost 0 daily trade volume
