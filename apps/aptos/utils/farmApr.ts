@@ -2,6 +2,8 @@ import BigNumber from 'bignumber.js'
 import { SECONDS_IN_YEAR } from 'config'
 import { ChainId } from '@pancakeswap/aptos-swap-sdk'
 import mainnetLpAprs from 'config/constants/lpAprs/1.json'
+import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 
 const getLpApr = (chainId: number) => {
   switch (chainId) {
@@ -34,7 +36,7 @@ export const getFarmApr = (
   const cakeRewardsApr = yearlyCakeRewardAllocation.times(cakePriceUsd).div(poolLiquidityUsd).times(100)
   let cakeRewardsAprAsNumber: null | number = null
   if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
-    cakeRewardsAprAsNumber = cakeRewardsApr.toNumber()
+    cakeRewardsAprAsNumber = cakeRewardsApr.div(BIG_TEN.pow(FARM_DEFAULT_DECIMALS)).toNumber()
   }
   const lpRewardsApr = getLpApr(chainId)[farmAddress?.toLowerCase()] ?? 0
   return { cakeRewardsApr: cakeRewardsAprAsNumber as number, lpRewardsApr }

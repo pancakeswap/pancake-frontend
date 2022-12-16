@@ -47,7 +47,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
       </HarvestActionContainer>
       {isReady ? (
         <Flex>
-          <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
+          <Text bold color="secondary" fontSize="12px" pr="4px">
             {farm.lpSymbol}
           </Text>
           <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
