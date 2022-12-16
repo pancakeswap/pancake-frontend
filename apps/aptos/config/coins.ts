@@ -30,6 +30,14 @@ export const CE_USDC_MAINNET = new Coin(
   'Celer - USD Coin',
 )
 
+export const WH_USDC_MAINNET = new Coin(
+  ChainId.MAINNET,
+  '0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T',
+  6,
+  'whUSDC',
+  'Wormhole - USD Coin',
+)
+
 export const CAKE = {
   [ChainId.MAINNET]: new Coin(
     ChainId.MAINNET,
