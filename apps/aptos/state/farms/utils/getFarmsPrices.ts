@@ -4,7 +4,7 @@ import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMulti
 import _toNumber from 'lodash/toNumber'
 import BigNumber from 'bignumber.js'
 import { BIG_ZERO, BIG_ONE, BIG_TWO } from '@pancakeswap/utils/bigNumber'
-import { SerializedFarmPublicData, FarmData, isStableFarm } from '@pancakeswap/farms/src/types'
+import { SerializedFarmPublicData, FarmData } from '@pancakeswap/farms/src/types'
 
 // Find BUSD price for token
 // either via direct calculation if farm is X-BNB or X-BUSD
@@ -98,7 +98,7 @@ const getFarmFromTokenAddress = (
 
 const filterFarmsByQuoteToken = (
   farms: SerializedFarmPublicData[],
-  preferredQuoteTokens: string[] = ['USDC', 'APT'],
+  preferredQuoteTokens: string[] = ['APT', 'USDC'],
 ): SerializedFarmPublicData => {
   const preferredFarm = farms.find((farm) => {
     return preferredQuoteTokens.some((quoteToken) => {
@@ -106,27 +106,6 @@ const filterFarmsByQuoteToken = (
     })
   })
   return preferredFarm || farms[0]
-}
-
-export const getStableLpTokenPrice = (
-  lpTotalSupply: BigNumber,
-  tokenAmountTotal: BigNumber,
-  tokenPriceBusd: BigNumber,
-  quoteTokenAmountTotal: BigNumber,
-  quoteTokenInBusd: BigNumber,
-  decimals: number,
-) => {
-  if (lpTotalSupply.isZero()) {
-    return BIG_ZERO
-  }
-  const valueOfBaseTokenInFarm = tokenPriceBusd.multipliedBy(tokenAmountTotal)
-  const valueOfQuoteTokenInFarm = quoteTokenInBusd.multipliedBy(quoteTokenAmountTotal)
-
-  const liquidity = valueOfBaseTokenInFarm.plus(valueOfQuoteTokenInFarm)
-
-  const totalLpTokens = lpTotalSupply.div(getFullDecimalMultiplier(decimals))
-
-  return liquidity.div(totalLpTokens)
 }
 
 export const getLpTokenPrice = (
@@ -202,23 +181,13 @@ export const getFarmsPrices = (
       nativeStableLp.stable,
       quoteTokenPriceBusd,
     )
-    const lpTokenPrice = isStableFarm(farm)
-      ? getStableLpTokenPrice(
-          new BigNumber(farm.lpTotalSupply),
-          new BigNumber(farm.tokenAmountTotal),
-          tokenPriceBusd,
-          new BigNumber(farm.quoteTokenAmountTotal),
-          // Assume token is busd, tokenPriceBusd is tokenPriceVsQuote
-          new BigNumber(farm.tokenPriceVsQuote),
-          decimals,
-        )
-      : getLpTokenPrice(
-          new BigNumber(farm.lpTotalSupply),
-          new BigNumber(farm.lpTotalInQuoteToken),
-          new BigNumber(farm.tokenAmountTotal),
-          tokenPriceBusd,
-          decimals,
-        )
+    const lpTokenPrice = getLpTokenPrice(
+      new BigNumber(farm.lpTotalSupply),
+      new BigNumber(farm.lpTotalInQuoteToken),
+      new BigNumber(farm.tokenAmountTotal),
+      tokenPriceBusd,
+      decimals,
+    )
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),
