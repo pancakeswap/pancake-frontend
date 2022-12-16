@@ -93,6 +93,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     }
     return ONE_HUNDRED_PERCENT.subtract(new Percent(liquidityMinted.quotient, expectedOutputWithoutFee.quotient))
   }, [liquidityMinted, expectedOutputWithoutFee])
+
   const slippageSeverity = warningSeverity(executionSlippage)
 
   // get the max amounts user can add
@@ -129,7 +130,11 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     if (!chainId || !account || !stableSwapContract) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
-    if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB) {
+
+    const atLeastOneCurrencyProvided = parsedAmountA?.greaterThan(0) || parsedAmountB?.greaterThan(0)
+    const allCurrenciesProvided = parsedAmountA?.greaterThan(0) && parsedAmountB?.greaterThan(0)
+
+    if (noLiquidity ? !allCurrenciesProvided : !atLeastOneCurrencyProvided) {
       return
     }
 
@@ -138,11 +143,14 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     const estimate = stableSwapContract.estimateGas.add_liquidity
     const method = stableSwapContract.add_liquidity
 
+    const quotientA = parsedAmountA?.quotient?.toString() || '0'
+    const quotientB = parsedAmountB?.quotient?.toString() || '0'
+
     // Ensure the token order [token0, token1]
     const tokenAmounts =
       stableSwapConfig?.token0?.address === parsedAmountA?.currency?.wrapped?.address
-        ? [parsedAmountA?.quotient?.toString(), parsedAmountB?.quotient?.toString()]
-        : [parsedAmountB?.quotient?.toString(), parsedAmountA?.quotient?.toString()]
+        ? [quotientA, quotientB]
+        : [quotientB, quotientA]
 
     const args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
 
@@ -159,9 +167,9 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
           const symbolA = currencies[Field.CURRENCY_A]?.symbol
-          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)
+          const amountA = parsedAmounts[Field.CURRENCY_A]?.toSignificant(3) || '0'
           const symbolB = currencies[Field.CURRENCY_B]?.symbol
-          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)
+          const amountB = parsedAmounts[Field.CURRENCY_B]?.toSignificant(3) || '0'
           addTransaction(response, {
             summary: `Add ${amountA} ${symbolA} and ${amountB} ${symbolB}`,
             translatableSummary: {
@@ -233,11 +241,13 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
   isValid = !error && !addError
   errorText = error ?? addError
 
-  const buttonDisabled =
-    !isValid ||
-    approvalA !== ApprovalState.APPROVED ||
-    approvalB !== ApprovalState.APPROVED ||
-    (slippageSeverity > 2 && !expertMode)
+  const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
+
+  const notApprovalYet =
+    (parsedAmountA?.greaterThan(0) && approvalA !== ApprovalState.APPROVED) ||
+    (parsedAmountB?.greaterThan(0) && approvalB !== ApprovalState.APPROVED)
+
+  const buttonDisabled = !isValid || notApprovalYet || (slippageSeverity > 2 && !expertMode)
 
   const showFieldAApproval = approvalA === ApprovalState.NOT_APPROVED || approvalA === ApprovalState.PENDING
   const showFieldBApproval = approvalB === ApprovalState.NOT_APPROVED || approvalB === ApprovalState.PENDING
