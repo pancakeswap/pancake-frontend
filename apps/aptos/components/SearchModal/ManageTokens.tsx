@@ -17,6 +17,7 @@ import {
   RowBetween,
   RowFixed,
   Text,
+  BscScanIcon,
 } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { CoinRegisterButton } from 'components/CoinRegisterButton'
@@ -132,13 +133,11 @@ export default function ManageTokens({
             <Link external href={getBlockExploreLink(token.address, 'token', chainId)} color="textSubtle" ml="10px">
               {token.symbol}
             </Link>
-            <Text color="textSubtle" fontSize="14px" ml="8px">
+            <Text color="textSubtle" fontSize="14px" ml="8px" mr="3px">
               {token.name}
             </Text>
             <a href={getBlockExploreLink(token.address, 'token', chainId)} target="_blank" rel="noreferrer noopener">
-              <IconButton scale="sm" variant="text">
-                <AptosIcon color="textSubtle" width="16px" />
-              </IconButton>
+              <BscScanIcon width="20px" color="primary" />
             </a>
           </RowFixed>
           <RowFixed>
