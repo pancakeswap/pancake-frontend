@@ -55,8 +55,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
       const totalAmount = fullBalanceNumber
         .dividedBy(100)
         .multipliedBy(percent)
-        .toNumber()
-        .toLocaleString(undefined, { maximumFractionDigits: decimals });
+        .toFixed(decimals, BigNumber.ROUND_DOWN);
       setVal(totalAmount);
     },
     [decimals, fullBalanceNumber]
