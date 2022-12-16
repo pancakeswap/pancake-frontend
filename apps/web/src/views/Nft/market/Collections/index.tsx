@@ -25,6 +25,7 @@ import { getLeastMostPriceInCollection } from 'state/nftMarket/helpers'
 import { ViewMode } from 'state/user/actions'
 import { Collection } from 'state/nftMarket/types'
 import styled from 'styled-components'
+import { laggyMiddleware } from 'hooks/useSWRContract'
 import { FetchStatus } from 'config/constants/types'
 import { useGetShuffledCollections } from 'state/nftMarket/hooks'
 import { useTranslation } from '@pancakeswap/localization'
@@ -139,7 +140,7 @@ const Collectible = () => {
       )
     },
     {
-      keepPreviousData: true,
+      use: [laggyMiddleware],
     },
   )
 

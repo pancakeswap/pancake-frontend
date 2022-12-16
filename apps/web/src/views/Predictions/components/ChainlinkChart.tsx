@@ -3,7 +3,7 @@ import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area, Dot } from
 import useTheme from 'hooks/useTheme'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import { useTranslation } from '@pancakeswap/localization'
-import { useSWRContract, useSWRMulticall } from 'hooks/useSWRContract'
+import { laggyMiddleware, useSWRContract, useSWRMulticall } from 'hooks/useSWRContract'
 import useSWRImmutable from 'swr/immutable'
 import { useSWRConfig } from 'swr'
 import { useChainlinkOracleContract } from 'hooks/useContract'
@@ -55,7 +55,7 @@ function useChainlinkRoundDataSet() {
     chainlinkOracleAbi,
     calls,
     {
-      keepPreviousData: true,
+      use: [laggyMiddleware],
     },
   )
 
