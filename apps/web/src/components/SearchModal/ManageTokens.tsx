@@ -1,6 +1,6 @@
 import { useRef, RefObject, useCallback, useState, useMemo } from 'react'
 import { Token } from '@pancakeswap/sdk'
-import { Text, Button, CloseIcon, IconButton, BscScanIcon, Input, Link } from '@pancakeswap/uikit'
+import { Text, Button, DeleteOutlineIcon, IconButton, BscScanIcon, Input, Link } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Row, { RowBetween, RowFixed } from 'components/Layout/Row'
 import { useToken } from 'hooks/Tokens'
@@ -83,12 +83,12 @@ export default function ManageTokens({
               {token.symbol}
             </Link>
             <a href={getBlockExploreLink(token.address, 'token', chainId)} target="_blank" rel="noreferrer noopener">
-              <BscScanIcon width="20px" color="primary" />
+              <BscScanIcon width="20px" color="textSubtle" />
             </a>
           </RowFixed>
           <RowFixed>
             <IconButton variant="text" onClick={() => removeToken(chainId, token.address)}>
-              <CloseIcon />
+              <DeleteOutlineIcon color="textSubtle" />
             </IconButton>
           </RowFixed>
         </RowBetween>
