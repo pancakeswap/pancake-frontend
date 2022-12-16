@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0x3eae4f73fe95d9ecfcb0b8c353959f20cbb7239e1b1a1ca55893235c7a4d6d0c' as const
+export const ADDRESS = '0x7968a225eba6c99f5f1070aeec1b405757dee939eabcfda43ba91588bf5fccf3' as const
 
 export const MASTERCHEF_MODULE_NAME = 'masterchef' as const
 
@@ -83,20 +83,6 @@ export const masterchefSetUpkeepAdmin = (
     type_arguments: [],
     arguments: args,
     function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::set_upkeep_admin`,
-  }
-}
-
-export type MasterchefTransferCakeOwnerShipArgs = [string]
-
-export const masterchefTransferCakeOwnerShip = (
-  args: MasterchefTransferCakeOwnerShipArgs,
-  typeArgs: [string],
-): Types.TransactionPayload_EntryFunctionPayload => {
-  return {
-    type: 'entry_function_payload',
-    type_arguments: typeArgs,
-    arguments: args,
-    function: `${ADDRESS}::${MASTERCHEF_MODULE_NAME}::transfer_cake_owner_ship`,
   }
 }
 

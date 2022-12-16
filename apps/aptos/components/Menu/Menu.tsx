@@ -59,13 +59,11 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     icon: EarnIcon,
     fillIcon: EarnFillIcon,
     image: '/images/decorations/pe2.png',
-    disabled: true,
     items: [
       {
         label: t('Farms'),
         href: '/farms',
-        status: { text: t('Soon'), color: 'warning' },
-        disabled: true,
+        status: { text: t('Live'), color: 'success' },
       },
       {
         label: t('Pools'),

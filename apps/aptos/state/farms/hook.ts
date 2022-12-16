@@ -80,7 +80,6 @@ export const useFarms = () => {
   }, [stakeCoinsInfo])
 
   const pairReserves = usePairReservesQueries(lpReservesAddresses)
-
   const lpInfo = useMemo(() => {
     return farmConfig
       .filter((f) => f.pid !== 0 && f.pid !== CAKE_PID)
@@ -146,12 +145,18 @@ export const useFarms = () => {
   const userInfos = useFarmsUserInfo()
   const currentDate = new Date().getTime() / 1000
   const showCakePerSecond = masterChef?.data && new BigNumber(currentDate).lte(masterChef.data.end_timestamp)
+  const regularCakePerSeconds = showCakePerSecond
+    ? new BigNumber(masterChef?.data?.cake_per_second)
+        .times(masterChef.data.cake_rate_to_regular)
+        .div(new BigNumber(masterChef.data.cake_rate_to_regular).plus(masterChef.data.cake_rate_to_special))
+        .toNumber()
+    : 0
 
   return useMemo(() => {
     return {
       userDataLoaded: true,
       poolLength,
-      regularCakePerBlock: showCakePerSecond ? Number(masterChef.data.cake_per_second) : 0,
+      regularCakePerBlock: regularCakePerSeconds,
       loadArchivedFarmsData: false,
       data: farmsWithPrices
         .filter((f) => !!f.pid)
@@ -173,7 +178,7 @@ export const useFarms = () => {
           }
         }),
     } as DeserializedFarmsState
-  }, [poolLength, showCakePerSecond, masterChef?.data, farmsWithPrices, userInfos])
+  }, [poolLength, regularCakePerSeconds, farmsWithPrices, masterChef, userInfos])
 }
 
 export function useFarmsUserInfo() {
