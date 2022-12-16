@@ -129,7 +129,8 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         .dividedBy(100)
         .multipliedBy(percent)
         .toNumber()
-        .toLocaleString(undefined, { maximumFractionDigits: decimals });
+        .toLocaleString(undefined, { maximumFractionDigits: decimals })
+        .replace(/,/g, ".");
       setVal(totalAmount);
     },
     [decimals, fullBalanceNumber]
