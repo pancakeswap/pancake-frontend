@@ -121,6 +121,9 @@ export const useFarms = () => {
           : masterChef?.data.total_special_alloc_point
         const poolWeight = totalAlloc ? allocPoint.div(new BigNumber(totalAlloc)) : BIG_ZERO
 
+        // tokenPriceVsQuote info for this price helper farm is wrong, opposite way should be used
+        const isAptCakeLp = config.pid === null && config.lpSymbol === 'APT-CAKE LP'
+
         return {
           ...config,
           tokenAmountTotal: tokenAmountTotal.toFixed(6),
@@ -129,7 +132,9 @@ export const useFarms = () => {
           lpTotalInQuoteToken: lpTotalInQuoteToken.toFixed(6),
           tokenPriceVsQuote:
             !quoteTokenAmountTotal.isZero() && !tokenAmountTotal.isZero()
-              ? quoteTokenAmountTotal.div(tokenAmountTotal).toFixed(6)
+              ? isAptCakeLp
+                ? tokenAmountTotal.div(quoteTokenAmountTotal).toFixed(6)
+                : quoteTokenAmountTotal.div(tokenAmountTotal).toFixed(6)
               : '0',
           poolWeight: poolWeight.toString(),
           multiplier: `${allocPoint.div(100).toString()}X`,
