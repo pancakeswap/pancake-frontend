@@ -52,7 +52,6 @@ export const getFarmQuoteTokenPrice = (
   nativePriceUSD: FixedNumber,
   wNative: string,
   stable: string,
-  isNativeFirst: boolean,
 ): FixedNumber => {
   if (farm.quoteToken.symbol === stable) {
     return FIXED_ONE
@@ -67,17 +66,13 @@ export const getFarmQuoteTokenPrice = (
   }
 
   if (quoteTokenFarm.quoteToken.symbol === wNative) {
-    return quoteTokenFarm.tokenPriceVsQuote && quoteTokenFarm.tokenPriceVsQuote !== '0'
-      ? isNativeFirst
-        ? nativePriceUSD.mulUnsafe(FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote))
-        : nativePriceUSD.mulUnsafe(FIXED_ONE.divUnsafe(FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote)))
+    return quoteTokenFarm.tokenPriceVsQuote
+      ? nativePriceUSD.mulUnsafe(FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote))
       : FIXED_ZERO
   }
 
   if (quoteTokenFarm.quoteToken.symbol === stable) {
-    return quoteTokenFarm.tokenPriceVsQuote && quoteTokenFarm.tokenPriceVsQuote !== '0'
-      ? FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote)
-      : FIXED_ZERO
+    return quoteTokenFarm.tokenPriceVsQuote ? FixedNumber.from(quoteTokenFarm.tokenPriceVsQuote) : FIXED_ZERO
   }
 
   return FIXED_ZERO
@@ -188,7 +183,6 @@ export const getFarmsPrices = (
       nativePriceUSD,
       nativeStableLp.wNative,
       nativeStableLp.stable,
-      isNativeFirst,
     )
 
     const tokenPriceBusd = getFarmBaseTokenPrice(
