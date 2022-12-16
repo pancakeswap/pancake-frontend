@@ -44,7 +44,9 @@ const activeListUrlsAtom = atom((get) => {
 
 const combineTokenMapsWithDefault = (lists: ListsState['byUrl'], urls: string[]) => {
   const defaultTokenMap = listToTokenMap(DEFAULT_TOKEN_LIST)
+
   if (!urls) return defaultTokenMap
+
   return combineMaps(combineTokenMaps(lists, urls), defaultTokenMap)
 }
 
