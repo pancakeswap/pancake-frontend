@@ -10,6 +10,7 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import { BlockResponse } from 'web/src/components/SubgraphHealthIndicator'
 import { BLOCKS_CLIENT_WITH_CHAIN } from 'web/src/config/constants/endpoints'
 import { stableSwapClient, infoClientWithChain } from 'web/src/utils/graphql'
+import { LP_HOLDERS_FEE, LP_HOLDERS_FEE_STABLE_AND_LP, WEEKS_IN_YEAR } from 'web/src/config/constants/info'
 
 interface SingleFarmResponse {
   id: string
@@ -30,9 +31,6 @@ const getWeekAgoTimestamp = () => {
   const weekAgo = sub(new Date(), { weeks: 1 })
   return getUnixTime(weekAgo)
 }
-
-const LP_HOLDERS_FEE = 0.0017
-const WEEKS_IN_A_YEAR = 52.1429
 
 const getBlockAtTimestamp = async (timestamp: number, chainId = ChainId.BSC) => {
   try {
@@ -74,10 +72,11 @@ const getAprsForFarmGroup = async (addresses: string[], blockWeekAgo: number, ch
       const farmWeekAgo = farmsOneWeekAgo.find((oldFarm) => oldFarm.id === farm.id)
       // In case farm is too new to estimate LP APR (i.e. not returned in farmsOneWeekAgo query) - return 0
       let lpApr = new BigNumber(0)
+      const lpHolderFee = LP_HOLDERS_FEE_STABLE_AND_LP[farm.id.toLowerCase()] ?? LP_HOLDERS_FEE
       if (farmWeekAgo) {
         const volume7d = new BigNumber(farm.volumeUSD).minus(new BigNumber(farmWeekAgo.volumeUSD))
-        const lpFees7d = volume7d.times(LP_HOLDERS_FEE)
-        const lpFeesInAYear = lpFees7d.times(WEEKS_IN_A_YEAR)
+        const lpFees7d = volume7d.times(lpHolderFee)
+        const lpFeesInAYear = lpFees7d.times(WEEKS_IN_YEAR)
         // Some untracked pairs like KUN-QSD will report 0 volume
         if (lpFeesInAYear.gt(0)) {
           const liquidity = new BigNumber(farm.reserveUSD)
