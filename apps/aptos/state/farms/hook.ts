@@ -8,7 +8,6 @@ import {
   fetchTableItem,
   FetchAccountResourceResult,
 } from '@pancakeswap/awgmi/core'
-import { getFarmsPrices } from '@pancakeswap/farms/farmPrices'
 import { BIG_TWO, BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import BigNumber from 'bignumber.js'
@@ -27,6 +26,7 @@ import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { deserializeFarm } from './utils/deserializeFarm'
 import { calcPendingRewardCake, calcRewardCakePerShare } from './utils/pendingCake'
+import { getFarmsPrices } from './utils/getFarmsPrices'
 
 const farmsPriceHelpLpMap = {
   [ChainId.MAINNET]: priceHelperLpsMainnet,
