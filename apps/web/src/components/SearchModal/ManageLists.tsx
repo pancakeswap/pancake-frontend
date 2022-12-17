@@ -31,6 +31,7 @@ function listVersionLabel(version: Version): string {
 const Wrapper = styled(Column)`
   width: 100%;
   height: 100%;
+  padding: 4px 4px 0 4px;
 `
 
 const RowWrapper = styled(Row)<{ active: boolean; hasActiveTokens: boolean }>`

@@ -2,7 +2,7 @@ import { useRef, RefObject, useCallback, useState, useMemo } from 'react'
 import { Token } from '@pancakeswap/sdk'
 import { Text, Button, DeleteOutlineIcon, IconButton, BscScanIcon, Input, Link } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { RowBetween, RowFixed } from 'components/Layout/Row'
+import Row, { RowBetween, RowFixed } from 'components/Layout/Row'
 import { useToken } from 'hooks/Tokens'
 import { useRemoveUserAddedToken } from 'state/user/hooks'
 import useUserAddedTokens from 'state/user/hooks/useUserAddedTokens'
@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: calc(100% - 60px);
   position: relative;
-  padding-bottom: 60px;
+  padding: 4px 4px 60px 4px;
 `
 
 const Footer = styled.div`
@@ -102,7 +102,7 @@ export default function ManageTokens({
     <Wrapper>
       <Column style={{ width: '100%', flex: '1 1' }}>
         <AutoColumn gap="14px">
-          <Flex width="96%" justifyContent="center" ml="2%">
+          <Row>
             <Input
               id="token-search-input"
               scale="lg"
@@ -113,7 +113,7 @@ export default function ManageTokens({
               onChange={handleInput}
               isWarning={!isAddressValid}
             />
-          </Flex>
+          </Row>
           {!isAddressValid && <Text color="failure">{t('Enter valid token address')}</Text>}
           {searchToken && (
             <ImportRow
