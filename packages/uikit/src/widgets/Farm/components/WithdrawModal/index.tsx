@@ -71,6 +71,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
           onChange={handleChange}
           value={val}
           max={fullBalance}
+          maxAmount={fullBalanceNumber}
           symbol={tokenName}
           inputTitle={t("Unstake")}
           decimals={decimals}

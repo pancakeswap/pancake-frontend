@@ -168,6 +168,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           onPercentInput={handlePercentInput}
           onChange={handleChange}
           max={fullBalance}
+          maxAmount={fullBalanceNumber}
           symbol={tokenName}
           addLiquidityUrl={addLiquidityUrl}
           inputTitle={t("Stake")}
