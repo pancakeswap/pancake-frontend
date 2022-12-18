@@ -19,6 +19,7 @@ import {
   TooltipText,
   useTooltip,
   useToast,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -74,6 +75,8 @@ const zapSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
 export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, currencyIdB }) {
   const router = useRouter()
   const native = useNativeCurrency()
+  const { isMobile } = useMatchBreakpoints()
+
   const [zapMode] = useZapModeManager()
   const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
@@ -581,7 +584,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
               </Button>
             </RowBetween>
             {!showDetailed && (
-              <BorderCard>
+              <BorderCard style={{ padding: isMobile ? '8px' : '16px' }}>
                 <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
                   {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
                 </Text>
