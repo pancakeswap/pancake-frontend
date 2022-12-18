@@ -26,6 +26,7 @@ import {
   usePoolChartDataSWR,
   usePoolDatasSWR,
   usePoolTransactionsSWR,
+  useStableSwapPath,
 } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -87,6 +88,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const [watchlistPools, addPoolToWatchlist] = useWatchlistPools()
   const chainName = useGetChainName()
   const chainPath = useMultiChainPath()
+  const infoTypeParam = useStableSwapPath()
 
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
@@ -94,10 +96,10 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
         <>
           <Flex justifyContent="space-between" mb="16px" flexDirection={['column', 'column', 'row']}>
             <Breadcrumbs mb="32px">
-              <NextLinkFromReactRouter to={`/info${chainPath}`}>
+              <NextLinkFromReactRouter to={`/info${chainPath}${infoTypeParam}`}>
                 <Text color="primary">{t('Info')}</Text>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/info${chainPath}/pairs`}>
+              <NextLinkFromReactRouter to={`/info${chainPath}/pairs${infoTypeParam}`}>
                 <Text color="primary">{t('Pairs')}</Text>
               </NextLinkFromReactRouter>
               <Flex>

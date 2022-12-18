@@ -30,6 +30,7 @@ import {
   useTokenDataSWR,
   useTokenPriceDataSWR,
   useTokenTransactionsSWR,
+  useStableSwapPath,
 } from 'state/info/hooks'
 import { useWatchlistTokens } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -102,6 +103,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const [watchlistTokens, addWatchlistToken] = useWatchlistTokens()
   const chainPath = useMultiChainPath()
   const chainName = useGetChainName()
+  const infoTypeParam = useStableSwapPath()
   return (
     <Page symbol={tokenData?.symbol}>
       {tokenData ? (
@@ -121,10 +123,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
             {/* Stuff on top */}
             <Flex justifyContent="space-between" mb="24px" flexDirection={['column', 'column', 'row']}>
               <Breadcrumbs mb="32px">
-                <NextLinkFromReactRouter to={`/info${chainPath}`}>
+                <NextLinkFromReactRouter to={`/info${chainPath}${infoTypeParam}`}>
                   <Text color="primary">{t('Info')}</Text>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/info${chainPath}/tokens`}>
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens${infoTypeParam}`}>
                   <Text color="primary">{t('Tokens')}</Text>
                 </NextLinkFromReactRouter>
                 <Flex>
