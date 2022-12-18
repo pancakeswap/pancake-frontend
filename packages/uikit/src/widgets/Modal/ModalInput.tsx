@@ -162,9 +162,9 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             })}
 
           <Button
-            onClick={onSelectMax} 
-            scale="xs" 
-            variant={isAtPercentMax ? "primary" : "secondary"} 
+            onClick={onSelectMax}
+            scale="xs"
+            variant={isAtPercentMax ? "primary" : "secondary"}
             style={{ textTransform: "uppercase" }}
           >
             {t("Max")}
