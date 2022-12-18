@@ -89,24 +89,24 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
     () => ({
       25: maxAmount
         ? maxAmount
-          .dividedBy(100)
-          .multipliedBy(25)
-          .toNumber()
-          .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .dividedBy(100)
+            .multipliedBy(25)
+            .toNumber()
+            .toLocaleString("en-US", { maximumFractionDigits: decimals })
         : undefined,
       50: maxAmount
         ? maxAmount
-          .dividedBy(100)
-          .multipliedBy(50)
-          .toNumber()
-          .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .dividedBy(100)
+            .multipliedBy(50)
+            .toNumber()
+            .toLocaleString("en-US", { maximumFractionDigits: decimals })
         : undefined,
       75: maxAmount
         ? maxAmount
-          .dividedBy(100)
-          .multipliedBy(75)
-          .toNumber()
-          .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .dividedBy(100)
+            .multipliedBy(75)
+            .toNumber()
+            .toLocaleString("en-US", { maximumFractionDigits: decimals })
         : undefined,
     }),
     [maxAmount, decimals]
@@ -160,7 +160,6 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
                 </Button>
               );
             })}
-
           <Button
             onClick={onSelectMax}
             scale="xs"
