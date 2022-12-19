@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, CardHeader, Flex, Heading, LinkExternal, LinkBscScan, Text } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Flex, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { format } from 'date-fns'
 import { Proposal } from 'state/types'
@@ -39,15 +39,15 @@ const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) 
         </Flex>
         <Flex alignItems="center" mb="8px">
           <Text color="textSubtle">{t('Creator')}</Text>
-          <LinkBscScan href={getBlockExploreLink(proposal.author, 'address')} ml="8px">
+          <LinkExternal isBscScan href={getBlockExploreLink(proposal.author, 'address')} ml="8px">
             {truncateHash(proposal.author)}
-          </LinkBscScan>
+          </LinkExternal>
         </Flex>
         <Flex alignItems="center" mb="16px">
           <Text color="textSubtle">{t('Snapshot')}</Text>
-          <LinkBscScan href={getBlockExploreLink(proposal.snapshot, 'block')} ml="8px">
+          <LinkExternal isBscScan href={getBlockExploreLink(proposal.snapshot, 'block')} ml="8px">
             {proposal.snapshot}
-          </LinkBscScan>
+          </LinkExternal>
         </Flex>
         <DetailBox p="16px">
           <ProposalStateTag proposalState={proposal.state} mb="8px" />

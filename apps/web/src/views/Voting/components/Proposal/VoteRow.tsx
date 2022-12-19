@@ -1,4 +1,4 @@
-import { Flex, LinkExternal, LinkBscScan, Text, Tag, CheckmarkCircleIcon } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Text, Tag, CheckmarkCircleIcon } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { getBlockExploreLink } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -27,7 +27,7 @@ const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, isVote
     <Row>
       <AddressColumn>
         <Flex alignItems="center">
-          <LinkBscScan href={getBlockExploreLink(vote.voter, 'address')}>{truncateHash(vote.voter)}</LinkBscScan>
+          <LinkExternal isBscScan href={getBlockExploreLink(vote.voter, 'address')}>{truncateHash(vote.voter)}</LinkExternal>
           {isVoter && (
             <Tag variant="success" outline ml="8px">
               <CheckmarkCircleIcon mr="4px" /> {t('Voted')}

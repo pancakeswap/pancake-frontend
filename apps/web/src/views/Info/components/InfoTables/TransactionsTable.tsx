@@ -3,7 +3,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, LinkBscScan, Radio, Skeleton, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Flex, LinkExternal, Radio, Skeleton, Text } from '@pancakeswap/uikit'
 import { ITEMS_PER_INFO_TABLE_PAGE } from 'config/constants/info'
 import { formatDistanceToNowStrict } from 'date-fns'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
@@ -104,7 +104,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const chainName = useGetChainName()
   return (
     <ResponsiveGrid>
-      <LinkBscScan href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && ChainId.ETHEREUM)}>
+      <LinkExternal isBscScan href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && ChainId.ETHEREUM)}>
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
@@ -112,7 +112,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
             ? t('Swap %token0% for %token1%', { token0: inputTokenSymbol, token1: outputTokenSymbol })
             : t('Remove %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })}
         </Text>
-      </LinkBscScan>
+      </LinkExternal>
       <Text>${formatAmount(transaction.amountUSD)}</Text>
       <Text>
         <Text>{`${formatAmount(abs0)} ${transaction.token0Symbol}`}</Text>
@@ -120,9 +120,9 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
       <Text>
         <Text>{`${formatAmount(abs1)} ${transaction.token1Symbol}`}</Text>
       </Text>
-      <LinkBscScan href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && ChainId.ETHEREUM)}>
+      <LinkExternal isBscScan href={getBlockExploreLink(transaction.sender, 'address', chainName === 'ETH' && ChainId.ETHEREUM)}>
         {truncateHash(transaction.sender)}
-      </LinkBscScan>
+      </LinkExternal>
       <Text>{formatDistanceToNowStrict(parseInt(transaction.timestamp, 10) * 1000)}</Text>
     </ResponsiveGrid>
   )

@@ -3,7 +3,6 @@ import {
   Farm as FarmUI,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
-  LinkBscScan,
   LinkExternal,
   Text,
   useMatchBreakpoints,
@@ -76,10 +75,6 @@ const Container = styled.div<{ expanded }>`
 `
 
 const StyledLinkExternal = styled(LinkExternal)`
-  font-weight: 400;
-`
-
-const StyledLinkBscScan = styled(LinkBscScan)`
   font-weight: 400;
 `
 
@@ -198,7 +193,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkBscScan href={bsc}>{t('View Contract')}</StyledLinkBscScan>
+        <StyledLinkExternal isBscScan href={bsc}>{t('View Contract')}</StyledLinkExternal>
         <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>
