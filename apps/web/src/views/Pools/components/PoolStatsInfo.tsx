@@ -1,6 +1,6 @@
 import { Flex, Link, LinkExternal, Skeleton, Text, TimerIcon, Balance, Pool } from '@pancakeswap/uikit'
 import AddToWalletButton, { AddToWalletTextOptions } from 'components/AddToWallet/AddToWalletButton'
-import { bsc } from '@pancakeswap/wagmi/chains'
+import { bsc } from 'wagmi/chains'
 import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 import { useCurrentBlock } from 'state/block/hooks'

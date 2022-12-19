@@ -19,8 +19,8 @@
   },
   "peerDependencies": {
     "swr": "^2.0.0",
-    "wagmi": "^0.6.6",
-    "@wagmi/core": "^0.5.7",
+    "wagmi": "^0.9.4",
+    "@wagmi/core": "^0.8.4",
     "@blocto/sdk": "^0.3.1",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
@@ -60,11 +60,6 @@
       "types": "./dist/connectors/blocto.d.ts",
       "import": "./dist/connectors/blocto.mjs",
       "require": "./dist/connectors/blocto.js"
-    },
-    "./chains": {
-      "types": "./dist/chains.d.ts",
-      "import": "./dist/chains.mjs",
-      "require": "./dist/chains.js"
     }
   },
   "peerDependenciesMeta": {

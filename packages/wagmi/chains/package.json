@@ -1,5 +1,0 @@
-{
-  "main": "../../dist/chains.js",
-  "module": "../../dist/chains.mjs",
-  "types": "../../dist/chains.d.ts"
-}
