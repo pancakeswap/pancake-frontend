@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, CheckmarkIcon, CogIcon, Input, LinkExternal, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
-import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { CMC, COINGECKO, COINGECKO_ETH, PANCAKE_EXTENDED, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists/lists'
@@ -15,6 +15,7 @@ import {
   removeList,
 } from '@pancakeswap/token-lists/react'
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
+import { ChainId } from '@pancakeswap/sdk'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
@@ -161,6 +162,8 @@ function ManageLists({
 }) {
   const [listUrlInput, setListUrlInput] = useState<string>('')
 
+  const { chainId } = useActiveChainId()
+
   const { t } = useTranslation()
   const [, dispatch] = useListState()
 
@@ -189,6 +192,9 @@ function ManageLists({
     const listUrls = Object.keys(lists)
     return listUrls
       .filter((listUrl) => {
+        if (chainId === ChainId.ETHEREUM && [COINGECKO, PANCAKE_EXTENDED, CMC].includes(listUrl)) return false
+        if (chainId === ChainId.BSC && listUrl === COINGECKO_ETH) return false
+
         // only show loaded lists, hide unsupported lists
         return Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
       })
@@ -221,7 +227,7 @@ function ManageLists({
         if (l2) return 1
         return 0
       })
-  }, [lists, activeCopy])
+  }, [lists, chainId, activeCopy])
 
   // temporary fetched list for import flow
   const [tempList, setTempList] = useState<TokenList>()
