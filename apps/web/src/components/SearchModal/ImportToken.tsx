@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Token, Currency, ChainId } from '@pancakeswap/sdk'
-import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid } from '@pancakeswap/uikit'
+import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid, BscScanIcon } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
@@ -80,7 +80,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                   {t('View on %site%', {
                     site: getBlockExploreName(token.chainId),
                   })}
-                  )
+                  {token.chainId === ChainId.BSC && <BscScanIcon color="invertedContrast" ml="4px" />})
                 </Link>
               </Flex>
             )}
