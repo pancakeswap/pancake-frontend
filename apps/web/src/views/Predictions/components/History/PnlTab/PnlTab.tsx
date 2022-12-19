@@ -193,12 +193,12 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
         <SummaryRow type="entered" summary={summary} bnbBusdPrice={bnbBusdPrice} />
 
         <Flex justifyContent="center" mt="24px">
-          <LinkExternal href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px">
+          <Link href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px" external>
             <Button mt="8px" width="100%">
               {t('View Reclaimed & Won')}
               <BscScanIcon color="invertedContrast" ml="4px" />
             </Button>
-          </LinkExternal>
+          </Link >
         </Flex>
       </Box>
     </Box>
