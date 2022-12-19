@@ -34,15 +34,16 @@ export const useIsUserLockedEnd = () => {
 
 const useLockedEndNotification = () => {
   useCakeVaultUserData()
+  const { t } = useTranslation()
   const isUserLockedEnd = useIsUserLockedEnd()
   const { toastInfo } = useToast()
   const [lockedNotificationShow, setLockedNotificationShow] = useLockedNotificationShow()
   useEffect(() => {
     if (toastInfo && isUserLockedEnd && lockedNotificationShow) {
-      toastInfo('Cake Syrup Pool', <LockedEndDescription />)
+      toastInfo(t('Cake Syrup Pool'), <LockedEndDescription />)
       setLockedNotificationShow(false) // show once
     }
-  }, [isUserLockedEnd, toastInfo, lockedNotificationShow, setLockedNotificationShow])
+  }, [isUserLockedEnd, toastInfo, lockedNotificationShow, setLockedNotificationShow, t])
 }
 
 export default useLockedEndNotification
