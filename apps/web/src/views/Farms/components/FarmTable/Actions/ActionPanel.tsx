@@ -193,7 +193,9 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkExternal isBscScan href={bsc}>{t('View Contract')}</StyledLinkExternal>
+        <StyledLinkExternal isBscScan href={bsc}>
+          {t('View Contract')}
+        </StyledLinkExternal>
         <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>
