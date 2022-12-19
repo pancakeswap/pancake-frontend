@@ -2417,4 +2417,5 @@ export const bscTokens = {
     'Token SQUAD',
     'https://ssquad.games/',
   ),
+  zbc: new Token(ChainId.BSC, '0x37a56cdcD83Dce2868f721De58cB3830C44C6303', 9, 'ZBC', 'ZEBEC', 'https://zebec.io/'),
 }
