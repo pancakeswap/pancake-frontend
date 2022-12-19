@@ -30,7 +30,7 @@ function useChainlinkLatestRound() {
     compare: (a, b) => {
       if (!a && !b) return true
       // check is equal
-      if (!a || !b) return true
+      if (!a || !b) return false
       return a.eq(b)
     },
   })
