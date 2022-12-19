@@ -11,5 +11,4 @@ const LinkBscScan: React.FC<React.PropsWithChildren<LinkProps>> = ({ children, .
     </Link>
   );
 };
-
 export default LinkBscScan;
