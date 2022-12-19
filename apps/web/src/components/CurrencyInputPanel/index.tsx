@@ -265,7 +265,8 @@ export default function CurrencyInputPanel({
                   onPercentInput &&
                   [25, 50, 75].map((percent) => {
                     const isAtCurrentPercent =
-                      (maxAmount && value === percentAmount[percent]) || (lpPercent && lpPercent === percent.toString())
+                      (maxAmount && value !== '0' && value === percentAmount[percent]) ||
+                      (lpPercent && lpPercent === percent.toString())
 
                     return (
                       <Button
