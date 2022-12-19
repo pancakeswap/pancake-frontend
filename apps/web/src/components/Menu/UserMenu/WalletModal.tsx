@@ -12,7 +12,7 @@ import {
   ModalTitle,
 } from '@pancakeswap/uikit'
 import { useAccount, useBalance } from 'wagmi'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import WalletInfo from './WalletInfo'
@@ -41,6 +41,24 @@ const Tabs = styled.div`
   padding: 16px 24px;
 `
 
+interface TabsComponentProps {
+  view: WalletView
+  handleClick: (newIndex: number) => void
+}
+
+const TabsComponent: React.FC<React.PropsWithChildren<TabsComponentProps>> = ({ view, handleClick }) => {
+  const { t } = useTranslation()
+
+  return (
+    <Tabs>
+      <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
+        <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>
+        <ButtonMenuItem>{t('Transactions')}</ButtonMenuItem>
+      </ButtonMenu>
+    </Tabs>
+  )
+}
+
 const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   initialView = WalletView.WALLET_INFO,
   onDismiss,
@@ -51,18 +69,9 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const { data, isFetched } = useBalance({ addressOrName: account })
   const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_NATIVE_BALANCE)
 
-  const handleClick = (newIndex: number) => {
+  const handleClick = useCallback((newIndex: number) => {
     setView(newIndex)
-  }
-
-  const TabsComponent: React.FC<React.PropsWithChildren> = () => (
-    <Tabs>
-      <ButtonMenu scale="sm" variant="subtle" onItemClick={handleClick} activeIndex={view} fullWidth>
-        <ButtonMenuItem>{t('Wallet')}</ButtonMenuItem>
-        <ButtonMenuItem>{t('Transactions')}</ButtonMenuItem>
-      </ButtonMenu>
-    </Tabs>
-  )
+  }, [])
 
   return (
     <ModalContainer title={t('Welcome!')} $minWidth="360px">
@@ -74,7 +83,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
           <CloseIcon width="24px" color="text" />
         </IconButton>
       </ModalHeader>
-      {view !== WalletView.WRONG_NETWORK && <TabsComponent />}
+      {view !== WalletView.WRONG_NETWORK && <TabsComponent view={view} handleClick={handleClick} />}
       <ModalBody p="24px" width="100%">
         {view === WalletView.WALLET_INFO && (
           <WalletInfo hasLowNativeBalance={hasLowNativeBalance} switchView={handleClick} onDismiss={onDismiss} />
