@@ -90,7 +90,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                         </CardFooter>
                       }
                       aprRow={
-                        <Pool.AprRowWithToolTip isVaultKey={false}>
+                        <Pool.AprRowWithToolTip>
                           <Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />
                         </Pool.AprRowWithToolTip>
                       }

@@ -19,6 +19,7 @@ describe('removeTrailingZerosRegex', () => {
     ['1000000000000000', '1000000000000000'],
     ['-100000000000000000000', '-100000000000000000000'],
     ['-1000000000000000', '-1000000000000000'],
+    ['270000.00000000', '270000'],
   ])('should format "%s" to "%s"', (numberString, expected) => {
     expect(removeTrailingZeros(numberString)).toEqual(expected)
   })
