@@ -6,6 +6,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 import getUnixTime from 'date-fns/getUnixTime'
 import sub from 'date-fns/sub'
 import { AprMap } from '@pancakeswap/farms'
+import _toLower from 'lodash/toLower'
 
 interface BlockResponse {
   blocks: {
@@ -163,15 +164,15 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
     const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
       gql`
         query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
-          virtualPriceAtLatestBlock: pairs(id: $stableSwapAddress) {
+          virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }
-          virtualPriceOneDayAgo: pairs(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+          virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
             virtualPrice
           }
         }
       `,
-      { stableSwapAddress, blockDayAgo },
+      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo },
     )
 
     const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice
