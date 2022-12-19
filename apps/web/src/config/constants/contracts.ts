@@ -89,7 +89,7 @@ export default {
     97: '',
   },
   predictionsV1: {
-    56: '0x1cdc19B13729f16C5284a0ACE825F83fC9d799f4',
+    56: '0x516ffd7d1e0ca40b1879935b2de87cb20fc1124b',
     97: '',
   },
   bunnySpecialCakeVault: {
