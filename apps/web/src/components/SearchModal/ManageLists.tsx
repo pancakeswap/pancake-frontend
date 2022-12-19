@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, CheckmarkIcon, CogIcon, Input, LinkExternal, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
-import { CMC, COINGECKO, COINGECKO_ETH, PANCAKE_EXTENDED, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { BSC_URLS, ETH_URLS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists/lists'
@@ -192,11 +192,17 @@ function ManageLists({
     const listUrls = Object.keys(lists)
     return listUrls
       .filter((listUrl) => {
-        if (chainId === ChainId.ETHEREUM && [COINGECKO, PANCAKE_EXTENDED, CMC].includes(listUrl)) return false
-        if (chainId === ChainId.BSC && listUrl === COINGECKO_ETH) return false
-
         // only show loaded lists, hide unsupported lists
-        return Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
+        const isValid = Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
+
+        if (isValid) {
+          return (
+            (chainId === ChainId.ETHEREUM && ETH_URLS.includes(listUrl)) ||
+            (chainId === ChainId.BSC && BSC_URLS.includes(listUrl))
+          )
+        }
+
+        return false
       })
       .sort((u1, u2) => {
         const { current: l1 } = lists[u1]
