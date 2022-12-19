@@ -20,7 +20,7 @@ import { multiChainId, multiChainPaths } from 'state/info/constant'
 import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
 import { useAccount } from 'wagmi'
-import { bsc, mainnet } from '@pancakeswap/wagmi/chains'
+import { bsc, mainnet } from 'wagmi/chains'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientCardHeader};

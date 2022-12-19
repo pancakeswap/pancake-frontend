@@ -51,6 +51,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 139,
+    lpSymbol: 'ZBC-CAKE LP',
+    lpAddress: '0x269043694D070e8811c620bf95485314BCC7B4b7',
+    token: bscTokens.zbc,
+    quoteToken: bscTokens.cake,
+  },
+  {
     pid: 138,
     lpSymbol: 'SQUAD-CAKE LP',
     lpAddress: '0x54cd9d6Ce45cEF4fCc1AC568329254661B28711d',

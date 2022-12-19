@@ -66,7 +66,7 @@ const WalletModal: React.FC<React.PropsWithChildren<WalletModalProps>> = ({
   const [view, setView] = useState(initialView)
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { data, isFetched } = useBalance({ addressOrName: account })
+  const { data, isFetched } = useBalance({ address: account })
   const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_NATIVE_BALANCE)
 
   const handleClick = useCallback((newIndex: number) => {
