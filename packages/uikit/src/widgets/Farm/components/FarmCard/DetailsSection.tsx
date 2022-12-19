@@ -3,7 +3,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "../../../../components/Text";
 import { Flex } from "../../../../components/Box";
 import { Skeleton } from "../../../../components/Skeleton";
-import { LinkExternal } from "../../../../components/Link";
+import { LinkExternal, LinkBscScan } from "../../../../components/Link";
 
 export interface ExpandableSectionProps {
   scanAddressLink?: string;
@@ -60,7 +60,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       {!removed && (
         <StyledLinkExternal href={addLiquidityUrl}>{t("Get %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
       )}
-      {scanAddressLink && <StyledLinkExternal href={scanAddressLink}>{t("View Contract")}</StyledLinkExternal>}
+      {scanAddressLink && <LinkBscScan href={scanAddressLink}>{t("View Contract")}</LinkBscScan>}
       {infoAddress && <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>}
     </Wrapper>
   );

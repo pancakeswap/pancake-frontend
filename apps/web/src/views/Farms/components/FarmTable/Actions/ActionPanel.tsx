@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
   LinkExternal,
+  LinkBscScan,
   Text,
   useMatchBreakpoints,
   Farm as FarmUI,
@@ -193,7 +194,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
+        <LinkBscScan href={bsc}>{t('View Contract')}</LinkBscScan>
         <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>
