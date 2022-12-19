@@ -24,6 +24,10 @@ const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
 `;
 
+const StyledLinkBscScan = styled(LinkBscScan)`
+  font-weight: 400;
+`;
+
 export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = ({
   scanAddressLink,
   infoAddress,
@@ -60,7 +64,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       {!removed && (
         <StyledLinkExternal href={addLiquidityUrl}>{t("Get %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
       )}
-      {scanAddressLink && <LinkBscScan href={scanAddressLink}>{t("View Contract")}</LinkBscScan>}
+      {scanAddressLink && <StyledLinkBscScan href={scanAddressLink}>{t("View Contract")}</StyledLinkBscScan>}
       {infoAddress && <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>}
     </Wrapper>
   );

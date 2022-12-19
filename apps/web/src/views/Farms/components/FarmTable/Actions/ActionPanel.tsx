@@ -79,6 +79,10 @@ const StyledLinkExternal = styled(LinkExternal)`
   font-weight: 400;
 `
 
+const StyledLinkBscScan = styled(LinkBscScan)`
+  font-weight: 400;
+`
+
 const StakeContainer = styled.div`
   color: ${({ theme }) => theme.colors.text};
   align-items: center;
@@ -194,7 +198,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <LinkBscScan href={bsc}>{t('View Contract')}</LinkBscScan>
+        <StyledLinkBscScan href={bsc}>{t('View Contract')}</StyledLinkBscScan>
         <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>
