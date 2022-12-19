@@ -198,7 +198,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
               {t('View Reclaimed & Won')}
               <BscScanIcon color="invertedContrast" ml="4px" />
             </Button>
-          </Link >
+          </Link>
         </Flex>
       </Box>
     </Box>
