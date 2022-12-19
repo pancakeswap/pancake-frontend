@@ -1,16 +1,9 @@
 import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { APT } from '../../coins'
+import { APT, CAKE } from '../../coins'
 
 export const mainnetTokens = {
   apt: APT[ChainId.MAINNET],
-  cake: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::CAKE',
-    8,
-    'CAKE',
-    'CAKE Coin',
-    '',
-  ),
+  cake: CAKE[ChainId.MAINNET],
   lzusdc: new Coin(
     ChainId.MAINNET,
     '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC',
@@ -87,70 +80,5 @@ export const mainnetTokens = {
     8,
     'whETH',
     'Wormhole - Wrapped Ether',
-  ),
-
-  busd: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::BUSD',
-    6,
-    'BUSD',
-    'BUSD Coin',
-    '',
-  ),
-  btc: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::BTC',
-    8,
-    'BTC',
-    'BTC Coin',
-    '',
-  ),
-  bnb: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::BNB',
-    8,
-    'BNB',
-    'BNB Coin',
-    '',
-  ),
-  eth: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::ETH',
-    8,
-    'ETH',
-    'ETH Coin',
-    '',
-  ),
-  sol: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::SOL',
-    8,
-    'SOL',
-    'SOL Coin',
-    '',
-  ),
-  usdc: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::USDC',
-    8,
-    'USDC',
-    'USDC Coin',
-    '',
-  ),
-  usdt: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::USDT',
-    8,
-    'USDT',
-    'USDT Coin',
-    '',
-  ),
-  dai: new Coin(
-    ChainId.MAINNET,
-    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::DAI',
-    8,
-    'DAI',
-    'DAI Coin',
-    '',
   ),
 }
