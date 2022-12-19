@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "./Link";
 import { LinkProps } from "./types";
-import BscScan from "../Svg/Icons/BscScan";
+import BscScanIcon from "../Svg/Icons/BscScan";
 
 const LinkBscScan: React.FC<React.PropsWithChildren<LinkProps>> = ({ children, ...props }) => {
   return (
