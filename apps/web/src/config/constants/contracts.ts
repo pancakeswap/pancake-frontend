@@ -71,7 +71,8 @@ export default {
     97: '',
   },
   predictionsBNB: {
-    56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
+    // 56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
+    56: '0x1cdc19B13729f16C5284a0ACE825F83fC9d799f4',
     97: '',
   },
   predictionsCAKE: {
