@@ -104,9 +104,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ transaction: Transaction }>> =
   const chainName = useGetChainName()
   return (
     <ResponsiveGrid>
-      <LinkBscScan
-        href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && ChainId.ETHEREUM)}
-      >
+      <LinkBscScan href={getBlockExploreLink(transaction.hash, 'transaction', chainName === 'ETH' && ChainId.ETHEREUM)}>
         <Text>
           {transaction.type === TransactionType.MINT
             ? t('Add %token0% and %token1%', { token0: transaction.token0Symbol, token1: transaction.token1Symbol })
