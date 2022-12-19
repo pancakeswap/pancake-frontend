@@ -10,7 +10,12 @@ const Container = styled.div`
 const Spinner: React.FC<React.PropsWithChildren<SpinnerProps>> = ({ size = 128 }) => {
   return (
     <Container>
-      <Image src="/images/pancake-3d-spinner.gif" width={size} alt="pancake-3d-spinner" />
+      <Image
+        width={size}
+        height={size * 1.197}
+        src="https://pancakeswap.finance/images/pancake-3d-spinner.gif"
+        alt="pancake-3d-spinner"
+      />
     </Container>
   );
 };
