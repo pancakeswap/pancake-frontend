@@ -28,7 +28,7 @@ export const useMenuItemsStatus = (): Record<string, string> => {
         '/pottery': 'pot_open',
       }),
       ...(votingStatus && {
-        '/voting': 'vote_now',
+        '/voting': votingStatus,
       }),
     }
   }, [competitionStatus, ifoStatus, potteryStatus, votingStatus])
