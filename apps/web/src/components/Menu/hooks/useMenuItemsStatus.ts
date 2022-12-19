@@ -33,10 +33,7 @@ export const useMenuItemsStatus = (): Record<string, string> => {
         '/voting': 'vote_now',
       }),
       ...(isUserLocked && {
-        '/voting': 'lock_end',
-        '/ifo': 'lock_end',
         '/pools': 'lock_end',
-        '/farms': 'lock_end',
       }),
     }
   }, [competitionStatus, ifoStatus, potteryStatus, votingStatus, isUserLocked])
