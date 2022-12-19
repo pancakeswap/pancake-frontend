@@ -72,7 +72,6 @@ function useChainlinkRoundDataSet() {
         }) ?? []
     )
   }, [data])
-  console.log('computedData', computedData)
   return { data: computedData, error }
 }
 
