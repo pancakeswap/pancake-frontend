@@ -1,9 +1,9 @@
-import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { Text } from "../../../../components/Text";
+import styled from "styled-components";
 import { Flex } from "../../../../components/Box";
+import { LinkBscScan, LinkExternal } from "../../../../components/Link";
 import { Skeleton } from "../../../../components/Skeleton";
-import { LinkExternal, LinkBscScan } from "../../../../components/Link";
+import { Text } from "../../../../components/Text";
 
 export interface ExpandableSectionProps {
   scanAddressLink?: string;
