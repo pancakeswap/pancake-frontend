@@ -29,7 +29,7 @@ function useChainlinkLatestRound() {
     refreshInterval: 10 * 1000,
     compare: (a, b) => {
       // check is equal
-      if (!a || !b) return false
+      if (!a || !b) return true
       return a.eq(b)
     },
   })
@@ -72,7 +72,7 @@ function useChainlinkRoundDataSet() {
         }) ?? []
     )
   }, [data])
-
+  console.log('computedData', computedData)
   return { data: computedData, error }
 }
 

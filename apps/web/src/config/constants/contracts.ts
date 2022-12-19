@@ -71,7 +71,7 @@ export default {
     97: '',
   },
   predictionsBNB: {
-    // 56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA',
+    // 56: '0x18B2A687610328590Bc8F2e5fEdDe3b582A49cdA', // Revert before merge
     56: '0x1cdc19B13729f16C5284a0ACE825F83fC9d799f4',
     97: '',
   },
@@ -80,7 +80,8 @@ export default {
     97: '',
   },
   chainlinkOracleBNB: {
-    56: '0xD276fCF34D54A926773c399eBAa772C12ec394aC',
+    // 56: '0xD276fCF34D54A926773c399eBAa772C12ec394aC',
+    56: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
     97: '',
   },
   chainlinkOracleCAKE: {
@@ -88,7 +89,7 @@ export default {
     97: '',
   },
   predictionsV1: {
-    56: '0x516ffd7d1e0ca40b1879935b2de87cb20fc1124b',
+    56: '0x1cdc19B13729f16C5284a0ACE825F83fC9d799f4',
     97: '',
   },
   bunnySpecialCakeVault: {
