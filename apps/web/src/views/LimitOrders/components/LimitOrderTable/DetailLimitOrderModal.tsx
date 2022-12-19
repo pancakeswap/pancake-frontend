@@ -140,6 +140,7 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
           <>
             <Button variant="primary" mt="16px" as="a" external href={formattedOrder.bscScanUrls.created}>
               {t('View on BscScan')}
+              <BscScanIcon color="invertedContrast" ml="4px" />
             </Button>
             {!isSubmissionPending && (
               <Button variant="danger" mt="16px" onClick={onCancelOrder}>

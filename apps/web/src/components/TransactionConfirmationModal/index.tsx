@@ -13,6 +13,7 @@ import {
   Modal,
   InjectedModalProps,
   ModalProps,
+  BscScanIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -83,6 +84,7 @@ export function TransactionSubmittedContent({
               {t('View on %site%', {
                 site: getBlockExploreName(chainId),
               })}
+              {chainId === ChainId.BSC && <BscScanIcon color="invertedContrast" ml="4px" />}
             </Link>
           )}
           {currencyToAdd && (
