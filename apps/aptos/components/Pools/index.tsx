@@ -58,7 +58,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                       isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
                       cardContent={
                         account ? (
-                          isVaultPool(pool) ? (
+                          isVaultPool() ? (
                             <CakeCardActions
                               hideLocateAddress
                               pool={pool}
