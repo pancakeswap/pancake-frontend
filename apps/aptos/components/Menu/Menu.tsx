@@ -68,8 +68,7 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Pools'),
         href: '/pools',
-        status: { text: t('Soon'), color: 'warning' },
-        disabled: true,
+        status: { text: t('Live'), color: 'success' },
       },
     ],
   },
