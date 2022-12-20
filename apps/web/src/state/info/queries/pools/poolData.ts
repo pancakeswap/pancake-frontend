@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import BigNumber from 'bignumber.js'
-import { getUnixTime, sub } from 'date-fns'
 import { gql } from 'graphql-request'
 import _toLower from 'lodash/toLower'
 import { useEffect, useState } from 'react'
@@ -12,12 +11,7 @@ import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
 import { stableSwapClient } from 'web/src/utils/graphql'
-import {
-  checkIsStableSwap,
-  getMultiChainQueryEndPointWithStableSwap,
-  MultiChainName,
-  multiChainQueryMainToken,
-} from '../../constant'
+import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../../constant'
 import { useGetChainName } from '../../hooks'
 import { fetchTopPoolAddresses } from './topPools'
 
@@ -155,7 +149,6 @@ const usePoolDatas = (poolAddresses: string[]): PoolDatas => {
   const { blocks, error: blockError } = useBlocksFromTimestamps([t24h, t48h, t7d, t14d])
   const [block24h, block48h, block7d, block14d] = blocks ?? []
   const chainName = useGetChainName()
-  const isStableSwap = checkIsStableSwap()
 
   useEffect(() => {
     const fetch = async () => {
