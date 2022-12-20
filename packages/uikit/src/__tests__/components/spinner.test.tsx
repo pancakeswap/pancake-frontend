@@ -41,7 +41,7 @@ it("renders correctly", () => {
           class="c1"
         >
           <div
-            class="2"
+            class="c2"
           />
         </div>
       </div>
