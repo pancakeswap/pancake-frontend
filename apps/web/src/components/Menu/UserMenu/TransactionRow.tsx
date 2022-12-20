@@ -1,4 +1,4 @@
-import { BlockIcon, CheckmarkCircleIcon, Flex, OpenNewIcon, RefreshIcon } from '@pancakeswap/uikit'
+import { BlockIcon, CheckmarkCircleIcon, Flex, BscScanIcon, RefreshIcon } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
@@ -79,7 +79,7 @@ const TransactionRow: React.FC<React.PropsWithChildren<TransactionRowProps>> = (
           : txn.summary ?? txn.hash}
       </Summary>
       <TxnIcon>
-        <OpenNewIcon width="24px" color="primary" />
+        <BscScanIcon width="24px" color="primary" />
       </TxnIcon>
     </TxnLink>
   )

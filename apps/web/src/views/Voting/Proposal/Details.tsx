@@ -39,13 +39,13 @@ const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) 
         </Flex>
         <Flex alignItems="center" mb="8px">
           <Text color="textSubtle">{t('Creator')}</Text>
-          <LinkExternal href={getBlockExploreLink(proposal.author, 'address')} ml="8px">
+          <LinkExternal isBscScan href={getBlockExploreLink(proposal.author, 'address')} ml="8px">
             {truncateHash(proposal.author)}
           </LinkExternal>
         </Flex>
         <Flex alignItems="center" mb="16px">
           <Text color="textSubtle">{t('Snapshot')}</Text>
-          <LinkExternal href={getBlockExploreLink(proposal.snapshot, 'block')} ml="8px">
+          <LinkExternal isBscScan href={getBlockExploreLink(proposal.snapshot, 'block')} ml="8px">
             {proposal.snapshot}
           </LinkExternal>
         </Flex>

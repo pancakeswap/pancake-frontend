@@ -1,4 +1,4 @@
-import { InjectedModalProps, Modal, Flex, Text, Button, BinanceIcon, Box } from '@pancakeswap/uikit'
+import { InjectedModalProps, Modal, Flex, Text, Button, BinanceIcon, Box, BscScanIcon } from '@pancakeswap/uikit'
 import { Price, Currency } from '@pancakeswap/sdk'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
@@ -102,6 +102,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
         <Flex flexDirection="column" pt="16px" alignItems="center">
           <Button as="a" external href={getBlockExploreLink(activity.tx, 'transaction', chainId)}>
             {t('View on BscScan')}
+            <BscScanIcon color="invertedContrast" ml="4px" />
           </Button>
         </Flex>
       </Flex>

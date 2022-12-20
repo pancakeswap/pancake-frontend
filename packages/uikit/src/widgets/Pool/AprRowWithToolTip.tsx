@@ -1,10 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Flex, TooltipText, useTooltip } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
 
-export const AprRowWithToolTip: React.FC<React.PropsWithChildren<{ isVaultKey: boolean }>> = ({
+export const AprRowWithToolTip: React.FC<React.PropsWithChildren<{ questionTooltip?: ReactNode }>> = ({
   children,
-  isVaultKey,
+  questionTooltip,
 }) => {
   const { t } = useTranslation();
 
@@ -17,7 +17,10 @@ export const AprRowWithToolTip: React.FC<React.PropsWithChildren<{ isVaultKey: b
   return (
     <Flex alignItems="center" justifyContent="space-between">
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef}>{isVaultKey ? `${t("APY")}:` : `${t("APR")}:`}</TooltipText>
+      <Flex>
+        <TooltipText ref={targetRef}>{`${t("APR")}:`}</TooltipText>
+        {questionTooltip}
+      </Flex>
       {children}
     </Flex>
   );

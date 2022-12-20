@@ -3,6 +3,7 @@ import os from 'os'
 import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
+import _toLower from 'lodash/toLower'
 import { sub, getUnixTime } from 'date-fns'
 import { ChainId } from '@pancakeswap/sdk'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
@@ -124,19 +125,19 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
     const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
       gql`
         query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
-          virtualPriceAtLatestBlock: pairs(id: $stableSwapAddress) {
+          virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }
-          virtualPriceOneDayAgo: pairs(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+          virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
             virtualPrice
           }
         }
       `,
-      { stableSwapAddress, blockDayAgo },
+      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo },
     )
 
-    const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice
-    const preVirtualPrice = virtualPriceOneDayAgo[0]?.virtualPrice
+    const virtualPrice = virtualPriceAtLatestBlock?.virtualPrice
+    const preVirtualPrice = virtualPriceOneDayAgo?.virtualPrice
 
     const current = new BigNumber(virtualPrice)
     const prev = new BigNumber(preVirtualPrice)

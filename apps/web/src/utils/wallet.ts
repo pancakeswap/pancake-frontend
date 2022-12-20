@@ -1,5 +1,6 @@
 // Set of helper functions to facilitate wallet setup
 import { BAD_SRCS } from 'components/Logo/Logo'
+import { Address } from 'wagmi'
 
 /**
  * Prompt the user to add a custom token to metamask
@@ -16,13 +17,12 @@ export const registerToken = async (
 ) => {
   // better leave this undefined for default image instead of broken image url
   const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
-
   const tokenAdded = await window.ethereum.request({
     method: 'wallet_watchAsset',
     params: {
       type: 'ERC20',
       options: {
-        address: tokenAddress,
+        address: tokenAddress as Address,
         symbol: tokenSymbol,
         decimals: tokenDecimals,
         image,

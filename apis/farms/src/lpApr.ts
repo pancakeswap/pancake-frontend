@@ -6,6 +6,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 import getUnixTime from 'date-fns/getUnixTime'
 import sub from 'date-fns/sub'
 import { AprMap } from '@pancakeswap/farms'
+import _toLower from 'lodash/toLower'
 
 interface BlockResponse {
   blocks: {
@@ -23,7 +24,6 @@ const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
   [ChainId.BSC_TESTNET]: '',
   [ChainId.GOERLI]: '',
-  [ChainId.RINKEBY]: '',
 }
 
 const INFO_CLIENT_WITH_CHAIN = {
@@ -31,7 +31,6 @@ const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
   [ChainId.BSC_TESTNET]: '',
   [ChainId.GOERLI]: '',
-  [ChainId.RINKEBY]: '',
 }
 
 const blockClientWithChain = (chainId: ChainId) => {
@@ -163,15 +162,15 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
     const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
       gql`
         query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
-          virtualPriceAtLatestBlock: pairs(id: $stableSwapAddress) {
+          virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }
-          virtualPriceOneDayAgo: pairs(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+          virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
             virtualPrice
           }
         }
       `,
-      { stableSwapAddress, blockDayAgo },
+      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo },
     )
 
     const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice

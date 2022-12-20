@@ -137,7 +137,7 @@ const UserMenuItems = ({ onShowTx }: { onShowTx: () => void }) => {
 
 async function switchNetwork(chainId: number) {
   const chain = CHAINS_STARGATE.find((c) => c.id === chainId)
-  const provider = window.stargate?.wallet?.ethereum?.signer?.provider?.provider ?? window.ethereum
+  const provider = window.stargate?.wallet?.ethereum?.signer?.provider?.provider ?? (window as any).ethereum
   if (chain && provider) {
     try {
       await provider.request({
