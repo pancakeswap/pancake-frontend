@@ -67,10 +67,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
   const needsEnable = useMemo(() => cakeNeeded && !hasEnoughBalanceToExtend, [cakeNeeded, hasEnoughBalanceToExtend])
 
   const { allowance, setLastUpdated } = useCheckVaultApprovalStatus(VaultKey.CakeVault)
-  const { handleApprove: handleCakeApprove, pendingTx: cakePendingTx } = useVaultApprove(
-    VaultKey.CakeVault,
-    setLastUpdated,
-  )
+  const { handleApprove, pendingTx: approvePendingTx } = useVaultApprove(VaultKey.CakeVault, setLastUpdated)
   const needsApprove = useMemo(() => {
     if (cakeNeeded) {
       return ENABLE_EXTEND_LOCK_AMOUNT.gt(allowance)
@@ -144,11 +141,11 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         {needsApprove ? (
           <Button
             width="100%"
-            isLoading={cakePendingTx}
-            endIcon={cakePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-            onClick={handleCakeApprove}
+            isLoading={approvePendingTx}
+            endIcon={approvePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+            onClick={handleApprove}
           >
-            {t('Enable')}
+            {approvePendingTx ? t('Enabling') : t('Enable')}
           </Button>
         ) : showEnableConfirmButtons ? (
           <ExtendEnable
