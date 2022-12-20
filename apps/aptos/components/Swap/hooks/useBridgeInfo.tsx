@@ -4,7 +4,7 @@ import { bridgeInfo } from 'components/Swap/BridgeButton'
 
 const useBridgeInfo = ({ currency }: { currency?: Currency }) => {
   const bridgeResult = useMemo(
-    () => bridgeInfo.find((bridge) => currency?.symbol === bridge.symbol || currency?.symbol.startsWith(bridge.symbol)),
+    () => bridgeInfo.find((bridge) => currency?.symbol.startsWith(bridge.symbol)),
     [currency],
   )
 
