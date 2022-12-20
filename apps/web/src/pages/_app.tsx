@@ -10,6 +10,7 @@ import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
 import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
+import useLockedEndNotification from 'hooks/useLockedEndNotification'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -41,6 +42,7 @@ function GlobalHooks() {
   useAccountEventListener()
   useSentryUser()
   useThemeCookie()
+  useLockedEndNotification()
   return null
 }
 
@@ -50,6 +52,7 @@ function MPGlobalHooks() {
   useUserAgent()
   useAccountEventListener()
   useSentryUser()
+  useLockedEndNotification()
   return null
 }
 

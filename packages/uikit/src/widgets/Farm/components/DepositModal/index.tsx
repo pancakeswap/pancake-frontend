@@ -16,11 +16,11 @@ import { Message, MessageText } from "../../../../components/Message";
 import { AutoRenewIcon, ErrorIcon, CalculateIcon } from "../../../../components/Svg";
 import { RoiCalculatorModal } from "../../../../components/RoiCalculatorModal";
 
-const AnnualRoiContainer = styled(Flex)`
+const AnnualRoiContainer = styled((props) => <Flex {...props} />)`
   cursor: pointer;
 `;
 
-const AnnualRoiDisplay = styled(Text)`
+const AnnualRoiDisplay = styled((props) => <Text {...props} />)`
   width: 72px;
   max-width: 72px;
   overflow: hidden;
@@ -129,7 +129,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         .dividedBy(100)
         .multipliedBy(percent)
         .toNumber()
-        .toLocaleString(undefined, { maximumFractionDigits: decimals });
+        .toLocaleString("en-US", { maximumFractionDigits: decimals });
       setVal(totalAmount);
     },
     [decimals, fullBalanceNumber]
@@ -168,6 +168,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           onPercentInput={handlePercentInput}
           onChange={handleChange}
           max={fullBalance}
+          maxAmount={fullBalanceNumber}
           symbol={tokenName}
           addLiquidityUrl={addLiquidityUrl}
           inputTitle={t("Stake")}

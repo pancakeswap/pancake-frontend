@@ -28,6 +28,7 @@ function useChainlinkLatestRound() {
     dedupingInterval: 10 * 1000,
     refreshInterval: 10 * 1000,
     compare: (a, b) => {
+      if (!a && !b) return true
       // check is equal
       if (!a || !b) return false
       return a.eq(b)

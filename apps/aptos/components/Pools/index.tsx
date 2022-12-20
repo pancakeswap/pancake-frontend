@@ -58,7 +58,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                       isStaked={Boolean(pool?.userData?.stakedBalance?.gt(0))}
                       cardContent={
                         account ? (
-                          isVaultPool(pool) ? (
+                          isVaultPool() ? (
                             <CakeCardActions
                               hideLocateAddress
                               pool={pool}
@@ -90,7 +90,7 @@ const PoolsPage: React.FC<React.PropsWithChildren> = () => {
                         </CardFooter>
                       }
                       aprRow={
-                        <Pool.AprRowWithToolTip isVaultKey={false}>
+                        <Pool.AprRowWithToolTip>
                           <Apr pool={pool} stakedBalance={pool?.userData?.stakedBalance} showIcon={false} />
                         </Pool.AprRowWithToolTip>
                       }

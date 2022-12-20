@@ -14,7 +14,7 @@ const WalletUserMenuItem: React.FC<React.PropsWithChildren<WalletUserMenuItemPro
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { data, isFetched } = useBalance({ addressOrName: account })
+  const { data, isFetched } = useBalance({ address: account })
   const hasLowNativeBalance = isFetched && data && data.value.lte(LOW_NATIVE_BALANCE)
 
   return (

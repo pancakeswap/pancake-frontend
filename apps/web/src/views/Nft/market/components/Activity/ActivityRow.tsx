@@ -5,7 +5,7 @@ import {
   Td,
   IconButton,
   Link,
-  OpenNewIcon,
+  BscScanIcon,
   useModal,
   Skeleton,
   useMatchBreakpoints,
@@ -158,7 +158,7 @@ const ActivityRow: React.FC<React.PropsWithChildren<ActivityRowProps>> = ({
       {isXs || isSm ? null : (
         <Td>
           <IconButton as={Link} external href={getBlockExploreLink(activity.tx, 'transaction', chainId)}>
-            <OpenNewIcon color="textSubtle" width="18px" />
+            <BscScanIcon color="textSubtle" width="18px" />
           </IconButton>
         </Td>
       )}

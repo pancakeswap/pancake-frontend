@@ -115,7 +115,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
     placement: 'bottom',
   })
 
-  const Actions = isVaultPool(pool) ? CakeTableActions : TableActions
+  const Actions = isVaultPool() ? CakeTableActions : TableActions
 
   return (
     <StyledActionPanel expanded={expanded}>

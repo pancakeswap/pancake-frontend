@@ -1,4 +1,3 @@
-import React from "react";
 import noop from "lodash/noop";
 import { renderWithProvider } from "../../testHelpers";
 import { Modal } from "../../widgets/Modal";

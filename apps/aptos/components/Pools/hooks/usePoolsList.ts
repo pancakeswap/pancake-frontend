@@ -52,19 +52,22 @@ export const usePoolsList = () => {
 
   const prices = useAddressPriceMap({ pools, chainId })
 
-  const tranformCakePool = useCakePool({ balances, chainId })
+  // const tranformCakePool = useCakePool({ balances, chainId })
 
   return useMemo(() => {
     const syrupPools = pools
       ? pools.map((pool) => transformPool(pool as PoolResource, balances, chainId, prices)).filter(Boolean)
       : []
 
-    const cakePool = tranformCakePool()
+    // const cakePool = tranformCakePool()
 
-    return cakePool ? [cakePool, ...syrupPools] : syrupPools
+    // return cakePool ? [cakePool, ...syrupPools] : syrupPools
+
+    return syrupPools
+
     // Disable exhaustive for lastUpdated
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pools, balances, chainId, prices, tranformCakePool, lastUpdated])
+  }, [pools, balances, chainId, prices, lastUpdated])
 }
 
 export const useCakePool = ({ balances, chainId }) => {

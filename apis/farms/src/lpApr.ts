@@ -24,7 +24,6 @@ const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
   [ChainId.BSC_TESTNET]: '',
   [ChainId.GOERLI]: '',
-  [ChainId.RINKEBY]: '',
 }
 
 const INFO_CLIENT_WITH_CHAIN = {
@@ -32,7 +31,6 @@ const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exhange-eth',
   [ChainId.BSC_TESTNET]: '',
   [ChainId.GOERLI]: '',
-  [ChainId.RINKEBY]: '',
 }
 
 const blockClientWithChain = (chainId: ChainId) => {

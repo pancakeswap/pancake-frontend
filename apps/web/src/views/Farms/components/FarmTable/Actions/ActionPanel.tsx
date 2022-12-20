@@ -1,18 +1,18 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
-  LinkExternal,
-  Text,
-  useMatchBreakpoints,
   Farm as FarmUI,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
+  LinkExternal,
+  Text,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContext, useMemo } from 'react'
+import { multiChainPaths } from 'state/info/constant'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { multiChainPaths } from 'state/info/constant'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FarmWithStakedValue } from '../../types'
 
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
@@ -193,7 +193,9 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             </StyledLinkExternal>
           </StakeContainer>
         )}
-        <StyledLinkExternal href={bsc}>{t('View Contract')}</StyledLinkExternal>
+        <StyledLinkExternal isBscScan href={bsc}>
+          {t('View Contract')}
+        </StyledLinkExternal>
         <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
       </InfoContainer>
       <ActionContainer>

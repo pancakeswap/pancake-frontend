@@ -5,7 +5,6 @@
     "target": "ES2015",
     "baseUrl": ".",
     "paths": {
-      "@pancakeswap/wagmi/chains": ["../../packages/wagmi/chains/index.ts"],
       "@pancakeswap/wagmi": ["../../packages/wagmi/src/index.ts"]
     }
   },

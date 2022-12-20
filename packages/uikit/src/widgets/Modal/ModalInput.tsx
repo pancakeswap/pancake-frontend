@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+import { useMemo } from "react";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { parseUnits } from "@ethersproject/units";
@@ -10,6 +12,7 @@ import { Input, InputProps } from "../../components/Input";
 
 interface ModalInputProps {
   max: string;
+  maxAmount?: BigNumber;
   symbol: string;
   onSelectMax?: () => void;
   onPercentInput?: (percent: number) => void;
@@ -59,6 +62,7 @@ const StyledErrorMessage = styled(Text)`
 
 const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   max,
+  maxAmount,
   symbol,
   onChange,
   onSelectMax,
@@ -80,6 +84,35 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
     const balanceUnits = parseUnits(balance, decimals);
     return formatBigNumber(balanceUnits, decimals, decimals);
   };
+
+  const percentAmount = useMemo(
+    () => ({
+      25: maxAmount
+        ? maxAmount
+            .dividedBy(100)
+            .multipliedBy(25)
+            .toNumber()
+            .toLocaleString("en-US", { maximumFractionDigits: decimals })
+        : undefined,
+      50: maxAmount
+        ? maxAmount
+            .dividedBy(100)
+            .multipliedBy(50)
+            .toNumber()
+            .toLocaleString("en-US", { maximumFractionDigits: decimals })
+        : undefined,
+      75: maxAmount
+        ? maxAmount
+            .dividedBy(100)
+            .multipliedBy(75)
+            .toNumber()
+            .toLocaleString("en-US", { maximumFractionDigits: decimals })
+        : undefined,
+    }),
+    [maxAmount, decimals]
+  );
+
+  const isAtPercentMax = maxAmount && value === maxAmount.toString();
 
   return (
     <div style={{ position: "relative" }}>
@@ -104,21 +137,35 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
         </Flex>
         <Flex pt="3px" justifyContent="flex-end">
           {onPercentInput &&
-            [25, 50, 75].map((percent) => (
-              <Button
-                key={`btn_quickCurrency${percent}`}
-                onClick={() => {
-                  onPercentInput(percent);
-                }}
-                scale="xs"
-                mr="5px"
-                variant="secondary"
-                style={{ textTransform: "uppercase" }}
-              >
-                {percent}%
-              </Button>
-            ))}
-          <Button onClick={onSelectMax} scale="xs" variant="secondary" style={{ textTransform: "uppercase" }}>
+            [25, 50, 75].map((percent) => {
+              let currentPercentAmount;
+              if (percent === 25) currentPercentAmount = percentAmount[25];
+              else if (percent === 50) currentPercentAmount = percentAmount[50];
+              else if (percent === 75) currentPercentAmount = percentAmount[75];
+
+              const isAtCurrentPercent = maxAmount && value === currentPercentAmount;
+
+              return (
+                <Button
+                  key={`btn_quickCurrency${percent}`}
+                  onClick={() => {
+                    onPercentInput(percent);
+                  }}
+                  scale="xs"
+                  mr="5px"
+                  variant={isAtCurrentPercent ? "primary" : "secondary"}
+                  style={{ textTransform: "uppercase" }}
+                >
+                  {percent}%
+                </Button>
+              );
+            })}
+          <Button
+            onClick={onSelectMax}
+            scale="xs"
+            variant={isAtPercentMax ? "primary" : "secondary"}
+            style={{ textTransform: "uppercase" }}
+          >
             {t("Max")}
           </Button>
         </Flex>
