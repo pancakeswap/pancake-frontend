@@ -108,7 +108,7 @@ export default function AddressInputPanel({
                   {t('View on %site%', {
                     site: getBlockExploreName(chainId),
                   })}
-                  {chainId === ChainId.BSC && <BscScanIcon color="invertedContrast" ml="4px" />})
+                  {chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
                 </Link>
               )}
             </RowBetween>
