@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
@@ -9,7 +8,8 @@ import { CoinRegisterButton } from 'components/CoinRegisterButton'
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import styled from 'styled-components'
-import { BridgeButton, bridgeInfo } from 'components/Swap/BridgeButton'
+import { BridgeButton } from 'components/Swap/BridgeButton'
+import useBridgeInfo from 'components/Swap/hooks/useBridgeInfo'
 
 type Props = {
   id: string
@@ -25,6 +25,7 @@ type Props = {
   showMaxButton: boolean
   label?: string
   disabled?: boolean
+  showBridgeWarning?: boolean
 }
 
 const InputRow = styled.div<{ selected: boolean }>`
@@ -49,8 +50,10 @@ export const CurrencyInputPanel = ({
   onMax,
   showMaxButton,
   disabled,
+  showBridgeWarning,
 }: Props) => {
   const { account } = useAccount()
+  const bridgeResult = useBridgeInfo({ currency })
 
   const isMounted = useIsMounted()
   const { t } = useTranslation()
@@ -70,17 +73,13 @@ export const CurrencyInputPanel = ({
     />,
   )
 
-  const isInBridgeInfo = useMemo(
-    () => bridgeInfo.find((bridge) => currency?.symbol === bridge.symbol || currency?.symbol.startsWith(bridge.symbol)),
-    [currency],
-  )
-
   return (
     <SwapUI.CurrencyInputPanel
       id={id}
       value={value}
       onUserInput={onUserInput}
       onInputBlur={onInputBlur}
+      showBridgeWarning={showBridgeWarning}
       top={
         <>
           <AtomBox display="flex" flexWrap="wrap">
@@ -109,7 +108,7 @@ export const CurrencyInputPanel = ({
                 {currency && currency.isToken && account && !isLoading && !data && (
                   <CoinRegisterButton currency={currency} />
                 )}
-                {isInBridgeInfo && <BridgeButton url={isInBridgeInfo.url} />}
+                {bridgeResult && <BridgeButton url={bridgeResult.url} />}
               </AtomBox>
             ) : null}
           </AtomBox>

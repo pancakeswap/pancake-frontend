@@ -112,7 +112,7 @@ export const inputContainerVariants = recipe({
   variants: {
     error: {
       true: atoms({
-        boxShadow: "warning",
+        boxShadow: "danger",
       }),
       false: atoms({
         boxShadow: "inset",
@@ -122,6 +122,11 @@ export const inputContainerVariants = recipe({
       true: {
         borderRadius: "0px 16px 16px 16px",
       },
+    },
+    showBridgeWarning: {
+      true: atoms({
+        boxShadow: "warning",
+      }),
     },
   },
 });
