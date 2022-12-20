@@ -6,7 +6,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Flex, Text, Box } from "../../components";
 import { DeserializedPool } from "./types";
 
-const InlineText = styled(Text)`
+const InlineText = styled((props) => <Text {...props} />)`
   display: inline;
 `;
 

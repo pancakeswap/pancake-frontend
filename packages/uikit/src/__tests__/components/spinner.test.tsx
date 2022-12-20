@@ -6,23 +6,44 @@ it("renders correctly", () => {
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
       .c0 {
+      width: 128px;
+      height: 153.216px;
       position: relative;
+    }
+
+    .c1 {
+      max-height: 153.216px;
+      max-width: 128px;
+      position: relative;
+      width: 100%;
+    }
+
+    .c1:after {
+      content: "";
+      display: block;
+      padding-top: 119.7%;
+    }
+
+    .c2 {
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
     }
 
     <div
         class="c0"
+        height="153.216"
+        width="128"
       >
-        <img
-          alt="pancake-3d-spinner"
-          data-nimg="1"
-          decoding="async"
-          height="153.216"
-          loading="lazy"
-          src="/_next/image?url=https%3A%2F%2Fpancakeswap.finance%2Fimages%2Fpancake-3d-spinner.gif&w=256&q=75"
-          srcset="/_next/image?url=https%3A%2F%2Fpancakeswap.finance%2Fimages%2Fpancake-3d-spinner.gif&w=128&q=75 1x, /_next/image?url=https%3A%2F%2Fpancakeswap.finance%2Fimages%2Fpancake-3d-spinner.gif&w=256&q=75 2x"
-          style="color: transparent;"
-          width="128"
-        />
+        <div
+          class="c1"
+        >
+          <div
+            class="c2"
+          />
+        </div>
       </div>
     </DocumentFragment>
   `);
