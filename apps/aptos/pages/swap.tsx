@@ -43,6 +43,7 @@ import {
   computeTradePriceBreakdown,
   warningSeverity,
 } from 'utils/exchange'
+import { useWarningSwapModal } from 'components/SwapWarningModal'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import useSWRImuutable from 'swr/immutable'
@@ -97,6 +98,8 @@ const SwapPage = () => {
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+
+  const shouldShowWarningModal = useWarningSwapModal()
 
   const isExactIn: boolean = independentField === Field.INPUT
 
@@ -259,6 +262,8 @@ const SwapPage = () => {
 
   const handleInputSelect = useCallback(
     (currency: Currency) => {
+      shouldShowWarningModal(currency)
+
       if (outputCurrency?.wrapped.equals(currency.wrapped) && inputCurrency) {
         replaceBrowserHistory('outputCurrency', currencyId(inputCurrency))
       }
@@ -266,11 +271,13 @@ const SwapPage = () => {
       dispatch(selectCurrency({ field: Field.INPUT, currencyId: currency.wrapped.address }))
       replaceBrowserHistory('inputCurrency', currencyId(currency))
     },
-    [dispatch, inputCurrency, outputCurrency],
+    [dispatch, inputCurrency, outputCurrency?.wrapped, shouldShowWarningModal],
   )
 
   const handleOutputSelect = useCallback(
     (currency: Currency) => {
+      shouldShowWarningModal(currency)
+
       if (inputCurrency?.wrapped.equals(currency.wrapped) && outputCurrency) {
         replaceBrowserHistory('inputCurrency', currencyId(outputCurrency))
       }
@@ -278,7 +285,7 @@ const SwapPage = () => {
       dispatch(selectCurrency({ field: Field.OUTPUT, currencyId: currency.wrapped.address }))
       replaceBrowserHistory('outputCurrency', currencyId(currency))
     },
-    [dispatch, inputCurrency, outputCurrency],
+    [dispatch, inputCurrency?.wrapped, outputCurrency, shouldShowWarningModal],
   )
 
   const handleSwitch = useCallback(() => {

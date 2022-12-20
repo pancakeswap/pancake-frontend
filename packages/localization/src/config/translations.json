@@ -1074,6 +1074,8 @@
   "out of $%totalFees% total fees": "out of $%totalFees% total fees",
   "24H": "24H",
   "7D performance": "7D performance",
+  "Please note that the Mojito Markets team have paused project development for the time being": "Please note that the Mojito Markets team have paused project development for the time being",
+  "For more info, please see %brand%’s twitter.": "For more info, please see %brand%’s twitter.",
   "Based on last 7 days' performance. Does not account for impermanent loss": "Based on last 7 days' performance. Does not account for impermanent loss",
   "View token on CoinMarketCap": "View token on CoinMarketCap",
   "Top Movers": "Top Movers",
