@@ -27,7 +27,9 @@ const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, isVote
     <Row>
       <AddressColumn>
         <Flex alignItems="center">
-          <LinkExternal href={getBlockExploreLink(vote.voter, 'address')}>{truncateHash(vote.voter)}</LinkExternal>
+          <LinkExternal isBscScan href={getBlockExploreLink(vote.voter, 'address')}>
+            {truncateHash(vote.voter)}
+          </LinkExternal>
           {isVoter && (
             <Tag variant="success" outline ml="8px">
               <CheckmarkCircleIcon mr="4px" /> {t('Voted')}

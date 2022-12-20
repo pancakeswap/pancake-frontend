@@ -87,7 +87,7 @@ const ConfirmModal: React.FC<React.PropsWithChildren<ConfirmModalProps>> = ({
               <Text mb="30px" bold>
                 {t('Transaction Submitted')}
               </Text>
-              <LinkExternal href={getBlockExploreLink(txHash, 'transaction', chainId)} mb="30px">
+              <LinkExternal isBscScan href={getBlockExploreLink(txHash, 'transaction', chainId)} mb="30px">
                 {t('View on BscScan')}: {truncateHash(txHash, 8, 0)}
               </LinkExternal>
               <Flex

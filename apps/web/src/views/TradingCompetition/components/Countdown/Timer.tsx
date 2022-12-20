@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Heading, Text, Link, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Heading, Text, Link, useTooltip, BscScanIcon } from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
 import { useTranslation, ContextApi } from '@pancakeswap/localization'
 
@@ -67,6 +67,7 @@ const TooltipContent = ({ blockNumber, t }: { blockNumber: number; t: ContextApi
     </Text>
     <Link external href={getBlockExploreLink(blockNumber, 'block')}>
       {t('View on BscScan')}
+      <BscScanIcon color="invertedContrast" ml="4px" />
     </Link>
   </>
 )
