@@ -62,7 +62,11 @@ const transformPool = (
   balances,
   chainId,
   prices,
-): Pool.DeserializedPool<Coin | AptosCoin> | undefined => {
+):
+  | (Pool.DeserializedPool<Coin | AptosCoin> & {
+      stakeLimitEndBlock?: number
+    })
+  | undefined => {
   const startTime = _toNumber(_get(resource, 'data.start_timestamp', '0'))
 
   const startYet = getSecondsLeftFromNow(startTime)
@@ -145,6 +149,8 @@ const transformPool = (
       totalStaked: totalStakedToken,
     }) || 0
 
+  const startBlock = _toNumber(resource.data.start_timestamp)
+
   return {
     // Ignore sousId
     sousId: 0,
@@ -159,9 +165,12 @@ const transformPool = (
 
     isFinished: Boolean(isFinished),
     poolCategory: PoolCategory.CORE,
-    startBlock: _toNumber(resource.data.start_timestamp),
+    startBlock,
+    endBlock: _toNumber(resource.data.end_timestamp),
+
     tokenPerBlock: resource.data.reward_per_second,
     stakingLimit: resource.data.pool_limit_per_user ? new BigNumber(resource.data.pool_limit_per_user) : BIG_ZERO,
+    stakeLimitEndBlock: startBlock + _toNumber(resource.data.seconds_for_user_limit),
     totalStaked: new BigNumber(totalStakedToken),
 
     userData,

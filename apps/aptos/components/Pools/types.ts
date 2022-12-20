@@ -12,5 +12,6 @@ export interface PoolResource {
     reward_per_second: string
     pool_limit_per_user: string
     total_staked_token: string
+    seconds_for_user_limit: string
   }
 }
