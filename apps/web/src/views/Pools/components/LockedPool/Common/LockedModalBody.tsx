@@ -71,7 +71,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
     VaultKey.CakeVault,
     setLastUpdated,
   )
-  const needApprove = useMemo(() => {
+  const needsApprove = useMemo(() => {
     if (cakeNeeded) {
       return ENABLE_EXTEND_LOCK_AMOUNT.gt(allowance)
     }
@@ -122,7 +122,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         />
       )}
 
-      {!needApprove && cakeNeeded ? (
+      {!needsApprove && cakeNeeded ? (
         hasEnoughBalanceToExtend ? (
           <Text fontSize="12px" mt="24px">
             {t('0.0001 CAKE will be spent to extend')}
@@ -134,14 +134,14 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         )
       ) : null}
 
-      {needApprove && cakeNeeded ? (
+      {needsApprove && cakeNeeded ? (
         <Message variant="warning" mt="24px">
           <MessageText maxWidth="200px">{t('Insufficient token allowance. Click "Enable" to approve.')}</MessageText>
         </Message>
       ) : null}
 
       <Flex mt="24px" flexDirection="column">
-        {needApprove ? (
+        {needsApprove ? (
           <Button
             width="100%"
             isLoading={cakePendingTx}
@@ -155,7 +155,6 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
             hasEnoughCake={hasEnoughBalanceToExtend}
             handleConfirmClick={handleConfirmClick}
             pendingConfirmTx={pendingTx}
-            disabled={needApprove}
             isValidAmount={isValidAmount}
             isValidDuration={isValidDuration}
           />

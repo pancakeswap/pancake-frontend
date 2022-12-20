@@ -3,7 +3,6 @@ import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { useExtendEnable } from '../hooks/useExtendEnable'
 
 interface ExtendEnableProps {
-  disabled: boolean
   hasEnoughCake: boolean
   handleConfirmClick: () => void
   pendingConfirmTx: boolean
@@ -12,7 +11,6 @@ interface ExtendEnableProps {
 }
 
 const ExtendEnable: React.FC<React.PropsWithChildren<ExtendEnableProps>> = ({
-  disabled,
   hasEnoughCake,
   handleConfirmClick,
   pendingConfirmTx,
@@ -35,7 +33,7 @@ const ExtendEnable: React.FC<React.PropsWithChildren<ExtendEnableProps>> = ({
     <ApproveConfirmButtons
       isApproveDisabled={!(isValidAmount && isValidDuration) || hasEnoughCake}
       isApproving={pendingEnableTxWithBalance}
-      isConfirmDisabled={!(isValidAmount && isValidDuration) || disabled || !hasEnoughCake}
+      isConfirmDisabled={!(isValidAmount && isValidDuration) || !hasEnoughCake}
       isConfirming={pendingConfirmTx}
       onApprove={handleEnable}
       onConfirm={handleConfirmClick}
