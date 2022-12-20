@@ -248,6 +248,7 @@ export default function CurrencyInputPanel({
               onBlur={onInputBlur}
               onUserInput={(val) => {
                 onUserInput(val)
+                setCurrentClickedPercent('')
               }}
             />
           </LabelRow>
@@ -279,7 +280,7 @@ export default function CurrencyInputPanel({
                         }}
                         scale="xs"
                         mr="5px"
-                        variant={isAtClickedPercent && isAtCurrentPercent ? 'primary' : 'secondary'}
+                        variant={isAtClickedPercent || isAtCurrentPercent ? 'primary' : 'secondary'}
                         style={{ textTransform: 'uppercase' }}
                       >
                         {percent}%
