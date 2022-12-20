@@ -53,7 +53,7 @@ export const CurrencyInputPanel = ({
   showBridgeWarning,
 }: Props) => {
   const { account } = useAccount()
-  const bridgeResult = useBridgeInfo({ currency })
+  const { bridgeResult } = useBridgeInfo({ currency })
 
   const isMounted = useIsMounted()
   const { t } = useTranslation()
