@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
@@ -79,6 +79,14 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
     return amount.gt(allowance)
   }, [allowance, cakeNeeded, lockedAmount])
 
+  const [showEnableConfirmButtons, setShowEnableConfirmButtons] = useState(needsEnable)
+
+  useEffect(() => {
+    if (needsEnable) {
+      setShowEnableConfirmButtons(true)
+    }
+  }, [needsEnable])
+
   return (
     <>
       <Box mb="16px">
@@ -114,7 +122,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         />
       )}
 
-      {cakeNeeded ? (
+      {!needApprove && cakeNeeded ? (
         hasEnoughBalanceToExtend ? (
           <Text fontSize="12px" mt="24px">
             {t('0.0001 CAKE will be spent to extend')}
@@ -132,7 +140,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         </Message>
       )}
 
-      <Flex mt="24px">
+      <Flex mt="24px" flexDirection="column">
         {needApprove ? (
           <Button
             width="100%"
@@ -142,8 +150,15 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
           >
             {t('Enable')}
           </Button>
-        ) : needsEnable ? (
-          <ExtendEnable isValidAmount={isValidAmount} isValidDuration={isValidDuration} />
+        ) : showEnableConfirmButtons ? (
+          <ExtendEnable
+            hasEnoughCake={hasEnoughBalanceToExtend}
+            handleConfirmClick={handleConfirmClick}
+            pendingConfirmTx={pendingTx}
+            disabled={needApprove}
+            isValidAmount={isValidAmount}
+            isValidDuration={isValidDuration}
+          />
         ) : (
           <Button
             width="100%"

@@ -17,6 +17,7 @@ interface ApproveConfirmButtonsProps {
   buttonArrangement?: ButtonArrangement
   confirmLabel?: string
   confirmId?: string
+  useMinWidth?: boolean
 }
 
 const StyledApproveConfirmButtonRow = styled.div`
@@ -30,11 +31,15 @@ const StyledApproveConfirmButtonRow = styled.div`
   }
 `
 
-const Button = styled(UIKitButton)`
+const Button = styled(UIKitButton)<{ useMinWidth: boolean }>`
   width: 100%;
 
   ${({ theme }) => theme.mediaQueries.md} {
+    ${({ useMinWidth }) =>
+      useMinWidth &&
+      `  
     min-width: 160px;
+  `}
   }
 `
 
@@ -68,6 +73,7 @@ const ApproveConfirmButtons: React.FC<React.PropsWithChildren<ApproveConfirmButt
   buttonArrangement = ButtonArrangement.ROW,
   confirmLabel,
   confirmId,
+  useMinWidth = true,
 }) => {
   const { t } = useTranslation()
   const confirmButtonText = confirmLabel ?? t('Confirm')
@@ -81,6 +87,7 @@ const ApproveConfirmButtons: React.FC<React.PropsWithChildren<ApproveConfirmButt
             onClick={onApprove}
             endIcon={isApproving ? spinnerIcon : undefined}
             isLoading={isApproving}
+            useMinWidth={useMinWidth}
           >
             {isApproving ? t('Enabling') : t('Enable')}
           </Button>
@@ -96,6 +103,7 @@ const ApproveConfirmButtons: React.FC<React.PropsWithChildren<ApproveConfirmButt
             disabled={isConfirmDisabled}
             isLoading={isConfirming}
             endIcon={isConfirming ? spinnerIcon : undefined}
+            useMinWidth={useMinWidth}
           >
             {isConfirming ? t('Confirming') : confirmButtonText}
           </Button>
