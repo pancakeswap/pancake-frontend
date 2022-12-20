@@ -134,11 +134,11 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         )
       ) : null}
 
-      {needApprove && (
+      {needApprove && cakeNeeded ? (
         <Message variant="warning" mt="24px">
           <MessageText maxWidth="200px">{t('Insufficient token allowance. Click "Enable" to approve.')}</MessageText>
         </Message>
-      )}
+      ) : null}
 
       <Flex mt="24px" flexDirection="column">
         {needApprove ? (
