@@ -9,7 +9,7 @@ import {
   TradeType,
   Token,
 } from '@pancakeswap/aptos-swap-sdk'
-import { APTOS_COIN, useAccount } from '@pancakeswap/awgmi'
+import { useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
@@ -390,13 +390,6 @@ const SwapPage = () => {
           <CurrencyInputPanel
             onCurrencySelect={handleInputSelect}
             id="swap-currency-input"
-            shareLink={
-              inputCurrency && inputCurrency.isToken
-                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
-                    inputCurrency.address,
-                  )}`
-                : undefined
-            }
             currency={isLoaded ? inputCurrency : undefined}
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
@@ -415,13 +408,6 @@ const SwapPage = () => {
           <CurrencyInputPanel
             showMaxButton={false}
             onCurrencySelect={handleOutputSelect}
-            shareLink={
-              outputCurrency && outputCurrency.isToken
-                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
-                    outputCurrency.address,
-                  )}`
-                : undefined
-            }
             id="swap-currency-output"
             value={formattedAmounts[Field.OUTPUT]}
             label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('to')}

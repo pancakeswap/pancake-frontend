@@ -1,27 +1,19 @@
+import { useMemo } from 'react'
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import {
-  Button,
-  ChevronDownIcon,
-  CopyButton,
-  ShareIcon,
-  SkeletonV2,
-  Swap as SwapUI,
-  Text,
-  useModal,
-} from '@pancakeswap/uikit'
+import { Button, ChevronDownIcon, CopyButton, SkeletonV2, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
 import { CoinRegisterButton } from 'components/CoinRegisterButton'
 import { CurrencyLogo } from 'components/Logo'
 import CurrencySearchModal from 'components/SearchModal/CurrencySearchModal'
 import styled from 'styled-components'
+import { BridgeButton, bridgeInfo } from 'components/Swap/BridgeButton'
 
 type Props = {
   id: string
   value: string
-  shareLink?: string
   onUserInput: (value: string) => void
   onInputBlur?: () => void
   currency?: Currency
@@ -46,7 +38,6 @@ const InputRow = styled.div<{ selected: boolean }>`
 export const CurrencyInputPanel = ({
   id,
   value,
-  shareLink,
   onUserInput,
   onInputBlur,
   currency,
@@ -77,6 +68,11 @@ export const CurrencyInputPanel = ({
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
     />,
+  )
+
+  const isInBridgeInfo = useMemo(
+    () => bridgeInfo.find((bridge) => currency?.symbol === bridge.symbol || currency?.symbol.startsWith(bridge.symbol)),
+    [currency],
   )
 
   return (
@@ -110,18 +106,10 @@ export const CurrencyInputPanel = ({
                   text={currency.address}
                   tooltipMessage={t('Token address copied')}
                 />
-                {shareLink && (
-                  <CopyButton
-                    icon={ShareIcon}
-                    width="16px"
-                    buttonColor="textSubtle"
-                    text={shareLink}
-                    tooltipMessage={t('Sharing link copied')}
-                  />
-                )}
                 {currency && currency.isToken && account && !isLoading && !data && (
                   <CoinRegisterButton currency={currency} />
                 )}
+                {isInBridgeInfo && <BridgeButton url={isInBridgeInfo.url} />}
               </AtomBox>
             ) : null}
           </AtomBox>
