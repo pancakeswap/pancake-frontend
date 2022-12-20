@@ -4,8 +4,10 @@ import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@p
 import _noop from 'lodash/noop'
 import { useTranslation } from '@pancakeswap/localization'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
-import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
+import BigNumber from 'bignumber.js'
+import { getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import { useIfoCeiling } from 'state/pools/hooks'
+import { VaultKey } from 'state/types'
 
 import { LockedModalBodyPropsType, ModalValidator } from '../types'
 
@@ -14,6 +16,7 @@ import LockDurationField from './LockDurationField'
 import useLockedPool from '../hooks/useLockedPool'
 import useAvgLockDuration from '../hooks/useAvgLockDuration'
 import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
+import { useCheckVaultApprovalStatus, useVaultApprove } from '../../../hooks/useApprove'
 
 const ExtendEnable = dynamic(() => import('./ExtendEnable'), { ssr: false })
 
@@ -63,6 +66,19 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
 
   const needsEnable = useMemo(() => cakeNeeded && !hasEnoughBalanceToExtend, [cakeNeeded, hasEnoughBalanceToExtend])
 
+  const { allowance, setLastUpdated } = useCheckVaultApprovalStatus(VaultKey.CakeVault)
+  const { handleApprove: handleCakeApprove, pendingTx: cakePendingTx } = useVaultApprove(
+    VaultKey.CakeVault,
+    setLastUpdated,
+  )
+  const needApprove = useMemo(() => {
+    if (cakeNeeded) {
+      return ENABLE_EXTEND_LOCK_AMOUNT.gt(allowance)
+    }
+    const amount = getDecimalAmount(new BigNumber(lockedAmount))
+    return amount.gt(allowance)
+  }, [allowance, cakeNeeded, lockedAmount])
+
   return (
     <>
       <Box mb="16px">
@@ -110,8 +126,23 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         )
       ) : null}
 
+      {needApprove && (
+        <Message variant="warning" mt="24px">
+          <MessageText maxWidth="200px">{t('Insufficient token allowance. Click "Enable" to approve.')}</MessageText>
+        </Message>
+      )}
+
       <Flex mt="24px">
-        {needsEnable ? (
+        {needApprove ? (
+          <Button
+            width="100%"
+            isLoading={cakePendingTx}
+            endIcon={cakePendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
+            onClick={handleCakeApprove}
+          >
+            {t('Enable')}
+          </Button>
+        ) : needsEnable ? (
           <ExtendEnable isValidAmount={isValidAmount} isValidDuration={isValidDuration} />
         ) : (
           <Button
