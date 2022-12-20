@@ -18,8 +18,8 @@ const useBridgeInfo = ({ currency }: { currency?: Currency }) => {
   )
 
   const showBridgeWarning = useMemo(
-    () => bridgeResult && !isLoading && Number(data?.formatted ?? 0) <= 0,
-    [data, isLoading, bridgeResult],
+    () => account?.address && bridgeResult && !isLoading && Number(data?.formatted ?? 0) <= 0,
+    [account, data, isLoading, bridgeResult],
   )
 
   return {
