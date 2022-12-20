@@ -76,6 +76,7 @@ const SellStage: React.FC<React.PropsWithChildren<SellStageProps>> = ({
           </Button>
           <HorizontalDivider />
           <LinkExternal
+            isBscScan
             p="0px"
             height="16px"
             href={getBscScanLinkForNft(nftToSell.collectionAddress, nftToSell.tokenId)}

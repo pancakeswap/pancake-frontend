@@ -75,6 +75,7 @@ const EditStage: React.FC<React.PropsWithChildren<EditStageProps>> = ({
           </Button>
           <HorizontalDivider />
           <LinkExternal
+            isBscScan
             p="0px"
             height="16px"
             href={getBscScanLinkForNft(nftToSell.collectionAddress, nftToSell.tokenId)}
