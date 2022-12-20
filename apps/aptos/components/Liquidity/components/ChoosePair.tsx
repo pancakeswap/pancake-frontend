@@ -6,6 +6,7 @@ import { useContext } from 'react'
 import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
 import { MintPairContext } from '../hooks/useMintPair'
 import { CurrencySelect } from './CurrencySelect'
+import LiquidityBridgeWarning from './LiquidityBridgeWarning'
 
 export default function ChoosePair({ onNext }: { onNext: () => void }) {
   const { error } = useContext(MintPairContext)
@@ -29,15 +30,20 @@ export default function ChoosePair({ onNext }: { onNext: () => void }) {
         />
       }
       footer={
-        <CommitButton
-          data-test="choose-pair-next"
-          width="100%"
-          variant={error ? 'danger' : 'primary'}
-          onClick={onNext}
-          disabled={Boolean(error)}
-        >
-          {error ?? t('Add Liquidity')}
-        </CommitButton>
+        <>
+          {[currencyA, currencyB].map((currency) => (
+            <LiquidityBridgeWarning currency={currency} />
+          ))}
+          <CommitButton
+            data-test="choose-pair-next"
+            width="100%"
+            variant={error ? 'danger' : 'primary'}
+            onClick={onNext}
+            disabled={Boolean(error)}
+          >
+            {error ?? t('Add Liquidity')}
+          </CommitButton>
+        </>
       }
     />
   )
