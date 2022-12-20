@@ -26,15 +26,15 @@ import {
 } from "../../components";
 import { Modal } from "../Modal";
 
-const StyledLink = styled(Link)`
+const StyledLink = styled((props) => <Link {...props} />)`
   width: 100%;
 `;
 
-const AnnualRoiContainer = styled(Flex)`
+const AnnualRoiContainer = styled((props) => <Flex {...props} />)`
   cursor: pointer;
 `;
 
-const AnnualRoiDisplay = styled(Text)`
+const AnnualRoiDisplay = styled((props) => <Text {...props} />)`
   width: 72px;
   max-width: 72px;
   overflow: hidden;

@@ -16,11 +16,11 @@ import { Message, MessageText } from "../../../../components/Message";
 import { AutoRenewIcon, ErrorIcon, CalculateIcon } from "../../../../components/Svg";
 import { RoiCalculatorModal } from "../../../../components/RoiCalculatorModal";
 
-const AnnualRoiContainer = styled(Flex)`
+const AnnualRoiContainer = styled((props) => <Flex {...props} />)`
   cursor: pointer;
 `;
 
-const AnnualRoiDisplay = styled(Text)`
+const AnnualRoiDisplay = styled((props) => <Text {...props} />)`
   width: 72px;
   max-width: 72px;
   overflow: hidden;
