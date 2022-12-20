@@ -351,11 +351,8 @@ export const fetchAllPoolData = async (blocks: Block[], chainName: MultiChainNam
 
 export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<BigNumber> => {
   try {
-    const day7Ago = sub(new Date(), { days: 7 })
-
-    const day7AgoTimestamp = getUnixTime(day7Ago)
-
-    const [blockDay7Ago] = await getBlocksFromTimestamps([day7AgoTimestamp])
+    const [, , t7d] = getDeltaTimestamps()
+    const [blockDay7Ago] = await getBlocksFromTimestamps([t7d])
 
     const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } = await stableSwapClient.request(
       gql`
