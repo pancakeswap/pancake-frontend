@@ -66,6 +66,7 @@ interface StakeModalProps {
   account: string;
   handleConfirmClick: any;
   pendingTx: boolean;
+  imageUrl?: string;
 }
 
 export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
@@ -90,6 +91,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
   account,
   pendingTx,
   handleConfirmClick,
+  imageUrl = "/images/tokens/",
 }) => {
   const { t } = useTranslation();
   const theme = useTheme();
@@ -209,7 +211,7 @@ export const StakeModal: React.FC<React.PropsWithChildren<StakeModalProps>> = ({
       <Flex alignItems="center" justifyContent="space-between" mb="8px">
         <Text bold>{isRemovingStake ? t("Unstake") : t("Stake")}:</Text>
         <Flex alignItems="center" minWidth="70px">
-          <Image src={`/images/tokens/${stakingTokenAddress}.png`} width={24} height={24} alt={stakingTokenSymbol} />
+          <Image src={`${imageUrl}${stakingTokenAddress}.png`} width={24} height={24} alt={stakingTokenSymbol} />
           <Text ml="4px" bold>
             {stakingTokenSymbol}
           </Text>
