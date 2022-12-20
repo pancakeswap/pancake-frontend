@@ -2065,5 +2065,6 @@
   "The locked staking duration has ended.": "The locked staking duration has ended.",
   "Cake Syrup Pool": "Cake Syrup Pool",
   "Use": "Use",
-  "to bridge this asset.": "to bridge this asset."
+  "to bridge this asset.": "to bridge this asset.",
+  "to bridge %symbol%.": "to bridge %symbol%."
 }

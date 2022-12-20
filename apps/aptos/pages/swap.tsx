@@ -9,7 +9,7 @@ import {
   TradeType,
   Token,
 } from '@pancakeswap/aptos-swap-sdk'
-import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
+import { useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
@@ -382,18 +382,7 @@ const SwapPage = () => {
 
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
-  const { data, isLoading } = useAccountBalance({
-    address: account?.address,
-    coin: inputCurrency?.wrapped?.address,
-    enabled: !!inputCurrency,
-    watch: true,
-  })
-
-  const bridgeResult = useBridgeInfo({ currency: inputCurrency })
-  const showBridgeWarning = useMemo(
-    () => bridgeResult && !isLoading && Number(data?.formatted) <= 0,
-    [data, isLoading, bridgeResult],
-  )
+  const { showBridgeWarning, bridgeResult } = useBridgeInfo({ currency: inputCurrency })
 
   return (
     <>
