@@ -170,7 +170,7 @@ const transformPool = (
 
     tokenPerBlock: resource.data.reward_per_second,
     stakingLimit: resource.data.pool_limit_per_user ? new BigNumber(resource.data.pool_limit_per_user) : BIG_ZERO,
-    stakeLimitEndBlock: startBlock + _toNumber(resource.data.seconds_for_user_limit),
+    stakeLimitEndBlock: _toNumber(resource.data.seconds_for_user_limit),
     totalStaked: new BigNumber(totalStakedToken),
 
     userData,

@@ -25,12 +25,13 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     userData: poolUserData,
     stakingLimit = BIG_ZERO,
     endBlock = 0,
+    startBlock = 0,
     stakeLimitEndBlock = 0,
   } = pool
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const endTimeObject = getTimePeriods(endBlock)
+  const endTimeObject = getTimePeriods(endBlock - startBlock)
 
   return (
     <>
