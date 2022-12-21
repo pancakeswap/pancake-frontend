@@ -1,9 +1,10 @@
 import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { APT, CAKE } from '../../coins'
+import { APT } from '../../coins'
+// import { APT, CAKE } from '../../coins'
 
 export const mainnetTokens = {
   apt: APT[ChainId.MAINNET],
-  cake: CAKE[ChainId.MAINNET],
+  // cake: CAKE[ChainId.MAINNET],
   lzusdc: new Coin(
     ChainId.MAINNET,
     '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC',
@@ -81,5 +82,19 @@ export const mainnetTokens = {
     8,
     'whWETH',
     'Wormhole - Wrapped Ether',
+  ),
+  bnb: new Coin(
+    ChainId.MAINNET,
+    '0x08c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::BNB',
+    8,
+    'BNB',
+    'BNB',
+  ),
+  cake: new Coin(
+    ChainId.MAINNET,
+    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::CAKE',
+    8,
+    'CAKE',
+    'CAKE',
   ),
 }
