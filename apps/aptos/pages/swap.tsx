@@ -9,11 +9,22 @@ import {
   TradeType,
   Token,
 } from '@pancakeswap/aptos-swap-sdk'
-import { APTOS_COIN, useAccount } from '@pancakeswap/awgmi'
+import { useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, Card, Skeleton, Swap as SwapUI, useModal, Flex, ModalV2, Modal } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  Card,
+  Skeleton,
+  Swap as SwapUI,
+  useModal,
+  Flex,
+  ModalV2,
+  Modal,
+  Text,
+  Link,
+} from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { CurrencyInputPanel } from 'components/CurrencyInputPanel'
@@ -25,7 +36,6 @@ import ImportToken from 'components/SearchModal/ImportToken'
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
-import { DOMAIN } from 'config'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useAllTokens, useCurrency } from 'hooks/Tokens'
@@ -47,6 +57,7 @@ import { useWarningSwapModal } from 'components/SwapWarningModal'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import useSWRImuutable from 'swr/immutable'
+import useBridgeInfo from 'components/Swap/hooks/useBridgeInfo'
 import { CommitButton } from '../components/CommitButton'
 
 const {
@@ -378,6 +389,8 @@ const SwapPage = () => {
 
   const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
 
+  const { showBridgeWarning, bridgeResult } = useBridgeInfo({ currency: inputCurrency })
+
   return (
     <>
       <PageMeta title={t('Exchange')} />
@@ -397,13 +410,6 @@ const SwapPage = () => {
           <CurrencyInputPanel
             onCurrencySelect={handleInputSelect}
             id="swap-currency-input"
-            shareLink={
-              inputCurrency && inputCurrency.isToken
-                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
-                    inputCurrency.address,
-                  )}`
-                : undefined
-            }
             currency={isLoaded ? inputCurrency : undefined}
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
@@ -411,7 +417,30 @@ const SwapPage = () => {
             showMaxButton={!atMaxAmountInput}
             onMax={handleMaxInput}
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
+            showBridgeWarning={showBridgeWarning}
           />
+          {showBridgeWarning && (
+            <AtomBox width="full">
+              <Flex justifyContent="flex-end">
+                <Text fontSize="12px" color="warning">
+                  {t('Use')}
+                </Text>
+                <Link
+                  external
+                  m="0 4px"
+                  fontSize="12px"
+                  color="warning"
+                  href={bridgeResult?.url}
+                  style={{ textDecoration: 'underline' }}
+                >
+                  {bridgeResult?.platform}
+                </Link>
+                <Text fontSize="12px" color="warning">
+                  {t('to bridge this asset.')}
+                </Text>
+              </Flex>
+            </AtomBox>
+          )}
           <AtomBox width="full" textAlign="center">
             <SwitchButton
               onClick={() => {
@@ -422,13 +451,6 @@ const SwapPage = () => {
           <CurrencyInputPanel
             showMaxButton={false}
             onCurrencySelect={handleOutputSelect}
-            shareLink={
-              outputCurrency && outputCurrency.isToken
-                ? `${DOMAIN}/swap?inputCurrency=${encodeURIComponent(APTOS_COIN)}&outputCurrency=${encodeURIComponent(
-                    outputCurrency.address,
-                  )}`
-                : undefined
-            }
             id="swap-currency-output"
             value={formattedAmounts[Field.OUTPUT]}
             label={independentField === Field.INPUT && trade ? t('To (estimated)') : t('to')}

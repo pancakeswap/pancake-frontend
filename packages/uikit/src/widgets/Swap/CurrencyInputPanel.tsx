@@ -15,6 +15,7 @@ interface CurrencyInputPanelProps {
   bottom?: React.ReactNode;
   disabled?: boolean;
   error?: boolean;
+  showBridgeWarning?: boolean;
 }
 export function CurrencyInputPanel({
   value,
@@ -26,6 +27,7 @@ export function CurrencyInputPanel({
   id,
   disabled,
   error,
+  showBridgeWarning,
 }: CurrencyInputPanelProps) {
   return (
     <AtomBox position="relative" id={id}>
@@ -44,6 +46,7 @@ export function CurrencyInputPanel({
           as="label"
           className={inputContainerVariants({
             hasZapStyle: !!zapStyle,
+            showBridgeWarning: !!showBridgeWarning,
             error,
           })}
         >
