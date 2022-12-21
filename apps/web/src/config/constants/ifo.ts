@@ -9,7 +9,7 @@ const ifos: Ifo[] = [
   {
     id: 'squad',
     address: '0x57eb2e676863435a140f8bc2a0f0e955c36ed446',
-    isActive: true,
+    isActive: false,
     cIFO: true,
     name: 'SQUAD',
     plannedStartTime: 1671105600,
