@@ -1,4 +1,3 @@
-import React from "react";
 import noop from "lodash/noop";
 import { BrowserRouter } from "react-router-dom";
 import { renderWithProvider } from "../../testHelpers";
