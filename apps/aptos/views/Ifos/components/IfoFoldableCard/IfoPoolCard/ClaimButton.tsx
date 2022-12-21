@@ -3,6 +3,7 @@ import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
+import { useCallback } from 'react'
 import splitTypeTag from 'utils/splitTypeTag'
 import { ifoHarvestPool } from 'views/Ifos/generated/ifo'
 
@@ -23,9 +24,12 @@ export const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ ifo, poo
   const { toastSuccess } = useToast()
   const pool = useIfoPool(ifo)
 
-  const setPendingTx = (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId)
+  const setPendingTx = useCallback(
+    (isPending: boolean) => walletIfoData.setPendingTx(isPending, poolId),
+    [poolId, walletIfoData],
+  )
 
-  const handleClaim = async () => {
+  const handleClaim = useCallback(async () => {
     setPendingTx(true)
 
     try {
@@ -44,12 +48,12 @@ export const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({ ifo, poo
     } finally {
       setPendingTx(false)
     }
-  }
+  }, [executeTransaction, pool?.type, poolId, setPendingTx, t, toastSuccess, walletIfoData])
 
   return (
     <Button
       onClick={handleClaim}
-      disabled={!pool?.data || userPoolCharacteristics.isPendingTx}
+      disabled={!pool?.data || userPoolCharacteristics.isPendingTx || userPoolCharacteristics.hasClaimed}
       width="100%"
       isLoading={userPoolCharacteristics.isPendingTx}
       endIcon={userPoolCharacteristics.isPendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}

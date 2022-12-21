@@ -136,7 +136,7 @@ export const IfoCurrentCard = ({
   const shouldShowBunny = status === 'live' || status === 'coming_soon'
 
   return (
-    <>
+    <NoSSR>
       {isMobile && (
         <Box
           className="sticky-header"
@@ -157,17 +157,13 @@ export const IfoCurrentCard = ({
           {!isMobile && (
             <>
               <Header $isCurrent ifoId={ifo.id} />
-              <NoSSR>
-                <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
-              </NoSSR>
+              <IfoRibbon publicIfoData={publicIfoData} releaseTime={ifo.releaseTime} />
             </>
           )}
-          <NoSSR>
-            <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
-          </NoSSR>
+          <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
         </StyledCard>
       </Box>
-    </>
+    </NoSSR>
   )
 }
 

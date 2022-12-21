@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount } from '@pancakeswap/awgmi'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 
 import {
@@ -150,6 +150,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
         </>
       )
     }
+
     if (status === 'live') {
       return (
         <>
@@ -163,7 +164,10 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
           </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
-            <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
+
+            <Value>
+              {getFullDisplayBalance(userPoolCharacteristics.offeringAmountInToken, token.decimals, token.decimals)}
+            </Value>
             {version >= 3.2 && publicPoolCharacteristics.vestingInformation.percentage > 0 && (
               <VestingAvailableToClaim
                 amountToReceive={userPoolCharacteristics.offeringAmountInToken}
@@ -208,7 +212,9 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
                 : t('%symbol% to receive', { symbol: token.symbol })}
             </Label>
             <Flex alignItems="center">
-              <Value>{getBalanceNumber(userPoolCharacteristics.offeringAmountInToken, token.decimals)}</Value>
+              <Value>
+                {getFullDisplayBalance(userPoolCharacteristics.offeringAmountInToken, token.decimals, token.decimals)}
+              </Value>
               {!hasClaimed && userPoolCharacteristics.offeringAmountInToken.isEqualTo(0) && (
                 <div ref={targetRef} style={{ display: 'flex', marginLeft: '8px' }}>
                   <HelpIcon />

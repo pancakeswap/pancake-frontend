@@ -3,6 +3,7 @@ import { BigNumber as EthersBigNumber, FixedNumber } from '@ethersproject/bignum
 import { formatUnits } from '@ethersproject/units'
 import { getLanguageCodeFromLS } from '@pancakeswap/localization'
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
+import _trimEnd from 'lodash/trimEnd'
 
 /**
  * Take a formatted amount, e.g. 15 BNB and convert it to full decimal value, e.g. 15000000000000000
@@ -23,7 +24,9 @@ export const getBalanceNumber = (balance: BigNumber, decimals = 18) => {
 }
 
 export const getFullDisplayBalance = (balance: BigNumber, decimals = 18, displayDecimals?: number): string => {
-  return getBalanceAmount(balance, decimals).toFixed(displayDecimals as number)
+  const stringNumber = getBalanceAmount(balance, decimals).toFixed(displayDecimals as number)
+
+  return displayDecimals ? _trimEnd(_trimEnd(stringNumber, '0'), '.') : stringNumber
 }
 
 /**

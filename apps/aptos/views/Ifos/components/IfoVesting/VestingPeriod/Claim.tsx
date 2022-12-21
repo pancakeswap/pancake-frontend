@@ -1,13 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, Button, useToast } from '@pancakeswap/uikit'
 import { PoolIds } from 'config/constants/types'
-import useCatchTxError from 'hooks/useCatchTxError'
 import { ifoRelease } from 'views/Ifos/generated/ifo'
 import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
 import splitTypeTag from 'utils/splitTypeTag'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 import { HexString } from 'aptos'
 
@@ -27,11 +26,13 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const { token } = data.ifo
-  const { loading: isPending } = useCatchTxError()
+  const [isPending, setIsPending] = useState(false)
   const executeTransaction = useSimulationAndSendTransaction()
   const ifo = useIfoPool(data.ifo)
 
   const handleClaim = useCallback(async () => {
+    setIsPending(true)
+
     const { vestingId } = data.userVestingData[poolId]
 
     const [raisingCoin, offeringCoin, uid] = splitTypeTag(ifo?.type)
@@ -39,16 +40,21 @@ const ClaimButton: React.FC<React.PropsWithChildren<Props>> = ({
     const vestingScheduleIdInArray: number[] = Array.from(new HexString(vestingId).toUint8Array())
 
     const payload = ifoRelease([vestingScheduleIdInArray], [raisingCoin, offeringCoin, uid])
-    const response = await executeTransaction(payload)
 
-    if (response.hash) {
-      toastSuccess(
-        t('Success!'),
-        <ToastDescriptionWithTx txHash={response.hash}>
-          {t('You have successfully claimed available tokens.')}
-        </ToastDescriptionWithTx>,
-      )
-      fetchUserVestingData()
+    try {
+      const response = await executeTransaction(payload)
+
+      if (response.hash) {
+        toastSuccess(
+          t('Success!'),
+          <ToastDescriptionWithTx txHash={response.hash}>
+            {t('You have successfully claimed available tokens.')}
+          </ToastDescriptionWithTx>,
+        )
+        fetchUserVestingData()
+      }
+    } finally {
+      setIsPending(false)
     }
   }, [data.userVestingData, poolId, ifo?.type, executeTransaction, toastSuccess, t, fetchUserVestingData])
 

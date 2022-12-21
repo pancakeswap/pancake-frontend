@@ -71,6 +71,7 @@ export const computeReleaseAmount = (
   vesting_schedule: VestingSchedule,
 ): BigNumber => {
   const current_time = Date.now() / 1000
+
   if (current_time < +ifo_metadata.vesting_start_time + +ifo_pool.vesting_cliff) {
     return BIG_ZERO
   }

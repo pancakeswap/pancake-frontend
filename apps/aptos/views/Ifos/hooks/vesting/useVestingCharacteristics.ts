@@ -1,4 +1,5 @@
 import { useAccount } from '@pancakeswap/awgmi'
+import { useInterval, useLastUpdated } from '@pancakeswap/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
@@ -18,6 +19,8 @@ import {
 } from 'views/Ifos/utils'
 import { useIfoResources } from '../useIfoResources'
 import { useIfoVestingSchedule, useIfoVestingSchedules } from '../useIfoVestingSchedule'
+
+export const IFO_RESET_INTERVAL = 1000 * 10
 
 function getPoolID(poolType?: string) {
   if (!poolType) return '0'
@@ -88,6 +91,11 @@ export const useVestingCharacteristics = (
 ): VestingCharacteristics & {
   isVestingInitialized: boolean
 } => {
+  // Due to computeReleaseAmount in mapVestingCharacteristics use Date() to update attribute
+  // Force update to get the latest computeReleaseAmount
+  const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
+  useInterval(refresh, IFO_RESET_INTERVAL)
+
   const { account } = useAccount()
 
   const vestingScheduleId = useMemo(
@@ -107,5 +115,6 @@ export const useVestingCharacteristics = (
       pool,
       resourcesMetaData: resources?.data?.[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?.data,
     })
-  }, [account, vestingSchedule, pool, resources?.data])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, vestingSchedule, pool, resources?.data, lastUpdated])
 }

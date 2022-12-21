@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-// import { bscTokens } from '@pancakeswap/tokens'
 import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
@@ -185,6 +184,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
             />
           )}
           <FooterEntry label={t('Total committed:')} value={currencyPriceInUSD.gt(0) ? totalCommitted : null} />
+          <FooterEntry label={t('Funds to raise:')} value={ifo[poolId].raiseAmount} />
           {ifo.version >= 3.2 && poolCharacteristic.vestingInformation.percentage > 0 && (
             <>
               <FooterEntry
@@ -204,7 +204,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
                 label={t('Vesting schedule:')}
                 value={`${vestingDays} days`}
                 tooltipContent={t('The vested tokens will be released linearly over a period of %days% days.', {
-                  weeks: vestingDays,
+                  days: vestingDays,
                 })}
               />
             </>

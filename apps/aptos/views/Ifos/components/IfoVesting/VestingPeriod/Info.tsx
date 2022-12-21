@@ -30,8 +30,13 @@ interface InfoProps {
 const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
-  const { vestingComputeReleasableAmount, offeringAmountInToken, vestingInformationPercentage, vestingReleased } =
-    data.userVestingData[poolId]
+  const {
+    vestingComputeReleasableAmount,
+    vestingAmountTotal,
+    vestingInformationPercentage,
+    vestingReleased,
+    offeringAmountInToken,
+  } = data.userVestingData[poolId]
 
   const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
 
@@ -40,13 +45,13 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     [vestingInformationPercentage],
   )
 
-  const releasedAtSaleEnd = useMemo(() => {
-    return new BigNumber(offeringAmountInToken).times(new BigNumber(1).minus(vestingPercentage))
-  }, [offeringAmountInToken, vestingPercentage])
+  const totalPurchased = useMemo(() => {
+    return vestingAmountTotal.gt(0) ? vestingAmountTotal.times(1).div(vestingPercentage) : offeringAmountInToken
+  }, [offeringAmountInToken, vestingAmountTotal, vestingPercentage])
 
-  const amountReleased = useMemo(() => {
-    return new BigNumber(releasedAtSaleEnd).plus(vestingReleased).plus(vestingComputeReleasableAmount)
-  }, [releasedAtSaleEnd, vestingReleased, vestingComputeReleasableAmount])
+  const releasedAtSaleEnd = useMemo(() => {
+    return totalPurchased.times(new BigNumber(1).minus(vestingPercentage))
+  }, [totalPurchased, vestingPercentage])
 
   const received = useMemo(() => {
     const alreadyClaimed = new BigNumber(releasedAtSaleEnd).plus(vestingReleased)
@@ -60,9 +65,10 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
   }, [token, vestingComputeReleasableAmount])
 
   const remaining = useMemo(() => {
-    const remain = new BigNumber(offeringAmountInToken).minus(amountReleased)
+    const remain = totalPurchased.minus(releasedAtSaleEnd).minus(vestingReleased).minus(vestingComputeReleasableAmount)
+
     return remain.gt(0) ? getFullDisplayBalance(remain, token.decimals, 8) : '0'
-  }, [token, offeringAmountInToken, amountReleased])
+  }, [totalPurchased, releasedAtSaleEnd, vestingReleased, vestingComputeReleasableAmount, token.decimals])
 
   const percentage = useMemo(() => {
     const total = new BigNumber(received).plus(claimable).plus(remaining)
