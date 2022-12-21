@@ -48,7 +48,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
     const addressSet: { [address: string]: true } = {}
     const trimmedSearchQuery = search.toLowerCase().trim()
     for (const url of inactiveUrls) {
-      const list = lists[url].current
+      const list = lists[url]?.current
       // eslint-disable-next-line no-continue
       if (!list) continue
       for (const tokenInfo of list.tokens) {
