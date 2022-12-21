@@ -25,7 +25,7 @@ const DescriptionWithTx: React.FC<React.PropsWithChildren<DescriptionWithTxProps
       {txHash && (
         <Link external href={getBlockExploreLink(txHash, 'transaction', txChainId || chainId)}>
           {t('View on %site%', { site: getBlockExploreName(txChainId || chainId) })}: {truncateHash(txHash, 8, 0)}
-          {(txChainId || chainId) === ChainId.BSC && <BscScanIcon color="invertedContrast" ml="4px" />}
+          {(txChainId || chainId) === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />}
         </Link>
       )}
     </>

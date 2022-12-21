@@ -80,7 +80,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                   {t('View on %site%', {
                     site: getBlockExploreName(token.chainId),
                   })}
-                  {token.chainId === ChainId.BSC && <BscScanIcon color="invertedContrast" ml="4px" />})
+                  {token.chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
                 </Link>
               </Flex>
             )}

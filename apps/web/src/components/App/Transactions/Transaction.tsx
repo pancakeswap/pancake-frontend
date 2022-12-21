@@ -30,7 +30,9 @@ export default function Transaction({ tx, chainId }: { tx: TransactionDetails; c
 
   return (
     <TransactionState pending={pending} success={success}>
-      <LinkExternal href={getBlockExploreLink(tx.hash, 'transaction', chainId)}>{summary ?? tx.hash}</LinkExternal>
+      <LinkExternal isBscScan href={getBlockExploreLink(tx.hash, 'transaction', chainId)}>
+        {summary ?? tx.hash}
+      </LinkExternal>
       <IconWrapper pending={pending} success={success}>
         {pending ? <CircleLoader /> : success ? <CheckmarkIcon color="success" /> : <CloseIcon color="failure" />}
       </IconWrapper>
