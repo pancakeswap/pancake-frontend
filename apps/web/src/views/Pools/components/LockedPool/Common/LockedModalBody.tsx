@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import { Button, AutoRenewIcon, Box, Flex, Message, MessageText, Text } from '@pancakeswap/uikit'
 import _noop from 'lodash/noop'
 import { useTranslation } from '@pancakeswap/localization'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { MAX_LOCK_DURATION } from 'config/constants/pools'
 import BigNumber from 'bignumber.js'
 import { getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
@@ -68,13 +69,18 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
 
   const { allowance, setLastUpdated } = useCheckVaultApprovalStatus(VaultKey.CakeVault)
   const { handleApprove, pendingTx: approvePendingTx } = useVaultApprove(VaultKey.CakeVault, setLastUpdated)
+  const [showApproveWarning, setShowApproveWarning] = useState(false)
+
   const needsApprove = useMemo(() => {
-    if (cakeNeeded) {
-      return ENABLE_EXTEND_LOCK_AMOUNT.gt(allowance)
+    if (prepConfirmArg) {
+      const { finalLockedAmount } = prepConfirmArg({ duration })
+      if (!isUndefinedOrNull(finalLockedAmount)) {
+        return getDecimalAmount(new BigNumber(finalLockedAmount)).gt(allowance)
+      }
     }
     const amount = getDecimalAmount(new BigNumber(lockedAmount))
     return amount.gt(allowance)
-  }, [allowance, cakeNeeded, lockedAmount])
+  }, [allowance, lockedAmount, prepConfirmArg, duration])
 
   const [showEnableConfirmButtons, setShowEnableConfirmButtons] = useState(needsEnable)
 
@@ -83,6 +89,15 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
       setShowEnableConfirmButtons(true)
     }
   }, [needsEnable])
+
+  useEffect(() => {
+    if (!showApproveWarning && prepConfirmArg) {
+      const { finalLockedAmount } = prepConfirmArg({ duration })
+      if (!isUndefinedOrNull(finalLockedAmount)) {
+        setShowApproveWarning(true)
+      }
+    }
+  }, [showApproveWarning, prepConfirmArg, duration])
 
   return (
     <>
@@ -131,7 +146,7 @@ const LockedModalBody: React.FC<React.PropsWithChildren<LockedModalBodyPropsType
         )
       ) : null}
 
-      {needsApprove && cakeNeeded ? (
+      {showApproveWarning && needsApprove ? (
         <Message variant="warning" mt="24px">
           <MessageText maxWidth="200px">{t('Insufficient token allowance. Click "Enable" to approve.')}</MessageText>
         </Message>
