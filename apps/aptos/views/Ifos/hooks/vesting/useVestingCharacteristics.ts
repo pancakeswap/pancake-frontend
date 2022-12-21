@@ -2,7 +2,6 @@ import { useAccount } from '@pancakeswap/awgmi'
 import { useInterval, useLastUpdated } from '@pancakeswap/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
-import { IFO_RESET_INTERVAL, POOL_RESET_INTERVAL } from 'components/Pools/constants'
 import { Ifo } from 'config/constants/types'
 import { useMemo } from 'react'
 import splitTypeTag from 'utils/splitTypeTag'
@@ -20,6 +19,8 @@ import {
 } from 'views/Ifos/utils'
 import { useIfoResources } from '../useIfoResources'
 import { useIfoVestingSchedule, useIfoVestingSchedules } from '../useIfoVestingSchedule'
+
+export const IFO_RESET_INTERVAL = 1000 * 10
 
 function getPoolID(poolType?: string) {
   if (!poolType) return '0'
