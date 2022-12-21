@@ -11,6 +11,7 @@ export enum ConnectorNames {
   BSC = 'bsc',
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
+  Ledger = 'ledger',
 }
 
 const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
@@ -146,6 +147,12 @@ const walletsConfig = ({
           ? true
           : undefined // undefined to show SDK
       },
+    },
+    {
+      id: 'ledger',
+      title: 'Ledger',
+      icon: '/images/wallets/ledger.png',
+      connectorId: ConnectorNames.Ledger,
     },
   ]
 }

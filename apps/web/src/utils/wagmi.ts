@@ -7,6 +7,7 @@ import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from './safeConnector'
 
@@ -102,6 +103,10 @@ const bloctoConnector = new BloctoConnector({
   },
 })
 
+const ledgerConnector = new LedgerConnector({
+  chains,
+})
+
 export const bscConnector = new BinanceWalletConnector({ chains })
 
 export const client = createClient({
@@ -115,6 +120,7 @@ export const client = createClient({
     walletConnectConnector,
     bscConnector,
     bloctoConnector,
+    ledgerConnector,
   ],
 })
 
