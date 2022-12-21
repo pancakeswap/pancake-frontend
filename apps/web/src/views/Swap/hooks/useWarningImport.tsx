@@ -10,6 +10,7 @@ import { useCurrency, useAllTokens } from 'hooks/Tokens'
 import { useDefaultsFromURLSearch } from 'state/swap/hooks'
 import ImportTokenWarningModal from 'components/ImportTokenWarningModal'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { isAddress } from 'utils'
 
 import SwapWarningModal from '../components/SwapWarningModal'
 
@@ -37,7 +38,9 @@ export default function useWarningImport() {
   const importTokensNotInDefault =
     !isWrongNetwork && urlLoadedTokens
       ? urlLoadedTokens.filter((token: Token) => {
-          return !(token.address in defaultTokens) && token.chainId === chainId
+          const checksummedAddress = isAddress(token.address) || ''
+
+          return !(checksummedAddress in defaultTokens) && token.chainId === chainId
         })
       : []
 

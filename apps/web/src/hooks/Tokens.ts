@@ -21,7 +21,12 @@ import { useActiveChainId } from './useActiveChainId'
 
 const mapWithoutUrls = (tokenMap: TokenAddressMap<ChainId>, chainId: number) =>
   Object.keys(tokenMap[chainId] || {}).reduce<{ [address: string]: ERC20Token }>((newMap, address) => {
-    newMap[address] = tokenMap[chainId][address].token
+    const checksummedAddress = isAddress(address)
+
+    if (checksummedAddress && !newMap[checksummedAddress]) {
+      newMap[checksummedAddress] = tokenMap[chainId][address].token
+    }
+
     return newMap
   }, {})
 
@@ -38,7 +43,12 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
         // reduce into all ALL_TOKENS filtered by the current chain
         .reduce<{ [address: string]: ERC20Token }>(
           (tokenMap_, token) => {
-            tokenMap_[token.address] = token
+            const checksummedAddress = isAddress(token.address)
+
+            if (checksummedAddress) {
+              tokenMap_[checksummedAddress] = token
+            }
+
             return tokenMap_
           },
           // must make a copy because reduce modifies the map, and we do not
@@ -62,7 +72,12 @@ export function useOfficialsAndUserAddedTokens(): { [address: string]: ERC20Toke
         // reduce into all ALL_TOKENS filtered by the current chain
         .reduce<{ [address: string]: ERC20Token }>(
           (tokenMap_, token) => {
-            tokenMap_[token.address] = token
+            const checksummedAddress = isAddress(token.address)
+
+            if (checksummedAddress) {
+              tokenMap_[checksummedAddress] = token
+            }
+
             return tokenMap_
           },
           // must make a copy because reduce modifies the map, and we do not
