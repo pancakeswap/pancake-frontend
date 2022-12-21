@@ -75,11 +75,11 @@ export const mainnetTokens = {
     'whBUSD',
     'Wormhole - Binance USD',
   ),
-  wheth: new Coin(
+  whweth: new Coin(
     ChainId.MAINNET,
     '0xcc8a89c8dce9693d354449f1f73e60e14e347417854f029db5bc8e7454008abb::coin::T',
     8,
-    'whETH',
+    'whwETH',
     'Wormhole - Wrapped Ether',
   ),
 }
