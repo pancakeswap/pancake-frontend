@@ -80,7 +80,6 @@ export const useFarms = () => {
   }, [stakeCoinsInfo])
 
   const pairReserves = usePairReservesQueries(lpReservesAddresses)
-
   const lpInfo = useMemo(() => {
     return farmConfig
       .filter((f) => f.pid !== 0 && f.pid !== CAKE_PID)
@@ -122,6 +121,9 @@ export const useFarms = () => {
           : masterChef?.data.total_special_alloc_point
         const poolWeight = totalAlloc ? allocPoint.div(new BigNumber(totalAlloc)) : BIG_ZERO
 
+        // tokenPriceVsQuote info for this price helper farm is wrong, opposite way should be used
+        const isAptCakeLp = config.pid === null && config.lpSymbol === 'APT-CAKE LP'
+
         return {
           ...config,
           tokenAmountTotal: tokenAmountTotal.toFixed(6),
@@ -130,7 +132,9 @@ export const useFarms = () => {
           lpTotalInQuoteToken: lpTotalInQuoteToken.toFixed(6),
           tokenPriceVsQuote:
             !quoteTokenAmountTotal.isZero() && !tokenAmountTotal.isZero()
-              ? quoteTokenAmountTotal.div(tokenAmountTotal).toFixed(6)
+              ? isAptCakeLp
+                ? tokenAmountTotal.div(quoteTokenAmountTotal).toFixed(6)
+                : quoteTokenAmountTotal.div(tokenAmountTotal).toFixed(6)
               : '0',
           poolWeight: poolWeight.toString(),
           multiplier: `${allocPoint.div(100).toString()}X`,
@@ -146,12 +150,18 @@ export const useFarms = () => {
   const userInfos = useFarmsUserInfo()
   const currentDate = new Date().getTime() / 1000
   const showCakePerSecond = masterChef?.data && new BigNumber(currentDate).lte(masterChef.data.end_timestamp)
+  const regularCakePerSeconds = showCakePerSecond
+    ? new BigNumber(masterChef?.data?.cake_per_second)
+        .times(masterChef.data.cake_rate_to_regular)
+        .div(new BigNumber(masterChef.data.cake_rate_to_regular).plus(masterChef.data.cake_rate_to_special))
+        .toNumber()
+    : 0
 
   return useMemo(() => {
     return {
       userDataLoaded: true,
       poolLength,
-      regularCakePerBlock: showCakePerSecond ? Number(masterChef.data.cake_per_second) : 0,
+      regularCakePerBlock: regularCakePerSeconds,
       loadArchivedFarmsData: false,
       data: farmsWithPrices
         .filter((f) => !!f.pid)
@@ -173,7 +183,7 @@ export const useFarms = () => {
           }
         }),
     } as DeserializedFarmsState
-  }, [poolLength, showCakePerSecond, masterChef?.data, farmsWithPrices, userInfos])
+  }, [poolLength, regularCakePerSeconds, farmsWithPrices, masterChef, userInfos])
 }
 
 export function useFarmsUserInfo() {

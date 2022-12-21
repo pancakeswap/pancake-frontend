@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
 import { ChainId, Pair } from '@pancakeswap/aptos-swap-sdk'
 import { getFarmConfig } from '../../apps/aptos/config/constants/farms'
+import { CAKE_PID } from '../../apps/aptos/config/constants'
 
 interface AprMap {
   [key: string]: BigNumber
@@ -158,7 +159,7 @@ const getAprsForFarmGroup = async (addresses: string[]): Promise<any> => {
 }
 
 const fetchAndUpdateAptosLPsAPR = async () => {
-  const farmsConfig = getFarmConfig(ChainId.MAINNET)
+  const farmsConfig = getFarmConfig(ChainId.MAINNET).filter((i) => i.pid !== CAKE_PID)
 
   const lowerCaseAddresses = farmsConfig.map((farm) => farm.lpAddress.toLowerCase())
   console.info(`Fetching farm data for ${lowerCaseAddresses.length} addresses`)

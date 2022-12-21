@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { useAccount } from 'wagmi'
-import { Box, Flex, Heading, Text, Button, Link, OpenNewIcon } from '@pancakeswap/uikit'
+import { Box, Flex, Heading, Text, Button, Link, BscScanIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getRoundResult, Result } from 'state/predictions/helpers'
 import { REWARD_RATE } from 'state/predictions/config'
@@ -196,7 +196,7 @@ const PnlTab: React.FC<React.PropsWithChildren<PnlTabProps>> = ({ hasBetHistory,
           <Link href={`${getBlockExploreLink(account, 'address')}#internaltx`} mb="16px" external>
             <Button mt="8px" width="100%">
               {t('View Reclaimed & Won')}
-              <OpenNewIcon color="invertedContrast" ml="4px" />
+              <BscScanIcon color="invertedContrast" ml="4px" />
             </Button>
           </Link>
         </Flex>

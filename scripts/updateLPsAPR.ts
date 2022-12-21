@@ -3,6 +3,7 @@ import os from 'os'
 import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
 import chunk from 'lodash/chunk'
+import _toLower from 'lodash/toLower'
 import { sub, getUnixTime } from 'date-fns'
 import { ChainId } from '@pancakeswap/sdk'
 import { SerializedFarmConfig } from '@pancakeswap/farms'
@@ -115,33 +116,38 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
   const stableSwapAddress = stableFarm?.stableSwapAddress
 
   try {
-    const dayAgo = sub(new Date(), { days: 1 })
+    const day7Ago = sub(new Date(), { days: 7 })
 
-    const dayAgoTimestamp = getUnixTime(dayAgo)
+    const day7AgoTimestamp = getUnixTime(day7Ago)
 
-    const blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
+    const blockDay7Ago = await getBlockAtTimestamp(day7AgoTimestamp)
 
-    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
+    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } = await stableSwapClient.request(
       gql`
         query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
-          virtualPriceAtLatestBlock: pairs(id: $stableSwapAddress) {
+          virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
             virtualPrice
           }
-          virtualPriceOneDayAgo: pairs(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+          virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
             virtualPrice
           }
         }
       `,
-      { stableSwapAddress, blockDayAgo },
+      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo: blockDay7Ago },
     )
 
-    const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice
-    const preVirtualPrice = virtualPriceOneDayAgo[0]?.virtualPrice
+    const virtualPrice = virtualPriceAtLatestBlock?.virtualPrice
+    const preVirtualPrice = virtualPrice7DayAgo?.virtualPrice
 
     const current = new BigNumber(virtualPrice)
     const prev = new BigNumber(preVirtualPrice)
 
-    return current.div(prev).pow(365).minus(1)
+    const result = current.minus(prev).div(current).plus(1).pow(52).minus(1).times(100)
+
+    if (result.isFinite() && result.isGreaterThan(0)) {
+      return result
+    }
+    return new BigNumber(0)
   } catch (error) {
     console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }

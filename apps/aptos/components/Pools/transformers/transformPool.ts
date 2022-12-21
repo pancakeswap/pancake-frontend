@@ -71,7 +71,9 @@ const transformPool = (
 
   const endTime = _toNumber(_get(resource, 'data.end_timestamp', '0'))
 
-  const isFinished = getSecondsLeftFromNow(endTime)
+  const hasRewardToken = _toNumber(_get(resource, 'data.total_reward_token.value', '0'))
+
+  const isFinished = getSecondsLeftFromNow(endTime) || !hasRewardToken
 
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 

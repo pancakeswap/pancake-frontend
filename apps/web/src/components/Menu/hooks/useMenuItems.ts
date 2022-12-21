@@ -34,6 +34,8 @@ export const useMenuItems = (): ConfigMenuItemsType[] => {
               itemMenuStatus = <LinkStatus>{ text: t('Vote Now'), color: 'success' }
             } else if (itemStatus === 'pot_open') {
               itemMenuStatus = <LinkStatus>{ text: t('Pot Open'), color: 'success' }
+            } else if (itemStatus === 'lock_end') {
+              itemMenuStatus = <LinkStatus>{ text: t('Lock End'), color: 'failure' }
             } else {
               itemMenuStatus = <LinkStatus>{ text: t('New'), color: 'success' }
             }

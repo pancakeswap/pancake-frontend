@@ -23,7 +23,7 @@ const StyledCell = styled(BaseCell)`
   }
 `;
 
-const ArrowIcon = styled(ChevronDownIcon)<{ toggled: boolean }>`
+const ArrowIcon = styled((props) => <ChevronDownIcon {...props} />)`
   transform: ${({ toggled }) => (toggled ? "rotate(180deg)" : "rotate(0)")};
   height: 24px;
 `;

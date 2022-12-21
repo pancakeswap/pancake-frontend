@@ -14,6 +14,7 @@ import {
   Box,
   Flex,
   useModal,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { BigNumber } from '@ethersproject/bignumber'
 import useNativeCurrency from 'hooks/useNativeCurrency'
@@ -60,6 +61,7 @@ const BorderCard = styled.div`
 export default function RemoveStableLiquidity({ currencyA, currencyB, currencyIdA, currencyIdB }) {
   const router = useRouter()
   const native = useNativeCurrency()
+  const { isMobile } = useMatchBreakpoints()
 
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const { toastError } = useToast()
@@ -334,7 +336,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
               </Button> */}
             </RowBetween>
             {!showDetailed && (
-              <BorderCard>
+              <BorderCard style={{ padding: isMobile ? '8px' : '16px' }}>
                 <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
                   {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
                 </Text>
