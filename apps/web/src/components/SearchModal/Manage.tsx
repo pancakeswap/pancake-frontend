@@ -28,7 +28,7 @@ export default function Manage({
   const { t } = useTranslation()
 
   return (
-    <ModalBody>
+    <ModalBody style={{ overflow: 'visible' }}>
       <StyledButtonMenu
         activeIndex={showLists ? 0 : 1}
         onItemClick={() => setShowLists((prev) => !prev)}
