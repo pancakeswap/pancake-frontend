@@ -438,9 +438,13 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
               <CurrencyInputPanel
                 value={formattedAmounts[Field.LIQUIDITY]}
                 onUserInput={onLiquidityInput}
+                onPercentInput={(percent) => {
+                  onUserInput(Field.LIQUIDITY_PERCENT, percent.toString())
+                }}
                 onMax={() => {
                   onUserInput(Field.LIQUIDITY_PERCENT, '100')
                 }}
+                showQuickInputButton
                 showMaxButton
                 lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
                 disableCurrencySelect

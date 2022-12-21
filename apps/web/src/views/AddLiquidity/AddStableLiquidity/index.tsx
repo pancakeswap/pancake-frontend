@@ -291,9 +291,15 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                 zapStyle="noZap"
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onFieldAInput}
+                onPercentInput={(percent) => {
+                  if (maxAmounts[Field.CURRENCY_A]) {
+                    onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                  }
+                }}
                 onMax={() => {
                   onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
                 }}
+                showQuickInputButton
                 showMaxButton
                 maxAmount={maxAmounts[Field.CURRENCY_A]}
                 currency={currencies[Field.CURRENCY_A]}
@@ -310,9 +316,15 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                 zapStyle="noZap"
                 value={formattedAmounts[Field.CURRENCY_B]}
                 onUserInput={onFieldBInput}
+                onPercentInput={(percent) => {
+                  if (maxAmounts[Field.CURRENCY_B]) {
+                    onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                  }
+                }}
                 onMax={() => {
                   onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
                 }}
+                showQuickInputButton
                 showMaxButton
                 maxAmount={maxAmounts[Field.CURRENCY_B]}
                 currency={currencies[Field.CURRENCY_B]}
