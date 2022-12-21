@@ -30,6 +30,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   setLang,
   cakePriceUsd,
   buyCakeLabel,
+  buyCakeLink,
   ...props
 }) => {
   const isMounted = useIsMounted();
@@ -105,7 +106,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
             <Button
               data-theme={isDark ? "dark" : "light"}
               as="a"
-              href="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
+              href={buyCakeLink}
               target="_blank"
               scale="sm"
               endIcon={<ArrowForwardIcon color="backgroundAlt" />}

@@ -84,6 +84,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   activeSubItem,
   langs,
   buyCakeLabel,
+  buyCakeLink,
   children,
 }) => {
   const { isMobile } = useMatchBreakpoints();
@@ -201,6 +202,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
         currentLang={currentLang}
         cakePriceUsd={cakePriceUsd}
         buyCakeLabel={buyCakeLabel}
+        buyCakeLink={buyCakeLink}
         mb={[`${MOBILE_MENU_HEIGHT}px`, null, "0px"]}
       />
       <AtomBox display={{ xs: "block", md: "none" }}>
