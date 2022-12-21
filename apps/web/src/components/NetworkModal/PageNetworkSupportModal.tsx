@@ -79,8 +79,10 @@ export function PageNetworkSupportModal() {
           </Button>
         )}
         {foundChain && lastValidPath && (
-          <NextLink href={lastValidPath} passHref>
-            <Button as="a">{t('Stay on %chain%', { chain: foundChain.name })}</Button>
+          <NextLink href={lastValidPath ?? ''} passHref>
+            <Button width="100%" as="a">
+              {t('Stay on %chain%', { chain: foundChain.name })}
+            </Button>
           </NextLink>
         )}
       </Grid>
