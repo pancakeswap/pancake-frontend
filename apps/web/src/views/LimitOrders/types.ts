@@ -2,13 +2,15 @@ import { Order } from '@gelatonetwork/limit-orders-lib'
 
 export enum ORDER_CATEGORY {
   Open = 0,
-  History = 1,
+  Expired = 1,
+  History = 2,
 }
 
 export enum LimitOrderStatus {
   OPEN = 'open',
   CANCELLED = 'cancelled',
   EXECUTED = 'executed',
+  EXPIRED = 'expired',
 }
 
 export interface LimitOrderTableProps {

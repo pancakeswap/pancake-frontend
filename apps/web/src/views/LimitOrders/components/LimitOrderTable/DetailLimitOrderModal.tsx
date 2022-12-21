@@ -108,7 +108,8 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
   const limitPriceExchangeRateText = `1 ${formattedOrder.inputToken?.symbol} = ${formattedOrder.executionPrice} ${formattedOrder.outputToken?.symbol}`
   const limitPriceExchangeRateTextReversed = `1 ${formattedOrder.outputToken?.symbol} = ${formattedOrder.invertedExecutionPrice} ${formattedOrder.inputToken?.symbol}`
 
-  const { isOpen, isExecuted, isCancelled, isSubmissionPending, isCancellationPending, bscScanUrls } = formattedOrder
+  const { isOpen, isExecuted, isCancelled, isSubmissionPending, isCancellationPending, bscScanUrls, isExpired } =
+    formattedOrder
 
   const orderDetails = (
     <>
@@ -129,6 +130,7 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
         limitPriceExchangeRateText={limitPriceExchangeRateText}
         limitPriceExchangeRateTextReversed={limitPriceExchangeRateTextReversed}
         isOpen={isOpen}
+        isExpired={isExpired}
         isExecuted={isExecuted}
         isCancelled={isCancelled}
         isSubmissionPending={isSubmissionPending}
@@ -195,6 +197,7 @@ interface LimitTradeInfoCardProps {
   limitPriceExchangeRateText: string
   limitPriceExchangeRateTextReversed: string
   isOpen: boolean
+  isExpired: boolean
   isExecuted: boolean
   isCancelled: boolean
   isSubmissionPending: boolean
@@ -206,6 +209,7 @@ const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardPro
     limitPriceExchangeRateText,
     limitPriceExchangeRateTextReversed,
     isOpen,
+    isExpired,
     isExecuted,
     isCancelled,
     isSubmissionPending,
@@ -232,6 +236,11 @@ const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardPro
             </Tag>
           )}
           {isCancelled && !isCancellationPending && (
+            <Tag outline scale="sm" p="8px" mb="16px" variant="failure">
+              {t('Cancelled')}
+            </Tag>
+          )}
+          {isExpired && (
             <Tag outline scale="sm" p="8px" mb="16px" variant="failure">
               {t('Cancelled')}
             </Tag>
