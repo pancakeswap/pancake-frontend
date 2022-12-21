@@ -1,27 +1,44 @@
-import { Button, AutoRenewIcon } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { useState, useEffect } from 'react'
+import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
 import { useExtendEnable } from '../hooks/useExtendEnable'
 
 interface ExtendEnableProps {
+  hasEnoughCake: boolean
+  handleConfirmClick: () => void
+  pendingConfirmTx: boolean
   isValidAmount: boolean
   isValidDuration: boolean
 }
 
-const ExtendEnable: React.FC<React.PropsWithChildren<ExtendEnableProps>> = ({ isValidAmount, isValidDuration }) => {
-  const { t } = useTranslation()
-
+const ExtendEnable: React.FC<React.PropsWithChildren<ExtendEnableProps>> = ({
+  hasEnoughCake,
+  handleConfirmClick,
+  pendingConfirmTx,
+  isValidAmount,
+  isValidDuration,
+}) => {
   const { handleEnable, pendingEnableTx } = useExtendEnable()
 
+  const [pendingEnableTxWithBalance, setPendingEnableTxWithBalance] = useState(pendingEnableTx)
+
+  useEffect(() => {
+    if (pendingEnableTx) {
+      setPendingEnableTxWithBalance(true)
+    } else if (hasEnoughCake) {
+      setPendingEnableTxWithBalance(false)
+    }
+  }, [hasEnoughCake, pendingEnableTx])
+
   return (
-    <Button
-      width="100%"
-      isLoading={pendingEnableTx}
-      endIcon={pendingEnableTx ? <AutoRenewIcon spin color="currentColor" /> : null}
-      onClick={handleEnable}
-      disabled={!(isValidAmount && isValidDuration)}
-    >
-      {pendingEnableTx ? t('Enabling') : t('Enable')}
-    </Button>
+    <ApproveConfirmButtons
+      isApproveDisabled={!(isValidAmount && isValidDuration) || hasEnoughCake}
+      isApproving={pendingEnableTxWithBalance}
+      isConfirmDisabled={!(isValidAmount && isValidDuration) || !hasEnoughCake}
+      isConfirming={pendingConfirmTx}
+      onApprove={handleEnable}
+      onConfirm={handleConfirmClick}
+      useMinWidth={false}
+    />
   )
 }
 
