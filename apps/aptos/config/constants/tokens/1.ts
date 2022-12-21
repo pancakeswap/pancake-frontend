@@ -59,6 +59,7 @@ export const mainnetTokens = {
     8,
     'stAPT',
     'Ditto Staked Aptos',
+    'https://www.dittofinance.io',
   ),
   whusdc: new Coin(
     ChainId.MAINNET,
