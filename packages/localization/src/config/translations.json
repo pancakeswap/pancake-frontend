@@ -2069,5 +2069,9 @@
   "Use": "Use",
   "to bridge this asset.": "to bridge this asset.",
   "to bridge %symbol%.": "to bridge %symbol%.",
-  "Bridge this asset": "Bridge this asset"
+  "Bridge this asset": "Bridge this asset",
+  "After your order is expired it might never be executed. Please cancel your order once expired": "After your order is expired it might never be executed. Please cancel your order once expired",
+  "Expiration Date: %expiryDate%": "Expiration Date: %expiryDate%",
+  "No Expired Orders": "No Expired Orders",
+  "Expired Order": "Expired Order"
 }
