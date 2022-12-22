@@ -97,4 +97,18 @@ export const mainnetTokens = {
     'CAKE',
     'CAKE',
   ),
+  sol: new Coin(
+    ChainId.MAINNET,
+    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::SOL',
+    8,
+    'SOL',
+    'SOL',
+  ),
+  usdc: new Coin(
+    ChainId.MAINNET,
+    '0x8c805723ebc0a7fc5b7d3e7b75d567918e806b3461cb9fa21941a9edc0220bf::coins::USDC',
+    8,
+    'USDC',
+    'USDC',
+  ),
 }
