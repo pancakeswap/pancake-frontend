@@ -5,6 +5,7 @@ import { Input, Flex, Text, Button, AutoRenewIcon, SyncAltIcon, HelpIcon, useToo
 import { useTranslation } from '@pancakeswap/localization'
 import { escapeRegExp } from 'utils'
 import { Rate } from 'state/limitOrders/types'
+import ExpiredDate from 'views/LimitOrders/components/ExpiredDate'
 import { getRatePercentageMessage, PercentageDirection } from '../utils/getRatePercentageMessage'
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." characters via in a non-capturing group
@@ -148,6 +149,7 @@ const LimitOrderPrice: React.FC<React.PropsWithChildren<LimitOrderPriceProps>> =
           <SyncAltIcon color="textSubtle" width="24px" ml="4px" />
         </LabelContainer>
       )}
+      <ExpiredDate />
       <Flex justifySelf="flex-end" mb="8px" minHeight="16px">
         {realExecutionPriceAsString && (
           <>
