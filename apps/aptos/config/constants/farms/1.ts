@@ -104,7 +104,7 @@ const farms: SerializedFarmConfig[] = [
   },
   {
     pid: 12,
-    lpSymbol: 'whUSDC-whwETH LP',
+    lpSymbol: 'whUSDC-whWETH LP',
     lpAddress:
       '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T, 0xcc8a89c8dce9693d354449f1f73e60e14e347417854f029db5bc8e7454008abb::coin::T>',
     token: mainnetTokens.whweth,
