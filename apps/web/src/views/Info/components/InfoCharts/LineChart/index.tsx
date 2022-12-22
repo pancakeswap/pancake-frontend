@@ -49,7 +49,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           dataKey="time"
           axisLine={false}
           tickLine={false}
-          tickFormatter={(time) => time.toLocaleDateString(undefined, { day: '2-digit' })}
+          tickFormatter={(time) => time.toLocaleDateString(undefined, { month: '2-digit' })}
           minTickGap={10}
         />
         <YAxis
