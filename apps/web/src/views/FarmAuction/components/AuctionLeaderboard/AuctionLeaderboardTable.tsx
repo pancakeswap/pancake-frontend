@@ -103,7 +103,13 @@ const LeaderboardRow: React.FC<React.PropsWithChildren<LeaderboardRowProps>> = (
             </SubMenuItem>
           )}
           {account && (
-            <SubMenuItem as={LinkExternal} href={getBlockExploreLink(account, 'address')} bold={false} color="text">
+            <SubMenuItem
+              as={LinkExternal}
+              isBscScan
+              href={getBlockExploreLink(account, 'address')}
+              bold={false}
+              color="text"
+            >
               {t('Bidder Address')}
             </SubMenuItem>
           )}
