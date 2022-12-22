@@ -79,7 +79,7 @@ export default {
     97: '',
   },
   chainlinkOracleBNB: {
-    56: '0xD276fCF34D54A926773c399eBAa772C12ec394aC',
+    56: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE',
     97: '',
   },
   chainlinkOracleCAKE: {
