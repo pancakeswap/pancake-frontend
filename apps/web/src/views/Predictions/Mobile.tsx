@@ -1,6 +1,6 @@
 import { memo } from 'react'
 import styled from 'styled-components'
-import { Box, Flex } from '@pancakeswap/uikit'
+import { Box, Flex, Link } from '@pancakeswap/uikit'
 import { useGetPredictionsStatus, useIsChartPaneOpen, useIsHistoryPaneOpen } from 'state/predictions/hooks'
 import { PredictionStatus } from 'state/types'
 import MobileMenu from './components/MobileMenu'
@@ -23,7 +23,7 @@ const StyledMobile = styled.div`
   }
 `
 
-const PowerLinkStyle = styled.div`
+const PowerLinkStyle = styled(Link)`
   display: flex;
   justify-content: flex-end;
   margin-right: 16px;
@@ -58,7 +58,7 @@ const Mobile: React.FC<React.PropsWithChildren> = () => {
               <Box width="100%">
                 <Menu />
                 {status === PredictionStatus.LIVE ? <Positions view={view} /> : <LoadingSection />}
-                <PowerLinkStyle>
+                <PowerLinkStyle href="https://chain.link/" external>
                   <img
                     src="/images/powered-by-chainlink.svg"
                     alt="Powered by ChainLink"
