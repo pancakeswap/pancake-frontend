@@ -60,14 +60,14 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
 
   const claimable = useMemo(() => {
     return vestingComputeReleasableAmount.gt(0)
-      ? getFullDisplayBalance(vestingComputeReleasableAmount, token.decimals, 8)
+      ? getFullDisplayBalance(vestingComputeReleasableAmount, token.decimals, token.decimals)
       : '0'
   }, [token, vestingComputeReleasableAmount])
 
   const remaining = useMemo(() => {
     const remain = totalPurchased.minus(releasedAtSaleEnd).minus(vestingReleased).minus(vestingComputeReleasableAmount)
 
-    return remain.gt(0) ? getFullDisplayBalance(remain, token.decimals, 8) : '0'
+    return remain.gt(0) ? getFullDisplayBalance(remain, token.decimals, token.decimals) : '0'
   }, [totalPurchased, releasedAtSaleEnd, vestingReleased, vestingComputeReleasableAmount, token.decimals])
 
   const percentage = useMemo(() => {

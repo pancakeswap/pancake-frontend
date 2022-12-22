@@ -4,7 +4,7 @@ import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { Ifo } from 'config/constants/types'
-import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance'
+import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import ReleasedChart from './ReleasedChart'
 
@@ -62,7 +62,7 @@ const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps
           </Flex>
           <Box ml="auto">
             <Text fontSize="14px" bold as="span">
-              {`${formatNumber(amount.released, 4, 4)} `}
+              {`${getFullDisplayBalance(amountReleased, token.decimals, token.decimals)} `}
             </Text>
             <Text fontSize="14px" as="span">
               {`(${amount.releasedPercentageDisplay}%)`}
@@ -78,7 +78,7 @@ const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps
           </Flex>
           <Box ml="auto">
             <Text fontSize="14px" bold as="span">
-              {`${formatNumber(amount.inVesting, 4, 4)} `}
+              {`${getFullDisplayBalance(amountInVesting, token.decimals, token.decimals)} `}
             </Text>
             <Text fontSize="14px" as="span">
               {`(${amount.inVestingPercentageDisplay}%)`}

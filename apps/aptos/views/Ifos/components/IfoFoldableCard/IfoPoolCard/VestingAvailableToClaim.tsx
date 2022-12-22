@@ -20,7 +20,7 @@ const VestingAvailableToClaim: React.FC<React.PropsWithChildren<VestingAvailable
   const num = useMemo(() => {
     const vestingaPercentage = new BigNumber(100).minus(percentage).div(100)
     const total = new BigNumber(amountToReceive).times(vestingaPercentage)
-    return getFullDisplayBalance(total, decimals, 2)
+    return getFullDisplayBalance(total, decimals, decimals)
   }, [amountToReceive, percentage, decimals])
 
   return (

@@ -20,7 +20,10 @@ const TotalAvailableClaim: React.FC<React.PropsWithChildren<TotalAvailableClaimP
   const { token } = ifo
 
   const amountAvailable = useMemo(
-    () => (amountAvailableToClaim.gt(0) ? getFullDisplayBalance(amountAvailableToClaim, token.decimals, 4) : '0'),
+    () =>
+      amountAvailableToClaim.gt(0)
+        ? getFullDisplayBalance(amountAvailableToClaim, token.decimals, token.decimals)
+        : '0',
     [token, amountAvailableToClaim],
   )
 
