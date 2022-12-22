@@ -39,7 +39,8 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
     })
 
   const amountClaimed = useMemo(
-    () => (amountAlreadyClaimed.gt(0) ? getFullDisplayBalance(amountAlreadyClaimed, token.decimals, 4) : '0'),
+    () =>
+      amountAlreadyClaimed.gt(0) ? getFullDisplayBalance(amountAlreadyClaimed, token.decimals, token.decimals) : '0',
     [token, amountAlreadyClaimed],
   )
 
