@@ -173,7 +173,7 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
     startFetch ? EXECUTED_EXPIRED_ORDERS_SWR_KEY : null,
     async () => {
       try {
-        const orders = await gelatoLimitOrders.getExecutedOrders(account.toLowerCase(), false)
+        const orders = await gelatoLimitOrders.getPastOrders(account.toLowerCase(), false)
         await syncOrderToLocalStorage({
           orders,
           chainId,
@@ -183,7 +183,9 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
         console.error('Error fetching expired orders from subgraph', e)
       }
 
-      const expiredOrdersLS = getLSOrders(chainId, account).filter((order) => order.isExpired)
+      const expiredOrdersLS = getLSOrders(chainId, account).filter(
+        (order) => order.isExpired && order.status === LimitOrderStatus.EXPIRED,
+      )
 
       return expiredOrdersLS.sort(newOrdersFirst)
     },
