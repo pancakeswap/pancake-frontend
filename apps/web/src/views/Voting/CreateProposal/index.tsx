@@ -258,14 +258,18 @@ const CreateProposal = () => {
                     <Text color="textSubtle" mr="16px">
                       {t('Creator')}
                     </Text>
-                    <LinkExternal href={getBlockExploreLink(account, 'address')}>{truncateHash(account)}</LinkExternal>
+                    <LinkExternal isBscScan href={getBlockExploreLink(account, 'address')}>
+                      {truncateHash(account)}
+                    </LinkExternal>
                   </Flex>
                 )}
                 <Flex alignItems="center" mb="16px">
                   <Text color="textSubtle" mr="16px">
                     {t('Snapshot')}
                   </Text>
-                  <LinkExternal href={getBlockExploreLink(snapshot, 'block')}>{snapshot}</LinkExternal>
+                  <LinkExternal isBscScan href={getBlockExploreLink(snapshot, 'block')}>
+                    {snapshot}
+                  </LinkExternal>
                 </Flex>
                 {account ? (
                   <>

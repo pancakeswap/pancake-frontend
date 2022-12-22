@@ -126,7 +126,7 @@ const DetailsView: React.FC<React.PropsWithChildren<DetailsViewProps>> = ({
       </VotingBoxBorder>
       <Text color="secondary" textTransform="uppercase" mb="4px" bold fontSize="14px">
         {t('Your voting power at block')}
-        <StyledLinkExternal href={getBlockExploreLink(block, 'block')} ml="8px">
+        <StyledLinkExternal isBscScan href={getBlockExploreLink(block, 'block')} ml="8px">
           {block}
         </StyledLinkExternal>
       </Text>
