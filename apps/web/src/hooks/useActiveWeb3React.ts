@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, ChainIdName } from '@pancakeswap/sdk'
 import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
@@ -36,7 +36,7 @@ export function useNetworkConnectorUpdater() {
         {
           query: {
             ...(!removeQueriesFromPath && router.query),
-            chainId,
+            chain: ChainIdName[chainId],
           },
           ...(uriHash && { hash: uriHash }),
         },
