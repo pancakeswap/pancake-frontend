@@ -28,7 +28,7 @@ describe('NFTs Page', () => {
   // collections details
   it('loads NFTs collections details page', () => {
     cy.visit('/nfts/collections/0x0a8901b0E25DEb55A87524f0cC164E9644020EBA') // Pancake Squad
-    cy.getBySel('collection-details-page-title').should('be.visible')
+    cy.getBySel('collection-detail-page-title').should('be.visible')
     cy.getBySel('collection-detail-page-card').should('have.length.at.least', 9)
   })
 
