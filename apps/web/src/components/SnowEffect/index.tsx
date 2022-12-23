@@ -57,6 +57,7 @@ const SnowWrapper = styled.div`
   pointer-events: none;
   ${createCSS()}
   overflow: hidden;
+  filter: drop-shadow(0 0 10px white);
 `
 const snowNodes = Array.from(Array(200).keys())
 
