@@ -63,8 +63,8 @@ const snowNodes = Array.from(Array(200).keys())
 const SnowEffect: React.FC = memo(() => {
   return (
     <SnowWrapper>
-      {snowNodes.map(() => (
-        <SnowItems />
+      {snowNodes.map((d) => (
+        <SnowItems key={`snowEffectItems${d}`} />
       ))}
     </SnowWrapper>
   )
