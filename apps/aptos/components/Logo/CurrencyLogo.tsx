@@ -5,7 +5,7 @@ import { useHttpLocations } from '@pancakeswap/hooks'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useMemo } from 'react'
 import styled from 'styled-components'
-import Logo from './Logo'
+import { TokenLogo } from '@pancakeswap/uikit'
 import { aptosLogoClass } from './CurrencyLogo.css'
 
 const getTokenLogoURL = memoize(
@@ -21,7 +21,7 @@ const getTokenLogoURL = memoize(
   (t) => (t ? `${t.chainId}#${t.address}` : null),
 )
 
-const StyledLogo = styled(Logo)<{ size: string }>`
+const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: 50%;
@@ -63,5 +63,5 @@ export function CurrencyLogo({
     return <AptosCoinLogo size={size} style={style} />
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return <StyledLogo useFilledIcon size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
 }

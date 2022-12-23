@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  TOKEN_LOGO_BAD_SRCS,
   BinanceChainIcon,
   Button,
   ButtonProps,
@@ -9,7 +10,6 @@ import {
   TokenPocketIcon,
   TrustWalletIcon,
 } from '@pancakeswap/uikit'
-import { BAD_SRCS } from 'components/Logo/Logo'
 import { useAccount } from 'wagmi'
 import { canRegisterToken } from '../../utils/wallet'
 
@@ -92,7 +92,7 @@ const AddToWalletButton: React.FC<AddToWalletButtonProps & ButtonProps> = ({
     <Button
       {...props}
       onClick={() => {
-        const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
+        const image = tokenLogo ? (TOKEN_LOGO_BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
         connector.watchAsset?.({
           address: tokenAddress,
           symbol: tokenSymbol,

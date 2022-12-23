@@ -11,9 +11,9 @@ import {
   SortArrowIcon,
   Text,
   useMatchBreakpoints,
+  TokenLogo,
 } from '@pancakeswap/uikit'
 
-import Logo from 'components/Logo/Logo'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
@@ -71,7 +71,7 @@ const LinkWrapper = styled(NextLinkFromReactRouter)`
   }
 `
 
-const ResponsiveLogo = styled(Logo)`
+const ResponsiveLogo = styled(TokenLogo)`
   border-radius: 50%;
   width: 24px;
   height: 24px;

@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { useHttpLocations } from '@pancakeswap/hooks'
-import Logo from './Logo'
+import { TokenLogo } from '@pancakeswap/uikit'
 
-const StyledListLogo = styled(Logo)<{ size: string }>`
+const StyledListLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
 `
