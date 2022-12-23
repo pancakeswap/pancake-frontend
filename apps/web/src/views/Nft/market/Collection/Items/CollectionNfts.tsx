@@ -47,6 +47,7 @@ const CollectionNfts: React.FC<React.PropsWithChildren<CollectionNftsProps>> = (
                   key={nft.tokenId}
                   nft={nft}
                   currentAskPrice={currentAskPriceAsNumber > 0 ? currentAskPriceAsNumber : undefined}
+                  data-test="collection-detail-page-card"
                 />
               )
             })}
