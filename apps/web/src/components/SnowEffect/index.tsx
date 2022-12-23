@@ -1,17 +1,18 @@
 import styled, { css } from 'styled-components'
 import { memo } from 'react'
+import { useMatchBreakpoints } from '@pancakeswap/uikit'
 
-function createCSS() {
+function createCSS(isMobile?: boolean) {
   let styles = ''
-
-  for (let i = 0; i < 200; i += 1) {
+  const dotCounts = isMobile ? 50 : 200
+  for (let i = 0; i < dotCounts; i += 1) {
     const randomX = Math.floor(Math.random() * 1000000) * 0.0001 // vw
     const randomOffset = Math.ceil(Math.random() * 1000000) * (Math.round(Math.random()) ? 1 : -1) * 0.0001 // vw
     const randomXEnd = randomX + randomOffset // vw
     const randomXEndYoyo = randomX + randomOffset / 2
     const RandomYoyoTime = (Math.random() * 50000 + 30000) / 100000
     const randomYoyoY = RandomYoyoTime * 100 // vh
-    const randomScale = Math.random() * 10000 * 0.0001
+    const randomScale = Math.random() * 10000 * 0.0001 * (isMobile ? 0.5 : 1)
     const fallDuration = Math.random() * 20 + 20 // s
     const fallDelay = Math.random() * 30 * -1 // s
     const opacity = Math.random() * 10000 * 0.0001
@@ -47,7 +48,7 @@ const SnowItems = styled.div`
   background: white;
   border-radius: 50%;
 `
-const SnowWrapper = styled.div`
+const SnowWrapper = styled.div<{ isMobile?: boolean }>`
   position: fixed;
   width: 100vw;
   height: 100vh;
@@ -55,16 +56,20 @@ const SnowWrapper = styled.div`
   left: 0;
   z-index: 10000;
   pointer-events: none;
-  ${createCSS()}
+  ${({ isMobile }) => {
+    return createCSS(isMobile)
+  }}
   overflow: hidden;
   filter: drop-shadow(0 0 10px white);
 `
 const snowNodes = Array.from(Array(200).keys())
+const snowNodesMobile = Array.from(Array(200).keys())
 
 const SnowEffect: React.FC = memo(() => {
+  const { isMobile } = useMatchBreakpoints()
   return (
-    <SnowWrapper>
-      {snowNodes.map((d) => (
+    <SnowWrapper isMobile={isMobile}>
+      {(isMobile ? snowNodesMobile : snowNodes).map((d) => (
         <SnowItems key={`snowEffectItems${d}`} />
       ))}
     </SnowWrapper>
