@@ -95,6 +95,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             .multipliedBy(25)
             .toNumber()
             .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .replace(/,/g, "")
         : undefined,
       50: maxAmount
         ? maxAmount
@@ -102,6 +103,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             .multipliedBy(50)
             .toNumber()
             .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .replace(/,/g, "")
         : undefined,
       75: maxAmount
         ? maxAmount
@@ -109,6 +111,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             .multipliedBy(75)
             .toNumber()
             .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .replace(/,/g, "")
         : undefined,
     }),
     [maxAmount, decimals]

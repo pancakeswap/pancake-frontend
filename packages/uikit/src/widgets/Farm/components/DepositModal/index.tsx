@@ -34,7 +34,7 @@ interface DepositModalProps {
   max: BigNumber;
   stakedBalance: BigNumber;
   multiplier?: string;
-  lpPrice: BigNumber;
+  lpPrice?: BigNumber;
   lpLabel?: string;
   tokenName?: string;
   apr?: number;
@@ -62,7 +62,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   tokenName = "",
   multiplier,
   displayApr,
-  lpPrice,
+  lpPrice = BIG_ZERO,
   lpLabel = "",
   apr = 0,
   addLiquidityUrl = "",

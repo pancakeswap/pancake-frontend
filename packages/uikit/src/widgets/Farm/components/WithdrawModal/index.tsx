@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { Button } from "../../../../components/Button";
 import { AutoRenewIcon } from "../../../../components/Svg";
 import { Message, MessageText } from "../../../../components/Message";
@@ -10,7 +11,7 @@ import { Modal, ModalBody, ModalActions, ModalInput } from "../../../Modal/index
 
 interface WithdrawModalProps {
   max: BigNumber;
-  lpPrice: BigNumber;
+  lpPrice?: BigNumber;
   onConfirm: (amount: string) => void;
   onDismiss?: () => void;
   tokenName?: string;
@@ -23,7 +24,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   onConfirm,
   onDismiss,
   max,
-  lpPrice,
+  lpPrice = BIG_ZERO,
   tokenName = "",
   showActiveBooster,
   showCrossChainFarmWarning,
