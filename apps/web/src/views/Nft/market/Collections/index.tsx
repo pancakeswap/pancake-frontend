@@ -18,6 +18,7 @@ import {
   Select,
   OptionProps,
   NextLinkFromReactRouter,
+  ToggleView,
 } from '@pancakeswap/uikit'
 import useSWRImmutable from 'swr/immutable'
 import orderBy from 'lodash/orderBy'
@@ -31,7 +32,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import Page from 'components/Layout/Page'
 import { nftsBaseUrl } from 'views/Nft/market/constants'
 import PageLoader from 'components/Loader/PageLoader'
-import ToggleView from 'components/ToggleView/ToggleView'
 import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
 import CollectionCardWithVolume from '../components/CollectibleCard/CollectionCardWithVolume'
 

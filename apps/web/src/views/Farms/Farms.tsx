@@ -20,6 +20,7 @@ import {
   FlexLayout,
   PageHeader,
   NextLinkFromReactRouter,
+  ToggleView,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Page from 'components/Layout/Page'
@@ -34,7 +35,6 @@ import { latinise } from 'utils/latinise'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
-import ToggleView from 'components/ToggleView/ToggleView'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Table from './components/FarmTable/FarmTable'
 import { FarmWithStakedValue } from './components/types'
