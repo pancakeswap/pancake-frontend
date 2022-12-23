@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
+import { useCurrencyBalance } from 'hooks/Balances'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { Button, ChevronDownIcon, CopyButton, SkeletonV2, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
@@ -63,6 +64,7 @@ export const CurrencyInputPanel = ({
 }: Props) => {
   const { account } = useAccount()
   const { bridgeResult } = useBridgeInfo({ currency })
+  const currencyBalance = useCurrencyBalance(currency?.wrapped?.address)
 
   const isMounted = useIsMounted()
   const { t } = useTranslation()
@@ -92,7 +94,8 @@ export const CurrencyInputPanel = ({
   )
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
-  const isShowPercentButton = isMounted && account && currency && !disabled && label !== 'To'
+  const isShowPercentButton =
+    isMounted && account && currency && currencyBalance?.greaterThan(0) && !disabled && label !== 'To'
 
   return (
     <SwapUI.CurrencyInputPanel
