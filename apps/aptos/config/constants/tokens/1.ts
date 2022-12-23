@@ -111,4 +111,18 @@ export const mainnetTokens = {
     'USDC',
     'USDC',
   ),
+  btc: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::BTC',
+    8,
+    'BTC',
+    'BTC',
+  ),
+  busd: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::BUSD',
+    6,
+    'BUSD',
+    'BUSD',
+  ),
 }
