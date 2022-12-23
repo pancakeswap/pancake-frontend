@@ -4,7 +4,7 @@ import { useMatchBreakpoints } from '@pancakeswap/uikit'
 
 function createCSS(isMobile?: boolean) {
   let styles = ''
-  const dotCounts = isMobile ? 50 : 200
+  const dotCounts = isMobile ? 60 : 200
   for (let i = 0; i < dotCounts; i += 1) {
     const randomX = Math.floor(Math.random() * 1000000) * 0.0001 // vw
     const randomOffset = Math.ceil(Math.random() * 1000000) * (Math.round(Math.random()) ? 1 : -1) * 0.0001 // vw
@@ -12,7 +12,7 @@ function createCSS(isMobile?: boolean) {
     const randomXEndYoyo = randomX + randomOffset / 2
     const RandomYoyoTime = (Math.random() * 50000 + 30000) / 100000
     const randomYoyoY = RandomYoyoTime * 100 // vh
-    const randomScale = Math.random() * 10000 * 0.0001 * (isMobile ? 0.5 : 1)
+    const randomScale = Math.random() * 10000 * 0.0001 * (isMobile ? 0.8 : 1)
     const fallDuration = Math.random() * 20 + 20 // s
     const fallDelay = Math.random() * 30 * -1 // s
     const opacity = Math.random() * 10000 * 0.0001
