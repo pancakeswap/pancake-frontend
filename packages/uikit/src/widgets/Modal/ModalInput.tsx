@@ -19,6 +19,7 @@ interface ModalInputProps {
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
   value: string;
+  valueUSDPrice?: string;
   addLiquidityUrl?: string;
   inputTitle?: string;
   decimals?: number;
@@ -68,6 +69,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   onSelectMax,
   onPercentInput,
   value,
+  valueUSDPrice,
   addLiquidityUrl,
   inputTitle,
   decimals = 18,
@@ -135,6 +137,15 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             {symbol}
           </Text>
         </Flex>
+        {valueUSDPrice && (
+          <Flex justifyContent="flex-start" ml="1rem">
+            <Flex maxWidth="200px">
+              <Text fontSize="12px" color="textSubtle">
+                ~{valueUSDPrice} USD
+              </Text>
+            </Flex>
+          </Flex>
+        )}
         <Flex pt="3px" justifyContent="flex-end">
           {onPercentInput &&
             [25, 50, 75].map((percent) => {

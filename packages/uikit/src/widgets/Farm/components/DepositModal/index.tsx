@@ -80,6 +80,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   bCakeCalculatorSlot,
 }) => {
   const [val, setVal] = useState("");
+  const [valUSDPrice, setValUSDPrice] = useState("");
   const [pendingTx, setPendingTx] = useState(false);
   const [showRoiCalculator, setShowRoiCalculator] = useState(false);
   const { t } = useTranslation();
@@ -113,15 +114,20 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
-        setVal(e.currentTarget.value.replace(/,/g, "."));
+        const inputVal = e.currentTarget.value.replace(/,/g, ".");
+        setVal(inputVal);
+
+        const inputValUSDPrice = inputVal.trim() === "" ? "0.00" : new BigNumber(inputVal).times(lpPrice).toFixed(2);
+        setValUSDPrice(inputValUSDPrice);
       }
     },
-    [setVal]
+    [setVal, setValUSDPrice, lpPrice]
   );
 
   const handleSelectMax = useCallback(() => {
     setVal(fullBalance);
-  }, [fullBalance, setVal]);
+    setValUSDPrice(new BigNumber(fullBalance.replace(/,/g, "")).times(lpPrice).toFixed(2));
+  }, [fullBalance, setVal, setValUSDPrice, lpPrice]);
 
   const handlePercentInput = useCallback(
     (percent: number) => {
@@ -129,10 +135,12 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         .dividedBy(100)
         .multipliedBy(percent)
         .toNumber()
-        .toLocaleString("en-US", { maximumFractionDigits: decimals });
+        .toLocaleString("en-US", { maximumFractionDigits: decimals })
+        .replace(/,/g, "");
       setVal(totalAmount);
+      setValUSDPrice(new BigNumber(totalAmount.replace(/,/g, "")).times(lpPrice).toFixed(2));
     },
-    [decimals, fullBalanceNumber]
+    [decimals, fullBalanceNumber, setValUSDPrice, lpPrice]
   );
 
   if (showRoiCalculator) {
@@ -164,6 +172,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
       <ModalBody width={["100%", "100%", "100%", "420px"]}>
         <ModalInput
           value={val}
+          valueUSDPrice={valUSDPrice}
           onSelectMax={handleSelectMax}
           onPercentInput={handlePercentInput}
           onChange={handleChange}

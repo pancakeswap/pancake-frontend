@@ -10,6 +10,7 @@ import { Modal, ModalBody, ModalActions, ModalInput } from "../../../Modal/index
 
 interface WithdrawModalProps {
   max: BigNumber;
+  lpPrice: BigNumber;
   onConfirm: (amount: string) => void;
   onDismiss?: () => void;
   tokenName?: string;
@@ -22,12 +23,14 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   onConfirm,
   onDismiss,
   max,
+  lpPrice,
   tokenName = "",
   showActiveBooster,
   showCrossChainFarmWarning,
   decimals,
 }) => {
   const [val, setVal] = useState("");
+  const [valUSDPrice, setValUSDPrice] = useState("");
   const [pendingTx, setPendingTx] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
@@ -40,15 +43,20 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
-        setVal(e.currentTarget.value.replace(/,/g, "."));
+        const inputVal = e.currentTarget.value.replace(/,/g, ".");
+        setVal(inputVal);
+
+        const inputValUSDPrice = inputVal.trim() === "" ? "0.00" : new BigNumber(inputVal).times(lpPrice).toFixed(2);
+        setValUSDPrice(inputValUSDPrice);
       }
     },
-    [setVal]
+    [setVal, setValUSDPrice, lpPrice]
   );
 
   const handleSelectMax = useCallback(() => {
     setVal(fullBalance);
-  }, [fullBalance, setVal]);
+    setValUSDPrice(new BigNumber(fullBalance.replace(/,/g, "")).times(lpPrice).toFixed(2));
+  }, [fullBalance, setVal, setValUSDPrice, lpPrice]);
 
   const handlePercentInput = useCallback(
     (percent: number) => {
@@ -56,10 +64,12 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
         .dividedBy(100)
         .multipliedBy(percent)
         .toNumber()
-        .toLocaleString("en-US", { maximumFractionDigits: decimals });
+        .toLocaleString("en-US", { maximumFractionDigits: decimals })
+        .replace(/,/g, "");
       setVal(totalAmount);
+      setValUSDPrice(new BigNumber(totalAmount.replace(/,/g, "")).times(lpPrice).toFixed(2));
     },
-    [decimals, fullBalanceNumber]
+    [decimals, fullBalanceNumber, setVal, setValUSDPrice, lpPrice]
   );
 
   return (
@@ -70,6 +80,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
           onPercentInput={handlePercentInput}
           onChange={handleChange}
           value={val}
+          valueUSDPrice={valUSDPrice}
           max={fullBalance}
           maxAmount={fullBalanceNumber}
           symbol={tokenName}
