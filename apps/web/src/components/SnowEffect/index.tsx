@@ -54,7 +54,7 @@ const SnowWrapper = styled.div<{ isMobile?: boolean }>`
   height: 100vh;
   top: 0;
   left: 0;
-  z-index: 10000;
+  z-index: 6;
   pointer-events: none;
   ${({ isMobile }) => {
     return createCSS(isMobile)
