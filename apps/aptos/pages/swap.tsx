@@ -325,6 +325,17 @@ const SwapPage = () => {
     }
   }, [dispatch, maxAmountInput])
 
+  const handlePercentInput = useCallback(
+    (percent) => {
+      if (maxAmountInput) {
+        dispatch(
+          typeInput({ field: Field.INPUT, typedValue: maxAmountInput.multiply(new Percent(percent, 100)).toExact() }),
+        )
+      }
+    },
+    [dispatch, maxAmountInput],
+  )
+
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
   const [onPresentSettingsModal] = useModal(
     <SettingsModalWithCustomDismiss customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)} />,
@@ -387,8 +398,6 @@ const SwapPage = () => {
 
   const isValid = !inputError
 
-  const atMaxAmountInput = Boolean(maxAmountInput && parsedAmounts[Field.INPUT]?.equalTo(maxAmountInput))
-
   const { showBridgeWarning, bridgeResult } = useBridgeInfo({ currency: inputCurrency })
 
   return (
@@ -414,8 +423,11 @@ const SwapPage = () => {
             otherCurrency={outputCurrency}
             value={formattedAmounts[Field.INPUT]}
             onUserInput={(value) => dispatch(typeInput({ field: Field.INPUT, typedValue: value }))}
-            showMaxButton={!atMaxAmountInput}
+            showMaxButton
             onMax={handleMaxInput}
+            maxAmount={maxAmountInput}
+            showQuickInputButton
+            onPercentInput={handlePercentInput}
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
             showBridgeWarning={showBridgeWarning}
           />
