@@ -19,11 +19,11 @@ import {
   Loading,
   SearchInput,
   Farm as FarmUI,
+  ToggleView,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
-import ToggleView from 'components/ToggleView/ToggleView'
 import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
 import NoSSR from 'components/NoSSR'
 
