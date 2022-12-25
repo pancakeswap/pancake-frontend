@@ -65,6 +65,7 @@ export function useAllTokens(): { [address: string]: ERC20Token } {
 export function useOfficialsAndUserAddedTokens(): { [address: string]: ERC20Token } {
   const { chainId } = useActiveChainId()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
+
   const userAddedTokens = useUserAddedTokens()
   return useMemo(() => {
     return (
