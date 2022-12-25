@@ -1,14 +1,14 @@
 import { useRef, useMemo } from 'react'
 import { latinise } from 'utils/latinise'
 import styled from 'styled-components'
-import { RowType } from '@pancakeswap/uikit'
+import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { getDisplayApr } from '../getDisplayApr'
 import Row, { RowProps } from './Row'
-import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 
 export interface ITableProps {
   farms: FarmWithStakedValue[]

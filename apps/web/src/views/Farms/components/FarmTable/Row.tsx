@@ -1,5 +1,6 @@
 import { useEffect, useState, createElement, useRef } from 'react'
 import styled from 'styled-components'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import {
   Box,
   Flex,
@@ -10,6 +11,8 @@ import {
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
   FarmTableFarmTokenInfoProps,
+  MobileColumnSchema,
+  DesktopColumnSchema,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser } from 'state/farms/hooks'
@@ -18,7 +21,6 @@ import { useDelayedUnmount } from '@pancakeswap/hooks'
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
 import ActionPanel from './Actions/ActionPanel'
-import { DesktopColumnSchema, MobileColumnSchema, FarmWithStakedValue } from '../types'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 

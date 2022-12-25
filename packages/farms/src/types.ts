@@ -133,3 +133,9 @@ export interface DeserializedFarmsState {
   poolLength?: number
   regularCakePerBlock?: number
 }
+
+export interface FarmWithStakedValue extends DeserializedFarm {
+  apr?: number
+  lpRewardsApr?: number
+  liquidity?: BigNumber
+}

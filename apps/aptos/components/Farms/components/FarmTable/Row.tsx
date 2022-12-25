@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import {
   Box,
   Farm as FarmUI,
@@ -9,13 +10,14 @@ import {
   Flex,
   Skeleton,
   useMatchBreakpoints,
+  MobileColumnSchema,
+  DesktopColumnSchema,
 } from '@pancakeswap/uikit'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
 
-import { DesktopColumnSchema, FarmWithStakedValue, MobileColumnSchema } from '../types'
 import ActionPanel from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'

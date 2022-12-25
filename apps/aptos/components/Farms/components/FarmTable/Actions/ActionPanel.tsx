@@ -9,7 +9,7 @@ import {
 } from '@pancakeswap/uikit'
 import styled, { css, keyframes } from 'styled-components'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { FarmWithStakedValue } from '../../types'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 
 import Apr, { AprProps } from '../Apr'
 import { HarvestAction, HarvestActionContainer } from './HarvestAction'

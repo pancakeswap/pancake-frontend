@@ -5,11 +5,10 @@ import { useAppDispatch } from 'state'
 import { fetchFarmsPublicDataAsync } from 'state/farms'
 import { getFarmApr } from 'utils/apr'
 import orderBy from 'lodash/orderBy'
-import { DeserializedFarm } from '@pancakeswap/farms'
+import { DeserializedFarm, FarmWithStakedValue } from '@pancakeswap/farms'
 import { FetchStatus } from 'config/constants/types'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { FarmWithStakedValue } from '../../Farms/components/types'
 
 const useGetTopFarmsByApr = (isIntersecting: boolean) => {
   const dispatch = useAppDispatch()
