@@ -107,7 +107,9 @@ export function useIsTokenActive(token: ERC20Token | undefined | null): boolean 
     return false
   }
 
-  return !!activeTokens[token.address]
+  const tokenAddress = isAddress(token.address)
+
+  return tokenAddress && !!activeTokens[tokenAddress]
 }
 
 // Check if currency is included in custom list from user storage
