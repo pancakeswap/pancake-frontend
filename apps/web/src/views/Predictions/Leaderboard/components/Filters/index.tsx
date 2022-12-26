@@ -8,9 +8,11 @@ import { useConfig } from 'views/Predictions/context/ConfigProvider'
 import AddressSearch from '../AddressSearch'
 
 const SearchWrapper = styled(Box)`
+  position: relative;
   margin-bottom: 8px;
   order: 1;
   width: 100%;
+  z-index: 2;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     margin-bottom: 0;
@@ -19,8 +21,10 @@ const SearchWrapper = styled(Box)`
   }
 `
 const FilterWrapper = styled(Box)`
+  position: relative;
   order: 2;
   width: 100%;
+  z-index: 1;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     order: 1;
@@ -45,7 +49,7 @@ const Filters = () => {
   }
 
   return (
-    <Container py="32px">
+    <Container position="relative" py="32px" zIndex={3}>
       <Text textTransform="uppercase" fontSize="12px" color="textSubtle" fontWeight="bold" mb="4px">
         {t('Rank By')}
       </Text>
