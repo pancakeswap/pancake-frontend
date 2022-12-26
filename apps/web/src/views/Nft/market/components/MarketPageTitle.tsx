@@ -26,7 +26,7 @@ const MarketPageTitle: React.FC<React.PropsWithChildren<MarketPageTitleProps>> =
       {...props}
     >
       <Box>
-        <Heading as="h1" scale="xl" color="secondary" mb="16px">
+        <Heading as="h1" scale="xl" color="secondary" mb="16px" data-test="collection-detail-page-title">
           {title}
         </Heading>
         {DELIST_COLLECTIONS[address] ? (
