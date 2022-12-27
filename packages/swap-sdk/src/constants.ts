@@ -14,7 +14,7 @@ export const ChainIdName = {
   [ChainId.BSC_TESTNET]: 'bscTestnet',
 }
 
-export const getChainId = (chainName: any) => {
+export const getChainId = (chainName: string) => {
   if (!chainName) return undefined
   const parsedQueryChain = Object.entries(ChainIdName).find(([_, value]) => value === chainName)
   return Number(parsedQueryChain?.[0])
