@@ -30,7 +30,7 @@ const Results = () => {
   }
 
   return (
-    <Box>
+    <Box position="relative" style={{ zIndex: 1 }}>
       <Container mb="16px">
         <Grid
           gridGap={['16px', null, null, null, null, '24px']}
