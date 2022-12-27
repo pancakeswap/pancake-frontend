@@ -2,12 +2,14 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, Flex, Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
+import { checkIsStableSwap } from 'state/info/constant'
 import {
   useAllPoolDataSWR,
   useAllTokenDataSWR,
   useProtocolChartDataSWR,
   useProtocolDataSWR,
   useProtocolTransactionsSWR,
+  useStableSwapTopPoolsAPR,
 } from 'state/info/hooks'
 import styled from 'styled-components'
 import BarChart from 'views/Info/components/InfoCharts/BarChart'
@@ -42,6 +44,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const protocolData = useProtocolDataSWR()
   const chartData = useProtocolChartDataSWR()
   const transactions = useProtocolTransactionsSWR()
+  const isStableSwap = checkIsStableSwap()
 
   const currentDate = useMemo(
     () => new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' }),
@@ -57,12 +60,21 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   }, [allTokens])
 
   const allPoolData = useAllPoolDataSWR()
-  // const allPoolData = useAllPoolData()
+  const poolAddresses = useMemo(() => {
+    return Object.keys(allPoolData)
+  }, [allPoolData])
+
+  const stableSwapsAprs = useStableSwapTopPoolsAPR(poolAddresses)
   const poolDatas = useMemo(() => {
     return Object.values(allPoolData)
-      .map((pool) => pool.data)
+      .map((pool, index) => {
+        return {
+          ...pool.data,
+          ...(isStableSwap && stableSwapsAprs && { lpApr7d: stableSwapsAprs[pool.data.address] }),
+        }
+      })
       .filter((pool) => pool.token1.name !== 'unknown' && pool.token0.name !== 'unknown')
-  }, [allPoolData])
+  }, [allPoolData, isStableSwap, stableSwapsAprs])
 
   const somePoolsAreLoading = useMemo(() => {
     return poolDatas.some((pool) => !pool?.token0Price)

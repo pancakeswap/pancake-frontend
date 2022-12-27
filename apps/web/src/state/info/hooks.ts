@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import BigNumber from 'bignumber.js'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
 import { fetchAllPoolData, fetchAllPoolDataWithAddress, getAprsForStableFarm } from 'state/info/queries/pools/poolData'
+import { fetchTopPoolAddresses } from 'state/info/queries/pools/topPools'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
 import { fetchProtocolData } from 'state/info/queries/protocol/overview'
@@ -269,6 +270,25 @@ export const useStableSwapAPR = (address: string | undefined): number => {
     SWR_SETTINGS,
   )
   return data?.toNumber()
+}
+
+const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
+  return Promise.all(addresses.map((d) => getAprsForStableFarm(d)))
+}
+
+export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, number> => {
+  const isStableSwap = checkIsStableSwap()
+  const chainName = useGetChainName()
+  const { data } = useSWRImmutable<BigNumber[]>(
+    isStableSwap && addresses?.length > 0 && [`info/pool/stableAPRs/Addresses/`, chainName],
+    () => stableSwapAPRWithAddressesFetcher(addresses),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  const addressWithAPR: Record<string, number> = {}
+  data?.forEach((d, index) => {
+    addressWithAPR[addresses[index]] = d?.toNumber()
+  })
+  return isStableSwap ? addressWithAPR : {}
 }
 
 export const useMultiChainPath = () => {
