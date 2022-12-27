@@ -1,4 +1,4 @@
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, getChainId } from '@pancakeswap/sdk'
 import { atom, useAtomValue } from 'jotai'
 import { useRouter } from 'next/router'
 import { useDeferredValue } from 'react'
@@ -10,9 +10,10 @@ const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
 
 queryChainIdAtom.onMount = (set) => {
   const params = new URL(window.location.href).searchParams
-  const c = params.get('chainId')
-  if (isChainSupported(+c)) {
-    set(+c)
+  const c = params.get('chain')
+  const chainId = getChainId(c)
+  if (isChainSupported(+chainId)) {
+    set(+chainId)
   } else {
     set(0)
   }
@@ -25,7 +26,7 @@ export function useLocalNetworkChain() {
 
   const { query } = useRouter()
 
-  const chainId = +(sessionChainId || query.chainId || queryChainId)
+  const chainId = +(sessionChainId || getChainId(query.chain) || queryChainId)
 
   if (isChainSupported(chainId)) {
     return chainId

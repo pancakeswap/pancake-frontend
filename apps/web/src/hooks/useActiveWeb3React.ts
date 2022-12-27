@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 import { EXCHANGE_PAGE_PATHS } from 'config/constants/exchange'
 import { isChainSupported } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
-import { ChainId, ChainIdName } from '@pancakeswap/sdk'
+import { ChainId, getChainId, ChainIdName } from '@pancakeswap/sdk'
 import { useActiveChainId } from './useActiveChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
@@ -23,8 +23,7 @@ export function useNetworkConnectorUpdater() {
       previousChainIdRef.current = chainId
     }
     if (loading || !router.isReady) return setPrevChainId()
-    const parsedQueryChain = Object.entries(ChainIdName).find(([_, value]) => value === router.query.chain)
-    const parsedQueryChainId = Number(parsedQueryChain?.[0])
+    const parsedQueryChainId = getChainId(router.query.chain)
 
     if (!parsedQueryChainId && chainId === ChainId.BSC) return setPrevChainId()
     if (parsedQueryChainId !== chainId && isChainSupported(chainId)) {
