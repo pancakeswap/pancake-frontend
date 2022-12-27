@@ -92,11 +92,11 @@ export const fetchChartData = async (
   let skip = 0
   let allFound = false
 
-  while (!allFound) {
+  while (!allFound && !error) {
     // eslint-disable-next-line no-await-in-loop
     const { data, error: fetchError } = await getEntityDayDatas(chainName, skip)
     skip += 1000
-    allFound = data?.length < 1000
+    allFound = data?.length < 1000 || skip > 2000
     error = fetchError
     if (data) {
       chartEntries = chartEntries.concat(data)
@@ -156,11 +156,11 @@ export const fetchChartDataWithAddress = async (
   let skip = 0
   let allFound = false
 
-  while (!allFound) {
+  while (!allFound && !error) {
     // eslint-disable-next-line no-await-in-loop
     const { data, error: fetchError } = await getEntityDayDatas(chainName, skip, address)
     skip += 1000
-    allFound = data?.length < 1000
+    allFound = data?.length < 1000 || skip > 2000
     error = fetchError
     if (data) {
       chartEntries = chartEntries.concat(data)
