@@ -93,7 +93,9 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
         console.error('Error fetching open orders from subgraph', e)
       }
 
-      const openOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === LimitOrderStatus.OPEN)
+      const openOrdersLS = getLSOrders(chainId, account).filter(
+        (order) => order.status === LimitOrderStatus.OPEN && !order.isExpired,
+      )
 
       const pendingOrdersLS = getLSOrders(chainId, account, true)
 
@@ -173,7 +175,7 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
     startFetch ? EXECUTED_EXPIRED_ORDERS_SWR_KEY : null,
     async () => {
       try {
-        const orders = await gelatoLimitOrders.getPastOrders(account.toLowerCase(), false)
+        const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
         await syncOrderToLocalStorage({
           orders,
           chainId,
@@ -184,7 +186,7 @@ const useExpiredOrders = (turnOn: boolean): Order[] => {
       }
 
       const expiredOrdersLS = getLSOrders(chainId, account).filter(
-        (order) => order.isExpired && order.status === LimitOrderStatus.EXPIRED,
+        (order) => order.isExpired && order.status === LimitOrderStatus.OPEN,
       )
 
       return expiredOrdersLS.sort(newOrdersFirst)

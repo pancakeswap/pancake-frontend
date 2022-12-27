@@ -10,7 +10,6 @@ export enum LimitOrderStatus {
   OPEN = 'open',
   CANCELLED = 'cancelled',
   EXECUTED = 'executed',
-  EXPIRED = 'expired',
 }
 
 export interface LimitOrderTableProps {

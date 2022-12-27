@@ -30,14 +30,14 @@ const OrderStatus: React.FC<
 > = ({ formattedOrder, showOpenTag = false, element = StatusElementType.TAG }) => {
   const { t } = useTranslation()
   const { isOpen, isSubmissionPending, isCancelled, isCancellationPending, isExecuted, isExpired } = formattedOrder
+  if (isOpen && isExpired) {
+    return <StatusElement element={element} text={t('Expired')} color="warning" />
+  }
   if (isOpen && !isSubmissionPending && showOpenTag) {
     return <StatusElement element={element} text={t('Open')} color="success" />
   }
   if (isOpen && isSubmissionPending) {
     return <StatusElement element={element} text={t('Pending')} color="warning" />
-  }
-  if (isExpired) {
-    return <StatusElement element={element} text={t('Expired')} color="warning" />
   }
   if (isCancelled && !isCancellationPending) {
     return <StatusElement element={element} text={t('Cancelled')} color="failure" />

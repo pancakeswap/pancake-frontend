@@ -85,7 +85,7 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
     isOpen: order.status === LimitOrderStatus.OPEN,
     isCancelled: order.status === LimitOrderStatus.CANCELLED,
     isExecuted: order.status === LimitOrderStatus.EXECUTED,
-    isExpired: order.isExpired && order.status === LimitOrderStatus.EXPIRED,
+    isExpired: order.isExpired && order.status === LimitOrderStatus.OPEN,
     isSubmissionPending,
     isCancellationPending,
     bscScanUrls: {
