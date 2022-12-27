@@ -3,7 +3,6 @@ import { Card, Flex, Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
 import {
-  useAllPoolDataSWR,
   useAllTokenDataSWR,
   useProtocolChartDataSWR,
   useProtocolDataSWR,
@@ -16,6 +15,7 @@ import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
 import TokenTable from 'views/Info/components/InfoTables/TokensTable'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import HoverableChart from '../components/InfoCharts/HoverableChart'
+import { usePoolsData } from '../hooks/usePoolsData'
 
 export const ChartCardsContainer = styled(Flex)`
   justify-content: space-between;
@@ -56,17 +56,11 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
       .filter((token) => token.name !== 'unknown')
   }, [allTokens])
 
-  const allPoolData = useAllPoolDataSWR()
-  // const allPoolData = useAllPoolData()
-  const poolDatas = useMemo(() => {
-    return Object.values(allPoolData)
-      .map((pool) => pool.data)
-      .filter((pool) => pool.token1.name !== 'unknown' && pool.token0.name !== 'unknown')
-  }, [allPoolData])
+  const { poolsData } = usePoolsData()
 
   const somePoolsAreLoading = useMemo(() => {
-    return poolDatas.some((pool) => !pool?.token0Price)
-  }, [poolDatas])
+    return poolsData.some((pool) => !pool?.token0Price)
+  }, [poolsData])
 
   return (
     <Page>
@@ -102,7 +96,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Top Pairs')}
       </Heading>
-      <PoolTable poolDatas={poolDatas} loading={somePoolsAreLoading} />
+      <PoolTable poolDatas={poolsData} loading={somePoolsAreLoading} />
       <Heading scale="lg" mt="40px" mb="16px">
         {t('Transactions')}
       </Heading>

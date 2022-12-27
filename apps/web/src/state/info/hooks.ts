@@ -271,6 +271,25 @@ export const useStableSwapAPR = (address: string | undefined): number => {
   return data?.toNumber()
 }
 
+const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
+  return Promise.all(addresses.map((d) => getAprsForStableFarm(d)))
+}
+
+export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, number> => {
+  const isStableSwap = checkIsStableSwap()
+  const chainName = useGetChainName()
+  const { data } = useSWRImmutable<BigNumber[]>(
+    isStableSwap && addresses?.length > 0 && [`info/pool/stableAPRs/Addresses/`, chainName],
+    () => stableSwapAPRWithAddressesFetcher(addresses),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  const addressWithAPR: Record<string, number> = {}
+  data?.forEach((d, index) => {
+    addressWithAPR[addresses[index]] = d?.toNumber()
+  })
+  return isStableSwap ? addressWithAPR : {}
+}
+
 export const useMultiChainPath = () => {
   const router = useRouter()
   const { chainName } = router.query
