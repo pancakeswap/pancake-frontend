@@ -1,5 +1,15 @@
-import { Token, JSBI, TradeType, CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
-import { ChainId, Pair, Route, Trade, isTradeBetter } from 'index'
+import {
+  ChainId,
+  Pair,
+  Route,
+  Trade,
+  isTradeBetter,
+  Token,
+  JSBI,
+  TradeType,
+  CurrencyAmount,
+  Percent,
+} from '@pancakeswap/sdk'
 
 const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(JSBI.BigInt(50), JSBI.BigInt(10000))
 
