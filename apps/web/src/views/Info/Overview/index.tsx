@@ -67,7 +67,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const stableSwapsAprs = useStableSwapTopPoolsAPR(poolAddresses)
   const poolDatas = useMemo(() => {
     return Object.values(allPoolData)
-      .map((pool, index) => {
+      .map((pool) => {
         return {
           ...pool.data,
           ...(isStableSwap && stableSwapsAprs && { lpApr7d: stableSwapsAprs[pool.data.address] }),
