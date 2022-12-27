@@ -13,6 +13,8 @@ import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { isAddress } from 'utils'
+
 import { AppState, useAppDispatch } from '../../index'
 import {
   addSerializedPair,
@@ -514,7 +516,9 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
               (BASES_TO_TRACK_LIQUIDITY_FOR[chainId] ?? [])
                 // to construct pairs of the given token with each base
                 .map((base) => {
-                  if (base.address === token.address) {
+                  const baseAddress = isAddress(base.address)
+
+                  if (baseAddress && baseAddress === tokenAddress) {
                     return null
                   }
                   return [base, token]

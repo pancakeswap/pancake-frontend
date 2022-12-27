@@ -1,16 +1,17 @@
 import '@pancakeswap/ui/css/reset.css'
-import { ResetCSS, ToastListener, ScrollToTopButtonV2 } from '@pancakeswap/uikit'
+import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
+import TransactionsDetailModal from 'components/TransactionDetailModal'
 import { useAccountEventListener } from 'hooks/useAccountEventListener'
 import useEagerConnect from 'hooks/useEagerConnect'
 import useEagerConnectMP from 'hooks/useEagerConnect.bmp'
+import useLockedEndNotification from 'hooks/useLockedEndNotification'
 import useSentryUser from 'hooks/useSentryUser'
 import useThemeCookie from 'hooks/useThemeCookie'
 import useUserAgent from 'hooks/useUserAgent'
-import useLockedEndNotification from 'hooks/useLockedEndNotification'
 import { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
@@ -20,7 +21,6 @@ import { Fragment } from 'react'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import TransactionsDetailModal from 'components/TransactionDetailModal'
 import { Blocklist, Updaters } from '..'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
@@ -28,6 +28,7 @@ import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
+const SnowEffect = dynamic(() => import('components/SnowEffect'), { ssr: false })
 
 // This config is required for number formatting
 BigNumber.config({
@@ -85,6 +86,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
         )}
       </Head>
+
       <Providers store={store}>
         <Blocklist>
           {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
@@ -126,6 +128,7 @@ type NextPageWithLayout = NextPage & {
    * */
   chains?: number[]
   isShowScrollToTopButton?: true
+  snowEffect?: boolean
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -157,6 +160,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
+      {Component.snowEffect && <SnowEffect />}
     </ProductionErrorBoundary>
   )
 }

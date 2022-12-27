@@ -1,5 +1,5 @@
 ---
-'@pancakeswap/sdk': minor
+'@pancakeswap/sdk': patch
 ---
 
 Remove duplicate util functions
