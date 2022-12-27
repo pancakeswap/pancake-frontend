@@ -33,7 +33,7 @@ const Inner = styled(Flex)<{ fullWidth?: boolean; gap?: string }>`
   flex-grow: ${({ fullWidth }) => (fullWidth ? 1 : 0)};
 `;
 
-const ButtonMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({
+const TabMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({
   activeIndex = 0,
   onItemClick,
   children,
@@ -63,4 +63,4 @@ const ButtonMenu: React.FC<React.PropsWithChildren<TabMenuProps>> = ({
   );
 };
 
-export default ButtonMenu;
+export default TabMenu;

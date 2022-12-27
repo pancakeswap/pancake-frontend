@@ -1,11 +1,10 @@
 import styled from 'styled-components'
-import { useState, useCallback } from 'react'
-import { Flex, Box, Card, Text, useMatchBreakpoints, Balance } from '@pancakeswap/uikit'
+import { useState, useCallback, useMemo } from 'react'
+import { Flex, Box, Card, Text, useMatchBreakpoints, Balance, ButtonTabMenu } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { usePotteryData } from 'state/pottery/hook'
-import PotTab from './PotTab'
 import Deposit from './Deposit/index'
 import Claim from './Claim/index'
 import CardHeader from './CardHeader'
@@ -77,6 +76,10 @@ const Pot: React.FC<React.PropsWithChildren> = () => {
   const prizeInBusd = publicData.totalPrize.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
 
+  const tabMenuItems = useMemo(() => {
+    return [t('Deposit'), t('Claim')]
+  }, [t])
+
   return (
     <PotteryContainer id="stake-to-win">
       <Flex width={['100%', '100%', '436px', '436px', '939px']} m="auto" flexDirection="column">
@@ -98,7 +101,7 @@ const Pot: React.FC<React.PropsWithChildren> = () => {
         <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'column', 'row']}>
           <Flex mt="48px" alignItems="flex-start">
             <Card style={{ width: isMobile ? '100%' : '436px' }}>
-              <PotTab onItemClick={handleClick} activeIndex={activeTab} />
+              <ButtonTabMenu itemList={tabMenuItems} onItemClick={handleClick} activeIndex={activeTab} />
               <Box>
                 <CardHeader
                   title={t('Pottery')}
