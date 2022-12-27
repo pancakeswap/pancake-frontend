@@ -1,13 +1,13 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import { BinanceIcon } from '@pancakeswap/uikit'
+import { BinanceIcon, TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import styled from 'styled-components'
 import { useHttpLocations } from '@pancakeswap/hooks'
+import { BAD_SRCS } from './constants'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
-import Logo from './Logo'
 
-const StyledLogo = styled(Logo)<{ size: string }>`
+const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: 50%;
@@ -44,8 +44,18 @@ export default function CurrencyLogo({
     if (currency.chainId === ChainId.BSC) {
       return <BinanceIcon width={size} style={style} />
     }
-    return <StyledLogo size={size} srcs={[`/images/chains/${currency.chainId}.png`]} width={size} style={style} />
+    return (
+      <StyledLogo
+        badSrcs={BAD_SRCS}
+        size={size}
+        srcs={[`/images/chains/${currency.chainId}.png`]}
+        width={size}
+        style={style}
+      />
+    )
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return (
+    <StyledLogo badSrcs={BAD_SRCS} size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  )
 }

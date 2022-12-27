@@ -9,9 +9,9 @@ import {
   TokenPocketIcon,
   TrustWalletIcon,
 } from '@pancakeswap/uikit'
-import { BAD_SRCS } from 'components/Logo/Logo'
 import { useAccount } from 'wagmi'
 import { canRegisterToken } from '../../utils/wallet'
+import { BAD_SRCS } from '../Logo/constants'
 
 export enum AddToWalletTextOptions {
   NO_TEXT,

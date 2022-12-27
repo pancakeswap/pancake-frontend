@@ -11,9 +11,9 @@ import {
   SortArrowIcon,
   Text,
   useMatchBreakpoints,
+  TokenLogo,
 } from '@pancakeswap/uikit'
 
-import Logo from 'components/Logo/Logo'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
@@ -24,6 +24,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
+import { BAD_SRCS } from 'components/Logo/constants'
 
 /**
  *  Columns on different layouts
@@ -71,7 +72,7 @@ const LinkWrapper = styled(NextLinkFromReactRouter)`
   }
 `
 
-const ResponsiveLogo = styled(Logo)`
+const ResponsiveLogo = styled(TokenLogo)`
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -155,6 +156,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
       <ResponsiveGrid>
         <Flex alignItems="center">
           <ResponsiveLogo
+            badSrcs={BAD_SRCS}
             sizes="24px"
             srcs={[tokenLogoURL, `https://tokens.pancakeswap.finance/images/${address}.png`]}
           />
