@@ -1,8 +1,6 @@
-import { ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
-import { useTranslation } from '@pancakeswap/localization'
-import { ORDER_CATEGORY } from '../../types'
+import styled, { useTheme } from "styled-components";
+import ButtonMenu from "./ButtonMenu";
+import ButtonMenuItem from "./ButtonMenuItem";
 
 const Wrapper = styled.div`
   & > div {
@@ -14,21 +12,29 @@ const Wrapper = styled.div`
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
   }
-`
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.input};
+    border-radius: 20px 20px 0 0;
+  }
+`;
 
-interface OrderTabProps {
-  activeIndex: ORDER_CATEGORY
-  onItemClick: (index: ORDER_CATEGORY) => void
+interface ButtonTabMenuProps {
+  activeIndex: number;
+  itemList: string[];
+  onItemClick: (index: number) => void;
 }
 
-const OrderTab: React.FC<React.PropsWithChildren<OrderTabProps>> = ({ activeIndex, onItemClick }) => {
-  const { theme } = useTheme()
-  const { t } = useTranslation()
+const ButtonTabMenu: React.FC<React.PropsWithChildren<ButtonTabMenuProps>> = ({
+  activeIndex,
+  itemList,
+  onItemClick,
+}) => {
+  const theme = useTheme();
 
   return (
     <Wrapper>
       <ButtonMenu activeIndex={activeIndex} onItemClick={onItemClick}>
-        {[t('Open Orders'), t('Order History')].map((content, idx) => (
+        {itemList.map((content, idx) => (
           <ButtonMenuItem
             key={content}
             style={{
@@ -41,7 +47,7 @@ const OrderTab: React.FC<React.PropsWithChildren<OrderTabProps>> = ({ activeInde
         ))}
       </ButtonMenu>
     </Wrapper>
-  )
-}
+  );
+};
 
-export default OrderTab
+export default ButtonTabMenu;
