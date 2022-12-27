@@ -7,18 +7,6 @@ export enum ChainId {
   BSC_TESTNET = 97,
 }
 
-export const ChainIdName = {
-  [ChainId.ETHEREUM]: 'eth',
-  [ChainId.GOERLI]: 'goerli',
-  [ChainId.BSC]: 'bsc',
-  [ChainId.BSC_TESTNET]: 'bscTestnet',
-}
-
-export const getChainId = (chainName: string) => {
-  if (!chainName) return undefined
-  const parsedQueryChain = Object.entries(ChainIdName).find(([_, value]) => value === chainName)
-  return Number(parsedQueryChain?.[0])
-}
 export const FACTORY_ADDRESS = '0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73'
 
 const FACTORY_ADDRESS_ETH = '0x1097053Fd2ea711dad45caCcc45EfF7548fCB362'
