@@ -47,7 +47,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
         const inputVal = e.currentTarget.value.replace(/,/g, ".");
         setVal(inputVal);
 
-        const inputValUSDPrice = inputVal.trim() === "" ? "0.00" : new BigNumber(inputVal).times(lpPrice).toFixed(2);
+        const inputValUSDPrice = inputVal === "" ? "0.00" : new BigNumber(inputVal).times(lpPrice).toFixed(2);
         setValUSDPrice(inputValUSDPrice);
       }
     },
