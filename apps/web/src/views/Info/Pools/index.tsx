@@ -2,42 +2,23 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, Heading, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
-import { useAllPoolDataSWR, usePoolDatasSWR, useStableSwapTopPoolsAPR } from 'state/info/hooks'
-import { checkIsStableSwap } from 'state/info/constant'
+import { usePoolDatasSWR } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import PoolTable from 'views/Info/components/InfoTables/PoolsTable'
+import { usePoolsData } from '../hooks/usePoolsData'
 
 const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const isStableSwap = checkIsStableSwap()
-  // get all the pool datas that exist
-  const allPoolData = useAllPoolDataSWR()
-
-  const poolAddresses = useMemo(() => {
-    return Object.keys(allPoolData)
-  }, [allPoolData])
-
-  const stableSwapsAprs = useStableSwapTopPoolsAPR(poolAddresses)
-
-  const poolDatas = useMemo(() => {
-    return Object.values(allPoolData)
-      .map((pool) => {
-        return {
-          ...pool.data,
-          ...(isStableSwap && stableSwapsAprs && { lpApr7d: stableSwapsAprs[pool.data.address] }),
-        }
-      })
-      .filter((pool) => pool.token1.name !== 'unknown' && pool.token0.name !== 'unknown')
-  }, [allPoolData, isStableSwap, stableSwapsAprs])
+  const { poolsData, stableSwapsAprs } = usePoolsData()
 
   const [savedPools] = useWatchlistPools()
   const watchlistPools = usePoolDatasSWR(savedPools)
   const watchlistPoolsData = useMemo(
     () =>
       watchlistPools.map((pool) => {
-        return { ...pool, ...(isStableSwap && stableSwapsAprs && { lpApr7d: stableSwapsAprs[pool.address] }) }
+        return { ...pool, ...(stableSwapsAprs && { lpApr7d: stableSwapsAprs[pool.address] }) }
       }),
-    [watchlistPools, stableSwapsAprs, isStableSwap],
+    [watchlistPools, stableSwapsAprs],
   )
 
   return (
@@ -57,7 +38,7 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
       <Heading scale="lg" mt="40px" mb="16px" id="info-pools-title">
         {t('All Pairs')}
       </Heading>
-      <PoolTable poolDatas={poolDatas} />
+      <PoolTable poolDatas={poolsData} />
     </Page>
   )
 }
