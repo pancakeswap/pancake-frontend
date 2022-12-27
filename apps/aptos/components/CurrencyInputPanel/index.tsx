@@ -1,6 +1,8 @@
-import { Currency } from '@pancakeswap/aptos-swap-sdk'
+import { useMemo } from 'react'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount, useAccountBalance } from '@pancakeswap/awgmi'
 import { useIsMounted } from '@pancakeswap/hooks'
+import { useCurrencyBalance } from 'hooks/Balances'
 import { useTranslation } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui'
 import { Button, ChevronDownIcon, CopyButton, SkeletonV2, Swap as SwapUI, Text, useModal } from '@pancakeswap/uikit'
@@ -21,8 +23,12 @@ type Props = {
   onCurrencySelect: (currency: Currency) => void
   hideBalance?: boolean
   disableCurrencySelect?: boolean
+  onPercentInput?: (percent: number) => void
+  showQuickInputButton?: boolean
   onMax?: () => void
   showMaxButton: boolean
+  maxAmount?: CurrencyAmount<Currency>
+  lpPercent?: string
   label?: string
   disabled?: boolean
   showBridgeWarning?: boolean
@@ -47,13 +53,18 @@ export const CurrencyInputPanel = ({
   hideBalance,
   disableCurrencySelect,
   label,
+  onPercentInput,
+  showQuickInputButton = false,
   onMax,
   showMaxButton,
+  maxAmount,
+  lpPercent,
   disabled,
   showBridgeWarning,
 }: Props) => {
   const { account } = useAccount()
   const { bridgeResult } = useBridgeInfo({ currency })
+  const currencyBalance = useCurrencyBalance(currency?.wrapped?.address)
 
   const isMounted = useIsMounted()
   const { t } = useTranslation()
@@ -72,6 +83,19 @@ export const CurrencyInputPanel = ({
       otherSelectedCurrency={otherCurrency}
     />,
   )
+
+  const percentAmount = useMemo(
+    () => ({
+      25: maxAmount ? maxAmount.multiply(new Percent(25, 100)).toExact() : undefined,
+      50: maxAmount ? maxAmount.multiply(new Percent(50, 100)).toExact() : undefined,
+      75: maxAmount ? maxAmount.multiply(new Percent(75, 100)).toExact() : undefined,
+    }),
+    [maxAmount],
+  )
+
+  const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
+  const isShowPercentButton =
+    isMounted && account && currency && currencyBalance?.greaterThan(0) && !disabled && label !== 'To'
 
   return (
     <SwapUI.CurrencyInputPanel
@@ -129,8 +153,35 @@ export const CurrencyInputPanel = ({
       }
       bottom={
         <InputRow selected={!!disableCurrencySelect}>
-          {isMounted && account && currency && !disabled && showMaxButton && label !== 'To' && (
-            <Button onClick={onMax} scale="xs" variant="secondary" style={{ textTransform: 'uppercase' }}>
+          {isShowPercentButton &&
+            showQuickInputButton &&
+            onPercentInput &&
+            [25, 50, 75].map((percent) => {
+              const isAtCurrentPercent =
+                (maxAmount && value === percentAmount[percent]) || (lpPercent && lpPercent === percent.toString())
+
+              return (
+                <Button
+                  key={`btn_quickCurrency${percent}`}
+                  onClick={() => {
+                    onPercentInput(percent)
+                  }}
+                  scale="xs"
+                  mr="5px"
+                  variant={isAtCurrentPercent ? 'primary' : 'secondary'}
+                  style={{ textTransform: 'uppercase' }}
+                >
+                  {percent}%
+                </Button>
+              )
+            })}
+          {isShowPercentButton && showMaxButton && (
+            <Button
+              onClick={onMax}
+              scale="xs"
+              variant={isAtPercentMax ? 'primary' : 'secondary'}
+              style={{ textTransform: 'uppercase' }}
+            >
               {t('Max')}
             </Button>
           )}
