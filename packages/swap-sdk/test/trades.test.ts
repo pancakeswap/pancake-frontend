@@ -1,23 +1,24 @@
-import { Trade, Route, Token, ChainId, Pair, JSBI, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
-import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from 'config/constants/exchange'
-import { isTradeBetter } from './trades'
+import { Token, JSBI, TradeType, CurrencyAmount, Percent } from '@pancakeswap/swap-sdk-core'
+import { ChainId, Pair, Route, Trade, isTradeBetter } from 'index'
+
+const BETTER_TRADE_LESS_HOPS_THRESHOLD = new Percent(JSBI.BigInt(50), JSBI.BigInt(10000))
 
 describe('isTradeBetter', () => {
-  const token1 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000001', 18)
-  const token2 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000002', 18)
-  const token3 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000003', 18)
+  const token1 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000001', 18, '1')
+  const token2 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000002', 18, '2')
+  const token3 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000003', 18, '3')
 
   const pair12 = new Pair(
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(20000)),
-    CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(20000)),
+    CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(20000))
   )
   const pair23 = new Pair(
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(20000)),
-    CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(30000)),
+    CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(30000))
   )
   const pair13 = new Pair(
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(30000)),
-    CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(30000)),
+    CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(30000))
   )
 
   it('should return false if tradeB missing', () => {
@@ -26,10 +27,10 @@ describe('isTradeBetter', () => {
         new Trade(
           new Route([pair12], token1, token2),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000)),
-          TradeType.EXACT_INPUT,
+          TradeType.EXACT_INPUT
         ),
-        undefined,
-      ),
+        undefined
+      )
     ).toBeFalsy()
   })
 
@@ -40,9 +41,9 @@ describe('isTradeBetter', () => {
         new Trade(
           new Route([pair12], token1, token2),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000)),
-          TradeType.EXACT_INPUT,
-        ),
-      ),
+          TradeType.EXACT_INPUT
+        )
+      )
     ).toBeTruthy()
   })
 
@@ -56,14 +57,14 @@ describe('isTradeBetter', () => {
         new Trade(
           new Route([pair12], token1, token2),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000)),
-          TradeType.EXACT_INPUT,
+          TradeType.EXACT_INPUT
         ),
         new Trade(
           new Route([pair12], token2, token1),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000)),
-          TradeType.EXACT_OUTPUT,
-        ),
-      ),
+          TradeType.EXACT_OUTPUT
+        )
+      )
     ).toThrow('Trades are not comparable')
   })
 
@@ -73,14 +74,14 @@ describe('isTradeBetter', () => {
         new Trade(
           new Route([pair12], token1, token2),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000)),
-          TradeType.EXACT_INPUT,
+          TradeType.EXACT_INPUT
         ),
         new Trade(
           new Route([pair23], token2, token3),
           CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(1000)),
-          TradeType.EXACT_INPUT,
-        ),
-      ),
+          TradeType.EXACT_INPUT
+        )
+      )
     ).toThrowError('Trades are not comparable')
 
     expect(() =>
@@ -88,14 +89,14 @@ describe('isTradeBetter', () => {
         new Trade(
           new Route([pair12], token1, token2),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000)),
-          TradeType.EXACT_INPUT,
+          TradeType.EXACT_INPUT
         ),
         new Trade(
           new Route([pair13], token1, token3),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000)),
-          TradeType.EXACT_INPUT,
-        ),
-      ),
+          TradeType.EXACT_INPUT
+        )
+      )
     ).toThrowError('Trades are not comparable')
   })
 
@@ -103,12 +104,12 @@ describe('isTradeBetter', () => {
     const tradeA = new Trade(
       new Route([pair13], token1, token3),
       CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(9000)),
-      TradeType.EXACT_INPUT,
+      TradeType.EXACT_INPUT
     )
     const tradeB = new Trade(
       new Route([pair12, pair23], token1, token3),
       CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(9000)),
-      TradeType.EXACT_INPUT,
+      TradeType.EXACT_INPUT
     )
 
     expect(isTradeBetter(tradeA, tradeB)).toBeTruthy()
@@ -117,12 +118,12 @@ describe('isTradeBetter', () => {
     const tradeA = new Trade(
       new Route([pair13], token1, token3),
       CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(9000)),
-      TradeType.EXACT_INPUT,
+      TradeType.EXACT_INPUT
     )
     const tradeB = new Trade(
       new Route([pair12, pair23], token1, token3),
       CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(9000)),
-      TradeType.EXACT_INPUT,
+      TradeType.EXACT_INPUT
     )
 
     expect(isTradeBetter(tradeA, tradeB, BETTER_TRADE_LESS_HOPS_THRESHOLD)).toBeTruthy()

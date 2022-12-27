@@ -1,12 +1,12 @@
-import { Currency, Percent, Trade, TradeType } from '@pancakeswap/sdk'
-
-import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from '../constants'
+import { Currency, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
+import { Trade } from 'entities'
+import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from 'index'
 
 // returns whether tradeB is better than tradeA by at least a threshold percentage amount
 export function isTradeBetter(
   tradeA: Trade<Currency, Currency, TradeType> | undefined | null,
   tradeB: Trade<Currency, Currency, TradeType> | undefined | null,
-  minimumDelta: Percent = ZERO_PERCENT,
+  minimumDelta: Percent = ZERO_PERCENT
 ): boolean | undefined {
   if (tradeA && !tradeB) return false
   if (tradeB && !tradeA) return true
