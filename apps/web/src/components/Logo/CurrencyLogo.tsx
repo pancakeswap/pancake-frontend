@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import styled from 'styled-components'
 import { useHttpLocations } from '@pancakeswap/hooks'
+import { BAD_SRCS } from './constants'
 import getTokenLogoURL from '../../utils/getTokenLogoURL'
 
 const StyledLogo = styled(TokenLogo)<{ size: string }>`
@@ -43,8 +44,18 @@ export default function CurrencyLogo({
     if (currency.chainId === ChainId.BSC) {
       return <BinanceIcon width={size} style={style} />
     }
-    return <StyledLogo size={size} srcs={[`/images/chains/${currency.chainId}.png`]} width={size} style={style} />
+    return (
+      <StyledLogo
+        badSrcs={BAD_SRCS}
+        size={size}
+        srcs={[`/images/chains/${currency.chainId}.png`]}
+        width={size}
+        style={style}
+      />
+    )
   }
 
-  return <StyledLogo size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return (
+    <StyledLogo badSrcs={BAD_SRCS} size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  )
 }

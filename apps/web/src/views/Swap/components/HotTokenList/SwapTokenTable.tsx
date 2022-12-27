@@ -24,6 +24,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
+import { BAD_SRCS } from 'components/Logo/constants'
 
 /**
  *  Columns on different layouts
@@ -155,6 +156,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
       <ResponsiveGrid>
         <Flex alignItems="center">
           <ResponsiveLogo
+            badSrcs={BAD_SRCS}
             sizes="24px"
             srcs={[tokenLogoURL, `https://tokens.pancakeswap.finance/images/${address}.png`]}
           />

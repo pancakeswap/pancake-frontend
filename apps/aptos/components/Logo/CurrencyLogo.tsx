@@ -7,6 +7,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { TokenLogo } from '@pancakeswap/uikit'
 import { aptosLogoClass } from './CurrencyLogo.css'
+import { BAD_SRCS } from './constants'
 
 const getTokenLogoURL = memoize(
   (token?: Token) => {
@@ -30,7 +31,16 @@ const StyledLogo = styled(TokenLogo)<{ size: string }>`
 const APT_SRCS = ['https://tokens.pancakeswap.finance/images/symbol/apt.png']
 
 export function AptosCoinLogo({ size = '24px', style }: { size?: string; style?: React.CSSProperties }) {
-  return <StyledLogo className={aptosLogoClass} srcs={APT_SRCS} alt="APT logo" style={style} size={size} />
+  return (
+    <StyledLogo
+      badSrcs={BAD_SRCS}
+      className={aptosLogoClass}
+      srcs={APT_SRCS}
+      alt="APT logo"
+      style={style}
+      size={size}
+    />
+  )
 }
 
 export function CurrencyLogo({
@@ -63,5 +73,14 @@ export function CurrencyLogo({
     return <AptosCoinLogo size={size} style={style} />
   }
 
-  return <StyledLogo useFilledIcon size={size} srcs={srcs} alt={`${currency?.symbol ?? 'token'} logo`} style={style} />
+  return (
+    <StyledLogo
+      badSrcs={BAD_SRCS}
+      useFilledIcon
+      size={size}
+      srcs={srcs}
+      alt={`${currency?.symbol ?? 'token'} logo`}
+      style={style}
+    />
+  )
 }

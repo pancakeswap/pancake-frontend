@@ -1,6 +1,6 @@
 // Set of helper functions to facilitate wallet setup
-import { TOKEN_LOGO_BAD_SRCS } from '@pancakeswap/uikit'
 import { Address } from 'wagmi'
+import { BAD_SRCS } from '../components/Logo/constants'
 
 /**
  * Prompt the user to add a custom token to metamask
@@ -16,7 +16,7 @@ export const registerToken = async (
   tokenLogo?: string,
 ) => {
   // better leave this undefined for default image instead of broken image url
-  const image = tokenLogo ? (TOKEN_LOGO_BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
+  const image = tokenLogo ? (BAD_SRCS[tokenLogo] ? undefined : tokenLogo) : undefined
   const tokenAdded = await window.ethereum.request({
     method: 'wallet_watchAsset',
     params: {
