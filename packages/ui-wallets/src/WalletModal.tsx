@@ -178,7 +178,7 @@ function MobileModal<T>({
 function WalletSelect<T>({
   wallets,
   onClick,
-  displayCount = 5,
+  displayCount = 6,
 }: {
   wallets: WalletConfigV2<T>[]
   onClick: (wallet: WalletConfigV2<T>) => void
@@ -186,7 +186,8 @@ function WalletSelect<T>({
 }) {
   const { t } = useTranslation()
   const [showMore, setShowMore] = useState(false)
-  const walletsToShow = showMore ? wallets : wallets.slice(0, displayCount)
+  const walletDisplayCount = wallets.length > displayCount ? displayCount - 1 : displayCount
+  const walletsToShow = showMore ? wallets : wallets.slice(0, walletDisplayCount)
   const [selected] = useSelectedWallet()
   return (
     <AtomBox
@@ -239,7 +240,7 @@ function WalletSelect<T>({
           </Button>
         )
       })}
-      {!showMore && wallets.length > displayCount && (
+      {!showMore && wallets.length > walletDisplayCount && (
         <AtomBox display="flex" justifyContent="center" alignItems="center" flexDirection="column">
           <Button height="auto" variant="text" as={AtomBox} flexDirection="column" onClick={() => setShowMore(true)}>
             <AtomBox
