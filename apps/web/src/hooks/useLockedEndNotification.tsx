@@ -4,8 +4,9 @@ import { useCakeVaultUserData } from 'state/pools/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import { useAtom } from 'jotai'
-
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import { ChainId } from '@pancakeswap/sdk'
 
 const storage = createJSONStorage(() => sessionStorage)
 storage.delayInit = true
@@ -28,7 +29,14 @@ const LockedEndDescription: React.FC = () => {
 
 export const useIsUserLockedEnd = () => {
   const { isLoading, locked, lockedEnd } = useUserLockedCakeStatus()
-  if (!isLoading && locked && (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))) return true
+  const { chainId } = useActiveChainId()
+  if (
+    chainId === ChainId.BSC &&
+    !isLoading &&
+    locked &&
+    (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))
+  )
+    return true
   return false
 }
 
@@ -36,14 +44,15 @@ const useLockedEndNotification = () => {
   useCakeVaultUserData()
   const { t } = useTranslation()
   const isUserLockedEnd = useIsUserLockedEnd()
+  const { chainId } = useActiveChainId()
   const { toastInfo } = useToast()
   const [lockedNotificationShow, setLockedNotificationShow] = useLockedNotificationShow()
   useEffect(() => {
-    if (toastInfo && isUserLockedEnd && lockedNotificationShow) {
+    if (toastInfo && isUserLockedEnd && lockedNotificationShow && chainId === ChainId.BSC) {
       toastInfo(t('Cake Syrup Pool'), <LockedEndDescription />)
       setLockedNotificationShow(false) // show once
     }
-  }, [isUserLockedEnd, toastInfo, lockedNotificationShow, setLockedNotificationShow, t])
+  }, [isUserLockedEnd, toastInfo, lockedNotificationShow, setLockedNotificationShow, t, chainId])
 }
 
 export default useLockedEndNotification
