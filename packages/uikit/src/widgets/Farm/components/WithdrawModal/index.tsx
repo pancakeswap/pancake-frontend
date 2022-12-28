@@ -69,14 +69,11 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent).toNumber().toString();
+      const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent);
 
-      setVal(totalAmount);
+      setVal(totalAmount.toNumber().toString());
 
-      const USDPrice = new BigNumber(totalAmount)
-        .times(lpPrice)
-        .toNumber()
-        .toLocaleString("en-US", { maximumFractionDigits: 2 });
+      const USDPrice = totalAmount.times(lpPrice).toNumber().toLocaleString("en-US", { maximumFractionDigits: 2 });
       setValUSDPrice(USDPrice);
     },
     [fullBalanceNumber, setVal, setValUSDPrice, lpPrice]
