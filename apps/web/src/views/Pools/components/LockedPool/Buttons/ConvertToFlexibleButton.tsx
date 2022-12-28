@@ -11,6 +11,7 @@ import { useVaultPoolContract } from 'hooks/useContract'
 import { useAppDispatch } from 'state'
 import { fetchCakeVaultUserData } from 'state/pools'
 import { VaultKey } from 'state/types'
+import { useSWRConfig } from 'swr'
 
 const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = (props) => {
   const dispatch = useAppDispatch()
@@ -20,6 +21,7 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
   const vaultPoolContract = useVaultPoolContract(VaultKey.CakeVault)
   const { callWithGasPrice } = useCallWithGasPrice()
   const { t } = useTranslation()
+  const { mutate } = useSWRConfig()
   const { toastSuccess } = useToast()
 
   const handleUnlock = useCallback(async () => {
@@ -40,8 +42,9 @@ const ConvertToFlexibleButton: React.FC<React.PropsWithChildren<ButtonProps>> = 
         </ToastDescriptionWithTx>,
       )
       dispatch(fetchCakeVaultUserData({ account }))
+      mutate(['userCakeLockStatus', account])
     }
-  }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract])
+  }, [t, toastSuccess, account, callWithGasPrice, dispatch, fetchWithCatchTxError, vaultPoolContract, mutate])
 
   return (
     <Button width="100%" disabled={pendingTx} onClick={handleUnlock} variant="secondary" {...props}>
