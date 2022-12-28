@@ -2418,4 +2418,12 @@ export const bscTokens = {
     'https://ssquad.games/',
   ),
   zbc: new Token(ChainId.BSC, '0x37a56cdcD83Dce2868f721De58cB3830C44C6303', 9, 'ZBC', 'ZEBEC', 'https://zebec.io/'),
+  primal: new Token(
+    ChainId.BSC,
+    '0xCb5327Ed4649548e0d73E70b633cdfd99aF6Da87',
+    18,
+    'PRIMAL',
+    'PRIMAL Token',
+    'https://www.getprimal.com/',
+  ),
 }
