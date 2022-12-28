@@ -80,5 +80,8 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
       return typeof window !== 'undefined' && Boolean(window.safePal) && Boolean((window.safePal as any)?.sfpPlatform)
     },
     connectorId: ConnectorNames.SafePal,
+    downloadLink: {
+      desktop: 'https://chrome.google.com/webstore/detail/safepal-extension-wallet/lgmpcpglpngdoalbgeoldeajfclnhafa',
+    },
   },
 ]
