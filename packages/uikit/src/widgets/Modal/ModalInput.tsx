@@ -157,7 +157,8 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
           </Flex>
         )}
         <Flex pt="3px" justifyContent="flex-end">
-          {onPercentInput &&
+          {maxAmount?.isGreaterThan(0) &&
+            onPercentInput &&
             [25, 50, 75].map((percent) => {
               let currentPercentAmount;
               if (percent === 25) currentPercentAmount = percentAmount[25];
@@ -181,14 +182,18 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
                 </Button>
               );
             })}
-          <Button
-            onClick={onSelectMax}
-            scale="xs"
-            variant={isAtPercentMax ? "primary" : "secondary"}
-            style={{ textTransform: "uppercase" }}
-          >
-            {t("Max")}
-          </Button>
+          {maxAmount?.isGreaterThan(0) && (
+            <>
+              <Button
+                onClick={onSelectMax}
+                scale="xs"
+                variant={isAtPercentMax ? "primary" : "secondary"}
+                style={{ textTransform: "uppercase" }}
+              >
+                {t("Max")}
+              </Button>
+            </>
+          )}
         </Flex>
       </StyledTokenInput>
       {isBalanceZero && (
