@@ -6,6 +6,7 @@ import { useCallback, useMemo } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorNames } from 'config/wallet'
 import { useAccount, useSwitchNetwork as useSwitchNetworkWallet } from 'wagmi'
+import { ChainIdName } from 'config/ChainIdName'
 import { useSessionChainId } from './useSessionChainId'
 import { useSwitchNetworkLoading } from './useSwitchNetworkLoading'
 
@@ -14,7 +15,7 @@ export function useSwitchNetworkLocal() {
   return useCallback(
     (chainId: number) => {
       setSessionChainId(chainId)
-      replaceBrowserHistory('chainId', chainId === ChainId.BSC ? null : chainId)
+      replaceBrowserHistory('chain', chainId === ChainId.BSC ? null : ChainIdName[chainId])
     },
     [setSessionChainId],
   )
