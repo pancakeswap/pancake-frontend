@@ -47,8 +47,11 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
         const inputVal = e.currentTarget.value.replace(/,/g, ".");
         setVal(inputVal);
 
-        const inputValUSDPrice = inputVal === "" ? "0.00" : new BigNumber(inputVal).times(lpPrice).toFixed(2);
-        setValUSDPrice(inputValUSDPrice);
+        const USDPrice =
+          inputVal === ""
+            ? "0.00"
+            : new BigNumber(inputVal).times(lpPrice).toNumber().toLocaleString("en-US", { maximumFractionDigits: 2 });
+        setValUSDPrice(USDPrice);
       }
     },
     [setVal, setValUSDPrice, lpPrice]
@@ -56,21 +59,27 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
 
   const handleSelectMax = useCallback(() => {
     setVal(fullBalance);
-    setValUSDPrice(new BigNumber(fullBalance.replace(/,/g, "")).times(lpPrice).toFixed(2));
+
+    const USDPrice = new BigNumber(fullBalance)
+      .times(lpPrice)
+      .toNumber()
+      .toLocaleString("en-US", { maximumFractionDigits: 2 });
+    setValUSDPrice(USDPrice);
   }, [fullBalance, setVal, setValUSDPrice, lpPrice]);
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      const totalAmount = fullBalanceNumber
-        .dividedBy(100)
-        .multipliedBy(percent)
-        .toNumber()
-        .toLocaleString("en-US", { maximumFractionDigits: decimals })
-        .replace(/,/g, "");
+      const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent).toNumber().toString();
+
       setVal(totalAmount);
-      setValUSDPrice(new BigNumber(totalAmount.replace(/,/g, "")).times(lpPrice).toFixed(2));
+
+      const USDPrice = new BigNumber(totalAmount)
+        .times(lpPrice)
+        .toNumber()
+        .toLocaleString("en-US", { maximumFractionDigits: 2 });
+      setValUSDPrice(USDPrice);
     },
-    [decimals, fullBalanceNumber, setVal, setValUSDPrice, lpPrice]
+    [fullBalanceNumber, setVal, setValUSDPrice, lpPrice]
   );
 
   return (
