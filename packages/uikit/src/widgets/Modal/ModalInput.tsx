@@ -95,27 +95,21 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             .dividedBy(100)
             .multipliedBy(25)
             .toNumber()
-            .toLocaleString("en-US", { maximumFractionDigits: decimals })
-            .replace(/,/g, "")
         : undefined,
       50: maxAmount
         ? maxAmount
             .dividedBy(100)
             .multipliedBy(50)
             .toNumber()
-            .toLocaleString("en-US", { maximumFractionDigits: decimals })
-            .replace(/,/g, "")
         : undefined,
       75: maxAmount
         ? maxAmount
             .dividedBy(100)
             .multipliedBy(75)
             .toNumber()
-            .toLocaleString("en-US", { maximumFractionDigits: decimals })
-            .replace(/,/g, "")
         : undefined,
     }),
-    [maxAmount, decimals]
+    [maxAmount]
   );
 
   const isAtPercentMax = maxAmount && value === maxAmount.toString();
@@ -165,7 +159,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
               else if (percent === 50) currentPercentAmount = percentAmount[50];
               else if (percent === 75) currentPercentAmount = percentAmount[75];
 
-              const isAtCurrentPercent = maxAmount && value === currentPercentAmount;
+              const isAtCurrentPercent = maxAmount && value === currentPercentAmount?.toString();
 
               return (
                 <Button
