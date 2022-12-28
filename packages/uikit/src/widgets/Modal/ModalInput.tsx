@@ -20,7 +20,7 @@ interface ModalInputProps {
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
   value: string;
-  valueUSDPrice?: number;
+  valueUSDPrice?: BigNumber;
   addLiquidityUrl?: string;
   inputTitle?: string;
   decimals?: number;
@@ -150,7 +150,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
                 color="textSubtle"
                 decimals={2}
                 prefix="~"
-                value={valueUSDPrice}
+                value={valueUSDPrice.toNumber()}
                 unit=" USD"
               />
             </Flex>
