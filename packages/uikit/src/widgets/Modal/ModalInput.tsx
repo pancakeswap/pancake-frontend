@@ -90,24 +90,9 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
 
   const percentAmount = useMemo(
     () => ({
-      25: maxAmount
-        ? maxAmount
-            .dividedBy(100)
-            .multipliedBy(25)
-            .toNumber()
-        : undefined,
-      50: maxAmount
-        ? maxAmount
-            .dividedBy(100)
-            .multipliedBy(50)
-            .toNumber()
-        : undefined,
-      75: maxAmount
-        ? maxAmount
-            .dividedBy(100)
-            .multipliedBy(75)
-            .toNumber()
-        : undefined,
+      25: maxAmount ? maxAmount.dividedBy(100).multipliedBy(25).toNumber() : undefined,
+      50: maxAmount ? maxAmount.dividedBy(100).multipliedBy(50).toNumber() : undefined,
+      75: maxAmount ? maxAmount.dividedBy(100).multipliedBy(75).toNumber() : undefined,
     }),
     [maxAmount]
   );
