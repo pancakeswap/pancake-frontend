@@ -26,8 +26,6 @@ const IndexPage = ({ totalTx30Days, addressCount30Days, tvl }) => {
   )
 }
 
-IndexPage.snowEffect = true
-
 // Values fetched from TheGraph and BitQuery jan 24, 2022
 const txCount = 54780336
 const addressCount = 4425459
