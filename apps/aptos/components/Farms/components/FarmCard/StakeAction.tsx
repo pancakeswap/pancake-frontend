@@ -100,6 +100,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const [onPresentWithdraw] = useModal(
     <FarmUI.WithdrawModal
       max={stakedBalance}
+      lpPrice={lpTokenPrice}
       onConfirm={handleUnstake}
       tokenName={lpSymbol}
       decimals={FARM_DEFAULT_DECIMALS}

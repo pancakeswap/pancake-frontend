@@ -345,6 +345,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
       showActiveBooster={boosterState === YieldBoosterState.ACTIVE}
       max={stakedBalance}
       onConfirm={handleUnstake}
+      lpPrice={lpTokenPrice}
       tokenName={lpSymbol}
       decimals={18}
       showCrossChainFarmWarning={chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET}

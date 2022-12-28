@@ -34,7 +34,7 @@ interface DepositModalProps {
   max: BigNumber;
   stakedBalance: BigNumber;
   multiplier?: string;
-  lpPrice: BigNumber;
+  lpPrice?: BigNumber;
   lpLabel?: string;
   tokenName?: string;
   apr?: number;
@@ -62,7 +62,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   tokenName = "",
   multiplier,
   displayApr,
-  lpPrice,
+  lpPrice = BIG_ZERO,
   lpLabel = "",
   apr = 0,
   addLiquidityUrl = "",
@@ -80,6 +80,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   bCakeCalculatorSlot,
 }) => {
   const [val, setVal] = useState("");
+  const [valUSDPrice, setValUSDPrice] = useState(new BigNumber(0));
   const [pendingTx, setPendingTx] = useState(false);
   const [showRoiCalculator, setShowRoiCalculator] = useState(false);
   const { t } = useTranslation();
@@ -113,26 +114,32 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
-        setVal(e.currentTarget.value.replace(/,/g, "."));
+        const inputVal = e.currentTarget.value.replace(/,/g, ".");
+        setVal(inputVal);
+
+        const USDPrice = inputVal === "" ? new BigNumber(0) : new BigNumber(inputVal).times(lpPrice);
+        setValUSDPrice(USDPrice);
       }
     },
-    [setVal]
+    [setVal, setValUSDPrice, lpPrice]
   );
 
   const handleSelectMax = useCallback(() => {
     setVal(fullBalance);
-  }, [fullBalance, setVal]);
+
+    const USDPrice = new BigNumber(fullBalance).times(lpPrice);
+    setValUSDPrice(USDPrice);
+  }, [fullBalance, setVal, setValUSDPrice, lpPrice]);
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      const totalAmount = fullBalanceNumber
-        .dividedBy(100)
-        .multipliedBy(percent)
-        .toNumber()
-        .toLocaleString("en-US", { maximumFractionDigits: decimals });
-      setVal(totalAmount);
+      const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent);
+      setVal(totalAmount.toNumber().toString());
+
+      const USDPrice = totalAmount.times(lpPrice);
+      setValUSDPrice(USDPrice);
     },
-    [decimals, fullBalanceNumber]
+    [fullBalanceNumber, setValUSDPrice, lpPrice]
   );
 
   if (showRoiCalculator) {
@@ -164,6 +171,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
       <ModalBody width={["100%", "100%", "100%", "420px"]}>
         <ModalInput
           value={val}
+          valueUSDPrice={valUSDPrice}
           onSelectMax={handleSelectMax}
           onPercentInput={handlePercentInput}
           onChange={handleChange}

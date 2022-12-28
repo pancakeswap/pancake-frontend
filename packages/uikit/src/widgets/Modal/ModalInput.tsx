@@ -8,6 +8,7 @@ import { Flex } from "../../components/Box";
 import { Text } from "../../components/Text";
 import { Link } from "../../components/Link";
 import { Button } from "../../components/Button";
+import { Balance } from "../../components/Balance";
 import { Input, InputProps } from "../../components/Input";
 
 interface ModalInputProps {
@@ -19,6 +20,7 @@ interface ModalInputProps {
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
   value: string;
+  valueUSDPrice?: BigNumber;
   addLiquidityUrl?: string;
   inputTitle?: string;
   decimals?: number;
@@ -68,6 +70,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
   onSelectMax,
   onPercentInput,
   value,
+  valueUSDPrice,
   addLiquidityUrl,
   inputTitle,
   decimals = 18,
@@ -93,6 +96,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             .multipliedBy(25)
             .toNumber()
             .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .replace(/,/g, "")
         : undefined,
       50: maxAmount
         ? maxAmount
@@ -100,6 +104,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             .multipliedBy(50)
             .toNumber()
             .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .replace(/,/g, "")
         : undefined,
       75: maxAmount
         ? maxAmount
@@ -107,6 +112,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             .multipliedBy(75)
             .toNumber()
             .toLocaleString("en-US", { maximumFractionDigits: decimals })
+            .replace(/,/g, "")
         : undefined,
     }),
     [maxAmount, decimals]
@@ -135,6 +141,21 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
             {symbol}
           </Text>
         </Flex>
+        {valueUSDPrice && (
+          <Flex justifyContent="flex-start" ml="1rem">
+            <Flex maxWidth="200px">
+              <Balance
+                display="inline"
+                fontSize="12px"
+                color="textSubtle"
+                decimals={2}
+                prefix="~"
+                value={valueUSDPrice.toNumber()}
+                unit=" USD"
+              />
+            </Flex>
+          </Flex>
+        )}
         <Flex pt="3px" justifyContent="flex-end">
           {onPercentInput &&
             [25, 50, 75].map((percent) => {

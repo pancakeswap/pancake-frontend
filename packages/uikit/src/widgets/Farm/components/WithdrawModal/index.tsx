@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { Button } from "../../../../components/Button";
 import { AutoRenewIcon } from "../../../../components/Svg";
 import { Message, MessageText } from "../../../../components/Message";
@@ -10,6 +11,7 @@ import { Modal, ModalBody, ModalActions, ModalInput } from "../../../Modal/index
 
 interface WithdrawModalProps {
   max: BigNumber;
+  lpPrice?: BigNumber;
   onConfirm: (amount: string) => void;
   onDismiss?: () => void;
   tokenName?: string;
@@ -22,12 +24,14 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   onConfirm,
   onDismiss,
   max,
+  lpPrice = BIG_ZERO,
   tokenName = "",
   showActiveBooster,
   showCrossChainFarmWarning,
   decimals,
 }) => {
   const [val, setVal] = useState("");
+  const [valUSDPrice, setValUSDPrice] = useState(new BigNumber(0));
   const [pendingTx, setPendingTx] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
@@ -40,26 +44,33 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       if (e.currentTarget.validity.valid) {
-        setVal(e.currentTarget.value.replace(/,/g, "."));
+        const inputVal = e.currentTarget.value.replace(/,/g, ".");
+        setVal(inputVal);
+
+        const USDPrice = inputVal === "" ? new BigNumber(0) : new BigNumber(inputVal).times(lpPrice);
+        setValUSDPrice(USDPrice);
       }
     },
-    [setVal]
+    [setVal, setValUSDPrice, lpPrice]
   );
 
   const handleSelectMax = useCallback(() => {
     setVal(fullBalance);
-  }, [fullBalance, setVal]);
+
+    const USDPrice = new BigNumber(fullBalance).times(lpPrice);
+    setValUSDPrice(USDPrice);
+  }, [fullBalance, setVal, setValUSDPrice, lpPrice]);
 
   const handlePercentInput = useCallback(
     (percent: number) => {
-      const totalAmount = fullBalanceNumber
-        .dividedBy(100)
-        .multipliedBy(percent)
-        .toNumber()
-        .toLocaleString("en-US", { maximumFractionDigits: decimals });
-      setVal(totalAmount);
+      const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent);
+
+      setVal(totalAmount.toNumber().toString());
+
+      const USDPrice = totalAmount.times(lpPrice);
+      setValUSDPrice(USDPrice);
     },
-    [decimals, fullBalanceNumber]
+    [fullBalanceNumber, setVal, setValUSDPrice, lpPrice]
   );
 
   return (
@@ -70,6 +81,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
           onPercentInput={handlePercentInput}
           onChange={handleChange}
           value={val}
+          valueUSDPrice={valUSDPrice}
           max={fullBalance}
           maxAmount={fullBalanceNumber}
           symbol={tokenName}
