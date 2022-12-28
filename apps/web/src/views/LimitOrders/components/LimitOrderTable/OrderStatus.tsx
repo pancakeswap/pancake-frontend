@@ -29,7 +29,10 @@ const OrderStatus: React.FC<
   }>
 > = ({ formattedOrder, showOpenTag = false, element = StatusElementType.TAG }) => {
   const { t } = useTranslation()
-  const { isOpen, isSubmissionPending, isCancelled, isCancellationPending, isExecuted } = formattedOrder
+  const { isOpen, isSubmissionPending, isCancelled, isCancellationPending, isExecuted, isExpired } = formattedOrder
+  if (isOpen && isExpired) {
+    return <StatusElement element={element} text={t('Expired')} color="warning" />
+  }
   if (isOpen && !isSubmissionPending && showOpenTag) {
     return <StatusElement element={element} text={t('Open')} color="success" />
   }

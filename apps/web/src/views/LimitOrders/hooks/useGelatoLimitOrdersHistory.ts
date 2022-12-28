@@ -12,6 +12,7 @@ import { ORDER_CATEGORY, LimitOrderStatus } from '../types'
 
 export const OPEN_ORDERS_SWR_KEY = ['gelato', 'openOrders']
 export const EXECUTED_CANCELLED_ORDERS_SWR_KEY = ['gelato', 'cancelledExecutedOrders']
+export const EXECUTED_EXPIRED_ORDERS_SWR_KEY = ['gelato', 'expiredExecutedOrders']
 
 function newOrdersFirst(a: Order, b: Order) {
   return Number(b.updatedAt) - Number(a.updatedAt)
@@ -92,7 +93,9 @@ const useOpenOrders = (turnOn: boolean): Order[] => {
         console.error('Error fetching open orders from subgraph', e)
       }
 
-      const openOrdersLS = getLSOrders(chainId, account).filter((order) => order.status === LimitOrderStatus.OPEN)
+      const openOrdersLS = getLSOrders(chainId, account).filter(
+        (order) => order.status === LimitOrderStatus.OPEN && !order.isExpired,
+      )
 
       const pendingOrdersLS = getLSOrders(chainId, account, true)
 
@@ -162,14 +165,57 @@ const useHistoryOrders = (turnOn: boolean): Order[] => {
   return startFetch ? data : []
 }
 
+const useExpiredOrders = (turnOn: boolean): Order[] => {
+  const { account, chainId } = useActiveWeb3React()
+  const gelatoLimitOrders = useGelatoLimitOrdersLib()
+
+  const startFetch = turnOn && gelatoLimitOrders && account && chainId
+
+  const { data } = useSWR(
+    startFetch ? EXECUTED_EXPIRED_ORDERS_SWR_KEY : null,
+    async () => {
+      try {
+        const orders = await gelatoLimitOrders.getOpenOrders(account.toLowerCase(), false)
+        await syncOrderToLocalStorage({
+          orders,
+          chainId,
+          account,
+        })
+      } catch (e) {
+        console.error('Error fetching expired orders from subgraph', e)
+      }
+
+      const expiredOrdersLS = getLSOrders(chainId, account).filter(
+        (order) => order.isExpired && order.status === LimitOrderStatus.OPEN,
+      )
+
+      return expiredOrdersLS.sort(newOrdersFirst)
+    },
+    {
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
+
+  return startFetch ? data : []
+}
+
 export default function useGelatoLimitOrdersHistory(orderCategory: ORDER_CATEGORY) {
   const historyOrders = useHistoryOrders(orderCategory === ORDER_CATEGORY.History)
   const openOrders = useOpenOrders(orderCategory === ORDER_CATEGORY.Open)
+  const expiredOrders = useExpiredOrders(orderCategory === ORDER_CATEGORY.Expired)
 
-  const orders = useMemo(
-    () => (orderCategory === ORDER_CATEGORY.Open ? openOrders : historyOrders),
-    [orderCategory, openOrders, historyOrders],
-  )
+  const orders = useMemo(() => {
+    switch (orderCategory as ORDER_CATEGORY) {
+      case ORDER_CATEGORY.Open:
+        return openOrders
+      case ORDER_CATEGORY.History:
+        return historyOrders
+      case ORDER_CATEGORY.Expired:
+        return expiredOrders
+      default:
+        return []
+    }
+  }, [orderCategory, openOrders, historyOrders, expiredOrders])
 
   return useMemo(
     () => (Array.isArray(orders) ? orderBy(orders, (order) => parseInt(order.createdAt), 'desc') : orders),

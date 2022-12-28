@@ -32,7 +32,7 @@ const LimitOrderTable: React.FC<React.PropsWithChildren<{ isCompact: boolean }>>
   const [activeTab, setIndex] = useState<ORDER_CATEGORY>(ORDER_CATEGORY.Open)
   const handleClick = useCallback((tabType: ORDER_CATEGORY) => setIndex(tabType), [])
   const tabMenuItems = useMemo(() => {
-    return [t('Open Orders'), t('Order History')]
+    return [t('Open Orders'), t('Expired Order'), t('Order History')]
   }, [t])
 
   return (

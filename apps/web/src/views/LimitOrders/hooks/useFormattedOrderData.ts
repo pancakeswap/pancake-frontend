@@ -19,6 +19,7 @@ export interface FormattedOrderData {
   isOpen: boolean
   isCancelled: boolean
   isExecuted: boolean
+  isExpired: boolean
   isSubmissionPending: boolean
   isCancellationPending: boolean
   bscScanUrls: {
@@ -84,6 +85,7 @@ const useFormattedOrderData = (order: Order): FormattedOrderData => {
     isOpen: order.status === LimitOrderStatus.OPEN,
     isCancelled: order.status === LimitOrderStatus.CANCELLED,
     isExecuted: order.status === LimitOrderStatus.EXECUTED,
+    isExpired: order.isExpired && order.status === LimitOrderStatus.OPEN,
     isSubmissionPending,
     isCancellationPending,
     bscScanUrls: {

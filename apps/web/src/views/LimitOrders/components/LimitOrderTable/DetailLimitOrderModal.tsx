@@ -108,7 +108,8 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
   const limitPriceExchangeRateText = `1 ${formattedOrder.inputToken?.symbol} = ${formattedOrder.executionPrice} ${formattedOrder.outputToken?.symbol}`
   const limitPriceExchangeRateTextReversed = `1 ${formattedOrder.outputToken?.symbol} = ${formattedOrder.invertedExecutionPrice} ${formattedOrder.inputToken?.symbol}`
 
-  const { isOpen, isExecuted, isCancelled, isSubmissionPending, isCancellationPending, bscScanUrls } = formattedOrder
+  const { isOpen, isExecuted, isExpired, isCancelled, isSubmissionPending, isCancellationPending, bscScanUrls } =
+    formattedOrder
 
   const orderDetails = (
     <>
@@ -130,13 +131,14 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
         limitPriceExchangeRateTextReversed={limitPriceExchangeRateTextReversed}
         isOpen={isOpen}
         isExecuted={isExecuted}
+        isExpired={isExpired}
         isCancelled={isCancelled}
         isSubmissionPending={isSubmissionPending}
         isCancellationPending={isCancellationPending}
       />
       <LimitOrderDisclaimer />
       <Flex flexDirection="column">
-        {isOpen ? (
+        {isOpen || isExpired ? (
           <>
             <Button variant="primary" mt="16px" as="a" external href={formattedOrder.bscScanUrls.created}>
               {t('View on BscScan')}
@@ -196,6 +198,7 @@ interface LimitTradeInfoCardProps {
   limitPriceExchangeRateTextReversed: string
   isOpen: boolean
   isExecuted: boolean
+  isExpired: boolean
   isCancelled: boolean
   isSubmissionPending: boolean
   isCancellationPending: boolean
@@ -207,6 +210,7 @@ const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardPro
     limitPriceExchangeRateTextReversed,
     isOpen,
     isExecuted,
+    isExpired,
     isCancelled,
     isSubmissionPending,
     isCancellationPending,
@@ -219,6 +223,11 @@ const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardPro
           {isOpen && isSubmissionPending && (
             <Tag outline scale="sm" p="8px" mb="16px" variant="warning">
               {t('Pending')}
+            </Tag>
+          )}
+          {isExpired && (
+            <Tag outline scale="sm" p="8px" mb="16px" variant="warning">
+              {t('Expired')}
             </Tag>
           )}
           {isExecuted && (
