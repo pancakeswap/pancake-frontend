@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Button, CheckmarkIcon, CogIcon, Input, LinkExternal, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
-import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
+import { BSC_URLS, ETH_URLS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useAtomValue } from 'jotai'
 import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { useListState } from 'state/lists/lists'
@@ -15,6 +15,7 @@ import {
   removeList,
 } from '@pancakeswap/token-lists/react'
 import uriToHttp from '@pancakeswap/utils/uriToHttp'
+import { ChainId } from '@pancakeswap/sdk'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
@@ -161,6 +162,8 @@ function ManageLists({
 }) {
   const [listUrlInput, setListUrlInput] = useState<string>('')
 
+  const { chainId } = useActiveChainId()
+
   const { t } = useTranslation()
   const [, dispatch] = useListState()
 
@@ -190,7 +193,16 @@ function ManageLists({
     return listUrls
       .filter((listUrl) => {
         // only show loaded lists, hide unsupported lists
-        return Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
+        const isValid = Boolean(lists[listUrl].current) && !UNSUPPORTED_LIST_URLS.includes(listUrl)
+
+        if (isValid) {
+          return (
+            (chainId === ChainId.ETHEREUM && ETH_URLS.includes(listUrl)) ||
+            (chainId === ChainId.BSC && BSC_URLS.includes(listUrl))
+          )
+        }
+
+        return false
       })
       .sort((u1, u2) => {
         const { current: l1 } = lists[u1]
@@ -221,7 +233,7 @@ function ManageLists({
         if (l2) return 1
         return 0
       })
-  }, [lists, activeCopy])
+  }, [lists, chainId, activeCopy])
 
   // temporary fetched list for import flow
   const [tempList, setTempList] = useState<TokenList>()

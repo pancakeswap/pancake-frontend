@@ -153,13 +153,13 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
   const stableSwapAddress = stableFarm?.stableSwapAddress
 
   try {
-    const dayAgo = sub(new Date(), { days: 1 })
+    const day7Ago = sub(new Date(), { days: 7 })
 
-    const dayAgoTimestamp = getUnixTime(dayAgo)
+    const day7AgoTimestamp = getUnixTime(day7Ago)
 
-    const blockDayAgo = await getBlockAtTimestamp(dayAgoTimestamp)
+    const blockDay7Ago = await getBlockAtTimestamp(day7AgoTimestamp)
 
-    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo } = await stableSwapClient.request(
+    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo: virtualPrice7DayAgo } = await stableSwapClient.request(
       gql`
         query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!) {
           virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
@@ -170,16 +170,21 @@ const getAprsForStableFarm = async (stableFarm: any): Promise<BigNumber> => {
           }
         }
       `,
-      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo },
+      { stableSwapAddress: _toLower(stableSwapAddress), blockDayAgo: blockDay7Ago },
     )
 
-    const virtualPrice = virtualPriceAtLatestBlock[0]?.virtualPrice
-    const preVirtualPrice = virtualPriceOneDayAgo[0]?.virtualPrice
+    const virtualPrice = virtualPriceAtLatestBlock?.virtualPrice
+    const preVirtualPrice = virtualPrice7DayAgo?.virtualPrice
 
     const current = new BigNumber(virtualPrice)
     const prev = new BigNumber(preVirtualPrice)
 
-    return current.minus(prev).div(prev)
+    const result = current.minus(prev).div(current).plus(1).pow(52).minus(1).times(100)
+
+    if (result.isFinite() && result.isGreaterThan(0)) {
+      return result
+    }
+    return new BigNumber(0)
   } catch (error) {
     console.error(error, '[LP APR Update] getAprsForStableFarm error')
   }
@@ -223,7 +228,7 @@ export const updateLPsAPR = async (chainId: number, allFarms: any[]) => {
 
   try {
     if (stableFarms?.length) {
-      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f, chainId)))
+      const stableAprs: BigNumber[] = await Promise.all(stableFarms.map((f) => getAprsForStableFarm(f)))
 
       const stableAprsMap = stableAprs.reduce(
         (result, apr, index) => ({

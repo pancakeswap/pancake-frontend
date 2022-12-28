@@ -52,5 +52,6 @@ export * from "./RoiCalculatorModal";
 export * from "./Balance";
 export * from "./ToggleView";
 export * from "./Acknowledgement";
+export * from "./TokenLogo";
 
 export type { DropdownMenuItems } from "./DropdownMenu";

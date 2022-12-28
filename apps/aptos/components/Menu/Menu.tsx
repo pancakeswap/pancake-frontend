@@ -11,6 +11,7 @@ import {
   SwapFillIcon,
   SwapIcon,
   DropdownMenuItemType,
+  footerLinks,
 } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
@@ -20,7 +21,6 @@ import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
 import { usePhishingBanner } from 'state/user'
-import { footerLinks } from './footerConfig'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
 
@@ -63,12 +63,10 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
       {
         label: t('Farms'),
         href: '/farms',
-        status: { text: t('Live'), color: 'success' },
       },
       {
         label: t('Pools'),
         href: '/pools',
-        status: { text: t('Live'), color: 'success' },
       },
     ],
   },

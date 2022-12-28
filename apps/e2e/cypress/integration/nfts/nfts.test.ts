@@ -25,6 +25,12 @@ describe('NFTs Page', () => {
     cy.getBySel('nft-collections-title').should('be.visible')
     cy.getBySel('hot-collection-card').should('have.length.at.least', 9)
   })
+  // collections details
+  it('loads NFTs collections details page', () => {
+    cy.visit('/nfts/collections/0x0a8901b0E25DEb55A87524f0cC164E9644020EBA') // Pancake Squad
+    cy.getBySel('collection-detail-page-title').should('be.visible')
+    cy.getBySel('collection-detail-page-card').should('have.length.at.least', 9)
+  })
 
   // activity
   it('loads NFTs Activity', () => {

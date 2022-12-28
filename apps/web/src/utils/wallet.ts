@@ -1,6 +1,6 @@
 // Set of helper functions to facilitate wallet setup
-import { BAD_SRCS } from 'components/Logo/Logo'
 import { Address } from 'wagmi'
+import { BAD_SRCS } from '../components/Logo/constants'
 
 /**
  * Prompt the user to add a custom token to metamask

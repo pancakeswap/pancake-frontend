@@ -31,7 +31,12 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const endTimeObject = getTimePeriods(endBlock - startBlock)
+  const currentDate = new Date().getTime() / 1000
+
+  const poolTimeRemaining = endBlock - currentDate
+  const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentDate
+
+  const endTimeObject = getTimePeriods(poolTimeRemaining)
 
   return (
     <>
@@ -49,7 +54,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
             <Text small>{t('Max. stake limit ends in')}:</Text>
             <Flex>
               <Text color="textSubtle" small>
-                {getTimePeriods(stakeLimitEndBlock)?.days} days
+                {stakeLimitTimeRemaining > 0 ? getTimePeriods(stakeLimitTimeRemaining)?.days : '0'} days
               </Text>
               <TimerIcon ml="4px" color="primary" />
             </Flex>
@@ -60,7 +65,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         <Text small>{t('Pool ends in')}:</Text>
         <Flex>
           <Text color="textSubtle" small>
-            {endTimeObject?.days} days
+            {poolTimeRemaining > 0 ? endTimeObject?.days : '0'} days
           </Text>
           <TimerIcon ml="4px" color="primary" />
         </Flex>

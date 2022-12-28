@@ -19,13 +19,14 @@ import {
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useState } from 'react'
-import { multiChainId, multiChainScan } from 'state/info/constant'
+import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
 import {
   useGetChainName,
   useMultiChainPath,
   usePoolChartDataSWR,
   usePoolDatasSWR,
   usePoolTransactionsSWR,
+  useStableSwapAPR,
   useStableSwapPath,
 } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
@@ -89,6 +90,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const chainName = useGetChainName()
   const chainPath = useMultiChainPath()
   const infoTypeParam = useStableSwapPath()
+  const isStableSwap = checkIsStableSwap()
+  const stableAPR = useStableSwapAPR(isStableSwap && address)
 
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
@@ -190,7 +193,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                         {t('LP reward APR')}
                       </Text>
                       <Text fontSize="24px" bold>
-                        {formatAmount(poolData.lpApr7d)}%
+                        {formatAmount(isStableSwap ? stableAPR : poolData.lpApr7d)}%
                       </Text>
                       <Flex alignItems="center">
                         <span ref={targetRef}>

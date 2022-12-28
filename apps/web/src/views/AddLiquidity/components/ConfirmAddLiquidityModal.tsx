@@ -59,11 +59,14 @@ const ConfirmAddLiquidityModal: React.FC<
     const amountCurrencyA = parsedAmounts[Field.CURRENCY_A]
       ? _toNumber(parsedAmounts[Field.CURRENCY_A]?.toSignificant(6))
       : 0
+    // If there is no price fallback to compare only amounts
+    const currencyAToCurrencyB = parseFloat(price?.toSignificant(4)) || 1
+    const normalizedAmountCurrencyA = currencyAToCurrencyB * amountCurrencyA
     const amountCurrencyB = parsedAmounts[Field.CURRENCY_B]
       ? _toNumber(parsedAmounts[Field.CURRENCY_B]?.toSignificant(6))
       : 0
 
-    percent = amountCurrencyA / (amountCurrencyA + amountCurrencyB)
+    percent = normalizedAmountCurrencyA / (normalizedAmountCurrencyA + amountCurrencyB)
   }
 
   const modalHeader = useCallback(() => {

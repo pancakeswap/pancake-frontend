@@ -37,9 +37,8 @@ const getDesiredInput = (
   }
 
   if (isInverted) {
-    const invertedResultAsFraction = parsedOutAmount
-      .multiply(parsedExchangeRate.asFraction)
-      .multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(inputCurrency.decimals)))
+    const invertedResultAsFraction = parsedOutAmount.multiply(parsedExchangeRate.asFraction)
+
     const invertedResultAsAmount = CurrencyAmount.fromRawAmount(inputCurrency, invertedResultAsFraction.toFixed(0))
 
     return invertedResultAsAmount

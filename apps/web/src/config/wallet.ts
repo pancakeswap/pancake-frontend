@@ -140,7 +140,7 @@ const walletsConfig = ({
     {
       id: 'blocto',
       title: 'Blocto',
-      icon: '/images/wallets/blocto.png',
+      icon: '/images/wallets/blocto.png?v=2',
       connectorId: ConnectorNames.Blocto,
       get installed() {
         return typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isBlocto)
