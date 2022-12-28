@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
@@ -161,6 +161,8 @@ export default function CurrencyInputPanel({
     [maxAmount],
   )
 
+  const [currentClickedPercent, setCurrentClickedPercent] = useState('')
+
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
   return (
@@ -246,6 +248,7 @@ export default function CurrencyInputPanel({
               onBlur={onInputBlur}
               onUserInput={(val) => {
                 onUserInput(val)
+                setCurrentClickedPercent('')
               }}
             />
           </LabelRow>
@@ -264,18 +267,21 @@ export default function CurrencyInputPanel({
                 {showQuickInputButton &&
                   onPercentInput &&
                   [25, 50, 75].map((percent) => {
+                    const isAtClickedPercent = currentClickedPercent === percent.toString()
                     const isAtCurrentPercent =
-                      (maxAmount && value === percentAmount[percent]) || (lpPercent && lpPercent === percent.toString())
+                      (maxAmount && value !== '0' && value === percentAmount[percent]) ||
+                      (lpPercent && lpPercent === percent.toString())
 
                     return (
                       <Button
                         key={`btn_quickCurrency${percent}`}
                         onClick={() => {
                           onPercentInput(percent)
+                          setCurrentClickedPercent(percent.toString())
                         }}
                         scale="xs"
                         mr="5px"
-                        variant={isAtCurrentPercent ? 'primary' : 'secondary'}
+                        variant={isAtClickedPercent || isAtCurrentPercent ? 'primary' : 'secondary'}
                         style={{ textTransform: 'uppercase' }}
                       >
                         {percent}%
@@ -288,6 +294,7 @@ export default function CurrencyInputPanel({
                       e.stopPropagation()
                       e.preventDefault()
                       onMax?.()
+                      setCurrentClickedPercent('MAX')
                     }}
                     scale="xs"
                     variant={isAtPercentMax ? 'primary' : 'secondary'}
