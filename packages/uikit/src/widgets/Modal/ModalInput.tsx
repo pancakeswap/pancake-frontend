@@ -8,6 +8,7 @@ import { Flex } from "../../components/Box";
 import { Text } from "../../components/Text";
 import { Link } from "../../components/Link";
 import { Button } from "../../components/Button";
+import { Balance } from "../../components/Balance";
 import { Input, InputProps } from "../../components/Input";
 
 interface ModalInputProps {
@@ -19,7 +20,7 @@ interface ModalInputProps {
   onChange: (e: React.FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
   value: string;
-  valueUSDPrice?: string;
+  valueUSDPrice?: number;
   addLiquidityUrl?: string;
   inputTitle?: string;
   decimals?: number;
@@ -143,9 +144,15 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
         {valueUSDPrice && (
           <Flex justifyContent="flex-start" ml="1rem">
             <Flex maxWidth="200px">
-              <Text fontSize="12px" color="textSubtle">
-                ~{valueUSDPrice} USD
-              </Text>
+              <Balance
+                display="inline"
+                fontSize="12px"
+                color="textSubtle"
+                decimals={2}
+                prefix="~"
+                value={valueUSDPrice}
+                unit=" USD"
+              />
             </Flex>
           </Flex>
         )}

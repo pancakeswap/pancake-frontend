@@ -31,7 +31,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   decimals,
 }) => {
   const [val, setVal] = useState("");
-  const [valUSDPrice, setValUSDPrice] = useState("");
+  const [valUSDPrice, setValUSDPrice] = useState(0);
   const [pendingTx, setPendingTx] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
@@ -47,10 +47,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
         const inputVal = e.currentTarget.value.replace(/,/g, ".");
         setVal(inputVal);
 
-        const USDPrice =
-          inputVal === ""
-            ? "0.00"
-            : new BigNumber(inputVal).times(lpPrice).toNumber().toLocaleString("en-US", { maximumFractionDigits: 2 });
+        const USDPrice = inputVal === "" ? 0 : new BigNumber(inputVal).times(lpPrice).toNumber();
         setValUSDPrice(USDPrice);
       }
     },
@@ -60,10 +57,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   const handleSelectMax = useCallback(() => {
     setVal(fullBalance);
 
-    const USDPrice = new BigNumber(fullBalance)
-      .times(lpPrice)
-      .toNumber()
-      .toLocaleString("en-US", { maximumFractionDigits: 2 });
+    const USDPrice = new BigNumber(fullBalance).times(lpPrice).toNumber();
     setValUSDPrice(USDPrice);
   }, [fullBalance, setVal, setValUSDPrice, lpPrice]);
 
@@ -73,7 +67,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
 
       setVal(totalAmount.toNumber().toString());
 
-      const USDPrice = totalAmount.times(lpPrice).toNumber().toLocaleString("en-US", { maximumFractionDigits: 2 });
+      const USDPrice = totalAmount.times(lpPrice).toNumber();
       setValUSDPrice(USDPrice);
     },
     [fullBalanceNumber, setVal, setValUSDPrice, lpPrice]
