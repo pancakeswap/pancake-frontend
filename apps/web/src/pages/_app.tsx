@@ -28,7 +28,6 @@ import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
-const SnowEffect = dynamic(() => import('components/SnowEffect'), { ssr: false })
 
 // This config is required for number formatting
 BigNumber.config({
@@ -128,7 +127,6 @@ type NextPageWithLayout = NextPage & {
    * */
   chains?: number[]
   isShowScrollToTopButton?: true
-  snowEffect?: boolean
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -160,7 +158,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <NetworkModal pageSupportedChains={Component.chains} />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
-      {Component.snowEffect && <SnowEffect />}
     </ProductionErrorBoundary>
   )
 }
