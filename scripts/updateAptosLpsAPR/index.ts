@@ -78,7 +78,7 @@ const fetchFarmsOneWeekAgo = async (farmsAtLatestBlock: SingleFarmResponse[]) =>
   farmsAtLatestBlock.forEach((farm) => {
     if (response[farm.id]) {
       if (response[farm.id].updateDate !== currentDate) {
-        const isMoreThanAWeek = response[farm.id].usdList.length >= 8
+        const isMoreThanAWeek = response[farm.id].usdList.length >= 7
         const usdList = [...response[farm.id]?.usdList]
 
         if (isMoreThanAWeek) {
@@ -117,12 +117,10 @@ const fetchFarmsOneWeekAgo = async (farmsAtLatestBlock: SingleFarmResponse[]) =>
     let volumeUSD = '0'
     let reserveUSD = '0'
     const { usdList } = responseData[address]
-    const oneWeekData = usdList.slice(0, 7)
 
-    if (oneWeekData.length === 7) {
-      const lastData = oneWeekData[0]
-      volumeUSD = lastData.volumeUSD.toString()
-      reserveUSD = lastData.reserveUSD.toString()
+    if (usdList.length > 0) {
+      volumeUSD = usdList.reduce((sum, single) => new BigNumber(sum).plus(single.volumeUSD).toNumber(), 0).toString()
+      reserveUSD = usdList.reduce((sum, single) => new BigNumber(sum).plus(single.reserveUSD).toNumber(), 0).toString()
     }
     return { id: address, volumeUSD, reserveUSD }
   })
@@ -138,7 +136,7 @@ const getAprsForFarmGroup = async (addresses: string[]): Promise<any> => {
       // In case farm is too new to estimate LP APR (i.e. not returned in farmsOneWeekAgo query) - return 0
       let lpApr = new BigNumber(0)
       if (farmWeekAgo) {
-        const volume7d = new BigNumber(farm.volumeUSD).minus(new BigNumber(farmWeekAgo.volumeUSD))
+        const volume7d = new BigNumber(farmWeekAgo.volumeUSD)
         const lpFees7d = volume7d.times(LP_HOLDERS_FEE)
         const lpFeesInAYear = lpFees7d.times(WEEKS_IN_A_YEAR)
         // Some untracked pairs like KUN-QSD will report 0 volume
