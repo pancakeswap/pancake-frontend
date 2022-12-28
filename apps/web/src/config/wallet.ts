@@ -125,6 +125,8 @@ const walletsConfig = ({
       icon: '/images/wallets/safepal.png',
       connectorId: ConnectorNames.Injected,
       installed: typeof window !== 'undefined' && Boolean((window.ethereum as ExtendEthereum)?.isSafePal),
+      downloadLink:
+        'https://chrome.google.com/webstore/detail/safepal-extension-wallet/lgmpcpglpngdoalbgeoldeajfclnhafa',
       qrCode,
     },
     {
