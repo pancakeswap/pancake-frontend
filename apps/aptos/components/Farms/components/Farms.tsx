@@ -32,8 +32,8 @@ import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { getFarmApr } from 'utils/farmApr'
 import { latinise } from 'utils/latinise'
 import type { DeserializedFarm } from '@pancakeswap/farms'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import Table from './FarmTable/FarmTable'
-import { FarmWithStakedValue } from './types'
 
 const ControlContainer = styled.div`
   display: flex;

@@ -10,7 +10,7 @@ import { TransactionResponse } from '@pancakeswap/awgmi/core'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-import { FarmWithStakedValue } from '../types'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 
 const IconButtonWrapper = styled.div`
   display: flex;

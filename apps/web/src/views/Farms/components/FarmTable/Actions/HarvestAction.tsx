@@ -14,8 +14,8 @@ import { usePriceCakeBusd } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-import { FarmWithStakedValue } from '../../types'
 import useProxyStakedActions from '../../YieldBooster/hooks/useProxyStakedActions'
 
 const { FarmTableHarvestAction } = FarmUI.FarmTable

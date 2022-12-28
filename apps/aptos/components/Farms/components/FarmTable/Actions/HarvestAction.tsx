@@ -8,8 +8,8 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import useHarvestFarm from '../../../hooks/useHarvestFarm'
-import { FarmWithStakedValue } from '../../types'
 
 const { FarmTableHarvestAction } = FarmUI.FarmTable
 

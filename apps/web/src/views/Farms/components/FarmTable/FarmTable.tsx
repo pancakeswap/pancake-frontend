@@ -1,15 +1,15 @@
 import { useRef, useMemo } from 'react'
 import { latinise } from 'utils/latinise'
 import styled from 'styled-components'
-import { RowType } from '@pancakeswap/uikit'
+import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { getDisplayApr } from '../getDisplayApr'
 
 import Row, { RowProps } from './Row'
-import { DesktopColumnSchema, FarmWithStakedValue } from '../types'
 import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 
 export interface ITableProps {

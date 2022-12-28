@@ -4,7 +4,7 @@ import { FarmsPageLayout, FarmsContext } from 'components/Farms/components/index
 import FarmCard from 'components/Farms/components/FarmCard/FarmCard'
 import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import { getDisplayApr } from 'components/Farms/components/getDisplayApr'
-import { FarmWithStakedValue } from 'components/Farms/components/types'
+import { FarmWithStakedValue } from '@pancakeswap/farms'
 
 const FarmsHistoryPage = () => {
   const { account } = useActiveWeb3React()
