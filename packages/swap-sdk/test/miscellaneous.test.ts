@@ -1,5 +1,4 @@
-import { Token, CurrencyAmount, sortedInsert, InsufficientInputAmountError } from '@pancakeswap/swap-sdk-core'
-import { ChainId, Pair } from '../src'
+import { ChainId, Pair, Token, CurrencyAmount, sortedInsert, InsufficientInputAmountError } from '@pancakeswap/sdk'
 
 describe('miscellaneous', () => {
   it('getLiquidityMinted:0', async () => {
