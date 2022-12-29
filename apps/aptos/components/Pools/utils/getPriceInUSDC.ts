@@ -1,7 +1,3 @@
-import _get from 'lodash/get'
-import _toString from 'lodash/toString'
-import _partition from 'lodash/partition'
-
 import _toNumber from 'lodash/toNumber'
 
 import { Trade } from '@pancakeswap/aptos-swap-sdk'

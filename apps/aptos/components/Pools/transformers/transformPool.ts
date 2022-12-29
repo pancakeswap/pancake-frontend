@@ -7,7 +7,6 @@ import _toNumber from 'lodash/toNumber'
 import _get from 'lodash/get'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import _find from 'lodash/find'
 
 import { PoolResource } from '../types'
 import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'

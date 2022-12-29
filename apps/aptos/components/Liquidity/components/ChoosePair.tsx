@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChoosePairView } from '@pancakeswap/uikit/src/widgets/Liquidity'
 import { CommitButton } from 'components/CommitButton'
-import _noop from 'lodash/noop'
 import { useContext } from 'react'
 import { CurrencySelectorContext } from '../hooks/useCurrencySelectRoute'
 import { MintPairContext } from '../hooks/useMintPair'
