@@ -4,7 +4,12 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import BigNumber from 'bignumber.js'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
-import { fetchAllPoolData, fetchAllPoolDataWithAddress, getAprsForStableFarm } from 'state/info/queries/pools/poolData'
+import {
+  fetchAllPoolData,
+  fetchAllPoolDataWithAddress,
+  getAprsForStableFarm,
+  getFeesRatioForStableFarm,
+} from 'state/info/queries/pools/poolData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
 import { fetchProtocolData } from 'state/info/queries/protocol/overview'
@@ -269,6 +274,16 @@ export const useStableSwapAPR = (address: string | undefined): number => {
     SWR_SETTINGS,
   )
   return data?.toNumber()
+}
+
+export const useStableSwapFeeRatio = (address: string | undefined): { dayFeeRatio: number; weekFeeRatio: number } => {
+  const chainName = useGetChainName()
+  const { data } = useSWRImmutable<{ dayFeeRatio: BigNumber; weekFeeRatio: BigNumber }>(
+    address && [`info/pool/stableFee/${address}/`, chainName],
+    () => getFeesRatioForStableFarm(address),
+    SWR_SETTINGS,
+  )
+  return { dayFeeRatio: data?.dayFeeRatio?.toNumber(), weekFeeRatio: data?.weekFeeRatio?.toNumber() }
 }
 
 const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {

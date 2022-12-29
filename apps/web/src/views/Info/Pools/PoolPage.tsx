@@ -18,7 +18,7 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
 import {
   useGetChainName,
@@ -27,6 +27,7 @@ import {
   usePoolDatasSWR,
   usePoolTransactionsSWR,
   useStableSwapAPR,
+  useStableSwapFeeRatio,
   useStableSwapPath,
 } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
@@ -92,7 +93,16 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap && address)
+  const stableFeeRatio = useStableSwapFeeRatio(isStableSwap && address)
+  const poolDayFee = useMemo(() => {
+    if (isStableSwap && stableFeeRatio) return stableFeeRatio.dayFeeRatio * poolData?.liquidityUSD
+    return poolData.lpFees24h
+  }, [isStableSwap, stableFeeRatio, poolData])
 
+  const poolWeekFee = useMemo(() => {
+    if (isStableSwap && stableFeeRatio) return stableFeeRatio.weekFeeRatio * poolData?.liquidityUSD
+    return poolData.lpFees7d
+  }, [isStableSwap, stableFeeRatio, poolData])
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
       {poolData ? (
@@ -257,15 +267,17 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                         {showWeeklyData ? t('LP reward fees 7D') : t('LP reward fees 24H')}
                       </Text>
                       <Text fontSize="24px" bold>
-                        ${showWeeklyData ? formatAmount(poolData.lpFees7d) : formatAmount(poolData.lpFees24h)}
+                        ${showWeeklyData ? formatAmount(poolWeekFee) : formatAmount(poolDayFee)}
                       </Text>
-                      <Text color="textSubtle" fontSize="12px">
-                        {t('out of $%totalFees% total fees', {
-                          totalFees: showWeeklyData
-                            ? formatAmount(poolData.totalFees7d)
-                            : formatAmount(poolData.totalFees24h),
-                        })}
-                      </Text>
+                      {!isStableSwap && (
+                        <Text color="textSubtle" fontSize="12px">
+                          {t('out of $%totalFees% total fees', {
+                            totalFees: showWeeklyData
+                              ? formatAmount(poolData.totalFees7d)
+                              : formatAmount(poolData.totalFees24h),
+                          })}
+                        </Text>
+                      )}
                     </Flex>
                   </Flex>
                 </Flex>

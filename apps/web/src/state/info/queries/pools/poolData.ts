@@ -380,4 +380,59 @@ export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<
   return new BigNumber('0')
 }
 
+export const getFeesRatioForStableFarm = async (
+  stableSwapAddress?: string,
+): Promise<{ dayFeeRatio: BigNumber; weekFeeRatio: BigNumber }> => {
+  try {
+    const [, t24h, t7d] = getDeltaTimestamps()
+    const [blockDayAgo, blockWeekAgo] = await getBlocksFromTimestamps([t24h, t7d])
+
+    const { virtualPriceAtLatestBlock, virtualPriceOneDayAgo, virtualPriceWeekAgo } = await stableSwapClient.request(
+      gql`
+        query virtualPriceStableSwap($stableSwapAddress: String, $blockDayAgo: Int!, $blockWeekAgo: Int!) {
+          virtualPriceAtLatestBlock: pair(id: $stableSwapAddress) {
+            virtualPrice
+          }
+          virtualPriceOneDayAgo: pair(id: $stableSwapAddress, block: { number: $blockDayAgo }) {
+            virtualPrice
+          }
+          virtualPriceWeekAgo: pair(id: $stableSwapAddress, block: { number: $blockWeekAgo }) {
+            virtualPrice
+          }
+        }
+      `,
+      {
+        stableSwapAddress: _toLower(stableSwapAddress),
+        blockDayAgo: blockDayAgo.number,
+        blockWeekAgo: blockWeekAgo.number,
+      },
+    )
+
+    const virtualPrice = virtualPriceAtLatestBlock?.virtualPrice
+    const DayAgoVirtualPrice = virtualPriceOneDayAgo?.virtualPrice
+    const weekAgoVirtualPrice = virtualPriceWeekAgo?.virtualPrice
+
+    const current = new BigNumber(virtualPrice)
+    const dayAgo = new BigNumber(DayAgoVirtualPrice)
+    const weekAgo = new BigNumber(weekAgoVirtualPrice)
+
+    // const result = current.minus(prev).div(current).plus(1).pow(52).minus(1).times(100)
+    const dayFeeRatio = current.minus(dayAgo).div(current)
+    const weekFeeRatio = current.minus(weekAgo).div(current)
+    if (
+      dayFeeRatio.isFinite() &&
+      dayFeeRatio.isGreaterThan(0) &&
+      weekFeeRatio.isFinite() &&
+      weekFeeRatio.isGreaterThan(0)
+    ) {
+      return { dayFeeRatio, weekFeeRatio }
+    }
+    return { dayFeeRatio: new BigNumber(0), weekFeeRatio: new BigNumber(0) }
+  } catch (error) {
+    console.error(error, '[LP APR Update] getAprsForStableFarm error')
+  }
+
+  return { dayFeeRatio: new BigNumber(0), weekFeeRatio: new BigNumber(0) }
+}
+
 export default usePoolDatas
