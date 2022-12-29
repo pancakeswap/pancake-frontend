@@ -6,7 +6,7 @@
   },
   "private": true,
   "dependencies": {
-    "@pancakeswap/tokens": "*",
-    "@pancakeswap/sdk": "*"
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/tokens": "*"
   }
 }

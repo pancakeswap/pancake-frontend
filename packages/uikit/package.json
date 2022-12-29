@@ -22,10 +22,10 @@
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
-    "@pancakeswap/swap-sdk-core": "*",
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.8",
     "@babel/preset-react": "^7.16.7",
+    "@pancakeswap/swap-sdk-core": "*",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-typescript": "^8.2.1",
     "@rollup/plugin-url": "^6.0.0",
@@ -62,11 +62,11 @@
     "styled-components": "^5.2.3"
   },
   "dependencies": {
+    "@pancakeswap/ui": "*",
     "@popperjs/core": "^2.9.2",
     "@types/styled-system": "^5.1.15",
-    "@pancakeswap/ui": "*",
-    "@vanilla-extract/recipes": "^0.2.5",
     "@vanilla-extract/css": "^1.9.1",
+    "@vanilla-extract/recipes": "^0.2.5",
     "framer-motion": "6.5.1",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",

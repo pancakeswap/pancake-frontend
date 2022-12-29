@@ -45,3 +45,12 @@ debug.log*
 # turbo
 .turbo
 .vercel
+
+# Yarn 3.0
+.yarn/*
+.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

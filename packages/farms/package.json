@@ -11,10 +11,10 @@
     "tsx": "^3.12.1"
   },
   "dependencies": {
-    "@pancakeswap/sdk": "*",
-    "@pancakeswap/tokens": "*",
-    "@pancakeswap/token-lists": "*",
     "@pancakeswap/multicall": "*",
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/token-lists": "*",
+    "@pancakeswap/tokens": "*",
     "@pancakeswap/utils": "*"
   }
 }

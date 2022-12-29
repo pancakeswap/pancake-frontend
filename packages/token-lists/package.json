@@ -13,13 +13,13 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "ajv": "^6.12.3",
-    "@pancakeswap/swap-sdk-core": "*"
+    "@pancakeswap/swap-sdk-core": "*",
+    "ajv": "^6.12.3"
   },
   "peerDependencies": {
     "@reduxjs/toolkit": "^1.9.1",
-    "localforage": "^1.10.0",
     "jotai": "^1.11.1",
+    "localforage": "^1.10.0",
     "react": "^18.2.0"
   },
   "devDependencies": {
@@ -39,16 +39,16 @@
     }
   },
   "peerDependenciesMeta": {
-    "react": {
+    "@reduxjs/toolkit": {
       "optional": true
     },
-    "@reduxjs/toolkit": {
+    "jotai": {
       "optional": true
     },
     "localforage": {
       "optional": true
     },
-    "jotai": {
+    "react": {
       "optional": true
     }
   }
