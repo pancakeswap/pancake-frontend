@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { parseUnits } from "@ethersproject/units";
 import { formatBigNumber } from "@pancakeswap/utils/formatBalance";
+import { trimTrailZero } from "@pancakeswap/utils/trimTrailZero";
 import { Flex } from "../../components/Box";
 import { Text } from "../../components/Text";
 import { Link } from "../../components/Link";
@@ -90,30 +91,9 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
 
   const percentAmount = useMemo(
     () => ({
-      25: maxAmount
-        ? maxAmount
-            .dividedBy(100)
-            .multipliedBy(25)
-            .toNumber()
-            .toLocaleString("en-US", { maximumFractionDigits: decimals })
-            .replace(/,/g, "")
-        : undefined,
-      50: maxAmount
-        ? maxAmount
-            .dividedBy(100)
-            .multipliedBy(50)
-            .toNumber()
-            .toLocaleString("en-US", { maximumFractionDigits: decimals })
-            .replace(/,/g, "")
-        : undefined,
-      75: maxAmount
-        ? maxAmount
-            .dividedBy(100)
-            .multipliedBy(75)
-            .toNumber()
-            .toLocaleString("en-US", { maximumFractionDigits: decimals })
-            .replace(/,/g, "")
-        : undefined,
+      25: maxAmount ? trimTrailZero(maxAmount.dividedBy(100).multipliedBy(25).toNumber().toFixed(decimals)) : undefined,
+      50: maxAmount ? trimTrailZero(maxAmount.dividedBy(100).multipliedBy(50).toNumber().toFixed(decimals)) : undefined,
+      75: maxAmount ? trimTrailZero(maxAmount.dividedBy(100).multipliedBy(75).toNumber().toFixed(decimals)) : undefined,
     }),
     [maxAmount, decimals]
   );
