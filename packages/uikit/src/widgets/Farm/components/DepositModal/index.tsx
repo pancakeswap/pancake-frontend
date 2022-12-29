@@ -6,6 +6,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { getFullDisplayBalance, formatNumber, getDecimalAmount } from "@pancakeswap/utils/formatBalance";
 import { getInterestBreakdown } from "@pancakeswap/utils/compoundApyHelpers";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import { trimTrailZero } from "@pancakeswap/utils/trimTrailZero";
 import { Modal, ModalV2, ModalBody, ModalActions, ModalInput } from "../../../Modal/index";
 import { Flex, Box } from "../../../../components/Box";
 import { Text } from "../../../../components/Text";
@@ -134,12 +135,13 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   const handlePercentInput = useCallback(
     (percent: number) => {
       const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent);
-      setVal(totalAmount.toNumber().toString());
+      const amount = trimTrailZero(totalAmount.toNumber().toFixed(decimals));
+      setVal(amount as string);
 
       const USDPrice = totalAmount.times(lpPrice);
       setValUSDPrice(USDPrice);
     },
-    [fullBalanceNumber, setValUSDPrice, lpPrice]
+    [fullBalanceNumber, decimals, lpPrice]
   );
 
   if (showRoiCalculator) {
