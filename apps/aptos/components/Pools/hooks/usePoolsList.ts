@@ -1,10 +1,8 @@
 import { useAccountResources, useTableItem } from '@pancakeswap/awgmi'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import _get from 'lodash/get'
 import _toString from 'lodash/toString'
 
 import { SMARTCHEF_ADDRESS, SMARTCHEF_POOL_INFO_TYPE_TAG } from 'contracts/smartchef/constants'
-import _toNumber from 'lodash/toNumber'
 import { useCallback, useMemo } from 'react'
 import { useMasterChefResource } from 'state/farms/hook'
 import { FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
