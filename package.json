@@ -32,6 +32,8 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
     "@changesets/cli": "^2.25.0",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "husky": "^7.0.0",
