@@ -5,25 +5,9 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { createSelector } from '@reduxjs/toolkit'
-import _isEmpty from 'lodash/isEmpty'
-import { SerializedFarm, DeserializedFarm, DeserializedFarmUserData } from '@pancakeswap/farms'
+import { SerializedFarm, DeserializedFarm, deserializeFarmUserData } from '@pancakeswap/farms'
 import { State } from '../types'
 import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../../config/constants'
-
-const deserializeFarmUserData = (farm: SerializedFarm): DeserializedFarmUserData => {
-  return {
-    allowance: farm.userData ? new BigNumber(farm.userData.allowance) : BIG_ZERO,
-    tokenBalance: farm.userData ? new BigNumber(farm.userData.tokenBalance) : BIG_ZERO,
-    stakedBalance: farm.userData ? new BigNumber(farm.userData.stakedBalance) : BIG_ZERO,
-    earnings: farm.userData ? new BigNumber(farm.userData.earnings) : BIG_ZERO,
-    proxy: {
-      allowance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.allowance) : BIG_ZERO,
-      tokenBalance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.tokenBalance) : BIG_ZERO,
-      stakedBalance: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.stakedBalance) : BIG_ZERO,
-      earnings: farm?.userData?.proxy ? new BigNumber(farm?.userData?.proxy.earnings) : BIG_ZERO,
-    },
-  }
-}
 
 const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
   const {
