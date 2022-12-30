@@ -2,6 +2,7 @@ import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
+import WalletConnectProvider from '@walletconnect/ethereum-provider'
 import { metaMaskConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
@@ -21,7 +22,7 @@ const createQrCode = (chainId: number, connect) => async () => {
 
   // wait for WalletConnect to setup in order to get the uri
   await delay(100)
-  const { uri } = (await walletConnectNoQrCodeConnector.getProvider()).connector
+  const { uri } = ((await walletConnectNoQrCodeConnector.getProvider()) as WalletConnectProvider).connector
 
   return uri
 }
