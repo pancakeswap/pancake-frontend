@@ -62,7 +62,7 @@ const Grid = styled.div`
   }
 `
 
-const emissionsPerBlock = 9.91
+const emissionsPerBlock = 9.9
 
 /**
  * User (Planet Finance) built a contract on top of our original manual CAKE pool,
