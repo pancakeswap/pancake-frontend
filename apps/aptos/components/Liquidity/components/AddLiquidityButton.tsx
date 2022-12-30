@@ -2,7 +2,6 @@ import { Coin, Currency, CurrencyAmount, Percent, Price } from '@pancakeswap/apt
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, useModal } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
-import _noop from 'lodash/noop'
 import { useCallback, useContext } from 'react'
 import { useIsExpertMode } from 'state/user/expertMode'
 import useAddLiquidityHandler from '../hooks/useAddLiquidityHandler'

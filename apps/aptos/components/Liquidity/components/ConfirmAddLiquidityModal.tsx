@@ -6,7 +6,6 @@ import TransactionConfirmationModal, {
   ConfirmationModalContent,
   TransactionErrorContent,
 } from 'components/TransactionConfirmationModal'
-import _toNumber from 'lodash/toNumber'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { AddLiquidityModalHeader, PairDistribution } from './common'
 import { CurrencySelectorValue } from '../hooks/useCurrencySelectRoute'

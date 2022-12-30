@@ -1,5 +1,13 @@
 # @pancakeswap/smart-router
 
+## 0.6.1
+
+### Patch Changes
+
+- d83530d6b: Remove duplicate isTradeBetter util
+- Updated dependencies [d83530d6b]
+  - @pancakeswap/sdk@3.1.3
+
 ## 0.6.0
 
 ### Minor Changes

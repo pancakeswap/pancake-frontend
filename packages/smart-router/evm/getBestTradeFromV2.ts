@@ -1,9 +1,8 @@
-import { Currency, CurrencyAmount, Pair, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Trade, TradeType, isTradeBetter } from '@pancakeswap/sdk'
 
 import { BETTER_TRADE_LESS_HOPS_THRESHOLD } from './constants'
 import { getAllCommonPairs as defaultGetAllCommonPairs } from './getAllCommonPairs'
 import { BestTradeOptions } from './types'
-import { isTradeBetter } from './utils/trade'
 
 export const getBestTradeFromV2ExactIn = createGetBestTradeFromV2(TradeType.EXACT_INPUT)
 
