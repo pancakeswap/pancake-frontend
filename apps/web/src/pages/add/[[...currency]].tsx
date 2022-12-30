@@ -27,7 +27,7 @@ const AddLiquidityPage = () => {
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const { stableSwapConfig, ...stableConfig } = useStableConfig({
+  const stableConfig = useStableConfig({
     tokenA: currencyA,
     tokenB: currencyB,
   })
@@ -38,8 +38,8 @@ const AddLiquidityPage = () => {
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
-  return stableSwapConfig ? (
-    <StableConfigContext.Provider value={{ stableSwapConfig, ...stableConfig }}>
+  return stableConfig.stableSwapConfig ? (
+    <StableConfigContext.Provider value={stableConfig}>
       <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
     </StableConfigContext.Provider>
   ) : (
