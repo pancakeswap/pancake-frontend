@@ -1,16 +1,8 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
-import {
-  ChainId,
-  WNATIVE as _WETH,
-  TradeType,
-  Rounding,
-  Token,
-  Pair,
-  Route,
-  Trade,
-  CurrencyAmount,
-} from '@pancakeswap/sdk'
+import { TradeType, Rounding, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { Pair, Route, Trade } from '../src/entities'
+import { ChainId, WNATIVE as _WETH } from '../src/constants'
 
 const ADDRESSES = [
   '0x0000000000000000000000000000000000000001',
