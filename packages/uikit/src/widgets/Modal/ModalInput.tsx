@@ -95,7 +95,7 @@ const ModalInput: React.FC<React.PropsWithChildren<ModalInputProps>> = ({
       50: maxAmount ? trimTrailZero(maxAmount.dividedBy(100).multipliedBy(50).toNumber().toFixed(decimals)) : undefined,
       75: maxAmount ? trimTrailZero(maxAmount.dividedBy(100).multipliedBy(75).toNumber().toFixed(decimals)) : undefined,
     }),
-    [maxAmount]
+    [maxAmount, decimals]
   );
 
   const isAtPercentMax = maxAmount && value === maxAmount.toString();
