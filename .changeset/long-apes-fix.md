@@ -2,4 +2,4 @@
 '@pancakeswap/sdk': patch
 ---
 
-Remove duplicate util functions
+Remove redundant import

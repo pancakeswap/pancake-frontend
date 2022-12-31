@@ -424,15 +424,15 @@ export const MinimalPositionCard = withLPValues(MinimalPositionCardView)
 export const StableFullPositionCardContainer = withStableLPValues(FullPositionCard)
 
 export const StableFullPositionCard = (props) => {
-  const { stableSwapConfig, ...config } = useStableConfig({
+  const stableConfig = useStableConfig({
     tokenA: props.pair?.token0,
     tokenB: props.pair?.token1,
   })
 
-  if (!stableSwapConfig) return null
+  if (!stableConfig.stableSwapConfig) return null
 
   return (
-    <StableConfigContext.Provider value={{ stableSwapConfig, ...config }}>
+    <StableConfigContext.Provider value={stableConfig}>
       <StableFullPositionCardContainer {...props} />
     </StableConfigContext.Provider>
   )

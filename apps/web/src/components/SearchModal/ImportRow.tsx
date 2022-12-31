@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints, Flex } from '@pancakeswap/uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
@@ -82,10 +82,20 @@ export default function ImportRow({
       <CurrencyLogo currency={token} size={isMobile ? '20px' : '24px'} style={{ opacity: dim ? '0.6' : '1' }} />
       <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
         <AutoRow>
-          <Text mr="8px">{token.symbol}</Text>
-          <Text color="textDisabled">
-            <NameOverflow title={token.name}>{token.name}</NameOverflow>
-          </Text>
+          <Flex
+            alignItems={isMobile && token.symbol.length > 14 ? undefined : 'center'}
+            flexDirection={isMobile && token.symbol.length > 14 ? 'column' : 'row'}
+          >
+            <Text mr="8px">{token.symbol}</Text>
+            <Text color="textDisabled">
+              <NameOverflow
+                style={!isMobile && token.symbol.length > 14 ? { maxWidth: '58px' } : {}}
+                title={token.name}
+              >
+                {token.name}
+              </NameOverflow>
+            </Text>
+          </Flex>
         </AutoRow>
         {list && list.logoURI && (
           <RowFixed>

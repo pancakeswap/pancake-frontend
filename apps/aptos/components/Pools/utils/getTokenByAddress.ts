@@ -1,8 +1,5 @@
 import { ChainId } from '@pancakeswap/aptos-swap-sdk'
 
-import _toNumber from 'lodash/toNumber'
-import _get from 'lodash/get'
-
 import { testnetTokens, mainnetTokens } from 'config/constants/tokens'
 import _find from 'lodash/find'
 

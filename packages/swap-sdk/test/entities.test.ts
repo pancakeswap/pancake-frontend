@@ -1,6 +1,8 @@
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
-import { ChainId, WNATIVE as _WETH, TradeType, Rounding, Token, Pair, Route, Trade, CurrencyAmount } from '../src'
+import { TradeType, Rounding, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { Pair, Route, Trade } from '../src/entities'
+import { ChainId, WNATIVE as _WETH } from '../src/constants'
 
 const ADDRESSES = [
   '0x0000000000000000000000000000000000000001',
@@ -24,7 +26,7 @@ describe('entities', () => {
     describe(`decimals permutation: ${decimals}`, () => {
       let tokens: Token[]
       it('Token', () => {
-        tokens = ADDRESSES.map((address, i) => new Token(CHAIN_ID, address, decimals[i]))
+        tokens = ADDRESSES.map((address, i) => new Token(CHAIN_ID, address, decimals[i], `Token${i}`))
         tokens.forEach((token, i) => {
           expect(token.chainId).toEqual(CHAIN_ID)
           expect(token.address).toEqual(ADDRESSES[i])
@@ -102,6 +104,7 @@ describe('entities', () => {
       })
 
       describe('Trade', () => {
+        // eslint-disable-next-line @typescript-eslint/no-shadow
         let route: Route<Token, Token>
         it('TradeType.EXACT_INPUT', () => {
           route = new Route(
@@ -149,6 +152,7 @@ describe('entities', () => {
 
         it('minimum TradeType.EXACT_INPUT', () => {
           if ([9, 18].includes(tokens[1].decimals)) {
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             const route = new Route(
               [
                 new Pair(

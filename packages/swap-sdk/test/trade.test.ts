@@ -1,5 +1,7 @@
 import JSBI from 'jsbi'
-import { ChainId, CurrencyAmount, Native, Pair, Percent, Route, Token, Trade, TradeType, WNATIVE } from '../src'
+import { TradeType, Percent, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { Pair, Route, Trade, Native } from '../src/entities'
+import { ChainId, WNATIVE } from '../src/constants'
 
 describe('Trade', () => {
   const ETHER = Native.onChain(ChainId.BSC)
@@ -8,40 +10,40 @@ describe('Trade', () => {
   const token2 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000003', 18, 't2')
   const token3 = new Token(ChainId.BSC, '0x0000000000000000000000000000000000000004', 18, 't3')
 
-  const pair_0_1 = new Pair(
+  const pair01 = new Pair(
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000))
   )
-  const pair_0_2 = new Pair(
+  const pair02 = new Pair(
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(1100))
   )
-  const pair_0_3 = new Pair(
+  const pair03 = new Pair(
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(900))
   )
-  const pair_1_2 = new Pair(
+  const pair12 = new Pair(
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1200)),
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(1000))
   )
-  const pair_1_3 = new Pair(
+  const pair13 = new Pair(
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1200)),
     CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(1300))
   )
 
-  const pair_weth_0 = new Pair(
+  const pairWeth0 = new Pair(
     CurrencyAmount.fromRawAmount(WNATIVE[ChainId.BSC], JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000))
   )
 
-  const empty_pair_0_1 = new Pair(
+  const emptyPair01 = new Pair(
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(0)),
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(0))
   )
 
   it('can be constructed with ETHER as input', () => {
     const trade = new Trade(
-      new Route([pair_weth_0], ETHER, token0),
+      new Route([pairWeth0], ETHER, token0),
       CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), JSBI.BigInt(100)),
       TradeType.EXACT_INPUT
     )
@@ -50,7 +52,7 @@ describe('Trade', () => {
   })
   it('can be constructed with ETHER as input for exact output', () => {
     const trade = new Trade(
-      new Route([pair_weth_0], ETHER, token0),
+      new Route([pairWeth0], ETHER, token0),
       CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)),
       TradeType.EXACT_OUTPUT
     )
@@ -60,7 +62,7 @@ describe('Trade', () => {
 
   it('can be constructed with ETHER as output', () => {
     const trade = new Trade(
-      new Route([pair_weth_0], token0, ETHER),
+      new Route([pairWeth0], token0, ETHER),
       CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), JSBI.BigInt(100)),
       TradeType.EXACT_OUTPUT
     )
@@ -69,7 +71,7 @@ describe('Trade', () => {
   })
   it('can be constructed with ETHER as output for exact input', () => {
     const trade = new Trade(
-      new Route([pair_weth_0], token0, ETHER),
+      new Route([pairWeth0], token0, ETHER),
       CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)),
       TradeType.EXACT_INPUT
     )
@@ -85,7 +87,7 @@ describe('Trade', () => {
     })
     it('throws with max hops of 0', () => {
       expect(() =>
-        Trade.bestTradeExactIn([pair_0_2], CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)), token2, {
+        Trade.bestTradeExactIn([pair02], CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)), token2, {
           maxHops: 0,
         })
       ).toThrow('MAX_HOPS')
@@ -93,7 +95,7 @@ describe('Trade', () => {
 
     it('provides best route', () => {
       const result = Trade.bestTradeExactIn(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)),
         token2
       )
@@ -110,13 +112,13 @@ describe('Trade', () => {
 
     it('doesnt throw for zero liquidity pairs', () => {
       expect(
-        Trade.bestTradeExactIn([empty_pair_0_1], CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)), token1)
+        Trade.bestTradeExactIn([emptyPair01], CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)), token1)
       ).toHaveLength(0)
     })
 
     it('respects maxHops', () => {
       const result = Trade.bestTradeExactIn(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10)),
         token2,
         { maxHops: 1 }
@@ -128,7 +130,7 @@ describe('Trade', () => {
 
     it('insufficient input for one pair', () => {
       const result = Trade.bestTradeExactIn(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1)),
         token2
       )
@@ -140,7 +142,7 @@ describe('Trade', () => {
 
     it('respects n', () => {
       const result = Trade.bestTradeExactIn(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10)),
         token2,
         { maxNumResults: 1 }
@@ -151,7 +153,7 @@ describe('Trade', () => {
 
     it('no path', () => {
       const result = Trade.bestTradeExactIn(
-        [pair_0_1, pair_0_3, pair_1_3],
+        [pair01, pair03, pair13],
         CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10)),
         token2
       )
@@ -160,7 +162,7 @@ describe('Trade', () => {
 
     it('works for ETHER currency input', () => {
       const result = Trade.bestTradeExactIn(
-        [pair_weth_0, pair_0_1, pair_0_3, pair_1_3],
+        [pairWeth0, pair01, pair03, pair13],
         CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), JSBI.BigInt(100)),
         token3
       )
@@ -174,7 +176,7 @@ describe('Trade', () => {
     })
     it('works for ETHER currency output', () => {
       const result = Trade.bestTradeExactIn(
-        [pair_weth_0, pair_0_1, pair_0_3, pair_1_3],
+        [pairWeth0, pair01, pair03, pair13],
         CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(100)),
         ETHER
       )
@@ -191,7 +193,7 @@ describe('Trade', () => {
   describe('#maximumAmountIn', () => {
     describe('tradeType = EXACT_INPUT', () => {
       const exactIn = new Trade(
-        new Route([pair_0_1, pair_1_2], token0, token2),
+        new Route([pair01, pair12], token0, token2),
         CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)),
         TradeType.EXACT_INPUT
       )
@@ -217,7 +219,7 @@ describe('Trade', () => {
     })
     describe('tradeType = EXACT_OUTPUT', () => {
       const exactOut = new Trade(
-        new Route([pair_0_1, pair_1_2], token0, token2),
+        new Route([pair01, pair12], token0, token2),
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(100)),
         TradeType.EXACT_OUTPUT
       )
@@ -247,7 +249,7 @@ describe('Trade', () => {
   describe('#minimumAmountOut', () => {
     describe('tradeType = EXACT_INPUT', () => {
       const exactIn = new Trade(
-        new Route([pair_0_1, pair_1_2], token0, token2),
+        new Route([pair01, pair12], token0, token2),
         CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100)),
         TradeType.EXACT_INPUT
       )
@@ -273,7 +275,7 @@ describe('Trade', () => {
     })
     describe('tradeType = EXACT_OUTPUT', () => {
       const exactOut = new Trade(
-        new Route([pair_0_1, pair_1_2], token0, token2),
+        new Route([pair01, pair12], token0, token2),
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(100)),
         TradeType.EXACT_OUTPUT
       )
@@ -308,7 +310,7 @@ describe('Trade', () => {
     })
     it('throws with max hops of 0', () => {
       expect(() =>
-        Trade.bestTradeExactOut([pair_0_2], token0, CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(100)), {
+        Trade.bestTradeExactOut([pair02], token0, CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(100)), {
           maxHops: 0,
         })
       ).toThrow('MAX_HOPS')
@@ -316,7 +318,7 @@ describe('Trade', () => {
 
     it('provides best route', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         token0,
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(100))
       )
@@ -333,13 +335,13 @@ describe('Trade', () => {
 
     it('doesnt throw for zero liquidity pairs', () => {
       expect(
-        Trade.bestTradeExactOut([empty_pair_0_1], token1, CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(100)))
+        Trade.bestTradeExactOut([emptyPair01], token1, CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(100)))
       ).toHaveLength(0)
     })
 
     it('respects maxHops', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         token0,
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(10)),
         { maxHops: 1 }
@@ -351,7 +353,7 @@ describe('Trade', () => {
 
     it('insufficient liquidity', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         token0,
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(1200))
       )
@@ -360,7 +362,7 @@ describe('Trade', () => {
 
     it('insufficient liquidity in one pair but not the other', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         token0,
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(1050))
       )
@@ -369,7 +371,7 @@ describe('Trade', () => {
 
     it('respects n', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_0_1, pair_0_2, pair_1_2],
+        [pair01, pair02, pair12],
         token0,
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(10)),
         { maxNumResults: 1 }
@@ -380,7 +382,7 @@ describe('Trade', () => {
 
     it('no path', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_0_1, pair_0_3, pair_1_3],
+        [pair01, pair03, pair13],
         token0,
         CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(10))
       )
@@ -389,7 +391,7 @@ describe('Trade', () => {
 
     it('works for ETHER currency input', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_weth_0, pair_0_1, pair_0_3, pair_1_3],
+        [pairWeth0, pair01, pair03, pair13],
         ETHER,
         CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(100))
       )
@@ -403,7 +405,7 @@ describe('Trade', () => {
     })
     it('works for ETHER currency output', () => {
       const result = Trade.bestTradeExactOut(
-        [pair_weth_0, pair_0_1, pair_0_3, pair_1_3],
+        [pairWeth0, pair01, pair03, pair13],
         token3,
         CurrencyAmount.fromRawAmount(Native.onChain(ChainId.BSC), JSBI.BigInt(100))
       )

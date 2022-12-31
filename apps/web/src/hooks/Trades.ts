@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { isTradeBetter } from 'utils/trades'
-import { Currency, CurrencyAmount, Pair, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, isTradeBetter, Pair, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 

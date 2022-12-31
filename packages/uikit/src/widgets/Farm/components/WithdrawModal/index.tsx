@@ -2,6 +2,7 @@ import BigNumber from "bignumber.js";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { getFullDisplayBalance } from "@pancakeswap/utils/formatBalance";
+import { trimTrailZero } from "@pancakeswap/utils/trimTrailZero";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { Button } from "../../../../components/Button";
 import { AutoRenewIcon } from "../../../../components/Svg";
@@ -64,13 +65,13 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   const handlePercentInput = useCallback(
     (percent: number) => {
       const totalAmount = fullBalanceNumber.dividedBy(100).multipliedBy(percent);
-
-      setVal(totalAmount.toNumber().toString());
+      const amount = trimTrailZero(totalAmount.toNumber().toFixed(decimals));
+      setVal(amount as string);
 
       const USDPrice = totalAmount.times(lpPrice);
       setValUSDPrice(USDPrice);
     },
-    [fullBalanceNumber, setVal, setValUSDPrice, lpPrice]
+    [fullBalanceNumber, decimals, lpPrice]
   );
 
   return (

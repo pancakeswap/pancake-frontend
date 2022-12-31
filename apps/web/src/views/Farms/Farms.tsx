@@ -354,8 +354,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     setSortOption(option.value)
   }
 
+  const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
+
   return (
-    <FarmsContext.Provider value={{ chosenFarmsMemoized }}>
+    <FarmsContext.Provider value={providerValue}>
       <PageHeader>
         <FarmFlexWrapper justifyContent="space-between">
           <Box>
