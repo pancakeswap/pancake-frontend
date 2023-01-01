@@ -264,7 +264,8 @@ export default function CurrencyInputPanel({
           <InputRow selected={disableCurrencySelect}>
             {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
               <Flex alignItems="right" justifyContent="right">
-                {showQuickInputButton &&
+                {maxAmount.toExact() !== '0' &&
+                  showQuickInputButton &&
                   onPercentInput &&
                   [25, 50, 75].map((percent) => {
                     const isAtClickedPercent = currentClickedPercent === percent.toString()
@@ -288,7 +289,7 @@ export default function CurrencyInputPanel({
                       </Button>
                     )
                   })}
-                {showMaxButton && (
+                {maxAmount.toExact() !== '0' && showMaxButton && (
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
