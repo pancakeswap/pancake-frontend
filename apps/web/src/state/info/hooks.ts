@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import BigNumber from 'bignumber.js'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
-import { fetchAllPoolData, fetchAllPoolDataWithAddress, getAprsForStableFarm } from 'state/info/queries/pools/poolData'
+import { fetchAllPoolData, fetchAllPoolDataWithAddress } from 'state/info/queries/pools/poolData'
 import fetchPoolTransactions from 'state/info/queries/pools/transactions'
 import { fetchGlobalChartData } from 'state/info/queries/protocol/chart'
 import { fetchProtocolData } from 'state/info/queries/protocol/overview'
@@ -18,6 +18,7 @@ import { Block, Transaction } from 'state/info/types'
 import { SWRConfiguration } from 'swr'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { checkIsStableSwap, MultiChainName } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
@@ -259,16 +260,6 @@ export const useGetChainName = () => {
   }, [getChain])
 
   return result
-}
-
-export const useStableSwapAPR = (address: string | undefined): number => {
-  const chainName = useGetChainName()
-  const { data } = useSWRImmutable<BigNumber>(
-    address && [`info/pool/stableAPR/${address}/`, chainName],
-    () => getAprsForStableFarm(address),
-    SWR_SETTINGS,
-  )
-  return data?.toNumber()
 }
 
 const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {

@@ -1,6 +1,16 @@
 import { useCallback, useContext, useMemo, useState } from 'react'
 import { CurrencyAmount, Token, WNATIVE, Percent } from '@pancakeswap/sdk'
-import { Button, Text, AddIcon, CardBody, Message, useModal, QuestionHelper } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  AddIcon,
+  CardBody,
+  Message,
+  useModal,
+  QuestionHelper,
+  TooltipText,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -9,6 +19,8 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { LightCard } from 'components/Card'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
+import { formatAmount } from 'utils/formatInfoNumbers'
+import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 
 import { AutoColumn, ColumnCenter } from '../../../components/Layout/Column'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
@@ -119,6 +131,13 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
   )
 
   const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
+  const stableAPR = useStableSwapAPR(stableSwapContract.address)
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t(`Based on last 7 days' performance. Does not account for impermanent loss`),
+    {
+      placement: 'bottom',
+    },
+  )
 
   // check whether the user has approved tokens for addling LPs
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], stableSwapContract?.address)
@@ -382,6 +401,18 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                   {allowedSlippage / 100}%
                 </Text>
               </RowBetween>
+
+              {stableAPR ? (
+                <RowBetween>
+                  <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+                    {t('LP reward APR')}
+                  </TooltipText>
+                  {tooltipVisible && tooltip}
+                  <Text bold color="primary">
+                    {formatAmount(stableAPR)}%
+                  </Text>
+                </RowBetween>
+              ) : null}
 
               {!account ? (
                 <ConnectWalletButton />
