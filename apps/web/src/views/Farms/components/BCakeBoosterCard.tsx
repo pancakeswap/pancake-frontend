@@ -171,7 +171,7 @@ const CardContent: React.FC = () => {
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
         <NextLink href="/pools" passHref>
-          <Button as="a" width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
+          <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
             {t('Go to Pool')}
           </Button>
         </NextLink>
@@ -187,7 +187,7 @@ const CardContent: React.FC = () => {
           {t('An active fixed-term CAKE staking position is required for activating farm yield boosters.')}
         </Text>
         <NextLink href="/pools" passHref>
-          <Button as="a" width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
+          <Button width="100%" style={{ backgroundColor: theme.colors.textSubtle }}>
             {t('Go to Pool')}
           </Button>
         </NextLink>
