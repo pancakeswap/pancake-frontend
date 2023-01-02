@@ -11,6 +11,8 @@ import {
   Text,
   useTooltip,
   useMatchBreakpoints,
+  MessageText,
+  Message,
 } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -19,6 +21,7 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
 import { useBCakeProxyContractAddress } from '../hooks/useBCakeProxyContractAddress'
+import useBCakeProxyBalance from '../hooks/useBCakeProxyBalance'
 import { useUserBoosterStatus } from '../hooks/useUserBoosterStatus'
 import { useUserLockedCakeStatus } from '../hooks/useUserLockedCakeStatus'
 import boosterCardImage from '../images/boosterCardImage.png'
@@ -66,6 +69,22 @@ const StyledCardFooter = styled(CardFooter)`
     background-color: ${({ theme }) => theme.colors.cardBorder};
   }
 `
+
+export const BCakeProxyCakeBalanceCard = () => {
+  const { t } = useTranslation()
+  const { bCakeProxyBalance, bCakeProxyDisplayBalance, isLoading } = useBCakeProxyBalance()
+  return !isLoading && bCakeProxyBalance > 0 ? (
+    <Message marginBottom="8px" variant="warning">
+      <MessageText>
+        {t(
+          'There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.',
+          { amount: bCakeProxyDisplayBalance },
+        )}
+      </MessageText>
+    </Message>
+  ) : null
+}
+
 export const useBCakeTooltipContent = () => {
   const { t } = useTranslation()
   const tooltipContent = (
@@ -114,6 +133,7 @@ export const BCakeBoosterCard = () => {
           </Box>
         </StyledCardBody>
         <StyledCardFooter>
+          <BCakeProxyCakeBalanceCard />
           <CardContent />
         </StyledCardFooter>
       </Card>
