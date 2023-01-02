@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { useContext, createContext, useEffect, useState } from 'react'
+import { useContext, createContext, useEffect, useState, useMemo } from 'react'
 
 const historyManagerContext = createContext<ReturnType<typeof useHistoryManager>>(null)
 
@@ -34,5 +34,7 @@ function useHistoryManager() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  return { history, canGoBack: () => history.length > 1 }
+  return useMemo(() => {
+    return { history, canGoBack: () => history.length > 1 }
+  }, [history])
 }

@@ -13,7 +13,7 @@ const RemoveLiquidityPage = () => {
 
   const [currencyA, currencyB] = [useCurrency(currencyIdA) ?? undefined, useCurrency(currencyIdB) ?? undefined]
 
-  const { stableSwapConfig, ...config } = useStableConfig({
+  const stableConfig = useStableConfig({
     tokenA: currencyA,
     tokenB: currencyB,
   })
@@ -25,8 +25,8 @@ const RemoveLiquidityPage = () => {
     currencyB,
   }
 
-  return stableSwapConfig && router.query.stable === '1' ? (
-    <StableConfigContext.Provider value={{ stableSwapConfig, ...config }}>
+  return stableConfig.stableSwapConfig && router.query.stable === '1' ? (
+    <StableConfigContext.Provider value={stableConfig}>
       <RemoveStableLiquidity {...props} />
     </StableConfigContext.Provider>
   ) : (

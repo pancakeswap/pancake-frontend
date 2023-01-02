@@ -1,16 +1,7 @@
 import JSBI from 'jsbi'
-import {
-  ChainId,
-  CurrencyAmount,
-  Native,
-  Pair,
-  Percent,
-  Route,
-  Token,
-  Trade,
-  TradeType,
-  WNATIVE,
-} from '@pancakeswap/sdk'
+import { TradeType, Percent, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { Pair, Route, Trade, Native } from '../src/entities'
+import { ChainId, WNATIVE } from '../src/constants'
 
 describe('Trade', () => {
   const ETHER = Native.onChain(ChainId.BSC)

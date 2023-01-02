@@ -1,6 +1,9 @@
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
-import { ChainId, CurrencyAmount, Native, Pair, Percent, Route, Router, Token, Trade, WNATIVE } from '@pancakeswap/sdk'
+import { Percent, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { Router } from '../src/router'
+import { Pair, Route, Trade, Native } from '../src/entities'
+import { ChainId, WNATIVE } from '../src/constants'
 
 function checkDeadline(deadline: string[] | string): void {
   expect(typeof deadline).toBe('string')

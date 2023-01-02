@@ -28,10 +28,10 @@ const StableSwapFormContainer = () => {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
 
-  const { stableSwapConfig, ...stableConfig } = useStableConfig({ tokenA: inputCurrency, tokenB: outputCurrency })
+  const stableConfig = useStableConfig({ tokenA: inputCurrency, tokenB: outputCurrency })
 
   return stableTokenPair ? (
-    <StableConfigContext.Provider value={{ stableSwapConfig, ...stableConfig }}>
+    <StableConfigContext.Provider value={stableConfig}>
       <StableSwapForm />
     </StableConfigContext.Provider>
   ) : null

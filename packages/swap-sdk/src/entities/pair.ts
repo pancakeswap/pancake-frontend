@@ -7,7 +7,6 @@ import {
   FIVE,
   ONE,
   ZERO,
-  _100,
   _10000,
   _9975,
   BigintIsh,
@@ -53,6 +52,7 @@ export const computePairAddress = ({
 
 export class Pair {
   public readonly liquidityToken: ERC20Token
+
   private readonly tokenAmounts: [CurrencyAmount<ERC20Token>, CurrencyAmount<ERC20Token>]
 
   public static getAddress(tokenA: ERC20Token, tokenB: ERC20Token): string {
@@ -207,7 +207,7 @@ export class Pair {
     token: ERC20Token,
     totalSupply: CurrencyAmount<ERC20Token>,
     liquidity: CurrencyAmount<ERC20Token>,
-    feeOn: boolean = false,
+    feeOn = false,
     kLast?: BigintIsh
   ): CurrencyAmount<ERC20Token> {
     invariant(this.involvesToken(token), 'TOKEN')

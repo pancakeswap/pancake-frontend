@@ -97,7 +97,9 @@ const ProfileCreationProvider: React.FC<React.PropsWithChildren> = ({ children }
     [dispatch],
   )
 
-  return <ProfileCreationContext.Provider value={{ ...state, actions }}>{children}</ProfileCreationContext.Provider>
+  const providerValue = useMemo(() => ({ ...state, actions }), [state, actions])
+
+  return <ProfileCreationContext.Provider value={providerValue}>{children}</ProfileCreationContext.Provider>
 }
 
 export default ProfileCreationProvider
