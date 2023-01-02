@@ -54,7 +54,7 @@ const useFarmsWithBalance = () => {
     const calls = [...masterChefCalls, proxyCall].filter(Boolean)
 
     const rawResults = await multicallv3({ calls })
-    const proxyCakeBalance = proxyCall ? rawResults.pop() : null
+    const proxyCakeBalance = rawResults?.length > 0 && proxyCall ? rawResults.pop() : null
     const proxyCakeBalanceNumber = proxyCakeBalance ? getBalanceNumber(new BigNumber(proxyCakeBalance.toString())) : 0
     const results = farms.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
     const farmsWithBalances: FarmWithBalance[] = results

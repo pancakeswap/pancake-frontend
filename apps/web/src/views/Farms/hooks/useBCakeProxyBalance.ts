@@ -4,9 +4,9 @@ import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { FetchStatus } from 'config/constants/types'
-import useActiveWeb3React from './useActiveWeb3React'
-import { useBCakeProxyContractAddress } from '../views/Farms/hooks/useBCakeProxyContractAddress'
-import { useBCakeProxyContract, useCake } from './useContract'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useBCakeProxyContract, useCake } from 'hooks/useContract'
+import { useBCakeProxyContractAddress } from './useBCakeProxyContractAddress'
 
 const useBCakeProxyBalance = () => {
   const { account, chainId } = useActiveWeb3React()
