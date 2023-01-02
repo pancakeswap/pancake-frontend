@@ -2073,5 +2073,6 @@
   "After your order is expired it might never be executed. Please cancel your order once expired": "After your order is expired it might never be executed. Please cancel your order once expired",
   "Expiration Date: %expiryDate%": "Expiration Date: %expiryDate%",
   "No Expired Orders": "No Expired Orders",
-  "Expired Order": "Expired Order"
+  "Expired Order": "Expired Order",
+  "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms."
 }
