@@ -44,7 +44,7 @@
     "@ethersproject/units": "^5.0.0",
     "@gelatonetwork/limit-orders-lib": "^4.1.0",
     "@gnosis.pm/safe-apps-wagmi": "^1.2.0",
-    "@next/bundle-analyzer": "^12.0.7",
+    "@next/bundle-analyzer": "13.0.7",
     "@pancakeswap/farms": "*",
     "@pancakeswap/hooks": "*",
     "@pancakeswap/localization": "*",
@@ -76,7 +76,7 @@
     "local-storage": "^2.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
-    "next": "^13.1.1",
+    "next": "13.0.7",
     "next-axiom": "^0.13.0",
     "next-themes": "^0.2.0",
     "numeral": "^2.0.6",
@@ -100,7 +100,7 @@
     "wagmi": "^0.9.5"
   },
   "devDependencies": {
-    "@next/eslint-plugin-next": "^12.0.10",
+    "@next/eslint-plugin-next": "13.0.7",
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^13.3.0",

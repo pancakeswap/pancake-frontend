@@ -2,7 +2,7 @@ import { ArrowForwardIcon, Button, Text, useMatchBreakpoints, NextLinkFromReactR
 import { ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import { memo, useEffect, useRef } from 'react'
 import { useChainCurrentBlock } from 'state/block/hooks'
 import styled, { keyframes } from 'styled-components'
