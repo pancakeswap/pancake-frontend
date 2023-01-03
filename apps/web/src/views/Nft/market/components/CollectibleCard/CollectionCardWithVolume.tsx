@@ -4,7 +4,6 @@ import { BNBAmountLabel } from './styles'
 import { CollectionCard } from './index'
 
 interface CollectionCardWithVolumeProps {
-  key: string
   bgSrc: string
   avatarSrc?: string
   collectionName: string
@@ -14,7 +13,6 @@ interface CollectionCardWithVolumeProps {
 }
 
 const CollectionCardWithVolume: React.FC<CollectionCardWithVolumeProps> = ({
-  key,
   bgSrc,
   avatarSrc,
   collectionName,
@@ -23,7 +21,7 @@ const CollectionCardWithVolume: React.FC<CollectionCardWithVolumeProps> = ({
 }) => {
   const { t } = useTranslation()
   return (
-    <CollectionCard key={key} bgSrc={bgSrc} avatarSrc={avatarSrc} collectionName={collectionName} url={url}>
+    <CollectionCard bgSrc={bgSrc} avatarSrc={avatarSrc} collectionName={collectionName} url={url}>
       <Flex alignItems="center">
         <Text fontSize="12px" color="textSubtle">
           {t('Volume')}
