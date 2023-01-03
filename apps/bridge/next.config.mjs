@@ -7,15 +7,13 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    transpilePackages: [
-      '@pancakeswap/uikit',
-      '@pancakeswap/ui',
-      '@pancakeswap/hooks',
-      '@pancakeswap/localization',
-      '@pancakeswap/utils',
-    ],
-  },
+  transpilePackages: [
+    '@pancakeswap/uikit',
+    '@pancakeswap/ui',
+    '@pancakeswap/hooks',
+    '@pancakeswap/localization',
+    '@pancakeswap/utils',
+  ],
   compiler: {
     styledComponents: true,
   },
