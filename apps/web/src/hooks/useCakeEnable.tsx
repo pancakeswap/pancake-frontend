@@ -11,15 +11,15 @@ import { useSwapCallback } from 'hooks/useSwapCallback'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
+import BigNumber from 'bignumber.js'
 
-export const useExtendEnable = () => {
+export const useCakeEnable = (enableAmount: BigNumber) => {
   const { account, chainId } = useActiveWeb3React()
   const dispatch = useAppDispatch()
   const [pendingEnableTx, setPendingEnableTx] = useState(false)
   const [transactionHash, setTransactionHash] = useState<string>()
   const isTransactionPending = useIsTransactionPending(transactionHash)
-  const swapAmount = useMemo(() => getFullDisplayBalance(ENABLE_EXTEND_LOCK_AMOUNT), [])
+  const swapAmount = useMemo(() => getFullDisplayBalance(enableAmount), [enableAmount])
 
   const parsedAmount = tryParseAmount(swapAmount, CAKE[chainId])
 
