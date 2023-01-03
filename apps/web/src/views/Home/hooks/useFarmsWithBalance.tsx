@@ -1,14 +1,17 @@
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import multicall from 'utils/multicall'
+import { multicallv3 } from 'utils/multicall'
 import masterChefABI from 'config/abi/masterchef.json'
+import cakeAbi from 'config/abi/cake.json'
 import { FAST_INTERVAL } from 'config/constants'
 import { SerializedFarmConfig } from 'config/constants/types'
 import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import useSWR from 'swr'
 import { useFarmsLength } from 'state/farms/hooks'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { useBCakeProxyContract, useMasterchef } from 'hooks/useContract'
+import { CAKE } from '@pancakeswap/tokens'
 import { Masterchef, BCakeProxy } from 'config/abi/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { useBCakeProxyContractAddress } from '../../Farms/hooks/useBCakeProxyContractAddress'
@@ -22,7 +25,7 @@ export type FarmWithBalance = {
 const useFarmsWithBalance = () => {
   const { account, chainId } = useActiveWeb3React()
   const { data: poolLength } = useFarmsLength()
-  const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
+  const { proxyAddress, isLoading: isProxyContractAddressLoading } = useBCakeProxyContractAddress(account, chainId)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const masterChefContract = useMasterchef()
 
@@ -31,13 +34,28 @@ const useFarmsWithBalance = () => {
     accountToCheck: string,
     contract: Masterchef | BCakeProxy,
   ) => {
-    const calls = farms.map((farm) => ({
+    const masterChefCalls = farms.map((farm) => ({
+      abi: masterChefABI,
       address: masterChefContract.address,
       name: 'pendingCake',
       params: [farm.pid, accountToCheck],
     }))
 
-    const rawResults = await multicall(masterChefABI, calls)
+    const proxyCall =
+      contract.address !== masterChefContract.address && bCakeProxy
+        ? {
+            abi: cakeAbi,
+            address: CAKE[chainId].address,
+            name: 'balanceOf',
+            params: [bCakeProxy.address],
+          }
+        : null
+
+    const calls = [...masterChefCalls, proxyCall].filter(Boolean)
+
+    const rawResults = await multicallv3({ calls })
+    const proxyCakeBalance = rawResults?.length > 0 && proxyCall ? rawResults.pop() : null
+    const proxyCakeBalanceNumber = proxyCakeBalance ? getBalanceNumber(new BigNumber(proxyCakeBalance.toString())) : 0
     const results = farms.map((farm, index) => ({ ...farm, balance: new BigNumber(rawResults[index]) }))
     const farmsWithBalances: FarmWithBalance[] = results
       .filter((balanceType) => balanceType.balance.gt(0))
@@ -52,7 +70,7 @@ const useFarmsWithBalance = () => {
       }
       return accum + earningNumber.div(DEFAULT_TOKEN_DECIMAL).toNumber()
     }, 0)
-    return { farmsWithBalances, totalEarned }
+    return { farmsWithBalances, totalEarned: totalEarned + proxyCakeBalanceNumber }
   }
 
   const {
@@ -61,7 +79,9 @@ const useFarmsWithBalance = () => {
       earningsSum: null,
     },
   } = useSWR(
-    account && poolLength && chainId ? [account, 'farmsWithBalance', chainId, poolLength] : null,
+    account && poolLength && chainId && !isProxyContractAddressLoading
+      ? [account, 'farmsWithBalance', chainId, poolLength]
+      : null,
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const farmsCanFetch = farmsConfig.filter((f) => poolLength > f.pid)
