@@ -20,13 +20,13 @@ import {
 import Page from 'components/Layout/Page'
 import { useState } from 'react'
 import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
+import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import {
   useGetChainName,
   useMultiChainPath,
   usePoolChartDataSWR,
   usePoolDatasSWR,
   usePoolTransactionsSWR,
-  useStableSwapAPR,
   useStableSwapPath,
 } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
