@@ -17,15 +17,17 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  transpilePackages: [
-    '@pancakeswap/ui',
-    '@pancakeswap/uikit',
-    '@pancakeswap/localization',
-    '@pancakeswap/hooks',
-    '@pancakeswap/utils',
-    '@pancakeswap/tokens',
-    '@pancakeswap/farms',
-  ],
+  experimental: {
+    transpilePackages: [
+      '@pancakeswap/ui',
+      '@pancakeswap/uikit',
+      '@pancakeswap/localization',
+      '@pancakeswap/hooks',
+      '@pancakeswap/utils',
+      '@pancakeswap/tokens',
+      '@pancakeswap/farms',
+    ],
+  },
   async redirects() {
     return [
       {
