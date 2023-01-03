@@ -2,7 +2,7 @@ import { Button, Flex, Heading, NextLinkFromReactRouter } from '@pancakeswap/uik
 import { useAccount } from 'wagmi'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 import styled, { keyframes } from 'styled-components'
 import bunnyImage from '../../../../public/images/home/lunar-bunny/astronaut-bunny.png'
 import CompositeImage, { CompositeImageProps } from './CompositeImage'
