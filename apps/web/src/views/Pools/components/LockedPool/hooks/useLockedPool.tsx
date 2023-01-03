@@ -1,5 +1,6 @@
 import { useState, useCallback, Dispatch, SetStateAction } from 'react'
 import { useAccount } from 'wagmi'
+import { useSWRConfig } from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAppDispatch } from 'state'
 import { useBUSDCakeAmount } from 'hooks/useBUSDPrice'
@@ -44,6 +45,7 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
   const { callWithGasPrice } = useCallWithGasPrice()
 
   const { t } = useTranslation()
+  const { mutate } = useSWRConfig()
   const { toastSuccess } = useToast()
   const [duration, setDuration] = useState(() => defaultDuration)
   const usdValueStaked = useBUSDCakeAmount(lockedAmount.toNumber())
@@ -70,9 +72,10 @@ export default function useLockedPool(hookArgs: HookArgs): HookReturn {
         )
         onDismiss?.()
         dispatch(fetchCakeVaultUserData({ account }))
+        mutate(['userCakeLockStatus', account])
       }
     },
-    [fetchWithCatchTxError, toastSuccess, dispatch, onDismiss, account, vaultPoolContract, t, callWithGasPrice],
+    [fetchWithCatchTxError, toastSuccess, dispatch, onDismiss, account, vaultPoolContract, t, callWithGasPrice, mutate],
   )
 
   const handleConfirmClick = useCallback(async () => {

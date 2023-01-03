@@ -1,12 +1,12 @@
 import { useToast, Text, Link } from '@pancakeswap/uikit'
 import { useEffect } from 'react'
-import { useCakeVaultUserData } from 'state/pools/hooks'
+import { useSWRConfig } from 'swr'
 import { useTranslation } from '@pancakeswap/localization'
-import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { useAtom } from 'jotai'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { atomWithStorage, createJSONStorage } from 'jotai/utils'
-import { ChainId } from '@pancakeswap/sdk'
+import { useAccount } from 'wagmi'
+import { useUserCakeLockStatus } from './useUserCakeLockStatus'
 
 const storage = createJSONStorage(() => sessionStorage)
 storage.delayInit = true
@@ -27,32 +27,31 @@ const LockedEndDescription: React.FC = () => {
   )
 }
 
-export const useIsUserLockedEnd = () => {
-  const { isLoading, locked, lockedEnd } = useUserLockedCakeStatus()
-  const { chainId } = useActiveChainId()
-  if (
-    chainId === ChainId.BSC &&
-    !isLoading &&
-    locked &&
-    (lockedEnd === '0' || new Date() > new Date(parseInt(lockedEnd) * 1000))
-  )
-    return true
-  return false
-}
-
 const useLockedEndNotification = () => {
-  useCakeVaultUserData()
   const { t } = useTranslation()
-  const isUserLockedEnd = useIsUserLockedEnd()
-  const { chainId } = useActiveChainId()
   const { toastInfo } = useToast()
+  const { mutate } = useSWRConfig()
+  const { address: account } = useAccount()
+  const isUserLockedEnd = useUserCakeLockStatus()
   const [lockedNotificationShow, setLockedNotificationShow] = useLockedNotificationShow()
+
   useEffect(() => {
-    if (toastInfo && isUserLockedEnd && lockedNotificationShow && chainId === ChainId.BSC) {
+    if (account) {
+      if (!isUndefinedOrNull(isUserLockedEnd)) {
+        setLockedNotificationShow(true)
+        mutate(['userCakeLockStatus', account])
+      }
+    } else {
+      setLockedNotificationShow(true)
+    }
+  }, [setLockedNotificationShow, account, mutate, isUserLockedEnd])
+
+  useEffect(() => {
+    if (toastInfo && isUserLockedEnd && lockedNotificationShow) {
       toastInfo(t('Cake Syrup Pool'), <LockedEndDescription />)
       setLockedNotificationShow(false) // show once
     }
-  }, [isUserLockedEnd, toastInfo, lockedNotificationShow, setLockedNotificationShow, t, chainId])
+  }, [isUserLockedEnd, toastInfo, lockedNotificationShow, setLockedNotificationShow, t])
 }
 
 export default useLockedEndNotification
