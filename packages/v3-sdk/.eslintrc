@@ -1,6 +1,7 @@
 {
   "plugins": [],
   "rules": {
+    "camelcase": 0,
     "no-param-reassign": 0,
     "no-useless-constructor": 0,
     "@typescript-eslint/camelcase": 0,
@@ -20,6 +21,5 @@
     "class-methods-use-this": 0,
     "no-new": 0,
     "@typescript-eslint/member-delimiter-style": 0
-    // End temporary rules
   }
 }

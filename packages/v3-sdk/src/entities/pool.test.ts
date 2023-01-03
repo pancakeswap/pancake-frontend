@@ -164,10 +164,12 @@ describe('Pool', () => {
   })
 
   describe('#involvesToken', () => {
-    const pool = new Pool(USDC, DAI, FeeAmount.LOW, encodeSqrtRatioX96(1, 1), 0, 0, [])
-    expect(pool.involvesToken(USDC)).toEqual(true)
-    expect(pool.involvesToken(DAI)).toEqual(true)
-    expect(pool.involvesToken(WETH9[1])).toEqual(false)
+    it('returns involves token', () => {
+      const pool = new Pool(USDC, DAI, FeeAmount.LOW, encodeSqrtRatioX96(1, 1), 0, 0, [])
+      expect(pool.involvesToken(USDC)).toEqual(true)
+      expect(pool.involvesToken(DAI)).toEqual(true)
+      expect(pool.involvesToken(WETH9[1])).toEqual(false)
+    })
   })
 
   describe('swaps', () => {
