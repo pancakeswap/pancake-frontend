@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import ApproveConfirmButtons from 'components/ApproveConfirmButtons'
-import { useExtendEnable } from '../hooks/useExtendEnable'
+import { useCakeEnable } from 'hooks/useCakeEnable'
+import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
 interface ExtendEnableProps {
   hasEnoughCake: boolean
@@ -17,7 +18,7 @@ const ExtendEnable: React.FC<React.PropsWithChildren<ExtendEnableProps>> = ({
   isValidAmount,
   isValidDuration,
 }) => {
-  const { handleEnable, pendingEnableTx } = useExtendEnable()
+  const { handleEnable, pendingEnableTx } = useCakeEnable(ENABLE_EXTEND_LOCK_AMOUNT)
 
   const [pendingEnableTxWithBalance, setPendingEnableTxWithBalance] = useState(pendingEnableTx)
 

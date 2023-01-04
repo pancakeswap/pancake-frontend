@@ -13,7 +13,7 @@
     "@pancakeswap/wagmi": "*",
     "@pancakeswap/uikit": "*",
     "@pancakeswap/sdk": "*",
-    "next": "^13.1.1",
+    "next": "13.0.7",
     "next-axiom": "^0.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -22,11 +22,11 @@
     "wagmi": "^0.9.5"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "13.0.7",
     "@types/node": "18.0.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "eslint": "^7.26.0",
-    "eslint-config-next": "12.2.2",
     "tsconfig": "*"
   }
 }

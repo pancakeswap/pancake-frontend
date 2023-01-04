@@ -1,6 +1,6 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { useActiveIfoWithBlocks } from 'hooks/useActiveIfoWithBlocks'
-import { useIsUserLockedEnd } from 'hooks/useLockedEndNotification'
+import { useUserCakeLockStatus } from 'hooks/useUserCakeLockStatus'
 import { useMemo } from 'react'
 import { useChainCurrentBlock } from 'state/block/hooks'
 import { PotteryDepositStatus } from 'state/types'
@@ -15,7 +15,7 @@ export const useMenuItemsStatus = (): Record<string, string> => {
   const competitionStatus = useCompetitionStatus()
   const potteryStatus = usePotteryStatus()
   const votingStatus = useVotingStatus()
-  const isUserLocked = useIsUserLockedEnd()
+  const isUserLocked = useUserCakeLockStatus()
 
   const ifoStatus =
     currentBlock && activeIfo && activeIfo.endBlock > currentBlock
