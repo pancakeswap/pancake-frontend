@@ -9,6 +9,7 @@ import { HelpIcon } from "../Svg";
 import { LinkExternal } from "../Link";
 import { ExpandableLabel } from "../Button";
 import { useTooltip } from "../../hooks/useTooltip";
+import { Link } from "../Link";
 
 const Footer = styled(Flex)`
   width: 100%;
@@ -45,6 +46,8 @@ interface RoiCalculatorFooterProps {
   performanceFee: number;
   rewardCakePerSecond?: boolean;
   isLocked?: boolean;
+  stableSwapAddress?: string;
+  stableSwapFeeRates?: Record<string, number>;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -59,6 +62,8 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   performanceFee,
   rewardCakePerSecond,
   isLocked = false,
+  stableSwapAddress,
+  stableSwapFeeRates,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -177,11 +182,32 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
               </Text>
             </li>
             {isFarm && (
-              <li>
-                <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
-                  {t("LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.")}
-                </Text>
-              </li>
+              <>
+                <li>
+                  <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+                    {t("LP rewards: %percent%% trading fees, distributed proportionally among LP token holders.", {
+                      percent: stableSwapAddress
+                        ? (stableSwapFeeRates?.[stableSwapAddress?.toLocaleLowerCase() ?? ""] ?? 0.00075) * 100
+                        : 0.17,
+                    })}
+                  </Text>
+                </li>
+                <li>
+                  <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+                    {t(
+                      "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the"
+                    )}
+                    <Link
+                      style={{ display: "inline-block" }}
+                      fontSize="12px"
+                      ml="3px"
+                      href={`/info${stableSwapAddress ? "?type=stableSwap" : ""}`}
+                    >
+                      {t("Info Page")}
+                    </Link>
+                  </Text>
+                </li>
+              </>
             )}
             <li>
               <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>

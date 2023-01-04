@@ -6,6 +6,13 @@ import { ETH_TOKEN_BLACKLIST, PCS_ETH_START, PCS_V2_START, TOKEN_BLACKLIST } fro
 
 export type MultiChainName = 'BSC' | 'ETH'
 
+export const LP_HOLDERS_FEE_STABLE_AND_LP = {
+  '0x169f653a54acd441ab34b73da9946e2c451787ef': 0.00075, // USDT/BUSD StableSwap
+  '0xc2f5b9a3d9138ab2b74d581fc11346219ebf43fe': 0.00075, // USDC/BUSD StableSwap
+  '0x3efebc418efb585248a0d2140cfb87afcc2c63dd': 0.00075, // USDT/USDC StableSwap
+  '0x49079d07ef47449af808a4f36c2a8dec975594ec': 0.0002, // HAY/BUSD StableSwap
+}
+
 export const multiChainQueryMainToken = {
   BSC: 'BNB',
   ETH: 'ETH',

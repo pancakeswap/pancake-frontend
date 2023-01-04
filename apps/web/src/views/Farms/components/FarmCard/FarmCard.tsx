@@ -140,6 +140,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     strikethrough={farm.boosted}
                     useTooltipText
                     boosted={farm.boosted}
+                    stableSwapAddress={stableSwapAddress}
                   />
                 </>
               ) : (

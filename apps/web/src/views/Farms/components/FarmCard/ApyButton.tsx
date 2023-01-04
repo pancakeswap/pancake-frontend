@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { LP_HOLDERS_FEE_STABLE_AND_LP } from 'state/info/constant'
 import { useTranslation } from '@pancakeswap/localization'
 import { Text, TooltipText, useModal, useTooltip, Farm as FarmUI, RoiCalculatorModal } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
@@ -26,6 +27,7 @@ export interface ApyButtonProps {
   useTooltipText?: boolean
   hideButton?: boolean
   boosted?: boolean
+  stableSwapAddress?: string
 }
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
@@ -44,6 +46,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   useTooltipText,
   hideButton,
   boosted,
+  stableSwapAddress,
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
@@ -83,6 +86,8 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
           />
         ) : null
       }
+      stableSwapAddress={stableSwapAddress}
+      stableSwapFeeRates={LP_HOLDERS_FEE_STABLE_AND_LP}
     />,
     false,
     true,
