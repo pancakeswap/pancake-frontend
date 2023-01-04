@@ -1,5 +1,11 @@
 # @pancakeswap/token-lists
 
+## 0.0.4
+
+### Patch Changes
+
+- 5dda2c74f: Fix duplicate active list url issue
+
 ## 0.0.3
 
 ### Patch Changes
