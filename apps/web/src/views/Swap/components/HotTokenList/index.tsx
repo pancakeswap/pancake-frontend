@@ -27,6 +27,8 @@ const MenuWrapper = styled.div`
   }
 `
 
+const LIQUIDITY_FILTER = 100000 // 100k
+
 const HotTokenList: React.FC = () => {
   const listsByUrl = useAtomValue(selectorByUrlsAtom)
   const { current: list } = listsByUrl[PANCAKE_EXTENDED]
@@ -37,7 +39,10 @@ const HotTokenList: React.FC = () => {
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
   const formattedTokens = useMemo(
-    () => allTokens.filter((t) => t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0),
+    () =>
+      allTokens.filter(
+        (t) => t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.liquidityUSD >= LIQUIDITY_FILTER,
+      ),
     [allTokens],
   )
 
