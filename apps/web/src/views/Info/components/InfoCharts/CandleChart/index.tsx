@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { createChart, IChartApi } from 'lightweight-charts'
 import { format } from 'date-fns'
 import { useTheme } from '@pancakeswap/hooks'
-import { CandleChartLoader } from 'views/Info/components/ChartLoaders'
+import { CandleChartLoader } from 'components/ChartLoaders'
 import { baseColors, lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
 
 const CANDLE_CHART_HEIGHT = 250

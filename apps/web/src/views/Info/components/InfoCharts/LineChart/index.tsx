@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'recharts'
 import useTheme from 'hooks/useTheme'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { LineChartLoader } from 'views/Info/components/ChartLoaders'
+import { LineChartLoader } from 'components/ChartLoaders'
 import { useTranslation } from '@pancakeswap/localization'
 
 export type LineChartProps = {
