@@ -6,10 +6,9 @@ import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { Flex, Box, Grid } from "../Box";
 import { Text } from "../Text";
 import { HelpIcon } from "../Svg";
-import { LinkExternal } from "../Link";
+import { LinkExternal, Link } from "../Link";
 import { ExpandableLabel } from "../Button";
 import { useTooltip } from "../../hooks/useTooltip";
-import { Link } from "../Link";
 
 const Footer = styled(Flex)`
   width: 100%;
