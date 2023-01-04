@@ -2426,4 +2426,12 @@ export const bscTokens = {
     'PRIMAL Token',
     'https://www.getprimal.com/',
   ),
+  ankrbnb: new Token(
+    ChainId.BSC,
+    '0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827',
+    18,
+    'ankrBNB',
+    'Ankr Staked BNB',
+    'https://www.ankr.com/staking-crypto/',
+  ),
 }
