@@ -22,7 +22,7 @@
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
-    "@pancakeswap/swap-sdk-core": "*",
+    "@pancakeswap/sdk": "*",
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.8",
     "@babel/preset-react": "^7.16.7",
