@@ -1,5 +1,6 @@
 import { Field } from 'components/Liquidity/type'
-import { useAtomValue, useReducerAtom } from 'jotai/utils'
+import { useAtomValue } from 'jotai'
+import { useReducerAtom } from 'jotai/utils'
 import { useCallback, useMemo } from 'react'
 import { typeInput, resetMintState } from './actions'
 import { MintState, mintStateAtom, reducer } from './reducers'

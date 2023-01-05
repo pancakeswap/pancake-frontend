@@ -1,5 +1,4 @@
-import { useAtom } from 'jotai'
-import { useAtomValue } from 'jotai/utils'
+import { useAtom, useAtomValue } from 'jotai'
 import { useCallback } from 'react'
 import { typeInput } from './actions'
 import { burnReducerAtom } from './reducers'
