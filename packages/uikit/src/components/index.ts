@@ -58,5 +58,6 @@ export * from "./PageSection";
 export * from "./PaginationButton";
 export * from "./LangSelector";
 export * from "./ReactMarkdown";
+export * from "./DateStep";
 
 export type { DropdownMenuItems } from "./DropdownMenu";
