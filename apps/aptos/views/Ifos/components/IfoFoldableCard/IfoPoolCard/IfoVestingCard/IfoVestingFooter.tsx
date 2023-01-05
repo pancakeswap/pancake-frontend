@@ -56,7 +56,7 @@ const IfoVestingFooter: React.FC<React.PropsWithChildren<IfoVestingFooterProps>>
 
   const releaseRate = useMemo(() => {
     const rate = new BigNumber(vestingAmountTotal).div(vestingInformation.duration)
-    return getFullDisplayBalance(rate, token.decimals, 5)
+    return getFullDisplayBalance(rate, token.decimals, token.decimals)
   }, [vestingInformation, vestingAmountTotal, token])
 
   const releaseDate = useMemo(() => {
