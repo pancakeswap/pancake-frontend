@@ -28,6 +28,7 @@ import {
   usePoolDatasSWR,
   usePoolTransactionsSWR,
   useStableSwapPath,
+  useStableSwapFee,
 } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -92,6 +93,13 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap && address)
+  const stableFee = useStableSwapFee(isStableSwap && address)
+  // console.log(
+  //   stableFee?.amount.toString(),
+  //   stableFee?.amountDayAgo.toString(),
+  //   stableFee?.amountWeekAgo.toString(),
+  //   'stableFee!!!',
+  // )
 
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
@@ -257,7 +265,10 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                         {showWeeklyData ? t('LP reward fees 7D') : t('LP reward fees 24H')}
                       </Text>
                       <Text fontSize="24px" bold>
-                        ${showWeeklyData ? formatAmount(poolData.lpFees7d) : formatAmount(poolData.lpFees24h)}
+                        $
+                        {showWeeklyData
+                          ? formatAmount(isStableSwap ? stableFee?.stableSwapWeekFee : poolData.lpFees7d)
+                          : formatAmount(isStableSwap ? stableFee?.stableSwapDayFee : poolData.lpFees24h)}
                       </Text>
                       <Text color="textSubtle" fontSize="12px">
                         {t('out of $%totalFees% total fees', {
