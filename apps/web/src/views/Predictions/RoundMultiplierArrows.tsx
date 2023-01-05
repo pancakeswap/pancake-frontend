@@ -1,4 +1,4 @@
-import { useTheme } from 'styled-components'
+import { useTheme } from '@pancakeswap/hooks'
 import { Svg, SvgProps } from '@pancakeswap/uikit'
 
 interface MultiplierProps extends SvgProps {
@@ -9,7 +9,7 @@ export const RoundMultiplierDownArrow: React.FC<React.PropsWithChildren<Multipli
   isActive,
   ...props
 }) => {
-  const theme = useTheme()
+  const { theme } = useTheme()
   const fill = theme.colors[isActive ? 'failure' : 'tertiary']
 
   return (
@@ -50,7 +50,7 @@ export const RoundMultiplierDownArrow: React.FC<React.PropsWithChildren<Multipli
 }
 
 export const RoundMultiplierUpArrow: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ isActive, ...props }) => {
-  const theme = useTheme()
+  const { theme } = useTheme()
   const fill = theme.colors[isActive ? 'success' : 'tertiary']
 
   return (

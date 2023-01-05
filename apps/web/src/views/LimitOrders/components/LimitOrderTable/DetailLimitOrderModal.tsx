@@ -11,6 +11,7 @@ import {
   useMatchBreakpoints,
   BscScanIcon,
 } from '@pancakeswap/uikit'
+import { AutoColumn } from 'components/Layout/Column'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'
@@ -261,18 +262,16 @@ const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardPro
 const LoadingContent: React.FC<React.PropsWithChildren> = memo(() => {
   const { t } = useTranslation()
   return (
-    <Flex>
-      <Flex flexDirection="column" flexGrow="wrap" flexBasis="267px">
-        <Text fontSize="20px" small color="secondary">
-          {t('Confirm')}
+    <Flex flexDirection="column">
+      <Box m="auto" padding="24px 0">
+        <Spinner />
+      </Box>
+      <AutoColumn gap="12px" justify="center">
+        <Text fontSize="20px">{t('Confirm')}</Text>
+        <Text small color="textSubtle" textAlign="center">
+          {t('Confirm this transaction in your wallet')}
         </Text>
-        <Text small color="textSubtle" mt="8px">
-          {t('Please confirm the transaction in your wallet')}
-        </Text>
-      </Flex>
-      <Flex>
-        <Spinner size={70} />
-      </Flex>
+      </AutoColumn>
     </Flex>
   )
 })
