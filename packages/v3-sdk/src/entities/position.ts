@@ -6,6 +6,7 @@ import { maxLiquidityForAmounts } from '../utils/maxLiquidityForAmounts'
 import { tickToPrice } from '../utils/priceTickConversions'
 import { SqrtPriceMath } from '../utils/sqrtPriceMath'
 import { TickMath } from '../utils/tickMath'
+import { PositionMath } from '../utils/positionMath'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
 import { Pool } from './pool'
 
@@ -72,29 +73,16 @@ export class Position {
    */
   public get amount0(): CurrencyAmount<Token> {
     if (this._token0Amount === null) {
-      if (this.pool.tickCurrent < this.tickLower) {
-        this._token0Amount = CurrencyAmount.fromRawAmount(
-          this.pool.token0,
-          SqrtPriceMath.getAmount0Delta(
-            TickMath.getSqrtRatioAtTick(this.tickLower),
-            TickMath.getSqrtRatioAtTick(this.tickUpper),
-            this.liquidity,
-            false
-          )
+      this._token0Amount = CurrencyAmount.fromRawAmount(
+        this.pool.token0,
+        PositionMath.getToken0Amount(
+          this.pool.tickCurrent,
+          this.tickLower,
+          this.tickUpper,
+          this.pool.sqrtRatioX96,
+          this.liquidity
         )
-      } else if (this.pool.tickCurrent < this.tickUpper) {
-        this._token0Amount = CurrencyAmount.fromRawAmount(
-          this.pool.token0,
-          SqrtPriceMath.getAmount0Delta(
-            this.pool.sqrtRatioX96,
-            TickMath.getSqrtRatioAtTick(this.tickUpper),
-            this.liquidity,
-            false
-          )
-        )
-      } else {
-        this._token0Amount = CurrencyAmount.fromRawAmount(this.pool.token0, ZERO)
-      }
+      )
     }
     return this._token0Amount
   }
@@ -104,29 +92,16 @@ export class Position {
    */
   public get amount1(): CurrencyAmount<Token> {
     if (this._token1Amount === null) {
-      if (this.pool.tickCurrent < this.tickLower) {
-        this._token1Amount = CurrencyAmount.fromRawAmount(this.pool.token1, ZERO)
-      } else if (this.pool.tickCurrent < this.tickUpper) {
-        this._token1Amount = CurrencyAmount.fromRawAmount(
-          this.pool.token1,
-          SqrtPriceMath.getAmount1Delta(
-            TickMath.getSqrtRatioAtTick(this.tickLower),
-            this.pool.sqrtRatioX96,
-            this.liquidity,
-            false
-          )
+      this._token1Amount = CurrencyAmount.fromRawAmount(
+        this.pool.token1,
+        PositionMath.getToken1Amount(
+          this.pool.tickCurrent,
+          this.tickLower,
+          this.tickUpper,
+          this.pool.sqrtRatioX96,
+          this.liquidity
         )
-      } else {
-        this._token1Amount = CurrencyAmount.fromRawAmount(
-          this.pool.token1,
-          SqrtPriceMath.getAmount1Delta(
-            TickMath.getSqrtRatioAtTick(this.tickLower),
-            TickMath.getSqrtRatioAtTick(this.tickUpper),
-            this.liquidity,
-            false
-          )
-        )
-      }
+      )
     }
     return this._token1Amount
   }
