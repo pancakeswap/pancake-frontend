@@ -28,7 +28,6 @@ import {
   usePoolDatasSWR,
   usePoolTransactionsSWR,
   useStableSwapPath,
-  useStableSwapFee,
 } from 'state/info/hooks'
 import { useWatchlistPools } from 'state/user/hooks'
 import styled from 'styled-components'
