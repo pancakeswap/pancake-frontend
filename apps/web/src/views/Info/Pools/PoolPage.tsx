@@ -115,7 +115,10 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     }
     return showWeeklyData ? poolData?.lpApr7d : poolData?.lpFees24h
   }, [poolData, isStableSwap, farmConfig, showWeeklyData, address])
-  const stableTotalFee = useMemo(() => (isStableSwap ? feeDisplay * 2 : 0), [isStableSwap, feeDisplay])
+  const stableTotalFee = useMemo(
+    () => (isStableSwap ? new BigNumber(feeDisplay).times(2).toNumber() : 0),
+    [isStableSwap, feeDisplay],
+  )
 
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
