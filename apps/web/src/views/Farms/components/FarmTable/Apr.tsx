@@ -23,6 +23,7 @@ export interface AprProps {
   useTooltipText?: boolean
   boosted?: boolean
   stableSwapAddress?: string
+  stableLpFee?: number
 }
 
 const Container = styled.div`
@@ -64,6 +65,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   useTooltipText = true,
   boosted,
   stableSwapAddress,
+  stableLpFee,
 }) => {
   const { chainId } = useActiveChainId()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress, chainId })
@@ -88,6 +90,7 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           hideButton={hideButton}
           boosted={boosted}
           stableSwapAddress={stableSwapAddress}
+          stableLpFee={stableLpFee}
         />
       ) : (
         <AprWrapper>

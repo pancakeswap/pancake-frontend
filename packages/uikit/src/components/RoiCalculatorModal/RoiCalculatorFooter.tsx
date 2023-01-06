@@ -1,14 +1,15 @@
-import { useState, useMemo } from "react";
-import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
+import { useMemo, useState } from "react";
+import styled from "styled-components";
 
-import { Flex, Box, Grid } from "../Box";
-import { Text } from "../Text";
-import { HelpIcon } from "../Svg";
-import { LinkExternal, Link } from "../Link";
-import { ExpandableLabel } from "../Button";
+import BigNumber from "bignumber.js";
 import { useTooltip } from "../../hooks/useTooltip";
+import { Box, Flex, Grid } from "../Box";
+import { ExpandableLabel } from "../Button";
+import { Link, LinkExternal } from "../Link";
+import { HelpIcon } from "../Svg";
+import { Text } from "../Text";
 
 const Footer = styled(Flex)`
   width: 100%;
@@ -46,7 +47,7 @@ interface RoiCalculatorFooterProps {
   rewardCakePerSecond?: boolean;
   isLocked?: boolean;
   stableSwapAddress?: string;
-  stableSwapFeeRates?: Record<string, number>;
+  stableLpFee?: number;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -62,7 +63,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   rewardCakePerSecond,
   isLocked = false,
   stableSwapAddress,
-  stableSwapFeeRates,
+  stableLpFee,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -185,9 +186,8 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                 <li>
                   <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
                     {t("LP rewards: %percent%% trading fees, distributed proportionally among LP token holders.", {
-                      percent: stableSwapAddress
-                        ? (stableSwapFeeRates?.[stableSwapAddress?.toLocaleLowerCase() ?? ""] ?? 0.00075) * 100
-                        : 0.17,
+                      percent:
+                        stableSwapAddress && stableLpFee ? new BigNumber(100).times(stableLpFee).toNumber() : 0.17,
                     })}
                   </Text>
                 </li>

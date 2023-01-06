@@ -78,7 +78,7 @@ export interface RoiCalculatorModalProps {
   bCakeCalculatorSlot?: (stakingTokenBalance: string) => React.ReactNode;
   isLocked?: boolean;
   stableSwapAddress?: string;
-  stableSwapFeeRates?: Record<string, number>;
+  stableLpFee?: number;
 }
 
 const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalProps>> = ({
@@ -109,7 +109,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
   bCakeCalculatorSlot,
   isLocked = false,
   stableSwapAddress,
-  stableSwapFeeRates,
+  stableLpFee,
 }) => {
   const { t } = useTranslation();
   const balanceInputRef = useRef<HTMLInputElement | null>(null);
@@ -311,7 +311,7 @@ const RoiCalculatorModal: React.FC<React.PropsWithChildren<RoiCalculatorModalPro
         rewardCakePerSecond={rewardCakePerSecond}
         isLocked={isLocked}
         stableSwapAddress={stableSwapAddress}
-        stableSwapFeeRates={stableSwapFeeRates}
+        stableLpFee={stableLpFee}
       />
     </StyledModal>
   );

@@ -132,6 +132,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         lpRewardsApr: farm.lpRewardsApr,
         originalValue: farm.apr,
         stableSwapAddress: farm.stableSwapAddress,
+        stableLpFee: farm.stableLpFee,
       },
       farm: {
         label: lpLabel,

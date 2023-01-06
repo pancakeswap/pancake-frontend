@@ -24,6 +24,8 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     boosted,
     infoStableSwapAddress,
     stableSwapAddress,
+    stableLpFee,
+    stableLpFeeRateOfTotalFee,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
@@ -66,6 +68,8 @@ const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     boosted,
     isStable: Boolean(infoStableSwapAddress),
     stableSwapAddress,
+    stableLpFee,
+    stableLpFeeRateOfTotalFee,
   }
 }
 
