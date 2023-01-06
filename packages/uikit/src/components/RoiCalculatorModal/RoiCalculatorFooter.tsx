@@ -200,7 +200,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                       style={{ display: "inline-block" }}
                       fontSize="12px"
                       ml="3px"
-                      href={`/info${stableSwapAddress ? "?type=stableSwap" : ""}`}
+                      href={`/info${stableSwapAddress ? `/pairs/${stableSwapAddress}?type=stableSwap` : ""}`}
                     >
                       {t("Info Page")}
                     </Link>
