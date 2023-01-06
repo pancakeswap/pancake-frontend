@@ -1,7 +1,7 @@
-import JSBI from 'jsbi'
-import { subIn256 } from '.'
+import { JSBI } from '@pancakeswap/swap-sdk-core'
 
-const Q128 = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128))
+import { subIn256 } from '.'
+import { Q128 } from '../constants'
 
 export abstract class PositionLibrary {
   /**
