@@ -26,6 +26,8 @@ export interface ApyButtonProps {
   useTooltipText?: boolean
   hideButton?: boolean
   boosted?: boolean
+  stableSwapAddress?: string
+  stableLpFee?: number
 }
 
 const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
@@ -44,6 +46,8 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   useTooltipText,
   hideButton,
   boosted,
+  stableSwapAddress,
+  stableLpFee,
 }) => {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
@@ -83,6 +87,8 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
           />
         ) : null
       }
+      stableSwapAddress={stableSwapAddress}
+      stableLpFee={stableLpFee}
     />,
     false,
     true,

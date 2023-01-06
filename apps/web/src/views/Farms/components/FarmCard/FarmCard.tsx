@@ -58,7 +58,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-
   const [showExpandableSection, setShowExpandableSection] = useState(false)
 
   const liquidity =
@@ -78,7 +77,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     chainId,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  const { lpAddress, stableSwapAddress } = farm
+  const { lpAddress, stableSwapAddress, stableLpFee } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
   const { stakedBalance, proxy, tokenBalance } = farm.userData
 
@@ -140,6 +139,8 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                     strikethrough={farm.boosted}
                     useTooltipText
                     boosted={farm.boosted}
+                    stableSwapAddress={stableSwapAddress}
+                    stableLpFee={stableLpFee}
                   />
                 </>
               ) : (

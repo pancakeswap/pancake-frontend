@@ -526,7 +526,7 @@
   "Max. stake per user": "Max. stake per user",
   "You have claimed your rewards!": "You have claimed your rewards!",
   "Already Collected": "Already Collected",
-  "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.": "LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.",
+  "LP rewards: %percent%% trading fees, distributed proportionally among LP token holders.": "LP rewards: %percent%% trading fees, distributed proportionally among LP token holders.",
   "CAKE + Fees": "CAKE + Fees",
   "Now Live": "Now Live",
   "Ended %date%": "Ended %date%",
@@ -2073,5 +2073,7 @@
   "Expiration Date: %expiryDate%": "Expiration Date: %expiryDate%",
   "No Expired Orders": "No Expired Orders",
   "Expired Order": "Expired Order",
-  "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms."
+  "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.",
+  "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the",
+  "Info Page": "Info Page"
 }
