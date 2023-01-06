@@ -93,14 +93,6 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap && address)
-  const stableFee = useStableSwapFee(isStableSwap && address)
-  // console.log(
-  //   stableFee?.amount.toString(),
-  //   stableFee?.amountDayAgo.toString(),
-  //   stableFee?.amountWeekAgo.toString(),
-  //   'stableFee!!!',
-  // )
-
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
       {poolData ? (

@@ -1,10 +1,6 @@
 import { Duration, getUnixTime, startOfHour, sub } from 'date-fns'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { multicallv2 } from 'utils/multicall'
-import stableSwapABI from 'config/abi/stableSwap.json'
-import { Web3Provider } from '@ethersproject/providers'
-import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
 
 import BigNumber from 'bignumber.js'
 import fetchPoolChartData from 'state/info/queries/pools/chartData'
@@ -265,64 +261,6 @@ export const useGetChainName = () => {
   }, [getChain])
 
   return result
-}
-
-const fetchStableSwapFee = async (address: string, blockDayAgo: number, blockWeekAgo: number) => {
-  const calls = [
-    {
-      address,
-      name: 'admin_balances',
-      params: [0],
-    },
-    {
-      address,
-      name: 'admin_balances',
-      params: [1],
-    },
-  ]
-  const [amount0, amount1] = await multicallv2({
-    abi: stableSwapABI,
-    calls,
-  })
-  const [amount0DayAgo, amount1DayAgo] = await multicallv2({
-    abi: stableSwapABI,
-    calls,
-    options: { blockTag: blockDayAgo },
-  })
-  const [amount0WeekAgo, amount1WeekAgo] = await multicallv2({
-    abi: stableSwapABI,
-    calls,
-    options: { blockTag: blockWeekAgo },
-  })
-  const de = BIG_TEN.pow(18)
-  if (amount0 && amount1 && amount0WeekAgo && amount1WeekAgo) {
-    const amount = new BigNumber(amount0.toString()).plus(new BigNumber(amount1.toString())).div(de)
-    const amountDayAgo = new BigNumber(amount0DayAgo.toString()).plus(new BigNumber(amount1DayAgo.toString())).div(de)
-    const amountWeekAgo = new BigNumber(amount0WeekAgo.toString())
-      .plus(new BigNumber(amount1WeekAgo.toString()))
-      .div(de)
-    return {
-      amount,
-      amountDayAgo,
-      amountWeekAgo,
-      stableSwapDayFee: amount > amountDayAgo ? amount.minus(amountDayAgo).toNumber() : 0,
-      stableSwapWeekFee: amount > amountWeekAgo ? amount.minus(amountWeekAgo).toNumber() : 0,
-    }
-  }
-  return undefined
-}
-
-export const useStableSwapFee = (address: string | undefined) => {
-  const isStableSwap = checkIsStableSwap()
-  const chainName = useGetChainName()
-  const [t24h, , t7d] = getDeltaTimestamps()
-  const { blocks } = useBlockFromTimeStampSWR([t24h, t7d])
-  const { data } = useSWRImmutable(
-    isStableSwap && address && blocks && [`info/pool/stableAPRs/${address}/fee`, chainName],
-    () => fetchStableSwapFee(address, blocks[0].number, blocks[1].number),
-    SWR_SETTINGS_WITHOUT_REFETCH,
-  )
-  return data
 }
 
 const stableSwapAPRWithAddressesFetcher = async (addresses: string[]) => {
