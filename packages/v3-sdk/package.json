@@ -13,19 +13,12 @@
     "pancakeswap",
     "bsc"
   ],
+  "main": "./src/index.ts",
   "scripts": {
     "build": "tsup",
     "start": "tsup --watch",
     "test": "vitest --run",
     "prepublishOnly": "tsup build"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    }
   },
   "dependencies": {
     "@ethersproject/abi": "^5.0.12",
