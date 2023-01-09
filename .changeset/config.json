@@ -16,6 +16,7 @@
     "@pancakeswap/uikit",
     "farms-api",
     "aptos-web",
+    "blog",
     "bridge",
     "e2e",
     "web"

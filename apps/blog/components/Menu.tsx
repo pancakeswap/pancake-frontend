@@ -1,0 +1,54 @@
+import { Box, Flex, Logo, ThemeSwitcher } from '@pancakeswap/uikit'
+import { useTheme as useNextTheme } from 'next-themes'
+import NextLink from 'next/link'
+import styled, { useTheme } from 'styled-components'
+
+const MenuItemStyle = styled.a<any>`
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  color: ${({ theme, $isActive }) => ($isActive ? theme.colors.secondary : theme.colors.textSubtle)};
+  font-size: 14px;
+  font-weight: ${({ $isActive }) => ($isActive ? '600' : '400')};
+
+  padding: 0 6px;
+  height: 48px;
+
+  &:hover {
+    opacity: 0.65;
+  }
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 16px;
+    padding: 0 16px;
+  }
+`
+
+const Menu = () => {
+  const theme = useTheme()
+  const { setTheme } = useNextTheme()
+
+  return (
+    <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={9}>
+      <Flex>
+        <Logo href="https://pancakeswap.finance" />
+
+        <Flex pl={['10px', null, '50px']}>
+          <Box display="flex">
+            <NextLink href="/" passHref>
+              <MenuItemStyle $isActive>Blog</MenuItemStyle>
+            </NextLink>
+          </Box>
+        </Flex>
+      </Flex>
+      <Flex alignItems="center">
+        <Box mr="16px">
+          <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
+        </Box>
+      </Flex>
+    </Flex>
+  )
+}
+
+export default Menu
