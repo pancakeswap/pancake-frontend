@@ -15,6 +15,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import Trans from 'components/Trans'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useAuth from 'hooks/useAuth'
+import { useSidName } from 'hooks/useSid'
 import NextLink from 'next/link'
 import { useEffect, useState, useCallback } from 'react'
 import { useProfile } from 'state/profile/hooks'
@@ -76,6 +77,8 @@ const UserMenuItems = () => {
 const UserMenu = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const accountOrSidName = useSidName(account)
+
   const { isWrongNetwork } = useActiveChainId()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { profile } = useProfile()
@@ -95,7 +98,7 @@ const UserMenu = () => {
 
   if (account) {
     return (
-      <UIKitUserMenu account={account} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
+      <UIKitUserMenu account={accountOrSidName} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
         {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>
     )
