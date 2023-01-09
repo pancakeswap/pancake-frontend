@@ -1,14 +1,15 @@
-import { useState, useMemo } from "react";
-import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
+import { useMemo, useState } from "react";
+import styled from "styled-components";
 
-import { Flex, Box, Grid } from "../Box";
-import { Text } from "../Text";
-import { HelpIcon } from "../Svg";
-import { LinkExternal } from "../Link";
-import { ExpandableLabel } from "../Button";
+import BigNumber from "bignumber.js";
 import { useTooltip } from "../../hooks/useTooltip";
+import { Box, Flex, Grid } from "../Box";
+import { ExpandableLabel } from "../Button";
+import { Link, LinkExternal } from "../Link";
+import { HelpIcon } from "../Svg";
+import { Text } from "../Text";
 
 const Footer = styled(Flex)`
   width: 100%;
@@ -45,6 +46,8 @@ interface RoiCalculatorFooterProps {
   performanceFee: number;
   rewardCakePerSecond?: boolean;
   isLocked?: boolean;
+  stableSwapAddress?: string;
+  stableLpFee?: number;
 }
 
 const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterProps>> = ({
@@ -59,6 +62,8 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
   performanceFee,
   rewardCakePerSecond,
   isLocked = false,
+  stableSwapAddress,
+  stableLpFee,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
@@ -177,11 +182,31 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
               </Text>
             </li>
             {isFarm && (
-              <li>
-                <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
-                  {t("LP rewards: 0.17% trading fees, distributed proportionally among LP token holders.")}
-                </Text>
-              </li>
+              <>
+                <li>
+                  <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+                    {t("LP rewards: %percent%% trading fees, distributed proportionally among LP token holders.", {
+                      percent:
+                        stableSwapAddress && stableLpFee ? new BigNumber(100).times(stableLpFee).toNumber() : 0.17,
+                    })}
+                  </Text>
+                </li>
+                <li>
+                  <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+                    {t(
+                      "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the"
+                    )}
+                    <Link
+                      style={{ display: "inline-block" }}
+                      fontSize="12px"
+                      ml="3px"
+                      href={`/info${stableSwapAddress ? `/pairs/${stableSwapAddress}?type=stableSwap` : ""}`}
+                    >
+                      {t("Info Page")}
+                    </Link>
+                  </Text>
+                </li>
+              </>
             )}
             <li>
               <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>

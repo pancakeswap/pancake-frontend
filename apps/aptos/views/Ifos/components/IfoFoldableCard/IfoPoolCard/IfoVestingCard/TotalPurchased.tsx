@@ -1,7 +1,7 @@
-import { Flex, Box, Text, BalanceWithLoading } from '@pancakeswap/uikit'
+import { Flex, Box, Text } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { TokenImage } from 'components/TokenImage'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { Currency } from '@pancakeswap/aptos-swap-sdk'
@@ -22,13 +22,9 @@ const TotalPurchased: React.FC<React.PropsWithChildren<TotalPurchasedProps>> = (
           <Text color="secondary" bold fontSize="12px">
             {t('Total %symbol% purchased', { symbol: token.symbol })}
           </Text>
-          <BalanceWithLoading
-            bold
-            prefix="~"
-            decimals={4}
-            fontSize="20px"
-            value={getBalanceNumber(totalPurchased, token.decimals)}
-          />
+          <Text as="span" bold fontSize="20px">
+            ~{getFullDisplayBalance(totalPurchased, token.decimals, token.decimals)}
+          </Text>
         </Box>
       </Flex>
     </LightGreyCard>

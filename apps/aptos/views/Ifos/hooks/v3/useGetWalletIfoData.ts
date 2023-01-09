@@ -34,6 +34,7 @@ const initialState = {
  */
 export const useGetWalletIfoData = (_ifo: Ifo): WalletIfoData => {
   const { account } = useAccount()
+
   const pool = useIfoPool(_ifo)
 
   const [state, setState] = useState<WalletIfoState>(initialState)

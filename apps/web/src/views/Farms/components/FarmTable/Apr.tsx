@@ -22,6 +22,8 @@ export interface AprProps {
   strikethrough?: boolean
   useTooltipText?: boolean
   boosted?: boolean
+  stableSwapAddress?: string
+  stableLpFee?: number
 }
 
 const Container = styled.div`
@@ -62,6 +64,8 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
   lpRewardsApr,
   useTooltipText = true,
   boosted,
+  stableSwapAddress,
+  stableLpFee,
 }) => {
   const { chainId } = useActiveChainId()
   const liquidityUrlPathParts = getLiquidityUrlPathParts({ quoteTokenAddress, tokenAddress, chainId })
@@ -85,6 +89,8 @@ const Apr: React.FC<React.PropsWithChildren<AprProps>> = ({
           useTooltipText={useTooltipText}
           hideButton={hideButton}
           boosted={boosted}
+          stableSwapAddress={stableSwapAddress}
+          stableLpFee={stableLpFee}
         />
       ) : (
         <AprWrapper>

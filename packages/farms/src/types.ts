@@ -55,6 +55,8 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   boosted?: boolean
   infoStableSwapAddress?: string
   stableSwapAddress?: string
+  stableLpFee?: number
+  stableLpFeeRateOfTotalFee?: number
 }
 
 export interface AprMap {
@@ -124,6 +126,8 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   boosted?: boolean
   isStable?: boolean
   stableSwapAddress?: string
+  stableLpFee?: number
+  stableLpFeeRateOfTotalFee?: number
 }
 
 export interface DeserializedFarmsState {
