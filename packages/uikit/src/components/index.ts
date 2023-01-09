@@ -53,5 +53,6 @@ export * from "./Balance";
 export * from "./ToggleView";
 export * from "./Acknowledgement";
 export * from "./TokenLogo";
+export * from "./NotFound";
 
 export type { DropdownMenuItems } from "./DropdownMenu";

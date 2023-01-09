@@ -1,8 +1,8 @@
-import styled from 'styled-components'
-import { Button, Heading, Text, LogoIcon } from '@pancakeswap/uikit'
-import Page from 'components/Layout/Page'
-import { useTranslation } from '@pancakeswap/localization'
-import Link from 'next/link'
+import styled from "styled-components";
+import { NextSeo } from "next-seo";
+import { Button, Heading, Text, LogoIcon } from "@pancakeswap/uikit";
+import { useTranslation } from "@pancakeswap/localization";
+import Link from "next/link";
 
 const StyledNotFound = styled.div`
   align-items: center;
@@ -10,25 +10,26 @@ const StyledNotFound = styled.div`
   flex-direction: column;
   height: calc(100vh - 64px);
   justify-content: center;
-`
+`;
 
 const NotFound = ({ statusCode = 404 }: { statusCode?: number }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
-    <Page>
+    <>
+      <NextSeo title="404" />
       <StyledNotFound>
         <LogoIcon width="64px" mb="8px" />
         <Heading scale="xxl">{statusCode}</Heading>
-        <Text mb="16px">{t('Oops, page not found.')}</Text>
+        <Text mb="16px">{t("Oops, page not found.")}</Text>
         <Link href="/" passHref>
           <Button as="a" scale="sm">
-            {t('Back Home')}
+            {t("Back Home")}
           </Button>
         </Link>
       </StyledNotFound>
-    </Page>
-  )
-}
+    </>
+  );
+};
 
-export default NotFound
+export default NotFound;
