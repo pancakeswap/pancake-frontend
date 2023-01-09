@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import PageSection from 'components/PageSection'
+import { PageSection } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import useTheme from 'hooks/useTheme'
 import Container from 'components/Layout/Container'
