@@ -1,9 +1,9 @@
 import { ChainId, Coin } from '@pancakeswap/aptos-swap-sdk'
-import { APT, CAKE } from '../../coins'
+import { APT } from '../../coins'
 
 export const mainnetTokens = {
   apt: APT[ChainId.MAINNET],
-  cake: CAKE[ChainId.MAINNET],
+  // cake: CAKE[ChainId.MAINNET],
   lzusdc: new Coin(
     ChainId.MAINNET,
     '0xf22bede237a07e121b56d91a491eb7bcdfd1f5907926a9e58338f964a01b17fa::asset::USDC',
@@ -81,5 +81,61 @@ export const mainnetTokens = {
     8,
     'whWETH',
     'Wormhole - Wrapped Ether',
+  ),
+  bnb: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::BNB',
+    8,
+    'BNB',
+    'BNB',
+  ),
+  cake: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::CAKE',
+    8,
+    'CAKE',
+    'CAKE',
+  ),
+  sol: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::SOL',
+    8,
+    'SOL',
+    'SOL',
+  ),
+  usdc: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::USDC',
+    8,
+    'USDC',
+    'USDC',
+  ),
+  usdt: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::USDT',
+    8,
+    'USDT',
+    'USDT',
+  ),
+  btc: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::BTC',
+    8,
+    'BTC',
+    'BTC',
+  ),
+  busd: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::BUSD',
+    6,
+    'BUSD',
+    'BUSD',
+  ),
+  eth: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::ETH',
+    8,
+    'ETH',
+    'ETH',
   ),
 }
