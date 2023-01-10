@@ -1,38 +1,67 @@
 import styled from 'styled-components'
-import { Box, Text, Flex, Card, Button } from '@pancakeswap/uikit'
+import { Box, Text, Flex, Button } from '@pancakeswap/uikit'
 import SingleArticle from 'components/Article/SingleArticle'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
   margin: 80px auto;
 
-  @media screen and (min-width: 1200px) {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     width: 1160px;
+  }
+`
+
+const StyledTagContainer = styled(Box)`
+  display: none;
+  width: 194px;
+  margin-right: 25px;
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    display: flex;
+    flex-direction: column;
+  }
+`
+
+const StyledCard = styled(Flex)`
+  width: 100%;
+  border-radius: 0;
+  overflow: hidden;
+
+  ${({ theme }) => theme.mediaQueries.xxl} {
+    border: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
+    border-bottom: ${({ theme }) => `3px solid ${theme.colors.cardBorder}`};
+    border-radius: ${({ theme }) => theme.radii.card};
   }
 `
 
 const Article = () => {
   return (
     <StyledArticleContainer>
-      <Text bold mb="35px" ml="20px" fontSize={['40px']} color="secondary">
+      <Text
+        bold
+        mb={['12px', '12px', '12px', '35px']}
+        ml={['16px', '16px', '16px', '20px']}
+        fontSize={['24px', '24px', '24px', '40px']}
+        color="secondary"
+      >
         All articles
       </Text>
       <Flex>
-        <Flex mr="25px" width={['194px']} flexDirection="column">
-          <Button width="fit-content" scale="sm" variant="subtle" mb="28px">
+        <StyledTagContainer>
+          <Button display="block" width="fit-content" scale="sm" variant="subtle" mb="28px">
             All
           </Button>
-          <Button width="fit-content" scale="sm" variant="light">
+          <Button display="block" width="fit-content" scale="sm" variant="light">
             Vote
           </Button>
-        </Flex>
+        </StyledTagContainer>
         <Flex width="100%">
-          <Card style={{ width: '100%' }}>
-            <Box padding="32px">
+          <StyledCard style={{ width: '100%' }}>
+            <Box>
               <SingleArticle />
               <SingleArticle />
             </Box>
-          </Card>
+          </StyledCard>
         </Flex>
       </Flex>
     </StyledArticleContainer>

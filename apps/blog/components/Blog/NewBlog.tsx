@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes'
 
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
   position: relative;
-  padding-top: 45px;
+  padding: 45px 16px 0 16px;
 
   &:before {
     content: '';
