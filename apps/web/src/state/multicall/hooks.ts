@@ -19,6 +19,10 @@ import {
   ListenerOptions,
 } from './actions'
 
+export interface CallStateResult extends ReadonlyArray<any> {
+  readonly [key: string]: any
+}
+
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
 }
