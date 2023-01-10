@@ -71,17 +71,28 @@ export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLowe
     return getLiquidityFromTick(ticks, tickLower)
   }
 
-  let lastTick = TickList.nextInitializedTick(ticks, tickLower, true)
+  const lowerOutOfBound = tickLower < ticks[0].index
+  let lastTick = lowerOutOfBound
+    ? new Tick({ index: TickMath.MIN_TICK, liquidityNet: ZERO, liquidityGross: ZERO })
+    : TickList.nextInitializedTick(ticks, tickLower, true)
   let currentTick = TickList.nextInitializedTick(ticks, tickLower, false)
-  let currentL = getLiquidityFromTick(ticks, tickLower)
+  let currentL = lowerOutOfBound ? ZERO : getLiquidityFromTick(ticks, tickLower)
   let weightedL = ZERO
+  const getWeightedLFromLastTickTo = (toTick: number) =>
+    JSBI.multiply(currentL, JSBI.BigInt(toTick - Math.max(lastTick.index, tickLower)))
   while (currentTick.index < tickUpper) {
-    weightedL = JSBI.multiply(currentL, JSBI.BigInt(currentTick.index - Math.max(lastTick.index, tickLower)))
+    weightedL = JSBI.add(weightedL, getWeightedLFromLastTickTo(currentTick.index))
     currentL = JSBI.add(currentL, currentTick.liquidityNet)
     lastTick = currentTick
+
+    // Tick upper is out of initialized tick range
+    if (currentTick.index === ticks[ticks.length - 1].index) {
+      break
+    }
+
     currentTick = TickList.nextInitializedTick(ticks, currentTick.index, false)
   }
-  weightedL = JSBI.multiply(currentL, JSBI.BigInt(tickUpper - Math.max(lastTick.index, tickLower)))
+  weightedL = JSBI.add(weightedL, getWeightedLFromLastTickTo(tickUpper))
 
   return JSBI.divide(weightedL, JSBI.BigInt(tickUpper - tickLower))
 }
