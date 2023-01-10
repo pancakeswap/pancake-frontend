@@ -31,7 +31,7 @@ const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ imgUrl, im
         <Box overflow="hidden" height={imgHeight ?? '200px'}>
           <StyledBackgroundImage imgUrl={imgUrl} />
         </Box>
-        <Box padding="20px">
+        <Box padding={['15px', '15px', '20px']}>
           <Flex justifyContent="space-between">
             <Text fontSize="12px" bold color="textSubtle">
               Partnership
