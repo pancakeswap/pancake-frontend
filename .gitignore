@@ -10,6 +10,7 @@ node_modules
 cypress/videos
 cypress/screenshots
 cypress/fixtures/example.json
+**/packages/**/coverage
 
 # next.js
 .next/

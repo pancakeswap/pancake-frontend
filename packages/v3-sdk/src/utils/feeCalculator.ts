@@ -63,7 +63,7 @@ export function getEstimatedLPFees({
   )
 }
 
-function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLower: number, tickUpper: number): JSBI {
+export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLower: number, tickUpper: number): JSBI {
   invariant(tickLower <= tickUpper, 'INVALID_TICK_RANGE')
   TickList.validateList(ticks, tickSpacing)
 
@@ -86,16 +86,21 @@ function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLower: numb
   return JSBI.divide(weightedL, JSBI.BigInt(tickUpper - tickLower))
 }
 
-function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {
+export function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {
   // calculate a cumulative of liquidityNet from all ticks that poolTicks[i] <= tick
   let liquidity = ZERO
+
+  if (tick < ticks[0].index || tick >= ticks[ticks.length - 1].index) {
+    return liquidity
+  }
+
   for (let i = 0; i < ticks.length - 1; ++i) {
     liquidity = JSBI.add(liquidity, ticks[i].liquidityNet)
 
     const lowerTick = ticks[i].index
     const upperTick = ticks[i + 1]?.index
 
-    if (lowerTick <= tick && tick <= upperTick) {
+    if (lowerTick <= tick && tick < upperTick) {
       break
     }
   }
