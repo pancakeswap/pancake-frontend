@@ -17,6 +17,8 @@ import {
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { ChainIdName } from 'config/ChainIdName'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import Page from 'components/Layout/Page'
 import { useState } from 'react'
 import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
@@ -73,6 +75,7 @@ const LockedTokensContainer = styled(Flex)`
 const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ address: routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const [showWeeklyData, setShowWeeklyData] = useState(0)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
@@ -160,7 +163,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
               <Flex>
                 <NextLinkFromReactRouter
-                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chainId=${multiChainId[chainName]}`}
+                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${ChainIdName[chainId]}`}
                 >
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
