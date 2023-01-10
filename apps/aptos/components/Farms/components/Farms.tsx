@@ -30,9 +30,8 @@ import NoSSR from 'components/NoSSR'
 import { useFarms } from 'state/farms/hook'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { getFarmApr } from 'utils/farmApr'
-import { latinise } from 'utils/latinise'
 import type { DeserializedFarm } from '@pancakeswap/farms'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { FarmWithStakedValue, filterFarmsByQuery } from '@pancakeswap/farms'
 import Table from './FarmTable/FarmTable'
 
 const ControlContainer = styled.div`
@@ -179,7 +178,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const farmsList = useCallback(
     (farmsToDisplay: DeserializedFarm[]): FarmWithStakedValue[] => {
-      let farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay?.map((farm) => {
+      const farmsToDisplayWithAPR: FarmWithStakedValue[] = farmsToDisplay?.map((farm) => {
         if (!farm.lpTotalInQuoteToken || !farm.quoteTokenPriceBusd) {
           return farm
         }
@@ -198,14 +197,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
 
-      if (query) {
-        const lowercaseQuery = latinise(query.toLowerCase())
-        farmsToDisplayWithAPR = farmsToDisplayWithAPR.filter((farm: FarmWithStakedValue) => {
-          return latinise(farm.lpSymbol.toLowerCase()).includes(lowercaseQuery)
-        })
-      }
-
-      return farmsToDisplayWithAPR
+      return filterFarmsByQuery(farmsToDisplayWithAPR, query)
     },
     [query, isActive, chainId, cakePrice, regularCakePerBlock],
   )
