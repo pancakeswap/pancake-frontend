@@ -13,7 +13,8 @@
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
 import { fetchCakePrice, saveFarms, saveLPsAPR } from './handler'
-import { farmFetcher, handleCors, requireChainId, wrapCorsHeader } from './helper'
+import { farmFetcher, requireChainId } from './helper'
+import { wrapCorsHeader, handleCors } from '@pancakeswap/worker-utils'
 import { FarmKV } from './kv'
 
 const router = Router()
@@ -89,7 +90,7 @@ router.get('/:chainId', async ({ params }, event) => {
 
 router.all('*', () => missing('Not found'))
 
-router.options('*', handleCors(allowedOrigin))
+router.options('*', handleCors(allowedOrigin, `GET, HEAD, OPTIONS`, `referer, origin, content-type`))
 
 addEventListener('fetch', (event) =>
   event.respondWith(
