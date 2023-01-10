@@ -4,10 +4,12 @@ import { z } from 'zod'
 import { missing, error } from 'itty-router-extras'
 import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
 
+const encoder = new TextEncoder()
+
 const _corsMethods = `GET, OPTIONS`
 const _corsHeaders = `referer, origin, content-type`
 
-const appId = '13cc90dc5ffa4032acb3'
+const appId = '0331c8c6a3130f66c01a3ea362ddc7de3612c5f18d65898896a32650553d47aa1e'
 const appSecret = AD_APP_SECRET
 const host = 'https://avengerdao.org'
 const url = '/api/v1/address-security'
@@ -18,14 +20,10 @@ function bytes2hex(bytes: ArrayBuffer) {
 }
 
 const hmacSha256ToHex = async (key: string, message: string) => {
-  const getUtf8Bytes = (str: string) =>
-    new Uint8Array([...unescape(encodeURIComponent(str))].map((c) => c.charCodeAt(0)))
-
-  const keyBytes = getUtf8Bytes(key)
-  const messageBytes = getUtf8Bytes(message)
-
-  const cryptoKey = await crypto.subtle.importKey('raw', keyBytes, { name: 'HMAC', hash: 'SHA-256' }, true, ['sign'])
-  const sig = await crypto.subtle.sign('HMAC', cryptoKey, messageBytes)
+  const cryptoKey = await crypto.subtle.importKey('raw', encoder.encode(key), { name: 'HMAC', hash: 'SHA-256' }, true, [
+    'sign',
+  ])
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(message))
 
   return bytes2hex(sig)
 }
@@ -41,22 +39,26 @@ const zParams = z.object({
   address: zAddress,
 })
 
-router.get('/:chainId/:address', async (request, _) => {
+router.get('/:chainId/:address', async (request, _, headers: Headers) => {
   const parsed = zParams.safeParse(request.params)
   if (!parsed.success) return error(400, parsed.error.message)
-  const { chainId, address } = parsed.data
-  const timeStamp = Date.now().toString()
-  const nonce = uuid().replace('-', '')
+  const { chainId, address: address_ } = parsed.data
+  const address = address_.toLowerCase()
+  const timeStamp = new Date().valueOf().toString()
+  const nonce = uuid().replaceAll('-', '')
   const method = 'POST'
   const body = JSON.stringify({
-    address,
     chainId,
+    address,
   })
   const key = [appId, timeStamp, nonce, method, url, body].join(';')
-  const signature = await hmacSha256ToHex(key, appSecret)
+  const signature = await hmacSha256ToHex(appSecret, key)
+  const ip = headers.get('X-Forwarded-For') || headers.get('Cf-Connecting-Ip') || ''
 
   const response = await fetch(endpoint, {
     headers: {
+      'X-Forwarded-For': ip,
+      'Content-Type': 'application/json;charset=UTF-8',
       'X-Signature-appid': appId,
       'X-Signature-timestamp': timeStamp,
       'X-Signature-nonce': nonce,
