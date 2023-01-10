@@ -56,7 +56,6 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
           MAX_PER_QUERY,
         )
         const activity = sortActivity(collectionActivity)
-
         setCurrentPage(1)
         setActivityData(activity)
         setMaxPages(Math.ceil(activity.length / MAX_PER_PAGE) || 1)
