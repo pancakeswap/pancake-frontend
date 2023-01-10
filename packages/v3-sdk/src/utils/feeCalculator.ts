@@ -32,7 +32,16 @@ interface EstimateFeeOptions {
   insidePercentage?: Percent
 }
 
-export function getEstimatedLPFees({
+export function getEstimatedLPFees(options: EstimateFeeOptions) {
+  try {
+    return tryGetEstimatedLPFees(options)
+  } catch (e) {
+    console.error(e)
+    return new Fraction(ZERO)
+  }
+}
+
+function tryGetEstimatedLPFees({
   amount,
   currency,
   volume24H,
