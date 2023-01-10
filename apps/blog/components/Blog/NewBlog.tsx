@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes'
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
   position: relative;
   width: 100%;
-  height: 90%;
+  height: 63%;
   background: ${({ isDark }) => (isDark ? NEW_BLOG_BG_DARK : NEW_BLOG_BG)};
   border-bottom-left-radius: 50% 5%;
   border-bottom-right-radius: 50% 5%;

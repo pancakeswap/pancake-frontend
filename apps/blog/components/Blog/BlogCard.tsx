@@ -15,6 +15,7 @@ const StyledBlogCard = styled(Box)`
   cursor: pointer;
 
   &:hover ${StyledBackgroundImage} {
+    opacity: 0.8;
     transform: scale(1.05);
   }
 `

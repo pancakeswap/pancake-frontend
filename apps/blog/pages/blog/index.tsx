@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { SWRConfig } from 'swr'
 import { Box } from '@pancakeswap/uikit'
 import NewBlog from 'components/Blog/NewBlog'
+import Article from 'components/Article'
 // import { InferGetServerSidePropsType } from 'next'
 
 // export async function getStaticProps() {
@@ -29,6 +30,7 @@ const Blog: FC = () => {
   return (
     <Box width="100%">
       <NewBlog />
+      <Article />
     </Box>
   )
 }
