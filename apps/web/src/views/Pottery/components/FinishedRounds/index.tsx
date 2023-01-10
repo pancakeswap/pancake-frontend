@@ -1,10 +1,9 @@
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, PageSection } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import { OutlineText } from 'views/Pottery/components/TextStyle'
 import { FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from 'views/Lottery/pageSectionStyles'
-import { ConvexTop } from 'components/PageSection/svg/CurvedSvg'
 import AllHistoryCard from './AllHistoryCard'
 
 const FinishedRoundsBg = styled(Flex)<{ isDark: boolean }>`
@@ -17,7 +16,6 @@ const FinishedRoundsBg = styled(Flex)<{ isDark: boolean }>`
 const FinishedRoundsContainer = styled(Flex)`
   flex-direction: column;
   margin: auto;
-  padding: 40px 24px;
   width: 100%;
 `
 
@@ -30,13 +28,14 @@ const FinishedRounds: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <FinishedRoundsBg isDark={isDark}>
-      <ConvexTop clipFill={{ light: COVEX_BG, dark: COVEX_BG }} />
-      <FinishedRoundsContainer>
-        <OutlineText fontSize="40px" mb="32px" bold textAlign="center">
-          {t('Finished Rounds')}
-        </OutlineText>
-        <AllHistoryCard />
-      </FinishedRoundsContainer>
+      <PageSection index={1} dividerPosition="top" clipFill={{ light: COVEX_BG, dark: COVEX_BG }}>
+        <FinishedRoundsContainer>
+          <OutlineText fontSize="40px" mb="32px" bold textAlign="center">
+            {t('Finished Rounds')}
+          </OutlineText>
+          <AllHistoryCard />
+        </FinishedRoundsContainer>
+      </PageSection>
     </FinishedRoundsBg>
   )
 }
