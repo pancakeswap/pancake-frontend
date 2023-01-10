@@ -1,5 +1,5 @@
 import { Router } from 'itty-router'
-import { missing } from 'itty-router-extras'
+import { missing, error } from 'itty-router-extras'
 
 const ALLOW = /[^\w](?:pancake\.run|localhost:3000|pancakeswap\.finance|pancakeswap\.com)$/
 
@@ -66,12 +66,16 @@ const router = Router()
 router.post('/bsc-exchange', async (request, _, headers: Headers) => {
   const ip = headers.get('X-Forwarded-For') || headers.get('Cf-Connecting-Ip') || ''
   const isLocalHost = headers.get('origin') === 'http://localhost:3000'
+  const body = (await request.text?.()) as any
+
+  if (!body) return error(400, 'Missing body')
+
   const response = await fetch(NODE_REAL_DATA_ENDPOINT, {
     headers: {
       'X-Forwarded-For': ip,
       origin: isLocalHost ? 'https://pancakeswap.finance' : headers.get('origin') || '',
     },
-    body: await request.text?.(),
+    body,
     method: 'POST',
   })
 
