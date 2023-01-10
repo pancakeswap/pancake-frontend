@@ -1,13 +1,13 @@
-import styled, { css, DefaultTheme } from 'styled-components'
-import { Box } from '@pancakeswap/uikit'
-import { ClipFill } from '../types'
+import styled, { css, DefaultTheme } from "styled-components";
+import { Box } from "../../Box";
+import { ClipFill } from "../types";
 
 interface CurveProps {
-  clipFill?: ClipFill
+  clipFill?: ClipFill;
 }
 
 interface ContainerProps extends CurveProps {
-  clipPath: string
+  clipPath: string;
 }
 
 const sharedStyles = (theme: DefaultTheme, clipPath: string, clipFill?: ClipFill) => css`
@@ -17,25 +17,25 @@ const sharedStyles = (theme: DefaultTheme, clipPath: string, clipFill?: ClipFill
 
   background: ${() => {
     if (theme.isDark) {
-      return clipFill?.dark || clipFill?.light || theme.colors.background
+      return clipFill?.dark || clipFill?.light || theme.colors.background;
     }
-    return clipFill?.light || theme.colors.background
+    return clipFill?.light || theme.colors.background;
   }};
 
   & svg {
     display: block;
   }
-`
+`;
 
 const ConcaveContainer = styled(Box)<ContainerProps>`
   ${({ theme, clipPath, clipFill }) => sharedStyles(theme, clipPath, clipFill)}
-  transform: ${({ clipPath }) => (clipPath === '#bottomConcaveCurve' ? 'translate(0, -13px)' : 'translate(0, 1px)')};
-`
+  transform: ${({ clipPath }) => (clipPath === "#bottomConcaveCurve" ? "translate(0, -13px)" : "translate(0, 1px)")};
+`;
 
 const ConvexContainer = styled(Box)<ContainerProps>`
   ${({ theme, clipPath, clipFill }) => sharedStyles(theme, clipPath, clipFill)}
-  transform: ${({ clipPath }) => (clipPath === '#bottomConvexCurve' ? 'translate(0, -13px)' : 'translate(0, -1px)')};
-`
+  transform: ${({ clipPath }) => (clipPath === "#bottomConvexCurve" ? "translate(0, -13px)" : "translate(0, -1px)")};
+`;
 
 export const ConvexTop: React.FC<React.PropsWithChildren<CurveProps>> = ({ clipFill }) => (
   <ConvexContainer clipFill={clipFill} clipPath="#topConvexCurve">
@@ -47,7 +47,7 @@ export const ConvexTop: React.FC<React.PropsWithChildren<CurveProps>> = ({ clipF
       </defs>
     </svg>
   </ConvexContainer>
-)
+);
 
 export const ConvexBottom: React.FC<React.PropsWithChildren<CurveProps>> = ({ clipFill }) => (
   <ConvexContainer clipFill={clipFill} clipPath="#bottomConvexCurve">
@@ -59,7 +59,7 @@ export const ConvexBottom: React.FC<React.PropsWithChildren<CurveProps>> = ({ cl
       </defs>
     </svg>
   </ConvexContainer>
-)
+);
 
 export const ConcaveTop: React.FC<React.PropsWithChildren<CurveProps>> = ({ clipFill }) => (
   <ConcaveContainer clipFill={clipFill} clipPath="#topConcaveCurve">
@@ -71,7 +71,7 @@ export const ConcaveTop: React.FC<React.PropsWithChildren<CurveProps>> = ({ clip
       </defs>
     </svg>
   </ConcaveContainer>
-)
+);
 
 export const ConcaveBottom: React.FC<React.PropsWithChildren<CurveProps>> = ({ clipFill }) => (
   <ConcaveContainer clipFill={clipFill} clipPath="#bottomConcaveCurve">
@@ -83,4 +83,4 @@ export const ConcaveBottom: React.FC<React.PropsWithChildren<CurveProps>> = ({ c
       </defs>
     </svg>
   </ConcaveContainer>
-)
+);
