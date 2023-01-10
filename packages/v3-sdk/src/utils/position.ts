@@ -1,7 +1,7 @@
 import { JSBI } from '@pancakeswap/sdk'
 
 import { subIn256 } from '.'
-import { Q128 } from '../constants'
+import { Q128 } from '../internalConstants'
 
 export abstract class PositionLibrary {
   /**

@@ -1,10 +1,8 @@
 import JSBI from 'jsbi'
 import { FeeAmount } from '../constants'
-import { NEGATIVE_ONE, ZERO } from '../internalConstants'
+import { NEGATIVE_ONE, ZERO, MAX_FEE } from '../internalConstants'
 import { FullMath } from './fullMath'
 import { SqrtPriceMath } from './sqrtPriceMath'
-
-const MAX_FEE = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(6))
 
 export abstract class SwapMath {
   /**

@@ -1,11 +1,12 @@
-import { Currency, CurrencyAmount, JSBI, MaxUint256, Percent, Fraction } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, JSBI, MaxUint256, Percent, Fraction, ZERO } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
 import { TickMath } from './tickMath'
-import { Q128 } from '../constants'
-
-type Amounts = [CurrencyAmount<Currency>, CurrencyAmount<Currency>]
+import { TICK_SPACINGS, FeeAmount } from '../constants'
+import { ONE_HUNDRED_PERCENT, MAX_FEE } from '../internalConstants'
+import { Tick } from '../entities'
+import { TickList } from './tickList'
 
 interface EstimateFeeOptions {
   // Amount of token user input
@@ -14,82 +15,90 @@ interface EstimateFeeOptions {
   currency: Currency
   tickLower: number
   tickUpper: number
+  // Average 24h historical trading volume in USD
+  volume24H: number | JSBI
 
   // The reason of using price sqrt X96 instead of tick current is that
   // tick current may have rounding error since it's a floor rounding
   sqrtRatioX96: JSBI
+  // All ticks inside the pool
+  ticks: Tick[]
+  // Fee tier of the pool, in hundreds of a bip, i.e. 1e-6
+  fee: number
+  // Tick spacing of the pool, default derived by the fee
+  tickSpacing?: number
 
-  feeGrowthGlobalsCurrent: [JSBI, JSBI]
-  feeGrowthGlobalsLast: [JSBI, JSBI]
-
-  secondsInside: number
-}
-
-interface OptionsWithDuration extends EstimateFeeOptions {
-  // Measured in seconds
-  duration: number
-}
-
-// interface ForecastAprOptions {
-//   tickLower: number
-//   tickUpper: number
-//   sqrtRatioX96: JSBI
-//   feeGrowthGlobalsCurrent: [JSBI, JSBI]
-//   feeGrowthGlobalsLast: [JSBI, JSBI]
-//   secondsInside: number
-// }
-//
-// interface ForecastAprOptionsWithDuration extends ForecastAprOption {
-//   // Measured in seconds
-//   duration: number
-// }
-
-function getFeeAmount(
-  feeGrowthCurrent: JSBI,
-  feeGrowthLast: JSBI,
-  liquidity: JSBI,
-  insideProportion: Percent
-): Fraction {
-  invariant(JSBI.lessThanOrEqual(feeGrowthLast, feeGrowthCurrent), 'ACCUMULATED_FEE_GROWTH')
-  return insideProportion
-    .multiply(JSBI.multiply(JSBI.subtract(feeGrowthCurrent, feeGrowthLast), liquidity))
-    .divide(Q128)
+  // Proportion of time in future 24 hours when price staying inside given tick range
+  insidePercentage?: Percent
 }
 
 export function getEstimatedLPFees({
   amount,
   currency,
+  volume24H,
   sqrtRatioX96,
   tickLower,
   tickUpper,
-  feeGrowthGlobalsCurrent,
-  feeGrowthGlobalsLast,
-  secondsInside,
-  duration,
-}: OptionsWithDuration): Amounts {
-  invariant(secondsInside <= duration, 'SECONDS_INSIDE_OUT_OF_BOUND')
-  const insideProportion = new Percent(secondsInside, duration)
-
-  const [feeGrowthGlobal0, feeGrowthGlobal1] = feeGrowthGlobalsCurrent
-  const [feeGrowthGlobal0Last, feeGrowthGlobal1Last] = feeGrowthGlobalsLast
+  ticks,
+  fee,
+  tickSpacing = TICK_SPACINGS[fee as FeeAmount],
+  insidePercentage = ONE_HUNDRED_PERCENT,
+}: EstimateFeeOptions): Fraction {
+  invariant(!Number.isNaN(fee) && fee >= 0, 'INVALID_FEE')
+  TickList.validateList(ticks, tickSpacing)
 
   const isToken0 = amount.currency.wrapped.sortsBefore(currency.wrapped)
-  const [currency0, currency1] = isToken0 ? [amount.currency, currency] : [currency, amount.currency]
   const [inputAmount0, inputAmount1] = isToken0 ? [amount.quotient, MaxUint256] : [MaxUint256, amount.quotient]
   const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickLower)
   const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickUpper)
   const liquidity = maxLiquidityForAmounts(sqrtRatioX96, sqrtRatioAX96, sqrtRatioBX96, inputAmount0, inputAmount1, true)
-  const fee0 = getFeeAmount(feeGrowthGlobal0, feeGrowthGlobal0Last, liquidity, insideProportion)
-  const fee1 = getFeeAmount(feeGrowthGlobal1, feeGrowthGlobal1Last, liquidity, insideProportion)
-  return [
-    CurrencyAmount.fromFractionalAmount(currency0, fee0.numerator, fee0.denominator),
-    CurrencyAmount.fromFractionalAmount(currency1, fee1.numerator, fee1.denominator),
-  ]
+
+  const liquidityInRange = getAverageLiquidity(ticks, tickSpacing, tickLower, tickUpper)
+
+  return insidePercentage.multiply(
+    JSBI.divide(
+      JSBI.multiply(JSBI.multiply(JSBI.BigInt(volume24H), JSBI.BigInt(fee)), liquidity),
+      JSBI.multiply(MAX_FEE, JSBI.add(liquidity, liquidityInRange))
+    )
+  )
 }
 
-export function getEstimatedLPFees7d(options: EstimateFeeOptions) {
-  return getEstimatedLPFees({
-    ...options,
-    duration: 60 * 60 * 24 * 7,
-  })
+function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLower: number, tickUpper: number): JSBI {
+  invariant(tickLower <= tickUpper, 'INVALID_TICK_RANGE')
+  TickList.validateList(ticks, tickSpacing)
+
+  if (tickLower === tickUpper) {
+    return getLiquidityFromTick(ticks, tickLower)
+  }
+
+  let lastTick = TickList.nextInitializedTick(ticks, tickLower, true)
+  let currentTick = TickList.nextInitializedTick(ticks, tickLower, false)
+  let currentL = getLiquidityFromTick(ticks, tickLower)
+  let weightedL = ZERO
+  while (currentTick.index < tickUpper) {
+    weightedL = JSBI.multiply(currentL, JSBI.BigInt(currentTick.index - Math.max(lastTick.index, tickLower)))
+    currentL = JSBI.add(currentL, currentTick.liquidityNet)
+    lastTick = currentTick
+    currentTick = TickList.nextInitializedTick(ticks, currentTick.index, false)
+  }
+  weightedL = JSBI.multiply(currentL, JSBI.BigInt(tickUpper - Math.max(lastTick.index, tickLower)))
+
+  return JSBI.divide(weightedL, JSBI.BigInt(tickUpper - tickLower))
+}
+
+function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {
+  // calculate a cumulative of liquidityNet from all ticks that poolTicks[i] <= tick
+  let liquidity = ZERO
+  for (let i = 0; i < ticks.length - 1; ++i) {
+    liquidity = JSBI.add(liquidity, ticks[i].liquidityNet)
+
+    const lowerTick = ticks[i].index
+    const upperTick = ticks[i + 1]?.index
+
+    if (lowerTick <= tick && tick <= upperTick) {
+      break
+    }
+  }
+
+  return liquidity
 }
