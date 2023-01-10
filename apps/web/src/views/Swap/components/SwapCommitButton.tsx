@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Text, useModal } from '@pancakeswap/uikit'
+import { Button, Text, useModal, confirmPriceImpactWithoutFee } from '@pancakeswap/uikit'
 import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { GreyCard } from 'components/Card'
@@ -15,14 +15,17 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCallback, useEffect, useState } from 'react'
 import Column from 'components/Layout/Column'
 import { useUserSingleHopOnly } from 'state/user/hooks'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
+import {
+  BIG_INT_ZERO,
+  ALLOWED_PRICE_IMPACT_HIGH,
+  PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+} from 'config/constants/exchange'
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
 
 import ConfirmSwapModal from './ConfirmSwapModal'
 import ProgressSteps from './ProgressSteps'
-import confirmPriceImpactWithoutFee from './confirmPriceImpactWithoutFee'
 import { SwapCallbackError } from './styleds'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
@@ -101,7 +104,15 @@ export default function SwapCommitButton({
 
   // Handlers
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
+    if (
+      priceImpactWithoutFee &&
+      !confirmPriceImpactWithoutFee(
+        priceImpactWithoutFee,
+        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+        ALLOWED_PRICE_IMPACT_HIGH,
+        t,
+      )
+    ) {
       return
     }
     if (!swapCallback) {
