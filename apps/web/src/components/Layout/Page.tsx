@@ -1,9 +1,8 @@
 import styled from 'styled-components'
+import { NextSeo } from 'next-seo'
 import { useTranslation } from '@pancakeswap/localization'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { DEFAULT_META, getCustomMeta } from 'config/constants/meta'
-import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import Container from './Container'
 
 const StyledPage = styled(Container)`
@@ -23,40 +22,31 @@ const StyledPage = styled(Container)`
   }
 `
 
-export const PageMeta: React.FC<React.PropsWithChildren<{ symbol?: string }>> = ({ symbol }) => {
+export const PageMeta: React.FC<React.PropsWithChildren> = () => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
   const { pathname } = useRouter()
-  const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true })
-  const cakePriceUsdDisplay = cakePriceUsd ? `$${cakePriceUsd.toFixed(3)}` : '...'
 
   const pageMeta = getCustomMeta(pathname, t, locale) || {}
   const { title, description, image } = { ...DEFAULT_META, ...pageMeta }
-  let pageTitle = cakePriceUsdDisplay ? [title, cakePriceUsdDisplay].join(' - ') : title
-  if (symbol) {
-    pageTitle = [symbol, title].join(' - ')
-  }
 
   return (
-    <Head>
-      <title>{pageTitle}</title>
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-    </Head>
+    <NextSeo
+      title={title}
+      description={description}
+      openGraph={{
+        images: [{ url: image, alt: title }],
+      }}
+    />
   )
 }
 
-interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
-  symbol?: string
-}
-
-const Page: React.FC<React.PropsWithChildren<PageProps>> = ({ children, symbol, ...props }) => {
+const Page: React.FC<React.PropsWithChildren> = ({ children, ...props }) => {
   return (
     <>
-      <PageMeta symbol={symbol} />
+      <PageMeta />
       <StyledPage {...props}>{children}</StyledPage>
     </>
   )
