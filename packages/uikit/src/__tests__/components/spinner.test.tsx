@@ -7,12 +7,12 @@ it("renders correctly", () => {
     <DocumentFragment>
       .c0 {
       width: 128px;
-      height: 153.216px;
+      height: 128px;
       position: relative;
     }
 
     .c1 {
-      max-height: 153.216px;
+      max-height: 128px;
       max-width: 128px;
       position: relative;
       width: 100%;
@@ -21,7 +21,7 @@ it("renders correctly", () => {
     .c1:after {
       content: "";
       display: block;
-      padding-top: 119.7%;
+      padding-top: 100%;
     }
 
     .c2 {
@@ -34,7 +34,7 @@ it("renders correctly", () => {
 
     <div
         class="c0"
-        height="153.216"
+        height="128"
         width="128"
       >
         <div
