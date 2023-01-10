@@ -26,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
   * {
     font-family: 'Kanit', sans-serif;
   }
-  html, body, #__next {
+  html, body {
     height: 100%;
   }
   #__next {

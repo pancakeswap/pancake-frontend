@@ -5,12 +5,20 @@ import { useTheme } from 'next-themes'
 
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
   position: relative;
-  width: 100%;
-  height: 63%;
-  background: ${({ isDark }) => (isDark ? NEW_BLOG_BG_DARK : NEW_BLOG_BG)};
-  border-bottom-left-radius: 50% 5%;
-  border-bottom-right-radius: 50% 5%;
-  padding-top: 46px;
+  padding-top: 45px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    background: ${({ isDark }) => (isDark ? NEW_BLOG_BG_DARK : NEW_BLOG_BG)};
+    border-bottom-left-radius: 50% 5%;
+    border-bottom-right-radius: 50% 5%;
+  }
 `
 
 const NEW_BLOG_BG = 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)'

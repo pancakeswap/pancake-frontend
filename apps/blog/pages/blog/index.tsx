@@ -28,7 +28,7 @@ const BlogPage = ({ fallback }: { fallback: () => void }) => {
 
 const Blog: FC = () => {
   return (
-    <Box width="100%">
+    <Box width="100%" mb="150px">
       <NewBlog />
       <Article />
     </Box>
