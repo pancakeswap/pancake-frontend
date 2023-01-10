@@ -13,18 +13,13 @@ const StyledBackgroundImage = styled(Box)<{ imgHeight?: number; imgUrl: string }
 
 const StyledArticle = styled(Flex)`
   cursor: pointer;
+  padding: 32px 0;
+  border-bottom: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
 
   &:hover ${StyledBackgroundImage} {
     opacity: 0.8;
     transform: scale(1.05);
   }
-`
-
-const Divider = styled.div`
-  height: 1px;
-  width: 100%;
-  margin: 32px 0;
-  background-color: ${({ theme }) => theme.colors.cardBorder};
 `
 
 const SingleArticle = () => {
@@ -51,14 +46,13 @@ const SingleArticle = () => {
           </Text>
           <Text m="24px 0">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.{' '}
+            dolore magna aliqua.
           </Text>
           <Text textAlign="right" fontSize="14px" color="textSubtle">
             June 22 2021
           </Text>
         </Flex>
       </Flex>
-      <Divider />
     </StyledArticle>
   )
 }
