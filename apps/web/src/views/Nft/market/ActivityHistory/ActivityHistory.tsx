@@ -90,6 +90,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
   useEffect(() => {
     const fetchCollectionActivity = async () => {
       try {
+        setIsLoading(true)
         const nftActivityFiltersParsed = JSON.parse(nftActivityFiltersString)
         const collectionActivity = await getCollectionActivity(
           collectionAddress.toLowerCase(),
@@ -98,6 +99,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
         )
         const activity = sortActivity(collectionActivity)
 
+        setIsLoading(false)
         setActivityData(activity)
         setMaxPages(Math.ceil(activity.length / MAX_PER_PAGE) || 1)
         setQueryPage((prevState) => prevState + 1)
@@ -107,9 +109,7 @@ const ActivityHistory: React.FC<React.PropsWithChildren<ActivityHistoryProps>> =
     }
 
     if (maxPage - currentPage === 1 && activityData.length === MAX_PER_QUERY * queryPage) {
-      setIsLoading(true)
       fetchCollectionActivity()
-      setIsLoading(false)
     }
   }, [activityData, collectionAddress, currentPage, maxPage, nftActivityFiltersString, queryPage])
 
