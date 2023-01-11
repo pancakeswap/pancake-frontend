@@ -1,6 +1,15 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { ACCESS_RISK_API } from 'config/constants/endpoints'
 
+import { z } from 'zod'
+
+const zBand = z.enum(['5/5', '4/5', '3/5', '2/5', '1/5'])
+export const zRiskTokenData = z.object({
+  trust_level: z.string(),
+  band: zBand,
+  scanned_ts: z.string(),
+})
+
 export enum TOKEN_RISK {
   'Low' = 'Low',
   'Medium' = 'Medium',
@@ -8,35 +17,26 @@ export enum TOKEN_RISK {
 }
 
 export const TokenRiskPhases = {
-  0: TOKEN_RISK.Low,
-  1: TOKEN_RISK.Medium,
-  2: TOKEN_RISK.Medium,
-  3: TOKEN_RISK.Medium,
-  4: TOKEN_RISK.High,
-  5: TOKEN_RISK.High,
+  '5/5': TOKEN_RISK.Low,
+  '4/5': TOKEN_RISK.Medium,
+  '3/5': TOKEN_RISK.Medium,
+  '2/5': TOKEN_RISK.Medium,
+  '1/5': TOKEN_RISK.High,
 }
 
 export interface RiskTokenInfo {
   address: string
   chainId: ChainId
-  isSuccess: boolean
   riskLevel: TOKEN_RISK
-  riskResult: string
   scannedTs: number
-  riskLevelDescription: string
 }
 
 const fetchRiskApi = async (address: string, chainId: number) => {
-  const response = await fetch(ACCESS_RISK_API, {
-    method: 'post',
+  const response = await fetch(`${ACCESS_RISK_API}/${chainId}/${address}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      address,
-      chain_id: chainId,
-    }),
   })
 
   const result = await response.json()
@@ -44,30 +44,16 @@ const fetchRiskApi = async (address: string, chainId: number) => {
 }
 
 export const fetchRiskToken = async (address: string, chainId: number): Promise<RiskTokenInfo> => {
-  try {
-    const riskApi = await fetchRiskApi(address, chainId)
-    // eslint-disable-next-line camelcase
-    const { risk_result, scanned_ts, risk_level, risk_level_description } = riskApi.data
+  const riskApi = await fetchRiskApi(address, chainId)
+  const data = zRiskTokenData.parse(riskApi.data)
+  // eslint-disable-next-line camelcase
+  const { band, scanned_ts } = data
+  console.log(band, 'band')
 
-    return {
-      isSuccess: true,
-      address,
-      chainId,
-      riskLevel: TokenRiskPhases[risk_level],
-      riskResult: risk_result,
-      scannedTs: scanned_ts,
-      riskLevelDescription: risk_level_description,
-    }
-  } catch (error) {
-    console.error('Fetch Risk Token error: ', error)
-    return {
-      isSuccess: false,
-      address: '',
-      chainId: ChainId.BSC,
-      riskLevel: TokenRiskPhases[0],
-      riskResult: '',
-      scannedTs: 0,
-      riskLevelDescription: '',
-    }
+  return {
+    address,
+    chainId,
+    riskLevel: TokenRiskPhases[band],
+    scannedTs: parseInt(scanned_ts, 10),
   }
 }

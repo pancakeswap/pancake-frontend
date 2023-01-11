@@ -1,124 +1,75 @@
-import { useState, useMemo, useCallback } from 'react'
-import { Currency } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Button, HelpIcon, useTooltip, Text, Link, useToast } from '@pancakeswap/uikit'
-import { fetchRiskToken, RiskTokenInfo } from 'views/Swap/hooks/fetchTokenRisk'
-import RiskMessage from 'views/Swap/components/AccessRisk/RiskMessage'
-import { tokenListFromOfficialsUrlsAtom } from 'state/lists/hooks'
-import merge from 'lodash/merge'
-import keyBy from 'lodash/keyBy'
-import groupBy from 'lodash/groupBy'
-import mapValues from 'lodash/mapValues'
+import { ERC20Token } from '@pancakeswap/sdk'
+import { Button, Flex, HelpIcon, Link, Tag, Text, useToast, useTooltip } from '@pancakeswap/uikit'
 import { useAtomValue } from 'jotai'
+import { useState } from 'react'
+import { tokenListFromOfficialsUrlsAtom } from 'state/lists/hooks'
+import useSWRImmutable from 'swr/immutable'
+import { fetchRiskToken } from 'views/Swap/hooks/fetchTokenRisk'
 
 interface AccessRiskProps {
-  inputCurrency: Currency
-  outputCurrency: Currency
+  token: ERC20Token
 }
 
-const AccessRisk: React.FC<AccessRiskProps> = ({ inputCurrency, outputCurrency }) => {
+const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {
   const { t } = useTranslation()
   const { toastInfo } = useToast()
   const tokenMap = useAtomValue(tokenListFromOfficialsUrlsAtom)
 
-  const { address: inputAddress, chainId: inputChainId } = useMemo(() => (inputCurrency as any) ?? {}, [inputCurrency])
-  const { address: outputAddress, chainId: outputChainId } = useMemo(
-    () => (outputCurrency as any) ?? {},
-    [outputCurrency],
-  )
+  const [retry, setRetry] = useState(false)
 
-  const [{ results, loading }, setState] = useState<{
-    results: { [chainId: number]: { [address: string]: RiskTokenInfo } }
-    loading: boolean
-  }>({
-    results: {},
-    loading: false,
+  const { data, mutate, error, isLoading } = useSWRImmutable(['risk', token.chainId, token.address], () => {
+    return fetchRiskToken(token.address, token.chainId)
   })
-  const tokensForScan = useMemo(() => {
-    const tokensToScan = []
-    if (
-      inputCurrency &&
-      !inputCurrency.isNative &&
-      !results[inputChainId]?.[inputAddress] &&
-      !tokenMap?.[inputChainId]?.[inputAddress]
-    ) {
-      tokensToScan.push(inputCurrency)
-    }
-    if (outputCurrency && !outputCurrency.isNative && !results[outputChainId]?.[outputAddress]) {
-      tokensToScan.push(outputCurrency)
-    }
-    return tokensToScan
-  }, [results, inputAddress, inputChainId, outputAddress, outputChainId, inputCurrency, outputCurrency, tokenMap])
-
-  const handleScan = useCallback(() => {
-    const fetchTokenRisks = async () => {
-      const tokenRiskResults = await Promise.all(
-        tokensForScan.map((tokenToScan) => {
-          const { address, chainId } = tokenToScan as any
-          return fetchRiskToken(address, chainId)
-        }),
-      )
-
-      setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        results: merge(
-          { ...prevState.results },
-          mapValues(groupBy(tokenRiskResults, 'chainId'), (tokenRiskResult) => keyBy(tokenRiskResult, 'address')),
-        ),
-      }))
-    }
-
-    toastInfo(
-      t('Scanning Risk'),
-      t('Please wait until we scan the risk for %symbol% token', {
-        symbol: tokensForScan.map((currency) => currency.symbol).join(','),
-      }),
-    )
-    setState((prevState) => ({
-      ...prevState,
-      loading: true,
-    }))
-    fetchTokenRisks()
-  }, [tokensForScan, toastInfo, t])
-
-  const disabledButton = useMemo(() => loading || tokensForScan.length === 0, [loading, tokensForScan])
 
   // Tooltips
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text>
+      <Text>{t('Risk scan results are provided by a third party, AvengerDAO.')}</Text>
+      <Text my="8px">
         {t(
-          'The scan result is provided by 3rd parties and may not cover every token. Therefore the result is for reference only, do NOT take it as investment or financial advice. Always DYOR!',
+          'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk. Click here for more information on AvengerDAO.',
         )}
       </Text>
       <Flex mt="4px">
-        <Text>{t('Powered by')}</Text>
+        <Text>{t('Learn more about risk rating')}</Text>
         <Link ml="4px" external href="https://www.hashdit.io/en">
-          {t('Hashdit.')}
+          {t('here.')}
         </Link>
       </Flex>
     </>,
     { placement: 'bottom' },
   )
 
+  if (data) {
+    return (
+      <Flex justifyContent="flex-end">
+        <Tag>{t('%riskLevel% Risk', { riskLevel: data.riskLevel })}</Tag>
+        {tooltipVisible && tooltip}
+        <Flex ref={targetRef}>
+          <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
+        </Flex>
+      </Flex>
+    )
+  }
+
   return (
     <>
       <Flex justifyContent="flex-end">
-        <Button scale="xs" style={{ textTransform: 'uppercase' }} disabled={disabledButton} onClick={handleScan}>
-          {loading ? t('scanning...') : t('scan risk')}
+        <Button
+          variant="bubblegum"
+          scale="xs"
+          style={{ textTransform: 'uppercase' }}
+          // disabled={disabledButton}
+          // onClick={handleScan}
+        >
+          {isLoading ? t('scanning...') : t('scan risk')}
         </Button>
         {tooltipVisible && tooltip}
         <Flex ref={targetRef}>
           <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
         </Flex>
       </Flex>
-      {results[inputChainId]?.[inputAddress]?.isSuccess && (
-        <RiskMessage currency={inputCurrency} riskTokenInfo={results[inputChainId][inputAddress]} />
-      )}
-      {results[outputChainId]?.[outputAddress]?.isSuccess && (
-        <RiskMessage currency={outputCurrency} riskTokenInfo={results[outputChainId][outputAddress]} />
-      )}
     </>
   )
 }

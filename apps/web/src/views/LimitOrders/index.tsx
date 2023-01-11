@@ -412,8 +412,8 @@ const LimitOrders = () => {
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
                     <Box>
-                      {isAccessTokenSupported && (
-                        <AccessRisk inputCurrency={currencies.input} outputCurrency={currencies.output} />
+                      {isAccessTokenSupported && currencies.output && currencies.output.isToken && (
+                        <AccessRisk token={currencies.output} />
                       )}
                     </Box>
                     <LimitOrderPrice

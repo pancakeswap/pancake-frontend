@@ -33,7 +33,7 @@ export const FARM_API = 'https://farms-api.pancakeswap.com'
 
 export const BIT_QUERY = 'https://graphql.bitquery.io'
 
-export const ACCESS_RISK_API = 'https://red.alert.pancakeswap.com/red-api'
+export const ACCESS_RISK_API = '/api/risk/'
 
 export const CELER_API = 'https://api.celerscan.com/scan'
 

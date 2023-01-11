@@ -265,9 +265,9 @@ export default function SwapForm() {
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
-          {isAccessTokenSupported && (
+          {isAccessTokenSupported && currencies[Field.OUTPUT]?.isToken && (
             <Box>
-              <AccessRisk inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
+              <AccessRisk token={currencies[Field.OUTPUT]} />
             </Box>
           )}
 
