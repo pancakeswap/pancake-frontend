@@ -1,4 +1,4 @@
-import { BigintIsh } from '@uniswap/sdk-core'
+import { BigintIsh } from '@pancakeswap/swap-sdk-core'
 import JSBI from 'jsbi'
 import { Q96 } from '../internalConstants'
 
@@ -15,7 +15,8 @@ import { Q96 } from '../internalConstants'
  */
 function maxLiquidityForAmount0Imprecise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, amount0: BigintIsh): JSBI {
   if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
-    ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
+    sqrtRatioAX96 = sqrtRatioBX96
+    sqrtRatioBX96 = sqrtRatioAX96
   }
   const intermediate = JSBI.divide(JSBI.multiply(sqrtRatioAX96, sqrtRatioBX96), Q96)
   return JSBI.divide(JSBI.multiply(JSBI.BigInt(amount0), intermediate), JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96))
@@ -31,7 +32,8 @@ function maxLiquidityForAmount0Imprecise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSB
  */
 function maxLiquidityForAmount0Precise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, amount0: BigintIsh): JSBI {
   if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
-    ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
+    sqrtRatioAX96 = sqrtRatioBX96
+    sqrtRatioBX96 = sqrtRatioAX96
   }
 
   const numerator = JSBI.multiply(JSBI.multiply(JSBI.BigInt(amount0), sqrtRatioAX96), sqrtRatioBX96)
@@ -49,7 +51,8 @@ function maxLiquidityForAmount0Precise(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI,
  */
 function maxLiquidityForAmount1(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, amount1: BigintIsh): JSBI {
   if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
-    ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
+    sqrtRatioAX96 = sqrtRatioBX96
+    sqrtRatioBX96 = sqrtRatioAX96
   }
   return JSBI.divide(JSBI.multiply(JSBI.BigInt(amount1), Q96), JSBI.subtract(sqrtRatioBX96, sqrtRatioAX96))
 }
@@ -74,7 +77,8 @@ export function maxLiquidityForAmounts(
   useFullPrecision: boolean
 ): JSBI {
   if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
-    ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
+    sqrtRatioAX96 = sqrtRatioBX96
+    sqrtRatioBX96 = sqrtRatioAX96
   }
 
   const maxLiquidityForAmount0 = useFullPrecision ? maxLiquidityForAmount0Precise : maxLiquidityForAmount0Imprecise

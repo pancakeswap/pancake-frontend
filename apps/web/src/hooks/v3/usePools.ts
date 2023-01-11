@@ -7,6 +7,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
 import addresses from 'config/constants/contracts'
 import IUniswapV3PoolStateABI from 'config/abi/v3PoolState.json'
+import { PoolState } from './types'
 
 // Philip TODO: Add IUniswapV3PoolStateInterface type
 const POOL_STATE_INTERFACE = new Interface(IUniswapV3PoolStateABI)
@@ -73,13 +74,6 @@ class PoolCache {
     this.pools.unshift(pool)
     return pool
   }
-}
-
-export enum PoolState {
-  LOADING,
-  NOT_EXISTS,
-  EXISTS,
-  INVALID,
 }
 
 export function usePools(

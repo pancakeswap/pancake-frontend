@@ -1,5 +1,4 @@
-import { Percent, Token } from '@uniswap/sdk-core'
-import JSBI from 'jsbi'
+import { Percent, Token, JSBI } from '@pancakeswap/swap-sdk-core'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
 import { nearestUsableTick } from '../utils/nearestUsableTick'

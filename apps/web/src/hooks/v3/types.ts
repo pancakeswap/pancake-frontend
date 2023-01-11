@@ -15,3 +15,10 @@ export interface PositionDetails {
   tokensOwed0: BigNumber
   tokensOwed1: BigNumber
 }
+
+export enum PoolState {
+  LOADING,
+  NOT_EXISTS,
+  EXISTS,
+  INVALID,
+}

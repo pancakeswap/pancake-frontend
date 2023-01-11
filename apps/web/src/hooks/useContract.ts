@@ -12,7 +12,7 @@ import {
 import zapAbi from 'config/abi/zap.json'
 import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
 import addresses from 'config/constants/contracts'
-import { useAccountInfo, useProviderOrSigner } from 'hooks/useProviderOrSigner'
+import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
 import {

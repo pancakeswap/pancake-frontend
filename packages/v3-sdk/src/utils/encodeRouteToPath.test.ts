@@ -1,4 +1,4 @@
-import { Ether, Token, WETH9 } from '@uniswap/sdk-core'
+import { Ether, Token, WETH9 } from '@pancakeswap/sdk'
 import { FeeAmount } from '../constants'
 import { Pool } from '../entities/pool'
 import { Route } from '../entities/route'

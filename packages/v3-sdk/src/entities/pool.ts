@@ -1,4 +1,4 @@
-import { BigintIsh, CurrencyAmount, Price, Token } from '@uniswap/sdk-core'
+import { BigintIsh, CurrencyAmount, Price, Token } from '@pancakeswap/swap-sdk-core'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { FACTORY_ADDRESS, FeeAmount, TICK_SPACINGS } from '../constants'

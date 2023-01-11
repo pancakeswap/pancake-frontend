@@ -1,6 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 // import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
+// import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 
 export default function AddLiquidity() {
   const tokenId = null
@@ -32,7 +33,7 @@ export default function AddLiquidity() {
   //   depositBDisabled,
   //   invertPrice,
   //   ticksAtLimit,
-  // } = useV3DerivedMintInfo(
+  // } = useV3DerivedInfo(
   //   baseCurrency ?? undefined,
   //   quoteCurrency ?? undefined,
   //   feeAmount,

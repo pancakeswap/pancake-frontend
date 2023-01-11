@@ -1,4 +1,4 @@
-import { Percent, Token, CurrencyAmount, WETH9, Ether } from '@uniswap/sdk-core'
+import { Percent, Token, CurrencyAmount, WETH9, Ether } from '@pancakeswap/sdk'
 import { FeeAmount, TICK_SPACINGS } from './constants'
 import { Pool } from './entities/pool'
 import { Position } from './entities/position'

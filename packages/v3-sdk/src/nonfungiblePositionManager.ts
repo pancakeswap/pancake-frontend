@@ -1,12 +1,6 @@
-import {
-  BigintIsh,
-  Percent,
-  Token,
-  CurrencyAmount,
-  validateAndParseAddress,
-  Currency,
-  NativeCurrency,
-} from '@uniswap/sdk-core'
+import { BigintIsh, Percent, Token, CurrencyAmount, Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
+import { validateAndParseAddress } from '@pancakeswap/sdk'
+
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { Interface } from '@ethersproject/abi'

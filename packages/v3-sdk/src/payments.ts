@@ -1,7 +1,9 @@
 import JSBI from 'jsbi'
 import { Interface } from '@ethersproject/abi'
 import IPeripheryPaymentsWithFee from '@uniswap/v3-periphery/artifacts/contracts/interfaces/IPeripheryPaymentsWithFee.sol/IPeripheryPaymentsWithFee.json'
-import { Percent, Token, validateAndParseAddress } from '@uniswap/sdk-core'
+import { Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { validateAndParseAddress } from '@pancakeswap/sdk'
+
 import { toHex } from './utils/calldata'
 
 export interface FeeOptions {
