@@ -3,6 +3,7 @@ import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } fro
 import { useEffect, useState } from 'react'
 import { AppProps } from 'next/app'
 import Script from 'next/script'
+import { LanguageProvider } from '@pancakeswap/localization'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
 import Head from 'next/head'
@@ -77,16 +78,18 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <NextThemeProvider>
         <StyledThemeProvider>
-          <ModalProvider>
-            <ResetCSS />
-            <GlobalStyle />
-            {isMounted && (
-              <>
-                <Menu />
-                <Component {...pageProps} />
-              </>
-            )}
-          </ModalProvider>
+          <LanguageProvider>
+            <ModalProvider>
+              <ResetCSS />
+              <GlobalStyle />
+              {isMounted && (
+                <>
+                  <Menu />
+                  <Component {...pageProps} />
+                </>
+              )}
+            </ModalProvider>
+          </LanguageProvider>
         </StyledThemeProvider>
       </NextThemeProvider>
       <Script

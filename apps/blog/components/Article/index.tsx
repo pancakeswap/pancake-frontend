@@ -1,6 +1,10 @@
 import styled from 'styled-components'
-import { Box, Text, Flex, Button } from '@pancakeswap/uikit'
+import { useState, useMemo } from 'react'
+import { Box, Text, Flex, Button, PaginationButton, SearchInput } from '@pancakeswap/uikit'
 import SingleArticle from 'components/Article/SingleArticle'
+import { useTranslation } from '@pancakeswap/localization'
+import { useRouter } from 'next/router'
+import ArticleSortSelect from 'components/Article/ArticleSortSelect'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -26,6 +30,7 @@ const StyledCard = styled(Flex)`
   width: 100%;
   border-radius: 0;
   overflow: hidden;
+  flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     border: ${({ theme }) => `1px solid ${theme.colors.cardBorder}`};
@@ -35,16 +40,29 @@ const StyledCard = styled(Flex)`
 `
 
 const Article = () => {
+  const { t } = useTranslation()
+  const { query: urlQuery } = useRouter()
+  const [currentPage, setCurrentPage] = useState(1)
+  const [maxPage, setMaxPages] = useState(1)
+  const [sortBy, setSortBy] = useState('date')
+  const [_query, setQuery] = useState('')
+
+  const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
+
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value)
+  }
+
   return (
     <StyledArticleContainer>
       <Text
         bold
+        color="secondary"
         mb={['12px', '12px', '12px', '35px']}
         ml={['16px', '16px', '16px', '20px']}
         fontSize={['24px', '24px', '24px', '40px']}
-        color="secondary"
       >
-        All articles
+        {t('All articles')}
       </Text>
       <Flex>
         <StyledTagContainer>
@@ -55,12 +73,24 @@ const Article = () => {
             Vote
           </Button>
         </StyledTagContainer>
-        <Flex width="100%">
-          <StyledCard style={{ width: '100%' }}>
+        <Flex width="100%" flexDirection="column">
+          <Flex alignItems="center" mb="24px">
+            <ArticleSortSelect setSortBy={setSortBy} />
+            <Box width="100%" ml="16px" mt="22px">
+              <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search" />
+            </Box>
+          </Flex>
+          <StyledCard>
             <Box>
               <SingleArticle />
               <SingleArticle />
             </Box>
+            <PaginationButton
+              showMaxPageText
+              currentPage={currentPage}
+              maxPage={maxPage}
+              setCurrentPage={setCurrentPage}
+            />
           </StyledCard>
         </Flex>
       </Flex>
