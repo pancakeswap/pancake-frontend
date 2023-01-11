@@ -7,6 +7,7 @@ import _toNumber from 'lodash/toNumber'
 import _get from 'lodash/get'
 import { FixedNumber } from '@ethersproject/bignumber'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 
 import { PoolResource } from '../types'
 import getSecondsLeftFromNow from '../utils/getSecondsLeftFromNow'
@@ -144,8 +145,8 @@ const transformPool = (
     getPoolApr({
       rewardTokenPrice: _toNumber(earningTokenPrice),
       stakingTokenPrice: _toNumber(stakingTokenPrice),
-      tokenPerSecond: rewardPerSecond,
-      totalStaked: totalStakedToken,
+      tokenPerSecond: getBalanceNumber(new BigNumber(rewardPerSecond), earningToken.decimals),
+      totalStaked: getBalanceNumber(new BigNumber(totalStakedToken), stakingToken.decimals),
     }) || 0
 
   const startBlock = _toNumber(resource.data.start_timestamp)
