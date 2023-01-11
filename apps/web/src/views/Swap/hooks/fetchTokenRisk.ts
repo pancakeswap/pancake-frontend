@@ -48,7 +48,6 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
   const data = zRiskTokenData.parse(riskApi.data)
   // eslint-disable-next-line camelcase
   const { band, scanned_ts } = data
-  console.log(band, 'band')
 
   return {
     address,
