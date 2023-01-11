@@ -16,7 +16,7 @@ import {
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainIdName } from 'config/ChainIdName'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import Page from 'components/Layout/Page'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
@@ -178,7 +178,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Flex>
               </Flex>
               <Flex>
-                <NextLinkFromReactRouter to={`/add/${address}?chain=${ChainIdName[chainId]}`}>
+                <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
                   </Button>
