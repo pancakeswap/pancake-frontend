@@ -17,7 +17,7 @@ import {
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
-import { ChainIdName } from 'config/ChainIdName'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Page from 'components/Layout/Page'
 import { useState, useMemo } from 'react'
@@ -188,7 +188,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
               <Flex>
                 <NextLinkFromReactRouter
-                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${ChainIdName[chainId]}`}
+                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${CHAIN_QUERY_NAME[chainId]}`}
                 >
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
