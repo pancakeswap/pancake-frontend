@@ -17,7 +17,7 @@ interface EstimateFeeOptions {
   tickLower: number
   tickUpper: number
   // Average 24h historical trading volume in USD
-  volume24H: number | JSBI
+  volume24H: number
 
   // The reason of using price sqrt X96 instead of tick current is that
   // tick current may have rounding error since it's a floor rounding
@@ -33,16 +33,16 @@ interface EstimateFeeOptions {
   insidePercentage?: Percent
 }
 
-export function getEstimatedLPFees(options: EstimateFeeOptions) {
+export function getEstimatedLPFee(options: EstimateFeeOptions) {
   try {
-    return tryGetEstimatedLPFees(options)
+    return tryGetEstimatedLPFee(options)
   } catch (e) {
     console.error(e)
     return new Fraction(ZERO)
   }
 }
 
-function tryGetEstimatedLPFees({
+function tryGetEstimatedLPFee({
   amount,
   currency,
   volume24H,
@@ -60,12 +60,9 @@ function tryGetEstimatedLPFees({
   const liquidity = getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
   const liquidityInRange = getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96)
 
-  return insidePercentage.multiply(
-    JSBI.divide(
-      JSBI.multiply(JSBI.multiply(JSBI.BigInt(volume24H), JSBI.BigInt(fee)), liquidity),
-      JSBI.multiply(MAX_FEE, JSBI.add(liquidity, liquidityInRange))
-    )
-  )
+  return insidePercentage
+    .multiply(JSBI.multiply(JSBI.multiply(JSBI.BigInt(Math.floor(volume24H)), JSBI.BigInt(fee)), liquidity))
+    .divide(JSBI.multiply(MAX_FEE, JSBI.add(liquidity, liquidityInRange))).asFraction
 }
 
 interface GetAmountOptions {
