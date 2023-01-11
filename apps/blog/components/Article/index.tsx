@@ -10,7 +10,7 @@ const StyledArticleContainer = styled(Box)`
   width: 100%;
   margin: 80px auto;
 
-  ${({ theme }) => theme.mediaQueries.xxl} {
+  @media screen and (min-width: 1440px) {
     width: 1160px;
   }
 `
@@ -59,12 +59,12 @@ const Article = () => {
         bold
         color="secondary"
         mb={['12px', '12px', '12px', '35px']}
-        ml={['16px', '16px', '16px', '20px']}
+        pl={['16px']}
         fontSize={['24px', '24px', '24px', '40px']}
       >
         {t('All articles')}
       </Text>
-      <Flex>
+      <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
         <StyledTagContainer>
           <Button display="block" width="fit-content" scale="sm" variant="subtle" mb="28px">
             All
@@ -74,9 +74,14 @@ const Article = () => {
           </Button>
         </StyledTagContainer>
         <Flex width="100%" flexDirection="column">
-          <Flex alignItems="center" mb="24px">
+          <Flex
+            mb="24px"
+            flexDirection={['column', 'column', 'column', 'row']}
+            alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
+            p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
+          >
             <ArticleSortSelect setSortBy={setSortBy} />
-            <Box width="100%" ml="16px" mt="22px">
+            <Box width="100%" mt="22px" ml={['0', '0', '0', '16px']}>
               <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search" />
             </Box>
           </Flex>

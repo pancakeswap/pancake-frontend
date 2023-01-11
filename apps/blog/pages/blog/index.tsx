@@ -3,6 +3,8 @@ import { SWRConfig } from 'swr'
 import { Box } from '@pancakeswap/uikit'
 import NewBlog from 'components/Blog/NewBlog'
 import Article from 'components/Article'
+import ChefsChoice from 'components/ChefsChoice'
+
 // import { InferGetServerSidePropsType } from 'next'
 
 // export async function getStaticProps() {
@@ -30,6 +32,7 @@ const Blog: FC = () => {
   return (
     <Box width="100%" mb="150px">
       <NewBlog />
+      <ChefsChoice />
       <Article />
     </Box>
   )

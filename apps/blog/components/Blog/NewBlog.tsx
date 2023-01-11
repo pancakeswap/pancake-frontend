@@ -1,7 +1,7 @@
 import { Box, Text } from '@pancakeswap/uikit'
 import BlogCard from 'components/Blog/BlogCard'
 import styled from 'styled-components'
-import { useTheme } from 'next-themes'
+import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
@@ -27,8 +27,7 @@ const NEW_BLOG_BG_DARK = 'linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)'
 
 const NewBlog = () => {
   const { t } = useTranslation()
-  const { resolvedTheme } = useTheme()
-  const isDark = resolvedTheme === 'dark'
+  const { isDark } = useTheme()
 
   return (
     <StyledBackground isDark={isDark}>
