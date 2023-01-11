@@ -11,13 +11,13 @@ import {
   useModal,
 } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { AppBody } from 'components/App'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { AutoColumn } from 'components/Layout/Column'
 import { GELATO_NATIVE } from 'config/constants'
 import { LIMIT_ORDERS_DOCS_URL } from 'config/constants/exchange'
+import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 import useGasOverhead from 'hooks/limitOrders/useGasOverhead'
 import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
 import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/useApproveCallback'
@@ -29,7 +29,7 @@ import { Field } from 'state/limitOrders/types'
 import { useExchangeChartManager } from 'state/user/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
-import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
 import ClaimWarning from './components/ClaimWarning'
 
@@ -48,7 +48,7 @@ import getRatePercentageDifference from './utils/getRatePercentageDifference'
 
 const LimitOrders = () => {
   // Helpers
-  const { account, chainId } = useWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
   const { isMobile, isTablet } = useMatchBreakpoints()
@@ -394,6 +394,12 @@ const LimitOrders = () => {
                       showCommonBases
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                     />
+
+                    <Box id="yo">
+                      {isAccessTokenSupported && currencies.input && currencies.input.isToken && (
+                        <AccessRisk token={currencies.input} />
+                      )}
+                    </Box>
 
                     <SwitchTokensButton
                       handleSwitchTokens={handleTokenSwitch}
