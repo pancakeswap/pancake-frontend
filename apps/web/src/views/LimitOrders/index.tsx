@@ -1,49 +1,50 @@
-import { useCallback, useEffect, useState, useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { CurrencyAmount, Token, Trade, TradeType, Currency, Percent, ChainId } from '@pancakeswap/sdk'
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
-import {
-  Button,
-  Box,
-  Flex,
-  useModal,
-  BottomDrawer,
-  Link,
-  useMatchBreakpoints,
-  Swap as SwapUI,
-} from '@pancakeswap/uikit'
-import AccessRisk from 'views/Swap/components/AccessRisk'
 import { useTranslation } from '@pancakeswap/localization'
-import { AutoColumn } from 'components/Layout/Column'
-import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { Currency, CurrencyAmount, Percent, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import {
+  BottomDrawer,
+  Box,
+  Button,
+  Flex,
+  Link,
+  Swap as SwapUI,
+  useMatchBreakpoints,
+  useModal,
+} from '@pancakeswap/uikit'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { useWeb3React } from '@pancakeswap/wagmi'
 import { AppBody } from 'components/App'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
-import useGasOverhead from 'hooks/limitOrders/useGasOverhead'
-import useTheme from 'hooks/useTheme'
-import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/useApproveCallback'
-import { Field } from 'state/limitOrders/types'
-import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
-import { maxAmountSpend } from 'utils/maxAmountSpend'
+import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { AutoColumn } from 'components/Layout/Column'
 import { GELATO_NATIVE } from 'config/constants'
 import { LIMIT_ORDERS_DOCS_URL } from 'config/constants/exchange'
+import useGasOverhead from 'hooks/limitOrders/useGasOverhead'
+import useGelatoLimitOrders from 'hooks/limitOrders/useGelatoLimitOrders'
+import { ApprovalState, useApproveCallbackFromInputCurrencyAmount } from 'hooks/useApproveCallback'
+import useTheme from 'hooks/useTheme'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useDefaultsFromURLSearch } from 'state/limitOrders/hooks'
+import { Field } from 'state/limitOrders/types'
 import { useExchangeChartManager } from 'state/user/hooks'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
+import AccessRisk from 'views/Swap/components/AccessRisk'
+import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 import PriceChartContainer from 'views/Swap/components/Chart/PriceChartContainer'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import ClaimWarning from './components/ClaimWarning'
 
-import { Wrapper, StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
-import CurrencyInputHeader from './components/CurrencyInputHeader'
-import LimitOrderPrice from './components/LimitOrderPrice'
-import SwitchTokensButton from './components/SwitchTokensButton'
-import Page from '../Page'
-import LimitOrderTable from './components/LimitOrderTable'
-import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
-import getRatePercentageDifference from './utils/getRatePercentageDifference'
-import { useCurrency, useAllTokens } from '../../hooks/Tokens'
 import ImportTokenWarningModal from '../../components/ImportTokenWarningModal'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import { useAllTokens, useCurrency } from '../../hooks/Tokens'
 import { currencyId } from '../../utils/currencyId'
+import Page from '../Page'
+import { ConfirmLimitOrderModal } from './components/ConfirmLimitOrderModal'
+import CurrencyInputHeader from './components/CurrencyInputHeader'
+import LimitOrderPrice from './components/LimitOrderPrice'
+import LimitOrderTable from './components/LimitOrderTable'
+import SwitchTokensButton from './components/SwitchTokensButton'
+import { StyledInputCurrencyWrapper, StyledSwapContainer, Wrapper } from './styles'
+import getRatePercentageDifference from './utils/getRatePercentageDifference'
 
 const LimitOrders = () => {
   // Helpers
@@ -328,8 +329,7 @@ const LimitOrders = () => {
 
   const isSideFooter = isChartExpanded || isChartDisplayed
 
-  const ACCESS_TOKEN_SUPPORT_CHAIN_IDS = [ChainId.BSC]
-  const isAccessTokenSupported = ACCESS_TOKEN_SUPPORT_CHAIN_IDS.includes(chainId)
+  const isAccessTokenSupported = SUPPORT_ONLY_BSC.includes(chainId)
 
   return (
     <Page

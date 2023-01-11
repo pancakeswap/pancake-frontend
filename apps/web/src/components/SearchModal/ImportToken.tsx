@@ -11,6 +11,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import AccessRisk from 'views/Swap/components/AccessRisk'
+import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 
 interface ImportProps {
   tokens: Token[]
@@ -53,38 +55,41 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         const list = token.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
-          <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
-            {list !== undefined ? (
-              <Tag
-                variant="success"
-                outline
-                scale="sm"
-                startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
-              >
-                {t('via')} {list.name}
-              </Tag>
-            ) : (
-              <Tag variant="failure" outline scale="sm" startIcon={<ErrorIcon color="failure" />}>
-                {t('Unknown Source')}
-              </Tag>
-            )}
-            <Flex alignItems="center">
-              <Text mr="8px">{token.name}</Text>
-              <Text>({token.symbol})</Text>
-            </Flex>
-            {token.chainId && (
-              <Flex justifyContent="space-between" width="100%">
-                <Text mr="4px">{address}</Text>
-                <Link href={getBlockExploreLink(token.address, 'address', token.chainId)} external>
-                  (
-                  {t('View on %site%', {
-                    site: getBlockExploreName(token.chainId),
-                  })}
-                  {token.chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
-                </Link>
+          <Flex alignItems="center" justifyContent="space-between">
+            <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px">
+              {list !== undefined ? (
+                <Tag
+                  variant="success"
+                  outline
+                  scale="sm"
+                  startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                >
+                  {t('via')} {list.name}
+                </Tag>
+              ) : (
+                <Tag variant="failure" outline scale="sm" startIcon={<ErrorIcon color="failure" />}>
+                  {t('Unknown Source')}
+                </Tag>
+              )}
+              <Flex alignItems="center">
+                <Text mr="8px">{token.name}</Text>
+                <Text>({token.symbol})</Text>
               </Flex>
-            )}
-          </Grid>
+              {token.chainId && (
+                <>
+                  <Text mr="4px">{address}</Text>
+                  <Link href={getBlockExploreLink(token.address, 'address', token.chainId)} external>
+                    (
+                    {t('View on %site%', {
+                      site: getBlockExploreName(token.chainId),
+                    })}
+                    {token.chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
+                  </Link>
+                </>
+              )}
+            </Grid>
+            {token && SUPPORT_ONLY_BSC.includes(token.chainId) && <AccessRisk token={token} />}
+          </Flex>
         )
       })}
 
