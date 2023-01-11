@@ -62,6 +62,7 @@ const transformPool = (
   balances,
   chainId,
   prices,
+  sousId,
 ):
   | (Pool.DeserializedPool<Coin | AptosCoin> & {
       stakeLimitEndBlock?: number
@@ -152,8 +153,7 @@ const transformPool = (
   const startBlock = _toNumber(resource.data.start_timestamp)
 
   return {
-    // Ignore sousId
-    sousId: 0,
+    sousId,
     contractAddress: {
       [chainId]: resource.type,
     },
