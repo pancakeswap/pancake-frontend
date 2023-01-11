@@ -3,6 +3,7 @@ import invariant from 'tiny-invariant'
 
 import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
 import { TickMath } from './tickMath'
+import { PositionMath } from './positionMath'
 import { TICK_SPACINGS, FeeAmount } from '../constants'
 import { ONE_HUNDRED_PERCENT, MAX_FEE } from '../internalConstants'
 import { Tick } from '../entities'
@@ -56,13 +57,8 @@ function tryGetEstimatedLPFees({
   invariant(!Number.isNaN(fee) && fee >= 0, 'INVALID_FEE')
   TickList.validateList(ticks, tickSpacing)
 
-  const isToken0 = amount.currency.wrapped.sortsBefore(currency.wrapped)
-  const [inputAmount0, inputAmount1] = isToken0 ? [amount.quotient, MaxUint256] : [MaxUint256, amount.quotient]
-  const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickLower)
-  const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickUpper)
-  const liquidity = maxLiquidityForAmounts(sqrtRatioX96, sqrtRatioAX96, sqrtRatioBX96, inputAmount0, inputAmount1, true)
-
-  const liquidityInRange = getAverageLiquidity(ticks, tickSpacing, tickLower, tickUpper)
+  const liquidity = getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
+  const liquidityInRange = getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96)
 
   return insidePercentage.multiply(
     JSBI.divide(
@@ -70,6 +66,45 @@ function tryGetEstimatedLPFees({
       JSBI.multiply(MAX_FEE, JSBI.add(liquidity, liquidityInRange))
     )
   )
+}
+
+interface GetAmountOptions {
+  // Amount of token user input
+  amount: CurrencyAmount<Currency>
+  // Currency of the dependent token in the pool
+  currency: Currency
+  tickLower: number
+  tickUpper: number
+
+  // The reason of using price sqrt X96 instead of tick current is that
+  // tick current may have rounding error since it's a floor rounding
+  sqrtRatioX96: JSBI
+}
+
+export function getDependentAmount(options: GetAmountOptions) {
+  const { currency, amount, sqrtRatioX96, tickLower, tickUpper } = options
+  const currentTick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
+  const liquidity = getLiquidityBySingleAmount(options)
+  const isToken0 = currency.wrapped.sortsBefore(amount.currency.wrapped)
+  const getTokenAmount = isToken0 ? PositionMath.getToken0Amount : PositionMath.getToken1Amount
+  return CurrencyAmount.fromRawAmount(
+    currency,
+    getTokenAmount(currentTick, tickLower, tickUpper, sqrtRatioX96, liquidity)
+  )
+}
+
+export function getLiquidityBySingleAmount({
+  amount,
+  currency,
+  tickUpper,
+  tickLower,
+  sqrtRatioX96,
+}: GetAmountOptions): JSBI {
+  const isToken0 = amount.currency.wrapped.sortsBefore(currency.wrapped)
+  const [inputAmount0, inputAmount1] = isToken0 ? [amount.quotient, MaxUint256] : [MaxUint256, amount.quotient]
+  const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickLower)
+  const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickUpper)
+  return maxLiquidityForAmounts(sqrtRatioX96, sqrtRatioAX96, sqrtRatioBX96, inputAmount0, inputAmount1, true)
 }
 
 export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLower: number, tickUpper: number): JSBI {
@@ -104,6 +139,11 @@ export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLowe
   weightedL = JSBI.add(weightedL, getWeightedLFromLastTickTo(tickUpper))
 
   return JSBI.divide(weightedL, JSBI.BigInt(tickUpper - tickLower))
+}
+
+export function getLiquidityFromSqrtRatioX96(ticks: Tick[], sqrtRatioX96: JSBI): JSBI {
+  const tick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
+  return getLiquidityFromTick(ticks, tick)
 }
 
 export function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {
