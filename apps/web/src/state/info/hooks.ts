@@ -22,6 +22,7 @@ import { getAprsForStableFarm } from 'utils/getAprsForStableFarm'
 import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { checkIsStableSwap, MultiChainName } from './constant'
 import { ChartEntry, PoolData, PriceChartEntry, ProtocolData, TokenData } from './types'
+
 // Protocol hooks
 
 const refreshIntervalForInfo = 15000 // 15s

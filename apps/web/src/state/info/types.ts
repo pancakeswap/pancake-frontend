@@ -77,8 +77,10 @@ export interface PoolData {
   }
 
   volumeUSD: number
+  volumeOutUSD?: number
   volumeUSDChange: number
   volumeUSDWeek: number
+  volumeOutUSDWeek?: number
   volumeUSDChangeWeek: number
 
   totalFees24h: number
