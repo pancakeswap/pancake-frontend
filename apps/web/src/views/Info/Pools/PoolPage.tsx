@@ -103,7 +103,6 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap && address)
-  const { chainId } = useActiveWeb3React()
   const { data: farmConfig } = useSWRImmutable(isStableSwap && chainId && `info/gerFarmConfig/${chainId}`, () =>
     getFarmConfig(chainId),
   )
