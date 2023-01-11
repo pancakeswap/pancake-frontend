@@ -40,7 +40,6 @@ import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWRImmutable from 'swr/immutable'
 import BigNumber from 'bignumber.js'
 
@@ -103,7 +102,6 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap && address)
-  const { chainId } = useActiveWeb3React()
   const { data: farmConfig } = useSWRImmutable(isStableSwap && chainId && `info/gerFarmConfig/${chainId}`, () =>
     getFarmConfig(chainId),
   )
