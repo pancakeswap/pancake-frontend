@@ -1,3 +1,5 @@
+// commit caacd62252990f61c2fec902663df268a51944f6
+
 // This file configures the initialization of Sentry on the browser.
 // The config you add here will be used whenever a page is visited.
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
