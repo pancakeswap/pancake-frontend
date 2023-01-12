@@ -22,7 +22,7 @@ import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import { FARMS_ADDRESS, FARMS_NAME_TAG, FARMS_USER_INFO_RESOURCE, FARMS_USER_INFO } from 'state/farms/constants'
 import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
-import { FARM_DEFAULT_DECIMALS, FARM_AUCTION_HOSTING_IN_SECONDS } from 'components/Farms/constants'
+import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
 import { calcPendingRewardCake, calcRewardCakePerShare } from './utils/pendingCake'
@@ -164,9 +164,7 @@ export const useFarms = () => {
       loadArchivedFarmsData: false,
       data: farmsWithPrices
         .filter((f) => !!f.pid)
-        .map((f) => {
-          return deserializeFarm(f, FARM_AUCTION_HOSTING_IN_SECONDS)
-        })
+        .map(deserializeFarm)
         .map((f) => {
           const accCakePerShare = masterChef?.data && f.pid ? calcRewardCakePerShare(masterChef.data, String(f.pid)) : 0
           const earningToken = calcPendingRewardCake(

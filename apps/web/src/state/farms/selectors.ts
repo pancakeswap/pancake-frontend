@@ -4,14 +4,13 @@ import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { createSelector } from '@reduxjs/toolkit'
 import { deserializeFarm, deserializeFarmUserData } from '@pancakeswap/farms'
 import { State } from '../types'
-import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../../config/constants'
 
 const selectCakeFarm = (state: State) => state.farms.data.find((f) => f.pid === 2)
 const selectFarmByKey = (key: string, value: string | number) => (state: State) =>
   state.farms.data.find((f) => f[key] === value)
 
 export const makeFarmFromPidSelector = (pid: number) =>
-  createSelector([selectFarmByKey('pid', pid)], (farm) => deserializeFarm(farm, FARM_AUCTION_HOSTING_IN_SECONDS))
+  createSelector([selectFarmByKey('pid', pid)], (farm) => deserializeFarm(farm))
 
 export const makeBusdPriceFromPidSelector = (pid: number) =>
   createSelector([selectFarmByKey('pid', pid)], (farm) => {
@@ -36,9 +35,7 @@ export const priceCakeFromPidSelector = createSelector([selectCakeFarm], (cakeBn
 })
 
 export const farmFromLpSymbolSelector = (lpSymbol: string) =>
-  createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) =>
-    deserializeFarm(farm, FARM_AUCTION_HOSTING_IN_SECONDS),
-  )
+  createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => deserializeFarm(farm))
 
 export const makeLpTokenPriceFromLpSymbolSelector = (lpSymbol: string) =>
   createSelector([selectFarmByKey('lpSymbol', lpSymbol)], (farm) => {
@@ -67,9 +64,7 @@ export const farmSelector = (chainId: number) =>
   createSelector(
     (state: State) => state.farms,
     (farms) => {
-      const deserializedFarmsData = farms.data
-        .map((farm) => deserializeFarm(farm, FARM_AUCTION_HOSTING_IN_SECONDS))
-        .filter((farm) => farm.token.chainId === chainId)
+      const deserializedFarmsData = farms.data.map(deserializeFarm).filter((farm) => farm.token.chainId === chainId)
       const { loadArchivedFarmsData, userDataLoaded, poolLength, regularCakePerBlock } = farms
 
       return {
