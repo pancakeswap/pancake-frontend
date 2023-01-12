@@ -1,19 +1,8 @@
-import styled, { DefaultTheme, keyframes, css } from "styled-components";
+import styled, { css, DefaultTheme } from "styled-components";
 import { space } from "styled-system";
+import { promotedGradient } from "../../util/animationToolkit";
 import { Box } from "../Box";
 import { CardProps } from "./types";
-
-const PromotedGradient = keyframes`
-  0% {
-    background-position: 50% 0%;
-  }
-  50% {
-    background-position: 50% 100%;
-  }
-  100% {
-    background-position: 50% 0%;
-  }
-`;
 
 interface StyledCardProps extends CardProps {
   theme: DefaultTheme;
@@ -51,7 +40,7 @@ export const StyledCard = styled.div<StyledCardProps>`
   ${({ isActive }) =>
     isActive &&
     css`
-      animation: ${PromotedGradient} 3s ease infinite;
+      animation: ${promotedGradient} 3s ease infinite;
       background-size: 400% 400%;
     `}
 

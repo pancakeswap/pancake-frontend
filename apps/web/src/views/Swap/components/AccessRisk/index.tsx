@@ -1,10 +1,28 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ERC20Token, Token } from '@pancakeswap/sdk'
-import { Button, Dots, Flex, HelpIcon, IconButton, Link, RefreshIcon, Tag, Text, useTooltip } from '@pancakeswap/uikit'
+import {
+  Button,
+  Dots,
+  Flex,
+  HelpIcon,
+  IconButton,
+  Link,
+  RefreshIcon,
+  Tag,
+  Text,
+  useTooltip,
+  promotedGradient,
+} from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
+import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { fetchRiskToken } from 'views/Swap/hooks/fetchTokenRisk'
+
+const AnimatedButton = styled(Button)`
+  animation: ${promotedGradient} 1.5s ease infinite;
+  background-size: 1000% 1000%;
+`
 
 interface AccessRiskProps {
   token: ERC20Token
@@ -117,9 +135,9 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   return (
     <>
       <Flex justifyContent="flex-end">
-        <Button variant="bubblegum" scale="xs" style={{ textTransform: 'uppercase' }} disabled>
-          <Dots>{t('Scanning Risk')}</Dots>
-        </Button>
+        <AnimatedButton variant="bubblegum" scale="sm" style={{ textTransform: 'uppercase', height: '28px' }}>
+          <Dots style={{ fontSize: '14px' }}>{t('Scanning Risk')}</Dots>
+        </AnimatedButton>
         {tooltipVisible && tooltip}
         <Flex ref={targetRef}>
           <HelpIcon ml="4px" width="20px" height="20px" color="textSubtle" />
