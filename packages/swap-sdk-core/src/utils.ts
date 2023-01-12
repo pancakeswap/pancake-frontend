@@ -11,7 +11,8 @@ export function validateVMTypeInstance(value: JSBI, vmType: VMType): void {
 
 // mock the on-chain sqrt function
 export function sqrt(y: JSBI): JSBI {
-  validateVMTypeInstance(y, VMType.uint256)
+  invariant(JSBI.greaterThanOrEqual(y, ZERO), 'NEGATIVE')
+
   let z: JSBI = ZERO
   let x: JSBI
   if (JSBI.greaterThan(y, THREE)) {

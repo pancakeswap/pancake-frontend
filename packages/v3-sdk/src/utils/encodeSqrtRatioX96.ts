@@ -1,5 +1,5 @@
 import JSBI from 'jsbi'
-import { BigintIsh, sqrt } from '@uniswap/sdk-core'
+import { BigintIsh, sqrt } from '@pancakeswap/sdk'
 
 /**
  * Returns the sqrt ratio as a Q64.96 corresponding to a given ratio of amount1 and amount0

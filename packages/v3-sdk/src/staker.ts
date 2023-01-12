@@ -1,4 +1,4 @@
-import { BigintIsh, Token, validateAndParseAddress } from '@uniswap/sdk-core'
+import { BigintIsh, Token, validateAndParseAddress } from '@pancakeswap/sdk'
 import { defaultAbiCoder, Interface } from '@ethersproject/abi'
 import IUniswapV3Staker from '@uniswap/v3-staker/artifacts/contracts/UniswapV3Staker.sol/UniswapV3Staker.json'
 import { MethodParameters, toHex } from './utils/calldata'
@@ -193,7 +193,7 @@ export abstract class Staker {
    * @param incentiveKey An `IncentiveKey` which represents a unique staking program.
    * @returns An encoded IncentiveKey to be read by ethers
    */
-  private static _encodeIncentiveKey(incentiveKey: IncentiveKey): {} {
+  private static _encodeIncentiveKey(incentiveKey: IncentiveKey) {
     const { token0, token1, fee } = incentiveKey.pool
     const refundee = validateAndParseAddress(incentiveKey.refundee)
     return {

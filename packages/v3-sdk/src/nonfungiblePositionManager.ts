@@ -3,10 +3,11 @@ import {
   Percent,
   Token,
   CurrencyAmount,
-  validateAndParseAddress,
   Currency,
   NativeCurrency,
-} from '@uniswap/sdk-core'
+  validateAndParseAddress,
+} from '@pancakeswap/sdk'
+
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { Interface } from '@ethersproject/abi'

@@ -1,5 +1,4 @@
-import { MaxUint256 } from '@uniswap/sdk-core'
-import JSBI from 'jsbi'
+import { MaxUint256, JSBI } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../internalConstants'
 import { mostSignificantBit } from './mostSignificantBit'
@@ -19,6 +18,7 @@ export abstract class TickMath {
   /**
    * The minimum tick that can be used on any pool.
    */
+  // eslint-disable-next-line @typescript-eslint/no-inferrable-types
   public static MIN_TICK: number = -887272
 
   /**

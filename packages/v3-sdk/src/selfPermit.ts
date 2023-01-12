@@ -1,4 +1,4 @@
-import { BigintIsh, Token } from '@uniswap/sdk-core'
+import { BigintIsh, Token } from '@pancakeswap/sdk'
 import { Interface } from '@ethersproject/abi'
 import ISelfPermit from '@uniswap/v3-periphery/artifacts/contracts/interfaces/ISelfPermit.sol/ISelfPermit.json'
 import { toHex } from './utils'

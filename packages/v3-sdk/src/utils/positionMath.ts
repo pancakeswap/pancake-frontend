@@ -1,4 +1,4 @@
-import { JSBI } from '@pancakeswap/swap-sdk-core'
+import { JSBI } from '@pancakeswap/sdk'
 
 import { SqrtPriceMath, TickMath } from '.'
 import { ZERO } from '../internalConstants'

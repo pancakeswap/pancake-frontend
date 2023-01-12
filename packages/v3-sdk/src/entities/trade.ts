@@ -1,6 +1,15 @@
-import { Currency, Fraction, Percent, Price, sortedInsert, CurrencyAmount, TradeType, Token } from '@uniswap/sdk-core'
-
-import { InsufficientInputAmountError, InsufficientReservesError } from '@pancakeswap/swap-sdk-core'
+import {
+  Currency,
+  Fraction,
+  Percent,
+  Price,
+  sortedInsert,
+  CurrencyAmount,
+  TradeType,
+  Token,
+  InsufficientInputAmountError,
+  InsufficientReservesError,
+} from '@pancakeswap/sdk'
 
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../internalConstants'
@@ -512,8 +521,11 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
       if (!pool.token0.equals(amountIn.currency) && !pool.token1.equals(amountIn.currency)) continue
 
       let amountOut: CurrencyAmount<Token>
+
       try {
-        ;[amountOut] = await pool.getOutputAmount(amountIn)
+        const [result] = await pool.getOutputAmount(amountIn)
+
+        amountOut = result
       } catch (error) {
         // input too low
         if ((error as InsufficientInputAmountError).isInsufficientInputAmountError) {
@@ -594,7 +606,9 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
 
       let amountIn: CurrencyAmount<Token>
       try {
-        ;[amountIn] = await pool.getInputAmount(amountOut)
+        const [result] = await pool.getInputAmount(amountOut)
+
+        amountIn = result
       } catch (error) {
         // not enough liquidity in this pool
         if ((error as InsufficientReservesError).isInsufficientReservesError) {

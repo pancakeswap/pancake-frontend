@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, MaxUint256, Percent, Fraction } from '@pancakeswap/swap-sdk-core'
+import { Currency, CurrencyAmount, JSBI, MaxUint256, Percent, Fraction } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'

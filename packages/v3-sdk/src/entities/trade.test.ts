@@ -1,4 +1,4 @@
-import { CurrencyAmount, Ether, Percent, Price, sqrt, Token, TradeType, WETH9 } from '@uniswap/sdk-core'
+import { WETH9, Ether, CurrencyAmount, Percent, Price, sqrt, Token, TradeType } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'

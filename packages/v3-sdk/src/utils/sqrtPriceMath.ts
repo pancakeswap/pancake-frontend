@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@uniswap/sdk-core'
+import { MaxUint256 } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO, Q96 } from '../internalConstants'
@@ -24,7 +24,8 @@ export abstract class SqrtPriceMath {
 
   public static getAmount0Delta(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, liquidity: JSBI, roundUp: boolean): JSBI {
     if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
-      ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
+      sqrtRatioAX96 = sqrtRatioBX96
+      sqrtRatioBX96 = sqrtRatioAX96
     }
 
     const numerator1 = JSBI.leftShift(liquidity, JSBI.BigInt(96))
@@ -37,7 +38,8 @@ export abstract class SqrtPriceMath {
 
   public static getAmount1Delta(sqrtRatioAX96: JSBI, sqrtRatioBX96: JSBI, liquidity: JSBI, roundUp: boolean): JSBI {
     if (JSBI.greaterThan(sqrtRatioAX96, sqrtRatioBX96)) {
-      ;[sqrtRatioAX96, sqrtRatioBX96] = [sqrtRatioBX96, sqrtRatioAX96]
+      sqrtRatioAX96 = sqrtRatioBX96
+      sqrtRatioBX96 = sqrtRatioAX96
     }
 
     return roundUp
