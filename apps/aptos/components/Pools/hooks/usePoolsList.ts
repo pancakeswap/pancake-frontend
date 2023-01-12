@@ -54,7 +54,10 @@ export const usePoolsList = () => {
 
   return useMemo(() => {
     const syrupPools = pools
-      ? pools.map((pool) => transformPool(pool as PoolResource, balances, chainId, prices)).filter(Boolean)
+      ? pools
+          .map((pool, index) => transformPool(pool as PoolResource, balances, chainId, prices, index + 1))
+          .filter(Boolean)
+          .sort((a, b) => Number(a?.sousId) - Number(b?.sousId))
       : []
 
     // const cakePool = tranformCakePool()
