@@ -23,11 +23,11 @@ describe('#getLiquidityFromTick', () => {
 
   it('Get liquidity at single tick', () => {
     expect(JSBI.equal(getLiquidityFromTick(ticks, 1), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 20), JSBI.BigInt(15))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 50), JSBI.BigInt(35))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 80), JSBI.BigInt(30))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 100), JSBI.BigInt(20))).toBe(true)
-    expect(JSBI.equal(getLiquidityFromTick(ticks, 150), ZERO)).toBe(true)
+    expect(JSBI.equal(getLiquidityFromTick(ticks, 20), JSBI.BigInt(10))).toBe(true)
+    expect(JSBI.equal(getLiquidityFromTick(ticks, 50), JSBI.BigInt(15))).toBe(true)
+    expect(JSBI.equal(getLiquidityFromTick(ticks, 80), JSBI.BigInt(35))).toBe(true)
+    expect(JSBI.equal(getLiquidityFromTick(ticks, 100), JSBI.BigInt(30))).toBe(true)
+    expect(JSBI.equal(getLiquidityFromTick(ticks, 150), JSBI.BigInt(20))).toBe(true)
   })
 
   it('Use lower tick liquidity if tick is between initialized ticks', () => {
@@ -58,11 +58,11 @@ describe('#getAverageLiquidity', () => {
     expect(JSBI.equal(getAverageLiquidity(ticks, 1, -1, -1), ZERO)).toBe(true)
     expect(JSBI.equal(getAverageLiquidity(ticks, 1, 51, 51), ZERO)).toBe(true)
     expect(JSBI.equal(getAverageLiquidity(ticks, 1, 0, 0), JSBI.BigInt(10))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 10, 10), JSBI.BigInt(15))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 20, 20), JSBI.BigInt(35))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 30, 30), JSBI.BigInt(30))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 40, 40), JSBI.BigInt(20))).toBe(true)
-    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 50, 50), ZERO)).toBe(true)
+    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 10, 10), JSBI.BigInt(10))).toBe(true)
+    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 20, 20), JSBI.BigInt(15))).toBe(true)
+    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 30, 30), JSBI.BigInt(35))).toBe(true)
+    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 40, 40), JSBI.BigInt(30))).toBe(true)
+    expect(JSBI.equal(getAverageLiquidity(ticks, 1, 50, 50), JSBI.BigInt(20))).toBe(true)
   })
 
   it('Tick lower and upper are both initialized ticks', () => {

@@ -117,7 +117,7 @@ export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLowe
     ? new Tick({ index: TickMath.MIN_TICK, liquidityNet: ZERO, liquidityGross: ZERO })
     : TickList.nextInitializedTick(ticks, tickLower, true)
   let currentTick = TickList.nextInitializedTick(ticks, tickLower, false)
-  let currentL = lowerOutOfBound ? ZERO : getLiquidityFromTick(ticks, tickLower)
+  let currentL = lowerOutOfBound ? ZERO : getLiquidityFromTick(ticks, currentTick.index)
   let weightedL = ZERO
   const getWeightedLFromLastTickTo = (toTick: number) =>
     JSBI.multiply(currentL, JSBI.BigInt(toTick - Math.max(lastTick.index, tickLower)))
@@ -147,7 +147,7 @@ export function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {
   // calculate a cumulative of liquidityNet from all ticks that poolTicks[i] <= tick
   let liquidity = ZERO
 
-  if (tick < ticks[0].index || tick >= ticks[ticks.length - 1].index) {
+  if (tick < ticks[0].index || tick > ticks[ticks.length - 1].index) {
     return liquidity
   }
 
@@ -157,7 +157,7 @@ export function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {
     const lowerTick = ticks[i].index
     const upperTick = ticks[i + 1]?.index
 
-    if (lowerTick <= tick && tick < upperTick) {
+    if (lowerTick <= tick && tick <= upperTick) {
       break
     }
   }
