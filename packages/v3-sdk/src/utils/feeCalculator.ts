@@ -9,6 +9,15 @@ import { ONE_HUNDRED_PERCENT, MAX_FEE } from '../internalConstants'
 import { Tick } from '../entities'
 import { TickList } from './tickList'
 
+export const FeeCalculator = {
+  getEstimatedLPFee,
+  getLiquidityFromTick,
+  getLiquidityFromSqrtRatioX96,
+  getAverageLiquidity,
+  getLiquidityBySingleAmount,
+  getDependentAmount,
+}
+
 interface EstimateFeeOptions {
   // Amount of token user input
   amount: CurrencyAmount<Currency>
@@ -57,8 +66,8 @@ function tryGetEstimatedLPFee({
   invariant(!Number.isNaN(fee) && fee >= 0, 'INVALID_FEE')
   TickList.validateList(ticks, tickSpacing)
 
-  const liquidity = getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
-  const liquidityInRange = getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96)
+  const liquidity = FeeCalculator.getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
+  const liquidityInRange = FeeCalculator.getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96)
 
   return insidePercentage
     .multiply(JSBI.multiply(JSBI.multiply(JSBI.BigInt(Math.floor(volume24H)), JSBI.BigInt(fee)), liquidity))
@@ -81,7 +90,7 @@ interface GetAmountOptions {
 export function getDependentAmount(options: GetAmountOptions) {
   const { currency, amount, sqrtRatioX96, tickLower, tickUpper } = options
   const currentTick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
-  const liquidity = getLiquidityBySingleAmount(options)
+  const liquidity = FeeCalculator.getLiquidityBySingleAmount(options)
   const isToken0 = currency.wrapped.sortsBefore(amount.currency.wrapped)
   const getTokenAmount = isToken0 ? PositionMath.getToken0Amount : PositionMath.getToken1Amount
   return CurrencyAmount.fromRawAmount(
@@ -109,7 +118,7 @@ export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLowe
   TickList.validateList(ticks, tickSpacing)
 
   if (tickLower === tickUpper) {
-    return getLiquidityFromTick(ticks, tickLower)
+    return FeeCalculator.getLiquidityFromTick(ticks, tickLower)
   }
 
   const lowerOutOfBound = tickLower < ticks[0].index
@@ -117,7 +126,7 @@ export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLowe
     ? new Tick({ index: TickMath.MIN_TICK, liquidityNet: ZERO, liquidityGross: ZERO })
     : TickList.nextInitializedTick(ticks, tickLower, true)
   let currentTick = TickList.nextInitializedTick(ticks, tickLower, false)
-  let currentL = lowerOutOfBound ? ZERO : getLiquidityFromTick(ticks, currentTick.index)
+  let currentL = lowerOutOfBound ? ZERO : FeeCalculator.getLiquidityFromTick(ticks, currentTick.index)
   let weightedL = ZERO
   const getWeightedLFromLastTickTo = (toTick: number) =>
     JSBI.multiply(currentL, JSBI.BigInt(toTick - Math.max(lastTick.index, tickLower)))
@@ -140,7 +149,7 @@ export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLowe
 
 export function getLiquidityFromSqrtRatioX96(ticks: Tick[], sqrtRatioX96: JSBI): JSBI {
   const tick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
-  return getLiquidityFromTick(ticks, tick)
+  return FeeCalculator.getLiquidityFromTick(ticks, tick)
 }
 
 export function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {

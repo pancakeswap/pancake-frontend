@@ -1,7 +1,18 @@
-import { BigintIsh, ZERO, JSBI } from '@pancakeswap/swap-sdk-core'
+import { BigintIsh, ZERO, JSBI, CurrencyAmount, ONE, Fraction, Percent } from '@pancakeswap/swap-sdk-core'
+import { bscTokens } from '@pancakeswap/tokens'
+import { vi } from 'vitest'
 
-import { getLiquidityFromTick, getAverageLiquidity } from './feeCalculator'
+import { FeeCalculator } from './feeCalculator'
 import { Tick } from '../entities'
+import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96'
+
+const {
+  getLiquidityFromTick,
+  getAverageLiquidity,
+  getLiquidityBySingleAmount,
+  getDependentAmount,
+  getLiquidityFromSqrtRatioX96,
+} = FeeCalculator
 
 const createTick = (index: number, liquidityGross: BigintIsh, liquidityNet: BigintIsh) =>
   new Tick({ index, liquidityGross, liquidityNet })
@@ -36,6 +47,10 @@ describe('#getLiquidityFromTick', () => {
     expect(JSBI.equal(getLiquidityFromTick(ticks, 70), JSBI.BigInt(35))).toBe(true)
     expect(JSBI.equal(getLiquidityFromTick(ticks, 90), JSBI.BigInt(30))).toBe(true)
     expect(JSBI.equal(getLiquidityFromTick(ticks, 120), JSBI.BigInt(20))).toBe(true)
+  })
+
+  it('#getLiquidityFromSqrtRatioX96', () => {
+    expect(getLiquidityFromSqrtRatioX96(ticks, JSBI.BigInt('79307426338960776842885539845'))).toEqual(JSBI.BigInt(10))
   })
 })
 
@@ -78,5 +93,148 @@ describe('#getAverageLiquidity', () => {
     expect(JSBI.equal(getAverageLiquidity(ticks, 1, 15, 35), JSBI.BigInt(28))).toBe(true)
     expect(JSBI.equal(getAverageLiquidity(ticks, 1, -5, 20), JSBI.BigInt(10))).toBe(true)
     expect(JSBI.equal(getAverageLiquidity(ticks, 1, 38, 53), JSBI.BigInt(17))).toBe(true)
+  })
+})
+
+describe('#getLiquidityBySingleAmount', () => {
+  it('input with token 0 amount', () => {
+    const amount = getLiquidityBySingleAmount({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
+      currency: bscTokens.busd,
+      tickLower: -953,
+      tickUpper: 953,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+    })
+    expect(amount).toEqual(JSBI.BigInt(2149))
+  })
+
+  it('input with token 1 amount', () => {
+    const amount = getLiquidityBySingleAmount({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.busd, '200'),
+      currency: bscTokens.usdt,
+      tickLower: -953,
+      tickUpper: 953,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+    })
+    expect(amount).toEqual(JSBI.BigInt(4298))
+  })
+})
+
+describe('#getDependentAmount', () => {
+  it('input with token 0 amount', () => {
+    const amount = getDependentAmount({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
+      currency: bscTokens.busd,
+      tickLower: -1000,
+      tickUpper: 1000,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+    })
+    expect(amount.quotient).toEqual(JSBI.BigInt(99))
+    expect(amount.currency).toEqual(bscTokens.busd)
+  })
+
+  it('input with token 1 amount', () => {
+    const amount = getDependentAmount({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.busd, '100'),
+      currency: bscTokens.usdt,
+      tickLower: -1000,
+      tickUpper: 1000,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+    })
+    expect(amount.quotient).toEqual(JSBI.BigInt(99))
+    expect(amount.currency).toEqual(bscTokens.usdt)
+  })
+})
+
+describe('#getEstimatedLPFee', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('Invalid input', () => {
+    const ticks = [createTick(0, 10, 10), createTick(1, 10, -10)]
+
+    const getLiquidityBySingleAmountSpy = vi.spyOn(FeeCalculator, 'getLiquidityBySingleAmount')
+    const getLiquidityFromSqrtRatioX96Spy = vi.spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
+    getLiquidityBySingleAmountSpy.mockImplementationOnce(() => JSBI.BigInt(100))
+    getLiquidityFromSqrtRatioX96Spy.mockImplementationOnce(() => JSBI.BigInt(900))
+    const amount = FeeCalculator.getEstimatedLPFee({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
+      currency: bscTokens.busd,
+      tickLower: 0,
+      tickUpper: 10,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+      volume24H: 10000,
+      ticks,
+      fee: 500,
+    })
+    expect(amount.numerator).toEqual(ZERO)
+    expect(amount.denominator).toEqual(ONE)
+    expect(getLiquidityBySingleAmountSpy).not.toHaveBeenCalled()
+    expect(getLiquidityFromSqrtRatioX96Spy).not.toHaveBeenCalled()
+
+    const another = FeeCalculator.getEstimatedLPFee({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
+      currency: bscTokens.busd,
+      tickLower: 0,
+      tickUpper: 10,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+      volume24H: 10000,
+      ticks,
+      fee: -1,
+    })
+    expect(another.numerator).toEqual(ZERO)
+    expect(another.denominator).toEqual(ONE)
+    expect(getLiquidityBySingleAmountSpy).not.toHaveBeenCalled()
+    expect(getLiquidityFromSqrtRatioX96Spy).not.toHaveBeenCalled()
+  })
+
+  it('100% in range', () => {
+    const ticks = [createTick(0, 10, 10), createTick(10, 10, -10)]
+
+    const getLiquidityBySingleAmountSpy = vi
+      .spyOn(FeeCalculator, 'getLiquidityBySingleAmount')
+      .mockImplementationOnce(() => JSBI.BigInt(100))
+    const getLiquidityFromSqrtRatioX96Spy = vi
+      .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
+      .mockImplementationOnce(() => JSBI.BigInt(900))
+    const amount = FeeCalculator.getEstimatedLPFee({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
+      currency: bscTokens.busd,
+      tickLower: 0,
+      tickUpper: 10,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+      volume24H: 10000,
+      ticks,
+      fee: 500,
+    })
+    expect(getLiquidityBySingleAmountSpy).toHaveBeenCalledTimes(1)
+    expect(getLiquidityFromSqrtRatioX96Spy).toHaveBeenCalledTimes(1)
+    expect(amount.equalTo(new Fraction(5, 10))).toBe(true)
+  })
+
+  it('50% in range', () => {
+    const ticks = [createTick(0, 10, 10), createTick(10, 10, -10)]
+
+    const getLiquidityBySingleAmountSpy = vi
+      .spyOn(FeeCalculator, 'getLiquidityBySingleAmount')
+      .mockImplementationOnce(() => JSBI.BigInt(100))
+    const getLiquidityFromSqrtRatioX96Spy = vi
+      .spyOn(FeeCalculator, 'getLiquidityFromSqrtRatioX96')
+      .mockImplementationOnce(() => JSBI.BigInt(900))
+    const amount = FeeCalculator.getEstimatedLPFee({
+      amount: CurrencyAmount.fromRawAmount(bscTokens.usdt, '100'),
+      currency: bscTokens.busd,
+      tickLower: 0,
+      tickUpper: 10,
+      sqrtRatioX96: encodeSqrtRatioX96(1, 1),
+      volume24H: 10000,
+      ticks,
+      fee: 500,
+      insidePercentage: new Percent(50, 100),
+    })
+    expect(getLiquidityBySingleAmountSpy).toHaveBeenCalledTimes(1)
+    expect(getLiquidityFromSqrtRatioX96Spy).toHaveBeenCalledTimes(1)
+    expect(amount.equalTo(new Fraction(5, 20))).toBe(true)
   })
 })
