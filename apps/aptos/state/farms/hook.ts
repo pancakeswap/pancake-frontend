@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
-import { DeserializedFarmsState } from '@pancakeswap/farms'
+import { DeserializedFarmsState, deserializeFarm } from '@pancakeswap/farms'
 import { useAccount, useAccountResource, useCoins, useQueries, useQuery } from '@pancakeswap/awgmi'
 import {
   FetchCoinResult,
@@ -22,10 +22,9 @@ import fromPairs from 'lodash/fromPairs'
 import { useMemo } from 'react'
 import { FARMS_ADDRESS, FARMS_NAME_TAG, FARMS_USER_INFO_RESOURCE, FARMS_USER_INFO } from 'state/farms/constants'
 import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
-import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
+import { FARM_DEFAULT_DECIMALS, FARM_AUCTION_HOSTING_IN_SECONDS } from 'components/Farms/constants'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
-import { deserializeFarm } from './utils/deserializeFarm'
 import { calcPendingRewardCake, calcRewardCakePerShare } from './utils/pendingCake'
 
 const farmsPriceHelpLpMap = {
@@ -165,7 +164,9 @@ export const useFarms = () => {
       loadArchivedFarmsData: false,
       data: farmsWithPrices
         .filter((f) => !!f.pid)
-        .map(deserializeFarm)
+        .map((f) => {
+          return deserializeFarm(f, FARM_AUCTION_HOSTING_IN_SECONDS)
+        })
         .map((f) => {
           const accCakePerShare = masterChef?.data && f.pid ? calcRewardCakePerShare(masterChef.data, String(f.pid)) : 0
           const earningToken = calcPendingRewardCake(
