@@ -1,4 +1,4 @@
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { ERC20Token, Token } from '@pancakeswap/sdk'
 import {
   Button,
@@ -17,7 +17,7 @@ import { useState } from 'react'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import { fetchRiskToken } from 'views/Swap/hooks/fetchTokenRisk'
+import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
 
 const AnimatedButton = styled(Button)`
   animation: ${promotedGradient} 1.5s ease infinite;
@@ -69,6 +69,14 @@ const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {
   return show && <AccessRiskComponent token={token} />
 }
 
+const TOKEN_RISK_T = {
+  [TOKEN_RISK.VERY_LOW]: <Trans>Very Low Risk</Trans>,
+  [TOKEN_RISK.LOW]: <Trans>Low Risk</Trans>,
+  [TOKEN_RISK.MEDIUM]: <Trans>Medium Risk</Trans>,
+  [TOKEN_RISK.HIGH]: <Trans>High Risk</Trans>,
+  [TOKEN_RISK.VERY_HIGH]: <Trans>Very High Risk</Trans>,
+} as const
+
 const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   const { t } = useTranslation()
 
@@ -96,11 +104,13 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   )
 
   if (data) {
+    const hasRiskValue = TOKEN_RISK_T[data.riskLevel]
+    if (!hasRiskValue) return null
     return (
       <Flex justifyContent="flex-end">
         <div ref={targetRef} style={{ userSelect: 'none' }}>
-          <Tag>
-            <strong>{t('%riskLevel% Risk', { riskLevel: data.riskLevel })}</strong>
+          <Tag variant={data.riskLevel > TOKEN_RISK.MEDIUM ? 'failure' : 'primary'}>
+            <strong>{hasRiskValue}</strong>
             {tooltipVisible && tooltip}
             <Flex>
               <HelpIcon ml="4px" width="16px" height="16px" color="#fff" />

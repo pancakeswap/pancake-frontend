@@ -10,24 +10,26 @@ export const zRiskTokenData = z.object({
   scanned_ts: z.string(),
 })
 
-export enum TOKEN_RISK {
-  'Low' = 'Low',
-  'Medium' = 'Medium',
-  'High' = 'High',
-}
+export const TOKEN_RISK = {
+  VERY_LOW: 0,
+  LOW: 1,
+  MEDIUM: 2,
+  HIGH: 3,
+  VERY_HIGH: 4,
+} as const
 
-export const TokenRiskPhases = {
-  '5/5': TOKEN_RISK.Low,
-  '4/5': TOKEN_RISK.Medium,
-  '3/5': TOKEN_RISK.Medium,
-  '2/5': TOKEN_RISK.Medium,
-  '1/5': TOKEN_RISK.High,
-}
+export const TOKEN_RISK_MAPPING = {
+  '5/5': TOKEN_RISK.VERY_LOW,
+  '4/5': TOKEN_RISK.LOW,
+  '3/5': TOKEN_RISK.MEDIUM,
+  '2/5': TOKEN_RISK.HIGH,
+  '1/5': TOKEN_RISK.VERY_HIGH,
+} as const
 
 export interface RiskTokenInfo {
   address: string
   chainId: ChainId
-  riskLevel: TOKEN_RISK
+  riskLevel: typeof TOKEN_RISK[keyof typeof TOKEN_RISK]
   scannedTs: number
 }
 
@@ -52,7 +54,7 @@ export const fetchRiskToken = async (address: string, chainId: number): Promise<
   return {
     address,
     chainId,
-    riskLevel: TokenRiskPhases[band],
+    riskLevel: TOKEN_RISK_MAPPING[band],
     scannedTs: parseInt(scanned_ts, 10),
   }
 }
