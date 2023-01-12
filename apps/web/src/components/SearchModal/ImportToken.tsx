@@ -1,9 +1,23 @@
 import { useState } from 'react'
 import { Token, Currency, ChainId } from '@pancakeswap/sdk'
-import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid, BscScanIcon } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  ErrorIcon,
+  Flex,
+  Message,
+  Checkbox,
+  Link,
+  Tag,
+  Grid,
+  BscScanIcon,
+  useTooltip,
+  HelpIcon,
+} from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
+import useSWRImmutable from 'swr/immutable'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import { ListLogo } from 'components/Logo'
@@ -13,6 +27,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
+import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
 
 interface ImportProps {
   tokens: Token[]
@@ -33,6 +48,15 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
   // use for showing import source on inactive tokens
   const inactiveTokenList = useCombinedInactiveList()
+
+  const { data: hasRiskToken } = useSWRImmutable(tokens && ['has-risks', tokens], async () => {
+    const result = await Promise.all(tokens.map((token) => fetchRiskToken(token.address, token.chainId)))
+    return result.some((r) => r.riskLevel > TOKEN_RISK.MEDIUM)
+  })
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('I have read the scanning result, understood the risk and want to proceed with token importing.'),
+  )
 
   return (
     <AutoColumn gap="lg">
@@ -55,8 +79,8 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         const list = token.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
-          <Flex alignItems="center" justifyContent="space-between">
-            <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px">
+          <Flex key={token.address} alignItems="center" justifyContent="space-between">
+            <Grid gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px">
               {list !== undefined ? (
                 <Tag
                   variant="success"
@@ -103,8 +127,14 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
             onChange={() => setConfirmed(!confirmed)}
           />
           <Text ml="8px" style={{ userSelect: 'none' }}>
-            {t('I understand')}
+            {hasRiskToken ? t('I acknowledge the risk') : t('I understand')}
           </Text>
+          {hasRiskToken && (
+            <div ref={targetRef}>
+              <HelpIcon color="textSubtle" />
+              {tooltipVisible && tooltip}
+            </div>
+          )}
         </Flex>
         <Button
           variant="danger"
