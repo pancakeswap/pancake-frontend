@@ -1,6 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
-import { validateAndParseAddress } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 
 import invariant from 'tiny-invariant'
 import ISwapRouter from '@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'

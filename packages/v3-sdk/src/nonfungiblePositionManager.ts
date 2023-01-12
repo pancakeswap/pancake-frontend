@@ -1,5 +1,12 @@
-import { BigintIsh, Percent, Token, CurrencyAmount, Currency, NativeCurrency } from '@pancakeswap/swap-sdk-core'
-import { validateAndParseAddress } from '@pancakeswap/sdk'
+import {
+  BigintIsh,
+  Percent,
+  Token,
+  CurrencyAmount,
+  Currency,
+  NativeCurrency,
+  validateAndParseAddress,
+} from '@pancakeswap/sdk'
 
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'

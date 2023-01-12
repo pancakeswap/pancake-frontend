@@ -1,4 +1,4 @@
-import { Price, Token } from '@pancakeswap/swap-sdk-core'
+import { Price, Token } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import { Q192 } from '../internalConstants'
 import { encodeSqrtRatioX96 } from './encodeSqrtRatioX96'

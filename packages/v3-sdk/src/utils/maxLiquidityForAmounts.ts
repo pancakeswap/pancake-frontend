@@ -1,4 +1,4 @@
-import { BigintIsh } from '@pancakeswap/swap-sdk-core'
+import { BigintIsh } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import { Q96 } from '../internalConstants'
 

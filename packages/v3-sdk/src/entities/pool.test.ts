@@ -1,5 +1,4 @@
-import { Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
-import { WETH9 } from '@pancakeswap/sdk'
+import { Token, CurrencyAmount, WETH9 } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import { FeeAmount, TICK_SPACINGS } from '../constants'
 import { nearestUsableTick } from '../utils/nearestUsableTick'

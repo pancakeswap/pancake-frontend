@@ -9,7 +9,7 @@ import {
   Token,
   InsufficientInputAmountError,
   InsufficientReservesError,
-} from '@pancakeswap/swap-sdk-core'
+} from '@pancakeswap/sdk'
 
 import invariant from 'tiny-invariant'
 import { ONE, ZERO } from '../internalConstants'

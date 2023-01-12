@@ -1,4 +1,4 @@
-import { JSBI } from '@pancakeswap/swap-sdk-core'
+import { JSBI } from '@pancakeswap/sdk'
 
 import { subIn256 } from '.'
 import { Q128 } from '../constants'

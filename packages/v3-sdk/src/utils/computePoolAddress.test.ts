@@ -1,4 +1,4 @@
-import { Token } from '@pancakeswap/swap-sdk-core'
+import { Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '../constants'
 import { computePoolAddress } from './computePoolAddress'
 

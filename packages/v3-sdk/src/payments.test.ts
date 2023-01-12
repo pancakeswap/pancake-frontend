@@ -1,4 +1,4 @@
-import { Percent, Token } from '@pancakeswap/swap-sdk-core'
+import { Percent, Token } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import { Payments } from './payments'
 

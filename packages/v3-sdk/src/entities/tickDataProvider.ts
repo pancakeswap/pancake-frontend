@@ -1,4 +1,4 @@
-import { BigintIsh } from '@pancakeswap/swap-sdk-core'
+import { BigintIsh } from '@pancakeswap/sdk'
 
 /**
  * Provides information about ticks

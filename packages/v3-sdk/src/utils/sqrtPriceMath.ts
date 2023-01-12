@@ -1,4 +1,4 @@
-import { MaxUint256 } from '@pancakeswap/swap-sdk-core'
+import { MaxUint256 } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ONE, ZERO, Q96 } from '../internalConstants'

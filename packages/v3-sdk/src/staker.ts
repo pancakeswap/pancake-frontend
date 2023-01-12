@@ -1,5 +1,4 @@
-import { BigintIsh, Token } from '@pancakeswap/swap-sdk-core'
-import { validateAndParseAddress } from '@pancakeswap/sdk'
+import { BigintIsh, Token, validateAndParseAddress } from '@pancakeswap/sdk'
 import { defaultAbiCoder, Interface } from '@ethersproject/abi'
 import IUniswapV3Staker from '@uniswap/v3-staker/artifacts/contracts/UniswapV3Staker.sol/UniswapV3Staker.json'
 import { MethodParameters, toHex } from './utils/calldata'
