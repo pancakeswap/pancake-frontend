@@ -29,15 +29,15 @@ export const PageMeta: React.FC<React.PropsWithChildren> = () => {
   } = useTranslation()
   const { pathname } = useRouter()
 
-  const pageMeta = getCustomMeta(pathname, t, locale) || {}
-  const { title, description, image } = { ...DEFAULT_META, ...pageMeta }
+  const pageMeta = getCustomMeta(pathname, t, locale)
+  const { description, image } = { ...DEFAULT_META, ...pageMeta }
 
   return (
     <NextSeo
-      title={title}
+      title={pageMeta?.title}
       description={description}
       openGraph={{
-        images: [{ url: image, alt: title }],
+        images: [{ url: image, alt: pageMeta?.title }],
       }}
     />
   )
