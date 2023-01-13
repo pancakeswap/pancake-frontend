@@ -33,7 +33,11 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultiplierFromSC = useBoostMultiplier({ pid: farmPid, boosterState, proxyAddress })
   const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTokenStakedAmount)
-  const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boostedMultiplierFromFE
+  const boostMultiplier = userBalanceInFarm.eq(0)
+    ? boostMultiplierFromSC
+    : userBalanceInFarm.gt(0) && boosterState === YieldBoosterState.ACTIVE
+    ? boostMultiplierFromSC
+    : boostedMultiplierFromFE
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   useEffect(() => {
     refreshActivePool() // run once to refresh data from context
