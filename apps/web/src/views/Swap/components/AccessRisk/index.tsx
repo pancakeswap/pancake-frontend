@@ -35,6 +35,11 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
     <>
       {t('Risk scanning failed.')} {!retry && t('Press the button to retry.')}
     </>,
+    {
+      placement: 'auto',
+      manualVisible: true,
+      trigger: 'hover',
+    },
   )
   return (
     <div ref={retryTooltip.targetRef}>
