@@ -1,13 +1,63 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { Currency } from '@pancakeswap/sdk'
 // import useLocalSelector from 'contexts/LocalRedux/useSelector'
 // import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 // import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
+// import { useNavigate, useParams } from 'react-router-dom'
+// import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+// import { LiquidityFormState } from 'hooks/v3/types'
+// import { useCallback, useEffect, useState } from 'react'
+// import useParsedQueryString from 'hooks/useParsedQueryString'
+import _isNaN from 'lodash/isNaN'
+// import useTransactionDeadline from 'hooks/useTransactionDeadline'
 
-export default function AddLiquidityV3({ currencyA, currencyB }) {
-  const tokenId = null
+// import { maxAmountSpend } from 'utils/maxAmountSpend'
+// import { Field } from 'state/mint/actions'
+// import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+// import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
-  // check for existing position if tokenId in url
+// import { useV3MintActionHandlers } from './form/hooks'
+// import { useUserSlippageTolerance } from 'state/user/hooks'
+// import { useTransactionAdder } from 'state/transactions/hooks'
+// import { useV3NFTPositionManagerContract } from 'hooks/useContract'
+// import { useWeb3React } from '@pancakeswap/wagmi'
+// import { TransactionResponse } from '@ethersproject/providers'
+// import { calculateGasMargin } from 'utils'
+// import currencyId from 'utils/currencyId'
+// import { TransactionType } from 'state/info/types'
+// import { useCurrencySelectRoute } from 'views/AddLiquidity/useCurrencySelectRoute'
+// import { useIsTransactionUnsupported } from 'hooks/Trades'
+// import useRangeHopCallbacks from 'hooks/v3/useRangeHopCallbacks'
+
+interface AddLiquidityV3PropsType {
+  currencyA: Currency
+  currencyB: Currency
+}
+
+export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
+  // const navigate = useNavigate()
+
+  // const { feeAmount: feeAmountFromUrl, tokenId } = useParams<{
+  //   feeAmount?: string
+  //   tokenId?: string
+  // }>()
+
+  // const positionManager = useV3NFTPositionManagerContract()
+
+  // const { account, chainId, provider } = useWeb3React()
+
+  // const parsedQs = useParsedQueryString()
+
+  // const addTransaction = useTransactionAdder()
+
+  // // fee selection from url
+  // const feeAmount: FeeAmount | undefined =
+  //   feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
+  //     ? parseFloat(feeAmountFromUrl)
+  //     : undefined
+
+  // // check for existing position if tokenId in url
   const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
     tokenId ? BigNumber.from(tokenId) : undefined,
   )
@@ -15,9 +65,14 @@ export default function AddLiquidityV3({ currencyA, currencyB }) {
 
   // const { position: existingPosition } = useDerivedPositionInfo(existingPositionDetails)
 
+  // // prevent an error if they input ETH/WETH
+  // const quoteCurrency =
+  //   baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
+
   // mint state
-  // const { independentField, typedValue, startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue } =
-  //   useLocalSelector((s) => s)
+  // const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
+
+  // const { independentField, typedValue, startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue } = formState
 
   // const {
   //   pool,
@@ -44,7 +99,210 @@ export default function AddLiquidityV3({ currencyA, currencyB }) {
   //   feeAmount,
   //   baseCurrency ?? undefined,
   //   existingPosition,
+  //   formState,
   // )
+
+  // const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput } =
+  //   useV3MintActionHandlers(noLiquidity)
+
+  // const isValid = !errorMessage && !invalidRange
+
+  // modal and loading
+  // const [showConfirm, setShowConfirm] = useState<boolean>(false)
+  // const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
+
+  // capital efficiency warning
+  // const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
+
+  // useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
+
+  // useEffect(() => {
+  //   if (
+  //     parsedQs.minPrice &&
+  //     typeof parsedQs.minPrice === 'string' &&
+  //     parsedQs.minPrice !== leftRangeTypedValue &&
+  //     !_isNaN(parsedQs.minPrice as any)
+  //   ) {
+  //     onLeftRangeInput(parsedQs.minPrice)
+  //   }
+
+  //   if (
+  //     parsedQs.maxPrice &&
+  //     typeof parsedQs.maxPrice === 'string' &&
+  //     parsedQs.maxPrice !== rightRangeTypedValue &&
+  //     !_isNaN(parsedQs.maxPrice as any)
+  //   ) {
+  //     onRightRangeInput(parsedQs.maxPrice)
+  //   }
+  // }, [parsedQs, rightRangeTypedValue, leftRangeTypedValue, onRightRangeInput, onLeftRangeInput])
+
+  // txn values
+  // const deadline = useTransactionDeadline() // custom from users settings
+
+  // const [txHash, setTxHash] = useState<string>('')
+
+  // // get formatted amounts
+  // const formattedAmounts = {
+  //   [independentField]: typedValue,
+  //   [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
+  // }
+
+  // const usdcValues = {
+  //   [Field.CURRENCY_A]: useStablecoinValue(parsedAmounts[Field.CURRENCY_A]),
+  //   [Field.CURRENCY_B]: useStablecoinValue(parsedAmounts[Field.CURRENCY_B]),
+  // }
+
+  // get the max amounts user can add
+  // const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  //   (accumulator, field) => {
+  //     return {
+  //       ...accumulator,
+  //       [field]: maxAmountSpend(currencyBalances[field]),
+  //     }
+  //   },
+  //   {},
+  // )
+
+  // const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  //   (accumulator, field) => {
+  //     return {
+  //       ...accumulator,
+  //       [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
+  //     }
+  //   },
+  //   {},
+  // )
+
+  // const nftPositionManagerAddress = chainId ? NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId] : undefined
+
+  // check whether the user has approved the router on the tokens
+  // const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
+  // const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
+
+  // Philip TODO: Add 'auto' allowedSlippage
+  // const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  // const allowedSlippage = useUserSlippageToleranceWithDefault(
+  //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE
+  // )
+
+  // async function onAdd() {
+  //   if (!chainId || !provider || !account) return
+
+  //   if (!positionManager || !baseCurrency || !quoteCurrency) {
+  //     return
+  //   }
+
+  //   if (position && account && deadline) {
+  //     const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
+  //     const { calldata, value } =
+  //       hasExistingPosition && tokenId
+  //         ? NonfungiblePositionManager.addCallParameters(position, {
+  //             tokenId,
+  //             slippageTolerance: allowedSlippage,
+  //             deadline: deadline.toString(),
+  //             useNative,
+  //           })
+  //         : NonfungiblePositionManager.addCallParameters(position, {
+  //             slippageTolerance: allowedSlippage,
+  //             recipient: account,
+  //             deadline: deadline.toString(),
+  //             useNative,
+  //             createPool: noLiquidity,
+  //           })
+
+  //     const txn: { to: string; data: string; value: string } = {
+  //       to: nftPositionManagerAddress,
+  //       data: calldata,
+  //       value,
+  //     }
+
+  //     setAttemptingTxn(true)
+
+  //     provider
+  //       .getSigner()
+  //       .estimateGas(txn)
+  //       .then((estimate) => {
+  //         const newTxn = {
+  //           ...txn,
+  //           gasLimit: calculateGasMargin(estimate),
+  //         }
+
+  //         return provider
+  //           .getSigner()
+  //           .sendTransaction(newTxn)
+  //           .then((response: TransactionResponse) => {
+  //             setAttemptingTxn(false)
+  //             addTransaction(response, {
+  //               type: 'add-liquidity-v3',
+  //               baseCurrencyId: currencyId(baseCurrency),
+  //               quoteCurrencyId: currencyId(quoteCurrency),
+  //               createPool: Boolean(noLiquidity),
+  //               expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+  //               expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+  //               feeAmount: position.pool.fee,
+  //             })
+  //             setTxHash(response.hash)
+  //           })
+  //       })
+  //       .catch((error) => {
+  //         console.error('Failed to send transaction', error)
+  //         setAttemptingTxn(false)
+  //         // we only care if the error is something _other_ than the user rejected the tx
+  //         if (error?.code !== 4001) {
+  //           console.error(error)
+  //         }
+  //       })
+  //   }
+  // }
+
+  // const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
+
+  // const handleFeePoolSelect = useCallback(
+  //   (newFeeAmount: FeeAmount) => {
+  //     onLeftRangeInput('')
+  //     onRightRangeInput('')
+  //     navigate(`/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}/${newFeeAmount}`)
+  //   },
+  //   [baseCurrency?.wrapped?.address, currencyB?.wrapped?.address, navigate, onLeftRangeInput, onRightRangeInput],
+  // )
+
+  // const handleDismissConfirmation = useCallback(() => {
+  //   setShowConfirm(false)
+  //   // if there was a tx hash, we want to clear the input
+  //   if (txHash) {
+  //     onFieldAInput('')
+  //     // dont jump to pool page if creating
+  //     navigate('/pool')
+  //   }
+  //   setTxHash('')
+  // }, [navigate, onFieldAInput, txHash])
+
+  // const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+
+  // const clearAll = useCallback(() => {
+  //   onFieldAInput('')
+  //   onFieldBInput('')
+  //   onLeftRangeInput('')
+  //   onRightRangeInput('')
+  //   navigate(`/add`)
+  // }, [navigate, onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput])
+
+  // get value and prices at ticks
+  // const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
+  // const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
+
+  // const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper, getSetFullRange } =
+  //   useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
+
+  // // we need an existence check on parsed amounts for single-asset deposits
+  // const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
+  // const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
+
+  // const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
+  //   !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
+  // } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
+  //   !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
+  // }`
 
   return hasExistingPosition ? <>v3 increase</> : <>v3 add</>
 }

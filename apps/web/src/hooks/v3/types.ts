@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { Field } from 'state/mint/actions'
 
 export interface PositionDetails {
   nonce: BigNumber
@@ -21,4 +22,12 @@ export enum PoolState {
   NOT_EXISTS,
   EXISTS,
   INVALID,
+}
+
+export interface LiquidityFormState {
+  independentField: Field
+  typedValue: string
+  leftRangeTypedValue: string | true
+  rightRangeTypedValue: string | true
+  startPriceTypedValue: string
 }

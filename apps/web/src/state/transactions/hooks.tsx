@@ -11,6 +11,8 @@ import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { useAccount } from 'wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
+
 import { TransactionDetails } from './reducer'
 import {
   addTransaction,
@@ -32,6 +34,11 @@ export function useTransactionAdder(): (
     type?: TransactionType
     order?: Order
     nonBscFarm?: NonBscFarmTransactionType
+    baseCurrencyId?: string
+    quoteCurrencyId?: string
+    expectedAmountBaseRaw?: string
+    expectedAmountQuoteRaw?: string
+    feeAmount?: FeeAmount
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
