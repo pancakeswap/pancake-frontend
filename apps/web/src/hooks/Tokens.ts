@@ -187,7 +187,7 @@ export function useToken(tokenAddress?: string): ERC20Token | undefined | null {
     if (token) return token
     if (!chainId || !address) return undefined
     if (status !== FetchStatus.Fetched && statusBytes !== FetchStatus.Fetched) return null
-    if (decimals) {
+    if (Number.isInteger(decimals)) {
       return new ERC20Token(
         chainId,
         address,
