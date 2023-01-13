@@ -71,5 +71,6 @@ export const deserializeFarm = (
     stableSwapAddress,
     stableLpFee,
     stableLpFeeRateOfTotalFee,
+    lpTokenStakedAmount: farm.lpTokenStakedAmount ? new BigNumber(farm.lpTokenStakedAmount) : BIG_ZERO,
   }
 }

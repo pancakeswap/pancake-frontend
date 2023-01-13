@@ -53,12 +53,12 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { account } = useActiveWeb3React()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
-  const { lpTotalSupply } = useFarmFromPid(pid)
+  const { lpTokenStakedAmount } = useFarmFromPid(pid)
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
   const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
     ? stakedBalance.plus(tokenBalance)
     : proxy.stakedBalance.plus(proxy.tokenBalance)
-  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
+  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTokenStakedAmount)
   const boostMultiplierFromSC = useBoostMultiplier({ pid, boosterState, proxyAddress })
   const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boosterMultiplierFromFE
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
@@ -82,7 +82,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
           <BCakeCalculator
             targetInputBalance={calculatorBalance}
             earningTokenPrice={cakePrice.toNumber()}
-            lpTotalSupply={lpTotalSupply}
+            lpTokenStakedAmount={lpTokenStakedAmount}
             setBCakeMultiplier={setBCakeMultiplier}
           />
         ) : null

@@ -223,7 +223,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
               )}
               desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
               farmPid={farm?.pid}
-              lpTotalSupply={farm?.lpTotalSupply}
+              lpTokenStakedAmount={farm?.lpTokenStakedAmount}
               userBalanceInFarm={
                 stakedBalance.plus(tokenBalance).gt(0)
                   ? stakedBalance.plus(tokenBalance)
