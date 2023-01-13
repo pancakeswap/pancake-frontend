@@ -18,7 +18,7 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 
-import tryParseTick from './utils/tryParseTick'
+import { tryParseTick } from './utils'
 import { usePool } from './usePools'
 import { getTickToPrice } from './utils/getTickToPrice'
 import { PoolState } from './types'

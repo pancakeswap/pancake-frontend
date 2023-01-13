@@ -7,11 +7,10 @@ import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
-import AddLiquidityV3 from 'views/AddLiquidityV3'
+import AddLiquidity from 'views/AddLiquidity'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
 import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import LiquidityFormProvider from 'views/AddLiquidityV3/form/LiquidityFormProvider'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -44,9 +43,7 @@ const AddLiquidityPage = () => {
       <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
     </StableConfigContext.Provider>
   ) : (
-    <LiquidityFormProvider>
-      <AddLiquidityV3 currencyA={currencyA} currencyB={currencyB} />
-    </LiquidityFormProvider>
+    <AddLiquidity currencyA={currencyA} currencyB={currencyB} />
   )
 }
 
@@ -72,7 +69,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return {
       redirect: {
         statusCode: 301,
-        destination: `/add/${match[1]}/${match[2]}`,
+        destination: `/add-v2/${match[1]}/${match[2]}`,
       },
     }
   }
@@ -81,7 +78,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     return {
       redirect: {
         statusCode: 303,
-        destination: `/add/${currencyIdA}`,
+        destination: `/add-v2/${currencyIdA}`,
       },
     }
   }

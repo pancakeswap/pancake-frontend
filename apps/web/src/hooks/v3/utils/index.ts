@@ -31,7 +31,7 @@ export function tryParsePrice(baseToken?: Token, quoteToken?: Token, value?: str
   )
 }
 
-export default function tryParseTick(
+export function tryParseTick(
   baseToken?: Token,
   quoteToken?: Token,
   feeAmount?: FeeAmount,

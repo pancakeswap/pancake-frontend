@@ -1,9 +1,10 @@
 import { BigNumber } from '@ethersproject/bignumber'
+// import useLocalSelector from 'contexts/LocalRedux/useSelector'
 // import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 // import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 
-export default function AddLiquidity() {
+export default function AddLiquidityV3({ currencyA, currencyB }) {
   const tokenId = null
 
   // check for existing position if tokenId in url
@@ -13,6 +14,10 @@ export default function AddLiquidity() {
   const hasExistingPosition = !!existingPositionDetails && !positionLoading
 
   // const { position: existingPosition } = useDerivedPositionInfo(existingPositionDetails)
+
+  // mint state
+  // const { independentField, typedValue, startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue } =
+  //   useLocalSelector((s) => s)
 
   // const {
   //   pool,
@@ -41,5 +46,5 @@ export default function AddLiquidity() {
   //   existingPosition,
   // )
 
-  return hasExistingPosition ? 'v3 increase' : 'v3 add'
+  return hasExistingPosition ? <>v3 increase</> : <>v3 add</>
 }
