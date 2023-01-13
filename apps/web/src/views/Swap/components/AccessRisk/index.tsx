@@ -31,6 +31,13 @@ interface AccessRiskProps {
 function RetryRisk({ onClick }: { onClick: () => void }) {
   const [retry, setRetry] = useState(false)
   const { t } = useTranslation()
+  const [isTooltipDisplayed, setIsTooltipDisplayed] = useState(false)
+  const displayTooltip = () => {
+    setIsTooltipDisplayed(true)
+    setTimeout(() => {
+      setIsTooltipDisplayed(false)
+    }, 1000)
+  }
   const retryTooltip = useTooltip(
     <>
       {t('Risk scanning failed.')} {!retry && t('Press the button to retry.')}
@@ -47,6 +54,7 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
         ml="4px"
         onClick={() => {
           setRetry(true)
+          displayTooltip(true)
           onClick()
         }}
         disabled={retry}
@@ -57,7 +65,7 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
       >
         <RefreshIcon color="primary" width="16px" height="16px" />
       </IconButton>
-      {retryTooltip.tooltipVisible && retryTooltip.tooltip}
+      {isTooltipDisplayed && retryTooltip.tooltip}
     </div>
   )
 }

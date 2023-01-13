@@ -1,130 +1,168 @@
-import { CSSProperties } from 'react'
-import { Currency, Token } from '@pancakeswap/sdk'
-import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints, Flex } from '@pancakeswap/uikit'
-import { AutoRow, RowFixed } from 'components/Layout/Row'
+import { useState } from 'react'
+import { Token, Currency, ChainId } from '@pancakeswap/sdk'
+import {
+  Button,
+  Text,
+  ErrorIcon,
+  Flex,
+  Message,
+  Checkbox,
+  Link,
+  Tag,
+  Grid,
+  BscScanIcon,
+  useTooltip,
+  HelpIcon,
+} from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
-import CurrencyLogo from 'components/Logo/CurrencyLogo'
-import { ListLogo } from 'components/Logo'
+import { useAddUserToken } from 'state/user/hooks'
+import { getBlockExploreLink, getBlockExploreName } from 'utils'
+import useSWRImmutable from 'swr/immutable'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useCombinedInactiveList } from 'state/lists/hooks'
-import styled from 'styled-components'
-import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
+import { ListLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
+import { chains } from 'utils/wagmi'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import AccessRisk from 'views/Swap/components/AccessRisk'
+import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
+import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
 
-const TokenSection = styled.div<{ dim?: boolean }>`
-  padding: 4px 20px;
-  height: 56px;
-  display: grid;
-  grid-template-columns: auto minmax(auto, 1fr) auto;
-  grid-gap: 10px;
-  align-items: center;
+interface ImportProps {
+  tokens: Token[]
+  handleCurrencySelect?: (currency: Currency) => void
+}
 
-  opacity: ${({ dim }) => (dim ? '0.4' : '1')};
+const getStandard = (chainId: ChainId) =>
+  chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET ? 'ERC20' : 'BEP20'
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    grid-gap: 16px;
-  }
-`
-
-const CheckIcon = styled(CheckmarkCircleIcon)`
-  height: 16px;
-  width: 16px;
-  margin-right: 6px;
-  stroke: ${({ theme }) => theme.colors.success};
-`
-
-const NameOverflow = styled.div`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 140px;
-  font-size: 12px;
-`
-
-export default function ImportRow({
-  token,
-  style,
-  dim,
-  onCurrencySelect,
-  showImportView,
-  setImportToken,
-}: {
-  token: Token
-  style?: CSSProperties
-  dim?: boolean
-  onCurrencySelect?: (currency: Currency) => void
-  showImportView: () => void
-  setImportToken: (token: Token) => void
-}) {
-  // globals
-  const { isMobile } = useMatchBreakpoints()
+function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
+  const { chainId } = useActiveChainId()
 
   const { t } = useTranslation()
 
-  // check if token comes from list
-  const inactiveTokenList = useCombinedInactiveList()
-  const list = token?.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
+  const [confirmed, setConfirmed] = useState(false)
 
-  // check if already active on list or local storage tokens
-  const isAdded = useIsUserAddedToken(token)
-  const isActive = useIsTokenActive(token)
+  const addToken = useAddUserToken()
+
+  // use for showing import source on inactive tokens
+  const inactiveTokenList = useCombinedInactiveList()
+
+  const { data: hasRiskToken } = useSWRImmutable(tokens && ['has-risks', tokens], async () => {
+    const result = await Promise.all(tokens.map((token) => fetchRiskToken(token.address, token.chainId)))
+    return result.some((r) => r.riskLevel > TOKEN_RISK.MEDIUM)
+  })
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    t('I have read the scanning result, understood the risk and want to proceed with token importing.'),
+  )
 
   return (
-    <TokenSection
-      style={style}
-      variant="text"
-      as={isActive && onCurrencySelect ? Button : 'a'}
-      onClick={() => {
-        if (isActive) {
-          onCurrencySelect?.(token)
-        }
-      }}
-    >
-      <CurrencyLogo currency={token} size={isMobile ? '20px' : '24px'} style={{ opacity: dim ? '0.6' : '1' }} />
-      <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
-        <AutoRow>
-          <Flex
-            alignItems={isMobile && token.symbol.length > 14 ? undefined : 'center'}
-            flexDirection={isMobile && token.symbol.length > 14 ? 'column' : 'row'}
-          >
-            <Text mr="8px">{token.symbol}</Text>
-            <Text color="textDisabled">
-              <NameOverflow
-                style={!isMobile && token.symbol.length > 14 ? { maxWidth: '58px' } : {}}
-                title={token.name}
-              >
-                {token.name}
-              </NameOverflow>
-            </Text>
+    <AutoColumn gap="lg">
+      <Message variant="warning">
+        <Text>
+          {t(
+            'Anyone can create a %standard% token on %network% with any name, including creating fake versions of existing tokens and tokens that claim to represent projects that do not have a token.',
+            {
+              standard: getStandard(chainId),
+              network: chains.find((c) => c.id === chainId)?.name,
+            },
+          )}
+          <br />
+          <br />
+          {t('If you purchase an arbitrary token, you may be unable to sell it back.')}
+        </Text>
+      </Message>
+
+      {tokens.map((token) => {
+        const list = token.chainId && inactiveTokenList?.[token.chainId]?.[token.address]?.list
+        const address = token.address ? `${truncateHash(token.address)}` : null
+        return (
+          <Flex key={token.address} alignItems="center" justifyContent="space-between">
+            <Grid gridTemplateRows="1fr 1fr 1fr 1fr" gridGap="4px">
+              {list !== undefined ? (
+                <Tag
+                  variant="success"
+                  outline
+                  scale="sm"
+                  startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                >
+                  {t('via')} {list.name}
+                </Tag>
+              ) : (
+                <Tag variant="failure" outline scale="sm" startIcon={<ErrorIcon color="failure" />}>
+                  {t('Unknown Source')}
+                </Tag>
+              )}
+              <Flex alignItems="center">
+                <Text mr="8px">{token.name}</Text>
+                <Text>({token.symbol})</Text>
+              </Flex>
+              {token.chainId && (
+                <>
+                  <Text mr="4px">{address}</Text>
+                  <Link href={getBlockExploreLink(token.address, 'address', token.chainId)} external>
+                    (
+                    {t('View on %site%', {
+                      site: getBlockExploreName(token.chainId),
+                    })}
+                    {token.chainId === ChainId.BSC && <BscScanIcon color="primary" ml="4px" />})
+                  </Link>
+                </>
+              )}
+            </Grid>
+            {token && SUPPORT_ONLY_BSC.includes(token.chainId) && <AccessRisk token={token} />}
           </Flex>
-        </AutoRow>
-        {list && list.logoURI && (
-          <RowFixed>
-            <Text fontSize={isMobile ? '10px' : '14px'} mr="4px" color="textSubtle">
-              {t('via')} {list.name}
-            </Text>
-            <ListLogo logoURI={list.logoURI} size="12px" />
-          </RowFixed>
-        )}
-      </AutoColumn>
-      {!isActive && !isAdded ? (
+        )
+      })}
+      <Grid gridTemplateRows="1fr" gridGap="4px">
+        <Flex alignItems="center" onClick={() => setConfirmed(!confirmed)}>
+          <Checkbox
+            scale="sm"
+            name="confirmed"
+            type="checkbox"
+            checked={confirmed}
+            onChange={() => setConfirmed(!confirmed)}
+          />
+          <Text ml="8px" style={{ userSelect: 'none' }}>
+            {hasRiskToken ? t('I acknowledge the risk') : t('I understand')}
+          </Text>
+          {hasRiskToken && (
+            <div ref={targetRef}>
+              <HelpIcon color="textSubtle" />
+              {tooltipVisible && tooltip}
+            </div>
+          )}
+        </Flex>
         <Button
-          scale={isMobile ? 'sm' : 'md'}
-          width="fit-content"
+          variant="danger"
+          width="100%"
+          disabled={!confirmed}
           onClick={() => {
-            if (setImportToken) {
-              setImportToken(token)
+            tokens.forEach((token) => {
+              const inactiveToken = chainId && inactiveTokenList?.[token.chainId]?.[token.address]
+              let tokenToAdd = token
+              if (inactiveToken) {
+                tokenToAdd = new WrappedTokenInfo({
+                  ...token,
+                  logoURI: inactiveToken.token.logoURI,
+                  name: token.name || inactiveToken.token.name,
+                })
+              }
+              addToken(tokenToAdd)
+            })
+            if (handleCurrencySelect) {
+              handleCurrencySelect(tokens[0])
             }
-            showImportView()
           }}
+          className=".token-dismiss-button"
         >
           {t('Import')}
         </Button>
-      ) : (
-        <RowFixed style={{ minWidth: 'fit-content' }}>
-          <CheckIcon />
-          <Text color="success">Active</Text>
-        </RowFixed>
-      )}
-    </TokenSection>
+      </Grid>
+    </AutoColumn>
   )
 }
+
+export default ImportToken
