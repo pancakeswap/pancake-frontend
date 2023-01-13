@@ -100,7 +100,6 @@ const ChefsChoice = () => {
           >
             <SwiperSlide>
               <BlogCard
-                // maxWidth="355px"
                 margin="auto"
                 imgHeight={['200px']}
                 imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
@@ -108,7 +107,6 @@ const ChefsChoice = () => {
             </SwiperSlide>
             <SwiperSlide>
               <BlogCard
-                // maxWidth="355px"
                 margin="auto"
                 imgHeight={['200px']}
                 imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
@@ -116,7 +114,6 @@ const ChefsChoice = () => {
             </SwiperSlide>
             <SwiperSlide>
               <BlogCard
-                // maxWidth="355px"
                 margin="auto"
                 imgHeight={['200px']}
                 imgUrl="https://www.shutterstock.com/image-photo/oil-field-workers-work-600w-393686092.jpg"
@@ -124,7 +121,6 @@ const ChefsChoice = () => {
             </SwiperSlide>
             <SwiperSlide>
               <BlogCard
-                // maxWidth="355px"
                 margin="auto"
                 imgHeight={['200px']}
                 imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
@@ -132,7 +128,6 @@ const ChefsChoice = () => {
             </SwiperSlide>
             <SwiperSlide>
               <BlogCard
-                // maxWidth="355px"
                 margin="auto"
                 imgHeight={['200px']}
                 imgUrl="https://www.shutterstock.com/image-photo/oil-field-workers-work-600w-393686092.jpg"
@@ -140,7 +135,6 @@ const ChefsChoice = () => {
             </SwiperSlide>
             <SwiperSlide>
               <BlogCard
-                // maxWidth="355px"
                 margin="auto"
                 imgHeight={['200px']}
                 imgUrl="https://www.shutterstock.com/image-illustration/military-robot-destroyed-city-future-600w-1207217143.jpg"
