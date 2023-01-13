@@ -54,7 +54,7 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
         ml="4px"
         onClick={() => {
           setRetry(true)
-          displayTooltip(true)
+          displayTooltip()
           onClick()
         }}
         disabled={retry}
