@@ -410,8 +410,8 @@ const campaigns: Campaign[] = [
   {
     id: '512100000',
     type: 'ifo',
-    title: 'ESPL',
-    badge: 'ifo-espl.svg',
+    title: 'ARENA',
+    badge: 'ifo-arena.svg',
   },
   {
     id: '512030001',

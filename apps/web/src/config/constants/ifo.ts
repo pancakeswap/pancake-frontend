@@ -7,10 +7,10 @@ export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 1
 
 const ifos: Ifo[] = [
   {
-    id: 'espl',
+    id: 'arena',
     address: '0xC7d259712a26fa33a9a94cFB58964a67dAB27095',
     isActive: true,
-    name: 'ESPL',
+    name: 'ARENA',
     plannedStartTime: 1673870400, // Mon Jan 16 2023 12:00:00 UTC
     poolBasic: {
       raiseAmount: '$350,000',
@@ -19,7 +19,7 @@ const ifos: Ifo[] = [
       raiseAmount: '$1,050,000',
     },
     currency: bscTokens.cake,
-    token: bscTokens.arean,
+    token: bscTokens.arena,
     campaignId: '512100000',
     articleUrl:
       'https://pancakeswap.finance/voting/proposal/0x06598b682d9f33ec5ea0c2acf8eba13dea7c63fa08dd2c4dfd7bc7af16920d51',
