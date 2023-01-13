@@ -8,10 +8,9 @@ export const cakeBnbLpToken = new ERC20Token(ChainId.BSC, CAKE_BNB_LP_MAINNET, 1
 const ifos: Ifo[] = [
   {
     id: 'espl',
-    address: '0x57eb2e676863435a140f8bc2a0f0e955c36ed446', // TODO wait for operation SC
+    address: '', // TODO wait for operation IFO SC
     isActive: true,
-    cIFO: false,
-    name: 'Esports Arena',
+    name: 'ESPL',
     plannedStartTime: 1673870400, // Mon Jan 16 2023 12:00:00 UTC
     poolBasic: {
       raiseAmount: '$350,000',
