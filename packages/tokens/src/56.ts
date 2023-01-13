@@ -2438,7 +2438,7 @@ export const bscTokens = {
     ChainId.BSC,
     '0xCfFD4D3B517b77BE32C76DA768634dE6C738889B',
     18,
-    'ARENA',
+    'ESPL',
     'ESPL ARENA',
     'https://espl.co/',
   ),
