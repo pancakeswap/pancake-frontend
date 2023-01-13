@@ -20,6 +20,7 @@
     "build": "tsup",
     "start": "tsup --watch",
     "test": "vitest --run",
+    "coverage": "vitest run --coverage",
     "prepublishOnly": "tsup build"
   },
   "dependencies": {
