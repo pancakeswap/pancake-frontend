@@ -1,14 +1,13 @@
-import { useContext, useState } from 'react'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-import { Text, TooltipText, useModal, useTooltip, Farm as FarmUI, RoiCalculatorModal } from '@pancakeswap/uikit'
+import { Farm as FarmUI, RoiCalculatorModal, Text, TooltipText, useModal, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import _toNumber from 'lodash/toNumber'
-import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
+import { useContext, useState } from 'react'
 import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
+import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import useBoostMultiplier from '../YieldBooster/hooks/useBoostMultiplier'
-import { useGetBoostedMultiplier } from '../YieldBooster/hooks/useGetBoostedAPR'
 
 export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
@@ -58,9 +57,9 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
     ? stakedBalance.plus(tokenBalance)
     : proxy.stakedBalance.plus(proxy.tokenBalance)
-  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
+  // const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
   const boostMultiplierFromSC = useBoostMultiplier({ pid, boosterState, proxyAddress })
-  const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boosterMultiplierFromFE
+  const boostMultiplier = boostMultiplierFromSC
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
