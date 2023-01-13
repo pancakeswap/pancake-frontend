@@ -37,7 +37,7 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   useEffect(() => {
     refreshActivePool() // run once to refresh data from context
-  }, [refreshActivePool])
+  }, [refreshActivePool, boostMultiplierFromSC])
   const renderBtn = useCallback(() => {
     switch (boosterState) {
       case YieldBoosterState.UNCONNECTED:
