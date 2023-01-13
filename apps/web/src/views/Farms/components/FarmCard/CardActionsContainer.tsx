@@ -93,7 +93,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           )}
           desc={(actionBtn) => <ActionContainer>{actionBtn}</ActionContainer>}
           farmPid={farm.pid}
-          lpTotalSupply={farm.lpTotalSupply}
+          lpTokenStakedAmount={farm.lpTokenStakedAmount}
           userBalanceInFarm={
             (stakedBalance.plus(tokenBalance).gt(0)
               ? stakedBalance.plus(tokenBalance)

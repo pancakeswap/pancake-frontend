@@ -35,7 +35,7 @@ const BCakeBlock = styled.div`
 interface BCakeCalculatorProps {
   targetInputBalance: string
   earningTokenPrice: number
-  lpTotalSupply: BigNumber
+  lpTokenStakedAmount: BigNumber
   initialState?: any
   stakingTokenSymbol?: string
   setBCakeMultiplier: (multiplier: number) => void
@@ -46,7 +46,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
   earningTokenPrice,
   initialState,
   stakingTokenSymbol = 'CAKE',
-  lpTotalSupply,
+  lpTokenStakedAmount,
   setBCakeMultiplier,
 }) => {
   const [isShow, setIsShow] = useState(true)
@@ -72,7 +72,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
     [principalAsToken],
   )
 
-  const bCakeMultiplier = useGetCalculatorMultiplier(userBalanceInFarm, lpTotalSupply, userLockedAmount, duration)
+  const bCakeMultiplier = useGetCalculatorMultiplier(userBalanceInFarm, lpTokenStakedAmount, userLockedAmount, duration)
 
   useEffect(() => {
     setBCakeMultiplier(bCakeMultiplier)

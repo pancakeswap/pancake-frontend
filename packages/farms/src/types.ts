@@ -57,6 +57,7 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   stableSwapAddress?: string
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
+  lpTokenStakedAmount?: string
 }
 
 export interface AprMap {
@@ -128,6 +129,7 @@ export interface DeserializedFarm extends DeserializedFarmConfig {
   stableSwapAddress?: string
   stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
+  lpTokenStakedAmount?: BigNumber
 }
 
 export interface DeserializedFarmsState {
