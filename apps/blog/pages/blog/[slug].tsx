@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { NotFound } from '@pancakeswap/uikit'
+import SingleArticle from 'components/Article/SingleArticle'
 
 interface ArticlePage {
   article?: any // Article
@@ -9,11 +10,11 @@ interface ArticlePage {
 
 const ArticlePage = ({ article, latestArticles, preview }: ArticlePage) => {
   const router = useRouter()
-  if (!router.isFallback && !article?.attributes?.slug) {
-    return <NotFound />
-  }
+  // if (!router.isFallback && !article?.attributes?.slug) {
+  //   return <NotFound />
+  // }
 
-  return <>ArticlePage</>
+  return <SingleArticle />
 }
 
 export default ArticlePage

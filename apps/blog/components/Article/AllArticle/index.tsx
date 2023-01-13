@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { useState, useMemo } from 'react'
 import { Box, Text, Flex, Button, PaginationButton, SearchInput } from '@pancakeswap/uikit'
-import SingleArticle from 'components/Article/SingleArticle'
+import CardArticle from 'components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import ArticleSortSelect from 'components/Article/ArticleSortSelect'
@@ -39,7 +39,7 @@ const StyledCard = styled(Flex)`
   }
 `
 
-const Article = () => {
+const AllArticle = () => {
   const { t } = useTranslation()
   const { query: urlQuery } = useRouter()
   const [currentPage, setCurrentPage] = useState(1)
@@ -87,8 +87,8 @@ const Article = () => {
           </Flex>
           <StyledCard>
             <Box>
-              <SingleArticle />
-              <SingleArticle />
+              <CardArticle />
+              <CardArticle />
             </Box>
             <PaginationButton
               showMaxPageText
@@ -103,4 +103,4 @@ const Article = () => {
   )
 }
 
-export default Article
+export default AllArticle

@@ -2,7 +2,7 @@ import { Box, BoxProps, Card, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { HeightProps } from 'styled-system'
 
-const StyledBackgroundImage = styled(Box)<{ imgHeight?: number; imgUrl: string }>`
+const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
   background-size: cover;
   background-position: center;
