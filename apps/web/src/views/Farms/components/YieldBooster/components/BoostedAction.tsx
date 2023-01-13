@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, NextLinkFromReactRouter, Button } from '@pancakeswap/uikit'
-import { ReactNode, useCallback, useContext } from 'react'
+import { ReactNode, useCallback, useContext, useEffect } from 'react'
 
 import BigNumber from 'bignumber.js'
 import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'
@@ -35,7 +35,9 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
   const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boostedMultiplierFromFE
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
-
+  useEffect(() => {
+    refreshActivePool() // run once to refresh data from context
+  }, [refreshActivePool])
   const renderBtn = useCallback(() => {
     switch (boosterState) {
       case YieldBoosterState.UNCONNECTED:
