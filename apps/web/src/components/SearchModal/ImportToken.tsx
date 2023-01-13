@@ -117,7 +117,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
         )
       })}
 
-      <Flex justifyContent="space-between" alignItems="center">
+      <Grid gridTemplateRows="1fr 1fr" gridGap="4px">
         <Flex alignItems="center" onClick={() => setConfirmed(!confirmed)}>
           <Checkbox
             scale="sm"
@@ -158,9 +158,9 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           }}
           className=".token-dismiss-button"
         >
-          {t('Import')}
+          {hasRiskToken ? t('Proceed') : t('Import')}
         </Button>
-      </Flex>
+      </Grid>
     </AutoColumn>
   )
 }
