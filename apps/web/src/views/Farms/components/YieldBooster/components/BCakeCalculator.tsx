@@ -206,6 +206,17 @@ export const getBCakeMultiplier = (
   lpBalanceOfFarm: BigNumber,
   averageLockDuration: number,
 ) => {
+  console.log(
+    {
+      userBalanceInFarm: userBalanceInFarm.toString(),
+      userLockAmount: userLockAmount.toString(),
+      userLockDuration,
+      totalLockAmount: totalLockAmount.toString(),
+      lpBalanceOfFarm: lpBalanceOfFarm.toString(),
+      averageLockDuration,
+    },
+    'BCakeMultiplier param console for bunswap',
+  )
   const dB = userBalanceInFarm.times(CA)
   const aBPart1 = lpBalanceOfFarm.times(userLockAmount).times(userLockDuration)
   const aBPart3 = totalLockAmount.times(averageLockDuration)
