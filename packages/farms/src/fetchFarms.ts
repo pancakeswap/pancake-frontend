@@ -375,7 +375,7 @@ const getClassicFarmsDynamicData = ({
 }: FormatClassicFarmResponse & {
   token0Decimals: number
   token1Decimals: number
-  lpTokenStakedAmount: string
+  lpTokenStakedAmount?: string
 }) => {
   // Raw amount of token in the LP, including those not staked
   const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0Decimals)
