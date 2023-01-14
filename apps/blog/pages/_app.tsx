@@ -42,6 +42,9 @@ const GlobalStyle = createGlobalStyle`
       max-width: 100%;
     }
   }
+  .swiper-grid-column .swiper-wrapper {
+    flex-direction: unset !important;
+  }
 `
 
 function useIsMounted() {

@@ -33,7 +33,7 @@ const CardArticle = () => {
   const router = useRouter()
 
   const handleClick = () => {
-    router.push('/blog/123')
+    router.push('/blog/article/123')
   }
 
   return (

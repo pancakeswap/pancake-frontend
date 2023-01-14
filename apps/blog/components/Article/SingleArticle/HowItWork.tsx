@@ -3,31 +3,38 @@ import { Box, Text, Flex, Card, Button, ArrowForwardIcon } from '@pancakeswap/ui
 
 const StyledImage = styled('div')`
   position: absolute;
-  width: 251px;
-  height: 365px;
+  width: 125px;
+  height: 182px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url('/images/how_it_work.png');
   z-index: 1;
   right: 0;
-  bottom: 5%;
+  top: -45%;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    width: 251px;
+    height: 365px;
+    top: auto;
+    bottom: 5%;
+  }
 `
 
 const HowItWork = () => {
   return (
-    <Box position="relative" width={['663px']} m={['auto']}>
+    <Box position="relative" m={['150px auto 0 auto']} padding={['0 16px']} width={['100%', '100%', '100%', '663px']}>
       <StyledImage />
       <Card>
         <Box padding={['24px']}>
-          <Flex flexDirection="column" mb={['58px']} width={['300px']}>
-            <Text bold fontSize={['24px']} color="primary">
+          <Flex flexDirection="column" mb={['24px', '24px', '58px']} width={['100%', '300px']}>
+            <Text bold fontSize={['16px', '16px', '24px']} color="primary">
               How does it work?
             </Text>
-            <Text bold fontSize={['40px']} m={['16px 0']} lineHeight="110%">
+            <Text bold fontSize={['24px', '24px', '40px']} m={['16px 0']} lineHeight="110%">
               Learn basics of PancakeSwap
             </Text>
-            <Text fontSize={['16px']} color="textSubtle">
+            <Text fontSize={['14px', '14px', '16px']} color="textSubtle">
               Trade tokens, earn rewards and play to win!
             </Text>
           </Flex>
