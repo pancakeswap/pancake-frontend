@@ -92,10 +92,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   }
 
   const handleExpertModeToggle = () => {
-    if (expertMode) {
-      onChangeRecipient(null)
-      toggleExpertMode()
-    } else if (!showExpertModeAcknowledgement) {
+    if (expertMode || !showExpertModeAcknowledgement) {
       onChangeRecipient(null)
       toggleExpertMode()
     } else {
