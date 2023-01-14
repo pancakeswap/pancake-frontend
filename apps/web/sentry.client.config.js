@@ -25,6 +25,7 @@ init({
     }),
     new Dedupe(),
   ],
+  release: process.env.VERCEL_GIT_COMMIT_SHA,
   environment: ENV === 'production' ? 'production' : 'development',
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 0,
