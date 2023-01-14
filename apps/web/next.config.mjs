@@ -22,6 +22,7 @@ const sentryWebpackPluginOptions =
         //   urlPrefix, include, ignore
         silent: false, // Logging when deploying to check if there is any problem
         validate: true,
+        release: 'f7c1c81418590501adfb8945f9bd17a073847046',
         // For all available options, see:
         // https://github.com/getsentry/sentry-webpack-plugin#options.
       }
