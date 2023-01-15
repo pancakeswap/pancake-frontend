@@ -58,14 +58,22 @@ router.get('/:chainId', async ({ params }, event) => {
     try {
       const savedFarms = await saveFarms(+chainId, event)
 
-      return json(savedFarms)
+      return json(savedFarms, {
+        headers: {
+          'Cache-Control': 'max-age=60, s-maxage=60',
+        },
+      })
     } catch (e) {
       console.log(e)
       return error(500, 'Fetch Farms error')
     }
   }
 
-  return json(cached)
+  return json(cached, {
+    headers: {
+      'Cache-Control': 'max-age=60, s-maxage=60',
+    },
+  })
 })
 
 router.all('*', () => missing('Not found'))
