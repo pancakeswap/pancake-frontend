@@ -1,7 +1,8 @@
-import { Box, Flex, Logo, ThemeSwitcher, Link, Button } from '@pancakeswap/uikit'
+import { Box, Flex, Logo, ThemeSwitcher, Link, Button, LangSelector } from '@pancakeswap/uikit'
 import { useTheme as useNextTheme } from 'next-themes'
 import NextLink from 'next/link'
 import styled, { useTheme } from 'styled-components'
+import { useTranslation, languageList } from '@pancakeswap/localization'
 
 const MenuItemStyle = styled.a<any>`
   position: relative;
@@ -28,6 +29,7 @@ const MenuItemStyle = styled.a<any>`
 const Menu = () => {
   const theme = useTheme()
   const { setTheme } = useNextTheme()
+  const { currentLanguage, setLanguage, t } = useTranslation()
 
   return (
     <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={9}>
@@ -36,7 +38,7 @@ const Menu = () => {
         <Flex pl={['10px', null, '50px']}>
           <Box display="flex">
             <NextLink href="/" passHref>
-              <MenuItemStyle $isActive>Blog</MenuItemStyle>
+              <MenuItemStyle $isActive>{t('Blog')}</MenuItemStyle>
             </NextLink>
           </Box>
         </Flex>
@@ -45,8 +47,16 @@ const Menu = () => {
         <Box mr="16px">
           <ThemeSwitcher isDark={theme.isDark} toggleTheme={() => setTheme(theme.isDark ? 'light' : 'dark')} />
         </Box>
+        <LangSelector
+          buttonScale="xs"
+          color="textSubtle"
+          hideLanguage
+          currentLang={currentLanguage.code}
+          langs={languageList}
+          setLang={setLanguage}
+        />
         <Link external href="https://pancakeswap.finance/">
-          <Button scale="sm">Launch App</Button>
+          <Button scale="sm">{t('Launch App')}</Button>
         </Link>
       </Flex>
     </Flex>

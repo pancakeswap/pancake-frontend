@@ -56,5 +56,6 @@ export * from "./TokenLogo";
 export * from "./NotFound";
 export * from "./PageSection";
 export * from "./PaginationButton";
+export * from "./LangSelector";
 
 export type { DropdownMenuItems } from "./DropdownMenu";

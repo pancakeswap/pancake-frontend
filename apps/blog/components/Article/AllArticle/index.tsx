@@ -45,7 +45,22 @@ const AllArticle = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
   const [sortBy, setSortBy] = useState('date')
+  const [languageOption, setLanguageOption] = useState('all')
   const [_query, setQuery] = useState('')
+
+  const languageItems = [
+    { label: t('All'), value: 'all' },
+    { label: 'English', value: 'en' },
+    { label: '简体中文', value: 'cn' },
+    { label: '日本語', value: 'ja' },
+    { label: 'Español', value: 'es-ES' },
+  ]
+
+  const sortByItems = [
+    { label: t('Date'), value: 'date' },
+    { label: t('Sort Title A-Z'), value: 'asc' },
+    { label: t('Sort Title Z-A'), value: 'desc' },
+  ]
 
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
 
@@ -76,12 +91,19 @@ const AllArticle = () => {
         <Flex width="100%" flexDirection="column">
           <Flex
             mb="24px"
-            flexDirection={['column', 'column', 'column', 'row']}
+            flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
             alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
           >
-            <ArticleSortSelect setSortBy={setSortBy} />
-            <Box width="100%" mt="22px" ml={['0', '0', '0', '16px']}>
+            <Flex flexDirection={['column', 'row']}>
+              <Box width="100%">
+                <ArticleSortSelect title={t('Languages')} options={languageItems} setOption={setLanguageOption} />
+              </Box>
+              <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>
+                <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
+              </Box>
+            </Flex>
+            <Box width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
               <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search" />
             </Box>
           </Flex>

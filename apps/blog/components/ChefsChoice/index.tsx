@@ -1,7 +1,8 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import BlogCard from 'components/Blog/BlogCard'
+import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper'
 import ArticleView from 'components/Article/ArticleView'
 import 'swiper/css/bundle'
@@ -15,9 +16,11 @@ const StyledChefsChoiceContainer = styled(Flex)`
 `
 
 const ChefsChoice = () => {
+  const { t } = useTranslation()
+
   return (
     <StyledChefsChoiceContainer justifyContent="center">
-      <ArticleView title="Chef’s choice" subTitle="Read about our latest announcements and more">
+      <ArticleView title={t('Chef’s choice')} subTitle={t('Read about our latest announcements and more')}>
         <Swiper
           loop
           resizeObserver
@@ -41,46 +44,14 @@ const ChefsChoice = () => {
           }}
         >
           <SwiperSlide>
-            <BlogCard
-              margin="auto"
-              imgHeight={['200px']}
-              imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <BlogCard
-              margin="auto"
-              imgHeight={['200px']}
-              imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <BlogCard
-              margin="auto"
-              imgHeight={['200px']}
-              imgUrl="https://www.shutterstock.com/image-photo/oil-field-workers-work-600w-393686092.jpg"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <BlogCard
-              margin="auto"
-              imgHeight={['200px']}
-              imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <BlogCard
-              margin="auto"
-              imgHeight={['200px']}
-              imgUrl="https://www.shutterstock.com/image-photo/oil-field-workers-work-600w-393686092.jpg"
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <BlogCard
-              margin="auto"
-              imgHeight={['200px']}
-              imgUrl="https://www.shutterstock.com/image-illustration/military-robot-destroyed-city-future-600w-1207217143.jpg"
-            />
+            <NextLinkFromReactRouter to="/blog/article/1">
+              <BlogCard
+                margin="auto"
+                padding={['0', '0', '18.5px']}
+                imgHeight={['200px']}
+                imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
+              />
+            </NextLinkFromReactRouter>
           </SwiperSlide>
         </Swiper>
       </ArticleView>

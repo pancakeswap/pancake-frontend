@@ -1,4 +1,4 @@
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box, Text, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import BlogCard from 'components/Blog/BlogCard'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
@@ -32,18 +32,20 @@ const NewBlog = () => {
   return (
     <StyledBackground isDark={isDark}>
       <Box maxWidth="1137px" margin="auto">
-        <Text bold fontSize={['32px', '32px', '40px']}>
-          {t('Blog')}
-        </Text>
-        <Text bold mt="4px" mb={['20px', '20px', '35px']} color="textSubtle" fontSize={['14px', '14px', '16px']}>
-          {t('Latest News about PancakeSwap and more!')}
-        </Text>
-        <BlogCard
-          maxWidth="880px"
-          margin="auto"
-          imgHeight={['155px', '250px', '350px', '500px']}
-          imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
-        />
+        <NextLinkFromReactRouter to="/blog/article/1">
+          <Text bold fontSize={['32px', '32px', '40px']}>
+            {t('Blog')}
+          </Text>
+          <Text bold mt="4px" mb={['20px', '20px', '35px']} color="textSubtle" fontSize={['14px', '14px', '16px']}>
+            {t('Latest News about PancakeSwap and more!')}
+          </Text>
+          <BlogCard
+            maxWidth="880px"
+            margin="auto"
+            imgHeight={['155px', '250px', '350px', '500px']}
+            imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
+          />
+        </NextLinkFromReactRouter>
       </Box>
     </StyledBackground>
   )

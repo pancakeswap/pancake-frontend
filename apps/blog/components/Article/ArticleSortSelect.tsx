@@ -1,29 +1,31 @@
 import { Box, Text, Select, OptionProps } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 
-interface ArticleSortSelectProps {
-  setSortBy: (value: string) => void
+interface SortByItem {
+  label: string
+  value: string
 }
 
-const ArticleSortSelect: React.FC<React.PropsWithChildren<ArticleSortSelectProps>> = ({ setSortBy }) => {
-  const { t } = useTranslation()
+interface ArticleSortSelectProps {
+  title: string
+  options: SortByItem[]
+  setOption: (value: string) => void
+}
 
-  const sortByItems = [
-    { label: t('Date'), value: 'date' },
-    { label: t('Sort Title A-Z'), value: 'asc' },
-    { label: t('Sort Title Z-A'), value: 'desc' },
-  ]
-
+const ArticleSortSelect: React.FC<React.PropsWithChildren<ArticleSortSelectProps>> = ({
+  title,
+  options,
+  setOption,
+}) => {
   const handleChange = (newOption: OptionProps) => {
-    setSortBy(newOption.value)
+    setOption(newOption.value)
   }
 
   return (
     <Box minWidth="165px">
       <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
-        {t('Sort By')}
+        {title}
       </Text>
-      <Select options={sortByItems} onOptionChange={handleChange} />
+      <Select options={options} onOptionChange={handleChange} />
     </Box>
   )
 }
