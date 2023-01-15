@@ -12,13 +12,25 @@
 
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
-import { saveFarms, saveLPsAPR } from './handler'
+import { fetchCakePrice, saveFarms, saveLPsAPR } from './handler'
 import { farmFetcher, handleCors, requireChainId, wrapCorsHeader } from './helper'
 import { FarmKV } from './kv'
 
 const router = Router()
 
-const allowedOrigin = /[^\w](?:pancake\.run|localhost:3000|pancakeswap\.finance|pancakeswap\.com)$/
+const allowedOrigin = /[^\w](pancake\.run)|(localhost:3000)|(localhost:3002)|(pancakeswap.finance)|(pancakeswap.com)$/
+
+router.get('/price/cake', async () => {
+  const price = await fetchCakePrice()
+  return json(
+    { price, updatedAt: new Date().toISOString() },
+    {
+      headers: {
+        'Cache-Control': 'max-age=10, s-maxage=10',
+      },
+    },
+  )
+})
 
 router.get('/apr', async ({ query }) => {
   if (typeof query?.key === 'string' && query.key === FORCE_UPDATE_KEY) {
