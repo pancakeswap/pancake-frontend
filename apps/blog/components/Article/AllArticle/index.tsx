@@ -8,7 +8,11 @@ import ArticleSortSelect from 'components/Article/ArticleSortSelect'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
-  margin: 80px auto;
+  margin: 45px auto 80px auto;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    margin: 80px auto;
+  }
 
   @media screen and (min-width: 1440px) {
     width: 1160px;

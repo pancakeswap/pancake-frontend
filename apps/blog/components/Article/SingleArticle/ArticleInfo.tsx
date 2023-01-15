@@ -18,7 +18,7 @@ const StyledSocialIcon = styled(Flex)`
   padding-top: 0px;
   flex-direction: row;
 
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.lg} {
     position: sticky;
     padding-top: 20px;
     flex-direction: column;
@@ -38,11 +38,11 @@ const ArticleInfo = () => {
 
   return (
     <Flex
-      padding={['0 16px', '0 16px', '0 16px', '0']}
+      padding={['0 16px', '0 16px', '0 16px', '0 16px', '0']}
       width={['100%', '100%', '100%', '100%', '828px']}
-      margin={['85px auto 40px auto']}
+      margin={['45px auto 40px auto', '45px auto 40px auto', '45px auto 40px auto', '85px auto 40px auto']}
       justifyContent={['flex-start', 'space-between']}
-      flexDirection={['column', 'column', 'column', 'row']}
+      flexDirection={['column', 'column', 'column', 'column', 'row']}
     >
       <Flex flexDirection="column" width={['100%', '100%', '100%', '100%', '748px']}>
         <Text bold fontSize={['32px', '32px', '40px']} mb={['26px']}>
@@ -63,8 +63,8 @@ const ArticleInfo = () => {
       <StyledSocialIcon>
         <StyledLink
           external
-          mb={['0', '0', '0', '28px']}
-          mr={['28px', '28px', '28px', '0']}
+          mb={['0', '0', '0', '0', '28px']}
+          mr={['28px', '28px', '28px', '28px', '0']}
           href={`https://twitter.com/share?url=https://blog.pancakeswap.finance${router.asPath}`}
         >
           <TwitterIcon width={40} />
