@@ -26,19 +26,6 @@ export interface BetResponse {
   block: string
 }
 
-export interface HistoricalBetResponse<UserType> {
-  id: string
-  hash: string
-  amount: string
-  position: string
-  claimed: boolean
-  user?: UserType
-  round: {
-    id: string
-    epoch: string
-  }
-}
-
 export interface RoundResponse<BetType> {
   id: string
   epoch: string

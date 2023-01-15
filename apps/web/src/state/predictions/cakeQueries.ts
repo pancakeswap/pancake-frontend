@@ -1,4 +1,4 @@
-import { UserResponse, BetResponse, HistoricalBetResponse, RoundResponse } from './responseType'
+import { UserResponse, BetResponse, RoundResponse } from './responseType'
 
 export interface UserResponseCAKE extends UserResponse<BetResponseCAKE> {
   totalCAKE: string
@@ -16,14 +16,7 @@ export interface BetResponseCAKE extends BetResponse {
   round?: RoundResponseCAKE
 }
 
-export type HistoricalBetResponseCAKE = HistoricalBetResponse<UserResponseCAKE>
-
 export type RoundResponseCAKE = RoundResponse<BetResponseCAKE>
-
-export interface TotalWonMarketResponseCAKE {
-  totalCAKE: string
-  totalCAKETreasury: string
-}
 
 /**
  * Base fields are the all the top-level fields available in the api. Used in multiple queries
