@@ -71,7 +71,7 @@ router.get('/:chainId', async ({ params }, event) => {
 
       return json(savedFarms, {
         headers: {
-          'Cache-Control': 'max-age=60, s-maxage=60',
+          'Cache-Control': 'public, max-age=60, s-maxage=60',
         },
       })
     } catch (e) {
