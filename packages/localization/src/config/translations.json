@@ -2093,5 +2093,6 @@
   "Learn more about risk rating": "Learn more about risk rating",
   "Unknown": "Unknown",
   "I acknowledge the risk": "I acknowledge the risk",
-  "I have read the scanning result, understood the risk and want to proceed with token importing.": "I have read the scanning result, understood the risk and want to proceed with token importing."
+  "I have read the scanning result, understood the risk and want to proceed with token importing.": "I have read the scanning result, understood the risk and want to proceed with token importing.",
+  "Proceed": "Proceed"
 }
