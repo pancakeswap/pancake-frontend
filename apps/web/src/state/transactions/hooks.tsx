@@ -39,6 +39,7 @@ export function useTransactionAdder(): (
     expectedAmountBaseRaw?: string
     expectedAmountQuoteRaw?: string
     feeAmount?: FeeAmount
+    createPool?: boolean
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()

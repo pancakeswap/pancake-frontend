@@ -8,6 +8,7 @@ export type TransactionType =
   | 'wrap'
   | 'add-liquidity'
   | 'add-liquidity-v3'
+  | 'remove-liquidity-v3'
   | 'remove-liquidity'
   | 'limit-order-submission'
   | 'limit-order-cancellation'
