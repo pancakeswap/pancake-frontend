@@ -26,6 +26,17 @@ const StyledTagContainer = styled(Box)`
   }
 `
 
+const StyledMobileTagContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  padding: 0 16px;
+  margin-bottom: 24px;
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    display: none;
+  }
+`
+
 const StyledCard = styled(Flex)`
   width: 100%;
   border-radius: 0;
@@ -90,7 +101,7 @@ const AllArticle = () => {
         </StyledTagContainer>
         <Flex width="100%" flexDirection="column">
           <Flex
-            mb="24px"
+            mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
             alignItems={['flexStart', 'flexStart', 'flexStart', 'center']}
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
@@ -107,6 +118,43 @@ const AllArticle = () => {
               <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search" />
             </Box>
           </Flex>
+          <StyledMobileTagContainer>
+            <Text fontSize="12px" textTransform="uppercase" color="textSubtle" fontWeight={600} mb="4px">
+              {t('Filter by')}
+            </Text>
+            <Flex overflowY="auto">
+              <Button display="block" width="fit-content" scale="sm" variant="subtle" m="0 4px 4px 0">
+                All
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
+                Vote
+              </Button>
+            </Flex>
+          </StyledMobileTagContainer>
           <StyledCard>
             <Box>
               <CardArticle />

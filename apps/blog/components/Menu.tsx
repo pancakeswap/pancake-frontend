@@ -37,7 +37,7 @@ const Menu = () => {
         <Logo href="/" />
         <Flex pl={['10px', null, '50px']}>
           <Box display="flex">
-            <NextLink href="/" passHref>
+            <NextLink href="/blog" passHref>
               <MenuItemStyle $isActive>{t('Blog')}</MenuItemStyle>
             </NextLink>
           </Box>

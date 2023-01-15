@@ -1,9 +1,10 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Button, Flex, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Button, Flex } from '@pancakeswap/uikit'
 import BlogCard from 'components/Blog/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay, Grid } from 'swiper'
 import ArticleView from 'components/Article/ArticleView'
+import NextLink from 'next/link'
 import 'swiper/css/grid'
 import 'swiper/css/bundle'
 
@@ -39,23 +40,25 @@ const SimilarArticles = () => {
             }}
           >
             <SwiperSlide>
-              <NextLinkFromReactRouter to="/blog/article/1">
+              <NextLink href="/blog/article/1" passHref>
                 <BlogCard
                   margin="auto"
                   padding={['0', '0', '18.5px']}
                   imgHeight={['200px']}
                   imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
                 />
-              </NextLinkFromReactRouter>
+              </NextLink>
             </SwiperSlide>
           </Swiper>
         </ArticleView>
       </Flex>
-      <NextLinkFromReactRouter to="/blog/article" style={{ margin: '50px auto' }}>
-        <Button scale="md" variant="secondary">
-          {t('More')}
-        </Button>
-      </NextLinkFromReactRouter>
+      <Flex justifyContent="center" m="50px auto">
+        <NextLink href="/blog/article" passHref>
+          <Button scale="md" variant="secondary">
+            {t('More')}
+          </Button>
+        </NextLink>
+      </Flex>
     </Flex>
   )
 }

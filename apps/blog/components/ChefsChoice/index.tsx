@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Flex, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
+import NextLink from 'next/link'
 import styled from 'styled-components'
 import BlogCard from 'components/Blog/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
@@ -44,14 +45,14 @@ const ChefsChoice = () => {
           }}
         >
           <SwiperSlide>
-            <NextLinkFromReactRouter to="/blog/article/1">
+            <NextLink href="/blog/article/1" passHref>
               <BlogCard
                 margin="auto"
                 padding={['0', '0', '18.5px']}
                 imgHeight={['200px']}
                 imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
               />
-            </NextLinkFromReactRouter>
+            </NextLink>
           </SwiperSlide>
         </Swiper>
       </ArticleView>
