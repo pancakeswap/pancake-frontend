@@ -36,7 +36,7 @@ import { useAccount } from 'wagmi'
 import Layout from '../components/Layout'
 import VoteDetailsModal from '../components/VoteDetailsModal'
 import { ADMINS, PANCAKE_SPACE, VOTE_THRESHOLD } from '../config'
-import Choices, { Choice, makeChoice, MINIMUM_CHOICES } from './Choices'
+import Choices, { ChoiceIdValue, makeChoice, MINIMUM_CHOICES } from './Choices'
 import { combineDateAndTime, getFormErrors } from './helpers'
 import { FormErrors, Label, SecondaryLabel } from './styles'
 import { FormState } from './types'
@@ -107,7 +107,7 @@ const CreateProposal = () => {
     }
   }
 
-  const updateValue = (key: string, value: string | Choice[] | Date) => {
+  const updateValue = (key: string, value: string | ChoiceIdValue[] | Date) => {
     setState((prevState) => ({
       ...prevState,
       [key]: value,
@@ -129,7 +129,7 @@ const CreateProposal = () => {
     updateValue('body', value)
   }
 
-  const handleChoiceChange = (newChoices: Choice[]) => {
+  const handleChoiceChange = (newChoices: ChoiceIdValue[]) => {
     updateValue('choices', newChoices)
   }
 

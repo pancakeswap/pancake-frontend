@@ -9,6 +9,7 @@ import { useFarmFromPid, useFarmUser } from 'state/farms/hooks'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
 import useBoostMultiplier from '../YieldBooster/hooks/useBoostMultiplier'
 import { useGetBoostedMultiplier } from '../YieldBooster/hooks/useGetBoostedAPR'
+import { YieldBoosterState } from '../YieldBooster/hooks/useYieldBoosterState'
 
 export interface ApyButtonProps {
   variant: 'text' | 'text-and-button'
@@ -53,14 +54,19 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
   const { account } = useActiveWeb3React()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
   const { tokenBalance, stakedBalance, proxy } = useFarmUser(pid)
-  const { lpTotalSupply } = useFarmFromPid(pid)
+  const { lpTokenStakedAmount } = useFarmFromPid(pid)
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
+
   const userBalanceInFarm = stakedBalance.plus(tokenBalance).gt(0)
     ? stakedBalance.plus(tokenBalance)
     : proxy.stakedBalance.plus(proxy.tokenBalance)
-  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
+  const boosterMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTokenStakedAmount)
   const boostMultiplierFromSC = useBoostMultiplier({ pid, boosterState, proxyAddress })
-  const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boosterMultiplierFromFE
+  const boostMultiplier = userBalanceInFarm.eq(0)
+    ? boostMultiplierFromSC
+    : userBalanceInFarm.gt(0) && boosterState === YieldBoosterState.ACTIVE
+    ? boostMultiplierFromSC
+    : boosterMultiplierFromFE
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
   const [onPresentApyModal] = useModal(
     <RoiCalculatorModal
@@ -82,7 +88,7 @@ const ApyButton: React.FC<React.PropsWithChildren<ApyButtonProps>> = ({
           <BCakeCalculator
             targetInputBalance={calculatorBalance}
             earningTokenPrice={cakePrice.toNumber()}
-            lpTotalSupply={lpTotalSupply}
+            lpTokenStakedAmount={lpTokenStakedAmount}
             setBCakeMultiplier={setBCakeMultiplier}
           />
         ) : null

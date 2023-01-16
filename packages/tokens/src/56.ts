@@ -2434,4 +2434,12 @@ export const bscTokens = {
     'Ankr Staked BNB',
     'https://www.ankr.com/staking-crypto/',
   ),
+  arena: new Token(
+    ChainId.BSC,
+    '0xCfFD4D3B517b77BE32C76DA768634dE6C738889B',
+    18,
+    'ARENA',
+    'ESPL ARENA',
+    'https://espl.co/',
+  ),
 }

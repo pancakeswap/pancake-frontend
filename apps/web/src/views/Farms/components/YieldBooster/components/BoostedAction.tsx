@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRenewIcon, NextLinkFromReactRouter, Button } from '@pancakeswap/uikit'
-import { ReactNode, useCallback, useContext } from 'react'
+import { ReactNode, useCallback, useContext, useEffect } from 'react'
 
 import BigNumber from 'bignumber.js'
 import useBoosterFarmHandlers from '../hooks/useBoosterFarmHandlers'
@@ -18,7 +18,7 @@ interface BoostedActionPropsType {
   title: (status: YieldBoosterState) => ReactNode
   desc: (actionBtn: ReactNode) => ReactNode
   userBalanceInFarm: BigNumber
-  lpTotalSupply: BigNumber
+  lpTokenStakedAmount: BigNumber
 }
 
 const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
@@ -26,16 +26,22 @@ const BoostedAction: React.FunctionComponent<BoostedActionPropsType> = ({
   title,
   desc,
   userBalanceInFarm,
-  lpTotalSupply,
+  lpTokenStakedAmount,
 }) => {
   const { t } = useTranslation()
   const { boosterState, refreshActivePool, refreshProxyAddress, proxyAddress } = useContext(YieldBoosterStateContext)
   const { isConfirming, ...handlers } = useBoosterFarmHandlers(farmPid, refreshActivePool)
   const boostMultiplierFromSC = useBoostMultiplier({ pid: farmPid, boosterState, proxyAddress })
-  const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
-  const boostMultiplier = userBalanceInFarm.eq(0) ? boostMultiplierFromSC : boostedMultiplierFromFE
+  const boostedMultiplierFromFE = useGetBoostedMultiplier(userBalanceInFarm, lpTokenStakedAmount)
+  const boostMultiplier = userBalanceInFarm.eq(0)
+    ? boostMultiplierFromSC
+    : userBalanceInFarm.gt(0) && boosterState === YieldBoosterState.ACTIVE
+    ? boostMultiplierFromSC
+    : boostedMultiplierFromFE
   const boostMultiplierDisplay = boostMultiplier.toLocaleString(undefined, { maximumFractionDigits: 3 })
-
+  useEffect(() => {
+    refreshActivePool() // run once to refresh data from context
+  }, [refreshActivePool, boostMultiplierFromSC])
   const renderBtn = useCallback(() => {
     switch (boosterState) {
       case YieldBoosterState.UNCONNECTED:
