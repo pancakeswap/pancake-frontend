@@ -6,7 +6,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
 import {
-  TITLE_BG,
+  CNY_TITLE_BG,
   GET_TICKETS_BG,
   FINISHED_ROUNDS_BG,
   FINISHED_ROUNDS_BG_DARK,
@@ -46,7 +46,7 @@ const Lottery = () => {
     <>
       <PageMeta />
       <LotteryPage>
-        <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
+        <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
         <PageSection
