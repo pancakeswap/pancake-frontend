@@ -1,7 +1,9 @@
 import styled from 'styled-components'
-import { Box, Text, Flex, TwitterIcon, TelegramIcon, Link } from '@pancakeswap/uikit'
-import { useRouter } from 'next/router'
+import { Box, Text, Flex } from '@pancakeswap/uikit'
 import ReactMarkdown from 'react-markdown'
+import useSWR from 'swr'
+import { ArticleType } from 'views/Blog/utils/transformArticle'
+import SocialIcon from 'views/Blog/components/Article/SingleArticle/SocialIcon'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -11,31 +13,45 @@ const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   background-image: ${({ imgUrl }) => `url(${imgUrl})`};
 `
 
-const StyledSocialIcon = styled(Flex)`
-  position: static;
-  top: 0px;
-  right: 0px;
-  height: 100%;
-  padding-top: 0px;
-  flex-direction: row;
+const StyledTagGroup = styled(Flex)`
+  flex-wrap: wrap;
+  margin-bottom: 4px;
 
-  ${({ theme }) => theme.mediaQueries.lg} {
-    position: sticky;
-    padding-top: 20px;
-    flex-direction: column;
-  }
-`
+  ${Text} {
+    &:after {
+      content: ',';
+      margin: 0 4px;
+    }
 
-const StyledLink = styled(Link)`
-  &:hover {
-    > svg {
-      fill: ${({ theme }) => theme.colors.secondary};
+    &:last-child {
+      &:after {
+        content: '';
+      }
     }
   }
 `
 
+const StyledMarkDown = styled(Box)`
+  * {
+    margin-bottom: 16px;
+  }
+
+  p {
+    line-height: 1.5;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 600;
+    font-size: 24px;
+    margin: 24px 0;
+  }
+`
+
 const ArticleInfo = () => {
-  const router = useRouter()
+  const { data: article } = useSWR<ArticleType>('/article')
 
   return (
     <Flex
@@ -47,37 +63,33 @@ const ArticleInfo = () => {
     >
       <Flex flexDirection="column" width={['100%', '100%', '100%', '100%', '748px']}>
         <Text bold fontSize={['32px', '32px', '40px']} mb={['26px']}>
-          PancakeSwap Info Relaunch in Partnership with $150,000 Bounty Winner — StreamingFast!
+          {article?.title}
         </Text>
-        <Flex mb={['4px']} justifyContent="flex-end">
-          <Text bold color="textSubtle" textTransform="uppercase">
-            partnership
-          </Text>
-        </Flex>
+        <StyledTagGroup justifyContent="flex-end">
+          {article?.categories.map((category: string) => (
+            <Text bold color="textSubtle" textTransform="uppercase">
+              {category}
+            </Text>
+          ))}
+        </StyledTagGroup>
         <Text color="textSubtle" mb={['26px']} textAlign="right">
-          June 24 2021
+          {article?.publishedAt}
         </Text>
         <Box mb="24px" borderRadius={20} overflow="hidden" height={['155px', '200px', '350px', '420px']}>
-          <StyledBackgroundImage imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg" />
+          <StyledBackgroundImage imgUrl={article?.imgUrl ?? ''} />
         </Box>
-        <ReactMarkdown>dddd</ReactMarkdown>
+        <Box mb="24px" display={['block', 'block', 'block', 'none']}>
+          <SocialIcon />
+        </Box>
+        {article?.content && (
+          <StyledMarkDown>
+            <ReactMarkdown>{article?.content}</ReactMarkdown>
+          </StyledMarkDown>
+        )}
       </Flex>
-      <StyledSocialIcon>
-        <StyledLink
-          external
-          mb={['0', '0', '0', '0', '28px']}
-          mr={['28px', '28px', '28px', '28px', '0']}
-          href={`https://twitter.com/share?url=https://blog.pancakeswap.finance${router.asPath}`}
-        >
-          <TwitterIcon width={40} />
-        </StyledLink>
-        <StyledLink
-          external
-          href={`https://telegram.me/share/url?url=https://blog.pancakeswap.finance${router.asPath}`}
-        >
-          <TelegramIcon width={40} />
-        </StyledLink>
-      </StyledSocialIcon>
+      <Box display={['none', 'none', 'none', 'block']}>
+        <SocialIcon />
+      </Box>
     </Flex>
   )
 }

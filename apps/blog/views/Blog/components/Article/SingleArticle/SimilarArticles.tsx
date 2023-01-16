@@ -6,53 +6,61 @@ import { Autoplay, Grid } from 'swiper'
 import ArticleView from 'views/Blog/components/Article/ArticleView'
 import NextLink from 'next/link'
 import MoreButton from 'views/Blog/components/MoreButton'
+import useSWR from 'swr'
+import { ArticleType } from 'views/Blog/utils/transformArticle'
 import 'swiper/css/grid'
 import 'swiper/css/bundle'
 
 const SimilarArticles = () => {
   const { t } = useTranslation()
+  const { data: similarArticles } = useSWR<ArticleType[]>('/similarArticles')
 
   return (
     <Flex maxWidth="100%" m="50px auto" flexDirection="column">
-      <Flex justifyContent="center">
-        <ArticleView title={t('You might also like')}>
-          <Swiper
-            resizeObserver
-            slidesPerView={1}
-            grid={{ rows: 1 }}
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-            modules={[Autoplay, Grid]}
-            breakpoints={{
-              320: {
-                slidesPerView: 1,
-                grid: { rows: 1 },
-              },
-              920: {
-                slidesPerView: 2,
-                grid: { rows: 1 },
-              },
-              1440: {
-                slidesPerView: 3,
-                grid: { rows: 2 },
-              },
-            }}
-          >
-            <SwiperSlide>
-              <NextLink href="/blog/article/1" passHref>
-                <BlogCard
-                  margin="auto"
-                  padding={['0', '0', '18.5px']}
-                  imgHeight={['200px']}
-                  imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
-                />
-              </NextLink>
-            </SwiperSlide>
-          </Swiper>
-        </ArticleView>
-      </Flex>
+      {similarArticles && similarArticles?.length > 0 && (
+        <Flex justifyContent="center">
+          <ArticleView title={t('You might also like')}>
+            <Swiper
+              resizeObserver
+              slidesPerView={1}
+              grid={{ rows: 1 }}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              modules={[Autoplay, Grid]}
+              breakpoints={{
+                320: {
+                  slidesPerView: 1,
+                  grid: { rows: 1 },
+                },
+                920: {
+                  slidesPerView: 2,
+                  grid: { rows: 1 },
+                },
+                1440: {
+                  slidesPerView: 3,
+                  grid: { rows: 2 },
+                },
+              }}
+            >
+              {similarArticles?.map((article) => (
+                <SwiperSlide key={article.id}>
+                  <NextLink passHref href={`/blog/article/${article.id}`}>
+                    <BlogCard
+                      margin="auto"
+                      padding={['0', '0', '18.5px']}
+                      imgHeight={['200px']}
+                      article={article}
+                      imgUrl={article.imgUrl}
+                    />
+                  </NextLink>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </ArticleView>
+        </Flex>
+      )}
       <MoreButton />
     </Flex>
   )

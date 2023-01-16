@@ -21,6 +21,7 @@ export interface ResponseArticleType {
     title: string
     description: string
     createAt: string
+    publishedAt: string
     content: string
     locale?: string
     categories: {

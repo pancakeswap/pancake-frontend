@@ -65,7 +65,7 @@ const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ article, i
               ))}
             </StyledTagGroup>
             <Text fontSize="14px" color="textSubtle">
-              {article?.createAt}
+              {article?.publishedAt}
             </Text>
           </Flex>
           <Text bold mt="20px">

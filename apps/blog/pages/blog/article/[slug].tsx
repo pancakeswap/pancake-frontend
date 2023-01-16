@@ -1,20 +1,65 @@
+import { FC } from 'react'
+import { SWRConfig } from 'swr'
 import { useRouter } from 'next/router'
 import { NotFound } from '@pancakeswap/uikit'
 import SingleArticle from 'views/Blog/components/Article/SingleArticle'
+import { InferGetServerSidePropsType } from 'next'
+import { getArticle, getSingleArticle } from 'views/Blog/hooks/getArticle'
+import PageMeta from 'components/PageMeta'
 
-interface ArticlePage {
-  article?: any // Article
-  latestArticles?: any[] // Article[]
-  preview: boolean
+export const getServerSideProps = async (context: any) => {
+  const params = context.params.slug
+  const article = await getSingleArticle({
+    url: `/articles/${params}`,
+    urlParamsObject: { populate: 'categories,image' },
+  })
+
+  const similarArticles = await getArticle({
+    url: '/articles',
+    urlParamsObject: {
+      populate: 'categories,image',
+      pagination: { limit: 6 },
+      filters: {
+        id: {
+          $not: params,
+        },
+        categories: {
+          $or: article.categories.map((category) => ({
+            name: {
+              $eq: category,
+            },
+          })),
+        },
+      },
+    },
+  })
+
+  return {
+    props: {
+      fallback: {
+        '/article': article,
+        '/similarArticles': similarArticles,
+      },
+    },
+  }
 }
 
-const ArticlePage = ({ article, latestArticles, preview }: ArticlePage) => {
+const ArticlePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ fallback }) => {
   const router = useRouter()
-  // if (!router.isFallback && !article?.attributes?.slug) {
-  //   return <NotFound />
-  // }
+  const { title, description, imgUrl } = fallback['/article']
 
-  return <SingleArticle />
+  if (!router.isFallback && !title) {
+    return <NotFound />
+  }
+
+  return (
+    <>
+      <PageMeta title={title} description={description} imgUrl={imgUrl} />
+      <SWRConfig value={{ fallback }}>
+        <SingleArticle />
+      </SWRConfig>
+    </>
+  )
 }
 
 export default ArticlePage

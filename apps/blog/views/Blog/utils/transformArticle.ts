@@ -8,6 +8,7 @@ export interface ArticleType {
   imgUrl: string
   content: string
   createAt: string
+  publishedAt: string
   description: string
   categories: Array<string>
 }
@@ -18,6 +19,7 @@ export const transformArticle = (article: ResponseArticleType): ArticleType => {
     title: article.attributes.title,
     content: article.attributes.content,
     createAt: article.attributes.createAt,
+    publishedAt: article.attributes.publishedAt,
     locale: article.attributes.locale ?? '',
     description: article.attributes.description,
     imgUrl: getStrapiURL(article.attributes.image.data[0].attributes.url) ?? '',

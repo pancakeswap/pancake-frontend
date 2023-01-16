@@ -7,15 +7,21 @@ import { getArticle } from 'views/Blog/hooks/getArticle'
 export async function getStaticProps() {
   const [latestArticles, chefChoiceArticle] = await Promise.all([
     getArticle({
-      populate: 'categories,image',
-      sort: 'publishedAt:desc',
-      pagination: { limit: 1 },
+      url: '/articles',
+      urlParamsObject: {
+        populate: 'categories,image',
+        sort: 'publishedAt:desc',
+        pagination: { limit: 1 },
+      },
     }),
     getArticle({
-      populate: 'categories,image',
-      sort: 'publishedAt:desc',
-      pagination: { limit: 9 },
-      'filters[categories][name][$eq]': 'Chef’s choice',
+      url: '/articles',
+      urlParamsObject: {
+        populate: 'categories,image',
+        sort: 'publishedAt:desc',
+        pagination: { limit: 9 },
+        'filters[categories][name][$eq]': 'Chef’s choice',
+      },
     }),
   ])
 
