@@ -1,0 +1,47 @@
+{
+  "name": "@pancakeswap/router-sdk",
+  "version": "1.4.0",
+  "description": "An sdk for routing swaps using Pancakeswap v2 and Pancakeswap v3.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest --run",
+    "build": "tsup",
+    "start": "tsup --watch"
+  },
+  "keywords": [
+    "pancakeswap",
+    "bnb"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@ethersproject/abi": "^5.5.0",
+    "@uniswap/swap-router-contracts": "1.1.0",
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/v3-sdk": "*"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.25",
+    "prettier": "^2.4.1",
+    "tsup": "^5.10.1"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  }
+}
