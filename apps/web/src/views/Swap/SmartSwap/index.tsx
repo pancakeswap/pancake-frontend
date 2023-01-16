@@ -96,7 +96,6 @@ export function SmartSwapForm() {
     parsedAmount,
     inputError: stableSwapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
-  // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
 
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
 
@@ -409,6 +408,7 @@ export function SmartSwapForm() {
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
+        !showWrap &&
         tradeInfo && (
           <AdvancedSwapDetailsDropdown
             hasStablePair={smartRouterOn}
