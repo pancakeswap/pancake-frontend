@@ -1,9 +1,12 @@
+import { useMemo } from 'react'
 import { Box, Text } from '@pancakeswap/uikit'
 import BlogCard from 'views/Blog/components/BlogCard'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import NextLink from 'next/link'
+import useSWR from 'swr'
+import { ArticleType } from 'views/Blog/utils/transformArticle'
 
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
   position: relative;
@@ -29,6 +32,8 @@ const NEW_BLOG_BG_DARK = 'linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)'
 const NewBlog = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
+  const { data: articlesData } = useSWR<ArticleType[]>('/latestArticles')
+  const article = useMemo(() => articlesData?.[0], [articlesData])
 
   return (
     <StyledBackground isDark={isDark}>
@@ -39,11 +44,16 @@ const NewBlog = () => {
         <Text bold mt="4px" mb={['20px', '20px', '35px']} color="textSubtle" fontSize={['14px', '14px', '16px']}>
           {t('Latest News about PancakeSwap and more!')}
         </Text>
-        <NextLink href="/blog/article/1" passHref style={{ display: 'flex', maxWidth: '880px', margin: 'auto' }}>
+        <NextLink
+          passHref
+          href={`/blog/article/${article?.id}`}
+          style={{ display: 'flex', maxWidth: '880px', margin: 'auto' }}
+        >
           <BlogCard
             width="100%"
             imgHeight={['155px', '250px', '350px', '500px']}
-            imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
+            article={article}
+            imgUrl={article?.imgUrl ?? ''}
           />
         </NextLink>
       </Box>

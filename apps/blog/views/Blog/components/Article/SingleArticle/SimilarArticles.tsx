@@ -1,10 +1,11 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Button, Flex } from '@pancakeswap/uikit'
+import { Flex } from '@pancakeswap/uikit'
 import BlogCard from 'views/Blog/components/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay, Grid } from 'swiper'
 import ArticleView from 'views/Blog/components/Article/ArticleView'
 import NextLink from 'next/link'
+import MoreButton from 'views/Blog/components/MoreButton'
 import 'swiper/css/grid'
 import 'swiper/css/bundle'
 
@@ -52,13 +53,7 @@ const SimilarArticles = () => {
           </Swiper>
         </ArticleView>
       </Flex>
-      <Flex justifyContent="center" m="50px auto">
-        <NextLink href="/blog/article" passHref>
-          <Button scale="md" variant="secondary">
-            {t('More')}
-          </Button>
-        </NextLink>
-      </Flex>
+      <MoreButton />
     </Flex>
   )
 }

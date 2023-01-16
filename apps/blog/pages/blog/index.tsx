@@ -1,22 +1,36 @@
+import { FC } from 'react'
 import { SWRConfig } from 'swr'
 import Blog from 'views/Blog'
+import { InferGetServerSidePropsType } from 'next'
+import { getArticle } from 'views/Blog/hooks/getArticle'
 
-// import { InferGetServerSidePropsType } from 'next'
+export async function getStaticProps() {
+  const [latestArticles, chefChoiceArticle] = await Promise.all([
+    getArticle({
+      populate: 'categories,image',
+      sort: 'publishedAt:desc',
+      pagination: { limit: 1 },
+    }),
+    getArticle({
+      populate: 'categories,image',
+      sort: 'publishedAt:desc',
+      pagination: { limit: 9 },
+      'filters[categories][name][$eq]': 'Chef’s choice',
+    }),
+  ])
 
-// export async function getStaticProps() {
-//   const [articles, categories] = await Promise.all([getArticles({ pagination: { limit: 10 } }), getCategories()])
-//   return {
-//     props: {
-//       fallback: {
-//         ['/articles']: articles?.articles || [],
-//         ['/categories']: categories?.categories || [],
-//       },
-//     },
-//     revalidate: 60,
-//   }
-// }
+  return {
+    props: {
+      fallback: {
+        '/latestArticles': latestArticles,
+        '/chefChoiceArticle': chefChoiceArticle,
+      },
+    },
+    revalidate: 60,
+  }
+}
 
-const BlogPage = ({ fallback }: { fallback: () => void }) => {
+const BlogPage: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
   return (
     <SWRConfig value={{ fallback }}>
       <Blog />

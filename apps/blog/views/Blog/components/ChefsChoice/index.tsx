@@ -6,6 +6,8 @@ import BlogCard from 'views/Blog/components/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper'
 import ArticleView from 'views/Blog/components/Article/ArticleView'
+import useSWR from 'swr'
+import { ArticleType } from 'views/Blog/utils/transformArticle'
 import 'swiper/css/bundle'
 
 const StyledChefsChoiceContainer = styled(Flex)`
@@ -18,6 +20,7 @@ const StyledChefsChoiceContainer = styled(Flex)`
 
 const ChefsChoice = () => {
   const { t } = useTranslation()
+  const { data: articlesData } = useSWR<ArticleType[]>('/chefChoiceArticle')
 
   return (
     <StyledChefsChoiceContainer justifyContent="center">
@@ -44,16 +47,19 @@ const ChefsChoice = () => {
             },
           }}
         >
-          <SwiperSlide>
-            <NextLink href="/blog/article/1" passHref>
-              <BlogCard
-                margin="auto"
-                padding={['0', '0', '18.5px']}
-                imgHeight={['200px']}
-                imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg"
-              />
-            </NextLink>
-          </SwiperSlide>
+          {articlesData?.map((article) => (
+            <SwiperSlide key={article.id}>
+              <NextLink passHref href={`/blog/article/${article.id}`}>
+                <BlogCard
+                  margin="auto"
+                  padding={['0', '0', '18.5px']}
+                  imgHeight={['200px']}
+                  article={article}
+                  imgUrl={article.imgUrl}
+                />
+              </NextLink>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </ArticleView>
     </StyledChefsChoiceContainer>

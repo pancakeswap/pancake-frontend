@@ -1,6 +1,9 @@
+import { useMemo } from 'react'
 import { Box, BoxProps, Card, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { HeightProps } from 'styled-system'
+import { ArticleType } from 'views/Blog/utils/transformArticle'
+import { subString } from 'views/Blog/utils/substring'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -20,12 +23,32 @@ const StyledBlogCard = styled(Box)`
   }
 `
 
+const StyledTagGroup = styled(Flex)`
+  flex-wrap: wrap;
+
+  ${Text} {
+    &:after {
+      content: ',';
+      margin: 0 4px;
+    }
+
+    &:last-child {
+      &:after {
+        content: '';
+      }
+    }
+  }
+`
+
 interface BlogCardProps extends BoxProps {
   imgUrl: string
+  article?: ArticleType
   imgHeight?: HeightProps['height']
 }
 
-const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ imgUrl, imgHeight, ...props }) => {
+const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ article, imgUrl, imgHeight, ...props }) => {
+  const title = useMemo(() => subString(article?.title ?? '', 60), [article])
+
   return (
     <StyledBlogCard {...props}>
       <Card>
@@ -34,15 +57,19 @@ const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ imgUrl, im
         </Box>
         <Box padding={['15px', '15px', '20px']}>
           <Flex justifyContent="space-between">
-            <Text fontSize="12px" bold color="textSubtle">
-              Partnership
-            </Text>
+            <StyledTagGroup>
+              {article?.categories.map((category: string) => (
+                <Text bold key={category} fontSize="12px" color="textSubtle" textTransform="uppercase">
+                  {category}
+                </Text>
+              ))}
+            </StyledTagGroup>
             <Text fontSize="14px" color="textSubtle">
-              June 21 2021
+              {article?.createAt}
             </Text>
           </Flex>
           <Text bold mt="20px">
-            PancakeSwap Info Relaunch in Partnership with $150,000 Bounty Winner — StreamingFast!
+            {title}
           </Text>
         </Box>
       </Card>

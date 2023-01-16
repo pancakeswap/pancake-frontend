@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Box, Text, Flex, TwitterIcon, TelegramIcon, Link } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
+import ReactMarkdown from 'react-markdown'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -59,6 +60,7 @@ const ArticleInfo = () => {
         <Box mb="24px" borderRadius={20} overflow="hidden" height={['155px', '200px', '350px', '420px']}>
           <StyledBackgroundImage imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg" />
         </Box>
+        <ReactMarkdown>dddd</ReactMarkdown>
       </Flex>
       <StyledSocialIcon>
         <StyledLink
