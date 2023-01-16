@@ -29,7 +29,7 @@ export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
 export const TC_MOBOX_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v3'
 export const TC_MOD_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v4'
 
-export const FARM_API = 'https://farms.pancake-swap.workers.dev'
+export const FARM_API = 'https://farms-api.pancakeswap.com'
 
 export const BIT_QUERY = 'https://graphql.bitquery.io'
 
