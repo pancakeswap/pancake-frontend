@@ -51,6 +51,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 142,
+    lpSymbol: 'ARENA-CAKE LP',
+    lpAddress: '0xfcc860289819c8b754ef31a1709a7952EB940223',
+    token: bscTokens.arena,
+    quoteToken: bscTokens.cake,
+  },
+  {
     pid: 140,
     lpSymbol: 'PRIMAL-BUSD LP',
     lpAddress: '0x4D4310f465C6db2081C3d24fA3B571cb29aBddB7',
