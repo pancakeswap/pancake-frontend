@@ -181,7 +181,7 @@ export function useSwapCallback(
               outputAmount,
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
-              type: isStableSwap(trade) ? 'StableSwap' : 'Swap',
+              type: isStableSwap(trade) ? 'StableSwap' : 'V2Swap',
             })
             logTx({ account, chainId, hash: response.hash })
 
