@@ -137,7 +137,7 @@ export const useFarms = () => {
                 : quoteTokenAmountTotal.div(tokenAmountTotal).toFixed(6)
               : '0',
           poolWeight: poolWeight.toString(),
-          multiplier: `${allocPoint.div(10).toString()}X`,
+          multiplier: `${allocPoint.div(100).toString()}X`,
         }
       })
   }, [farmConfig, masterChef, pairReserves, stakeCoinsInfoMap])
