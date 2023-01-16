@@ -2,7 +2,7 @@ import { Currency, JSBI, Price, Trade } from '@pancakeswap/aptos-swap-sdk'
 import { L0_USDC, CAKE } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import BigNumber from 'bignumber.js'
 import { useAllCommonPairs } from 'hooks/Trades'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -117,10 +117,10 @@ export const useStableCakeAmount = (_amount: number): number | undefined => {
 }
 
 export const useCakePrice = () => {
-  return useSWR(
+  return useSWRImmutable(
     ['cake-usd-price'],
     async () => {
-      const cake = await (await fetch('https://farms.pancake-swap.workers.dev/price/cake')).json()
+      const cake = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
       return cake.price
     },
     {
