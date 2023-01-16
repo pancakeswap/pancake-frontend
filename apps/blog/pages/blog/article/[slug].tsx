@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { NotFound } from '@pancakeswap/uikit'
-import SingleArticle from 'components/Article/SingleArticle'
+import SingleArticle from 'views/Blog/components/Article/SingleArticle'
 
 interface ArticlePage {
   article?: any // Article

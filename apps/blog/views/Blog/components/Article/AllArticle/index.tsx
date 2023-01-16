@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import { useState, useMemo } from 'react'
 import { Box, Text, Flex, Button, PaginationButton, SearchInput } from '@pancakeswap/uikit'
-import CardArticle from 'components/Article/CardArticle'
+import CardArticle from 'views/Blog/components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
-import ArticleSortSelect from 'components/Article/ArticleSortSelect'
+import ArticleSortSelect from 'views/Blog/components/Article/ArticleSortSelect'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;

@@ -1,5 +1,5 @@
 import { Box, Text } from '@pancakeswap/uikit'
-import BlogCard from 'components/Blog/BlogCard'
+import BlogCard from 'views/Blog/components/BlogCard'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'

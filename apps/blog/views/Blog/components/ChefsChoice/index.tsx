@@ -2,10 +2,10 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Flex } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import styled from 'styled-components'
-import BlogCard from 'components/Blog/BlogCard'
+import BlogCard from 'views/Blog/components/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper'
-import ArticleView from 'components/Article/ArticleView'
+import ArticleView from 'views/Blog/components/Article/ArticleView'
 import 'swiper/css/bundle'
 
 const StyledChefsChoiceContainer = styled(Flex)`

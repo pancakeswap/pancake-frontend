@@ -1,5 +1,5 @@
 import { SWRConfig } from 'swr'
-import AllArticle from 'components/Article/AllArticle'
+import AllArticle from 'views/Blog/components/Article/AllArticle'
 
 const AllArticlePage = ({ fallback }: { fallback: () => void }) => {
   return (
