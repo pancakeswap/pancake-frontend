@@ -44,5 +44,13 @@
     "printWidth": 120,
     "semi": false,
     "singleQuote": true
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
   }
 }

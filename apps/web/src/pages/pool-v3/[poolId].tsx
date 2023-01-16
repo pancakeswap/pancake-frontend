@@ -4,6 +4,7 @@ import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { useToken } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
@@ -156,11 +157,8 @@ export default function PoolPage() {
   const [showConfirm, setShowConfirm] = useState(false)
 
   // usdc prices always in terms of tokens
-  // const price0 = useStablecoinPrice(token0 ?? undefined)
-  // const price1 = useStablecoinPrice(token1 ?? undefined)
-
-  const price0 = priceUpper.invert()
-  const price1 = priceUpper.invert()
+  const price0 = useBUSDPrice(token0 ?? undefined)
+  const price1 = useBUSDPrice(token1 ?? undefined)
 
   const fiatValueOfFees: CurrencyAmount<Currency> | null = useMemo(() => {
     if (!price0 || !price1 || !feeValue0 || !feeValue1) return null

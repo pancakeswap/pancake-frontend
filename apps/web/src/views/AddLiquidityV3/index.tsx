@@ -30,6 +30,7 @@ import useRangeHopCallbacks from 'hooks/v3/useRangeHopCallbacks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
+import useBUSDPrice from 'hooks/useBUSDPrice'
 
 import { useV3MintActionHandlers } from './form/hooks'
 
@@ -152,10 +153,10 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
 
-  // const usdcValues = {
-  //   [Field.CURRENCY_A]: useStablecoinValue(parsedAmounts[Field.CURRENCY_A]),
-  //   [Field.CURRENCY_B]: useStablecoinValue(parsedAmounts[Field.CURRENCY_B]),
-  // }
+  const usdcValues = {
+    [Field.CURRENCY_A]: useBUSDPrice(parsedAmounts[Field.CURRENCY_A]?.currency),
+    [Field.CURRENCY_B]: useBUSDPrice(parsedAmounts[Field.CURRENCY_B]?.currency),
+  }
 
   // get the max amounts user can add
   const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(

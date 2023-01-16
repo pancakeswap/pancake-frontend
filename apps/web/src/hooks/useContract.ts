@@ -9,6 +9,9 @@ import {
   Weth,
   Zap,
 } from 'config/abi/types'
+import QuoterJson from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
+import QuoterV2Json from '@uniswap/swap-router-contracts/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
+
 import zapAbi from 'config/abi/zap.json'
 import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
 import addresses from 'config/constants/contracts'
@@ -389,6 +392,13 @@ export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfP
     () => proxyContractAddress && getCrossFarmingProxyContract(proxyContractAddress, providerOrSigner, chainId),
     [proxyContractAddress, providerOrSigner, chainId],
   )
+}
+
+const { abi: QuoterABI } = QuoterJson
+const { abi: QuoterV2ABI } = QuoterV2Json
+
+export const useQuoterContract = (useQuoterV2 = false) => {
+  return useContract(addresses.quoter, useQuoterV2 ? QuoterV2ABI : QuoterABI)
 }
 
 // Philip TODO: Add NonfungiblePositionManager | null type
