@@ -11,14 +11,14 @@ export const logSwap = ({
   inputAmount,
   outputAmount,
   chainId,
-  type = 'Swap',
+  type,
 }: {
   input: Currency
   output: Currency
   inputAmount: string
   outputAmount: string
   chainId: number
-  type: 'Swap' | 'SmartSwap' | 'StableSwap'
+  type: 'V2Swap' | 'SmartSwap' | 'StableSwap'
 }) => {
   try {
     log.info(type, {
