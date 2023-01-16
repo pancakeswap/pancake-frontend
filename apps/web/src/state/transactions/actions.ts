@@ -9,6 +9,7 @@ export type TransactionType =
   | 'add-liquidity'
   | 'add-liquidity-v3'
   | 'remove-liquidity-v3'
+  | 'collect-fee'
   | 'remove-liquidity'
   | 'limit-order-submission'
   | 'limit-order-cancellation'

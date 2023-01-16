@@ -17,6 +17,7 @@ import {
   parseCallKey,
   toCallKey,
   ListenerOptions,
+  ListenerOptionsWithGas,
 } from './actions'
 
 export interface CallStateResult extends ReadonlyArray<any> {
@@ -303,7 +304,7 @@ export function useSingleCallResult(
   contract: Contract | null | undefined,
   methodName: string,
   inputs?: OptionalMethodInputs,
-  options?: ListenerOptions,
+  options?: ListenerOptionsWithGas,
 ): CallState {
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 

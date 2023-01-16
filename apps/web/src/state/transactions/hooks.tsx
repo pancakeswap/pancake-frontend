@@ -34,12 +34,18 @@ export function useTransactionAdder(): (
     type?: TransactionType
     order?: Order
     nonBscFarm?: NonBscFarmTransactionType
+    // add/remove pool
     baseCurrencyId?: string
     quoteCurrencyId?: string
     expectedAmountBaseRaw?: string
     expectedAmountQuoteRaw?: string
     feeAmount?: FeeAmount
     createPool?: boolean
+    // fee collect
+    currencyId0?: string
+    currencyId1?: string
+    expectedCurrencyOwed0?: string
+    expectedCurrencyOwed1?: string
   },
 ) => void {
   const { chainId, account } = useActiveWeb3React()
