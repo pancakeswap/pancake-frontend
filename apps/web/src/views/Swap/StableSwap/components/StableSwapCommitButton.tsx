@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Text, useModal } from '@pancakeswap/uikit'
-import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
@@ -33,7 +33,7 @@ interface StableSwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  trade: Trade<Currency, Currency, TradeType> | StableTrade
+  trade: StableTrade
   swapInputError: string
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
@@ -62,7 +62,7 @@ export default function StableSwapCommitButton({
 
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, allowedSlippage, null, swapCalls)
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade<Currency, Currency, TradeType> | StableTrade | undefined
+    tradeToConfirm: StableTrade | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
