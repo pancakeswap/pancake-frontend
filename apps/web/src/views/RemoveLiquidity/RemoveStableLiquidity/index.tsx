@@ -16,6 +16,7 @@ import {
   useModal,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { CommitButton } from 'components/CommitButton'
@@ -39,7 +40,6 @@ import StyledInternalLink from '../../../components/Links'
 import { calculateGasMargin } from '../../../utils'
 import { calculateSlippageAmount } from '../../../utils/exchange'
 import { currencyId } from '../../../utils/currencyId'
-import useDebouncedChangeHandler from '../../../hooks/useDebouncedChangeHandler'
 import { useApproveCallback, ApprovalState } from '../../../hooks/useApproveCallback'
 import Dots from '../../../components/Loader/Dots'
 import { useBurnActionHandlers, useBurnState } from '../../../state/burn/hooks'
