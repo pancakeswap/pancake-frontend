@@ -25,6 +25,8 @@ export function transactionErrorToUserReadableMessage(error: any, t: TranslateFu
     case 'PancakeRouter: EXCESSIVE_INPUT_AMOUNT':
     case 'PancakeRouter: INSUFFICIENT_A_AMOUNT':
     case 'PancakeRouter: INSUFFICIENT_B_AMOUNT':
+    case 'swapMulti: incorrect user balance':
+    case 'Pancake: K':
       return t(
         'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.',
       )
