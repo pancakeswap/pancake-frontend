@@ -31,7 +31,7 @@ export const getAchievementDescription = (campaign: Campaign): TranslatableText 
   switch (campaign.type) {
     case 'ifo':
       return {
-        key: 'Committed more than $5 in the %title% IFO',
+        key: 'Participated in the %title% IFO by committing above the minimum required amount',
         data: {
           title: campaign.title as string,
         },
