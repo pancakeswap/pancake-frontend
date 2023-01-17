@@ -1,7 +1,9 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { subString } from 'views/Blog/utils/substring'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -54,6 +56,13 @@ interface CardArticleProps {
 const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ article }) => {
   const router = useRouter()
 
+  const cardText = useMemo(() => {
+    return {
+      title: subString(article?.title ?? '', 60),
+      description: subString(article?.description ?? '', 80),
+    }
+  }, [article])
+
   const handleClick = () => {
     router.push(`/blog/article/${article.id}`)
   }
@@ -81,10 +90,10 @@ const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ arti
             </StyledTagGroup>
           </Box>
           <Text bold lineHeight="100%" mb={['8px', '8px', '8px', '24px']} fontSize={['12px', '14px', '16px', '24px']}>
-            {article.title}
+            {cardText.title}
           </Text>
           <Text display={['none', null, null, 'block']} mb="24px">
-            {article.description}
+            {cardText.description}
           </Text>
           <Text mt="auto" textAlign="right" fontSize={['12px', '12px', '14px']} color="textSubtle">
             {article.createAt}

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import useSWR from 'swr'
 import { useDebounce } from '@pancakeswap/hooks'
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput } from '@pancakeswap/uikit'
 import CardArticle from 'views/Blog/components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
@@ -168,7 +168,7 @@ const AllArticle = () => {
             </Flex>
           </StyledMobileTagContainer>
           {loading || !articles ? (
-            <Text>Loading...</Text>
+            <Text>{`${t('Loading')}...`}</Text>
           ) : (
             <>
               {articles.length > 0 ? (
