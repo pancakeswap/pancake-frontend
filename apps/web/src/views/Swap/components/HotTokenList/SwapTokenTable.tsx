@@ -28,6 +28,7 @@ import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from '
 import Percent from 'views/Info/components/Percent'
 import { BAD_SRCS } from 'components/Logo/constants'
 import { Currency, Token } from '@pancakeswap/sdk'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 
 /**
  *  Columns on different layouts
@@ -38,7 +39,7 @@ import { Currency, Token } from '@pancakeswap/sdk'
  *  On smallest screen Name is reduced to just symbol
  */
 
-type TableType = 'priceChange' | 'volume' | 'liquidityChange'
+type TableType = 'priceChange' | 'volume' | 'liquidity'
 const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
@@ -164,7 +165,12 @@ const DataRow: React.FC<
   const { t } = useTranslation()
   const { theme } = useTheme()
   return (
-    <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
+    <LinkWrapper
+      to={`/info${chianPath}/tokens/${tokenData.address}?chain=${CHAIN_QUERY_NAME[chainId]}${stableSwapPath.replace(
+        '?',
+        '&',
+      )}`}
+    >
       <ResponsiveGrid>
         <Flex alignItems="center">
           <ResponsiveLogo
@@ -180,16 +186,16 @@ const DataRow: React.FC<
             </Flex>
           )}
         </Flex>
-        {(type === 'priceChange' || type === 'liquidityChange') && (
+        {(type === 'priceChange' || type === 'liquidity') && (
           <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
         )}
-        {type !== 'liquidityChange' && (
+        {type !== 'liquidity' && (
           <Text fontWeight={400}>
             <Percent value={tokenData.priceUSDChange} fontWeight={400} />
           </Text>
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
-        {type === 'liquidityChange' && <Percent value={tokenData.liquidityUSDChange} fontWeight={400} />}
+        {type === 'liquidity' && <Text fontWeight={400}>${formatAmount(tokenData.liquidityUSD)}</Text>}
         <Flex alignItems="center">
           <Button
             variant="text"
@@ -226,7 +232,6 @@ const SORT_FIELD = {
   priceUSD: 'priceUSD',
   priceUSDChange: 'priceUSDChange',
   priceUSDChangeWeek: 'priceUSDChangeWeek',
-  liquidityUSDChange: 'liquidityUSDChange',
 }
 
 const MAX_ITEMS = 10
@@ -305,7 +310,7 @@ const TokenTable: React.FC<
         >
           {t('Token Name')}
         </StyledClickableColumnHeader>
-        {(type === 'priceChange' || type === 'liquidityChange') && (
+        {(type === 'priceChange' || type === 'liquidity') && (
           <StyledClickableColumnHeader
             color="secondary"
             fontSize="12px"
@@ -320,7 +325,7 @@ const TokenTable: React.FC<
           </StyledClickableColumnHeader>
         )}
 
-        {type !== 'liquidityChange' && (
+        {type !== 'liquidity' && (
           <StyledClickableColumnHeader
             color="secondary"
             fontSize="12px"
@@ -334,16 +339,16 @@ const TokenTable: React.FC<
             </SortButton>
           </StyledClickableColumnHeader>
         )}
-        {type === 'liquidityChange' && (
+        {type === 'liquidity' && (
           <StyledClickableColumnHeader
             color="secondary"
             fontSize="12px"
             bold
-            onClick={() => handleSort(SORT_FIELD.liquidityUSDChange)}
+            onClick={() => handleSort(SORT_FIELD.liquidityUSD)}
             textTransform="uppercase"
           >
-            {t('Liquidity (24H)')}{' '}
-            <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.liquidityUSDChange)}>
+            {t('Liquidity')}
+            <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.liquidityUSD)}>
               <SortArrowIcon />
             </SortButton>
           </StyledClickableColumnHeader>

@@ -48,15 +48,15 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
     <Wrapper>
       <MenuWrapper>
         <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
-          <ButtonMenuItem>{chainId === ChainId.BSC ? t('Price Change') : t('Liquidity Change')}</ButtonMenuItem>
+          <ButtonMenuItem>{chainId === ChainId.BSC ? t('Price Change') : t('Liquidity')}</ButtonMenuItem>
           <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
         </ButtonMenu>
       </MenuWrapper>
       {index === 0 ? (
         <TokenTable
           tokenDatas={formattedTokens}
-          type={chainId === ChainId.BSC ? 'priceChange' : 'liquidityChange'}
-          defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSDChange'}
+          type={chainId === ChainId.BSC ? 'priceChange' : 'liquidity'}
+          defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSD'}
           maxItems={isMobile ? 100 : 6}
           handleOutputSelect={handleOutputSelect}
         />

@@ -135,7 +135,7 @@ export const useAllTokenHighLight = (): TokenData[] => {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data, isLoading } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${type}`, chainName],
     () => fetchAllTokenData(chainName, blocks),
     SWR_SETTINGS_WITHOUT_REFETCH,
@@ -150,7 +150,7 @@ export const useAllTokenHighLight = (): TokenData[] => {
           .filter((d) => d && d.exists)
       : []
   }, [data])
-  return tokensWithData ?? []
+  return isLoading ? [] : tokensWithData ?? []
 }
 
 export const useAllTokenDataSWR = (): {
@@ -185,7 +185,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data, isLoading } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
     () => fetcher(addresses, chainName, blocks),
     withSettings ? SWR_SETTINGS : SWR_SETTINGS_WITHOUT_REFETCH,
@@ -209,7 +209,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
       .filter((d) => d && d.exists)
   }, [addresses, allData])
 
-  return tokensWithData ?? undefined
+  return isLoading ? [] : tokensWithData ?? undefined
 }
 
 export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
