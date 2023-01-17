@@ -12,9 +12,11 @@ import {
   Text,
   useMatchBreakpoints,
   TokenLogo,
+  MoreIcon,
 } from '@pancakeswap/uikit'
 
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 import { useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
@@ -157,6 +159,7 @@ const DataRow: React.FC<
   const address = getAddress(tokenData.address)
   const tokenLogoURL = getTokenLogoURLByAddress(tokenData.address, chainId)
   const { t } = useTranslation()
+  const { theme } = useTheme()
   return (
     <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
@@ -184,20 +187,26 @@ const DataRow: React.FC<
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidityChange' && <Percent value={tokenData.liquidityUSDChange} fontWeight={400} />}
-        <Text fontWeight={400}>
+        <Flex alignItems="center">
           <Button
             variant="text"
             scale="sm"
+            p="0"
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
               const currency = new Token(chainId, tokenData.address, tokenData.decimals, tokenData.symbol)
               handleOutputSelect(currency)
             }}
+            style={{ color: theme.colors.textSubtle }}
           >
             {t('Trade')}
           </Button>
-        </Text>
+          <Text pl="3px" lineHeight="100%" color="rgba(122, 110, 170, 0.3)">
+            |
+          </Text>
+          <MoreIcon color={theme.colors.textSubtle} />
+        </Flex>
       </ResponsiveGrid>
     </LinkWrapper>
   )
