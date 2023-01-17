@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown from 'components/ReactMarkdown'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import SocialIcon from 'views/Blog/components/Article/SingleArticle/SocialIcon'
@@ -28,25 +28,6 @@ const StyledTagGroup = styled(Flex)`
         content: '';
       }
     }
-  }
-`
-
-const StyledMarkDown = styled(Box)`
-  * {
-    margin-bottom: 16px;
-  }
-
-  p {
-    line-height: 1.5;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-weight: 600;
-    font-size: 24px;
-    margin: 24px 0;
   }
 `
 
@@ -81,11 +62,7 @@ const ArticleInfo = () => {
         <Box mb="24px" display={['block', 'block', 'block', 'none']}>
           <SocialIcon />
         </Box>
-        {article?.content && (
-          <StyledMarkDown>
-            <ReactMarkdown>{article?.content}</ReactMarkdown>
-          </StyledMarkDown>
-        )}
+        {article?.content && <ReactMarkdown>{article?.content}</ReactMarkdown>}
       </Flex>
       <Box display={['none', 'none', 'none', 'block']}>
         <SocialIcon />
