@@ -144,8 +144,9 @@ export default function PoolPage() {
       : undefined
   }, [inverted, pool, priceLower, priceUpper])
 
+  // TODO: add wrapped and unwrapped token support
   // fees
-  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWETH)
+  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, false)
 
   // these currencies will match the feeValue{0,1} currencies for the purposes of fee collection
   const currency0ForFeeCollectionPurposes = pool ? unwrappedToken(pool.token0) : undefined
@@ -174,12 +175,12 @@ export default function PoolPage() {
     return amount0.add(amount1)
   }, [price0, price1, feeValue0, feeValue1])
 
-  const fiatValueOfLiquidity: CurrencyAmount<Token> | null = useMemo(() => {
-    if (!price0 || !price1 || !position) return null
-    const amount0 = price0.quote(position.amount0)
-    const amount1 = price1.quote(position.amount1)
-    return amount0.add(amount1)
-  }, [price0, price1, position])
+  // const fiatValueOfLiquidity: CurrencyAmount<Token> | null = useMemo(() => {
+  //   if (!price0 || !price1 || !position) return null
+  //   const amount0 = price0.quote(position.amount0)
+  //   const amount1 = price1.quote(position.amount1)
+  //   return amount0.add(amount1)
+  // }, [price0, price1, position])
 
   const addTransaction = useTransactionAdder()
 
@@ -214,35 +215,35 @@ export default function PoolPage() {
       value,
     }
 
-    provider
-      .getSigner()
-      .estimateGas(txn)
-      .then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gasLimit: calculateGasMargin(estimate),
-        }
+    // provider
+    //   .getSigner()
+    //   .estimateGas(txn)
+    //   .then((estimate) => {
+    //     const newTxn = {
+    //       ...txn,
+    //       gasLimit: calculateGasMargin(estimate),
+    //     }
 
-        return provider
-          .getSigner()
-          .sendTransaction(newTxn)
-          .then((response: TransactionResponse) => {
-            setCollectMigrationHash(response.hash)
-            setCollecting(false)
+    //     return provider
+    //       .getSigner()
+    //       .sendTransaction(newTxn)
+    //       .then((response: TransactionResponse) => {
+    //         setCollectMigrationHash(response.hash)
+    //         setCollecting(false)
 
-            addTransaction(response, {
-              type: 'collect-fee',
-              currencyId0: currencyId(currency0ForFeeCollectionPurposes),
-              currencyId1: currencyId(currency1ForFeeCollectionPurposes),
-              expectedCurrencyOwed0: CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0).toExact(),
-              expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0).toExact(),
-            })
-          })
-      })
-      .catch((error) => {
-        setCollecting(false)
-        console.error(error)
-      })
+    //         addTransaction(response, {
+    //           type: 'collect-fee',
+    //           currencyId0: currencyId(currency0ForFeeCollectionPurposes),
+    //           currencyId1: currencyId(currency1ForFeeCollectionPurposes),
+    //           expectedCurrencyOwed0: CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0).toExact(),
+    //           expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0).toExact(),
+    //         })
+    //       })
+    //   })
+    //   .catch((error) => {
+    //     setCollecting(false)
+    //     console.error(error)
+    //   })
   }, [
     chainId,
     feeValue0,

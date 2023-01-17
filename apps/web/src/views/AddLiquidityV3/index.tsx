@@ -33,6 +33,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 
 import { useV3MintActionHandlers } from './form/hooks'
+import { Bound } from './form/actions'
 
 interface AddLiquidityV3PropsType {
   currencyA: Currency
@@ -179,7 +180,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     {},
   )
 
-  const nftPositionManagerAddress = chainId ? NONFUNGIBLE_POSITION_MANAGER_ADDRESSES[chainId] : undefined
+  const nftPositionManagerAddress = useV3NFTPositionManagerContract().address
 
   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
@@ -224,40 +225,40 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
 
       setAttemptingTxn(true)
 
-      provider
-        .getSigner()
-        .estimateGas(txn)
-        .then((estimate) => {
-          const newTxn = {
-            ...txn,
-            gasLimit: calculateGasMargin(estimate),
-          }
+      // provider
+      //   .getSigner()
+      //   .estimateGas(txn)
+      //   .then((estimate) => {
+      //     const newTxn = {
+      //       ...txn,
+      //       gasLimit: calculateGasMargin(estimate),
+      //     }
 
-          return provider
-            .getSigner()
-            .sendTransaction(newTxn)
-            .then((response: TransactionResponse) => {
-              setAttemptingTxn(false)
-              addTransaction(response, {
-                type: 'add-liquidity-v3',
-                baseCurrencyId: currencyId(baseCurrency),
-                quoteCurrencyId: currencyId(quoteCurrency),
-                createPool: Boolean(noLiquidity),
-                expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-                expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-                feeAmount: position.pool.fee,
-              })
-              setTxHash(response.hash)
-            })
-        })
-        .catch((error) => {
-          console.error('Failed to send transaction', error)
-          setAttemptingTxn(false)
-          // we only care if the error is something _other_ than the user rejected the tx
-          if (error?.code !== 4001) {
-            console.error(error)
-          }
-        })
+      //     return provider
+      //       .getSigner()
+      //       .sendTransaction(newTxn)
+      //       .then((response: TransactionResponse) => {
+      //         setAttemptingTxn(false)
+      //         addTransaction(response, {
+      //           type: 'add-liquidity-v3',
+      //           baseCurrencyId: currencyId(baseCurrency),
+      //           quoteCurrencyId: currencyId(quoteCurrency),
+      //           createPool: Boolean(noLiquidity),
+      //           expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+      //           expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+      //           feeAmount: position.pool.fee,
+      //         })
+      //         setTxHash(response.hash)
+      //       })
+      //   })
+      //   .catch((error) => {
+      //     console.error('Failed to send transaction', error)
+      //     setAttemptingTxn(false)
+      //     // we only care if the error is something _other_ than the user rejected the tx
+      //     if (error?.code !== 4001) {
+      //       console.error(error)
+      //     }
+      //   })
     }
   }
 

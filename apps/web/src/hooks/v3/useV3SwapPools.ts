@@ -1,6 +1,6 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { useAllCommonPairs } from 'hooks/Trades'
+import { useAllCommonPairs, useAllCurrencyCombinations } from 'hooks/Trades'
 import { useMemo } from 'react'
 import { PoolState } from './types'
 
@@ -21,7 +21,7 @@ export function useV3SwapPools(
   pools: Pool[]
   loading: boolean
 } {
-  const allCurrencyCombinations = useAllCommonPairs(currencyIn, currencyOut)
+  const allCurrencyCombinations = useAllCurrencyCombinations(currencyIn, currencyOut)
 
   const allCurrencyCombinationsWithAllFees: [Token, Token, FeeAmount][] = useMemo(
     () =>

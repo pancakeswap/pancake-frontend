@@ -25,7 +25,7 @@
     "@ethersproject/abi": "^5.5.0",
     "@uniswap/swap-router-contracts": "1.1.0",
     "@pancakeswap/sdk": "*",
-    "@pancakeswap/v3-sdk": "*"
+    "@pancakeswap/v3-sdk": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^24.0.25",

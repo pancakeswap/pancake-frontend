@@ -97,34 +97,34 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       value,
     }
 
-    provider
-      .getSigner()
-      .estimateGas(txn)
-      .then((estimate) => {
-        const newTxn = {
-          ...txn,
-          gasLimit: calculateGasMargin(estimate),
-        }
+    // provider
+    //   .getSigner()
+    //   .estimateGas(txn)
+    //   .then((estimate) => {
+    //     const newTxn = {
+    //       ...txn,
+    //       gasLimit: calculateGasMargin(estimate),
+    //     }
 
-        return provider
-          .getSigner()
-          .sendTransaction(newTxn)
-          .then((response: TransactionResponse) => {
-            setTxnHash(response.hash)
-            setAttemptingTxn(false)
-            addTransaction(response, {
-              type: 'remove-liquidity-v3',
-              baseCurrencyId: currencyId(liquidityValue0.currency),
-              quoteCurrencyId: currencyId(liquidityValue1.currency),
-              expectedAmountBaseRaw: liquidityValue0.quotient.toString(),
-              expectedAmountQuoteRaw: liquidityValue1.quotient.toString(),
-            })
-          })
-      })
-      .catch((err) => {
-        setAttemptingTxn(false)
-        console.error(err)
-      })
+    //     return provider
+    //       .getSigner()
+    //       .sendTransaction(newTxn)
+    //       .then((response: TransactionResponse) => {
+    //         setTxnHash(response.hash)
+    //         setAttemptingTxn(false)
+    //         addTransaction(response, {
+    //           type: 'remove-liquidity-v3',
+    //           baseCurrencyId: currencyId(liquidityValue0.currency),
+    //           quoteCurrencyId: currencyId(liquidityValue1.currency),
+    //           expectedAmountBaseRaw: liquidityValue0.quotient.toString(),
+    //           expectedAmountQuoteRaw: liquidityValue1.quotient.toString(),
+    //         })
+    //       })
+    //   })
+    //   .catch((err) => {
+    //     setAttemptingTxn(false)
+    //     console.error(err)
+    //   })
   }, [
     positionManager,
     liquidityValue0,
