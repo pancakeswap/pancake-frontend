@@ -7,6 +7,7 @@ import { AutoColumn } from 'components/Layout/Column'
 import { CurrencyLogo } from 'components/Logo'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useMemo } from 'react'
 import { TruncatedText, SwapShowAcceptChanges } from '../../components/styleds'
 
 export default function StableSwapModalHeader({
@@ -42,12 +43,17 @@ export default function StableSwapModalHeader({
   const symbol =
     trade.tradeType === TradeType.EXACT_INPUT ? trade.outputAmount.currency.symbol : trade.inputAmount.currency.symbol
 
-  const tradeInfoText =
-    trade.tradeType === TradeType.EXACT_INPUT
-      ? t('Output is estimated. You will receive at least or the transaction will revert.')
-      : t('Input is estimated. You will sell at most or the transaction will revert.')
-
-  const [estimatedText, transactionRevertText] = tradeInfoText.split(`${amount} ${symbol}`)
+  const tradeInfoText = useMemo(() => {
+    return trade.tradeType === TradeType.EXACT_INPUT
+      ? t('Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.', {
+          amount,
+          symbol,
+        })
+      : t('Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.', {
+          amount,
+          symbol,
+        })
+  }, [t, trade.tradeType, amount, symbol])
 
   const truncatedRecipient = recipient ? truncateHash(recipient) : ''
 
@@ -116,9 +122,8 @@ export default function StableSwapModalHeader({
             {t('Insufficient input token balance. Your transaction may fail.')}
           </Text>
         )}
-        <Text small color="textSubtle" textAlign="left" style={{ width: '100%' }}>
-          {estimatedText}
-          {transactionRevertText}
+        <Text small color="textSubtle" textAlign="left" style={{ maxWidth: '320px' }}>
+          {tradeInfoText}
         </Text>
       </AutoColumn>
       {recipient !== null ? (
