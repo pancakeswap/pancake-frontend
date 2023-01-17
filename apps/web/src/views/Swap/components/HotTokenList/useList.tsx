@@ -21,7 +21,7 @@ export const useTokenHighLightList = () => {
   const { query } = useRouter()
   const bscWhiteList = useBSCWhiteList()
   const allTokensFromBSC = useTokenDatasSWR(chainId === ChainId.BSC ? bscWhiteList : [], false)
-  const allTokensFromETH = useAllTokenHighLight()
+  const allTokensFromETH = useAllTokenHighLight('ETH')
 
   return chainId === ChainId.BSC && query.chain !== 'eth' ? allTokensFromBSC : allTokensFromETH
 }

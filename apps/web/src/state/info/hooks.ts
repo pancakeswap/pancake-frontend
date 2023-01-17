@@ -130,8 +130,7 @@ export const usePoolTransactionsSWR = (address: string): Transaction[] | undefin
 
 // Tokens hooks
 
-export const useAllTokenHighLight = (): TokenData[] => {
-  const chainName = useGetChainName()
+export const useAllTokenHighLight = (chainName: MultiChainName): TokenData[] => {
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
