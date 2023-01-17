@@ -18,6 +18,7 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
+import useMerryChristmas from 'hooks/useMerryChristmas'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -36,6 +37,7 @@ BigNumber.config({
 })
 
 function GlobalHooks() {
+  useMerryChristmas()
   usePollBlockNumber()
   useEagerConnect()
   useUserAgent()
