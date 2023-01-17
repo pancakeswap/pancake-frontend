@@ -130,7 +130,8 @@ export const usePoolTransactionsSWR = (address: string): Transaction[] | undefin
 
 // Tokens hooks
 
-export const useAllTokenHighLight = (chainName: MultiChainName): TokenData[] => {
+export const useAllTokenHighLight = (): TokenData[] => {
+  const chainName = useGetChainName()
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
@@ -269,11 +270,12 @@ export const useTokenTransactionsSWR = (address: string): Transaction[] | undefi
 }
 
 export const useGetChainName = () => {
-  const path = window.location.href
+  const { pathname, query } = useRouter()
+
   const getChain = useCallback(() => {
-    if (path.includes('eth')) return 'ETH'
+    if (pathname.includes('eth') || query.chain === 'eth') return 'ETH'
     return 'BSC'
-  }, [path])
+  }, [pathname, query])
   const [name, setName] = useState<MultiChainName | null>(getChain())
   const result = useMemo(() => name, [name])
 
