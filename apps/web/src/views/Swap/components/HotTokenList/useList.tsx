@@ -5,6 +5,7 @@ import { selectorByUrlsAtom } from 'state/lists/hooks'
 import { useTokenDatasSWR, useAllTokenHighLight } from 'state/info/hooks'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
+import { useRouter } from 'next/router'
 
 export const useBSCWhiteList = () => {
   const listsByUrl = useAtomValue(selectorByUrlsAtom)
@@ -17,9 +18,10 @@ export const useBSCWhiteList = () => {
 
 export const useTokenHighLightList = () => {
   const { chainId } = useActiveChainId()
+  const { query } = useRouter()
   const bscWhiteList = useBSCWhiteList()
   const allTokensFromBSC = useTokenDatasSWR(chainId === ChainId.BSC ? bscWhiteList : [], false)
   const allTokensFromETH = useAllTokenHighLight()
 
-  return chainId === ChainId.BSC ? allTokensFromBSC : allTokensFromETH
+  return chainId === ChainId.BSC && query.chain !== 'eth' ? allTokensFromBSC : allTokensFromETH
 }

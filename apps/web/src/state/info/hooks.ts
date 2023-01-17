@@ -271,7 +271,6 @@ export const useTokenTransactionsSWR = (address: string): Transaction[] | undefi
 
 export const useGetChainName = () => {
   const path = window.location.href
-
   const getChain = useCallback(() => {
     if (path.includes('eth')) return 'ETH'
     return 'BSC'
