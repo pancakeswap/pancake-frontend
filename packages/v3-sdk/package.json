@@ -18,7 +18,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsup",
-    "start": "tsup --watch",
+    "dev": "tsup --watch",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "prepublishOnly": "tsup build"

@@ -5,19 +5,20 @@
   "publishConfig": {
     "access": "public"
   },
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "typings": "dist/index.d.ts",
+  "module": "./dist/index.mjs",
   "files": [
     "dist"
   ],
   "scripts": {
     "test": "vitest --run",
     "build": "tsup",
-    "start": "tsup --watch"
+    "dev": "tsup --watch"
   },
   "keywords": [
     "pancakeswap",
-    "bnb"
+    "bsc"
   ],
   "license": "MIT",
   "dependencies": {

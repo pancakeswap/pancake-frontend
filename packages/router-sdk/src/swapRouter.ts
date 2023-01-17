@@ -8,7 +8,7 @@ import {
   validateAndParseAddress,
   WNATIVE,
 } from '@pancakeswap/sdk'
-import { abi } from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/ISwapRouter02.sol/ISwapRouter02.json'
+import ISwapRouter02 from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/ISwapRouter02.sol/ISwapRouter02.json'
 import {
   encodeRouteToPath,
   FeeOptions,
@@ -90,7 +90,7 @@ type AnyTradeType =
  * Represents the Uniswap V2 + V3 SwapRouter02, and has static methods for helping execute trades.
  */
 export abstract class SwapRouter {
-  public static INTERFACE: Interface = new Interface(abi)
+  public static INTERFACE: Interface = new Interface(ISwapRouter02.abi)
 
   /**
    * @notice Generates the calldata for a Swap with a V2 Route.
