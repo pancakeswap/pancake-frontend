@@ -35,7 +35,7 @@ import { BAD_SRCS } from 'components/Logo/constants'
  *  On smallest screen Name is reduced to just symbol
  */
 
-type TableType = 'priceChange' | 'volume'
+type TableType = 'priceChange' | 'volume' | 'liquidityChange'
 const ResponsiveGrid = styled.div`
   display: grid;
   grid-gap: 1em;
@@ -168,13 +168,16 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
             </Flex>
           )}
         </Flex>
-        {type === 'priceChange' && (
+        {(type === 'priceChange' || type === 'liquidityChange') && (
           <Text fontWeight={400}>${formatAmount(tokenData.priceUSD, { notation: 'standard' })}</Text>
         )}
-        <Text fontWeight={400}>
-          <Percent value={tokenData.priceUSDChange} fontWeight={400} />
-        </Text>
+        {type !== 'liquidityChange' && (
+          <Text fontWeight={400}>
+            <Percent value={tokenData.priceUSDChange} fontWeight={400} />
+          </Text>
+        )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
+        {type === 'liquidityChange' && <Percent value={tokenData.liquidityUSDChange} fontWeight={400} />}
       </ResponsiveGrid>
     </LinkWrapper>
   )
@@ -187,6 +190,7 @@ const SORT_FIELD = {
   priceUSD: 'priceUSD',
   priceUSDChange: 'priceUSDChange',
   priceUSDChangeWeek: 'priceUSDChangeWeek',
+  liquidityUSDChange: 'liquidityUSDChange',
 }
 
 const MAX_ITEMS = 10
@@ -264,7 +268,7 @@ const TokenTable: React.FC<
         >
           {t('Token Name')}
         </StyledClickableColumnHeader>
-        {type === 'priceChange' && (
+        {(type === 'priceChange' || type === 'liquidityChange') && (
           <StyledClickableColumnHeader
             color="secondary"
             fontSize="12px"
@@ -278,18 +282,35 @@ const TokenTable: React.FC<
             </SortButton>
           </StyledClickableColumnHeader>
         )}
-        <StyledClickableColumnHeader
-          color="secondary"
-          fontSize="12px"
-          bold
-          onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
-          textTransform="uppercase"
-        >
-          {t('Change')}{' '}
-          <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.priceUSDChange)}>
-            <SortArrowIcon />
-          </SortButton>
-        </StyledClickableColumnHeader>
+
+        {type !== 'liquidityChange' && (
+          <StyledClickableColumnHeader
+            color="secondary"
+            fontSize="12px"
+            bold
+            onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
+            textTransform="uppercase"
+          >
+            {t('Change')}{' '}
+            <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.priceUSDChange)}>
+              <SortArrowIcon />
+            </SortButton>
+          </StyledClickableColumnHeader>
+        )}
+        {type === 'liquidityChange' && (
+          <StyledClickableColumnHeader
+            color="secondary"
+            fontSize="12px"
+            bold
+            onClick={() => handleSort(SORT_FIELD.liquidityUSDChange)}
+            textTransform="uppercase"
+          >
+            {t('Liquidity')}{' '}
+            <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.liquidityUSDChange)}>
+              <SortArrowIcon />
+            </SortButton>
+          </StyledClickableColumnHeader>
+        )}
         {type === 'volume' && (
           <StyledClickableColumnHeader
             color="secondary"

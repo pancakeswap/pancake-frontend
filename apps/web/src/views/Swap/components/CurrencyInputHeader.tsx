@@ -78,24 +78,22 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
                 )}
               </ColoredIconButton>
             )}
-            {isChartSupported && (
-              <ColoredIconButton
-                variant="text"
-                scale="sm"
-                onClick={() => {
-                  if (!isSwapHotTokenDisplay && isChartDisplayed) {
-                    toggleChartDisplayed()
-                  }
-                  setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)
-                }}
-              >
-                {isSwapHotTokenDisplay ? (
-                  <HotDisableIcon color="textSubtle" width="24px" />
-                ) : (
-                  <HotIcon color="textSubtle" width="24px" />
-                )}
-              </ColoredIconButton>
-            )}
+            <ColoredIconButton
+              variant="text"
+              scale="sm"
+              onClick={() => {
+                if (!isSwapHotTokenDisplay && isChartDisplayed) {
+                  toggleChartDisplayed()
+                }
+                setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)
+              }}
+            >
+              {isSwapHotTokenDisplay ? (
+                <HotDisableIcon color="textSubtle" width="24px" />
+              ) : (
+                <HotIcon color="textSubtle" width="24px" />
+              )}
+            </ColoredIconButton>
             <NotificationDot show={expertMode}>
               <GlobalSettings color="textSubtle" mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
             </NotificationDot>
