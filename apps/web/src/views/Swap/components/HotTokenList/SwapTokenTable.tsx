@@ -25,6 +25,7 @@ import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
 import { BAD_SRCS } from 'components/Logo/constants'
+import { Currency, Token } from '@pancakeswap/sdk'
 
 /**
  *  Columns on different layouts
@@ -43,7 +44,7 @@ const ResponsiveGrid = styled.div`
 
   padding: 0 24px;
 
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr 1fr;
 
   @media screen and (max-width: 900px) {
     grid-template-columns: 2fr repeat(2, 1fr);
@@ -141,16 +142,21 @@ const TableLoader: React.FC<React.PropsWithChildren> = () => {
   )
 }
 
-const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: number; type: TableType }>> = ({
-  tokenData,
-  type,
-}) => {
+const DataRow: React.FC<
+  React.PropsWithChildren<{
+    tokenData: TokenData
+    index: number
+    type: TableType
+    handleOutputSelect: (newCurrencyOutput: Currency) => void
+  }>
+> = ({ tokenData, type, handleOutputSelect }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const chianPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
   const address = getAddress(tokenData.address)
   const tokenLogoURL = getTokenLogoURLByAddress(tokenData.address, chainId)
+  const { t } = useTranslation()
   return (
     <LinkWrapper to={`/info${chianPath}/tokens/${tokenData.address}${stableSwapPath}`}>
       <ResponsiveGrid>
@@ -178,6 +184,20 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
         )}
         {type === 'volume' && <Text fontWeight={400}>${formatAmount(tokenData.volumeUSD)}</Text>}
         {type === 'liquidityChange' && <Percent value={tokenData.liquidityUSDChange} fontWeight={400} />}
+        <Text fontWeight={400}>
+          <Button
+            variant="text"
+            scale="sm"
+            onClick={(e) => {
+              e.stopPropagation()
+              e.preventDefault()
+              const currency = new Token(chainId, tokenData.address, tokenData.decimals, tokenData.symbol)
+              handleOutputSelect(currency)
+            }}
+          >
+            {t('Trade')}
+          </Button>
+        </Text>
       </ResponsiveGrid>
     </LinkWrapper>
   )
@@ -201,8 +221,9 @@ const TokenTable: React.FC<
     maxItems?: number
     defaultSortField?: string
     type: TableType
+    handleOutputSelect: (newCurrencyOutput: Currency) => void
   }>
-> = ({ tokenDatas, maxItems = MAX_ITEMS, defaultSortField = SORT_FIELD.volumeUSD, type }) => {
+> = ({ tokenDatas, maxItems = MAX_ITEMS, defaultSortField = SORT_FIELD.volumeUSD, type, handleOutputSelect }) => {
   const [sortField, setSortField] = useState(SORT_FIELD[defaultSortField])
   const { isMobile } = useMatchBreakpoints()
   useEffect(() => {
@@ -305,7 +326,7 @@ const TokenTable: React.FC<
             onClick={() => handleSort(SORT_FIELD.liquidityUSDChange)}
             textTransform="uppercase"
           >
-            {t('Liquidity')}{' '}
+            {t('Liquidity (24H)')}{' '}
             <SortButton scale="sm" variant="subtle" className={arrowClassName(SORT_FIELD.liquidityUSDChange)}>
               <SortArrowIcon />
             </SortButton>
@@ -334,7 +355,12 @@ const TokenTable: React.FC<
             if (data) {
               return (
                 <Fragment key={data.address}>
-                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} type={type} />
+                  <DataRow
+                    index={(page - 1) * MAX_ITEMS + i}
+                    tokenData={data}
+                    type={type}
+                    handleOutputSelect={handleOutputSelect}
+                  />
                   <Break />
                 </Fragment>
               )

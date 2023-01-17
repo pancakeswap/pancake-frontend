@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { memo, useState, useMemo } from 'react'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ChainId } from '@pancakeswap/sdk'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 
 import styled from 'styled-components'
 import TokenTable from './SwapTokenTable'
@@ -28,7 +28,9 @@ const MenuWrapper = styled.div`
 
 const LIQUIDITY_FILTER = 100000 // 100k
 
-const HotTokenList: React.FC = () => {
+const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
+  handleOutputSelect,
+}) => {
   const { chainId } = useActiveChainId()
   const allTokens = useTokenHighLightList()
   const [index, setIndex] = useState(0)
@@ -56,6 +58,7 @@ const HotTokenList: React.FC = () => {
           type={chainId === ChainId.BSC ? 'priceChange' : 'liquidityChange'}
           defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSDChange'}
           maxItems={isMobile ? 100 : 6}
+          handleOutputSelect={handleOutputSelect}
         />
       ) : (
         <TokenTable
@@ -63,6 +66,7 @@ const HotTokenList: React.FC = () => {
           type="volume"
           defaultSortField="volumeUSD"
           maxItems={isMobile ? 100 : 6}
+          handleOutputSelect={handleOutputSelect}
         />
       )}
     </Wrapper>
