@@ -49,21 +49,24 @@ const ResponsiveGrid = styled.div`
   grid-template-columns: 4fr 1fr 1fr 1fr;
 
   @media screen and (max-width: 900px) {
-    grid-template-columns: 2fr repeat(2, 1fr);
+    grid-template-columns: 2fr repeat(3, 1fr);
     & :nth-child(4) {
       display: none;
     }
   }
 
   @media screen and (max-width: 800px) {
-    grid-template-columns: 2fr repeat(2, 1fr);
+    grid-template-columns: 2fr repeat(3, 1fr);
     & :nth-child(6) {
       display: none;
     }
   }
 
   @media screen and (max-width: 670px) {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    & :nth-child(4) {
+      display: block;
+    }
   }
 `
 
@@ -152,7 +155,7 @@ const DataRow: React.FC<
     handleOutputSelect: (newCurrencyOutput: Currency) => void
   }>
 > = ({ tokenData, type, handleOutputSelect }) => {
-  const { isXs, isSm } = useMatchBreakpoints()
+  const { isXs, isSm, isMobile } = useMatchBreakpoints()
   const chianPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
@@ -202,10 +205,14 @@ const DataRow: React.FC<
           >
             {t('Trade')}
           </Button>
-          <Text pl="3px" lineHeight="100%" color="rgba(122, 110, 170, 0.3)">
-            |
-          </Text>
-          <MoreIcon color={theme.colors.textSubtle} />
+          {!isMobile && (
+            <>
+              <Text pl="8px" pr="4px" lineHeight="100%" color="rgba(122, 110, 170, 0.3)">
+                |
+              </Text>
+              <MoreIcon color={theme.colors.textSubtle} />
+            </>
+          )}
         </Flex>
       </ResponsiveGrid>
     </LinkWrapper>
