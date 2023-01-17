@@ -17,6 +17,7 @@ export const getServerSideProps = async (context: any) => {
   const similarArticles = await getArticle({
     url: '/articles',
     urlParamsObject: {
+      locale: article.locale,
       populate: 'categories,image',
       pagination: { limit: 6 },
       filters: {
