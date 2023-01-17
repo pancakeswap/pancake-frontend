@@ -15,7 +15,7 @@ export interface ArticleImageType {
   }
 }
 
-export interface ResponseArticleType {
+export interface ResponseArticleDataType {
   id: number
   attributes: {
     title: string
@@ -31,4 +31,30 @@ export interface ResponseArticleType {
       data: ArticleImageType[]
     }
   }
+}
+
+export interface PaginationType {
+  page: number
+  pageSize: number
+  pageCount: number
+  total: number
+}
+
+export interface ResponseArticleType {
+  data: ResponseArticleDataType[]
+  meta: {
+    pagination: PaginationType
+  }
+}
+
+export interface ResponseCategoriesType {
+  id: number
+  attributes: {
+    name: string
+  }
+}
+
+export interface Categories {
+  id: number
+  name: string
 }

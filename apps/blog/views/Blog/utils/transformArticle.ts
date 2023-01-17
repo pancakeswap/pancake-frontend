@@ -1,7 +1,7 @@
-import { ResponseArticleType } from 'views/Blog/types'
+import { ResponseArticleDataType, PaginationType } from 'views/Blog/types'
 import { getStrapiURL } from 'views/Blog/utils/api'
 
-export interface ArticleType {
+export interface ArticleDataType {
   id: number
   title: string
   locale: string
@@ -13,7 +13,12 @@ export interface ArticleType {
   categories: Array<string>
 }
 
-export const transformArticle = (article: ResponseArticleType): ArticleType => {
+export interface ArticleType {
+  data: ArticleDataType[]
+  pagination: PaginationType
+}
+
+export const transformArticle = (article: ResponseArticleDataType): ArticleDataType => {
   return {
     id: article.id,
     title: article.attributes.title,

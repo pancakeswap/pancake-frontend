@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { Box, BoxProps, Card, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { HeightProps } from 'styled-system'
-import { ArticleType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import { subString } from 'views/Blog/utils/substring'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
@@ -42,7 +42,7 @@ const StyledTagGroup = styled(Flex)`
 
 interface BlogCardProps extends BoxProps {
   imgUrl: string
-  article?: ArticleType
+  article?: ArticleDataType
   imgHeight?: HeightProps['height']
 }
 
@@ -65,7 +65,7 @@ const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ article, i
               ))}
             </StyledTagGroup>
             <Text fontSize="14px" color="textSubtle">
-              {article?.publishedAt}
+              {article?.createAt}
             </Text>
           </Flex>
           <Text bold mt="20px">

@@ -7,13 +7,13 @@ import ArticleView from 'views/Blog/components/Article/ArticleView'
 import NextLink from 'next/link'
 import MoreButton from 'views/Blog/components/MoreButton'
 import useSWR from 'swr'
-import { ArticleType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import 'swiper/css/grid'
 import 'swiper/css/bundle'
 
 const SimilarArticles = () => {
   const { t } = useTranslation()
-  const { data: similarArticles } = useSWR<ArticleType[]>('/similarArticles')
+  const { data: similarArticles } = useSWR<ArticleDataType[]>('/similarArticles')
 
   return (
     <Flex maxWidth="100%" m="50px auto" flexDirection="column">

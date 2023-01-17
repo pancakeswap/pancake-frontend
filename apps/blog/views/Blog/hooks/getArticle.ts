@@ -1,27 +1,37 @@
 import { fetchAPI } from 'views/Blog/utils/api'
-import { ResponseArticleType } from 'views/Blog/types'
-import { transformArticle, ArticleType } from 'views/Blog/utils/transformArticle'
-// pagination: { page: 1, pageSize: 1 },
+import { ResponseArticleType, ResponseArticleDataType, ResponseCategoriesType, Categories } from 'views/Blog/types'
+import { transformArticle, ArticleType, ArticleDataType } from 'views/Blog/utils/transformArticle'
 
 interface GetArticleProps {
   url: string
   urlParamsObject?: Record<string, any>
 }
 
-export const getArticle = async ({ url, urlParamsObject = {} }: GetArticleProps): Promise<ArticleType[]> => {
+export const getArticle = async ({ url, urlParamsObject = {} }: GetArticleProps): Promise<ArticleType> => {
   try {
-    const response = await fetchAPI(url, urlParamsObject)
-    return response.data.map((i: ResponseArticleType) => transformArticle(i)) ?? []
+    const response: ResponseArticleType = await fetchAPI(url, urlParamsObject)
+    return {
+      data: response.data.map((i: ResponseArticleDataType) => transformArticle(i)) ?? [],
+      pagination: { ...response.meta.pagination },
+    }
   } catch (error) {
     console.error('[ERROR] Fetching Article', error)
-    return []
+    return {
+      data: [],
+      pagination: {
+        page: 0,
+        pageSize: 0,
+        pageCount: 0,
+        total: 0,
+      },
+    }
   }
 }
 
-export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticleProps): Promise<ArticleType> => {
+export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticleProps): Promise<ArticleDataType> => {
   try {
     const response = await fetchAPI(url, urlParamsObject)
-    return transformArticle(response.data as ResponseArticleType)
+    return transformArticle(response.data as ResponseArticleDataType)
   } catch (error) {
     console.error('[ERROR] Fetching Single Article', error)
     return {
@@ -35,5 +45,21 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
       description: '',
       categories: [],
     }
+  }
+}
+
+export const getCategories = async (): Promise<Categories[]> => {
+  try {
+    const response = await fetchAPI('/categories', {
+      fields: 'id,name',
+    })
+
+    return (response.data as ResponseCategoriesType[]).map((category) => ({
+      id: category.id,
+      name: category.attributes.name,
+    }))
+  } catch (error) {
+    console.error('[ERROR] Fetching Categories', error)
+    return []
   }
 }

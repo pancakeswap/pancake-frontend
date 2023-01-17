@@ -18,6 +18,7 @@ export const getServerSideProps = async (context: any) => {
     url: '/articles',
     urlParamsObject: {
       locale: article.locale,
+      sort: 'createAt:desc',
       populate: 'categories,image',
       pagination: { limit: 6 },
       filters: {
@@ -39,7 +40,7 @@ export const getServerSideProps = async (context: any) => {
     props: {
       fallback: {
         '/article': article,
-        '/similarArticles': similarArticles,
+        '/similarArticles': similarArticles.data,
       },
     },
   }

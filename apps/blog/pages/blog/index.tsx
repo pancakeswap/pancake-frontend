@@ -10,7 +10,7 @@ export async function getStaticProps() {
       url: '/articles',
       urlParamsObject: {
         populate: 'categories,image',
-        sort: 'publishedAt:desc',
+        sort: 'createAt:desc',
         pagination: { limit: 1 },
       },
     }),
@@ -18,7 +18,7 @@ export async function getStaticProps() {
       url: '/articles',
       urlParamsObject: {
         populate: 'categories,image',
-        sort: 'publishedAt:desc',
+        sort: 'createAt:desc',
         pagination: { limit: 9 },
         'filters[categories][name][$eq]': 'Chef’s choice',
       },
@@ -28,8 +28,8 @@ export async function getStaticProps() {
   return {
     props: {
       fallback: {
-        '/latestArticles': latestArticles,
-        '/chefChoiceArticle': chefChoiceArticle,
+        '/latestArticles': latestArticles.data,
+        '/chefChoiceArticle': chefChoiceArticle.data,
       },
     },
     revalidate: 60,

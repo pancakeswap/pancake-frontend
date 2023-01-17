@@ -6,7 +6,7 @@ import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import NextLink from 'next/link'
 import useSWR from 'swr'
-import { ArticleType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
   position: relative;
@@ -32,7 +32,7 @@ const NEW_BLOG_BG_DARK = 'linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)'
 const NewBlog = () => {
   const { t } = useTranslation()
   const { isDark } = useTheme()
-  const { data: articlesData } = useSWR<ArticleType[]>('/latestArticles')
+  const { data: articlesData } = useSWR<ArticleDataType[]>('/latestArticles')
   const article = useMemo(() => articlesData?.[0], [articlesData])
 
   return (

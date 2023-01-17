@@ -7,7 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper'
 import ArticleView from 'views/Blog/components/Article/ArticleView'
 import useSWR from 'swr'
-import { ArticleType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import 'swiper/css/bundle'
 
 const StyledChefsChoiceContainer = styled(Flex)`
@@ -20,7 +20,7 @@ const StyledChefsChoiceContainer = styled(Flex)`
 
 const ChefsChoice = () => {
   const { t } = useTranslation()
-  const { data: articlesData } = useSWR<ArticleType[]>('/chefChoiceArticle')
+  const { data: articlesData } = useSWR<ArticleDataType[]>('/chefChoiceArticle')
 
   return (
     <StyledChefsChoiceContainer justifyContent="center">

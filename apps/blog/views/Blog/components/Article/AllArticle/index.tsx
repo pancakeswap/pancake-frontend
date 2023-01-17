@@ -1,14 +1,19 @@
 import styled from 'styled-components'
+import useSWR from 'swr'
+import { useDebounce } from '@pancakeswap/hooks'
 import { useState, useMemo } from 'react'
-import { Box, Text, Flex, Button, PaginationButton, SearchInput } from '@pancakeswap/uikit'
+import { Box, Text, Flex, PaginationButton, SearchInput } from '@pancakeswap/uikit'
 import CardArticle from 'views/Blog/components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import ArticleSortSelect from 'views/Blog/components/Article/ArticleSortSelect'
+import { Categories } from 'views/Blog/types'
+import CategoriesSelector from 'views/Blog/components/Article/CategoriesSelector'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
   margin: 45px auto 80px auto;
+  z-index: 0;
 
   ${({ theme }) => theme.mediaQueries.md} {
     margin: 80px auto;
@@ -36,7 +41,7 @@ const StyledMobileTagContainer = styled(Box)`
   padding: 0 16px;
   margin-bottom: 24px;
 
-  ${({ theme }) => theme.mediaQueries.xl} {
+  ${({ theme }) => theme.mediaQueries.xxl} {
     display: none;
   }
 `
@@ -56,32 +61,48 @@ const StyledCard = styled(Flex)`
 
 const AllArticle = () => {
   const { t } = useTranslation()
-  const { query: urlQuery } = useRouter()
+  const [query, setQuery] = useState<string>('')
   const [currentPage, setCurrentPage] = useState(1)
   const [maxPage, setMaxPages] = useState(1)
-  const [sortBy, setSortBy] = useState('date')
+  const [selectedCategories, setSelectCategoriesSelected] = useState(0)
+  const [sortBy, setSortBy] = useState('createAt:desc')
   const [languageOption, setLanguageOption] = useState('all')
-  const [_query, setQuery] = useState('')
+
+  const { data: categoriesData } = useSWR<Categories[]>('/categories')
 
   const languageItems = [
     { label: t('All'), value: 'all' },
     { label: 'English', value: 'en' },
-    { label: '简体中文', value: 'cn' },
+    { label: '简体中文', value: 'zh-CN' },
     { label: '日本語', value: 'ja' },
-    { label: 'Español', value: 'es-ES' },
+    { label: 'Español', value: 'es' },
+    { label: 'Bahasa Indonesia', value: 'id' },
+    { label: 'Português', value: 'pt' },
+    { label: 'Georgian', value: 'ka' },
+    { label: 'Türkçe', value: 'tr' },
+    { label: 'हिंदी', value: 'hi' },
   ]
 
   const sortByItems = [
-    { label: t('Date'), value: 'date' },
-    { label: t('Sort Title A-Z'), value: 'asc' },
-    { label: t('Sort Title Z-A'), value: 'desc' },
+    { label: t('Date'), value: 'createAt:desc' },
+    { label: t('Sort Title A-Z'), value: 'title:asc' },
+    { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
 
-  const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
+  // const { data: articlesData, isValidating } = useSWR(
+  //   [`/articles`, query, currentPage, selectedCategories, sortBy, languageOption],
+  //   async () => {
+  //     // pagination: { page: searchPage, pageSize: 10 },
+  //   }, {
+  //     revalidateOnFocus: false,
+  //     revalidateIfStale: false,
+  //     revalidateOnReconnect: false,
+  //     revalidateOnMount: true,
+  //   }
+  // )
 
-  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
-  }
+  // const loading = useDebounce(isValidating, 400)
+  // const articles = articlesData?.data
 
   return (
     <StyledArticleContainer>
@@ -96,12 +117,12 @@ const AllArticle = () => {
       </Text>
       <Flex p={['0', '0', '0', '0', '0', '0', '0 16px']}>
         <StyledTagContainer>
-          <Button display="block" width="fit-content" scale="sm" variant="subtle" mb="28px">
-            All
-          </Button>
-          <Button display="block" width="fit-content" scale="sm" variant="light">
-            Vote
-          </Button>
+          <CategoriesSelector
+            selected={selectedCategories}
+            categoriesData={categoriesData ?? []}
+            setSelected={setSelectCategoriesSelected}
+            childMargin="0 0 28px 0"
+          />
         </StyledTagContainer>
         <Flex width="100%" flexDirection="column">
           <Flex
@@ -119,7 +140,7 @@ const AllArticle = () => {
               </Box>
             </Flex>
             <Box width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
-              <SearchInput initialValue={normalizedUrlSearch} onChange={handleChangeQuery} placeholder="Search" />
+              <SearchInput placeholder="Search" initialValue={query} onChange={(e) => setQuery(e.target.value)} />
             </Box>
           </Flex>
           <StyledMobileTagContainer>
@@ -127,50 +148,41 @@ const AllArticle = () => {
               {t('Filter by')}
             </Text>
             <Flex overflowY="auto">
-              <Button display="block" width="fit-content" scale="sm" variant="subtle" m="0 4px 4px 0">
-                All
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
-              <Button display="block" width="fit-content" scale="sm" variant="light" m="0 4px 4px 0">
-                Vote
-              </Button>
+              <CategoriesSelector
+                selected={selectedCategories}
+                categoriesData={categoriesData ?? []}
+                setSelected={setSelectCategoriesSelected}
+                childMargin="0 4px 4px 0"
+              />
             </Flex>
           </StyledMobileTagContainer>
-          <StyledCard>
-            <Box>
-              <CardArticle />
-              <CardArticle />
-            </Box>
-            <PaginationButton
-              showMaxPageText
-              currentPage={currentPage}
-              maxPage={maxPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </StyledCard>
+          {/* {!loading && maxPage === 0 && query !== '' && (
+            <Flex
+              mb="24px"
+              padding={['0 16px', '0 16px', '0 16px', '0 16px', '0']}
+            >
+              <Text>{t('%total% Results for', { total: maxPage })}</Text>
+              <Text ml="4px" bold>“mul”</Text>
+            </Flex>
+          )} */}
+          {/* <StyledCard>
+            {loading ? (
+              <></>
+            ): (
+              <>
+                <Box>
+                  <CardArticle />
+                  <CardArticle />
+                </Box>
+                <PaginationButton
+                  showMaxPageText
+                  currentPage={currentPage}
+                  maxPage={maxPage}
+                  setCurrentPage={setCurrentPage}
+                />
+              </>
+            )}
+          </StyledCard> */}
         </Flex>
       </Flex>
     </StyledArticleContainer>

@@ -1,27 +1,28 @@
+import { FC } from 'react'
 import { SWRConfig } from 'swr'
 import AllArticle from 'views/Blog/components/Article/AllArticle'
+import { getCategories } from 'views/Blog/hooks/getArticle'
+import { InferGetServerSidePropsType } from 'next'
 
-const AllArticlePage = ({ fallback }: { fallback: () => void }) => {
+export async function getStaticProps() {
+  const categories = await getCategories()
+
+  return {
+    props: {
+      fallback: {
+        '/categories': categories,
+      },
+    },
+    revalidate: 1,
+  }
+}
+
+const AllArticlePage: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
   return (
     <SWRConfig value={{ fallback }}>
       <AllArticle />
     </SWRConfig>
   )
 }
-
-// export async function getStaticProps() {
-//   const articles = await getArticles()
-//   const categories = await getCategories()
-
-//   return {
-//     props: {
-//       fallback: {
-//         ['/articles']: articles?.articles || [],
-//         ['/categories']: categories?.categories || [],
-//       },
-//     },
-//     revalidate: 1,
-//   }
-// }
 
 export default AllArticlePage

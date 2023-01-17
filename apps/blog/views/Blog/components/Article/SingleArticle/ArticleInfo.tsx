@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
 import ReactMarkdown from 'react-markdown'
 import useSWR from 'swr'
-import { ArticleType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import SocialIcon from 'views/Blog/components/Article/SingleArticle/SocialIcon'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
@@ -51,7 +51,7 @@ const StyledMarkDown = styled(Box)`
 `
 
 const ArticleInfo = () => {
-  const { data: article } = useSWR<ArticleType>('/article')
+  const { data: article } = useSWR<ArticleDataType>('/article')
 
   return (
     <Flex
@@ -73,7 +73,7 @@ const ArticleInfo = () => {
           ))}
         </StyledTagGroup>
         <Text color="textSubtle" mb={['26px']} textAlign="right">
-          {article?.publishedAt}
+          {article?.createAt}
         </Text>
         <Box mb="24px" borderRadius={20} overflow="hidden" height={['155px', '200px', '350px', '420px']}>
           <StyledBackgroundImage imgUrl={article?.imgUrl ?? ''} />
