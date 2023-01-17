@@ -101,7 +101,12 @@ export default function Swap() {
             onDismiss={() => setIsSwapHotTokenDisplay(false)}
             bodyPadding="0px"
           >
-            <HotTokenList handleOutputSelect={handleOutputSelect} />
+            <HotTokenList
+              handleOutputSelect={(newCurrencyOutput: Currency) => {
+                handleOutputSelect(newCurrencyOutput)
+                setIsSwapHotTokenDisplay(false)
+              }}
+            />
           </Modal>
         </ModalV2>
 
