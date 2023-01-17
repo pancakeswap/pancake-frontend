@@ -142,4 +142,11 @@ export const mainnetTokens = {
     'ETH',
     'ETH',
   ),
+  dai: new Coin(
+    ChainId.MAINNET,
+    '0x48e0e3958d42b8d452c9199d4a221d0d1b15d14655787453dbe77208ced90517::coins::DAI',
+    8,
+    'DAI',
+    'DAI',
+  ),
 }
