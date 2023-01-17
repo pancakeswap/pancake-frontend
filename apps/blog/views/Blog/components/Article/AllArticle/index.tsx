@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import useSWR from 'swr'
-import { useDebounce } from '@pancakeswap/hooks'
 import { useState, useEffect } from 'react'
-import { Box, Text, Flex, PaginationButton, SearchInput } from '@pancakeswap/uikit'
+import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import CardArticle from 'views/Blog/components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
@@ -10,6 +9,7 @@ import ArticleSortSelect from 'views/Blog/components/Article/ArticleSortSelect'
 import { Categories } from 'views/Blog/types'
 import CategoriesSelector from 'views/Blog/components/Article/CategoriesSelector'
 import useAllArticle from 'views/Blog/hooks/useAllArticle'
+import SkeletonArticle from 'views/Blog/components/SkeletonArticle'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -63,7 +63,7 @@ const StyledCard = styled(Flex)`
 const AllArticle = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const [query, setQuery] = useState<string>('')
+  const [query, setQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategories, setSelectCategoriesSelected] = useState(0)
   const [sortBy, setSortBy] = useState('createAt:desc')
@@ -98,15 +98,13 @@ const AllArticle = () => {
 
   const { data: categoriesData } = useSWR<Categories[]>('/categories')
 
-  const { articlesData, isValidating } = useAllArticle({
+  const { articlesData, isFetching } = useAllArticle({
     query,
     sortBy,
     currentPage,
     languageOption,
     selectedCategories,
   })
-
-  const loading = useDebounce(isValidating, 400)
   const articles = articlesData?.data
 
   const handlePagination = (value: number) => {
@@ -151,7 +149,9 @@ const AllArticle = () => {
               </Box>
             </Flex>
             <Box width="100%" m={['0 0 12px 0', '0 0 12px 0', '0 0 12px 0', '22px 0 0 0']}>
-              <SearchInput placeholder="Search" initialValue={query} onChange={(e) => setQuery(e.target.value)} />
+              <InputGroup startIcon={<SearchIcon style={{ zIndex: 1 }} color="textSubtle" width="18px" />}>
+                <SearchInput placeholder="Search" initialValue={query} onChange={(e) => setQuery(e.target.value)} />
+              </InputGroup>
             </Box>
           </Flex>
           <StyledMobileTagContainer>
@@ -167,12 +167,16 @@ const AllArticle = () => {
               />
             </Flex>
           </StyledMobileTagContainer>
-          {loading || !articles ? (
-            <Text>{`${t('Loading')}...`}</Text>
+          {!isFetching && articles.length === 0 ? (
+            <Text fontSize={20} bold>
+              {t('No results found.')}
+            </Text>
           ) : (
-            <>
-              {articles.length > 0 ? (
-                <StyledCard>
+            <StyledCard>
+              {isFetching && articles.length === 0 ? (
+                <SkeletonArticle />
+              ) : (
+                <>
                   <Box>
                     {articles.map((article) => (
                       <CardArticle key={article.id} article={article} />
@@ -184,13 +188,9 @@ const AllArticle = () => {
                     maxPage={articlesData.pagination.pageCount}
                     setCurrentPage={handlePagination}
                   />
-                </StyledCard>
-              ) : (
-                <Text fontSize={20} bold>
-                  {t('No articles found')}
-                </Text>
+                </>
               )}
-            </>
+            </StyledCard>
           )}
         </Flex>
       </Flex>

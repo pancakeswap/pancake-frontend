@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Box, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import BlogCard from 'views/Blog/components/BlogCard'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
@@ -7,6 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import NextLink from 'next/link'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import SearchBar from 'views/Blog/components/SearchBar'
 
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
   position: relative;
@@ -38,12 +39,17 @@ const NewBlog = () => {
   return (
     <StyledBackground isDark={isDark}>
       <Box maxWidth="1137px" margin="auto">
-        <Text bold fontSize={['32px', '32px', '40px']}>
-          {t('Blog')}
-        </Text>
-        <Text bold mt="4px" mb={['20px', '20px', '35px']} color="textSubtle" fontSize={['14px', '14px', '16px']}>
-          {t('Latest News about PancakeSwap and more!')}
-        </Text>
+        <Flex flexDirection={['column', 'column', 'column', 'row']}>
+          <Box>
+            <Text bold fontSize={['32px', '32px', '40px']}>
+              {t('Blog')}
+            </Text>
+            <Text bold mt="4px" mb={['20px', '20px', '35px']} color="textSubtle" fontSize={['14px', '14px', '16px']}>
+              {t('Latest News about PancakeSwap and more!')}
+            </Text>
+          </Box>
+          <SearchBar />
+        </Flex>
         <NextLink
           passHref
           href={`/blog/article/${article?.id}`}

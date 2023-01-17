@@ -11,7 +11,7 @@ interface UseAllArticleProps {
 }
 
 interface AllArticleType {
-  isValidating: boolean
+  isFetching: boolean
   articlesData: ArticleType
 }
 
@@ -22,8 +22,8 @@ const useAllArticle = ({
   languageOption,
   selectedCategories,
 }: UseAllArticleProps): AllArticleType => {
-  const { data: articlesData, isValidating } = useSWR(
-    [`/articles`, query, currentPage, selectedCategories, sortBy, languageOption],
+  const { data: articlesData, isLoading } = useSWR(
+    ['/articles', query, currentPage, selectedCategories, sortBy, languageOption],
     async () => {
       const result = await getArticle({
         url: '/articles',
@@ -59,7 +59,7 @@ const useAllArticle = ({
   )
 
   return {
-    isValidating,
+    isFetching: isLoading,
     articlesData: articlesData ?? {
       data: [],
       pagination: {
