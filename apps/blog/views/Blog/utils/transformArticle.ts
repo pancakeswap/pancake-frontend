@@ -27,7 +27,7 @@ export const transformArticle = (article: ResponseArticleDataType): ArticleDataT
     publishedAt: article.attributes.publishedAt,
     locale: article.attributes.locale ?? '',
     description: article.attributes.description,
-    imgUrl: getStrapiURL(article.attributes.image.data[0].attributes.url) ?? '',
-    categories: article.attributes.categories.data.map((i) => i.attributes.name),
+    imgUrl: getStrapiURL(article?.attributes?.image?.data?.[0]?.attributes?.url) ?? '',
+    categories: article.attributes?.categories?.data?.map((i) => i.attributes.name),
   }
 }

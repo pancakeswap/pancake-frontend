@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import useSWR from 'swr'
 import { useDebounce } from '@pancakeswap/hooks'
-import { useState, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput } from '@pancakeswap/uikit'
 import CardArticle from 'views/Blog/components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 import ArticleSortSelect from 'views/Blog/components/Article/ArticleSortSelect'
 import { Categories } from 'views/Blog/types'
 import CategoriesSelector from 'views/Blog/components/Article/CategoriesSelector'
+import useAllArticle from 'views/Blog/hooks/useAllArticle'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;
@@ -61,15 +62,12 @@ const StyledCard = styled(Flex)`
 
 const AllArticle = () => {
   const { t } = useTranslation()
+  const router = useRouter()
   const [query, setQuery] = useState<string>('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [maxPage, setMaxPages] = useState(1)
   const [selectedCategories, setSelectCategoriesSelected] = useState(0)
   const [sortBy, setSortBy] = useState('createAt:desc')
   const [languageOption, setLanguageOption] = useState('all')
-
-  const { data: categoriesData } = useSWR<Categories[]>('/categories')
-
   const languageItems = [
     { label: t('All'), value: 'all' },
     { label: 'English', value: 'en' },
@@ -82,27 +80,40 @@ const AllArticle = () => {
     { label: 'Türkçe', value: 'tr' },
     { label: 'हिंदी', value: 'hi' },
   ]
-
   const sortByItems = [
     { label: t('Date'), value: 'createAt:desc' },
     { label: t('Sort Title A-Z'), value: 'title:asc' },
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
 
-  // const { data: articlesData, isValidating } = useSWR(
-  //   [`/articles`, query, currentPage, selectedCategories, sortBy, languageOption],
-  //   async () => {
-  //     // pagination: { page: searchPage, pageSize: 10 },
-  //   }, {
-  //     revalidateOnFocus: false,
-  //     revalidateIfStale: false,
-  //     revalidateOnReconnect: false,
-  //     revalidateOnMount: true,
-  //   }
-  // )
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [query, selectedCategories, sortBy, languageOption])
 
-  // const loading = useDebounce(isValidating, 400)
-  // const articles = articlesData?.data
+  useEffect(() => {
+    if (router.isReady && router.query.search) {
+      setQuery(router.query.search as string)
+    }
+  }, [router.isReady, router.query.search])
+
+  const { data: categoriesData } = useSWR<Categories[]>('/categories')
+
+  const { articlesData, isValidating } = useAllArticle({
+    query,
+    sortBy,
+    currentPage,
+    languageOption,
+    selectedCategories,
+  })
+
+  const loading = useDebounce(isValidating, 400)
+  const articles = articlesData?.data
+
+  const handlePagination = (value: number) => {
+    setCurrentPage(1)
+    setCurrentPage(value)
+    window.scrollTo({ top: 0, behavior: 'auto' })
+  }
 
   return (
     <StyledArticleContainer>
@@ -156,33 +167,31 @@ const AllArticle = () => {
               />
             </Flex>
           </StyledMobileTagContainer>
-          {/* {!loading && maxPage === 0 && query !== '' && (
-            <Flex
-              mb="24px"
-              padding={['0 16px', '0 16px', '0 16px', '0 16px', '0']}
-            >
-              <Text>{t('%total% Results for', { total: maxPage })}</Text>
-              <Text ml="4px" bold>“mul”</Text>
-            </Flex>
-          )} */}
-          {/* <StyledCard>
-            {loading ? (
-              <></>
-            ): (
-              <>
-                <Box>
-                  <CardArticle />
-                  <CardArticle />
-                </Box>
-                <PaginationButton
-                  showMaxPageText
-                  currentPage={currentPage}
-                  maxPage={maxPage}
-                  setCurrentPage={setCurrentPage}
-                />
-              </>
-            )}
-          </StyledCard> */}
+          {loading || !articles ? (
+            <Text>Loading...</Text>
+          ) : (
+            <>
+              {articles.length > 0 ? (
+                <StyledCard>
+                  <Box>
+                    {articles.map((article) => (
+                      <CardArticle key={article.id} article={article} />
+                    ))}
+                  </Box>
+                  <PaginationButton
+                    showMaxPageText
+                    currentPage={articlesData.pagination.page}
+                    maxPage={articlesData.pagination.pageCount}
+                    setCurrentPage={handlePagination}
+                  />
+                </StyledCard>
+              ) : (
+                <Text fontSize={20} bold>
+                  {t('No articles found')}
+                </Text>
+              )}
+            </>
+          )}
         </Flex>
       </Flex>
     </StyledArticleContainer>

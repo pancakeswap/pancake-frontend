@@ -20,7 +20,13 @@ export async function getStaticProps() {
         populate: 'categories,image',
         sort: 'createAt:desc',
         pagination: { limit: 9 },
-        'filters[categories][name][$eq]': 'Chef’s choice',
+        filters: {
+          categories: {
+            name: {
+              $eq: 'Chef’s choice',
+            },
+          },
+        },
       },
     }),
   ])

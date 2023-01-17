@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
+import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -29,11 +30,32 @@ const StyledArticle = styled(Flex)`
   }
 `
 
-const CardArticle = () => {
+const StyledTagGroup = styled(Flex)`
+  flex-wrap: wrap;
+
+  ${Text} {
+    &:after {
+      content: ',';
+      margin: 0 4px;
+    }
+
+    &:last-child {
+      &:after {
+        content: '';
+      }
+    }
+  }
+`
+
+interface CardArticleProps {
+  article: ArticleDataType
+}
+
+const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ article }) => {
   const router = useRouter()
 
   const handleClick = () => {
-    router.push('/blog/article/123')
+    router.push(`/blog/article/${article.id}`)
   }
 
   return (
@@ -46,23 +68,26 @@ const CardArticle = () => {
           minWidth={['132px', '152px', '192px', '320px']}
           height={['71px', '91px', '111px', '180px']}
         >
-          <StyledBackgroundImage imgUrl="https://www.shutterstock.com/image-photo/adult-bearded-male-casual-clothes-600w-2080095523.jpg" />
+          <StyledBackgroundImage imgUrl={article.imgUrl} />
         </Box>
-        <Flex flexDirection="column">
+        <Flex flexDirection="column" width="100%">
           <Box mb="24px" display={['none', null, null, 'block']}>
-            <Text display="inline" bold color="textSubtle" textTransform="uppercase">
-              ifo
-            </Text>
+            <StyledTagGroup>
+              {article?.categories?.map((category: string) => (
+                <Text bold key={category} fontSize="12px" color="textSubtle" textTransform="uppercase">
+                  {category}
+                </Text>
+              ))}
+            </StyledTagGroup>
           </Box>
           <Text bold lineHeight="100%" mb={['8px', '8px', '8px', '24px']} fontSize={['12px', '14px', '16px', '24px']}>
-            PancakeSwap Info Relaunch in Partnership with $150,000 Bounty Winner — StreamingFast!
+            {article.title}
           </Text>
           <Text display={['none', null, null, 'block']} mb="24px">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua.
+            {article.description}
           </Text>
-          <Text textAlign="right" fontSize={['12px', '12px', '14px']} color="textSubtle">
-            June 22 2021
+          <Text mt="auto" textAlign="right" fontSize={['12px', '12px', '14px']} color="textSubtle">
+            {article.createAt}
           </Text>
         </Flex>
       </Flex>
