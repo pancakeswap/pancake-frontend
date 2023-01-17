@@ -19,7 +19,7 @@ import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
-import { ReactElement, useCallback, useContext, useState, useEffect } from 'react'
+import { ReactElement, useCallback, useContext, useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { useExpertModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
@@ -47,10 +47,9 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
 }) => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
-  const [mobileTooltipShow, setMobileTooltipShow] = useState(true)
+  const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
     placement: isMobile ? 'top' : 'bottom',
-    tooltipOffset: isMobile ? [0, -70] : [0, 10],
     trigger: isMobile ? 'focus' : 'hover',
     ...(isMobile && { manualVisible: mobileTooltipShow }),
   })
@@ -65,6 +64,9 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   const mobileTooltipClickOutside = useCallback(() => {
     setMobileTooltipShow(false)
   }, [])
+  useLayoutEffect(() => {
+    if (isMobile) setMobileTooltipShow(true)
+  }, [isMobile])
 
   useEffect(() => {
     document.body.addEventListener('click', mobileTooltipClickOutside)
