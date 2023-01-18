@@ -14,7 +14,7 @@ export const articles = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   }
   const queryString = qs.stringify(req.query)
-  const requestUrl = `${process.env.NEXT_STRAPI_API_URL}/api/articles?${queryString}`
+  const requestUrl = `${process.env.STRAPI_API_URL}/api/articles?${queryString}`
   const response = await fetch(requestUrl, mergedOptions)
 
   if (!response.ok) {
