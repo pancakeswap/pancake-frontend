@@ -2075,5 +2075,15 @@
   "Expired Order": "Expired Order",
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the",
-  "Info Page": "Info Page"
+  "Info Page": "Info Page",
+  "Launch App": "Launch App",
+  "Sort Title A-Z": "Sort Title A-Z",
+  "Sort Title Z-A": "Sort Title Z-A",
+  "All articles": "All articles",
+  "Learn basics of PancakeSwap": "Learn basics of PancakeSwap",
+  "Learn how": "Learn how",
+  "You might also like": "You might also like",
+  "Chef’s choice": "Chef’s choice",
+  "Read about our latest announcements and more": "Read about our latest announcements and more",
+  "Latest News about PancakeSwap and more!": "Latest News about PancakeSwap and more!"
 }
