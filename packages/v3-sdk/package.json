@@ -13,15 +13,14 @@
     "pancakeswap",
     "bsc"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/index.mjs",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "test": "vitest --run",
-    "coverage": "vitest run --coverage",
-    "prepublishOnly": "tsup build"
+    "coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@ethersproject/abi": "^5.0.12",

@@ -52,8 +52,6 @@ const config = {
       'wagmi',
       '@ledgerhq',
       '@gnosis.pm/safe-apps-wagmi',
-      '@pancakeswap/v3-sdk',
-      '@pancakeswap/router-sdk',
     ],
   },
   reactStrictMode: true,
