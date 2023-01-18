@@ -43,6 +43,16 @@ const whitelist = [
   'Zap in %amount% %symbol% for %lpSymbol%',
   'Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%',
   'Order cancellation',
+  'Launch App',
+  'Sort Title A-Z',
+  'Sort Title Z-A',
+  'All articles',
+  'Learn basics of PancakeSwap',
+  'Learn how',
+  'You might also like',
+  'Chef’s choice',
+  'Read about our latest announcements and more',
+  'Latest News about PancakeSwap and more!',
 ]
 
 describe('Check translations integrity', () => {
