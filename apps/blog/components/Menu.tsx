@@ -1,8 +1,9 @@
 import { Box, Flex, Logo, ThemeSwitcher, Link, Button, LangSelector } from '@pancakeswap/uikit'
 import { useTheme as useNextTheme } from 'next-themes'
 import NextLink from 'next/link'
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import { useTranslation, languageList } from '@pancakeswap/localization'
+import { useTheme } from '@pancakeswap/hooks'
 
 const MenuItemStyle = styled.a<any>`
   position: relative;

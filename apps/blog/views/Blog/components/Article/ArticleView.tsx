@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import useTheme from 'hooks/useTheme'
+import { useTheme } from '@pancakeswap/hooks'
 
 const StyledChoiceContainer = styled(Flex)`
   width: 100%;
