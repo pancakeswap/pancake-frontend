@@ -74,6 +74,7 @@ const BasicChart = ({
         alignItems={['flex-start', null, null, null, null, null, 'center']}
         justifyContent="space-between"
         px="24px"
+        flexWrap="wrap"
       >
         <Flex flexDirection="column" pt="12px">
           <PairPriceDisplay

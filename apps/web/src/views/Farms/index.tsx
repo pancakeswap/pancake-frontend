@@ -3,7 +3,7 @@ import { LinkExternal, ModalV2 } from '@pancakeswap/uikit'
 import DisclaimerModal from 'components/DisclaimerModal'
 import { ConnectorNames, getDocLink } from 'config/wallet'
 import { ExtendEthereum } from 'global'
-import { FC, useState } from 'react'
+import { FC, useState, useCallback } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import Farms, { FarmsContext } from './Farms'
@@ -30,6 +30,10 @@ function BloctoWarning() {
 
   const [close, setClose] = useState(false)
 
+  const handleSuccess = useCallback(() => {
+    setClose(true)
+  }, [])
+
   return (
     <ModalV2 isOpen={isBloctoETH && !close} closeOnOverlayClick={false}>
       <DisclaimerModal
@@ -52,7 +56,7 @@ function BloctoWarning() {
             content: t('I understand'),
           },
         ]}
-        onSuccess={() => setClose(true)}
+        onSuccess={handleSuccess}
       />
     </ModalV2>
   )

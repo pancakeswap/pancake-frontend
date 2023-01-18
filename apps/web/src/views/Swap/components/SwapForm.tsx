@@ -233,6 +233,11 @@ export default function SwapForm() {
             showBUSD={!!tokenMap[chainId]?.[inputCurrencyId] || inputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
+          {isAccessTokenSupported && inputCurrency?.isToken && (
+            <Box>
+              <AccessRisk token={inputCurrency} />
+            </Box>
+          )}
 
           <AutoColumn justify="space-between">
             <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
@@ -265,9 +270,9 @@ export default function SwapForm() {
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
-          {isAccessTokenSupported && (
+          {isAccessTokenSupported && outputCurrency?.isToken && (
             <Box>
-              <AccessRisk inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
+              <AccessRisk token={outputCurrency} />
             </Box>
           )}
 
