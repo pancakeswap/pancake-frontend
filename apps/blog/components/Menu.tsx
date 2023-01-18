@@ -1,11 +1,11 @@
-import { Box, Flex, Logo, ThemeSwitcher, Link, Button, LangSelector } from '@pancakeswap/uikit'
+import { Box, Flex, Logo, ThemeSwitcher, Text, Link, Button, LangSelector } from '@pancakeswap/uikit'
 import { useTheme as useNextTheme } from 'next-themes'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 import { useTranslation, languageList } from '@pancakeswap/localization'
 import { useTheme } from '@pancakeswap/hooks'
 
-const MenuItemStyle = styled.a<any>`
+const MenuItemStyle = styled(Text)<{ $isActive: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
