@@ -14,23 +14,18 @@ const disableWhenNotCNY = () => {
 }
 
 const useChineseNewYearEffect = () => {
-  const isDisabled = disableWhenNotCNY && disableWhenNotCNY()
+  const isDisabled = disableWhenNotCNY()
 
   useEffect(() => {
     const { cancel } = emojisplosions({
-      interval() {
-        if (isDisabled) {
-          return 0
-        }
-        return 3000
-      },
+      interval: () => (isDisabled ? 0 : 1600),
       uniqueness: 1,
-      emojiCount: 8,
+      emojiCount: 10,
       emojis: ['🧧'],
     })
 
     return () => cancel()
-  })
+  }, [])
 }
 
 export default useChineseNewYearEffect
