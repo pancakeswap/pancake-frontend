@@ -1,4 +1,5 @@
 import { emojisplosions } from 'emojisplosion'
+import { useEffect } from 'react'
 
 const disableWhenNotCNY = () => {
   const today = new Date()
@@ -15,14 +16,21 @@ const disableWhenNotCNY = () => {
 const useChineseNewYearEffect = () => {
   const isDisabled = disableWhenNotCNY && disableWhenNotCNY()
 
-  if (!isDisabled) {
-    emojisplosions({
-      interval: 10000,
+  useEffect(() => {
+    const { cancel } = emojisplosions({
+      interval() {
+        if (isDisabled) {
+          return 0
+        }
+        return 3000
+      },
       uniqueness: 1,
       emojiCount: 8,
       emojis: ['🧧'],
     })
-  }
+
+    return () => cancel()
+  })
 }
 
 export default useChineseNewYearEffect
