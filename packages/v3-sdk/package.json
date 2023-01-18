@@ -23,18 +23,29 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@ethersproject/abi": "^5.0.12",
-    "@ethersproject/solidity": "^5.0.9",
     "@uniswap/swap-router-contracts": "^1.2.1",
     "@uniswap/v3-periphery": "^1.1.1",
     "@uniswap/v3-staker": "1.0.0",
+    "big.js": "^5.2.2",
+    "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
-    "@pancakeswap/sdk": "*"
+    "@pancakeswap/sdk": "*",
+    "toformat": "^2.0.0",
+    "jsbi": "^3.1.4"
+  },
+  "peerDependencies": {
+    "@ethersproject/bignumber": "^5.0.0",
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0",
+    "@ethersproject/address": "^5.0.0"
   },
   "devDependencies": {
+    "@ethersproject/bignumber": "^5.0.0",
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0",
     "@types/jest": "^24.0.25",
-    "tsup": "^5.10.1"
+    "tsup": "^6.5.0"
   },
   "engines": {
     "node": ">=10"

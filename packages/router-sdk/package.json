@@ -22,15 +22,22 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@ethersproject/abi": "^5.5.0",
     "@uniswap/swap-router-contracts": "1.1.0",
     "@pancakeswap/sdk": "*",
-    "@pancakeswap/v3-sdk": "workspace:*"
+    "@pancakeswap/v3-sdk": "*",
+    "tiny-invariant": "^1.1.0",
+    "jsbi": "^3.1.4"
+  },
+  "peerDependencies": {
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0"
   },
   "devDependencies": {
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0",
     "@types/jest": "^24.0.25",
     "prettier": "^2.4.1",
-    "tsup": "^5.10.1"
+    "tsup": "^6.5.0"
   },
   "prettier": {
     "printWidth": 120,
