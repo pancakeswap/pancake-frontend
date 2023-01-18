@@ -27,9 +27,12 @@ export function transactionErrorToUserReadableMessage(error: any, t: TranslateFu
     case 'PancakeRouter: INSUFFICIENT_B_AMOUNT':
     case 'swapMulti: incorrect user balance':
     case 'Pancake: K':
-      return t(
-        'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.',
-      )
+      return [
+        t(
+          'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.',
+        ),
+        `(${reason})`,
+      ].join(' ')
     case 'TransferHelper: TRANSFER_FROM_FAILED':
       return t('The input token cannot be transferred. There may be an issue with the input token.')
     case 'Pancake: TRANSFER_FAILED':
