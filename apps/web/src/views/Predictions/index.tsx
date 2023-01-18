@@ -1,15 +1,12 @@
 import { useModal, useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useAccount } from 'wagmi'
 import { PageMeta } from 'components/Layout/Page'
 import { useEffect, useRef } from 'react'
-import { useInitialBlock } from 'state/block/hooks'
-import { initializePredictions } from 'state/predictions'
 import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { PredictionsChartView } from 'state/types'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import useChineseNewYearEffect from 'hooks/useChineseNewYearEffect'
+
 import ChartDisclaimer from './components/ChartDisclaimer'
 import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
 import CollectWinningsPopup from './components/CollectWinningsPopup'
@@ -52,19 +49,9 @@ function Warnings() {
 
 const Predictions = () => {
   const { isDesktop } = useMatchBreakpoints()
-  const { address: account } = useAccount()
-  const dispatch = useLocalDispatch()
-  const initialBlock = useInitialBlock()
 
   useChineseNewYearEffect()
   useAccountLocalEventListener()
-
-  useEffect(() => {
-    if (initialBlock > 0) {
-      // Do not start initialization until the first block has been retrieved
-      dispatch(initializePredictions(account))
-    }
-  }, [initialBlock, dispatch, account])
 
   usePollPredictions()
 

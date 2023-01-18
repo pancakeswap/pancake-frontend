@@ -13,6 +13,7 @@ import {
   Text,
   useModal,
   useToast,
+  ReactMarkdown,
 } from '@pancakeswap/uikit'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import snapshot from '@snapshot-labs/snapshot.js'
@@ -26,7 +27,6 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
 import { PageMeta } from 'components/Layout/Page'
-import ReactMarkdown from 'components/ReactMarkdown'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
