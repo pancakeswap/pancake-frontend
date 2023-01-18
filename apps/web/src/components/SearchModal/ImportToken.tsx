@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Token, Currency, ChainId } from '@pancakeswap/sdk'
 import {
   Button,
@@ -24,7 +24,7 @@ import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { WrappedTokenInfo, TokenList } from '@pancakeswap/token-lists'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
@@ -48,6 +48,23 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
 
   const lists = useAllLists()
   const inactiveUrls = useInactiveListUrls()
+
+  const tokenListMap: WeakMap<Token, TokenList> = useMemo(() => {
+    const map = new WeakMap()
+    tokens.forEach((token) => {
+      for (const url of inactiveUrls) {
+        const list = lists[url].current
+        const tokenInList = list?.tokens.some(
+          (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
+        )
+        if (tokenInList) {
+          map.set(token, list)
+          break
+        }
+      }
+    })
+    return map
+  }, [inactiveUrls, lists, tokens])
 
   const { data: hasRiskToken } = useSWRImmutable(tokens && ['has-risks', tokens], async () => {
     const result = await Promise.all(tokens.map((token) => fetchRiskToken(token.address, token.chainId)))
@@ -76,17 +93,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       </Message>
 
       {tokens.map((token) => {
-        let tokenList
-        for (const url of inactiveUrls) {
-          const list = lists[url].current
-          const tokenInList = list?.tokens.some(
-            (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
-          )
-          if (tokenInList) {
-            tokenList = list
-            break
-          }
-        }
+        const tokenList = tokenListMap.get(token)
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
           <Flex key={token.address} alignItems="center" justifyContent="space-between">
@@ -151,24 +158,14 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           disabled={!confirmed}
           onClick={() => {
             tokens.forEach((token) => {
-              let tokenInList
-              for (const url of inactiveUrls) {
-                const list = lists[url].current
-                tokenInList = list?.tokens.find(
-                  (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
-                )
-                if (tokenInList) {
-                  break
-                }
-              }
-
-              const inactiveToken = chainId && tokenInList
+              const inactiveTokenList = tokenListMap.get(token)
+              const inactiveTokenInfo = inactiveTokenList?.[chainId]?.[token.address]
               let tokenToAdd = token
-              if (inactiveToken) {
+              if (inactiveTokenInfo) {
                 tokenToAdd = new WrappedTokenInfo({
                   ...token,
-                  logoURI: inactiveToken.logoURI,
-                  name: token.name || inactiveToken.name,
+                  logoURI: inactiveTokenInfo.logoURI,
+                  name: token.name || inactiveTokenInfo.name,
                 })
               }
               addToken(tokenToAdd)

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Token, Currency } from '@pancakeswap/aptos-swap-sdk'
 import {
   Button,
@@ -19,7 +19,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAddUserToken } from 'state/user'
-import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { WrappedTokenInfo, TokenList } from '@pancakeswap/token-lists'
 
 interface ImportProps {
   tokens: Token[]
@@ -38,6 +38,23 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
   const lists = useAllLists()
   const inactiveUrls = useInactiveListUrls()
 
+  const tokenListMap: WeakMap<Token, TokenList> = useMemo(() => {
+    const map = new WeakMap()
+    tokens.forEach((token) => {
+      for (const url of inactiveUrls) {
+        const list = lists[url].current
+        const tokenInList = list?.tokens.some(
+          (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
+        )
+        if (tokenInList) {
+          map.set(token, list)
+          break
+        }
+      }
+    })
+    return map
+  }, [inactiveUrls, lists, tokens])
+
   return (
     <AutoColumn gap="lg">
       <Message variant="warning">
@@ -52,17 +69,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
       </Message>
 
       {tokens.map((token) => {
-        let tokenList
-        for (const url of inactiveUrls) {
-          const list = lists[url].current
-          const tokenInList = list?.tokens.some(
-            (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
-          )
-          if (tokenInList) {
-            tokenList = list
-            break
-          }
-        }
+        const tokenList = tokenListMap.get(token)
         const address = token.address ? `${truncateHash(token.address)}` : null
         return (
           <Grid key={token.address} gridTemplateRows="1fr 1fr 1fr" gridGap="4px">
@@ -116,24 +123,14 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
           disabled={!confirmed}
           onClick={() => {
             tokens.forEach((token) => {
-              let tokenInList
-              for (const url of inactiveUrls) {
-                const list = lists[url].current
-                tokenInList = list?.tokens.find(
-                  (tokenInfo) => tokenInfo.address === token.address && tokenInfo.chainId === token.chainId,
-                )
-                if (tokenInList) {
-                  break
-                }
-              }
-
-              const inactiveToken = chainId && tokenInList
+              const inactiveTokenList = tokenListMap.get(token)
+              const inactiveTokenInfo = inactiveTokenList?.[chainId]?.[token.address]
               let tokenToAdd = token
-              if (inactiveToken) {
+              if (inactiveTokenInfo) {
                 tokenToAdd = new WrappedTokenInfo({
                   ...token,
-                  logoURI: inactiveToken.logoURI,
-                  name: token.name || inactiveToken.name,
+                  logoURI: inactiveTokenInfo.logoURI,
+                  name: token.name || inactiveTokenInfo.name,
                 })
               }
               addToken(tokenToAdd)
