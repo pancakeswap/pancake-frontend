@@ -9,7 +9,7 @@ export enum ConnectorNames {
   Blocto = 'blocto',
   TrustWallet = 'trustWallet',
   SafePal = 'safePal',
-  RiseWallet = 'riseWallet',
+  Rise = 'rise',
 }
 
 export const wallets: WalletConfigV2<ConnectorNames>[] = [
@@ -95,9 +95,9 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
   {
     id: 'rise',
     title: 'Rise Wallet',
-    icon: '/images/wallets/risewallet.png',
+    icon: '/images/wallets/rise.png',
     installed: typeof window !== 'undefined' && Boolean(window.rise),
-    connectorId: ConnectorNames.RiseWallet,
+    connectorId: ConnectorNames.Rise,
     downloadLink: {
       desktop: isFirefox
         ? 'https://addons.mozilla.org/en-US/firefox/addon/rise-wallet/'
