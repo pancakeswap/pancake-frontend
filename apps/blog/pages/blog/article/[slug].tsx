@@ -7,7 +7,14 @@ import { InferGetServerSidePropsType } from 'next'
 import { getArticle, getSingleArticle } from 'views/Blog/hooks/getArticle'
 import PageMeta from 'components/PageMeta'
 
-export const getServerSideProps = async (context: any) => {
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps = async (context: any) => {
   const params = context.params.slug
   const article = await getSingleArticle({
     url: `/articles/${params}`,
@@ -43,16 +50,17 @@ export const getServerSideProps = async (context: any) => {
         '/similarArticles': similarArticles.data,
       },
     },
+    revalidate: 60,
   }
 }
 
-const ArticlePage: FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ fallback }) => {
+const ArticlePage: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
   const router = useRouter()
-  const { title, description, imgUrl } = fallback['/article']
-
-  if (!router.isFallback && !title) {
+  if (!router.isFallback && !fallback?.['/article']?.title) {
     return <NotFound />
   }
+
+  const { title, description, imgUrl } = fallback['/article']
 
   return (
     <>
