@@ -24,6 +24,7 @@ import {
   Modal,
   Text,
   Link,
+  confirmPriceImpactWithoutFee,
 } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -34,9 +35,8 @@ import { SettingsButton } from 'components/Menu/Settings/SettingsButton'
 import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/SettingsModal'
 import ImportToken from 'components/SearchModal/ImportToken'
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
-import confirmPriceImpactWithoutFee from 'components/Swap/confirmPriceImpactWithoutFee'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
-import { BIPS_BASE } from 'config/constants/exchange'
+import { BIPS_BASE, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN, ALLOWED_PRICE_IMPACT_HIGH } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
@@ -244,7 +244,15 @@ const SwapPage = () => {
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)
 
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
+    if (
+      priceImpactWithoutFee &&
+      !confirmPriceImpactWithoutFee(
+        priceImpactWithoutFee,
+        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+        ALLOWED_PRICE_IMPACT_HIGH,
+        t,
+      )
+    ) {
       return
     }
     if (!swapCallback) return
