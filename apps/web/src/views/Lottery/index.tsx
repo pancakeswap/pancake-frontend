@@ -5,6 +5,7 @@ import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
+import useChineseNewYearEffect from 'hooks/useChineseNewYearEffect'
 import {
   CNY_TITLE_BG,
   GET_TICKETS_BG,
@@ -30,6 +31,7 @@ const LotteryPage = styled.div`
 `
 
 const Lottery = () => {
+  useChineseNewYearEffect()
   useFetchLottery()
   useStatusTransitions()
   const { t } = useTranslation()

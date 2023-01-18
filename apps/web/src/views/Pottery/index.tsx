@@ -6,12 +6,14 @@ import { usePotteryFetch } from 'state/pottery/hook'
 import Banner from 'views/Pottery/components/Banner/index'
 import Pot from 'views/Pottery/components/Pot/index'
 import SubgraphHealthIndicator from 'components/SubgraphHealthIndicator'
+import useChineseNewYearEffect from 'hooks/useChineseNewYearEffect'
 import FinishedRounds from './components/FinishedRounds'
 import HowToPlay from './components/HowToPlay'
 import PrizeFunds from './components/PrizeFunds'
 import FAQ from './components/FAQ'
 
 const Pottery: React.FC<React.PropsWithChildren> = () => {
+  useChineseNewYearEffect()
   usePotteryFetch()
   const potWrapperEl = useRef<HTMLDivElement>(null)
 
