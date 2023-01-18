@@ -26,7 +26,7 @@ const MenuWrapper = styled.div`
   }
 `
 
-const LIQUIDITY_FILTER = 100000 // 100k
+const LIQUIDITY_FILTER = { [ChainId.BSC]: 100000, [ChainId.ETHEREUM]: 50000 }
 
 const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
@@ -38,9 +38,13 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
   const formattedTokens = useMemo(
     () =>
       allTokens.filter(
-        (t) => t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.liquidityUSD >= LIQUIDITY_FILTER,
+        (t) =>
+          t.priceUSD !== 0 &&
+          t.priceUSDChange !== 0 &&
+          t.volumeUSD !== 0 &&
+          t.liquidityUSD >= LIQUIDITY_FILTER[chainId],
       ),
-    [allTokens],
+    [allTokens, chainId],
   )
 
   const { t } = useTranslation()
