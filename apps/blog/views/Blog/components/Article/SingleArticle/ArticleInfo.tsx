@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { Box, Text, Flex } from '@pancakeswap/uikit'
-import ReactMarkdown from 'components/ReactMarkdown'
+import { Box, Text, Flex, ReactMarkdown } from '@pancakeswap/uikit'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import SocialIcon from 'views/Blog/components/Article/SingleArticle/SocialIcon'

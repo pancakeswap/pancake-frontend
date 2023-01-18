@@ -8,6 +8,7 @@ import {
   Heading,
   Button,
   ChevronUpIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import orderBy from 'lodash/orderBy'
@@ -16,8 +17,6 @@ import { Vote } from 'state/types'
 import { FetchStatus } from 'config/constants/types'
 import VotesLoading from '../components/Proposal/VotesLoading'
 import VoteRow from '../components/Proposal/VoteRow'
-
-const VOTES_PER_VIEW = 20
 
 interface VotesProps {
   votes: Vote[]
@@ -33,9 +32,12 @@ const parseVotePower = (incomingVote: Vote) => {
 
 const Votes: React.FC<React.PropsWithChildren<VotesProps>> = ({ votes, votesLoadingStatus, totalVotes }) => {
   const [showAll, setShowAll] = useState(false)
+  const { isMobile } = useMatchBreakpoints()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const orderedVotes = orderBy(votes, [parseVotePower, 'created'], ['desc', 'desc'])
+
+  const VOTES_PER_VIEW = isMobile ? 10 : 20
   const displayVotes = showAll ? orderedVotes : orderedVotes.slice(0, VOTES_PER_VIEW)
   const isFetched = votesLoadingStatus === FetchStatus.Fetched
 

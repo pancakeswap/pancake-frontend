@@ -1,14 +1,16 @@
 import BigNumber from 'bignumber.js'
 import addSeconds from 'date-fns/addSeconds'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { deserializeFarmUserData } from '@pancakeswap/farms'
-import type { SerializedFarm, DeserializedFarm } from '@pancakeswap/farms'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { SerializedFarm, DeserializedFarm } from './types'
+import { deserializeFarmUserData } from './deserializeFarmUserData'
+import { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
 
-export const FARM_AUCTION_HOSTING_IN_SECONDS = 691200
-
-export const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
+export const deserializeFarm = (
+  farm: SerializedFarm,
+  auctionHostingInSeconds: number = FARM_AUCTION_HOSTING_IN_SECONDS,
+): DeserializedFarm => {
   const {
     lpAddress,
     lpSymbol,
@@ -22,13 +24,16 @@ export const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     tokenPriceBusd,
     boosted,
     infoStableSwapAddress,
+    stableSwapAddress,
+    stableLpFee,
+    stableLpFeeRateOfTotalFee,
   } = farm
 
   const auctionHostingStartDate = !isUndefinedOrNull(auctionHostingStartSeconds)
     ? new Date((auctionHostingStartSeconds as number) * 1000)
     : null
   const auctionHostingEndDate = auctionHostingStartDate
-    ? addSeconds(auctionHostingStartDate, FARM_AUCTION_HOSTING_IN_SECONDS)
+    ? addSeconds(auctionHostingStartDate, auctionHostingInSeconds)
     : null
   const now = Date.now()
   const isFarmCommunity =
@@ -63,5 +68,9 @@ export const deserializeFarm = (farm: SerializedFarm): DeserializedFarm => {
     poolWeight: farm.poolWeight ? new BigNumber(farm.poolWeight) : BIG_ZERO,
     boosted,
     isStable: Boolean(infoStableSwapAddress),
+    stableSwapAddress,
+    stableLpFee,
+    stableLpFeeRateOfTotalFee,
+    lpTokenStakedAmount: farm.lpTokenStakedAmount ? new BigNumber(farm.lpTokenStakedAmount) : BIG_ZERO,
   }
 }

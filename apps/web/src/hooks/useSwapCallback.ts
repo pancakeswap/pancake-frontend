@@ -4,7 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { SwapParameters, TradeType } from '@pancakeswap/sdk'
 import isZero from '@pancakeswap/utils/isZero'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { V2TradeAndStableSwap } from 'config/constants/types'
+import { isStableSwap, V2TradeAndStableSwap } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useGasPrice } from 'state/user/hooks'
@@ -181,6 +181,7 @@ export function useSwapCallback(
               outputAmount,
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
+              type: isStableSwap(trade) ? 'StableSwap' : 'V2Swap',
             })
             logTx({ account, chainId, hash: response.hash })
 

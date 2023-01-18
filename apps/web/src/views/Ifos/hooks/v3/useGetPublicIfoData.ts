@@ -35,6 +35,8 @@ const formatVestingInfo = (pool) => ({
   slicePeriodSeconds: pool ? pool[3].toNumber() : 0,
 })
 
+const ROUND_DIGIT = 3
+
 /**
  * Gets all public data of an IFO
  */
@@ -191,7 +193,10 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         poolBasic: {
           ...poolBasicFormatted,
           taxRate: 0,
-          distributionRatio: round(poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(), 1),
+          distributionRatio: round(
+            poolBasicFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
+            ROUND_DIGIT,
+          ),
           pointThreshold: pointThreshold ? pointThreshold[0].toNumber() : 0,
           admissionProfile:
             Boolean(admissionProfile && admissionProfile[0]) && admissionProfile[0] !== NO_QUALIFIED_NFT_ADDRESS
@@ -202,7 +207,10 @@ const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
         poolUnlimited: {
           ...poolUnlimitedFormatted,
           taxRate: taxRateNum,
-          distributionRatio: round(poolUnlimitedFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(), 1),
+          distributionRatio: round(
+            poolUnlimitedFormatted.offeringAmountPool.div(totalOfferingAmount).toNumber(),
+            ROUND_DIGIT,
+          ),
           vestingInformation: formatVestingInfo(unlimitedVestingInformation),
         },
         status,

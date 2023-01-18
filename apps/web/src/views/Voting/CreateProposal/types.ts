@@ -1,9 +1,9 @@
-import { Choice } from './Choices'
+import { ChoiceIdValue } from './Choices'
 
 export interface FormState {
   name: string
   body: string
-  choices: Choice[]
+  choices: ChoiceIdValue[]
   startDate: Date
   startTime: Date
   endDate: Date

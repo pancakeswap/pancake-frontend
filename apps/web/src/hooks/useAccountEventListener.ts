@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react'
 import { ExtendEthereum } from 'global'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { ConnectorData } from 'wagmi'
-import { ChainIdName } from 'config/ChainIdName'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useAppDispatch } from '../state'
 import { clearUserStates } from '../utils/clearUserStates'
 import useActiveWeb3React from './useActiveWeb3React'
@@ -21,7 +21,7 @@ export const useAccountEventListener = () => {
     if (account && connector) {
       const handleUpdateEvent = (e: ConnectorData<any>) => {
         if (e?.chain?.id && !(e?.chain?.unsupported ?? false)) {
-          replaceBrowserHistory('chain', ChainIdName[e.chain.id])
+          replaceBrowserHistory('chain', CHAIN_QUERY_NAME[e.chain.id])
           setSessionChainId(e.chain.id)
         }
         // Blocto in-app browser throws change event when no account change which causes user state reset therefore

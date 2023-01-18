@@ -14,7 +14,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeBusd, useFarmFromPid } from 'state/farms/hooks'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BigNumber from 'bignumber.js'
@@ -137,7 +137,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const pendingFarm = useNonBscFarmPendingTransaction(lpAddress)
   const { boosterState } = useContext(YieldBoosterStateContext)
   const { isFirstTime, refresh: refreshFirstTime } = useFirstTimeCrossFarming(vaultPid)
-
+  const { lpTokenStakedAmount } = useFarmFromPid(pid)
   const { t } = useTranslation()
   const { toastSuccess } = useToast()
   const addTransaction = useTransactionAdder()
@@ -297,7 +297,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
     <BCakeCalculator
       targetInputBalance={calculatorBalance}
       earningTokenPrice={cakePrice.toNumber()}
-      lpTotalSupply={lpTotalSupply}
+      lpTokenStakedAmount={lpTokenStakedAmount}
       setBCakeMultiplier={setBCakeMultiplier}
     />
   )

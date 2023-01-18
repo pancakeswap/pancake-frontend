@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { ChainId, Coin, Pair, PAIR_RESERVE_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
-import { DeserializedFarmsState } from '@pancakeswap/farms'
+import { DeserializedFarmsState, deserializeFarm } from '@pancakeswap/farms'
 import { useAccount, useAccountResource, useCoins, useQueries, useQuery } from '@pancakeswap/awgmi'
 import {
   FetchCoinResult,
@@ -25,7 +25,6 @@ import { FarmResource, FarmUserInfoResource } from 'state/farms/types'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
 import priceHelperLpsMainnet from '../../config/constants/priceHelperLps/farms/1'
 import priceHelperLpsTestnet from '../../config/constants/priceHelperLps/farms/2'
-import { deserializeFarm } from './utils/deserializeFarm'
 import { calcPendingRewardCake, calcRewardCakePerShare } from './utils/pendingCake'
 
 const farmsPriceHelpLpMap = {

@@ -7,7 +7,7 @@ import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStat
 import useAvgLockDuration from 'views/Pools/components/LockedPool/hooks/useAvgLockDuration'
 import { secondsToDays } from 'views/Pools/components/utils/formatSecondsToWeeks'
 
-export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTotalSupply: BigNumber) => {
+export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTokenStakedAmount: BigNumber) => {
   useCakeVaultPublicData()
   useCakeVaultUserData()
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
@@ -18,13 +18,13 @@ export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTotalSup
       lockedAmount, // userLockAmount
       secondsToDays(_toNumber(lockedEnd) - _toNumber(lockedStart)), // userLockDuration
       totalLockedAmount, // totalLockAmount
-      lpTotalSupply, // lpBalanceOfFarm
+      lpTokenStakedAmount, // lpBalanceOfFarm
       avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration
     )
     return result.toString() === 'NaN' || isLoading ? '1.000' : result.toFixed(3)
   }, [
     userBalanceInFarm,
-    lpTotalSupply,
+    lpTokenStakedAmount,
     totalLockedAmount,
     avgLockDurationsInSeconds,
     lockedAmount,
@@ -37,7 +37,7 @@ export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTotalSup
 
 export const useGetCalculatorMultiplier = (
   userBalanceInFarm: BigNumber,
-  lpTotalSupply: BigNumber,
+  lpTokenStakedAmount: BigNumber,
   lockedAmount: BigNumber,
   userLockDuration: number,
 ) => {
@@ -51,13 +51,13 @@ export const useGetCalculatorMultiplier = (
       lockedAmount, // userLockAmount
       secondsToDays(userLockDuration), // userLockDuration
       totalLockedAmount, // totalLockAmount
-      lpTotalSupply, // lpBalanceOfFarm
+      lpTokenStakedAmount, // lpBalanceOfFarm
       avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration
     )
     return result.toString() === 'NaN' || isLoading ? '1.000' : result.toFixed(3)
   }, [
     userBalanceInFarm,
-    lpTotalSupply,
+    lpTokenStakedAmount,
     totalLockedAmount,
     avgLockDurationsInSeconds,
     lockedAmount,
@@ -69,11 +69,11 @@ export const useGetCalculatorMultiplier = (
 
 const useGetBoostedAPR = (
   userBalanceInFarm: BigNumber,
-  lpTotalSupply: BigNumber,
+  lpTokenStakedAmount: BigNumber,
   apr: number,
   lpRewardsApr: number,
 ) => {
-  const bCakeMultiplier = useGetBoostedMultiplier(userBalanceInFarm, lpTotalSupply)
+  const bCakeMultiplier = useGetBoostedMultiplier(userBalanceInFarm, lpTokenStakedAmount)
   return (apr * bCakeMultiplier + lpRewardsApr).toFixed(2)
 }
 
