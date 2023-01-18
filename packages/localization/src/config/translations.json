@@ -2075,5 +2075,6 @@
   "Expired Order": "Expired Order",
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the",
-  "Info Page": "Info Page"
+  "Info Page": "Info Page",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount"
 }
