@@ -46,7 +46,7 @@ const useAllArticle = ({
         },
       }
       const queryString = qs.stringify(urlParamsObject)
-      const response = await fetch(`/api/blogs?${queryString}`)
+      const response = await fetch(`/api/articles?${queryString}`)
       const result: ResponseArticleType = await response.json()
 
       return {

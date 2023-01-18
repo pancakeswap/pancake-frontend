@@ -2,7 +2,7 @@ import qs from 'qs'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 // eslint-disable-next-line consistent-return
-export const blogs = async (req: NextApiRequest, res: NextApiResponse) => {
+export const articles = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!process.env.STRAPI_PREVIEW_SECRET || !req.query) {
     return res.status(401).json({ message: 'Invalid token' })
   }
@@ -25,4 +25,4 @@ export const blogs = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json(data)
 }
 
-export default blogs
+export default articles
