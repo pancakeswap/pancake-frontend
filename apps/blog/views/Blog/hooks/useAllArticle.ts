@@ -1,6 +1,7 @@
+import qs from 'qs'
 import useSWR from 'swr'
-import { getArticle } from 'views/Blog/hooks/getArticle'
-import { ArticleType } from 'views/Blog/utils/transformArticle'
+import { ResponseArticleType, ResponseArticleDataType } from 'views/Blog/types'
+import { transformArticle, ArticleType } from 'views/Blog/utils/transformArticle'
 
 interface UseAllArticleProps {
   query: string
@@ -25,30 +26,33 @@ const useAllArticle = ({
   const { data: articlesData, isLoading } = useSWR(
     ['/articles', query, currentPage, selectedCategories, sortBy, languageOption],
     async () => {
-      const result = await getArticle({
-        url: '/articles',
-        urlParamsObject: {
-          ...(query && { _q: query }),
-          filters: {
-            ...(selectedCategories && {
-              categories: {
-                id: {
-                  $eq: selectedCategories,
-                },
+      const urlParamsObject = {
+        ...(query && { _q: query }),
+        filters: {
+          ...(selectedCategories && {
+            categories: {
+              id: {
+                $eq: selectedCategories,
               },
-            }),
-          },
-          locale: languageOption,
-          populate: 'categories,image',
-          sort: sortBy,
-          pagination: {
-            page: currentPage,
-            pageSize: 10,
-          },
+            },
+          }),
         },
-      })
+        locale: languageOption,
+        populate: 'categories,image',
+        sort: sortBy,
+        pagination: {
+          page: currentPage,
+          pageSize: 10,
+        },
+      }
+      const queryString = qs.stringify(urlParamsObject)
+      const response = await fetch(`/api/blogs?${queryString}`)
+      const result: ResponseArticleType = await response.json()
 
-      return result
+      return {
+        data: result.data.map((i: ResponseArticleDataType) => transformArticle(i)) ?? [],
+        pagination: { ...result.meta.pagination },
+      }
     },
     {
       revalidateOnFocus: false,

@@ -1,8 +1,5 @@
 import qs from 'qs'
 
-const STRAPI_PUBLIC_API_TOKEN =
-  'fdc489952ca99b260feaa8f64248e21e970c803c9eea8b25571df2663ebe0b958ffb178fba0ef0ad07cbf57cbaa59a759f599ab74cf59df34e1482f730fa8449cae4031c9c1430e36f1aba72640b2731b713597b98f2da2bdb9456e93937f2a1bd6916d7eaa6f40bdf7b40a48edbfc6fadd3ee8c9491bdeb3501d1a9c72406fb'
-
 /**
  * Get full Strapi URL from path
  * @param {string} path Path of the URL
@@ -24,7 +21,7 @@ export async function fetchAPI(path: string, urlParamsObject = {}, options = {})
   const mergedOptions = {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${STRAPI_PUBLIC_API_TOKEN}`,
+      Authorization: `Bearer ${process.env.STRAPI_PREVIEW_SECRET}`,
     },
     ...options,
   }
