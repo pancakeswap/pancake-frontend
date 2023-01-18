@@ -4,7 +4,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Text, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import useSearchBarArticle from 'views/Blog/hooks/useSearchBarArticle'
-import { subString } from 'views/Blog/utils/substring'
 
 const SubMenu = styled.div<{ isOpen: boolean }>`
   align-items: center;
@@ -37,6 +36,9 @@ const ArticleList = styled(Text)`
   overflow-wrap: break-word;
   font-weight: bold;
   padding: 8px 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   &:hover {
     background: ${({ theme }) => theme.colors.inputSecondary};
   }
@@ -65,7 +67,7 @@ const SearchBar = () => {
             <Box>
               {articlesData.map((article) => (
                 <ArticleList key={article.id} onClick={() => handleClick(article.title)}>
-                  {subString(article.title, 25)}
+                  {article.title}
                 </ArticleList>
               ))}
             </Box>

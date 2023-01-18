@@ -28,6 +28,7 @@ const StyledArticleContainer = styled(Box)`
 const StyledTagContainer = styled(Box)`
   display: none;
   width: 194px;
+  min-width: 194px;
   margin-right: 25px;
 
   ${({ theme }) => theme.mediaQueries.xxl} {
@@ -133,7 +134,7 @@ const AllArticle = () => {
             childMargin="0 0 28px 0"
           />
         </StyledTagContainer>
-        <Flex width="100%" flexDirection="column">
+        <Flex width="100%" overflow="hidden" flexDirection="column">
           <Flex
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}

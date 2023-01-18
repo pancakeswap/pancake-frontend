@@ -1,9 +1,7 @@
-import { useMemo } from 'react'
 import { Box, BoxProps, Card, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { HeightProps } from 'styled-system'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
-import { subString } from 'views/Blog/utils/substring'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -47,8 +45,6 @@ interface BlogCardProps extends BoxProps {
 }
 
 const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ article, imgUrl, imgHeight, ...props }) => {
-  const title = useMemo(() => subString(article?.title ?? '', 60), [article])
-
   return (
     <StyledBlogCard {...props}>
       <Card>
@@ -68,8 +64,8 @@ const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ article, i
               {article?.createAt}
             </Text>
           </Flex>
-          <Text bold mt="20px">
-            {title}
+          <Text ellipsis bold mt="20px">
+            {article?.title}
           </Text>
         </Box>
       </Card>
