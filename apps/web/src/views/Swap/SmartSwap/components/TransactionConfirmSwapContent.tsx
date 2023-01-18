@@ -6,11 +6,11 @@ import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import SwapModalFooter from './SwapModalFooter'
-import SwapModalHeader from './SwapModalHeader'
 import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
   computeTradePriceBreakdown as computeTradePriceBreakdownWithSmartRouter,
 } from '../utils/exchange'
+import SwapModalHeader from '../../components/SwapModalHeader'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
