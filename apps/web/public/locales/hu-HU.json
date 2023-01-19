@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "A proxy turbó szerződés %amount% összegben tartalmaz CAKE-et. Ahhoz, hogy ezt az összeget betakarítsd, ki kell venned, be kell fizetned vagy be kell takarítanod az egyik felturbózott farmot.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "A proxy turbó szerződés %amount% összegben tartalmaz CAKE-et. Ahhoz, hogy ezt az összeget betakarítsd, ki kell venned, be kell fizetned vagy be kell takarítanod az egyik felturbózott farmot",
   "Info Page": "Infó oldal",
+  "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.",
   "Launch App": "Launch App",
   "Sort Title A-Z": "Sort Title A-Z",
   "Sort Title Z-A": "Sort Title Z-A",
