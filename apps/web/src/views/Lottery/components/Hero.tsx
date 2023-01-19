@@ -8,7 +8,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 
-const floatingStarsLeft = keyframes`
+export const floatingStarsLeft = keyframes`
   from {
     transform: translate(0,  0px);
   }
@@ -20,7 +20,7 @@ const floatingStarsLeft = keyframes`
   }
 `
 
-const floatingStarsRight = keyframes`
+export const floatingStarsRight = keyframes`
   from {
     transform: translate(0,  0px);
   }
@@ -293,9 +293,9 @@ const Hero = () => {
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
       <CnyDecorations>
-        <img src="/images/lottery/cny-lantern-1.png" width="200px" height="280px" alt="" />
-        <img src="/images/lottery/cny-lantern-2.png" width="184px" height="210px" alt="" />
-        <img src="/images/lottery/cny-frame.png" width="900px" height="400px" alt="" />
+        <img src="/images/cny-asset/cny-lantern-1.png" width="200px" height="280px" alt="" />
+        <img src="/images/cny-asset/cny-lantern-2.png" width="184px" height="210px" alt="" />
+        <img src="/images/cny-asset/cny-frame.png" width="900px" height="400px" alt="" />
       </CnyDecorations>
       <Decorations />
       <StarsDecorations display={['none', 'none', 'block']}>
@@ -307,6 +307,9 @@ const Hero = () => {
       </StarsDecorations>
       <Heading style={{ zIndex: 1 }} mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
         {t('The PancakeSwap Lottery')}
+      </Heading>
+      <Heading style={{ zIndex: 1 }} mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
+        {t('Potential Prize up to')}
       </Heading>
       {getHeroHeading()}
       <TicketContainer
