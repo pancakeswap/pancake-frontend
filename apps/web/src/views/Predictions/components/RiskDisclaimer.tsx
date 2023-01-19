@@ -1,4 +1,4 @@
-import { useEffect, memo } from 'react'
+import { useEffect, memo, useCallback } from 'react'
 import { useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import DisclaimerModal from 'components/DisclaimerModal'
@@ -7,6 +7,10 @@ import { useUserPredictionAcceptedRisk } from 'state/user/hooks'
 function RiskDisclaimer() {
   const [hasAcceptedRisk, setHasAcceptedRisk] = useUserPredictionAcceptedRisk()
   const { t } = useTranslation()
+
+  const handleSuccess = useCallback(() => {
+    setHasAcceptedRisk(true)
+  }, [setHasAcceptedRisk])
 
   const [onPresentRiskDisclaimer, onDismiss] = useModal(
     <DisclaimerModal
@@ -25,7 +29,7 @@ function RiskDisclaimer() {
           content: t('I understand that this product is still in beta. I am participating at my own risk'),
         },
       ]}
-      onSuccess={() => setHasAcceptedRisk(true)}
+      onSuccess={handleSuccess}
     />,
     false,
     false,

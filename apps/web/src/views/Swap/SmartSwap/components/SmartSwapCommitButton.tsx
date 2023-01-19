@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { Button, Text, useModal } from '@pancakeswap/uikit'
+import { Button, Text, useModal, confirmPriceImpactWithoutFee } from '@pancakeswap/uikit'
 
 import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { GreyCard } from 'components/Card'
@@ -11,14 +11,17 @@ import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
-import { BIG_INT_ZERO } from 'config/constants/exchange'
+import {
+  BIG_INT_ZERO,
+  PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+  ALLOWED_PRICE_IMPACT_HIGH,
+} from 'config/constants/exchange'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useUserSingleHopOnly } from 'state/user/hooks'
 import { warningSeverity } from 'utils/exchange'
-import confirmPriceImpactWithoutFee from '../../components/confirmPriceImpactWithoutFee'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
@@ -102,7 +105,15 @@ export default function SwapCommitButton({
 
   // Handlers
   const handleSwap = useCallback(() => {
-    if (priceImpactWithoutFee && !confirmPriceImpactWithoutFee(priceImpactWithoutFee, t)) {
+    if (
+      priceImpactWithoutFee &&
+      !confirmPriceImpactWithoutFee(
+        priceImpactWithoutFee,
+        PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
+        ALLOWED_PRICE_IMPACT_HIGH,
+        t,
+      )
+    ) {
       return
     }
     if (!swapCallback) {
