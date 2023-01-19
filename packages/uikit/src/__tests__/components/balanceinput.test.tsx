@@ -1,8 +1,8 @@
-import React from "react";
+import { vi } from "vitest";
 import { renderWithProvider } from "../../testHelpers";
 import BalanceInput from "../../components/BalanceInput/BalanceInput";
 
-const handleChange = jest.fn();
+const handleChange = vi.fn();
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(
@@ -333,7 +333,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       value="14"
       currencyValue="15 USD"
       unit="CAKE"
-      switchEditingUnits={jest.fn()}
+      switchEditingUnits={vi.fn()}
       onUserInput={handleChange}
     />
   );

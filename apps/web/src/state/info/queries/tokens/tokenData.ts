@@ -13,6 +13,7 @@ interface TokenFields {
   id: string
   symbol: string
   name: string
+  decimals: string
   derivedBNB: string // Price in BNB per token
   derivedETH: string // Price in ETH per token
   derivedUSD: string // Price in USD per token
@@ -24,7 +25,7 @@ interface TokenFields {
 interface FormattedTokenFields
   extends Omit<
     TokenFields,
-    'derivedETH' | 'derivedBNB' | 'derivedUSD' | 'tradeVolumeUSD' | 'totalTransactions' | 'totalLiquidity'
+    'derivedETH' | 'derivedBNB' | 'derivedUSD' | 'tradeVolumeUSD' | 'totalTransactions' | 'totalLiquidity' | 'decimals'
   > {
   derivedBNB: number
   derivedETH: number
@@ -32,6 +33,7 @@ interface FormattedTokenFields
   tradeVolumeUSD: number
   totalTransactions: number
   totalLiquidity: number
+  decimals: number
 }
 
 interface TokenQueryResponse {
@@ -57,6 +59,7 @@ const TOKEN_AT_BLOCK = (chainName: MultiChainName, block: number | undefined, to
       id
       symbol
       name
+      decimals
       derived${multiChainQueryMainToken[chainName]}
       derivedUSD
       tradeVolumeUSD
@@ -98,7 +101,8 @@ const parseTokenData = (tokens?: TokenFields[]) => {
     return {}
   }
   return tokens.reduce((accum: { [address: string]: FormattedTokenFields }, tokenData) => {
-    const { derivedBNB, derivedUSD, tradeVolumeUSD, totalTransactions, totalLiquidity, derivedETH } = tokenData
+    const { derivedBNB, derivedUSD, tradeVolumeUSD, totalTransactions, totalLiquidity, derivedETH, decimals } =
+      tokenData
     accum[tokenData.id.toLowerCase()] = {
       ...tokenData,
       derivedBNB: derivedBNB ? 0 : parseFloat(derivedBNB),
@@ -107,6 +111,7 @@ const parseTokenData = (tokens?: TokenFields[]) => {
       tradeVolumeUSD: parseFloat(tradeVolumeUSD),
       totalTransactions: parseFloat(totalTransactions),
       totalLiquidity: parseFloat(totalLiquidity),
+      decimals: parseInt(decimals),
     }
     return accum
   }, {})
@@ -193,6 +198,7 @@ const useFetchedTokenDatas = (chainName: MultiChainName, tokenAddresses: string[
             priceUSD,
             priceUSDChange,
             priceUSDChangeWeek,
+            decimals: current ? current.decimals : 18,
           }
 
           return accum
@@ -251,6 +257,7 @@ export const fetchAllTokenDataByAddresses = async (
     const liquidityToken = current ? current.totalLiquidity : 0
     // Prices of tokens for now, 24h ago and 7d ago
     const priceUSD = current ? current.derivedUSD : 0
+    const decimals = current ? current.decimals : 0
     const priceUSDOneDay = oneDay ? oneDay.derivedUSD : 0
     const priceUSDWeek = week ? week.derivedUSD : 0
     const priceUSDChange = getPercentChange(priceUSD, priceUSDOneDay)
@@ -273,6 +280,7 @@ export const fetchAllTokenDataByAddresses = async (
         priceUSD,
         priceUSDChange,
         priceUSDChangeWeek,
+        decimals,
       },
     }
     return accum
