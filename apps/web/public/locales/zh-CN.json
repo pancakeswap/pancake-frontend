@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "代理助推器合约中有 %amount% 个 CAKE。为了收割该数量，您应提取、存入或收割其中一个助推的农场。",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "为了提供稳定的估计，每天都会在农场页面上计算一次 APR 数据。如需实时 APR，请访问",
   "Info Page": "信息页面",
+  "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.",
   "Launch App": "Launch App",
   "Sort Title A-Z": "Sort Title A-Z",
   "Sort Title Z-A": "Sort Title Z-A",
