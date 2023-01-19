@@ -130,6 +130,29 @@ export const usePoolTransactionsSWR = (address: string): Transaction[] | undefin
 
 // Tokens hooks
 
+export const useAllTokenHighLight = (): TokenData[] => {
+  const chainName = useGetChainName()
+  const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
+  const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
+  const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
+  const { data, isLoading } = useSWRImmutable(
+    blocks && chainName && [`info/token/data/${type}`, chainName],
+    () => fetchAllTokenData(chainName, blocks),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+
+  const tokensWithData = useMemo(() => {
+    return data
+      ? Object.keys(data)
+          .map((k) => {
+            return data?.[k]?.data
+          })
+          .filter((d) => d && d.exists)
+      : []
+  }, [data])
+  return isLoading ? [] : tokensWithData ?? []
+}
+
 export const useAllTokenDataSWR = (): {
   [address: string]: { data?: TokenData }
 } => {
@@ -162,7 +185,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
   const [t24h, t48h, t7d, t14d] = getDeltaTimestamps()
   const { blocks } = useBlockFromTimeStampSWR([t24h, t48h, t7d, t14d])
   const type = checkIsStableSwap() ? 'stableSwap' : 'swap'
-  const { data } = useSWRImmutable(
+  const { data, isLoading } = useSWRImmutable(
     blocks && chainName && [`info/token/data/${name}/${type}`, chainName],
     () => fetcher(addresses, chainName, blocks),
     withSettings ? SWR_SETTINGS : SWR_SETTINGS_WITHOUT_REFETCH,
@@ -186,7 +209,7 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
       .filter((d) => d && d.exists)
   }, [addresses, allData])
 
-  return tokensWithData ?? undefined
+  return isLoading ? [] : tokensWithData ?? undefined
 }
 
 export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
@@ -247,12 +270,12 @@ export const useTokenTransactionsSWR = (address: string): Transaction[] | undefi
 }
 
 export const useGetChainName = () => {
-  const path = window.location.href
+  const { pathname, query } = useRouter()
 
   const getChain = useCallback(() => {
-    if (path.includes('eth')) return 'ETH'
+    if (pathname.includes('eth') || query.chain === 'eth') return 'ETH'
     return 'BSC'
-  }, [path])
+  }, [pathname, query])
   const [name, setName] = useState<MultiChainName | null>(getChain())
   const result = useMemo(() => name, [name])
 
