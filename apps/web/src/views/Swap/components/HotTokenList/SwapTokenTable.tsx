@@ -6,15 +6,17 @@ import {
   Box,
   Button,
   Flex,
+  MoreIcon,
   NextLinkFromReactRouter,
   Skeleton,
   SortArrowIcon,
   Text,
-  useMatchBreakpoints,
   TokenLogo,
-  MoreIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-
+import { Currency, Token, ChainId } from '@pancakeswap/sdk'
+import { BAD_SRCS } from 'components/Logo/constants'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
@@ -26,9 +28,6 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
-import { BAD_SRCS } from 'components/Logo/constants'
-import { Currency, Token } from '@pancakeswap/sdk'
-import { CHAIN_QUERY_NAME } from 'config/chains'
 
 /**
  *  Columns on different layouts
@@ -164,6 +163,7 @@ const DataRow: React.FC<
   const tokenLogoURL = getTokenLogoURLByAddress(tokenData.address, chainId)
   const { t } = useTranslation()
   const { theme } = useTheme()
+  const imagePath = chainId === ChainId.BSC ? '' : `${chainId}/tokens/`
   return (
     <LinkWrapper
       to={`/info${chianPath}/tokens/${tokenData.address}?chain=${CHAIN_QUERY_NAME[chainId]}${stableSwapPath.replace(
@@ -176,7 +176,12 @@ const DataRow: React.FC<
           <ResponsiveLogo
             badSrcs={BAD_SRCS}
             sizes="24px"
-            srcs={[tokenLogoURL, `https://tokens.pancakeswap.finance/images/${address}.png`]}
+            srcs={[
+              tokenLogoURL,
+              `https://${
+                chainId === ChainId.BSC ? 'tokens.' : ''
+              }pancakeswap.finance/images/${imagePath}${address}.png`,
+            ]}
           />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (

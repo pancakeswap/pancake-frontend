@@ -12,13 +12,13 @@ import {
   useTooltip,
   TooltipText,
   Text,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
+import { isMobile } from 'react-device-detect'
 import { ReactElement, useCallback, useContext, useState, useEffect, useLayoutEffect } from 'react'
 import { useExpertModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
@@ -46,7 +46,6 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   title,
 }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
     placement: isMobile ? 'top' : 'bottom',
@@ -66,7 +65,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   }, [])
   useLayoutEffect(() => {
     if (isMobile) setMobileTooltipShow(true)
-  }, [isMobile])
+  }, [])
 
   useEffect(() => {
     document.body.addEventListener('click', mobileTooltipClickOutside)

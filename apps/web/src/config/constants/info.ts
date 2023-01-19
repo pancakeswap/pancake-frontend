@@ -49,4 +49,5 @@ export const ETH_TOKEN_WHITELIST = [
   '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
   '0xdac17f958d2ee523a2206206994597c13d831ec7',
   '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+  '0x993864e43caa7f7f12953ad6feb1d1ca635b875f',
 ]
