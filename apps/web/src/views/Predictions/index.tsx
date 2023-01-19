@@ -5,7 +5,6 @@ import { useChartView, useIsChartPaneOpen } from 'state/predictions/hooks'
 import { PredictionsChartView } from 'state/types'
 import { useAccountLocalEventListener } from 'hooks/useAccountLocalEventListener'
 import { useUserPredictionChainlinkChartDisclaimerShow, useUserPredictionChartDisclaimerShow } from 'state/user/hooks'
-import useChineseNewYearEffect from 'hooks/useChineseNewYearEffect'
 
 import ChartDisclaimer from './components/ChartDisclaimer'
 import ChainlinkChartDisclaimer from './components/ChainlinkChartDisclaimer'
@@ -50,7 +49,6 @@ function Warnings() {
 const Predictions = () => {
   const { isDesktop } = useMatchBreakpoints()
 
-  useChineseNewYearEffect()
   useAccountLocalEventListener()
 
   usePollPredictions()
