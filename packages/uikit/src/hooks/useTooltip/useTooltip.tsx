@@ -47,6 +47,10 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
   const isHoveringOverTooltip = useRef(false);
   const hideTimeoutRef = useRef<number>();
 
+  useEffect(() => {
+    setVisible(manualVisible);
+  }, [manualVisible]);
+
   const hideTooltip = useCallback(
     (e: Event) => {
       const hide = () => {

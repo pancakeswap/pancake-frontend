@@ -27,7 +27,7 @@ import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { CHAINS_STARGATE } from './stargate/config'
 import { findChainByStargateId } from './stargate/network'
 
-const StyledMenuItem = styled.a<any>`
+const StyledMenuItem = styled('div')<{ $isActive?: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
@@ -97,7 +97,9 @@ export function Menu() {
               </NextLink>
             </Box>
           ))}
-          <StyledMenuItem href="https://pancakeswap.finance/swap">Swap</StyledMenuItem>
+          <a href="https://pancakeswap.finance/swap" target="_blank" rel="noreferrer noopener">
+            <StyledMenuItem>Swap</StyledMenuItem>
+          </a>
         </Flex>
       </Flex>
       <Flex alignItems="center">

@@ -3,6 +3,7 @@
 import { renderHook } from '@testing-library/react-hooks'
 import { DEFAULT_OUTPUT_CURRENCY } from 'config/constants/exchange'
 import { parse } from 'querystring'
+import { vi, Mock } from 'vitest'
 import { useCurrency } from 'hooks/Tokens'
 import { createReduxWrapper } from 'testUtils'
 import { Field } from './actions'
@@ -96,10 +97,10 @@ describe('hooks', () => {
 })
 
 // weird bug on jest Reference Error, must use `var` here
-var mockUseActiveWeb3React: jest.Mock
+var mockUseActiveWeb3React: Mock
 
-jest.mock('../../hooks/useActiveWeb3React', () => {
-  mockUseActiveWeb3React = jest.fn().mockReturnValue({
+vi.mock('../../hooks/useActiveWeb3React', () => {
+  mockUseActiveWeb3React = vi.fn().mockReturnValue({
     chainId: 56,
   })
   return {
@@ -108,12 +109,13 @@ jest.mock('../../hooks/useActiveWeb3React', () => {
   }
 })
 
-var mockAccount: jest.Mock
+var mockAccount: Mock
 
-jest.mock('wagmi', () => {
-  mockAccount = jest.fn().mockReturnValue({})
-  const original = jest.requireActual('wagmi') // Step 2.
+vi.mock('wagmi', async () => {
+  mockAccount = vi.fn().mockReturnValue({})
+  const original = await vi.importActual('wagmi') // Step 2.
   return {
+    // @ts-ignore
     ...original,
     useAccount: mockAccount,
   }

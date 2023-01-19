@@ -1,9 +1,9 @@
-import React from "react";
+import { vi } from "vitest";
 import { renderWithProvider } from "../../testHelpers";
 import ButtonMenu from "../../components/ButtonMenu/ButtonMenu";
 import ButtonMenuItem from "../../components/ButtonMenu/ButtonMenuItem";
 
-const handleClick = jest.fn();
+const handleClick = vi.fn();
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(

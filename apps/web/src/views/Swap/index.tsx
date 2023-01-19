@@ -2,7 +2,10 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody } from 'components/App'
-import { useContext } from 'react'
+import { useContext, useCallback } from 'react'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { currencyId } from 'utils/currencyId'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useCurrency } from '../../hooks/Tokens'
@@ -12,6 +15,7 @@ import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import HotTokenList from './components/HotTokenList'
 import { SmartSwapForm } from './SmartSwap'
+import useWarningImport from './hooks/useWarningImport'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 
@@ -36,6 +40,23 @@ export default function Swap() {
   }
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
+  const warningSwapHandler = useWarningImport()
+  const { onCurrencySelection } = useSwapActionHandlers()
+
+  const handleOutputSelect = useCallback(
+    (newCurrencyOutput: Currency) => {
+      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
+      warningSwapHandler(newCurrencyOutput)
+
+      const newCurrencyOutputId = currencyId(newCurrencyOutput)
+      if (newCurrencyOutputId === inputCurrencyId) {
+        replaceBrowserHistory('inputCurrency', outputCurrencyId)
+      }
+      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
+    },
+
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
+  )
 
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
@@ -71,19 +92,21 @@ export default function Swap() {
             setIsOpen={setIsChartDisplayed}
           />
         )}
-        {!isMobile && isSwapHotTokenDisplay && isChartSupported && <HotTokenList />}
+        {!isMobile && isSwapHotTokenDisplay && <HotTokenList handleOutputSelect={handleOutputSelect} />}
 
-        <ModalV2
-          isOpen={isMobile && isSwapHotTokenDisplay && isChartSupported}
-          onDismiss={() => setIsSwapHotTokenDisplay(false)}
-        >
+        <ModalV2 isOpen={isMobile && isSwapHotTokenDisplay} onDismiss={() => setIsSwapHotTokenDisplay(false)}>
           <Modal
             style={{ padding: 0 }}
             title={t('Top Token')}
             onDismiss={() => setIsSwapHotTokenDisplay(false)}
             bodyPadding="0px"
           >
-            <HotTokenList />
+            <HotTokenList
+              handleOutputSelect={(newCurrencyOutput: Currency) => {
+                handleOutputSelect(newCurrencyOutput)
+                setIsSwapHotTokenDisplay(false)
+              }}
+            />
           </Modal>
         </ModalV2>
 
@@ -91,7 +114,7 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                <SmartSwapForm />
+                <SmartSwapForm handleOutputSelect={handleOutputSelect} />
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>

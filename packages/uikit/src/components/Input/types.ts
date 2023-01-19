@@ -7,7 +7,7 @@ export const scales = {
   LG: "lg",
 } as const;
 
-export type Scales = typeof scales[keyof typeof scales];
+export type Scales = (typeof scales)[keyof typeof scales];
 
 export interface InputProps extends SpaceProps {
   scale?: Scales;

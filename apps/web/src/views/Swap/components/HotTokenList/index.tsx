@@ -1,13 +1,12 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ButtonMenu, ButtonMenuItem, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { memo, useState, useMemo } from 'react'
-import { useAtomValue } from 'jotai'
-import { selectorByUrlsAtom } from 'state/lists/hooks'
-import { PANCAKE_EXTENDED } from 'config/constants/lists'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 
-import { useTokenDatasSWR } from 'state/info/hooks'
 import styled from 'styled-components'
 import TokenTable from './SwapTokenTable'
+import { useTokenHighLightList } from './useList'
 
 const Wrapper = styled.div`
   padding-top: 10px;
@@ -27,23 +26,25 @@ const MenuWrapper = styled.div`
   }
 `
 
-const LIQUIDITY_FILTER = 100000 // 100k
+const LIQUIDITY_FILTER = { [ChainId.BSC]: 100000, [ChainId.ETHEREUM]: 50000 }
 
-const HotTokenList: React.FC = () => {
-  const listsByUrl = useAtomValue(selectorByUrlsAtom)
-  const { current: list } = listsByUrl[PANCAKE_EXTENDED]
-  const whiteList = useMemo(() => {
-    return list ? list.tokens.map((t) => t.address.toLowerCase()) : []
-  }, [list])
-  const allTokens = useTokenDatasSWR(whiteList, false)
+const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
+  handleOutputSelect,
+}) => {
+  const { chainId } = useActiveChainId()
+  const allTokens = useTokenHighLightList()
   const [index, setIndex] = useState(0)
   const { isMobile } = useMatchBreakpoints()
   const formattedTokens = useMemo(
     () =>
       allTokens.filter(
-        (t) => t.priceUSD !== 0 && t.priceUSDChange !== 0 && t.volumeUSD !== 0 && t.liquidityUSD >= LIQUIDITY_FILTER,
+        (t) =>
+          t.priceUSD !== 0 &&
+          t.priceUSDChange !== 0 &&
+          t.volumeUSD !== 0 &&
+          t.liquidityUSD >= LIQUIDITY_FILTER[chainId],
       ),
-    [allTokens],
+    [allTokens, chainId],
   )
 
   const { t } = useTranslation()
@@ -51,16 +52,17 @@ const HotTokenList: React.FC = () => {
     <Wrapper>
       <MenuWrapper>
         <ButtonMenu activeIndex={index} onItemClick={setIndex} fullWidth scale="sm" variant="subtle">
-          <ButtonMenuItem>{t('Price Change')}</ButtonMenuItem>
+          <ButtonMenuItem>{chainId === ChainId.BSC ? t('Price Change') : t('Liquidity')}</ButtonMenuItem>
           <ButtonMenuItem>{t('Volume (24H)')}</ButtonMenuItem>
         </ButtonMenu>
       </MenuWrapper>
       {index === 0 ? (
         <TokenTable
           tokenDatas={formattedTokens}
-          type="priceChange"
-          defaultSortField="priceUSDChange"
+          type={chainId === ChainId.BSC ? 'priceChange' : 'liquidity'}
+          defaultSortField={chainId === ChainId.BSC ? 'priceUSDChange' : 'liquidityUSD'}
           maxItems={isMobile ? 100 : 6}
+          handleOutputSelect={handleOutputSelect}
         />
       ) : (
         <TokenTable
@@ -68,6 +70,7 @@ const HotTokenList: React.FC = () => {
           type="volume"
           defaultSortField="volumeUSD"
           maxItems={isMobile ? 100 : 6}
+          handleOutputSelect={handleOutputSelect}
         />
       )}
     </Wrapper>

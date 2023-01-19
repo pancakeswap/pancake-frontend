@@ -5,6 +5,7 @@ import { HelpIcon } from "../../../../components/Svg";
 import { Skeleton } from "../../../../components/Skeleton";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import { FarmTableMultiplierProps } from "../../types";
+import { Link } from "../../../../components/Link";
 
 const ReferenceElement = styled.div`
   display: inline-block;
@@ -35,21 +36,45 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
   const { t } = useTranslation();
   const tooltipContent = (
     <>
-      <Text>
-        {rewardCakePerSecond
-          ? t(
+      {rewardCakePerSecond ? (
+        <>
+          <Text>
+            {t(
               "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second."
-            )
-          : t(
+            )}
+          </Text>
+          <Text my="24px">
+            {" "}
+            {t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")}
+          </Text>
+          <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
+        </>
+      ) : (
+        <>
+          <Text>
+            {t(
               "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block."
             )}
-      </Text>
-      <Text my="24px">
-        {rewardCakePerSecond
-          ? t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")
-          : t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
-      </Text>
-      <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
+          </Text>
+          <Text my="24px">
+            {" "}
+            {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
+          </Text>
+          <Text>
+            {t(
+              "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives."
+            )}
+          </Text>
+          <Link
+            mt="8px"
+            display="inline"
+            href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd"
+            external
+          >
+            {t("Read more")}
+          </Link>
+        </>
+      )}
     </>
   );
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {

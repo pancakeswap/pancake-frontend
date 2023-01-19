@@ -9,12 +9,17 @@ import {
   NotificationDot,
   Swap,
   useModal,
+  useTooltip,
+  TooltipText,
+  Text,
 } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
-import { ReactElement, useCallback, useContext } from 'react'
+import { isMobile } from 'react-device-detect'
+import { ReactElement, useCallback, useContext, useState, useEffect, useLayoutEffect } from 'react'
 import { useExpertModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
@@ -40,6 +45,13 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   onRefreshPrice,
   title,
 }) => {
+  const { t } = useTranslation()
+  const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
+  const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
+    placement: isMobile ? 'top' : 'bottom',
+    trigger: isMobile ? 'focus' : 'hover',
+    ...(isMobile && { manualVisible: mobileTooltipShow }),
+  })
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
@@ -48,6 +60,19 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const handleOnClick = useCallback(() => onRefreshPrice?.(), [onRefreshPrice])
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
+  const mobileTooltipClickOutside = useCallback(() => {
+    setMobileTooltipShow(false)
+  }, [])
+  useLayoutEffect(() => {
+    if (isMobile) setMobileTooltipShow(true)
+  }, [])
+
+  useEffect(() => {
+    document.body.addEventListener('click', mobileTooltipClickOutside)
+    return () => {
+      document.body.removeEventListener('click', mobileTooltipClickOutside)
+    }
+  }, [mobileTooltipClickOutside])
 
   return (
     <Swap.CurrencyInputHeader
@@ -78,24 +103,32 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
                 )}
               </ColoredIconButton>
             )}
-            {isChartSupported && (
-              <ColoredIconButton
-                variant="text"
-                scale="sm"
-                onClick={() => {
-                  if (!isSwapHotTokenDisplay && isChartDisplayed) {
-                    toggleChartDisplayed()
-                  }
-                  setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)
-                }}
-              >
-                {isSwapHotTokenDisplay ? (
-                  <HotDisableIcon color="textSubtle" width="24px" />
-                ) : (
-                  <HotIcon color="textSubtle" width="24px" />
-                )}
-              </ColoredIconButton>
-            )}
+            <ColoredIconButton
+              variant="text"
+              scale="sm"
+              onClick={() => {
+                if (!isSwapHotTokenDisplay && isChartDisplayed) {
+                  toggleChartDisplayed()
+                }
+                setIsSwapHotTokenDisplay(!isSwapHotTokenDisplay)
+              }}
+            >
+              {isSwapHotTokenDisplay ? (
+                <HotDisableIcon color="textSubtle" width="24px" />
+              ) : (
+                <>
+                  <TooltipText
+                    ref={targetRef}
+                    onClick={() => setMobileTooltipShow(false)}
+                    display="flex"
+                    style={{ justifyContent: 'center' }}
+                  >
+                    <HotIcon color="textSubtle" width="24px" />
+                  </TooltipText>
+                  {tooltipVisible && (!isMobile || mobileTooltipShow) && tooltip}
+                </>
+              )}
+            </ColoredIconButton>
             <NotificationDot show={expertMode}>
               <GlobalSettings color="textSubtle" mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
             </NotificationDot>
