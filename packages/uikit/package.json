@@ -16,7 +16,7 @@
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "start-storybook -p 6006",
     "storybook:build": "build-storybook",
-    "test": "jest",
+    "test": "vitest --run",
     "prepublishOnly": "yarn build"
   },
   "devDependencies": {
