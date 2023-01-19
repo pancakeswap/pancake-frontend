@@ -9,9 +9,6 @@ const r = (p: string) => resolve(__dirname, p)
 export default defineConfig({
   // @ts-ignore
   plugins: [tsconfigPaths(), react(), vanillaExtractPlugin()],
-  esbuild: {
-    target: 'node14',
-  },
   resolve: {
     alias: {
       '@pancakeswap/wagmi/connectors/binanceWallet': r('../../packages/wagmi/connectors/binanceWallet/index.ts'),

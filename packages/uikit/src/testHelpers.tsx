@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { render, RenderResult } from "@testing-library/react";
+import { vi } from "vitest";
 import { light } from "./theme";
 import { UIKitProvider } from "./Providers";
 
@@ -24,11 +25,11 @@ export const setupMockIntersectionObserver = (): void => {
     }
 
     disconnect() {
-      return jest.fn;
+      return vi.fn;
     }
 
     observe() {
-      return jest.fn;
+      return vi.fn;
     }
 
     takeRecords(): IntersectionObserverEntry[] {
@@ -36,7 +37,7 @@ export const setupMockIntersectionObserver = (): void => {
     }
 
     unobserve() {
-      return jest.fn;
+      return vi.fn;
     }
   }
 
