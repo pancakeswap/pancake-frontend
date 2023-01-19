@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Er staat %bedrag% CAKE in het proxyboostercontract. Om dat bedrag te oogsten moet je een van de gebooste farms opnemen, storten of oogsten.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Om stabiele schattingen te geven, worden de APR-cijfers eenmaal per dag berekend op de farmpagina. Voor actuele APR kun je terecht op de",
   "Info Page": "Informatiepagina",
+  "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.",
   "Launch App": "Launch App",
   "Sort Title A-Z": "Sort Title A-Z",
   "Sort Title Z-A": "Sort Title Z-A",
