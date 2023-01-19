@@ -2095,5 +2095,6 @@
   "Unknown": "Inconnu(e)",
   "I acknowledge the risk": "Je confirme le risque",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "J'ai lu le résultat de l'analyse, j'ai compris le risque et je veux procéder à l'importation du jeton.",
-  "Proceed": "Continuer"
+  "Proceed": "Continuer",
+  "Check out the top traded tokens": "Check out the top traded tokens"
 }
