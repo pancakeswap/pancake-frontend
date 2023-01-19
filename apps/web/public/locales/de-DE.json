@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Der Proxy-Booster-Contract enthält %amount% CAKE. Um diesen Betrag zu ernten, müssen Sie bei einer der Farmen mit Ertragserhöhung abheben, einzahlen oder ernten.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Um stabile Schätzungen zu liefern, wird der effektive Jahreszins einmal pro Tag auf der Farmseite berechnet. Für den effektiven Jahreszins in Echtzeit, besuchen Sie bitte die",
   "Info Page": "Infoseite",
+  "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.",
   "Launch App": "Launch App",
   "Sort Title A-Z": "Sort Title A-Z",
   "Sort Title Z-A": "Sort Title Z-A",
