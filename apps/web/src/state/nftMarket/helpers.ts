@@ -85,7 +85,12 @@ export const getCollections = async (): Promise<Record<string, Collection>> => {
   try {
     const [collections, collectionsMarket] = await Promise.all([getCollectionsApi(), getCollectionsSg()])
     const collectionApiData: ApiCollection[] = collections?.data ?? []
-    const collectionsTotalSupply = await fetchCollectionsTotalSupply(collectionApiData)
+    let collectionsTotalSupply
+    try {
+      collectionsTotalSupply = await fetchCollectionsTotalSupply(collectionApiData)
+    } catch (error) {
+      console.error('on chain fetch collections total supply error', error)
+    }
     const collectionApiDataCombinedOnChain = collectionApiData.map((collection, index) => {
       const totalSupplyFromApi = Number(collection?.totalSupply) || 0
       const totalSupplyFromOnChain = collectionsTotalSupply[index]
@@ -111,10 +116,14 @@ export const getCollection = async (collectionAddress: string): Promise<Record<s
       getCollectionApi(collectionAddress),
       getCollectionSg(collectionAddress),
     ])
-
-    const collectionsTotalSupply = await fetchCollectionsTotalSupply([collection])
+    let collectionsTotalSupply
+    try {
+      collectionsTotalSupply = await fetchCollectionsTotalSupply([collection])
+    } catch (error) {
+      console.error('on chain fetch collections total supply error', error)
+    }
     const totalSupplyFromApi = Number(collection?.totalSupply) || 0
-    const totalSupplyFromOnChain = collectionsTotalSupply[0]
+    const totalSupplyFromOnChain = collectionsTotalSupply?.[0]
     const collectionApiDataCombinedOnChain = {
       ...collection,
       totalSupply: Math.max(totalSupplyFromApi, totalSupplyFromOnChain).toString(),
