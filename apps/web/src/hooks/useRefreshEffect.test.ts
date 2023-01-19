@@ -3,10 +3,11 @@ import { FAST_INTERVAL, SLOW_INTERVAL } from 'config/constants'
 import { useState } from 'react'
 import useSWR from 'swr'
 import { createWagmiWrapper } from 'testUtils'
+import { vi } from 'vitest'
 import { useFastRefreshEffect, useSlowRefreshEffect } from './useRefreshEffect'
 
 test('should refresh when deps changes', () => {
-  const callback = jest.fn()
+  const callback = vi.fn()
   let deps = [1, 2, () => 1]
   const { rerender } = renderHook(
     () => {
@@ -31,7 +32,7 @@ test('should refresh when deps changes', () => {
 })
 
 test('should refresh when block changes', async () => {
-  const callback = jest.fn()
+  const callback = vi.fn()
   const { result, rerender } = renderHook(
     () => {
       const { mutate, data } = useSWR([FAST_INTERVAL, 'blockNumber', 56])

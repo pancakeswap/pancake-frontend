@@ -1,4 +1,4 @@
-import { ChainId, Token, WBNB, ERC20Token } from '@pancakeswap/sdk'
+import { ChainId, WBNB, ERC20Token } from '@pancakeswap/sdk'
 import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
 
 export const bscTokens = {
@@ -2360,7 +2360,7 @@ export const bscTokens = {
     'Galactic Quadrant',
     'https://outerringmmo.com/',
   ),
-  hoop: new Token(
+  hoop: new ERC20Token(
     ChainId.BSC,
     '0xF19cfb40B3774dF6Eed83169Ad5aB0Aaf6865F25',
     18,
@@ -2368,8 +2368,8 @@ export const bscTokens = {
     'Chibi Dinos',
     'https://www.chibidinos.io/',
   ),
-  co: new Token(ChainId.BSC, '0x936B6659Ad0C1b244Ba8Efe639092acae30dc8d6', 6, 'CO', 'CO', 'https://corite.com/'),
-  krs: new Token(
+  co: new ERC20Token(ChainId.BSC, '0x936B6659Ad0C1b244Ba8Efe639092acae30dc8d6', 6, 'CO', 'CO', 'https://corite.com/'),
+  krs: new ERC20Token(
     ChainId.BSC,
     '0x37b53894e7429f794B56F22a32E1695567Ee9913',
     18,
@@ -2377,7 +2377,7 @@ export const bscTokens = {
     'Kingdom Raids',
     'https://kingdomraids.io/',
   ),
-  wmx: new Token(
+  wmx: new ERC20Token(
     ChainId.BSC,
     '0xa75d9ca2a0a1D547409D82e1B06618EC284A2CeD',
     18,
@@ -2385,7 +2385,7 @@ export const bscTokens = {
     'Wombex Token',
     'https://wombex.finance/',
   ),
-  mgp: new Token(
+  mgp: new ERC20Token(
     ChainId.BSC,
     '0xD06716E1Ff2E492Cc5034c2E81805562dd3b45fa',
     18,
@@ -2393,7 +2393,7 @@ export const bscTokens = {
     'Magpie Token',
     'https://www.magpiexyz.io/',
   ),
-  hook: new Token(
+  hook: new ERC20Token(
     ChainId.BSC,
     '0xa260E12d2B924cb899AE80BB58123ac3fEE1E2F0',
     18,
@@ -2401,7 +2401,7 @@ export const bscTokens = {
     'Hook Token',
     'https://hooked.io/',
   ),
-  hft: new Token(
+  hft: new ERC20Token(
     ChainId.BSC,
     '0x44Ec807ce2F4a6F2737A92e985f318d035883e47',
     18,
@@ -2409,7 +2409,7 @@ export const bscTokens = {
     'Hashflow',
     'https://www.hashflow.com/',
   ),
-  squad: new Token(
+  squad: new ERC20Token(
     ChainId.BSC,
     '0x724A32dFFF9769A0a0e1F0515c0012d1fB14c3bd',
     18,
@@ -2417,8 +2417,15 @@ export const bscTokens = {
     'Token SQUAD',
     'https://ssquad.games/',
   ),
-  zbc: new Token(ChainId.BSC, '0x37a56cdcD83Dce2868f721De58cB3830C44C6303', 9, 'ZBC', 'ZEBEC', 'https://zebec.io/'),
-  primal: new Token(
+  zbc: new ERC20Token(
+    ChainId.BSC,
+    '0x37a56cdcD83Dce2868f721De58cB3830C44C6303',
+    9,
+    'ZBC',
+    'ZEBEC',
+    'https://zebec.io/',
+  ),
+  primal: new ERC20Token(
     ChainId.BSC,
     '0xCb5327Ed4649548e0d73E70b633cdfd99aF6Da87',
     18,
@@ -2426,7 +2433,7 @@ export const bscTokens = {
     'PRIMAL Token',
     'https://www.getprimal.com/',
   ),
-  ankrbnb: new Token(
+  ankrbnb: new ERC20Token(
     ChainId.BSC,
     '0x52F24a5e03aee338Da5fd9Df68D2b6FAe1178827',
     18,
@@ -2434,7 +2441,7 @@ export const bscTokens = {
     'Ankr Staked BNB',
     'https://www.ankr.com/staking-crypto/',
   ),
-  arena: new Token(
+  arena: new ERC20Token(
     ChainId.BSC,
     '0xCfFD4D3B517b77BE32C76DA768634dE6C738889B',
     18,

@@ -1,13 +1,13 @@
-import React from "react";
+import { vi } from "vitest";
 import { renderWithProvider } from "../../testHelpers";
 import FallingBunnies from "../../components/FallingBunnies/FallingBunnies";
 
 beforeEach(() => {
-  jest.spyOn(global.Math, "random").mockReturnValue(0.5);
+  vi.spyOn(global.Math, "random").mockReturnValue(0.5);
 });
 
 afterEach(() => {
-  jest.spyOn(global.Math, "random").mockRestore();
+  vi.spyOn(global.Math, "random").mockRestore();
 });
 
 it("renders correctly", () => {

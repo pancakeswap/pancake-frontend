@@ -183,25 +183,28 @@ const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & C
           currencyB={swapOutCurrencyAmount ? currencies[zapSwapOutTokenField] : undefined}
           currencyBValue={swapOutCurrencyAmount?.toSignificant(6)}
         />
-        {swapOutTokenAmount && swapInTokenAmount && currencies[zapSwapTokenField] && currencies[zapSwapOutTokenField] && (
-          <AutoColumn justify="center" gap="16px">
-            <ArrowDownIcon color="textSubtle" />
-            <AutoRow gap="6px" justify="center">
-              <RowFixed gap="2px">
-                <Text>{swapInTokenAmount?.toSignificant(6)}</Text>
-                <CurrencyLogo currency={currencies[zapSwapTokenField]} />
-                <Text>{currencies[zapSwapTokenField].symbol}</Text>
-              </RowFixed>
-              <Text>{t('to')}</Text>
-              <RowFixed gap="2px">
-                <Text>{swapOutTokenAmount?.toSignificant(6)}</Text>
-                <CurrencyLogo currency={currencies[zapSwapOutTokenField]} />
-                <Text>{currencies[zapSwapOutTokenField].symbol}</Text>
-              </RowFixed>
-            </AutoRow>
-            <ArrowDownIcon color="textSubtle" />
-          </AutoColumn>
-        )}
+        {swapOutTokenAmount &&
+          swapInTokenAmount &&
+          currencies[zapSwapTokenField] &&
+          currencies[zapSwapOutTokenField] && (
+            <AutoColumn justify="center" gap="16px">
+              <ArrowDownIcon color="textSubtle" />
+              <AutoRow gap="6px" justify="center">
+                <RowFixed gap="2px">
+                  <Text>{swapInTokenAmount?.toSignificant(6)}</Text>
+                  <CurrencyLogo currency={currencies[zapSwapTokenField]} />
+                  <Text>{currencies[zapSwapTokenField].symbol}</Text>
+                </RowFixed>
+                <Text>{t('to')}</Text>
+                <RowFixed gap="2px">
+                  <Text>{swapOutTokenAmount?.toSignificant(6)}</Text>
+                  <CurrencyLogo currency={currencies[zapSwapOutTokenField]} />
+                  <Text>{currencies[zapSwapOutTokenField].symbol}</Text>
+                </RowFixed>
+              </AutoRow>
+              <ArrowDownIcon color="textSubtle" />
+            </AutoColumn>
+          )}
         <AutoColumn gap="4px">
           {tooltipVisible && tooltip}
           <PairDistribution

@@ -1,6 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { UNLOCK_FREE_DURATION, BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from 'config/constants/pools'
 import { addWeeks, addDays } from 'date-fns'
+import { vi } from 'vitest'
 import { VaultPosition, getVaultPosition } from './cakePool'
 import { getCakeVaultV2Contract } from './contractHelpers'
 
@@ -56,12 +57,12 @@ describe('cakePool', () => {
       VaultPosition.AfterBurning,
     ],
   ])(`%s should be %s`, (params, result) => {
-    jest.useFakeTimers().setSystemTime(NOW)
+    vi.useFakeTimers().setSystemTime(NOW)
     expect(getVaultPosition(params)).toBe(result)
   })
 
   it('should be not be Locked if lockEndTime after now ', () => {
-    jest.useFakeTimers().setSystemTime(NOW)
+    vi.useFakeTimers().setSystemTime(NOW)
     expect(
       getVaultPosition({
         userShares: new BigNumber('1'),

@@ -14,13 +14,13 @@
     "storybook": "turbo run start --filter=uikit...",
     "build": "turbo run build --filter=web...",
     "start": "turbo run start --filter=web",
-    "test:config": "yarn workspace web run test:config",
+    "test:config": "yarn turbo run test:config --filter=[HEAD^1]",
     "test:ci": "yarn turbo run test --filter=[HEAD^1]",
     "lint": "turbo run lint --filter=web",
     "lint:report": "eslint --no-error-on-unmatched-pattern --max-warnings=0",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json}\"",
     "format:check:staged": "lint-staged",
-    "e2e:ci": "turbo run integration-test --filter=e2e...[HEAD^1]",
+    "e2e:ci": "yarn run build && turbo run integration-test --filter=e2e...[HEAD^1]",
     "updateLPsAPR": "yarn turbo run build --filter=@pancakeswap/sdk --filter=@pancakeswap/farm --filter=@pancakeswap/token-lists && NODE_PATH=./apps/web/src ts-node --project ./apps/web/tsconfig.json --compiler-options '{\"module\":\"commonjs\"}' scripts/updateLPsAPR.ts",
     "updateAptosLPsAPR": "yarn turbo run build --filter=@pancakeswap/aptos-swap-sdk && NODE_PATH=./apps/aptos/src ts-node --project ./apps/aptos/tsconfig.json --compiler-options '{\"module\":\"commonjs\"}' scripts/updateAptosLpsAPR/index.ts",
     "postinstall": "turbo run --filter=web postinstall",
@@ -37,7 +37,7 @@
     "@stylelint/postcss-css-in-js": "^0.37.2",
     "husky": "^7.0.0",
     "lint-staged": "^12.3.4",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.3",
     "serve": "^12.0.0",
     "start-server-and-test": "^1.14.0",
     "stylelint": "^14.5.3",
@@ -48,8 +48,9 @@
     "tilg": "^0.1.1",
     "ts-node": "^10.9.1",
     "tsconfig": "*",
-    "turbo": "^1.6.1",
-    "vitest": "^0.23.1"
+    "turbo": "^1.7.0",
+    "vitest": "^0.27.2",
+    "jest": "29.3.1"
   },
   "volta": {
     "node": "16.18.0"

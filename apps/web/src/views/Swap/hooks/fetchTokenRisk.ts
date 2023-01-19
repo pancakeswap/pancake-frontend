@@ -29,7 +29,7 @@ export const TOKEN_RISK_MAPPING = {
 export interface RiskTokenInfo {
   address: string
   chainId: ChainId
-  riskLevel: typeof TOKEN_RISK[keyof typeof TOKEN_RISK]
+  riskLevel: (typeof TOKEN_RISK)[keyof typeof TOKEN_RISK]
   scannedTs: number
 }
 

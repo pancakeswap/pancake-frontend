@@ -17,8 +17,8 @@ export const scales = {
   SM: "sm",
 } as const;
 
-export type Scale = typeof scales[keyof typeof scales];
-export type Variant = typeof variants[keyof typeof variants];
+export type Scale = (typeof scales)[keyof typeof scales];
+export type Variant = (typeof variants)[keyof typeof variants];
 
 export interface TagProps extends SpaceProps, TypographyProps {
   variant?: Variant;
