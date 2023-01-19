@@ -2074,7 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Vekil artış sözleşmesinde %amount% CAKE var. Bu miktarı hasat etmek için artırılmış farm'lardan birini çekmeli, yatırmalı veya hasat etmelisiniz.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "İstikrarlı tahminler sağlamak için farm sayfasında günde bir kez APR rakamları hesaplanır. Gerçek zamanlı APR için lütfen şu adresi ziyaret edin:",
   "Info Page": "Bilgi Sayfası",
-  "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.",
+  "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "Yakın zamanda çarpanları 10 katına çıkardık. Bu, yalnızca görsel bir değişikliktir ve her farm'ın aldığı CAKE miktarını etkilemez.",
   "Launch App": "Uygulamayı Başlat",
   "Sort Title A-Z": "Başlığı A'dan Z'ye Sırala",
   "Sort Title Z-A": "Başlığı Z'den A'ya Sırala",
@@ -2095,5 +2095,6 @@
   "Unknown": "Bilinmiyor",
   "I acknowledge the risk": "Riski anlıyorum",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "Tarama sonucunu okudum, riski anladım ve token içe aktarma işlemine devam etmek istiyorum.",
-  "Proceed": "İlerle"
+  "Proceed": "İlerle",
+  "Check out the top traded tokens": "En çok işlem gören token'lara göz atın"
 }
