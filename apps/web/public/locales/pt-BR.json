@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Há %amount% CAKE no contrato do impulsionador proxy. Para colher esta quantia, você precisa retirar, depositar ou colher uma das farms impulsionadas.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Para oferecer estimativas estáveis, os valores de APR são calculados uma vez por dia na página da farm. Para obter a APR em tempo real, visite o",
   "Info Page": "Página de informações",
+  "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.",
   "Launch App": "Launch App",
   "Sort Title A-Z": "Sort Title A-Z",
   "Sort Title Z-A": "Sort Title Z-A",
