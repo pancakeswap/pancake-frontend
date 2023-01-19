@@ -2095,5 +2095,6 @@
   "Unknown": "Nieznany",
   "I acknowledge the risk": "Przyjmuję ryzyko do wiadomości",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "Znam wynik skanowania, rozumiem ryzyko i chcę kontynuować import tokenów.",
-  "Proceed": "Kontynuuj"
+  "Proceed": "Kontynuuj",
+  "Check out the top traded tokens": "Check out the top traded tokens"
 }
