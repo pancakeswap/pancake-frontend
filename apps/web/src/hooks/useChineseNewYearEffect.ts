@@ -25,7 +25,7 @@ const useChineseNewYearEffect = () => {
     })
 
     return () => cancel()
-  }, [])
+  }, [isDisabled])
 }
 
 export default useChineseNewYearEffect
