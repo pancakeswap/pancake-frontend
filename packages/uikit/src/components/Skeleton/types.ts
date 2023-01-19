@@ -11,8 +11,8 @@ export const variant = {
   CIRCLE: "circle",
 } as const;
 
-export type Animation = typeof animation[keyof typeof animation];
-export type Variant = typeof variant[keyof typeof variant];
+export type Animation = (typeof animation)[keyof typeof animation];
+export type Variant = (typeof variant)[keyof typeof variant];
 
 export interface SkeletonProps extends SpaceProps, LayoutProps, BorderRadiusProps {
   animation?: Animation;
