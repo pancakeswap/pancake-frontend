@@ -8,12 +8,11 @@ import {
   Grid,
   SellIcon,
   Text,
-  ArrowBackIcon,
-  ArrowForwardIcon,
   ArrowUpIcon,
   ArrowDownIcon,
   Spinner,
   useMatchBreakpoints,
+  PaginationButton,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
@@ -21,7 +20,6 @@ import { ApiResponseCollectionTokens } from 'state/nftMarket/types'
 import ForSaleTableRows from './ForSaleTableRows'
 import { StyledSortButton, TableHeading } from '../../shared/styles'
 import UpdateIndicator from './UpdateIndicator'
-import { Arrow, PageButtons } from '../../../../components/PaginationButtons'
 import { usePancakeBunnyOnSaleNfts } from '../../../../hooks/usePancakeBunnyOnSaleNfts'
 
 const ITEMS_PER_PAGE_DESKTOP = 10
@@ -154,23 +152,7 @@ const ForSaleTableCard: React.FC<React.PropsWithChildren<ForSaleTableCardProps>>
                 onSuccessSale?.()
               }}
             />
-            <PageButtons>
-              <Arrow
-                onClick={() => {
-                  switchPage(internalPage === 1 ? internalPage : internalPage - 1)
-                }}
-              >
-                <ArrowBackIcon color={internalPage === 1 ? 'textDisabled' : 'primary'} />
-              </Arrow>
-              <Text>{t('Page %page%', { page: internalPage })}</Text>
-              <Arrow
-                onClick={() => {
-                  switchPage(internalPage === maxInternalPage ? internalPage : internalPage + 1)
-                }}
-              >
-                <ArrowForwardIcon color={internalPage === maxInternalPage ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </PageButtons>
+            <PaginationButton currentPage={internalPage} maxPage={maxInternalPage} setCurrentPage={switchPage} />
           </Flex>
         </>
       ) : isFetchingNfts ? (

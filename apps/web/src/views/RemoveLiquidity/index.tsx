@@ -21,6 +21,7 @@ import {
   useToast,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { callWithEstimateGas } from 'utils/calls'
@@ -51,7 +52,6 @@ import StyledInternalLink from '../../components/Links'
 import { calculateGasMargin } from '../../utils'
 import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
 import { currencyId } from '../../utils/currencyId'
-import useDebouncedChangeHandler from '../../hooks/useDebouncedChangeHandler'
 import { useApproveCallback, ApprovalState } from '../../hooks/useApproveCallback'
 import Dots from '../../components/Loader/Dots'
 import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../state/burn/hooks'

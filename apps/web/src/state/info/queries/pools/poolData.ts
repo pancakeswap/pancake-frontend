@@ -6,8 +6,14 @@ import { getChangeForPeriod } from 'utils/getChangeForPeriod'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { getLpFeesAndApr } from 'utils/getLpFeesAndApr'
 import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
-import { getPercentChange } from 'views/Info/utils/infoDataHelpers'
-import { getMultiChainQueryEndPointWithStableSwap, MultiChainName, multiChainQueryMainToken } from '../../constant'
+import { getPercentChange, getAmountChange } from 'views/Info/utils/infoDataHelpers'
+
+import {
+  getMultiChainQueryEndPointWithStableSwap,
+  MultiChainName,
+  multiChainQueryMainToken,
+  checkIsStableSwap,
+} from '../../constant'
 import { useGetChainName } from '../../hooks'
 import { fetchTopPoolAddresses } from './topPools'
 
@@ -17,6 +23,7 @@ interface PoolFields {
   reserve1: string
   reserveUSD: string
   volumeUSD: string
+  volumeOutUSD?: string
   token0Price: string
   token1Price: string
   token0?: {
@@ -32,13 +39,17 @@ interface PoolFields {
 }
 
 export interface FormattedPoolFields
-  extends Omit<PoolFields, 'volumeUSD' | 'reserveUSD' | 'reserve0' | 'reserve1' | 'token0Price' | 'token1Price'> {
+  extends Omit<
+    PoolFields,
+    'volumeUSD' | 'reserveUSD' | 'reserve0' | 'reserve1' | 'token0Price' | 'token1Price' | 'volumeOutUSD'
+  > {
   volumeUSD: number
   reserveUSD: number
   reserve0: number
   reserve1: number
   token0Price: number
   token1Price: number
+  volumeOutUSD?: number
 }
 
 interface PoolsQueryResponse {
@@ -57,6 +68,8 @@ interface PoolsQueryResponse {
 const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pools: string[]) => {
   const blockString = block ? `block: {number: ${block}}` : ``
   const addressesString = `["${pools.join('","')}"]`
+  const volumeOutUSDString = checkIsStableSwap() ? 'volumeOutUSD' : ''
+
   return `pairs(
     where: { id_in: ${addressesString} }
     ${blockString}
@@ -68,6 +81,7 @@ const POOL_AT_BLOCK = (chainName: MultiChainName, block: number | null, pools: s
     reserve1
     reserveUSD
     volumeUSD
+    ${volumeOutUSDString}
     token0Price
     token1Price
     token0 {
@@ -115,10 +129,11 @@ export const parsePoolData = (pairs?: PoolFields[]) => {
     return {}
   }
   return pairs.reduce((accum: { [address: string]: FormattedPoolFields }, poolData) => {
-    const { volumeUSD, reserveUSD, reserve0, reserve1, token0Price, token1Price } = poolData
+    const { volumeUSD, reserveUSD, reserve0, reserve1, token0Price, token1Price, volumeOutUSD } = poolData
     accum[poolData.id.toLowerCase()] = {
       ...poolData,
       volumeUSD: parseFloat(volumeUSD),
+      volumeOutUSD: volumeOutUSD && parseFloat(volumeOutUSD),
       reserveUSD: parseFloat(reserveUSD),
       reserve0: parseFloat(reserve0),
       reserve1: parseFloat(reserve1),
@@ -276,6 +291,8 @@ export const fetchAllPoolDataWithAddress = async (
     const twoWeeks: FormattedPoolFields | undefined = formattedPoolData14d[address]
 
     const [volumeUSD, volumeUSDChange] = getChangeForPeriod(current?.volumeUSD, oneDay?.volumeUSD, twoDays?.volumeUSD)
+    const volumeOutUSD = current?.volumeOutUSD && getAmountChange(current?.volumeOutUSD, oneDay?.volumeOutUSD)
+    const volumeOutUSDWeek = current?.volumeOutUSD && getAmountChange(current?.volumeOutUSD, week?.volumeOutUSD)
     const [volumeUSDWeek, volumeUSDChangeWeek] = getChangeForPeriod(
       current?.volumeUSD,
       week?.volumeUSD,
@@ -324,6 +341,8 @@ export const fetchAllPoolDataWithAddress = async (
           liquidityUSDChange,
           liquidityToken0,
           liquidityToken1,
+          volumeOutUSD,
+          volumeOutUSDWeek,
         },
       }
     }

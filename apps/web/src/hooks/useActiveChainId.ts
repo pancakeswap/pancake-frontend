@@ -4,15 +4,22 @@ import { useRouter } from 'next/router'
 import { useDeferredValue } from 'react'
 import { isChainSupported } from 'utils/wagmi'
 import { useNetwork } from 'wagmi'
-import { getChainId } from 'config/ChainIdName'
+import { getChainId } from 'config/chains'
 import { useSessionChainId } from './useSessionChainId'
 
 const queryChainIdAtom = atom(-1) // -1 unload, 0 no chainId on query
 
 queryChainIdAtom.onMount = (set) => {
   const params = new URL(window.location.href).searchParams
+  let chainId
+  // chain has higher priority than chainId
+  // keep chainId for backward compatible
   const c = params.get('chain')
-  const chainId = getChainId(c)
+  if (!c) {
+    chainId = params.get('chainId')
+  } else {
+    chainId = getChainId(c)
+  }
   if (isChainSupported(+chainId)) {
     set(+chainId)
   } else {

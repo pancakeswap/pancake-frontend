@@ -15,6 +15,8 @@ import {
   useMatchBreakpoints,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import Page from 'components/Layout/Page'
 import { ONE_HOUR_SECONDS } from 'config/constants/info'
@@ -69,6 +71,7 @@ const DEFAULT_TIME_WINDOW: Duration = { weeks: 1 }
 const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = ({ routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
@@ -175,7 +178,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
                 </Flex>
               </Flex>
               <Flex>
-                <NextLinkFromReactRouter to={`/add/${address}?chainId=${multiChainId[chainName]}`}>
+                <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
                   </Button>

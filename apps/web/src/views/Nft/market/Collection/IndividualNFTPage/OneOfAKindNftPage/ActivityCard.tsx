@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Flex, Card, Text, Table, Th, ArrowBackIcon, ArrowForwardIcon, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Flex, Card, Text, Table, Th, useMatchBreakpoints, PaginationButton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { Activity, NftToken } from 'state/nftMarket/types'
@@ -7,7 +7,6 @@ import { useBNBBusdPrice } from 'hooks/useBUSDPrice'
 import { useAppDispatch } from '../../../../../../state'
 import NoNftsImage from '../../../components/Activity/NoNftsImage'
 import TableLoader from '../../../../../../components/TableLoader'
-import { Arrow, PageButtons } from '../../../components/PaginationButtons'
 import { getTokenActivity } from '../../../../../../state/nftMarket/helpers'
 import { sortActivity } from '../../../ActivityHistory/utils/sortActivity'
 import ActivityRow from '../../../components/Activity/ActivityRow'
@@ -123,23 +122,12 @@ const ActivityCard: React.FC<React.PropsWithChildren<ActivityCardProps>> = ({ nf
             justifyContent="space-between"
             height="100%"
           >
-            <PageButtons>
-              <Arrow
-                onClick={() => {
-                  setCurrentPage(currentPage === 1 ? currentPage : currentPage - 1)
-                }}
-              >
-                <ArrowBackIcon color={currentPage === 1 ? 'textDisabled' : 'primary'} />
-              </Arrow>
-              <Text>{t('Page %page% of %maxPage%', { page: currentPage, maxPage })}</Text>
-              <Arrow
-                onClick={() => {
-                  setCurrentPage(currentPage === maxPage ? currentPage : currentPage + 1)
-                }}
-              >
-                <ArrowForwardIcon color={currentPage === maxPage ? 'textDisabled' : 'primary'} />
-              </Arrow>
-            </PageButtons>
+            <PaginationButton
+              showMaxPageText
+              currentPage={currentPage}
+              maxPage={maxPage}
+              setCurrentPage={setCurrentPage}
+            />
           </Flex>
         </>
       )}

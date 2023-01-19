@@ -96,7 +96,6 @@ export function SmartSwapForm() {
     parsedAmount,
     inputError: stableSwapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
-  // console.log({ tradeWithStableSwap, v2Trade, currencyBalances, parsedAmount, swapInputError }, 'Trade')
 
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
 
@@ -269,6 +268,12 @@ export function SmartSwapForm() {
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
+          {isAccessTokenSupported && inputCurrency?.isToken && (
+            <Box>
+              <AccessRisk token={inputCurrency} />
+            </Box>
+          )}
+
           <AutoColumn justify="space-between">
             <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
               <SwapUI.SwitchButton
@@ -301,9 +306,9 @@ export function SmartSwapForm() {
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
 
-          {isAccessTokenSupported && (
+          {isAccessTokenSupported && outputCurrency?.isToken && (
             <Box>
-              <AccessRisk inputCurrency={currencies[Field.INPUT]} outputCurrency={currencies[Field.OUTPUT]} />
+              <AccessRisk token={outputCurrency} />
             </Box>
           )}
 
@@ -409,6 +414,7 @@ export function SmartSwapForm() {
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
+        !showWrap &&
         tradeInfo && (
           <AdvancedSwapDetailsDropdown
             hasStablePair={smartRouterOn}

@@ -17,8 +17,10 @@ import {
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import Page from 'components/Layout/Page'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { checkIsStableSwap, multiChainId, multiChainScan } from 'state/info/constant'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import {
@@ -38,6 +40,8 @@ import ChartCard from 'views/Info/components/InfoCharts/ChartCard'
 import TransactionTable from 'views/Info/components/InfoTables/TransactionsTable'
 import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
+import useSWRImmutable from 'swr/immutable'
+import BigNumber from 'bignumber.js'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -70,9 +74,15 @@ const LockedTokensContainer = styled(Flex)`
   max-width: 280px;
 `
 
+const getFarmConfig = async (chainId: number) => {
+  const config = await import(`@pancakeswap/farms/constants/${chainId}`)
+  return config
+}
+
 const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ address: routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const [showWeeklyData, setShowWeeklyData] = useState(0)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),
@@ -92,6 +102,24 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   const infoTypeParam = useStableSwapPath()
   const isStableSwap = checkIsStableSwap()
   const stableAPR = useStableSwapAPR(isStableSwap && address)
+  const { data: farmConfig } = useSWRImmutable(isStableSwap && chainId && `info/gerFarmConfig/${chainId}`, () =>
+    getFarmConfig(chainId),
+  )
+
+  const feeDisplay = useMemo(() => {
+    if (isStableSwap && farmConfig) {
+      const stableLpFee =
+        farmConfig?.default.find((d) => d.stableSwapAddress?.toLowerCase() === address)?.stableLpFee ?? 0
+      return new BigNumber(stableLpFee)
+        .times(showWeeklyData ? poolData?.volumeOutUSDWeek : poolData?.volumeOutUSD)
+        .toNumber()
+    }
+    return showWeeklyData ? poolData?.lpFees7d : poolData?.lpFees24h
+  }, [poolData, isStableSwap, farmConfig, showWeeklyData, address])
+  const stableTotalFee = useMemo(
+    () => (isStableSwap ? new BigNumber(feeDisplay).times(2).toNumber() : 0),
+    [isStableSwap, feeDisplay],
+  )
 
   return (
     <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
@@ -160,7 +188,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
               <Flex>
                 <NextLinkFromReactRouter
-                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chainId=${multiChainId[chainName]}`}
+                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${CHAIN_QUERY_NAME[chainId]}`}
                 >
                   <Button mr="8px" variant="secondary">
                     {t('Add Liquidity')}
@@ -257,11 +285,13 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                         {showWeeklyData ? t('LP reward fees 7D') : t('LP reward fees 24H')}
                       </Text>
                       <Text fontSize="24px" bold>
-                        ${showWeeklyData ? formatAmount(poolData.lpFees7d) : formatAmount(poolData.lpFees24h)}
+                        ${formatAmount(feeDisplay)}
                       </Text>
                       <Text color="textSubtle" fontSize="12px">
                         {t('out of $%totalFees% total fees', {
-                          totalFees: showWeeklyData
+                          totalFees: isStableSwap
+                            ? formatAmount(stableTotalFee)
+                            : showWeeklyData
                             ? formatAmount(poolData.totalFees7d)
                             : formatAmount(poolData.totalFees24h),
                         })}

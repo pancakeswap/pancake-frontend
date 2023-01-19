@@ -31,6 +31,7 @@ export const mainnetTokens = {
     6,
     'ceUSDC',
     'Celer - USD Coin',
+    'https://celer.network',
   ),
   ceusdt: new Coin(
     ChainId.MAINNET,
@@ -38,6 +39,7 @@ export const mainnetTokens = {
     6,
     'ceUSDT',
     'Celer - Tether USD',
+    'https://celer.network',
   ),
   ceweth: new Coin(
     ChainId.MAINNET,
@@ -45,6 +47,7 @@ export const mainnetTokens = {
     8,
     'ceWETH',
     'Celer - Wrapped Ether',
+    'https://celer.network',
   ),
   cebnb: new Coin(
     ChainId.MAINNET,
@@ -52,6 +55,7 @@ export const mainnetTokens = {
     8,
     'ceBNB',
     'Celer - Binance Coin',
+    'https://celer.network',
   ),
   stapt: new Coin(
     ChainId.MAINNET,

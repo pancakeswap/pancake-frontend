@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { BigNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
-import maxBy from 'lodash/maxBy'
 import merge from 'lodash/merge'
 import range from 'lodash/range'
 import pickBy from 'lodash/pickBy'
@@ -19,13 +18,7 @@ import {
   PredictionConfig,
 } from 'state/types'
 import { FetchStatus } from 'config/constants/types'
-import {
-  FUTURE_ROUND_COUNT,
-  LEADERBOARD_MIN_ROUNDS_PLAYED,
-  PAST_ROUND_COUNT,
-  ROUNDS_PER_PAGE,
-  ROUND_BUFFER,
-} from './config'
+import { FUTURE_ROUND_COUNT, LEADERBOARD_MIN_ROUNDS_PLAYED, PAST_ROUND_COUNT, ROUNDS_PER_PAGE } from './config'
 import {
   makeFutureRoundResponse,
   makeRoundData,
@@ -84,8 +77,8 @@ type PredictionInitialization = Pick<
   PredictionsState,
   'status' | 'currentEpoch' | 'intervalSeconds' | 'minBetAmount' | 'rounds' | 'ledgers' | 'claimableStatuses'
 >
-export const initializePredictions = createAsyncThunk<PredictionInitialization, string, { extra: PredictionConfig }>(
-  'predictions/initialize',
+export const fetchPredictionData = createAsyncThunk<PredictionInitialization, string, { extra: PredictionConfig }>(
+  'predictions/fetchPredictionData',
   async (account = null, { extra }) => {
     // Static values
     const marketData = await getPredictionData(extra.address)
@@ -122,55 +115,6 @@ export const initializePredictions = createAsyncThunk<PredictionInitialization, 
     ])
 
     return merge({}, initializedData, {
-      ledgers: makeLedgerData(account, ledgerResponses, epochs),
-      claimableStatuses,
-    })
-  },
-)
-
-export const fetchPredictionData = createAsyncThunk<PredictionInitialization, string, { extra: PredictionConfig }>(
-  'predictions/fetchPredictionData',
-  async (account = null, { extra }) => {
-    const { status, currentEpoch, intervalSeconds, minBetAmount } = await getPredictionData(extra.address)
-    const liveCurrentAndRecent = [currentEpoch, currentEpoch - 1, currentEpoch - 2]
-
-    const roundsResponse = await getRoundsData(liveCurrentAndRecent, extra.address)
-    const roundData = roundsResponse.reduce((accum, round) => {
-      if (!round) {
-        return accum
-      }
-
-      const reduxNodeRound = serializePredictionsRoundsResponse(round)
-
-      return {
-        ...accum,
-        [reduxNodeRound.epoch.toString()]: reduxNodeRound,
-      }
-    }, {})
-
-    const publicData = {
-      status,
-      currentEpoch,
-      intervalSeconds,
-      minBetAmount,
-      rounds: roundData,
-      ledgers: {},
-      claimableStatuses: {},
-    }
-
-    if (!account) {
-      return publicData
-    }
-
-    const epochs =
-      currentEpoch > PAST_ROUND_COUNT ? range(currentEpoch, currentEpoch - PAST_ROUND_COUNT) : [currentEpoch]
-
-    const [ledgerResponses, claimableStatuses] = await Promise.all([
-      getLedgerData(account, epochs, extra.address), // Bet data
-      getClaimStatuses(account, epochs, extra.address), // Claim statuses
-    ])
-
-    return merge({}, publicData, {
       ledgers: makeLedgerData(account, ledgerResponses, epochs),
       claimableStatuses,
     })
@@ -470,16 +414,13 @@ export const predictionsSlice = createSlice({
         return Number(key) > state.currentEpoch - PAST_ROUND_COUNT
       })
 
-      // If the round has change add a new future round
-      if (state.currentEpoch !== currentEpoch) {
-        const newestRound = maxBy(Object.values(state.rounds), 'epoch')
-        const futureRound = makeFutureRoundResponse(
-          newestRound.epoch + 1,
-          newestRound.startTimestamp + intervalSeconds + ROUND_BUFFER,
-        )
-
-        newRounds = { ...newRounds, [futureRound.epoch]: futureRound }
+      const futureRounds: ReduxNodeRound[] = []
+      const currentRound = rounds[currentEpoch]
+      for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
+        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRound.startTimestamp + intervalSeconds * i))
       }
+
+      newRounds = { ...newRounds, ...makeRoundData(futureRounds) }
 
       state.status = status
       state.currentEpoch = currentEpoch
@@ -488,27 +429,6 @@ export const predictionsSlice = createSlice({
       state.claimableStatuses = merge({}, state.claimableStatuses, claimableStatuses)
       state.ledgers = merge({}, state.ledgers, ledgers)
       state.rounds = newRounds
-    })
-
-    // Initialize predictions
-    builder.addCase(initializePredictions.fulfilled, (state, action) => {
-      const { status, currentEpoch, intervalSeconds, rounds, claimableStatuses, ledgers } = action.payload
-      const futureRounds: ReduxNodeRound[] = []
-      const currentRound = rounds[currentEpoch]
-
-      for (let i = 1; i <= FUTURE_ROUND_COUNT; i++) {
-        futureRounds.push(makeFutureRoundResponse(currentEpoch + i, currentRound.startTimestamp + intervalSeconds * i))
-      }
-
-      return {
-        ...state,
-        status,
-        currentEpoch,
-        intervalSeconds,
-        claimableStatuses,
-        ledgers,
-        rounds: merge({}, rounds, makeRoundData(futureRounds)),
-      }
     })
 
     // History from the node
