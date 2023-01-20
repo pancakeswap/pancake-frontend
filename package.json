@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "turbo run dev --filter=web...",
     "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
+    "dev:blog": "yarn turbo run dev --filter=blog...",
     "storybook": "turbo run start --filter=uikit...",
     "build": "turbo run build --filter=web...",
     "start": "turbo run start --filter=web",
