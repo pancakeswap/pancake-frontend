@@ -18,7 +18,7 @@ const RightWrapper = styled.div`
 
   & :nth-child(1) {
     right: 4%;
-    bottom: -5%;
+    bottom: -8%;
     z-index: 1;
   }
 
@@ -54,9 +54,11 @@ const Header = styled(S.StyledHeading)`
   background-clip: text;
   -webkit-background-clip: text;
   font-size: 20px;
+  padding: 20px;
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 40px;
     min-height: auto;
+    padding: 0px 20px;
   }
 `
 
@@ -66,6 +68,7 @@ const CnyBanner = () => {
   return (
     <S.Wrapper
       style={{
+        overflow: 'hidden',
         background: 'linear-gradient(180deg, #ED6D42 0%, #8D1F0B 100%)',
       }}
     >
