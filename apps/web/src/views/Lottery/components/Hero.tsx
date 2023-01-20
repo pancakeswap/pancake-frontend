@@ -308,9 +308,6 @@ const Hero = () => {
       <Heading style={{ zIndex: 1 }} mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
         {t('The PancakeSwap Lottery')}
       </Heading>
-      <Heading style={{ zIndex: 1 }} mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
-        {t('Potential Prize up to')}
-      </Heading>
       {getHeroHeading()}
       <TicketContainer
         position="relative"

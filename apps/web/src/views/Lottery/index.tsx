@@ -20,6 +20,7 @@ import HowToPlay from './components/HowToPlay'
 import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
 import { PageMeta } from '../../components/Layout/Page'
 import CnyDecorations from './components/LotteryCnyEffect'
+import CnyLotteryDraw from './components/CnyLotteryDraw'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -74,6 +75,7 @@ const Lottery = () => {
             <NextDrawCard />
           </Flex>
         </PageSection>
+        <CnyLotteryDraw />
         <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={2}>
           <CheckPrizesSection />
         </PageSection>
