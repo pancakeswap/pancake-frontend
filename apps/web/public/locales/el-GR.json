@@ -2096,5 +2096,13 @@
   "I acknowledge the risk": "Αναγνωρίζω τον κίνδυνο",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "Διάβασα το αποτέλεσμα της αξιολόγησης, έχω κατανοήσει τον κίνδυνο και θέλω να προχωρήσω στην εισαγωγή του νομίσματος.",
   "Proceed": "Συνέχεια",
-  "Check out the top traded tokens": "Ρίξτε μια ματιά στα νομίσματα με τις περισσότερες συναλλαγές"
+  "Check out the top traded tokens": "Ρίξτε μια ματιά στα νομίσματα με τις περισσότερες συναλλαγές",
+  "PancakeSwap CNY Lottery Draw": "PancakeSwap CNY Lottery Draw",
+  "Draw Date:": "Draw Date:",
+  "Tickets for this round start selling on:": "Tickets for this round start selling on:",
+  "Draw No:": "Draw No:",
+  "Potential Prize Pot:": "Potential Prize Pot:",
+  "In Prizes!": "In Prizes!",
+  "CNY Lottery Draw": "CNY Lottery Draw",
+  "Up to $96K in Prizes": "Up to $96K in Prizes"
 }
