@@ -1,5 +1,6 @@
-import { emojisplosions } from 'emojisplosion'
 import { useEffect } from 'react'
+import { useParticleBurst } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 
 const disableWhenNotCNY = () => {
   const today = new Date()
@@ -14,25 +15,18 @@ const disableWhenNotCNY = () => {
 }
 
 const useChineseNewYearEffect = () => {
-  const isDisabled = disableWhenNotCNY()
+  const { pathname } = useRouter()
+  const { initialize, teardown } = useParticleBurst({
+    imgSrc: '/images/cny-asset/redpocket.png',
+    disableWhen: disableWhenNotCNY,
+    debounceDuration: 1000,
+  })
 
   useEffect(() => {
-    let cancelFC = null
-    const timer = setTimeout(() => {
-      const { cancel } = emojisplosions({
-        interval: () => (isDisabled ? 0 : 2400),
-        uniqueness: 1,
-        emojiCount: 10,
-        emojis: ['🧧'],
-      })
-      cancelFC = cancel
-    }, 2000)
+    initialize()
 
-    return () => {
-      cancelFC?.()
-      clearTimeout(timer)
-    }
-  }, [isDisabled])
+    return () => teardown()
+  }, [pathname, initialize, teardown])
 }
 
 export default useChineseNewYearEffect
