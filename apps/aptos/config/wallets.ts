@@ -96,7 +96,9 @@ export const wallets: WalletConfigV2<ConnectorNames>[] = [
     id: 'rise',
     title: 'Rise Wallet',
     icon: '/images/wallets/rise.png',
-    installed: typeof window !== 'undefined' && Boolean(window.rise),
+    get installed() {
+      return typeof window !== 'undefined' && Boolean(window.rise)
+    },
     connectorId: ConnectorNames.Rise,
     downloadLink: {
       desktop: isFirefox
