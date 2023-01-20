@@ -2096,5 +2096,13 @@
   "I acknowledge the risk": "Ymmärrän riskin",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "Olen lukenut skannauksen tuloksen, ymmärrän riskin ja haluan jatkaa poletin tuontia.",
   "Proceed": "Jatka",
-  "Check out the top traded tokens": "Katso suosituimmat treidatut poletit"
+  "Check out the top traded tokens": "Katso suosituimmat treidatut poletit",
+  "PancakeSwap CNY Lottery Draw": "PancakeSwap CNY -arvonta",
+  "Draw Date:": "Arvontapäivä:",
+  "Tickets for this round start selling on:": "Tämän kierroksen lippujen myynti alkaa:",
+  "Draw No:": "Arvonta numero:",
+  "Potential Prize Pot:": "Potentiaalinen palkintopotti:",
+  "In Prizes!": "Palkintoina!",
+  "CNY Lottery Draw": "CNY-arvonta",
+  "Up to $96K in Prizes": "Jopa 96 tuhannen dollarin arvosta palkintoja"
 }
