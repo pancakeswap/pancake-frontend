@@ -18,7 +18,7 @@ const useChineseNewYearEffect = () => {
 
   useEffect(() => {
     const { cancel } = emojisplosions({
-      interval: () => (isDisabled ? 0 : 1600),
+      interval: () => (isDisabled ? 0 : 2400),
       uniqueness: 1,
       emojiCount: 10,
       emojis: ['🧧'],
