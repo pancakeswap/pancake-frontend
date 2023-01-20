@@ -97,7 +97,8 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
     tooltip: myBalanceTooltip,
     tooltipVisible: myBalanceTooltipVisible,
   } = useTooltip(t('Boost multiplier calculation does not include profit from CAKE staking pool'), {
-    placement: 'bottom-start',
+    placement: 'top-end',
+    tooltipOffset: [20, 10],
   })
   const theme = useTheme()
 
