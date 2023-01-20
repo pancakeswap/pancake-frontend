@@ -21,8 +21,9 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
+import { useStableSwapPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
+import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
@@ -156,7 +157,6 @@ const DataRow: React.FC<
   }>
 > = ({ tokenData, type, handleOutputSelect }) => {
   const { isXs, isSm, isMobile } = useMatchBreakpoints()
-  const chianPath = useMultiChainPath()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
   const address = getAddress(tokenData.address)
@@ -166,10 +166,9 @@ const DataRow: React.FC<
   const imagePath = chainId === ChainId.BSC ? '' : `${chainId}/tokens/`
   return (
     <LinkWrapper
-      to={`/info${chianPath}/tokens/${tokenData.address}?chain=${CHAIN_QUERY_NAME[chainId]}${stableSwapPath.replace(
-        '?',
-        '&',
-      )}`}
+      to={`/info${multiChainPaths[chainId]}/tokens/${tokenData.address}?chain=${
+        CHAIN_QUERY_NAME[chainId]
+      }${stableSwapPath.replace('?', '&')}`}
     >
       <ResponsiveGrid>
         <Flex alignItems="center">
