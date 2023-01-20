@@ -146,22 +146,23 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
               >
                 $1000
               </Button>
+              <Button
+                disabled={!account || isLoading || lockedAmount.eq(0)}
+                scale="xs"
+                p="4px 16px"
+                width="128px"
+                variant="tertiary"
+                style={{ textTransform: 'uppercase' }}
+                onClick={() =>
+                  setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
+                }
+              >
+                {t('My Balance')}
+              </Button>
+              <span ref={myBalanceTargetRef}>
+                <HelpIcon width="16px" height="16px" color="textSubtle" />
+              </span>
               {myBalanceTooltipVisible && myBalanceTooltip}
-              <Box ref={myBalanceTargetRef}>
-                <Button
-                  disabled={!account || isLoading || lockedAmount.eq(0)}
-                  scale="xs"
-                  p="4px 16px"
-                  width="128px"
-                  variant="tertiary"
-                  style={{ textTransform: 'uppercase' }}
-                  onClick={() =>
-                    setPrincipalFromUSDValue(getBalanceNumber(lockedAmount.times(earningTokenPrice)).toFixed(2))
-                  }
-                >
-                  {t('My Balance')}
-                </Button>
-              </Box>
             </Flex>
             <LockDurationField
               duration={duration}
