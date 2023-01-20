@@ -90,7 +90,7 @@ const CnyLotteryDraw = () => {
       concaveDivider
       background="linear-gradient(180deg, #7645D9 0%, #5121B1 100%)"
       clipFill={{ light: '#7645D9', dark: '#7645D9' }}
-      dividerFill={{ light: '#5121B1', dark: '#5121B1' }}
+      dividerFill={{ light: '#8D1F0B', dark: '#8D1F0B' }}
     >
       <Decorations>
         <img src="/images/cny-asset/ball-1.png" width="127px" height="127px" alt="" />

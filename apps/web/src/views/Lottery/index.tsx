@@ -47,6 +47,7 @@ const Lottery = () => {
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
+        <CnyLotteryDraw />
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={GET_TICKETS_BG}
@@ -75,7 +76,6 @@ const Lottery = () => {
             <NextDrawCard />
           </Flex>
         </PageSection>
-        <CnyLotteryDraw />
         <PageSection background={CHECK_PRIZES_BG} hasCurvedDivider={false} index={2}>
           <CheckPrizesSection />
         </PageSection>
