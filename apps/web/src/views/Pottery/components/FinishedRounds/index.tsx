@@ -1,16 +1,17 @@
 import styled from 'styled-components'
-import { Flex, PageSection } from '@pancakeswap/uikit'
+import { Flex, PageSection, Box } from '@pancakeswap/uikit'
 import useTheme from 'hooks/useTheme'
 import { useTranslation } from '@pancakeswap/localization'
 import { OutlineText } from 'views/Pottery/components/TextStyle'
-import { FINISHED_ROUNDS_BG, FINISHED_ROUNDS_BG_DARK } from 'views/Lottery/pageSectionStyles'
+import { CNY_POTTERY_FINISHED_ROUNDS_BG } from 'views/Lottery/pageSectionStyles'
+import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import AllHistoryCard from './AllHistoryCard'
 
 const FinishedRoundsBg = styled(Flex)<{ isDark: boolean }>`
   position: relative;
   width: 100%;
   flex-direction: column;
-  background: ${({ isDark }) => (isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG)};
+  background: ${({ isDark }) => (isDark ? CNY_POTTERY_FINISHED_ROUNDS_BG : CNY_POTTERY_FINISHED_ROUNDS_BG)};
 `
 
 const FinishedRoundsContainer = styled(Flex)`
@@ -19,8 +20,51 @@ const FinishedRoundsContainer = styled(Flex)`
   width: 100%;
 `
 
-const COVEX_BG =
-  'linear-gradient(90deg,rgba(168,129,252,1) 0%,rgb(160 121 244) 15%,rgb(145 104 226) 30%,rgb(136 95 216) 45%,rgb(139 98 219) 65%,rgb(148 108 230) 80%,rgba(168,129,252,1) 100%)'
+const CnyDecorations = styled(Box)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  top: 0;
+  left: 0;
+
+  > img {
+    display: none;
+    position: absolute;
+  }
+
+  & :nth-child(1) {
+    left: 10%;
+    bottom: 15%;
+    animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
+  }
+
+  & :nth-child(2) {
+    left: 8%;
+    bottom: 50%;
+    animation: ${floatingStarsLeft} 6s ease-in-out infinite;
+  }
+
+  & :nth-child(3) {
+    top: 5%;
+    right: 10%;
+    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
+  }
+
+  & :nth-child(4) {
+    top: 30%;
+    right: 8%;
+    animation: ${floatingStarsRight} 6s ease-in-out infinite;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    > img {
+      display: block;
+    }
+  }
+`
+
+const CNY_COVEX_BG = '#ED6D42'
 
 const FinishedRounds: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -28,7 +72,13 @@ const FinishedRounds: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <FinishedRoundsBg isDark={isDark}>
-      <PageSection index={1} dividerPosition="top" clipFill={{ light: COVEX_BG, dark: COVEX_BG }}>
+      <CnyDecorations>
+        <img src="/images/cny-asset/cny-lantern-1.png" width="200px" height="280px" alt="" />
+        <img src="/images/cny-asset/p-2.png" width="30px" height="30px" alt="" />
+        <img src="/images/cny-asset/cny-lantern-2.png" width="184px" height="210px" alt="" />
+        <img src="/images/cny-asset/p-2.png" width="30px" height="30px" alt="" />
+      </CnyDecorations>
+      <PageSection index={1} dividerPosition="top" clipFill={{ light: CNY_COVEX_BG, dark: CNY_COVEX_BG }}>
         <FinishedRoundsContainer>
           <OutlineText fontSize="40px" mb="32px" bold textAlign="center">
             {t('Finished Rounds')}

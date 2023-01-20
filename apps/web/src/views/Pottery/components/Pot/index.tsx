@@ -9,6 +9,7 @@ import Deposit from './Deposit/index'
 import Claim from './Claim/index'
 import CardHeader from './CardHeader'
 import { POT_CATEGORY } from '../../types'
+import PotteryCnyEffect from './PotteryCnyEffect'
 
 const PotteryContainer = styled(Box)`
   position: relative;
@@ -38,18 +39,18 @@ const PotteryContainer = styled(Box)`
 `
 
 const PotImage = styled.div`
-  width: 260px;
-  height: 228.77px;
+  width: 320px;
+  height: 205px;
   align-self: center;
-  background: url(/images/pottery/honeypot.png);
+  background: url(/images/cny-asset/p-1.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   margin-top: 48px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    width: 412px;
-    height: 362.52px;
+    width: 420px;
+    height: 268.68px;
     margin-top: 0;
   }
 `
@@ -82,6 +83,7 @@ const Pot: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <PotteryContainer id="stake-to-win">
+      <PotteryCnyEffect />
       <Flex width={['100%', '100%', '436px', '436px', '939px']} m="auto" flexDirection="column">
         <Text color="white" fontSize="32px" textAlign="center" bold>
           {t('Current Prize Pot')}
