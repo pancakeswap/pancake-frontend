@@ -1,25 +1,27 @@
+import { useTranslation } from '@pancakeswap/localization'
 import {
   ChartDisableIcon,
   ChartIcon,
   Flex,
   HistoryIcon,
-  HotIcon,
   HotDisableIcon,
+  HotIcon,
   IconButton,
   NotificationDot,
   Swap,
+  Text,
+  TooltipText,
   useModal,
   useTooltip,
-  TooltipText,
-  Text,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
+import { useAtom } from 'jotai'
+import { atomWithStorage } from 'jotai/utils'
+import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { ReactElement, useCallback, useContext, useState, useEffect, useLayoutEffect } from 'react'
 import { useExpertModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
@@ -39,6 +41,8 @@ const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
 `
 
+const mobileShowOnceTokenHighlightAtom = atomWithStorage('pcs::mobileShowOnceTokenHighlight', false)
+
 const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   subtitle,
   hasAmount,
@@ -46,6 +50,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   title,
 }) => {
   const { t } = useTranslation()
+  const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
     placement: isMobile ? 'top' : 'bottom',
@@ -60,12 +65,17 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const handleOnClick = useCallback(() => onRefreshPrice?.(), [onRefreshPrice])
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
+
   const mobileTooltipClickOutside = useCallback(() => {
     setMobileTooltipShow(false)
   }, [])
-  useLayoutEffect(() => {
-    if (isMobile) setMobileTooltipShow(true)
-  }, [])
+
+  useEffect(() => {
+    if (isMobile && !mobileTooltipShowOnce) {
+      setMobileTooltipShow(true)
+      setMobileTooltipShowOnce(true)
+    }
+  }, [mobileTooltipShowOnce, setMobileTooltipShowOnce])
 
   useEffect(() => {
     document.body.addEventListener('click', mobileTooltipClickOutside)
