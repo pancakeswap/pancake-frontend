@@ -1,4 +1,4 @@
-import { ArrowForwardIcon, Button, Text, Link } from '@pancakeswap/uikit'
+import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { memo } from 'react'
 import styled from 'styled-components'
@@ -18,7 +18,7 @@ const RightWrapper = styled.div`
 
   & :nth-child(1) {
     right: 4%;
-    bottom: -8%;
+    bottom: 0%;
     z-index: 1;
   }
 
@@ -46,6 +46,7 @@ const RightWrapper = styled.div`
     & :nth-child(1) {
       width: 180px;
       height: 280px;
+      bottom: -8%;
     }
   }
 `
@@ -64,11 +65,11 @@ const Header = styled(S.StyledHeading)`
 
 const CnyBanner = () => {
   const { t } = useTranslation()
-
+  const { isMobile } = useMatchBreakpoints()
   return (
     <S.Wrapper
       style={{
-        overflow: 'hidden',
+        overflow: isMobile ? 'hidden' : 'visible',
         background: 'linear-gradient(180deg, #ED6D42 0%, #8D1F0B 100%)',
       }}
     >
@@ -86,7 +87,7 @@ const CnyBanner = () => {
           </Link>
         </S.LeftWrapper>
         <RightWrapper>
-          <img src="/images/cny-asset/banner-1.png" alt="" width={141} height={206} />
+          <img src="/images/cny-asset/banner-1.png" alt="" width={130} height={180} />
           <img src="/images/cny-asset/banner-2.png" alt="" width={294} height={67.33} />
           <img src="/images/cny-asset/banner-3.png" alt="" width={294} height={67.33} />
         </RightWrapper>
