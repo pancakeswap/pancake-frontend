@@ -2096,5 +2096,13 @@
   "I acknowledge the risk": "다음 리스크를 확인했습니다:",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "스캔 결과를 읽었고, 리스크를 이해했으며, 토큰 가져오기를 진행하고 싶습니다.",
   "Proceed": "진행하기",
-  "Check out the top traded tokens": " 상위 거래 토큰 확인"
+  "Check out the top traded tokens": " 상위 거래 토큰 확인",
+  "PancakeSwap CNY Lottery Draw": "PancakeSwap CNY Lottery Draw",
+  "Draw Date:": "Draw Date:",
+  "Tickets for this round start selling on:": "Tickets for this round start selling on:",
+  "Draw No:": "Draw No:",
+  "Potential Prize Pot:": "Potential Prize Pot:",
+  "In Prizes!": "In Prizes!",
+  "CNY Lottery Draw": "CNY Lottery Draw",
+  "Up to $96K in Prizes": "Up to $96K in Prizes"
 }
