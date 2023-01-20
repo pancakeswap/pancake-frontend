@@ -1,5 +1,5 @@
-import { Flex, LinkExternal, Pool, Text, TimerIcon } from '@pancakeswap/uikit'
-import { memo } from 'react'
+import { Flex, LinkExternal, Pool, Text, TimerIcon, useTooltip } from '@pancakeswap/uikit'
+import { memo, useMemo } from 'react'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
@@ -13,6 +13,33 @@ interface ExpandedFooterProps {
   account?: string
   showTotalStaked?: boolean
   alignLinksToRight?: boolean
+}
+
+interface EndTimeTooltipComponentProps {
+  endTime: number
+}
+
+const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipComponentProps>> = ({ endTime }) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+
+  return (
+    <>
+      <Text bold>{t('End Time')}:</Text>
+      <Text>
+        {new Date(endTime * 1000).toLocaleString(locale, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        })}
+      </Text>
+    </>
+  )
 }
 
 const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({ pool, showTotalStaked = true }) => {
@@ -36,7 +63,20 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
   const poolTimeRemaining = endBlock - currentDate
   const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentDate
 
-  const endTimeObject = getTimePeriods(poolTimeRemaining)
+  const endTimeObject = useMemo(() => getTimePeriods(poolTimeRemaining), [poolTimeRemaining])
+  const stakeLimitTimeObject = useMemo(() => getTimePeriods(stakeLimitTimeRemaining), [stakeLimitTimeRemaining])
+
+  const {
+    targetRef: endTimeTargetRef,
+    tooltip: endTimeTooltip,
+    tooltipVisible: endTimeTooltipVisible,
+  } = useTooltip(<EndTimeTooltipComponent endTime={endBlock} />)
+
+  const {
+    targetRef: stakeLimitTargetRef,
+    tooltip: stakeLimitTooltip,
+    tooltipVisible: stakeLimitTooltipVisible,
+  } = useTooltip(<EndTimeTooltipComponent endTime={stakeLimitEndBlock + startBlock} />)
 
   return (
     <>
@@ -52,22 +92,40 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           </Flex>
           <Flex justifyContent="space-between" alignItems="center">
             <Text small>{t('Max. stake limit ends in')}:</Text>
-            <Flex>
+            <Flex alignItems="center">
               <Text color="textSubtle" small>
-                {stakeLimitTimeRemaining > 0 ? getTimePeriods(stakeLimitTimeRemaining)?.days : '0'} days
+                {stakeLimitTimeRemaining > 0
+                  ? stakeLimitTimeObject?.days
+                    ? stakeLimitTimeObject?.days === 1
+                      ? t('1 day')
+                      : t('%days% days', { days: stakeLimitTimeObject?.days })
+                    : t('< 1 day')
+                  : t('%days% days', { days: 0 })}
               </Text>
-              <TimerIcon ml="4px" color="primary" />
+              <span ref={stakeLimitTargetRef}>
+                <TimerIcon ml="4px" color="primary" />
+                {stakeLimitTooltipVisible && stakeLimitTooltip}
+              </span>
             </Flex>
           </Flex>
         </>
       ) : null}
       <Flex justifyContent="space-between" alignItems="center">
         <Text small>{t('Pool ends in')}:</Text>
-        <Flex>
+        <Flex alignItems="center">
           <Text color="textSubtle" small>
-            {poolTimeRemaining > 0 ? endTimeObject?.days : '0'} days
+            {poolTimeRemaining > 0
+              ? endTimeObject?.days
+                ? endTimeObject?.days === 1
+                  ? t('1 day')
+                  : t('%days% days', { days: endTimeObject?.days })
+                : t('< 1 day')
+              : t('%days% days', { days: 0 })}
           </Text>
-          <TimerIcon ml="4px" color="primary" />
+          <span ref={endTimeTargetRef}>
+            <TimerIcon ml="4px" color="primary" />
+            {endTimeTooltipVisible && endTimeTooltip}
+          </span>
         </Flex>
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
