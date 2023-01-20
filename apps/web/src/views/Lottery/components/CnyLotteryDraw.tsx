@@ -36,25 +36,25 @@ const Decorations = styled(Box)`
 
   & :nth-child(4) {
     top: 2%;
-    right: 30%;
+    right: 25%;
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
   }
 
   & :nth-child(5) {
     top: 32%;
-    right: 38%;
+    right: 33%;
     animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
   }
 
   & :nth-child(6) {
     top: 25%;
-    right: 20%;
+    right: 15%;
     animation: ${floatingStarsLeft} 2.5s ease-in-out infinite;
   }
 
   & :nth-child(7) {
     right: 30%;
-    bottom: 15%;
+    bottom: 10%;
     animation: ${floatingStarsRight} 6s ease-in-out infinite;
   }
 
@@ -113,24 +113,24 @@ const CnyLotteryDraw = () => {
         </WhiteText>
         <Flex flexDirection={['column', 'column', 'row']} alignItems="center" justifyContent="center" mb="12px">
           <WhiteText mr="4px">{t('Draw Date:')}</WhiteText>
-          <GoldText>27th Jan 2023, 12:00pm UTC</GoldText>
+          <GoldText>28th Jan, 12:00pm UTC</GoldText>
+        </Flex>
+        <Flex flexDirection={['column', 'column', 'row']} alignItems="center" justifyContent="center" mb="12px">
+          <WhiteText mr="4px">{t('Draw No:')}</WhiteText>
+          <GoldText>#792</GoldText>
         </Flex>
         <Flex flexDirection={['column', 'column', 'row']} alignItems="center" justifyContent="center" mb="12px">
           <WhiteText mr="4px" fontSize={['14px', '14px', '16px']}>
             {t('Tickets for this round start selling on:')}
           </WhiteText>
-          <GoldText>26th Jan 2023, 1:00pm UTC</GoldText>
-        </Flex>
-        <Flex flexDirection={['column', 'column', 'row']} alignItems="center" justifyContent="center" mb="12px">
-          <WhiteText mr="4px">{t('Draw No:')}</WhiteText>
-          <GoldText>#792</GoldText>
+          <GoldText>27th Jan, 12:00am UTC</GoldText>
         </Flex>
         <WhiteText textAlign="center" mb="20px">
           {t('Potential Prize Pot:')}
         </WhiteText>
         <GoldText textAlign="center">{t('Up to')}</GoldText>
         <GoldText fontSize="64px" textAlign="center">
-          $150,000
+          $96,000
         </GoldText>
         <GoldText textAlign="center">{t('In Prizes!')}</GoldText>
       </Flex>
