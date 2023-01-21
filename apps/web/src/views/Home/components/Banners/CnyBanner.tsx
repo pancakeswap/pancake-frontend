@@ -50,16 +50,24 @@ const RightWrapper = styled.div`
     }
   }
 `
-const Header = styled(S.StyledHeading)`
-  background: -webkit-linear-gradient(#ed6d42 0%, #8d1f0b 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  font-size: 20px;
-  padding: 20px;
+const Title = styled.div`
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 110%;
+  color: #ffffff;
+  text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
+  margin-bottom: 21px;
+
+  @media screen and (max-width: 375px) {
+    font-size: 21px;
+  }
+  ${({ theme }) => theme.mediaQueries.sm} {
+    font-size: 35px;
+  }
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 40px;
-    min-height: auto;
-    padding: 0px 20px;
   }
 `
 
@@ -69,14 +77,15 @@ const CnyBanner = () => {
   return (
     <S.Wrapper
       style={{
-        overflow: isMobile ? 'hidden' : 'visible',
+        marginTop: '0px',
+        padding: isMobile ? '2px 0' : '0',
         background: 'linear-gradient(180deg, #ED6D42 0%, #8D1F0B 100%)',
       }}
     >
       <S.Inner>
         <S.LeftWrapper>
           <S.StyledSubheading>{t('CNY Lottery Draw')}</S.StyledSubheading>
-          <Header width={['160px', '160px', 'auto']}>{t('Up to $96K in Prizes')}</Header>
+          <Title>{t('Up to $96K in Prizes')}</Title>
           <Link href="/lottery">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">

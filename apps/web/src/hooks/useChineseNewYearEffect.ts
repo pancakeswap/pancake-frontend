@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useParticleBurst } from '@pancakeswap/uikit'
+import { useParticleBurst, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 
 const disableWhenNotCNY = () => {
@@ -16,9 +16,11 @@ const disableWhenNotCNY = () => {
 
 const useChineseNewYearEffect = () => {
   const { pathname } = useRouter()
+  const { isMobile } = useMatchBreakpoints()
+
   const { initialize, teardown } = useParticleBurst({
     imgSrc: '/images/cny-asset/redpocket.png',
-    disableWhen: disableWhenNotCNY,
+    disableWhen: () => disableWhenNotCNY() || isMobile,
     debounceDuration: 1000,
   })
 
