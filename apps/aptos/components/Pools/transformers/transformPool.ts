@@ -16,6 +16,7 @@ import getTokenByAddress from '../utils/getTokenByAddress'
 import { getPoolApr } from './transformCakePool'
 
 function calcPendingRewardToken({
+  currentTimestamp,
   lastRewardTimestamp,
   totalStakedToken,
   userStakedAmount,
@@ -27,7 +28,7 @@ function calcPendingRewardToken({
   isFinished,
 }): FixedNumber {
   const pendingSeconds = Math.max(
-    isFinished ? endTime - lastRewardTimestamp : getSecondsLeftFromNow(lastRewardTimestamp),
+    isFinished ? endTime - lastRewardTimestamp : getSecondsLeftFromNow(lastRewardTimestamp, currentTimestamp),
     0,
   )
 
@@ -59,6 +60,7 @@ function calcPendingRewardToken({
 
 const transformPool = (
   resource: PoolResource,
+  currentTimestamp,
   balances,
   chainId,
   prices,
@@ -70,7 +72,7 @@ const transformPool = (
   | undefined => {
   const startTime = _toNumber(_get(resource, 'data.start_timestamp', '0'))
 
-  const startYet = getSecondsLeftFromNow(startTime)
+  const startYet = getSecondsLeftFromNow(startTime, currentTimestamp)
 
   if (!startYet) return undefined
 
@@ -78,7 +80,7 @@ const transformPool = (
 
   const hasRewardToken = _toNumber(_get(resource, 'data.total_reward_token.value', '0'))
 
-  const isFinished = getSecondsLeftFromNow(endTime) || !hasRewardToken
+  const isFinished = getSecondsLeftFromNow(endTime, currentTimestamp) || !hasRewardToken
 
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
@@ -114,6 +116,7 @@ const transformPool = (
         const precisionFactor = _get(resource, 'data.precision_factor')
 
         const pendingReward = calcPendingRewardToken({
+          currentTimestamp,
           currentRewardDebt,
           lastRewardTimestamp,
           totalStakedToken,

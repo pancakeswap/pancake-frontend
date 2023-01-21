@@ -1,9 +1,10 @@
 import { useAccountResources, useTableItem } from '@pancakeswap/awgmi'
+import { fetchLedgerInfo } from '@pancakeswap/awgmi/core'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import _toString from 'lodash/toString'
 
 import { SMARTCHEF_ADDRESS, SMARTCHEF_POOL_INFO_TYPE_TAG } from 'contracts/smartchef/constants'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect, useState } from 'react'
 import { useMasterChefResource } from 'state/farms/hook'
 import { FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
 import { getFarmConfig } from 'config/constants/farms'
@@ -27,6 +28,17 @@ export const usePoolsList = () => {
   useInterval(refresh, POOL_RESET_INTERVAL)
 
   const { account, chainId, networkName } = useActiveWeb3React()
+  const [currentTimestamp, setCurrentTimestamp] = useState<number>(Date.now())
+
+  useEffect(() => {
+    const fetchTimestamp = async () => {
+      // eslint-disable-next-line camelcase
+      const { ledger_timestamp } = await fetchLedgerInfo()
+      setCurrentTimestamp(Math.floor(parseInt(ledger_timestamp) / 1000))
+    }
+
+    fetchTimestamp()
+  }, [lastUpdated])
 
   const { data: pools } = useAccountResources({
     networkName,
@@ -55,7 +67,9 @@ export const usePoolsList = () => {
   return useMemo(() => {
     const syrupPools = pools
       ? pools
-          .map((pool, index) => transformPool(pool as PoolResource, balances, chainId, prices, index + 1))
+          .map((pool, index) =>
+            transformPool(pool as PoolResource, currentTimestamp, balances, chainId, prices, index + 1),
+          )
           .filter(Boolean)
           .sort((a, b) => Number(a?.sousId) - Number(b?.sousId))
       : []
