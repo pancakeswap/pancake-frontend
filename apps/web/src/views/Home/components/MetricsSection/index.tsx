@@ -57,7 +57,7 @@ const Stats = () => {
         {t('Will you join them?')}
       </Text>
 
-      <Flex flexDirection={['column', null, null, 'row']}>
+      <Flex maxWidth="100%" flexDirection={['column', null, null, 'row']}>
         <IconCard {...UsersCardData} mr={[null, null, null, '16px']} mb={['16px', null, null, '0']}>
           <StatCardContent
             headingText={t('%users% users', { users })}
