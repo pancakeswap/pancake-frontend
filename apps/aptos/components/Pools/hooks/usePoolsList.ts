@@ -1,14 +1,14 @@
 import { useAccountResources, useTableItem } from '@pancakeswap/awgmi'
-import { fetchLedgerInfo } from '@pancakeswap/awgmi/core'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import _toString from 'lodash/toString'
 
 import { SMARTCHEF_ADDRESS, SMARTCHEF_POOL_INFO_TYPE_TAG } from 'contracts/smartchef/constants'
-import { useCallback, useMemo, useEffect, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useMasterChefResource } from 'state/farms/hook'
 import { FARMS_USER_INFO, FARMS_USER_INFO_RESOURCE } from 'state/farms/constants'
 import { getFarmConfig } from 'config/constants/farms'
 import { PairState, usePairs } from 'hooks/usePairs'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { APT, L0_USDC } from 'config/coins'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { Coin, Pair, PAIR_LP_TYPE_TAG } from '@pancakeswap/aptos-swap-sdk'
@@ -28,17 +28,7 @@ export const usePoolsList = () => {
   useInterval(refresh, POOL_RESET_INTERVAL)
 
   const { account, chainId, networkName } = useActiveWeb3React()
-  const [currentTimestamp, setCurrentTimestamp] = useState<number>(Date.now())
-
-  useEffect(() => {
-    const fetchTimestamp = async () => {
-      // eslint-disable-next-line camelcase
-      const { ledger_timestamp } = await fetchLedgerInfo()
-      setCurrentTimestamp(Math.floor(parseInt(ledger_timestamp) / 1000))
-    }
-
-    fetchTimestamp()
-  }, [lastUpdated])
+  const getNow = useLedgerTimestamp()
 
   const { data: pools } = useAccountResources({
     networkName,
@@ -65,6 +55,7 @@ export const usePoolsList = () => {
   // const tranformCakePool = useCakePool({ balances, chainId })
 
   return useMemo(() => {
+    const currentTimestamp = getNow()
     const syrupPools = pools
       ? pools
           .map((pool, index) =>
