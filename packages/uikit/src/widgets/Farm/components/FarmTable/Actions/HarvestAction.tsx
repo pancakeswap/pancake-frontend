@@ -7,6 +7,7 @@ import { Balance } from "../../../../../components/Balance";
 import { Skeleton } from "../../../../../components/Skeleton";
 import { useTooltip } from "../../../../../hooks/useTooltip";
 import { ActionContainer, ActionContent, ActionTitles } from "./styles";
+import { FARMS_SMALL_AMOUNT_THRESHOLD } from "../../../constants";
 
 interface HarvestActionProps {
   earnings: BigNumber;
@@ -31,7 +32,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
 
   const toolTipBalance = !userDataReady ? (
     <Skeleton width={60} />
-  ) : earnings.isGreaterThan(new BigNumber(0.00001)) ? (
+  ) : earnings.isGreaterThan(FARMS_SMALL_AMOUNT_THRESHOLD) ? (
     earnings.toFixed(5, BigNumber.ROUND_DOWN)
   ) : (
     `< 0.00001`
