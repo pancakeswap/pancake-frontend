@@ -1,5 +1,6 @@
 import { Flex, LinkExternal, Pool, Text, TimerIcon, useTooltip } from '@pancakeswap/uikit'
 import { memo, useMemo } from 'react'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
@@ -44,6 +45,7 @@ const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipCo
 
 const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({ pool, showTotalStaked = true }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
 
   const {
     stakingToken,
@@ -58,7 +60,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
 
-  const currentDate = new Date().getTime() / 1000
+  const currentDate = getNow() / 1000
 
   const poolTimeRemaining = endBlock - currentDate
   const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentDate
