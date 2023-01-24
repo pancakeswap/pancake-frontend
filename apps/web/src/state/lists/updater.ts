@@ -6,7 +6,7 @@ import useWeb3Provider from 'hooks/useActiveWeb3React'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import useSWRImuutable from 'swr/immutable'
+import useSWRImmutable from 'swr/immutable'
 import { useActiveListUrls } from './hooks'
 import { useListState, useListStateReady, initialState } from './lists'
 
@@ -35,7 +35,7 @@ export default function Updater(): null {
   const fetchList = useFetchListCallback(dispatch)
 
   // whenever a list is not loaded and not loading, try again to load it
-  useSWRImuutable(isReady && ['first-fetch-token-list', lists], () => {
+  useSWRImmutable(isReady && ['first-fetch-token-list', lists], () => {
     Object.keys(lists).forEach((listUrl) => {
       const list = lists[listUrl]
       if (!list.current && !list.loadingRequestId && !list.error) {
@@ -44,7 +44,7 @@ export default function Updater(): null {
     })
   })
 
-  useSWRImuutable(
+  useSWRImmutable(
     includeListUpdater && isReady && listState !== initialState ? ['token-list'] : null,
     () => {
       Object.keys(lists).forEach((url) =>
