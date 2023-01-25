@@ -1876,6 +1876,7 @@
   "To enable farm yield boosters, you must follow the guide and migrate your current farming positions. However, for each farm, you will only need to migrate once.": "To enable farm yield boosters, you must follow the guide and migrate your current farming positions. However, for each farm, you will only need to migrate once.",
   "Select a Network": "Select a Network",
   "Requesting": "Requesting",
+  "Enter a percent": "Enter a percent",
   "Unwrap %amount% %wrap% to %native%": "Unwrap %amount% %wrap% to %native%",
   "Wrap %amount% %native% to %wrap%": "Wrap %amount% %native% to %wrap%",
   "%currency% Balance Low": "%currency% Balance Low",

@@ -275,3 +275,7 @@
 
 //   return <>Pool Item {tokenIdFromUrl}</>
 // }
+
+export default function PoolItem() {
+  return <h1>Pool Item</h1>
+}
