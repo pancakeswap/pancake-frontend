@@ -1,6 +1,6 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import { useAllCommonPairs, useAllCurrencyCombinations } from 'hooks/Trades'
+import { useAllCurrencyCombinations } from 'hooks/Trades'
 import { useMemo } from 'react'
 import { PoolState } from './types'
 
