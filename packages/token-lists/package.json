@@ -18,7 +18,7 @@
   "peerDependencies": {
     "@reduxjs/toolkit": "^1.9.1",
     "localforage": "^1.10.0",
-    "jotai": "^1.12.1",
+    "jotai": "^1.13.1",
     "react": "^18.2.0"
   },
   "devDependencies": {
