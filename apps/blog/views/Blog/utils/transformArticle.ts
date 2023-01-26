@@ -22,7 +22,7 @@ export const transformArticle = (article: ResponseArticleDataType): ArticleDataT
   return {
     id: article.id,
     title: article.attributes.title,
-    content: article.attributes.content,
+    content: article.attributes.content.replaceAll('/uploads', `${process.env.STRAPI_API_URL}/uploads`),
     createAt: article.attributes.createAt,
     publishedAt: article.attributes.publishedAt,
     locale: article.attributes.locale ?? '',
