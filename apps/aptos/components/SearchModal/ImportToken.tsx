@@ -1,14 +1,26 @@
 import { useState } from 'react'
 import { Token, Currency } from '@pancakeswap/aptos-swap-sdk'
-import { Button, Text, ErrorIcon, Flex, Message, Checkbox, Link, Tag, Grid, AutoColumn } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  ErrorIcon,
+  Flex,
+  Message,
+  Checkbox,
+  Link,
+  Tag,
+  Grid,
+  AutoColumn,
+  ListLogo,
+} from '@pancakeswap/uikit'
 import { getBlockExploreLink } from 'utils'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCombinedInactiveList } from 'state/lists/hooks'
-import { ListLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAddUserToken } from 'state/user'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { BAD_SRCS } from '../Logo/constants'
 
 interface ImportProps {
   tokens: Token[]
@@ -50,7 +62,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 variant="success"
                 outline
                 scale="sm"
-                startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                startIcon={list.logoURI && <ListLogo badSrcs={BAD_SRCS} logoURI={list.logoURI} size="12px" />}
               >
                 {t('via')} {list.name}
               </Tag>

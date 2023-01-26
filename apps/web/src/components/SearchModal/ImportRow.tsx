@@ -1,14 +1,14 @@
 import { CSSProperties } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
-import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints, Flex } from '@pancakeswap/uikit'
+import { Button, Text, CheckmarkCircleIcon, useMatchBreakpoints, Flex, ListLogo } from '@pancakeswap/uikit'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { AutoColumn } from 'components/Layout/Column'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
-import { ListLogo } from 'components/Logo'
 import { useCombinedInactiveList } from 'state/lists/hooks'
 import styled from 'styled-components'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
 import { useTranslation } from '@pancakeswap/localization'
+import { BAD_SRCS } from '../Logo/constants'
 
 const TokenSection = styled.div<{ dim?: boolean }>`
   padding: 4px 20px;
@@ -102,7 +102,7 @@ export default function ImportRow({
             <Text fontSize={isMobile ? '10px' : '14px'} mr="4px" color="textSubtle">
               {t('via')} {list.name}
             </Text>
-            <ListLogo logoURI={list.logoURI} size="12px" />
+            <ListLogo badSrcs={BAD_SRCS} logoURI={list.logoURI} size="12px" />
           </RowFixed>
         )}
       </AutoColumn>
