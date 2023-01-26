@@ -56,7 +56,7 @@ import {
 import { useWarningSwapModal } from 'components/SwapWarningModal'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import useSWRImuutable from 'swr/immutable'
+import useSWRImmutable from 'swr/immutable'
 import useBridgeInfo from 'components/Swap/hooks/useBridgeInfo'
 import { CommitButton } from '../components/CommitButton'
 
@@ -78,7 +78,7 @@ function useWarningImport(currencies: (Currency | undefined)[]) {
   const defaultTokens = useAllTokens()
   const { isWrongNetwork } = useActiveNetwork()
   const chainId = useActiveChainId()
-  const { data: loadedTokenList } = useSWRImuutable(['token-list'])
+  const { data: loadedTokenList } = useSWRImmutable(['token-list'])
   const urlLoadedTokens = useMemo(() => currencies.filter((c): c is Token => Boolean(c?.isToken)), [currencies])
   const isLoaded = !!loadedTokenList
   const importTokensNotInDefault = useMemo(() => {

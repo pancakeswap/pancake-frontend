@@ -1,6 +1,8 @@
 import { appearAnimation, useIsomorphicEffect, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useState } from 'react'
+import { ChainId } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import styled from 'styled-components'
 import SwiperCore, { Autoplay, EffectFade, Pagination } from 'swiper'
 import 'swiper/css'
@@ -92,6 +94,7 @@ const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   const bannerList = useMultipleBannerConfig()
   const { address: account } = useAccount()
   const { isDesktop, isTablet } = useMatchBreakpoints()
+  const { chainId } = useActiveChainId()
   const [swiperRef, setSwiperRef] = useState<SwiperCore>(null)
 
   useIsomorphicEffect(() => {
@@ -105,7 +108,7 @@ const MultipleBanner: React.FC<React.PropsWithChildren> = () => {
   }, [bannerList, swiperRef])
 
   return (
-    <BannerPlaceHolder walletConnected={Boolean(account)}>
+    <BannerPlaceHolder walletConnected={Boolean(account) && chainId === ChainId.BSC}>
       <StyledSwiper
         onSwiper={setSwiperRef}
         modules={[Autoplay, Pagination, EffectFade]}

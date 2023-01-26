@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
+import { Flex, Text, HelpIcon, useTooltip, Link } from '@pancakeswap/uikit'
 import { MultiplierProps } from '../Cells/Multiplier'
 
 const Containter = styled(Flex)`
@@ -45,7 +45,19 @@ const TotalStaked: React.FC<React.PropsWithChildren<MultiplierProps>> = ({ multi
       <Text my="24px">
         {t('For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.')}
       </Text>
-      <Text>{t('This amount is already included in all APR calculations for the farm.')}</Text>
+      <Text>
+        {t(
+          'We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.',
+        )}
+      </Text>
+      <Link
+        mt="8px"
+        display="inline"
+        href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd"
+        external
+      >
+        {t('Read more')}
+      </Link>
     </>
   )
   const { targetRef, tooltip, tooltipVisible } = useTooltip(tooltipContent, {

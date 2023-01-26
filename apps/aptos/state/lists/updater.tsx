@@ -3,7 +3,7 @@ import { acceptListUpdate, updateListVersion, useFetchListCallback } from '@panc
 import { UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
 import { useEffect } from 'react'
 import { useAllLists } from 'state/lists/hooks'
-import useSWRImuutable from 'swr/immutable'
+import useSWRImmutable from 'swr/immutable'
 import { useActiveListUrls } from './hooks'
 import { useListState, initialState, useListStateReady } from './index'
 
@@ -25,7 +25,7 @@ export default function Updater(): null {
   const fetchList = useFetchListCallback(dispatch)
 
   // whenever a list is not loaded and not loading, try again to load it
-  useSWRImuutable(isReady && ['first-fetch-token-list', lists], () => {
+  useSWRImmutable(isReady && ['first-fetch-token-list', lists], () => {
     Object.keys(lists).forEach((listUrl) => {
       const list = lists[listUrl]
       if (!list.current && !list.loadingRequestId && !list.error) {
@@ -34,7 +34,7 @@ export default function Updater(): null {
     })
   })
 
-  useSWRImuutable(
+  useSWRImmutable(
     isReady && listState !== initialState && ['token-list'],
     async () => {
       return Promise.all(

@@ -3,7 +3,7 @@ name: Test Config
 on:
   pull_request:
     paths:
-      - 'src/config/**'
+      - 'apps/web/src/config/**'
   push:
     branches:
       - master
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -44,4 +46,4 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run tests
-        run: yarn test:config --watchAll=false
+        run: yarn test:config

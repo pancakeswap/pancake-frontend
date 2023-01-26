@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import styled from "styled-components";
 import { variant as systemVariant, space } from "styled-system";
 import { WarningIcon, ErrorIcon, CheckmarkCircleFillIcon, InfoFilledIcon } from "../Svg";
@@ -58,8 +58,9 @@ const Message: React.FC<React.PropsWithChildren<MessageProps>> = ({
   ...props
 }) => {
   const Icon = Icons[variant];
+  const providerValue = useMemo(() => ({ variant }), [variant]);
   return (
-    <MessageContext.Provider value={{ variant }}>
+    <MessageContext.Provider value={providerValue}>
       <MessageContainer variant={variant} {...props}>
         <Flex>
           <Box mr="12px">{icon ?? <Icon color={variants[variant].borderColor} width="24px" />}</Box>

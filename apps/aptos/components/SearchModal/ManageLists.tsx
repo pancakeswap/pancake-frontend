@@ -13,6 +13,7 @@ import {
   Row,
   RowBetween,
   RowFixed,
+  ListLogo,
 } from '@pancakeswap/uikit'
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
@@ -33,8 +34,8 @@ import uriToHttp from '@pancakeswap/utils/uriToHttp'
 
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from 'state/lists/hooks'
 
-import { ListLogo } from '../Logo'
 import { CurrencyModalView } from './types'
+import { BAD_SRCS } from '../Logo/constants'
 
 function listVersionLabel(version: Version): string {
   return `v${version.major}.${version.minor}.${version.patch}`
@@ -125,7 +126,13 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
     >
       {tooltipVisible && tooltip}
       {list.logoURI ? (
-        <ListLogo size="40px" style={{ marginRight: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
+        <ListLogo
+          size="40px"
+          badSrcs={BAD_SRCS}
+          style={{ marginRight: '1rem' }}
+          logoURI={list.logoURI}
+          alt={`${list.name} list logo`}
+        />
       ) : (
         <div style={{ width: '24px', height: '24px', marginRight: '1rem' }} />
       )}
@@ -291,11 +298,11 @@ function ManageLists({
         ) : null}
       </AutoColumn>
       {tempList && (
-        <AutoColumn style={{ paddingTop: 0 }}>
+        <AutoColumn style={{ marginTop: 8 }}>
           <Card py="12px" px="20px">
             <RowBetween>
               <RowFixed>
-                {tempList.logoURI && <ListLogo logoURI={tempList.logoURI} size="40px" />}
+                {tempList.logoURI && <ListLogo badSrcs={BAD_SRCS} logoURI={tempList.logoURI} size="40px" />}
                 <AutoColumn gap="4px" style={{ marginLeft: '20px' }}>
                   <Text bold>{tempList.name}</Text>
                   <Text color="textSubtle" small textTransform="lowercase">

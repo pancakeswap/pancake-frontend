@@ -10,6 +10,7 @@ import {
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import { useCallback } from 'react'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
 import { ChainId } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
@@ -83,13 +84,16 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   const foundChain = chains.find((d) => d.id === multiChainId[chainName])
   const symbol = foundChain?.nativeCurrency?.symbol
   const router = useRouter()
+  const { switchNetworkAsync } = useSwitchNetwork()
   const switchNetwork = useCallback(
-    (chainPath: string) => {
+    (chianId: number) => {
+      const chainPath = multiChainPaths[chianId]
       if (activeIndex === 0) router.push(`/info${chainPath}`)
       if (activeIndex === 1) router.push(`/info${chainPath}/pairs`)
       if (activeIndex === 2) router.push(`/info${chainPath}/tokens`)
+      switchNetworkAsync(chianId)
     },
-    [router, activeIndex],
+    [router, activeIndex, switchNetworkAsync],
   )
 
   return (
@@ -114,7 +118,7 @@ export const NetworkSwitcher: React.FC<{ activeIndex: number }> = ({ activeIndex
   )
 }
 
-const NetworkSelect: React.FC<{ chainId: ChainId; switchNetwork: (chainPath: string) => void }> = ({
+const NetworkSelect: React.FC<{ chainId: ChainId; switchNetwork: (chainId: number) => void }> = ({
   switchNetwork,
   chainId,
 }) => {
@@ -131,7 +135,7 @@ const NetworkSelect: React.FC<{ chainId: ChainId; switchNetwork: (chainPath: str
           key={chain.id}
           style={{ justifyContent: 'flex-start' }}
           onClick={() => {
-            if (chain.id !== chainId) switchNetwork(multiChainPaths[chain.id])
+            if (chain.id !== chainId) switchNetwork(chain.id)
           }}
         >
           <ChainLogo chainId={chain.id} />

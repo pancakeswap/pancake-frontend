@@ -11,6 +11,7 @@ import {
   Tag,
   Grid,
   BscScanIcon,
+  ListLogo,
   useTooltip,
   HelpIcon,
 } from '@pancakeswap/uikit'
@@ -20,7 +21,6 @@ import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import useSWRImmutable from 'swr/immutable'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useCombinedInactiveList } from 'state/lists/hooks'
-import { ListLogo } from 'components/Logo'
 import { useTranslation } from '@pancakeswap/localization'
 import { chains } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -28,6 +28,7 @@ import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
+import { BAD_SRCS } from '../Logo/constants'
 
 interface ImportProps {
   tokens: Token[]
@@ -86,7 +87,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                   variant="success"
                   outline
                   scale="sm"
-                  startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
+                  startIcon={list.logoURI && <ListLogo badSrcs={BAD_SRCS} logoURI={list.logoURI} size="12px" />}
                 >
                   {t('via')} {list.name}
                 </Tag>

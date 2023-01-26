@@ -16,6 +16,8 @@ export const ITEMS_PER_INFO_TABLE_PAGE = 10
 
 // These tokens are either incorrectly priced or have some other issues that spoil the query data
 // None of them present any interest as they have almost 0 daily trade volume
+
+export const BSC_TOKEN_WHITELIST = []
 export const TOKEN_BLACKLIST = [
   // These ones are copied from v1 info
   '0x495c7f3a713870f68f8b418b355c085dfdc412c3',
@@ -42,3 +44,10 @@ export const TOKEN_BLACKLIST = [
 ]
 
 export const ETH_TOKEN_BLACKLIST = ['0x72b169ad8af6c4fb53056b6a2a85602ad6863864']
+export const ETH_TOKEN_WHITELIST = [
+  '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+  '0xdac17f958d2ee523a2206206994597c13d831ec7',
+  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+  '0x993864e43caa7f7f12953ad6feb1d1ca635b875f',
+]

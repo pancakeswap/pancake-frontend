@@ -7,7 +7,7 @@ export const types = {
   INFO: "info",
 };
 
-export type Types = typeof types[keyof typeof types];
+export type Types = (typeof types)[keyof typeof types];
 
 export interface ToastData {
   id: string;
