@@ -1,15 +1,18 @@
-import { Dispatch, SetStateAction } from 'react'
-import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'recharts'
-import useTheme from 'hooks/useTheme'
-import { LineChartLoader } from 'views/Info/components/ChartLoaders'
-import { PairDataTimeWindowEnum } from 'state/swap/types'
+import { useRef, useState, useEffect, Dispatch, SetStateAction, useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
+import { createChart, IChartApi, UTCTimestamp } from 'lightweight-charts'
+import { format } from 'date-fns'
+import { LineChartLoader } from 'components/ChartLoaders'
+import useTheme from 'hooks/useTheme'
+import { PairDataTimeWindowEnum } from 'state/swap/types'
+import { lightColors, darkColors } from '@pancakeswap/ui/tokens/colors'
 
-export type SwapLineChartProps = {
+export type SwapLineChartNewProps = {
   data: any[]
-  setHoverValue: Dispatch<SetStateAction<number | undefined>> // used for value on hover
-  setHoverDate: Dispatch<SetStateAction<string | undefined>> // used for label of value
+  setHoverValue?: Dispatch<SetStateAction<number | undefined>> // used for value on hover
+  setHoverDate?: Dispatch<SetStateAction<string | undefined>> // used for value label on hover
   isChangePositive: boolean
+  isChartExpanded: boolean
   timeWindow: PairDataTimeWindowEnum
 } & React.HTMLAttributes<HTMLDivElement>
 
@@ -19,89 +22,136 @@ const getChartColors = ({ isChangePositive }) => {
     : { gradient1: '#ED4B9E', gradient2: '#ED4B9E', stroke: '#ED4B9E ' }
 }
 
-const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, Intl.DateTimeFormatOptions> = {
-  [PairDataTimeWindowEnum.DAY]: {
-    hour: '2-digit',
-    minute: '2-digit',
-  },
-  [PairDataTimeWindowEnum.WEEK]: {
-    month: 'short',
-    day: '2-digit',
-  },
-  [PairDataTimeWindowEnum.MONTH]: {
-    month: 'short',
-    day: '2-digit',
-  },
-  [PairDataTimeWindowEnum.YEAR]: {
-    month: 'short',
-    day: '2-digit',
-  },
+const dateFormattingByTimewindow: Record<PairDataTimeWindowEnum, string> = {
+  [PairDataTimeWindowEnum.DAY]: 'h:mm a',
+  [PairDataTimeWindowEnum.WEEK]: 'MMM dd',
+  [PairDataTimeWindowEnum.MONTH]: 'MMM dd',
+  [PairDataTimeWindowEnum.YEAR]: 'MMM dd',
 }
 
-/**
- * Note: remember that it needs to be mounted inside the container with fixed height
- */
-const LineChart = ({ data, setHoverValue, setHoverDate, isChangePositive, timeWindow }: SwapLineChartProps) => {
+const SwapLineChart = ({
+  data,
+  setHoverValue,
+  setHoverDate,
+  isChangePositive,
+  isChartExpanded,
+  timeWindow,
+  ...rest
+}: SwapLineChartNewProps) => {
+  const { isDark } = useTheme()
+  const transformedData = useMemo(() => {
+    return (
+      data?.map(({ time, value }) => {
+        return { time: Math.floor(time.getTime() / 1000) as UTCTimestamp, value }
+      }) || []
+    )
+  }, [data])
   const {
     currentLanguage: { locale },
   } = useTranslation()
-  const { theme } = useTheme()
-  const colors = getChartColors({ isChangePositive })
-  const dateFormatting = dateFormattingByTimewindow[timeWindow]
+  const chartRef = useRef<HTMLDivElement>(null)
+  const colors = useMemo(() => {
+    return getChartColors({ isChangePositive })
+  }, [isChangePositive])
+  const [chartCreated, setChart] = useState<IChartApi | undefined>()
 
-  if (!data || data.length === 0) {
-    return <LineChartLoader />
-  }
+  useEffect(() => {
+    const handleResize = () => {
+      chart.applyOptions({ width: chartRef.current.clientWidth, height: chartRef.current.clientHeight })
+    }
+
+    const chart = createChart(chartRef.current, {
+      layout: {
+        background: { color: 'transparent' },
+        textColor: isDark ? darkColors.text : lightColors.text,
+      },
+      handleScale: false,
+      handleScroll: false,
+      width: chartRef.current.parentElement.clientWidth - 32,
+      height: chartRef.current.parentElement.clientHeight - 32,
+      rightPriceScale: {
+        scaleMargins: {
+          top: 0.1,
+          bottom: 0.1,
+        },
+        borderVisible: false,
+      },
+      timeScale: {
+        visible: true,
+        borderVisible: false,
+        secondsVisible: false,
+        tickMarkFormatter: (unixTime: number) => {
+          return format(unixTime * 1000, dateFormattingByTimewindow[timeWindow])
+        },
+      },
+      grid: {
+        horzLines: {
+          visible: false,
+        },
+        vertLines: {
+          visible: false,
+        },
+      },
+      crosshair: {
+        horzLine: {
+          visible: true,
+          labelVisible: true,
+        },
+        mode: 1,
+        vertLine: {
+          visible: true,
+          labelVisible: false,
+          style: 3,
+          width: 1,
+          color: isDark ? '#B8ADD2' : '#7A6EAA',
+        },
+      },
+    })
+    const newSeries = chart.addAreaSeries({
+      lineWidth: 2,
+      lineColor: colors.gradient1,
+      topColor: colors.gradient1,
+      bottomColor: isDark ? darkColors.backgroundDisabled : lightColors.backgroundDisabled,
+    })
+    setChart(chart)
+    newSeries.setData(transformedData)
+    chart.timeScale().fitContent()
+
+    chart.subscribeCrosshairMove((param) => {
+      if (newSeries && param && param.seriesPrices.size) {
+        const timestamp = param.time as number
+        const now = new Date(timestamp * 1000)
+        const time = `${now.toLocaleString(locale, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          timeZone: 'UTC',
+        })} (UTC)`
+        const parsed = param.seriesPrices.get(newSeries) as number | undefined
+        if (setHoverValue) setHoverValue(parsed)
+        if (setHoverDate) setHoverDate(time)
+      } else {
+        if (setHoverValue) setHoverValue(undefined)
+        if (setHoverDate) setHoverDate(undefined)
+      }
+    })
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      chart.remove()
+    }
+  }, [transformedData, isDark, colors, isChartExpanded, locale, timeWindow, setHoverDate, setHoverValue])
+
   return (
-    <ResponsiveContainer>
-      <AreaChart
-        data={data}
-        margin={{
-          top: 5,
-          right: 0,
-          left: 0,
-          bottom: 5,
-        }}
-        onMouseLeave={() => {
-          if (setHoverDate) setHoverDate(undefined)
-          if (setHoverValue) setHoverValue(undefined)
-        }}
-      >
-        <defs>
-          <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor={colors.gradient1} stopOpacity={0.34} />
-            <stop offset="100%" stopColor={colors.gradient2} stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <XAxis
-          dataKey="time"
-          axisLine={false}
-          tickLine={false}
-          tickFormatter={(time) => time.toLocaleString(locale, dateFormatting)}
-          minTickGap={8}
-        />
-        <YAxis dataKey="value" axisLine={false} tickLine={false} domain={['auto', 'auto']} hide />
-        <Tooltip
-          cursor={{ stroke: theme.colors.textDisabled }}
-          contentStyle={{ display: 'none' }}
-          formatter={(tooltipValue, name, props) => {
-            setHoverValue(props.payload.value)
-            setHoverDate(
-              props.payload.time.toLocaleString(locale, {
-                year: 'numeric',
-                month: 'short',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-              }),
-            )
-            return null
-          }}
-        />
-        <Area dataKey="value" type="linear" stroke={colors.stroke} fill="url(#gradient)" strokeWidth={2} />
-      </AreaChart>
-    </ResponsiveContainer>
+    <>
+      {!chartCreated && <LineChartLoader />}
+      <div ref={chartRef} id="swap-line-chart" {...rest} />
+    </>
   )
 }
 
-export default LineChart
+export default SwapLineChart

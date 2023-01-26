@@ -105,6 +105,7 @@ const BasicChart = ({
           setHoverValue={setHoverValue}
           setHoverDate={setHoverDate}
           isChangePositive={isChangePositive}
+          isChartExpanded={isChartExpanded}
           timeWindow={timeWindow}
         />
       </Box>

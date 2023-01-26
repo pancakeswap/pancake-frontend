@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area, Dot } from 'recharts'
 import useTheme from 'hooks/useTheme'
-import { LineChartLoader } from 'views/Info/components/ChartLoaders'
+import { LineChartLoader } from 'components/ChartLoaders'
 import { useTranslation } from '@pancakeswap/localization'
 import { useSWRContract, useSWRMulticall } from 'hooks/useSWRContract'
 import useSWRImmutable from 'swr/immutable'
