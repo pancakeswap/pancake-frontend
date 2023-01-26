@@ -9,12 +9,12 @@ import {
   Swap as SwapUI,
   useMatchBreakpoints,
   useModal,
+  AutoColumn,
 } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { AutoColumn } from 'components/Layout/Column'
 import { GELATO_NATIVE } from 'config/constants'
 import { LIMIT_ORDERS_DOCS_URL } from 'config/constants/exchange'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'

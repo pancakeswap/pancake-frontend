@@ -1,8 +1,9 @@
 import { useTranslation } from "@pancakeswap/localization";
+import { AutoColumn } from "@pancakeswap/uikit";
 import { useTheme } from "@pancakeswap/hooks";
 import { useState } from "react";
 import styled from "styled-components";
-import { AutoColumn, Flex, Link, Text, Checkbox, Button, Message, Box, RowBetween, RowFixed } from "../../components";
+import { Flex, Link, Text, Checkbox, Button, Message, Box, RowBetween, RowFixed } from "../../components";
 import { ListLogo } from "./ListLogo";
 
 interface ImportProps {

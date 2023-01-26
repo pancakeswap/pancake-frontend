@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { AutoRenewIcon, Button, QuestionHelper, Text } from '@pancakeswap/uikit'
-import { AutoColumn } from 'components/Layout/Column'
+import { AutoRenewIcon, Button, QuestionHelper, Text, AutoColumn } from '@pancakeswap/uikit'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { useState } from 'react'
 import { Field } from 'state/swap/actions'
