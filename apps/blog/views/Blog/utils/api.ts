@@ -1,4 +1,5 @@
 import qs from 'qs'
+import getConfig from 'next/config'
 
 /**
  * Get full Strapi URL from path
@@ -6,7 +7,8 @@ import qs from 'qs'
  * @returns {string} Full Strapi URL
  */
 export function getStrapiURL(path = '') {
-  return `${process.env.STRAPI_API_URL || 'http://localhost:1337'}${path}`
+  const { publicRuntimeConfig } = getConfig()
+  return `${publicRuntimeConfig.STRAPI_API_URL || 'http://localhost:1337'}${path}`
 }
 
 /**

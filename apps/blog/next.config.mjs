@@ -35,6 +35,9 @@ const nextConfig = {
       })),
     ]
   },
+  publicRuntimeConfig: {
+    STRAPI_API_URL: process.env.STRAPI_API_URL
+  }
 }
 
 export default withAxiom(withVanillaExtract(nextConfig))
