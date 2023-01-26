@@ -1,6 +1,5 @@
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useCallback } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { Field, typeInput, typeLeftRangeInput, typeRightRangeInput, typeStartPriceInput } from './actions'
 
 export const replaceURLParam = (search: string, param: string, newValue: string) => {
@@ -17,7 +16,6 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
   onStartPriceInput: (typedValue: string) => void
 } {
   const dispatch = useLocalDispatch()
-  const navigate = useNavigate()
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {
@@ -33,22 +31,21 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
     [dispatch, noLiquidity],
   )
 
-  const { search } = useLocation()
-
   const onLeftRangeInput = useCallback(
     (typedValue: string) => {
       dispatch(typeLeftRangeInput({ typedValue }))
-      navigate({ search: replaceURLParam(search, 'minPrice', typedValue) }, { replace: true })
+      // Philip TODO; Replace navigate with next
+      // navigate({ search: replaceURLParam(search, 'minPrice', typedValue) }, { replace: true })
     },
-    [dispatch, navigate, search],
+    [dispatch],
   )
 
   const onRightRangeInput = useCallback(
     (typedValue: string) => {
       dispatch(typeRightRangeInput({ typedValue }))
-      navigate({ search: replaceURLParam(search, 'maxPrice', typedValue) }, { replace: true })
+      // navigate({ search: replaceURLParam(search, 'maxPrice', typedValue) }, { replace: true })
     },
-    [dispatch, navigate, search],
+    [dispatch],
   )
 
   const onStartPriceInput = useCallback(

@@ -10,6 +10,8 @@ import orderBy from 'lodash/orderBy'
 import omitBy from 'lodash/omitBy'
 import isEmpty from 'lodash/isEmpty'
 import { useAccount } from 'wagmi'
+import { SendTransactionResult } from '@wagmi/core'
+
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
@@ -25,7 +27,7 @@ import { AppState, useAppDispatch } from '../index'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
 export function useTransactionAdder(): (
-  response: TransactionResponse,
+  response: TransactionResponse | SendTransactionResult,
   customData?: {
     summary?: string
     translatableSummary?: { text: string; data?: Record<string, string | number> }
