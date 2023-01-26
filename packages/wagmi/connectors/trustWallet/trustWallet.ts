@@ -155,6 +155,6 @@ export class TrustWalletConnector extends InjectedConnector {
   }
 
   async getProvider() {
-    return getTrustWalletProvider();
+    return getTrustWalletProvider()
   }
 }
