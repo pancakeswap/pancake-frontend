@@ -1,5 +1,6 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
+import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
 import { configureChains, createClient } from 'wagmi'
 import memoize from 'lodash/memoize'
@@ -109,6 +110,14 @@ const ledgerConnector = new LedgerConnector({
 
 export const bscConnector = new BinanceWalletConnector({ chains })
 
+export const trustWalletConnector = new TrustWalletConnector({
+  chains,
+  options: {
+    shimDisconnect: false,
+    shimChainChangedDisconnect: true,
+  },
+})
+
 export const client = createClient({
   autoConnect: false,
   provider,
@@ -121,6 +130,7 @@ export const client = createClient({
     bscConnector,
     bloctoConnector,
     ledgerConnector,
+    trustWalletConnector,
   ],
 })
 

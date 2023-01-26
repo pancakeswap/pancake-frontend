@@ -3,6 +3,7 @@ import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
 import { isFirefox } from 'react-device-detect'
 import WalletConnectProvider from '@walletconnect/ethereum-provider'
+import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { metaMaskConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 
 export enum ConnectorNames {
@@ -13,6 +14,7 @@ export enum ConnectorNames {
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
   Ledger = 'ledger',
+  TrustWallet = 'trustWallet',
 }
 
 const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
@@ -25,6 +27,22 @@ const createQrCode = (chainId: number, connect) => async () => {
   const { uri } = ((await walletConnectNoQrCodeConnector.getProvider()) as WalletConnectProvider).connector
 
   return uri
+}
+
+const isMetamaskInstalled = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  if (window.ethereum?.isMetaMask) {
+    return true
+  }
+
+  if (window.ethereum?.providers.some((p) => p.isMetaMask)) {
+    return true
+  }
+
+  return false
 }
 
 const walletsConfig = ({
@@ -40,7 +58,7 @@ const walletsConfig = ({
       id: 'metamask',
       title: 'Metamask',
       icon: '/images/wallets/metamask.png',
-      installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
+      installed: isMetamaskInstalled() && metaMaskConnector.ready,
       connectorId: ConnectorNames.MetaMask,
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
       qrCode,
@@ -71,14 +89,13 @@ const walletsConfig = ({
       id: 'trust',
       title: 'Trust Wallet',
       icon: '/images/wallets/trust.png',
-      connectorId: ConnectorNames.Injected,
-      installed:
-        typeof window !== 'undefined' &&
-        !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
-        (Boolean(window.ethereum?.isTrust) || Boolean((window.ethereum as ExtendEthereum)?.isTrustWallet)),
+      connectorId: ConnectorNames.TrustWallet,
+      installed: !!getTrustWalletProvider(),
       deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
-      downloadLink: {
-        desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
+      downloadLink: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph',
+      guide: {
+        desktop: 'https://trustwallet.com/browser-extension',
+        mobile: 'https://trustwallet.com/',
       },
       qrCode,
     },
