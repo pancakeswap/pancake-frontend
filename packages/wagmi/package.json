@@ -60,6 +60,11 @@
       "types": "./dist/connectors/blocto.d.ts",
       "import": "./dist/connectors/blocto.mjs",
       "require": "./dist/connectors/blocto.js"
+    },
+    "./connectors/trustWallet": {
+      "types": "./dist/connectors/trustWallet.d.ts",
+      "import": "./dist/connectors/trustWallet.mjs",
+      "require": "./dist/connectors/trustWallet.js"
     }
   },
   "peerDependenciesMeta": {

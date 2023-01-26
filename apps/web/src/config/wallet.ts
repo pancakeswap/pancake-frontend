@@ -1,7 +1,7 @@
 import { WalletConfigV2 } from '@pancakeswap/ui-wallets'
 import { WalletFilledIcon } from '@pancakeswap/uikit'
 import type { ExtendEthereum } from 'global'
-import { isFirefox } from 'react-device-detect'
+import { isAndroid, isFirefox } from 'react-device-detect'
 import WalletConnectProvider from '@walletconnect/ethereum-provider'
 import { metaMaskConnector, walletConnectNoQrCodeConnector } from '../utils/wagmi'
 
@@ -13,6 +13,7 @@ export enum ConnectorNames {
   Blocto = 'blocto',
   WalletLink = 'coinbaseWallet',
   Ledger = 'ledger',
+  TrustWallet = 'trustWallet',
 }
 
 const delay = (t: number) => new Promise((resolve) => setTimeout(resolve, t))
@@ -71,14 +72,49 @@ const walletsConfig = ({
       id: 'trust',
       title: 'Trust Wallet',
       icon: '/images/wallets/trust.png',
-      connectorId: ConnectorNames.Injected,
-      installed:
-        typeof window !== 'undefined' &&
-        !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
-        (Boolean(window.ethereum?.isTrust) || Boolean((window.ethereum as ExtendEthereum)?.isTrustWallet)),
+      connectorId: ConnectorNames.TrustWallet,
+      get installed() {
+        const isTrustWallet = (ethereum: NonNullable<Window['ethereum']>) => {
+          // Identify if Trust Wallet injected provider is present.
+          const trustWallet = !!ethereum.isTrust
+
+          return trustWallet
+        }
+
+        const injectedProviderExist = typeof window !== 'undefined' && typeof window.ethereum !== 'undefined'
+
+        // No injected providers exist.
+        if (!injectedProviderExist) {
+          return false
+        }
+
+        // Trust Wallet was injected into window.ethereum.
+        if (isTrustWallet(window.ethereum)) {
+          return true
+        }
+
+        // Trust Wallet provider might be replaced by another
+        // injected provider, check the providers array.
+        if (window.ethereum?.providers) {
+          return !!window.ethereum.providers.find(isTrustWallet)
+        }
+
+        // In some cases injected providers can replace window.ethereum
+        // without updating the providers array. In those instances the Trust Wallet
+        // can be installed and its provider instance can be retrieved by
+        // looking at the global `trustwallet` object.
+        return !!window.trustwallet
+      },
       deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
       downloadLink: {
-        desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
+        desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph',
+        mobile: isAndroid
+          ? 'https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp'
+          : 'https://apps.apple.com/us/app/trust-crypto-bitcoin-wallet/id1288339409',
+      },
+      guide: {
+        desktop: 'https://trustwallet.com/browser-extension',
+        mobile: 'https://trustwallet.com/',
       },
       qrCode,
     },

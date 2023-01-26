@@ -6,6 +6,7 @@ export default defineConfig({
     'connectors/miniProgram': 'connectors/miniProgram/index.ts',
     'connectors/binanceWallet': 'connectors/binanceWallet/index.ts',
     'connectors/blocto': 'connectors/blocto/index.ts',
+    'connectors/trustWallet': 'connectors/trustWallet/index.ts',
   },
   format: ['esm', 'cjs'],
   dts: true,
