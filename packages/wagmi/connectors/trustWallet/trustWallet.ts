@@ -63,7 +63,7 @@ export class TrustWalletConnector extends InjectedConnector {
       if (this.options?.shimDisconnect && !getClient().storage?.getItem(this.shimDisconnectKey)) {
         account = await this.getAccount().catch(() => null)
         const isConnected = !!account
-        if (isConnected)
+        if (isConnected) {
           // Attempt to show another prompt for selecting wallet if already connected
           try {
             await provider.request({
@@ -74,8 +74,11 @@ export class TrustWalletConnector extends InjectedConnector {
             account = await this.getAccount()
           } catch (error) {
             // Only bubble up error if user rejects request
-            if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error)
+            if (this.isUserRejectedRequestError(error)) {
+              throw new UserRejectedRequestError(error)
+            }
           }
+        }
       }
 
       if (!account) {
@@ -94,12 +97,20 @@ export class TrustWalletConnector extends InjectedConnector {
         unsupported = this.isChainUnsupported(id)
       }
 
-      if (this.options?.shimDisconnect) getClient().storage?.setItem(this.shimDisconnectKey, true)
+      if (this.options?.shimDisconnect) {
+        getClient().storage?.setItem(this.shimDisconnectKey, true)
+      }
 
       return { account, chain: { id, unsupported }, provider }
     } catch (error) {
-      if (this.isUserRejectedRequestError(error)) throw new UserRejectedRequestError(error)
-      if ((error as RpcError).code === -32002) throw new ResourceUnavailableError(error)
+      if (this.isUserRejectedRequestError(error)) {
+        throw new UserRejectedRequestError(error)
+      }
+
+      if ((error as RpcError).code === -32002) {
+        throw new ResourceUnavailableError(error)
+      }
+
       throw error
     }
   }
