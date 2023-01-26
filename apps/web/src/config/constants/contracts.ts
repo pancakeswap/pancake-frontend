@@ -164,10 +164,14 @@ export default {
   nftPositionManager: {
     56: '',
     97: '',
+    5: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+    1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
   },
   v3Factory: {
     56: '',
     97: '',
+    5: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
   },
   quoter: {
     56: '',

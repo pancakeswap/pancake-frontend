@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useMemo } from 'react'
-import { CallStateResult, useSingleContractMultipleData } from 'state/multicall/hooks'
+import { CallStateResult, useSingleCallResult, useSingleContractMultipleData } from 'state/multicall/hooks'
 import { PositionDetails } from './types'
 
 interface UseV3PositionsResults {
@@ -58,5 +58,47 @@ export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3P
   return {
     loading: position.loading,
     position: position.positions?.[0],
+  }
+}
+
+export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
+  const positionManager = useV3NFTPositionManagerContract()
+
+  const { loading: balanceLoading, result: balanceResult } = useSingleCallResult(positionManager, 'balanceOf', [
+    account ?? undefined,
+  ])
+
+  // we don't expect any account balance to ever exceed the bounds of max safe int
+  const accountBalance: number | undefined = balanceResult?.[0]?.toNumber()
+
+  const tokenIdsArgs = useMemo(() => {
+    if (accountBalance && account) {
+      const tokenRequests = []
+      for (let i = 0; i < accountBalance; i++) {
+        tokenRequests.push([account, i])
+      }
+      return tokenRequests
+    }
+    return []
+  }, [account, accountBalance])
+
+  const tokenIdResults = useSingleContractMultipleData(positionManager, 'tokenOfOwnerByIndex', tokenIdsArgs)
+  const someTokenIdsLoading = useMemo(() => tokenIdResults.some(({ loading }) => loading), [tokenIdResults])
+
+  const tokenIds = useMemo(() => {
+    if (account) {
+      return tokenIdResults
+        .map(({ result }) => result)
+        .filter((result): result is CallStateResult => !!result)
+        .map((result) => BigNumber.from(result[0]))
+    }
+    return []
+  }, [account, tokenIdResults])
+
+  const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(tokenIds)
+
+  return {
+    loading: someTokenIdsLoading || balanceLoading || positionsLoading,
+    positions,
   }
 }

@@ -348,6 +348,7 @@ export function useSingleCallResult(
   }, [contract, fragment, inputs])
 
   const result = useCallsData(calls, options)[0]
+
   const { cache } = useSWRConfig()
   const { chainId } = useActiveChainId()
 
