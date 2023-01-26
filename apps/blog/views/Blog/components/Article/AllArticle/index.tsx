@@ -169,7 +169,7 @@ const AllArticle = () => {
             </Flex>
           </StyledMobileTagContainer>
           {!isFetching && articles.length === 0 ? (
-            <Text fontSize={20} bold>
+            <Text bold fontSize={20} padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}>
               {t('No results found.')}
             </Text>
           ) : (
