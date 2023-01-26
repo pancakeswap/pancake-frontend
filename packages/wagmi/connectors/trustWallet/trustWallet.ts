@@ -19,6 +19,39 @@ const mappingNetwork: Record<number, string> = {
   97: 'bsc-testnet',
 }
 
+export function getTrustWalletProvider() {
+  const isTrustWallet = (ethereum: NonNullable<Window['ethereum']>) => {
+    // Identify if Trust Wallet injected provider is present.
+    const trustWallet = !!ethereum.isTrust
+
+    return trustWallet
+  }
+
+  const injectedProviderExist = typeof window !== 'undefined' && typeof window.ethereum !== 'undefined'
+
+  // No injected providers exist.
+  if (!injectedProviderExist) {
+    return
+  }
+
+  // Trust Wallet was injected into window.ethereum.
+  if (isTrustWallet(window.ethereum as NonNullable<Window['ethereum']>)) {
+    return window.ethereum
+  }
+
+  // Trust Wallet provider might be replaced by another
+  // injected provider, check the providers array.
+  if (window.ethereum?.providers) {
+    return window.ethereum.providers.find(isTrustWallet)
+  }
+
+  // In some cases injected providers can replace window.ethereum
+  // without updating the providers array. In those instances the Trust Wallet
+  // can be installed and its provider instance can be retrieved by
+  // looking at the global `trustwallet` object.
+  return window.trustwallet
+}
+
 export class TrustWalletConnector extends InjectedConnector {
   readonly id = 'trustWallet'
 
@@ -44,10 +77,24 @@ export class TrustWalletConnector extends InjectedConnector {
     })
   }
 
+  private handleFailedConnect(error: Error): never {
+    if (this.isUserRejectedRequestError(error)) {
+      throw new UserRejectedRequestError(error)
+    }
+
+    if ((error as RpcError).code === -32002) {
+      throw new ResourceUnavailableError(error)
+    }
+
+    throw error
+  }
+
   async connect({ chainId }: { chainId?: number } = {}) {
     try {
       const provider = await this.getProvider()
-      if (!provider) throw new ConnectorNotFoundError()
+      if (!provider) {
+        throw new ConnectorNotFoundError()
+      }
 
       if (provider.on) {
         provider.on('accountsChanged', this.onAccountsChanged)
@@ -103,48 +150,11 @@ export class TrustWalletConnector extends InjectedConnector {
 
       return { account, chain: { id, unsupported }, provider }
     } catch (error) {
-      if (this.isUserRejectedRequestError(error)) {
-        throw new UserRejectedRequestError(error)
-      }
-
-      if ((error as RpcError).code === -32002) {
-        throw new ResourceUnavailableError(error)
-      }
-
-      throw error
+      this.handleFailedConnect(error as Error)
     }
   }
 
   async getProvider() {
-    const isTrustWallet = (ethereum: NonNullable<Window['ethereum']>) => {
-      // Identify if Trust Wallet injected provider is present.
-      const trustWallet = !!ethereum.isTrust
-
-      return trustWallet
-    }
-
-    const injectedProviderExist = typeof window !== 'undefined' && typeof window.ethereum !== 'undefined'
-
-    // No injected providers exist.
-    if (!injectedProviderExist) {
-      return
-    }
-
-    // Trust Wallet was injected into window.ethereum.
-    if (isTrustWallet(window.ethereum as NonNullable<Window['ethereum']>)) {
-      return window.ethereum
-    }
-
-    // Trust Wallet provider might be replaced by another
-    // injected provider, check the providers array.
-    if (window.ethereum?.providers) {
-      return window.ethereum.providers.find(isTrustWallet)
-    }
-
-    // In some cases injected providers can replace window.ethereum
-    // without updating the providers array. In those instances the Trust Wallet
-    // can be installed and its provider instance can be retrieved by
-    // looking at the global `trustwallet` object.
-    return window.trustwallet
+    return getTrustWalletProvider();
   }
 }
