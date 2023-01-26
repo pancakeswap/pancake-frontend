@@ -29,6 +29,22 @@ const createQrCode = (chainId: number, connect) => async () => {
   return uri
 }
 
+const isMetamaskInstalled = () => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  if (window.ethereum?.isMetaMask) {
+    return true
+  }
+
+  if (window.ethereum?.providers.some((p) => p.isMetaMask)) {
+    return true
+  }
+
+  return false
+}
+
 const walletsConfig = ({
   chainId,
   connect,
@@ -42,7 +58,7 @@ const walletsConfig = ({
       id: 'metamask',
       title: 'Metamask',
       icon: '/images/wallets/metamask.png',
-      installed: typeof window !== 'undefined' && Boolean(window.ethereum?.isMetaMask) && metaMaskConnector.ready,
+      installed: isMetamaskInstalled() && metaMaskConnector.ready,
       connectorId: ConnectorNames.MetaMask,
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
       qrCode,
