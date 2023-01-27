@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "代理助推器合約中有 %amount% 個 CAKE。為了收割該數量，您應提取、儲值或收割其中一個助推的農場。",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "為了提供穩定的估計，每天都會在農場頁面上計算一次 APR 數字。如需即時 APR，請造訪",
   "Info Page": "資訊頁面",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "我們最近將倍數重新設定為 10 倍，然而，這只是視覺上的變化，並不會影響各個農場接收的 CAKE 量。",
   "Launch App": "啟動應用程式",
   "Sort Title A-Z": "按 A-Z 順序排列標題",
@@ -2104,7 +2105,7 @@
   "Potential Prize Pot:": "潛在獎池：",
   "In Prizes!": "獎金！",
   "CNY Lottery Draw": "CNY 彩券開獎",
-  "Up to $96K in Prizes": "獎金高達 $96K",
+  "Up to $150K in Prizes": "Up to $150K in Prizes",
   "%days% days": "%days% 天",
   "1 day": "1 天",
   "< 1 day": "< 1 天"
