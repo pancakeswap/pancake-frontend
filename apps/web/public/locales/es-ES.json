@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Hay una %amount% de CAKE en el contrato del potenciador proxy. Para cosechar esa cantidad debes retirar, depositar o cosechar una de las granjas potenciadas.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Para proporcionar estimaciones estables, las tasas APR se calculan una vez al día en la página de la granja. Para conocer la APR en tiempo real, visite la página",
   "Info Page": "Página informativa",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "Recientemente modificamos los multiplicadores por un factor de 10, pero se trata solo de un cambio visual que no afecta a la cantidad de CAKE que recibe cada granja.",
   "Launch App": "Lanzar la aplicación",
   "Sort Title A-Z": "Clasificar título de la A a la Z",
@@ -2104,7 +2105,7 @@
   "Potential Prize Pot:": "Potential Prize Pot:",
   "In Prizes!": "In Prizes!",
   "CNY Lottery Draw": "CNY Lottery Draw",
-  "Up to $96K in Prizes": "Up to $96K in Prizes",
+  "Up to $150K in Prizes": "Up to $150K in Prizes",
   "%days% days": "%days% days",
   "1 day": "1 day",
   "< 1 day": "< 1 day"
