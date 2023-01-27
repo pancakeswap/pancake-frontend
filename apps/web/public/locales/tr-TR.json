@@ -2074,7 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Vekil artış sözleşmesinde %amount% CAKE var. Bu miktarı hasat etmek için artırılmış farm'lardan birini çekmeli, yatırmalı veya hasat etmelisiniz.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "İstikrarlı tahminler sağlamak için farm sayfasında günde bir kez APR rakamları hesaplanır. Gerçek zamanlı APR için lütfen şu adresi ziyaret edin:",
   "Info Page": "Bilgi Sayfası",
-  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Minimum gerekli tutarın üzerinde taahhüt ederek %title% IFO'suna katıldı",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "Yakın zamanda çarpanları 10 katına çıkardık. Bu, yalnızca görsel bir değişikliktir ve her farm'ın aldığı CAKE miktarını etkilemez.",
   "Launch App": "Uygulamayı Başlat",
   "Sort Title A-Z": "Başlığı A'dan Z'ye Sırala",
@@ -2105,8 +2105,8 @@
   "Potential Prize Pot:": "Potansiyel Ödül Havuzu:",
   "In Prizes!": "Ödüllerde!",
   "CNY Lottery Draw": "CNY Çekilişi",
-  "Up to $150K in Prizes": "Up to $150K in Prizes",
-  "%days% days": "%days% days",
-  "1 day": "1 day",
-  "< 1 day": "< 1 day"
+  "Up to $150K in Prizes": "150.000 Dolara Varan Ödüller",
+  "%days% days": "%days% gün",
+  "1 day": "1 gün",
+  "< 1 day": "< 1 gün"
 }
