@@ -13,6 +13,9 @@ const PageMeta = ({ title, description, imgUrl }: PageMetaProps) => {
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imgUrl} />
+      <meta property="twitter:title" content={title} />
+      <meta property="twitter:description" content={description} />
+      <meta property="twitter:image" content={imgUrl} />
     </Head>
   )
 }
