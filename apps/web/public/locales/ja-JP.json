@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "プロキシブースタースマートコントラクトに%amount% CAKEあります。その額を収穫するには、強化ファームの1つを引き出すか、入金するか、収穫する必要があります。",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "安定した推定を提供するために、年率の数値はファームページで1日1回計算されています。リアルタイム年率については次のページをご覧ください:",
   "Info Page": "情報ページ",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "最近、マルチプライヤーを10倍にリベースしました。これはあくまでも視覚的な変更であるため、各ファームが受け取るCAKE数には影響しません。",
   "Launch App": "アプリを起動",
   "Sort Title A-Z": "A～Z順でタイトルを並べ替え",
@@ -2104,7 +2105,7 @@
   "Potential Prize Pot:": "予想賞金総額:",
   "In Prizes!": "の賞金を獲得！",
   "CNY Lottery Draw": "CNY宝くじ抽選",
-  "Up to $96K in Prizes": "賞金総額最大9.6万ドル",
+  "Up to $150K in Prizes": "Up to $150K in Prizes",
   "%days% days": "%days% days",
   "1 day": "1 day",
   "< 1 day": "< 1 day"
