@@ -83,7 +83,7 @@ export function useClientSideV3Trade<TTradeType extends TradeType>(
         // overwrite the current best if it's not defined or if this route is better
         if (tradeType === TradeType.EXACT_INPUT) {
           const aOut = CurrencyAmount.fromRawAmount(currencyOut, result.amountOut.toString())
-          if (currentBest.amountOut === null || JSBI.lessThan(currentBest.amountOut.quotient, amountOut.quotient)) {
+          if (currentBest.amountOut === null || JSBI.lessThan(currentBest.amountOut.quotient, aOut.quotient)) {
             return {
               bestRoute: routes[i],
               amountIn: amountSpecified,
@@ -92,7 +92,7 @@ export function useClientSideV3Trade<TTradeType extends TradeType>(
           }
         } else {
           const aIn = CurrencyAmount.fromRawAmount(currencyIn, result.amountIn.toString())
-          if (currentBest.amountIn === null || JSBI.greaterThan(currentBest.amountIn.quotient, amountIn.quotient)) {
+          if (currentBest.amountIn === null || JSBI.greaterThan(currentBest.amountIn.quotient, aIn.quotient)) {
             return {
               bestRoute: routes[i],
               amountIn: aIn,

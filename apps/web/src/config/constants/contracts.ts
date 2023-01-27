@@ -176,5 +176,7 @@ export default {
   quoter: {
     56: '',
     97: '',
+    5: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    1: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
   },
 }
