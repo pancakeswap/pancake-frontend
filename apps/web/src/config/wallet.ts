@@ -38,7 +38,7 @@ const isMetamaskInstalled = () => {
     return true
   }
 
-  if (window.ethereum?.providers.some((p) => p.isMetaMask)) {
+  if (window.ethereum?.providers?.some((p) => p.isMetaMask)) {
     return true
   }
 
