@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "ப்ராக்ஸி பூஸ்டர் ஒப்பந்தத்தில் %amount% CAKE உள்ளது. அந்தத் தொகையை அறுவடை செய்ய, பூஸ்ட் செய்த ஃபார்ம்களில் ஒன்றை நீங்கள் திரும்பப் பெற வேண்டும், டெபாசிட் செய்ய வேண்டும் அல்லது அறுவடை செய்ய வேண்டும்.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "நிலையான மதிப்பீடுகளை வழங்க, APR புள்ளிவிவரங்களானது ஃபார்ம் பக்கத்தில் ஒரு நாளைக்கு ஒரு முறை கணக்கிடப்படுகின்றன. நிகழ்நேர APRக்கு, தயவுசெய்து காணுங்கள்",
   "Info Page": "தகவல் பக்கம்",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.",
   "Launch App": "Launch App",
   "Sort Title A-Z": "Sort Title A-Z",
@@ -2104,7 +2105,7 @@
   "Potential Prize Pot:": "Potential Prize Pot:",
   "In Prizes!": "In Prizes!",
   "CNY Lottery Draw": "CNY Lottery Draw",
-  "Up to $96K in Prizes": "Up to $96K in Prizes",
+  "Up to $150K in Prizes": "Up to $150K in Prizes",
   "%days% days": "%days% days",
   "1 day": "1 day",
   "< 1 day": "< 1 day"
