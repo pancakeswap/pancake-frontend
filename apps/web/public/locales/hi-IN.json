@@ -2074,7 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "प्रॉक्सी बूस्टर कॉन्ट्रैक्ट में %amount% CAKE हैं। इस राशि को प्राप्त करने के लिए, आपको बूस्ट किए गए फ़ॉर्म को निकालना, जमा करना या प्राप्त करना चाहिए।",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "स्थिर अनुमान प्रदान करने के लिए, APR आंकड़ों की गणना फार्म पेज में प्रतिदिन एक बार की जाती है। रियल टाइम APR के लिए, कृपया यहां जाएं",
   "Info Page": "जानकारी पेज",
-  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
+  "Participated in the %title% IFO by committing above the minimum required amount": "न्यूनतम आवश्यक राशि से अधिक का कमिट करके %title% IFO में भागीदारी की",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "हमने 10 के फ़ैक्टर से मल्टीप्लायर को फिर से रीबेस किया है, यह केवल दिखने योग्य परिवर्तन है और इससे प्रत्येक फार्म को प्राप्त होने वाले CAKE की राशि प्रभावित नहीं होती है।",
   "Launch App": "ऐप लॉन्च करें",
   "Sort Title A-Z": "शीर्षक A-Z सॉर्ट करें",
@@ -2105,7 +2105,7 @@
   "Potential Prize Pot:": "संभावित प्राइज पॉट:",
   "In Prizes!": "पुरस्कारों में!",
   "CNY Lottery Draw": "CNY लॉटरी ड्रॉ",
-  "Up to $150K in Prizes": "Up to $150K in Prizes",
+  "Up to $150K in Prizes": "पुरस्कारों में $150K तक",
   "%days% days": "%days% दिन",
   "1 day": "1 दिन",
   "< 1 day": "< 1 दिन"
