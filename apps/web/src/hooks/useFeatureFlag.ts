@@ -1,9 +1,10 @@
 import { FLAG_FARM } from 'config/flag'
 import { Atom, useAtomValue } from 'jotai'
-import { atomWithStorage, createJSONStorage } from 'jotai/utils'
+import { createJSONStorage } from 'jotai/utils'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 
 const storage = { ...createJSONStorage(() => sessionStorage), delayInit: true }
-export const featureFarmApiAtom = atomWithStorage<typeof FLAG_FARM>(
+export const featureFarmApiAtom = atomWithStorageWithErrorCatch<typeof FLAG_FARM>(
   'feature-farm-api',
   FLAG_FARM,
   // @ts-ignore
