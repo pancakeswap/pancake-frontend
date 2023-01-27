@@ -63,12 +63,12 @@ const ArticlePage: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ f
   const { title, description, imgUrl } = fallback['/article']
 
   return (
-    <>
+    <div>
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
       <SWRConfig value={{ fallback }}>
         <SingleArticle />
       </SWRConfig>
-    </>
+    </div>
   )
 }
 
