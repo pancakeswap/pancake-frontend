@@ -2074,6 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Proxy-parannussopimuksessa on %amount% CAKEa. Tämän summan korjaamiseksi sinun tulisi nostaa, tallettaa tai korjata jokin parannetuista viljelmistä.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Vakaiden arvioiden antamiseksi APR-luvut lasketaan kerran päivässä viljelmäsivulla. Reaaliaikaisen APR:n löydät kohteesta",
   "Info Page": "Tietosivu",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "Olemme hiljattain sovittaneet kertoimet 10:n monikerralla, tämä on vain visuaalinen muutos, eikä se vaikuta kunkin viljelmän saaman CAKEn määrään.",
   "Launch App": "Käynnistä sovellus",
   "Sort Title A-Z": "Otsikon järjestys A–Z",
@@ -2104,7 +2105,7 @@
   "Potential Prize Pot:": "Potentiaalinen palkintopotti:",
   "In Prizes!": "Palkintoina!",
   "CNY Lottery Draw": "CNY-arvonta",
-  "Up to $96K in Prizes": "Jopa 96 tuhannen dollarin arvosta palkintoja",
+  "Up to $150K in Prizes": "Up to $150K in Prizes",
   "%days% days": "%days% päivää",
   "1 day": "1 päivä",
   "< 1 day": "< 1 päivä"
