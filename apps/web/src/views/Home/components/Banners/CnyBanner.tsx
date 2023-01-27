@@ -85,7 +85,7 @@ const CnyBanner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <S.StyledSubheading>{t('CNY Lottery Draw')}</S.StyledSubheading>
-          <Title>{t('Up to $96K in Prizes')}</Title>
+          <Title>{t('Up to $150K in Prizes')}</Title>
           <Link href="/lottery">
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
