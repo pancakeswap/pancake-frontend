@@ -130,7 +130,7 @@ const CnyLotteryDraw = () => {
         </WhiteText>
         <GoldText textAlign="center">{t('Up to')}</GoldText>
         <GoldText fontSize="64px" textAlign="center">
-          $96,000
+          $150,000
         </GoldText>
         <GoldText textAlign="center">{t('In Prizes!')}</GoldText>
       </Flex>
