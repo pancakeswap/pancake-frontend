@@ -8,6 +8,7 @@ import NextLink from 'next/link'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import SearchBar from 'views/Blog/components/SearchBar'
+import NoSSR from 'components/NoSSR'
 
 const StyledBackground = styled(Box)<{ isDark: boolean }>`
   position: relative;
@@ -37,33 +38,35 @@ const NewBlog = () => {
   const article = useMemo(() => articlesData?.[0], [articlesData])
 
   return (
-    <StyledBackground isDark={isDark}>
-      <Box maxWidth="1137px" margin="auto">
-        <Flex flexDirection={['column', 'column', 'column', 'row']}>
-          <Box>
-            <Text bold fontSize={['32px', '32px', '40px']}>
-              {t('Blog')}
-            </Text>
-            <Text bold mt="4px" mb={['20px', '20px', '35px']} color="textSubtle" fontSize={['14px', '14px', '16px']}>
-              {t('Latest News about PancakeSwap and more!')}
-            </Text>
-          </Box>
-          <SearchBar />
-        </Flex>
-        <NextLink
-          passHref
-          href={`/blog/article/${article?.id}`}
-          style={{ display: 'flex', maxWidth: '880px', margin: 'auto' }}
-        >
-          <BlogCard
-            width="100%"
-            imgHeight={['155px', '250px', '350px', '500px']}
-            article={article}
-            imgUrl={article?.imgUrl ?? ''}
-          />
-        </NextLink>
-      </Box>
-    </StyledBackground>
+    <NoSSR>
+      <StyledBackground isDark={isDark}>
+        <Box maxWidth="1137px" margin="auto">
+          <Flex flexDirection={['column', 'column', 'column', 'row']}>
+            <Box>
+              <Text bold fontSize={['32px', '32px', '40px']}>
+                {t('Blog')}
+              </Text>
+              <Text bold mt="4px" mb={['20px', '20px', '35px']} color="textSubtle" fontSize={['14px', '14px', '16px']}>
+                {t('Latest News about PancakeSwap and more!')}
+              </Text>
+            </Box>
+            <SearchBar />
+          </Flex>
+          <NextLink
+            passHref
+            href={`/blog/article/${article?.id}`}
+            style={{ display: 'flex', maxWidth: '880px', margin: 'auto' }}
+          >
+            <BlogCard
+              width="100%"
+              imgHeight={['155px', '250px', '350px', '500px']}
+              article={article}
+              imgUrl={article?.imgUrl ?? ''}
+            />
+          </NextLink>
+        </Box>
+      </StyledBackground>
+    </NoSSR>
   )
 }
 

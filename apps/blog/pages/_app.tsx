@@ -1,6 +1,5 @@
 import '@pancakeswap/ui/css/reset.css'
 import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
-import { useEffect, useState } from 'react'
 import { AppProps } from 'next/app'
 import Script from 'next/script'
 import { LanguageProvider } from '@pancakeswap/localization'
@@ -47,17 +46,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-function useIsMounted() {
-  const [isMounted, setIsMounted] = useState(false)
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  return isMounted
-}
-
 function MyApp({ Component, pageProps }: AppProps) {
-  const isMounted = useIsMounted()
   return (
     <>
       <Head>
@@ -85,12 +74,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             <ModalProvider>
               <ResetCSS />
               <GlobalStyle />
-              {isMounted && (
-                <>
-                  <Menu />
-                  <Component {...pageProps} />
-                </>
-              )}
+              <Menu />
+              <Component {...pageProps} />
             </ModalProvider>
           </LanguageProvider>
         </StyledThemeProvider>

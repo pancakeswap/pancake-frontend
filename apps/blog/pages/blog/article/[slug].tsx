@@ -8,16 +8,6 @@ import { getArticle, getSingleArticle } from 'views/Blog/hooks/getArticle'
 import PageMeta from 'components/PageMeta'
 
 export async function getStaticPaths() {
-  // When this is true (in preview environments) don't
-  // prerender any static pages
-  // (faster builds, but slower initial page load)
-  // if (process.env.SKIP_BUILD_STATIC_GENERATION === 'true') {
-  //   return {
-  //     paths: [],
-  //     fallback: 'blocking',
-  //   }
-  // }
-
   return {
     paths: [],
     fallback: 'blocking',

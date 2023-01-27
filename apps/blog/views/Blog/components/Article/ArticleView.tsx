@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTheme } from '@pancakeswap/hooks'
+import NoSSR from 'components/NoSSR'
 
 const StyledChoiceContainer = styled(Flex)`
   width: 100%;
@@ -74,9 +75,11 @@ const ArticleView: React.FC<React.PropsWithChildren<ArticleViewProps>> = ({ titl
           </Text>
         )}
       </StyledTitleContainer>
-      <StyledContainer isDark={isDark}>
-        <Container>{children}</Container>
-      </StyledContainer>
+      <NoSSR>
+        <StyledContainer isDark={isDark}>
+          <Container>{children}</Container>
+        </StyledContainer>
+      </NoSSR>
     </StyledChoiceContainer>
   )
 }
