@@ -10,8 +10,8 @@ const InputsContainer = styled.div<{ focused: boolean; isDuplicate: boolean }>`
   align-items: center;
   height: 36px;
   box-sizing: border-box;
-  border: 1px solid #d7caec;
-  background-color: #eeeaf4;
+  background-color: ${({ theme }) => theme.colors.input};
+  border: 1px solid ${({ theme }) => theme.colors.inputSecondary};
   border-radius: 16px;
   margin-bottom: 8px;
   ${({ isDuplicate }) =>
@@ -29,7 +29,6 @@ const InputsContainer = styled.div<{ focused: boolean; isDuplicate: boolean }>`
 `
 
 const DigitInput = styled.input`
-  color: ${({ theme }) => theme.colors.primaryDark};
   border: none;
   height: 32px;
   padding: 0 12px;
@@ -225,6 +224,7 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
+          color="textSubtle"
         />
         <DigitInput
           ref={digit2}
@@ -238,6 +238,7 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
+          color="textSubtle"
         />
         <DigitInput
           ref={digit3}
@@ -251,6 +252,7 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
+          color="textSubtle"
         />
         <DigitInput
           ref={digit4}
@@ -264,6 +266,7 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
+          color="textSubtle"
         />
         <DigitInput
           ref={digit5}
@@ -277,6 +280,7 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
+          color="textSubtle"
         />
         <DigitInput
           ref={digit6}
@@ -290,6 +294,7 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
+          color="textSubtle"
         />
       </InputsContainer>
     </>
