@@ -29,6 +29,7 @@ const InputsContainer = styled.div<{ focused: boolean; isDuplicate: boolean }>`
 `
 
 const DigitInput = styled.input`
+  color: ${({ theme }) => theme.colors.text};
   border: none;
   height: 32px;
   padding: 0 12px;
@@ -224,7 +225,6 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
-          color="textSubtle"
         />
         <DigitInput
           ref={digit2}
@@ -238,7 +238,6 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
-          color="textSubtle"
         />
         <DigitInput
           ref={digit3}
@@ -252,7 +251,6 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
-          color="textSubtle"
         />
         <DigitInput
           ref={digit4}
@@ -266,7 +264,6 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
-          color="textSubtle"
         />
         <DigitInput
           ref={digit5}
@@ -280,7 +277,6 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
-          color="textSubtle"
         />
         <DigitInput
           ref={digit6}
@@ -294,7 +290,6 @@ const TicketContainer: React.FC<
           onBlur={onBlurHandler}
           onPaste={onPasteHandler}
           inputMode="numeric"
-          color="textSubtle"
         />
       </InputsContainer>
     </>
