@@ -19,7 +19,8 @@ import { FarmKV } from './kv'
 
 const router = Router()
 
-const allowedOrigin = /[^\w](pancake\.run)|(localhost:3000)|(localhost:3002)|(pancakeswap.finance)|(pancakeswap.com)$/
+const allowedOrigin =
+  /^(?:[^\w](pancake\.run)|(localhost:3000)|(localhost:3002)|(pancakeswap.finance)|(pancakeswap.com))$/
 
 router.get('/price/cake', async (_, event) => {
   const cache = caches.default

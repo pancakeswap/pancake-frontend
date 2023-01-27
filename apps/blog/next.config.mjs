@@ -3,8 +3,6 @@ import { withAxiom } from 'next-axiom'
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
-const blocksPage = process.env.NODE_ENV === 'production' ? [] : []
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -28,11 +26,6 @@ const nextConfig = {
         destination: '/blog',
         permanent: false,
       },
-      ...blocksPage.map((p) => ({
-        source: p,
-        destination: '/404',
-        permanent: false,
-      })),
     ]
   },
 }

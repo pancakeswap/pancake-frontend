@@ -11,7 +11,7 @@ const FinishedRoundsBg = styled(Flex)<{ isDark: boolean }>`
   position: relative;
   width: 100%;
   flex-direction: column;
-  background: ${({ isDark }) => (isDark ? CNY_POTTERY_FINISHED_ROUNDS_BG : CNY_POTTERY_FINISHED_ROUNDS_BG)};
+  background: ${CNY_POTTERY_FINISHED_ROUNDS_BG};
 `
 
 const FinishedRoundsContainer = styled(Flex)`
