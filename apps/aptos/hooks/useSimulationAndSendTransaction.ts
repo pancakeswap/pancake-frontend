@@ -17,11 +17,14 @@ export default function useSimulationAndSendTransaction() {
       try {
         results = await simulateTransactionAsync({ payload })
       } catch (error) {
+        console.log(error)
         // ignore error
         if (simulateError) {
           simulateError(error)
         }
       }
+
+      console.log(results)
 
       let options
 
@@ -30,6 +33,15 @@ export default function useSimulationAndSendTransaction() {
         const gasUnitPrice = results[0].gas_unit_price
 
         options = { max_gas_amount: maxGasAmount, gas_unit_price: gasUnitPrice }
+      }
+
+      console.log(options)
+
+      if (Array.isArray(results)) {
+        return sendTransactionAsync({
+          payload: results[0].payload,
+          options,
+        })
       }
 
       return sendTransactionAsync({
