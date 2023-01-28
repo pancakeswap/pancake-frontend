@@ -30,7 +30,6 @@ export interface Ifo {
   token: Currency
   releaseTime: number
   articleUrl: string
-  campaignId: string
   tokenOfferingPrice: number
   description?: string
   twitterUrl?: string
