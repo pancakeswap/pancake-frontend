@@ -15,6 +15,7 @@ export const ifos: Ifo[] = [
       cakeToBurn: '$0',
       distributionRatio: 0.7,
     },
+    campaignId: '1',
     currency: mainnetTokens.cake,
     token: mainnetTokens.lzusdt,
     releaseTime: 1674921023,
