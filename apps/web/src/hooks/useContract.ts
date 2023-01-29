@@ -59,6 +59,7 @@ import {
   getNonBscVaultContract,
   getCrossFarmingProxyContract,
   getIfoCreditAddressContract,
+  getMMLinkedPoolContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -383,4 +384,10 @@ export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfP
     () => proxyContractAddress && getCrossFarmingProxyContract(proxyContractAddress, providerOrSigner, chainId),
     [proxyContractAddress, providerOrSigner, chainId],
   )
+}
+
+export const useMMLinkedPoolContract = () => {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useSigner()
+  return useMemo(() => getMMLinkedPoolContract(signer, chainId), [signer, chainId])
 }

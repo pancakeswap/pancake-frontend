@@ -1,12 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { BottomDrawer, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { BottomDrawer, Button, Flex, Modal, ModalV2, useMatchBreakpoints } from '@pancakeswap/uikit'
+import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { AppBody } from 'components/App'
-import { useContext, useCallback } from 'react'
+import { useCallback, useContext } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
-import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { useSignTypedData } from 'wagmi'
 
+import { useMMLinkedPoolContract } from 'hooks/useContract'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
@@ -14,8 +16,8 @@ import { useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import HotTokenList from './components/HotTokenList'
-import { SmartSwapForm } from './SmartSwap'
 import useWarningImport from './hooks/useWarningImport'
+import { SmartSwapForm } from './SmartSwap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 
@@ -25,6 +27,9 @@ export default function Swap() {
     useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
+  const signMMData = pretendToBeMMData()
+  const { data, isError, error, signTypedDataAsync } = useSignTypedData(signMMData)
+  const contract = useMMLinkedPoolContract()
 
   // swap state & price data
   const {
@@ -118,8 +123,72 @@ export default function Swap() {
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
+          <Button
+            style={{ width: 330, marginLeft: 40, marginTop: 20 }}
+            onClick={async () => {
+              // const nonce = (
+              //   await contract.getUserNonce(
+              //     '0x3148Ba523363d073dbffBB62b5C18C77F7A705e9',
+              //     '0x3148Ba523363d073dbffBB62b5C18C77F7A705e9',
+              //   )
+              // ).toString()
+              signTypedDataAsync().then((result) => {
+                console.log(result, 'result data')
+              })
+            }}
+          >
+            sign As MM
+          </Button>
+          <Button
+            style={{ width: 330, marginLeft: 40, marginTop: 20 }}
+            onClick={async () => {
+              const mmSinger = '0x3148Ba523363d073dbffBB62b5C18C77F7A705e9'
+              const quoteValue = pretendToBeMMData().value
+              const signature =
+                '0x96e27c9ea6ca1aa1c3d19f68d7a1c12895392302976d30935f766d2852131e4d70a0fd1122bd46105ce6a0ba7ba38f8dee794471a1adc90bd15dd6dce021eac31b'
+              const result = await contract.verifyQuoteSignature(mmSinger, quoteValue, signature)
+              console.log(result, 'verifyQuoteSignature')
+              contract.swap(mmSinger, quoteValue, signature)
+            }}
+          >
+            trade with MM
+          </Button>
         </Flex>
       </Flex>
     </Page>
   )
+}
+
+const pretendToBeMMData = () => {
+  const domain = {
+    name: 'PCS MM Pool',
+    version: '1',
+    chainId: 5, // GOERLI
+    verifyingContract: '0xf61F708e3f094fBD5db66CFc3E4367b3023D6Da2' as any,
+  }
+  const quoteType = {
+    Quote: [
+      { name: 'nonce', type: 'uint256' },
+      { name: 'user', type: 'address' },
+      { name: 'baseToken', type: 'address' },
+      { name: 'quoteToken', type: 'address' },
+      { name: 'baseTokenAmount', type: 'uint256' },
+      { name: 'quoteTokenAmount', type: 'uint256' },
+      { name: 'expiryTimestamp', type: 'uint256' },
+    ],
+  }
+  const quoteValue = {
+    nonce: '0',
+    user: '0x3148Ba523363d073dbffBB62b5C18C77F7A705e9',
+    baseToken: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+    quoteToken: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+    baseTokenAmount: '1000000000000000', // 0.01 WETH
+    quoteTokenAmount: '1000000', // 10 tUsdc
+    expiryTimestamp: '1673327860', // Tue Jan 10 2023 13:17:40 GMT+0800
+  }
+  return {
+    domain,
+    types: quoteType,
+    value: quoteValue,
+  }
 }
