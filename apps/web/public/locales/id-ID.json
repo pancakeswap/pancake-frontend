@@ -2074,7 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Ada %amount% CAKE dalam kontrak peningkat proksi. Agar Anda dapat memanen jumlah tersebut, Anda harus menarik, menyetor, atau memanen salah satu dari farm yang telah ditingkatkan.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Untuk menghasilkan perkiraan yang stabil, angka APR dihitung sekali sehari di halaman farm. Untuk mengetahui APR waktu nyata, silakan kunjungi",
   "Info Page": "Halaman Info",
-  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Berpartisipasi dalam IFO %title% dengan jumlah di atas kewajiban minimum",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "Baru-baru ini, kami telah mengubah dasar pengganda dengan faktor sebesar 10, ini hanyalah perubahan visual dan tidak memengaruhi jumlah CAKE yang diterima masing-masing farm.",
   "Launch App": "Jalankan Aplikasi",
   "Sort Title A-Z": "Urutkan Judul A–Z",
@@ -2105,8 +2105,8 @@
   "Potential Prize Pot:": "Potensi Pot Hadiah:",
   "In Prizes!": "Dalam Hadiah!",
   "CNY Lottery Draw": "Penarikan Lotre CNY",
-  "Up to $150K in Prizes": "Up to $150K in Prizes",
-  "%days% days": "%days% days",
-  "1 day": "1 day",
-  "< 1 day": "< 1 day"
+  "Up to $150K in Prizes": "Hadiah hingga $150 rb",
+  "%days% days": "%days% hari",
+  "1 day": "1 hari",
+  "< 1 day": "< 1 hari"
 }
