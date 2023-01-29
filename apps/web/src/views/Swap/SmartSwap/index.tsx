@@ -11,6 +11,7 @@ import {
   Skeleton,
   Swap as SwapUI,
   Text,
+  useModal,
 } from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -45,6 +46,8 @@ import useWarningImport from '../hooks/useWarningImport'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
+import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 
 export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
@@ -227,6 +230,8 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
 
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
 
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   return (
     <>
       <CurrencyInputHeader
@@ -350,6 +355,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
                 )
               }
               allowedSlippage={allowedSlippage}
+              onSlippageClick={onPresentSettingsModal}
             />
           )}
         </AutoColumn>

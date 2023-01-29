@@ -489,6 +489,7 @@ const SwapPage = () => {
               ) : null
             }
             allowedSlippage={allowedSlippage}
+            onSlippageClick={onPresentSettingsModal}
           />
           <AtomBox>
             <CommitButton
