@@ -13,17 +13,12 @@ const PoolRow: React.FC<
     pool: Pool.DeserializedPool<Coin>
   }>
 > = ({ account = '', initialActivity, pool }) => {
-  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
+  const { isLg, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const { stakingToken, totalStaked, earningToken } = pool
 
   return (
-    <Pool.ExpandRow
-      initialActivity={initialActivity}
-      panel={
-        <ActionPanel account={account} pool={pool} expanded breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }} />
-      }
-    >
+    <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <Pool.NameCell<Coin>
         pool={pool}
         tokenPairImage={

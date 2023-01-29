@@ -26,7 +26,7 @@ const StyledRow = styled.div`
 `
 
 const PoolRow: React.FC<React.PropsWithChildren<PoolRowProps>> = ({ pool, account }) => {
-  const { isXl, isXxl, isXs, isSm, isMd, isLg, isTablet, isDesktop } = useMatchBreakpoints()
+  const { isXl, isXxl, isLg, isTablet, isDesktop } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
@@ -52,14 +52,7 @@ const PoolRow: React.FC<React.PropsWithChildren<PoolRowProps>> = ({ pool, accoun
         {isLargerScreen && <TotalStakedCell pool={pool} totalCakeInVault={totalCakeInVault} cakeInVaults={BIG_ZERO} />}
         <Pool.ExpandActionCell expanded={expanded} isFullLayout={isTablet || isDesktop} />
       </StyledRow>
-      {shouldRenderActionPanel && (
-        <ActionPanel
-          account={account}
-          pool={pool}
-          expanded={expanded}
-          breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }}
-        />
-      )}
+      {shouldRenderActionPanel && <ActionPanel account={account} pool={pool} expanded={expanded} />}
     </>
   )
 }
