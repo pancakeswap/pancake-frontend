@@ -16,7 +16,7 @@ export const ifos: Ifo[] = [
       distributionRatio: 0.7,
     },
     currency: mainnetTokens.cake,
-    token: mainnetTokens.dai,
+    token: mainnetTokens.lzusdt,
     releaseTime: 1674921023,
     articleUrl:
       'https://pancakeswap.finance/voting/proposal/0x06598b682d9f33ec5ea0c2acf8eba13dea7c63fa08dd2c4dfd7bc7af16920d51',
