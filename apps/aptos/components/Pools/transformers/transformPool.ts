@@ -85,10 +85,10 @@ const transformPool = (
   const [stakingAddress, earningAddress] = splitTypeTag(resource.type)
 
   let userData = {
-    allowance: new BigNumber(0),
-    pendingReward: new BigNumber(0),
-    stakedBalance: new BigNumber(0),
-    stakingTokenBalance: new BigNumber(0),
+    allowance: BIG_ZERO,
+    pendingReward: BIG_ZERO,
+    stakedBalance: BIG_ZERO,
+    stakingTokenBalance: BIG_ZERO,
   }
 
   const totalStakedToken = _get(resource, 'data.total_staked_token.value', '0')

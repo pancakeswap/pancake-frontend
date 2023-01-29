@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
@@ -18,7 +19,7 @@ const VestingAvailableToClaim: React.FC<React.PropsWithChildren<VestingAvailable
   const { t } = useTranslation()
 
   const num = useMemo(() => {
-    const vestingaPercentage = new BigNumber(100).minus(percentage).div(100)
+    const vestingaPercentage = BIG_ONE_HUNDRED.minus(percentage).div(100)
     const total = new BigNumber(amountToReceive).times(vestingaPercentage)
     return getFullDisplayBalance(total, decimals, 2)
   }, [amountToReceive, percentage, decimals])

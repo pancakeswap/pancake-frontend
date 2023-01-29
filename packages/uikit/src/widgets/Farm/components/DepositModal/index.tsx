@@ -81,7 +81,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
   bCakeCalculatorSlot,
 }) => {
   const [val, setVal] = useState("");
-  const [valUSDPrice, setValUSDPrice] = useState(new BigNumber(0));
+  const [valUSDPrice, setValUSDPrice] = useState(BIG_ZERO);
   const [pendingTx, setPendingTx] = useState(false);
   const [showRoiCalculator, setShowRoiCalculator] = useState(false);
   const { t } = useTranslation();
@@ -118,7 +118,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
         const inputVal = e.currentTarget.value.replace(/,/g, ".");
         setVal(inputVal);
 
-        const USDPrice = inputVal === "" ? new BigNumber(0) : new BigNumber(inputVal).times(lpPrice);
+        const USDPrice = inputVal === "" ? BIG_ZERO : new BigNumber(inputVal).times(lpPrice);
         setValUSDPrice(USDPrice);
       }
     },
