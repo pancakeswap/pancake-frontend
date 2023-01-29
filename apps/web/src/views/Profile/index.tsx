@@ -1,4 +1,4 @@
-import { FC, useCallback } from 'react'
+import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import { isAddress } from 'utils'
 import { useAchievementsForAddress, useProfileForAddress } from 'state/profile/hooks'
@@ -24,7 +24,7 @@ const TabMenuWrapper = styled(Box)`
   }
 `
 
-const NftProfile: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
+const NftProfile: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   const accountAddress = useRouter().query.accountAddress as string
   const { t } = useTranslation()
 
@@ -100,7 +100,7 @@ const NftProfile: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   )
 }
 
-export const NftProfileLayout: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
+export const NftProfileLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   return <NftProfile>{children}</NftProfile>
 }
 

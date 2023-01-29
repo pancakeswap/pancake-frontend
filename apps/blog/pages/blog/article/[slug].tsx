@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import { SWRConfig } from 'swr'
 import { useRouter } from 'next/router'
 import { NotFound } from '@pancakeswap/uikit'
@@ -54,7 +53,7 @@ export const getStaticProps = async (context: any) => {
   }
 }
 
-const ArticlePage: FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
+const ArticlePage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
   const router = useRouter()
   if (!router.isFallback && !fallback?.['/article']?.title) {
     return <NotFound />

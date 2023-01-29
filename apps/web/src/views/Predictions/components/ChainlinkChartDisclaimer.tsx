@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import {
   ModalContainer,
   ModalBody,
@@ -26,7 +25,7 @@ const Ul = styled.ul`
   }
 `
 
-const ChartDisclaimer: FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
+const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss }) => {
   const [showDisclaimer, setShowDisclaimer] = useUserPredictionChainlinkChartDisclaimerShow()
   const { t } = useTranslation()
 
