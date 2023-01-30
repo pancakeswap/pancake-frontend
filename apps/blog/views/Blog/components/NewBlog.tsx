@@ -8,23 +8,23 @@ import NextLink from 'next/link'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
 import SearchBar from 'views/Blog/components/SearchBar'
+import NoSSR from 'components/NoSSR'
 
-const StyledBackground = styled(Box)<{ isDark: boolean }>`
+const StyledBackground = styled(Box)`
   position: relative;
   padding: 45px 16px 0 16px;
+`
 
-  &:before {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 90%;
-    background: ${({ isDark }) => (isDark ? NEW_BLOG_BG_DARK : NEW_BLOG_BG)};
-    border-bottom-left-radius: 50% 5%;
-    border-bottom-right-radius: 50% 5%;
-  }
+const StyledGradientBg = styled('div')<{ isDark: boolean }>`
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  background: ${({ isDark }) => (isDark ? NEW_BLOG_BG_DARK : NEW_BLOG_BG)};
+  border-bottom-left-radius: 50% 5%;
+  border-bottom-right-radius: 50% 5%;
 `
 
 const NEW_BLOG_BG = 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)'
@@ -37,7 +37,10 @@ const NewBlog = () => {
   const article = useMemo(() => articlesData?.[0], [articlesData])
 
   return (
-    <StyledBackground isDark={isDark}>
+    <StyledBackground>
+      <NoSSR>
+        <StyledGradientBg isDark={isDark} />
+      </NoSSR>
       <Box maxWidth="1137px" margin="auto">
         <Flex flexDirection={['column', 'column', 'column', 'row']}>
           <Box>

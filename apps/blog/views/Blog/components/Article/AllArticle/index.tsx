@@ -87,6 +87,8 @@ const AllArticle = () => {
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
 
+  const { data: categoriesData } = useSWR<Categories[]>('/categories')
+
   useEffect(() => {
     setCurrentPage(1)
   }, [query, selectedCategories, sortBy, languageOption])
@@ -97,7 +99,16 @@ const AllArticle = () => {
     }
   }, [router.isReady, router.query.search])
 
-  const { data: categoriesData } = useSWR<Categories[]>('/categories')
+  useEffect(() => {
+    if (router.isReady && router.query.category) {
+      const searchedTopic = categoriesData?.find(
+        (category) => category.name.toLowerCase() === (router.query.category as string).toLowerCase(),
+      )
+      if (searchedTopic) {
+        setSelectCategoriesSelected(searchedTopic.id)
+      }
+    }
+  }, [categoriesData, router.isReady, router.query.category])
 
   const { articlesData, isFetching } = useAllArticle({
     query,
@@ -169,7 +180,7 @@ const AllArticle = () => {
             </Flex>
           </StyledMobileTagContainer>
           {!isFetching && articles.length === 0 ? (
-            <Text fontSize={20} bold>
+            <Text bold fontSize={20} padding={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}>
               {t('No results found.')}
             </Text>
           ) : (

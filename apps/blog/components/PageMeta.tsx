@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import { NextSeo } from 'next-seo'
 
 interface PageMetaProps {
   title: string
@@ -8,12 +8,15 @@ interface PageMetaProps {
 
 const PageMeta = ({ title, description, imgUrl }: PageMetaProps) => {
   return (
-    <Head>
-      <title>{title}</title>
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={imgUrl} />
-    </Head>
+    <NextSeo
+      title={title}
+      description={description}
+      openGraph={{
+        title,
+        description,
+        images: [{ url: imgUrl }],
+      }}
+    />
   )
 }
 
