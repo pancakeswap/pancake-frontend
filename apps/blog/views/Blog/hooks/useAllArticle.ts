@@ -54,7 +54,7 @@ const useAllArticle = ({
           pagination: { ...result.meta.pagination },
         }
       } catch (error) {
-        console.log('Fetch All Article Error: ', error)
+        console.error('Fetch All Article Error: ', error)
         return {
           data: [],
           pagination: {
