@@ -53,10 +53,10 @@ const transformCakePool = ({
   })
 
   let userData = {
-    allowance: new BigNumber(0),
-    pendingReward: new BigNumber(0),
-    stakedBalance: new BigNumber(0),
-    stakingTokenBalance: new BigNumber(0),
+    allowance: BIG_ZERO,
+    pendingReward: BIG_ZERO,
+    stakedBalance: BIG_ZERO,
+    stakingTokenBalance: BIG_ZERO,
   }
 
   const foundStakingBalance = balances?.find(
