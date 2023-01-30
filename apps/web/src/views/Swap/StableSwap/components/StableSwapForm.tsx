@@ -12,6 +12,8 @@ import {
   Message,
   MessageText,
   Swap as SwapUI,
+  PencilIcon,
+  useModal,
 } from '@pancakeswap/uikit'
 import InfoTooltip from '@pancakeswap/uikit/src/components/Timeline/InfoTooltip'
 
@@ -41,6 +43,8 @@ import StableSwapCommitButton from './StableSwapCommitButton'
 import { useDerivedStableSwapInfo } from '../hooks/useDerivedStableSwapInfo'
 import useApproveCallbackFromStableTrade from '../hooks/useApproveCallbackFromStableTrade'
 import { StableConfigContext, useStableFarms } from '../hooks/useStableConfig'
+import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../../../components/Menu/GlobalSettings/types'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -210,6 +214,8 @@ export default function StableSwapForm() {
     }
   }, [hasAmount, refreshBlockNumber])
 
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   return (
     <>
       <CurrencyInputHeader
@@ -295,7 +301,12 @@ export default function StableSwapForm() {
               )}
             </RowBetween>
             <RowBetween align="center">
-              <Label>{t('Slippage Tolerance')}</Label>
+              <Label>
+                {t('Slippage Tolerance')}
+                <IconButton scale="sm" variant="text" onClick={onPresentSettingsModal}>
+                  <PencilIcon color="primary" width="10px" />
+                </IconButton>
+              </Label>
               <Text bold color="primary">
                 {allowedSlippage / 100}%
               </Text>
