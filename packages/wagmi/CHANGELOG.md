@@ -1,5 +1,11 @@
 # @pancakeswap/wagmi
 
+## 0.1.0
+
+### Minor Changes
+
+- 0205708b4: Add Trust Wallet Connector #5932
+
 ## 0.0.5
 
 ### Patch Changes
