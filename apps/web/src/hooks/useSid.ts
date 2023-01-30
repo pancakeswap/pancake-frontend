@@ -1,7 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import SID, { getSidAddress } from '@siddomains/sidjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useProvider } from 'wagmi'
 
 /**
@@ -74,4 +74,16 @@ export const useSid = () => {
   )
 
   return { getSidName, getSidAddr }
+}
+
+export const useSidName = (address) => {
+  const [name, setName] = useState(address)
+
+  const { getSidName } = useSid()
+
+  useEffect(() => {
+    getSidName(address).then(setName)
+  }, [address, getSidName])
+
+  return name
 }

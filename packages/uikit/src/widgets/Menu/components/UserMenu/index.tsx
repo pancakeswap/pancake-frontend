@@ -78,7 +78,16 @@ const UserMenu: React.FC<UserMenuProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [targetRef, setTargetRef] = useState<HTMLDivElement | null>(null);
   const [tooltipRef, setTooltipRef] = useState<HTMLDivElement | null>(null);
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 4)}` : null;
+
+  let accountEllipsis = null;
+
+  if (account) {
+    accountEllipsis =
+      account?.includes(".") && account?.length < 10
+        ? account
+        : `${account.substring(0, 2)}...${account.substring(account.length - 4)}`;
+  }
+
   const { styles, attributes, update } = usePopper(targetRef, tooltipRef, {
     strategy: "fixed",
     placement,
