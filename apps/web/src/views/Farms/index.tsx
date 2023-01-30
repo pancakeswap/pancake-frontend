@@ -3,7 +3,7 @@ import { LinkExternal, ModalV2 } from '@pancakeswap/uikit'
 import DisclaimerModal from 'components/DisclaimerModal'
 import { ConnectorNames, getDocLink } from 'config/wallet'
 import { ExtendEthereum } from 'global'
-import { FC, useState, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
 import Farms, { FarmsContext } from './Farms'
@@ -62,7 +62,7 @@ function BloctoWarning() {
   )
 }
 
-export const FarmsPageLayout: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
+export const FarmsPageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   return (
     <>
       <BloctoWarning />

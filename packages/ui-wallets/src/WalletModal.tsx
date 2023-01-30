@@ -17,7 +17,7 @@ import {
   WarningIcon,
 } from '@pancakeswap/uikit'
 import { atom, useAtom } from 'jotai'
-import { FC, lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
+import { lazy, PropsWithChildren, Suspense, useMemo, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { StepIntro } from './components/Intro'
 import {
@@ -42,7 +42,7 @@ type LinkOfDevice = string | DeviceLink
 export type WalletConfigV2<T = unknown> = {
   id: string
   title: string
-  icon: string | FC<React.PropsWithChildren<SvgProps>>
+  icon: string | React.FC<React.PropsWithChildren<SvgProps>>
   connectorId: T
   deepLink?: string
   installed?: boolean
