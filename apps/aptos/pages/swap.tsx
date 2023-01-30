@@ -345,9 +345,11 @@ const SwapPage = () => {
   )
 
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
-  const [onPresentSettingsModal] = useModal(
+  const [onPresentSettingsCustomDismissModal] = useModal(
     <SettingsModalWithCustomDismiss customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)} />,
   )
+
+  const [onPresentSettingsModal] = useModal(<SettingsModal />)
 
   const [onPresentConfirmModal] = useModal(
     trade && (
@@ -363,7 +365,7 @@ const SwapPage = () => {
         onConfirm={handleSwap}
         swapErrorMessage={swapErrorMessage}
         customOnDismiss={handleConfirmDismiss}
-        openSettingModal={onPresentSettingsModal}
+        openSettingModal={onPresentSettingsCustomDismissModal}
       />
     ),
     true,
