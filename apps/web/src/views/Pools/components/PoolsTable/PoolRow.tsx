@@ -17,7 +17,7 @@ import StakedCell from './Cells/StakedCell'
 export const VaultPoolRow: React.FC<
   React.PropsWithChildren<{ vaultKey: VaultKey; account: string; initialActivity?: boolean }>
 > = memo(({ vaultKey, account, initialActivity }) => {
-  const { isXs, isSm, isMd, isLg, isXl, isXxl } = useMatchBreakpoints()
+  const { isLg, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const isXLargerScreen = isXl || isXxl
   const pool = useDeserializedPoolByVaultKey(vaultKey)
@@ -30,12 +30,7 @@ export const VaultPoolRow: React.FC<
   }, [stakingToken.decimals, totalCakeInVault])
 
   return (
-    <Pool.ExpandRow
-      initialActivity={initialActivity}
-      panel={
-        <ActionPanel account={account} pool={pool} expanded breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }} />
-      }
-    >
+    <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />
       {isXLargerScreen && <AutoEarningsCell pool={pool} account={account} />}
       {isXLargerScreen ? <StakedCell pool={pool} account={account} /> : null}
@@ -56,7 +51,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
   account,
   initialActivity,
 }) => {
-  const { isXs, isSm, isMd, isLg, isXl, isXxl, isDesktop } = useMatchBreakpoints()
+  const { isLg, isXl, isXxl, isDesktop } = useMatchBreakpoints()
   const isLargerScreen = isLg || isXl || isXxl
   const { pool } = usePool(sousId)
   const { stakingToken, totalStaked } = pool
@@ -66,12 +61,7 @@ const PoolRow: React.FC<React.PropsWithChildren<{ sousId: number; account: strin
   }, [stakingToken.decimals, totalStaked])
 
   return (
-    <Pool.ExpandRow
-      initialActivity={initialActivity}
-      panel={
-        <ActionPanel account={account} pool={pool} expanded breakpoints={{ isXs, isSm, isMd, isLg, isXl, isXxl }} />
-      }
-    >
+    <Pool.ExpandRow initialActivity={initialActivity} panel={<ActionPanel account={account} pool={pool} expanded />}>
       <NameCell pool={pool} />
       <EarningsCell pool={pool} account={account} />
       {isLargerScreen && (
