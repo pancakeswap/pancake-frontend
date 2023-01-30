@@ -1,4 +1,4 @@
-import { BigintIsh, CurrencyAmount, Currency, JSBI, Percent } from '@pancakeswap/sdk'
+import { BigintIsh, CurrencyAmount, Currency, JSBI, Percent, ZERO, ONE_HUNDRED_PERCENT } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { getY } from './amm'
@@ -44,6 +44,14 @@ export function getSwapOutput({
     'Input currency or output currency does not match currencies of token balances.',
   )
 
+  // Exact output
+  if (JSBI.lessThan(amount.quotient, ZERO)) {
+    const x = ONE_HUNDRED_PERCENT.subtract(fee).invert().multiply(amount.quotient).quotient
+    const y = getY({ amplifier, balances, i, j, x })
+    const dy = JSBI.subtract(y, balances[j])
+    return CurrencyAmount.fromRawAmount(outputCurrency, dy)
+  }
+
   const y = getY({ amplifier, balances, i, j, x: amount.quotient })
   const dy = JSBI.subtract(balances[j], y)
   const feeAmount = fee.multiply(dy).quotient
@@ -52,4 +60,15 @@ export function getSwapOutput({
 
 export function getSwapOutputWithoutFee(params: Omit<GetSwapOutputParams, 'fee'>): CurrencyAmount<Currency> {
   return getSwapOutput({ ...params, fee: new Percent(0) })
+}
+
+export function getSwapInput({ amount, ...rest }: GetSwapOutputParams) {
+  return getSwapOutput({
+    ...rest,
+    amount: CurrencyAmount.fromRawAmount(amount.currency, JSBI.unaryMinus(amount.quotient)),
+  })
+}
+
+export function getSwapInputWithtouFee(params: Omit<GetSwapOutputParams, 'fee'>) {
+  return getSwapInput({ ...params, fee: new Percent(0) })
 }
