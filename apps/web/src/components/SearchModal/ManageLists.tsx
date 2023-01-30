@@ -1,5 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, CheckmarkIcon, CogIcon, Input, LinkExternal, Text, Toggle, useTooltip } from '@pancakeswap/uikit'
+import {
+  Button,
+  CheckmarkIcon,
+  CogIcon,
+  Input,
+  LinkExternal,
+  ListLogo,
+  Text,
+  Toggle,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
 import { BSC_URLS, ETH_URLS, UNSUPPORTED_LIST_URLS } from 'config/constants/lists'
@@ -22,8 +32,8 @@ import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } f
 
 import Column, { AutoColumn } from '../Layout/Column'
 import Row, { RowBetween, RowFixed } from '../Layout/Row'
-import { ListLogo } from '../Logo'
 import { CurrencyModalView } from './types'
+import { BAD_SRCS } from '../Logo/constants'
 
 function listVersionLabel(version: Version): string {
   return `v${version.major}.${version.minor}.${version.patch}`
@@ -114,7 +124,13 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
     >
       {tooltipVisible && tooltip}
       {list.logoURI ? (
-        <ListLogo size="40px" style={{ marginRight: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
+        <ListLogo
+          size="40px"
+          badSrcs={BAD_SRCS}
+          style={{ marginRight: '1rem' }}
+          logoURI={list.logoURI}
+          alt={`${list.name} list logo`}
+        />
       ) : (
         <div style={{ width: '24px', height: '24px', marginRight: '1rem' }} />
       )}
@@ -291,11 +307,11 @@ function ManageLists({
         ) : null}
       </AutoColumn>
       {tempList && (
-        <AutoColumn style={{ paddingTop: 0 }}>
+        <AutoColumn style={{ marginTop: 8 }}>
           <Card padding="12px 20px">
             <RowBetween>
               <RowFixed>
-                {tempList.logoURI && <ListLogo logoURI={tempList.logoURI} size="40px" />}
+                {tempList.logoURI && <ListLogo badSrcs={BAD_SRCS} logoURI={tempList.logoURI} size="40px" />}
                 <AutoColumn gap="4px" style={{ marginLeft: '20px' }}>
                   <Text bold>{tempList.name}</Text>
                   <Text color="textSubtle" small textTransform="lowercase">

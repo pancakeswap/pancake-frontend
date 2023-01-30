@@ -32,7 +32,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
   decimals,
 }) => {
   const [val, setVal] = useState("");
-  const [valUSDPrice, setValUSDPrice] = useState(new BigNumber(0));
+  const [valUSDPrice, setValUSDPrice] = useState(BIG_ZERO);
   const [pendingTx, setPendingTx] = useState(false);
   const { t } = useTranslation();
   const fullBalance = useMemo(() => {
@@ -48,7 +48,7 @@ const WithdrawModal: React.FC<React.PropsWithChildren<WithdrawModalProps>> = ({
         const inputVal = e.currentTarget.value.replace(/,/g, ".");
         setVal(inputVal);
 
-        const USDPrice = inputVal === "" ? new BigNumber(0) : new BigNumber(inputVal).times(lpPrice);
+        const USDPrice = inputVal === "" ? BIG_ZERO : new BigNumber(inputVal).times(lpPrice);
         setValUSDPrice(USDPrice);
       }
     },

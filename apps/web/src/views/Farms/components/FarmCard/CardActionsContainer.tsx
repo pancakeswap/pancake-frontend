@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Skeleton, Text } from '@pancakeswap/uikit'
-import BigNumber from 'bignumber.js'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useContext } from 'react'
 import styled from 'styled-components'
@@ -97,7 +97,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           userBalanceInFarm={
             (stakedBalance.plus(tokenBalance).gt(0)
               ? stakedBalance.plus(tokenBalance)
-              : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? new BigNumber(0)
+              : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
           }
         />
       )}

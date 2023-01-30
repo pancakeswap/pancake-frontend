@@ -10,6 +10,8 @@ import {
   QuestionHelper,
   TooltipText,
   useTooltip,
+  IconButton,
+  PencilIcon,
 } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useTranslation } from '@pancakeswap/localization'
@@ -49,6 +51,8 @@ import { useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
 import { useDerivedLPInfo } from './hooks/useDerivedLPInfo'
 import { FormattedSlippage } from './components'
 import { warningSeverity } from './utils/slippage'
+import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 
 export default function AddStableLiquidity({ currencyA, currencyB }) {
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
@@ -277,6 +281,8 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     chainId && ((currencyA && currencyA.equals(WNATIVE[chainId])) || (currencyB && currencyB.equals(WNATIVE[chainId]))),
   )
 
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   return (
     <Page>
       <AppBody>
@@ -396,6 +402,9 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
               <RowBetween>
                 <Text bold fontSize="12px" color="secondary">
                   {t('Slippage Tolerance')}
+                  <IconButton scale="sm" variant="text" onClick={onPresentSettingsModal}>
+                    <PencilIcon color="primary" width="10px" />
+                  </IconButton>
                 </Text>
                 <Text bold color="primary">
                   {allowedSlippage / 100}%

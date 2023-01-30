@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Card, Farm as FarmUI, Flex, Skeleton, Text, ExpandableSectionButton } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { multiChainPaths } from 'state/info/constant'
@@ -120,7 +121,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                       userBalanceInFarm={
                         (stakedBalance.plus(tokenBalance).gt(0)
                           ? stakedBalance?.plus(tokenBalance)
-                          : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? new BigNumber(0)
+                          : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
                       }
                     />
                   ) : null}

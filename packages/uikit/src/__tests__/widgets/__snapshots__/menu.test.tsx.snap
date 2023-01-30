@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1
 
 exports[`renders correctly 1`] = `
 <DocumentFragment>
@@ -997,7 +997,7 @@ exports[`renders correctly 1`] = `
 }
 
 <div
-    class="c0 reset__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc1yo sprinkles_minHeight_100vh_md__pkzlfc1zq"
+    class="c0 reset_base__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc1yo sprinkles_minHeight_100vh_md__pkzlfc1zq"
   >
     <div
       class="c1"
@@ -1078,7 +1078,7 @@ exports[`renders correctly 1`] = `
             </a>
           </div>
           <div
-            class="reset__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_md__pkzlfc2"
+            class="reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_md__pkzlfc2"
           >
             <div
               class="c7 c3"
@@ -1378,7 +1378,7 @@ exports[`renders correctly 1`] = `
           height="100%"
         >
           <div
-            class="reset__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfc12i sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
+            class="reset_base__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfc12i sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
           >
             <a
               class="c26"
@@ -1620,10 +1620,10 @@ exports[`renders correctly 1`] = `
       overflow="hidden"
     >
       <div
-        class="c39 c3 c40 reset__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
+        class="c39 c3 c40 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
       >
         <div
-          class="c41 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c41 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c6"
@@ -1638,7 +1638,7 @@ exports[`renders correctly 1`] = `
           </svg>
         </div>
         <div
-          class="c42 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c42 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c6"
@@ -1686,10 +1686,10 @@ exports[`renders correctly 1`] = `
         </div>
       </div>
       <div
-        class="c39 c3 c49 reset__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
+        class="c39 c3 c49 reset_base__1c7dnup0 sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_sm__pkzlfc1"
       >
         <div
-          class="c41 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c41 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c6"
@@ -1704,7 +1704,7 @@ exports[`renders correctly 1`] = `
           </svg>
         </div>
         <div
-          class="c42 reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+          class="c42 reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
         >
           <svg
             class="c6"
@@ -4341,7 +4341,7 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
 }
 
 <div
-    class="reset__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
+    class="reset_base__1c7dnup0 sprinkles_display_block_xs__pkzlfc0 sprinkles_display_none_md__pkzlfc12"
   >
     <div
       class="c0 c1 c2"

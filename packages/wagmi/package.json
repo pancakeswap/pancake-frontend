@@ -1,6 +1,6 @@
 {
   "name": "@pancakeswap/wagmi",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "license": "WAGMIT",
   "description": "wagmi adaptor for pancakeswap",
   "main": "./dist/index.js",
@@ -18,7 +18,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
-    "swr": "^2.0.0",
+    "swr": "^2.0.1",
     "wagmi": "^0.10.10",
     "@wagmi/core": "^0.8.14",
     "@blocto/sdk": "^0.3.1",
@@ -60,6 +60,11 @@
       "types": "./dist/connectors/blocto.d.ts",
       "import": "./dist/connectors/blocto.mjs",
       "require": "./dist/connectors/blocto.js"
+    },
+    "./connectors/trustWallet": {
+      "types": "./dist/connectors/trustWallet.d.ts",
+      "import": "./dist/connectors/trustWallet.mjs",
+      "require": "./dist/connectors/trustWallet.js"
     }
   },
   "peerDependenciesMeta": {

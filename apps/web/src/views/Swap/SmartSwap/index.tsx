@@ -11,6 +11,7 @@ import {
   Skeleton,
   Swap as SwapUI,
   Text,
+  useModal,
 } from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -45,8 +46,12 @@ import useWarningImport from '../hooks/useWarningImport'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
+import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 
-export function SmartSwapForm() {
+export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
+  handleOutputSelect,
+}) => {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
@@ -188,21 +193,6 @@ export function SmartSwapForm() {
     }
   }, [maxAmountInput, onUserInput])
 
-  const handleOutputSelect = useCallback(
-    (newCurrencyOutput) => {
-      onCurrencySelection(Field.OUTPUT, newCurrencyOutput)
-      warningSwapHandler(newCurrencyOutput)
-
-      const newCurrencyOutputId = currencyId(newCurrencyOutput)
-      if (newCurrencyOutputId === inputCurrencyId) {
-        replaceBrowserHistory('inputCurrency', outputCurrencyId)
-      }
-      replaceBrowserHistory('outputCurrency', newCurrencyOutputId)
-    },
-
-    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
-  )
-
   const handlePercentInput = useCallback(
     (percent) => {
       if (maxAmountInput) {
@@ -239,6 +229,8 @@ export function SmartSwapForm() {
   const onUseSmartRouterChecked = useCallback(() => setAllowUseSmartRouter(!allowUseSmartRouter), [allowUseSmartRouter])
 
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
+
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
   return (
     <>
@@ -363,6 +355,7 @@ export function SmartSwapForm() {
                 )
               }
               allowedSlippage={allowedSlippage}
+              onSlippageClick={onPresentSettingsModal}
             />
           )}
         </AutoColumn>

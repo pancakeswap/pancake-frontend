@@ -3,13 +3,14 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-unresolved */
 import { render as rtlRender } from '@testing-library/react'
-import Provider from 'Providers'
-import { WagmiConfig } from 'wagmi'
 import noop from 'lodash/noop'
-import { initializeStore, makeStore } from 'state'
 import { RouterContext } from 'next/dist/shared/lib/router-context'
 import { NextRouter } from 'next/router'
+import Provider from 'Providers'
+import { initializeStore, makeStore } from 'state'
 import { SWRConfig } from 'swr'
+import { vi } from 'vitest'
+import { WagmiConfig } from 'wagmi'
 import { client } from './utils/wagmi'
 
 const mockRouter: NextRouter = {
@@ -19,16 +20,16 @@ const mockRouter: NextRouter = {
   asPath: '/',
   forward: noop,
   query: {},
-  push: jest.fn(),
-  replace: jest.fn(),
-  reload: jest.fn(),
-  back: jest.fn(),
-  prefetch: jest.fn(),
-  beforePopState: jest.fn(),
+  push: vi.fn(),
+  replace: vi.fn(),
+  reload: vi.fn(),
+  back: vi.fn(),
+  prefetch: vi.fn(),
+  beforePopState: vi.fn(),
   events: {
-    on: jest.fn(),
-    off: jest.fn(),
-    emit: jest.fn(),
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn(),
   },
   isFallback: false,
   isLocaleDomain: false,

@@ -1,5 +1,4 @@
 import { Flex, Skeleton, Text, FlexGap, FlexGapProps } from '@pancakeswap/uikit'
-import { FC } from 'react'
 import styled from 'styled-components'
 import { formatAmount, formatAmountNotation } from 'utils/formatInfoNumbers'
 
@@ -25,7 +24,7 @@ const TextLabel = styled(Text)`
   }
 `
 
-const PairPriceDisplay: FC<React.PropsWithChildren<TokenDisplayProps>> = ({
+const PairPriceDisplay: React.FC<React.PropsWithChildren<TokenDisplayProps>> = ({
   value,
   inputSymbol,
   outputSymbol,

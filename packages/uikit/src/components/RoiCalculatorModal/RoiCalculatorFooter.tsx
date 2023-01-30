@@ -3,7 +3,7 @@ import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { useMemo, useState } from "react";
 import styled from "styled-components";
 
-import BigNumber from "bignumber.js";
+import { BIG_ONE_HUNDRED } from "@pancakeswap/utils/bigNumber";
 import { useTooltip } from "../../hooks/useTooltip";
 import { Box, Flex, Grid } from "../Box";
 import { ExpandableLabel } from "../Button";
@@ -73,21 +73,45 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
     tooltipVisible: multiplierTooltipVisible,
   } = useTooltip(
     <>
-      <Text>
-        {rewardCakePerSecond
-          ? t(
+      {rewardCakePerSecond ? (
+        <>
+          <Text>
+            {t(
               "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each second."
-            )
-          : t(
+            )}
+          </Text>
+          <Text my="24px">
+            {" "}
+            {t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")}
+          </Text>
+          <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
+        </>
+      ) : (
+        <>
+          <Text>
+            {t(
               "The Multiplier represents the proportion of CAKE rewards each farm receives, as a proportion of the CAKE produced each block."
             )}
-      </Text>
-      <Text my="24px">
-        {rewardCakePerSecond
-          ? t("For example, if a 1x farm received 1 CAKE per second, a 40x farm would receive 40 CAKE per second.")
-          : t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
-      </Text>
-      <Text>{t("This amount is already included in all APR calculations for the farm.")}</Text>
+          </Text>
+          <Text my="24px">
+            {" "}
+            {t("For example, if a 1x farm received 1 CAKE per block, a 40x farm would receive 40 CAKE per block.")}
+          </Text>
+          <Text>
+            {t(
+              "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives."
+            )}
+          </Text>
+          <Link
+            mt="8px"
+            display="inline"
+            href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd"
+            external
+          >
+            {t("Read more")}
+          </Link>
+        </>
+      )}
     </>,
     { placement: "top-end", tooltipOffset: [20, 10] }
   );
@@ -186,8 +210,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                 <li>
                   <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
                     {t("LP rewards: %percent%% trading fees, distributed proportionally among LP token holders.", {
-                      percent:
-                        stableSwapAddress && stableLpFee ? new BigNumber(100).times(stableLpFee).toNumber() : 0.17,
+                      percent: stableSwapAddress && stableLpFee ? BIG_ONE_HUNDRED.times(stableLpFee).toNumber() : 0.17,
                     })}
                   </Text>
                 </li>

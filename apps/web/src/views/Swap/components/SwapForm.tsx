@@ -1,6 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
-import { ArrowDownIcon, Box, Button, Message, MessageText, Skeleton, Swap as SwapUI } from '@pancakeswap/uikit'
+import {
+  ArrowDownIcon,
+  Box,
+  Button,
+  Message,
+  MessageText,
+  Skeleton,
+  Swap as SwapUI,
+  useModal,
+} from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -38,6 +47,8 @@ import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
 import CurrencyInputHeader from './CurrencyInputHeader'
 import { ArrowWrapper, Wrapper } from './styleds'
 import SwapCommitButton from './SwapCommitButton'
+import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 
 export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
@@ -206,6 +217,8 @@ export default function SwapForm() {
     }
   }, [hasAmount, refreshBlockNumber])
 
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   return (
     <>
       <CurrencyInputHeader
@@ -305,6 +318,7 @@ export default function SwapForm() {
                 )
               }
               allowedSlippage={allowedSlippage}
+              onSlippageClick={onPresentSettingsModal}
             />
           )}
         </AutoColumn>

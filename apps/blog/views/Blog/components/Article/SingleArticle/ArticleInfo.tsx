@@ -47,7 +47,7 @@ const ArticleInfo = () => {
         </Text>
         <StyledTagGroup justifyContent="flex-end">
           {article?.categories.map((category: string) => (
-            <Text bold color="textSubtle" textTransform="uppercase">
+            <Text key={category} bold color="textSubtle" textTransform="uppercase">
               {category}
             </Text>
           ))}

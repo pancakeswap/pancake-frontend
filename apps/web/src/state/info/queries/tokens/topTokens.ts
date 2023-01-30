@@ -1,12 +1,14 @@
 import { gql } from 'graphql-request'
 import { useCallback, useState, useEffect } from 'react'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import union from 'lodash/union'
 import { useGetChainName } from '../../hooks'
 import {
   MultiChainName,
   getMultiChainQueryEndPointWithStableSwap,
   checkIsStableSwap,
   multiChainTokenBlackList,
+  multiChainTokenWhiteList,
 } from '../../constant'
 
 interface TopTokensResponse {
@@ -45,7 +47,10 @@ const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number
       blacklist: multiChainTokenBlackList[chainName],
     })
     // tokenDayDatas id has compound id "0xTOKENADDRESS-NUMBERS", extracting token address with .split('-')
-    return data.tokenDayDatas.map((t) => t.id.split('-')[0])
+    return union(
+      data.tokenDayDatas.map((t) => t.id.split('-')[0]),
+      multiChainTokenWhiteList[chainName],
+    )
   } catch (error) {
     console.warn('fetchTopTokens', { chainName, timestamp24hAgo })
     console.error('Failed to fetch top tokens', error)

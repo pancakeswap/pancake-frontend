@@ -31,7 +31,10 @@ export default function ChoosePair({ onNext }: { onNext: () => void }) {
       footer={
         <>
           {[currencyA, currencyB].map((currency) => (
-            <LiquidityBridgeWarning currency={currency} />
+            <LiquidityBridgeWarning
+              key={`liquidityBridgeWarning#${currency?.address || 'generic'}`}
+              currency={currency}
+            />
           ))}
           <CommitButton
             data-test="choose-pair-next"

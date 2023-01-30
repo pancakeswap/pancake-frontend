@@ -8,7 +8,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 
-const floatingStarsLeft = keyframes`
+export const floatingStarsLeft = keyframes`
   from {
     transform: translate(0,  0px);
   }
@@ -20,7 +20,7 @@ const floatingStarsLeft = keyframes`
   }
 `
 
-const floatingStarsRight = keyframes`
+export const floatingStarsRight = keyframes`
   from {
     transform: translate(0,  0px);
   }
@@ -210,6 +210,52 @@ const StarsDecorations = styled(Box)`
   }
 `
 
+const CnyDecorations = styled(Box)`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+
+  & :nth-child(1),
+  & :nth-child(2) {
+    display: none;
+    z-index: 1;
+  }
+
+  & :nth-child(1) {
+    position: absolute;
+    top: 0;
+    left: 15%;
+    animation: ${floatingStarsLeft} 3s ease-in-out infinite;
+    animation-delay: 0.25s;
+  }
+
+  & :nth-child(2) {
+    position: absolute;
+    bottom: 0;
+    right: 15%;
+    animation: ${floatingStarsLeft} 3.5s ease-in-out infinite;
+    animation-delay: 0.5s;
+  }
+
+  & :nth-child(3) {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    & :nth-child(1),
+    & :nth-child(2),
+    & :nth-child(3) {
+      display: block;
+    }
+  }
+`
+
 const Hero = () => {
   const { t } = useTranslation()
   const {
@@ -246,6 +292,11 @@ const Hero = () => {
 
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
+      <CnyDecorations>
+        <img src="/images/cny-asset/cny-lantern-1.png" width="200px" height="280px" alt="" />
+        <img src="/images/cny-asset/cny-lantern-2.png" width="184px" height="210px" alt="" />
+        <img src="/images/cny-asset/cny-frame.png" width="900px" height="400px" alt="" />
+      </CnyDecorations>
       <Decorations />
       <StarsDecorations display={['none', 'none', 'block']}>
         <img src="/images/lottery/star-big.png" width="124px" height="109px" alt="" />
@@ -254,7 +305,7 @@ const Hero = () => {
         <img src="/images/lottery/ticket-l.png" width="123px" height="83px" alt="" />
         <img src="/images/lottery/ticket-r.png" width="121px" height="72px" alt="" />
       </StarsDecorations>
-      <Heading mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
+      <Heading style={{ zIndex: 1 }} mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
         {t('The PancakeSwap Lottery')}
       </Heading>
       {getHeroHeading()}

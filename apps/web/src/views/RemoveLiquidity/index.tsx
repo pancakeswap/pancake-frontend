@@ -20,6 +20,8 @@ import {
   useTooltip,
   useToast,
   useMatchBreakpoints,
+  IconButton,
+  PencilIcon,
 } from '@pancakeswap/uikit'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
@@ -63,6 +65,8 @@ import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModa
 import { logError } from '../../utils/sentry'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -556,6 +560,8 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
     'removeLiquidityModal',
   )
 
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   const isZapOutA = isZap && !removalCheckedB && removalCheckedA
   const isZapOutB = isZap && !removalCheckedA && removalCheckedB
 
@@ -811,6 +817,9 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           <RowBetween mt="16px">
             <Text bold color="secondary" fontSize="12px">
               {t('Slippage Tolerance')}
+              <IconButton scale="sm" variant="text" onClick={onPresentSettingsModal}>
+                <PencilIcon color="primary" width="10px" />
+              </IconButton>
             </Text>
             <Text bold color="primary">
               {allowedSlippage / 100}%
