@@ -13,7 +13,7 @@ export const ifos: Ifo[] = [
       saleAmount: '10 lzUSDT',
       raiseAmount: '$10',
       cakeToBurn: '$0',
-      distributionRatio: 0.7,
+      distributionRatio: 1,
     },
     campaignId: '1',
     currency: mainnetTokens.cake,
@@ -21,7 +21,7 @@ export const ifos: Ifo[] = [
     releaseTime: 1674921023,
     articleUrl:
       'https://pancakeswap.finance/voting/proposal/0x06598b682d9f33ec5ea0c2acf8eba13dea7c63fa08dd2c4dfd7bc7af16920d51',
-    tokenOfferingPrice: 4,
+    tokenOfferingPrice: 1,
     version: 3.2,
     twitterUrl: '',
     description: 'lzUSDT description',
