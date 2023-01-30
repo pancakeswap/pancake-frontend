@@ -12,6 +12,8 @@ import {
   TooltipText,
   useTooltip,
   MessageText,
+  IconButton,
+  PencilIcon,
 } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
@@ -65,6 +67,8 @@ import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import { CommonBasesType } from '../../components/SearchModal/types'
+import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
 
 enum Steps {
   Choose,
@@ -566,6 +570,8 @@ export default function AddLiquidity({ currencyA, currencyB }) {
       (pair && JSBI.lessThan(pair.reserve1.quotient, MINIMUM_LIQUIDITY))
     )
 
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   return (
     <Page>
       <AppBody>
@@ -793,6 +799,9 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                 <RowBetween>
                   <Text bold fontSize="12px" color="secondary">
                     {t('Slippage Tolerance')}
+                    <IconButton scale="sm" variant="text" onClick={onPresentSettingsModal}>
+                      <PencilIcon color="primary" width="10px" />
+                    </IconButton>
                   </Text>
                   <Text bold color="primary">
                     {allowedSlippage / 100}%

@@ -68,20 +68,10 @@ const ActionContainer = styled.div<{ isAutoVault?: boolean; hasBalance?: boolean
   }
 `
 
-type MediaBreakpoints = {
-  isXs: boolean
-  isSm: boolean
-  isMd: boolean
-  isLg: boolean
-  isXl: boolean
-  isXxl: boolean
-}
-
 interface ActionPanelProps {
   account?: string
   pool: Pool.DeserializedPool<Coin>
   expanded: boolean
-  breakpoints: MediaBreakpoints
 }
 
 const InfoSection = styled(Box)`

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react'
+import { useEffect } from 'react'
 import { listenOnBnMessage, useInterceptLink, useInjectI18n, useSystemInfo } from 'utils/mpBridge'
 import { useActiveHandle, getAccount } from 'hooks/useEagerConnect.bmp'
 import Navbar from 'components/Navbar.bmp'
@@ -6,7 +6,7 @@ import { useTheme } from 'next-themes'
 import Farms from './Farms'
 
 listenOnBnMessage()
-const FarmsMpPageLayout: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
+const FarmsMpPageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   useInterceptLink()
   const systemInfo = useSystemInfo()
   const { setTheme } = useTheme()

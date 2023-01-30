@@ -95,16 +95,16 @@ const DepositAction: React.FC<React.PropsWithChildren<DepositActionProps>> = ({ 
     return <Skeleton width="100%" height="48px" />
   }
 
-  if (userData.allowance.isLessThanOrEqualTo(0)) {
-    return <EnableButton potteryVaultAddress={lastVaultAddress} />
-  }
-
   if (publicData.getStatus !== PotteryDepositStatus.BEFORE_LOCK) {
     return (
       <Button disabled mt="10px" width="100%">
         {t('Deposit closed until next Pottery')}
       </Button>
     )
+  }
+
+  if (userData.allowance.isLessThanOrEqualTo(0)) {
+    return <EnableButton potteryVaultAddress={lastVaultAddress} />
   }
 
   if (isReachMaxAmount) {

@@ -3,7 +3,7 @@ import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { useMemo, useState } from "react";
 import styled from "styled-components";
 
-import BigNumber from "bignumber.js";
+import { BIG_ONE_HUNDRED } from "@pancakeswap/utils/bigNumber";
 import { useTooltip } from "../../hooks/useTooltip";
 import { Box, Flex, Grid } from "../Box";
 import { ExpandableLabel } from "../Button";
@@ -210,8 +210,7 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                 <li>
                   <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
                     {t("LP rewards: %percent%% trading fees, distributed proportionally among LP token holders.", {
-                      percent:
-                        stableSwapAddress && stableLpFee ? new BigNumber(100).times(stableLpFee).toNumber() : 0.17,
+                      percent: stableSwapAddress && stableLpFee ? BIG_ONE_HUNDRED.times(stableLpFee).toNumber() : 0.17,
                     })}
                   </Text>
                 </li>
