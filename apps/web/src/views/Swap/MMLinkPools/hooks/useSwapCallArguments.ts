@@ -32,7 +32,7 @@ export function useSwapCallArguments(
   const mmSigner = MM_SIGNER[chainId]
 
   return useMemo(() => {
-    if (!trade || !recipient || !account || !chainId || !deadline || !mmSigner) return []
+    if (!trade || !recipient || !account || !chainId || !deadline || !mmSigner || !rfq) return []
 
     if (!contract) {
       return []
@@ -60,13 +60,13 @@ function swapCallParameters(
   const args = [
     mmSigner,
     {
-      nonce: rfq.nonce,
+      nonce: rfq?.nonce,
       user: recipient,
-      baseToken: rfq.takerSideToken,
-      quoteToken: rfq.makerSideToken,
-      baseTokenAmount: rfq.takerSideTokenAmount,
-      quoteTokenAmount: rfq.makerSideTokenAmount,
-      expiryTimestamp: rfq.quoteExpiry.toString(),
+      baseToken: rfq?.takerSideToken,
+      quoteToken: rfq?.makerSideToken,
+      baseTokenAmount: rfq?.takerSideTokenAmount,
+      quoteTokenAmount: rfq?.makerSideTokenAmount,
+      expiryTimestamp: rfq?.quoteExpiry.toString(),
     },
     rfq.signature,
   ]

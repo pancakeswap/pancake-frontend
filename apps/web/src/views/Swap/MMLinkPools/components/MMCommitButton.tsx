@@ -26,10 +26,9 @@ import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
-import { TradeWithMM, OrderBookRequest } from '../types'
+import { TradeWithMM, RFQResponse } from '../types'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import ConfirmSwapModal from './ConfirmSwapModal'
-import { useGetRFQTrade } from '../hooks'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -58,7 +57,8 @@ interface SwapCommitButtonPropsType {
   allowedSlippage: number
   parsedIndepentFieldAmount: CurrencyAmount<Currency>
   onUserInput: (field: Field, typedValue: string) => void
-  mmParam: OrderBookRequest
+  rfq?: RFQResponse['message']
+  refreshRFQ?: () => void
 }
 
 export default function MMSwapCommitButton({
@@ -80,14 +80,14 @@ export default function MMSwapCommitButton({
   allowedSlippage,
   parsedIndepentFieldAmount,
   onUserInput,
-  mmParam,
+  rfq,
+  refreshRFQ,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const [singleHopOnly] = useUserSingleHopOnly()
   const { chainId } = useActiveWeb3React()
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
-  const rfq = useGetRFQTrade(mmParam)
   // the callback to execute the swap
 
   const swapCalls = useSwapCallArguments(trade, rfq, recipient)
@@ -306,6 +306,7 @@ export default function MMSwapCommitButton({
       <CommitButton
         variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
         onClick={() => {
+          refreshRFQ?.()
           onSwapHandler()
         }}
         id="swap-button"

@@ -2105,5 +2105,6 @@
   "Oldest First": "Oldest First",
   "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node.",
   "Participate in our next IFO.": "Participate in our next IFO.",
-  "The Market Maker (MM) is currently executing for your trade, there is no slippage against the quote from MM.": "The Market Maker (MM) is currently executing for your trade, there is no slippage against the quote from MM."
+  "The Market Maker (MM) is currently executing for your trade, there is no slippage against the quote from MM.": "The Market Maker (MM) is currently executing for your trade, there is no slippage against the quote from MM.",
+  "Market Maker": "Market Maker"
 }

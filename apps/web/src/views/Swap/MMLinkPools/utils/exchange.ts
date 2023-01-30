@@ -10,7 +10,7 @@ import { useContract } from 'hooks/useContract'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
-import { TradeWithMM, OrderBookRequest } from '../types'
+import { TradeWithMM, OrderBookRequest, OrderBookResponse } from '../types'
 
 export function useMMSwapContract() {
   const { chainId } = useActiveChainId()
@@ -109,4 +109,25 @@ export const parseMMParameter = (
         : undefined,
     trader: account,
   }
+}
+
+export const parseMMTrade = (
+  isExactIn,
+  inputCurrency: Currency,
+  outputCurrency: Currency,
+  takerSideTokenAmount: string,
+  makerSideTokenAmount: string,
+): TradeWithMM<Currency, Currency, TradeType> => {
+  const bestTradeWithMM: TradeWithMM<Currency, Currency, TradeType> = {
+    tradeType: isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
+    inputAmount: CurrencyAmount.fromRawAmount(inputCurrency, JSBI.BigInt(takerSideTokenAmount)),
+    outputAmount: CurrencyAmount.fromRawAmount(outputCurrency, JSBI.BigInt(makerSideTokenAmount)),
+    route: {
+      input: inputCurrency,
+      output: outputCurrency,
+      pairs: [],
+      path: [inputCurrency, outputCurrency],
+    },
+  }
+  return bestTradeWithMM
 }

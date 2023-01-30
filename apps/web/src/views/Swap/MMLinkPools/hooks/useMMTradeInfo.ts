@@ -29,6 +29,7 @@ interface Info {
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency> | null
   inputError: string
+  trade: TradeWithMM<Currency, Currency, TradeType>
 }
 
 export function useMMTradeInfo({ mmTrade, useMMToTrade = false, chainId, mmSwapInputError }: Options): Info | null {
@@ -37,6 +38,7 @@ export function useMMTradeInfo({ mmTrade, useMMToTrade = false, chainId, mmSwapI
       return null
     }
     return {
+      trade: mmTrade,
       tradeType: mmTrade.tradeType,
       route: mmTrade.route,
       inputAmount: mmTrade.inputAmount,

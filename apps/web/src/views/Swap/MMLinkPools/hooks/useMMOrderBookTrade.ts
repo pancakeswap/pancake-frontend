@@ -10,7 +10,7 @@ import { useMemo } from 'react'
 
 import { getMMOrderBook } from '../apis'
 import { OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
-import { parseMMParameter } from '../utils/exchange'
+import { parseMMParameter, parseMMTrade } from '../utils/exchange'
 
 // TODO: update
 const BAD_RECIPIENT_ADDRESSES: string[] = [
@@ -32,12 +32,13 @@ export const useOrderBookQuote = (request: OrderBookRequest): OrderBookResponse 
       request.trader &&
       (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
       request.makerSideTokenAmount !== '0' &&
-      request.takerSideTokenAmount !== '0' &&
-      `orderBook/${request.networkId}/${request.makerSideToken}/${request.takerSideToken}/${request.makerSideTokenAmount}/${request.takerSideTokenAmount}`,
+      request.takerSideTokenAmount !== '0' && [
+        `orderBook/${request.networkId}/${request.makerSideToken}/${request.takerSideToken}/${request.makerSideTokenAmount}/${request.takerSideTokenAmount}/`,
+      ],
     () => {
       return getMMOrderBook(request)
     },
-    { refreshInterval: 100000 },
+    { refreshInterval: 5000 },
   )
   return data
 }
@@ -71,21 +72,16 @@ export const useMMTrade = (
   ])
   const isExactIn: boolean = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
-  // const dependentCurrency = isExactIn ? outputCurrency : inputCurrency
   const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
   if (!inputCurrency || !outputCurrency || !mmQoute || !account || !mmQoute?.message?.takerSideTokenAmount) return null
-  // const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
-  const bestTradeWithMM: TradeWithMM<Currency, Currency, TradeType> = {
-    tradeType: isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
-    inputAmount: CurrencyAmount.fromRawAmount(inputCurrency, JSBI.BigInt(mmQoute.message.takerSideTokenAmount)),
-    outputAmount: CurrencyAmount.fromRawAmount(outputCurrency, JSBI.BigInt(mmQoute.message.makerSideTokenAmount)),
-    route: {
-      input: inputCurrency,
-      output: outputCurrency,
-      pairs: [],
-      path: [inputCurrency, outputCurrency],
-    },
-  }
+  const { takerSideTokenAmount, makerSideTokenAmount } = mmQoute.message
+  const bestTradeWithMM = parseMMTrade(
+    isExactIn,
+    inputCurrency,
+    outputCurrency,
+    takerSideTokenAmount,
+    makerSideTokenAmount,
+  )
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
     [Field.OUTPUT]: relevantTokenBalances[1],
@@ -132,7 +128,6 @@ export const useMMTrade = (
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
   }
-
   return {
     trade: bestTradeWithMM,
     parsedAmount,

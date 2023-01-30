@@ -46,11 +46,11 @@ import SwapCommitButton from '../components/SwapCommitButton'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import MMCommitButton from '../MMLinkPools/components/MMCommitButton'
-import { useIsTradeWithMMBetter, useMMTrade, useMMTradeInfo } from '../MMLinkPools/hooks'
+import { MMSlippageTolerance } from '../MMLinkPools/components/MMSlippageTolerance'
+import { useGetRFQTrade, useIsTradeWithMMBetter, useMMTrade, useMMTradeInfo } from '../MMLinkPools/hooks'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
-import { MMSlippageTolerance } from '../MMLinkPools/components/MMSlippageTolerance'
 
 export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
@@ -105,10 +105,21 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     inputError: stableSwapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency, recipient)
 
-  const mmTrade = useMMTrade(independentField, typedValue, inputCurrency, outputCurrency, recipient)
+  const mmOrderBookTrade = useMMTrade(independentField, typedValue, inputCurrency, outputCurrency, recipient)
 
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
-  const isMMBetter = useIsTradeWithMMBetter({ trade: tradeWithStableSwap, v2Trade, tradeWithMM: mmTrade?.trade })
+  const isMMBetter = useIsTradeWithMMBetter({
+    trade: tradeWithStableSwap,
+    v2Trade,
+    tradeWithMM: mmOrderBookTrade?.trade,
+  })
+  const mmRFQTrade = useGetRFQTrade(
+    independentField,
+    inputCurrency,
+    outputCurrency,
+    mmOrderBookTrade?.mmParam,
+    isMMBetter,
+  )
   // console.log(isMMBetter, 'isMMBetter')
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
@@ -121,11 +132,11 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   })
 
   const mmTradeInfo = useMMTradeInfo({
-    mmTrade: mmTrade?.trade,
+    mmTrade: mmRFQTrade?.trade || mmOrderBookTrade?.trade,
     useMMToTrade: isMMBetter,
     allowedSlippage,
     chainId,
-    mmSwapInputError: mmTrade?.inputError,
+    mmSwapInputError: mmOrderBookTrade?.inputError,
   })
 
   const {
@@ -405,13 +416,14 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               approvalSubmitted={approvalSubmitted}
               currencies={currencies}
               isExpertMode={isExpertMode}
-              trade={mmTrade.trade}
-              swapInputError={swapInputError}
-              currencyBalances={currencyBalances}
+              trade={mmTradeInfo.trade}
+              swapInputError={mmOrderBookTrade.inputError}
+              currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
               allowedSlippage={allowedSlippage}
               onUserInput={onUserInput}
-              mmParam={mmTrade.mmParam}
+              rfq={mmRFQTrade?.rfq}
+              refreshRFQ={mmRFQTrade?.refreshRFQ}
             />
           ) : tradeInfo?.fallbackV2 ? (
             <SwapCommitButton
