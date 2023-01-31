@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import { Types } from 'aptos'
 
-export const ADDRESS = '0xc23c3b70956ce8d88fb18ad9ed3b463fe873cb045db3f6d2e2fb15b9aab71d50' as const
+export const ADDRESS = '0x488c277a7dabb9dca5352c573a441f3a41f473f664e469465924af22eb3fd4bd' as const
 
 export const IFO_MODULE_NAME = 'IFO' as const
 
