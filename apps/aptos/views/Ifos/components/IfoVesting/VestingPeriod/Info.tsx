@@ -55,7 +55,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
 
   const received = useMemo(() => {
     const alreadyClaimed = new BigNumber(releasedAtSaleEnd).plus(vestingReleased)
-    return alreadyClaimed.gt(0) ? getFullDisplayBalance(alreadyClaimed, token.decimals, 8) : '0'
+    return alreadyClaimed.gt(0) ? getFullDisplayBalance(alreadyClaimed, token.decimals, token.decimals) : '0'
   }, [token, releasedAtSaleEnd, vestingReleased])
 
   const claimable = useMemo(() => {
