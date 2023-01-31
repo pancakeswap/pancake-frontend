@@ -6,7 +6,8 @@ import { ExtendEthereum } from 'global'
 import { useState, useCallback } from 'react'
 import { useAccount, useNetwork } from 'wagmi'
 import { mainnet } from 'wagmi/chains'
-import Farms, { FarmsContext } from './Farms'
+import { FarmsContext } from './context'
+import Farms from './Farms'
 
 export function useIsBloctoETH() {
   const { chain } = useNetwork()
