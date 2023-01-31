@@ -24,6 +24,7 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { FetchStatus } from 'config/constants/types'
 import { PredictionUser } from 'state/types'
+import { useSidNameForAddress } from 'hooks/useSid'
 import { NetWinningsView } from './Results/styles'
 import MobileBetsTable from './MobileBetsTable'
 import DesktopBetsTable from './Results/DesktopBetsTable'
@@ -57,7 +58,8 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
 }) => {
   const { t } = useTranslation()
   const { theme } = useTheme()
-  const { profile } = useProfileForAddress(address)
+  const { profile, isLoading: isProfileLoading } = useProfileForAddress(address)
+  const { sidName } = useSidNameForAddress(address, !profile && !isProfileLoading)
   const isLoading = leaderboardLoadingState === FetchStatus.Fetching
   const { isDesktop } = useMatchBreakpoints()
 
@@ -77,9 +79,9 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
             <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={96} width={96} />
           </Box>
           <Box>
-            {profile?.username && (
+            {(profile?.username || sidName) && (
               <Heading scale="lg" mb="8px">
-                {profile?.username}
+                {profile?.username || sidName}
               </Heading>
             )}
             <ExternalLink isBscScan href={getBlockExploreLink(address, 'address')}>
