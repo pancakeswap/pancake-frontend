@@ -92,14 +92,14 @@ const UserDetail = () => {
       )}
       {isMobile && (
         <Mobile>
-          {usernameWithVisibility ? (
+          {profile ? (
             <Heading mb="18px" textAlign="center">
               {t('Hi, %userName%!', {
                 userName: usernameWithVisibility,
               })}
               <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
             </Heading>
-          ) : isProfileLoading || isSidNameLoading ? (
+          ) : isProfileLoading ? (
             <Skeleton width={120} height={20} mt="2px" mb="18px" />
           ) : null}
         </Mobile>
