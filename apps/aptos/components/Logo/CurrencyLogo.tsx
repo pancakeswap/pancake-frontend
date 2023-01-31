@@ -34,7 +34,9 @@ export function AptosCoinLogo({ size = '24px', style }: { size?: string; style?:
   return (
     <StyledLogo
       badSrcs={BAD_SRCS}
-      className={aptosLogoClass}
+      className={aptosLogoClass({
+        isProduction: true,
+      })}
       srcs={APT_SRCS}
       alt="APT logo"
       style={style}

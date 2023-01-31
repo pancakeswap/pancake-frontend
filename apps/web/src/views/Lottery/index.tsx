@@ -5,8 +5,13 @@ import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
-import useChineseNewYearEffect from 'hooks/useChineseNewYearEffect'
-import { CNY_TITLE_BG, GET_TICKETS_BG, CNY_FINISHED_ROUNDS_BG, CHECK_PRIZES_BG } from './pageSectionStyles'
+import {
+  TITLE_BG,
+  GET_TICKETS_BG,
+  FINISHED_ROUNDS_BG,
+  FINISHED_ROUNDS_BG_DARK,
+  CHECK_PRIZES_BG,
+} from './pageSectionStyles'
 import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent'
 import useStatusTransitions from './hooks/useStatusTransitions'
 import Hero from './components/Hero'
@@ -19,19 +24,16 @@ import CheckPrizesSection from './components/CheckPrizesSection'
 import HowToPlay from './components/HowToPlay'
 import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
 import { PageMeta } from '../../components/Layout/Page'
-import CnyDecorations from './components/LotteryCnyEffect'
-import CnyLotteryDraw from './components/CnyLotteryDraw'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
 `
 
 const Lottery = () => {
-  useChineseNewYearEffect()
   useFetchLottery()
   useStatusTransitions()
   const { t } = useTranslation()
-  const { theme } = useTheme()
+  const { isDark, theme } = useTheme()
   const {
     currentRound: { status, endTime },
   } = useLottery()
@@ -44,10 +46,9 @@ const Lottery = () => {
     <>
       <PageMeta />
       <LotteryPage>
-        <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
+        <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
-        <CnyLotteryDraw />
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={GET_TICKETS_BG}
@@ -82,13 +83,12 @@ const Lottery = () => {
         <PageSection
           position="relative"
           innerProps={{ style: { margin: '0', width: '100%' } }}
-          background={CNY_FINISHED_ROUNDS_BG}
+          background={isDark ? FINISHED_ROUNDS_BG_DARK : FINISHED_ROUNDS_BG}
           hasCurvedDivider={false}
           index={2}
         >
-          <CnyDecorations />
           <Flex width="100%" flexDirection="column" alignItems="center" justifyContent="center">
-            <Heading color="#280D5F" mb="24px" scale="xl">
+            <Heading mb="24px" scale="xl">
               {t('Finished Rounds')}
             </Heading>
             <Box mb="24px">
@@ -110,7 +110,7 @@ const Lottery = () => {
         <PageSection
           dividerPosition="top"
           dividerFill={{ light: theme.colors.background }}
-          clipFill={{ light: '#FDAB32 ', dark: '#FDAB32' }}
+          clipFill={{ light: '#9A9FD0', dark: '#66578D' }}
           index={2}
         >
           <HowToPlay />

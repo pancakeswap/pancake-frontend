@@ -38,18 +38,19 @@ const Decorations = styled.div`
 `
 
 const BannerBunny = styled.div`
-  width: 302px;
-  height: 347.5px;
-  background: url(/images/pottery/banner-bunny-cny.png);
+  width: 221px;
+  height: 348px;
+  background: url(/images/pottery/banner-bunny.png);
   margin: 63px auto auto auto;
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 1;
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 402px;
-    height: 447.5px;
+    width: 370px;
+    height: 549px;
+    margin-top: 0;
   }
 `
 

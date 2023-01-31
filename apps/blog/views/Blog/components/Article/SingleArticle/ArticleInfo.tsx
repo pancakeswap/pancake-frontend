@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Box, Text, Flex, ReactMarkdown } from '@pancakeswap/uikit'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { useRouter } from 'next/router'
 import SocialIcon from 'views/Blog/components/Article/SingleArticle/SocialIcon'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
@@ -31,7 +32,12 @@ const StyledTagGroup = styled(Flex)`
 `
 
 const ArticleInfo = () => {
+  const router = useRouter()
   const { data: article } = useSWR<ArticleDataType>('/article')
+
+  const handleClickTag = (category: string) => {
+    router.push(`/blog/article?category=${category}`)
+  }
 
   return (
     <Flex
@@ -47,7 +53,14 @@ const ArticleInfo = () => {
         </Text>
         <StyledTagGroup justifyContent="flex-end">
           {article?.categories.map((category: string) => (
-            <Text key={category} bold color="textSubtle" textTransform="uppercase">
+            <Text
+              style={{ cursor: 'pointer' }}
+              onClick={() => handleClickTag(category)}
+              key={category}
+              bold
+              color="textSubtle"
+              textTransform="uppercase"
+            >
               {category}
             </Text>
           ))}
