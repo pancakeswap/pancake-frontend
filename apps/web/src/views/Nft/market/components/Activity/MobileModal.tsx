@@ -8,6 +8,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { getBlockExploreLink } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useSidNameForAddress } from 'hooks/useSid'
 import ActivityEventText from './ActivityEventText'
 import NFTMedia from '../NFTMedia'
 
@@ -32,6 +33,9 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
   const { theme } = useTheme()
   const priceAsFloat = parseFloat(activity.price)
   const priceInUsd = multiplyPriceByAmount(bnbBusdPrice, priceAsFloat)
+  const { sidName: otherPartySidName } = useSidNameForAddress(activity.otherParty)
+  const { sidName: sellerSidName } = useSidNameForAddress(activity.seller)
+  const { sidName: buyerSidName } = useSidNameForAddress(activity.buyer)
 
   return (
     <Modal title={t('Transaction Details')} onDismiss={onDismiss} headerBackground={theme.colors.gradientCardHeader}>
@@ -74,7 +78,7 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
               <Text fontSize="14px" color="textSubtle">
                 {t('From/To')}
               </Text>
-              <Text>{activity.otherParty ? truncateHash(activity.otherParty) : '-'}</Text>
+              <Text>{activity.otherParty ? otherPartySidName || truncateHash(activity.otherParty) : '-'}</Text>
             </Flex>
           ) : (
             <>
@@ -82,13 +86,13 @@ const MobileModal: React.FC<React.PropsWithChildren<MobileModalProps>> = ({
                 <Text fontSize="14px" color="textSubtle">
                   {t('From')}
                 </Text>
-                <Text>{activity.seller ? truncateHash(activity.seller) : '-'}</Text>
+                <Text>{activity.seller ? sellerSidName || truncateHash(activity.seller) : '-'}</Text>
               </Flex>
               <Flex mb="24px" justifyContent="space-between">
                 <Text fontSize="14px" color="textSubtle">
                   {t('To')}
                 </Text>
-                <Text>{activity.buyer ? truncateHash(activity.buyer) : '-'}</Text>
+                <Text>{activity.buyer ? buyerSidName || truncateHash(activity.buyer) : '-'}</Text>
               </Flex>
             </>
           )}
