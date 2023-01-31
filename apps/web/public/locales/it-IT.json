@@ -2074,7 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Ci sono %amount% CAKE nel contratto booster proxy. Per ottenere tale importo è necessario prelevare, depositare o raccogliere da una delle farm potenziate.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Per fornire stime stabili, i dati APR vengono calcolati una volta al giorno sulla pagina della farm. Per APR in tempo reale, visita il",
   "Info Page": "Pagina informazioni",
-  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Partecipazione all'IFO %title% impegnandosi oltre l'importo minimo richiesto",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "Recentemente abbiamo ribasato i moltiplicatori di un fattore 10: questo è solo un cambiamento visivo e non influisce sulla quantità di CAKE che ogni farm riceve.",
   "Launch App": "Avvia app",
   "Sort Title A-Z": "Ordina titolo A-Z",
@@ -2098,7 +2098,7 @@
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "Ho analizzato il risultato della scansione, ho compreso il rischio e desidero procedere con l'importazione del token.",
   "Proceed": "Procedi",
   "Check out the top traded tokens": "Dai un'occhiata ai token più scambiati",
-  "%days% days": "%days% days",
-  "1 day": "1 day",
-  "< 1 day": "< 1 day"
+  "%days% days": "%days% giorni",
+  "1 day": "1 giorno",
+  "< 1 day": "< 1 giorno"
 }
