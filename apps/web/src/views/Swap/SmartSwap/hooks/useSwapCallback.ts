@@ -12,7 +12,7 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import { calculateGasMargin, isAddress } from 'utils'
 import { basisPointsToPercent } from 'utils/exchange'
-import { logSwap, logTx } from 'utils/log'
+import { logSwapTx } from 'utils/log'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 
 export enum SwapCallbackState {
@@ -173,7 +173,7 @@ export function useSwapCallback(
               },
               type: 'swap',
             })
-            logSwap({
+            logSwapTx({
               chainId,
               inputAmount,
               outputAmount,
@@ -181,8 +181,9 @@ export function useSwapCallback(
               output: trade.outputAmount.currency,
               type: 'SmartSwap',
               connectorId: connector?.id,
+              account,
+              hash: response.hash,
             })
-            logTx({ account, chainId, hash: response.hash })
 
             return response.hash
           })

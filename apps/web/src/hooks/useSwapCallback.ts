@@ -8,7 +8,7 @@ import { isStableSwap, V2TradeAndStableSwap } from 'config/constants/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useGasPrice } from 'state/user/hooks'
-import { logSwap, logTx } from 'utils/log'
+import { logSwapTx } from 'utils/log'
 
 import { INITIAL_ALLOWED_SLIPPAGE } from '../config/constants'
 import { useTransactionAdder } from '../state/transactions/hooks'
@@ -175,7 +175,7 @@ export function useSwapCallback(
               },
               type: 'swap',
             })
-            logSwap({
+            logSwapTx({
               chainId,
               inputAmount,
               outputAmount,
@@ -183,8 +183,9 @@ export function useSwapCallback(
               output: trade.outputAmount.currency,
               type: isStableSwap(trade) ? 'StableSwap' : 'V2Swap',
               connectorId: connector?.id,
+              account,
+              hash: response.hash,
             })
-            logTx({ account, chainId, hash: response.hash })
 
             return response.hash
           })
