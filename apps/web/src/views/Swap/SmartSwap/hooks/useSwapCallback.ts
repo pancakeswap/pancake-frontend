@@ -46,7 +46,7 @@ export function useSwapCallback(
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: SwapCall[],
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  const { account, chainId } = useActiveWeb3React()
+  const { account, chainId, connector } = useActiveWeb3React()
   const gasPrice = useGasPrice()
 
   const { t } = useTranslation()
@@ -180,6 +180,7 @@ export function useSwapCallback(
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
               type: 'SmartSwap',
+              connectorId: connector.id,
             })
             logTx({ account, chainId, hash: response.hash })
 
@@ -198,5 +199,17 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, t, addTransaction, allowedSlippage])
+  }, [
+    trade,
+    account,
+    chainId,
+    recipient,
+    recipientAddress,
+    swapCalls,
+    gasPrice,
+    t,
+    allowedSlippage,
+    addTransaction,
+    connector.id,
+  ])
 }

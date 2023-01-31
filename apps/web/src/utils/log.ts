@@ -12,6 +12,7 @@ export const logSwap = ({
   outputAmount,
   chainId,
   type,
+  connectorId,
 }: {
   input: Currency
   output: Currency
@@ -19,6 +20,7 @@ export const logSwap = ({
   outputAmount: string
   chainId: number
   type: 'V2Swap' | 'SmartSwap' | 'StableSwap'
+  connectorId: string
 }) => {
   try {
     log.info(type, {
@@ -27,6 +29,7 @@ export const logSwap = ({
       inputAmount,
       outputAmount,
       chainId,
+      connectorId,
     })
   } catch (error) {
     //
