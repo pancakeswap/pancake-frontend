@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { useAuth } from 'hooks/useAuth'
 import { wallets } from 'config/wallets'
 
-export const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
+export const ConnectWalletButton = ({ children, onClick, ...props }: ButtonProps) => {
   const [open, setOpen] = useState(false)
   const { t } = useTranslation()
   const { login } = useAuth()
@@ -16,7 +16,7 @@ export const ConnectWalletButton = ({ children, ...props }: ButtonProps) => {
 
   return (
     <>
-      <Button width="100%" onClick={handleClick} {...props}>
+      <Button width="100%" onClick={onClick || handleClick} {...props}>
         {children || <Trans>Connect Wallet</Trans>}
       </Button>
       <WalletModalV2

@@ -89,14 +89,11 @@ export class BloctoConnector extends Connector<AptosProviderInterface, Partial<A
     }
   }
 
-  async signAndSubmitTransaction(
-    transaction?: Types.TransactionPayload,
-    options?: Types.SubmitTransactionRequest,
-  ): Promise<ConnectorTransactionResponse> {
+  async signAndSubmitTransaction(transaction?: Types.TransactionPayload): Promise<ConnectorTransactionResponse> {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
     try {
-      const response = await provider.signAndSubmitTransaction(transaction, options)
+      const response = await provider.signAndSubmitTransaction(transaction)
       return response
     } catch (error) {
       if ((error as any)?.message === 'User declined to send the transaction') {

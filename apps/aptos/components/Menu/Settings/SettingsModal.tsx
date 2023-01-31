@@ -20,7 +20,6 @@ import { useAudioPlay, useUserSlippage } from 'state/user'
 import { useExpertMode, useUserExpertModeAcknowledgement } from 'state/user/expertMode'
 import { useUserSingleHopOnly } from 'state/user/singleHop'
 import styled from 'styled-components'
-import { GasSettings } from './GasSettings'
 
 export const withCustomOnDismiss =
   (Component) =>
@@ -218,7 +217,6 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
           <Text>{t('Dark mode')}</Text>
           <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
         </Flex>
-        <GasSettings />
         <Flex pt="3px" flexDirection="column">
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">

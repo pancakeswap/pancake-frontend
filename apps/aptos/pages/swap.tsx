@@ -18,6 +18,8 @@ import {
   Card,
   confirmPriceImpactWithoutFee,
   Flex,
+  HistoryIcon,
+  IconButton,
   Link,
   Modal,
   ModalV2,
@@ -57,6 +59,7 @@ import {
   computeTradePriceBreakdown,
   warningSeverity,
 } from 'utils/exchange'
+import WalletModal, { WalletView } from 'components/Menu/WalletModal'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { CommitButton } from '../components/CommitButton'
@@ -411,6 +414,8 @@ const SwapPage = () => {
 
   const { showBridgeWarning, bridgeResult } = useBridgeInfo({ currency: inputCurrency })
 
+  const [onPresentTransactionsModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
+
   return (
     <>
       <PageMeta title={t('Exchange')} />
@@ -421,6 +426,11 @@ const SwapPage = () => {
               <Flex flexDirection="column" alignItems="center" width="100%">
                 <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
               </Flex>
+              {account && (
+                <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
+                  <HistoryIcon color="textSubtle" width="24px" />
+                </IconButton>
+              )}
               <SettingsButton />
             </Flex>
           }
