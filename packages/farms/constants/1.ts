@@ -34,6 +34,14 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: ethereumTokens.weth,
     token: ethereumTokens.sdao,
   },
+  {
+    pid: 143,
+    vaultPid: 5,
+    lpSymbol: 'STG-USDC LP',
+    lpAddress: '0x6cCA86CC27EB8c7C2d10B0672FE392CFC88e62ff',
+    quoteToken: ethereumTokens.usdc,
+    token: ethereumTokens.stg,
+  },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default farms
