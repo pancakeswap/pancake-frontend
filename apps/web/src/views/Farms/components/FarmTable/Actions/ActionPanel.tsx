@@ -150,9 +150,9 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
 
   const infoUrl = useMemo(() => {
     if (farm.isStable) {
-      return `/info${multiChainPaths[chainId]}/pairs/${stableSwapAddress}?type=stableSwap&chian=${CHAIN_QUERY_NAME[chainId]}`
+      return `/info${multiChainPaths[chainId]}/pairs/${stableSwapAddress}?type=stableSwap&chain=${CHAIN_QUERY_NAME[chainId]}`
     }
-    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chian=${CHAIN_QUERY_NAME[chainId]}`
+    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
   }, [chainId, farm.isStable, lpAddress, stableSwapAddress])
 
   return (
