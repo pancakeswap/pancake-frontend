@@ -6,6 +6,7 @@ import {
   InjectedModalProps,
   Link,
   Modal,
+  ExpertModal,
   PancakeToggle,
   QuestionHelper,
   Text,
@@ -29,7 +30,6 @@ import {
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useStableSwapByDefault } from 'state/user/smartRouter'
 import styled from 'styled-components'
-import ExpertModal from './ExpertModal'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
 import { SettingsMode } from './types'
@@ -89,6 +89,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
       <ExpertModal
         setShowConfirmExpertModal={setShowConfirmExpertModal}
         onDismiss={onDismiss}
+        toggleExpertMode={toggleExpertMode}
         setShowExpertModeAcknowledgement={setShowExpertModeAcknowledgement}
       />
     )

@@ -1,5 +1,6 @@
 import { useSendTransaction, useSimulateTransaction } from '@pancakeswap/awgmi'
 import { useCallback } from 'react'
+import { useUserPrioritizedGasPrice } from 'state/user/prioritizedGasPrice'
 
 const SAFE_FACTOR = 1.5
 
@@ -8,6 +9,8 @@ export default function useSimulationAndSendTransaction() {
 
   const { sendTransactionAsync } = useSendTransaction()
 
+  const [prioritizedGasPrice] = useUserPrioritizedGasPrice()
+
   const execute = useCallback(
     async (payload, simulateError?: (err: any) => void) => {
       console.info('payload: ', payload)
@@ -15,7 +18,12 @@ export default function useSimulationAndSendTransaction() {
       let results
 
       try {
-        results = await simulateTransactionAsync({ payload })
+        results = await simulateTransactionAsync({
+          payload,
+          query: {
+            estimatePrioritizedGasUnitPrice: prioritizedGasPrice,
+          },
+        })
       } catch (error) {
         // ignore error
         if (simulateError) {
@@ -37,7 +45,7 @@ export default function useSimulationAndSendTransaction() {
         options,
       })
     },
-    [sendTransactionAsync, simulateTransactionAsync],
+    [sendTransactionAsync, simulateTransactionAsync, prioritizedGasPrice],
   )
 
   return execute

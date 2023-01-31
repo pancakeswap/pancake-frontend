@@ -94,10 +94,10 @@ export class PetraConnector extends Connector<Window['aptos'], PetraConnectorOpt
     }
   }
 
-  async signAndSubmitTransaction(tx: Types.TransactionPayload) {
+  async signAndSubmitTransaction(tx: Types.TransactionPayload, options?: Types.SubmitTransactionRequest) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
-    return provider.signAndSubmitTransaction(tx)
+    return provider.signAndSubmitTransaction(tx, options)
   }
 
   async signTransaction(tx: Types.TransactionPayload) {
