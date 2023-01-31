@@ -79,7 +79,7 @@ const _bridgeUtils = {
   },
 }
 export const bridgeUtils = {
-  toWallet() {
+  toWallet(): Promise<undefined | { method: string }> {
     return new Promise((resolve) => {
       postMessage({ action: 'toWallet', cb: resolve })
     })
