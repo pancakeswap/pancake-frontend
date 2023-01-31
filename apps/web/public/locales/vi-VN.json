@@ -2074,7 +2074,7 @@
   "There is %amount% CAKE in the proxy booster contract. In order to harvest that amount you should withdraw, deposit or harvest one of the boosted farms.": "Đây là %amount% CAKE trong hợp đồng tăng cường trung gian. Để thu hoạch số tiền này, bạn cần rút, nộp hoặc thu hoạch một trong các trang trại được tăng cường.",
   "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the": "Để đưa ra ước tính ổn định, các số liệu APR sẽ được tính một lần mỗi ngày trên trang trang trại. Để xem APR trong thời gian thực, hãy truy cập",
   "Info Page": "Trang Thông tin",
-  "Participated in the %title% IFO by committing above the minimum required amount": "Participated in the %title% IFO by committing above the minimum required amount",
+  "Participated in the %title% IFO by committing above the minimum required amount": "Đã tham gia IFO %title% thông qua việc cam kết số tiền tối thiểu bắt buộc ở trên",
   "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives.": "Gần đây chúng tôi đã đặt lại cơ sở cho hệ số nhân theo hệ số 10, đây chỉ là một thay đổi về hình thức và không ảnh hưởng đến lượng CAKE mà mỗi trang trại nhận được.",
   "Launch App": "Khởi chạy ứng dụng",
   "Sort Title A-Z": "Sắp xếp tiêu đề A-Z",
@@ -2098,7 +2098,7 @@
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "Tôi đã đọc kết quả quét, hiểu rủi ro và muốn tiếp tục nhập token.",
   "Proceed": "Tiếp tục",
   "Check out the top traded tokens": "Xem những token được giao dịch nhiều nhất",
-  "%days% days": "%days% days",
-  "1 day": "1 day",
-  "< 1 day": "< 1 day"
+  "%days% days": "%days% ngày",
+  "1 day": "1 ngày",
+  "< 1 day": "< 1 ngày"
 }
