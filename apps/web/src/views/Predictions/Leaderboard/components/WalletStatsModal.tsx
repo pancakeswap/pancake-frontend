@@ -79,13 +79,13 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
             <ProfileAvatar src={profile?.nft?.image?.thumbnail} height={96} width={96} />
           </Box>
           <Box>
-            {(profile?.username || sidName) && (
+            {profile?.username && (
               <Heading scale="lg" mb="8px">
-                {profile?.username || sidName}
+                {profile?.username}
               </Heading>
             )}
             <ExternalLink isBscScan href={getBlockExploreLink(address, 'address')}>
-              {truncateHash(address)}
+              {sidName || truncateHash(address)}
             </ExternalLink>
           </Box>
         </Flex>
