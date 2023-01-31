@@ -25,12 +25,12 @@ export const useSidNameForAddress = (address: string, fetchData = true) => {
 }
 
 export const useSidAddressForName = (name: string, fetchData: boolean) => {
-  const { chainId, provider } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React()
 
   const { data: sidAddress, status } = useSWRImmutable(
     fetchData && name && [ChainId.BSC, ChainId.BSC_TESTNET].includes(chainId) ? ['sidAddress', chainId, name] : null,
     async () => {
-      const sid = new SID({ provider, sidAddress: getSidAddress(`${chainId}`) })
+      const sid = new SID({ bscRpcProvider, sidAddress: getSidAddress(`${chainId}`) })
       const address = await sid.name(name).getAddress()
       if (parseInt(address, 16) === 0) {
         return '-'
