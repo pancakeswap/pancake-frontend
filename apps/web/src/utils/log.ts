@@ -20,7 +20,7 @@ export const logSwap = ({
   outputAmount: string
   chainId: number
   type: 'V2Swap' | 'SmartSwap' | 'StableSwap'
-  connectorId: string
+  connectorId?: string
 }) => {
   try {
     log.info(type, {

@@ -180,7 +180,7 @@ export function useSwapCallback(
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
               type: 'SmartSwap',
-              connectorId: connector.id,
+              connectorId: connector?.id,
             })
             logTx({ account, chainId, hash: response.hash })
 
@@ -210,6 +210,6 @@ export function useSwapCallback(
     t,
     allowedSlippage,
     addTransaction,
-    connector.id,
+    connector?.id,
   ])
 }

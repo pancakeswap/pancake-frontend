@@ -182,7 +182,7 @@ export function useSwapCallback(
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
               type: isStableSwap(trade) ? 'StableSwap' : 'V2Swap',
-              connectorId: connector.id,
+              connectorId: connector?.id,
             })
             logTx({ account, chainId, hash: response.hash })
 
@@ -212,6 +212,6 @@ export function useSwapCallback(
     t,
     allowedSlippage,
     addTransaction,
-    connector.id,
+    connector?.id,
   ])
 }
