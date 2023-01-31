@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import useSWR from 'swr'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import CardArticle from 'views/Blog/components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
@@ -64,6 +64,7 @@ const StyledCard = styled(Flex)`
 const AllArticle = () => {
   const { t } = useTranslation()
   const router = useRouter()
+  const wrapperElement = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategories, setSelectCategoriesSelected] = useState(0)
@@ -82,7 +83,8 @@ const AllArticle = () => {
     { label: 'हिंदी', value: 'hi' },
   ]
   const sortByItems = [
-    { label: t('Date'), value: 'createAt:desc' },
+    { label: t('Newest First'), value: 'createAt:desc' },
+    { label: t('Oldest First'), value: 'createAt:asc' },
     { label: t('Sort Title A-Z'), value: 'title:asc' },
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
@@ -90,14 +92,15 @@ const AllArticle = () => {
   const { data: categoriesData } = useSWR<Categories[]>('/categories')
 
   useEffect(() => {
-    setCurrentPage(1)
-  }, [query, selectedCategories, sortBy, languageOption])
+    const hash = router.asPath.split('#')[1]
+    if (hash === 'allArticle') {
+      wrapperElement?.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [router.asPath])
 
   useEffect(() => {
-    if (router.isReady && router.query.search) {
-      setQuery(router.query.search as string)
-    }
-  }, [router.isReady, router.query.search])
+    setCurrentPage(1)
+  }, [query, selectedCategories, sortBy, languageOption])
 
   useEffect(() => {
     if (router.isReady && router.query.category) {
@@ -122,11 +125,11 @@ const AllArticle = () => {
   const handlePagination = (value: number) => {
     setCurrentPage(1)
     setCurrentPage(value)
-    window.scrollTo({ top: 0, behavior: 'auto' })
+    wrapperElement?.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <StyledArticleContainer>
+    <StyledArticleContainer ref={wrapperElement}>
       <Text
         bold
         color="secondary"

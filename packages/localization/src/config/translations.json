@@ -2100,5 +2100,7 @@
   "Check out the top traded tokens": "Check out the top traded tokens",
   "%days% days": "%days% days",
   "1 day": "1 day",
-  "< 1 day": "< 1 day"
+  "< 1 day": "< 1 day",
+  "Newest First": "Newest First",
+  "Oldest First": "Oldest First"
 }

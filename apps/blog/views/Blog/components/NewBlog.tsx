@@ -7,7 +7,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import NextLink from 'next/link'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
-import SearchBar from 'views/Blog/components/SearchBar'
 import NoSSR from 'components/NoSSR'
 
 const StyledBackground = styled(Box)`
@@ -51,13 +50,8 @@ const NewBlog = () => {
               {t('Latest News about PancakeSwap and more!')}
             </Text>
           </Box>
-          <SearchBar />
         </Flex>
-        <NextLink
-          passHref
-          href={`/blog/article/${article?.id}`}
-          style={{ display: 'flex', maxWidth: '880px', margin: 'auto' }}
-        >
+        <NextLink passHref href={`/blog/${article?.id}`} style={{ display: 'flex', maxWidth: '880px', margin: 'auto' }}>
           <BlogCard
             width="100%"
             imgHeight={['155px', '250px', '350px', '500px']}

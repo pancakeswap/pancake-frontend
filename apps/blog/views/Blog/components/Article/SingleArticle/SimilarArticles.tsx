@@ -46,7 +46,7 @@ const SimilarArticles = () => {
             >
               {similarArticles?.map((article) => (
                 <SwiperSlide key={article.id}>
-                  <NextLink passHref href={`/blog/article/${article.id}`}>
+                  <NextLink passHref href={`/blog/${article.id}`}>
                     <BlogCard
                       margin="auto"
                       padding={['0', '0', '18.5px']}
