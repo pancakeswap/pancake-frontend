@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Box, Flex, Text, ProfileAvatar, Skeleton } from '@pancakeswap/uikit'
 import { useProfileForAddress } from 'state/profile/hooks'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useSidNameForAddress } from 'hooks/useSid'
 
 const Container = styled(Flex)`
   min-width: 158px;
@@ -27,6 +28,7 @@ interface WinnerProps {
 
 const Winner: React.FC<React.PropsWithChildren<WinnerProps>> = ({ address }) => {
   const { profile, isFetching } = useProfileForAddress(address)
+  const { sidName } = useSidNameForAddress(address)
 
   return (
     <Container>
@@ -35,7 +37,7 @@ const Winner: React.FC<React.PropsWithChildren<WinnerProps>> = ({ address }) => 
           <ProfileAvatar style={{ alignSelf: 'center' }} width={24} height={24} src={profile?.nft?.image?.thumbnail} />
           <Box ml="4px">
             <Text fontSize="12px" color="primary">
-              {truncateHash(address)}
+              {sidName || truncateHash(address)}
             </Text>
             <Text minHeight="18px" fontSize="12px" color="primary">
               {profile?.username ? `@${profile.username}` : null}
