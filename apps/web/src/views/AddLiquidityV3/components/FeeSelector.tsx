@@ -8,8 +8,13 @@ export default function FeeSelector({ handleFeePoolSelect, feeAmount }) {
   const selectedIndex = feeArrays.findIndex((fee) => fee === _toNumber(feeAmount))
 
   return (
-    <Box>
-      <ButtonMenu activeIndex={selectedIndex} onItemClick={(index) => handleFeePoolSelect(feeArrays[index])} scale="sm">
+    <Box width="100%">
+      <ButtonMenu
+        fullWidth
+        activeIndex={selectedIndex}
+        onItemClick={(index) => handleFeePoolSelect(feeArrays[index])}
+        scale="sm"
+      >
         {feeArrays.map((fee) => (
           <ButtonMenuItem key={fee}>{fee}</ButtonMenuItem>
         ))}

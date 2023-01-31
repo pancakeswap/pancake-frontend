@@ -1,9 +1,22 @@
-// import { BigNumber } from '@ethersproject/bignumber'
+import { BigNumber } from '@ethersproject/bignumber'
 import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
-import { Box, FlexGap, AutoColumn, Button, Dots, RowBetween } from '@pancakeswap/uikit'
+import { Currency, Percent } from '@pancakeswap/sdk'
+import {
+  FlexGap,
+  AutoColumn,
+  Button,
+  Dots,
+  RowBetween,
+  CardBody,
+  Card,
+  Text,
+  AddIcon,
+  BalanceInput,
+  Flex,
+  AutoRow,
+} from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -16,13 +29,12 @@ import {
   useCallback,
   // useEffect,
   useState,
-  useMemo,
 } from 'react'
 // import useParsedQueryString from 'hooks/useParsedQueryString'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 
-import { maxAmountSpend } from 'utils/maxAmountSpend'
+// import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
@@ -43,15 +55,24 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 // import useBUSDPrice from 'hooks/useBUSDPrice'
-import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { usePrepareSendTransaction } from 'wagmi'
-import { BigNumber } from '@ethersproject/bignumber'
-import { sendTransaction } from '@wagmi/core'
+import { useSigner } from 'wagmi'
+import Page from 'views/Page'
+import { AppHeader } from 'components/App'
+import styled from 'styled-components'
+import { CurrencyLogo } from 'components/Logo'
+import { TransactionResponse } from '@ethersproject/providers'
 
 import { useV3MintActionHandlers } from './form/hooks'
 import { Bound } from './form/actions'
 import FeeSelector from './components/FeeSelector'
 import RangeSelector from './components/RangeSelector'
+
+export const BodyWrapper = styled(Card)`
+  border-radius: 24px;
+  max-width: 858px;
+  width: 100%;
+  z-index: 1;
+`
 
 interface AddLiquidityV3PropsType {
   currencyA: Currency
@@ -60,6 +81,8 @@ interface AddLiquidityV3PropsType {
 
 export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
   const router = useRouter()
+  const { data: signer } = useSigner()
+  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   const [currencyIdA, currencyIdB, feeAmountFromUrl, tokenId] = router.query.currency || []
 
@@ -67,7 +90,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   // const expertMode = useIsExpertMode()
 
   const positionManager = useV3NFTPositionManagerContract()
-  const { account, chainId, provider, isWrongNetwork } = useActiveWeb3React()
+  const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   // const parsedQs = useParsedQueryString()
   const addTransaction = useTransactionAdder()
   // // fee selection from url
@@ -99,7 +122,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     // price,
     pricesAtTicks,
     parsedAmounts,
-    currencyBalances,
+    // currencyBalances,
     position,
     noLiquidity,
     currencies,
@@ -119,8 +142,13 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     existingPosition,
     formState,
   )
-  const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput } =
-    useV3MintActionHandlers(noLiquidity)
+  const {
+    onFieldAInput,
+    onFieldBInput,
+    onLeftRangeInput,
+    onRightRangeInput,
+    // onStartPriceInput
+  } = useV3MintActionHandlers(noLiquidity)
   const isValid = !errorMessage && !invalidRange
   // modal and loading
   //   const [showConfirm, setShowConfirm] = useState<boolean>(false)
@@ -158,25 +186,25 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   //   [Field.CURRENCY_B]: useBUSDPrice(parsedAmounts[Field.CURRENCY_B]?.currency),
   // }
   //   // get the max amounts user can add
-  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmountSpend(currencyBalances[field]),
-      }
-    },
-    {},
-  )
-  const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-      }
-    },
-    {},
-  )
-  const nftPositionManagerAddress = useV3NFTPositionManagerContract().address
+  // const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  //   (accumulator, field) => {
+  //     return {
+  //       ...accumulator,
+  //       [field]: maxAmountSpend(currencyBalances[field]),
+  //     }
+  //   },
+  //   {},
+  // )
+  // const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  //   (accumulator, field) => {
+  //     return {
+  //       ...accumulator,
+  //       [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
+  //     }
+  //   },
+  //   {},
+  // )
+  const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   //   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
@@ -186,48 +214,73 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
   //   // )
 
-  const txn = useMemo(() => {
-    if (
-      !chainId ||
-      !provider ||
-      !account ||
-      !positionManager ||
-      !baseCurrency ||
-      !quoteCurrency ||
-      !position ||
-      !account ||
-      !deadline
-    ) {
-      return undefined
+  const onAdd = useCallback(async () => {
+    if (!chainId || !signer || !account || !nftPositionManagerAddress) return
+
+    if (!positionManager || !baseCurrency || !quoteCurrency) {
+      return
     }
 
-    const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
+    if (position && account && deadline) {
+      const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
+      const { calldata, value } =
+        hasExistingPosition && tokenId
+          ? NonfungiblePositionManager.addCallParameters(position, {
+              tokenId,
+              slippageTolerance: new Percent(allowedSlippage, 100),
+              deadline: deadline.toString(),
+              useNative,
+            })
+          : NonfungiblePositionManager.addCallParameters(position, {
+              slippageTolerance: new Percent(allowedSlippage, 100),
+              recipient: account,
+              deadline: deadline.toString(),
+              useNative,
+              createPool: noLiquidity,
+            })
 
-    const { calldata, value } =
-      hasExistingPosition && tokenId
-        ? NonfungiblePositionManager.addCallParameters(position, {
-            tokenId,
-            slippageTolerance: new Percent(allowedSlippage, 100),
-            deadline: deadline.toString(),
-            useNative,
-          })
-        : NonfungiblePositionManager.addCallParameters(position, {
-            slippageTolerance: new Percent(allowedSlippage, 100),
-            recipient: account,
-            deadline: deadline.toString(),
-            useNative,
-            createPool: noLiquidity,
-          })
+      const txn: { to: string; data: string; value: string } = {
+        to: nftPositionManagerAddress,
+        data: calldata,
+        value,
+      }
 
-    const tx: { to: string; data: string; value: string } = {
-      to: nftPositionManagerAddress,
-      data: calldata,
-      value,
+      setAttemptingTxn(true)
+
+      signer
+        .estimateGas(txn)
+        .then((estimate) => {
+          const newTxn = {
+            ...txn,
+            gasLimit: calculateGasMargin(estimate),
+          }
+
+          return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+            setAttemptingTxn(false)
+            addTransaction(response, {
+              type: 'add-liquidity-v3',
+              baseCurrencyId: currencyId(baseCurrency),
+              quoteCurrencyId: currencyId(quoteCurrency),
+              createPool: Boolean(noLiquidity),
+              expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+              expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+              feeAmount: position.pool.fee,
+            })
+            setTxHash(response.hash)
+          })
+        })
+        .catch((error) => {
+          console.error('Failed to send transaction', error)
+          setAttemptingTxn(false)
+          // we only care if the error is something _other_ than the user rejected the tx
+          if (error?.code !== 4001) {
+            console.error(error)
+          }
+        })
     }
-
-    return tx
   }, [
     account,
+    addTransaction,
     allowedSlippage,
     baseCurrency,
     chainId,
@@ -235,37 +288,13 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     hasExistingPosition,
     nftPositionManagerAddress,
     noLiquidity,
+    parsedAmounts,
     position,
     positionManager,
-    provider,
     quoteCurrency,
+    signer,
     tokenId,
   ])
-
-  const { config } = usePrepareSendTransaction({
-    request: txn,
-  })
-
-  const onAdd = useCallback(() => {
-    sendTransaction({
-      ...config,
-      request: {
-        ...config?.request,
-        ...(config?.request?.gasLimit && { gasLimit: calculateGasMargin(BigNumber.from(config?.request?.gasLimit)) }),
-      },
-    }).then((txnResponse) => {
-      addTransaction(txnResponse, {
-        type: 'add-liquidity-v3',
-        baseCurrencyId: currencyId(baseCurrency),
-        quoteCurrencyId: currencyId(quoteCurrency),
-        createPool: Boolean(noLiquidity),
-        expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-        expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-        feeAmount: position.pool.fee,
-      })
-      setTxHash(txnResponse.hash)
-    })
-  }, [addTransaction, baseCurrency, config, noLiquidity, parsedAmounts, position.pool.fee, quoteCurrency])
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
   const handleFeePoolSelect = useCallback(
@@ -356,6 +385,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
           onClick={() => onAdd()}
           disabled={
             !isValid ||
+            attemptingTxn ||
             (approvalA !== ApprovalState.APPROVED && !depositADisabled) ||
             (approvalB !== ApprovalState.APPROVED && !depositBDisabled)
           }
@@ -367,67 +397,101 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   }
 
   return (
-    <Box>
-      <FlexGap gap="4px">
-        <CurrencySelect
-          id="add-liquidity-select-tokena"
-          selectedCurrency={baseCurrency}
-          onCurrencySelect={handleCurrencyASelect}
-          showCommonBases
-          commonBasesType={CommonBasesType.LIQUIDITY}
-        />
-        <CurrencySelect
-          id="add-liquidity-select-tokenb"
-          selectedCurrency={currencyB}
-          onCurrencySelect={handleCurrencyBSelect}
-          showCommonBases
-          commonBasesType={CommonBasesType.LIQUIDITY}
-        />
-      </FlexGap>
-      <Box>
-        <FeeSelector handleFeePoolSelect={handleFeePoolSelect} feeAmount={feeAmountFromUrl} />
-      </Box>
-      <Box>
-        <RangeSelector
-          priceLower={priceLower}
-          priceUpper={priceUpper}
-          getDecrementLower={getDecrementLower}
-          getIncrementLower={getIncrementLower}
-          getDecrementUpper={getDecrementUpper}
-          getIncrementUpper={getIncrementUpper}
-          onLeftRangeInput={onLeftRangeInput}
-          onRightRangeInput={onRightRangeInput}
-          currencyA={baseCurrency}
-          currencyB={quoteCurrency}
-          feeAmount={feeAmount}
-          ticksAtLimit={ticksAtLimit}
-        />
-      </Box>
-      <FlexGap>
-        <CurrencyInputPanel
-          value={formattedAmounts[Field.CURRENCY_A]}
-          onUserInput={onFieldAInput}
-          onMax={() => {
-            onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-          }}
-          showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-          currency={currencies[Field.CURRENCY_A] ?? null}
-          id="add-liquidity-input-tokena"
-          showCommonBases
-        />
-        <CurrencyInputPanel
-          value={formattedAmounts[Field.CURRENCY_B]}
-          onUserInput={onFieldBInput}
-          onMax={() => {
-            onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
-          }}
-          showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-          currency={currencies[Field.CURRENCY_B] ?? null}
-          id="add-liquidity-input-tokenb"
-          showCommonBases
-        />
-      </FlexGap>
-      {buttons}
-    </Box>
+    <Page>
+      <BodyWrapper>
+        <AppHeader title={t('Add Liquidity')} backTo="/pool-v3" />
+        <CardBody>
+          <AutoRow gap="24px">
+            <AutoColumn
+              style={{
+                flexBasis: '50%',
+              }}
+            >
+              <FlexGap gap="4px" mb="8px">
+                <CurrencySelect
+                  id="add-liquidity-select-tokena"
+                  selectedCurrency={baseCurrency}
+                  onCurrencySelect={handleCurrencyASelect}
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                  hideBalance
+                />
+                <AddIcon color="textSubtle" />
+                <CurrencySelect
+                  id="add-liquidity-select-tokenb"
+                  selectedCurrency={currencyB}
+                  onCurrencySelect={handleCurrencyBSelect}
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                  hideBalance
+                />
+              </FlexGap>
+
+              <FeeSelector handleFeePoolSelect={handleFeePoolSelect} feeAmount={feeAmountFromUrl} />
+            </AutoColumn>
+
+            <AutoColumn
+              style={{
+                flexGrow: 1,
+              }}
+            >
+              <RangeSelector
+                priceLower={priceLower}
+                priceUpper={priceUpper}
+                getDecrementLower={getDecrementLower}
+                getIncrementLower={getIncrementLower}
+                getDecrementUpper={getDecrementUpper}
+                getIncrementUpper={getIncrementUpper}
+                onLeftRangeInput={onLeftRangeInput}
+                onRightRangeInput={onRightRangeInput}
+                currencyA={baseCurrency}
+                currencyB={quoteCurrency}
+                feeAmount={feeAmount}
+                ticksAtLimit={ticksAtLimit}
+              />
+            </AutoColumn>
+          </AutoRow>
+          <AutoRow gap="24px">
+            <AutoColumn
+              style={{
+                flexBasis: '50%',
+              }}
+            >
+              <Flex alignItems="center" minWidth="70px">
+                <CurrencyLogo currency={currencies[Field.CURRENCY_A]} />
+                <Text ml="4px" bold>
+                  {currencies[Field.CURRENCY_A]?.symbol}
+                </Text>
+              </Flex>
+              <BalanceInput
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                decimals={currencies[Field.CURRENCY_A]?.decimals ?? null}
+                id="add-liquidity-input-tokena"
+              />
+              <Flex alignItems="center" minWidth="70px">
+                <CurrencyLogo currency={currencies[Field.CURRENCY_B]} />
+                <Text ml="4px" bold>
+                  {currencies[Field.CURRENCY_B]?.symbol}
+                </Text>
+              </Flex>
+              <BalanceInput
+                value={formattedAmounts[Field.CURRENCY_B]}
+                onUserInput={onFieldBInput}
+                decimals={currencies[Field.CURRENCY_B]?.decimals ?? null}
+                id="add-liquidity-input-tokenb"
+              />
+            </AutoColumn>
+            <AutoColumn
+              style={{
+                flexGrow: 1,
+              }}
+            >
+              {buttons}
+            </AutoColumn>
+          </AutoRow>
+        </CardBody>
+      </BodyWrapper>
+    </Page>
   )
 }
