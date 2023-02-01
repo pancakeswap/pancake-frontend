@@ -27,7 +27,7 @@ const HowItWork = () => {
         labore et dolore magna aliqua.
       </Text>
       <Text textAlign="center" color="textSubtle" bold mb="32px">
-        {t('How does it work?  ')}
+        {t('How does it work?')}
       </Text>
       <Flex maxWidth={['888px']}>
         <Flex width="33.33%" mr={['16px']}>
