@@ -996,7 +996,7 @@
   "5Y": "5 Yıl",
   "Annual ROI at current rates": "Güncel oranlarda yatırım getirisi",
   "Default Transaction Speed (GWEI)": "Varsayılan İşlem Hızı (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "İşleminizin gas fiyatını (işlem ücreti) ayarlar. Daha yüksek GWEI = daha yüksek hız = daha yüksek ücretler",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Standart (%gasPrice%)",
   "Fast (%gasPrice%)": "Hızlı (%gasPrice%)",
   "Instant (%gasPrice%)": "Anında (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Emir iptali: %outputAmount% %outputTokenSymbol% karşılığında %inputAmount% %inputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Farm verimini artırmanın, IFO'lara katılmanın, oylama gücünü artırmanın ve çok daha fazlasının avantajlarından yararlanmaya devam etmek için fon pozisyonunuzu yenileyin!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Kilit dönemi sona erdi. Daha fazla ödülün yakılmasını önlemek üzere kilitli fonlardan yararlanmaya devam etmek için fon pozisyonunuzu yenileyin.",
-  "RPC Default": "RPC Varsayılan",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Tavşanlar yerine cüzdanın kullanıcı adını gösterir",
   "Show username": "Kullanıcı adını göster",
   "For more info, please see pGALA’s twitter.": "Daha fazla bilgi için lütfen pGALA'nın Twitter adresine göz atın.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "En çok işlem gören token'lara göz atın",
   "%days% days": "%days% gün",
   "1 day": "1 gün",
-  "< 1 day": "< 1 gün"
+  "< 1 day": "< 1 gün",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
