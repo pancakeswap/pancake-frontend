@@ -996,7 +996,7 @@
   "5Y": "5Y",
   "Annual ROI at current rates": "Taunang ROI sa kasaluyang mga rate",
   "Default Transaction Speed (GWEI)": "Default na Bilis ng Transaksyon (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Ina-adjust ang presyo ng gas (transaction fee) para sa iyong transaksyon. Mas mataas na GWEI = mas mabilis = mas mataas ang singilin",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Karaniwan (%gasPrice%)",
   "Fast (%gasPrice%)": "Mabilis (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Pagkansela ng order: %inputAmount% %inputTokenSymbol% para sa %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "I-renew ang posisyon mo sa pag-stake para patuloy na ma-enjoy ang mga benepisyo ng pag-boost ng yield sa farm, pagsali sa mga IFO, mga pag-boost sa kapangyarihang bumoto, at marami pang iba!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Natapos na ang panahon ng pag-lock. Para maiwasang dumami pa ang mga reward na mabe-burn, i-renew ang iyong posisyon sa pag-stake para patuloy na ma-enjoy ang mga benepisyo mula sa mga na-lock na pag-stake.",
-  "RPC Default": "Default na RPC",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Ipinapakita ang username ng wallet sa halip na mga bunny",
   "Show username": "Ipakita ang username",
   "For more info, please see pGALA’s twitter.": "Para sa higit pang impormasyon, pakitingnan ang twiiter ng pGALA.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Tingnan ang mga nangungunang token na tine-trade",
   "%days% days": "%days% (na) araw",
   "1 day": "1 araw",
-  "< 1 day": "< 1 araw"
+  "< 1 day": "< 1 araw",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
