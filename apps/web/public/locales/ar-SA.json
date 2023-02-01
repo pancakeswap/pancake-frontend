@@ -996,7 +996,7 @@
   "5Y": "5 سنوات",
   "Annual ROI at current rates": "العائد على الاستثمار السنوي بالأسعار الحالية",
   "Default Transaction Speed (GWEI)": "سرعة المعاملة الافتراضية (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "يعدل سعر الوقود (رسوم المعاملة) لمعاملتك. GWEI المرتفع = سرعة عالية = رسوم مرتفعة",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "القياسي (%gasPrice%)",
   "Fast (%gasPrice%)": "السريع (%gasPrice%)",
   "Instant (%gasPrice%)": "الفوري (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "إلغاء الأمر: %inputAmount% %inputTokenSymbol% مقابل %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "جدد مركز الرهن الخاص بك للاستمرار في الاستمتاع بفوائد تعزيز عائد المزرعة، والمشاركة في العروض الأولية للمزرعة (IFO)، ومعززات قوة التصويت وغير ذلك الكثير!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "انتهت فترة التجميد. لتفادي حرق مزيد من المكافآت، جدد مركز الرهن الخاص بك للاستمرار في الاستمتاع بالفوائد من الرهن المجمد.",
-  "RPC Default": "RPC الافتراضي",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "إظهار اسم مستخدم المزرعة بدلاً من الأرانب",
   "Show username": "إظهار اسم المستخدم",
   "For more info, please see pGALA’s twitter.": "لمزيد من المعلومات، يرجى الاطلاع على حساب pGALA على تويتر.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "افحص الرموز المميزة الأعلى تداولاً",
   "%days% days": "%days% من الأيام",
   "1 day": "يوم واحد",
-  "< 1 day": "< 1 يوم"
+  "< 1 day": "< 1 يوم",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
