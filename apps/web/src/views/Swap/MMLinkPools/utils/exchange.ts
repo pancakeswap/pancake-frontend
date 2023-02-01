@@ -50,7 +50,8 @@ export function computeTradePriceBreakdown(trade?: TradeWithMM<Currency, Currenc
   const priceImpactWithoutFeePercent = priceImpactWithoutFeeFraction ? ZERO_PERCENT : undefined
 
   // the amount of the input that accrues to LPs
-  const realizedLPFeeAmount = realizedLPFee && trade && trade.inputAmount
+  const feeRate = new Fraction(5, 10000)
+  const realizedLPFeeAmount = realizedLPFee && trade && trade.inputAmount.multiply(feeRate)
 
   return { priceImpactWithoutFee: priceImpactWithoutFeePercent, realizedLPFee: realizedLPFeeAmount }
 }

@@ -101,7 +101,7 @@ export default function SwapModalFooter({
             <QuestionHelper
               text={
                 <>
-                  <Text>{`${t('AMM')}:${t(
+                  <Text>{`${t('AMM')}: ${t(
                     'The difference between the market price and estimated price due to trade size.',
                   )}`}</Text>
                   <Text mt="10px">{`${t('MM')}:${t('No slippage against quote from market maker')}`}</Text>
@@ -119,7 +119,8 @@ export default function SwapModalFooter({
               text={
                 <>
                   <Text mb="12px">
-                    {t('AMM')}:{t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
+                    {t('AMM')}:{' '}
+                    {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
                   </Text>
                   <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
                   <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
