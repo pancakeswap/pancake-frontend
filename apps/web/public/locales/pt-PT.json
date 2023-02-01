@@ -996,7 +996,7 @@
   "5Y": "5A",
   "Annual ROI at current rates": "ROI anual nas taxas atuais",
   "Default Transaction Speed (GWEI)": "Velocidade de transação padrão (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Ajuste o preço do gás (taxa de negociação) para a sua negociação. Maior GWEI = maior velocidade = maiores taxas",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Padrão (%gasPrice%)",
   "Fast (%gasPrice%)": "Rápido (%gasPrice%)",
   "Instant (%gasPrice%)": "Instantâneo (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Cancelamento de ordem: %inputAmount% %inputTokenSymbol% para %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Renove a sua posição de stake para continuar a aproveitar os benefícios do aumento do rendimento da farm, a participação em IFOs, o aumento do poder de voto e muito mais!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "O período de bloqueio terminou. Para evitar que mais recompensas sejam queimadas, renove a sua posição de stake para continuar a aproveitar os benefícios do stake bloqueado.",
-  "RPC Default": "RPC predeterminado",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Mostra o nome de utilizador em vez de coelhinhos",
   "Show username": "Mostrar nome de utilizador",
   "For more info, please see pGALA’s twitter.": "Para mais informações, consulte o twitter de pGALA.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Confira os tokens mais negociados",
   "%days% days": "%days% dias",
   "1 day": "1 dia",
-  "< 1 day": "< 1 dia"
+  "< 1 day": "< 1 dia",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
