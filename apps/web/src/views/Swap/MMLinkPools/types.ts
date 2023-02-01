@@ -43,6 +43,7 @@ export type OrderBookRequest = {
 export interface OrderBookResponse {
   messageType: MessageType.ORDER_BOOK_PRICE_RESPONSE
   message: {
+    error?: string
     makerSideToken: string
     takerSideToken: string
     makerSideTokenAmount: string

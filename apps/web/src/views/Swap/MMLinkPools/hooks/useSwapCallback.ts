@@ -44,7 +44,6 @@ export function useSwapCallback(
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
   swapCalls: SwapCall[],
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-  console.log(swapCalls, 'swapCalls')
   const { account, chainId } = useActiveWeb3React()
   const gasPrice = useGasPrice()
 
@@ -106,11 +105,11 @@ export function useSwapCallback(
             'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
-        // if (!successfulEstimation) {
-        //   const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
-        //   if (errorCalls.length > 0) throw new Error(errorCalls[errorCalls.length - 1].error)
-        //   throw new Error(t('Unexpected error. Could not estimate gas for the swap.'))
-        // }
+        if (!successfulEstimation) {
+          const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
+          if (errorCalls.length > 0) throw new Error(errorCalls[errorCalls.length - 1].error)
+          throw new Error(t('Unexpected error. Could not estimate gas for the swap.'))
+        }
 
         const {
           call: {

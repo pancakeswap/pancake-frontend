@@ -74,7 +74,7 @@ export const useMMTrade = (
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
   if (!inputCurrency || !outputCurrency || !mmQoute || !account || !mmQoute?.message?.takerSideTokenAmount) return null
-  const { takerSideTokenAmount, makerSideTokenAmount } = mmQoute.message
+  const { takerSideTokenAmount, makerSideTokenAmount, error } = mmQoute.message
   const bestTradeWithMM = parseMMTrade(
     isExactIn,
     inputCurrency,
@@ -127,6 +127,9 @@ export const useMMTrade = (
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
+  }
+  if (error) {
+    inputError = error
   }
   return {
     trade: bestTradeWithMM,

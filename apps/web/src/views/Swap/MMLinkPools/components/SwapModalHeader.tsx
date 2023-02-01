@@ -1,13 +1,14 @@
-import { TradeType, CurrencyAmount, Currency, Percent } from '@pancakeswap/sdk'
-import { Button, Text, ErrorIcon, ArrowDownIcon } from '@pancakeswap/uikit'
-import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
-import { warningSeverity } from 'utils/exchange'
-import { AutoColumn } from 'components/Layout/Column'
-import { CurrencyLogo } from 'components/Logo'
-import { RowBetween, RowFixed } from 'components/Layout/Row'
+import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
+import { ArrowDownIcon, Button, ErrorIcon, Text } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-import { TruncatedText, SwapShowAcceptChanges } from '../../components/styleds'
+import { AutoColumn } from 'components/Layout/Column'
+import { RowBetween, RowFixed } from 'components/Layout/Row'
+import { CurrencyLogo } from 'components/Logo'
+import { Field } from 'state/swap/actions'
+import { warningSeverity } from 'utils/exchange'
+import { SwapShowAcceptChanges, TruncatedText } from '../../components/styleds'
+import { MMSlippageTolerance } from './MMSlippageTolerance'
 
 export default function SwapModalHeader({
   inputAmount,
@@ -120,8 +121,9 @@ export default function SwapModalHeader({
           <Text color="secondary" bold textTransform="uppercase">
             {t('Slippage Tolerance')}
           </Text>
+
           <Text bold color="primary" ml="auto" textAlign="end">
-            {`${allowedSlippage / 100}%`}
+            <MMSlippageTolerance />
           </Text>
         </RowFixed>
         {tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (
