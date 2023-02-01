@@ -996,7 +996,7 @@
   "5Y": "5É",
   "Annual ROI at current rates": "Éves ROI aktuális árfolyamon",
   "Default Transaction Speed (GWEI)": "Alapértelmezett ügyleti sebesség (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Korrigálja a gázárat (ügyletdíjat) a tranzakcióhoz. Magasabb GWEI = nagyobb sebesség = magasabb díjak",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Normál (%gasPrice%)",
   "Fast (%gasPrice%)": "Gyors (%gasPrice%)",
   "Instant (%gasPrice%)": "Azonnali (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Megrendelés törlése: %inputAmount% %inputTokenSymbol% ehhez: %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Újítsa meg tétpozícióját, hogy továbbra is élvezhesse a hozamfarmok hozamnöveléséből, az IFO részvételből, a szavazati jog növeléséből és még sok egyébből származó előnyöket!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "A zárolási időszak véget ért. Hogy elkerüld további jutalmak elégetését, újítsd meg tétpozíciódat, hogy továbbra is élvezhesd a zárolt tét előnyeit.",
-  "RPC Default": "RPC alapértelmezett",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "A pénztárca felhasználónevét mutatja nyuszik helyett",
   "Show username": "Felhasználónév megjelenítése",
   "For more info, please see pGALA’s twitter.": "További információért látogasd meg a pGALA twitter felületét.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Nézze meg a legkeresettebb zsetonokat",
   "%days% days": "%days% nap",
   "1 day": "1 nap",
-  "< 1 day": "< 1 nap"
+  "< 1 day": "< 1 nap",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
