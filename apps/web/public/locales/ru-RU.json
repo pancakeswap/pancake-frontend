@@ -996,7 +996,7 @@
   "5Y": "5Л",
   "Annual ROI at current rates": "ROI по текущему курсу",
   "Default Transaction Speed (GWEI)": "Скорость транзакции по умолчанию (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Определите цену газа (комиссию за транзакцию) для транзакции. Выше GWEI = выше скорость = выше комиссия.",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Стандартная (%gasPrice%)",
   "Fast (%gasPrice%)": "Быстрая (%gasPrice%)",
   "Instant (%gasPrice%)": "Мгновенная (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Отмена ордера: %inputAmount% %inputTokenSymbol% на %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Возобновите позицию вложения и продолжайте пользоваться преимуществами: повышением выручки фарма, участием в IFO, увеличенным влиянием в голосовании и т. д.!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Период блокировки закончился. Чтобы избежать дальнейшего сожжения вознаграждений, возобновите позицию вложения или продолжайте пользоваться преимуществами вложения с блокировкой.",
-  "RPC Default": "RPC по умолчанию",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Показывает имя пользователя кошелька вместо зайчиков",
   "Show username": "Показывать имя пользователя",
   "For more info, please see pGALA’s twitter.": "Подробнее смотрите в твиттере pGALA.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Просмотрите самые продаваемые токены",
   "%days% days": "%days% сут",
   "1 day": "1 день",
-  "< 1 day": "< 1 дня"
+  "< 1 day": "< 1 дня",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
