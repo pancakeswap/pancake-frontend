@@ -996,7 +996,7 @@
   "5Y": "5J",
   "Annual ROI at current rates": "Jaarlijkse ROI volgens de huidige tarieven",
   "Default Transaction Speed (GWEI)": "Standaard transactiesnelheid (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Past de gasprijs (transactiekosten) voor je transactie aan. Hogere GWEI = hogere snelheid = hogere kosten",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Standaard (%gasPrice%)",
   "Fast (%gasPrice%)": "Snel (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Orderannulering: %inputAmount% %inputTokenSymbol% voor %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Vernieuw je stakingpositie om te blijven genieten van de voordelen van opbrengstboosting, deelname aan IFO's, stemkrachtverhoging en nog veel meer!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "De vergrendelingsperiode is afgelopen. Om te voorkomen dat meer beloningen worden verbrand, moet je je stakingpositie vernieuwen om te blijven genieten van de voordelen van vergrendelde staking.",
-  "RPC Default": "RPC-standaardinstelling",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Geeft de gebruikersnaam van de wallet weer in plaats van konijntjes",
   "Show username": "Gebruikersnaam weergeven",
   "For more info, please see pGALA’s twitter.": "Zie pGALA's Twitter voor meer informatie.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Bekijk de meest verhandelde tokens",
   "%days% days": "%days% dagen",
   "1 day": "1 dag",
-  "< 1 day": "< 1 dag"
+  "< 1 day": "< 1 dag",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
