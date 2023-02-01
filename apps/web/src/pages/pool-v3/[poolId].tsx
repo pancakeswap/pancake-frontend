@@ -1,9 +1,9 @@
 import { BigNumber } from '@ethersproject/bignumber'
 // import { TransactionResponse } from '@ethersproject/providers'
-import { Currency, CurrencyAmount, Percent, Price, Token } from '@pancakeswap/sdk'
-import { Button, useModal } from '@pancakeswap/uikit'
+import { Currency, CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
+import { Button, Card, CardBody, useModal, Text, AutoRow, Flex, Box, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
-import { SendTransactionResult } from '@wagmi/core'
+import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 // import useBUSDPrice from 'hooks/useBUSDPrice'
@@ -23,7 +23,18 @@ import currencyId from 'utils/currencyId'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import ClaimFeeModal from 'views/AddLiquidityV3/components/ClaimFeeModal'
+import Page from 'views/Page'
 import { usePrepareSendTransaction, useSendTransaction, useTransaction } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
+import styled from 'styled-components'
+import { LightGreyCard } from 'components/Card'
+
+export const BodyWrapper = styled(Card)`
+  border-radius: 24px;
+  max-width: 858px;
+  width: 100%;
+  z-index: 1;
+`
 
 const useInverter = ({
   priceLower,
@@ -51,37 +62,39 @@ const useInverter = ({
   }
 }
 
-function getRatio(
-  lower: Price<Currency, Currency>,
-  current: Price<Currency, Currency>,
-  upper: Price<Currency, Currency>,
-) {
-  try {
-    if (!current.greaterThan(lower)) {
-      return 100
-    }
+// function getRatio(
+//   lower: Price<Currency, Currency>,
+//   current: Price<Currency, Currency>,
+//   upper: Price<Currency, Currency>,
+// ) {
+//   try {
+//     if (!current.greaterThan(lower)) {
+//       return 100
+//     }
 
-    if (!current.lessThan(upper)) {
-      return 0
-    }
+//     if (!current.lessThan(upper)) {
+//       return 0
+//     }
 
-    const a = Number.parseFloat(lower.toSignificant(15))
-    const b = Number.parseFloat(upper.toSignificant(15))
-    const c = Number.parseFloat(current.toSignificant(15))
+//     const a = Number.parseFloat(lower.toSignificant(15))
+//     const b = Number.parseFloat(upper.toSignificant(15))
+//     const c = Number.parseFloat(current.toSignificant(15))
 
-    const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
+//     const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
 
-    if (ratio < 0 || ratio > 100) {
-      throw Error('Out of range')
-    }
+//     if (ratio < 0 || ratio > 100) {
+//       throw Error('Out of range')
+//     }
 
-    return ratio
-  } catch {
-    return undefined
-  }
-}
+//     return ratio
+//   } catch {
+//     return undefined
+//   }
+// }
 
 export default function PoolPage() {
+  // const { t } = useTranslation()
+
   const { account, chainId, provider } = useActiveWeb3React()
 
   const router = useRouter()
@@ -285,18 +298,67 @@ export default function PoolPage() {
   )
 
   return (
-    <>
-      <div>
-        {currencyQuote?.symbol} / {currencyBase?.symbol}{' '}
-        {feeAmount && new Percent(feeAmount, 1_000_000).toSignificant()}% {inRange ? 'in range' : 'out of range'}
-      </div>
-      <div>ID: {tokenIdFromUrl}</div>
-      <div>Min Tick: {tickLower}</div>
-      <div>Max Tick: {tickUpper}</div>
-      <Button disabled={collecting} onClick={onClaimFee}>
-        Claim fee
-      </Button>
-    </>
+    <Page>
+      <BodyWrapper>
+        <AppHeader
+          title={`${currencyQuote?.symbol} / ${currencyBase?.symbol} - ${inRange ? 'In Range' : 'Out of Range'}`}
+          backTo="/pool-v3"
+          noConfig
+          buttons={
+            currency0 &&
+            currency1 && (
+              <>
+                <NextLinkFromReactRouter
+                  to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
+                >
+                  <Button width="100%">Add</Button>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
+                  <Button ml="16px" variant="secondary" width="100%">
+                    Remove
+                  </Button>
+                </NextLinkFromReactRouter>
+              </>
+            )
+          }
+        />
+        <CardBody>
+          <AutoRow>
+            <Flex alignItems="center" justifyContent="space-between" width="100%">
+              <Box width="100%">
+                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                  Liquidity
+                </Text>
+              </Box>
+              <Box width="100%">
+                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                  Unclaim Fees
+                </Text>
+                <Button scale="sm" disabled={collecting} onClick={onClaimFee}>
+                  Collect
+                </Button>
+              </Box>
+            </Flex>
+          </AutoRow>
+          <AutoRow>
+            <Flex alignItems="center" justifyContent="space-between" width="100%">
+              <LightGreyCard mr="4px">
+                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                  MIN PRICE
+                </Text>
+                {tickLower}
+              </LightGreyCard>
+              <LightGreyCard ml="4px">
+                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                  MAX PRICE
+                </Text>
+                {tickUpper}
+              </LightGreyCard>
+            </Flex>
+          </AutoRow>
+        </CardBody>
+      </BodyWrapper>
+    </Page>
   )
 }
 

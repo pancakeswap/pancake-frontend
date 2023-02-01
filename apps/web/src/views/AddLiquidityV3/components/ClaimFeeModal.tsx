@@ -1,6 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, Flex, InjectedModalProps, Modal } from '@pancakeswap/uikit'
+import { AutoRow, Button, Flex, InjectedModalProps, Modal, Text } from '@pancakeswap/uikit'
+import { LightGreyCard } from 'components/Card'
+import { CurrencyLogo } from 'components/Logo'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
 interface ClaimFeeModal {
@@ -20,17 +22,31 @@ export default function ClaimFeeModal({
   } = useTranslation()
 
   return (
-    <Modal title="Claim fee" onDismiss={onDismiss}>
-      <Flex>
-        <div>{feeValueUpper?.currency?.symbol}</div>
-        <div>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</div>
-      </Flex>
-      <Flex>
-        <div>{feeValueLower?.currency?.symbol}</div>
-        <div>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</div>
-      </Flex>
+    <Modal title="Collect fees" onDismiss={onDismiss}>
+      <LightGreyCard mb="16px">
+        <AutoRow justifyContent="space-between">
+          <Flex>
+            <CurrencyLogo currency={feeValueUpper?.currency} size="24px" />
+            <Text color="primary" ml="4px">
+              {feeValueUpper?.currency?.symbol}
+            </Text>
+          </Flex>
+          <Text>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
+        </AutoRow>
+        <AutoRow justifyContent="space-between">
+          <Flex>
+            <CurrencyLogo currency={feeValueLower?.currency} size="24px" m />
+            <Text color="primary" ml="4px">
+              {feeValueLower?.currency?.symbol}
+            </Text>
+          </Flex>
+          <Text>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
+        </AutoRow>
+      </LightGreyCard>
       <Flex flexDirection="column" alignItems="center" justifyContent="center" maxWidth="320px">
-        <Button onClick={collect}>Claim</Button>
+        <Button width="100%" onClick={collect}>
+          Collect
+        </Button>
       </Flex>
     </Modal>
   )

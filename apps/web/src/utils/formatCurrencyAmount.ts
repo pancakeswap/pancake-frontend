@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Price } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, JSBI, Price } from '@pancakeswap/sdk'
 import formatLocaleNumber from './formatLocaleNumber'
 
 export function formatCurrencyAmount(
@@ -15,9 +15,9 @@ export function formatCurrencyAmount(
     return '0'
   }
 
-  if (amount.divide(amount.decimalScale).lessThan(new Fraction(1, 100000))) {
-    return `<${formatLocaleNumber({ number: 0.00001, locale })}`
-  }
+  // if (amount.divide(amount.decimalScale).lessThan(new Fraction(1, 100000))) {
+  //   return `<${formatLocaleNumber({ number: 0.00001, locale })}`
+  // }
 
   return formatLocaleNumber({ number: amount, locale, sigFigs, fixedDecimals })
 }
