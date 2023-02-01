@@ -996,7 +996,7 @@
   "5Y": "5 T",
   "Annual ROI at current rates": "ROI Tahunan pada kurs saat ini",
   "Default Transaction Speed (GWEI)": "Kecepatan Transaksi Standar (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Menyesuaikan harga bahan bakar (biaya transaksi) untuk transaksi Anda. GWEI lebih tinggi = kecepatan lebih tinggi = biaya lebih tinggi",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Standar (%gasPrice%)",
   "Fast (%gasPrice%)": "Cepat (%gasPrice%)",
   "Instant (%gasPrice%)": "Seketika (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Pembatalan order: %inputAmount% %inputTokenSymbol% dengan %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Perpanjang posisi penumpukan Anda agar dapat terus menikmati berbagai manfaat dari peningkatan hasil farm, partisipasi dalam IFO, peningkatan kekuatan pemungutan suara, dan masih banyak lagi!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Masa penguncian telah berakhir. Untuk menghindari lebih banyak hadiah yang hangus, perpanjang posisi penumpukan Anda agar dapat terus menikmati berbagai manfaat dari penumpukan terkunci.",
-  "RPC Default": "Standar RPC",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Menampilkan nama pengguna dompet, bukan kelinci",
   "Show username": "Tampilkan nama pengguna",
   "For more info, please see pGALA’s twitter.": "Untuk mendapatkan info lebih lanjut, lihatlah Twitter pGALA.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Lihat token yang populer diperdagangkan",
   "%days% days": "%days% hari",
   "1 day": "1 hari",
-  "< 1 day": "< 1 hari"
+  "< 1 day": "< 1 hari",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
