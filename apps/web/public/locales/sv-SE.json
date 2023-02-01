@@ -996,7 +996,7 @@
   "5Y": "5Å",
   "Annual ROI at current rates": "Årlig avkastning på investeringar med befintliga priser",
   "Default Transaction Speed (GWEI)": "Förvald transaktionshastighet (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Justerar priset (transaktionsavgiften) på din transaktion. Högre GWEI = högre hastighet = högre avgifter",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Snabb (%gasPrice%)",
   "Instant (%gasPrice%)": "Omedelbar (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Avbeställning av order: %inputAmount% %inputTokenSymbol% för %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Förnya din position för att fortsätta njuta av fördelarna med att öka avkastningen på farmen, delta i IFO:er, öka röststyrkan och mycket mer!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Låsperioden har avslutats. För att undvika att fler belöningar bränns, förnya din position för att fortsätta att njuta av fördelarna med den låsta positionen.",
-  "RPC Default": "Standard-RPC",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Visar användarnamn på plånboken istället för kaniner",
   "Show username": "Visa användarnamn",
   "For more info, please see pGALA’s twitter.": "Mer information finns på pGALA:s twitter.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Se de mest handlade tokens",
   "%days% days": "%days% dagar",
   "1 day": "1 dag",
-  "< 1 day": "< 1 dag"
+  "< 1 day": "< 1 dag",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
