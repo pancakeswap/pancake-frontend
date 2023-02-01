@@ -996,7 +996,7 @@
   "5Y": "5 वर्ष",
   "Annual ROI at current rates": "वर्तमान रेट पर वार्षिक ROI",
   "Default Transaction Speed (GWEI)": "डिफ़ॉल्ट लेनदेन स्पीड (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "आपके लेनदेन के लिए गैस कीमत (लेनदेन फीस) को एडजस्ट करता है। अधिक GWEI = अधिक स्पीड = अधिक फीस",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "स्टैंडर्ड (%gasPrice%)",
   "Fast (%gasPrice%)": "फास्ट (%gasPrice%)",
   "Instant (%gasPrice%)": "इंस्टेंट (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "ऑर्डर रद्द करना: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "फार्म यील्ड बूस्टिंग के फायदे लेने, IFO में शामिल होने, वोटिंग पावर बूस्ट और कई दूसरी चीजों का आनंद जारी रखने के लिए अपनी स्टेकिंग पोजीशन को रिन्यू करें!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "लॉक अवधि खत्म हो गई है। ज्यादा पुरस्कारों को बर्न होने से बचाने के लिए, लॉक किए गए स्टेकिंग के फायदों का आनंद लेना जारी रखने के लिए अपनी स्टेकिंग पोजीशन रिन्यू करें।",
-  "RPC Default": "RPC डिफ़ॉल्ट",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "बनी के बजाय वॉलेट का यूज़रनेम दिखाता है",
   "Show username": "यूज़रनेम दिखाएं",
   "For more info, please see pGALA’s twitter.": "अधिक जानकारी के लिए कृपया pGALA के ट्विटर देखें।",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "सबसे अधिक ट्रेड किए गए टोकन देखें",
   "%days% days": "%days% दिन",
   "1 day": "1 दिन",
-  "< 1 day": "< 1 दिन"
+  "< 1 day": "< 1 दिन",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
