@@ -80,9 +80,9 @@ const UserDetail = () => {
             ) : isProfileLoading ? (
               <Skeleton width={200} height={40} my="4px" />
             ) : null}
-            {isSidNameLoading || !account ? (
+            {isSidNameLoading || isProfileLoading || !account ? (
               <Skeleton width={160} height={16} my="4px" />
-            ) : userUsernameVisibility ? (
+            ) : (profile && userUsernameVisibility) || (!profile && account) ? (
               <Text fontSize="16px">
                 {t('Connected with %address%', { address: sidName || truncateHash(account) })}
               </Text>
