@@ -60,6 +60,7 @@ import {
   getTradingCompetitionContractMobox,
   getTradingCompetitionContractMoD,
   getStableSwapNativeHelperContract,
+  getSidContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -375,6 +376,10 @@ export const useNonBscVault = (withSignerIfPossible = true) => {
   const { chainId } = useActiveChainId()
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
   return useMemo(() => getNonBscVaultContract(providerOrSigner, chainId), [providerOrSigner, chainId])
+}
+
+export const useSIDContract = (address) => {
+  return useMemo(() => getSidContract(address), [address])
 }
 
 export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfPossible = true) => {
