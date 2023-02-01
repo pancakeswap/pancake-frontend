@@ -996,7 +996,7 @@
   "5Y": "5 J",
   "Annual ROI at current rates": "Jährliche Anlagerendite zu aktuellen Zinssätzen",
   "Default Transaction Speed (GWEI)": "Standard-Transaktionsgeschwindigkeit (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Passt den Gaspreis (Transaktionsgebühr) für Ihre Transaktion an. Höhere GWEI = höhere Geschwindigkeit = höhere Gebühren",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Schnell (%gasPrice%)",
   "Instant (%gasPrice%)": "Sofort (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Stornierung des Auftrags: %inputAmount% %inputTokenSymbol% für %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Erneuern Sie Ihre Einsatz-Position, um weiterhin von den Vorteilen der Renditesteigerung auf der Farm, der Teilnahme an IFOs, der wertvolleren Stimme bei Abstimmungen und vielem mehr zu profitieren!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Die Sperrfrist ist abgelaufen. Um zu verhindern, dass weitere Belohnungen verbrannt werden, erneuern Sie Ihre Einsatz-Position, um weiterhin die Vorteile des gesperrten Einsatzes zu genießen.",
-  "RPC Default": "Standard-RPC",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Benutzernamen der Wallet anstelle von Häschen anzeigen",
   "Show username": "Benutzername anzeigen",
   "For more info, please see pGALA’s twitter.": "Weitere Informationen finden Sie auf der Twitter-Seite von pGALAs.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Die meistgehandelten Tokens",
   "%days% days": "%days% Tage",
   "1 day": "1 Tag",
-  "< 1 day": "< 1 Tag"
+  "< 1 day": "< 1 Tag",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
