@@ -996,7 +996,7 @@
   "5Y": "5 v",
   "Annual ROI at current rates": "Vuosittainen ROI nykyisillä yksikköhinnoilla",
   "Default Transaction Speed (GWEI)": "Oletustransaktionopeus (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Säätää transaktiosi käyttövoiman hintaa (transaktiomaksu). Korkeampi GWEI = suurempi nopeus = korkeammat maksut",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Normaali (%gasPrice%)",
   "Fast (%gasPrice%)": "Nopea (%gasPrice%)",
   "Instant (%gasPrice%)": "Välitön (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Tilauksen peruutus: %inputAmount% %inputTokenSymbol% → %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Uusi panostuspositiosi, jotta voit jatkossakin saada viljelmän tuoton parannuksen etuja, osallistua IFO:ihin, äänestää tehostuksia ja paljon muuta!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Lukitusjakso on päättynyt. Voit välttää lisäpalkintojen polttamisen uusimalla panostuspositiosi, jotta voit jatkossakin hyötyä lukitusta panostamisesta.",
-  "RPC Default": "RPC-oletus",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Näyttää lompakon käyttäjänimen pupujen sijaan",
   "Show username": "Näytä käyttäjänimi",
   "For more info, please see pGALA’s twitter.": "Katso lisätietoja PGALAn Twitter-tililtä.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Katso suosituimmat treidatut poletit",
   "%days% days": "%days% päivää",
   "1 day": "1 päivä",
-  "< 1 day": "< 1 päivä"
+  "< 1 day": "< 1 päivä",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
