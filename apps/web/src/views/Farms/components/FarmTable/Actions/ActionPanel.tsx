@@ -7,13 +7,15 @@ import {
   Text,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+
+import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContext, useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
 
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
@@ -148,9 +150,9 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
 
   const infoUrl = useMemo(() => {
     if (farm.isStable) {
-      return `/info${multiChainPaths[chainId]}/pairs/${stableSwapAddress}?type=stableSwap`
+      return `/info${multiChainPaths[chainId]}/pairs/${stableSwapAddress}?type=stableSwap&chain=${CHAIN_QUERY_NAME[chainId]}`
     }
-    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}`
+    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
   }, [chainId, farm.isStable, lpAddress, stableSwapAddress])
 
   return (
