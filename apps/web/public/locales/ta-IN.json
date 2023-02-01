@@ -996,7 +996,7 @@
   "5Y": "5வ",
   "Annual ROI at current rates": "நடப்பு விகிதங்களில் வருடாந்திர ROI",
   "Default Transaction Speed (GWEI)": "இயல்பான பரிவர்த்தனை வேகம் (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "உங்கள் பரிவர்த்தனைக்கான கேஸ் விலையை (பரிவர்த்தனைக் கட்டணம்) சரிசெய்கிறது. அதிக GWEI = அதிக வேகம் = அதிக கட்டணம்",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "தரநிலை (%gasPrice%)",
   "Fast (%gasPrice%)": "வேகம் (%gasPrice%)",
   "Instant (%gasPrice%)": "உடனடி (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "ஆர்டர் ரத்து: %outputAmount% %outputTokenSymbol% -க்கான %inputAmount% %inputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "பண்ணை விளைச்சலை அதிகரிப்பது, IFOகளில் பங்கேற்பது, வாக்களிப்பு ஆற்றலை அதிகரிப்பது மற்றும் பலவற்றின் பலன்களைத் தொடர்ந்து அனுபவிக்க உங்கள் ஸ்டேக்கிங் நிலையைப் புதுப்பிக்கவும்!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "பூட்டுக் காலம் முடிந்துவிட்டது. அதிக வெகுமதிகள் செலவழிக்கப்படுவதைத் தவிர்க்க, பூட்டிய ஸ்டேக்கிங்கின் பலன்களைத் தொடர்ந்து அனுபவிக்க உங்கள் ஸ்டேக்கிங் நிலையைப் புதுப்பிக்கவும்.",
-  "RPC Default": "RPC இயல்புநிலை",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "முயல்களுக்குப் பதிலாக வாலட்டின் பயனர்பெயரைக் காட்டுகிறது",
   "Show username": "பயனர்பெயரைக் காட்டு",
   "For more info, please see pGALA’s twitter.": "மேலும் தகவலுக்கு, pGALAவின் டுவிட்டரைப் பாருங்கள்.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "முதன்மையான டிரேட் செய்த டோக்கன்களைப் பார்க்கவும்",
   "%days% days": "%days% நாட்கள்",
   "1 day": "1 நாள்",
-  "< 1 day": "< 1 நாள்"
+  "< 1 day": "< 1 நாள்",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
