@@ -1,13 +1,15 @@
 import { useDeferredValue } from 'react'
 import useSWR from 'swr'
 import { CurrencyAmount, TradeType, Currency, Pair } from '@pancakeswap/sdk'
-import { getBestTradeExactIn, getBestTradeExactOut, createStableSwapPair } from '@pancakeswap/smart-router/evm'
+import { LegacyRouter } from '@pancakeswap/smart-router/evm'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { getAddress } from '@ethersproject/address'
 
 import { useAllCommonPairs } from 'hooks/Trades'
 import { provider } from 'utils/wagmi'
 import { getBestPriceWithRouter, RequestBody } from 'state/swap/fetch/fetchBestPriceWithRouter'
+
+const { getBestTradeExactIn, getBestTradeExactOut, createStableSwapPair } = LegacyRouter
 
 const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
