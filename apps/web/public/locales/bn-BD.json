@@ -996,7 +996,7 @@
   "5Y": "5 বছর",
   "Annual ROI at current rates": "বর্তমান হারে বার্ষিক ROI",
   "Default Transaction Speed (GWEI)": "ডিফল্ট লেনদেনের গতি (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "আপনার লেনদেনের জন্য জ্বালানি মূল্য (লেনদেন ফি) সমন্বয় করে। উচ্চতর GWEI = উচ্চতর গতি = উচ্চতর ফি",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "প্রমিত (%gasPrice%)",
   "Fast (%gasPrice%)": "দ্রুততর (%gasPrice%)",
   "Instant (%gasPrice%)": "তাৎক্ষণিক (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "অর্ডার বাতিলকরণ:  %outputAmount% %outputTokenSymbol%-এর জন্য %inputAmount% %inputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "খামারের ইল্ড বুস্টিং, IFO-এ অংশগ্রহণ, ভোটিং পাওয়ার বুস্ট এবং আরো অনেক সুবিধা উপভোগ করা চালিয়ে যেতে আপনার স্টেকিং অবস্থান নবায়ন করুন",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "লক করা সময় শেষ হয়েছে। আরো পুরষ্কার বার্ন হওয়া এড়াতে, লক করা স্টেকিং থেকে সুবিধাদি উপভোগ করা চালিয়ে যেতে আপনার স্টেকিং অবস্থান নবায়ন করুন।",
-  "RPC Default": "RPC ডিফল্ট",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "খরগোশের পরিবর্তে ওয়ালেট ব্যবহারকারীর নাম দেখায়",
   "Show username": "ইউজারনেম দেখান",
   "For more info, please see pGALA’s twitter.": "আরো তথ্যের জন্য অনুগ্রহ করে pGALA-এর টুইটার দেখুন।",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "শীর্ষ ট্রেড হয়েছে এমন টোকেনগুলো দেখুন",
   "%days% days": "%days% দিন",
   "1 day": "1 দিন",
-  "< 1 day": "< 1 দিন"
+  "< 1 day": "< 1 দিন",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
