@@ -81,6 +81,8 @@ const AllArticle = () => {
     { label: 'Georgian', value: 'ka' },
     { label: 'Türkçe', value: 'tr' },
     { label: 'हिंदी', value: 'hi' },
+    { label: 'Русский', value: 'ru' },
+    { label: 'Deutsch', value: 'de' },
   ]
   const sortByItems = [
     { label: t('Newest First'), value: 'createAt:desc' },
