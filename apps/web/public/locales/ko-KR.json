@@ -996,7 +996,7 @@
   "5Y": "5년",
   "Annual ROI at current rates": "현재 환율의 연간 ROI",
   "Default Transaction Speed (GWEI)": "기본 트랜잭션 속도(GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "트랜잭션에 대한 가스 가격(트랜잭션 수수료)을 조정합니다. GWEI 더 높음 = 더 빠름 = 더 높은 수수료",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "표준(%gasPrice%)",
   "Fast (%gasPrice%)": "빠름(%gasPrice%)",
   "Instant (%gasPrice%)": "즉시(%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "주문 취소: %outputAmount% %outputTokenSymbol%에 대한 %inputAmount% %inputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "스테이킹 포지션을 갱신하여 팜 일드 부스팅, IFO 참여, 투표권 강화 등의 혜택을 계속 이용하세요!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "잠금 기간이 종료되었습니다. 더 많은 리워드가 소각되지 않도록 스테이킹 포지션을 갱신하여 잠긴 스테이킹의 혜택을 누리세요.",
-  "RPC Default": "RPC 디폴트",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "버니 대신 지갑의 사용자 이름을 표시합니다.",
   "Show username": "사용자 이름 표시",
   "For more info, please see pGALA’s twitter.": "자세한 내용은 pGALA의 트위터를 참조하세요.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": " 상위 거래 토큰 확인",
   "%days% days": "%days%일",
   "1 day": "1일",
-  "< 1 day": "< 1일"
+  "< 1 day": "< 1일",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
