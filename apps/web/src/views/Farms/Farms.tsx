@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState, useMemo, useRef, createContext } from 'react'
+import { useEffect, useCallback, useState, useMemo, useRef } from 'react'
 import BigNumber from 'bignumber.js'
 import { ChainId } from '@pancakeswap/sdk'
 import { useAccount } from 'wagmi'
@@ -38,6 +38,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
+import { FarmsContext } from './context'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -484,7 +485,5 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     </FarmsContext.Provider>
   )
 }
-
-export const FarmsContext = createContext({ chosenFarmsMemoized: [] })
 
 export default Farms
