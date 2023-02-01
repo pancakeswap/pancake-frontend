@@ -8,6 +8,7 @@ import {
   Skeleton,
   Text,
   CopyAddress,
+  FlexGap,
 } from '@pancakeswap/uikit'
 import { ChainId, WNATIVE } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
@@ -60,12 +61,10 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       <Text color="secondary" fontSize="12px" textTransform="uppercase" fontWeight="bold" mb="8px">
         {t('Your Address')}
       </Text>
-      <CopyAddress tooltipMessage={t('Copied')} account={account} mb="24px" />
-      {sidName ? (
-        <Text color="textSubtle" mb="8px">
-          {sidName}
-        </Text>
-      ) : null}
+      <FlexGap flexDirection="column" mb="24px" gap="8px">
+        <CopyAddress tooltipMessage={t('Copied')} account={account} />
+        {sidName ? <Text color="textSubtle">{sidName}</Text> : null}
+      </FlexGap>
       {hasLowNativeBalance && (
         <Message variant="warning" mb="24px">
           <Box>
