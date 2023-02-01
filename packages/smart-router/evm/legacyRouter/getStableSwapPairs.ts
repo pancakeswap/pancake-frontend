@@ -3,7 +3,7 @@ import { deserializeToken } from '@pancakeswap/token-lists'
 
 import { StableSwapPair } from './types'
 import { createStableSwapPair } from './stableSwap'
-import { getStableSwapPools } from './constants/stableSwap'
+import { getStableSwapPools } from '../constants/stableSwap'
 
 export function getStableSwapPairs(chainId: ChainId): StableSwapPair[] {
   // Stable swap is only supported on BSC chain & BSC testnet
