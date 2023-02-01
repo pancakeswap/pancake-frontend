@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
+import { computeTradePriceBreakdown } from '../utils/exchange'
 
 import { TradeWithMM } from '../types'
 
@@ -55,7 +56,7 @@ export function useMMTradeInfo({ mmTrade, useMMToTrade = false, chainId, mmSwapI
       ),
       routerAddress: MM_SWAP_CONTRACT_ADDRESS[chainId],
       priceImpactWithoutFee: ZERO_PERCENT,
-      realizedLPFee: null,
+      realizedLPFee: computeTradePriceBreakdown(mmTrade).realizedLPFee,
       inputError: mmSwapInputError,
     }
   }, [mmTrade, chainId, mmSwapInputError, useMMToTrade])
