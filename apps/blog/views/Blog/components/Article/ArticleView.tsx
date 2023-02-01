@@ -46,7 +46,7 @@ const StyledTitleContainer = styled(Box)`
   margin-bottom: 64px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    margin-bottom: 130px;
+    margin-bottom: 80px;
   }
 
   @media screen and (min-width: 1440px) {

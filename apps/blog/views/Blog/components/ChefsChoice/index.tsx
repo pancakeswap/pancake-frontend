@@ -14,7 +14,7 @@ const StyledChefsChoiceContainer = styled(Flex)`
   margin: 61px auto 48px auto;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin: 152px auto 80px auto;
+    margin: 120px auto 80px auto;
   }
 `
 
@@ -28,7 +28,6 @@ const ChefsChoice = () => {
         <Swiper
           loop
           resizeObserver
-          spaceBetween={37}
           slidesPerView={1}
           autoplay={{
             delay: 2500,

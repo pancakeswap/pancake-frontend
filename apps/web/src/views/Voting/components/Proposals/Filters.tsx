@@ -41,6 +41,7 @@ const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ filterState,
 
         return (
           <FilterLabel key={label}>
+            <></>
             <Radio
               scale="sm"
               value={value}
