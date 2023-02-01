@@ -107,6 +107,7 @@ const TransactionConfirmSwapContent = ({
   const modalBottom = useCallback(() => {
     return trade ? (
       <SwapModalFooter
+        isMM
         onConfirm={onConfirm}
         trade={trade}
         disabledConfirm={showAcceptChanges}

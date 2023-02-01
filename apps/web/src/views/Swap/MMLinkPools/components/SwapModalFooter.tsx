@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
-import { AutoRenewIcon, Button, QuestionHelper, Text, Link } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
@@ -11,8 +10,8 @@ import styled from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
 import FormattedPriceImpact from '../../components/FormattedPriceImpact'
 import { StyledBalanceMaxMini, SwapCallbackError } from '../../components/styleds'
-import { formatExecutionPrice, computeTradePriceBreakdown } from '../utils/exchange'
 import { TradeWithMM } from '../types'
+import { computeTradePriceBreakdown, formatExecutionPrice } from '../utils/exchange'
 
 const SwapModalFooterContainer = styled(AutoColumn)`
   margin-top: 24px;
@@ -29,6 +28,7 @@ export default function SwapModalFooter({
   onConfirm,
   swapErrorMessage,
   disabledConfirm,
+  isMM = false,
 }: {
   trade: TradeWithMM<Currency, Currency, TradeType>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
@@ -36,6 +36,7 @@ export default function SwapModalFooter({
   onConfirm: () => void
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
+  isMM?: boolean
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -98,20 +99,27 @@ export default function SwapModalFooter({
           <RowFixed>
             <Text fontSize="14px">{t('Price Impact')}</Text>
             <QuestionHelper
-              text={t('The difference between the market price and your price due to trade size.')}
+              text={
+                <>
+                  <Text>{`${t('AMM')}:${t(
+                    'The difference between the market price and estimated price due to trade size.',
+                  )}`}</Text>
+                  <Text mt="10px">{`${t('MM')}:${t('No slippage against quote from market maker')}`}</Text>
+                </>
+              }
               ml="4px"
             />
           </RowFixed>
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+          {isMM ? <Text color="textSubtle">--</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">{t('Liquidity Provider Fee')}</Text>
+            <Text fontSize="14px">{t('Trading Fee')}</Text>
             <QuestionHelper
               text={
                 <>
                   <Text mb="12px">
-                    {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
+                    {t('AMM')}:{t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
                   </Text>
                   <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
                   <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
@@ -126,6 +134,12 @@ export default function SwapModalFooter({
                     >
                       {t('here.')}
                     </Link>
+                  </Text>
+                  <Text mt="10px">
+                    {t('MM')}:
+                    {t(
+                      'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
+                    )}
                   </Text>
                 </>
               }
