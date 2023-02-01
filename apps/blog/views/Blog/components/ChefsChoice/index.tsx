@@ -29,6 +29,7 @@ const ChefsChoice = () => {
           loop
           resizeObserver
           slidesPerView={1}
+          spaceBetween={20}
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
@@ -37,12 +38,15 @@ const ChefsChoice = () => {
           breakpoints={{
             768: {
               slidesPerView: 1,
+              spaceBetween: 20,
             },
             920: {
               slidesPerView: 2,
+              spaceBetween: 20,
             },
             1440: {
               slidesPerView: 3,
+              spaceBetween: 0,
             },
           }}
         >
