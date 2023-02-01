@@ -996,7 +996,7 @@
   "5Y": "5年",
   "Annual ROI at current rates": "現在のレートでの年間投資効率",
   "Default Transaction Speed (GWEI)": "デフォルトの取引速度（GWEI）",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "取引のガス代（取引手数料）を調整します。より高いGWEI = より高速 = より高い手数料",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "標準（%gasPrice%）",
   "Fast (%gasPrice%)": "高速（%gasPrice%）",
   "Instant (%gasPrice%)": "瞬時（%gasPrice%）",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "注文のキャンセル: %inputAmount% %inputTokenSymbol%を%outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "ステーキングポジションを更新して、ファーム利回り強化、IFOへの参加、投票権強化などを引き続き利用しましょう！",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "ロック期間が終了しました。さらに多くの報酬がバーンされないように、ステーキングポジションを更新して、ロックステーキングのメリットをさらに楽しみましょう。",
-  "RPC Default": "RPCデフォルト",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "バニーの代わりにウォレットのユーザー名を表示します",
   "Show username": "ユーザー名を表示する",
   "For more info, please see pGALA’s twitter.": "詳細は、pGALAのTwitterをご覧ください。",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "トレード上位トークンを確認",
   "%days% days": "%days%日",
   "1 day": "1 日",
-  "< 1 day": "< 1 日"
+  "< 1 day": "< 1 日",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
