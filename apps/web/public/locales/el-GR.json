@@ -996,7 +996,7 @@
   "5Y": "5 Ε",
   "Annual ROI at current rates": "Ετήσια ROI με τις τρέχουσες τιμές",
   "Default Transaction Speed (GWEI)": "Προεπιλεγμένη ταχύτητα συναλλαγής (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Ρυθμίζει την τιμή της βενζίνης (τέλος συναλλαγής) για τη συναλλαγή σας. Υψηλότερο GWEI = υψηλότερη ταχύτητα = υψηλότερα τέλη",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Τυπική (%gasPrice%)",
   "Fast (%gasPrice%)": "Γρήγορη (%gasPrice%)",
   "Instant (%gasPrice%)": "Άμεση (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Ακύρωση εντολής: %inputAmount% %inputTokenSymbol% για %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Ανανεώστε τη θέση σας staking για να συνεχίσετε να απολαμβάνετε τα οφέλη από την αύξηση της απόδοσης της farm, τη συμμετοχή σε IFO, την αύξηση της δύναμης ψήφου και πολλά άλλα!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Η περίοδος κλειδώματος έχει λήξει. Για να αποφύγετε την απώλεια περισσότερων ανταμοιβών, ανανεώστε τη θέση σας staking για να συνεχίσετε να απολαμβάνετε τα οφέλη από το κλείδωμα του staking.",
-  "RPC Default": "RPC προεπιλογή",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Εμφανίζει το όνομα χρήστη του πορτοφολιού αντί για κουνελάκια",
   "Show username": "Εμφάνιση ονόματος χρήστη",
   "For more info, please see pGALA’s twitter.": "Για περισσότερες πληροφορίες, ανατρέξτε στο twitter του pGALA.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Ρίξτε μια ματιά στα νομίσματα με τις περισσότερες συναλλαγές",
   "%days% days": "%days% ημέρες",
   "1 day": "1 ημέρα",
-  "< 1 day": "< 1 ημέρα"
+  "< 1 day": "< 1 ημέρα",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
