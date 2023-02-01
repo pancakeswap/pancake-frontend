@@ -996,7 +996,7 @@
   "5Y": "5 年",
   "Annual ROI at current rates": "当前汇率下的年度投资回报率",
   "Default Transaction Speed (GWEI)": "默认交易速度 (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "为您的交易调整 gas 价格（交易费用）。GWEI 更高 = 速度更快 = 费用更高",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "标准 (%gasPrice%)",
   "Fast (%gasPrice%)": "快速 (%gasPrice%)",
   "Instant (%gasPrice%)": "即时 (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "订单取消：%inputAmount% %inputTokenSymbol% 兑换为 %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "更新您的质押持仓以继续享受提高农场收益、参与 IFO、提高投票权等权益！",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "您的锁仓期已结束。为避免更多奖励被销毁，请更新您的锁仓仓位并继续享受锁仓带来的权益。",
-  "RPC Default": "默认 RPC",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "显示钱包的用户名而非兔子",
   "Show username": "显示用户名",
   "For more info, please see pGALA’s twitter.": "更多资讯，请查看 pGALA 官方推特。",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "查看交易量最大的代币",
   "%days% days": "%days% 天",
   "1 day": "1 天",
-  "< 1 day": "< 1 天"
+  "< 1 day": "< 1 天",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
