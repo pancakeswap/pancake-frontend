@@ -996,7 +996,7 @@
   "5Y": "5 L",
   "Annual ROI at current rates": "Roczny ROI przy bieżących kursach",
   "Default Transaction Speed (GWEI)": "Domyślna szybkość transakcji (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Dostosowuje cenę gazu (prowizję transakcyjną) do Twojej transakcji. Wyższy GWEI = większa szybkość = wyższe prowizje",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Standardowa (%gasPrice%)",
   "Fast (%gasPrice%)": "Szybka (%gasPrice%)",
   "Instant (%gasPrice%)": "Natychmiastowa (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Anulowanie zamówienia: %inputAmount% %inputTokenSymbol% na %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Odnów swoją pozycję stakowania, aby nadal cieszyć się korzyściami płynącymi ze zwiększenia plonów z farmy, udziału w IFO, zwiększenia siły głosu i wielu innych rzeczy!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Okres blokady zakończył się. Aby uniknąć spalenia kolejnych nagród, odnów swoją pozycję w stakingu, aby nadal korzystać z korzyści płynących z blokady.",
-  "RPC Default": "Wartość domyślna RPC",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Pokazuje nazwę użytkownika portfela, zamiast króliczków",
   "Show username": "Pokaż nazwę użytkownika",
   "For more info, please see pGALA’s twitter.": "Więcej informacji można znaleźć na Twitterze pGALA.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Sprawdź tokeny o największym wolumenie obrotu",
   "%days% days": "%days% dni",
   "1 day": "1 dzień",
-  "< 1 day": "< 1 dzień"
+  "< 1 day": "< 1 dzień",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
