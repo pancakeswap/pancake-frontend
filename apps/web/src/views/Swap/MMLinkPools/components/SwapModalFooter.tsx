@@ -101,10 +101,18 @@ export default function SwapModalFooter({
             <QuestionHelper
               text={
                 <>
-                  <Text>{`${t('AMM')}: ${t(
-                    'The difference between the market price and estimated price due to trade size.',
-                  )}`}</Text>
-                  <Text mt="10px">{`${t('MM')}:${t('No slippage against quote from market maker')}`}</Text>
+                  <Text>
+                    <Text bold display="inline-block">
+                      {t('AMM')}
+                    </Text>
+                    {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
+                  </Text>
+                  <Text mt="10px">
+                    <Text bold display="inline-block">
+                      {t('MM')}
+                    </Text>
+                    {`: ${t('No slippage against quote from market maker')}`}
+                  </Text>
                 </>
               }
               ml="4px"
@@ -119,8 +127,10 @@ export default function SwapModalFooter({
               text={
                 <>
                   <Text mb="12px">
-                    {t('AMM')}:{' '}
-                    {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
+                    <Text bold display="inline-block">
+                      {t('AMM')}
+                    </Text>
+                    : {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
                   </Text>
                   <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
                   <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
@@ -137,7 +147,10 @@ export default function SwapModalFooter({
                     </Link>
                   </Text>
                   <Text mt="10px">
-                    {t('MM')}:
+                    <Text bold display="inline-block">
+                      {t('MM')}
+                    </Text>
+                    :{' '}
                     {t(
                       'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
                     )}
