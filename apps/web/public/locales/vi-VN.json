@@ -996,7 +996,7 @@
   "5Y": "5 năm",
   "Annual ROI at current rates": "ROI hằng năm theo tỷ giá hiện tại",
   "Default Transaction Speed (GWEI)": "Tốc độ giao dịch mặc định (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Điều chỉnh giá năng lượng (phí giao dịch) cho giao dịch của bạn. GWEI cao hơn = tốc độ nhanh hơn = phí cao hơn",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Tiêu chuẩn (%gasPrice%)",
   "Fast (%gasPrice%)": "Nhanh (%gasPrice%)",
   "Instant (%gasPrice%)": "Tức thì (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Hủy đơn hàng: %inputAmount% %inputTokenSymbol% cho %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Gia hạn vị thế đặt cọc của bạn để tiếp tục tận hưởng lợi ích của việc tăng cường lợi nhuận trang trại, tham gia các IFO, tăng quyền lực bình chọn, v.v.!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "Khoảng thời gian khóa đã kết thúc. Để tránh các phần thưởng khác bị đốt, hãy gia hạn vị thế đặt cọc của bạn để tiếp tục tận hưởng các lợi ích của việc khóa cọc.",
-  "RPC Default": "RPC mặc định",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Hiển thị tên người dùng của ví thay vì các con thỏ",
   "Show username": "Hiển thị tên người dùng",
   "For more info, please see pGALA’s twitter.": "Để biết thêm thông tin, vui lòng xem twitter của pGALA.",
@@ -2100,5 +2100,6 @@
   "Check out the top traded tokens": "Xem những token được giao dịch nhiều nhất",
   "%days% days": "%days% ngày",
   "1 day": "1 ngày",
-  "< 1 day": "< 1 ngày"
+  "< 1 day": "< 1 ngày",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
