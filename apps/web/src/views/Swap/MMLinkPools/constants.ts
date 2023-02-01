@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 
 export const MM_SWAP_CONTRACT_ADDRESS = {
   [ChainId.ETHEREUM]: '',
-  [ChainId.GOERLI]: '0xf61F708e3f094fBD5db66CFc3E4367b3023D6Da2',
+  [ChainId.GOERLI]: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92',
 }
 
 const GOERLI_WHITE_LIST = ['0x65afadd39029741b3b8f0756952c74678c9cec93', '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6']

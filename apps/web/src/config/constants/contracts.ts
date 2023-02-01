@@ -163,6 +163,6 @@ export default {
   },
   mmLinkedPool: {
     1: '',
-    5: '0xf61F708e3f094fBD5db66CFc3E4367b3023D6Da2', // play MM role by my self contract
+    5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92', // play MM role by my self contract
   },
 }
