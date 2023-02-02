@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { AutoRenewIcon, Button, QuestionHelper, Text, Link } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'

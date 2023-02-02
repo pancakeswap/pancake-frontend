@@ -4,7 +4,7 @@ import { InjectedModalProps, LinkExternal, Text, TransactionErrorContent } from 
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import ConfirmationPendingContent from '../../components/ConfirmationPendingContent'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'

@@ -161,4 +161,17 @@ export default {
     56: '0x0726a8C8206b9eC0AfB788df5adb36a8AEDB13c2',
     97: '0xBab5d3B6bA24E185f216419f3ba07f03984bF983',
   },
+  // TODO replace with real contract address
+  nftPositionManager: {
+    56: 'nftPositionManager',
+    97: '',
+  },
+  v3Factory: {
+    56: 'v3Factory',
+    97: '',
+  },
+  quoter: {
+    56: 'quoter',
+    97: '',
+  },
 }

@@ -17,7 +17,12 @@ import {
   parseCallKey,
   toCallKey,
   ListenerOptions,
+  ListenerOptionsWithGas,
 } from './actions'
+
+export interface CallStateResult extends ReadonlyArray<any> {
+  readonly [key: string]: any
+}
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -221,6 +226,34 @@ export function useSingleContractMultiMethods(
   return useMultiContractsMultiMethods(multiInputs, options)
 }
 
+export function useSingleContractWithCallData(
+  contract: Contract | null | undefined,
+  callData: string[],
+  options?: ListenerOptionsWithGas,
+): CallState[] {
+  const { chainId } = useActiveChainId()
+
+  const calls = useMemo(
+    () =>
+      contract && callData && callData.length > 0
+        ? callData.map((data) => ({
+            address: contract.address,
+            callData: data,
+          }))
+        : [],
+    [callData, contract],
+  )
+
+  const results = useCallsData(calls, options)
+
+  const { cache } = useSWRConfig()
+
+  return useMemo(() => {
+    const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+    return results.map((result) => toCallState(result, contract?.interface, undefined, currentBlockNumber))
+  }, [cache, chainId, results, contract])
+}
+
 export function useSingleContractMultipleData(
   contract: Contract | null | undefined,
   methodName: string,
@@ -299,7 +332,7 @@ export function useSingleCallResult(
   contract: Contract | null | undefined,
   methodName: string,
   inputs?: OptionalMethodInputs,
-  options?: ListenerOptions,
+  options?: ListenerOptionsWithGas,
 ): CallState {
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
