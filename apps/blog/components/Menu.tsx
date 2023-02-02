@@ -37,13 +37,6 @@ const Menu = () => {
     <Flex height="56px" bg="backgroundAlt" px="16px" alignItems="center" justifyContent="space-between" zIndex={9}>
       <Flex>
         <Logo href="/" />
-        <Flex pl={['10px', null, '50px']}>
-          <Box display="flex">
-            <NextLink href="/blog" passHref>
-              <MenuItemStyle $isActive>{t('Blog')}</MenuItemStyle>
-            </NextLink>
-          </Box>
-        </Flex>
       </Flex>
       <Flex alignItems="center">
         <NoSSR>

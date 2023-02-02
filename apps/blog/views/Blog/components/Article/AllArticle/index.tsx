@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import useSWR from 'swr'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
 import CardArticle from 'views/Blog/components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
@@ -64,7 +64,6 @@ const StyledCard = styled(Flex)`
 const AllArticle = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const wrapperElement = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategories, setSelectCategoriesSelected] = useState(0)
@@ -94,13 +93,6 @@ const AllArticle = () => {
   const { data: categoriesData } = useSWR<Categories[]>('/categories')
 
   useEffect(() => {
-    const hash = router.asPath.split('#')[1]
-    if (hash === 'allArticle') {
-      wrapperElement?.current?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [router.asPath])
-
-  useEffect(() => {
     setCurrentPage(1)
   }, [query, selectedCategories, sortBy, languageOption])
 
@@ -127,11 +119,10 @@ const AllArticle = () => {
   const handlePagination = (value: number) => {
     setCurrentPage(1)
     setCurrentPage(value)
-    wrapperElement?.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
-    <StyledArticleContainer ref={wrapperElement}>
+    <StyledArticleContainer id="all">
       <Text
         bold
         color="secondary"

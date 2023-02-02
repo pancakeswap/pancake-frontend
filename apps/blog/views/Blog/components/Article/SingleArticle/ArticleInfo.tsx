@@ -36,7 +36,7 @@ const ArticleInfo = () => {
   const { data: article } = useSWR<ArticleDataType>('/article')
 
   const handleClickTag = (category: string) => {
-    router.push(`/blog?category=${category}#allArticle`)
+    router.push(`/?category=${category}#all`)
   }
 
   return (
