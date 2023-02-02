@@ -13,8 +13,12 @@ export const useIsTradeWithMMBetter = ({ trade, v2Trade, tradeWithMM }: Options)
     return false
   }
   if (!v2Trade && !trade && tradeWithMM) return true // v2 and smart router has not liq but MM provide the deal
+  if (!v2Trade?.outputAmount || !v2Trade?.inputAmount) {
+    if (tradeWithMM) return true
+  }
   return (
-    tradeWithMM.outputAmount.greaterThan(v2Trade.outputAmount) || // exactIn
-    (tradeWithMM.outputAmount.equalTo(v2Trade.outputAmount) && tradeWithMM.inputAmount.lessThan(v2Trade.outputAmount)) // exactOut
+    tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO) || // exactIn
+    (tradeWithMM.outputAmount.equalTo(v2Trade.outputAmount) &&
+      tradeWithMM.inputAmount.lessThan(v2Trade?.outputAmount ?? ZERO)) // exactOut
   )
 }
