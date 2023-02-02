@@ -8,3 +8,5 @@ export * from "./SeverityErrorText";
 export * from "./SwapCallbackError";
 export * from "./SwapWidget";
 export * from "./TransactionErrorContent";
+export * from "./ConfirmationModalContent";
+export * from "./ConfirmationPendingContent";
