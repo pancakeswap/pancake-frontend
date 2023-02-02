@@ -1,22 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, Percent } from '@pancakeswap/sdk'
-import {
-  FlexGap,
-  AutoColumn,
-  Button,
-  Dots,
-  RowBetween,
-  CardBody,
-  Card,
-  Text,
-  AddIcon,
-  BalanceInput,
-  Flex,
-  AutoRow,
-} from '@pancakeswap/uikit'
+import { AutoColumn, Button, CardBody } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -35,7 +21,6 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 
 // import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
-import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
 import {
   // useIsExpertMode,
@@ -46,10 +31,8 @@ import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
-import { useCurrencySelectRoute } from 'views/AddLiquidity/useCurrencySelectRoute'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
-import useRangeHopCallbacks from 'hooks/v3/useRangeHopCallbacks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
@@ -57,33 +40,25 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useSigner } from 'wagmi'
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
-import styled from 'styled-components'
-import { CurrencyLogo } from 'components/Logo'
 import { TransactionResponse } from '@ethersproject/providers'
 
-import { useV3MintActionHandlers } from './form/hooks'
-import { Bound } from './form/actions'
-import FeeSelector from './components/FeeSelector'
-import RangeSelector from './components/RangeSelector'
+import { BodyWrapper } from 'components/App/AppBody'
+import CurrencyInputPanel from 'components/CurrencyInputPanel'
 
-export const BodyWrapper = styled(Card)`
-  border-radius: 24px;
-  max-width: 858px;
-  width: 100%;
-  z-index: 1;
-`
+import { useV3MintActionHandlers } from './form/hooks'
+import { PositionPreview } from './components/PositionPreview'
 
 interface AddLiquidityV3PropsType {
   currencyA: Currency
   currencyB: Currency
 }
 
-export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
+export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
   const router = useRouter()
   const { data: signer } = useSigner()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
-  const [currencyIdA, currencyIdB, feeAmountFromUrl, tokenId] = router.query.currency || []
+  const [, , feeAmountFromUrl, tokenId] = router.query.currency || []
 
   const { t } = useTranslation()
   // const expertMode = useIsExpertMode()
@@ -115,11 +90,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   } = formState
 
   const {
-    pool,
-    ticks,
     dependentField,
     // price,
-    pricesAtTicks,
     parsedAmounts,
     // currencyBalances,
     position,
@@ -128,9 +100,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     errorMessage,
     // invalidPool,
     invalidRange,
-    // outOfRange,
-    depositADisabled,
-    depositBDisabled,
+    outOfRange,
     // invertPrice,
     ticksAtLimit,
   } = useV3DerivedInfo(
@@ -144,8 +114,6 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const {
     onFieldAInput,
     onFieldBInput,
-    onLeftRangeInput,
-    onRightRangeInput,
     // onStartPriceInput
   } = useV3MintActionHandlers(noLiquidity)
   const isValid = !errorMessage && !invalidRange
@@ -205,8 +173,6 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   // )
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   //   // check whether the user has approved the router on the tokens
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
   //   // Philip TODO: Add 'auto' allowedSlippage
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
   //   // const allowedSlippage = useUserSlippageToleranceWithDefault(
@@ -295,52 +261,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     tokenId,
   ])
 
-  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
-  const handleFeePoolSelect = useCallback(
-    (newFeeAmount: FeeAmount) => {
-      onLeftRangeInput('')
-      onRightRangeInput('')
-
-      router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, { shallow: true })
-    },
-    [currencyIdA, currencyIdB, onLeftRangeInput, onRightRangeInput, router],
-  )
-  //   const handleDismissConfirmation = useCallback(() => {
-  //     setShowConfirm(false)
-  //     // if there was a tx hash, we want to clear the input
-  //     if (txHash) {
-  //       onFieldAInput('')
-  //       // dont jump to pool page if creating
-  //       navigate('/pool')
-  //     }
-  //     setTxHash('')
-  //   }, [navigate, onFieldAInput, txHash])
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
-  //   // const clearAll = useCallback(() => {
-  //   //   onFieldAInput('')
-  //   //   onFieldBInput('')
-  //   //   onLeftRangeInput('')
-  //   //   onRightRangeInput('')
-  //   //   navigate(`/add`)
-  //   // }, [navigate, onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput])
-  //   // get value and prices at ticks
-  const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
-  const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
-  const {
-    getDecrementLower,
-    getIncrementLower,
-    getDecrementUpper,
-    getIncrementUpper,
-    // getSetFullRange
-  } = useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
-  // we need an existence check on parsed amounts for single-asset deposits
-  const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
-  const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
-  // const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
-  //   !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
-  // } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
-  //   !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
-  // }`
+
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   let buttons
   if (addIsUnsupported || addIsWarning) {
@@ -356,43 +278,12 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   } else {
     buttons = (
       <AutoColumn gap="md">
-        {(approvalA === ApprovalState.NOT_APPROVED ||
-          approvalA === ApprovalState.PENDING ||
-          approvalB === ApprovalState.NOT_APPROVED ||
-          approvalB === ApprovalState.PENDING) &&
-          isValid && (
-            <RowBetween style={{ gap: '8px' }}>
-              {showApprovalA && (
-                <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
-                  {approvalA === ApprovalState.PENDING ? (
-                    <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
-                  ) : (
-                    t('Enable %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })
-                  )}
-                </Button>
-              )}
-              {showApprovalB && (
-                <Button onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
-                  {approvalB === ApprovalState.PENDING ? (
-                    <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
-                  ) : (
-                    t('Enable %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })
-                  )}
-                </Button>
-              )}
-            </RowBetween>
-          )}
         <CommitButton
           variant={
             !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B] ? 'danger' : 'primary'
           }
           onClick={() => onAdd()}
-          disabled={
-            !isValid ||
-            attemptingTxn ||
-            (approvalA !== ApprovalState.APPROVED && !depositADisabled) ||
-            (approvalB !== ApprovalState.APPROVED && !depositBDisabled)
-          }
+          disabled={!isValid || attemptingTxn}
         >
           {errorMessage || t('Supply')}
         </CommitButton>
@@ -403,97 +294,56 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   return (
     <Page>
       <BodyWrapper>
-        <AppHeader title={t('Add Liquidity')} backTo="/pool-v3" />
+        <AppHeader
+          backTo={`/pool-v3/${tokenId}`}
+          title={t('Add %assetA%-%assetB% liquidity', {
+            assetA: currencies[Field.CURRENCY_A]?.symbol ?? '',
+            assetB: currencies[Field.CURRENCY_B]?.symbol ?? '',
+          })}
+          noConfig
+        />{' '}
         <CardBody>
-          <AutoRow gap="24px">
-            <AutoColumn
-              style={{
-                flexBasis: '50%',
-              }}
-            >
-              <FlexGap gap="4px" mb="8px">
-                <CurrencySelect
-                  id="add-liquidity-select-tokena"
-                  selectedCurrency={baseCurrency}
-                  onCurrencySelect={handleCurrencyASelect}
-                  showCommonBases
-                  commonBasesType={CommonBasesType.LIQUIDITY}
-                  hideBalance
-                />
-                <AddIcon color="textSubtle" />
-                <CurrencySelect
-                  id="add-liquidity-select-tokenb"
-                  selectedCurrency={currencyB}
-                  onCurrencySelect={handleCurrencyBSelect}
-                  showCommonBases
-                  commonBasesType={CommonBasesType.LIQUIDITY}
-                  hideBalance
-                />
-              </FlexGap>
-
-              <FeeSelector handleFeePoolSelect={handleFeePoolSelect} feeAmount={feeAmountFromUrl} />
-            </AutoColumn>
-
-            <AutoColumn
-              style={{
-                flexGrow: 1,
-              }}
-            >
-              <RangeSelector
-                priceLower={priceLower}
-                priceUpper={priceUpper}
-                getDecrementLower={getDecrementLower}
-                getIncrementLower={getIncrementLower}
-                getDecrementUpper={getDecrementUpper}
-                getIncrementUpper={getIncrementUpper}
-                onLeftRangeInput={onLeftRangeInput}
-                onRightRangeInput={onRightRangeInput}
-                currencyA={baseCurrency}
-                currencyB={quoteCurrency}
-                feeAmount={feeAmount}
+          <AutoColumn mb="16px">
+            {existingPosition && (
+              <PositionPreview
+                position={existingPosition}
+                title="Selected Range"
+                inRange={!outOfRange}
                 ticksAtLimit={ticksAtLimit}
               />
-            </AutoColumn>
-          </AutoRow>
-          <AutoRow gap="24px">
-            <AutoColumn
-              style={{
-                flexBasis: '50%',
-              }}
-            >
-              <Flex alignItems="center" minWidth="70px">
-                <CurrencyLogo currency={currencies[Field.CURRENCY_A]} />
-                <Text ml="4px" bold>
-                  {currencies[Field.CURRENCY_A]?.symbol}
-                </Text>
-              </Flex>
-              <BalanceInput
-                value={formattedAmounts[Field.CURRENCY_A]}
-                onUserInput={onFieldAInput}
-                decimals={currencies[Field.CURRENCY_A]?.decimals ?? null}
-                id="add-liquidity-input-tokena"
-              />
-              <Flex alignItems="center" minWidth="70px">
-                <CurrencyLogo currency={currencies[Field.CURRENCY_B]} />
-                <Text ml="4px" bold>
-                  {currencies[Field.CURRENCY_B]?.symbol}
-                </Text>
-              </Flex>
-              <BalanceInput
-                value={formattedAmounts[Field.CURRENCY_B]}
-                onUserInput={onFieldBInput}
-                decimals={currencies[Field.CURRENCY_B]?.decimals ?? null}
-                id="add-liquidity-input-tokenb"
-              />
-            </AutoColumn>
-            <AutoColumn
-              style={{
-                flexGrow: 1,
-              }}
-            >
-              {buttons}
-            </AutoColumn>
-          </AutoRow>
+            )}
+            <CurrencyInputPanel
+              disableCurrencySelect
+              showBUSD
+              value={formattedAmounts[Field.CURRENCY_A]}
+              onUserInput={onFieldAInput}
+              showQuickInputButton
+              showMaxButton
+              currency={currencies[Field.CURRENCY_A]}
+              id="add-liquidity-input-tokenb"
+              showCommonBases
+              commonBasesType={CommonBasesType.LIQUIDITY}
+            />
+            <CurrencyInputPanel
+              disableCurrencySelect
+              showBUSD
+              value={formattedAmounts[Field.CURRENCY_B]}
+              onUserInput={onFieldBInput}
+              showQuickInputButton
+              showMaxButton
+              currency={currencies[Field.CURRENCY_B]}
+              id="add-liquidity-input-tokenb"
+              showCommonBases
+              commonBasesType={CommonBasesType.LIQUIDITY}
+            />
+          </AutoColumn>
+          <AutoColumn
+            style={{
+              flexGrow: 1,
+            }}
+          >
+            {buttons}
+          </AutoColumn>
         </CardBody>
       </BodyWrapper>
     </Page>

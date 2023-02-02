@@ -16,8 +16,9 @@ export function useV3PositionFees(
   asWETH = false,
 ): [CurrencyAmount<Currency>, CurrencyAmount<Currency>] | [undefined, undefined] {
   const positionManager = useV3NFTPositionManagerContract(false)
-  const owner: string | undefined = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId])
-    .result?.[0]
+  const owner: string | undefined = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [
+    tokenId?.toString(),
+  ]).result?.[0]
 
   const tokenIdHexString = tokenId?.toHexString()
   const latestBlockNumber = useBlockNumber()
