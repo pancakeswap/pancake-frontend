@@ -656,8 +656,8 @@
   "to check if you've won!": "to check if you've won!",
   "Why didn't I win?": "Why didn't I win?",
   "How to Play": "How to Play",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Output is estimated. You will receive at least or the transaction will revert.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Input is estimated. You will sell at most or the transaction will revert.",
+  "Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.": "Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.",
+  "Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.": "Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.",
   "If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize pool.": "If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize pool.",
   "Simple!": "Simple!",
   "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.": "Prices are set when the round starts, equal to 5 USD in CAKE per ticket.",
@@ -996,7 +996,7 @@
   "5Y": "5Y",
   "Annual ROI at current rates": "Annual ROI at current rates",
   "Default Transaction Speed (GWEI)": "Default Transaction Speed (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
   "Standard (%gasPrice%)": "Standard (%gasPrice%)",
   "Fast (%gasPrice%)": "Fast (%gasPrice%)",
   "Instant (%gasPrice%)": "Instant (%gasPrice%)",
@@ -2020,7 +2020,7 @@
   "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%": "Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%",
   "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!": "Renew your staking position to continue enjoying the benefits of farm yield boosting, participating in IFOs, voting power boosts, and so much more!",
   "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.": "The lock period has ended. To avoid more rewards being burned, renew your staking position to continue enjoying the benefits from locked staking.",
-  "RPC Default": "RPC Default",
+  "Default": "Default",
   "Shows username of wallet instead of bunnies": "Shows username of wallet instead of bunnies",
   "Show username": "Show username",
   "For more info, please see pGALA’s twitter.": "For more info, please see pGALA’s twitter.",
@@ -2102,5 +2102,6 @@
   "1 day": "1 day",
   "< 1 day": "< 1 day",
   "Newest First": "Newest First",
-  "Oldest First": "Oldest First"
+  "Oldest First": "Oldest First",
+  "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }

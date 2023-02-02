@@ -10,6 +10,7 @@ import {
   Spinner,
   useMatchBreakpoints,
   BscScanIcon,
+  TransactionErrorContent,
 } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { useTranslation } from '@pancakeswap/localization'
@@ -19,7 +20,7 @@ import styled from 'styled-components'
 import { FormattedOrderData } from 'views/LimitOrders/hooks/useFormattedOrderData'
 import useGelatoLimitOrdersHandlers from 'hooks/limitOrders/useGelatoLimitOrdersHandlers'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
+import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'

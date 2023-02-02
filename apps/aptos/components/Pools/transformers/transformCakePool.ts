@@ -41,6 +41,7 @@ const transformCakePool = ({
   cakeFarm,
   chainId,
   earningTokenPrice,
+  getNow,
 }) => {
   const userStakedAmount = _get(userInfo, 'amount', '0')
 
@@ -74,7 +75,7 @@ const transformCakePool = ({
   if (_toNumber(userStakedAmount) && _toNumber(totalStaked)) {
     const rewardDebt = _get(userInfo, 'reward_debt', '0')
 
-    const accCakePerShare = calcRewardCakePerShare(masterChefData, CAKE_PID)
+    const accCakePerShare = calcRewardCakePerShare(masterChefData, CAKE_PID, getNow)
     const pendingReward = calcPendingRewardCake(userStakedAmount, rewardDebt, accCakePerShare)
 
     userData = {

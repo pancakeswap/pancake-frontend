@@ -3,20 +3,20 @@ import { SerializedFarmConfig } from '@pancakeswap/farms'
 
 const farms: SerializedFarmConfig[] = [
   {
-    pid: 124,
-    vaultPid: 1,
-    lpSymbol: 'ETH-USDC LP',
-    lpAddress: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
-    quoteToken: ethereumTokens.weth,
-    token: ethereumTokens.usdc,
+    pid: 143,
+    vaultPid: 5,
+    lpSymbol: 'STG-USDC LP',
+    lpAddress: '0x6cCA86CC27EB8c7C2d10B0672FE392CFC88e62ff',
+    quoteToken: ethereumTokens.usdc,
+    token: ethereumTokens.stg,
   },
   {
-    pid: 125,
-    vaultPid: 2,
-    lpSymbol: 'ETH-USDT LP',
-    lpAddress: '0x17C1Ae82D99379240059940093762c5e4539aba5',
+    pid: 141,
+    vaultPid: 4,
+    lpSymbol: 'SDAO-WETH LP',
+    lpAddress: '0xDA7cF6a0CD5d5e8D10AB55d8bA58257813a239cA',
     quoteToken: ethereumTokens.weth,
-    token: ethereumTokens.usdt,
+    token: ethereumTokens.sdao,
   },
   {
     pid: 126,
@@ -27,12 +27,20 @@ const farms: SerializedFarmConfig[] = [
     token: ethereumTokens.wbtc,
   },
   {
-    pid: 141,
-    vaultPid: 4,
-    lpSymbol: 'SDAO-WETH LP',
-    lpAddress: '0xDA7cF6a0CD5d5e8D10AB55d8bA58257813a239cA',
+    pid: 125,
+    vaultPid: 2,
+    lpSymbol: 'ETH-USDT LP',
+    lpAddress: '0x17C1Ae82D99379240059940093762c5e4539aba5',
     quoteToken: ethereumTokens.weth,
-    token: ethereumTokens.sdao,
+    token: ethereumTokens.usdt,
+  },
+  {
+    pid: 124,
+    vaultPid: 1,
+    lpSymbol: 'ETH-USDC LP',
+    lpAddress: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
+    quoteToken: ethereumTokens.weth,
+    token: ethereumTokens.usdc,
   },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 

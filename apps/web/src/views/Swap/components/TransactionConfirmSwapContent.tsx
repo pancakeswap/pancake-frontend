@@ -1,13 +1,13 @@
 import { useCallback, useMemo, memo } from 'react'
 import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
-import { ConfirmationModalContent } from 'components/TransactionConfirmationModal'
+import { ConfirmationModalContent } from '@pancakeswap/uikit'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/swap/actions'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
-import StableSwapModalHeader from '../StableSwap/components/StableSwapModalHeader'
 import StableSwapModalFooter from '../StableSwap/components/StableSwapModalFooter'
+import { computeTradePriceBreakdown } from '../SmartSwap/utils/exchange'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -63,12 +63,17 @@ const TransactionConfirmSwapContent = ({
       : false
   }, [currencyBalances, trade, slippageAdjustedAmounts])
 
-  const modalHeader = useCallback(() => {
-    const SwapModalHead = isStable ? StableSwapModalHeader : SwapModalHeader
+  const { priceImpactWithoutFee } = useMemo(() => {
+    return isStable ? { priceImpactWithoutFee: undefined } : computeTradePriceBreakdown(trade)
+  }, [isStable, trade])
 
+  const modalHeader = useCallback(() => {
     return trade ? (
-      <SwapModalHead
-        trade={trade}
+      <SwapModalHeader
+        inputAmount={trade.inputAmount}
+        outputAmount={trade.outputAmount}
+        tradeType={trade.tradeType}
+        priceImpactWithoutFee={priceImpactWithoutFee}
         allowedSlippage={allowedSlippage}
         slippageAdjustedAmounts={slippageAdjustedAmounts}
         isEnoughInputBalance={isEnoughInputBalance}
@@ -85,7 +90,7 @@ const TransactionConfirmSwapContent = ({
     trade,
     slippageAdjustedAmounts,
     isEnoughInputBalance,
-    isStable,
+    priceImpactWithoutFee,
   ])
 
   const modalBottom = useCallback(() => {

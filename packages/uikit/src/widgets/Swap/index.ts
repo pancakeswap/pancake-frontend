@@ -5,3 +5,5 @@ export * from "./SwapCallbackError";
 export * from "./confirmPriceImpactWithoutFee";
 export * from "./ImportList";
 export * from "./ListLogo";
+export * from "./TransactionErrorContent";
+export * from "./ConfirmationModalContent";

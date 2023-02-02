@@ -126,6 +126,8 @@ export const useCakePool = ({ balances, chainId }) => {
     },
   })
 
+  const getNow = useLedgerTimestamp()
+
   return useCallback(() => {
     if (!masterChef || !cakeFarm) return undefined
     const cakePoolInfo = masterChef.data.pool_info[CAKE_PID]
@@ -138,6 +140,7 @@ export const useCakePool = ({ balances, chainId }) => {
       cakeFarm,
       chainId,
       earningTokenPrice,
+      getNow,
     })
-  }, [masterChef, cakeFarm, balances, userInfo, chainId, earningTokenPrice])
+  }, [masterChef, cakeFarm, balances, userInfo, chainId, earningTokenPrice, getNow])
 }
