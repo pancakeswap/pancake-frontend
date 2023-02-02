@@ -120,7 +120,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     mmOrderBookTrade?.mmParam,
     isMMBetter,
   )
-  // console.log(isMMBetter, 'isMMBetter')
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
@@ -269,7 +268,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   const onUseSmartRouterChecked = useCallback(() => setAllowUseSmartRouter(!allowUseSmartRouter), [allowUseSmartRouter])
 
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
-  console.log(v2Trade, tradeWithStableSwap, mmTradeInfo, '!?!?!?!?', mmOrderBookTrade)
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
