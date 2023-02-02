@@ -35,7 +35,7 @@ export default function ClaimFeeModal({
         </AutoRow>
         <AutoRow justifyContent="space-between">
           <Flex>
-            <CurrencyLogo currency={feeValueLower?.currency} size="24px" m />
+            <CurrencyLogo currency={feeValueLower?.currency} size="24px" />
             <Text color="primary" ml="4px">
               {feeValueLower?.currency?.symbol}
             </Text>

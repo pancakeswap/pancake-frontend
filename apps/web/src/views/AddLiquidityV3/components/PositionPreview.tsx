@@ -1,3 +1,4 @@
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { AutoColumn, RowBetween, RowFixed, Text } from '@pancakeswap/uikit'
 import { Position } from '@pancakeswap/v3-sdk'
@@ -23,6 +24,10 @@ export const PositionPreview = ({
   baseCurrencyDefault?: Currency | undefined
   ticksAtLimit: { [bound: string]: boolean | undefined }
 }) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
+
   const currency0 = unwrappedToken(position.pool.token0)
   const currency1 = unwrappedToken(position.pool.token1)
 
@@ -100,7 +105,7 @@ export const PositionPreview = ({
           <LightCard width="48%" padding="8px">
             <AutoColumn gap="4px" justify="center">
               <Text fontSize="12px">Min Price</Text>
-              <Text textAlign="center">{`${formatTickPrice(priceLower, ticksAtLimit, Bound.LOWER)}`}</Text>
+              <Text textAlign="center">{`${formatTickPrice(priceLower, ticksAtLimit, Bound.LOWER, locale)}`}</Text>
               <Text textAlign="center" fontSize="12px">
                 {quoteCurrency.symbol} per {baseCurrency.symbol}
               </Text>
@@ -113,7 +118,7 @@ export const PositionPreview = ({
           <LightCard width="48%" padding="8px">
             <AutoColumn gap="4px" justify="center">
               <Text fontSize="12px">Max Price</Text>
-              <Text textAlign="center">{`${formatTickPrice(priceUpper, ticksAtLimit, Bound.UPPER)}`}</Text>
+              <Text textAlign="center">{`${formatTickPrice(priceUpper, ticksAtLimit, Bound.UPPER, locale)}`}</Text>
               <Text textAlign="center" fontSize="12px">
                 {quoteCurrency.symbol} per {baseCurrency.symbol}
               </Text>

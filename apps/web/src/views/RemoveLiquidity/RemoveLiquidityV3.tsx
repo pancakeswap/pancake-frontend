@@ -147,7 +147,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         }
 
         return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
-          setTxnHash(response.hash)
+          // setTxnHash(response.hash)
           setAttemptingTxn(false)
           addTransaction(response, {
             type: 'remove-liquidity-v3',
