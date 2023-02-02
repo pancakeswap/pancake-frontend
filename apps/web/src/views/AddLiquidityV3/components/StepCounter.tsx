@@ -1,4 +1,4 @@
-import { AutoColumn, AutoRow, Button, NumericalInput, Flex } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Button, NumericalInput } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { ReactNode, useCallback, useEffect, useState } from 'react'
 
@@ -24,7 +24,7 @@ const StepCounter = ({
   increment,
   decrementDisabled = false,
   incrementDisabled = false,
-  width,
+  // width,
   locked,
   onUserInput,
   title,
@@ -32,25 +32,32 @@ const StepCounter = ({
   tokenB,
 }: StepCounterProps) => {
   //  for focus state, styled components doesnt let you select input parent container
-  const [active, setActive] = useState(false)
+  // const [
+  // active,
+  // setActive,
+  // ] = useState(false)
 
   // let user type value and only update parent value on blur
   const [localValue, setLocalValue] = useState('')
   const [useLocalValue, setUseLocalValue] = useState(false)
 
   // animation if parent value updates local value
-  const [pulsing, setPulsing] = useState<boolean>(false)
+  const [
+    ,
+    // pulsing,
+    setPulsing,
+  ] = useState<boolean>(false)
 
-  const handleOnFocus = () => {
-    setUseLocalValue(true)
-    setActive(true)
-  }
+  // const handleOnFocus = () => {
+  //   setUseLocalValue(true)
+  //   setActive(true)
+  // }
 
-  const handleOnBlur = useCallback(() => {
-    setUseLocalValue(false)
-    setActive(false)
-    onUserInput(localValue) // trigger update on parent value
-  }, [localValue, onUserInput])
+  // const handleOnBlur = useCallback(() => {
+  //   setUseLocalValue(false)
+  //   setActive(false)
+  //   onUserInput(localValue) // trigger update on parent value
+  // }, [localValue, onUserInput])
 
   // for button clicks
   const handleDecrement = useCallback(() => {
@@ -68,12 +75,12 @@ const StepCounter = ({
       setTimeout(() => {
         setLocalValue(value) // reset local value to match parent
         setPulsing(true) // trigger animation
-        setTimeout(function () {
+        setTimeout(() => {
           setPulsing(false)
         }, 1800)
       }, 0)
     }
-  }, [localValue, useLocalValue, value])
+  }, [localValue, setPulsing, useLocalValue, value])
 
   return (
     <AutoColumn gap="8px" width="100%">

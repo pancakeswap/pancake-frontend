@@ -104,7 +104,7 @@ export default function PoolListPage() {
   return (
     <Page>
       <AppBody>
-        <AppHeader title={t('Your Liquidity')} subtitle={t('List of your liquidity positions')} />
+        <AppHeader title="Your Liquidity" subtitle="List of your liquidity positions" />
         <Body>{bodyChildren}</Body>
         <CardFooter style={{ textAlign: 'center' }}>
           <NextLink href="/add" passHref>
