@@ -8,7 +8,7 @@ import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
 
-const floatingStarsLeft = keyframes`
+export const floatingStarsLeft = keyframes`
   from {
     transform: translate(0,  0px);
   }
@@ -20,7 +20,7 @@ const floatingStarsLeft = keyframes`
   }
 `
 
-const floatingStarsRight = keyframes`
+export const floatingStarsRight = keyframes`
   from {
     transform: translate(0,  0px);
   }
