@@ -1,12 +1,12 @@
 import { BigNumber } from '@ethersproject/bignumber'
 // import { TransactionResponse } from '@ethersproject/providers'
-import { CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
+import { CurrencyAmount, Fraction, Price, Token } from '@pancakeswap/sdk'
 import { Button, Card, CardBody, useModal, Text, AutoRow, Flex, Box, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-// import useBUSDPrice from 'hooks/useBUSDPrice'
+import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
@@ -175,29 +175,29 @@ export default function PoolPage() {
   // const [showConfirm, setShowConfirm] = useState(false)
 
   // usdc prices always in terms of tokens
-  // const price0 = useBUSDPrice(token0 ?? undefined)
-  // const price1 = useBUSDPrice(token1 ?? undefined)
+  const price0 = useBUSDPrice(token0 ?? undefined)
+  const price1 = useBUSDPrice(token1 ?? undefined)
 
-  // const fiatValueOfFees: CurrencyAmount<Currency> | null = useMemo(() => {
-  //   if (!price0 || !price1 || !feeValue0 || !feeValue1) return null
+  const fiatValueOfFees: CurrencyAmount<Currency> | null = useMemo(() => {
+    if (!price0 || !price1 || !feeValue0 || !feeValue1) return null
 
-  //   // we wrap because it doesn't matter, the quote returns a USDC amount
-  //   const feeValue0Wrapped = feeValue0?.wrapped
-  //   const feeValue1Wrapped = feeValue1?.wrapped
+    // we wrap because it doesn't matter, the quote returns a USDC amount
+    const feeValue0Wrapped = feeValue0?.wrapped
+    const feeValue1Wrapped = feeValue1?.wrapped
 
-  //   if (!feeValue0Wrapped || !feeValue1Wrapped) return null
+    if (!feeValue0Wrapped || !feeValue1Wrapped) return null
 
-  //   const amount0 = price0.quote(feeValue0Wrapped)
-  //   const amount1 = price1.quote(feeValue1Wrapped)
-  //   return amount0.add(amount1)
-  // }, [price0, price1, feeValue0, feeValue1])
+    const amount0 = price0.quote(feeValue0Wrapped)
+    const amount1 = price1.quote(feeValue1Wrapped)
+    return amount0.add(amount1)
+  }, [price0, price1, feeValue0, feeValue1])
 
-  // const fiatValueOfLiquidity: CurrencyAmount<Token> | null = useMemo(() => {
-  //   if (!price0 || !price1 || !position) return null
-  //   const amount0 = price0.quote(position.amount0)
-  //   const amount1 = price1.quote(position.amount1)
-  //   return amount0.add(amount1)
-  // }, [price0, price1, position])
+  const fiatValueOfLiquidity: CurrencyAmount<Currency> | null = useMemo(() => {
+    if (!price0 || !price1 || !position) return null
+    const amount0 = price0.quote(position.amount0)
+    const amount1 = price1.quote(position.amount1)
+    return amount0.add(amount1)
+  }, [price0, price1, position])
 
   const addTransaction = useTransactionAdder()
 
@@ -324,19 +324,39 @@ export default function PoolPage() {
         />
         <CardBody>
           <AutoRow>
-            <Flex alignItems="center" justifyContent="space-between" width="100%">
+            <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
               <Box width="100%">
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   Liquidity
                 </Text>
+                {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100)) ? (
+                  <Text fontSize="24px" fontWeight={500}>
+                    ${fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })}
+                  </Text>
+                ) : (
+                  <Text fontSize="24px" fontWeight={500}>
+                    $-
+                  </Text>
+                )}
               </Box>
               <Box width="100%">
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   Unclaim Fees
                 </Text>
-                <Button scale="sm" disabled={collecting} onClick={onClaimFee}>
-                  Collect
-                </Button>
+                <AutoRow justifyContent="space-between">
+                  {fiatValueOfFees?.greaterThan(new Fraction(1, 100)) ? (
+                    <Text fontSize="24px" fontWeight={500}>
+                      ${fiatValueOfFees.toFixed(2, { groupSeparator: ',' })}
+                    </Text>
+                  ) : (
+                    <Text fontSize="24px" fontWeight={500}>
+                      $-
+                    </Text>
+                  )}
+                  <Button scale="sm" disabled={collecting} onClick={onClaimFee}>
+                    Collect
+                  </Button>
+                </AutoRow>
               </Box>
             </Flex>
           </AutoRow>
