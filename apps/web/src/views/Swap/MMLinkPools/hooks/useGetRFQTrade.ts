@@ -12,7 +12,7 @@ const fetchRFQResult = async (param: QuoteRequest) => {
   const data = await sendRFQAndGetRFQId(param) // get rfq id always works
   // get rfq sometimes have some issue, need to fix from BE
   // can be fixed buy using delay for now
-  await delay(6000)
+  await delay(3000)
   const rfq = await getRFQById(data?.message.rfqId) // || data?.message.rfqId
   return rfq
 }
@@ -42,7 +42,6 @@ export const useGetRFQTrade = (
     { refreshInterval: 60000 }, // 60sec auto refresh
   )
   const isExactIn: boolean = independentField === Field.INPUT
-  console.log(status, 'status')
 
   if (data?.messageType !== MessageType.RFQ_RESPONSE) return null
   return {
