@@ -6,7 +6,7 @@ export const ifos: Ifo[] = [
   {
     id: 'USDC',
     cIFO: false,
-    address: `${IFO_POOL_STORE_TAG}<${testnetTokens.cake.address}, ${testnetTokens.usdc.address}, ${getIFOUID(1)}>`,
+    address: `${IFO_POOL_STORE_TAG}<${testnetTokens.usdc.address}, ${testnetTokens.cake.address}, ${getIFOUID(0)}>`,
     isActive: true,
     name: 'USDC',
     poolUnlimited: {
@@ -16,8 +16,8 @@ export const ifos: Ifo[] = [
       distributionRatio: 1,
     },
     campaignId: '1',
-    currency: testnetTokens.cake,
-    token: testnetTokens.usdc,
+    currency: testnetTokens.usdc,
+    token: testnetTokens.cake,
     releaseTime: 1674921023,
     articleUrl:
       'https://pancakeswap.finance/voting/proposal/0x06598b682d9f33ec5ea0c2acf8eba13dea7c63fa08dd2c4dfd7bc7af16920d51',
