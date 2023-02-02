@@ -6,11 +6,14 @@ import PancakeSwapMMLinkedPoolABI from 'config/abi/mmLinkedPool.json'
 import { MmLinkedPool } from 'config/abi/types/MmLinkedPool'
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getAddress } from '@ethersproject/address'
 import { useContract } from 'hooks/useContract'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
 import { TradeWithMM, OrderBookRequest, OrderBookResponse } from '../types'
+
+const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
 export function useMMSwapContract() {
   const { chainId } = useActiveChainId()
@@ -98,8 +101,8 @@ export const parseMMParameter = (
 ): OrderBookRequest => {
   return {
     networkId: chainId,
-    takerSideToken: inputCurrency?.isToken ? inputCurrency.address : inputCurrency?.wrapped.address,
-    makerSideToken: outputCurrency?.isToken ? outputCurrency.address : outputCurrency?.wrapped.address,
+    takerSideToken: inputCurrency?.isToken ? inputCurrency.address : NATIVE_CURRENCY_ADDRESS,
+    makerSideToken: outputCurrency?.isToken ? outputCurrency.address : NATIVE_CURRENCY_ADDRESS,
     takerSideTokenAmount:
       independentField === Field.INPUT && typedValue && typedValue !== '0'
         ? parseUnits(typedValue, inputCurrency.decimals).toString()
@@ -131,4 +134,9 @@ export const parseMMTrade = (
     },
   }
   return bestTradeWithMM
+}
+
+export const shouldShowMMError = (message?: string) => {
+  if (message?.includes('Amount is below')) return true
+  return false
 }
