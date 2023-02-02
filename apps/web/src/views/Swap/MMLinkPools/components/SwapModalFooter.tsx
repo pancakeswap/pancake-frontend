@@ -29,6 +29,8 @@ export default function SwapModalFooter({
   swapErrorMessage,
   disabledConfirm,
   isMM = false,
+  isRFQReady = false,
+  isRFQLoading,
 }: {
   trade: TradeWithMM<Currency, Currency, TradeType>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
@@ -37,6 +39,8 @@ export default function SwapModalFooter({
   swapErrorMessage?: string | undefined
   disabledConfirm: boolean
   isMM?: boolean
+  isRFQReady: boolean
+  isRFQLoading: boolean
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
@@ -170,12 +174,14 @@ export default function SwapModalFooter({
         <Button
           variant={severity > 2 ? 'danger' : 'primary'}
           onClick={onConfirm}
-          disabled={disabledConfirm}
+          disabled={disabledConfirm || !isRFQReady}
           mt="12px"
           id="confirm-swap-or-send"
           width="100%"
         >
-          {severity > 2 || (trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance)
+          {!isRFQReady
+            ? 'checking RFQ with MM'
+            : severity > 2 || (trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance)
             ? t('Swap Anyway')
             : t('Confirm Swap')}
         </Button>

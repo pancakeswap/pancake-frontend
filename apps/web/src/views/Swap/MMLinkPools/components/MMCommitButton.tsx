@@ -59,6 +59,7 @@ interface SwapCommitButtonPropsType {
   onUserInput: (field: Field, typedValue: string) => void
   rfq?: RFQResponse['message']
   refreshRFQ?: () => void
+  isRFQLoading?: boolean
 }
 
 export default function MMSwapCommitButton({
@@ -82,6 +83,7 @@ export default function MMSwapCommitButton({
   onUserInput,
   rfq,
   refreshRFQ,
+  isRFQLoading,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const [singleHopOnly] = useUserSingleHopOnly()
@@ -174,6 +176,8 @@ export default function MMSwapCommitButton({
       swapErrorMessage={swapErrorMessage}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
+      isRFQReady={Boolean(rfq) && !isRFQLoading}
+      isRFQLoading={isRFQLoading}
     />,
     true,
     true,

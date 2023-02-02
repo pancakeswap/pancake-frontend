@@ -40,6 +40,8 @@ interface TransactionConfirmSwapContentProps {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
+  isRFQReady: boolean
+  isRFQLoading: boolean
 }
 
 const TransactionConfirmSwapContent = ({
@@ -50,6 +52,8 @@ const TransactionConfirmSwapContent = ({
   onConfirm,
   recipient,
   currencyBalances,
+  isRFQReady,
+  isRFQLoading,
 }: TransactionConfirmSwapContentProps) => {
   const showAcceptChanges = useMemo(
     () => Boolean(trade && originalTrade && tradeMeaningfullyDiffers(trade, originalTrade)),
@@ -108,6 +112,8 @@ const TransactionConfirmSwapContent = ({
     return trade ? (
       <SwapModalFooter
         isMM
+        isRFQLoading={isRFQLoading}
+        isRFQReady={isRFQReady}
         onConfirm={onConfirm}
         trade={trade}
         disabledConfirm={showAcceptChanges}
@@ -115,7 +121,7 @@ const TransactionConfirmSwapContent = ({
         isEnoughInputBalance={isEnoughInputBalance}
       />
     ) : null
-  }, [onConfirm, showAcceptChanges, trade, isEnoughInputBalance, slippageAdjustedAmounts])
+  }, [onConfirm, showAcceptChanges, trade, isEnoughInputBalance, slippageAdjustedAmounts, isRFQReady, isRFQLoading])
 
   return <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
 }

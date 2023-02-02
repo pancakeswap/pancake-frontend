@@ -146,7 +146,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
 
-  console.log(v2Trade, tradeWithStableSwap, mmOrderBookTrade?.inputError, '????')
   const parsedAmounts = showWrap
     ? {
         [Field.INPUT]: parsedAmount,
