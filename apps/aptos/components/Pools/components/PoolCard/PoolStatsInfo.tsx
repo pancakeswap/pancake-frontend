@@ -7,7 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 
-import { AprInfo, TotalStaked } from './Stat'
+import { AprInfo } from './Stat'
 
 interface ExpandedFooterProps {
   pool: Pool.DeserializedPool<Token> & { stakeLimitEndBlock?: number }
@@ -83,7 +83,14 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
   return (
     <>
       <AprInfo pool={pool} stakedBalance={stakedBalance} />
-      {showTotalStaked && <TotalStaked totalStaked={totalStaked} stakingToken={stakingToken} />}
+      {showTotalStaked && (
+        <Pool.TotalStaked
+          totalStaked={totalStaked}
+          tokenDecimals={stakingToken.decimals}
+          decimalsToShow={3}
+          symbol={stakingToken.symbol}
+        />
+      )}
       {stakingLimit?.gt(0) ? (
         <>
           <Flex justifyContent="space-between" alignItems="center">
