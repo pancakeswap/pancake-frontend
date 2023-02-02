@@ -269,6 +269,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   const onUseSmartRouterChecked = useCallback(() => setAllowUseSmartRouter(!allowUseSmartRouter), [allowUseSmartRouter])
 
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
+  console.log(v2Trade, tradeWithStableSwap, mmTradeInfo, '!?!?!?!?', mmOrderBookTrade)
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
@@ -299,7 +300,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
             showBUSD={!!tokenMap[chainId]?.[inputCurrencyId] || inputCurrencyId === NATIVE[chainId]?.symbol}
             commonBasesType={CommonBasesType.SWAP_LIMITORDER}
           />
-
           {isAccessTokenSupported && inputCurrency?.isToken && (
             <Box>
               <AccessRisk token={inputCurrency} />
@@ -402,7 +402,11 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         </AutoColumn>
 
         <Box mt="0.25rem">
-          {isMMBetter ? (
+          {!tradeWithStableSwap && !v2Trade && mmOrderBookTrade?.inputError ? (
+            <Button width="100%" disabled>
+              {mmOrderBookTrade?.inputError}
+            </Button>
+          ) : isMMBetter ? (
             <MMCommitButton
               swapIsUnsupported={swapIsUnsupported}
               account={account}
@@ -417,7 +421,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               currencies={currencies}
               isExpertMode={isExpertMode}
               trade={mmTradeInfo.trade}
-              swapInputError={mmOrderBookTrade.inputError}
+              swapInputError={mmOrderBookTrade?.inputError || mmOrderBookTrade?.inputError}
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
               allowedSlippage={allowedSlippage}
