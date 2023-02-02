@@ -1,7 +1,9 @@
 import { SWRConfig } from 'swr'
 import { useRouter } from 'next/router'
-import { NotFound } from '@pancakeswap/uikit'
-import SingleArticle from 'components/Blog/Article/SingleArticle'
+import { NotFound, Box } from '@pancakeswap/uikit'
+import ArticleInfo from 'components/Blog/Article/SingleArticle/ArticleInfo'
+import HowItWork from 'components/Blog/Article/SingleArticle/HowItWork'
+import SimilarArticles from 'components/Blog/Article/SingleArticle/SimilarArticles'
 import { InferGetServerSidePropsType } from 'next'
 import { getArticle, getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
@@ -65,7 +67,11 @@ const ArticlePage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> 
     <div>
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
       <SWRConfig value={{ fallback }}>
-        <SingleArticle />
+        <Box>
+          <ArticleInfo />
+          <HowItWork />
+          <SimilarArticles />
+        </Box>
       </SWRConfig>
     </div>
   )
