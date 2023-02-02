@@ -42,6 +42,7 @@ export const useGetRFQTrade = (
     { refreshInterval: 60000 }, // 60sec auto refresh
   )
   const isExactIn: boolean = independentField === Field.INPUT
+  console.log(status, 'status')
 
   if (data?.messageType !== MessageType.RFQ_RESPONSE) return null
   return {

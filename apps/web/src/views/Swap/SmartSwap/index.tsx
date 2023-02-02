@@ -114,6 +114,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     v2Trade,
     tradeWithMM: mmOrderBookTrade?.trade,
   })
+
   const mmRFQTrade = useGetRFQTrade(
     independentField,
     inputCurrency,
@@ -477,7 +478,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         </Box>
       </Wrapper>
       {!swapIsUnsupported ? (
-        !showWrap && tradeInfo ? (
+        !showWrap && tradeInfo && !isMMBetter ? (
           <AdvancedSwapDetailsDropdown
             hasStablePair={smartRouterOn}
             pairs={tradeInfo.route.pairs}
