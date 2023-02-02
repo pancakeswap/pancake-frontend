@@ -2101,5 +2101,7 @@
   "%days% days": "%days% dias",
   "1 day": "1 dia",
   "< 1 day": "< 1 dia",
+  "Newest First": "Newest First",
+  "Oldest First": "Oldest First",
   "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node."
 }
