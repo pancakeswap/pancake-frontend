@@ -2,13 +2,12 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Flex } from '@pancakeswap/uikit'
 import BlogCard from 'views/Blog/components/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
-import { Autoplay, Grid } from 'swiper'
+import { Autoplay } from 'swiper'
 import ArticleView from 'views/Blog/components/Article/ArticleView'
 import NextLink from 'next/link'
 import MoreButton from 'views/Blog/components/MoreButton'
 import useSWR from 'swr'
 import { ArticleDataType } from 'views/Blog/utils/transformArticle'
-import 'swiper/css/grid'
 import 'swiper/css/bundle'
 
 const SimilarArticles = () => {
@@ -21,32 +20,33 @@ const SimilarArticles = () => {
         <Flex justifyContent="center">
           <ArticleView title={t('You might also like')}>
             <Swiper
+              loop
               resizeObserver
               slidesPerView={1}
-              grid={{ rows: 1 }}
+              spaceBetween={20}
               autoplay={{
                 delay: 2500,
                 disableOnInteraction: false,
               }}
-              modules={[Autoplay, Grid]}
+              modules={[Autoplay]}
               breakpoints={{
                 320: {
                   slidesPerView: 1,
-                  grid: { rows: 1 },
+                  spaceBetween: 20,
                 },
                 920: {
                   slidesPerView: 2,
-                  grid: { rows: 1 },
+                  spaceBetween: 20,
                 },
                 1440: {
                   slidesPerView: 3,
-                  grid: { rows: 2 },
+                  spaceBetween: 0,
                 },
               }}
             >
               {similarArticles?.map((article) => (
                 <SwiperSlide key={article.id}>
-                  <NextLink passHref href={`/blog/article/${article.id}`}>
+                  <NextLink passHref href={`/${article.id}`}>
                     <BlogCard
                       margin="auto"
                       padding={['0', '0', '18.5px']}

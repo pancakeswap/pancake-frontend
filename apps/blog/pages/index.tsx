@@ -1,10 +1,10 @@
 import { SWRConfig } from 'swr'
 import Blog from 'views/Blog'
 import { InferGetServerSidePropsType } from 'next'
-import { getArticle } from 'views/Blog/hooks/getArticle'
+import { getArticle, getCategories } from 'views/Blog/hooks/getArticle'
 
 export async function getStaticProps() {
-  const [latestArticles, chefChoiceArticle] = await Promise.all([
+  const [latestArticles, chefChoiceArticle, categories] = await Promise.all([
     getArticle({
       url: '/articles',
       urlParamsObject: {
@@ -28,6 +28,7 @@ export async function getStaticProps() {
         },
       },
     }),
+    getCategories(),
   ])
 
   return {
@@ -35,6 +36,7 @@ export async function getStaticProps() {
       fallback: {
         '/latestArticles': latestArticles.data,
         '/chefChoiceArticle': chefChoiceArticle.data,
+        '/categories': categories,
       },
     },
     revalidate: 60,

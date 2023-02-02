@@ -14,7 +14,7 @@ const StyledChefsChoiceContainer = styled(Flex)`
   margin: 61px auto 48px auto;
 
   ${({ theme }) => theme.mediaQueries.sm} {
-    margin: 152px auto 80px auto;
+    margin: 120px auto 80px auto;
   }
 `
 
@@ -28,8 +28,8 @@ const ChefsChoice = () => {
         <Swiper
           loop
           resizeObserver
-          spaceBetween={37}
           slidesPerView={1}
+          spaceBetween={20}
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,
@@ -38,18 +38,21 @@ const ChefsChoice = () => {
           breakpoints={{
             768: {
               slidesPerView: 1,
+              spaceBetween: 20,
             },
             920: {
               slidesPerView: 2,
+              spaceBetween: 20,
             },
             1440: {
               slidesPerView: 3,
+              spaceBetween: 0,
             },
           }}
         >
           {articlesData?.map((article) => (
             <SwiperSlide key={article.id}>
-              <NextLink passHref href={`/blog/article/${article.id}`}>
+              <NextLink passHref href={`/${article.id}`}>
                 <BlogCard
                   margin="auto"
                   padding={['0', '0', '18.5px']}

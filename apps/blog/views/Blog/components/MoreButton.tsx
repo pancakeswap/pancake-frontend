@@ -7,7 +7,7 @@ const MoreButton = () => {
 
   return (
     <Flex justifyContent="center" m="50px auto">
-      <NextLink href="/blog/article" passHref>
+      <NextLink href="/#all" passHref>
         <Button scale="md" variant="secondary">
           {t('More')}
         </Button>

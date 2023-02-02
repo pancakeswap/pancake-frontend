@@ -54,7 +54,7 @@ interface CardArticleProps {
 const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ article }) => {
   return (
     <StyledArticle flexDirection="column">
-      <NextLink passHref href={`/blog/article/${article.id}`}>
+      <NextLink passHref href={`/${article.id}`}>
         <Flex>
           <Box
             borderRadius={8}

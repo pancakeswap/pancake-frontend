@@ -80,9 +80,12 @@ const AllArticle = () => {
     { label: 'Georgian', value: 'ka' },
     { label: 'Türkçe', value: 'tr' },
     { label: 'हिंदी', value: 'hi' },
+    { label: 'Русский', value: 'ru' },
+    { label: 'Deutsch', value: 'de' },
   ]
   const sortByItems = [
-    { label: t('Date'), value: 'createAt:desc' },
+    { label: t('Newest First'), value: 'createAt:desc' },
+    { label: t('Oldest First'), value: 'createAt:asc' },
     { label: t('Sort Title A-Z'), value: 'title:asc' },
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
@@ -92,12 +95,6 @@ const AllArticle = () => {
   useEffect(() => {
     setCurrentPage(1)
   }, [query, selectedCategories, sortBy, languageOption])
-
-  useEffect(() => {
-    if (router.isReady && router.query.search) {
-      setQuery(router.query.search as string)
-    }
-  }, [router.isReady, router.query.search])
 
   useEffect(() => {
     if (router.isReady && router.query.category) {
@@ -122,11 +119,10 @@ const AllArticle = () => {
   const handlePagination = (value: number) => {
     setCurrentPage(1)
     setCurrentPage(value)
-    window.scrollTo({ top: 0, behavior: 'auto' })
   }
 
   return (
-    <StyledArticleContainer>
+    <StyledArticleContainer id="all">
       <Text
         bold
         color="secondary"
