@@ -68,6 +68,7 @@ const RewardList = [
 ]
 
 const RewardFee = () => {
+  const { t } = useTranslation()
   const { theme } = useTheme()
 
   return (
