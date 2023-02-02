@@ -180,7 +180,7 @@ export default function SwapModalFooter({
           width="100%"
         >
           {!isRFQReady
-            ? 'checking RFQ with MM'
+            ? 'Checking RFQ with MM'
             : severity > 2 || (trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance)
             ? t('Swap Anyway')
             : t('Confirm Swap')}
