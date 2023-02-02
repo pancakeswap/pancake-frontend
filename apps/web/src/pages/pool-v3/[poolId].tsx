@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 // import { TransactionResponse } from '@ethersproject/providers'
-import { CurrencyAmount, Fraction, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Price, Token } from '@pancakeswap/sdk'
 import { Button, Card, CardBody, useModal, Text, AutoRow, Flex, Box, NextLinkFromReactRouter } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
