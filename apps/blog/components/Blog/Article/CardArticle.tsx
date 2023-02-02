@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
-import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'utils/transformArticle'
 import NextLink from 'next/link'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`

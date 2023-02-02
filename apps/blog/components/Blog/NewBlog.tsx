@@ -5,7 +5,7 @@ import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import NextLink from 'next/link'
 import useSWR from 'swr'
-import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'utils/transformArticle'
 import NoSSR from 'components/NoSSR'
 
 const StyledBackground = styled(Box)`

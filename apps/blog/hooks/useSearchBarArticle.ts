@@ -1,6 +1,6 @@
 import useSWR from 'swr'
-import { getArticle } from 'views/Blog/hooks/getArticle'
-import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { getArticle } from 'hooks/getArticle'
+import { ArticleDataType } from 'utils/transformArticle'
 
 interface SearchBarArticle {
   isFetching: boolean

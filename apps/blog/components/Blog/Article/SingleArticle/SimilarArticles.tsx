@@ -1,13 +1,13 @@
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Flex } from '@pancakeswap/uikit'
-import BlogCard from 'views/Blog/components/BlogCard'
+import BlogCard from 'components/Blog/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper'
-import ArticleView from 'views/Blog/components/Article/ArticleView'
+import ArticleView from 'components/Blog/Article/ArticleView'
 import NextLink from 'next/link'
-import MoreButton from 'views/Blog/components/MoreButton'
+import MoreButton from 'components/Blog/MoreButton'
 import useSWR from 'swr'
-import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'utils/transformArticle'
 import 'swiper/css/bundle'
 
 const SimilarArticles = () => {
