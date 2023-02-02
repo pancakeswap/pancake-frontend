@@ -41,7 +41,7 @@ const Benefits = () => {
   const { theme } = useTheme()
 
   return (
-    <PageSection index={1} dividerPosition="top" dividerFill={{ light: theme.colors.background }}>
+    <PageSection index={1} dividerPosition="top" clipFill={{ light: theme.colors.gradientBubblegum }}>
       <Flex alignItems="center" flexDirection="column" justifyContent="center">
         <GradientLogo height="36px" width="36px" mb="24px" />
         <Heading textAlign="center" scale="xl">
