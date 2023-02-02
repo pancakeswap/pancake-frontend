@@ -4,11 +4,8 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   ArrowUpIcon,
   AutoColumn,
-  Box,
   Button,
   ColumnCenter,
-  ErrorIcon,
-  Flex,
   InjectedModalProps,
   Link,
   Modal,
@@ -17,7 +14,7 @@ import {
   Text,
 } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { ReactElement, useCallback } from 'react'
+import { useCallback } from 'react'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 
@@ -85,47 +82,6 @@ export function TransactionSubmittedContent({
           </Button>
         </AutoColumn>
       </Section>
-    </Wrapper>
-  )
-}
-
-export function ConfirmationModalContent({
-  bottomContent,
-  topContent,
-}: {
-  topContent: () => React.ReactNode
-  bottomContent: () => React.ReactNode
-}) {
-  return (
-    <Wrapper>
-      <Box>{topContent()}</Box>
-      <Box>{bottomContent()}</Box>
-    </Wrapper>
-  )
-}
-
-export function TransactionErrorContent({
-  message,
-  onDismiss,
-}: {
-  message: ReactElement | string
-  onDismiss?: () => void
-}) {
-  const { t } = useTranslation()
-  return (
-    <Wrapper>
-      <AutoColumn justify="center">
-        <ErrorIcon color="failure" width="64px" />
-        <Text color="failure" style={{ textAlign: 'center', width: '85%', wordBreak: 'break-word' }}>
-          {message}
-        </Text>
-      </AutoColumn>
-
-      {onDismiss ? (
-        <Flex justifyContent="center" pt="24px">
-          <Button onClick={onDismiss}>{t('Dismiss')}</Button>
-        </Flex>
-      ) : null}
     </Wrapper>
   )
 }
