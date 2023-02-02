@@ -1,17 +1,17 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
-import { isStableSwapPair } from '@pancakeswap/smart-router/evm'
 
+import { getAddress } from '@ethersproject/address'
 import { parseUnits } from '@ethersproject/units'
 import PancakeSwapMMLinkedPoolABI from 'config/abi/mmLinkedPool.json'
 import { MmLinkedPool } from 'config/abi/types/MmLinkedPool'
-import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
+import { BIPS_BASE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { getAddress } from '@ethersproject/address'
 import { useContract } from 'hooks/useContract'
+import toNumber from 'lodash/toNumber'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
-import { TradeWithMM, OrderBookRequest, OrderBookResponse } from '../types'
+import { OrderBookRequest, TradeWithMM } from '../types'
 
 const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
@@ -91,6 +91,19 @@ export function formatExecutionPrice(trade?: TradeWithMM<Currency, Currency, Tra
       }`
 }
 
+export const tryParseUnit = (typedValue?: string, decimals?: number) => {
+  let parseAmountString
+  if (!typedValue || !decimals) return parseAmountString
+  try {
+    parseAmountString = parseUnits(typedValue, decimals).toString()
+  } catch {
+    parseAmountString = parseUnits(toNumber(typedValue).toFixed(decimals), decimals).toString()
+  } finally {
+    // eslint-disable-next-line no-unsafe-finally
+    return parseAmountString
+  }
+}
+
 export const parseMMParameter = (
   chainId: number,
   inputCurrency: Currency,
@@ -105,11 +118,11 @@ export const parseMMParameter = (
     makerSideToken: outputCurrency?.isToken ? outputCurrency.address : NATIVE_CURRENCY_ADDRESS,
     takerSideTokenAmount:
       independentField === Field.INPUT && typedValue && typedValue !== '0'
-        ? parseUnits(typedValue, inputCurrency.decimals).toString()
+        ? tryParseUnit(typedValue, inputCurrency.decimals)
         : undefined,
     makerSideTokenAmount:
       independentField === Field.OUTPUT && typedValue && typedValue !== '0'
-        ? parseUnits(typedValue, outputCurrency.decimals).toString()
+        ? tryParseUnit(typedValue, outputCurrency?.decimals)
         : undefined,
     trader: account,
   }
@@ -138,5 +151,6 @@ export const parseMMTrade = (
 
 export const shouldShowMMError = (message?: string) => {
   if (message?.includes('Amount is below')) return true
+  if (message?.includes('Amount is above')) return true
   return false
 }
