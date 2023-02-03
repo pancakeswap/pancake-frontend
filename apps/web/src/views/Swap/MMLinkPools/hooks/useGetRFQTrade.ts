@@ -1,7 +1,7 @@
 import { Currency, TradeType } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
 import { Field } from 'state/swap/actions'
-import useSWRImmutable from 'swr/immutable'
+import useSWR from 'swr'
 import { getRFQById, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
 import { parseMMTrade } from '../utils/exchange'
@@ -29,7 +29,7 @@ export const useGetRFQTrade = (
   refreshRFQ: () => void
   isRFQLoading: boolean
 } | null => {
-  const { data, mutate, status } = useSWRImmutable(
+  const { data, mutate, status } = useSWR(
     isMMBetter &&
       param &&
       param.trader &&
