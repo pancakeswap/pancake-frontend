@@ -1,4 +1,5 @@
 import { useAccount } from '@pancakeswap/awgmi'
+import { IfoSkeletonCardActions } from '@pancakeswap/uikit'
 import { ConnectWalletButton } from 'components/ConnectWalletButton'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useMemo } from 'react'
@@ -6,7 +7,6 @@ import { getStatus } from 'views/Ifos/hooks/helpers'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import { ClaimButton } from './ClaimButton'
 import ContributeButton from './ContributeButton'
-import { SkeletonCardActions } from './Skeletons'
 
 interface Props {
   poolId: PoolIds
@@ -47,7 +47,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   ])
 
   if (isLoading) {
-    return <SkeletonCardActions />
+    return <IfoSkeletonCardActions />
   }
 
   if (!account) {

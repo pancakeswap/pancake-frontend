@@ -1,10 +1,10 @@
-import { Flex, Skeleton } from '@pancakeswap/uikit'
+import { Flex, Skeleton } from "@pancakeswap/uikit";
 
-export const SkeletonCardActions = () => {
-  return <Skeleton height="48px" />
-}
+export const IfoSkeletonCardActions = () => {
+  return <Skeleton height="48px" />;
+};
 
-export const SkeletonCardTokens = () => {
+export const IfoSkeletonCardTokens = () => {
   return (
     <div>
       <Flex justifyContent="space-between" alignItems="center" mb="24px">
@@ -16,16 +16,16 @@ export const SkeletonCardTokens = () => {
         <Skeleton width="90%" />
       </Flex>
     </div>
-  )
-}
+  );
+};
 
-export const SkeletonCardDetails = () => {
+export const IfoSkeletonCardDetails = () => {
   return (
     <div>
       <Skeleton mb="8px" />
       <Skeleton />
     </div>
-  )
-}
+  );
+};
 
-export default null
+export default null;
