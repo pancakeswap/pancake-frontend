@@ -8,18 +8,14 @@ import { InferGetServerSidePropsType } from 'next'
 import { getArticle, getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  }
-}
-
-export const getStaticProps = async (context: any) => {
+export async function getServerSideProps(context: any) {
   const params = context.params.slug
   const article = await getSingleArticle({
     url: `/slugify/slugs/article/${params}`,
-    urlParamsObject: { populate: 'categories,image' },
+    urlParamsObject: {
+      populate: 'categories,image',
+      locale: context?.query?.locale ?? 'en',
+    },
   })
 
   const similarArticles = await getArticle({
@@ -51,11 +47,10 @@ export const getStaticProps = async (context: any) => {
         '/similarArticles': similarArticles.data,
       },
     },
-    revalidate: 60,
   }
 }
 
-const ArticlePage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
+const ArticlePage: React.FC<InferGetServerSidePropsType<typeof getServerSideProps>> = ({ fallback }) => {
   const router = useRouter()
   if (!router.isFallback && !fallback?.['/article']?.title) {
     return <NotFound />
