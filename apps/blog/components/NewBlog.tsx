@@ -65,6 +65,13 @@ const StyledTagGroup = styled(Flex)`
   }
 `
 
+const StyledDesc = styled(Text)`
+  display: -webkit-box;
+  white-space: initial;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+`
+
 const NewBlog = () => {
   const { t } = useTranslation()
   const { data: articlesData } = useSWR<ArticleDataType[]>('/latestArticles')
@@ -84,7 +91,7 @@ const NewBlog = () => {
             </Text>
           </Box>
         </Flex>
-        <NextLink passHref href={`/articles/${article?.slug}`}>
+        <NextLink passHref href={`/articles/${article?.slug}?locale=${article?.locale}`}>
           <StyleBlog>
             <Box
               overflow="hidden"
@@ -119,9 +126,9 @@ const NewBlog = () => {
               >
                 {article?.title}
               </Text>
-              <Text ellipsis mb="24px">
+              <StyledDesc ellipsis mb="24px">
                 {article?.description}
-              </Text>
+              </StyledDesc>
               <Text fontSize={['12px', '12px', '14px']} color="textSubtle">
                 {article?.createAt}
               </Text>
