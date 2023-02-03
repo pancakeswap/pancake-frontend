@@ -1,13 +1,13 @@
 import {
-  Router,
   Currency,
   CurrencyAmount,
   JSBI,
   Percent,
+  Router,
   SWAP_ADDRESS_MODULE,
+  Token,
   Trade,
   TradeType,
-  Token,
 } from '@pancakeswap/aptos-swap-sdk'
 import { useAccount } from '@pancakeswap/awgmi'
 import { parseVmStatusError, SimulateTransactionError, UserRejectedRequestError } from '@pancakeswap/awgmi/core'
@@ -16,15 +16,17 @@ import { AtomBox } from '@pancakeswap/ui'
 import {
   AutoColumn,
   Card,
+  confirmPriceImpactWithoutFee,
+  Flex,
+  HistoryIcon,
+  IconButton,
+  Link,
+  Modal,
+  ModalV2,
   Skeleton,
   Swap as SwapUI,
-  useModal,
-  Flex,
-  ModalV2,
-  Modal,
   Text,
-  Link,
-  confirmPriceImpactWithoutFee,
+  useModal,
 } from '@pancakeswap/uikit'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -36,7 +38,9 @@ import { SettingsModal, withCustomOnDismiss } from 'components/Menu/Settings/Set
 import ImportToken from 'components/SearchModal/ImportToken'
 import AdvancedSwapDetailsDropdown from 'components/Swap/AdvancedSwapDetailsDropdown'
 import ConfirmSwapModal from 'components/Swap/ConfirmSwapModal'
-import { BIPS_BASE, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN, ALLOWED_PRICE_IMPACT_HIGH } from 'config/constants/exchange'
+import useBridgeInfo from 'components/Swap/hooks/useBridgeInfo'
+import { useWarningSwapModal } from 'components/SwapWarningModal'
+import { ALLOWED_PRICE_IMPACT_HIGH, BIPS_BASE, PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN } from 'config/constants/exchange'
 import { useCurrencyBalance } from 'hooks/Balances'
 import { useAllTokens, useCurrency } from 'hooks/Tokens'
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
@@ -46,6 +50,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from 'state/user'
+import { useIsExpertMode } from 'state/user/expertMode'
+import useSWRImmutable from 'swr/immutable'
 import currencyId from 'utils/currencyId'
 import {
   basisPointsToPercent,
@@ -53,11 +59,9 @@ import {
   computeTradePriceBreakdown,
   warningSeverity,
 } from 'utils/exchange'
-import { useWarningSwapModal } from 'components/SwapWarningModal'
+import WalletModal, { WalletView } from 'components/Menu/WalletModal'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
-import useSWRImmutable from 'swr/immutable'
-import useBridgeInfo from 'components/Swap/hooks/useBridgeInfo'
 import { CommitButton } from '../components/CommitButton'
 
 const {
@@ -69,8 +73,6 @@ const {
   InfoLabel,
   TradePrice,
 } = SwapUI
-
-const isExpertMode = false
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -106,6 +108,8 @@ const SwapPage = () => {
   const isLoaded = useDefaultsFromURLSearch()
 
   const { t } = useTranslation()
+
+  const isExpertMode = useIsExpertMode()
 
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
@@ -410,6 +414,8 @@ const SwapPage = () => {
 
   const { showBridgeWarning, bridgeResult } = useBridgeInfo({ currency: inputCurrency })
 
+  const [onPresentTransactionsModal] = useModal(<WalletModal initialView={WalletView.TRANSACTIONS} />)
+
   return (
     <>
       <PageMeta title={t('Exchange')} />
@@ -420,6 +426,11 @@ const SwapPage = () => {
               <Flex flexDirection="column" alignItems="center" width="100%">
                 <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
               </Flex>
+              {account && (
+                <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
+                  <HistoryIcon color="textSubtle" width="24px" />
+                </IconButton>
+              )}
               <SettingsButton />
             </Flex>
           }
