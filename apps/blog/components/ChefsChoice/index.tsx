@@ -52,7 +52,7 @@ const ChefsChoice = () => {
         >
           {articlesData?.map((article) => (
             <SwiperSlide key={article.id}>
-              <NextLink passHref href={`/articles/${article.slug}?locale=${article?.locale}`}>
+              <NextLink passHref href={`/articles/${article?.locale}/${article?.slug}`}>
                 <BlogCard
                   margin="auto"
                   padding={['0', '0', '18.5px']}
