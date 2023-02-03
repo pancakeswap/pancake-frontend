@@ -2,9 +2,9 @@ import { SWRConfig } from 'swr'
 import { InferGetServerSidePropsType } from 'next'
 import { getArticle, getCategories } from 'hooks/getArticle'
 import { Box } from '@pancakeswap/uikit'
-import NewBlog from 'components/Blog/NewBlog'
-import ChefsChoice from 'components/Blog/ChefsChoice'
-import AllArticle from 'components/Blog/Article/AllArticle'
+import NewBlog from 'components/NewBlog'
+import ChefsChoice from 'components/ChefsChoice'
+import AllArticle from 'components/Article/AllArticle'
 
 export async function getStaticProps() {
   const [latestArticles, chefChoiceArticle, categories] = await Promise.all([

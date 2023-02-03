@@ -2,14 +2,14 @@ import styled from 'styled-components'
 import useSWR from 'swr'
 import { useState, useEffect } from 'react'
 import { Box, Text, Flex, PaginationButton, SearchInput, InputGroup, SearchIcon } from '@pancakeswap/uikit'
-import CardArticle from 'components/Blog/Article/CardArticle'
+import CardArticle from 'components/Article/CardArticle'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
-import ArticleSortSelect from 'components/Blog/Article/ArticleSortSelect'
+import ArticleSortSelect from 'components/Article/ArticleSortSelect'
 import { Categories } from 'types'
-import CategoriesSelector from 'components/Blog/Article/CategoriesSelector'
+import CategoriesSelector from 'components/Article/CategoriesSelector'
 import useAllArticle from 'hooks/useAllArticle'
-import SkeletonArticle from 'components/Blog/SkeletonArticle'
+import SkeletonArticle from 'components/SkeletonArticle'
 
 const StyledArticleContainer = styled(Box)`
   width: 100%;

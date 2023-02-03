@@ -3,7 +3,7 @@ import { Box, Text, Flex, ReactMarkdown } from '@pancakeswap/uikit'
 import useSWR from 'swr'
 import { ArticleDataType } from 'utils/transformArticle'
 import { useRouter } from 'next/router'
-import SocialIcon from 'components/Blog/Article/SingleArticle/SocialIcon'
+import SocialIcon from 'components/Article/SingleArticle/SocialIcon'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
