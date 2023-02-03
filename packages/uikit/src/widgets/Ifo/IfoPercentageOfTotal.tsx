@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
-import { Text, TextProps } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
+import { Text, TextProps } from "../../components/Text";
 
 interface IfoPercentageOfTotalProps extends TextProps {
   userAmount: BigNumber;

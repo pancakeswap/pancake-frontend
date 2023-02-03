@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { ReactNode } from "react";
-import { Box, Flex, HelpIcon, CardHeader, CardBody, Text, useTooltip, Card } from "@pancakeswap/uikit";
+import { Card, CardBody, CardHeader } from "../../components/Card";
+import { Flex, Box } from "../../components/Box";
+import { Text } from "../../components/Text";
+import { HelpIcon } from "../../components/Svg";
+import useTooltip from "../../hooks/useTooltip/useTooltip";
 
 const StyledCard = styled(Card)`
   background: none;
