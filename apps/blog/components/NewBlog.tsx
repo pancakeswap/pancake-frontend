@@ -91,7 +91,7 @@ const NewBlog = () => {
             </Text>
           </Box>
         </Flex>
-        <NextLink passHref href={`/articles/${article?.locale}/${article?.slug}`}>
+        <NextLink passHref href={`/articles/${article?.slug}`}>
           <StyleBlog>
             <Box
               overflow="hidden"
