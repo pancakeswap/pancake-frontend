@@ -13,9 +13,10 @@ import {
   Card,
   Text,
   AddIcon,
-  BalanceInput,
-  Flex,
   AutoRow,
+  Box,
+  Flex,
+  NumericalInput,
 } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
@@ -32,6 +33,8 @@ import {
 // import useParsedQueryString from 'hooks/useParsedQueryString'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { LightGreyCard } from 'components/Card'
 
 // import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
@@ -58,7 +61,6 @@ import { useSigner } from 'wagmi'
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
 import styled from 'styled-components'
-import { CurrencyLogo } from 'components/Logo'
 import { TransactionResponse } from '@ethersproject/providers'
 
 import { useV3MintActionHandlers } from './form/hooks'
@@ -73,6 +75,16 @@ export const BodyWrapper = styled(Card)`
   z-index: 1;
 `
 
+const StyledInput = styled(NumericalInput)`
+  background-color: ${({ theme }) => theme.colors.input};
+  box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
+  border-radius: 16px;
+  padding: 8px 16px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 16px;
+`
+
 interface AddLiquidityV3PropsType {
   currencyA: Currency
   currencyB: Currency
@@ -83,7 +95,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const { data: signer } = useSigner()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
-  const [currencyIdA, currencyIdB, feeAmountFromUrl, tokenId] = router.query.currency || []
+  const [, , feeAmountFromUrl] = router.query.currency || []
 
   const { t } = useTranslation()
   // const expertMode = useIsExpertMode()
@@ -97,12 +109,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
       ? parseFloat(feeAmountFromUrl)
       : undefined
-  // // check for existing position if tokenId in url
-  const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
-    tokenId ? BigNumber.from(tokenId) : undefined,
-  )
-  const hasExistingPosition = !!existingPositionDetails && !positionLoading
-  const { position: existingPosition } = useDerivedPositionInfo(existingPositionDetails)
+
+  const { position: existingPosition } = useDerivedPositionInfo(undefined)
   // // prevent an error if they input ETH/WETH
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
@@ -111,14 +119,16 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const {
     independentField,
     typedValue,
-    //  startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue
+    startPriceTypedValue,
+    // rightRangeTypedValue,
+    // leftRangeTypedValue
   } = formState
 
   const {
     pool,
     ticks,
     dependentField,
-    // price,
+    price,
     pricesAtTicks,
     parsedAmounts,
     // currencyBalances,
@@ -131,7 +141,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     // outOfRange,
     depositADisabled,
     depositBDisabled,
-    // invertPrice,
+    invertPrice,
     ticksAtLimit,
   } = useV3DerivedInfo(
     baseCurrency ?? undefined,
@@ -141,13 +151,9 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     existingPosition,
     formState,
   )
-  const {
-    onFieldAInput,
-    onFieldBInput,
-    onLeftRangeInput,
-    onRightRangeInput,
-    // onStartPriceInput
-  } = useV3MintActionHandlers(noLiquidity)
+  const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput } =
+    useV3MintActionHandlers(noLiquidity)
+
   const isValid = !errorMessage && !invalidRange
   // modal and loading
   //   const [showConfirm, setShowConfirm] = useState<boolean>(false)
@@ -222,21 +228,13 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
 
     if (position && account && deadline) {
       const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
-      const { calldata, value } =
-        hasExistingPosition && tokenId
-          ? NonfungiblePositionManager.addCallParameters(position, {
-              tokenId,
-              slippageTolerance: new Percent(allowedSlippage, 100),
-              deadline: deadline.toString(),
-              useNative,
-            })
-          : NonfungiblePositionManager.addCallParameters(position, {
-              slippageTolerance: new Percent(allowedSlippage, 100),
-              recipient: account,
-              deadline: deadline.toString(),
-              useNative,
-              createPool: noLiquidity,
-            })
+      const { calldata, value } = NonfungiblePositionManager.addCallParameters(position, {
+        slippageTolerance: new Percent(allowedSlippage, 100),
+        recipient: account,
+        deadline: deadline.toString(),
+        useNative,
+        createPool: noLiquidity,
+      })
 
       const txn: { to: string; data: string; value: string } = {
         to: nftPositionManagerAddress,
@@ -284,7 +282,6 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     baseCurrency,
     chainId,
     deadline,
-    hasExistingPosition,
     nftPositionManagerAddress,
     noLiquidity,
     parsedAmounts,
@@ -292,7 +289,6 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     positionManager,
     quoteCurrency,
     signer,
-    tokenId,
   ])
 
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
@@ -301,9 +297,11 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
       onLeftRangeInput('')
       onRightRangeInput('')
 
-      router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, { shallow: true })
+      router.replace(`/add/${baseCurrency.wrapped.address}/${currencyB.wrapped.address}/${newFeeAmount}`, undefined, {
+        shallow: true,
+      })
     },
-    [currencyIdA, currencyIdB, onLeftRangeInput, onRightRangeInput, router],
+    [baseCurrency?.wrapped?.address, currencyB?.wrapped?.address, onLeftRangeInput, onRightRangeInput, router],
   )
   //   const handleDismissConfirmation = useCallback(() => {
   //     setShowConfirm(false)
@@ -405,13 +403,12 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
       <BodyWrapper>
         <AppHeader title={t('Add Liquidity')} backTo="/pool-v3" />
         <CardBody>
-          <AutoRow gap="24px">
-            <AutoColumn
-              style={{
-                flexBasis: '50%',
-              }}
-            >
-              <FlexGap gap="4px" mb="8px">
+          <FlexGap gap="24px" alignItems="flex-start">
+            <RowBetween>
+              <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
+                Choose Token Pair
+              </Text>
+              <FlexGap gap="4px" width="100%" mb="24px">
                 <CurrencySelect
                   id="add-liquidity-select-tokena"
                   selectedCurrency={baseCurrency}
@@ -432,13 +429,31 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
               </FlexGap>
 
               <FeeSelector handleFeePoolSelect={handleFeePoolSelect} feeAmount={feeAmountFromUrl} />
-            </AutoColumn>
+            </RowBetween>
 
-            <AutoColumn
-              style={{
-                flexGrow: 1,
-              }}
-            >
+            <RowBetween>
+              {noLiquidity && (
+                <Box>
+                  <Text>Set Starting Price</Text>
+                  <LightGreyCard mb="16px">
+                    This pool must be initialized before you can add liquidity. To initialize, select a starting price
+                    for the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher
+                    than usual due to the initialization transaction.
+                  </LightGreyCard>
+                  <StyledInput
+                    className="start-price-input"
+                    value={startPriceTypedValue}
+                    onUserInput={onStartPriceInput}
+                  />
+                  <AutoRow justifyContent="space-between" mb="24px">
+                    <Text>Current {baseCurrency?.symbol} Price:</Text>
+                    <Text>
+                      {price ? (invertPrice ? price?.invert()?.toSignificant(5) : price?.toSignificant(5)) : '-'}
+                      <span style={{ marginLeft: '4px' }}>{quoteCurrency?.symbol}</span>
+                    </Text>
+                  </AutoRow>
+                </Box>
+              )}
               <RangeSelector
                 priceLower={priceLower}
                 priceUpper={priceUpper}
@@ -453,37 +468,40 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                 feeAmount={feeAmount}
                 ticksAtLimit={ticksAtLimit}
               />
-            </AutoColumn>
-          </AutoRow>
+            </RowBetween>
+          </FlexGap>
           <AutoRow gap="24px">
             <AutoColumn
               style={{
                 flexBasis: '50%',
               }}
             >
-              <Flex alignItems="center" minWidth="70px">
-                <CurrencyLogo currency={currencies[Field.CURRENCY_A]} />
-                <Text ml="4px" bold>
-                  {currencies[Field.CURRENCY_A]?.symbol}
-                </Text>
-              </Flex>
-              <BalanceInput
+              <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
+                Deposit Amount
+              </Text>
+              <CurrencyInputPanel
+                disableCurrencySelect
+                showBUSD
                 value={formattedAmounts[Field.CURRENCY_A]}
                 onUserInput={onFieldAInput}
-                decimals={currencies[Field.CURRENCY_A]?.decimals ?? null}
-                id="add-liquidity-input-tokena"
+                showQuickInputButton
+                showMaxButton
+                currency={currencies[Field.CURRENCY_A]}
+                id="add-liquidity-input-tokenb"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
               />
-              <Flex alignItems="center" minWidth="70px">
-                <CurrencyLogo currency={currencies[Field.CURRENCY_B]} />
-                <Text ml="4px" bold>
-                  {currencies[Field.CURRENCY_B]?.symbol}
-                </Text>
-              </Flex>
-              <BalanceInput
+              <CurrencyInputPanel
+                disableCurrencySelect
+                showBUSD
                 value={formattedAmounts[Field.CURRENCY_B]}
                 onUserInput={onFieldBInput}
-                decimals={currencies[Field.CURRENCY_B]?.decimals ?? null}
+                showQuickInputButton
+                showMaxButton
+                currency={currencies[Field.CURRENCY_B]}
                 id="add-liquidity-input-tokenb"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
               />
             </AutoColumn>
             <AutoColumn

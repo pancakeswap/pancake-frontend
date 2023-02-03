@@ -8,7 +8,7 @@ export default function FeeSelector({ handleFeePoolSelect, feeAmount }) {
   const selectedIndex = feeArrays.findIndex((fee) => fee === _toNumber(feeAmount))
 
   return (
-    <Box width="100%">
+    <Box width="100%" mb="24px">
       <ButtonMenu
         fullWidth
         activeIndex={selectedIndex}

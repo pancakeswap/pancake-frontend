@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, Percent } from '@pancakeswap/sdk'
-import { AutoColumn, Button, CardBody } from '@pancakeswap/uikit'
+import { AutoColumn, Flex, Button, CardBody } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -303,7 +303,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           noConfig
         />{' '}
         <CardBody>
-          <AutoColumn mb="16px">
+          <Flex mb="16px">
             {existingPosition && (
               <PositionPreview
                 position={existingPosition}
@@ -336,7 +336,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
               showCommonBases
               commonBasesType={CommonBasesType.LIQUIDITY}
             />
-          </AutoColumn>
+          </Flex>
           <AutoColumn
             style={{
               flexGrow: 1,

@@ -39,7 +39,7 @@ export default function RangeSelector({
   const rightPrice = isSorted ? priceUpper : priceLower?.invert()
 
   return (
-    <FlexGap gap="16px">
+    <FlexGap gap="16px" width="100%">
       <StepCounter
         value={ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] ? '0' : leftPrice?.toSignificant(5) ?? ''}
         onUserInput={onLeftRangeInput}
