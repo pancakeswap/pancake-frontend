@@ -1,7 +1,7 @@
 import { useDeferredValue } from 'react'
 import useSWR from 'swr'
 import { CurrencyAmount, TradeType, Currency, Pair } from '@pancakeswap/sdk'
-import { LegacyRouter } from '@pancakeswap/smart-router/evm'
+import { LegacyRouter, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { getAddress } from '@ethersproject/address'
 
@@ -51,7 +51,11 @@ function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions
           ]
         : null,
       // TODO: trader should use user Wallet address
-      () => getBestTrade({ amount, currency, tradeType, allCommonPairs, trader: '', maxHops }),
+      async () => {
+        const res = await SmartRouter.getBestTrade(amount, currency, tradeType, { maxHops })
+        console.log(res)
+        return getBestTrade({ amount, currency, tradeType, allCommonPairs, trader: '', maxHops })
+      },
       {
         keepPreviousData: true,
       },

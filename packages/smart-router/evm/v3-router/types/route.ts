@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
 
 import { Pool } from './pool'
 
@@ -9,7 +9,7 @@ export enum RouteType {
   MIXED,
 }
 
-export interface Route {
+export interface BaseRoute {
   // Support all v2, v3, stable, and combined
   // Can derive from pools
   type: RouteType
@@ -18,6 +18,28 @@ export interface Route {
   pools: Pool[]
 
   path: Currency[]
+}
+
+export interface RouteWithoutQuote extends BaseRoute {
+  amount: CurrencyAmount<Currency>
+}
+
+export interface Route extends BaseRoute {
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
+}
+
+export interface RouteQuote {
+  // If exact in, this is (quote - gasCostInToken). If exact out, this is (quote + gasCostInToken).
+  quoteAdjustedForGas: CurrencyAmount<Currency>
+  quote: CurrencyAmount<Currency>
+  gasEstimate: JSBI
+  // The gas cost in terms of the quote token.
+  gasCostInToken: CurrencyAmount<Currency>
+  gasCostInUSD: CurrencyAmount<Currency>
+}
+
+export interface RouteWithValidQuotes extends RouteWithoutQuote {
+  percent: number
+  quotes: RouteQuote[]
 }
