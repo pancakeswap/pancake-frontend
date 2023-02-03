@@ -1,6 +1,6 @@
-import { fetchAPI } from 'views/Blog/utils/api'
-import { ResponseArticleType, ResponseArticleDataType, ResponseCategoriesType, Categories } from 'views/Blog/types'
-import { transformArticle, ArticleType, ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { fetchAPI } from 'utils/api'
+import { ResponseArticleType, ResponseArticleDataType, ResponseCategoriesType, Categories } from 'types'
+import { transformArticle, ArticleType, ArticleDataType } from 'utils/transformArticle'
 
 interface GetArticleProps {
   url: string
@@ -36,6 +36,7 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
     console.error('[ERROR] Fetching Single Article', error)
     return {
       id: 0,
+      slug: '',
       title: '',
       locale: '',
       imgUrl: '',

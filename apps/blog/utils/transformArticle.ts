@@ -1,7 +1,8 @@
-import { ResponseArticleDataType, PaginationType } from 'views/Blog/types'
+import { ResponseArticleDataType, PaginationType } from 'types'
 
 export interface ArticleDataType {
   id: number
+  slug: string
   title: string
   locale: string
   imgUrl: string
@@ -20,6 +21,7 @@ export interface ArticleType {
 export const transformArticle = (article: ResponseArticleDataType): ArticleDataType => {
   return {
     id: article.id,
+    slug: article?.attributes?.slug ?? '',
     title: article?.attributes?.title ?? '',
     content: article?.attributes?.content ?? '',
     createAt: article?.attributes?.createAt ?? '',

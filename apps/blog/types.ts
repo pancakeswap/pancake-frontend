@@ -30,6 +30,7 @@ export interface ResponseArticleDataType {
   id: number
   attributes: {
     title: string
+    slug: string
     description: string
     createAt: string
     publishedAt: string

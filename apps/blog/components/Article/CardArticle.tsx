@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
-import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'utils/transformArticle'
 import NextLink from 'next/link'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
@@ -54,7 +54,7 @@ interface CardArticleProps {
 const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ article }) => {
   return (
     <StyledArticle flexDirection="column">
-      <NextLink passHref href={`/${article.id}`}>
+      <NextLink passHref href={`/articles/${article?.slug}`}>
         <Flex>
           <Box
             borderRadius={8}

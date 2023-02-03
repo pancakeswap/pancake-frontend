@@ -2,12 +2,12 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { Flex } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import styled from 'styled-components'
-import BlogCard from 'views/Blog/components/BlogCard'
+import BlogCard from 'components/BlogCard'
 import { useTranslation } from '@pancakeswap/localization'
 import { Autoplay } from 'swiper'
-import ArticleView from 'views/Blog/components/Article/ArticleView'
+import ArticleView from 'components/Article/ArticleView'
 import useSWR from 'swr'
-import { ArticleDataType } from 'views/Blog/utils/transformArticle'
+import { ArticleDataType } from 'utils/transformArticle'
 import 'swiper/css/bundle'
 
 const StyledChefsChoiceContainer = styled(Flex)`
@@ -52,7 +52,7 @@ const ChefsChoice = () => {
         >
           {articlesData?.map((article) => (
             <SwiperSlide key={article.id}>
-              <NextLink passHref href={`/${article.id}`}>
+              <NextLink passHref href={`/articles/${article?.slug}`}>
                 <BlogCard
                   margin="auto"
                   padding={['0', '0', '18.5px']}

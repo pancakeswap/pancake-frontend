@@ -1,26 +1,24 @@
-import { useMemo } from 'react'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import { useTheme } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
+import { Box, Flex, Text } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
+import { useMemo } from 'react'
+import styled from 'styled-components'
 import useSWR from 'swr'
-import { ArticleDataType } from 'views/Blog/utils/transformArticle'
-import NoSSR from 'components/NoSSR'
+import { ArticleDataType } from 'utils/transformArticle'
 
 const StyledBackground = styled(Box)`
   position: relative;
   padding: 45px 16px 0 16px;
 `
 
-const StyledGradientBg = styled('div')<{ isDark: boolean }>`
+const StyledGradientBg = styled('div')`
   position: absolute;
   z-index: -1;
   top: 0;
   left: 0;
   width: 100%;
   height: 65%;
-  background: ${({ isDark }) => (isDark ? NEW_BLOG_BG_DARK : NEW_BLOG_BG)};
+  background: ${({ theme }) => theme.colors.gradientBubblegum};
   border-bottom-left-radius: 50% 5%;
   border-bottom-right-radius: 50% 5%;
 
@@ -67,20 +65,21 @@ const StyledTagGroup = styled(Flex)`
   }
 `
 
-const NEW_BLOG_BG = 'linear-gradient(139.73deg, #E6FDFF 0%, #F3EFFF 100%)'
-const NEW_BLOG_BG_DARK = 'linear-gradient(139.73deg, #313D5C 0%, #3D2A54 100%)'
+const StyledDesc = styled(Text)`
+  display: -webkit-box;
+  white-space: initial;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+`
 
 const NewBlog = () => {
   const { t } = useTranslation()
-  const { isDark } = useTheme()
   const { data: articlesData } = useSWR<ArticleDataType[]>('/latestArticles')
   const article = useMemo(() => articlesData?.[0], [articlesData])
 
   return (
     <StyledBackground>
-      <NoSSR>
-        <StyledGradientBg isDark={isDark} />
-      </NoSSR>
+      <StyledGradientBg />
       <Box maxWidth="1137px" margin="auto">
         <Flex flexDirection={['column', 'column', 'column', 'row']}>
           <Box>
@@ -92,7 +91,7 @@ const NewBlog = () => {
             </Text>
           </Box>
         </Flex>
-        <NextLink passHref href={`/${article?.id}`}>
+        <NextLink passHref href={`/articles/${article?.slug}`}>
           <StyleBlog>
             <Box
               overflow="hidden"
@@ -127,9 +126,9 @@ const NewBlog = () => {
               >
                 {article?.title}
               </Text>
-              <Text ellipsis mb="24px">
+              <StyledDesc ellipsis mb="24px">
                 {article?.description}
-              </Text>
+              </StyledDesc>
               <Text fontSize={['12px', '12px', '14px']} color="textSubtle">
                 {article?.createAt}
               </Text>

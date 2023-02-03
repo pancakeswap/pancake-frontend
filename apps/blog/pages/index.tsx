@@ -1,7 +1,10 @@
 import { SWRConfig } from 'swr'
-import Blog from 'views/Blog'
 import { InferGetServerSidePropsType } from 'next'
-import { getArticle, getCategories } from 'views/Blog/hooks/getArticle'
+import { getArticle, getCategories } from 'hooks/getArticle'
+import { Box } from '@pancakeswap/uikit'
+import NewBlog from 'components/NewBlog'
+import ChefsChoice from 'components/ChefsChoice'
+import AllArticle from 'components/Article/AllArticle'
 
 export async function getStaticProps() {
   const [latestArticles, chefChoiceArticle, categories] = await Promise.all([
@@ -46,7 +49,11 @@ export async function getStaticProps() {
 const BlogPage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
   return (
     <SWRConfig value={{ fallback }}>
-      <Blog />
+      <Box width="100%" mb="150px">
+        <NewBlog />
+        <ChefsChoice />
+        <AllArticle />
+      </Box>
     </SWRConfig>
   )
 }

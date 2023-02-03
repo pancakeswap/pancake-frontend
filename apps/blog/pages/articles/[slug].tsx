@@ -1,9 +1,11 @@
 import { SWRConfig } from 'swr'
 import { useRouter } from 'next/router'
-import { NotFound } from '@pancakeswap/uikit'
-import SingleArticle from 'views/Blog/components/Article/SingleArticle'
-import { InferGetServerSidePropsType } from 'next'
-import { getArticle, getSingleArticle } from 'views/Blog/hooks/getArticle'
+import { NotFound, Box } from '@pancakeswap/uikit'
+import ArticleInfo from 'components/Article/SingleArticle/ArticleInfo'
+import HowItWork from 'components/Article/SingleArticle/HowItWork'
+import SimilarArticles from 'components/Article/SingleArticle/SimilarArticles'
+import { InferGetStaticPropsType, GetStaticProps } from 'next'
+import { getArticle, getSingleArticle } from 'hooks/getArticle'
 import PageMeta from 'components/PageMeta'
 
 export async function getStaticPaths() {
@@ -13,11 +15,24 @@ export async function getStaticPaths() {
   }
 }
 
-export const getStaticProps = async (context: any) => {
-  const params = context.params.slug
+export const getStaticProps = (async ({ params }) => {
+  if (!params)
+    return {
+      redirect: {
+        permanent: false,
+        statusCode: 404,
+        destination: '/404',
+      },
+    }
+
+  const { slug } = params
+
   const article = await getSingleArticle({
-    url: `/articles/${params}`,
-    urlParamsObject: { populate: 'categories,image' },
+    url: `/slugify/slugs/article/${slug}`,
+    urlParamsObject: {
+      populate: 'categories,image',
+      locale: 'all',
+    },
   })
 
   const similarArticles = await getArticle({
@@ -29,7 +44,7 @@ export const getStaticProps = async (context: any) => {
       pagination: { limit: 6 },
       filters: {
         id: {
-          $not: params,
+          $not: article.id,
         },
         categories: {
           $or: article.categories.map((category) => ({
@@ -51,9 +66,9 @@ export const getStaticProps = async (context: any) => {
     },
     revalidate: 60,
   }
-}
+}) satisfies GetStaticProps
 
-const ArticlePage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> = ({ fallback }) => {
+const ArticlePage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({ fallback }) => {
   const router = useRouter()
   if (!router.isFallback && !fallback?.['/article']?.title) {
     return <NotFound />
@@ -65,7 +80,11 @@ const ArticlePage: React.FC<InferGetServerSidePropsType<typeof getStaticProps>> 
     <div>
       <PageMeta title={title} description={description} imgUrl={imgUrl} />
       <SWRConfig value={{ fallback }}>
-        <SingleArticle />
+        <Box>
+          <ArticleInfo />
+          <HowItWork />
+          <SimilarArticles />
+        </Box>
       </SWRConfig>
     </div>
   )
