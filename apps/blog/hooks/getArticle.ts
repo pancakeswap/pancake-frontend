@@ -36,6 +36,7 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
     console.error('[ERROR] Fetching Single Article', error)
     return {
       id: 0,
+      slug: '',
       title: '',
       locale: '',
       imgUrl: '',

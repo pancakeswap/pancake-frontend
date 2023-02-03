@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 export const getStaticProps = async (context: any) => {
   const params = context.params.slug
   const article = await getSingleArticle({
-    url: `/articles/${params}`,
+    url: `/api/slugify/slugs/article/${params}`,
     urlParamsObject: { populate: 'categories,image' },
   })
 
