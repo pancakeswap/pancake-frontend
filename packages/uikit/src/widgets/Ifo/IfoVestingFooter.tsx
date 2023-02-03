@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { useMemo } from "react";
-import { Flex, Text, Skeleton } from "@pancakeswap/uikit";
 import { format } from "date-fns";
 import { useTranslation } from "@pancakeswap/localization";
+import { Flex } from "../../components/Box";
+import { Text } from "../../components/Text";
+import { Skeleton } from "../../components/Skeleton";
 
 const StyledIfoVestingFooter = styled(Flex)`
   padding: 16px;

@@ -1,4 +1,5 @@
-import { Flex, Skeleton } from "@pancakeswap/uikit";
+import { Flex } from "../../components/Box";
+import { Skeleton } from "../../components/Skeleton";
 
 export const IfoSkeletonCardActions = () => {
   return <Skeleton height="48px" />;
