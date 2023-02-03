@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Card, Text, BunnyPlaceholderIcon, Box, IfoGenericIfoCard } from '@pancakeswap/uikit'
+import { Card, Text, BunnyPlaceholderIcon, Box, IfoGenericIfoCard, BunnyKnownPlaceholder } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { PoolIds } from 'config/constants/types'
@@ -7,7 +7,6 @@ import { PoolIds } from 'config/constants/types'
 import { CardsWrapper } from './IfoCardStyles'
 import { StyledCardBody } from './IfoFoldableCard/index'
 import { cardConfig } from './IfoFoldableCard/IfoPoolCard'
-import BunnyKnownPlaceholder from './IfoFoldableCard/IfoPoolCard/Icons/BunnyKnownPlaceholder'
 
 const CurveBox = styled(Box)`
   border-bottom-left-radius: 100% 40px;
