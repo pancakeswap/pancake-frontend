@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 export const getStaticProps = async (context: any) => {
   const params = context.params.slug
   const article = await getSingleArticle({
-    url: `/articles/${params}`,
+    url: `/slugify/slugs/article/${params}`,
     urlParamsObject: { populate: 'categories,image' },
   })
 
@@ -31,7 +31,7 @@ export const getStaticProps = async (context: any) => {
       pagination: { limit: 6 },
       filters: {
         id: {
-          $not: params,
+          $not: article.id,
         },
         categories: {
           $or: article.categories.map((category) => ({
