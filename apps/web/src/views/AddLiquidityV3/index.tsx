@@ -85,6 +85,12 @@ const StyledInput = styled(NumericalInput)`
   margin-bottom: 16px;
 `
 
+export const DynamicSection = styled(AutoColumn)<{ disabled?: boolean }>`
+  opacity: ${({ disabled }) => (disabled ? '0.2' : '1')};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'initial')};
+  width: 100%;
+`
+
 interface AddLiquidityV3PropsType {
   currencyA: Currency
   currencyB: Currency
@@ -136,7 +142,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     noLiquidity,
     currencies,
     errorMessage,
-    // invalidPool,
+    invalidPool,
     invalidRange,
     // outOfRange,
     depositADisabled,
@@ -456,20 +462,22 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                   </AutoRow>
                 </Box>
               )}
-              <RangeSelector
-                priceLower={priceLower}
-                priceUpper={priceUpper}
-                getDecrementLower={getDecrementLower}
-                getIncrementLower={getIncrementLower}
-                getDecrementUpper={getDecrementUpper}
-                getIncrementUpper={getIncrementUpper}
-                onLeftRangeInput={onLeftRangeInput}
-                onRightRangeInput={onRightRangeInput}
-                currencyA={baseCurrency}
-                currencyB={quoteCurrency}
-                feeAmount={feeAmount}
-                ticksAtLimit={ticksAtLimit}
-              />
+              <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
+                <RangeSelector
+                  priceLower={priceLower}
+                  priceUpper={priceUpper}
+                  getDecrementLower={getDecrementLower}
+                  getIncrementLower={getIncrementLower}
+                  getDecrementUpper={getDecrementUpper}
+                  getIncrementUpper={getIncrementUpper}
+                  onLeftRangeInput={onLeftRangeInput}
+                  onRightRangeInput={onRightRangeInput}
+                  currencyA={baseCurrency}
+                  currencyB={quoteCurrency}
+                  feeAmount={feeAmount}
+                  ticksAtLimit={ticksAtLimit}
+                />
+              </DynamicSection>
             </RowBetween>
           </FlexGap>
           <AutoRow gap="24px">
