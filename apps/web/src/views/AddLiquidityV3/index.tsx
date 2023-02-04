@@ -15,13 +15,11 @@ import {
   AddIcon,
   AutoRow,
   Box,
-  Flex,
   NumericalInput,
 } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
-import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { LiquidityFormState } from 'hooks/v3/types'
@@ -62,6 +60,7 @@ import Page from 'views/Page'
 import { AppHeader } from 'components/App'
 import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
+import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 
 import { useV3MintActionHandlers } from './form/hooks'
 import { Bound } from './form/actions'
@@ -440,7 +439,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
             </RowBetween>
 
             <RowBetween>
-              {noLiquidity && (
+              {noLiquidity ? (
                 <Box>
                   <Text>Set Starting Price</Text>
                   <LightGreyCard mb="16px">
@@ -461,6 +460,39 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     </Text>
                   </AutoRow>
                 </Box>
+              ) : (
+                <>
+                  <RowBetween>
+                    <Text>Set Price Range</Text>
+                  </RowBetween>
+
+                  {price && baseCurrency && quoteCurrency && !noLiquidity && (
+                    <AutoRow gap="4px" justifyContent="center" style={{ marginTop: '0.5rem' }}>
+                      <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                        Current Price:
+                      </Text>
+                      <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                        {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
+                      </Text>
+                      <Text color="text2" fontSize={12}>
+                        {quoteCurrency?.symbol} per {baseCurrency.symbol}
+                      </Text>
+                    </AutoRow>
+                  )}
+
+                  <LiquidityChartRangeInput
+                    currencyA={baseCurrency ?? undefined}
+                    currencyB={quoteCurrency ?? undefined}
+                    feeAmount={feeAmount}
+                    ticksAtLimit={ticksAtLimit}
+                    price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
+                    priceLower={priceLower}
+                    priceUpper={priceUpper}
+                    onLeftRangeInput={onLeftRangeInput}
+                    onRightRangeInput={onRightRangeInput}
+                    interactive
+                  />
+                </>
               )}
               <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
                 <RangeSelector

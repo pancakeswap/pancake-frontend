@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { JSBI } from '@pancakeswap/sdk'
 import { Field } from 'state/mint/actions'
 
 export interface PositionDetails {
@@ -30,4 +31,12 @@ export interface LiquidityFormState {
   leftRangeTypedValue: string | true
   rightRangeTypedValue: string | true
   startPriceTypedValue: string
+}
+
+// Tick with fields parsed to JSBIs, and active liquidity computed.
+export interface TickProcessed {
+  tick: number
+  liquidityActive: JSBI
+  liquidityNet: JSBI
+  price0: string
 }
