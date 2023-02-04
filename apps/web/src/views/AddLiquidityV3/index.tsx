@@ -121,7 +121,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     typedValue,
     startPriceTypedValue,
     // rightRangeTypedValue,
-    // leftRangeTypedValue
+    //  leftRangeTypedValue
   } = formState
 
   const {
@@ -334,11 +334,13 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   // we need an existence check on parsed amounts for single-asset deposits
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
+
   // const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
   //   !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
   // } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
   //   !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
   // }`
+
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   let buttons
   if (addIsUnsupported || addIsWarning) {
