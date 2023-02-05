@@ -1,8 +1,9 @@
 import { Price, Currency } from "@pancakeswap/swap-sdk-core";
 import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
-import { Text, AutoRenewIcon } from "@pancakeswap/uikit";
 import { useState } from "react";
 import { balanceMaxMiniClass } from "./SwapWidget.css";
+import { AutoRenewIcon } from "../../components/Svg";
+import { Text } from "../../components/Text";
 
 interface TradePriceProps {
   price?: Price<Currency, Currency>;
