@@ -1,12 +1,13 @@
 /* eslint-disable no-restricted-syntax */
 import { Currency, Token } from '@pancakeswap/aptos-swap-sdk'
-import { useDebounce } from '@pancakeswap/hooks'
+import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
+import { createFilterToken } from '@pancakeswap/utils/filtering'
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoColumn, Box, Column, Input, Row, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { KeyboardEvent, RefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { APTOS_COIN } from '@pancakeswap/awgmi'
+import { APTOS_COIN, isStructTag } from '@pancakeswap/awgmi'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
@@ -15,7 +16,6 @@ import { useAudioPlay } from 'state/user'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
-import { createFilterToken, useSortedTokensByQuery } from './filtering'
 import ImportRow from './ImportRow'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
@@ -38,7 +38,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
   const activeTokens = useAllTokens()
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
-    const filterToken = createFilterToken(search)
+    const filterToken = createFilterToken(search, (address) => isStructTag(address))
     const exactMatches: WrappedTokenInfo[] = []
     const rest: WrappedTokenInfo[] = []
     const addressSet: { [address: string]: true } = {}
@@ -110,7 +110,7 @@ function CurrencySearch({
   }, [debouncedQuery, native])
 
   const filteredTokens: Token[] = useMemo(() => {
-    const filterToken = createFilterToken(debouncedQuery)
+    const filterToken = createFilterToken(debouncedQuery, (address) => isStructTag(address))
     return Object.values(allTokens)
       .filter((token) => token.address !== APTOS_COIN)
       .filter(filterToken)
