@@ -10221,6 +10221,13 @@ dom-walk@^0.1.0:
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
   integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
 
+dom7@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/dom7/-/dom7-4.0.4.tgz#8b68c5d8e5e2ed0fddb1cb93e433bc9060c8f3fb"
+  integrity sha512-DSSgBzQ4rJWQp1u6o+3FVwMNnT5bzQbMb+o31TjYYeRi05uAcpF8koxdfzeoe5ElzPmua7W7N28YJhF7iEKqIw==
+  dependencies:
+    ssr-window "^4.0.0"
+
 domain-browser@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.2.0.tgz#3d31f50191a6749dd1375a7f522e823d42e54eda"
@@ -19159,7 +19166,7 @@ sshpk@^1.14.1:
     safer-buffer "^2.0.2"
     tweetnacl "~0.14.0"
 
-ssr-window@^4.0.2:
+ssr-window@^4.0.0, ssr-window@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/ssr-window/-/ssr-window-4.0.2.tgz#dc6b3ee37be86ac0e3ddc60030f7b3bc9b8553be"
   integrity sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==
@@ -19747,11 +19754,12 @@ svg-tags@^1.0.0:
   resolved "https://registry.yarnpkg.com/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
   integrity sha1-WPcc7jvVGbWdSyqEO2x95krAR2Q=
 
-swiper@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/swiper/-/swiper-9.0.2.tgz#7acad3a875e415f2265aa8bb5786455917472bb1"
-  integrity sha512-6iGqr9OeEMU7KVfGxXNW+xhVWmqvVhtt+1nnqbZ0a0i1p/S1rXgr9cPD55k7DFxeOojVHkiEqmsubaP3NgWwUQ==
+swiper@^8.4.2:
+  version "8.4.2"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-8.4.2.tgz#a52e091a92a52b230bd076fb3ef19ae73baed2a2"
+  integrity sha512-nMD/RHVYxJxrLqjWQX2n0B94ANwpnuUv/3PUDT8Aaf+mSteFvZGFng4ypAYq70zW4svryyV+8TRlbRZ+6cgv9A==
   dependencies:
+    dom7 "^4.0.4"
     ssr-window "^4.0.2"
 
 swr@^2.0.1:
