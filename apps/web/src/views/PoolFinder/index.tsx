@@ -7,6 +7,7 @@ import {
   useModal,
   NextLinkFromReactRouter,
   AutoColumn,
+  ColumnCenter,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -16,7 +17,6 @@ import { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AppBody, AppHeader } from '../../components/App'
 import { LightCard } from '../../components/Card'
-import { ColumnCenter } from '../../components/Layout/Column'
 import Row from '../../components/Layout/Row'
 import Dots from '../../components/Loader/Dots'
 import { CurrencyLogo } from '../../components/Logo'

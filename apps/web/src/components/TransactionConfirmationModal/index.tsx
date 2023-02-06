@@ -12,12 +12,12 @@ import {
   ModalProps,
   BscScanIcon,
   AutoColumn,
+  ColumnCenter,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { ColumnCenter } from '../Layout/Column'
 import { getBlockExploreLink, getBlockExploreName } from '../../utils'
 import AddToWalletButton, { AddToWalletTextOptions } from '../AddToWallet/AddToWalletButton'
 

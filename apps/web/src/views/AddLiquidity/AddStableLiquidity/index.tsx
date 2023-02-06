@@ -13,6 +13,7 @@ import {
   IconButton,
   PencilIcon,
   AutoColumn,
+  ColumnCenter,
 } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useTranslation } from '@pancakeswap/localization'
@@ -25,7 +26,6 @@ import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 
-import { ColumnCenter } from '../../../components/Layout/Column'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 

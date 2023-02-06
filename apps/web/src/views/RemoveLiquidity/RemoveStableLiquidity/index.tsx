@@ -18,6 +18,7 @@ import {
   IconButton,
   PencilIcon,
   AutoColumn,
+  ColumnCenter,
 } from '@pancakeswap/uikit'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -27,7 +28,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
-import { ColumnCenter } from '../../../components/Layout/Column'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../../components/PositionCard'
 import { AppHeader, AppBody } from '../../../components/App'

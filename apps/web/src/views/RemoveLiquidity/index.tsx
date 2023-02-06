@@ -23,6 +23,7 @@ import {
   IconButton,
   PencilIcon,
   AutoColumn,
+  ColumnCenter,
 } from '@pancakeswap/uikit'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
@@ -37,7 +38,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useLPApr } from 'state/swap/useLPApr'
-import { ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import { AppHeader, AppBody } from '../../components/App'
