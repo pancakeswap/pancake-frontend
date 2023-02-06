@@ -14,6 +14,7 @@ import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
+import { isMiniProgram } from 'utils/mpBridge'
 
 import { AppState, useAppDispatch } from '../../index'
 import {
@@ -63,7 +64,7 @@ export function useAudioModeManager(): [boolean, () => void] {
     }
   }, [audioPlay, dispatch])
 
-  return [audioPlay, toggleSetAudioMode]
+  return [isMiniProgram ? false : audioPlay, toggleSetAudioMode]
 }
 
 export function usePhishingBannerManager(): [boolean, () => void] {

@@ -91,7 +91,7 @@ let globalInfo
 export const useSystemInfo = () => {
   const [info, setInfo] = useState(globalInfo)
   useEffect(() => {
-    if (!globalInfo && typeof __NEZHA_BRIDGE__ !== 'undefined') {
+    if (!globalInfo && isMiniProgram) {
       _bridgeUtils.getSystemInfo().then((value) => {
         globalInfo = value
         setInfo(value)
@@ -196,3 +196,5 @@ export const useInjectI18n = () => {
   return { injected }
 }
 export default getWeb3Provider
+
+export const isMiniProgram = typeof __NEZHA_BRIDGE__ !== 'undefined'
