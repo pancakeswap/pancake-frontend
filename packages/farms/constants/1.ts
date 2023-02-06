@@ -3,6 +3,14 @@ import { SerializedFarmConfig } from '@pancakeswap/farms'
 
 const farms: SerializedFarmConfig[] = [
   {
+    pid: 145,
+    vaultPid: 6,
+    lpSymbol: 'FUSE-ETH LP',
+    lpAddress: '0xF9b026786522251c08d8C49e154d036Ef3Ad8Cc7',
+    quoteToken: ethereumTokens.weth,
+    token: ethereumTokens.fuse,
+  },
+  {
     pid: 143,
     vaultPid: 5,
     lpSymbol: 'STG-USDC LP',
