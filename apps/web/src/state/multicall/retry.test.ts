@@ -1,7 +1,7 @@
-import { vi } from 'vitest'
+import { vi, describe, it } from 'vitest'
 import { retry, RetryableError } from './retry'
 
-describe('retry', () => {
+describe.concurrent('retry', () => {
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {
       //
