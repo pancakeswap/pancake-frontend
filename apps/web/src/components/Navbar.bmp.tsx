@@ -4,6 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { useSystemInfo, bridgeUtils } from 'utils/mpBridge'
 import useAuth from 'hooks/useAuth'
+import truncateHash from '@pancakeswap/utils/truncateHash'
 
 const title = {
   dark: '/images/nav-title-dark.png',
@@ -28,12 +29,11 @@ const Wallet = () => {
       }
     })
   }
-  const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 2)}` : null
   return (
     <StyledWallet isActive={isActive} onClick={handleWalletClick}>
       <WalletIcon color={isActive ? '#7A6EAA' : '#929AA5'} />
       <Text style={{ marginLeft: '4px' }} color="textSubtle">
-        {accountEllipsis}
+        {truncateHash(account, 2, 2)}
       </Text>
     </StyledWallet>
   )
@@ -57,7 +57,7 @@ const Navbar = ({ height = 44 }) => {
           right: '0px',
           justifyContent: 'center',
           width: '100vw',
-          zIndex: '99',
+          zIndex: '98',
           background: theme.colors.backgroundAlt,
           paddingTop: `${top}px`,
           boxSizing: 'content-box',
