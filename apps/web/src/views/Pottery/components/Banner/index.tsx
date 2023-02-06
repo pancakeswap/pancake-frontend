@@ -146,7 +146,7 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
               </DarkTextStyle>
             </SkeletonV2>
             <Text color="white" bold as="span">
-              {t('APY')}
+              {t('APR')}
             </Text>
           </Box>
           <Box>
