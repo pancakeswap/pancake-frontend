@@ -157,7 +157,7 @@ export const shouldShowMMError = (message?: string) => {
 
 export const parseMMError = (message?: string) => {
   if (message?.includes('Amount is below')) {
-    return `Minimum Amount (~30$) to trade with MM: ${
+    return `Minimum Amount (~$30) to trade with MM: ${
       Math.ceil(toNumber(message.split(':')?.[1] ?? 0) * 1000) / 1000 ?? ''
     }`
   }
