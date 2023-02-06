@@ -13,7 +13,6 @@ const Handle = styled.path<{ color: string }>`
   fill: ${({ color }) => color};
 `
 
-// Philip TODO: Update theme.colors
 const HandleAccent = styled.path`
   cursor: ew-resize;
   pointer-events: none;
@@ -29,13 +28,13 @@ const LabelGroup = styled.g<{ visible: boolean }>`
 `
 
 const TooltipBackground = styled.rect`
-  fill: ${({ theme }) => theme.colors.background};
+  fill: ${({ theme }) => theme.colors.secondary};
 `
 
 const Tooltip = styled.text`
   text-anchor: middle;
   font-size: 13px;
-  fill: ${({ theme }) => theme.colors.textSubtle};
+  fill: ${({ theme }) => theme.colors.background};
 `
 
 // flips the handles draggers when close to the container edges

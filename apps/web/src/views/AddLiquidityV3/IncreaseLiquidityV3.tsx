@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, Percent } from '@pancakeswap/sdk'
-import { AutoColumn, Flex, Button, CardBody } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, CardBody } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -303,7 +303,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           noConfig
         />{' '}
         <CardBody>
-          <Flex mb="16px">
+          <Box mb="16px">
             {existingPosition && (
               <PositionPreview
                 position={existingPosition}
@@ -312,31 +312,33 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                 ticksAtLimit={ticksAtLimit}
               />
             )}
-            <CurrencyInputPanel
-              disableCurrencySelect
-              showBUSD
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              showQuickInputButton
-              showMaxButton
-              currency={currencies[Field.CURRENCY_A]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-              commonBasesType={CommonBasesType.LIQUIDITY}
-            />
-            <CurrencyInputPanel
-              disableCurrencySelect
-              showBUSD
-              value={formattedAmounts[Field.CURRENCY_B]}
-              onUserInput={onFieldBInput}
-              showQuickInputButton
-              showMaxButton
-              currency={currencies[Field.CURRENCY_B]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-              commonBasesType={CommonBasesType.LIQUIDITY}
-            />
-          </Flex>
+            <Box mt="16px">
+              <CurrencyInputPanel
+                disableCurrencySelect
+                showBUSD
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                showQuickInputButton
+                showMaxButton
+                currency={currencies[Field.CURRENCY_A]}
+                id="add-liquidity-input-tokenb"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
+              />
+              <CurrencyInputPanel
+                disableCurrencySelect
+                showBUSD
+                value={formattedAmounts[Field.CURRENCY_B]}
+                onUserInput={onFieldBInput}
+                showQuickInputButton
+                showMaxButton
+                currency={currencies[Field.CURRENCY_B]}
+                id="add-liquidity-input-tokenb"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
+              />
+            </Box>
+          </Box>
           <AutoColumn
             style={{
               flexGrow: 1,

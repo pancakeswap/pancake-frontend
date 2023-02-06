@@ -1,4 +1,4 @@
-import { Button } from '@pancakeswap/uikit'
+import { Button, Box } from '@pancakeswap/uikit'
 import { ScaleLinear, select, zoom, ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef } from 'react'
 import { RefreshCcw, ZoomIn, ZoomOut } from 'react-feather'
@@ -12,7 +12,7 @@ const Wrapper = styled.div<{ count: number }>`
   grid-gap: 6px;
 
   position: absolute;
-  top: -75px;
+  top: -55px;
   right: 0;
 `
 
@@ -109,12 +109,20 @@ export default function Zoom({
           <RefreshCcw size={16} />
         </Button>
       )}
-      <Button onClick={zoomIn} disabled={false}>
-        <ZoomIn size={16} />
-      </Button>
-      <Button onClick={zoomOut} disabled={false}>
-        <ZoomOut size={16} />
-      </Button>
+      <Box
+        style={{
+          cursor: 'pointer',
+        }}
+      >
+        <ZoomIn size={24} onClick={zoomIn} />
+      </Box>
+      <Box
+        style={{
+          cursor: 'pointer',
+        }}
+      >
+        <ZoomOut size={24} onClick={zoomOut} />
+      </Box>
     </Wrapper>
   )
 }

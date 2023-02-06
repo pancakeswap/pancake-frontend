@@ -299,12 +299,18 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
   const handleFeePoolSelect = useCallback(
     (newFeeAmount: FeeAmount) => {
-      onLeftRangeInput('')
-      onRightRangeInput('')
+      if (baseCurrency?.wrapped?.address && currencyB?.wrapped?.address) {
+        onLeftRangeInput('')
+        onRightRangeInput('')
 
-      router.replace(`/add/${baseCurrency.wrapped.address}/${currencyB.wrapped.address}/${newFeeAmount}`, undefined, {
-        shallow: true,
-      })
+        router.replace(
+          `/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}/${newFeeAmount}`,
+          undefined,
+          {
+            shallow: true,
+          },
+        )
+      }
     },
     [baseCurrency?.wrapped?.address, currencyB?.wrapped?.address, onLeftRangeInput, onRightRangeInput, router],
   )
@@ -463,7 +469,9 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
               ) : (
                 <>
                   <RowBetween>
-                    <Text>Set Price Range</Text>
+                    <Text bold fontSize="14px" textTransform="uppercase" color="secondary">
+                      Set Price Range
+                    </Text>
                   </RowBetween>
 
                   {price && baseCurrency && quoteCurrency && !noLiquidity && (

@@ -4,11 +4,10 @@ import styled from 'styled-components'
 
 import { ChartEntry } from './types'
 
-// Philip TODO: Update theme.colors
 const Path = styled.path<{ fill: string | undefined }>`
   opacity: 0.5;
-  stroke: ${({ fill, theme }) => fill ?? theme.colors.background};
-  fill: ${({ fill, theme }) => fill ?? theme.colors.background};
+  stroke: ${({ fill, theme }) => fill ?? theme.colors.failure};
+  fill: ${({ fill, theme }) => fill ?? theme.colors.failure};
 `
 
 export const Area = ({

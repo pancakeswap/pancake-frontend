@@ -1,13 +1,13 @@
 import { ScaleLinear } from 'd3'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import styled from 'styled-components'
 
-// Philip TODO: Update theme.colors
 const StyledLine = styled.line`
   opacity: 0.5;
   stroke-width: 2;
-  stroke: ${({ theme }) => theme.colors.text};
+  stroke: ${({ theme }) => theme.colors.primary};
   fill: none;
+  stroke-dasharray: 4;
 `
 
 export const Line = ({

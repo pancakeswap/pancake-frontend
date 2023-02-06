@@ -88,8 +88,8 @@ export default function LiquidityChartRangeInput({
   const theme = useTheme()
 
   // Get token color
-  const tokenAColor = '#2172E5'
-  const tokenBColor = '#2172E5'
+  const tokenAColor = '#7645D9'
+  const tokenBColor = '#7645D9'
 
   const isSorted = currencyA && currencyB && currencyA?.wrapped.sortsBefore(currencyB?.wrapped)
 
@@ -159,7 +159,7 @@ export default function LiquidityChartRangeInput({
   const isUninitialized = !currencyA || !currencyB || (formattedData === undefined && !isLoading)
 
   return (
-    <AutoColumn gap="md" style={{ minHeight: '200px' }}>
+    <AutoColumn gap="md" style={{ minHeight: '200px', width: '100%', marginBottom: '16px' }}>
       {isUninitialized ? (
         <InfoBox message="Your position will appear here." icon={<Inbox size={56} stroke={theme.colors.text} />} />
       ) : isLoading ? (

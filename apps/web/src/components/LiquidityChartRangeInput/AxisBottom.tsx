@@ -2,15 +2,13 @@ import { Axis as d3Axis, axisBottom, NumberValue, ScaleLinear, select } from 'd3
 import { useMemo } from 'react'
 import styled from 'styled-components'
 
-// Philip TODO: Update theme.colors
-
 const StyledGroup = styled.g`
   line {
     display: none;
   }
 
   text {
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.textSubtle};
     transform: translateY(5px);
   }
 `
