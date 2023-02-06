@@ -33,8 +33,7 @@ export const MpPageLayout: React.FC<React.PropsWithChildren> = ({ children }) =>
   return (
     <>
       <Navbar />
-      {/* {injected && children} */}
-      {children}
+      {injected && children}
     </>
   )
 }
