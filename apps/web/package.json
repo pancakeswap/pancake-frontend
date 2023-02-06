@@ -54,6 +54,7 @@
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
     "@pancakeswap/uikit": "*",
+    "@pancakeswap/ui-wallets": "*",
     "@pancakeswap/utils": "*",
     "@pancakeswap/router-sdk": "*",
     "@pancakeswap/v3-sdk": "*",

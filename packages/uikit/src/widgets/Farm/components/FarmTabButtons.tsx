@@ -1,11 +1,12 @@
 import React from "react";
-import { Flex, Text } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { useTranslation } from "@pancakeswap/localization";
 import { NextLinkFromReactRouter } from "../../../components/NextLink";
 import { NotificationDot } from "../../../components/NotificationDot";
 import { ButtonMenu, ButtonMenuItem } from "../../../components/ButtonMenu";
+import { Text } from "../../../components/Text";
+import { Flex } from "../../../components/Box";
 
 const Wrapper = styled.div`
   display: flex;

@@ -1,15 +1,12 @@
-import {
-  Button,
-  Text,
-  Flex,
-  Message,
-  Modal,
-  InjectedModalProps,
-  Checkbox,
-  useMatchBreakpoints,
-} from "@pancakeswap/uikit";
 import { useState } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import { Button } from "../../components/Button";
+import { Text } from "../../components/Text";
+import { Flex } from "../../components/Box";
+import { Checkbox } from "../../components/Checkbox";
+import { InjectedModalProps, Modal } from "../Modal";
+import { Message } from "../../components/Message";
+import { useMatchBreakpoints } from "../../contexts";
 
 interface ExpertModalProps extends InjectedModalProps {
   setShowConfirmExpertModal: (show: boolean) => void;

@@ -1,6 +1,9 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
-import { AddIcon, Box, CardBody, CardFooter, Text } from "@pancakeswap/uikit";
+import { CardBody, CardFooter } from "../../../components/Card";
+import { Box } from "../../../components/Box";
+import { Text } from "../../../components/Text";
+import { AddIcon } from "../../../components/Svg";
 
 export function ChoosePairView({
   selectCurrencyA,

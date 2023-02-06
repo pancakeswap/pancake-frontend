@@ -1,7 +1,11 @@
-import { Text, Heading, IconButton, ArrowBackIcon, QuestionHelper } from "@pancakeswap/uikit";
 import Link from "next/link";
 import { AtomBox } from "@pancakeswap/ui";
 import styled from "styled-components";
+import { ArrowBackIcon } from "../../components/Svg";
+import { IconButton } from "../../components/Button";
+import { Text } from "../../components/Text";
+import { Heading } from "../../components/Heading";
+import { QuestionHelper } from "../../components/QuestionHelper";
 
 interface LiquidityCardHeaderProps {
   title: string;
