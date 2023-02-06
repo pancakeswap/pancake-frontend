@@ -111,9 +111,32 @@ const handleLinkClick = (e: MouseEvent, router: NextRouter) => {
     if (entry === 'add') {
       const [currency1, currency2] = params
       _bridgeUtils.jump({ path: entry, query: { currency1, currency2 } })
+      router.replace({
+        query: {
+          page: 'add',
+          currency1,
+          currency2,
+        },
+      })
+    } else if (entry === 'liquidity') {
+      _bridgeUtils.jump({ path: 'add' })
+      router.replace({
+        query: {
+          page: 'liquidity',
+          currency1: undefined,
+          currency2: undefined,
+        },
+      })
     } else if (entry === 'remove') {
       const [currency1, currency2] = params
       _bridgeUtils.jump({ path: 'add', query: { currency1, currency2, page: entry } })
+      router.replace({
+        query: {
+          page: entry,
+          currency1,
+          currency2,
+        },
+      })
     } else if (entry === 'find') {
       _bridgeUtils.jump({ path: 'add', query: { page: entry } })
     } else if (url.pathname === '/swap') {

@@ -8,20 +8,22 @@ import PoolFinder from 'views/PoolFinder'
 const MpLiquidityPage = () => {
   const { query } = useRouter()
 
+  let Com = <Liquidity />
+
   if (query.page === 'add') {
-    return <AddLiquidityPage />
+    Com = <AddLiquidityPage />
   }
   if (query.page === 'remove') {
-    return <RemoveLiquidityPage />
+    Com = <RemoveLiquidityPage />
   }
   if (query.page === 'find') {
-    return <PoolFinder />
+    Com = <PoolFinder />
   }
 
   return (
     <>
       {JSON.stringify(query, null, 2)}
-      <Liquidity />
+      {Com}
     </>
   )
 }
