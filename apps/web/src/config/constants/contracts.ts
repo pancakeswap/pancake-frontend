@@ -162,7 +162,7 @@ export default {
     97: '0xBab5d3B6bA24E185f216419f3ba07f03984bF983',
   },
   mmLinkedPool: {
-    1: '',
+    1: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
     5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92', // play MM role by my self contract
   },
 }
