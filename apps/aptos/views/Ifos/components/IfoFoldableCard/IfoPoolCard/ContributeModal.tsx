@@ -1,5 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { BalanceInput, Box, Button, Flex, Image, Link, Message, Modal, ModalBody, Text } from '@pancakeswap/uikit'
+import {
+  BalanceInput,
+  Box,
+  Button,
+  Flex,
+  Image,
+  Link,
+  Modal,
+  ModalBody,
+  Text,
+  IfoHasVestingNotice,
+} from '@pancakeswap/uikit'
 import { formatNumber, getBalanceAmount, getDecimalAmount } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
 import { ConfirmButton } from 'components/ConfirmButton'
@@ -7,19 +18,11 @@ import splitTypeTag from 'utils/splitTypeTag'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useConfirmTransaction } from 'hooks/useConfirmTransaction'
 import { useMemo, useState } from 'react'
-import styled from 'styled-components'
 import { ifoDeposit } from 'views/Ifos/generated/ifo'
 import { useIfoPool } from 'views/Ifos/hooks/useIfoPool'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransaction'
 
-const MessageTextLink = styled(Link)`
-  display: inline;
-  text-decoration: underline;
-  font-weight: bold;
-  font-size: 14px;
-  white-space: nowrap;
-`
 interface Props {
   poolId: PoolIds
   ifo: Ifo
@@ -31,25 +34,6 @@ interface Props {
 }
 
 const multiplierValues = [0.1, 0.25, 0.5, 0.75, 1]
-
-const SmallAmountNotice: React.FC<React.PropsWithChildren<{ url: string }>> = ({ url }) => {
-  const { t } = useTranslation()
-
-  return (
-    <Box maxWidth="350px">
-      <Message variant="warning" mb="16px">
-        <Box>
-          <Text fontSize="14px" color="#D67E0A">
-            {t('This IFO has token vesting. Purchased tokens are released over a period of time.')}
-          </Text>
-          <MessageTextLink external href={url} color="#D67E0A" display="inline">
-            {t('Learn more in the vote proposal')}
-          </MessageTextLink>
-        </Box>
-      </Message>
-    </Box>
-  )
-}
 
 const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
   poolId,
@@ -193,7 +177,7 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
               </Button>
             ))}
           </Flex>
-          {(vestingInformation?.percentage ?? 0) > 0 && <SmallAmountNotice url={articleUrl} />}
+          {(vestingInformation?.percentage ?? 0) > 0 && <IfoHasVestingNotice url={articleUrl} />}
           <Text color="textSubtle" fontSize="12px" mb="24px">
             {t(
               'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
