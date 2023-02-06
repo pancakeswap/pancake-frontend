@@ -57,7 +57,7 @@ const Navbar = ({ height = 44 }) => {
           right: '0px',
           justifyContent: 'center',
           width: '100vw',
-          zIndex: '100',
+          zIndex: '99',
           background: theme.colors.backgroundAlt,
           paddingTop: `${top}px`,
           boxSizing: 'content-box',
