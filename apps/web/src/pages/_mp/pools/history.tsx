@@ -1,10 +1,10 @@
+import { MpPageLayout } from 'components/MpPageLayout'
 import Pools from 'views/Pools'
-import PoolsMpPageLayout from 'views/Pools/MpPageLayout'
 
 const MpPoolsPage = () => {
   return <Pools />
 }
 MpPoolsPage.mp = true
-MpPoolsPage.Layout = PoolsMpPageLayout
+MpPoolsPage.Layout = MpPageLayout
 
 export default MpPoolsPage

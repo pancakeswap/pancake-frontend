@@ -154,9 +154,11 @@ export const useInjectI18n = () => {
     const main = async () => {
       if (systemInfo) {
         const { language } = systemInfo
-        const currLanguage = code2Lang[language.toLowerCase()]
-        if (currLanguage) {
-          await setLanguage(currLanguage)
+        if (language) {
+          const currLanguage = code2Lang[language.toLowerCase()]
+          if (currLanguage) {
+            setLanguage(currLanguage)
+          }
         }
         setInjected(true)
       }
