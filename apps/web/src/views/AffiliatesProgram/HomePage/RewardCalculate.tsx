@@ -1,6 +1,7 @@
 import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
+import Calculator from 'views/AffiliatesProgram/HomePage/Calculator'
 
 const RewardCalculate = () => {
   const { t } = useTranslation()
@@ -14,7 +15,7 @@ const RewardCalculate = () => {
       background={theme.colors.gradientBubblegum}
       clipFill={{ light: theme.colors.gradientBubblegum }}
     >
-      <Flex alignItems="center" flexDirection="column" justifyContent="center">
+      <Flex>
         <Flex width={['447px']} alignSelf={['center']} flexDirection="column">
           <Text fontSize={['20px']} color="secondary">
             Rewards calculator
@@ -36,6 +37,7 @@ const RewardCalculate = () => {
           </Text>
           <Button width="fit-content">Apply now!</Button>
         </Flex>
+        <Calculator />
       </Flex>
     </PageSection>
   )

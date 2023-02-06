@@ -76,7 +76,7 @@ const AffiliatesBanner = () => {
           </InnerWrapper>
         </BgWrapper>
         <Flex>
-          <Box width={['375px']} height={['559px']}>
+          <Box width={['560px']} height={['639px']}>
             <Image src={bunnyImage} alt="banner-image" />
           </Box>
           <Flex ml={['48px']} width={['697px']} alignSelf="center" flexDirection="column">
