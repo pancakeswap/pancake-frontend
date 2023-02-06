@@ -154,3 +154,11 @@ export const shouldShowMMError = (message?: string) => {
   if (message?.includes('Amount is above')) return true
   return false
 }
+
+export const parseMMError = (message?: string) => {
+  if (message?.includes('Amount is below') || message?.includes('Amount is above')) {
+    return `Minimum ~$30 to trade with MM`
+  }
+
+  return message
+}

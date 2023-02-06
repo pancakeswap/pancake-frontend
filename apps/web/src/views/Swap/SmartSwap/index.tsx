@@ -48,7 +48,7 @@ import useWarningImport from '../hooks/useWarningImport'
 import MMCommitButton from '../MMLinkPools/components/MMCommitButton'
 import { MMSlippageTolerance } from '../MMLinkPools/components/MMSlippageTolerance'
 import { useGetRFQTrade, useIsTradeWithMMBetter, useMMTrade, useMMTradeInfo } from '../MMLinkPools/hooks'
-import { shouldShowMMError } from '../MMLinkPools/utils/exchange'
+import { shouldShowMMError, parseMMError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
@@ -406,8 +406,8 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
           !v2Trade &&
           mmOrderBookTrade?.inputError &&
           shouldShowMMError(mmOrderBookTrade?.inputError) ? (
-            <Button width="100%" disabled>
-              {mmOrderBookTrade?.inputError}
+            <Button width="100%" disabled style={{ textAlign: 'left' }}>
+              {parseMMError(mmOrderBookTrade?.inputError)}
             </Button>
           ) : isMMBetter ? (
             <MMCommitButton
