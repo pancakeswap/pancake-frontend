@@ -2449,4 +2449,12 @@ export const bscTokens = {
     'ESPL ARENA',
     'https://espl.co/',
   ),
+  champ: new ERC20Token(
+    ChainId.BSC,
+    '0x7e9AB560d37E62883E882474b096643caB234B65',
+    18,
+    'CHAMP',
+    'Ultimate Champions Token',
+    'https://beta.ultimate-champions.com/',
+  ),
 }

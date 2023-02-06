@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Skeleton, TooltipText, useTooltip, IfoSkeletonCardDetails } from '@pancakeswap/uikit'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -9,7 +9,6 @@ import useStablePrice from 'hooks/useStablePrice'
 import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { SkeletonCardDetails } from './Skeletons'
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
@@ -236,7 +235,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
         </>
       )
     }
-    return <SkeletonCardDetails />
+    return <IfoSkeletonCardDetails />
   }
 
   return <Box paddingTop="24px">{renderBasedOnIfoStatus()}</Box>

@@ -44,6 +44,8 @@ const whitelist = [
   'Order cancellation: %inputAmount% %inputTokenSymbol% for %outputAmount% %outputTokenSymbol%',
   'Order cancellation',
   'Launch App',
+  'Newest First',
+  'Oldest First',
   'Sort Title A-Z',
   'Sort Title Z-A',
   'All articles',
