@@ -92,7 +92,7 @@ const Deposit: React.FC<React.PropsWithChildren> = () => {
           </Flex>
         </GreyCard>
         <Flex justifyContent="space-between">
-          <Text color="textSubtle">{t('APY')}</Text>
+          <Text color="textSubtle">{t('APR')}</Text>
           <Text bold>{apyDisplay}</Text>
         </Flex>
         {getStatus === PotteryDepositStatus.BEFORE_LOCK ? (
