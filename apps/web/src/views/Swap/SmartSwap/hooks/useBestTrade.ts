@@ -52,7 +52,11 @@ function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions
         : null,
       // TODO: trader should use user Wallet address
       async () => {
-        const res = await SmartRouter.getBestTrade(amount, currency, tradeType, { maxHops })
+        const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
+          maxHops,
+          poolProvider: SmartRouter.createPoolProvider({ onChainProvider: provider }),
+        })
+        // eslint-disable-next-line
         console.log(res)
         return getBestTrade({ amount, currency, tradeType, allCommonPairs, trader: '', maxHops })
       },

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Currency, CurrencyAmount, TradeType, JSBI } from '@pancakeswap/sdk'
 
 import { BaseRoute, Pool, PoolProvider, QuoteProvider, Route, RouteWithValidQuotes, Trade } from './types'
@@ -57,7 +58,7 @@ async function getBestRoutes(
   const inputCurrency = isExactIn ? amount.currency : currency
   const outputCurrency = isExactIn ? currency : amount.currency
 
-  const candidatePools = await poolProvider?.getCandidatePools(amount.currency, currency)
+  const candidatePools = await poolProvider?.getCandidatePools(amount.currency, currency, 0)
   if (!candidatePools) {
     return null
   }
