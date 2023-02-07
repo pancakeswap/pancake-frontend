@@ -47,7 +47,13 @@ import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
 import MMCommitButton from '../MMLinkPools/components/MMCommitButton'
 import { MMSlippageTolerance } from '../MMLinkPools/components/MMSlippageTolerance'
-import { useGetRFQTrade, useIsTradeWithMMBetter, useMMTrade, useMMTradeInfo } from '../MMLinkPools/hooks'
+import {
+  useGetRFQTrade,
+  useIsTradeWithMMBetter,
+  useMMTrade,
+  useMMTradeInfo,
+  useIsMMQuotingPair,
+} from '../MMLinkPools/hooks'
 import { shouldShowMMError, parseMMError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
@@ -140,6 +146,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     mmSwapInputError: mmOrderBookTrade?.inputError,
   })
 
+  const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const {
     wrapType,
     execute: onWrap,
@@ -396,7 +403,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               }
               allowedSlippage={allowedSlippage}
               onSlippageClick={onPresentSettingsModal}
-              allowedSlippageSlot={isMMBetter ? <MMSlippageTolerance /> : undefined}
+              allowedSlippageSlot={isMMBetter || (!v2Trade && isMMQuotingPair) ? <MMSlippageTolerance /> : undefined}
             />
           )}
         </AutoColumn>

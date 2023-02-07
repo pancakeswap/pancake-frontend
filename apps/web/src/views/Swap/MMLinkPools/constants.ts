@@ -7,11 +7,11 @@ export const MM_SWAP_CONTRACT_ADDRESS = {
 
 const GOERLI_WHITE_LIST = ['0x65afadd39029741b3b8f0756952c74678c9cec93', '0xb4fbf271143f4fbf7b91a5ded31805e42b2208d6']
 export const MM_TOKENS_WHITE_LIST = {
-  [ChainId.ETHEREUM]: [],
+  [ChainId.ETHEREUM]: null,
   [ChainId.GOERLI]: GOERLI_WHITE_LIST,
 }
 
 export const MM_SIGNER = {
-  [ChainId.ETHEREUM]: '0x13414B047539298D5aeD429722211681eAAb43B7', // TODO: may need to update if MM use different wallet on mainnet
+  [ChainId.ETHEREUM]: '0x945BCF562085De2D5875b9E2012ed5Fd5cfaB927',
   [ChainId.GOERLI]: '0x13414B047539298D5aeD429722211681eAAb43B7',
 }

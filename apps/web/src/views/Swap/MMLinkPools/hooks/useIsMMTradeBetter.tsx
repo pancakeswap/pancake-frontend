@@ -1,5 +1,6 @@
 import { Currency, Trade, TradeType, ZERO } from '@pancakeswap/sdk'
 import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { useMemo } from 'react'
 import { TradeWithMM } from '../types'
 
 interface Options {
@@ -9,16 +10,18 @@ interface Options {
 }
 
 export const useIsTradeWithMMBetter = ({ trade, v2Trade, tradeWithMM }: Options) => {
-  if (!tradeWithMM || tradeWithMM.inputAmount.equalTo(ZERO) || tradeWithMM.outputAmount.equalTo(ZERO)) {
-    return false
-  }
-  if (!v2Trade && !trade && tradeWithMM) return true // v2 and smart router has not liq but MM provide the deal
-  if (!v2Trade?.outputAmount || !v2Trade?.inputAmount) {
-    if (tradeWithMM) return true
-  }
-  return (
-    tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO) || // exactIn
-    (tradeWithMM.outputAmount.equalTo(v2Trade.outputAmount) &&
-      tradeWithMM.inputAmount.lessThan(v2Trade?.outputAmount ?? ZERO)) // exactOut
-  )
+  return useMemo(() => {
+    if (!tradeWithMM || tradeWithMM.inputAmount.equalTo(ZERO) || tradeWithMM.outputAmount.equalTo(ZERO)) {
+      return false
+    }
+    if (!v2Trade && !trade && tradeWithMM) return true // v2 and smart router has not liq but MM provide the deal
+    if (!v2Trade?.outputAmount || !v2Trade?.inputAmount) {
+      if (tradeWithMM) return true
+    }
+    return (
+      tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO) || // exactIn
+      (tradeWithMM.outputAmount.equalTo(v2Trade.outputAmount) &&
+        tradeWithMM.inputAmount.lessThan(v2Trade?.outputAmount ?? ZERO)) // exactOut
+    )
+  }, [trade, v2Trade, tradeWithMM])
 }
