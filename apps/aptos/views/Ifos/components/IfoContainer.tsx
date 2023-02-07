@@ -20,11 +20,7 @@ const IfoContainer: React.FC<React.PropsWithChildren<TypeProps>> = ({ ifoSection
         </IfoLayoutWrapper>
       </Container>
       <Container>
-        <LinkExternal
-          href="https://docs.pancakeswap.finance/contact-us/business-partnerships#ifos-token-sales"
-          mx="auto"
-          mt="16px"
-        >
+        <LinkExternal href="https://docs.pancakeswap.finance/aptos-deployment" mx="auto" mt="16px">
           {t('Apply to run an IFO!')}
         </LinkExternal>
       </Container>
