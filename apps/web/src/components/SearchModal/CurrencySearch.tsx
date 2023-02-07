@@ -58,7 +58,10 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
           !addressSet[tokenInfo.address] &&
           filterToken(tokenInfo)
         ) {
-          const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo)
+          const wrapped: WrappedTokenInfo = new WrappedTokenInfo({
+            ...tokenInfo,
+            address: isAddress(tokenInfo.address) || tokenInfo.address,
+          })
           addressSet[wrapped.address] = true
           if (
             tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||
