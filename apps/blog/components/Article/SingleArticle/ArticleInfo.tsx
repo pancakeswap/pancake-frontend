@@ -69,7 +69,7 @@ const ArticleInfo = () => {
         <Text color="textSubtle" mb={['26px']} textAlign="right">
           {article?.createAt}
         </Text>
-        <Box mb="24px" borderRadius={20} overflow="hidden" height={['155px', '200px', '350px', '420px']}>
+        <Box mb="24px" height={['155px', '200px', '350px', '420px']}>
           <StyledBackgroundImage imgUrl={article?.imgUrl ?? ''} />
         </Box>
         <Box mb="24px" display={['block', 'block', 'block', 'none']}>

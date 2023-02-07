@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { ArticleDataType } from 'utils/transformArticle'
 import NextLink from 'next/link'
+import { StyledLineClamp } from 'components/StyledLineClamp'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -75,16 +76,17 @@ const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ arti
                 ))}
               </StyledTagGroup>
             </Box>
-            <Text
-              ellipsis
+            <StyledLineClamp
               bold
+              line={3}
+              ellipsis
               lineHeight="100%"
               mb={['8px', '8px', '8px', '24px']}
-              fontSize={['12px', '14px', '16px', '24px']}
+              fontSize={['14px', '16px', '24px']}
             >
               {article.title}
-            </Text>
-            <Text ellipsis mb="24px">
+            </StyledLineClamp>
+            <Text ellipsis mb="24px" display={['none', 'none', 'none', 'block']}>
               {article.description}
             </Text>
             <Text mt="auto" textAlign="right" fontSize={['12px', '12px', '14px']} color="textSubtle">
