@@ -8,8 +8,6 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-const blocksPage = process.env.NODE_ENV === 'production' ? ['/ifo', '/ifo/history'] : []
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -34,12 +32,7 @@ const nextConfig = {
         source: '/',
         destination: '/swap',
         permanent: false,
-      },
-      ...blocksPage.map((p) => ({
-        source: p,
-        destination: '/404',
-        permanent: false,
-      })),
+      }
     ]
   },
 }
