@@ -19,11 +19,6 @@ const StyledArticle = styled(Flex)`
   margin: 0;
   border-bottom: ${({ theme }) => `2px solid ${theme.colors.cardBorder}`};
 
-  &:hover ${StyledBackgroundImage} {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-
   ${({ theme }) => theme.mediaQueries.xxl} {
     padding: 32px 0;
     margin: 0 32px;
@@ -80,7 +75,7 @@ const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ arti
               bold
               line={3}
               ellipsis
-              lineHeight="100%"
+              lineHeight={['1.5', '1.2']}
               mb={['8px', '8px', '8px', '24px']}
               fontSize={['14px', '16px', '24px']}
             >

@@ -42,10 +42,6 @@ const StyleBlog = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: row;
   }
-
-  &:hover ${StyledBackgroundImage} {
-    transform: scale(1.05);
-  }
 `
 
 const StyledTagGroup = styled(Flex)`
@@ -114,15 +110,15 @@ const NewBlog = () => {
                 bold
                 ellipsis
                 line={2}
-                lineHeight="100%"
+                lineHeight={['1.5', '1.2']}
                 mb={['8px', '8px', '8px', '24px']}
                 fontSize={['16px', '24px', '24px', '24px', '24px', '48px']}
               >
                 {article?.title}
               </StyledLineClamp>
-              <StyledLineClamp line={2} ellipsis mb="24px">
+              <Text display={['none', 'none', 'none', 'block']} ellipsis mb="24px">
                 {article?.description}
-              </StyledLineClamp>
+              </Text>
               <Text fontSize={['12px', '12px', '14px']} color="textSubtle">
                 {article?.createAt}
               </Text>
