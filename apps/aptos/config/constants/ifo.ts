@@ -24,6 +24,6 @@ export const ifos: Ifo[] = [
     twitterUrl: 'https://twitter.com/BlueMove_OA',
     description:
       'BlueMove is the leading multi-chain NFT Marketplace on Aptos and Sui, where creators can easily create their own NFTs, and freely list their collections for buying, selling and trading',
-    vestingTitle: 'Vesting title: Stake $MOVE to access BlueMove Launchpad projects and earn platform fees',
+    vestingTitle: 'Stake $MOVE to access BlueMove Launchpad projects and earn platform fees',
   },
 ]
