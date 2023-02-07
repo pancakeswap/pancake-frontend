@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { ArticleDataType } from 'utils/transformArticle'
 import NextLink from 'next/link'
+import { StyledLineClamp } from 'components/StyledLineClamp'
 
 const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
   height: 100%;
@@ -17,11 +18,6 @@ const StyledArticle = styled(Flex)`
   padding: 24px 16px;
   margin: 0;
   border-bottom: ${({ theme }) => `2px solid ${theme.colors.cardBorder}`};
-
-  &:hover ${StyledBackgroundImage} {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
 
   ${({ theme }) => theme.mediaQueries.xxl} {
     padding: 32px 0;
@@ -75,16 +71,17 @@ const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ arti
                 ))}
               </StyledTagGroup>
             </Box>
-            <Text
-              ellipsis
+            <StyledLineClamp
               bold
-              lineHeight="100%"
+              line={3}
+              ellipsis
+              lineHeight={['1.5', '1.2']}
               mb={['8px', '8px', '8px', '24px']}
-              fontSize={['12px', '14px', '16px', '24px']}
+              fontSize={['14px', '16px', '24px']}
             >
               {article.title}
-            </Text>
-            <Text ellipsis mb="24px">
+            </StyledLineClamp>
+            <Text ellipsis mb="24px" display={['none', 'none', 'none', 'block']}>
               {article.description}
             </Text>
             <Text mt="auto" textAlign="right" fontSize={['12px', '12px', '14px']} color="textSubtle">

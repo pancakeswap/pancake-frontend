@@ -5,6 +5,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import useSWR from 'swr'
 import { ArticleDataType } from 'utils/transformArticle'
+import { StyledLineClamp } from 'components/StyledLineClamp'
 
 const StyledBackground = styled(Box)`
   position: relative;
@@ -41,11 +42,6 @@ const StyleBlog = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.xl} {
     flex-direction: row;
   }
-
-  &:hover ${StyledBackgroundImage} {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
 `
 
 const StyledTagGroup = styled(Flex)`
@@ -63,13 +59,6 @@ const StyledTagGroup = styled(Flex)`
       }
     }
   }
-`
-
-const StyledDesc = styled(Text)`
-  display: -webkit-box;
-  white-space: initial;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
 `
 
 const NewBlog = () => {
@@ -117,18 +106,19 @@ const NewBlog = () => {
                   ))}
                 </StyledTagGroup>
               </Box>
-              <Text
-                ellipsis
+              <StyledLineClamp
                 bold
-                lineHeight="100%"
+                ellipsis
+                line={2}
+                lineHeight={['1.5', '1.2']}
                 mb={['8px', '8px', '8px', '24px']}
                 fontSize={['16px', '24px', '24px', '24px', '24px', '48px']}
               >
                 {article?.title}
-              </Text>
-              <StyledDesc ellipsis mb="24px">
+              </StyledLineClamp>
+              <Text display={['none', 'none', 'none', 'block']} ellipsis mb="24px">
                 {article?.description}
-              </StyledDesc>
+              </Text>
               <Text fontSize={['12px', '12px', '14px']} color="textSubtle">
                 {article?.createAt}
               </Text>
