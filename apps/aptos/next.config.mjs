@@ -8,7 +8,7 @@ const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-const blocksPage = process.env.NODE_ENV === 'production' ? [] : []
+const blocksPage = []
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
