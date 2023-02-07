@@ -7,12 +7,11 @@ import {
   ChevronRightIcon,
   InjectedModalProps,
   Tag,
-  Spinner,
   useMatchBreakpoints,
   BscScanIcon,
   TransactionErrorContent,
+  ConfirmationPendingContent,
 } from '@pancakeswap/uikit'
-import { AutoColumn } from 'components/Layout/Column'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'
@@ -181,7 +180,7 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
       onDismiss={onDismiss}
     >
       {attemptingTxn ? (
-        <LoadingContent />
+        <ConfirmationPendingContent />
       ) : txHash ? (
         <TransactionSubmittedContent chainId={chainId} hash={txHash} onDismiss={onDismiss} />
       ) : cancellationErrorMessage ? (
@@ -259,20 +258,3 @@ const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardPro
     )
   },
 )
-
-const LoadingContent: React.FC<React.PropsWithChildren> = memo(() => {
-  const { t } = useTranslation()
-  return (
-    <Flex flexDirection="column">
-      <Box m="auto" padding="24px 0">
-        <Spinner />
-      </Box>
-      <AutoColumn gap="12px" justify="center">
-        <Text fontSize="20px">{t('Confirm')}</Text>
-        <Text small color="textSubtle" textAlign="center">
-          {t('Confirm this transaction in your wallet')}
-        </Text>
-      </AutoColumn>
-    </Flex>
-  )
-})

@@ -22,4 +22,12 @@ export const ethereumTokens = {
     'StargateToken',
     'https://stargate.finance/',
   ),
+  fuse: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x970B9bB2C0444F5E81e9d0eFb84C8ccdcdcAf84d',
+    18,
+    'FUSE',
+    'Fuse Token',
+    'https://fuse.io/',
+  ),
 }

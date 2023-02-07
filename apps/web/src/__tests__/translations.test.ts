@@ -1,5 +1,6 @@
 import Path from 'path'
 import fs from 'fs'
+import { describe, it } from 'vitest'
 import teams from 'config/constants/teams'
 import { NftLocation } from 'state/nftMarket/types'
 
@@ -57,7 +58,7 @@ const whitelist = [
   'Latest News about PancakeSwap and more!',
 ]
 
-describe('Check translations integrity', () => {
+describe.concurrent('Check translations integrity', () => {
   it.each(allTranslationKeys)('Translation key value should be equal', (key) => {
     expect(key).toEqual(translations[key])
   })
