@@ -75,13 +75,11 @@ const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
     href: '/ifo',
     icon: MoreIcon,
     hideSubNav: true,
-    disabled: true,
     items: [
       {
         label: t('IFO'),
         href: '/ifo',
-        disabled: true,
-        status: { text: t('Soon'), color: 'warning' },
+        status: { text: t('Live'), color: 'success' },
       },
     ],
   },
