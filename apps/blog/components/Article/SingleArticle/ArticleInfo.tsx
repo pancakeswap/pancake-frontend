@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { Box, Text, Flex, ReactMarkdown } from '@pancakeswap/uikit'
 import useSWR from 'swr'
+import Balancer from 'react-wrap-balancer'
 import { ArticleDataType } from 'utils/transformArticle'
 import { useRouter } from 'next/router'
 import SocialIcon from 'components/Article/SingleArticle/SocialIcon'
@@ -49,7 +50,7 @@ const ArticleInfo = () => {
     >
       <Flex flexDirection="column" width={['100%', '100%', '100%', '100%', '748px']}>
         <Text bold fontSize={['32px', '32px', '40px']} mb={['26px']}>
-          {article?.title}
+          <Balancer>{article?.title}</Balancer>
         </Text>
         <StyledTagGroup justifyContent="flex-end">
           {article?.categories.map((category: string) => (
