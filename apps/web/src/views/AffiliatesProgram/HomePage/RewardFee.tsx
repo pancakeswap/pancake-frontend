@@ -55,16 +55,6 @@ const RewardList = [
     percentage: '20%',
     icon: () => <TimerIcon color="failure" width={32} height={32} />,
   },
-  // {
-  //   title: <Trans>Lottery & Pottery</Trans>,
-  //   percentage: '3%',
-  //   icon: () => <TicketFillIcon color="secondary" width={32} height={32} />
-  // },
-  // {
-  //   title: <Trans>Prediction</Trans>,
-  //   percentage: '3%',
-  //   icon: () => <PredictionsIcon color="primary" width={32} height={32} />
-  // }
 ]
 
 const RewardFee = () => {

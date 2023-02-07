@@ -3,6 +3,7 @@ import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
+import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import bunnyImage from '../../../../public/images/affiliates-program/banner.png'
 
 const StyledBannerSection = styled(PageSection)`
@@ -29,6 +30,36 @@ const InnerWrapper = styled.div`
   bottom: -3px;
   transform: scaleX(-1);
 `
+
+const Decorations = styled(Box)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+
+  > img {
+    position: absolute;
+  }
+
+  & :nth-child(1) {
+    left: 15%;
+    top: 8%;
+    animation: ${floatingStarsLeft} 3s ease-in-out infinite;
+  }
+  & :nth-child(2) {
+    left: 15%;
+    bottom: 5%;
+    animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
+  }
+  & :nth-child(3) {
+    right: 10%;
+    top: 15%;
+    animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
+  }
+}`
 
 const AffiliatesBanner = () => {
   const { t } = useTranslation()
@@ -69,6 +100,11 @@ const AffiliatesBanner = () => {
         index={2}
         hasCurvedDivider={false}
       >
+        <Decorations>
+          <img src="/images/affiliates-program/bobbing-1.png" width="155px" height="170px" alt="" />
+          <img src="/images/affiliates-program/bobbing-2.png" width="240px" height="187px" alt="" />
+          <img src="/images/affiliates-program/bobbing-3.png" width="160px" height="124px" alt="" />
+        </Decorations>
         <BgWrapper>
           <InnerWrapper>
             <SlideSvgDark className="slide-svg-dark" width="100%" />
