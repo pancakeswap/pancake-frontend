@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import { Currency, CurrencyAmount, TradeType, JSBI } from '@pancakeswap/sdk'
 
-import { BaseRoute, Pool, PoolProvider, QuoteProvider, Route, RouteWithValidQuotes, Trade } from './types'
+import { computeAllRoutes } from './functions'
+import { BaseRoute, PoolProvider, QuoteProvider, Route, RouteWithValidQuotes, Trade } from './types'
 
 interface Config {
   maxHops?: number
@@ -23,22 +24,26 @@ export async function getBestTrade(
   tradeType: TradeType,
   config: Config = {},
 ): Promise<BestTrade | null> {
-  const bestRoutes = await getBestRoutes(amount, currency, tradeType, config)
+  try {
+    const bestRoutes = await getBestRoutes(amount, currency, tradeType, config)
+    if (!bestRoutes) {
+      return null
+    }
 
-  if (!bestRoutes) {
+    const { routes, estimatedGasUsed, estimatedGasUsedUSD } = bestRoutes
+    // TODO restrict trade type to exact input if routes include one of the old
+    // stable swap pools, which only allow to swap with exact input
+    return {
+      estimatedGasUsedUSD,
+      estimatedGasUsed,
+      trade: {
+        tradeType,
+        routes,
+      },
+    }
+  } catch (e) {
+    console.error(e)
     return null
-  }
-
-  const { routes, estimatedGasUsed, estimatedGasUsedUSD } = bestRoutes
-  // TODO restrict trade type to exact input if routes include one of the old
-  // stable swap pools, which only allow to swap with exact input
-  return {
-    estimatedGasUsedUSD,
-    estimatedGasUsed,
-    trade: {
-      tradeType,
-      routes,
-    },
   }
 }
 
@@ -63,15 +68,10 @@ async function getBestRoutes(
     return null
   }
 
-  const baseRoutes = getAllPossibleRoutes(inputCurrency, outputCurrency, candidatePools)
+  const baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools)
   const routesWithValidQuotes = await getRoutesWithValidQuotes(amount, baseRoutes, distributionPercent)
   console.log(amount, currency, tradeType, maxHops, maxSplits)
   return getBestRoutesByQuotes(amount, routesWithValidQuotes)
-}
-
-function getAllPossibleRoutes(inputCurrency: Currency, outputCurrency: Currency, candidatePools: Pool[]): BaseRoute[] {
-  console.log(inputCurrency, outputCurrency, candidatePools)
-  return []
 }
 
 async function getRoutesWithValidQuotes(
