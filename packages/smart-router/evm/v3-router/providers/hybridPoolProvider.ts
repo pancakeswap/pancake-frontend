@@ -1,10 +1,13 @@
 import { Call, createMulticall } from '@pancakeswap/multicall'
-import { ChainId, Currency, CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent } from '@pancakeswap/sdk'
+import { deserializeToken } from '@pancakeswap/token-lists'
 
 import { getPairCombinations } from '../functions'
-import { OnChainProvider, Pool, PoolProvider, PoolType, V2Pool } from '../types'
+import { OnChainProvider, Pool, PoolProvider, PoolType, V2Pool, StablePool } from '../types'
 import { createPoolProviderWithCache } from './poolProviderWithCache'
 import IPancakePairABI from '../../abis/IPancakePair.json'
+import IStablePoolABI from '../../abis/StableSwapPair.json'
+import { getStableSwapPools } from '../../constants/stableSwap'
 
 export function createHybridPoolProvider(onChainProvider: OnChainProvider): PoolProvider {
   const hybridPoolProvider: PoolProvider = {
@@ -37,6 +40,16 @@ interface Options {
   provider: OnChainProvider
 }
 
+async function getPools(pairs: [Currency, Currency][], { provider }: Options): Promise<Pool[]> {
+  const chainId = pairs[0]?.[0]?.chainId
+  if (!chainId) {
+    return []
+  }
+
+  const [v2Pools, stablePools] = await Promise.all([getV2Pools(pairs, provider), getStablePools(pairs, provider)])
+  return [...v2Pools, ...stablePools]
+}
+
 const getV2Pools = createPoolFactory<V2Pool>(
   IPancakePairABI,
   ([currencyA, currencyB]) => [
@@ -50,6 +63,9 @@ const getV2Pools = createPoolFactory<V2Pool>(
     },
   ],
   ({ currencyA, currencyB }, [{ reserve0, reserve1 }]) => {
+    if (!reserve0 || !reserve1) {
+      return null
+    }
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
@@ -61,21 +77,73 @@ const getV2Pools = createPoolFactory<V2Pool>(
   },
 )
 
-async function getPools(pairs: [Currency, Currency][], { provider }: Options): Promise<Pool[]> {
-  const chainId = pairs[0]?.[0]?.chainId
-  if (!chainId) {
-    return []
-  }
-
-  const [v2Pools] = await Promise.all([getV2Pools(pairs, provider)])
-  return v2Pools
-}
+const getStablePools = createPoolFactory<StablePool>(
+  IStablePoolABI,
+  ([currencyA, currencyB]) => {
+    const poolConfigs = getStableSwapPools(currencyA.chainId)
+    return poolConfigs
+      .filter(({ token, quoteToken }) => {
+        const tokenA = deserializeToken(token)
+        const tokenB = deserializeToken(quoteToken)
+        return (
+          (tokenA.equals(currencyA.wrapped) && tokenB.equals(currencyB.wrapped)) ||
+          (tokenA.equals(currencyB.wrapped) && tokenB.equals(currencyA.wrapped))
+        )
+      })
+      .map(({ stableSwapAddress }) => ({
+        address: stableSwapAddress,
+        currencyA,
+        currencyB,
+      }))
+  },
+  (address) => [
+    {
+      address,
+      name: 'balances',
+      params: [0],
+    },
+    {
+      address,
+      name: 'balances',
+      params: [1],
+    },
+    {
+      address,
+      name: 'A',
+      params: [],
+    },
+    {
+      address,
+      name: 'fee',
+      params: [],
+    },
+    {
+      address,
+      name: 'FEE_DENOMINATOR',
+      params: [],
+    },
+  ],
+  ({ currencyA, currencyB }, [balance0, balance1, a, fee, feeDenominator]) => {
+    if (!balance0 || !balance1 || !a || !fee || !feeDenominator) {
+      return null
+    }
+    const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+      ? [currencyA, currencyB]
+      : [currencyB, currencyA]
+    return {
+      type: PoolType.STABLE,
+      balances: [CurrencyAmount.fromRawAmount(token0, balance0), CurrencyAmount.fromRawAmount(token1, balance1)],
+      amplifier: JSBI.BigInt(a),
+      fee: new Percent(JSBI.BigInt(fee), JSBI.BigInt(feeDenominator)),
+    }
+  },
+)
 
 function createPoolFactory<TPool extends Pool>(
   abi: any[],
   getPossiblePoolMetas: (pair: [Currency, Currency]) => PoolMeta[],
   buildPoolInfoCalls: (poolAddress: string) => Call[],
-  buildPool: (poolMeta: PoolMeta, data: any[]) => TPool,
+  buildPool: (poolMeta: PoolMeta, data: any[]) => TPool | null,
 ) {
   return async function poolFactory(pairs: [Currency, Currency][], provider: OnChainProvider): Promise<TPool[]> {
     const chainId: ChainId = pairs[0]?.[0]?.chainId
