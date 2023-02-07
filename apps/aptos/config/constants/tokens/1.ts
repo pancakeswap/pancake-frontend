@@ -91,6 +91,6 @@ export const mainnetTokens = {
     '0x27fafcc4e39daac97556af8a803dbb52bcb03f0821898dc845ac54225b9793eb::move_coin::MoveCoin',
     8,
     'MOVE',
-    'Wormhole - Wrapped Ether',
+    'BlueMove',
   ),
 }
