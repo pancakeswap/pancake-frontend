@@ -18,7 +18,7 @@ export const ifos: Ifo[] = [
     currency: mainnetTokens.cake,
     token: mainnetTokens.move,
     releaseTime: 1675944000,
-    articleUrl: '',
+    articleUrl: 'https://medium.com/pancakeswap/bluemove-move-ifo-to-be-hosted-on-aptos-pancakeswap-25adee83d1ee',
     tokenOfferingPrice: 0.04,
     version: 3.2,
     twitterUrl: 'https://twitter.com/BlueMove_OA',

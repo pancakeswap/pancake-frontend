@@ -92,5 +92,6 @@ export const mainnetTokens = {
     8,
     'MOVE',
     'BlueMove',
+    'https://bluemove.net/',
   ),
 }
