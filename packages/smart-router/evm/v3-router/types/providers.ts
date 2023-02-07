@@ -1,5 +1,6 @@
 import { Currency, BigintIsh, ChainId } from '@pancakeswap/sdk'
 import { Provider as IProvider } from '@ethersproject/providers'
+import type { GraphQLClient } from 'graphql-request'
 
 import { Pool, PoolType } from './pool'
 import { RouteWithoutQuote, Route } from './route'
@@ -18,3 +19,5 @@ export interface QuoteProvider {
 }
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => IProvider
+
+export type SubgraphProvider = ({ chainId }: { chainId?: ChainId }) => GraphQLClient

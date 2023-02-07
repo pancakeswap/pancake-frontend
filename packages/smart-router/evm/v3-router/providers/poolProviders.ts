@@ -1,12 +1,13 @@
-import { PoolProvider, OnChainProvider } from '../types'
+import { PoolProvider, OnChainProvider, SubgraphProvider } from '../types'
 import { createHybridPoolProvider } from './hybridPoolProvider'
 
 interface Config {
   onChainProvider: OnChainProvider
+  subgraphProvider?: SubgraphProvider
 }
 
 // For evm
-export function createPoolProvider({ onChainProvider }: Config): PoolProvider {
-  const hybridPoolProvider = createHybridPoolProvider(onChainProvider)
+export function createPoolProvider(config: Config): PoolProvider {
+  const hybridPoolProvider = createHybridPoolProvider(config)
   return hybridPoolProvider
 }
