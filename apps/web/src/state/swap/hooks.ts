@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent, TradeType, Trade } from '@pancakeswap/sdk'
+import { Trade as TradeV3V2 } from '@pancakeswap/router-sdk'
 import { CAKE, USDC } from '@pancakeswap/tokens'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
@@ -7,13 +8,12 @@ import { DEFAULT_INPUT_CURRENCY, DEFAULT_OUTPUT_CURRENCY } from 'config/constant
 import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-// import { useClientSideV3Trade } from 'hooks/v3/useClientSideV3Trade'
+import { useClientSideV3Trade } from 'hooks/v3/useClientSideV3Trade'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { isAddress } from 'utils'
-import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import getLpAddress from 'utils/getLpAddress'
 import { multicallv2 } from 'utils/multicall'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
@@ -95,7 +95,7 @@ export function useDerivedSwapInfo(
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   parsedAmount: CurrencyAmount<Currency> | undefined
-  v2Trade: Trade<Currency, Currency, TradeType> | undefined
+  v2Trade: TradeV3V2<Currency, Currency, TradeType> | undefined
   inputError?: string
 } {
   const { address: account } = useAccount()
@@ -114,13 +114,13 @@ export function useDerivedSwapInfo(
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
-  // const bestTradeV3 = useClientSideV3Trade(
-  //   isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
-  //   parsedAmount,
-  //   (isExactIn ? outputCurrency : inputCurrency) ?? undefined,
-  // )
+  const bestTradeV3 = useClientSideV3Trade(
+    isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
+    parsedAmount,
+    (isExactIn ? outputCurrency : inputCurrency) ?? undefined,
+  )
 
-  const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
+  const v2Trade = bestTradeV3?.trade
 
   const currencyBalances = {
     [Field.INPUT]: relevantTokenBalances[0],
@@ -156,15 +156,22 @@ export function useDerivedSwapInfo(
     inputError = inputError ?? t('Invalid recipient')
   }
 
+  // Philip TODO: change allowedSlippage to Percent object
   const [allowedSlippage] = useUserSlippageTolerance()
 
-  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
-
-  // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
     currencyBalances[Field.INPUT],
-    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
+    v2Trade?.maximumAmountIn(new Percent(allowedSlippage, 100)),
   ]
+
+  // // Philip TODO: Calculate slippage adjusted amounts using V3
+  // const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+
+  // // compare input balance to max input based on version
+  // const [balanceIn, amountIn] = [
+  //   currencyBalances[Field.INPUT],
+  //   slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
+  // ]
 
   if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
     inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })

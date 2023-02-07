@@ -22,6 +22,7 @@ import {
 import { computeTradePriceBreakdown, warningSeverity } from 'utils/exchange'
 import { useSwapCallback } from 'hooks/useSwapCallback'
 import { useSwapCallArguments } from 'hooks/useSwapCallArguments'
+import { Trade as TradeV3V2 } from '@pancakeswap/router-sdk'
 
 import ConfirmSwapModal from './ConfirmSwapModal'
 import ProgressSteps from './ProgressSteps'
@@ -44,7 +45,7 @@ interface SwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  trade: Trade<Currency, Currency, TradeType>
+  trade: Trade<Currency, Currency, TradeType> | TradeV3V2<Currency, Currency, TradeType>
   swapInputError: string
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
@@ -78,7 +79,7 @@ export default function SwapCommitButton({
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const [singleHopOnly] = useUserSingleHopOnly()
-  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
+  const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade as TradeV3V2<Currency, Currency, TradeType>)
   // the callback to execute the swap
 
   const swapCalls = useSwapCallArguments(trade, allowedSlippage, recipient)
@@ -90,7 +91,7 @@ export default function SwapCommitButton({
     swapCalls,
   )
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade<Currency, Currency, TradeType> | undefined
+    tradeToConfirm: Trade<Currency, Currency, TradeType> | TradeV3V2<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined
@@ -158,8 +159,8 @@ export default function SwapCommitButton({
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
-      trade={trade}
-      originalTrade={tradeToConfirm}
+      trade={trade as Trade<Currency, Currency, TradeType>}
+      originalTrade={tradeToConfirm as Trade<Currency, Currency, TradeType>}
       currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
@@ -226,7 +227,7 @@ export default function SwapCommitButton({
     )
   }
 
-  const noRoute = !trade?.route
+  const noRoute = !(trade as TradeV3V2<Currency, Currency, TradeType>)?.swaps
 
   const userHasSpecifiedInputOutput = Boolean(
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),

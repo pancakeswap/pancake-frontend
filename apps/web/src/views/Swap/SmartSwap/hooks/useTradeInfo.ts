@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
-import { ChainId, Currency, CurrencyAmount, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Percent, Price, TradeType } from '@pancakeswap/sdk'
 import {
   LegacyPair as Pair,
   LegacyRouteType as RouteType,
   LegacyTrade as SmartRouterTrade,
   LegacyTradeWithStableSwap as TradeWithStableSwap,
 } from '@pancakeswap/smart-router/evm'
+import { Trade } from '@pancakeswap/router-sdk'
 
 import { Field } from 'state/swap/actions'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
@@ -26,22 +27,22 @@ interface Options {
   stableSwapInputError: string
 }
 
-interface Info {
-  tradeType: TradeType
-  inputAmount: CurrencyAmount<Currency>
-  outputAmount: CurrencyAmount<Currency>
-  route: {
-    pairs: Pair[]
-    path: Currency[]
-  }
-  slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
-  executionPrice: Price<Currency, Currency>
-  routerAddress: string
-  priceImpactWithoutFee?: Percent
-  realizedLPFee?: CurrencyAmount<Currency> | null
-  fallbackV2: boolean
-  inputError: string
-}
+// interface Info {
+//   tradeType: TradeType
+//   inputAmount: CurrencyAmount<Currency>
+//   outputAmount: CurrencyAmount<Currency>
+//   route: {
+//     pairs: Pair[]
+//     path: Currency[]
+//   }
+//   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }
+//   executionPrice: Price<Currency, Currency>
+//   routerAddress: string
+//   priceImpactWithoutFee?: Percent
+//   realizedLPFee?: CurrencyAmount<Currency> | null
+//   fallbackV2: boolean
+//   inputError: string
+// }
 
 export function useTradeInfo({
   trade,
@@ -51,7 +52,7 @@ export function useTradeInfo({
   chainId,
   swapInputError,
   stableSwapInputError,
-}: Options): Info | null {
+}: Options): any {
   return useMemo(() => {
     if (!trade && !v2Trade) {
       return null
@@ -65,7 +66,7 @@ export function useTradeInfo({
         return {
           tradeType: v2Trade.tradeType,
           fallbackV2,
-          route: v2Trade.route,
+          route: v2Trade.routes,
           inputAmount: v2Trade.inputAmount,
           outputAmount: v2Trade.outputAmount,
           slippageAdjustedAmounts: computeSlippageAdjustedAmountsForV2Trade(v2Trade, allowedSlippage),

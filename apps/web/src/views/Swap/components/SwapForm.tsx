@@ -352,7 +352,7 @@ export default function SwapForm() {
           />
         </Box>
       </Wrapper>
-      {!swapIsUnsupported ? (
+      {/* {!swapIsUnsupported ? (
         trade && (
           <AdvancedSwapDetailsDropdown
             pairs={trade?.route?.pairs}
@@ -367,7 +367,7 @@ export default function SwapForm() {
         )
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-      )}
+      )} */}
     </>
   )
 }

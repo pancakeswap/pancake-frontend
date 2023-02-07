@@ -1,5 +1,6 @@
 import type { FarmConfigBaseProps, SerializedFarmConfig } from '@pancakeswap/farms'
-import { ChainId, Currency, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { Trade as TradeV3 } from '@pancakeswap/router-sdk'
+import { ChainId, Currency, Token, TradeType, Trade } from '@pancakeswap/sdk'
 import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import BigNumber from 'bignumber.js'
 import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
@@ -210,6 +211,7 @@ export const isV2SwapOrMixSwap = (
 }
 
 export type ITrade =
+  | TradeV3<Currency, Currency, TradeType>
   | Trade<Currency, Currency, TradeType>
   | StableTrade
   | TradeWithStableSwap<Currency, Currency, TradeType>

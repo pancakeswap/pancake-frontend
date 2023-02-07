@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
+import { TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
+import { Trade } from '@pancakeswap/router-sdk'
 import { Button, Text, AutoRenewIcon, QuestionHelper, AutoColumn } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'

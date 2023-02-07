@@ -1,4 +1,6 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType } from '@pancakeswap/sdk'
+import { Trade } from '@pancakeswap/router-sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import {
@@ -37,6 +39,46 @@ export function useRouterContract() {
   return useContract<IPancakeRouter02>(ROUTER_ADDRESS[chainId], IPancakeRouter02ABI, true)
 }
 
+function getPoolFee(currentFee: Percent, pool): Percent {
+  const fee =
+    pool instanceof Pair
+      ? // not currently possible given protocol check above, but not fatal
+        FeeAmount.MEDIUM
+      : pool.fee
+  return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(new Fraction(fee, 1_000_000)))
+}
+
+// computes realized lp fee as a percent
+export function computeRealizedLPFeePercent(trade: Trade<Currency, Currency, TradeType>): Percent {
+  let percent: Percent
+
+  // Since routes are either all v2 or all v3 right now, calculate separately
+  if (trade.swaps[0].route.pools instanceof Pair) {
+    // for each hop in our trade, take away the x*y=k price impact from 0.3% fees
+    // e.g. for 3 tokens/2 hops: 1 - ((1 - .03) * (1-.03))
+    percent = ONE_HUNDRED_PERCENT.subtract(
+      trade.swaps.reduce<Percent>(
+        (currentFee: Percent): Percent => currentFee.multiply(INPUT_FRACTION_AFTER_FEE),
+        ONE_HUNDRED_PERCENT,
+      ),
+    )
+  } else {
+    percent = ZERO_PERCENT
+    for (const swap of trade.swaps) {
+      const { numerator, denominator } = swap.inputAmount.divide(trade.inputAmount)
+      const overallPercent = new Percent(numerator, denominator)
+
+      const poolFee = swap.route.pools.reduce<Percent>(getPoolFee, ONE_HUNDRED_PERCENT)
+
+      const routeRealizedLPFeePercent = overallPercent.multiply(ONE_HUNDRED_PERCENT.subtract(poolFee))
+
+      percent = percent.add(routeRealizedLPFeePercent)
+    }
+  }
+
+  return new Percent(percent.numerator, percent.denominator)
+}
+
 // computes price breakdown for the trade
 export function computeTradePriceBreakdown(trade: Trade<Currency, Currency, TradeType> | null): {
   priceImpactWithoutFee: Percent | undefined
@@ -44,14 +86,7 @@ export function computeTradePriceBreakdown(trade: Trade<Currency, Currency, Trad
 } {
   // for each hop in our trade, take away the x*y=k price impact from 0.3% fees
   // e.g. for 3 tokens/2 hops: 1 - ((1 - .03) * (1-.03))
-  const realizedLPFee = !trade
-    ? undefined
-    : ONE_HUNDRED_PERCENT.subtract(
-        trade.route.pairs.reduce<Fraction>(
-          (currentFee: Fraction): Fraction => currentFee.multiply(INPUT_FRACTION_AFTER_FEE),
-          ONE_HUNDRED_PERCENT,
-        ),
-      )
+  const realizedLPFee = computeRealizedLPFeePercent(trade ?? undefined)
 
   // remove lp fees from price impact
   const priceImpactWithoutFeeFraction = trade && realizedLPFee ? trade?.priceImpact.subtract(realizedLPFee) : undefined

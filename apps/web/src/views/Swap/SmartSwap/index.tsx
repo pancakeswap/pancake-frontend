@@ -505,7 +505,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
           )}
         </Box>
       </Wrapper>
-      {!swapIsUnsupported ? (
+      {/* {!swapIsUnsupported ? (
         !showWrap && tradeInfo && !isMMBetter ? (
           <AdvancedSwapDetailsDropdown
             hasStablePair={smartRouterOn}
@@ -536,7 +536,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         )
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-      )}
+      )} */}
     </>
   )
 }
