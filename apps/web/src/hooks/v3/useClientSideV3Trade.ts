@@ -30,6 +30,7 @@ export function useClientSideV3Trade<TTradeType extends TradeType>(
   // Chains deployed using the deploy-v3 script only deploy QuoterV2.
   const useQuoterV2 = false
   const quoter = useQuoterContract(useQuoterV2)
+
   const callData = useMemo(
     () =>
       amountSpecified

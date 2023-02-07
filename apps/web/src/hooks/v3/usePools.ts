@@ -3,10 +3,10 @@ import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
 import { computePoolAddress, FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import JSBI from 'jsbi'
 import { useMemo } from 'react'
-import { useWeb3React } from '@pancakeswap/wagmi'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
 import addresses from 'config/constants/contracts'
 import IUniswapV3PoolStateABI from 'config/abi/v3PoolState.json'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from './types'
 
 // Philip TODO: Add IUniswapV3PoolStateInterface type
@@ -79,7 +79,7 @@ class PoolCache {
 export function usePools(
   poolKeys: [Currency | undefined, Currency | undefined, FeeAmount | undefined][],
 ): [PoolState, Pool | null][] {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveChainId()
 
   const poolTokens: ([Token, Token, FeeAmount] | undefined)[] = useMemo(() => {
     if (!chainId) return new Array(poolKeys.length)
