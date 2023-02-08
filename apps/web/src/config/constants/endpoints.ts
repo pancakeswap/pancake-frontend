@@ -46,3 +46,5 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.BSC]: BLOCKS_CLIENT,
   [ChainId.ETHEREUM]: BLOCKS_CLIENT_ETH,
 }
+
+export const ASSET_CDN = 'https://assets.pancakeswap.finance'
