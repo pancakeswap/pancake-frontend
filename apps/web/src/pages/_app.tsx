@@ -83,6 +83,10 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
       <DefaultSeo {...SEO} />
       <Providers store={store}>
         <PageMeta />
+        {(Component as NextPageWithLayout).Meta && (
+          // @ts-ignore
+          <Component.Meta {...pageProps} />
+        )}
         <Blocklist>
           {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
           <ResetCSS />
@@ -123,6 +127,10 @@ type NextPageWithLayout = NextPage & {
    * */
   chains?: number[]
   isShowScrollToTopButton?: true
+  /**
+   * Meta component for page, hacky solution for static build page to avoid `PersistGate` which blocks the page from rendering
+   */
+  Meta?: React.FC<React.PropsWithChildren<unknown>>
 }
 
 type AppPropsWithLayout = AppProps & {
