@@ -2,6 +2,7 @@ import { Currency, TradeType } from '@pancakeswap/sdk'
 import { FetchStatus } from 'config/constants/types'
 import { Field } from 'state/swap/actions'
 import useSWR from 'swr'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getRFQById, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
 import { parseMMTrade } from '../utils/exchange'
@@ -29,8 +30,10 @@ export const useGetRFQTrade = (
   refreshRFQ: () => void
   isRFQLoading: boolean
 } | null => {
+  const { account } = useActiveWeb3React()
   const { data, mutate, status } = useSWR(
     isMMBetter &&
+      account &&
       param &&
       param.trader &&
       (param.makerSideTokenAmount || param.takerSideTokenAmount) &&

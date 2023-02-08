@@ -61,6 +61,7 @@ export const useMMTrade = (
     () => parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account),
     [chainId, inputCurrency, outputCurrency, independentField, typedValue, account],
   )
+  console.log(mmParam, 'mmParam')
   const mmQoute = useOrderBookQuote(mmParam)
   const { t } = useTranslation()
   const to: string | null = account ?? null
@@ -74,8 +75,7 @@ export const useMMTrade = (
   const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
   let bestTradeWithMM
 
-  if (!inputCurrency || !outputCurrency || !mmQoute || !account || !mmQoute?.message?.takerSideTokenAmount)
-    bestTradeWithMM = null
+  if (!inputCurrency || !outputCurrency || !mmQoute || !mmQoute?.message?.takerSideTokenAmount) bestTradeWithMM = null
   else {
     const { takerSideTokenAmount, makerSideTokenAmount } = mmQoute?.message
     bestTradeWithMM = parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)

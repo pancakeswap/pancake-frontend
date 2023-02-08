@@ -112,7 +112,7 @@ export const parseMMParameter = (
       independentField === Field.OUTPUT && typedValue && typedValue !== '0'
         ? tryParseUnit(typedValue, outputCurrency?.decimals)
         : undefined,
-    trader: account,
+    trader: account ?? '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE', // need a default address for API
   }
 }
 

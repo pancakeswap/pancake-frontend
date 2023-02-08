@@ -310,7 +310,7 @@ export default function MMSwapCommitButton({
         }}
         id="swap-button"
         width="100%"
-        disabled={!isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || !approved}
+        disabled={!rfq || !isValid || (priceImpactSeverity > 3 && !isExpertMode) || !!swapCallbackError || !approved}
       >
         {swapInputError ||
           (priceImpactSeverity > 3 && !isExpertMode
