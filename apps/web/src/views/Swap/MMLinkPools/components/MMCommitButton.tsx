@@ -81,7 +81,7 @@ export default function MMSwapCommitButton({
   onUserInput,
   rfq,
   refreshRFQ,
-  isRFQLoading,
+  isRFQLoading = false,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
 

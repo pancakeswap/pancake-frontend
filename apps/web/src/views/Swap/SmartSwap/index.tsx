@@ -54,6 +54,7 @@ import {
   useMMTrade,
   useMMTradeInfo,
   useIsMMQuotingPair,
+  useGetRFQId,
 } from '../MMLinkPools/hooks'
 import { shouldShowMMError, parseMMError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
@@ -123,13 +124,9 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     isMMQuotingPair,
   })
 
-  const mmRFQTrade = useGetRFQTrade(
-    independentField,
-    inputCurrency,
-    outputCurrency,
-    mmOrderBookTrade?.mmParam,
-    isMMBetter,
-  )
+  const { refreshRFQ, rfqId } = useGetRFQId(mmOrderBookTrade?.mmParam, isMMBetter)
+
+  const mmRFQTrade = useGetRFQTrade(rfqId, independentField, inputCurrency, outputCurrency, isMMBetter, refreshRFQ)
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,

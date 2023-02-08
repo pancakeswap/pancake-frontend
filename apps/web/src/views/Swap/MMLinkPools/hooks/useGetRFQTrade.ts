@@ -7,31 +7,9 @@ import { getRFQById, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
-const delay = (t) => new Promise((resolve) => setTimeout(resolve, t))
-
-const fetchRFQResult = async (param: QuoteRequest) => {
-  const data = await sendRFQAndGetRFQId(param) // get rfq id always works
-  // get rfq sometimes have some issue, need to fix from BE
-  // can be fixed buy using delay for now
-  await delay(3000)
-  const rfq = await getRFQById(data?.message.rfqId) // || data?.message.rfqId
-  return rfq
-}
-
-export const useGetRFQTrade = (
-  independentField: Field,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
-  param: QuoteRequest,
-  isMMBetter: boolean,
-): {
-  rfq: RFQResponse['message']
-  trade: TradeWithMM<Currency, Currency, TradeType>
-  refreshRFQ: () => void
-  isRFQLoading: boolean
-} | null => {
+export const useGetRFQId = (param: QuoteRequest, isMMBetter: boolean): { rfqId: string; refreshRFQ: () => void } => {
   const { account } = useActiveWeb3React()
-  const { data, mutate, status } = useSWR(
+  const { data, mutate } = useSWR(
     isMMBetter &&
       account &&
       param &&
@@ -41,8 +19,28 @@ export const useGetRFQTrade = (
       param.takerSideTokenAmount !== '0' && [
         `RFQ/${param.networkId}/${param.makerSideToken}/${param.takerSideToken}/${param.makerSideTokenAmount}/${param.takerSideTokenAmount}`,
       ],
-    () => fetchRFQResult(param),
-    { refreshInterval: 60000 }, // 60sec auto refresh
+    () => sendRFQAndGetRFQId(param),
+    { refreshInterval: 40000 }, // 30 sec auto refresh Id once
+  )
+  return { rfqId: data?.message?.rfqId ?? '', refreshRFQ: mutate }
+}
+
+export const useGetRFQTrade = (
+  rfqId: string,
+  independentField: Field,
+  inputCurrency: Currency | undefined,
+  outputCurrency: Currency | undefined,
+  isMMBetter: boolean,
+  refreshRFQ: () => void,
+): {
+  rfq: RFQResponse['message']
+  trade: TradeWithMM<Currency, Currency, TradeType>
+  refreshRFQ: () => void
+} | null => {
+  const { data } = useSWR(
+    isMMBetter && rfqId && [`RFQ/${rfqId}`],
+    () => getRFQById(rfqId),
+    { refreshInterval: 5000 }, // 5sec auto refresh
   )
   const isExactIn: boolean = independentField === Field.INPUT
 
@@ -56,7 +54,6 @@ export const useGetRFQTrade = (
       data.message.takerSideTokenAmount,
       data.message.makerSideTokenAmount,
     ),
-    refreshRFQ: mutate,
-    isRFQLoading: status !== FetchStatus.Fetched,
+    refreshRFQ,
   }
 }
