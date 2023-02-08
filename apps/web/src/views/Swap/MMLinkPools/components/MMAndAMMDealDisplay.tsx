@@ -15,29 +15,26 @@ export const MMAndAMMDealDisplay: React.FC<{
   const dealInANdOut = isExactIn ? '(out)' : '(in)'
   return (
     <Box pl="20px" pt="10px">
-      <Text>
-        type:{' '}
-        <Text display="inline-block" color="textSubtle">
-          {isExactIn ? 'ExactIn' : 'ExactOut'}
-        </Text>
+      <Text color="textSubtle">
+        type: <Text display="inline-block">{isExactIn ? 'ExactIn' : 'ExactOut'}</Text>
       </Text>
-      <Text>
+      <Text color="textSubtle">
         <Text display="inline-block" color="transparent">
           A
         </Text>
         MM Deal{dealInANdOut}:{' '}
-        <Text display="inline-block" color="textSubtle">
+        <Text display="inline-block">
           {(isExactIn ? mmTrade?.outputAmount?.toSignificant(6) : mmTrade?.inputAmount?.toSignificant(6)) ?? 'null'}
         </Text>
       </Text>
-      <Text>
+      <Text color="textSubtle">
         AMM Deal{dealInANdOut}:{' '}
-        <Text display="inline-block" color="textSubtle">
+        <Text display="inline-block">
           {(isExactIn ? v2Trade?.outputAmount?.toSignificant(6) : v2Trade?.inputAmount?.toSignificant(6)) ?? 'null'}
         </Text>
       </Text>
-      <Text>
-        MM win: <Text display="inline-block" color="textSubtle">{`${isMMBetter}`}</Text>
+      <Text color="textSubtle">
+        MM win: <Text display="inline-block">{`${isMMBetter}`}</Text>
       </Text>
     </Box>
   )
