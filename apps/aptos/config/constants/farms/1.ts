@@ -40,11 +40,11 @@ const farms: SerializedFarmConfig[] = [
   // * By order of release
   {
     pid: 15,
-    lpSymbol: 'MOVE-APT LP',
+    lpSymbol: 'APT-MOVE LP',
     lpAddress:
-      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x27fafcc4e39daac97556af8a803dbb52bcb03f0821898dc845ac54225b9793eb::move_coin::MoveCoin, 0x1::aptos_coin::AptosCoin>',
-    token: mainnetTokens.apt,
-    quoteToken: mainnetTokens.move,
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0x27fafcc4e39daac97556af8a803dbb52bcb03f0821898dc845ac54225b9793eb::move_coin::MoveCoin>',
+    token: mainnetTokens.move,
+    quoteToken: mainnetTokens.apt,
   },
   {
     pid: 6,
