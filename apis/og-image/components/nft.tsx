@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 import { getTemplatePath } from 'config'
 
-export function NFTOgImage({ title, image, price }: { title: string; price: string; image: string }) {
+export function NFTOgImage(props: { title: string; price: string; image: string }) {
   return (
     <div
       style={{
