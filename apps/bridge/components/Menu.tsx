@@ -16,6 +16,7 @@ import {
   UserMenu,
   UserMenuDivider,
   UserMenuItem,
+  DropdownMenuItemType,
 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useTheme as useNextTheme } from 'next-themes'
@@ -23,6 +24,7 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
+import { DropdownMenu } from '@pancakeswap/uikit/src/components/DropdownMenu'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { CHAINS_STARGATE } from './stargate/config'
 import { findChainByStargateId } from './stargate/network'
@@ -76,7 +78,31 @@ const TxnLink = styled(Link)`
 
 const MenuConfig = [
   { title: 'Bridge', href: '/' },
-  { title: 'Aptos', href: '/aptos' },
+  {
+    title: 'Aptos',
+    href: '/aptos',
+    items: [
+      {
+        label: 'CAKE Bridging',
+        href: '/aptos',
+      },
+      {
+        label: 'LayerZero',
+        href: 'https://theaptosbridge.com/bridge',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
+      },
+      {
+        label: 'Celer cBridge',
+        href: 'https://cbridge.celer.network/1/12360001/',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
+      },
+      {
+        label: 'Wormhole',
+        href: 'https://www.portalbridge.com/#/transfer',
+        type: DropdownMenuItemType.EXTERNAL_LINK,
+      },
+    ],
+  },
 ]
 
 export function Menu() {
@@ -91,11 +117,21 @@ export function Menu() {
 
         <Flex pl={['10px', null, '50px']}>
           {MenuConfig.map((menu) => (
-            <Box key={menu.title} display="flex">
-              <NextLink href={menu.href} passHref>
-                <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
-              </NextLink>
-            </Box>
+            <>
+              {menu.items ? (
+                <DropdownMenu items={menu.items}>
+                  <NextLink href={menu.href} passHref>
+                    <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
+                  </NextLink>
+                </DropdownMenu>
+              ) : (
+                <Box key={menu.title} display="flex">
+                  <NextLink href={menu.href} passHref>
+                    <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
+                  </NextLink>
+                </Box>
+              )}
+            </>
           ))}
           <a href="https://pancakeswap.finance/swap" target="_blank" rel="noreferrer noopener">
             <StyledMenuItem>Swap</StyledMenuItem>
