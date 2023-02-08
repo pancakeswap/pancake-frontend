@@ -20,7 +20,6 @@ export default function SwapModalHeader({
   recipient,
   showAcceptChanges,
   onAcceptChanges,
-  allowedSlippage,
 }: {
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>

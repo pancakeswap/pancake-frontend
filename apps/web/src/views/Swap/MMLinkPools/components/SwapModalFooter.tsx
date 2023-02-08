@@ -30,7 +30,6 @@ export default function SwapModalFooter({
   disabledConfirm,
   isMM = false,
   isRFQReady = false,
-  isRFQLoading,
 }: {
   trade: TradeWithMM<Currency, Currency, TradeType>
   slippageAdjustedAmounts: { [field in Field]?: CurrencyAmount<Currency> }

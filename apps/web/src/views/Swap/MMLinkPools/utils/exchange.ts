@@ -4,12 +4,11 @@ import { getAddress } from '@ethersproject/address'
 import { parseUnits } from '@ethersproject/units'
 import PancakeSwapMMLinkedPoolABI from 'config/abi/mmLinkedPool.json'
 import { MmLinkedPool } from 'config/abi/types/MmLinkedPool'
-import { BIPS_BASE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
+import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
 import toNumber from 'lodash/toNumber'
 import { Field } from 'state/swap/actions'
-import { basisPointsToPercent } from 'utils/exchange'
 import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
 import { OrderBookRequest, TradeWithMM } from '../types'
 
@@ -31,7 +30,7 @@ export function computeTradePriceBreakdown(trade?: TradeWithMM<Currency, Currenc
     ? undefined
     : ONE_HUNDRED_PERCENT.subtract(
         trade.route.pairs.reduce<Fraction>(
-          (currentFee: Fraction, pair): Fraction => currentFee.multiply(ONE_HUNDRED_PERCENT),
+          (currentFee: Fraction): Fraction => currentFee.multiply(ONE_HUNDRED_PERCENT),
           ONE_HUNDRED_PERCENT,
         ),
       )
@@ -50,11 +49,9 @@ export function computeTradePriceBreakdown(trade?: TradeWithMM<Currency, Currenc
 }
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
-export function computeSlippageAdjustedAmounts(
-  trade: TradeWithMM<Currency, Currency, TradeType> | undefined,
-  allowedSlippage: number,
-): { [field in Field]?: CurrencyAmount<Currency> } {
-  const pct = basisPointsToPercent(allowedSlippage)
+export function computeSlippageAdjustedAmounts(trade: TradeWithMM<Currency, Currency, TradeType> | undefined): {
+  [field in Field]?: CurrencyAmount<Currency>
+} {
   return {
     [Field.INPUT]: trade.inputAmount,
     [Field.OUTPUT]: trade.outputAmount,

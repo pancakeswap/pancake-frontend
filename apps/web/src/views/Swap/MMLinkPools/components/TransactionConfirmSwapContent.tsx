@@ -60,10 +60,7 @@ const TransactionConfirmSwapContent = ({
     [originalTrade, trade],
   )
 
-  const slippageAdjustedAmounts = useMemo(
-    () => computeSlippageAdjustedAmountsWithSmartRouter(trade, allowedSlippage),
-    [trade, allowedSlippage],
-  )
+  const slippageAdjustedAmounts = useMemo(() => computeSlippageAdjustedAmountsWithSmartRouter(trade), [trade])
   const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdownWithSmartRouter(trade), [trade])
 
   const isEnoughInputBalance = useMemo(() => {
