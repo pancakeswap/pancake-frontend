@@ -3,7 +3,7 @@ import { Provider as IProvider } from '@ethersproject/providers'
 import type { GraphQLClient } from 'graphql-request'
 
 import { Pool, PoolType } from './pool'
-import { RouteWithoutQuote, Route } from './route'
+import { RouteWithoutQuote, RouteWithQuote } from './route'
 
 export interface PoolProvider {
   getCandidatePools: (currencyA: Currency, currencyB: Currency, blockNumber: BigintIsh) => Promise<Pool[]>
@@ -14,8 +14,8 @@ export interface PoolProvider {
 }
 
 export interface QuoteProvider {
-  getRouteWithQuotesExactIn: (routes: RouteWithoutQuote[]) => Promise<Route[]>
-  getRouteWithQuotesExactOut: (routes: RouteWithoutQuote[]) => Promise<Route[]>
+  getRouteWithQuotesExactIn: (routes: RouteWithoutQuote[]) => Promise<RouteWithQuote[]>
+  getRouteWithQuotesExactOut: (routes: RouteWithoutQuote[]) => Promise<RouteWithQuote[]>
 }
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => IProvider

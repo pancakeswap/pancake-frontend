@@ -13,6 +13,7 @@
     "no-plusplus": 0,
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
+    "no-continue": 0,
     "lodash/import-scope": [2, "method"],
     "@next/next/no-img-element": 0,
     "no-sparse-arrays": 0,

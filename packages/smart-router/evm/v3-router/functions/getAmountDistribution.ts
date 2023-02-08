@@ -9,9 +9,12 @@ import { Currency, CurrencyAmount, Fraction } from '@pancakeswap/sdk'
  * 55% of input => Route 2
  * 40% of input => Route 3
  */
-export function getAmountDistribution(amount: CurrencyAmount<Currency>, distributionPercent: number) {
-  const percents = []
-  const amounts = []
+export function getAmountDistribution(
+  amount: CurrencyAmount<Currency>,
+  distributionPercent: number,
+): [number[], CurrencyAmount<Currency>[]] {
+  const percents: number[] = []
+  const amounts: CurrencyAmount<Currency>[] = []
 
   for (let i = 1; i <= 100 / distributionPercent; i++) {
     // Note multiplications here can result in a loss of precision in the amounts (e.g. taking 50% of 101)

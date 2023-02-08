@@ -1,7 +1,8 @@
 import { getBestTrade } from './getBestTrade'
-import { createPoolProvider } from './providers'
+import { createPoolProvider, createQuoteProvider } from './providers'
 
 export const SmartRouter = {
   getBestTrade,
   createPoolProvider,
+  createQuoteProvider,
 }
