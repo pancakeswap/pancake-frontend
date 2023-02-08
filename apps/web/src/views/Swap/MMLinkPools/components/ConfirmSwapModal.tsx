@@ -5,7 +5,7 @@ import { TransactionSubmittedContent } from 'components/TransactionConfirmationM
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { memo, useCallback } from 'react'
 import { Field } from 'state/swap/actions'
-import ConfirmationPendingContent from '../../components/ConfirmationPendingContent'
+import ConfirmationPendingContent from 'views/Swap/components/ConfirmationPendingContent'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { TradeWithMM } from '../types'
 import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSwapContent'
