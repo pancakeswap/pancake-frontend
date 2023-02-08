@@ -171,7 +171,7 @@ export function useSwapCallback(
               outputAmount,
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
-              type: 'SmartSwap',
+              type: 'MarketMakerSwap',
             })
             logTx({ account, chainId, hash: response.hash })
 
