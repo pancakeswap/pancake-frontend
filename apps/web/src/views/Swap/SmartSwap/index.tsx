@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
+import { useDebounce } from '@pancakeswap/hooks'
 import {
   ArrowDownIcon,
   Box,
@@ -112,8 +113,8 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     inputError: stableSwapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency)
   const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
-  const mmOrderBookTrade = useMMTrade(independentField, typedValue, inputCurrency, outputCurrency)
-
+  const deBounceTypedValue = useDebounce(typedValue, 300)
+  const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
   const isMMBetter = useIsTradeWithMMBetter({
     trade: tradeWithStableSwap,
