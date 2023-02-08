@@ -18,10 +18,10 @@ export function VotingOgImage({ title }: { title: string }) {
           left: '47px',
           top: '126px',
           maxWidth: '448px',
-          height: '448px',
           color: 'white',
-          textShadow: '0px 2px 0px rgba(0, 0, 0, 0.5)',
+          textShadow: '0px 3px 0px rgba(0, 0, 0, 0.5)',
           textTransform: 'uppercase',
+          wordBreak: 'break-word',
         }}
       >
         {title}

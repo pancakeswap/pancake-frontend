@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const ASSET_BASE_PATH = 'https://assets-agx.pages.dev'
+export const ASSET_BASE_PATH = 'https://assets.pancakeswap.finance'
 
 export const OG_IMAGE_DEFAULT = `${ASSET_BASE_PATH}/web/og` as const
 export const OG_TEMPLATE_IMAGE_DEFAULT = `${ASSET_BASE_PATH}/web/og-template` as const
@@ -11,12 +11,12 @@ export const zTemplate = z.enum(['swap', 'voting', 'nft', 'nft-collection', 'inf
 type TemplateType = typeof zTemplate._type
 
 export const OG_TEMPLATE_PATH = {
-  swap: '/swap.jpeg',
-  voting: '/voting.jpeg',
-  nft: '/nft.jpeg',
-  'nft-collection': '/nft-collection.jpeg',
-  'info-pair': '/info-pair.jpeg',
-  'info-token': '/info-token.jpeg',
+  swap: '/swap.jpg',
+  voting: '/voting.jpg',
+  nft: '/nft.jpg',
+  'nft-collection': '/nft-collection.jpg',
+  'info-pair': '/info-pair.jpg',
+  'info-token': '/info-token.jpg',
 } satisfies Record<TemplateType, string>
 
 export const getTemplatePath = (template: keyof typeof OG_TEMPLATE_PATH) => {
