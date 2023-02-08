@@ -47,4 +47,4 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.ETHEREUM]: BLOCKS_CLIENT_ETH,
 }
 
-export const ASSET_CDN = 'https://assets.pancakeswap.finance/'
+export const ASSET_CDN = 'https://assets.pancakeswap.finance'
