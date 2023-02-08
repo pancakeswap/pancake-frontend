@@ -43,7 +43,7 @@ export const PageMeta: React.FC<React.PropsWithChildren> = () => {
   )
 }
 
-const Page: React.FC<React.PropsWithChildren> = ({ children, ...props }) => {
+const Page: React.FC<React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>> = ({ children, ...props }) => {
   return (
     <>
       <PageMeta />
