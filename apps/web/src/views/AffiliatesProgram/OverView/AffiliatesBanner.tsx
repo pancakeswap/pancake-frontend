@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
-import { useTranslation } from '@pancakeswap/localization'
+// import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import bunnyImage from '../../../../public/images/affiliates-program/banner.png'
@@ -62,14 +62,19 @@ const Decorations = styled(Box)`
 }`
 
 const AffiliatesBanner = () => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
 
   return (
     <>
       <style jsx global>
         {`
           #home-1 .page-bg {
-            background: linear-gradient(139.73deg, #e6fdff 0%, #f3efff 100%);
+            background: linear-gradient(
+              142.67deg,
+              #9bedff 10.8%,
+              rgba(214, 201, 255, 0.4) 41.55%,
+              rgba(214, 201, 255, 0.4) 81.99%
+            );
           }
           [data-theme='dark'] #home-1 .page-bg {
             background: radial-gradient(103.12% 50% at 50% 50%, #21193a 0%, #191326 100%);

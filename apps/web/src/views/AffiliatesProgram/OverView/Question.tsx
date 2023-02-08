@@ -32,7 +32,13 @@ const Question = () => {
   const { theme } = useTheme()
 
   return (
-    <PageSection index={1} dividerPosition="top" clipFill={{ light: theme.colors.gradientBubblegum }}>
+    <PageSection
+      index={1}
+      dividerPosition="top"
+      concaveDivider
+      clipFill={{ light: '#CAD6EE', dark: '#434575' }}
+      background={theme.colors.gradientVioletAlt}
+    >
       <Wrapper>
         <Text fontSize={['40px']} mb={['64px']} bold>
           {t('Still Got Questions?')}

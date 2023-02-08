@@ -6,7 +6,6 @@ import BigNumber from 'bignumber.js'
 const CalculatorWrapper = styled(Flex)`
   width: 375px;
   padding: 24px;
-  margin-left: 48px;
   flex-direction: column;
   background: ${({ theme }) => theme.colors.background};
   border-radius: ${({ theme }) => theme.radii.default};
@@ -34,78 +33,84 @@ const Calculator = () => {
 
   const defaultAmount = (amount: BigNumber) => (amount.gt(0) ? amount.toFixed(0) : '1')
 
-  const totalPerMonth = useMemo(() => {
-    return new BigNumber(referral).times(0.25).times(volume).times(3).toNumber()
-  }, [referral, volume])
+  const totalPerMonth = useMemo(
+    () => new BigNumber(referral).times(0.25).times(volume).times(3).toNumber(),
+    [referral, volume],
+  )
 
   return (
-    <CalculatorWrapper>
-      <Flex flexDirection="column">
-        <Text mb="8px" color="secondary" textTransform="uppercase" fontSize="12px" bold>
-          number of referrals
-        </Text>
-        <Input
-          min="1"
-          placeholder="0"
-          inputMode="decimal"
-          value={referral}
-          style={{ textAlign: 'right' }}
-          onChange={(e) => setReferral(defaultAmount(new BigNumber(e.currentTarget.value)))}
-        />
-        <Flex justifyContent="space-between" mt="8px">
-          {referralList.map((list) => (
-            <Button
-              key={list}
-              scale="xs"
-              mr="4px"
-              p="4px 16px"
-              width="68px"
-              variant={list === referral ? 'primary' : 'tertiary'}
-              onClick={() => setReferral(list)}
-            >
-              {list}
-            </Button>
-          ))}
-        </Flex>
-      </Flex>
-      <Flex flexDirection="column" mt="28px">
-        <Text mb="8px" color="secondary" textTransform="uppercase" fontSize="12px" bold>
-          volume per month
-        </Text>
-        <Input
-          min="1"
-          placeholder="0"
-          inputMode="decimal"
-          value={volume}
-          style={{ textAlign: 'right' }}
-          onChange={(e) => setVolume(defaultAmount(new BigNumber(e.currentTarget.value)))}
-        />
-        <Flex justifyContent="space-between" mt="8px">
-          {amountList.map((amount) => (
-            <Button
-              key={amount}
-              scale="xs"
-              mr="4px"
-              p="4px 8px"
-              width="68px"
-              variant={amount === volume ? 'primary' : 'tertiary'}
-              onClick={() => setVolume(amount)}
-            >
-              {Number(amount).toLocaleString('en', { maximumFractionDigits: 0 })}
-            </Button>
-          ))}
-        </Flex>
-      </Flex>
-      <ArrowDownIcon margin={['28px 0']} width="24px" height="24px" color="textSubtle" />
-      <EarnWrapper>
-        <EarnCardInner>
-          <Text color="secondary" textTransform="uppercase" fontSize="12px" bold>
-            affiliate fees per month
+    <Box ml={['48px']}>
+      <Text mb="24px" color="secondary" fontSize={['20px']} bold>
+        Rewards calculator
+      </Text>
+      <CalculatorWrapper>
+        <Flex flexDirection="column">
+          <Text mb="8px" color="secondary" textTransform="uppercase" fontSize="12px" bold>
+            number of referrals
           </Text>
-          <Balance bold prefix="$ " fontSize="24px" decimals={0} value={totalPerMonth} />
-        </EarnCardInner>
-      </EarnWrapper>
-    </CalculatorWrapper>
+          <Input
+            min="1"
+            placeholder="0"
+            inputMode="decimal"
+            value={referral}
+            style={{ textAlign: 'right' }}
+            onChange={(e) => setReferral(defaultAmount(new BigNumber(e.currentTarget.value)))}
+          />
+          <Flex justifyContent="space-between" mt="8px">
+            {referralList.map((list) => (
+              <Button
+                key={list}
+                scale="xs"
+                mr="4px"
+                p="4px 16px"
+                width="68px"
+                variant={list === referral ? 'primary' : 'tertiary'}
+                onClick={() => setReferral(list)}
+              >
+                {list}
+              </Button>
+            ))}
+          </Flex>
+        </Flex>
+        <Flex flexDirection="column" mt="28px">
+          <Text mb="8px" color="secondary" textTransform="uppercase" fontSize="12px" bold>
+            volume per month
+          </Text>
+          <Input
+            min="1"
+            placeholder="0"
+            inputMode="decimal"
+            value={volume}
+            style={{ textAlign: 'right' }}
+            onChange={(e) => setVolume(defaultAmount(new BigNumber(e.currentTarget.value)))}
+          />
+          <Flex justifyContent="space-between" mt="8px">
+            {amountList.map((amount) => (
+              <Button
+                key={amount}
+                scale="xs"
+                mr="4px"
+                p="4px 8px"
+                width="68px"
+                variant={amount === volume ? 'primary' : 'tertiary'}
+                onClick={() => setVolume(amount)}
+              >
+                {Number(amount).toLocaleString('en', { maximumFractionDigits: 0 })}
+              </Button>
+            ))}
+          </Flex>
+        </Flex>
+        <ArrowDownIcon margin={['28px 0']} width="24px" height="24px" color="textSubtle" />
+        <EarnWrapper>
+          <EarnCardInner>
+            <Text color="secondary" textTransform="uppercase" fontSize="12px" bold>
+              affiliate fees per month
+            </Text>
+            <Balance bold prefix="$ " fontSize="24px" decimals={0} value={totalPerMonth} />
+          </EarnCardInner>
+        </EarnWrapper>
+      </CalculatorWrapper>
+    </Box>
   )
 }
 
