@@ -17,6 +17,7 @@ import {
   UserMenuDivider,
   UserMenuItem,
   DropdownMenuItemType,
+  DropdownMenu,
 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useTheme as useNextTheme } from 'next-themes'
@@ -24,7 +25,6 @@ import Image from 'next/image'
 import NextLink from 'next/link'
 import { useEffect, useReducer, useRef, useState } from 'react'
 import styled, { useTheme } from 'styled-components'
-import { DropdownMenu } from '@pancakeswap/uikit/src/components/DropdownMenu'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { CHAINS_STARGATE } from './stargate/config'
 import { findChainByStargateId } from './stargate/network'
@@ -117,7 +117,7 @@ export function Menu() {
 
         <Flex pl={['10px', null, '50px']}>
           {MenuConfig.map((menu) => (
-            <>
+            <Flex key={menu.title}>
               {menu.items ? (
                 <DropdownMenu items={menu.items}>
                   <NextLink href={menu.href} passHref>
@@ -125,13 +125,13 @@ export function Menu() {
                   </NextLink>
                 </DropdownMenu>
               ) : (
-                <Box key={menu.title} display="flex">
+                <Box display="flex">
                   <NextLink href={menu.href} passHref>
                     <StyledMenuItem $isActive={nextRouter.pathname === menu.href}>{menu.title}</StyledMenuItem>
                   </NextLink>
                 </Box>
               )}
-            </>
+            </Flex>
           ))}
           <a href="https://pancakeswap.finance/swap" target="_blank" rel="noreferrer noopener">
             <StyledMenuItem>Swap</StyledMenuItem>
