@@ -27,13 +27,7 @@ export default function ComingSoonSection() {
   //   [t],
   // )
 
-  const unlimitedConfig = useMemo(
-    () =>
-      cardConfig(t, PoolIds.poolUnlimited, {
-        version: 3.1,
-      }),
-    [t],
-  )
+  const unlimitedConfig = useMemo(() => cardConfig(t, PoolIds.poolUnlimited), [t])
 
   return (
     <Card
