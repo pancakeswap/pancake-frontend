@@ -1,3 +1,3 @@
-import Dashboard from '../../views/AffiliatesProgram/Dashboard'
+import Dashboard from '../../views/AffiliatesProgram/components/Dashboard'
 
 export default Dashboard

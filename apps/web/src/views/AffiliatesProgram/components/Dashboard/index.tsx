@@ -1,6 +1,6 @@
 import { Box } from '@pancakeswap/uikit'
-import Banner from 'views/AffiliatesProgram/Dashboard/Banner'
-import MyReferralLink from 'views/AffiliatesProgram/Dashboard/MyReferralLink'
+import Banner from 'views/AffiliatesProgram/components/Dashboard/Banner'
+import MyReferralLink from 'views/AffiliatesProgram/components/Dashboard/MyReferralLink'
 
 const Dashboard = () => {
   return (
