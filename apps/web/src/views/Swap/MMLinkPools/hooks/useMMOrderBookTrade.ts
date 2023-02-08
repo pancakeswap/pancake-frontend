@@ -61,7 +61,6 @@ export const useMMTrade = (
     () => parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account),
     [chainId, inputCurrency, outputCurrency, independentField, typedValue, account],
   )
-  console.log(mmParam, 'mmParam')
   const mmQoute = useOrderBookQuote(mmParam)
   const { t } = useTranslation()
   const to: string | null = account ?? null
