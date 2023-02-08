@@ -28,10 +28,10 @@ const AddLiquidityPage = () => {
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const stableConfig = useStableConfig({
-    tokenA: currencyA,
-    tokenB: currencyB,
-  })
+  // const stableConfig = useStableConfig({
+  //   tokenA: currencyA,
+  //   tokenB: currencyB,
+  // })
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
@@ -39,15 +39,21 @@ const AddLiquidityPage = () => {
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
-  return stableConfig.stableSwapConfig ? (
-    <StableConfigContext.Provider value={stableConfig}>
-      <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
-    </StableConfigContext.Provider>
-  ) : (
+  return (
     <LiquidityFormProvider>
       <AddLiquidityV3 currencyA={currencyA} currencyB={currencyB} />
     </LiquidityFormProvider>
   )
+
+  // return stableConfig.stableSwapConfig ? (
+  //   <StableConfigContext.Provider value={stableConfig}>
+  //     <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
+  //   </StableConfigContext.Provider>
+  // ) : (
+  //   <LiquidityFormProvider>
+  //     <AddLiquidityV3 currencyA={currencyA} currencyB={currencyB} />
+  //   </LiquidityFormProvider>
+  // )
 }
 
 AddLiquidityPage.chains = CHAIN_IDS

@@ -31,6 +31,7 @@ class PoolCache {
     const { address: addressA } = tokenA
     const { address: addressB } = tokenB
     const key = `${factoryAddress}:${addressA}:${addressB}:${fee.toString()}`
+
     const found = this.addresses.find((address) => address.key === key)
     if (found) return found.address
 
@@ -43,6 +44,7 @@ class PoolCache {
         fee,
       }),
     }
+
     this.addresses.unshift(address)
     return address.address
   }
