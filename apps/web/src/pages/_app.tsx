@@ -18,10 +18,13 @@ import dynamic from 'next/dynamic'
 import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
+import { DefaultSeo } from 'next-seo'
+import { PageMeta } from 'components/Layout/Page'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
 import { Blocklist, Updaters } from '..'
+import { SEO } from '../../next-seo.config'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
@@ -72,21 +75,14 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           content="Cheaper and faster than Uniswap? Discover PancakeSwap, the leading DEX on BNB Smart Chain (BSC) with the best farms in DeFi and a lottery for CAKE."
         />
         <meta name="theme-color" content="#1FC7D4" />
-        <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />
-        <meta
-          name="twitter:description"
-          content="The most popular AMM on BSC! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust."
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
-        <title>PancakeSwap</title>
         {(Component as NextPageWithLayout).mp && (
           // eslint-disable-next-line @next/next/no-sync-scripts
           <script src="https://public.bnbstatic.com/static/js/mp-webview-sdk/webview-v1.0.0.min.js" id="mp-webview" />
         )}
       </Head>
-
+      <DefaultSeo {...SEO} />
       <Providers store={store}>
+        <PageMeta />
         <Blocklist>
           {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
           <ResetCSS />
