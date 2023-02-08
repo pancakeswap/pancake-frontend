@@ -74,10 +74,6 @@ const config = {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
       },
-      {
-        source: '/mmLinkedPool/:path*',
-        destination: 'https://test.linked-pool.pancakeswap.com/quote-service/:path*',
-      },
     ]
   },
   async headers() {

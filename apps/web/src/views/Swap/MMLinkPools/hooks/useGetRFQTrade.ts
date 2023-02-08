@@ -1,6 +1,6 @@
 import { Currency, TradeType } from '@pancakeswap/sdk'
 import { Field } from 'state/swap/actions'
-import useSWR from 'swr'
+import useSWRImmutable from 'swr/immutable'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getRFQById, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
@@ -8,7 +8,7 @@ import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (param: QuoteRequest, isMMBetter: boolean): { rfqId: string; refreshRFQ: () => void } => {
   const { account } = useActiveWeb3React()
-  const { data, mutate } = useSWR(
+  const { data, mutate } = useSWRImmutable(
     isMMBetter &&
       account &&
       param &&
@@ -36,10 +36,10 @@ export const useGetRFQTrade = (
   trade: TradeWithMM<Currency, Currency, TradeType>
   refreshRFQ: () => void
 } | null => {
-  const { data } = useSWR(
+  const { data } = useSWRImmutable(
     isMMBetter && rfqId && [`RFQ/${rfqId}`],
     () => getRFQById(rfqId),
-    { refreshInterval: 5000 }, // 5sec auto refresh
+    { shouldRetryOnError: true, errorRetryCount: 5, errorRetryInterval: 5000 }, // 5sec auto refresh if error
   )
   const isExactIn: boolean = independentField === Field.INPUT
 
