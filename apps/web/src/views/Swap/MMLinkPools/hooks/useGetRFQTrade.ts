@@ -1,5 +1,4 @@
 import { Currency, TradeType } from '@pancakeswap/sdk'
-import { FetchStatus } from 'config/constants/types'
 import { Field } from 'state/swap/actions'
 import useSWR from 'swr'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
