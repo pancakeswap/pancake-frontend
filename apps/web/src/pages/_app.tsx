@@ -19,6 +19,7 @@ import Head from 'next/head'
 import Script from 'next/script'
 import { Fragment } from 'react'
 import { DefaultSeo } from 'next-seo'
+import { PageMeta } from 'components/Layout/Page'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
@@ -80,8 +81,8 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
         )}
       </Head>
       <DefaultSeo {...SEO} />
-
       <Providers store={store}>
+        <PageMeta />
         <Blocklist>
           {(Component as NextPageWithLayout).mp ? <MPGlobalHooks /> : <GlobalHooks />}
           <ResetCSS />
