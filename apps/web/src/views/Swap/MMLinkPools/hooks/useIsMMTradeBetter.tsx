@@ -37,5 +37,5 @@ export const useIsTradeWithMMBetter = ({
       (tradeWithMM.outputAmount.equalTo(v2Trade.outputAmount) &&
         tradeWithMM.inputAmount.lessThan(v2Trade?.outputAmount ?? ZERO)) // exactOut
     )
-  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair])
+  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair, isExpertMode])
 }
