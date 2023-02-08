@@ -1,13 +1,13 @@
-import { Box } from '@pancakeswap/uikit'
+import AffiliatesProgramLayout from 'views/AffiliatesProgram/components/AffiliatesProgramLayout'
 import Banner from 'views/AffiliatesProgram/components/Dashboard/Banner'
 import MyReferralLink from 'views/AffiliatesProgram/components/Dashboard/MyReferralLink'
 
 const Dashboard = () => {
   return (
-    <Box>
+    <AffiliatesProgramLayout>
       <Banner />
       <MyReferralLink />
-    </Box>
+    </AffiliatesProgramLayout>
   )
 }
 

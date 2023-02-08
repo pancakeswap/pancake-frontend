@@ -4,7 +4,7 @@ import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
 // import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
-import bunnyImage from '../../../../public/images/affiliates-program/banner.png'
+import bunnyImage from '../../../../../public/images/affiliates-program/banner.png'
 
 const StyledBannerSection = styled(PageSection)`
   padding-top: 16px;

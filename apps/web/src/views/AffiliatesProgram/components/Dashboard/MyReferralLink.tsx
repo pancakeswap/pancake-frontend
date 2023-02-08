@@ -35,7 +35,7 @@ const FriendsWrapper = styled(Box)`
 
 const FriendsCardInner = styled(Box)`
   padding: 24px 16px;
-  background: #eaecf4;
+  background: ${({ theme }) => theme.colors.background};
   border-radius: ${({ theme }) => theme.radii.default};
 `
 
