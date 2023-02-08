@@ -9,7 +9,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
 import toNumber from 'lodash/toNumber'
 import { Field } from 'state/swap/actions'
-import { MM_SWAP_CONTRACT_ADDRESS } from '../constants'
+import { MM_SWAP_CONTRACT_ADDRESS, MM_STABLE_TOKENS_WHITE_LIST } from '../constants'
 import { OrderBookRequest, TradeWithMM } from '../types'
 
 const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
@@ -35,6 +35,13 @@ export function computeTradePriceBreakdown(trade?: TradeWithMM<Currency, Currenc
         ),
       )
 
+  const stableList = MM_STABLE_TOKENS_WHITE_LIST[trade?.inputAmount?.currency?.chainId]
+  const isStablePair = Boolean(
+    trade?.inputAmount?.currency?.isToken &&
+      trade?.outputAmount?.currency?.isToken &&
+      stableList[trade?.inputAmount?.currency?.address] &&
+      stableList[trade?.outputAmount?.currency?.address],
+  )
   // remove lp fees from price impact
   const priceImpactWithoutFeeFraction = ZERO_PERCENT
 
@@ -43,7 +50,11 @@ export function computeTradePriceBreakdown(trade?: TradeWithMM<Currency, Currenc
 
   // the amount of the input that accrues to LPs
   const feeRate = new Fraction(5, 10000)
-  const realizedLPFeeAmount = realizedLPFee && trade && trade.inputAmount.multiply(feeRate)
+  const stableFeeRate = new Fraction(1, 10000)
+  const realizedLPFeeAmount =
+    realizedLPFee &&
+    trade &&
+    (isStablePair ? trade.inputAmount.multiply(stableFeeRate) : trade.inputAmount.multiply(feeRate))
 
   return { priceImpactWithoutFee: priceImpactWithoutFeePercent, realizedLPFee: realizedLPFeeAmount }
 }
