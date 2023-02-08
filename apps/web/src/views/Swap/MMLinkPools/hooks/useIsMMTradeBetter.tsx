@@ -7,11 +7,17 @@ interface Options {
   trade?: TradeWithStableSwap<Currency, Currency, TradeType> | null
   v2Trade?: Trade<Currency, Currency, TradeType> | null
   tradeWithMM?: TradeWithMM<Currency, Currency, TradeType> | null
+  isMMQuotingPair?: boolean
 }
 
-export const useIsTradeWithMMBetter = ({ trade, v2Trade, tradeWithMM }: Options) => {
+export const useIsTradeWithMMBetter = ({ trade, v2Trade, tradeWithMM, isMMQuotingPair = false }: Options) => {
   return useMemo(() => {
-    if (!tradeWithMM || tradeWithMM.inputAmount.equalTo(ZERO) || tradeWithMM.outputAmount.equalTo(ZERO)) {
+    if (
+      !isMMQuotingPair ||
+      !tradeWithMM ||
+      tradeWithMM.inputAmount.equalTo(ZERO) ||
+      tradeWithMM.outputAmount.equalTo(ZERO)
+    ) {
       return false
     }
     if (!v2Trade && !trade && tradeWithMM) return true // v2 and smart router has not liq but MM provide the deal
@@ -23,5 +29,5 @@ export const useIsTradeWithMMBetter = ({ trade, v2Trade, tradeWithMM }: Options)
       (tradeWithMM.outputAmount.equalTo(v2Trade.outputAmount) &&
         tradeWithMM.inputAmount.lessThan(v2Trade?.outputAmount ?? ZERO)) // exactOut
     )
-  }, [trade, v2Trade, tradeWithMM])
+  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair])
 }

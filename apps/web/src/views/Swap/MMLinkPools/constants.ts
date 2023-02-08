@@ -1,5 +1,11 @@
 import { ChainId } from '@pancakeswap/sdk'
 
+export const MM_SUPPORT_CHIAN = {
+  1: true,
+  5: true,
+  56: false,
+}
+
 export const MM_SWAP_CONTRACT_ADDRESS = {
   [ChainId.ETHEREUM]: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
   [ChainId.GOERLI]: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92',

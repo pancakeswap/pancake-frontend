@@ -5,6 +5,7 @@ import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
 import { getAddress } from '@ethersproject/address'
+import { useIsMMSupportChain } from './useIsMMSupportChain'
 
 const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
@@ -33,14 +34,15 @@ export const useIsMMQuotingPair = (
 ): boolean => {
   const { chainId } = useActiveWeb3React()
   const list = useTokenList(QUOTING_WHITE_LIST[chainId])
+  const isMMSupportChain = useIsMMSupportChain()
 
   return useMemo(() => {
-    if (!chainId || !list || !inputCurrency || !outputCurrency) return false
+    if (!isMMSupportChain || !chainId || !list || !inputCurrency || !outputCurrency) return false
     if (
       list[(inputCurrency.isToken ? inputCurrency.address : NATIVE_CURRENCY_ADDRESS).toLowerCase()] &&
       list[(outputCurrency.isToken ? outputCurrency.address : NATIVE_CURRENCY_ADDRESS).toLowerCase()]
     )
       return true
     return false
-  }, [chainId, list, inputCurrency, outputCurrency])
+  }, [chainId, list, inputCurrency, outputCurrency, isMMSupportChain])
 }

@@ -111,7 +111,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     parsedAmount,
     inputError: stableSwapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency)
-
+  const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const mmOrderBookTrade = useMMTrade(independentField, typedValue, inputCurrency, outputCurrency)
 
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
@@ -119,6 +119,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     trade: tradeWithStableSwap,
     v2Trade,
     tradeWithMM: mmOrderBookTrade?.trade,
+    isMMQuotingPair,
   })
 
   const mmRFQTrade = useGetRFQTrade(
@@ -146,7 +147,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     mmSwapInputError: mmOrderBookTrade?.inputError,
   })
 
-  const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const {
     wrapType,
     execute: onWrap,
