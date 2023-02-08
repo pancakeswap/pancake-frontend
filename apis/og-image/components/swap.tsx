@@ -1,13 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { getTemplatePath } from 'config'
-import { z } from 'zod'
-
-export const zSwapProps = z.object({
-  inputSymbol: z.string(),
-  outputSymbol: z.string(),
-  inputImage: z.string(),
-  outputImage: z.string(),
-})
 
 export function SwapOgImage({
   inputSymbol,
@@ -24,7 +16,6 @@ export function SwapOgImage({
     <div
       style={{
         display: 'flex',
-        // getTemplatePath('swap')
       }}
     >
       <img src={getTemplatePath('swap')} width={800} height={450} alt="swap-background" />

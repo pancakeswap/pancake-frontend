@@ -3,12 +3,21 @@
 /* eslint-disable @next/next/no-img-element */
 import { getTemplatePath } from 'config'
 
-export function NFTOgImage(props: { title: string; price: string; image: string }) {
+export function NFTOgImage({
+  title,
+  price,
+  image,
+  nativePrice,
+}: {
+  title: string
+  price: string
+  image: string
+  nativePrice: string
+}) {
   return (
     <div
       style={{
         display: 'flex',
-        // getTemplatePath('swap')
       }}
     >
       <img src={getTemplatePath('nft')} width={800} height={450} alt="nft-background" />
@@ -28,52 +37,44 @@ export function NFTOgImage(props: { title: string; price: string; image: string 
           style={{
             display: 'flex',
             maxWidth: '300px',
-            backgroundImage: 'linear-gradient(180deg, #7645D9 0%, #612AD0 100%)',
-            backgroundClip: 'text',
-            // @ts-ignore
-            '-webkit-background-clip': 'text',
-            color: 'transparent',
+            color: 'white',
+            textShadow: '0px 3px 0px rgba(0, 0, 0, 0.5)',
             textTransform: 'uppercase',
+            marginBottom: '42px',
           }}
         >
-          Super Long Name of the NFT #112345
+          {title}
         </div>
         <div
           style={{
             display: 'flex',
             maxWidth: '300px',
-            backgroundImage: 'linear-gradient(166.02deg, #FFB237 -5.1%, #FFEB37 75.24%)',
-            backgroundClip: 'text',
-            // @ts-ignore
-            '-webkit-background-clip': 'text',
-            color: 'transparent',
+            color: 'white',
+            textShadow: '0px 3px 0px rgba(0, 0, 0, 0.5)',
           }}
         >
-          8.5 BNB
+          {nativePrice}
         </div>
         <div
           style={{
             display: 'flex',
             maxWidth: '300px',
-            backgroundImage: 'linear-gradient(166.02deg, #FFB237 -5.1%, #FFEB37 75.24%)',
-            backgroundClip: 'text',
-            // @ts-ignore
-            '-webkit-background-clip': 'text',
-            color: 'transparent',
+            color: 'white',
+            textShadow: '0px 3px 0px rgba(0, 0, 0, 0.5)',
           }}
         >
-          (~2,165.13 USD)
+          (~{price})
         </div>
       </div>
       <img
-        width={266}
-        height={266}
+        width={264}
+        height={264}
         style={{
           position: 'absolute',
-          top: '86px',
-          left: '469px',
+          top: '80px',
+          left: '470px',
         }}
-        src="https://static-nft.pancakeswap.com/mainnet/0x0a8901b0E25DEb55A87524f0cC164E9644020EBA/pancake-squad-5219-1000.png"
+        src={image}
       />
     </div>
   )
