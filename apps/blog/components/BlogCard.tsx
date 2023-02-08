@@ -14,11 +14,6 @@ const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
 
 const StyledBlogCard = styled(Box)`
   cursor: pointer;
-
-  &:hover ${StyledBackgroundImage} {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
 `
 
 const StyledTagGroup = styled(Flex)`

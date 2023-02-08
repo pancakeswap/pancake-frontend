@@ -42,12 +42,13 @@ const CheckIcon = styled(CheckmarkCircleIcon)`
   stroke: ${({ theme }) => theme.colors.success};
 `
 
-const NameOverflow = styled.div`
+const NameOverflow = styled(Flex)`
   white-space: nowrap;
   overflow: hidden;
+  align-items: center;
   text-overflow: ellipsis;
-  max-width: 140px;
-  font-size: 12px;
+  max-width: 210px;
+  gap: 8px;
 `
 
 export default function ImportRow({
@@ -93,20 +94,12 @@ export default function ImportRow({
       <CurrencyLogo currency={token} size={isMobile ? '20px' : '24px'} style={{ opacity: dim ? '0.6' : '1' }} />
       <AutoColumn gap="4px" style={{ opacity: dim ? '0.6' : '1' }}>
         <AutoRow>
-          <Flex
-            alignItems={isMobile && token.symbol.length > 14 ? undefined : 'center'}
-            flexDirection={isMobile && token.symbol.length > 14 ? 'column' : 'row'}
-          >
-            <Text mr="8px">{token.symbol}</Text>
-            <Text color="textDisabled">
-              <NameOverflow
-                style={!isMobile && token.symbol.length > 14 ? { maxWidth: '58px' } : {}}
-                title={token.name}
-              >
-                {token.name}
-              </NameOverflow>
+          <NameOverflow title={token.name}>
+            {token.symbol}
+            <Text ellipsis color="textDisabled" fontSize="12px">
+              {token.name}
             </Text>
-          </Flex>
+          </NameOverflow>
         </AutoRow>
         {list && list.logoURI && (
           <RowFixed>

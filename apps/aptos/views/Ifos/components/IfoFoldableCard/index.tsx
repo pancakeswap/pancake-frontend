@@ -1,4 +1,14 @@
-import { Box, Card, CardBody, CardHeader, ExpandableButton, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import {
+  Box,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  ExpandableButton,
+  ExpandableLabel,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import NoSSR from 'components/NoSSR'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { useRouter } from 'next/router'
@@ -7,6 +17,7 @@ import styled from 'styled-components'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { CardsWrapper } from '../IfoCardStyles'
+import IfoCardFooter from './IfoCardFooter'
 import IfoPoolCard from './IfoPoolCard'
 import { IfoRibbon } from './IfoRibbon'
 
@@ -99,6 +110,12 @@ const StyledNoHatBunny = styled.div<{ $isLive: boolean; $isCurrent?: boolean }>`
   }
 `
 
+const StyledCardFooter = styled(CardFooter)`
+  padding: 0;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  text-align: center;
+`
+
 const NoHatBunny = ({ isLive, isCurrent }: { isLive?: boolean; isCurrent?: boolean }) => {
   const { isXs, isSm, isMd } = useMatchBreakpoints()
   const isSmallerThanTablet = isXs || isSm || isMd
@@ -126,6 +143,8 @@ export const IfoCurrentCard = ({
   walletIfoData: WalletIfoData
 }) => {
   const { isMobile } = useMatchBreakpoints()
+  const [isExpanded, setIsExpanded] = useState(false)
+  const { t } = useTranslation()
 
   const { startTime, endTime } = publicIfoData
 
@@ -161,6 +180,12 @@ export const IfoCurrentCard = ({
             </>
           )}
           <IfoCard ifo={ifo} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+          <StyledCardFooter>
+            <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? t('Hide') : t('Details')}
+            </ExpandableLabel>
+            {isExpanded && <IfoCardFooter status={status} ifo={ifo} />}
+          </StyledCardFooter>
         </StyledCard>
       </Box>
     </NoSSR>

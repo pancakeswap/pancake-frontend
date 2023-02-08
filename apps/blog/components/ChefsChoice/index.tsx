@@ -32,6 +32,7 @@ const ChefsChoice = () => {
           spaceBetween={20}
           autoplay={{
             delay: 2500,
+            pauseOnMouseEnter: true,
             disableOnInteraction: false,
           }}
           modules={[Autoplay]}

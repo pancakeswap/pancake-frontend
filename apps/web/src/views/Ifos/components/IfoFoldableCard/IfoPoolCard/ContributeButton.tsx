@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, useModal, useToast } from '@pancakeswap/uikit'
+import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -8,7 +8,6 @@ import { useCurrentBlock } from 'state/block/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import ContributeModal from './ContributeModal'
-import GetTokenModal from './GetTokenModal'
 
 interface Props {
   poolId: PoolIds
@@ -52,7 +51,14 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     false,
   )
 
-  const [onPresentGetTokenModal] = useModal(<GetTokenModal currency={ifo.currency} />, false)
+  const [onPresentGetTokenModal] = useModal(
+    <IfoGetTokenModal
+      symbol={ifo.currency.symbol}
+      address={ifo.currency.address}
+      imageSrc={`/images/tokens/${ifo.currency.address}.png`}
+    />,
+    false,
+  )
 
   const noNeedCredit = ifo.version >= 3.1 && poolId === PoolIds.poolBasic
 
