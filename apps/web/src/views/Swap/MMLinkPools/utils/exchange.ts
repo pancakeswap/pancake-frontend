@@ -105,13 +105,14 @@ export const tryParseUnit = (typedValue?: string, decimals?: number) => {
 }
 
 export const parseMMParameter = (
-  chainId: number,
-  inputCurrency: Currency,
-  outputCurrency: Currency,
-  independentField: Field,
-  typedValue: string,
-  account: string,
+  chainId?: number,
+  inputCurrency?: Currency,
+  outputCurrency?: Currency,
+  independentField?: Field,
+  typedValue?: string,
+  account?: string,
 ): OrderBookRequest => {
+  if (!chainId || !inputCurrency || !outputCurrency || !outputCurrency || !independentField || !typedValue) return null
   return {
     networkId: chainId,
     takerSideToken: inputCurrency?.isToken ? inputCurrency.address : NATIVE_CURRENCY_ADDRESS,
