@@ -1,6 +1,6 @@
+import { useDebounce } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
-import { useDebounce } from '@pancakeswap/hooks'
 import {
   ArrowDownIcon,
   Box,
@@ -46,17 +46,18 @@ import { ArrowWrapper, Wrapper } from '../components/styleds'
 import SwapCommitButton from '../components/SwapCommitButton'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
+import { MMAndAMMDealDisplay } from '../MMLinkPools/components/MMAndAMMDealDisplay'
 import MMCommitButton from '../MMLinkPools/components/MMCommitButton'
 import { MMSlippageTolerance } from '../MMLinkPools/components/MMSlippageTolerance'
 import {
+  useGetRFQId,
   useGetRFQTrade,
+  useIsMMQuotingPair,
   useIsTradeWithMMBetter,
   useMMTrade,
   useMMTradeInfo,
-  useIsMMQuotingPair,
-  useGetRFQId,
 } from '../MMLinkPools/hooks'
-import { shouldShowMMError, parseMMError } from '../MMLinkPools/utils/exchange'
+import { parseMMError, shouldShowMMError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
@@ -281,6 +282,12 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
 
   return (
     <>
+      <MMAndAMMDealDisplay
+        independentField={independentField}
+        isMMBetter={isMMBetter}
+        v2Trade={v2Trade}
+        mmTrade={mmOrderBookTrade?.trade}
+      />
       <CurrencyInputHeader
         title={t('Swap')}
         subtitle={t('Trade tokens in an instant')}
