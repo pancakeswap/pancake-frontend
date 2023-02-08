@@ -8,7 +8,6 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import Column from 'components/Layout/Column'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import {
@@ -20,13 +19,12 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 import { WrapType } from 'hooks/useWrapCallback'
 import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
-import { useUserSingleHopOnly } from 'state/user/hooks'
 import { warningSeverity } from 'utils/exchange'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
-import { TradeWithMM, RFQResponse } from '../types'
+import { RFQResponse, TradeWithMM } from '../types'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import ConfirmSwapModal from './ConfirmSwapModal'
 
@@ -86,8 +84,6 @@ export default function MMSwapCommitButton({
   isRFQLoading,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
-  const [singleHopOnly] = useUserSingleHopOnly()
-  const { chainId } = useActiveWeb3React()
 
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   // the callback to execute the swap
@@ -244,7 +240,6 @@ export default function MMSwapCommitButton({
     return (
       <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
         <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
-        {singleHopOnly && <Text color="textSubtle">{t('Try enabling multi-hop trades.')}</Text>}
       </GreyCard>
     )
   }
