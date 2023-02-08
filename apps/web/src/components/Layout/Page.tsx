@@ -37,7 +37,7 @@ export const PageMeta: React.FC<React.PropsWithChildren> = () => {
       title={pageMeta?.title}
       description={description}
       openGraph={{
-        images: [{ url: image, alt: pageMeta?.title }],
+        images: [{ url: image, alt: pageMeta?.title, type: 'image/jpeg' }],
       }}
     />
   )
