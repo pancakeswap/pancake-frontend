@@ -1,7 +1,7 @@
 import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
 // import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
-import Calculator from 'views/AffiliatesProgram/Overview/Calculator'
+import Calculator from 'views/AffiliatesProgram/components/Overview/Calculator'
 import styled from 'styled-components'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 
