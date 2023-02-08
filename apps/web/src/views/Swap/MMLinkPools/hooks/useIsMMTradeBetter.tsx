@@ -8,11 +8,19 @@ interface Options {
   v2Trade?: Trade<Currency, Currency, TradeType> | null
   tradeWithMM?: TradeWithMM<Currency, Currency, TradeType> | null
   isMMQuotingPair?: boolean
+  isExpertMode?: boolean
 }
 
-export const useIsTradeWithMMBetter = ({ trade, v2Trade, tradeWithMM, isMMQuotingPair = false }: Options) => {
+export const useIsTradeWithMMBetter = ({
+  trade,
+  v2Trade,
+  tradeWithMM,
+  isMMQuotingPair = false,
+  isExpertMode = false,
+}: Options) => {
   return useMemo(() => {
     if (
+      isExpertMode ||
       !isMMQuotingPair ||
       !tradeWithMM ||
       tradeWithMM.inputAmount.equalTo(ZERO) ||

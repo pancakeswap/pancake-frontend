@@ -122,6 +122,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     v2Trade,
     tradeWithMM: mmOrderBookTrade?.trade,
     isMMQuotingPair,
+    isExpertMode,
   })
 
   const { refreshRFQ, rfqId } = useGetRFQId(mmOrderBookTrade?.mmParam, isMMBetter)
@@ -401,7 +402,9 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               }
               allowedSlippage={allowedSlippage}
               onSlippageClick={onPresentSettingsModal}
-              allowedSlippageSlot={isMMBetter || (!v2Trade && isMMQuotingPair) ? <MMSlippageTolerance /> : undefined}
+              allowedSlippageSlot={
+                isMMBetter || (!v2Trade && isMMQuotingPair && !isExpertMode) ? <MMSlippageTolerance /> : undefined
+              }
             />
           )}
         </AutoColumn>
