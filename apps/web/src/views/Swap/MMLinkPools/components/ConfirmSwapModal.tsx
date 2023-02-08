@@ -138,10 +138,10 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   // text to show while loading
   const pendingText = useMemo(() => {
     return t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
-      amountA: trade.inputAmount?.toSignificant(6) ?? '',
-      symbolA: trade.inputAmount?.currency?.symbol ?? '',
-      amountB: trade.outputAmount?.toSignificant(6) ?? '',
-      symbolB: trade.outputAmount?.currency?.symbol ?? '',
+      amountA: trade?.inputAmount?.toSignificant(6) ?? '',
+      symbolA: trade?.inputAmount?.currency?.symbol ?? '',
+      amountB: trade?.outputAmount?.toSignificant(6) ?? '',
+      symbolB: trade?.outputAmount?.currency?.symbol ?? '',
     })
   }, [t, trade])
 

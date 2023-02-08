@@ -19,7 +19,7 @@ export const useGetRFQId = (param: QuoteRequest, isMMBetter: boolean): { rfqId: 
         `RFQ/${param.networkId}/${param.makerSideToken}/${param.takerSideToken}/${param.makerSideTokenAmount}/${param.takerSideTokenAmount}`,
       ],
     () => sendRFQAndGetRFQId(param),
-    { refreshInterval: 40000 }, // 30 sec auto refresh Id once
+    { refreshInterval: 30000 }, // 30 sec auto refresh Id once
   )
   return { rfqId: data?.message?.rfqId ?? '', refreshRFQ: mutate }
 }
@@ -39,7 +39,7 @@ export const useGetRFQTrade = (
   const { data } = useSWRImmutable(
     isMMBetter && rfqId && [`RFQ/${rfqId}`],
     () => getRFQById(rfqId),
-    { shouldRetryOnError: true, errorRetryCount: 5, errorRetryInterval: 5000 }, // 5sec auto refresh if error
+    { refreshInterval: 5000 }, // 5sec auto refresh if error
   )
   const isExactIn: boolean = independentField === Field.INPUT
 
