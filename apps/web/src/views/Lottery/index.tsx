@@ -23,7 +23,6 @@ import AllHistoryCard from './components/AllHistoryCard'
 import CheckPrizesSection from './components/CheckPrizesSection'
 import HowToPlay from './components/HowToPlay'
 import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
-import { PageMeta } from '../../components/Layout/Page'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -44,7 +43,6 @@ const Lottery = () => {
 
   return (
     <>
-      <PageMeta />
       <LotteryPage>
         <PageSection background={TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
