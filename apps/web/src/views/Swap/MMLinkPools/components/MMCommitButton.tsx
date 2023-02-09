@@ -80,7 +80,7 @@ export default function MMSwapCommitButton({
   parsedIndepentFieldAmount,
   onUserInput,
   rfq,
-  refreshRFQ,
+  // refreshRFQ,
   isRFQLoading = false,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
@@ -236,7 +236,7 @@ export default function MMSwapCommitButton({
     currencies[Field.INPUT] && currencies[Field.OUTPUT] && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
   )
 
-  if (noRoute && userHasSpecifiedInputOutput) {
+  if (noRoute && userHasSpecifiedInputOutput && !swapInputError) {
     return (
       <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
         <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
