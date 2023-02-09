@@ -66,11 +66,12 @@ export const computeOfferingAndRefundAmount = (amount: string, ifo_pool: IFOPool
  * compute_release_amount
  */
 export const computeReleaseAmount = (
+  getNow: () => number,
   ifo_metadata: IFOMetadata['data'],
   ifo_pool: IFOPool,
   vesting_schedule: VestingSchedule,
 ): BigNumber => {
-  const current_time = Date.now() / 1000
+  const current_time = getNow() / 1000
 
   if (current_time < +ifo_metadata.vesting_start_time + +ifo_pool.vesting_cliff) {
     return BIG_ZERO

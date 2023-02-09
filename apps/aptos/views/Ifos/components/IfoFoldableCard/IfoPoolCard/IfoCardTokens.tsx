@@ -22,6 +22,7 @@ import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { getStatus } from 'views/Ifos/hooks/helpers'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 
 interface TokenSectionProps extends FlexProps {
   primaryToken?: Currency
@@ -106,6 +107,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 }) => {
   const { account } = useAccount()
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(
       'Sorry, you didn’t contribute enough CAKE to meet the minimum threshold. You didn’t buy anything in this sale, but you can still reclaim your CAKE.',
@@ -118,7 +120,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 
   const { startTime, endTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 

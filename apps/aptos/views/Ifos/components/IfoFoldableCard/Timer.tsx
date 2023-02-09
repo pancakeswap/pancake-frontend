@@ -4,6 +4,7 @@ import { Flex, Heading, PocketWatchIcon, Text, Skeleton, TimerIcon, useTooltip }
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { PublicIfoData } from 'views/Ifos/types'
 import { getStatus } from 'views/Ifos/hooks/helpers'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 
 interface Props {
   publicIfoData: PublicIfoData
@@ -50,9 +51,10 @@ const TimeTooltipComponent: React.FC<React.PropsWithChildren<TimeTooltipComponen
 
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { startTime, endTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const secondsUntilStart = startTime - currentTime
 
@@ -135,9 +137,10 @@ const LiveNowHeading = styled(EndInHeading)`
 
 const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { endTime, startTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const secondsUntilEnd = endTime - currentTime
 
