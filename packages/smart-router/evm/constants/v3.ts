@@ -8,3 +8,6 @@ export const V3_POOL_FACTORY_ADDRESS: ChainMap<string> = {
   [ChainId.BSC]: '',
   [ChainId.BSC_TESTNET]: '',
 }
+
+// = 1 << 23 or 100000000000000000000000
+export const V2_FEE_PATH_PLACEHOLDER = 8388608

@@ -18,14 +18,18 @@ export interface BaseRoute {
   pools: Pool[]
 
   path: Currency[]
+
+  input: Currency
 }
 
-export interface RouteWithoutQuote extends BaseRoute {
+type RouteEssentials = Omit<BaseRoute, 'input'>
+
+export interface RouteWithoutQuote extends RouteEssentials {
   percent: number
   amount: CurrencyAmount<Currency>
 }
 
-export interface Route extends BaseRoute {
+export interface Route extends RouteEssentials {
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
 }
