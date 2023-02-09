@@ -50,9 +50,9 @@ const Banner = () => {
       </Decorations>
       <Box width={['1120px']}>
         <Text bold color="secondary" fontSize={['40px']}>
-          Dashboard
+          {t('Dashboard')}
         </Text>
-        <Text fontSize={['20px']}>Manage your affiliates link, see how much you’ve earned</Text>
+        <Text fontSize={['20px']}>{t('Manage your affiliates link, see how much you’ve earned')}</Text>
       </Box>
     </PageSection>
   )

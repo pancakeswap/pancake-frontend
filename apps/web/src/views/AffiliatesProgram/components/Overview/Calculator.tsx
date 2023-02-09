@@ -28,7 +28,7 @@ const referralList: Array<string> = ['15', '25', '35', '50', '100']
 const amountList: Array<string> = ['1000', '3000', '5000', '10000', '20000']
 
 const Calculator = () => {
-  const [referral, setReferral] = useState('15')
+  const [referral, setReferral] = useState('50')
   const [volume, setVolume] = useState('5000')
 
   const defaultAmount = (amount: BigNumber) => (amount.gt(0) ? amount.toFixed(0) : '1')

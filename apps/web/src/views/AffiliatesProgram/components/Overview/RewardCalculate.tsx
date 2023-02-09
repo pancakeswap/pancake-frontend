@@ -1,8 +1,9 @@
 import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
-// import { useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
+import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
 import Calculator from 'views/AffiliatesProgram/components/Overview/Calculator'
-import styled from 'styled-components'
+import CommissionStructure from 'views/AffiliatesProgram/components/Overview/CommissionStructure'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 
 const Decorations = styled(Box)`
@@ -46,7 +47,7 @@ const Decorations = styled(Box)`
 }`
 
 const RewardCalculate = () => {
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
   const { theme } = useTheme()
 
   return (
@@ -68,17 +69,19 @@ const RewardCalculate = () => {
         <Flex width={['447px']} alignSelf={['center']} flexDirection="column">
           <Box m={['32px 0']}>
             <Text fontSize={['40px']} lineHeight="110%" color="body" bold>
-              Earn generous commissions on every referral
+              {t('Earn generous commissions on every referral')}
             </Text>
           </Box>
           <Text color="textSubtle" mb="32px">
-            As a member of our affiliate program, you&aposll have access to a range of marketing materials, personalized
-            support, and real-time reporting to help you maximize your earnings.
+            {t(
+              "As a member of our affiliate program, you'll have access to a range of marketing materials, personalized support, and real-time reporting to help you maximize your earnings.",
+            )}
           </Text>
-          <Button width="fit-content">Apply now!</Button>
+          <Button width="fit-content">{t('Apply now!')}</Button>
         </Flex>
         <Calculator />
       </Flex>
+      <CommissionStructure />
     </PageSection>
   )
 }
