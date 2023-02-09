@@ -55,6 +55,7 @@ function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions
         const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
           maxHops,
           poolProvider: SmartRouter.createPoolProvider({ onChainProvider: provider }),
+          quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
         })
         // eslint-disable-next-line
         console.log(res)

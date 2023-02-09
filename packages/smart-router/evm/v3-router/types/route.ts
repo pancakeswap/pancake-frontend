@@ -21,6 +21,7 @@ export interface BaseRoute {
 }
 
 export interface RouteWithoutQuote extends BaseRoute {
+  percent: number
   amount: CurrencyAmount<Currency>
 }
 
@@ -39,7 +40,4 @@ export interface RouteQuote {
   gasCostInUSD: CurrencyAmount<Currency>
 }
 
-export interface RouteWithValidQuotes extends RouteWithoutQuote {
-  percent: number
-  quotes: RouteQuote[]
-}
+export type RouteWithQuote = RouteWithoutQuote & RouteQuote

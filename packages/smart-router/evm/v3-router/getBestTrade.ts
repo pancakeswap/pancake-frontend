@@ -2,14 +2,15 @@
 import { Currency, CurrencyAmount, TradeType, JSBI } from '@pancakeswap/sdk'
 
 import { computeAllRoutes } from './functions'
-import { BaseRoute, PoolProvider, QuoteProvider, Route, RouteWithValidQuotes, Trade } from './types'
+import { getRoutesWithValidQuote } from './getRoutesWithValidQuote'
+import { PoolProvider, QuoteProvider, Route, RouteWithQuote, Trade } from './types'
 
 interface Config {
   maxHops?: number
   maxSplits?: number
   distributionPercent?: number
-  poolProvider?: PoolProvider
-  quoteProvider?: QuoteProvider
+  poolProvider: PoolProvider
+  quoteProvider: QuoteProvider
 }
 
 interface BestTrade {
@@ -22,7 +23,7 @@ export async function getBestTrade(
   amount: CurrencyAmount<Currency>,
   currency: Currency,
   tradeType: TradeType,
-  config: Config = {},
+  config: Config,
 ): Promise<BestTrade | null> {
   try {
     const bestRoutes = await getBestRoutes(amount, currency, tradeType, config)
@@ -57,7 +58,7 @@ async function getBestRoutes(
   amount: CurrencyAmount<Currency>,
   currency: Currency,
   tradeType: TradeType,
-  { maxHops = 3, maxSplits = 4, distributionPercent = 5, poolProvider }: Config = {},
+  { maxHops = 3, maxSplits = 4, distributionPercent = 5, poolProvider, quoteProvider }: Config,
 ): Promise<BestRoutes | null> {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const inputCurrency = isExactIn ? amount.currency : currency
@@ -69,24 +70,31 @@ async function getBestRoutes(
   }
 
   const baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools)
-  const routesWithValidQuotes = await getRoutesWithValidQuotes(amount, baseRoutes, distributionPercent)
+  const routesWithValidQuote = await getRoutesWithValidQuote({
+    amount,
+    baseRoutes,
+    distributionPercent,
+    quoteProvider,
+    tradeType,
+  })
+  // routesWithValidQuote.forEach(({ percent, path, amount: a, quote }) => {
+  //   const pathStr = path.map((t) => t.symbol).join('->')
+  //   console.log(
+  //     `${percent}% Swap`,
+  //     a.toExact(),
+  //     a.currency.symbol,
+  //     'through',
+  //     pathStr,
+  //     ':',
+  //     quote.toExact(),
+  //     quote.currency.symbol,
+  //   )
+  // })
   console.log(amount, currency, tradeType, maxHops, maxSplits)
-  return getBestRoutesByQuotes(amount, routesWithValidQuotes)
+  return getBestRoutesByQuotes(amount, routesWithValidQuote)
 }
 
-async function getRoutesWithValidQuotes(
-  amount: CurrencyAmount<Currency>,
-  baseRoutes: BaseRoute[],
-  distributionPercent: number,
-): Promise<RouteWithValidQuotes[]> {
-  console.log(amount, baseRoutes, distributionPercent)
-  return []
-}
-
-function getBestRoutesByQuotes(
-  amount: CurrencyAmount<Currency>,
-  routesWithValidQuotes: RouteWithValidQuotes[],
-): BestRoutes | null {
-  console.log(amount, routesWithValidQuotes)
+function getBestRoutesByQuotes(amount: CurrencyAmount<Currency>, routesWithQuote: RouteWithQuote[]): BestRoutes | null {
+  console.log(amount, routesWithQuote)
   return null
 }
