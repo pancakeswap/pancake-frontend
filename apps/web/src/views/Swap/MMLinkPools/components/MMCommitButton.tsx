@@ -305,7 +305,7 @@ export default function MMSwapCommitButton({
       <CommitButton
         variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
         onClick={() => {
-          refreshRFQ?.()
+          // refreshRFQ?.()
           onSwapHandler()
         }}
         id="swap-button"
