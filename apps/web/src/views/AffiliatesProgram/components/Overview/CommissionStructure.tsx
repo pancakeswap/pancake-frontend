@@ -1,5 +1,29 @@
+import styled from 'styled-components'
 import { Flex, Text, Box, Image } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import commissionList from 'views/AffiliatesProgram/utils/commisionList'
+
+const CardInner = styled(Flex)`
+  width: 200px;
+  flex-direction: column;
+`
+
+const StyledContainer = styled(Flex)`
+  flex-direction: column;
+  align-items: center;
+`
+
+const StyledCommission = styled(Flex)`
+  justify-content: center;
+
+  ${CardInner} {
+    &:first-child {
+      ${StyledContainer} {
+        border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+      }
+    }
+  }
+`
 
 const CommissionStructure = () => {
   const { t } = useTranslation()
@@ -15,30 +39,21 @@ const CommissionStructure = () => {
           magna aliqua.
         </Text>
       </Flex>
-      <Flex justifyContent={['center']}>
-        <Box width={['200px']}>
-          <Image m="auto auto 20px auto" width={128} height={148} src="/images/affiliates-program/stableSwap.png" />
-          <Flex flexDirection="column" alignItems={['center']} borderRight={['0', 'solid 1px #D7CAEC']}>
-            <Text fontSize="12px" bold color="secondary" textTransform="uppercase">
-              V2/V3 Swap & StableSwap
-            </Text>
-            <Text fontSize={['32px']} bold>
-              3%
-            </Text>
-          </Flex>
-        </Box>
-        <Box width={['200px']}>
-          <Image m="auto auto 20px auto" width={100} height={148} src="/images/affiliates-program/perpetual.png" />
-          <Flex flexDirection="column" alignItems={['center']}>
-            <Text fontSize="12px" bold color="secondary" textTransform="uppercase">
-              Perpetual
-            </Text>
-            <Text fontSize={['32px']} bold>
-              20%
-            </Text>
-          </Flex>
-        </Box>
-      </Flex>
+      <StyledCommission>
+        {commissionList.map((list) => (
+          <CardInner key={list.image.url}>
+            <Image m="auto auto 20px auto" width={list.image.width} height={list.image.height} src={list.image.url} />
+            <StyledContainer>
+              <Text fontSize="12px" bold color="secondary" textTransform="uppercase">
+                {list.title}
+              </Text>
+              <Text fontSize={['32px']} bold>
+                {list.percentage}
+              </Text>
+            </StyledContainer>
+          </CardInner>
+        ))}
+      </StyledCommission>
     </Box>
   )
 }

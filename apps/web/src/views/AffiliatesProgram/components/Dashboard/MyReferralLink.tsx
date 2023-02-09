@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Flex,
   Text,
@@ -7,85 +8,112 @@ import {
   Card,
   CopyIcon,
   ShareIcon,
-  AddCircleIcon,
-  ArrowDownIcon,
+  Button,
+  ArrowForwardIcon,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
+import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 
-const YourWrapper = styled(Box)`
-  background: linear-gradient(180deg, #53dee9, #7645d9);
+const Wrapper = styled(Flex)`
+  flex: 1;
   padding: 1px;
-  width: 100%;
+  width: calc(100% - 18px);
+  margin-left: 18px;
+  background: linear-gradient(180deg, #53dee9, #7645d9);
   border-radius: ${({ theme }) => theme.radii.default};
 `
 
-const YourCardInner = styled(Box)`
-  padding: 24px;
+const StyledCommission = styled(Flex)`
+  width: 150px;
+  align-items: center;
+  flex-direction: column;
+  align-self: center;
+`
+
+const CardInner = styled(Flex)`
+  width: 100%;
+  height: 100%;
+  padding: 8px 24px;
+  justify-content: space-between;
   border-radius: ${({ theme }) => theme.radii.default};
   background: ${({ theme }) => theme.colors.gradientBubblegum};
+
+  ${StyledCommission} {
+    &:first-child {
+      border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+    }
+  }
 `
 
-const FriendsWrapper = styled(Box)`
-  width: 100%;
-  padding: 1px;
-  border-radius: ${({ theme }) => theme.radii.default};
-  background: ${({ theme }) => theme.colors.gradientVioletAlt};
-`
-
-const FriendsCardInner = styled(Box)`
-  padding: 24px 16px;
-  background: ${({ theme }) => theme.colors.background};
-  border-radius: ${({ theme }) => theme.radii.default};
-`
+const receivePercentageList: Array<string> = ['0', '10', '25', '50']
 
 const MyReferralLink = () => {
   const { t } = useTranslation()
+  const [percentage, setPercentage] = useState('0')
 
   return (
-    <Box width={['488px']} margin={['56px auto']}>
+    <Box width={['700px']} ml={['32px']}>
       <Card>
         <Box padding={['24px']}>
-          <Flex mb={['17px']}>
-            <Text bold fontSize={['20px']}>
-              My Referral Link
-            </Text>
-            <Flex ml={['auto']} alignSelf={['center']} style={{ cursor: 'pointer' }}>
-              <Text color="textSubtle">Create a new link</Text>
-              <AddCircleIcon ml="4px" color="primary" />
-            </Flex>
-          </Flex>
-          <Flex mb="16px">
+          <Text bold mb={['17px']} color="secondary" fontSize="12px" textTransform="uppercase">
+            create a new link
+          </Text>
+          <Flex mb="24px">
             <InputGroup endIcon={<CopyIcon width="18px" color="textSubtle" />} scale="lg">
               <Input type="text" value="http://pancakeswap.finance/ref=47730d" />
             </InputGroup>
             <ShareIcon width={24} height={24} ml="16px" color="primary" />
           </Flex>
-          <Box>
-            <Text bold textAlign="center" mb="8px">
-              You will get
-            </Text>
-            <YourWrapper>
-              <YourCardInner>
-                <Text fontSize={['32px']} bold textAlign="center">
+          <Flex width={['100%']} mb={['24px']}>
+            <Flex flex={1} justifyContent={['space-between']} alignSelf="center">
+              <Box>
+                <Text color="textSubtle">You will receive</Text>
+                <Text color="secondary" bold fontSize={['32px']} textAlign="center">
+                  100%
+                </Text>
+              </Box>
+              <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
+              <Box>
+                <Text color="textSubtle">Friends will receive</Text>
+                <Text color="primary" bold fontSize={['32px']} textAlign="center">
                   0%
                 </Text>
-              </YourCardInner>
-            </YourWrapper>
-          </Box>
-          <ArrowDownIcon color="textSubtle" display="block" margin="16px auto" width={24} height={24} />
-          <Box>
-            <Text bold textAlign="center" mb="8px">
-              Friends will get
-            </Text>
-            <FriendsWrapper>
-              <FriendsCardInner>
-                <Text fontSize={['32px']} bold textAlign="center">
-                  0%
-                </Text>
-              </FriendsCardInner>
-            </FriendsWrapper>
-          </Box>
+              </Box>
+            </Flex>
+            <Wrapper>
+              <CardInner>
+                {commissionList.map((list) => (
+                  <StyledCommission key={list.image.url}>
+                    <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
+                      {list.title}
+                    </Text>
+                    <Text fontSize={['32px']} bold>
+                      {list.percentage}
+                    </Text>
+                  </StyledCommission>
+                ))}
+              </CardInner>
+            </Wrapper>
+          </Flex>
+          <Flex>
+            <Flex>
+              {receivePercentageList.map((list) => (
+                <Button
+                  key={list}
+                  mr={['8px']}
+                  variant={list === percentage ? 'primary' : 'tertiary'}
+                  onClick={() => setPercentage(list)}
+                >
+                  {`${list}%`}
+                </Button>
+              ))}
+            </Flex>
+            <Input scale="lg" type="text" placeholder="Note (100 characters)" />
+          </Flex>
+          <Button mt="24px" width="100%">
+            Generate a referral link
+          </Button>
         </Box>
       </Card>
     </Box>
