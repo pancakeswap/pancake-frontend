@@ -1,5 +1,4 @@
 import { Price, Currency } from "@pancakeswap/swap-sdk-core";
-import { ArrowForwardIcon } from "@pancakeswap/uikit";
 import { AtomBox } from "@pancakeswap/ui/components/AtomBox";
 import { useState } from "react";
 import { balanceMaxMiniClass } from "./SwapWidget.css";
@@ -21,8 +20,7 @@ export function TradePrice({ price }: TradePriceProps) {
       {show ? (
         <>
           {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
-          <ArrowForwardIcon width="16px" ml="4px" mr="4px" />
-          {`${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
+          {` ⇌ ${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
           <AtomBox className={balanceMaxMiniClass} onClick={() => setShowInverted(!showInverted)}>
             <AutoRenewIcon width="14px" />
           </AtomBox>
