@@ -61,7 +61,7 @@ const MyReferralLink = () => {
           </Text>
           <Flex mb="24px">
             <InputGroup endIcon={<CopyIcon width="18px" color="textSubtle" />} scale="lg">
-              <Input type="text" value="http://pancakeswap.finance/ref=47730d" />
+              <Input type="text" placeholder="http://" />
             </InputGroup>
             <ShareIcon width={24} height={24} ml="16px" color="primary" />
           </Flex>
