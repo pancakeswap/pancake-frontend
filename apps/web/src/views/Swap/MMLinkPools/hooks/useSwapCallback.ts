@@ -46,6 +46,7 @@ export function useSwapCallback(
   const { account, chainId } = useActiveWeb3React()
   const gasPrice = useGasPrice()
   const raisedGasPrice = useMemo(() => {
+    if (!gasPrice) return ''
     return BigNumber.from(gasPrice).mul(125).div(100).toString()
   }, [gasPrice])
 
@@ -193,5 +194,5 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, gasPrice, t, addTransaction])
+  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, t, addTransaction, raisedGasPrice])
 }
