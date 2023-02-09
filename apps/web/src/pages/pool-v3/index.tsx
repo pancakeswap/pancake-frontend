@@ -12,6 +12,7 @@ import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { Bound } from 'views/AddLiquidityV3/form/actions'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Percent } from '@pancakeswap/sdk'
+import RangeTag from 'views/AddLiquidityV3/components/RangeTag'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -73,19 +74,7 @@ export default function PoolListPage() {
                     </Text>
                   </Flex>
 
-                  {removed ? (
-                    <Tag ml="8px" variant="failure" outline>
-                      Closed
-                    </Tag>
-                  ) : outOfRange ? (
-                    <Tag ml="8px" variant="textSubtle" outline>
-                      Out of range
-                    </Tag>
-                  ) : (
-                    <Tag ml="8px" variant="success" outline>
-                      In range
-                    </Tag>
-                  )}
+                  <RangeTag removed={removed} outOfRange={outOfRange} />
                 </Flex>
               </NextLink>
             </Card>

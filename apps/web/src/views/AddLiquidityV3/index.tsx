@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
@@ -16,6 +15,8 @@ import {
   AutoRow,
   Box,
   NumericalInput,
+  ConfirmationModalContent,
+  useModal,
 } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
@@ -38,10 +39,7 @@ import { LightGreyCard } from 'components/Card'
 import { Field } from 'state/mint/actions'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
-import {
-  // useIsExpertMode,
-  useUserSlippageTolerance,
-} from 'state/user/hooks'
+import { useIsExpertMode, useUserSlippageTolerance } from 'state/user/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
@@ -61,11 +59,13 @@ import { AppHeader } from 'components/App'
 import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 
 import { useV3MintActionHandlers } from './form/hooks'
 import { Bound } from './form/actions'
 import FeeSelector from './components/FeeSelector'
 import RangeSelector from './components/RangeSelector'
+import { PositionPreview } from './components/PositionPreview'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -103,7 +103,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const [, , feeAmountFromUrl] = router.query.currency || []
 
   const { t } = useTranslation()
-  // const expertMode = useIsExpertMode()
+  const expertMode = useIsExpertMode()
 
   const positionManager = useV3NFTPositionManagerContract()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
@@ -143,7 +143,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     errorMessage,
     invalidPool,
     invalidRange,
-    // outOfRange,
+    outOfRange,
     depositADisabled,
     depositBDisabled,
     invertPrice,
@@ -161,7 +161,6 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
 
   const isValid = !errorMessage && !invalidRange
   // modal and loading
-  //   const [showConfirm, setShowConfirm] = useState<boolean>(false)
   //   // capital efficiency warning
   //   const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
   //   useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
@@ -185,7 +184,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   //   }, [parsedQs, rightRangeTypedValue, leftRangeTypedValue, onRightRangeInput, onLeftRangeInput])
   //   // txn values
   const deadline = useTransactionDeadline() // custom from users settings
-  const [, setTxHash] = useState<string>('')
+  const [txHash, setTxHash] = useState<string>('')
   //   // get formatted amounts
   const formattedAmounts = {
     [independentField]: typedValue,
@@ -314,16 +313,17 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     },
     [baseCurrency?.wrapped?.address, currencyB?.wrapped?.address, onLeftRangeInput, onRightRangeInput, router],
   )
-  //   const handleDismissConfirmation = useCallback(() => {
-  //     setShowConfirm(false)
-  //     // if there was a tx hash, we want to clear the input
-  //     if (txHash) {
-  //       onFieldAInput('')
-  //       // dont jump to pool page if creating
-  //       navigate('/pool')
-  //     }
-  //     setTxHash('')
-  //   }, [navigate, onFieldAInput, txHash])
+  const handleDismissConfirmation = useCallback(() => {
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onFieldAInput('')
+      // dont jump to pool page if creating
+      router.replace(`pool`, undefined, {
+        shallow: true,
+      })
+    }
+    setTxHash('')
+  }, [onFieldAInput, router, txHash])
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   //   // const clearAll = useCallback(() => {
   //   //   onFieldAInput('')
@@ -346,11 +346,37 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
 
-  // const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
-  //   !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
-  // } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
-  //   !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
-  // }`
+  const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
+    !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
+  } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
+    !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
+  }`
+
+  const [onPresentAddLiquidityModal] = useModal(
+    <TransactionConfirmationModal
+      style={{
+        width: '420px',
+      }}
+      title="Add Liquidity"
+      onDismiss={handleDismissConfirmation}
+      attemptingTxn={attemptingTxn}
+      hash={txHash}
+      content={() => (
+        <ConfirmationModalContent
+          topContent={() => <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} />}
+          bottomContent={() => (
+            <Button width="100%" mt="16px" onClick={onAdd}>
+              Add
+            </Button>
+          )}
+        />
+      )}
+      pendingText={pendingText}
+    />,
+    true,
+    true,
+    'TransactionConfirmationModal',
+  )
 
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   let buttons
@@ -397,7 +423,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
           variant={
             !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B] ? 'danger' : 'primary'
           }
-          onClick={() => onAdd()}
+          onClick={() => (expertMode ? onAdd() : onPresentAddLiquidityModal())}
           disabled={
             !isValid ||
             attemptingTxn ||
