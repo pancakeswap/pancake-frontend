@@ -41,7 +41,7 @@ const Banner = () => {
       dividerPosition="bottom"
       background={theme.colors.gradientBubblegum}
       clipFill={{ light: theme.colors.background }}
-      innerProps={{ style: { width: '100%' } }}
+      innerProps={{ style: { width: '100%', paddingTop: '0px' } }}
     >
       <Decorations>
         <img src="/images/affiliates-program/bobbing-1.png" width="138px" height="95px" alt="" />

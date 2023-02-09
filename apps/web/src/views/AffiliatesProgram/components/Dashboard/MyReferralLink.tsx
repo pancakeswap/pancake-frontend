@@ -109,7 +109,7 @@ const MyReferralLink = () => {
                 </Button>
               ))}
             </Flex>
-            <Input scale="lg" type="text" placeholder="Note (100 characters)" />
+            <Input scale="lg" type="text" maxLength={100} placeholder="Note (100 characters)" />
           </Flex>
           <Button mt="24px" width="100%">
             Generate a referral link

@@ -1,8 +1,9 @@
-import { Flex, Text, Heading, PageSection, Image } from '@pancakeswap/uikit'
+import { Flex, Text, Heading, PageSection } from '@pancakeswap/uikit'
 import { useTranslation, Trans } from '@pancakeswap/localization'
 import GradientLogo from 'views/Home/components/GradientLogoSvg'
 import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
+import Image from 'next/image'
 
 const StyledList = styled(Flex)`
   margin-top: 48x;
@@ -14,7 +15,6 @@ const StyledContainer = styled(Flex)`
 
   ${StyledList} {
     &:nth-child(even) {
-      border: solid 1px;
       flex-direction: row-reverse;
     }
   }
@@ -56,7 +56,7 @@ const Benefits = () => {
     <PageSection index={1} dividerPosition="top" clipFill={{ light: theme.colors.gradientBubblegum }}>
       <Flex alignItems="center" flexDirection="column" justifyContent="center">
         <GradientLogo height="36px" width="36px" mb="24px" />
-        <Heading textAlign="center" scale="xl">
+        <Heading width={['700px']} textAlign="center" scale="xl">
           {t('Unlock the Power of PancakeSwap: Become an Affiliate Now')}
         </Heading>
         <Text color="textSubtle" margin={['48px 0']}>
@@ -67,7 +67,7 @@ const Benefits = () => {
           {BenefitsList.map((benefit, index) => (
             // eslint-disable-next-line react/no-array-index-key
             <StyledList key={`benefit-${index}`}>
-              <Image width={220} height={220} src={benefit.imgUrl} alt="" />
+              <Image width={220} height={180} src={benefit.imgUrl} alt="" />
               <Flex m={['0 32px']} alignSelf={['center']} flexDirection="column">
                 <Text fontSize={['32px']} bold color="secondary" mb="24px">
                   {benefit.title}
