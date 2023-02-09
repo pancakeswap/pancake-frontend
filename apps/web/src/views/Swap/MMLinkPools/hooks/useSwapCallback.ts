@@ -119,7 +119,7 @@ export function useSwapCallback(
         } = successfulEstimation
 
         return contract[methodName](...args, {
-          gasLimit: calculateGasMargin(gasEstimate),
+          gasLimit: calculateGasMargin(gasEstimate).mul(BigNumber.from(125)).div(BigNumber.from(100)), // 1.25 times gas limit
           gasPrice,
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
