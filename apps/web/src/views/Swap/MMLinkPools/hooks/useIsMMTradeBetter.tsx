@@ -23,7 +23,6 @@ export const useIsTradeWithMMBetter = ({
 }: Options) => {
   return useMemo(() => {
     const isExactIn = independentField === Field.INPUT
-    console.log(isExactIn)
     if (
       isExpertMode ||
       !isMMQuotingPair ||

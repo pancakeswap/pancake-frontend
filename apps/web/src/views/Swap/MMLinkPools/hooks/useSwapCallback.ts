@@ -47,7 +47,7 @@ export function useSwapCallback(
   const gasPrice = useGasPrice()
   const raisedGasPrice = useMemo(() => {
     if (!gasPrice) return ''
-    return BigNumber.from(gasPrice).mul(125).div(100).toString()
+    return BigNumber.from(gasPrice).mul(145).div(100).toString()
   }, [gasPrice])
 
   const { t } = useTranslation()
