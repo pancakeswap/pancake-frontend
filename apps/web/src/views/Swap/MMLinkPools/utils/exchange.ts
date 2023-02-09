@@ -64,8 +64,8 @@ export function computeSlippageAdjustedAmounts(trade: TradeWithMM<Currency, Curr
   [field in Field]?: CurrencyAmount<Currency>
 } {
   return {
-    [Field.INPUT]: trade.inputAmount,
-    [Field.OUTPUT]: trade.outputAmount,
+    [Field.INPUT]: trade?.inputAmount,
+    [Field.OUTPUT]: trade?.outputAmount,
   }
 }
 

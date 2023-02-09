@@ -80,11 +80,16 @@ export default function MMSwapCommitButton({
   parsedIndepentFieldAmount,
   onUserInput,
   rfq,
-  // refreshRFQ,
+  refreshRFQ,
   isRFQLoading = false,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
-
+  const [lastTrade, setLastTrade] = useState<TradeWithMM<Currency, Currency, TradeType> | null>(null)
+  useEffect(() => {
+    if (trade) {
+      setLastTrade(trade)
+    }
+  }, [trade])
   const { priceImpactWithoutFee } = computeTradePriceBreakdown(trade)
   // the callback to execute the swap
 
@@ -160,7 +165,7 @@ export default function MMSwapCommitButton({
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
-      trade={trade}
+      trade={trade || lastTrade} // show the info while refresh RFQ
       originalTrade={tradeToConfirm}
       currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
@@ -305,7 +310,7 @@ export default function MMSwapCommitButton({
       <CommitButton
         variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
         onClick={() => {
-          // refreshRFQ?.()
+          refreshRFQ?.()
           onSwapHandler()
         }}
         id="swap-button"
