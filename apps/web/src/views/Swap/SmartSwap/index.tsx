@@ -438,7 +438,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               approvalSubmitted={approvalSubmitted}
               currencies={currencies}
               isExpertMode={isExpertMode}
-              trade={mmTradeInfo.trade}
+              trade={mmRFQTrade?.trade}
               swapInputError={mmOrderBookTrade?.inputError || mmOrderBookTrade?.inputError}
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
