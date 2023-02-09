@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
+import contract from 'config/constants/contracts'
 
 export const MM_SUPPORT_CHIAN = {
   1: true,
@@ -6,10 +7,7 @@ export const MM_SUPPORT_CHIAN = {
   56: false,
 }
 
-export const MM_SWAP_CONTRACT_ADDRESS = {
-  [ChainId.ETHEREUM]: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
-  [ChainId.GOERLI]: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92',
-}
+export const MM_SWAP_CONTRACT_ADDRESS = contract.mmLinkedPool
 
 export const MM_STABLE_TOKENS_WHITE_LIST: Record<number, Record<string, string>> = {
   [ChainId.ETHEREUM]: {
