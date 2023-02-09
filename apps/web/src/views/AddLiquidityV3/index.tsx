@@ -66,6 +66,7 @@ import { Bound } from './form/actions'
 import FeeSelector from './components/FeeSelector'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
+import RateToggle from './components/RateToggle'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -498,6 +499,26 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     <Text bold fontSize="14px" textTransform="uppercase" color="secondary">
                       Set Price Range
                     </Text>
+                    <RateToggle
+                      currencyA={baseCurrency}
+                      handleRateToggle={() => {
+                        if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
+                          onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
+                          onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
+                          onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
+                        }
+
+                        router.replace(
+                          `/add/${currencyB?.wrapped?.address}/${baseCurrency?.wrapped?.address}${
+                            feeAmount ? `/${feeAmount}` : ''
+                          }`,
+                          undefined,
+                          {
+                            shallow: true,
+                          },
+                        )
+                      }}
+                    />
                   </RowBetween>
 
                   {price && baseCurrency && quoteCurrency && !noLiquidity && (
