@@ -12,6 +12,7 @@
     "dev:aptos": "yarn turbo run dev --filter=aptos-web...",
     "dev:blog": "yarn turbo run dev --filter=blog...",
     "storybook": "turbo run start --filter=uikit...",
+    "build:storybook": "turbo run build:storybook --filter=uikit...",
     "build": "turbo run build --filter=web...",
     "start": "turbo run start --filter=web",
     "test:config": "yarn turbo run test:config --filter=[HEAD^1]",
