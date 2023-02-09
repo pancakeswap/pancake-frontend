@@ -26,7 +26,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import Container from 'components/Layout/Container'
-import { PageMeta } from 'components/Layout/Page'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -157,7 +156,6 @@ const CreateProposal = () => {
 
   return (
     <Container py="40px">
-      <PageMeta />
       <Box mb="48px">
         <Breadcrumbs>
           <Link href="/">{t('Home')}</Link>

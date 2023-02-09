@@ -26,13 +26,7 @@ interface IfoCardProps {
   walletIfoData: WalletIfoData
 }
 
-export const cardConfig = (
-  t: ContextApi['t'],
-  poolId: PoolIds,
-  meta: {
-    version: number
-  },
-): CardConfigReturn => {
+export const cardConfig = (t: ContextApi['t'], poolId: PoolIds): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
       return {
@@ -44,7 +38,7 @@ export const cardConfig = (
       }
     case PoolIds.poolUnlimited:
       return {
-        title: meta?.version >= 3.1 ? t('Public Sale') : t('Unlimited Sale'),
+        title: t('Unlimited Sale'),
         variant: 'violet',
         tooltip: t('No limits on the amount you can commit. Additional fee applies when claiming.'),
       }
@@ -62,9 +56,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, if
 
   const { vestingInformation } = publicIfoData[poolId]
 
-  const config = cardConfig(t, poolId, {
-    version: ifo.version,
-  })
+  const config = cardConfig(t, poolId)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
 

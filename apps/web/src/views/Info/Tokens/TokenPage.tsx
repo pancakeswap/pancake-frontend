@@ -16,6 +16,7 @@ import {
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import { ChainId } from '@pancakeswap/sdk'
+import { NextSeo } from 'next-seo'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -110,7 +111,8 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const infoTypeParam = useStableSwapPath()
 
   return (
-    <Page symbol={tokenData?.symbol}>
+    <Page>
+      <NextSeo title={tokenData?.symbol} />
       {tokenData ? (
         !tokenData.exists ? (
           <Card>
