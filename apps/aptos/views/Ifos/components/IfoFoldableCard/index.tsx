@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { CardsWrapper } from '../IfoCardStyles'
 import IfoCardFooter from './IfoCardFooter'
 import IfoPoolCard from './IfoPoolCard'
@@ -145,10 +146,11 @@ export const IfoCurrentCard = ({
   const { isMobile } = useMatchBreakpoints()
   const [isExpanded, setIsExpanded] = useState(false)
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
 
   const { startTime, endTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 
