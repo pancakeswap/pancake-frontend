@@ -1,8 +1,12 @@
-export const FACTORY_ADDRESS = '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4'
+// BSC testnet
+// export const FACTORY_ADDRESS = '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4'
+export const FACTORY_ADDRESS = '0xDf2B32A0c67a0FF133E6aE23D79673aC3661bCF7'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
-export const POOL_INIT_CODE_HASH = '0x6e60bee46dd509cb7aa4e8b6342b6063a6ffd0c2b33c075ece472b3d55414b3a'
+// BSC testnet
+// export const POOL_INIT_CODE_HASH = '0x6e60bee46dd509cb7aa4e8b6342b6063a6ffd0c2b33c075ece472b3d55414b3a'
+export const POOL_INIT_CODE_HASH = '0xe34f199b19b2b4f47f68442619d555527d244f78a3297ea89325f843f87b8b54'
 
 /**
  * The default factory enabled fee amounts, denominated in hundredths of bips.
