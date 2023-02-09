@@ -20,11 +20,13 @@ export interface BaseRoute {
   path: Currency[]
 
   input: Currency
+
+  output: Currency
 }
 
-type RouteEssentials = Omit<BaseRoute, 'input'>
+export type RouteEssentials = Omit<BaseRoute, 'input' | 'output'>
 
-export interface RouteWithoutQuote extends RouteEssentials {
+export interface RouteWithoutQuote extends BaseRoute {
   percent: number
   amount: CurrencyAmount<Currency>
 }

@@ -1,5 +1,5 @@
 /* eslint-disable no-console, @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion, prefer-destructuring, camelcase, consistent-return, no-await-in-loop, no-lonely-if, @typescript-eslint/no-unused-vars */
-import { ChainId, JSBI } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
 import { BaseProvider } from '@ethersproject/providers'
 import { Interface } from '@ethersproject/abi'
 import chunk from 'lodash/chunk'
@@ -13,7 +13,7 @@ import stats from 'stats-lite'
 import { BaseRoute, OnChainProvider, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
-import { encodeMixedRouteToPath } from '../utils'
+import { encodeMixedRouteToPath, getQuoteCurrency } from '../utils'
 import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
 
@@ -126,12 +126,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
         )
 
         const inputs = routes.map<[string, string]>((route) => [
-          encodeRouteToPath({
-            pools: route.pools,
-            path: route.path,
-            type: route.type,
-            input: route.amount.currency,
-          }),
+          encodeRouteToPath(route),
           `0x${route.amount.quotient.toString(16)}`,
         ])
 
@@ -378,7 +373,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
           },
         )
 
-        // const routesQuotes = this.processQuoteResults(quoteResults, routes, amounts)
+        const routesWithQuote = processQuoteResults(quoteResults, routes)
 
         // metric.putMetric('QuoteApproxGasUsedPerSuccessfulCall', approxGasUsedPerSuccessCall, MetricLoggerUnit.Count)
 
@@ -402,7 +397,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
         // )
 
         // return { routesWithQuotes: routesQuotes, blockNumber }
-        return []
+        return routesWithQuote
       }
     }
 
@@ -486,6 +481,70 @@ function validateBlockNumbers(
   return new BlockConflictError(
     `Quotes returned from different blocks. ${uniqBlocks}. ${totalCalls} calls were made with gas limit ${gasLimitOverride}`,
   )
+}
+
+function processQuoteResults(
+  quoteResults: Result<[JSBI, JSBI[], number[], JSBI]>[],
+  routes: RouteWithoutQuote[],
+): RouteWithQuote[] {
+  const routesWithQuote: RouteWithQuote[] = []
+
+  // const debugFailedQuotes: {
+  //   amount: string
+  //   percent: number
+  //   route: string
+  // }[] = []
+
+  for (let i = 0; i < quoteResults.length; i += 1) {
+    const quoteResult = quoteResults[i]
+    const { success } = quoteResult
+    const route = routes[i]
+    if (!success) {
+      // const amountStr = amount.toFixed(Math.min(amount.currency.decimals, 2))
+      // const routeStr = routeToString(route)
+      // debugFailedQuotes.push({
+      //   route: routeStr,
+      //   percent,
+      //   amount: amountStr,
+      // })
+      continue
+    }
+
+    const quoteCurrency = getQuoteCurrency(route, route.amount.currency)
+    const quote = CurrencyAmount.fromRawAmount(quoteCurrency, quoteResult.result[0])
+    routesWithQuote.push({
+      ...route,
+      quote,
+      quoteAdjustedForGas: quote,
+      // sqrtPriceX96AfterList: quoteResult.result[1],
+      // initializedTicksCrossedList: quoteResult.result[2],
+      gasEstimate: JSBI.BigInt(quoteResult.result[3]),
+      // TODO gas model
+      gasCostInToken: quote,
+      gasCostInUSD: quote,
+    })
+  }
+
+  // // For routes and amounts that we failed to get a quote for, group them by route
+  // // and batch them together before logging to minimize number of logs.
+  // const debugChunk = 80
+  // _.forEach(_.chunk(debugFailedQuotes, debugChunk), (quotes, idx) => {
+  //   const failedQuotesByRoute = _.groupBy(quotes, (q) => q.route)
+  //   const failedFlat = _.mapValues(failedQuotesByRoute, (f) =>
+  //     _(f)
+  //       .map((f) => `${f.percent}%[${f.amount}]`)
+  //       .join(','),
+  //   )
+
+  //   log.info(
+  //     {
+  //       failedQuotes: _.map(failedFlat, (amounts, routeStr) => `${routeStr} : ${amounts}`),
+  //     },
+  //     `Failed on chain quotes for routes Part ${idx}/${Math.ceil(debugFailedQuotes.length / debugChunk)}`,
+  //   )
+  // })
+
+  return routesWithQuote
 }
 
 export const createMixedRouteOnChainQuoteProvider = onChainQuoteProviderFactory({
