@@ -119,6 +119,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
   const isMMBetter = useIsTradeWithMMBetter({
+    independentField,
     trade: tradeWithStableSwap,
     v2Trade,
     tradeWithMM: mmOrderBookTrade?.trade,

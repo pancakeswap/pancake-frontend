@@ -1,9 +1,11 @@
 import { Currency, Trade, TradeType, ZERO } from '@pancakeswap/sdk'
 import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
+import { Field } from 'state/swap/actions'
 import { TradeWithMM } from '../types'
 
 interface Options {
+  independentField: Field
   trade?: TradeWithStableSwap<Currency, Currency, TradeType> | null
   v2Trade?: Trade<Currency, Currency, TradeType> | null
   tradeWithMM?: TradeWithMM<Currency, Currency, TradeType> | null
@@ -12,6 +14,7 @@ interface Options {
 }
 
 export const useIsTradeWithMMBetter = ({
+  independentField,
   trade,
   v2Trade,
   tradeWithMM,
@@ -19,6 +22,8 @@ export const useIsTradeWithMMBetter = ({
   isExpertMode = false,
 }: Options) => {
   return useMemo(() => {
+    const isExactIn = independentField === Field.INPUT
+    console.log(isExactIn)
     if (
       isExpertMode ||
       !isMMQuotingPair ||
@@ -33,9 +38,8 @@ export const useIsTradeWithMMBetter = ({
       if (tradeWithMM) return true
     }
     return (
-      tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO) || // exactIn
-      (tradeWithMM.outputAmount.equalTo(v2Trade.outputAmount) &&
-        tradeWithMM.inputAmount.lessThan(v2Trade?.outputAmount ?? ZERO)) // exactOut
+      (isExactIn && tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO)) || // exactIn
+      (!isExactIn && tradeWithMM.inputAmount.lessThan(v2Trade?.inputAmount ?? ZERO)) // exactOut
     )
-  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair, isExpertMode])
+  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair, isExpertMode, independentField])
 }
