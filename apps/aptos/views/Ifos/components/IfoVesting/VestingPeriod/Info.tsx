@@ -38,7 +38,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     offeringAmountInToken,
   } = data.userVestingData[poolId]
 
-  const labelText = poolId === PoolIds.poolUnlimited ? t('Public Sale') : t('Private Sale')
+  const labelText = t('Unlimited Sale')
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
