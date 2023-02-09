@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { ConfirmationModalContent } from '@pancakeswap/uikit'
 import { ITrade } from 'config/constants/types'
 import { memo, useCallback, useMemo } from 'react'
