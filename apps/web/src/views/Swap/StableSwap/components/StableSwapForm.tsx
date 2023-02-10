@@ -14,6 +14,7 @@ import {
   Swap as SwapUI,
   PencilIcon,
   useModal,
+  AutoColumn,
 } from '@pancakeswap/uikit'
 import InfoTooltip from '@pancakeswap/uikit/src/components/Timeline/InfoTooltip'
 
@@ -23,7 +24,6 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
-import { AutoColumn } from 'components/Layout/Column'
 
 import { useCurrency } from 'hooks/Tokens'
 import { ApprovalState } from 'hooks/useApproveCallback'
@@ -287,7 +287,7 @@ export default function StableSwapForm() {
             tokensToShow={stableTokens}
           />
 
-          <AutoColumn gap="7px" style={{ padding: '0 16px' }}>
+          <AutoColumn gap="sm" style={{ padding: '0 16px' }}>
             <RowBetween align="center">
               {Boolean(trade) && (
                 <>

@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, Text, useModal, confirmPriceImpactWithoutFee } from '@pancakeswap/uikit'
+import { Button, Text, useModal, confirmPriceImpactWithoutFee, Column } from '@pancakeswap/uikit'
 import { Currency, CurrencyAmount, Trade, TradeType } from '@pancakeswap/sdk'
 
 import { GreyCard } from 'components/Card'
@@ -13,7 +13,6 @@ import { Field } from 'state/swap/actions'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCallback, useEffect, useState } from 'react'
-import Column from 'components/Layout/Column'
 import { useUserSingleHopOnly } from 'state/user/hooks'
 import {
   BIG_INT_ZERO,

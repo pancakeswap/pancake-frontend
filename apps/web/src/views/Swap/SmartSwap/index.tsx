@@ -12,6 +12,7 @@ import {
   Swap as SwapUI,
   Text,
   useModal,
+  AutoColumn,
 } from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -24,7 +25,6 @@ import AccessRisk from 'views/Swap/components/AccessRisk'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow } from 'components/Layout/Row'
 import { CommonBasesType } from 'components/SearchModal/types'
 import { useCurrency } from 'hooks/Tokens'
