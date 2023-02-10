@@ -2104,5 +2104,16 @@
   "Newest First": "Newest First",
   "Oldest First": "Oldest First",
   "Choose “Default” to use the settings from your current blockchain RPC node.": "Choose “Default” to use the settings from your current blockchain RPC node.",
-  "Participate in our next IFO.": "Participate in our next IFO."
+  "Participate in our next IFO.": "Participate in our next IFO.",
+  "The Market Maker (MM) is currently executing for your trade, there is no slippage against the quote from MM.": "The Market Maker (MM) is currently executing for your trade, there is no slippage against the quote from MM.",
+  "Market Maker": "Market Maker",
+  "AMM": "AMM",
+  "MM": "MM",
+  "No slippage against quote from market maker": "No slippage against quote from market maker",
+  "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.",
+  "Trading Fee": "Trading Fee",
+  "Output is estimated. You will receive at least or the transaction will revert.": "Output is estimated. You will receive at least or the transaction will revert.",
+  "Input is estimated. You will sell at most or the transaction will revert.": "Input is estimated. You will sell at most or the transaction will revert.",
+  "MM Linked Pool": "MM Linked Pool",
+  "Trade through the market makers if they provide better deal": "Trade through the market makers if they provide better deal"
 }

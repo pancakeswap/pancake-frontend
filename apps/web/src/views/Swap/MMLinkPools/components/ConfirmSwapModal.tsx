@@ -1,18 +1,18 @@
-import { useCallback, memo, useMemo } from 'react'
-import { Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
+import { useTranslation } from '@pancakeswap/localization'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import {
+  ConfirmationPendingContent,
   InjectedModalProps,
   LinkExternal,
   Text,
   TransactionErrorContent,
-  ConfirmationPendingContent,
 } from '@pancakeswap/uikit'
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
-import { useTranslation } from '@pancakeswap/localization'
-import { Field } from 'state/swap/actions'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { memo, useCallback, useMemo } from 'react'
+import { Field } from 'state/swap/actions'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
+import { TradeWithMM } from '../types'
 import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSwapContent'
 
 const PancakeRouterSlippageErrorMsg =
@@ -56,8 +56,8 @@ const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) =
 }
 
 interface ConfirmSwapModalProps {
-  trade?: TradeWithStableSwap<Currency, Currency, TradeType>
-  originalTrade?: TradeWithStableSwap<Currency, Currency, TradeType>
+  trade?: TradeWithMM<Currency, Currency, TradeType>
+  originalTrade?: TradeWithMM<Currency, Currency, TradeType>
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
@@ -68,6 +68,8 @@ interface ConfirmSwapModalProps {
   swapErrorMessage?: string
   customOnDismiss?: () => void
   openSettingModal?: () => void
+  isRFQReady: boolean
+  isRFQLoading: boolean
 }
 
 const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
@@ -84,10 +86,11 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   attemptingTxn,
   txHash,
   openSettingModal,
+  isRFQReady,
+  isRFQLoading,
 }) => {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
-
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
       customOnDismiss()
@@ -105,6 +108,8 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
         />
       ) : (
         <TransactionConfirmSwapContentWithSmartRouter
+          isRFQReady={isRFQReady}
+          isRFQLoading={isRFQLoading}
           trade={trade}
           currencyBalances={currencyBalances}
           originalTrade={originalTrade}
@@ -125,6 +130,8 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       onDismiss,
       openSettingModal,
       currencyBalances,
+      isRFQReady,
+      isRFQLoading,
     ],
   )
 

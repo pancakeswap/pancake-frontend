@@ -1,9 +1,10 @@
 export const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-extended.json'
 export const COINGECKO = 'https://tokens.pancakeswap.finance/coingecko.json'
+export const PANCAKE_ETH_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-eth-default.json'
 export const COINGECKO_ETH = 'https://tokens.coingecko.com/uniswap/all.json'
 export const CMC = 'https://tokens.pancakeswap.finance/cmc.json'
 
-export const ETH_URLS = [COINGECKO_ETH]
+export const ETH_URLS = [PANCAKE_ETH_DEFAULT, COINGECKO_ETH]
 export const BSC_URLS = [PANCAKE_EXTENDED, CMC, COINGECKO]
 
 // List of official tokens list
@@ -21,4 +22,4 @@ export const DEFAULT_LIST_OF_LISTS: string[] = [
 ]
 
 // default lists to be 'active' aka searched across
-export const DEFAULT_ACTIVE_LIST_URLS: string[] = [PANCAKE_EXTENDED, COINGECKO_ETH]
+export const DEFAULT_ACTIVE_LIST_URLS: string[] = [PANCAKE_EXTENDED, PANCAKE_ETH_DEFAULT]
