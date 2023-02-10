@@ -26,6 +26,7 @@ import { useSwapCallback } from '../hooks/useSwapCallback'
 import { RFQResponse, TradeWithMM } from '../types'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import ConfirmSwapModal from './ConfirmSwapModal'
+import { SAFE_MM_QUOTE_EXPIRY_SEC } from '../constants'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
@@ -57,6 +58,7 @@ interface SwapCommitButtonPropsType {
   rfq?: RFQResponse['message']
   refreshRFQ?: () => void
   isRFQLoading?: boolean
+  mmQuoteExpiryRemainingSec?: number | null
 }
 
 export default function MMSwapCommitButton({
@@ -79,8 +81,9 @@ export default function MMSwapCommitButton({
   parsedIndepentFieldAmount,
   onUserInput,
   rfq,
-  refreshRFQ,
+  // refreshRFQ,
   isRFQLoading = false,
+  mmQuoteExpiryRemainingSec = null,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const [lastTrade, setLastTrade] = useState<TradeWithMM<Currency, Currency, TradeType> | null>(null)
@@ -176,7 +179,7 @@ export default function MMSwapCommitButton({
       swapErrorMessage={swapErrorMessage}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
-      isRFQReady={Boolean(rfq) && !isRFQLoading}
+      isRFQReady={Boolean(rfq) && !isRFQLoading && mmQuoteExpiryRemainingSec >= SAFE_MM_QUOTE_EXPIRY_SEC}
       isRFQLoading={isRFQLoading}
     />,
     true,
@@ -309,7 +312,7 @@ export default function MMSwapCommitButton({
       <CommitButton
         variant={isValid && priceImpactSeverity > 2 && !swapCallbackError ? 'danger' : 'primary'}
         onClick={() => {
-          refreshRFQ?.()
+          // refreshRFQ?.()
           onSwapHandler()
         }}
         id="swap-button"

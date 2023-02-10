@@ -35,6 +35,7 @@ export const useGetRFQTrade = (
   rfq: RFQResponse['message']
   trade: TradeWithMM<Currency, Currency, TradeType>
   refreshRFQ: () => void
+  quoteExpiry: number
 } | null => {
   const { data } = useSWRImmutable(
     isMMBetter && rfqId && [`RFQ/${rfqId}`],
@@ -53,6 +54,7 @@ export const useGetRFQTrade = (
       data.message.takerSideTokenAmount,
       data.message.makerSideTokenAmount,
     ),
+    quoteExpiry: data.message.quoteExpiry,
     refreshRFQ,
   }
 }

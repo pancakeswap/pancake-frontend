@@ -56,6 +56,7 @@ import {
   useIsTradeWithMMBetter,
   useMMTrade,
   useMMTradeInfo,
+  useMMQuoteCountDown,
 } from '../MMLinkPools/hooks'
 import { parseMMError, shouldShowMMError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
@@ -148,6 +149,10 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     mmSwapInputError: mmOrderBookTrade?.inputError,
   })
 
+  const { remainingSec: mmQuoteExpiryRemainingSec } = useMMQuoteCountDown(
+    mmRFQTrade?.quoteExpiry,
+    isMMBetter ? mmRFQTrade?.refreshRFQ : undefined,
+  )
   const {
     wrapType,
     execute: onWrap,
@@ -287,6 +292,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         isMMBetter={isMMBetter}
         v2Trade={v2Trade}
         mmTrade={mmOrderBookTrade?.trade}
+        mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
       />
       <CurrencyInputHeader
         title={t('Swap')}
@@ -446,6 +452,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               onUserInput={onUserInput}
               rfq={mmRFQTrade?.rfq}
               refreshRFQ={mmRFQTrade?.refreshRFQ}
+              mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
             />
           ) : tradeInfo?.fallbackV2 ? (
             <SwapCommitButton

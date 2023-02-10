@@ -10,7 +10,8 @@ export const MMAndAMMDealDisplay: React.FC<{
   isMMBetter: boolean
   v2Trade?: Trade<Currency, Currency, TradeType>
   mmTrade?: TradeWithMM<Currency, Currency, TradeType>
-}> = ({ isMMBetter = false, independentField, v2Trade, mmTrade }) => {
+  mmQuoteExpiryRemainingSec?: number
+}> = ({ isMMBetter = false, independentField, v2Trade, mmTrade, mmQuoteExpiryRemainingSec }) => {
   const isExactIn = independentField === Field.INPUT
   const dealInANdOut = isExactIn ? '(out)' : '(in)'
   return (
@@ -35,6 +36,10 @@ export const MMAndAMMDealDisplay: React.FC<{
       </Text>
       <Text color="textSubtle">
         MM win: <Text display="inline-block">{`${isMMBetter}`}</Text>
+      </Text>
+      <Text color="textSubtle">
+        Quote Expiry In:{' '}
+        <Text display="inline-block">{`${mmQuoteExpiryRemainingSec > 0 ? mmQuoteExpiryRemainingSec : '?'}`} SEC</Text>
       </Text>
     </Box>
   )
