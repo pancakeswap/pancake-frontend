@@ -568,7 +568,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                   </Box>
                 ) : (
                   <>
-                    <RowBetween>
+                    <RowBetween mb="8px">
                       <Text bold fontSize="14px" textTransform="uppercase" color="secondary">
                         Set Price Range
                       </Text>
@@ -622,7 +622,10 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     />
                   </>
                 )}
-                <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
+                <DynamicSection
+                  mb="24px"
+                  disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
+                >
                   <RangeSelector
                     priceLower={priceLower}
                     priceUpper={priceUpper}
