@@ -5,10 +5,17 @@ import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, Stabl
 import { BasePair } from '../types/pair'
 import { getOutputToken } from '../utils/pair'
 
-export function createStableSwapPair(pair: Omit<BasePair, 'involvesToken'>, stableSwapAddress = ''): StableSwapPair {
+export function createStableSwapPair(
+  pair: Omit<BasePair, 'involvesToken'>,
+  stableSwapAddress = '',
+  lpAddress = '',
+  infoStableSwapAddress = '',
+): StableSwapPair {
   return {
     ...pair,
     stableSwapAddress,
+    lpAddress,
+    infoStableSwapAddress,
     // default price & fees are zero, need to get the actual price from chain
     price: new Price(pair.token0, pair.token1, '0', '1'),
     fee: new Percent(0),

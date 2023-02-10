@@ -1,59 +1,49 @@
-import { useContract } from 'hooks/useContract'
-import stableSwapABI from 'config/abi/stableSwap.json'
+import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
+import { stableSwapPairsByChainId } from '@pancakeswap/smart-router/evm'
 import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 import stableLPABI from 'config/abi/stableLP.json'
-import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
-import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import { createContext, useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
-import { getStableConfig } from '@pancakeswap/farms/constants'
-import { deserializeToken } from '@pancakeswap/token-lists'
+import stableSwapABI from 'config/abi/stableSwap.json'
+import { InfoStableSwap, StableLP, StableSwap } from 'config/abi/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useContract } from 'hooks/useContract'
+import { createContext, useMemo } from 'react'
+import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 
-export function useStableFarms() {
+export function useStablePairs() {
   const { chainId } = useActiveChainId()
 
-  const { data: stableFarms = [] } = useSWRImmutable(chainId && ['stable-farms', chainId], async () => {
-    const farms = await getStableConfig(chainId)
-
-    return farms.map(({ token, quoteToken, lpAddress, ...rest }) => ({
-      ...rest,
-      liquidityToken: new ERC20Token(chainId, lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
-      token0: deserializeToken(token),
-      token1: deserializeToken(quoteToken),
+  const stablePairs = useMemo(() => {
+    return (stableSwapPairsByChainId[chainId] || []).map((pair) => ({
+      ...pair,
+      liquidityToken: new ERC20Token(pair.token0.chainId, pair.lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
     }))
-  })
+  }, [chainId])
 
-  return stableFarms
+  return stablePairs
 }
 
-function useFindStablePair({ tokenA, tokenB }) {
-  const stableFarms = useStableFarms()
+function useFindStablePair({ tokenA, tokenB }: { tokenA: Currency; tokenB: Currency }) {
+  const stablePairs = useStablePairs()
 
-  return useMemo(
-    () =>
-      stableFarms.find((stablePair) => {
-        return (
-          tokenA &&
-          tokenB &&
-          ((stablePair?.token0?.equals(tokenA) && stablePair?.token1?.equals(tokenB)) ||
-            (stablePair?.token1?.equals(tokenA) && stablePair?.token0?.equals(tokenB)))
-        )
-      }),
-    [tokenA, tokenB, stableFarms],
-  )
+  return useMemo(() => {
+    return stablePairs.find((pair) => {
+      return tokenA && tokenB && pair.involvesToken(tokenA) && pair.involvesToken(tokenB)
+    })
+  }, [stablePairs, tokenA, tokenB])
 }
 
-export function useLPTokensWithBalanceByAccount(account) {
-  const lpTokens = useStableFarms()
+export function useLPTokensWithBalanceByAccount(account: string) {
+  const lpTokens = useStablePairs()
 
   const [stableBalances] = useTokenBalancesWithLoadingIndicator(
     account ?? undefined,
-    lpTokens.map(({ liquidityToken }) => liquidityToken),
+    lpTokens.map(
+      ({ token0, lpAddress }) => new ERC20Token(token0.chainId, lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
+    ),
   )
 
   const lpTokensWithBalance = useMemo(
-    () => lpTokens.filter(({ liquidityToken }) => stableBalances[liquidityToken.address]?.greaterThan('0')),
+    () => lpTokens.filter(({ lpAddress }) => stableBalances[lpAddress]?.greaterThan('0')),
     [lpTokens, stableBalances],
   )
 
@@ -66,13 +56,13 @@ export function useLPTokensWithBalanceByAccount(account) {
   }))
 }
 
-export const StableConfigContext = createContext(null)
+export const StableConfigContext = createContext<ReturnType<typeof useStableConfig>>(null)
 
 export default function useStableConfig({ tokenA, tokenB }: { tokenA: Currency; tokenB: Currency }) {
   const stablePair = useFindStablePair({ tokenA, tokenB })
-  const stableSwapContract = useContract(stablePair?.stableSwapAddress, stableSwapABI)
-  const stableSwapInfoContract = useContract(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
-  const stableSwapLPContract = useContract(stablePair?.liquidityToken.address, stableLPABI)
+  const stableSwapContract = useContract<StableSwap>(stablePair?.stableSwapAddress, stableSwapABI)
+  const stableSwapInfoContract = useContract<InfoStableSwap>(stablePair?.infoStableSwapAddress, stableSwapInfoABI)
+  const stableSwapLPContract = useContract<StableLP>(stablePair?.lpAddress, stableLPABI)
 
   return useMemo(
     () => ({

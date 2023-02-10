@@ -1,10 +1,10 @@
-import type { SerializedWrappedToken } from '@pancakeswap/token-lists'
+import { Currency } from '@pancakeswap/sdk'
 
 export interface BasePool {
   lpSymbol: string
   lpAddress: string
-  token: SerializedWrappedToken
-  quoteToken: SerializedWrappedToken
+  token: Currency
+  quoteToken: Currency
 }
 
 export interface StableSwapPool extends BasePool {

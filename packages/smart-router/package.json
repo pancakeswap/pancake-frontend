@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "test": "vitest --run",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
@@ -29,7 +30,7 @@
     "@pancakeswap/token-lists": "*",
     "@types/lodash": "^4.14.178",
     "tsconfig": "*",
-    "tsup": "^5.10.1",
+    "tsup": "^6.6.0",
     "typescript": "^4.9.4"
   },
   "exports": {

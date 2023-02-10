@@ -171,14 +171,17 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     const quotientB = parsedAmountB?.quotient?.toString() || '0'
 
     // Ensure the token order [token0, token1]
-    const tokenAmounts =
-      stableSwapConfig?.token0?.address === parsedAmountA?.currency?.wrapped?.address
-        ? [quotientA, quotientB]
-        : [quotientB, quotientA]
+    const tokenAmounts = stableSwapConfig?.token0.equals(parsedAmountA?.currency)
+      ? ([quotientA, quotientB] as [string, string])
+      : ([quotientB, quotientA] as [string, string])
 
-    const args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
+    const args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()] as const
 
-    const value = null
+    let value: string | null = null
+
+    if (parsedAmountA.currency.isNative || parsedAmountB.currency.isNative) {
+      value = parsedAmountB.currency.isNative ? parsedAmountB.quotient.toString() : parsedAmountA.quotient.toString()
+    }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     await estimate(...args, value ? { value } : {})

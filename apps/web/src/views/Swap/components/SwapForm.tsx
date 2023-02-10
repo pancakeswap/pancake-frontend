@@ -37,10 +37,9 @@ import { currencyId } from 'utils/currencyId'
 import { useAtomValue } from 'jotai'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
-import { isAddress } from '../../../utils'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
-import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
+import { useStablePairs } from '../StableSwap/hooks/useStableConfig'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import AddressInputPanel from './AddressInputPanel'
 import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
@@ -54,7 +53,7 @@ export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-  const stableFarms = useStableFarms()
+  const stableParis = useStablePairs()
   const warningSwapHandler = useWarningImport()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
@@ -77,15 +76,15 @@ export default function SwapForm() {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const hasStableSwapAlternative = useMemo(() => {
-    return stableFarms.some((stableFarm) => {
-      const checkSummedToken0 = isAddress(stableFarm?.token0.address)
-      const checkSummedToken1 = isAddress(stableFarm?.token1.address)
+    return stableParis.some((stableFarm) => {
+      const checkSummedToken0 = currencyId(stableFarm?.token0)
+      const checkSummedToken1 = currencyId(stableFarm?.token1)
       return (
         (checkSummedToken0 === inputCurrencyId || checkSummedToken0 === outputCurrencyId) &&
         (checkSummedToken1 === inputCurrencyId || checkSummedToken1 === outputCurrencyId)
       )
     })
-  }, [stableFarms, inputCurrencyId, outputCurrencyId])
+  }, [stableParis, inputCurrencyId, outputCurrencyId])
 
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({

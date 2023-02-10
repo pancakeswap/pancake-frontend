@@ -18,7 +18,7 @@ export function useDerivedLPInfo(
   const { stableSwapConfig } = useContext(StableConfigContext)
   const { totalSupply, balances, amplifier, loading } = useStableSwapInfo(
     stableSwapConfig?.stableSwapAddress,
-    stableSwapConfig?.liquidityToken.address,
+    stableSwapConfig?.lpAddress,
   )
   const wrappedCurrencyA = amountA?.currency.wrapped
   const wrappedCurrencyB = amountB?.currency.wrapped

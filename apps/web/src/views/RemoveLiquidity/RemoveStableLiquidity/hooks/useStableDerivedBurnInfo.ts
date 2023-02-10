@@ -76,8 +76,8 @@ export function useStableDerivedBurnInfo(
   const parsedAmounts: {
     [Field.LIQUIDITY_PERCENT]: Percent
     [Field.LIQUIDITY]?: CurrencyAmount<Token>
-    [Field.CURRENCY_A]?: CurrencyAmount<Token>
-    [Field.CURRENCY_B]?: CurrencyAmount<Token>
+    [Field.CURRENCY_A]?: CurrencyAmount<Currency>
+    [Field.CURRENCY_B]?: CurrencyAmount<Currency>
   } = {
     [Field.LIQUIDITY_PERCENT]: percentToRemove,
     [Field.LIQUIDITY]: liquidityToRemove,
