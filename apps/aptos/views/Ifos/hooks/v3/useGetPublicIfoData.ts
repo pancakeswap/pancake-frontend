@@ -94,3 +94,5 @@ export const useGetPublicIfoData = (ifo: Ifo): PublicIfoData => {
 
   return { ...finalState, currencyPriceInUSD }
 }
+
+export default useGetPublicIfoData

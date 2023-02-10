@@ -5,6 +5,7 @@ import BigNumber from 'bignumber.js'
 import { PoolIds } from 'config/constants/types'
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import useGetPublicIfoV3Data from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import { format } from 'date-fns'
 import Claim from './Claim'
@@ -39,12 +40,12 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     vestingReleased,
     offeringAmountInToken,
     vestingInformationDuration,
-    vestingInformation,
   } = data.userVestingData[poolId]
 
   const labelText = t('Unlimited Sale')
 
-  const { cliff } = vestingInformation
+  const publicIfoData = useGetPublicIfoV3Data(data.ifo)
+  const { cliff } = publicIfoData[poolId]?.vestingInformation
   const currentTimeStamp = new Date().getTime()
   const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
   const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
