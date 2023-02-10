@@ -16,7 +16,7 @@ import {
 } from 'config/constants/exchange'
 import { ApprovalState } from 'hooks/useApproveCallback'
 import { WrapType } from 'hooks/useWrapCallback'
-import { useCallback, useEffect, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { warningSeverity } from 'utils/exchange'
 import ProgressSteps from '../../components/ProgressSteps'
@@ -46,7 +46,7 @@ interface SwapCommitButtonPropsType {
   }
   isExpertMode: boolean
   trade: TradeWithMM<Currency, Currency, TradeType>
-  swapInputError: string
+  swapInputError: string | ReactNode
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
