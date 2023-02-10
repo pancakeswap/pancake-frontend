@@ -169,8 +169,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
     }
 
     if (status === 'live') {
-      const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
-
       return (
         <>
           <CommitTokenSection commitToken={ifo.currency} mb="24px">
@@ -193,7 +191,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
                   bold
                   decimals={4}
                   fontSize="20px"
-                  value={getBalanceNumber(spentAmount, currency.decimals)}
+                  value={getBalanceNumber(amountTokenCommittedInLP.minus(refundingAmountInLP), currency.decimals)}
                 />
               </Box>
             </Flex>
