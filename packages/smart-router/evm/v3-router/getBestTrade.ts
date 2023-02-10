@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import { Currency, CurrencyAmount, TradeType, JSBI } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 
-import { computeAllRoutes } from './functions'
+import { computeAllRoutes, getBestRouteCombinationByQuotes } from './functions'
 import { getRoutesWithValidQuote } from './getRoutesWithValidQuote'
-import { PoolProvider, QuoteProvider, Route, RouteWithQuote, Trade } from './types'
+import { BestRoutes, PoolProvider, QuoteProvider, Trade } from './types'
 
 interface Config {
   maxHops?: number
@@ -13,45 +13,33 @@ interface Config {
   quoteProvider: QuoteProvider
 }
 
-interface BestTrade {
-  trade: Trade<TradeType>
-  estimatedGasUsed: JSBI
-  estimatedGasUsedUSD: JSBI
-}
-
 export async function getBestTrade(
   amount: CurrencyAmount<Currency>,
   currency: Currency,
   tradeType: TradeType,
   config: Config,
-): Promise<BestTrade | null> {
+): Promise<Trade<TradeType> | null> {
   try {
     const bestRoutes = await getBestRoutes(amount, currency, tradeType, config)
     if (!bestRoutes) {
       return null
     }
 
-    const { routes, estimatedGasUsed, estimatedGasUsedUSD } = bestRoutes
+    const { routes, gasEstimateInUSD, gasEstimate, inputAmount, outputAmount } = bestRoutes
     // TODO restrict trade type to exact input if routes include one of the old
     // stable swap pools, which only allow to swap with exact input
     return {
-      estimatedGasUsedUSD,
-      estimatedGasUsed,
-      trade: {
-        tradeType,
-        routes,
-      },
+      tradeType,
+      routes,
+      gasEstimate,
+      gasEstimateInUSD,
+      inputAmount,
+      outputAmount,
     }
   } catch (e) {
     console.error(e)
     return null
   }
-}
-
-interface BestRoutes {
-  estimatedGasUsed: JSBI
-  estimatedGasUsedUSD: JSBI
-  routes: Route[]
 }
 
 async function getBestRoutes(
@@ -69,7 +57,7 @@ async function getBestRoutes(
     return null
   }
 
-  const baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools)
+  const baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools, maxHops)
   const routesWithValidQuote = await getRoutesWithValidQuote({
     amount,
     baseRoutes,
@@ -90,11 +78,5 @@ async function getBestRoutes(
   //     quote.currency.symbol,
   //   )
   // })
-  console.log(amount, currency, tradeType, maxHops, maxSplits)
-  return getBestRoutesByQuotes(amount, routesWithValidQuote)
-}
-
-function getBestRoutesByQuotes(amount: CurrencyAmount<Currency>, routesWithQuote: RouteWithQuote[]): BestRoutes | null {
-  console.log(amount, routesWithQuote)
-  return null
+  return getBestRouteCombinationByQuotes(amount, routesWithValidQuote, tradeType, { maxSplits })
 }

@@ -24,12 +24,12 @@ export interface BaseRoute {
   output: Currency
 }
 
-export type RouteEssentials = Omit<BaseRoute, 'input' | 'output'>
-
 export interface RouteWithoutQuote extends BaseRoute {
   percent: number
   amount: CurrencyAmount<Currency>
 }
+
+export type RouteEssentials = Omit<RouteWithoutQuote, 'input' | 'output' | 'amount'>
 
 export interface Route extends RouteEssentials {
   inputAmount: CurrencyAmount<Currency>
@@ -47,3 +47,11 @@ export interface RouteQuote {
 }
 
 export type RouteWithQuote = RouteWithoutQuote & RouteQuote
+
+export interface BestRoutes {
+  gasEstimate: JSBI
+  gasEstimateInUSD: CurrencyAmount<Currency>
+  routes: Route[]
+  inputAmount: CurrencyAmount<Currency>
+  outputAmount: CurrencyAmount<Currency>
+}
