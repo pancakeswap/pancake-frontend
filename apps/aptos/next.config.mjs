@@ -32,7 +32,7 @@ const nextConfig = {
         source: '/',
         destination: '/swap',
         permanent: false,
-      }
+      },
     ]
   },
 }
