@@ -3,7 +3,7 @@ import { BunnyPlaceholderIcon, Flex, Text } from "../../components";
 import { IfoMessageTextLink } from "./styleds";
 
 const IfoNotTokens: React.FC<React.PropsWithChildren<{ participateText: string; showHowDoesItWork?: boolean }>> = ({
-    participateText,
+  participateText,
   showHowDoesItWork = true,
 }) => {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ const IfoNotTokens: React.FC<React.PropsWithChildren<{ participateText: string; 
           {t("You have no tokens available for claiming")}
         </Text>
         <Text fontSize="14px" color="textSubtle" textAlign="center">
-            {participateText}
+          {participateText}
         </Text>
         {showHowDoesItWork && (
           <IfoMessageTextLink href="/ifo#ifo-how-to" color="primary" display="inline">
