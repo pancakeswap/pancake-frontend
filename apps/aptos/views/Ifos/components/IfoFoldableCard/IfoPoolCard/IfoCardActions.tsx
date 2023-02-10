@@ -5,6 +5,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { useMemo } from 'react'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { ClaimButton } from './ClaimButton'
 import ContributeButton from './ContributeButton'
 
@@ -24,11 +25,12 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   isLoading,
 }) => {
   const { account } = useAccount()
+  const getNow = useLedgerTimestamp()
   const userPoolCharacteristics = walletIfoData[poolId]
 
   const { startTime, endTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 

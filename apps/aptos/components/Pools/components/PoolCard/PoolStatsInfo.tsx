@@ -43,7 +43,11 @@ const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipCo
   )
 }
 
-const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({ pool, showTotalStaked = true }) => {
+const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
+  pool,
+  showTotalStaked = true,
+  alignLinksToRight = true,
+}) => {
   const { t } = useTranslation()
   const getNow = useLedgerTimestamp()
 
@@ -66,6 +70,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
   const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentDate
 
   const endTimeObject = useMemo(() => getTimePeriods(poolTimeRemaining), [poolTimeRemaining])
+
   const stakeLimitTimeObject = useMemo(() => getTimePeriods(stakeLimitTimeRemaining), [stakeLimitTimeRemaining])
 
   const {
@@ -104,10 +109,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
             <Flex alignItems="center">
               <Text color="textSubtle" small>
                 {stakeLimitTimeRemaining > 0
-                  ? stakeLimitTimeObject?.days
-                    ? stakeLimitTimeObject?.days === 1
+                  ? stakeLimitTimeObject?.totalDays
+                    ? stakeLimitTimeObject?.totalDays === 1
                       ? t('1 day')
-                      : t('%days% days', { days: stakeLimitTimeObject?.days })
+                      : t('%days% days', { days: stakeLimitTimeObject?.totalDays })
                     : t('< 1 day')
                   : t('%days% days', { days: 0 })}
               </Text>
@@ -124,10 +129,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         <Flex alignItems="center">
           <Text color="textSubtle" small>
             {poolTimeRemaining > 0
-              ? endTimeObject?.days
-                ? endTimeObject?.days === 1
+              ? endTimeObject?.totalDays
+                ? endTimeObject?.totalDays === 1
                   ? t('1 day')
-                  : t('%days% days', { days: endTimeObject?.days })
+                  : t('%days% days', { days: endTimeObject?.totalDays })
                 : t('< 1 day')
               : t('%days% days', { days: 0 })}
           </Text>
@@ -138,10 +143,11 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         </Flex>
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
-        <Flex />
-        <LinkExternal href={earningToken.projectLink} bold={false} small>
-          {t('View Project Site')}
-        </LinkExternal>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <LinkExternal href={earningToken.projectLink} bold={false} small>
+            {t('View Project Site')}
+          </LinkExternal>
+        </Flex>
       </Flex>
     </>
   )

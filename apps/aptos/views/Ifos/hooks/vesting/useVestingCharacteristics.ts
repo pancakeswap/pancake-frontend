@@ -17,6 +17,7 @@ import {
   computeReleaseAmount,
   computeVestingScheduleId,
 } from 'views/Ifos/utils'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { useIfoResources } from '../useIfoResources'
 import { useIfoVestingSchedule, useIfoVestingSchedules } from '../useIfoVestingSchedule'
 
@@ -32,7 +33,7 @@ function getPoolID(poolType?: string) {
   return pid
 }
 
-function mapVestingCharacteristics({ pool, account, vestingSchedule, resourcesMetaData }) {
+function mapVestingCharacteristics({ getNow, pool, account, vestingSchedule, resourcesMetaData }) {
   const pid = getPoolID(pool?.type)
 
   const ifoPool = pool?.data as unknown as IFOPool
@@ -46,7 +47,7 @@ function mapVestingCharacteristics({ pool, account, vestingSchedule, resourcesMe
 
   const vestingComputeReleasableAmount =
     resourcesMetaData && ifoPool && vestingSchedule.data
-      ? computeReleaseAmount(resourcesMetaData, ifoPool, vestingSchedule.data)
+      ? computeReleaseAmount(getNow, resourcesMetaData, ifoPool, vestingSchedule.data)
       : BIG_ZERO
 
   return {
@@ -62,6 +63,7 @@ function mapVestingCharacteristics({ pool, account, vestingSchedule, resourcesMe
 
 export const useVestingCharacteristicsList = (resourcesList) => {
   const { account } = useAccount()
+  const getNow = useLedgerTimestamp()
 
   const vestingScheduleId = useMemo(
     () => (account?.address ? computeVestingScheduleId(account.address, +IfoPoolKey.UNLIMITED) : undefined),
@@ -77,13 +79,14 @@ export const useVestingCharacteristicsList = (resourcesList) => {
       }
 
       return mapVestingCharacteristics({
+        getNow,
         account,
         vestingSchedule,
         pool: resourcesList[idx][IFO_RESOURCE_ACCOUNT_TYPE_POOL_STORE],
         resourcesMetaData: resourcesList[idx][IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?.data,
       })
     })
-  }, [account, resourcesList, vestingSchedules])
+  }, [getNow, account, resourcesList, vestingSchedules])
 }
 
 export const useVestingCharacteristics = (
@@ -97,6 +100,7 @@ export const useVestingCharacteristics = (
   useInterval(refresh, IFO_RESET_INTERVAL)
 
   const { account } = useAccount()
+  const getNow = useLedgerTimestamp()
 
   const vestingScheduleId = useMemo(
     () => (account?.address ? computeVestingScheduleId(account.address, +IfoPoolKey.UNLIMITED) : undefined),
@@ -110,11 +114,12 @@ export const useVestingCharacteristics = (
 
   return useMemo(() => {
     return mapVestingCharacteristics({
+      getNow,
       account,
       vestingSchedule,
       pool,
       resourcesMetaData: resources?.data?.[IFO_RESOURCE_ACCOUNT_TYPE_METADATA]?.data,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account, vestingSchedule, pool, resources?.data, lastUpdated])
+  }, [getNow, account, vestingSchedule, pool, resources?.data, lastUpdated])
 }

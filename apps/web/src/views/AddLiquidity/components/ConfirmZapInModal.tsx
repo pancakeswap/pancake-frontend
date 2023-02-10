@@ -9,10 +9,10 @@ import {
   useTooltip,
   TransactionErrorContent,
   ConfirmationModalContent,
+  AutoColumn,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
-import { AutoColumn } from 'components/Layout/Column'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { CurrencyLogo } from 'components/Logo'

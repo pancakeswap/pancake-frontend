@@ -9,6 +9,7 @@ import useStablePrice from 'hooks/useStablePrice'
 import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { multiplyPriceByAmount } from 'utils/prices'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
@@ -104,11 +105,12 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   publicIfoData,
 }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { startTime, endTime, currencyPriceInUSD } = publicIfoData
 
   const poolCharacteristic = publicIfoData[poolId]
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 

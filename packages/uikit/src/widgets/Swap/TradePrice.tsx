@@ -14,15 +14,13 @@ export function TradePrice({ price }: TradePriceProps) {
   const formattedPrice = showInverted ? price?.toSignificant(6) : price?.invert()?.toSignificant(6);
 
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency);
-  const label = showInverted
-    ? `${price?.quoteCurrency?.symbol} per ${price?.baseCurrency?.symbol}`
-    : `${price?.baseCurrency?.symbol} per ${price?.quoteCurrency?.symbol}`;
 
   return (
     <Text style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
       {show ? (
         <>
-          {formattedPrice ?? "-"} {label}
+          {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
+          {` ⇌ ${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
           <AtomBox className={balanceMaxMiniClass} onClick={() => setShowInverted(!showInverted)}>
             <AutoRenewIcon width="14px" />
           </AtomBox>

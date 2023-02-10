@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { CardConfigReturn } from '../types'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
@@ -50,6 +51,7 @@ export const cardConfig = (t: ContextApi['t'], poolId: PoolIds): CardConfigRetur
 
 const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { account } = useActiveWeb3React()
 
   const { startTime, endTime } = publicIfoData
@@ -60,7 +62,7 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, if
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 
