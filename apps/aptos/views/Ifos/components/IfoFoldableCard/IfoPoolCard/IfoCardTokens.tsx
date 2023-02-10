@@ -117,7 +117,6 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
   const { amountTokenCommittedInLP, refundingAmountInLP } = userPoolCharacteristics
-  const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
 
   const { startTime, endTime } = publicIfoData
 
@@ -170,6 +169,8 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
     }
 
     if (status === 'live') {
+      const spentAmount = amountTokenCommittedInLP.minus(refundingAmountInLP)
+
       return (
         <>
           <CommitTokenSection commitToken={ifo.currency} mb="24px">
