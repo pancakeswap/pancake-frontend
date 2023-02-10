@@ -13,7 +13,7 @@ import stats from 'stats-lite'
 import { BaseRoute, OnChainProvider, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
-import { encodeMixedRouteToPath, getQuoteCurrency } from '../utils'
+import { encodeMixedRouteToPath, getQuoteCurrency, getUsdGasToken } from '../utils'
 import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
 
@@ -511,7 +511,11 @@ function processQuoteResults(
     }
 
     const quoteCurrency = getQuoteCurrency(route, route.amount.currency)
-    const quote = CurrencyAmount.fromRawAmount(quoteCurrency, quoteResult.result[0])
+    const quote = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, quoteResult.result[0])
+    const usdToken = getUsdGasToken(quote.currency.chainId)
+    if (!usdToken) {
+      console.warn('Cannot get usd gas token on chain', quote.currency.chainId)
+    }
     routesWithQuote.push({
       ...route,
       quote,
@@ -520,8 +524,8 @@ function processQuoteResults(
       // initializedTicksCrossedList: quoteResult.result[2],
       gasEstimate: JSBI.BigInt(quoteResult.result[3]),
       // TODO gas model
-      gasCostInToken: quote,
-      gasCostInUSD: quote,
+      gasCostInToken: CurrencyAmount.fromRawAmount(quote.currency.wrapped, 0),
+      gasCostInUSD: CurrencyAmount.fromRawAmount(usdToken || quote.currency.wrapped, 0),
     })
   }
 
