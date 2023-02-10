@@ -17,6 +17,7 @@ import {
   IfoSkeletonCardTokens,
   IfoPercentageOfTotal,
   IfoVestingAvailableToClaim,
+  BalanceWithLoading,
 } from '@pancakeswap/uikit'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -117,6 +118,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 
   const publicPoolCharacteristics = publicIfoData[poolId]
   const userPoolCharacteristics = walletIfoData[poolId]
+  const { amountTokenCommittedInLP, refundingAmountInLP } = userPoolCharacteristics
 
   const { startTime, endTime } = publicIfoData
 
@@ -127,6 +129,21 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
   const { currency, token, version } = ifo
   const { hasClaimed } = userPoolCharacteristics
   const distributionRatio = ifo[poolId].distributionRatio * 100
+
+  const tooltipContentOfSpent = t(
+    'Based on "overflow" sales method. %refundingAmount% unspent %spentToken% are available to claim after the sale is completed.',
+    {
+      refundingAmount: getBalanceNumber(refundingAmountInLP, ifo.currency.decimals).toFixed(4),
+      spentToken: ifo.currency.symbol,
+    },
+  )
+  const {
+    targetRef: tagTargetRefOfSpent,
+    tooltip: tagTooltipOfSpent,
+    tooltipVisible: tagTooltipVisibleOfSpent,
+  } = useTooltip(tooltipContentOfSpent, {
+    placement: 'bottom',
+  })
 
   const renderTokenSection = () => {
     if (isLoading) {
@@ -163,6 +180,23 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
               userAmount={userPoolCharacteristics.amountTokenCommittedInLP}
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
+            <Flex>
+              <Box>
+                <Flex>
+                  <Label>{t('Your %symbol% spent', { symbol: currency.symbol })}</Label>
+                  {tagTooltipVisibleOfSpent && tagTooltipOfSpent}
+                  <span ref={tagTargetRefOfSpent}>
+                    <HelpIcon ml="4px" width="15px" height="15px" color="textSubtle" />
+                  </span>
+                </Flex>
+                <BalanceWithLoading
+                  bold
+                  decimals={4}
+                  fontSize="20px"
+                  value={getBalanceNumber(amountTokenCommittedInLP.minus(refundingAmountInLP), currency.decimals)}
+                />
+              </Box>
+            </Flex>
           </CommitTokenSection>
           <TokenSection primaryToken={ifo.token}>
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
