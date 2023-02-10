@@ -7,7 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { getBlockExploreLinkDefault } from 'utils'
-import splitTypeTag from 'utils/splitTypeTag'
+import getContactAddress from 'utils/getContactAddress'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AprInfo } from './Stat'
 
@@ -89,7 +89,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     tooltipVisible: stakeLimitTooltipVisible,
   } = useTooltip(<EndTimeTooltipComponent endTime={stakeLimitEndBlock + startBlock} />)
 
-  const poolContractAddress = splitTypeTag(contractAddress[chainId])[1]
+  const poolContractAddress = getContactAddress(contractAddress[chainId])
 
   return (
     <>
@@ -159,7 +159,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
           <LinkExternal
             isAptosScan
-            href={getBlockExploreLinkDefault(poolContractAddress, 'token', chainId)}
+            href={getBlockExploreLinkDefault(poolContractAddress, 'address', chainId)}
             bold={false}
             small
           >
