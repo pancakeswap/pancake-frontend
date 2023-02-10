@@ -1,6 +1,7 @@
 import { OrderBookRequest, OrderBookResponse, QuoteRequest, RFQIdResponse, RFQResponse } from '../types'
 
-const API_ENDPOINT = `https://test.linked-pool.pancakeswap.com/quote-service`
+// const API_ENDPOINT = `https://test.linked-pool.pancakeswap.com/quote-service`
+const API_ENDPOINT = `https://linked-pool.pancakeswap.com/quote-service`
 
 export const getMMOrderBook = async (param: OrderBookRequest): Promise<OrderBookResponse> => {
   try {
