@@ -18,7 +18,7 @@ export function computeAllRoutes(input: Currency, output: Currency, candidatePoo
     }
 
     if (currentRoute.length > 0 && involvesCurrency(currentRoute[currentRoute.length - 1], currencyOut)) {
-      routes.push(buildBaseRoute([...currentRoute], currencyIn))
+      routes.push(buildBaseRoute([...currentRoute], currencyIn, currencyOut))
       return
     }
 

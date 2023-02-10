@@ -39,6 +39,7 @@ yarn-error.log*
 debug.log*
 
 **/apps/web/config/abi/types
+**/packages/smart-router/evm/abis/types
 
 # Sentry
 .sentryclirc

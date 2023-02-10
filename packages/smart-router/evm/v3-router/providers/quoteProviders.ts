@@ -2,6 +2,7 @@
 import { QuoteProvider, OnChainProvider, RouteWithoutQuote, RouteWithQuote, RouteType } from '../types'
 import { isV3Pool } from '../utils'
 import { createOffChainQuoteProvider } from './offChainQuoteProvider'
+import { createMixedRouteOnChainQuoteProvider, createV3OnChainQuoteProvider } from './onChainQuoteProvider'
 
 interface Config {
   onChainProvider: OnChainProvider
@@ -9,13 +10,20 @@ interface Config {
 
 // For evm
 export function createQuoteProvider({ onChainProvider }: Config): QuoteProvider {
-  console.log(onChainProvider)
   const offChainQuoteProvider = createOffChainQuoteProvider()
+  const mixedRouteOnChainQuoteProvider = createMixedRouteOnChainQuoteProvider({ onChainProvider })
+  const v3OnChainQuoteProvider = createV3OnChainQuoteProvider({ onChainProvider })
 
   const createGetRouteWithQuotes = (isExactIn = true) => {
     const getOffChainQuotes = isExactIn
       ? offChainQuoteProvider.getRouteWithQuotesExactIn
       : offChainQuoteProvider.getRouteWithQuotesExactOut
+    const getMixedRouteQuotes = isExactIn
+      ? mixedRouteOnChainQuoteProvider.getRouteWithQuotesExactIn
+      : mixedRouteOnChainQuoteProvider.getRouteWithQuotesExactOut
+    const getV3Quotes = isExactIn
+      ? v3OnChainQuoteProvider.getRouteWithQuotesExactIn
+      : v3OnChainQuoteProvider.getRouteWithQuotesExactOut
 
     return async function getRoutesWithQuotes(routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> {
       const v3Routes: RouteWithoutQuote[] = []
@@ -38,8 +46,12 @@ export function createQuoteProvider({ onChainProvider }: Config): QuoteProvider 
         routesCanQuoteOffChain.push(route)
       }
 
-      const [offChainQuotes] = await Promise.all([getOffChainQuotes(routesCanQuoteOffChain)])
-      return [...offChainQuotes]
+      const [offChainQuotes, mixedRouteQuotes, v3Quotes] = await Promise.all([
+        getOffChainQuotes(routesCanQuoteOffChain),
+        getMixedRouteQuotes(mixedRoutesHaveV3Pool),
+        getV3Quotes(v3Routes),
+      ])
+      return [...offChainQuotes, ...mixedRouteQuotes, ...v3Quotes]
     }
   }
 

@@ -3,7 +3,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { BaseRoute, Pool, RouteType, PoolType } from '../types'
 import { getOutputCurrency } from './pool'
 
-export function buildBaseRoute(pools: Pool[], currencyIn: Currency): BaseRoute {
+export function buildBaseRoute(pools: Pool[], currencyIn: Currency, currencyOut: Currency): BaseRoute {
   const path: Currency[] = [currencyIn.wrapped]
   let prevIn = path[0]
   let routeType: RouteType | null = null
@@ -30,6 +30,8 @@ export function buildBaseRoute(pools: Pool[], currencyIn: Currency): BaseRoute {
     path,
     pools,
     type: routeType,
+    input: currencyIn,
+    output: currencyOut,
   }
 }
 
@@ -44,4 +46,8 @@ function getRouteTypeFromPool(pool: Pool) {
     default:
       return RouteType.MIXED
   }
+}
+
+export function getQuoteCurrency({ input, output }: BaseRoute, baseCurrency: Currency) {
+  return baseCurrency.equals(input) ? output : input
 }
