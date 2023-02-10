@@ -43,7 +43,11 @@ const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipCo
   )
 }
 
-const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({ pool, showTotalStaked = true }) => {
+const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
+  pool,
+  showTotalStaked = true,
+  alignLinksToRight = true,
+}) => {
   const { t } = useTranslation()
   const getNow = useLedgerTimestamp()
 
@@ -139,10 +143,11 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         </Flex>
       </Flex>
       <Flex justifyContent="space-between" alignItems="center">
-        <Flex />
-        <LinkExternal href={earningToken.projectLink} bold={false} small>
-          {t('View Project Site')}
-        </LinkExternal>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <LinkExternal href={earningToken.projectLink} bold={false} small>
+            {t('View Project Site')}
+          </LinkExternal>
+        </Flex>
       </Flex>
     </>
   )
