@@ -37,8 +37,6 @@ export default function FeeSelector({
 
   const { isLoading, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
 
-  console.log('distributions: ', distributions)
-
   const [showOptions, setShowOptions] = useState(false)
   // get pool data on-chain for latest states
   const pools = usePools([
@@ -89,7 +87,7 @@ export default function FeeSelector({
 
   return (
     <DynamicSection disabled={disabled}>
-      <LightGreyCard>
+      <LightGreyCard padding="8px">
         <AutoRow justifyContent="space-between" marginBottom="8px">
           {feeAmount ? (
             <>

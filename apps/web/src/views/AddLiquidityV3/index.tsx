@@ -86,6 +86,48 @@ const StyledInput = styled(NumericalInput)`
   margin-bottom: 16px;
 `
 
+/* two-column layout where DepositAmount is moved at the very end on mobile. */
+export const ResponsiveTwoColumns = styled.div<{ wide: boolean }>`
+  display: grid;
+  grid-column-gap: 32px;
+  grid-row-gap: 16px;
+  grid-template-columns: 1fr;
+
+  grid-template-rows: max-content;
+  grid-auto-flow: row;
+
+  padding-top: 20px;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-template-columns: 1fr 1fr;
+  }
+`
+
+export const HideMedium = styled.div`
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: none;
+  }
+`
+
+export const MediumOnly = styled.div`
+  display: none;
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: initial;
+  }
+`
+
+export const RightContainer = styled(AutoColumn)`
+  height: fit-content;
+
+  grid-row: 2 / 3;
+  grid-column: 1;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    grid-row: 1 / 3;
+    grid-column: 2;
+  }
+`
+
 interface AddLiquidityV3PropsType {
   currencyA: Currency
   currencyB: Currency
@@ -438,8 +480,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
       <BodyWrapper>
         <AppHeader title={t('Add Liquidity')} backTo="/pool-v3" />
         <CardBody>
-          <FlexGap gap="24px" alignItems="flex-start">
-            <RowBetween>
+          <ResponsiveTwoColumns>
+            <AutoColumn>
               <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
                 Choose Token Pair
               </Text>
@@ -469,110 +511,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                 handleFeePoolSelect={handleFeePoolSelect}
                 feeAmount={feeAmount}
               />
-            </RowBetween>
-
-            <RowBetween>
-              {noLiquidity ? (
-                <Box>
-                  <Text>Set Starting Price</Text>
-                  <LightGreyCard mb="16px">
-                    This pool must be initialized before you can add liquidity. To initialize, select a starting price
-                    for the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher
-                    than usual due to the initialization transaction.
-                  </LightGreyCard>
-                  <StyledInput
-                    className="start-price-input"
-                    value={startPriceTypedValue}
-                    onUserInput={onStartPriceInput}
-                  />
-                  <AutoRow justifyContent="space-between" mb="24px">
-                    <Text>Current {baseCurrency?.symbol} Price:</Text>
-                    <Text>
-                      {price ? (invertPrice ? price?.invert()?.toSignificant(5) : price?.toSignificant(5)) : '-'}
-                      <span style={{ marginLeft: '4px' }}>{quoteCurrency?.symbol}</span>
-                    </Text>
-                  </AutoRow>
-                </Box>
-              ) : (
-                <>
-                  <RowBetween>
-                    <Text bold fontSize="14px" textTransform="uppercase" color="secondary">
-                      Set Price Range
-                    </Text>
-                    <RateToggle
-                      currencyA={baseCurrency}
-                      handleRateToggle={() => {
-                        if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                          onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
-                          onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
-                          onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
-                        }
-
-                        router.replace(
-                          `/add/${currencyB?.wrapped?.address}/${baseCurrency?.wrapped?.address}${
-                            feeAmount ? `/${feeAmount}` : ''
-                          }`,
-                          undefined,
-                          {
-                            shallow: true,
-                          },
-                        )
-                      }}
-                    />
-                  </RowBetween>
-
-                  {price && baseCurrency && quoteCurrency && !noLiquidity && (
-                    <AutoRow gap="4px" justifyContent="center" style={{ marginTop: '0.5rem' }}>
-                      <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
-                        Current Price:
-                      </Text>
-                      <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
-                        {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
-                      </Text>
-                      <Text color="text2" fontSize={12}>
-                        {quoteCurrency?.symbol} per {baseCurrency.symbol}
-                      </Text>
-                    </AutoRow>
-                  )}
-
-                  <LiquidityChartRangeInput
-                    currencyA={baseCurrency ?? undefined}
-                    currencyB={quoteCurrency ?? undefined}
-                    feeAmount={feeAmount}
-                    ticksAtLimit={ticksAtLimit}
-                    price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
-                    priceLower={priceLower}
-                    priceUpper={priceUpper}
-                    onLeftRangeInput={onLeftRangeInput}
-                    onRightRangeInput={onRightRangeInput}
-                    interactive
-                  />
-                </>
-              )}
-              <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
-                <RangeSelector
-                  priceLower={priceLower}
-                  priceUpper={priceUpper}
-                  getDecrementLower={getDecrementLower}
-                  getIncrementLower={getIncrementLower}
-                  getDecrementUpper={getDecrementUpper}
-                  getIncrementUpper={getIncrementUpper}
-                  onLeftRangeInput={onLeftRangeInput}
-                  onRightRangeInput={onRightRangeInput}
-                  currencyA={baseCurrency}
-                  currencyB={quoteCurrency}
-                  feeAmount={feeAmount}
-                  ticksAtLimit={ticksAtLimit}
-                />
-              </DynamicSection>
-            </RowBetween>
-          </FlexGap>
-          <AutoRow gap="24px">
-            <AutoColumn
-              style={{
-                flexBasis: '50%',
-              }}
-            >
+            </AutoColumn>
+            <AutoColumn>
               <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
                 Deposit Amount
               </Text>
@@ -601,14 +541,107 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                 commonBasesType={CommonBasesType.LIQUIDITY}
               />
             </AutoColumn>
-            <AutoColumn
-              style={{
-                flexGrow: 1,
-              }}
-            >
-              {buttons}
-            </AutoColumn>
-          </AutoRow>
+            <HideMedium>{buttons}</HideMedium>
+
+            <RightContainer>
+              <AutoColumn>
+                {noLiquidity ? (
+                  <Box>
+                    <Text>Set Starting Price</Text>
+                    <LightGreyCard mb="16px">
+                      This pool must be initialized before you can add liquidity. To initialize, select a starting price
+                      for the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher
+                      than usual due to the initialization transaction.
+                    </LightGreyCard>
+                    <StyledInput
+                      className="start-price-input"
+                      value={startPriceTypedValue}
+                      onUserInput={onStartPriceInput}
+                    />
+                    <AutoRow justifyContent="space-between" mb="24px">
+                      <Text>Current {baseCurrency?.symbol} Price:</Text>
+                      <Text>
+                        {price ? (invertPrice ? price?.invert()?.toSignificant(5) : price?.toSignificant(5)) : '-'}
+                        <span style={{ marginLeft: '4px' }}>{quoteCurrency?.symbol}</span>
+                      </Text>
+                    </AutoRow>
+                  </Box>
+                ) : (
+                  <>
+                    <RowBetween>
+                      <Text bold fontSize="14px" textTransform="uppercase" color="secondary">
+                        Set Price Range
+                      </Text>
+                      <RateToggle
+                        currencyA={baseCurrency}
+                        handleRateToggle={() => {
+                          if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
+                            onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
+                            onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
+                            onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
+                          }
+
+                          router.replace(
+                            `/add/${currencyB?.wrapped?.address}/${baseCurrency?.wrapped?.address}${
+                              feeAmount ? `/${feeAmount}` : ''
+                            }`,
+                            undefined,
+                            {
+                              shallow: true,
+                            },
+                          )
+                        }}
+                      />
+                    </RowBetween>
+
+                    {price && baseCurrency && quoteCurrency && !noLiquidity && (
+                      <AutoRow gap="4px" justifyContent="center" style={{ marginTop: '0.5rem' }}>
+                        <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                          Current Price:
+                        </Text>
+                        <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                          {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
+                        </Text>
+                        <Text color="text2" fontSize={12}>
+                          {quoteCurrency?.symbol} per {baseCurrency.symbol}
+                        </Text>
+                      </AutoRow>
+                    )}
+
+                    <LiquidityChartRangeInput
+                      currencyA={baseCurrency ?? undefined}
+                      currencyB={quoteCurrency ?? undefined}
+                      feeAmount={feeAmount}
+                      ticksAtLimit={ticksAtLimit}
+                      price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
+                      priceLower={priceLower}
+                      priceUpper={priceUpper}
+                      onLeftRangeInput={onLeftRangeInput}
+                      onRightRangeInput={onRightRangeInput}
+                      interactive
+                    />
+                  </>
+                )}
+                <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
+                  <RangeSelector
+                    priceLower={priceLower}
+                    priceUpper={priceUpper}
+                    getDecrementLower={getDecrementLower}
+                    getIncrementLower={getIncrementLower}
+                    getDecrementUpper={getDecrementUpper}
+                    getIncrementUpper={getIncrementUpper}
+                    onLeftRangeInput={onLeftRangeInput}
+                    onRightRangeInput={onRightRangeInput}
+                    currencyA={baseCurrency}
+                    currencyB={quoteCurrency}
+                    feeAmount={feeAmount}
+                    ticksAtLimit={ticksAtLimit}
+                  />
+                </DynamicSection>
+                <MediumOnly>{buttons}</MediumOnly>
+              </AutoColumn>
+            </RightContainer>
+          </ResponsiveTwoColumns>
         </CardBody>
       </BodyWrapper>
     </Page>

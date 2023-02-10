@@ -16,9 +16,10 @@ export function FeeTierPercentageBadge({
     <Tag
       variant="textSubtle"
       outline
-      fontSize="12px"
+      fontSize="10px"
       padding="4px"
       style={{
+        justifyContent: 'center',
         whiteSpace: 'inherit',
       }}
     >
