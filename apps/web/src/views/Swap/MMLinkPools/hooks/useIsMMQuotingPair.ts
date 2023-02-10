@@ -4,10 +4,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
-import { getAddress } from '@ethersproject/address'
+import { NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { useIsMMSupportChain } from './useIsMMSupportChain'
-
-const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
 const QUOTING_WHITE_LIST = {
   1: PANCAKE_ETH_DEFAULT,

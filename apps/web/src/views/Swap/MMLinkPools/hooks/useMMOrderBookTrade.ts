@@ -77,7 +77,7 @@ export const useMMTrade = (
   const isExactIn: boolean = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
-  let bestTradeWithMM
+  let bestTradeWithMM = null
 
   if (!inputCurrency || !outputCurrency || !mmQoute || !mmQoute?.message?.takerSideTokenAmount) bestTradeWithMM = null
   else {

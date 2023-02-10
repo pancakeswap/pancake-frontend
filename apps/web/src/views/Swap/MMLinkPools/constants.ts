@@ -1,5 +1,8 @@
 import { ChainId } from '@pancakeswap/sdk'
 import contract from 'config/constants/contracts'
+import { getAddress } from '@ethersproject/address'
+
+export const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
 export const MM_SUPPORT_CHIAN = {
   1: true,

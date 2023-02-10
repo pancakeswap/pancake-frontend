@@ -12,10 +12,10 @@ export const useGetRFQId = (param: QuoteRequest, isMMBetter: boolean): { rfqId: 
     isMMBetter &&
       account &&
       param &&
-      param.trader &&
-      (param.makerSideTokenAmount || param.takerSideTokenAmount) &&
-      param.makerSideTokenAmount !== '0' &&
-      param.takerSideTokenAmount !== '0' && [
+      param?.trader &&
+      (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
+      param?.makerSideTokenAmount !== '0' &&
+      param?.takerSideTokenAmount !== '0' && [
         `RFQ/${param.networkId}/${param.makerSideToken}/${param.takerSideToken}/${param.makerSideTokenAmount}/${param.takerSideTokenAmount}`,
       ],
     () => sendRFQAndGetRFQId(param),
@@ -33,7 +33,7 @@ export const useGetRFQTrade = (
   refreshRFQ: () => void,
 ): {
   rfq: RFQResponse['message']
-  trade: TradeWithMM<Currency, Currency, TradeType>
+  trade: TradeWithMM<Currency, Currency, TradeType> | null
   refreshRFQ: () => void
   quoteExpiry: number
 } | null => {
@@ -51,10 +51,10 @@ export const useGetRFQTrade = (
       isExactIn,
       inputCurrency,
       outputCurrency,
-      data.message.takerSideTokenAmount,
-      data.message.makerSideTokenAmount,
+      data?.message?.takerSideTokenAmount,
+      data?.message?.makerSideTokenAmount,
     ),
-    quoteExpiry: data.message.quoteExpiry,
+    quoteExpiry: data?.message?.quoteExpiry ?? null,
     refreshRFQ,
   }
 }

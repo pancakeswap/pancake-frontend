@@ -1,6 +1,5 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
 
-import { getAddress } from '@ethersproject/address'
 import { parseUnits } from '@ethersproject/units'
 import PancakeSwapMMLinkedPoolABI from 'config/abi/mmLinkedPool.json'
 import { MmLinkedPool } from 'config/abi/types/MmLinkedPool'
@@ -9,10 +8,8 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useContract } from 'hooks/useContract'
 import toNumber from 'lodash/toNumber'
 import { Field } from 'state/swap/actions'
-import { MM_SWAP_CONTRACT_ADDRESS, MM_STABLE_TOKENS_WHITE_LIST } from '../constants'
+import { MM_STABLE_TOKENS_WHITE_LIST, MM_SWAP_CONTRACT_ADDRESS, NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { OrderBookRequest, TradeWithMM } from '../types'
-
-const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
 export function useMMSwapContract() {
   const { chainId } = useActiveChainId()
@@ -129,11 +126,12 @@ export const parseMMParameter = (
 
 export const parseMMTrade = (
   isExactIn,
-  inputCurrency: Currency,
-  outputCurrency: Currency,
-  takerSideTokenAmount: string,
-  makerSideTokenAmount: string,
+  inputCurrency?: Currency,
+  outputCurrency?: Currency,
+  takerSideTokenAmount?: string,
+  makerSideTokenAmount?: string,
 ): TradeWithMM<Currency, Currency, TradeType> => {
+  if (!inputCurrency || !outputCurrency || !takerSideTokenAmount || !makerSideTokenAmount) return null
   const bestTradeWithMM: TradeWithMM<Currency, Currency, TradeType> = {
     tradeType: isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
     inputAmount: CurrencyAmount.fromRawAmount(inputCurrency, JSBI.BigInt(takerSideTokenAmount)),
