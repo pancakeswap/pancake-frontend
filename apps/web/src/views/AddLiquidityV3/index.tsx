@@ -67,6 +67,7 @@ import FeeSelector from './components/FeeSelector'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
+import { DynamicSection } from './components/shared'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -83,12 +84,6 @@ const StyledInput = styled(NumericalInput)`
   font-size: 16px;
   width: 100%;
   margin-bottom: 16px;
-`
-
-export const DynamicSection = styled(AutoColumn)<{ disabled?: boolean }>`
-  opacity: ${({ disabled }) => (disabled ? '0.2' : '1')};
-  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'initial')};
-  width: 100%;
 `
 
 interface AddLiquidityV3PropsType {
@@ -468,7 +463,12 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                 />
               </FlexGap>
 
-              <FeeSelector handleFeePoolSelect={handleFeePoolSelect} feeAmount={feeAmountFromUrl} />
+              <FeeSelector
+                currencyA={baseCurrency ?? undefined}
+                currencyB={quoteCurrency ?? undefined}
+                handleFeePoolSelect={handleFeePoolSelect}
+                feeAmount={feeAmount}
+              />
             </RowBetween>
 
             <RowBetween>
@@ -584,7 +584,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                 showQuickInputButton
                 showMaxButton
                 currency={currencies[Field.CURRENCY_A]}
-                id="add-liquidity-input-tokenb"
+                id="add-liquidity-input-tokena"
                 showCommonBases
                 commonBasesType={CommonBasesType.LIQUIDITY}
               />

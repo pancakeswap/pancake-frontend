@@ -8,7 +8,7 @@ import addresses from 'config/constants/contracts'
 import { PoolState, TickProcessed } from './types'
 import { usePool } from './usePools'
 import computeSurroundingTicks from './utils/computeSurroundingTicks'
-import useAllV3TicksQuery, { TickData } from './AllV3TicksQuery'
+import useAllV3TicksQuery, { TickData } from './useAllV3TicksQuery'
 
 const PRICE_FIXED_DIGITS = 8
 
