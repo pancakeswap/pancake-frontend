@@ -46,7 +46,7 @@ export function getOutputCurrency(pool: Pool, currencyIn: Currency): Currency {
   }
   if (isStablePool(pool)) {
     const { balances } = pool
-    return balances[0].currency.equals(tokenIn) ? balances[0].currency : balances[1].currency
+    return balances[0].currency.equals(tokenIn) ? balances[1].currency : balances[0].currency
   }
   throw new Error('Cannot get output currency by invalid pool')
 }
