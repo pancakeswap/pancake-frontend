@@ -38,7 +38,11 @@ export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool>({
   },
 })
 
-export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool>({
+interface StablePoolMeta extends PoolMeta {
+  address: string
+}
+
+export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, StablePoolMeta>({
   abi: IStablePoolABI,
   getPossiblePoolMetas: ([currencyA, currencyB]) => {
     const poolConfigs = getStableSwapPools(currencyA.chainId)
@@ -84,7 +88,7 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool>({
       params: [],
     },
   ],
-  buildPool: ({ currencyA, currencyB }, [balance0, balance1, a, fee, feeDenominator]) => {
+  buildPool: ({ currencyA, currencyB, address }, [balance0, balance1, a, fee, feeDenominator]) => {
     if (!balance0 || !balance1 || !a || !fee || !feeDenominator) {
       return null
     }
@@ -92,6 +96,7 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool>({
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
     return {
+      address,
       type: PoolType.STABLE,
       balances: [CurrencyAmount.fromRawAmount(token0, balance0), CurrencyAmount.fromRawAmount(token1, balance1)],
       amplifier: JSBI.BigInt(a),

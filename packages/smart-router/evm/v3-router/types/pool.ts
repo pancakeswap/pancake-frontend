@@ -18,6 +18,7 @@ export interface V2Pool extends BasePool {
 }
 
 export interface StablePool extends BasePool {
+  address: string
   type: PoolType.STABLE
   // Could be 2 token pool or more
   balances: CurrencyAmount<Currency>[]

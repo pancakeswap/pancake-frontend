@@ -11,7 +11,7 @@ import {
   V3Pool as IV3Pool,
 } from '../types'
 import { StableSwap } from '../../stableSwap'
-import { getOutputCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
+import { getOutputCurrency, getUsdGasToken, isStablePool, isV2Pool, isV3Pool } from '../utils'
 
 // TODO Gas Model
 
@@ -58,14 +58,18 @@ export function createOffChainQuoteProvider(): QuoteProvider {
           }
         }
 
+        const usdToken = getUsdGasToken(quote.currency.chainId)
+        if (!usdToken) {
+          console.warn('Cannot find usd gas token on chain', quote.currency.chainId)
+        }
         routesWithQuote.push({
           ...route,
           quote,
           // TODO gas model
           quoteAdjustedForGas: quote,
           gasEstimate: JSBI.BigInt(0),
-          gasCostInUSD: quote,
-          gasCostInToken: quote,
+          gasCostInUSD: CurrencyAmount.fromRawAmount(usdToken || quote.currency, 0),
+          gasCostInToken: CurrencyAmount.fromRawAmount(quote.currency.wrapped, 0),
         })
       }
       return routesWithQuote

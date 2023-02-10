@@ -1,6 +1,8 @@
-import { Currency } from '@pancakeswap/sdk'
+import { ChainId, Currency, Pair } from '@pancakeswap/sdk'
+import { computePoolAddress } from '@pancakeswap/v3-sdk'
 
 import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
+import { V3_POOL_FACTORY_ADDRESS } from '../../constants'
 
 export function isV2Pool(pool: Pool): pool is V2Pool {
   return pool.type === PoolType.V2
@@ -44,7 +46,30 @@ export function getOutputCurrency(pool: Pool, currencyIn: Currency): Currency {
   }
   if (isStablePool(pool)) {
     const { balances } = pool
-    return balances[0].currency.equals(tokenIn) ? balances[0].currency : balances[1].currency
+    return balances[0].currency.equals(tokenIn) ? balances[1].currency : balances[0].currency
   }
   throw new Error('Cannot get output currency by invalid pool')
+}
+
+export function getPoolAddress(pool: Pool): string {
+  if (isStablePool(pool)) {
+    return pool.address
+  }
+  if (isV2Pool(pool)) {
+    const { reserve0, reserve1 } = pool
+    return Pair.getAddress(reserve0.currency.wrapped, reserve1.currency.wrapped)
+  }
+  if (isV3Pool(pool)) {
+    const { fee, token0, token1 } = pool
+    // eslint-disable-next-line
+    const chainId: ChainId = token0.chainId
+    const factoryAddress = V3_POOL_FACTORY_ADDRESS[chainId]
+    return computePoolAddress({
+      factoryAddress,
+      tokenA: token0.wrapped,
+      tokenB: token1.wrapped,
+      fee,
+    })
+  }
+  return ''
 }

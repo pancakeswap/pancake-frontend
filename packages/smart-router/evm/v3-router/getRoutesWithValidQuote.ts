@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 
 import { BaseRoute, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
