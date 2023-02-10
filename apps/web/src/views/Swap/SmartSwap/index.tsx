@@ -3,6 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
 import {
   ArrowDownIcon,
+  AutoColumn,
   Box,
   Button,
   Checkbox,
@@ -13,7 +14,6 @@ import {
   Swap as SwapUI,
   Text,
   useModal,
-  AutoColumn,
 } from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -54,9 +54,9 @@ import {
   useGetRFQTrade,
   useIsMMQuotingPair,
   useIsTradeWithMMBetter,
+  useMMQuoteCountDown,
   useMMTrade,
   useMMTradeInfo,
-  useMMQuoteCountDown,
 } from '../MMLinkPools/hooks'
 import { parseMMError, shouldShowMMError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
