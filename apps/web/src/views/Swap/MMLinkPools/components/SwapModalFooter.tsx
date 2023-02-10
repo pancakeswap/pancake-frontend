@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { AutoRenewIcon, Button, Link, QuestionHelper, Text } from '@pancakeswap/uikit'
-import { AutoColumn } from 'components/Layout/Column'
+import { AutoRenewIcon, Button, Link, QuestionHelper, Text, AutoColumn } from '@pancakeswap/uikit'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useMemo, useState } from 'react'
