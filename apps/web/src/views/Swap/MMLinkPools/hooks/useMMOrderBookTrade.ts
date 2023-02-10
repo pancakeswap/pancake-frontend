@@ -9,6 +9,7 @@ import useSWR from 'swr'
 import { isAddress } from 'utils'
 
 import { getMMOrderBook } from '../apis'
+import { useIsMMQuotingPair } from './useIsMMQuotingPair'
 import { OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
 import { parseMMParameter, parseMMTrade } from '../utils/exchange'
 
@@ -26,7 +27,7 @@ function involvesAddress(trade: TradeWithMM<Currency, Currency, TradeType>, chec
   )
 }
 
-export const useOrderBookQuote = (request: OrderBookRequest): OrderBookResponse => {
+export const useOrderBookQuote = (request: OrderBookRequest | null): OrderBookResponse => {
   const { data } = useSWR(
     request &&
       request.trader &&
@@ -56,10 +57,14 @@ export const useMMTrade = (
   inputError?: string
   mmParam: OrderBookRequest
 } | null => {
+  const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const { account, chainId } = useActiveWeb3React()
   const mmParam = useMemo(
-    () => parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account),
-    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account],
+    () =>
+      isMMQuotingPair
+        ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account)
+        : null,
+    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
   )
   const mmQoute = useOrderBookQuote(mmParam)
   const { t } = useTranslation()
