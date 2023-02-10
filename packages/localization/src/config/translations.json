@@ -2115,5 +2115,6 @@
   "Output is estimated. You will receive at least or the transaction will revert.": "Output is estimated. You will receive at least or the transaction will revert.",
   "Input is estimated. You will sell at most or the transaction will revert.": "Input is estimated. You will sell at most or the transaction will revert.",
   "MM Linked Pool": "MM Linked Pool",
-  "Trade through the market makers if they provide better deal": "Trade through the market makers if they provide better deal"
+  "Trade through the market makers if they provide better deal": "Trade through the market makers if they provide better deal",
+  "Checking RFQ with MM": "Checking RFQ with MM"
 }

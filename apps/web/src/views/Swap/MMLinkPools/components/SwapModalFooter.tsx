@@ -1,6 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { AutoRenewIcon, Button, Link, QuestionHelper, Text, AutoColumn } from '@pancakeswap/uikit'
+import { AutoRenewIcon, Button, Link, QuestionHelper, Text, AutoColumn, Dots } from '@pancakeswap/uikit'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useMemo, useState } from 'react'
@@ -177,11 +177,13 @@ export default function SwapModalFooter({
           id="confirm-swap-or-send"
           width="100%"
         >
-          {!isRFQReady
-            ? 'Checking RFQ with MM'
-            : severity > 2 || (trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance)
-            ? t('Swap Anyway')
-            : t('Confirm Swap')}
+          {!isRFQReady ? (
+            <Dots>{t('Checking RFQ with MM')}</Dots>
+          ) : severity > 2 || (trade.tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance) ? (
+            t('Swap Anyway')
+          ) : (
+            t('Confirm Swap')
+          )}
         </Button>
 
         {swapErrorMessage ? <SwapCallbackError error={swapErrorMessage} /> : null}

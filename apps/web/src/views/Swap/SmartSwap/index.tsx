@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Dots,
   Flex,
   Message,
   MessageText,
@@ -445,7 +446,10 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               currencies={currencies}
               isExpertMode={isExpertMode}
               trade={mmRFQTrade?.trade}
-              swapInputError={mmOrderBookTrade?.inputError || (isMMBetter && !mmRFQTrade ? 'Checking RFQ with MM' : '')}
+              swapInputError={
+                mmOrderBookTrade?.inputError ||
+                (isMMBetter && !mmRFQTrade ? <Dots>{t('Checking RFQ with MM')}</Dots> : '')
+              }
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
               allowedSlippage={allowedSlippage}

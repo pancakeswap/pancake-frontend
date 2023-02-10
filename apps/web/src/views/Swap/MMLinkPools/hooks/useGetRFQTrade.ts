@@ -40,7 +40,7 @@ export const useGetRFQTrade = (
   const { data } = useSWRImmutable(
     isMMBetter && rfqId && [`RFQ/${rfqId}`],
     () => getRFQById(rfqId),
-    { refreshInterval: 1500 }, // 1.5 sec auto refresh
+    { refreshInterval: 1500, keepPreviousData: true }, // 1.5 sec auto refresh
   )
   const isExactIn: boolean = independentField === Field.INPUT
 
