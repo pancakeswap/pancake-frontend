@@ -37,6 +37,8 @@ export default function FeeSelector({
 
   const { isLoading, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
 
+  console.log('distributions: ', distributions)
+
   const [showOptions, setShowOptions] = useState(false)
   // get pool data on-chain for latest states
   const pools = usePools([

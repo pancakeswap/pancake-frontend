@@ -11,22 +11,22 @@ export const FEE_AMOUNT_DETAIL: Record<
   [FeeAmount.LOWEST]: {
     label: '0.01',
     description: 'Best for very stable pairs.',
-    supportedChains: [ChainId.GOERLI],
+    supportedChains: [ChainId.GOERLI, ChainId.ETHEREUM],
   },
   [FeeAmount.LOW]: {
     label: '0.05',
     description: 'Best for stable pairs.',
-    supportedChains: [ChainId.GOERLI],
+    supportedChains: [ChainId.GOERLI, ChainId.ETHEREUM],
   },
   [FeeAmount.MEDIUM]: {
     label: '0.3',
     description: 'Best for most pairs.',
-    supportedChains: [ChainId.GOERLI],
+    supportedChains: [ChainId.GOERLI, ChainId.ETHEREUM],
   },
   [FeeAmount.HIGH]: {
     label: '1',
     description: 'Best for exotic pairs.',
-    supportedChains: [ChainId.GOERLI],
+    supportedChains: [ChainId.GOERLI, ChainId.ETHEREUM],
   },
 }
 
