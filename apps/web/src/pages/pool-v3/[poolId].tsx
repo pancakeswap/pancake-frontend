@@ -422,11 +422,11 @@ export default function PoolPage() {
                   </Text>
 
                   {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash ? (
-                    <Button scale="sm" disabled={isCollectPending} onClick={onClaimFee}>
+                    <Button scale="sm" disabled={collecting || isCollectPending} onClick={onClaimFee}>
                       {!!collectMigrationHash && !isCollectPending
                         ? 'Collected'
                         : isCollectPending || collecting
-                        ? 'Collecting'
+                        ? 'Collecting...'
                         : 'Collect fees'}
                     </Button>
                   ) : null}

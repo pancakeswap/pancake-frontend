@@ -271,7 +271,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     />,
     true,
     true,
-    'TransactionConfirmationModalIncressLiquidity',
+    'TransactionConfirmationModalIncreaseLiquidity',
   )
 
   let buttons
