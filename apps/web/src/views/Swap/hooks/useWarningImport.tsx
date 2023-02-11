@@ -3,7 +3,7 @@ import { Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
 
 import { useRouter } from 'next/router'
-
+import useSWRImmutable from 'swr/immutable'
 import shouldShowSwapWarning from 'utils/shouldShowSwapWarning'
 
 import { useCurrency, useAllTokens } from 'hooks/Tokens'
@@ -35,14 +35,17 @@ export default function useWarningImport() {
 
   const defaultTokens = useAllTokens()
 
-  const importTokensNotInDefault =
-    !isWrongNetwork && urlLoadedTokens
+  const { data: loadedTokenList } = useSWRImmutable(['token-list'])
+
+  const importTokensNotInDefault = useMemo(() => {
+    return !isWrongNetwork && urlLoadedTokens && !!loadedTokenList
       ? urlLoadedTokens.filter((token: Token) => {
           const checksummedAddress = isAddress(token.address) || ''
 
           return !(checksummedAddress in defaultTokens) && token.chainId === chainId
         })
       : []
+  }, [chainId, defaultTokens, isWrongNetwork, loadedTokenList, urlLoadedTokens])
 
   const [onPresentSwapWarningModal] = useModal(<SwapWarningModal swapCurrency={swapWarningCurrency} />, false)
   const [onPresentImportTokenWarningModal] = useModal(

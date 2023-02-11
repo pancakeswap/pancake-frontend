@@ -19,6 +19,7 @@ function TradeSummary({
   priceImpactWithoutFee,
   realizedLPFee,
   hasStablePair = false,
+  isMM = false,
 }: {
   hasStablePair?: boolean
   inputAmount?: CurrencyAmount<Currency>
@@ -30,6 +31,7 @@ function TradeSummary({
   }
   priceImpactWithoutFee?: Percent
   realizedLPFee?: CurrencyAmount<Currency>
+  isMM?: boolean
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
@@ -68,12 +70,28 @@ function TradeSummary({
               {t('Price Impact')}
             </Text>
             <QuestionHelper
-              text={t('The difference between the market price and estimated price due to trade size.')}
+              text={
+                <>
+                  <Text>
+                    <Text bold display="inline-block">
+                      {t('AMM')}
+                    </Text>
+                    {`: ${t('The difference between the market price and estimated price due to trade size.')}`}
+                  </Text>
+                  <Text mt="10px">
+                    <Text bold display="inline-block">
+                      {t('MM')}
+                    </Text>
+                    {`: ${t('No slippage against quote from market maker')}`}
+                  </Text>
+                </>
+              }
               ml="4px"
               placement="top-start"
             />
           </RowFixed>
-          <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
+
+          {isMM ? <Text color="textSubtle">--</Text> : <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />}
         </RowBetween>
       )}
 
@@ -87,6 +105,10 @@ function TradeSummary({
               text={
                 <>
                   <Text mb="12px">
+                    <Text bold display="inline-block">
+                      {t('AMM')}
+                    </Text>
+                    :{' '}
                     {hasStablePair
                       ? t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })
                       : t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}
@@ -109,6 +131,15 @@ function TradeSummary({
                       </Text>
                     </>
                   )}
+                  <Text mt="10px">
+                    <Text bold display="inline-block">
+                      {t('MM')}
+                    </Text>
+                    :{' '}
+                    {t(
+                      'PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.',
+                    )}
+                  </Text>
                 </>
               }
               ml="4px"
@@ -135,6 +166,7 @@ export interface AdvancedSwapDetailsProps {
   inputAmount?: CurrencyAmount<Currency>
   outputAmount?: CurrencyAmount<Currency>
   tradeType?: TradeType
+  isMM?: boolean
 }
 
 export function AdvancedSwapDetails({
@@ -147,6 +179,7 @@ export function AdvancedSwapDetails({
   outputAmount,
   tradeType,
   hasStablePair,
+  isMM = false,
 }: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState(() => false)
@@ -163,6 +196,7 @@ export function AdvancedSwapDetails({
             priceImpactWithoutFee={priceImpactWithoutFee}
             realizedLPFee={realizedLPFee}
             hasStablePair={hasStablePair}
+            isMM={isMM}
           />
           {showRoute && (
             <>
@@ -194,6 +228,7 @@ export function AdvancedSwapDetails({
                     onDismiss={() => setIsModalOpen(false)}
                   >
                     <RouterViewer
+                      isMM={isMM}
                       inputCurrency={inputAmount.currency}
                       pairs={pairs}
                       path={path}

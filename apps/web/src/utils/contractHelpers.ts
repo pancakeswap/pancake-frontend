@@ -43,6 +43,7 @@ import {
   getNonBscVaultAddress,
   getCrossFarmingSenderAddress,
   getCrossFarmingReceiverAddress,
+  getMMLinkedPoolAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -97,6 +98,7 @@ import nonBscVault from 'config/abi/nonBscVault.json'
 import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
 import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
 import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
+import mmLinkedPoolAbi from 'config/abi/mmLinkedPool.json'
 
 // Types
 import type {
@@ -147,6 +149,7 @@ import type {
   CrossFarmingSender,
   CrossFarmingReceiver,
   CrossFarmingProxy,
+  MmLinkedPool,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -182,6 +185,9 @@ export const getIfoV2Contract = (address: string, signer?: Signer | Provider) =>
 }
 export const getIfoV3Contract = (address: string, signer?: Signer | Provider) => {
   return getContract({ abi: ifoV3Abi, address, signer })
+}
+export const getMMLinkedPoolContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({ abi: mmLinkedPoolAbi, address: getMMLinkedPoolAddress(chainId), signer }) as MmLinkedPool
 }
 export const getSouschefContract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
