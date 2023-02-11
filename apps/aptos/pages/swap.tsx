@@ -422,8 +422,8 @@ const SwapPage = () => {
       <Card style={{ width: '328px' }}>
         <CurrencyInputHeader
           title={
-            <Flex width="100%" ml={32}>
-              <Flex flexDirection="column" alignItems="center" width="100%">
+            <Flex width="100%">
+              <Flex flexDirection="column" alignItems="center" width="100%" ml="60px">
                 <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
               </Flex>
               {account && (
