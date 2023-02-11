@@ -7,10 +7,11 @@ import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
-import AddLiquidity from 'views/AddLiquidity'
+import AddLiquidityV3 from 'views/AddLiquidityV3'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
 import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import LiquidityFormProvider from 'views/AddLiquidityV3/form/LiquidityFormProvider'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -43,7 +44,9 @@ const AddLiquidityPage = () => {
       <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
     </StableConfigContext.Provider>
   ) : (
-    <AddLiquidity currencyA={currencyA} currencyB={currencyB} />
+    <LiquidityFormProvider>
+      <AddLiquidityV3 currencyA={currencyA} currencyB={currencyB} />
+    </LiquidityFormProvider>
   )
 }
 

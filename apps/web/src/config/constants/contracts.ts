@@ -164,5 +164,23 @@ export default {
   mmLinkedPool: {
     1: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
     5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92', // play MM role by my self contract
+},
+  nftPositionManager: {
+    56: 'nftPositionManager',
+    97: '',
+    5: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+    1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+  },
+  v3Factory: {
+    56: 'v3Factory',
+    97: '',
+    5: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
+  quoter: {
+    56: 'quoter',
+    97: '',
+    5: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    1: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
   },
 }

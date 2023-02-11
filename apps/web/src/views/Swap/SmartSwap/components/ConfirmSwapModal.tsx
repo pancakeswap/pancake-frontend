@@ -10,7 +10,7 @@ import {
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSwapContent'
