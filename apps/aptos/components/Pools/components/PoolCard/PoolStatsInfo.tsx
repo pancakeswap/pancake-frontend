@@ -148,25 +148,21 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           </span>
         </Flex>
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <LinkExternal href={earningToken.projectLink} bold={false} small>
-            {t('View Project Site')}
-          </LinkExternal>
-        </Flex>
+      <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+        <LinkExternal href={earningToken.projectLink} bold={false} small>
+          {t('View Project Site')}
+        </LinkExternal>
       </Flex>
       {poolContractAddress && (
-        <Flex justifyContent="space-between" alignItems="center">
-          <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-            <LinkExternal
-              isAptosScan
-              href={getBlockExploreLinkDefault(poolContractAddress, 'address', chainId)}
-              bold={false}
-              small
-            >
-              {t('View Contract')}
-            </LinkExternal>
-          </Flex>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <LinkExternal
+            isAptosScan
+            href={getBlockExploreLinkDefault(poolContractAddress, 'address', chainId)}
+            bold={false}
+            small
+          >
+            {t('View Contract')}
+          </LinkExternal>
         </Flex>
       )}
     </>
