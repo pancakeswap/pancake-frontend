@@ -1,7 +1,17 @@
 import { BigNumber } from '@ethersproject/bignumber'
-// import { TransactionResponse } from '@ethersproject/providers'
 import { Currency, CurrencyAmount, Fraction, Price, Token } from '@pancakeswap/sdk'
-import { Button, Card, CardBody, useModal, Text, AutoRow, Flex, Box, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import {
+  Button,
+  Card,
+  CardBody,
+  useModal,
+  Text,
+  AutoRow,
+  Flex,
+  Box,
+  NextLinkFromReactRouter,
+  ConfirmationModalContent,
+} from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
@@ -15,19 +25,22 @@ import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
 import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 // import { useSingleCallResult } from 'state/multicall/hooks'
-import { useTransactionAdder } from 'state/transactions/hooks'
+import { useTransactionAdder, useIsTransactionPending } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import ClaimFeeModal from 'views/AddLiquidityV3/components/ClaimFeeModal'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import Page from 'views/Page'
-import { usePrepareSendTransaction, useSendTransaction, useTransaction } from 'wagmi'
-// import { useTranslation } from '@pancakeswap/localization'
+import { useSigner } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { LightGreyCard } from 'components/Card'
+import { CurrencyLogo } from 'components/Logo'
+import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { TransactionResponse } from '@ethersproject/providers'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -93,7 +106,14 @@ const useInverter = ({
 // }
 
 export default function PoolPage() {
-  // const { t } = useTranslation()
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
+
+  const [collecting, setCollecting] = useState<boolean>(false)
+  const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
+
+  const { data: signer } = useSigner()
 
   const { account, chainId, provider } = useActiveWeb3React()
 
@@ -170,9 +190,7 @@ export default function PoolPage() {
   const currency0ForFeeCollectionPurposes = pool ? unwrappedToken(pool.token0) : undefined
   const currency1ForFeeCollectionPurposes = pool ? unwrappedToken(pool.token1) : undefined
 
-  // const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
-  // const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
-  // const [showConfirm, setShowConfirm] = useState(false)
+  const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
   // usdc prices always in terms of tokens
   const price0 = useBUSDPrice(token0 ?? undefined)
@@ -203,7 +221,7 @@ export default function PoolPage() {
 
   const positionManager = useV3NFTPositionManagerContract()
 
-  const txn = useMemo(() => {
+  const collect = useCallback(() => {
     if (
       !currency0ForFeeCollectionPurposes ||
       !currency1ForFeeCollectionPurposes ||
@@ -213,7 +231,9 @@ export default function PoolPage() {
       !tokenId ||
       !provider
     )
-      return undefined
+      return
+
+    setCollecting(true)
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
@@ -224,63 +244,50 @@ export default function PoolPage() {
       recipient: account,
     })
 
-    return {
+    const txn = {
       to: positionManager.address,
       data: calldata,
       value,
     }
+
+    signer
+      .estimateGas(txn)
+      .then((estimate) => {
+        const newTxn = {
+          ...txn,
+          gasLimit: calculateGasMargin(estimate),
+        }
+
+        return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+          setCollectMigrationHash(response.hash)
+          setCollecting(false)
+
+          addTransaction(response, {
+            type: 'collect-fee',
+            currencyId0: currencyId(currency0ForFeeCollectionPurposes),
+            currencyId1: currencyId(currency1ForFeeCollectionPurposes),
+            expectedCurrencyOwed0: CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0).toExact(),
+            expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0).toExact(),
+          })
+        })
+      })
+      .catch((error) => {
+        setCollecting(false)
+        console.error(error)
+      })
   }, [
-    account,
-    chainId,
     currency0ForFeeCollectionPurposes,
     currency1ForFeeCollectionPurposes,
+    chainId,
+    positionManager,
+    account,
+    tokenId,
+    provider,
     feeValue0,
     feeValue1,
-    positionManager,
-    provider,
-    tokenId,
+    signer,
+    addTransaction,
   ])
-
-  const { config } = usePrepareSendTransaction({
-    request: txn,
-  })
-
-  const {
-    data: txnResult,
-    sendTransaction,
-    isLoading: collecting,
-    isSuccess,
-  } = useSendTransaction({
-    ...config,
-    request: {
-      ...config?.request,
-      ...(config?.request?.gasLimit && { gasLimit: calculateGasMargin(BigNumber.from(config?.request?.gasLimit)) }),
-    },
-  })
-
-  const { data: txnResponse } = useTransaction({
-    hash: txnResult?.hash,
-  })
-
-  useEffect(() => {
-    // setCollectMigrationHash(response.hash)
-
-    if (isSuccess) {
-      addTransaction(txnResponse, {
-        type: 'collect-fee',
-        currencyId0: currencyId(currency0ForFeeCollectionPurposes),
-        currencyId1: currencyId(currency1ForFeeCollectionPurposes),
-        expectedCurrencyOwed0: CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0).toExact(),
-        expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0).toExact(),
-      })
-    }
-  }, [isSuccess, addTransaction, currency0ForFeeCollectionPurposes, currency1ForFeeCollectionPurposes, txnResponse])
-
-  const collect = useCallback(() => {
-    if (!txn) return
-
-    sendTransaction()
-  }, [sendTransaction, txn])
 
   // const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId?.toString()]).result?.[0]
   // const ownsNFT = owner === account || positionDetails?.operator === account
@@ -293,8 +300,51 @@ export default function PoolPage() {
   const above = pool && typeof tickUpper === 'number' ? pool.tickCurrent >= tickUpper : undefined
   const inRange: boolean = typeof below === 'boolean' && typeof above === 'boolean' ? !below && !above : false
 
+  const modalHeader = () => (
+    <>
+      <LightGreyCard mb="16px">
+        <AutoRow justifyContent="space-between">
+          <Flex>
+            <CurrencyLogo currency={feeValueUpper?.currency} size="24px" />
+            <Text color="primary" ml="4px">
+              {feeValueUpper?.currency?.symbol}
+            </Text>
+          </Flex>
+          <Text>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
+        </AutoRow>
+        <AutoRow justifyContent="space-between">
+          <Flex>
+            <CurrencyLogo currency={feeValueLower?.currency} size="24px" />
+            <Text color="primary" ml="4px">
+              {feeValueLower?.currency?.symbol}
+            </Text>
+          </Flex>
+          <Text>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
+        </AutoRow>
+      </LightGreyCard>
+    </>
+  )
+
   const [onClaimFee] = useModal(
-    <ClaimFeeModal collect={collect} feeValueLower={feeValueLower} feeValueUpper={feeValueUpper} />,
+    <TransactionConfirmationModal
+      title="Claim fees"
+      attemptingTxn={collecting}
+      hash={collectMigrationHash ?? ''}
+      content={() => (
+        <ConfirmationModalContent
+          topContent={modalHeader}
+          bottomContent={() => (
+            <Button width="100%" onClick={collect}>
+              Collect
+            </Button>
+          )}
+        />
+      )}
+      pendingText="Collecting fees"
+    />,
+    true,
+    true,
+    'TransactionConfirmationModalColelctFees',
   )
 
   return (
@@ -325,42 +375,90 @@ export default function PoolPage() {
         <CardBody>
           <AutoRow>
             <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
-              <Box width="100%">
+              <Box width="100%" mr="4px">
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   Liquidity
                 </Text>
-                {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100)) ? (
-                  <Text fontSize="24px" fontWeight={500}>
-                    ${fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })}
-                  </Text>
-                ) : (
-                  <Text fontSize="24px" fontWeight={500}>
-                    $-
-                  </Text>
-                )}
+
+                <Text fontSize="24px" fontWeight={500}>
+                  {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100))
+                    ? fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })
+                    : '$-'}
+                </Text>
+                <LightGreyCard mr="4px">
+                  <AutoRow justifyContent="space-between" mb="8px">
+                    <Flex>
+                      <CurrencyLogo currency={currencyQuote} />
+                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                        {currencyQuote?.symbol}
+                      </Text>
+                    </Flex>
+                    <Text small bold>
+                      {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
+                    </Text>
+                  </AutoRow>
+                  <AutoRow justifyContent="space-between">
+                    <Flex>
+                      <CurrencyLogo currency={currencyBase} />
+                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                        {currencyBase?.symbol}
+                      </Text>
+                    </Flex>
+                    <Text small bold>
+                      {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
+                    </Text>
+                  </AutoRow>
+                </LightGreyCard>
               </Box>
-              <Box width="100%">
+              <Box width="100%" ml="4px">
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   Unclaim Fees
                 </Text>
                 <AutoRow justifyContent="space-between">
-                  {fiatValueOfFees?.greaterThan(new Fraction(1, 100)) ? (
-                    <Text fontSize="24px" fontWeight={500}>
-                      ${fiatValueOfFees.toFixed(2, { groupSeparator: ',' })}
-                    </Text>
-                  ) : (
-                    <Text fontSize="24px" fontWeight={500}>
-                      $-
-                    </Text>
-                  )}
-                  <Button scale="sm" disabled={collecting} onClick={onClaimFee}>
-                    Collect
-                  </Button>
+                  <Text fontSize="24px" fontWeight={500}>
+                    {fiatValueOfFees?.greaterThan(new Fraction(1, 100))
+                      ? fiatValueOfFees.toFixed(2, { groupSeparator: ',' })
+                      : '$-'}
+                  </Text>
+
+                  {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash ? (
+                    <Button scale="sm" disabled={isCollectPending} onClick={onClaimFee}>
+                      {!!collectMigrationHash && !isCollectPending
+                        ? 'Collected'
+                        : isCollectPending || collecting
+                        ? 'Collecting'
+                        : 'Collect fees'}
+                    </Button>
+                  ) : null}
                 </AutoRow>
+                <LightGreyCard mr="4px">
+                  <AutoRow justifyContent="space-between" mb="8px">
+                    <Flex>
+                      <CurrencyLogo currency={feeValue0?.currency} />
+                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                        {feeValue0?.currency?.symbol}
+                      </Text>
+                    </Flex>
+                    <Text small bold>
+                      {feeValue0?.toSignificant(6) || '0'}
+                    </Text>
+                  </AutoRow>
+                  <AutoRow justifyContent="space-between">
+                    <Flex>
+                      <CurrencyLogo currency={feeValue1?.currency} />
+                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                        {feeValue1?.currency?.symbol}
+                      </Text>
+                    </Flex>
+                    <Text small bold>
+                      {feeValue1?.toSignificant(6) || '0'}
+                    </Text>
+                  </AutoRow>
+                </LightGreyCard>
               </Box>
             </Flex>
           </AutoRow>
-          <AutoRow>
+          <AutoRow mb="8px">
             <Flex alignItems="center" justifyContent="space-between" width="100%">
               <LightGreyCard mr="4px">
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
@@ -376,6 +474,14 @@ export default function PoolPage() {
               </LightGreyCard>
             </Flex>
           </AutoRow>
+          {pool && currencyQuote && currencyBase ? (
+            <LightGreyCard style={{ textAlign: 'center' }}>
+              <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                CURRENT PRICE
+              </Text>
+              {(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}{' '}
+            </LightGreyCard>
+          ) : null}
         </CardBody>
       </BodyWrapper>
     </Page>
