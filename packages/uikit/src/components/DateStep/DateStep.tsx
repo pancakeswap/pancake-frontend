@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Text } from "../Text";
 import { Flex } from "../Box";
-import { LogoIcon, CircleOutlineIcon } from "../Svg";
+import { LogoIcon, CircleOutlineIcon, CheckmarkCircleIcon } from "../Svg";
 
 const sharedFlexStyles = `
   min-width: 86px;
@@ -50,10 +50,6 @@ interface DateStepProps {
   stepText: string;
   activeStepIndex: number;
   dateText: string;
-}
-
-function CheckmarkCircleIcon() {
-  return null;
 }
 
 const DateStep: React.FC<React.PropsWithChildren<DateStepProps>> = ({ index, stepText, activeStepIndex, dateText }) => {
