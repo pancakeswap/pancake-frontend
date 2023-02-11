@@ -1,6 +1,5 @@
 import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-motion";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useMatchBreakpoints } from "@pancakeswap/uikit";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
 import { DefaultTheme, ThemeProvider, useTheme } from "styled-components";
@@ -30,11 +29,10 @@ const invertTheme = (currentTheme: DefaultTheme) => {
 };
 
 const useTooltip = (content: React.ReactNode, options?: TooltipOptions): TooltipRefs => {
-  const { isMobile } = useMatchBreakpoints();
   const { isDark } = useTheme();
   const {
     placement = "auto",
-    trigger = isMobile ? "click" : "hover",
+    trigger = isTouchDevice() ? "click" : "hover",
     arrowPadding = 16,
     tooltipPadding = { left: 16, right: 16 },
     tooltipOffset = [0, 10],
