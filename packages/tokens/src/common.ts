@@ -9,6 +9,14 @@ export const CAKE_MAINNET = new ERC20Token(
   'https://pancakeswap.finance/',
 )
 
+export const CADINU_MAINNET = new ERC20Token(
+  ChainId.BSC,
+  '0x76e112203eF59D445452ef7556386dD2DF3Ed914',
+  18,
+  'CADINU',
+  'Canadian Inuit Dog',
+  'https://cadinu.io/',
+)
 export const CAKE_TESTNET = new ERC20Token(
   ChainId.BSC_TESTNET,
   '0xFa60D973F7642B748046464e165A65B7323b0DEE',
@@ -116,6 +124,10 @@ export const BUSD: Record<ChainId, ERC20Token> = {
 export const CAKE = {
   [ChainId.BSC]: CAKE_MAINNET,
   [ChainId.BSC_TESTNET]: CAKE_TESTNET,
+}
+
+export const CADINU = {
+  [ChainId.BSC]: CADINU_MAINNET,
 }
 
 export const USDC = {

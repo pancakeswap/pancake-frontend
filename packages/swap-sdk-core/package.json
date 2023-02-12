@@ -33,7 +33,6 @@
     "tiny-warning": "^1.0.3",
     "toformat": "^2.0.0"
   },
-  "peerDependencies": {},
   "devDependencies": {
     "@swc/core": "^1.2.215",
     "@swc/jest": "^0.2.21",

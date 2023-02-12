@@ -18,9 +18,6 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
-    "swr": "^2.0.0",
-    "wagmi": "^0.10.10",
-    "@wagmi/core": "^0.8.14",
     "@blocto/sdk": "^0.3.1",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/address": "^5.0.0",
@@ -31,8 +28,11 @@
     "@ethersproject/providers": "^5.0.0",
     "@ethersproject/strings": "^5.0.0",
     "@ethersproject/units": "^5.0.0",
+    "@wagmi/core": "^0.8.14",
     "react": "^17.0.0",
-    "react-dom": "^17.0.0"
+    "react-dom": "^17.0.0",
+    "swr": "^2.0.0",
+    "wagmi": "^0.10.10"
   },
   "devDependencies": {
     "@blocto/sdk": "^0.3.1",

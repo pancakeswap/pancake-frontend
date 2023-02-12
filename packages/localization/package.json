@@ -6,7 +6,6 @@
   "main": "./src/index.tsx",
   "types": "./src/index.tsx",
   "private": true,
-  "scripts": {},
   "dependencies": {
     "react": "^18.2.0"
   }

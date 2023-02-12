@@ -83,63 +83,63 @@ const Home: React.FC<React.PropsWithChildren> = () => {
           fill: #201335;
         }
       `}</style>
-      <StyledHeroSection
-        innerProps={{ style: { margin: '0', width: '100%' } }}
-        containerProps={{
-          id: 'home-1',
-        }}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        {account && chainId === ChainId.BSC && (
-          <UserBannerWrapper>
-            <UserBanner />
-          </UserBannerWrapper>
-        )}
-        <MultipleBanner />
-        <Hero />
-      </StyledHeroSection>
-      <PageSection
-        innerProps={{ style: { margin: '0', width: '100%' } }}
-        containerProps={{
-          id: 'home-2',
-        }}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <MetricsSection />
-      </PageSection>
-      <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
-        background={theme.colors.background}
-        containerProps={{
-          id: 'home-4',
-        }}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <OuterWedgeWrapper>
-          <InnerWedgeWrapper top>
-            <WedgeTopLeft />
-          </InnerWedgeWrapper>
-        </OuterWedgeWrapper>
-        <SalesSection {...swapSectionData(t)} />
-      </PageSection>
-      <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
-        background={theme.colors.gradientCardHeader}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <OuterWedgeWrapper>
-          <InnerWedgeWrapper width="150%" top>
-            <WedgeTopRight />
-          </InnerWedgeWrapper>
-        </OuterWedgeWrapper>
-        <SalesSection {...earnSectionData(t)} />
-        {/* TODO: until we are enable fetch multi-chain farms */}
-        {chainId === ChainId.BSC && <FarmsPoolsRow />}
-      </PageSection>
+      {/*<StyledHeroSection*/}
+      {/*  innerProps={{ style: { margin: '0', width: '100%' } }}*/}
+      {/*  containerProps={{*/}
+      {/*    id: 'home-1',*/}
+      {/*  }}*/}
+      {/*  index={2}*/}
+      {/*  hasCurvedDivider={false}*/}
+      {/*>*/}
+      {/*  {account && chainId === ChainId.BSC && (*/}
+      {/*    <UserBannerWrapper>*/}
+      {/*      <UserBanner />*/}
+      {/*    </UserBannerWrapper>*/}
+      {/*  )}*/}
+      {/*  <MultipleBanner />*/}
+      {/*  <Hero />*/}
+      {/*</StyledHeroSection>*/}
+      {/*<PageSection*/}
+      {/*  innerProps={{ style: { margin: '0', width: '100%' } }}*/}
+      {/*  containerProps={{*/}
+      {/*    id: 'home-2',*/}
+      {/*  }}*/}
+      {/*  index={2}*/}
+      {/*  hasCurvedDivider={false}*/}
+      {/*>*/}
+      {/*  <MetricsSection />*/}
+      {/*</PageSection>*/}
+      {/*<PageSection*/}
+      {/*  innerProps={{ style: HomeSectionContainerStyles }}*/}
+      {/*  background={theme.colors.background}*/}
+      {/*  containerProps={{*/}
+      {/*    id: 'home-4',*/}
+      {/*  }}*/}
+      {/*  index={2}*/}
+      {/*  hasCurvedDivider={false}*/}
+      {/*>*/}
+      {/*  <OuterWedgeWrapper>*/}
+      {/*    <InnerWedgeWrapper top>*/}
+      {/*      <WedgeTopLeft />*/}
+      {/*    </InnerWedgeWrapper>*/}
+      {/*  </OuterWedgeWrapper>*/}
+      {/*  <SalesSection {...swapSectionData(t)} />*/}
+      {/*</PageSection>*/}
+      {/*<PageSection*/}
+      {/*  innerProps={{ style: HomeSectionContainerStyles }}*/}
+      {/*  background={theme.colors.gradientCardHeader}*/}
+      {/*  index={2}*/}
+      {/*  hasCurvedDivider={false}*/}
+      {/*>*/}
+      {/*  <OuterWedgeWrapper>*/}
+      {/*    <InnerWedgeWrapper width="150%" top>*/}
+      {/*      <WedgeTopRight />*/}
+      {/*    </InnerWedgeWrapper>*/}
+      {/*  </OuterWedgeWrapper>*/}
+      {/*  <SalesSection {...earnSectionData(t)} />*/}
+      {/*  /!* TODO: until we are enable fetch multi-chain farms *!/*/}
+      {/*  {chainId === ChainId.BSC && <FarmsPoolsRow />}*/}
+      {/*</PageSection>*/}
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
         containerProps={{
@@ -150,15 +150,15 @@ const Home: React.FC<React.PropsWithChildren> = () => {
       >
         <WinSection />
       </PageSection>
-      <PageSection
-        innerProps={{ style: HomeSectionContainerStyles }}
-        background={theme.colors.background}
-        index={2}
-        hasCurvedDivider={false}
-      >
-        <SalesSection {...cakeSectionData(t)} />
-        <CakeDataRow />
-      </PageSection>
+      {/*<PageSection*/}
+      {/*  innerProps={{ style: HomeSectionContainerStyles }}*/}
+      {/*  background={theme.colors.background}*/}
+      {/*  index={2}*/}
+      {/*  hasCurvedDivider={false}*/}
+      {/*>*/}
+      {/*  <SalesSection {...cakeSectionData(t)} />*/}
+      {/*  <CakeDataRow />*/}
+      {/*</PageSection>*/}
       <PageSection
         innerProps={{ style: HomeSectionContainerStyles }}
         background="linear-gradient(180deg, #7645D9 0%, #5121B1 100%)"

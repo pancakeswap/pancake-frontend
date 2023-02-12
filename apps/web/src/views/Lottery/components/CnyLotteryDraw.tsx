@@ -109,7 +109,7 @@ const CnyLotteryDraw = () => {
         width={['100%', '100%', '500px']}
       >
         <WhiteText textAlign="center" fontSize={['20px', '24px', '32px']} bold>
-          {t('PancakeSwap CNY Lottery Draw')}
+          {t('CADINU CNY Lottery Draw')}
         </WhiteText>
         <Flex flexDirection={['column', 'column', 'row']} alignItems="center" justifyContent="center" mb="12px">
           <WhiteText mr="4px">{t('Draw Date:')}</WhiteText>

@@ -25,6 +25,7 @@ const Icon: React.FC<React.PropsWithChildren<SvgProps>> = (props) => {
         fill="#633001"
       />
     </Svg>
+
   );
 };
 

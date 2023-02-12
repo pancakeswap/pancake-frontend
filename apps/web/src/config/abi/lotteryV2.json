@@ -3,7 +3,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_cakeTokenAddress",
+        "name": "_cadinuTokenAddress",
         "type": "address"
       },
       {
@@ -121,7 +121,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "priceTicketInCake",
+        "name": "priceTicketInCadinu",
         "type": "uint256"
       },
       {
@@ -325,7 +325,7 @@
   },
   {
     "inputs": [],
-    "name": "cakeToken",
+    "name": "cadinuToken",
     "outputs": [
       {
         "internalType": "contract IERC20",
@@ -504,7 +504,7 @@
   },
   {
     "inputs": [],
-    "name": "maxPriceTicketInCake",
+    "name": "maxPriceTicketInCadinu",
     "outputs": [
       {
         "internalType": "uint256",
@@ -517,7 +517,7 @@
   },
   {
     "inputs": [],
-    "name": "minPriceTicketInCake",
+    "name": "minPriceTicketInCadinu",
     "outputs": [
       {
         "internalType": "uint256",
@@ -622,16 +622,16 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_minPriceTicketInCake",
+        "name": "_minPriceTicketInCadinu",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "_maxPriceTicketInCake",
+        "name": "_maxPriceTicketInCadinu",
         "type": "uint256"
       }
     ],
-    "name": "setMinAndMaxTicketPriceInCake",
+    "name": "setMinAndMaxTicketPriceInCadinu",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -668,7 +668,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "_priceTicketInCake",
+        "name": "_priceTicketInCadinu",
         "type": "uint256"
       },
       {
@@ -744,7 +744,7 @@
       {
         "components": [
           {
-            "internalType": "enum PancakeSwapLottery.Status",
+            "internalType": "enum CadinuLottery.Status",
             "name": "status",
             "type": "uint8"
           },
@@ -760,7 +760,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "priceTicketInCake",
+            "name": "priceTicketInCadinu",
             "type": "uint256"
           },
           {
@@ -780,7 +780,7 @@
           },
           {
             "internalType": "uint256[6]",
-            "name": "cakePerBracket",
+            "name": "cadinuPerBracket",
             "type": "uint256[6]"
           },
           {
@@ -800,7 +800,7 @@
           },
           {
             "internalType": "uint256",
-            "name": "amountCollectedInCake",
+            "name": "amountCollectedInCadinu",
             "type": "uint256"
           },
           {
@@ -809,7 +809,7 @@
             "type": "uint32"
           }
         ],
-        "internalType": "struct PancakeSwapLottery.Lottery",
+        "internalType": "struct CadinuLottery.Lottery",
         "name": "",
         "type": "tuple"
       }
@@ -917,6 +917,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawBnb",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   }
 ]
