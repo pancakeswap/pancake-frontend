@@ -12,20 +12,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/',
-    '/swap',
-    '/liquidity',
-    '/pools',
-    '/farms',
-    '/add',
-    '/ifo',
-    '/remove',
-    '/prediction',
-    '/find',
-    '/limit-orders',
-    '/lottery',
-    '/nfts',
-    '/info/:path*',
-  ],
+  matcher: ['/', '/swap', '/liquidity', '/pools', '/farms', '/add', '/ifo', '/remove'],
 }
