@@ -8,7 +8,7 @@ export const ETH_URLS = [PANCAKE_ETH_DEFAULT, COINGECKO_ETH]
 export const BSC_URLS = [PANCAKE_EXTENDED, CMC, COINGECKO]
 
 // List of official tokens list
-export const OFFICIAL_LISTS = [PANCAKE_EXTENDED]
+export const OFFICIAL_LISTS = [PANCAKE_EXTENDED, PANCAKE_ETH_DEFAULT]
 
 export const UNSUPPORTED_LIST_URLS: string[] = []
 export const WARNING_LIST_URLS: string[] = []
