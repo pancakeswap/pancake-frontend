@@ -129,9 +129,22 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     isExpertMode,
   })
 
-  const { refreshRFQ, rfqId } = useGetRFQId(mmOrderBookTrade?.mmParam, isMMBetter)
+  const { refreshRFQ, rfqId } = useGetRFQId(
+    mmOrderBookTrade?.mmParam,
+    isMMBetter,
+    mmOrderBookTrade?.rfqUserInputPath,
+    mmOrderBookTrade?.isRFQLive,
+  )
 
-  const mmRFQTrade = useGetRFQTrade(rfqId, independentField, inputCurrency, outputCurrency, isMMBetter, refreshRFQ)
+  const mmRFQTrade = useGetRFQTrade(
+    rfqId,
+    independentField,
+    inputCurrency,
+    outputCurrency,
+    isMMBetter,
+    refreshRFQ,
+    mmOrderBookTrade?.isRFQLive,
+  )
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
