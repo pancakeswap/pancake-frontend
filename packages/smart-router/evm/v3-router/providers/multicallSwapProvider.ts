@@ -73,7 +73,7 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
     console.log({ calls }, `About to multicall for ${functionName} across ${addresses.length} addresses`)
 
     const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-      blockTag: blockNumberOverride,
+      blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
     })
 
     const results: Result<TReturn>[] = []
@@ -137,7 +137,7 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
     )
 
     const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-      blockTag: blockNumberOverride,
+      blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
     })
 
     const results: Result<TReturn>[] = []
@@ -207,7 +207,7 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
     )
 
     const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
-      blockTag: blockNumberOverride,
+      blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
     })
 
     const results: Result<TReturn>[] = []

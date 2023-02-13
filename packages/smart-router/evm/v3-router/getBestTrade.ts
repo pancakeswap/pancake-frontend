@@ -1,26 +1,33 @@
 /* eslint-disable no-console */
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 
 import { computeAllRoutes, getBestRouteCombinationByQuotes } from './functions'
 import { getRoutesWithValidQuote } from './getRoutesWithValidQuote'
 import { BestRoutes, PoolProvider, QuoteProvider, Trade } from './types'
 
-interface Config {
+interface TradeConfig {
+  blockNumber: BigintIsh | (() => Promise<BigintIsh>)
+  poolProvider: PoolProvider
+  quoteProvider: QuoteProvider
   maxHops?: number
   maxSplits?: number
   distributionPercent?: number
-  poolProvider: PoolProvider
-  quoteProvider: QuoteProvider
 }
 
 export async function getBestTrade(
   amount: CurrencyAmount<Currency>,
   currency: Currency,
   tradeType: TradeType,
-  config: Config,
+  config: TradeConfig,
 ): Promise<Trade<TradeType> | null> {
   try {
-    const bestRoutes = await getBestRoutes(amount, currency, tradeType, config)
+    const { blockNumber: blockNumberFromConfig } = config
+    const blockNumber: BigintIsh =
+      typeof blockNumberFromConfig === 'function' ? await blockNumberFromConfig() : blockNumberFromConfig
+    const bestRoutes = await getBestRoutes(amount, currency, tradeType, {
+      ...config,
+      blockNumber,
+    })
     if (!bestRoutes) {
       return null
     }
@@ -42,18 +49,22 @@ export async function getBestTrade(
   }
 }
 
+interface RouteConfig extends TradeConfig {
+  blockNumber: BigintIsh
+}
+
 async function getBestRoutes(
   amount: CurrencyAmount<Currency>,
   currency: Currency,
   tradeType: TradeType,
-  { maxHops = 3, maxSplits = 4, distributionPercent = 5, poolProvider, quoteProvider }: Config,
+  { maxHops = 3, maxSplits = 4, distributionPercent = 5, poolProvider, quoteProvider, blockNumber }: RouteConfig,
 ): Promise<BestRoutes | null> {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const inputCurrency = isExactIn ? amount.currency : currency
   const outputCurrency = isExactIn ? currency : amount.currency
 
-  const candidatePools = await poolProvider?.getCandidatePools(amount.currency, currency, 0)
-  if (!candidatePools) {
+  const candidatePools = await poolProvider?.getCandidatePools(amount.currency, currency, blockNumber)
+  if (!candidatePools.length) {
     return null
   }
 
@@ -64,6 +75,7 @@ async function getBestRoutes(
     distributionPercent,
     quoteProvider,
     tradeType,
+    blockNumber,
   })
   // routesWithValidQuote.forEach(({ percent, path, amount: a, quote }) => {
   //   const pathStr = path.map((t) => t.symbol).join('->')

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { QuoteProvider, OnChainProvider, RouteWithoutQuote, RouteWithQuote, RouteType } from '../types'
+import { QuoteProvider, OnChainProvider, RouteWithoutQuote, RouteWithQuote, RouteType, QuoterOptions } from '../types'
 import { isV3Pool } from '../utils'
 import { createOffChainQuoteProvider } from './offChainQuoteProvider'
 import { createMixedRouteOnChainQuoteProvider, createV3OnChainQuoteProvider } from './onChainQuoteProvider'
@@ -25,7 +25,10 @@ export function createQuoteProvider({ onChainProvider }: Config): QuoteProvider 
       ? v3OnChainQuoteProvider.getRouteWithQuotesExactIn
       : v3OnChainQuoteProvider.getRouteWithQuotesExactOut
 
-    return async function getRoutesWithQuotes(routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> {
+    return async function getRoutesWithQuotes(
+      routes: RouteWithoutQuote[],
+      { blockNumber }: QuoterOptions,
+    ): Promise<RouteWithQuote[]> {
       const v3Routes: RouteWithoutQuote[] = []
       const mixedRoutesHaveV3Pool: RouteWithoutQuote[] = []
       const routesCanQuoteOffChain: RouteWithoutQuote[] = []
@@ -47,9 +50,9 @@ export function createQuoteProvider({ onChainProvider }: Config): QuoteProvider 
       }
 
       const [offChainQuotes, mixedRouteQuotes, v3Quotes] = await Promise.all([
-        getOffChainQuotes(routesCanQuoteOffChain),
-        getMixedRouteQuotes(mixedRoutesHaveV3Pool),
-        getV3Quotes(v3Routes),
+        getOffChainQuotes(routesCanQuoteOffChain, { blockNumber }),
+        getMixedRouteQuotes(mixedRoutesHaveV3Pool, { blockNumber }),
+        getV3Quotes(v3Routes, { blockNumber }),
       ])
       return [...offChainQuotes, ...mixedRouteQuotes, ...v3Quotes]
     }

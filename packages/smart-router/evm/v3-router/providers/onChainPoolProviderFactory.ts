@@ -1,4 +1,4 @@
-import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent, BigintIsh } from '@pancakeswap/sdk'
 import { Call, createMulticall } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { computePoolAddress, FeeAmount } from '@pancakeswap/v3-sdk'
@@ -178,7 +178,11 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
   buildPoolInfoCalls,
   buildPool,
 }: OnChainPoolFactoryParams<TPool, TPoolMeta>) {
-  return async function poolFactory(pairs: [Currency, Currency][], provider: OnChainProvider): Promise<TPool[]> {
+  return async function poolFactory(
+    pairs: [Currency, Currency][],
+    provider: OnChainProvider,
+    blockNumber: BigintIsh,
+  ): Promise<TPool[]> {
     const chainId: ChainId = pairs[0]?.[0]?.chainId
     if (!chainId) {
       return []
@@ -217,6 +221,7 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
       chainId,
       options: {
         requireSuccess: false,
+        blockTag: JSBI.toNumber(JSBI.BigInt(blockNumber)),
       },
     })
 

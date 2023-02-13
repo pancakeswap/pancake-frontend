@@ -1,4 +1,4 @@
-import { Currency } from '@pancakeswap/sdk'
+import { BigintIsh, Currency } from '@pancakeswap/sdk'
 
 import { getPairCombinations } from '../functions'
 import { OnChainProvider, Pool, PoolProvider, SubgraphProvider } from '../types'
@@ -22,9 +22,7 @@ export function createHybridPoolProvider({ onChainProvider }: HybridProviderConf
     },
 
     getPools: async (pairs, blockNumber) => {
-      // eslint-disable-next-line
-      console.log(blockNumber)
-      return getPools(pairs, { provider: onChainProvider })
+      return getPools(pairs, { provider: onChainProvider, blockNumber })
     },
   }
 
@@ -33,18 +31,19 @@ export function createHybridPoolProvider({ onChainProvider }: HybridProviderConf
 
 interface Options {
   provider: OnChainProvider
+  blockNumber: BigintIsh
 }
 
-async function getPools(pairs: [Currency, Currency][], { provider }: Options): Promise<Pool[]> {
+async function getPools(pairs: [Currency, Currency][], { provider, blockNumber }: Options): Promise<Pool[]> {
   const chainId = pairs[0]?.[0]?.chainId
   if (!chainId) {
     return []
   }
 
   const [v2Pools, stablePools, v3Pools] = await Promise.all([
-    getV2PoolsOnChain(pairs, provider),
-    getStablePoolsOnChain(pairs, provider),
-    getV3PoolsWithoutTicksOnChain(pairs, provider),
+    getV2PoolsOnChain(pairs, provider, blockNumber),
+    getStablePoolsOnChain(pairs, provider, blockNumber),
+    getV3PoolsWithoutTicksOnChain(pairs, provider, blockNumber),
   ])
   return [...v2Pools, ...stablePools, ...v3Pools]
 }
