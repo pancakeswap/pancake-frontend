@@ -12,7 +12,9 @@ export const MMAndAMMDealDisplay: React.FC<{
   v2Trade?: Trade<Currency, Currency, TradeType>
   mmTrade?: TradeWithMM<Currency, Currency, TradeType>
   mmQuoteExpiryRemainingSec?: number
-}> = ({ isMMBetter = false, independentField, v2Trade, mmTrade, mmQuoteExpiryRemainingSec }) => {
+  errorMessage?: string
+  rfqId?: string
+}> = ({ isMMBetter = false, independentField, v2Trade, mmTrade, mmQuoteExpiryRemainingSec, errorMessage, rfqId }) => {
   const isExactIn = independentField === Field.INPUT
   const dealInANdOut = isExactIn ? '(out)' : '(in)'
   const { query } = useRouter()
@@ -43,6 +45,12 @@ export const MMAndAMMDealDisplay: React.FC<{
         <Text color="textSubtle">
           Quote Expiry In:{' '}
           <Text display="inline-block">{`${mmQuoteExpiryRemainingSec > 0 ? mmQuoteExpiryRemainingSec : '?'}`} SEC</Text>
+        </Text>
+        <Text color="textSubtle">
+          Error Message: <Text display="inline-block">{errorMessage}</Text>
+        </Text>
+        <Text color="textSubtle">
+          RfqId: <Text display="inline-block">{rfqId}</Text>
         </Text>
       </Box>
     )
