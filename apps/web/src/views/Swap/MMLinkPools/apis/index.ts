@@ -5,6 +5,7 @@ import {
   RFQIdResponse,
   RFQResponse,
   RFQErrorResponse,
+  zRFQResponse,
 } from '../types'
 
 // const API_ENDPOINT = `https://test.linked-pool.pancakeswap.com/quote-service`
@@ -52,6 +53,7 @@ export const getRFQById = async (id: string | number): Promise<RFQResponse | RFQ
       },
     })
     const data = await response.json()
+    zRFQResponse.parse(data)
     return data as RFQResponse
   } catch (e) {
     return Promise.reject(e)

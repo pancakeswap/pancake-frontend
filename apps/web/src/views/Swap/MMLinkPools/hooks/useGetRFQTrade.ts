@@ -3,7 +3,7 @@ import { Field } from 'state/swap/actions'
 import useSWRImmutable from 'swr/immutable'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getRFQById, sendRFQAndGetRFQId } from '../apis'
-import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
+import { MessageType, QuoteRequest, RFQResponse, TradeWithMM, zRFQResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (param: QuoteRequest, isMMBetter: boolean): { rfqId: string; refreshRFQ: () => void } => {
@@ -39,11 +39,11 @@ export const useGetRFQTrade = (
   error?: string
   rfqId?: string
 } | null => {
-  const { data } = useSWRImmutable(
-    isMMBetter && rfqId && [`RFQ/${rfqId}`],
-    () => getRFQById(rfqId),
-    { refreshInterval: 1500, keepPreviousData: true }, // 1.5 sec auto refresh
-  )
+  const { data } = useSWRImmutable(isMMBetter && rfqId && [`RFQ/${rfqId}`], () => getRFQById(rfqId), {
+    keepPreviousData: true,
+    errorRetryCount: 15,
+    errorRetryInterval: 1000,
+  })
   const isExactIn: boolean = independentField === Field.INPUT
 
   if (data?.messageType !== MessageType.RFQ_RESPONSE)
