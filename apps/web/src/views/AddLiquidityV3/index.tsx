@@ -29,7 +29,6 @@ import {
   // useEffect,
   useState,
 } from 'react'
-// import useParsedQueryString from 'hooks/useParsedQueryString'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -145,7 +144,6 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
 
   const positionManager = useV3NFTPositionManagerContract()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
-  // const parsedQs = useParsedQueryString()
   const addTransaction = useTransactionAdder()
   // // fee selection from url
   const feeAmount: FeeAmount | undefined =

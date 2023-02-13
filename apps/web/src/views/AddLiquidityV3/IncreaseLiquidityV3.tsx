@@ -11,7 +11,6 @@ import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { LiquidityFormState } from 'hooks/v3/types'
 import { useCallback, useState } from 'react'
-// import useParsedQueryString from 'hooks/useParsedQueryString'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 
