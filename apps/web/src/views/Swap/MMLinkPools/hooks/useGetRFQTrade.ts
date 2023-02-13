@@ -3,7 +3,7 @@ import { Field } from 'state/swap/actions'
 import useSWRImmutable from 'swr/immutable'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { getRFQById, sendRFQAndGetRFQId } from '../apis'
-import { MessageType, QuoteRequest, RFQResponse, TradeWithMM, zRFQResponse } from '../types'
+import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (param: QuoteRequest, isMMBetter: boolean): { rfqId: string; refreshRFQ: () => void } => {
