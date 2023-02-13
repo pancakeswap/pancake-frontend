@@ -196,10 +196,10 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
   useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
   useEffect(() => {
-    if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !_isNaN(minPrice as any)) {
+    if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !leftRangeTypedValue) {
       onLeftRangeInput(minPrice)
     }
-    if (maxPrice && typeof maxPrice === 'string' && maxPrice !== rightRangeTypedValue && !_isNaN(maxPrice as any)) {
+    if (maxPrice && typeof maxPrice === 'string' && maxPrice !== rightRangeTypedValue && !rightRangeTypedValue) {
       onRightRangeInput(maxPrice)
     }
   }, [minPrice, maxPrice, onRightRangeInput, onLeftRangeInput, leftRangeTypedValue, rightRangeTypedValue])
