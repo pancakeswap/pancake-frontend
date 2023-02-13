@@ -120,13 +120,13 @@ export interface LotteryTicket {
   status: boolean
   rewardBracket?: number
   roundId?: string
-  cakeReward?: string
+  cadinuReward?: string
 }
 
 export interface LotteryTicketClaimData {
   ticketsWithUnclaimedRewards: LotteryTicket[]
   allWinningTickets: LotteryTicket[]
-  cakeTotal: BigNumber
+  cadinuTotal: BigNumber
   roundId: string
 }
 

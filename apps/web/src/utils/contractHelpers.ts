@@ -4,7 +4,7 @@ import { provider } from 'utils/wagmi'
 import { Contract } from '@ethersproject/contracts'
 import poolsConfig from 'config/constants/pools'
 import { PoolCategory } from 'config/constants/types'
-import { CAKE } from '@pancakeswap/tokens'
+import { CAKE, CADINU } from '@pancakeswap/tokens'
 
 // Addresses
 import {
@@ -97,6 +97,7 @@ import nonBscVault from 'config/abi/nonBscVault.json'
 import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
 import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
 import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
+import cadinuAbi from 'config/abi/cadinu.json'
 
 // Types
 import type {
@@ -109,6 +110,7 @@ import type {
   Erc20,
   Erc721,
   Cake,
+  Cadinu,
   BunnyFactory,
   PancakeBunnies,
   PancakeProfile,
@@ -202,6 +204,13 @@ export const getCakeContract = (signer?: Signer | Provider, chainId?: number) =>
     address: chainId ? CAKE[chainId].address : CAKE[ChainId.BSC].address,
     signer,
   }) as Cake
+}
+export const getCadinuContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: cadinuAbi,
+    address: chainId ? CADINU[chainId].address : CADINU[ChainId.BSC].address,
+    signer,
+  }) as Cadinu
 }
 export const getProfileContract = (signer?: Signer | Provider) => {
   return getContract({ abi: profileABI, address: getPancakeProfileAddress(), signer }) as PancakeProfile
