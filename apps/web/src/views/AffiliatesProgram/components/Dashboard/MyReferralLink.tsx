@@ -16,10 +16,9 @@ import styled from 'styled-components'
 import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 
 const Wrapper = styled(Flex)`
-  flex: 1;
   padding: 1px;
-  width: calc(100% - 18px);
-  margin-left: 18px;
+  width: fit-content;
+  margin: auto auto 49px auto;
   background: linear-gradient(180deg, #53dee9, #7645d9);
   border-radius: ${({ theme }) => theme.radii.default};
 `
@@ -65,37 +64,35 @@ const MyReferralLink = () => {
             </InputGroup>
             <ShareIcon width={24} height={24} ml="16px" color="primary" />
           </Flex>
-          <Flex width={['100%']} mb={['24px']}>
-            <Flex flex={1} justifyContent={['space-between']} alignSelf="center">
-              <Box>
-                <Text color="textSubtle">You will receive</Text>
-                <Text color="secondary" bold fontSize={['32px']} textAlign="center">
-                  100%
-                </Text>
-              </Box>
-              <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
-              <Box>
-                <Text color="textSubtle">Friends will receive</Text>
-                <Text color="primary" bold fontSize={['32px']} textAlign="center">
-                  0%
-                </Text>
-              </Box>
-            </Flex>
-            <Wrapper>
-              <CardInner>
-                {commissionList.map((list) => (
-                  <StyledCommission key={list.image.url}>
-                    <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
-                      {list.title}
-                    </Text>
-                    <Text fontSize={['32px']} bold>
-                      {list.percentage}
-                    </Text>
-                  </StyledCommission>
-                ))}
-              </CardInner>
-            </Wrapper>
+          <Flex width={['320px']} m={['auto auto 36px auto']} justifyContent={['space-between']}>
+            <Box>
+              <Text color="textSubtle">You will receive</Text>
+              <Text color="secondary" bold fontSize={['32px']} textAlign="center">
+                100%
+              </Text>
+            </Box>
+            <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
+            <Box>
+              <Text color="textSubtle">Friends will receive</Text>
+              <Text color="primary" bold fontSize={['32px']} textAlign="center">
+                0%
+              </Text>
+            </Box>
           </Flex>
+          <Wrapper>
+            <CardInner>
+              {commissionList.map((list) => (
+                <StyledCommission key={list.image.url}>
+                  <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
+                    {list.title}
+                  </Text>
+                  <Text fontSize={['32px']} bold>
+                    {list.percentage}
+                  </Text>
+                </StyledCommission>
+              ))}
+            </CardInner>
+          </Wrapper>
           <Flex>
             <Flex>
               {receivePercentageList.map((list) => (
