@@ -66,6 +66,14 @@ export const useMMTrade = (
         : null,
     [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
   )
+
+  const mmParamForRFQ = useMemo(
+    () =>
+      isMMQuotingPair
+        ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account, true)
+        : null,
+    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
+  )
   const mmQoute = useOrderBookQuote(mmParam)
   const { t } = useTranslation()
   const to: string | null = account ?? null
@@ -140,6 +148,6 @@ export const useMMTrade = (
     currencyBalances,
     currencies,
     inputError,
-    mmParam,
+    mmParam: mmParamForRFQ,
   }
 }

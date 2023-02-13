@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
+import { z } from 'zod'
 
 export enum MessageType {
   RFQ_REQUEST = 'RFQ_REQUEST',
@@ -7,6 +8,20 @@ export enum MessageType {
   RFQ_SUCCESS = 'RFQ_SUCCESS',
   RFQ_ERROR = 'RFQ_ERROR',
 }
+
+export const zRFQResponse = z.object({
+  messageType: z.nativeEnum(MessageType),
+  message: z.object({
+    makerSideToken: z.string(),
+    takerSideToken: z.string(),
+    makerSideTokenAmount: z.string(),
+    takerSideTokenAmount: z.string(),
+    rfqId: z.string(),
+    mmId: z.string().optional(),
+    signature: z.string(),
+    quoteExpiry: z.number(),
+  }),
+})
 
 export interface RFQResponse {
   messageType: MessageType.RFQ_RESPONSE

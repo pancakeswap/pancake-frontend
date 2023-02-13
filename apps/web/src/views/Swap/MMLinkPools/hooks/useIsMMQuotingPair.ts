@@ -4,8 +4,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
-import { NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { useIsMMSupportChain } from './useIsMMSupportChain'
+import { IS_SUPPORT_NATIVE_TOKEN, NATIVE_CURRENCY_ADDRESS } from '../constants'
 
 const QUOTING_WHITE_LIST = {
   1: PANCAKE_ETH_DEFAULT,
@@ -37,8 +37,22 @@ export const useIsMMQuotingPair = (
   return useMemo(() => {
     if (!isMMSupportChain || !chainId || !list || !inputCurrency || !outputCurrency) return false
     if (
-      list[(inputCurrency.isToken ? inputCurrency.address : NATIVE_CURRENCY_ADDRESS).toLowerCase()] &&
-      list[(outputCurrency.isToken ? outputCurrency.address : NATIVE_CURRENCY_ADDRESS).toLowerCase()]
+      list[
+        (inputCurrency.isToken
+          ? inputCurrency.address
+          : IS_SUPPORT_NATIVE_TOKEN
+          ? inputCurrency.wrapped.address
+          : NATIVE_CURRENCY_ADDRESS
+        ).toLowerCase()
+      ] &&
+      list[
+        (outputCurrency.isToken
+          ? outputCurrency.address
+          : IS_SUPPORT_NATIVE_TOKEN
+          ? inputCurrency.wrapped.address
+          : NATIVE_CURRENCY_ADDRESS
+        ).toLowerCase()
+      ]
     )
       return true
     return false
