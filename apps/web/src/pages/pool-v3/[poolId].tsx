@@ -41,6 +41,8 @@ import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { TransactionResponse } from '@ethersproject/providers'
+import RangeTag from 'views/AddLiquidityV3/components/RangeTag'
+import RateToggle from 'views/AddLiquidityV3/components/RateToggle'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -75,35 +77,35 @@ const useInverter = ({
   }
 }
 
-// function getRatio(
-//   lower: Price<Currency, Currency>,
-//   current: Price<Currency, Currency>,
-//   upper: Price<Currency, Currency>,
-// ) {
-//   try {
-//     if (!current.greaterThan(lower)) {
-//       return 100
-//     }
+function getRatio(
+  lower: Price<Currency, Currency>,
+  current: Price<Currency, Currency>,
+  upper: Price<Currency, Currency>,
+) {
+  try {
+    if (!current.greaterThan(lower)) {
+      return 100
+    }
 
-//     if (!current.lessThan(upper)) {
-//       return 0
-//     }
+    if (!current.lessThan(upper)) {
+      return 0
+    }
 
-//     const a = Number.parseFloat(lower.toSignificant(15))
-//     const b = Number.parseFloat(upper.toSignificant(15))
-//     const c = Number.parseFloat(current.toSignificant(15))
+    const a = Number.parseFloat(lower.toSignificant(15))
+    const b = Number.parseFloat(upper.toSignificant(15))
+    const c = Number.parseFloat(current.toSignificant(15))
 
-//     const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
+    const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
 
-//     if (ratio < 0 || ratio > 100) {
-//       throw Error('Out of range')
-//     }
+    if (ratio < 0 || ratio > 100) {
+      throw Error('Out of range')
+    }
 
-//     return ratio
-//   } catch {
-//     return undefined
-//   }
-// }
+    return ratio
+  } catch {
+    return undefined
+  }
+}
 
 export default function PoolPage() {
   const {
@@ -134,7 +136,7 @@ export default function PoolPage() {
     tokenId,
   } = positionDetails || {}
 
-  // const removed = liquidity?.eq(0)
+  const removed = liquidity?.eq(0)
 
   // const metadata = usePositionTokenURI(parsedTokenId)
 
@@ -157,10 +159,10 @@ export default function PoolPage() {
 
   const pricesFromPosition = getPriceOrderingFromPositionForUI(position)
 
-  const [manuallyInverted] = useState(false)
+  const [manuallyInverted, setManuallyInverted] = useState(false)
 
   // handle manual inversion
-  const { base } = useInverter({
+  const { priceLower, priceUpper, base } = useInverter({
     priceLower: pricesFromPosition.priceLower,
     priceUpper: pricesFromPosition.priceUpper,
     quote: pricesFromPosition.quote,
@@ -172,15 +174,15 @@ export default function PoolPage() {
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
-  // const ratio = useMemo(() => {
-  //   return priceLower && pool && priceUpper
-  //     ? getRatio(
-  //         inverted ? priceUpper.invert() : priceLower,
-  //         pool.token0Price,
-  //         inverted ? priceLower.invert() : priceUpper,
-  //       )
-  //     : undefined
-  // }, [inverted, pool, priceLower, priceUpper])
+  const ratio = useMemo(() => {
+    return priceLower && pool && priceUpper
+      ? getRatio(
+          inverted ? priceUpper.invert() : priceLower,
+          pool.token0Price,
+          inverted ? priceLower.invert() : priceUpper,
+        )
+      : undefined
+  }, [inverted, pool, priceLower, priceUpper])
 
   // TODO: add wrapped and unwrapped token support
   // fees
@@ -396,6 +398,7 @@ export default function PoolPage() {
                     <Text small bold>
                       {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
                     </Text>
+                    <Text>{inverted ? ratio : 100 - ratio}%</Text>
                   </AutoRow>
                   <AutoRow justifyContent="space-between">
                     <Flex>
@@ -407,6 +410,7 @@ export default function PoolPage() {
                     <Text small bold>
                       {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
                     </Text>
+                    <Text>{inverted ? 100 - ratio : ratio}%</Text>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
@@ -458,19 +462,50 @@ export default function PoolPage() {
               </Box>
             </Flex>
           </AutoRow>
+          <AutoRow justifyContent="space-between" mb="8px">
+            <Flex>
+              <Text>Price Range</Text>
+              <RangeTag removed={removed} outOfRange={!inRange} />
+            </Flex>
+            {currencyBase && currencyQuote && (
+              <RateToggle currencyA={currencyBase} handleRateToggle={() => setManuallyInverted(!manuallyInverted)} />
+            )}
+          </AutoRow>
           <AutoRow mb="8px">
             <Flex alignItems="center" justifyContent="space-between" width="100%">
-              <LightGreyCard mr="4px">
+              <LightGreyCard
+                mr="4px"
+                style={{
+                  textAlign: 'center',
+                }}
+              >
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   MIN PRICE
                 </Text>
                 {tickLower}
+                <Text fontSize="12px" color="textSubtle" bold>
+                  {currencyQuote?.symbol} per {currencyBase?.symbol}
+                </Text>
+                {inRange && (
+                  <Text fontSize="12px">Your position will be 100% {currencyBase?.symbol} at this price.</Text>
+                )}
               </LightGreyCard>
-              <LightGreyCard ml="4px">
+              <LightGreyCard
+                ml="4px"
+                style={{
+                  textAlign: 'center',
+                }}
+              >
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   MAX PRICE
                 </Text>
                 {tickUpper}
+                <Text fontSize="12px" color="textSubtle" bold>
+                  {currencyQuote?.symbol} per {currencyBase?.symbol}
+                </Text>
+                {inRange && (
+                  <Text fontSize="12px">Your position will be 100% {currencyQuote?.symbol} at this price.</Text>
+                )}
               </LightGreyCard>
             </Flex>
           </AutoRow>
@@ -479,7 +514,10 @@ export default function PoolPage() {
               <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                 CURRENT PRICE
               </Text>
-              {(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}{' '}
+              <Text>{(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}</Text>
+              <Text fontSize="12px" color="textSubtle" bold>
+                {currencyQuote?.symbol} per {currencyBase?.symbol}
+              </Text>
             </LightGreyCard>
           ) : null}
         </CardBody>

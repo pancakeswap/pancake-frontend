@@ -606,10 +606,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     />
                   </>
                 )}
-                <DynamicSection
-                  mb="24px"
-                  disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
-                >
+                <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
                   <RangeSelector
                     priceLower={priceLower}
                     priceUpper={priceUpper}
