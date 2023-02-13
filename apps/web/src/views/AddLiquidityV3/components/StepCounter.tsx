@@ -32,7 +32,7 @@ const StepCounter = ({
   tokenB,
 }: StepCounterProps) => {
   //  for focus state, styled components doesnt let you select input parent container
-  const [active, setActive] = useState(false)
+  const [, setActive] = useState(false)
 
   // let user type value and only update parent value on blur
   const [localValue, setLocalValue] = useState('')
