@@ -294,6 +294,8 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         v2Trade={v2Trade}
         mmTrade={mmOrderBookTrade?.trade}
         mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
+        errorMessage={mmRFQTrade?.error || mmOrderBookTrade?.inputError}
+        rfqId={mmRFQTrade?.rfqId}
       />
       <CurrencyInputHeader
         title={t('Swap')}

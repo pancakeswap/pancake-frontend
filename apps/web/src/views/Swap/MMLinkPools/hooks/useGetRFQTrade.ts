@@ -32,10 +32,12 @@ export const useGetRFQTrade = (
   isMMBetter: boolean,
   refreshRFQ: () => void,
 ): {
-  rfq: RFQResponse['message']
+  rfq: RFQResponse['message'] | null
   trade: TradeWithMM<Currency, Currency, TradeType> | null
-  refreshRFQ: () => void
-  quoteExpiry: number
+  refreshRFQ: () => void | null
+  quoteExpiry: number | null
+  error?: string
+  rfqId?: string
 } | null => {
   const { data } = useSWRImmutable(
     isMMBetter && rfqId && [`RFQ/${rfqId}`],
@@ -44,7 +46,15 @@ export const useGetRFQTrade = (
   )
   const isExactIn: boolean = independentField === Field.INPUT
 
-  if (data?.messageType !== MessageType.RFQ_RESPONSE) return null
+  if (data?.messageType !== MessageType.RFQ_RESPONSE)
+    return {
+      rfq: null,
+      trade: null,
+      quoteExpiry: null,
+      refreshRFQ: null,
+      error: data?.message?.error ?? '',
+      rfqId: data?.message?.rfqId ?? '',
+    }
   return {
     rfq: data.message,
     trade: parseMMTrade(
