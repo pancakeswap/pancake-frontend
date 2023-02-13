@@ -450,7 +450,11 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               trade={mmRFQTrade?.trade}
               swapInputError={
                 mmOrderBookTrade?.inputError ||
-                (isMMBetter && !mmRFQTrade ? <Dots>{t('Checking RFQ with MM')}</Dots> : '')
+                (isMMBetter && !mmRFQTrade?.rfq ? (
+                  <Dots>{t('Checking RFQ with MM')}</Dots>
+                ) : (
+                  parseMMError(mmRFQTrade?.error)
+                ))
               }
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}

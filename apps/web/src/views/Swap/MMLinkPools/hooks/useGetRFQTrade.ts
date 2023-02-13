@@ -40,7 +40,6 @@ export const useGetRFQTrade = (
   rfqId?: string
 } | null => {
   const { data, error } = useSWRImmutable(isMMBetter && rfqId && [`RFQ/${rfqId}`], () => getRFQById(rfqId), {
-    keepPreviousData: true,
     errorRetryCount: 10,
     errorRetryInterval: 1000,
   })

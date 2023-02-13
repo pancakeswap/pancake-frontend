@@ -170,5 +170,8 @@ export const parseMMError = (message?: string) => {
   if (message?.includes('Amount is above')) {
     return `Maximum Amount to trade with MM: ${toNumber(message.split(':')?.[1] ?? 0).toFixed(3) ?? ''}`
   }
+  if (message?.includes('insufficient_liquidity')) {
+    return `MM insufficient liquidity`
+  }
   return message
 }

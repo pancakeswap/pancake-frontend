@@ -39,7 +39,7 @@ export const useOrderBookQuote = (request: OrderBookRequest | null): OrderBookRe
     () => {
       return getMMOrderBook(request)
     },
-    { refreshInterval: 5000, keepPreviousData: true },
+    { refreshInterval: 5000 },
   )
   return data
 }
