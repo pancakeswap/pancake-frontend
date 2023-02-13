@@ -31,6 +31,14 @@ export interface RFQResponse {
   }
 }
 
+export interface RFQErrorResponse {
+  message: {
+    error: string
+    rfqId: string
+  }
+  messageType: MessageType.RFQ_ERROR
+}
+
 export type OrderBookRequest = {
   networkId: number
   makerSideToken: string

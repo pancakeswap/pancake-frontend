@@ -1,4 +1,11 @@
-import { OrderBookRequest, OrderBookResponse, QuoteRequest, RFQIdResponse, RFQResponse } from '../types'
+import {
+  OrderBookRequest,
+  OrderBookResponse,
+  QuoteRequest,
+  RFQIdResponse,
+  RFQResponse,
+  RFQErrorResponse,
+} from '../types'
 
 // const API_ENDPOINT = `https://test.linked-pool.pancakeswap.com/quote-service`
 const API_ENDPOINT = `https://linked-pool.pancakeswap.com/quote-service`
@@ -35,7 +42,7 @@ export const sendRFQAndGetRFQId = async (param: QuoteRequest): Promise<RFQIdResp
   }
 }
 
-export const getRFQById = async (id: string | number): Promise<RFQResponse> => {
+export const getRFQById = async (id: string | number): Promise<RFQResponse | RFQErrorResponse> => {
   try {
     const response = await fetch(`${API_ENDPOINT}/rfq/${id}`, {
       method: 'GET',
