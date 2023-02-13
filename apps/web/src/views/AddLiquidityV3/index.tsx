@@ -138,31 +138,27 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
 
   const [, , feeAmountFromUrl] = router.query.currency || []
 
+  const { minPrice, maxPrice } = router.query
+
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
   const positionManager = useV3NFTPositionManagerContract()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
-  // // fee selection from url
+  // fee selection from url
   const feeAmount: FeeAmount | undefined =
     feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
       ? parseFloat(feeAmountFromUrl)
       : undefined
 
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
-  // // prevent an error if they input ETH/WETH
+  // prevent an error if they input ETH/WETH
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
   // mint state
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
-  const {
-    independentField,
-    typedValue,
-    startPriceTypedValue,
-    // rightRangeTypedValue,
-    //  leftRangeTypedValue
-  } = formState
+  const { independentField, typedValue, startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue } = formState
 
   const {
     pool,
@@ -196,31 +192,21 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
 
   const isValid = !errorMessage && !invalidRange
   // modal and loading
-  //   // capital efficiency warning
+  // capital efficiency warning
   const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
   useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
-  //   useEffect(() => {
-  //     if (
-  //       parsedQs.minPrice &&
-  //       typeof parsedQs.minPrice === 'string' &&
-  //       parsedQs.minPrice !== leftRangeTypedValue &&
-  //       !_isNaN(parsedQs.minPrice as any)
-  //     ) {
-  //       onLeftRangeInput(parsedQs.minPrice)
-  //     }
-  //     if (
-  //       parsedQs.maxPrice &&
-  //       typeof parsedQs.maxPrice === 'string' &&
-  //       parsedQs.maxPrice !== rightRangeTypedValue &&
-  //       !_isNaN(parsedQs.maxPrice as any)
-  //     ) {
-  //       onRightRangeInput(parsedQs.maxPrice)
-  //     }
-  //   }, [parsedQs, rightRangeTypedValue, leftRangeTypedValue, onRightRangeInput, onLeftRangeInput])
-  //   // txn values
+  useEffect(() => {
+    if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !_isNaN(minPrice as any)) {
+      onLeftRangeInput(minPrice)
+    }
+    if (maxPrice && typeof maxPrice === 'string' && maxPrice !== rightRangeTypedValue && !_isNaN(maxPrice as any)) {
+      onRightRangeInput(maxPrice)
+    }
+  }, [minPrice, maxPrice, onRightRangeInput, onLeftRangeInput, leftRangeTypedValue, rightRangeTypedValue])
+  // txn values
   const deadline = useTransactionDeadline() // custom from users settings
   const [txHash, setTxHash] = useState<string>('')
-  //   // get formatted amounts
+  // get formatted amounts
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
@@ -417,7 +403,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
       </Button>
     )
   } else if (!account) {
-    buttons = <ConnectWalletButton />
+    buttons = <ConnectWalletButton width="100%" />
   } else if (isWrongNetwork) {
     buttons = <CommitButton />
   } else {
