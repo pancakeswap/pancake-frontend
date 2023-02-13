@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useRef } from "react";
 import get from "lodash/get";
 import { Context } from "./ModalContext";
 import { Handler } from "./types";
@@ -9,10 +9,12 @@ const useModal = (
   updateOnPropsChange = false,
   modalId = "defaultNodeId"
 ): [Handler, Handler] => {
+  const currentModal = useRef<React.ReactNode>();
+  currentModal.current = modal;
   const { isOpen, nodeId, modalNode, setModalNode, onPresent, onDismiss } = useContext(Context);
   const onPresentCallback = useCallback(() => {
-    onPresent(modal, modalId, closeOnOverlayClick);
-  }, [modal, modalId, onPresent, closeOnOverlayClick]);
+    onPresent(currentModal.current, modalId, closeOnOverlayClick);
+  }, [modalId, onPresent, closeOnOverlayClick]);
 
   // Updates the "modal" component if props are changed
   // Use carefully since it might result in unnecessary rerenders
