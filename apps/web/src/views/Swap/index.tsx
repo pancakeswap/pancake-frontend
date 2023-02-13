@@ -7,6 +7,7 @@ import { useCallback, useContext } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
@@ -25,6 +26,7 @@ export default function Swap() {
     useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
   const { t } = useTranslation()
+  const queryClient = new QueryClient()
 
   // swap state & price data
   const {
@@ -112,7 +114,9 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                <SmartSwapForm handleOutputSelect={handleOutputSelect} />
+                <QueryClientProvider client={queryClient}>
+                  <SmartSwapForm handleOutputSelect={handleOutputSelect} />
+                </QueryClientProvider>
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
