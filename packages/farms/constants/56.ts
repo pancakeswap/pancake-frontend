@@ -142,6 +142,13 @@ const farms: SerializedFarmConfig[] = [
     auctionHostingStartSeconds: 1668153600, // Fri Nov 11 2022 08:00:00 GMT+0000
   },
   {
+    pid: 146,
+    lpSymbol: 'SDAO-BNB',
+    lpAddress: '0x20C99830967a18563D2D3eD51094aDD9FBE06e2A',
+    token: bscTokens.sdao,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
     pid: 130,
     lpSymbol: 'XCAD-CAKE',
     lpAddress: '0x50e4837Fc2eEFFD34EF78483A89c6Afb7Dd70c77',
