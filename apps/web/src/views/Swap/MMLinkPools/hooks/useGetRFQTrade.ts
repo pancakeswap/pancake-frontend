@@ -41,7 +41,8 @@ export const useGetRFQTrade = (
 } | null => {
   const { data, error } = useSWRImmutable(isMMBetter && rfqId && [`RFQ/${rfqId}`], () => getRFQById(rfqId), {
     keepPreviousData: true,
-    errorRetryCount: 15,
+
+    errorRetryCount: 10,
     errorRetryInterval: 1000,
   })
   const isExactIn: boolean = independentField === Field.INPUT
