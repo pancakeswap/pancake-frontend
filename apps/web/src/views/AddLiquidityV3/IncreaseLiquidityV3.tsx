@@ -2,7 +2,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, Percent } from '@pancakeswap/sdk'
-import { AutoColumn, Button, CardBody } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, CardBody, ConfirmationModalContent, useModal } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -10,22 +10,14 @@ import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { LiquidityFormState } from 'hooks/v3/types'
-import {
-  useCallback,
-  // useEffect,
-  useState,
-} from 'react'
-// import useParsedQueryString from 'hooks/useParsedQueryString'
+import { useCallback, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 
 // import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
 
-import {
-  // useIsExpertMode,
-  useUserSlippageTolerance,
-} from 'state/user/hooks'
+import { useIsExpertMode, useUserSlippageTolerance } from 'state/user/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
@@ -44,6 +36,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 
 import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 
 import { useV3MintActionHandlers } from './form/hooks'
 import { PositionPreview } from './components/PositionPreview'
@@ -61,47 +54,43 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const [, , feeAmountFromUrl, tokenId] = router.query.currency || []
 
   const { t } = useTranslation()
-  // const expertMode = useIsExpertMode()
+  const expertMode = useIsExpertMode()
 
   const positionManager = useV3NFTPositionManagerContract()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
-  // const parsedQs = useParsedQueryString()
+
+  const [txHash, setTxHash] = useState<string>('')
+
   const addTransaction = useTransactionAdder()
-  // // fee selection from url
+  // fee selection from url
   const feeAmount: FeeAmount | undefined =
     feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
       ? parseFloat(feeAmountFromUrl)
       : undefined
-  // // check for existing position if tokenId in url
+  // check for existing position if tokenId in url
   const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
     tokenId ? BigNumber.from(tokenId) : undefined,
   )
   const hasExistingPosition = !!existingPositionDetails && !positionLoading
   const { position: existingPosition } = useDerivedPositionInfo(existingPositionDetails)
-  // // prevent an error if they input ETH/WETH
+  // prevent an error if they input ETH/WETH
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
   // mint state
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
-  const {
-    independentField,
-    typedValue,
-    //  startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue
-  } = formState
+  const { independentField, typedValue } = formState
 
   const {
     dependentField,
-    // price,
     parsedAmounts,
-    // currencyBalances,
     position,
     noLiquidity,
     currencies,
     errorMessage,
-    // invalidPool,
     invalidRange,
     outOfRange,
-    // invertPrice,
+    depositADisabled,
+    depositBDisabled,
     ticksAtLimit,
   } = useV3DerivedInfo(
     baseCurrency ?? undefined,
@@ -111,39 +100,12 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     existingPosition,
     formState,
   )
-  const {
-    onFieldAInput,
-    onFieldBInput,
-    // onStartPriceInput
-  } = useV3MintActionHandlers(noLiquidity)
+  const { onFieldAInput, onFieldBInput } = useV3MintActionHandlers(noLiquidity)
   const isValid = !errorMessage && !invalidRange
-  // modal and loading
-  //   const [showConfirm, setShowConfirm] = useState<boolean>(false)
-  //   // capital efficiency warning
-  //   const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
-  //   useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
-  //   useEffect(() => {
-  //     if (
-  //       parsedQs.minPrice &&
-  //       typeof parsedQs.minPrice === 'string' &&
-  //       parsedQs.minPrice !== leftRangeTypedValue &&
-  //       !_isNaN(parsedQs.minPrice as any)
-  //     ) {
-  //       onLeftRangeInput(parsedQs.minPrice)
-  //     }
-  //     if (
-  //       parsedQs.maxPrice &&
-  //       typeof parsedQs.maxPrice === 'string' &&
-  //       parsedQs.maxPrice !== rightRangeTypedValue &&
-  //       !_isNaN(parsedQs.maxPrice as any)
-  //     ) {
-  //       onRightRangeInput(parsedQs.maxPrice)
-  //     }
-  //   }, [parsedQs, rightRangeTypedValue, leftRangeTypedValue, onRightRangeInput, onLeftRangeInput])
-  //   // txn values
+
+  // txn values
   const deadline = useTransactionDeadline() // custom from users settings
-  const [, setTxHash] = useState<string>('')
-  //   // get formatted amounts
+  // get formatted amounts
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
@@ -162,6 +124,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   //   },
   //   {},
   // )
+
   // const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
   //   (accumulator, field) => {
   //     return {
@@ -171,6 +134,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   //   },
   //   {},
   // )
+
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   //   // check whether the user has approved the router on the tokens
   //   // Philip TODO: Add 'auto' allowedSlippage
@@ -179,7 +143,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
   //   // )
 
-  const onAdd = useCallback(async () => {
+  const onIncrease = useCallback(async () => {
     if (!chainId || !signer || !account || !nftPositionManagerAddress) return
 
     if (!positionManager || !baseCurrency || !quoteCurrency) {
@@ -264,6 +228,51 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+
+  const handleDismissConfirmation = useCallback(() => {
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onFieldAInput('')
+      // dont jump to pool page if creating
+      router.replace(`pool`, undefined, {
+        shallow: true,
+      })
+    }
+    setTxHash('')
+  }, [onFieldAInput, router, txHash])
+
+  const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
+    !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
+  } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
+    !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
+  }`
+
+  const [onPresentIncreaseLiquidityModal] = useModal(
+    <TransactionConfirmationModal
+      style={{
+        width: '420px',
+      }}
+      title="Increase Liquidity"
+      onDismiss={handleDismissConfirmation}
+      attemptingTxn={attemptingTxn}
+      hash={txHash}
+      content={() => (
+        <ConfirmationModalContent
+          topContent={() => <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} />}
+          bottomContent={() => (
+            <Button width="100%" mt="16px" onClick={onIncrease}>
+              Increase
+            </Button>
+          )}
+        />
+      )}
+      pendingText={pendingText}
+    />,
+    true,
+    true,
+    'TransactionConfirmationModalIncreaseLiquidity',
+  )
+
   let buttons
   if (addIsUnsupported || addIsWarning) {
     buttons = (
@@ -282,7 +291,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           variant={
             !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B] ? 'danger' : 'primary'
           }
-          onClick={() => onAdd()}
+          onClick={() => (expertMode ? onIncrease() : onPresentIncreaseLiquidityModal())}
           disabled={!isValid || attemptingTxn}
         >
           {errorMessage || t('Supply')}
@@ -303,7 +312,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           noConfig
         />{' '}
         <CardBody>
-          <AutoColumn mb="16px">
+          <Box mb="16px">
             {existingPosition && (
               <PositionPreview
                 position={existingPosition}
@@ -312,31 +321,33 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
                 ticksAtLimit={ticksAtLimit}
               />
             )}
-            <CurrencyInputPanel
-              disableCurrencySelect
-              showBUSD
-              value={formattedAmounts[Field.CURRENCY_A]}
-              onUserInput={onFieldAInput}
-              showQuickInputButton
-              showMaxButton
-              currency={currencies[Field.CURRENCY_A]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-              commonBasesType={CommonBasesType.LIQUIDITY}
-            />
-            <CurrencyInputPanel
-              disableCurrencySelect
-              showBUSD
-              value={formattedAmounts[Field.CURRENCY_B]}
-              onUserInput={onFieldBInput}
-              showQuickInputButton
-              showMaxButton
-              currency={currencies[Field.CURRENCY_B]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-              commonBasesType={CommonBasesType.LIQUIDITY}
-            />
-          </AutoColumn>
+            <Box mt="16px">
+              <CurrencyInputPanel
+                disableCurrencySelect
+                showBUSD
+                value={formattedAmounts[Field.CURRENCY_A]}
+                onUserInput={onFieldAInput}
+                showQuickInputButton
+                showMaxButton
+                currency={currencies[Field.CURRENCY_A]}
+                id="add-liquidity-input-tokenb"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
+              />
+              <CurrencyInputPanel
+                disableCurrencySelect
+                showBUSD
+                value={formattedAmounts[Field.CURRENCY_B]}
+                onUserInput={onFieldBInput}
+                showQuickInputButton
+                showMaxButton
+                currency={currencies[Field.CURRENCY_B]}
+                id="add-liquidity-input-tokenb"
+                showCommonBases
+                commonBasesType={CommonBasesType.LIQUIDITY}
+              />
+            </Box>
+          </Box>
           <AutoColumn
             style={{
               flexGrow: 1,

@@ -14,6 +14,10 @@ import {
   ColumnCenter,
   ArrowDownIcon,
   AutoColumn,
+  useModal,
+  ConfirmationModalContent,
+  RowBetween,
+  RowFixed,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
@@ -35,6 +39,8 @@ import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import styled from 'styled-components'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { LightGreyCard } from 'components/Card'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
+import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 
 import { useBurnV3ActionHandlers } from './form/hooks'
 
@@ -98,11 +104,11 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const deadline = useTransactionDeadline() // custom from users settings
   const [attemptingTxn, setAttemptingTxn] = useState(false)
-  // const [txnHash, setTxnHash] = useState<string | undefined>()
+  const [txnHash, setTxnHash] = useState<string | undefined>()
 
   const positionManager = useV3NFTPositionManagerContract()
 
-  const burn = useCallback(async () => {
+  const onRemove = useCallback(async () => {
     setAttemptingTxn(true)
     if (
       !positionManager ||
@@ -180,6 +186,97 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   ])
 
   const removed = position?.liquidity?.eq(0)
+
+  function modalHeader() {
+    return (
+      <>
+        <RowBetween alignItems="flex-end">
+          <Text fontSize={16} fontWeight={500}>
+            Pooled {liquidityValue0?.currency?.symbol}:
+          </Text>
+          <RowFixed>
+            <Text fontSize={16} fontWeight={500} marginLeft="6px">
+              {liquidityValue0 && <FormattedCurrencyAmount currencyAmount={liquidityValue0} />}
+            </Text>
+            <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={liquidityValue0?.currency} />
+          </RowFixed>
+        </RowBetween>
+        <RowBetween alignItems="flex-end">
+          <Text fontSize={16} fontWeight={500}>
+            Pooled {liquidityValue1?.currency?.symbol}:
+          </Text>
+          <RowFixed>
+            <Text fontSize={16} fontWeight={500} marginLeft="6px">
+              {liquidityValue1 && <FormattedCurrencyAmount currencyAmount={liquidityValue1} />}
+            </Text>
+            <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={liquidityValue1?.currency} />
+          </RowFixed>
+        </RowBetween>
+        {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) ? (
+          <>
+            <Text fontSize={12} textAlign="left" padding="8px 0 0 0">
+              You will also collect fees earned from this position.
+            </Text>
+            <RowBetween>
+              <Text fontSize={16} fontWeight={500}>
+                {feeValue0?.currency?.symbol} Fees Earned:
+              </Text>
+              <RowFixed>
+                <Text fontSize={16} fontWeight={500} marginLeft="6px">
+                  {feeValue0 && <FormattedCurrencyAmount currencyAmount={feeValue0} />}
+                </Text>
+                <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={feeValue0?.currency} />
+              </RowFixed>
+            </RowBetween>
+            <RowBetween>
+              <Text fontSize={16} fontWeight={500}>
+                {feeValue1?.currency?.symbol} Fees Earned:
+              </Text>
+              <RowFixed>
+                <Text fontSize={16} fontWeight={500} marginLeft="6px">
+                  {feeValue1 && <FormattedCurrencyAmount currencyAmount={feeValue1} />}
+                </Text>
+                <CurrencyLogo size="20px" style={{ marginLeft: '8px' }} currency={feeValue1?.currency} />
+              </RowFixed>
+            </RowBetween>
+          </>
+        ) : null}
+      </>
+    )
+  }
+
+  const handleDismissConfirmation = useCallback(() => {
+    // if there was a tx hash, we want to clear the input
+    if (txnHash) {
+      onPercentSelectForSlider(0)
+    }
+    setAttemptingTxn(false)
+    setTxnHash('')
+  }, [onPercentSelectForSlider, txnHash])
+
+  const [onPresentRemoveLiquidityModal] = useModal(
+    <TransactionConfirmationModal
+      title="Remove Liquidity"
+      onDismiss={handleDismissConfirmation}
+      attemptingTxn={attemptingTxn}
+      hash={txnHash ?? ''}
+      content={() => (
+        <ConfirmationModalContent
+          topContent={modalHeader}
+          bottomContent={() => (
+            <Button width="100%" mt="16px" onClick={onRemove}>
+              Remove
+            </Button>
+          )}
+        />
+      )}
+      pendingText={`Removing ${liquidityValue0?.toSignificant(6)} ${liquidityValue0?.currency?.symbol} and 
+      ${liquidityValue1?.toSignificant(6)} ${liquidityValue1?.currency?.symbol}`}
+    />,
+    true,
+    true,
+    'TransactionConfirmationModalRemoveLiquidity',
+  )
 
   return (
     <Page>
@@ -305,7 +402,11 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
               </Flex>
             </LightGreyCard>
           </AutoColumn>
-          <Button disabled={attemptingTxn || removed || Boolean(error)} width="100%" onClick={burn}>
+          <Button
+            disabled={attemptingTxn || removed || Boolean(error)}
+            width="100%"
+            onClick={onPresentRemoveLiquidityModal}
+          >
             {removed ? 'Closed' : error ?? 'Remove'}
           </Button>
         </CardBody>

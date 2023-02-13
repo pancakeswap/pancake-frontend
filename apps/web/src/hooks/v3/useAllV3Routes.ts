@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 import { Pool, Route } from '@pancakeswap/v3-sdk'
-import { useWeb3React } from '@pancakeswap/wagmi'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { useV3SwapPools } from './useV3SwapPools'
 
@@ -63,7 +63,7 @@ export function useAllV3Routes(
   currencyIn?: Currency,
   currencyOut?: Currency,
 ): { loading: boolean; routes: Route<Currency, Currency>[] } {
-  const { chainId } = useWeb3React()
+  const { chainId } = useActiveWeb3React()
   const { pools, loading: poolsLoading } = useV3SwapPools(currencyIn, currencyOut)
 
   return useMemo(() => {

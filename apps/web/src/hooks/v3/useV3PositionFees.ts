@@ -21,7 +21,7 @@ export function useV3PositionFees(
   ]).result?.[0]
 
   const tokenIdHexString = tokenId?.toHexString()
-  const latestBlockNumber = useBlockNumber()
+  const { data: latestBlockNumber } = useBlockNumber()
 
   // we can't use multicall for this because we need to simulate the call from a specific address
   // latestBlockNumber is included to ensure data stays up-to-date every block

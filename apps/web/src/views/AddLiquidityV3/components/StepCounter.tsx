@@ -32,32 +32,29 @@ const StepCounter = ({
   tokenB,
 }: StepCounterProps) => {
   //  for focus state, styled components doesnt let you select input parent container
-  // const [
-  // active,
-  // setActive,
-  // ] = useState(false)
+  const [, setActive] = useState(false)
 
   // let user type value and only update parent value on blur
   const [localValue, setLocalValue] = useState('')
   const [useLocalValue, setUseLocalValue] = useState(false)
 
   // animation if parent value updates local value
-  const [
-    ,
-    // pulsing,
-    setPulsing,
-  ] = useState<boolean>(false)
+  // const [
 
-  // const handleOnFocus = () => {
-  //   setUseLocalValue(true)
-  //   setActive(true)
-  // }
+  //   pulsing,
+  //   setPulsing,
+  // ] = useState<boolean>(false)
 
-  // const handleOnBlur = useCallback(() => {
-  //   setUseLocalValue(false)
-  //   setActive(false)
-  //   onUserInput(localValue) // trigger update on parent value
-  // }, [localValue, onUserInput])
+  const handleOnFocus = () => {
+    setUseLocalValue(true)
+    setActive(true)
+  }
+
+  const handleOnBlur = useCallback(() => {
+    setUseLocalValue(false)
+    setActive(false)
+    onUserInput(localValue) // trigger update on parent value
+  }, [localValue, onUserInput])
 
   // for button clicks
   const handleDecrement = useCallback(() => {
@@ -74,16 +71,16 @@ const StepCounter = ({
     if (localValue !== value && !useLocalValue) {
       setTimeout(() => {
         setLocalValue(value) // reset local value to match parent
-        setPulsing(true) // trigger animation
-        setTimeout(() => {
-          setPulsing(false)
-        }, 1800)
+        // setPulsing(true) // trigger animation
+        // setTimeout(() => {
+        //   setPulsing(false)
+        // }, 1800)
       }, 0)
     }
-  }, [localValue, setPulsing, useLocalValue, value])
+  }, [localValue, useLocalValue, value])
 
   return (
-    <AutoColumn gap="8px" width="100%">
+    <AutoColumn gap="8px" width="100%" onFocus={handleOnFocus} onBlur={handleOnBlur}>
       {title}
       <AutoRow>
         {!locked && (

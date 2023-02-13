@@ -7,9 +7,11 @@ import { DoubleCurrencyLogo } from 'components/Logo'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import JSBI from 'jsbi'
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState, useCallback } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { Bound } from '../form/actions'
+import RangeTag from './RangeTag'
+import RateToggle from './RateToggle'
 
 export const PositionPreview = ({
   position,
@@ -32,10 +34,7 @@ export const PositionPreview = ({
   const currency1 = unwrappedToken(position.pool.token1)
 
   // track which currency should be base
-  const [
-    baseCurrency,
-    // setBaseCurrency
-  ] = useState(
+  const [baseCurrency, setBaseCurrency] = useState(
     baseCurrencyDefault
       ? baseCurrencyDefault === currency0
         ? currency0
@@ -53,9 +52,9 @@ export const PositionPreview = ({
   const priceLower = sorted ? position.token0PriceLower : position.token0PriceUpper.invert()
   const priceUpper = sorted ? position.token0PriceUpper : position.token0PriceLower.invert()
 
-  // const handleRateChange = useCallback(() => {
-  //   setBaseCurrency(quoteCurrency)
-  // }, [quoteCurrency])
+  const handleRateChange = useCallback(() => {
+    setBaseCurrency(quoteCurrency)
+  }, [quoteCurrency])
 
   const removed = position?.liquidity && JSBI.equal(position?.liquidity, JSBI.BigInt(0))
 
@@ -68,7 +67,7 @@ export const PositionPreview = ({
             {currency0?.symbol} / {currency1?.symbol}
           </Text>
         </RowFixed>
-        {removed ? 'Removed' : inRange ? 'In Range' : 'Out of Range'}
+        <RangeTag removed={removed} outOfRange={!inRange} />
       </RowBetween>
 
       <LightCard>
@@ -99,6 +98,11 @@ export const PositionPreview = ({
       </LightCard>
 
       <AutoColumn gap="md">
+        <RowBetween>
+          {title ? <Text>{title}</Text> : <div />}
+          <RateToggle currencyA={sorted ? currency0 : currency1} handleRateToggle={handleRateChange} />
+        </RowBetween>
+
         <RowBetween>{title ? <Text>{title}</Text> : <div />}</RowBetween>
 
         <RowBetween>

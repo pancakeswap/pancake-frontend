@@ -8,8 +8,6 @@ import { useAppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidityV3 from 'views/AddLiquidityV3'
-import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
-import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import LiquidityFormProvider from 'views/AddLiquidityV3/form/LiquidityFormProvider'
 
@@ -28,22 +26,13 @@ const AddLiquidityPage = () => {
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const stableConfig = useStableConfig({
-    tokenA: currencyA,
-    tokenB: currencyB,
-  })
-
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
       dispatch(resetMintState())
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
-  return stableConfig.stableSwapConfig ? (
-    <StableConfigContext.Provider value={stableConfig}>
-      <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
-    </StableConfigContext.Provider>
-  ) : (
+  return (
     <LiquidityFormProvider>
       <AddLiquidityV3 currencyA={currencyA} currencyB={currencyB} />
     </LiquidityFormProvider>
