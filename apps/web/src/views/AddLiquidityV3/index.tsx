@@ -87,7 +87,7 @@ const StyledInput = styled(NumericalInput)`
 `
 
 /* two-column layout where DepositAmount is moved at the very end on mobile. */
-export const ResponsiveTwoColumns = styled.div<{ wide: boolean }>`
+export const ResponsiveTwoColumns = styled.div`
   display: grid;
   grid-column-gap: 32px;
   grid-row-gap: 16px;

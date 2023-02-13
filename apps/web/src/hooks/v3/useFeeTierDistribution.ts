@@ -74,7 +74,7 @@ export function useFeeTierDistribution(
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
-  const latestBlock = useBlockNumber()
+  const { data: latestBlock } = useBlockNumber()
   const { isLoading, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
 
   const { asToken0, asToken1, _meta } = data ?? {}
@@ -97,8 +97,8 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
     const all = asToken0.concat(asToken1)
 
     // sum tvl for token0 and token1 by fee tier
-    const tvlByFeeTier = all.reduce<{ [feeAmount: number]: [number | undefined, number | undefined] }>(
-      (acc, value) => {
+    const tvlByFeeTier = all.reduce(
+      (acc: Record<FeeAmount, [number | undefined, number | undefined]>, value) => {
         const result = acc
 
         result[value.feeTier][0] = (result[value.feeTier][0] ?? 0) + Number(value.totalValueLockedToken0)
@@ -110,7 +110,7 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
         [FeeAmount.LOW]: [undefined, undefined],
         [FeeAmount.MEDIUM]: [undefined, undefined],
         [FeeAmount.HIGH]: [undefined, undefined],
-      } as Record<FeeAmount, [number | undefined, number | undefined]>,
+      },
     )
 
     // sum total tvl for token0 and token1
