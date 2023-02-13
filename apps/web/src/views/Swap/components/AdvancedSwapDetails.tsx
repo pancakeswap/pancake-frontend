@@ -52,7 +52,7 @@ function TradeSummary({
               'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
             )}
             ml="4px"
-            placement="top-start"
+            placement="top"
           />
         </RowFixed>
         <RowFixed>
@@ -87,7 +87,7 @@ function TradeSummary({
                 </>
               }
               ml="4px"
-              placement="top-start"
+              placement="top"
             />
           </RowFixed>
 
@@ -143,7 +143,7 @@ function TradeSummary({
                 </>
               }
               ml="4px"
-              placement="top-start"
+              placement="top"
             />
           </RowFixed>
           <Text fontSize="14px">{`${realizedLPFee.toSignificant(4)} ${inputAmount.currency.symbol}`}</Text>
