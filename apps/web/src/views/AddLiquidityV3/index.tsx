@@ -17,6 +17,7 @@ import {
   NumericalInput,
   ConfirmationModalContent,
   useModal,
+  Message,
 } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
@@ -24,11 +25,7 @@ import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { LiquidityFormState } from 'hooks/v3/types'
-import {
-  useCallback,
-  // useEffect,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -198,8 +195,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const isValid = !errorMessage && !invalidRange
   // modal and loading
   //   // capital efficiency warning
-  //   const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
-  //   useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
+  const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
+  useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
   //   useEffect(() => {
   //     if (
   //       parsedQs.minPrice &&
@@ -371,13 +368,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   //   // get value and prices at ticks
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
-  const {
-    getDecrementLower,
-    getIncrementLower,
-    getDecrementUpper,
-    getIncrementUpper,
-    // getSetFullRange
-  } = useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
+  const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper, getSetFullRange } =
+    useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
   // we need an existence check on parsed amounts for single-asset deposits
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
@@ -638,6 +630,36 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     feeAmount={feeAmount}
                     ticksAtLimit={ticksAtLimit}
                   />
+                  {showCapitalEfficiencyWarning ? (
+                    <Message variant="warning">
+                      <Box>
+                        <Text fontSize="16px">Efficiency Comparison</Text>
+                        <Text color="textSubtle">
+                          Full range positions may earn less fees than concentrated positions.
+                        </Text>
+                        <Button
+                          mt="16px"
+                          onClick={() => {
+                            setShowCapitalEfficiencyWarning(false)
+                            getSetFullRange()
+                          }}
+                          scale="md"
+                          variant="danger"
+                        >
+                          I understand
+                        </Button>
+                      </Box>
+                    </Message>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        setShowCapitalEfficiencyWarning(true)
+                      }}
+                      variant="secondary"
+                    >
+                      Full Range
+                    </Button>
+                  )}
                 </DynamicSection>
                 <MediumOnly>{buttons}</MediumOnly>
               </AutoColumn>
