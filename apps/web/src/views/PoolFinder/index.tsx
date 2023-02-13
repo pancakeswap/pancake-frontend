@@ -47,7 +47,7 @@ export default function PoolFinder() {
   const native = useNativeCurrency()
 
   const [activeField, setActiveField] = useState<number>(Fields.TOKEN1)
-  const [currency0, setCurrency0] = useState<Currency | null>(() => native)
+  const [currency0, setCurrency0] = useState<Currency | null>(native)
   const [currency1, setCurrency1] = useState<Currency | null>(null)
 
   const [pairState, pair] = usePair(currency0 ?? undefined, currency1 ?? undefined)
