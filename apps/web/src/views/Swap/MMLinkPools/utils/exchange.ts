@@ -106,12 +106,21 @@ export const parseMMParameter = (
   independentField?: Field,
   typedValue?: string,
   account?: string,
+  isForRFQ?: boolean,
 ): OrderBookRequest => {
   if (!chainId || !inputCurrency || !outputCurrency || !outputCurrency || !independentField || !typedValue) return null
   return {
     networkId: chainId,
-    takerSideToken: inputCurrency?.isToken ? inputCurrency.address : NATIVE_CURRENCY_ADDRESS,
-    makerSideToken: outputCurrency?.isToken ? outputCurrency.address : NATIVE_CURRENCY_ADDRESS,
+    takerSideToken: inputCurrency?.isToken
+      ? inputCurrency.address
+      : isForRFQ // RFQ needs native address and order book use WETH to get quote
+      ? NATIVE_CURRENCY_ADDRESS
+      : inputCurrency.wrapped.address,
+    makerSideToken: outputCurrency?.isToken
+      ? outputCurrency.address
+      : isForRFQ
+      ? NATIVE_CURRENCY_ADDRESS
+      : inputCurrency.wrapped.address,
     takerSideTokenAmount:
       independentField === Field.INPUT && typedValue && typedValue !== '0'
         ? tryParseUnit(typedValue, inputCurrency.decimals)

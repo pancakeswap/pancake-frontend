@@ -39,7 +39,7 @@ export const useOrderBookQuote = (request: OrderBookRequest | null): OrderBookRe
     () => {
       return getMMOrderBook(request)
     },
-    { refreshInterval: 5000 },
+    { refreshInterval: 5000, keepPreviousData: true },
   )
   return data
 }
@@ -63,6 +63,14 @@ export const useMMTrade = (
     () =>
       isMMQuotingPair
         ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account)
+        : null,
+    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
+  )
+
+  const mmParamForRFQ = useMemo(
+    () =>
+      isMMQuotingPair
+        ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account, true)
         : null,
     [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
   )
@@ -140,6 +148,6 @@ export const useMMTrade = (
     currencyBalances,
     currencies,
     inputError,
-    mmParam,
+    mmParam: mmParamForRFQ,
   }
 }
