@@ -144,7 +144,7 @@ const farms: SerializedFarmConfig[] = [
   {
     pid: 146,
     lpSymbol: 'SDAO-BNB',
-    lpAddress: '0x20C99830967a18563D2D3eD51094aDD9FBE06e2A',
+    lpAddress: '0x43b95976cF0929478bC13332C9cd2D63Bf060976',
     token: bscTokens.sdao,
     quoteToken: bscTokens.wbnb,
   },
