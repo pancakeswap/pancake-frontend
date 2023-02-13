@@ -13,9 +13,13 @@ export interface PoolProvider {
   getPool: (currencyA: Currency, currencyB: Currency, type: PoolType, blockNumber: BigintIsh) => Promise<Pool | null>
 }
 
+export interface QuoterOptions {
+  blockNumber: BigintIsh
+}
+
 export interface QuoteProvider {
-  getRouteWithQuotesExactIn: (routes: RouteWithoutQuote[]) => Promise<RouteWithQuote[]>
-  getRouteWithQuotesExactOut: (routes: RouteWithoutQuote[]) => Promise<RouteWithQuote[]>
+  getRouteWithQuotesExactIn: (routes: RouteWithoutQuote[], options: QuoterOptions) => Promise<RouteWithQuote[]>
+  getRouteWithQuotesExactOut: (routes: RouteWithoutQuote[], options: QuoterOptions) => Promise<RouteWithQuote[]>
 }
 
 export type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => IProvider

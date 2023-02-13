@@ -10,7 +10,7 @@ import filter from 'lodash/filter'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
 
-import { BaseRoute, OnChainProvider, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from '../types'
+import { BaseRoute, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
 import { encodeMixedRouteToPath, getQuoteCurrency, getUsdGasToken } from '../utils'
@@ -95,7 +95,10 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
       const encodeRouteToPath = (route: BaseRoute) => encodeMixedRouteToPath(route, !isExactIn)
       const functionName = getQuoteFunctionName(isExactIn)
 
-      return async function getRoutesWithQuote(routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> {
+      return async function getRoutesWithQuote(
+        routes: RouteWithoutQuote[],
+        { blockNumber: blockNumberFromConfig }: QuoterOptions,
+      ): Promise<RouteWithQuote[]> {
         if (!routes.length) {
           return []
         }
@@ -116,7 +119,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
           minTimeout: 25,
           maxTimeout: 250,
         }
-        const providerConfig = { blockNumber: 0 }
+        const providerConfig = { blockNumber: blockNumberFromConfig }
         // const baseBlockOffset = 0
         const rollback = { enabled: false, rollbackBlockOffset: 0, attemptsBeforeRollback: 2 }
         const multicall2Provider = new UniswapMulticallProvider(
@@ -189,6 +192,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                     contractInterface,
                     functionName,
                     functionParams: inputs,
+                    providerConfig,
                     additionalConfig: {
                       gasLimitPerCallOverride: gasLimitOverride,
                     },
@@ -308,8 +312,8 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                         } times. Rolling back block number by ${rollbackBlockOffset} for next retry`,
                       )
                       providerConfig.blockNumber = providerConfig.blockNumber
-                        ? (await providerConfig.blockNumber) + rollbackBlockOffset
-                        : (await chainProvider.getBlockNumber()) + rollbackBlockOffset
+                        ? JSBI.add(JSBI.BigInt(await providerConfig.blockNumber), JSBI.BigInt(rollbackBlockOffset))
+                        : JSBI.add(JSBI.BigInt(await chainProvider.getBlockNumber()), JSBI.BigInt(rollbackBlockOffset))
 
                       retryAll = true
                       blockHeaderRolledBack = true

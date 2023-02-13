@@ -1,11 +1,11 @@
-import { JSBI } from '@pancakeswap/sdk'
+import { BigintIsh, JSBI } from '@pancakeswap/sdk'
 import { Interface } from '@ethersproject/abi'
 
 export type ProviderConfig = {
   /**
    * The block number to use when getting data on-chain.
    */
-  blockNumber?: number | Promise<number>
+  blockNumber?: BigintIsh | Promise<BigintIsh>
 }
 
 export type CallSameFunctionOnMultipleContractsParams<TFunctionParams, TAdditionalConfig = any> = {
