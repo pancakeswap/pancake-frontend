@@ -4,20 +4,12 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import { BIPS_BASE } from 'config/constants/exchange'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { SwapRouter, Trade as TradeV2V3 } from '@pancakeswap/router-sdk'
-
 import { useRouterContract } from 'utils/exchange'
 import useTransactionDeadline from './useTransactionDeadline'
 
 export interface SwapCall {
   contract: Contract
   parameters: SwapParameters
-}
-
-export interface SwapCallV3 {
-  address: string
-  calldata: string
-  value: string
 }
 
 /**
@@ -27,10 +19,10 @@ export interface SwapCallV3 {
  * @param recipientAddressOrName
  */
 export function useSwapCallArguments(
-  trade: Trade<Currency, Currency, TradeType> | TradeV2V3<Currency, Currency, TradeType> | undefined, // trade to execute, required
+  trade: Trade<Currency, Currency, TradeType> | undefined, // trade to execute, required
   allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
   recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
-): SwapCall[] | SwapCallV3[] {
+): SwapCall[] {
   const { account, chainId } = useActiveWeb3React()
 
   const recipient = recipientAddress === null ? account : recipientAddress
@@ -42,22 +34,6 @@ export function useSwapCallArguments(
 
     if (!contract) {
       return []
-    }
-
-    if (trade instanceof TradeV2V3<Currency, Currency, TradeType>) {
-      const { value, calldata } = SwapRouter.swapCallParameters(trade, {
-        recipient,
-        slippageTolerance: new Percent(allowedSlippage, 100),
-        deadlineOrPreviousBlockhash: deadline.toString(),
-      })
-
-      return [
-        {
-          address: contract.address,
-          calldata,
-          value,
-        },
-      ]
     }
 
     const swapMethods = []

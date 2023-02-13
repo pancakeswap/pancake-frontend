@@ -16,7 +16,7 @@ import {
   Text,
   useModal,
 } from '@pancakeswap/uikit'
-// import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
@@ -41,7 +41,7 @@ import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
 import AddressInputPanel from '../components/AddressInputPanel'
-// import AdvancedSwapDetailsDropdown from '../components/AdvancedSwapDetailsDropdown'
+import AdvancedSwapDetailsDropdown from '../components/AdvancedSwapDetailsDropdown'
 import CurrencyInputHeader from '../components/CurrencyInputHeader'
 import { ArrowWrapper, Wrapper } from '../components/styleds'
 import SwapCommitButton from '../components/SwapCommitButton'
@@ -110,7 +110,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     outputCurrency,
     recipient,
   )
-
   const {
     trade: tradeWithStableSwap,
     currencyBalances,
@@ -506,7 +505,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
           )}
         </Box>
       </Wrapper>
-      {/* {!swapIsUnsupported ? (
+      {!swapIsUnsupported ? (
         !showWrap && tradeInfo && !isMMBetter ? (
           <AdvancedSwapDetailsDropdown
             hasStablePair={smartRouterOn}
@@ -537,7 +536,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         )
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
-      )} */}
+      )}
     </>
   )
 }

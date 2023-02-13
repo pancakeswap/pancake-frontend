@@ -3,10 +3,11 @@ import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
 import { ConfirmationModalContent } from '@pancakeswap/uikit'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/swap/actions'
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
+import { computeSlippageAdjustedAmounts } from 'utils/exchange'
 import SwapModalFooter from './SwapModalFooter'
 import SwapModalHeader from './SwapModalHeader'
 import StableSwapModalFooter from '../StableSwap/components/StableSwapModalFooter'
+import { computeTradePriceBreakdown } from '../SmartSwap/utils/exchange'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it

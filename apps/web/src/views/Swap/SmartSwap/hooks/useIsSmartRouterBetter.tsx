@@ -1,6 +1,8 @@
-import { Currency, TradeType } from '@pancakeswap/sdk'
-import { Trade } from '@pancakeswap/router-sdk'
-import { LegacyRouteType, LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
+import {
+  LegacyRouteType as RouteType,
+  LegacyTradeWithStableSwap as TradeWithStableSwap,
+} from '@pancakeswap/smart-router/evm'
 
 interface Options {
   trade?: TradeWithStableSwap<Currency, Currency, TradeType> | null
@@ -19,12 +21,12 @@ export const useIsSmartRouterBetter = ({ trade, v2Trade }: Options) => {
     // Trade is cached so when changing the input, trade might be outdated
     (trade.tradeType === v2Trade.tradeType && !trade.inputAmount.equalTo(v2Trade.inputAmount)) ||
     // Trade should share the same path with v2 trade
-    !isSamePath(trade.route.path, v2Trade?.swaps?.[0]?.route?.path)
+    !isSamePath(trade.route.path, v2Trade.route.path)
   ) {
     return false
   }
 
-  return trade.route.routeType !== LegacyRouteType?.V2 && trade.outputAmount.greaterThan(v2Trade.outputAmount)
+  return trade.route.routeType !== RouteType.V2 && trade.outputAmount.greaterThan(v2Trade.outputAmount)
 }
 
 function isSamePath(one: Currency[], another: Currency[]) {
