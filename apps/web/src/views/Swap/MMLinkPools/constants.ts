@@ -28,3 +28,4 @@ export const MM_SIGNER = {
 }
 
 export const SAFE_MM_QUOTE_EXPIRY_SEC = 20
+export const IS_SUPPORT_NATIVE_TOKEN = false
