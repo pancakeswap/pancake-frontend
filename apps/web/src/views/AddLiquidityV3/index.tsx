@@ -19,6 +19,7 @@ import {
   useModal,
   Message,
 } from '@pancakeswap/uikit'
+
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -64,6 +65,7 @@ import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
 import { DynamicSection } from './components/shared'
+import LockedDeposit from './components/LockedDeposit'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -459,7 +461,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
             (approvalB !== ApprovalState.APPROVED && !depositBDisabled)
           }
         >
-          {errorMessage || t('Supply')}
+          {errorMessage || t('Add')}
         </CommitButton>
       </AutoColumn>
     )
@@ -506,30 +508,36 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
               <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
                 Deposit Amount
               </Text>
-              <CurrencyInputPanel
-                disableCurrencySelect
-                showBUSD
-                value={formattedAmounts[Field.CURRENCY_A]}
-                onUserInput={onFieldAInput}
-                showQuickInputButton
-                showMaxButton
-                currency={currencies[Field.CURRENCY_A]}
-                id="add-liquidity-input-tokena"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
-              <CurrencyInputPanel
-                disableCurrencySelect
-                showBUSD
-                value={formattedAmounts[Field.CURRENCY_B]}
-                onUserInput={onFieldBInput}
-                showQuickInputButton
-                showMaxButton
-                currency={currencies[Field.CURRENCY_B]}
-                id="add-liquidity-input-tokenb"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
+
+              <LockedDeposit locked={depositADisabled} mb="8px">
+                <CurrencyInputPanel
+                  disableCurrencySelect
+                  showBUSD
+                  value={formattedAmounts[Field.CURRENCY_A]}
+                  onUserInput={onFieldAInput}
+                  showQuickInputButton
+                  showMaxButton
+                  currency={currencies[Field.CURRENCY_A]}
+                  id="add-liquidity-input-tokena"
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                />
+              </LockedDeposit>
+
+              <LockedDeposit locked={depositBDisabled}>
+                <CurrencyInputPanel
+                  disableCurrencySelect
+                  showBUSD
+                  value={formattedAmounts[Field.CURRENCY_B]}
+                  onUserInput={onFieldBInput}
+                  showQuickInputButton
+                  showMaxButton
+                  currency={currencies[Field.CURRENCY_B]}
+                  id="add-liquidity-input-tokenb"
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                />
+              </LockedDeposit>
             </AutoColumn>
             <HideMedium>{buttons}</HideMedium>
 
@@ -631,7 +639,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     ticksAtLimit={ticksAtLimit}
                   />
                   {showCapitalEfficiencyWarning ? (
-                    <Message variant="warning">
+                    <Message variant="warning" mb="16px">
                       <Box>
                         <Text fontSize="16px">Efficiency Comparison</Text>
                         <Text color="textSubtle">
@@ -656,10 +664,22 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                         setShowCapitalEfficiencyWarning(true)
                       }}
                       variant="secondary"
+                      mb="16px"
                     >
                       Full Range
                     </Button>
                   )}
+
+                  {outOfRange ? (
+                    <Message variant="warning">
+                      <RowBetween>
+                        <Text ml="12px" fontSize="12px">
+                          Your position will not earn fees or be used in trades until the market price moves into your
+                          range.
+                        </Text>
+                      </RowBetween>
+                    </Message>
+                  ) : null}
                 </DynamicSection>
                 <MediumOnly>{buttons}</MediumOnly>
               </AutoColumn>
