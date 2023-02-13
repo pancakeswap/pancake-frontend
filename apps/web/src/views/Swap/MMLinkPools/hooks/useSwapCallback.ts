@@ -45,10 +45,6 @@ export function useSwapCallback(
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId } = useActiveWeb3React()
   const gasPrice = useGasPrice()
-  const raisedGasPrice = useMemo(() => {
-    if (!gasPrice) return ''
-    return BigNumber.from(gasPrice).mul(145).div(100).toString()
-  }, [gasPrice])
 
   const { t } = useTranslation()
 
@@ -124,7 +120,7 @@ export function useSwapCallback(
 
         return contract[methodName](...args, {
           gasLimit: calculateGasMargin(gasEstimate),
-          gasPrice: raisedGasPrice,
+          gasPrice,
           ...(value && !isZero(value) ? { value, from: account } : { from: account }),
         })
           .then((response: any) => {
@@ -194,5 +190,5 @@ export function useSwapCallback(
       },
       error: null,
     }
-  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, t, addTransaction, raisedGasPrice])
+  }, [trade, account, chainId, recipient, recipientAddress, swapCalls, t, addTransaction, gasPrice])
 }
