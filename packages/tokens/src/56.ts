@@ -2457,4 +2457,12 @@ export const bscTokens = {
     'Ultimate Champions Token',
     'https://beta.ultimate-champions.com/',
   ),
+  axlusdc: new ERC20Token(
+    ChainId.BSC,
+    '0x4268B8F0B87b6Eae5d897996E6b845ddbD99Adf3',
+    6,
+    'axlUSDC',
+    'Axelar Wrapped USDC',
+    'https://axelarscan.io/assets/',
+  ),
 }
