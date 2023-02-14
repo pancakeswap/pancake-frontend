@@ -29,6 +29,7 @@ import {
 } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import { useStableSwapByDefault } from 'state/user/smartRouter'
+import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import styled from 'styled-components'
 import GasSettings from './GasSettings'
 import TransactionSettings from './TransactionSettings'
@@ -79,6 +80,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
   const [isStableSwapByDefault, setIsStableSwapByDefault] = useStableSwapByDefault()
+  const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [tokenRisk, setTokenRisk] = useUserTokenRisk()
 
   const { t } = useTranslation()
@@ -277,6 +279,22 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 />
               </Flex>
               <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
+            </Flex>
+            <Flex justifyContent="space-between" alignItems="center" mb="24px">
+              <Flex alignItems="center">
+                <Text>{t('MM Linked Pool')}</Text>
+                <QuestionHelper
+                  text={t('Trade through the market makers if they provide better deal')}
+                  placement="top-start"
+                  ml="4px"
+                />
+              </Flex>
+              <Toggle
+                id="toggle-disable-mm-button"
+                checked={isMMLinkedPoolByDefault}
+                onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
+                scale="md"
+              />
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">

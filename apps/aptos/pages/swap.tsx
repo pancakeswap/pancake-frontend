@@ -422,16 +422,19 @@ const SwapPage = () => {
       <Card style={{ width: '328px' }}>
         <CurrencyInputHeader
           title={
-            <Flex width="100%" ml={32}>
-              <Flex flexDirection="column" alignItems="center" width="100%">
+            <Flex width="100%" alignItems="center" justifyContent="center">
+              <Flex flex="1" />
+              <Flex flex="1" justifyContent="center">
                 <CurrencyInputHeaderTitle>{t('Swap')}</CurrencyInputHeaderTitle>
               </Flex>
-              {account && (
-                <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
-                  <HistoryIcon color="textSubtle" width="24px" />
-                </IconButton>
-              )}
-              <SettingsButton />
+              <Flex flex="1" justifyContent="flex-end">
+                {account && (
+                  <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
+                    <HistoryIcon color="textSubtle" width="24px" />
+                  </IconButton>
+                )}
+                <SettingsButton />
+              </Flex>
             </Flex>
           }
           subtitle={<CurrencyInputHeaderSubTitle>{t('Trade tokens in an instant')}</CurrencyInputHeaderSubTitle>}

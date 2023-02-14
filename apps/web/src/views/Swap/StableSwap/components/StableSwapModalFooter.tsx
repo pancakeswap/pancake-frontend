@@ -67,6 +67,7 @@ export default function StableSwapModalFooter({
                 'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
               )}
               ml="4px"
+              placement="top"
             />
           </RowFixed>
           <RowFixed>

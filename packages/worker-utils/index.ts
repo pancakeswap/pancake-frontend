@@ -1,4 +1,11 @@
-export const CORS_ALLOW = /[^\w](?:pancake\.run|localhost:3000|pancakeswap\.finance|pancakeswap\.com)$/
+export const CORS_ALLOW = [
+  /\.pancake\.run$/,
+  /\.pancakeswap\.finance$/,
+  /\.pancakeswap\.com$/,
+  'https://pancakeswap.finance',
+  'https://pancakeswap.com',
+  /^http:\/\/localhost(:\d+)?$/,
+]
 
 function isString(s: any): s is string {
   return typeof s === 'string' || s instanceof String

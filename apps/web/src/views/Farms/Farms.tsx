@@ -39,6 +39,7 @@ import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsContext } from './context'
+import useMultiChainHarvestModal from './hooks/useMultiChainHarvestModal'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -175,6 +176,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   useCakeVaultUserData()
 
   usePollFarmsWithUserData()
+
+  useMultiChainHarvestModal()
 
   // Users with no wallet connected should see 0 as Earned amount
   // Connected users should see loading indicator until first userData has loaded

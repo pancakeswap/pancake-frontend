@@ -61,7 +61,7 @@ const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps
           </Flex>
           <Box ml="auto">
             <Text fontSize="14px" bold as="span">
-              {`${getFullDisplayBalance(amountReleased, token.decimals, token.decimals)} `}
+              {`${getFullDisplayBalance(amountReleased, token.decimals, 4)} `}
             </Text>
             <Text fontSize="14px" as="span">
               {`(${amount.releasedPercentageDisplay}%)`}
@@ -77,7 +77,7 @@ const ReleasedTokenInfo: React.FC<React.PropsWithChildren<ReleasedTokenInfoProps
           </Flex>
           <Box ml="auto">
             <Text fontSize="14px" bold as="span">
-              {`${getFullDisplayBalance(amountInVesting, token.decimals, token.decimals)} `}
+              {`${getFullDisplayBalance(amountInVesting, token.decimals, 4)} `}
             </Text>
             <Text fontSize="14px" as="span">
               {`(${amount.inVestingPercentageDisplay}%)`}
