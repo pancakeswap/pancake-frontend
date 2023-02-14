@@ -12,6 +12,7 @@ import { useV3PositionFees } from './useV3PositionFees'
 export function useDerivedV3BurnInfo(
   position?: PositionDetails,
   percent?: number,
+  asWETH = false,
 ): {
   position?: Position
   liquidityPercentage?: Percent
@@ -53,11 +54,15 @@ export function useDerivedV3BurnInfo(
     : undefined
 
   const liquidityValue0 =
-    token0 && discountedAmount0 ? CurrencyAmount.fromRawAmount(unwrappedToken(token0), discountedAmount0) : undefined
+    token0 && discountedAmount0
+      ? CurrencyAmount.fromRawAmount(asWETH ? token0 : unwrappedToken(token0), discountedAmount0)
+      : undefined
   const liquidityValue1 =
-    token1 && discountedAmount1 ? CurrencyAmount.fromRawAmount(unwrappedToken(token1), discountedAmount1) : undefined
+    token1 && discountedAmount1
+      ? CurrencyAmount.fromRawAmount(asWETH ? token1 : unwrappedToken(token1), discountedAmount1)
+      : undefined
 
-  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, position?.tokenId)
+  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, position?.tokenId, asWETH)
 
   const outOfRange =
     pool && position ? pool.tickCurrent < position.tickLower || pool.tickCurrent > position.tickUpper : false
