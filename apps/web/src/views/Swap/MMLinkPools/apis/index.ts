@@ -85,6 +85,6 @@ class RFQInsufficientError extends MMError {
 
   constructor() {
     super()
-    this.message = 'Insufficient liquidity'
+    this.message = 'Insufficient liquidity. Please try again later.'
   }
 }
