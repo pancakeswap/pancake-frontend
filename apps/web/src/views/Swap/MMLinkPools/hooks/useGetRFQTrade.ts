@@ -1,8 +1,7 @@
 import { Currency, TradeType } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { MutableRefObject } from 'react'
+import { MutableRefObject, useDeferredValue } from 'react'
 import { Field } from 'state/swap/actions'
-import useSWRImmutable from 'swr/immutable'
 import { useQuery } from '@tanstack/react-query'
 import { getRFQById, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
@@ -31,7 +30,7 @@ export const useGetRFQId = (
   isMMBetter: boolean,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
-): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string } => {
+): { rfqId: string; refreshRFQ: () => void; rfqUserInputCache: string; isLoading: boolean } => {
   const { account } = useActiveWeb3React()
 
   if (rfqUserInputPath)
@@ -40,24 +39,32 @@ export const useGetRFQId = (
   // eslint-disable-next-line no-param-reassign
   if (isRFQLive) isRFQLive.current = false
 
-  const { data, refetch } = useQuery(
+  const enabled = Boolean(
+    isMMBetter &&
+      account &&
+      param &&
+      param?.trader &&
+      (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
+      param?.makerSideTokenAmount !== '0' &&
+      param?.takerSideTokenAmount !== '0',
+  )
+
+  const { data, refetch, isLoading } = useQuery(
     [`RFQ/${rfqUserInputPath.current}`],
     () => sendRFQAndGetRFQId(param),
     {
       refetchInterval: 20000,
       retry: true,
-      enabled: Boolean(
-        isMMBetter &&
-          account &&
-          param &&
-          param?.trader &&
-          (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
-          param?.makerSideTokenAmount !== '0' &&
-          param?.takerSideTokenAmount !== '0',
-      ),
+      refetchOnWindowFocus: false,
+      enabled,
     }, // 20sec
   )
-  return { rfqId: data?.message?.rfqId ?? '', refreshRFQ: refetch, rfqUserInputCache: rfqUserInputPath.current }
+  return {
+    rfqId: data?.message?.rfqId ?? '',
+    refreshRFQ: refetch,
+    rfqUserInputCache: rfqUserInputPath.current,
+    isLoading: enabled && isLoading,
+  }
 }
 
 export const useGetRFQTrade = (
@@ -73,16 +80,23 @@ export const useGetRFQTrade = (
   trade: TradeWithMM<Currency, Currency, TradeType> | null
   refreshRFQ: () => void | null
   quoteExpiry: number | null
+  isLoading: boolean
   error?: string
   rfqId?: string
 } | null => {
-  const { data, error } = useSWRImmutable(isMMBetter && rfqId && [`RFQ/${rfqId}`], () => getRFQById(rfqId), {
-    errorRetryCount: 10,
-    errorRetryInterval: 1000,
+  const deferedRfqId = useDeferredValue(rfqId)
+  const { error, data, isLoading } = useQuery([`RFQ/${deferedRfqId}`], () => getRFQById(deferedRfqId), {
+    enabled: Boolean(isMMBetter && deferedRfqId),
+    retry: 6,
+    staleTime: Infinity,
   })
+  // const { data, error, isLoading } = useSWRImmutable(isMMBetter && rfqId && [`RFQ/${rfqId}`], () => getRFQById(rfqId), {
+  //   errorRetryCount: 10,
+  //   errorRetryInterval: 1000,
+  // })
   const isExactIn: boolean = independentField === Field.INPUT
 
-  if (error && error?.message && !data?.message)
+  if (error && error instanceof Error && error?.message && !data?.message)
     return {
       rfq: null,
       trade: null,
@@ -90,6 +104,7 @@ export const useGetRFQTrade = (
       refreshRFQ: null,
       error: error?.message === 'RFQ not found' ? 'fetching... RFQ' : error?.message,
       rfqId,
+      isLoading,
     }
   if (data?.messageType === MessageType.RFQ_RESPONSE) {
     // eslint-disable-next-line no-param-reassign
@@ -105,6 +120,7 @@ export const useGetRFQTrade = (
       ),
       quoteExpiry: data?.message?.quoteExpiry ?? null,
       refreshRFQ,
+      isLoading,
     }
   }
   return null
