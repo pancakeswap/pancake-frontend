@@ -53,6 +53,10 @@ function createUseBestTrade<T>(key: string, getBestTrade: (options: TradeOptions
       // TODO: trader should use user Wallet address
       async () => {
         const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
+          gasPriceWei: async () => {
+            const price = await provider({ chainId: amount.currency.chainId }).getGasPrice()
+            return price.toString()
+          },
           maxHops,
           poolProvider: SmartRouter.createPoolProvider({ onChainProvider: provider }),
           quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),

@@ -1,9 +1,10 @@
-import { Currency, CurrencyAmount, JSBI, Pair } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair } from '@pancakeswap/sdk'
 import { Pool as V3Pool, TickMath } from '@pancakeswap/v3-sdk'
 
 import {
   Pool as IPool,
   QuoteProvider,
+  QuoterOptions,
   RouteWithoutQuote,
   RouteWithQuote,
   StablePool,
@@ -11,7 +12,7 @@ import {
   V3Pool as IV3Pool,
 } from '../types'
 import { StableSwap } from '../../stableSwap'
-import { getOutputCurrency, getUsdGasToken, isStablePool, isV2Pool, isV3Pool } from '../utils'
+import { getOutputCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 
 // TODO Gas Model
 
@@ -32,8 +33,17 @@ export function createOffChainQuoteProvider(): QuoteProvider {
         }
       }
     }
+    const adjustQuoteForGas = (quote: CurrencyAmount<Currency>, gasCostInToken: CurrencyAmount<Currency>) => {
+      if (isExactIn) {
+        return quote.subtract(gasCostInToken)
+      }
+      return quote.add(gasCostInToken)
+    }
 
-    return async function getRoutesWithQuotes(routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> {
+    return async function getRoutesWithQuotes(
+      routes: RouteWithoutQuote[],
+      { gasModel }: QuoterOptions,
+    ): Promise<RouteWithQuote[]> {
       const routesWithQuote: RouteWithQuote[] = []
       for (const route of routes) {
         const { pools, amount } = route
@@ -58,18 +68,20 @@ export function createOffChainQuoteProvider(): QuoteProvider {
           }
         }
 
-        const usdToken = getUsdGasToken(quote.currency.chainId)
-        if (!usdToken) {
-          console.warn('Cannot find usd gas token on chain', quote.currency.chainId)
-        }
+        const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
+          {
+            ...route,
+            quote,
+          },
+          { initializedTickCrossedList: [] },
+        )
         routesWithQuote.push({
           ...route,
           quote,
-          // TODO gas model
-          quoteAdjustedForGas: quote,
-          gasEstimate: JSBI.BigInt(0),
-          gasCostInUSD: CurrencyAmount.fromRawAmount(usdToken || quote.currency, 0),
-          gasCostInToken: CurrencyAmount.fromRawAmount(quote.currency.wrapped, 0),
+          quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
+          gasEstimate,
+          gasCostInUSD,
+          gasCostInToken,
         })
       }
       return routesWithQuote

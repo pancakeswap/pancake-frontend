@@ -4,6 +4,7 @@ import type { GraphQLClient } from 'graphql-request'
 
 import { Pool, PoolType } from './pool'
 import { RouteWithoutQuote, RouteWithQuote } from './route'
+import { GasModel } from './gasModel'
 
 export interface PoolProvider {
   getCandidatePools: (currencyA: Currency, currencyB: Currency, blockNumber: BigintIsh) => Promise<Pool[]>
@@ -15,6 +16,7 @@ export interface PoolProvider {
 
 export interface QuoterOptions {
   blockNumber: BigintIsh
+  gasModel: GasModel
 }
 
 export interface QuoteProvider {

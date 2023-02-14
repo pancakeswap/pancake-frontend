@@ -1,6 +1,6 @@
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 
-import { BaseRoute, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
+import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
 import { getAmountDistribution } from './functions'
 
 interface Params {
@@ -10,6 +10,7 @@ interface Params {
   distributionPercent: number
   quoteProvider: QuoteProvider
   tradeType: TradeType
+  gasModel: GasModel
 }
 
 export async function getRoutesWithValidQuote({
@@ -19,6 +20,7 @@ export async function getRoutesWithValidQuote({
   quoteProvider,
   tradeType,
   blockNumber,
+  gasModel,
 }: Params): Promise<RouteWithQuote[]> {
   const [percents, amounts] = getAmountDistribution(amount, distributionPercent)
   const routesWithoutQuote = amounts.reduce<RouteWithoutQuote[]>(
@@ -36,5 +38,5 @@ export async function getRoutesWithValidQuote({
     tradeType === TradeType.EXACT_INPUT
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
-  return getRoutesWithQuote(routesWithoutQuote, { blockNumber })
+  return getRoutesWithQuote(routesWithoutQuote, { blockNumber, gasModel })
 }
