@@ -58,7 +58,7 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTokens.usdt,
     stableSwapAddress: '0x6D8fba276ec6F1EDa2344DA48565AdbCA7e4FFa5',
     infoStableSwapAddress: '0x0d396b1e47143221b7D9fbac73CCB647aC7BED3a',
-    stableLpFee: 0.00005,
+    stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
   {
