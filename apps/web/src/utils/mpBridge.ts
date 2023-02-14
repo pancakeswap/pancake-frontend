@@ -20,6 +20,13 @@ export const listenOnBnMessage = () => {
         cbList[id](newPayload)
         delete cbList[id]
       }
+      // control connect / disconnect
+      if (id === 'disconnect') {
+        window.bn.disconnect?.()
+      }
+      if (id === 'connect') {
+        window.bn.connect?.()
+      }
     }
   }
 }
