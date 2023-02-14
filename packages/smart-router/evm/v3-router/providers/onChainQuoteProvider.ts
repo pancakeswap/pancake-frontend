@@ -1,5 +1,5 @@
 /* eslint-disable no-console, @typescript-eslint/no-shadow, @typescript-eslint/no-non-null-assertion, prefer-destructuring, camelcase, consistent-return, no-await-in-loop, no-lonely-if, @typescript-eslint/no-unused-vars */
-import { ChainId, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
 import { BaseProvider } from '@ethersproject/providers'
 import { Interface } from '@ethersproject/abi'
 import chunk from 'lodash/chunk'
@@ -10,10 +10,18 @@ import filter from 'lodash/filter'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
 
-import { BaseRoute, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
+import {
+  BaseRoute,
+  GasModel,
+  OnChainProvider,
+  QuoteProvider,
+  QuoterOptions,
+  RouteWithoutQuote,
+  RouteWithQuote,
+} from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
-import { encodeMixedRouteToPath, getQuoteCurrency, getUsdGasToken } from '../utils'
+import { encodeMixedRouteToPath, getQuoteCurrency } from '../utils'
 import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
 
@@ -94,10 +102,12 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
     const createGetRoutesWithQuotes = (isExactIn = true) => {
       const encodeRouteToPath = (route: BaseRoute) => encodeMixedRouteToPath(route, !isExactIn)
       const functionName = getQuoteFunctionName(isExactIn)
+      const adjustQuoteForGas = (quote: CurrencyAmount<Currency>, gasCostInToken: CurrencyAmount<Currency>) =>
+        isExactIn ? quote.subtract(gasCostInToken) : quote.add(gasCostInToken)
 
       return async function getRoutesWithQuote(
         routes: RouteWithoutQuote[],
-        { blockNumber: blockNumberFromConfig }: QuoterOptions,
+        { blockNumber: blockNumberFromConfig, gasModel }: QuoterOptions,
       ): Promise<RouteWithQuote[]> {
         if (!routes.length) {
           return []
@@ -377,7 +387,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
           },
         )
 
-        const routesWithQuote = processQuoteResults(quoteResults, routes)
+        const routesWithQuote = processQuoteResults(quoteResults, routes, gasModel, adjustQuoteForGas)
 
         // metric.putMetric('QuoteApproxGasUsedPerSuccessfulCall', approxGasUsedPerSuccessCall, MetricLoggerUnit.Count)
 
@@ -490,6 +500,11 @@ function validateBlockNumbers(
 function processQuoteResults(
   quoteResults: Result<[JSBI, JSBI[], number[], JSBI]>[],
   routes: RouteWithoutQuote[],
+  gasModel: GasModel,
+  adjustQuoteForGas: (
+    quote: CurrencyAmount<Currency>,
+    gasCostInToken: CurrencyAmount<Currency>,
+  ) => CurrencyAmount<Currency>,
 ): RouteWithQuote[] {
   const routesWithQuote: RouteWithQuote[] = []
 
@@ -516,20 +531,21 @@ function processQuoteResults(
 
     const quoteCurrency = getQuoteCurrency(route, route.amount.currency)
     const quote = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, quoteResult.result[0])
-    const usdToken = getUsdGasToken(quote.currency.chainId)
-    if (!usdToken) {
-      console.warn('Cannot get usd gas token on chain', quote.currency.chainId)
-    }
+    const { gasEstimate, gasCostInToken, gasCostInUSD } = gasModel.estimateGasCost(
+      {
+        ...route,
+        quote,
+      },
+      { initializedTickCrossedList: quoteResult.result[2] },
+    )
     routesWithQuote.push({
       ...route,
       quote,
-      quoteAdjustedForGas: quote,
+      quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
       // sqrtPriceX96AfterList: quoteResult.result[1],
-      // initializedTicksCrossedList: quoteResult.result[2],
-      gasEstimate: JSBI.BigInt(quoteResult.result[3]),
-      // TODO gas model
-      gasCostInToken: CurrencyAmount.fromRawAmount(quote.currency.wrapped, 0),
-      gasCostInUSD: CurrencyAmount.fromRawAmount(usdToken || quote.currency.wrapped, 0),
+      gasEstimate,
+      gasCostInToken,
+      gasCostInUSD,
     })
   }
 

@@ -1,5 +1,5 @@
-import { ChainId, Currency, Pair } from '@pancakeswap/sdk'
-import { computePoolAddress } from '@pancakeswap/v3-sdk'
+import { ChainId, Currency, JSBI, Pair, Price } from '@pancakeswap/sdk'
+import { computePoolAddress, Pool as SDKV3Pool, TickMath } from '@pancakeswap/v3-sdk'
 
 import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
 import { V3_POOL_FACTORY_ADDRESS } from '../../constants'
@@ -72,4 +72,25 @@ export function getPoolAddress(pool: Pool): string {
     })
   }
   return ''
+}
+
+export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Price<Currency, Currency> {
+  if (isV3Pool(pool)) {
+    const { token0, token1, fee, liquidity, sqrtRatioX96 } = pool
+    const v3Pool = new SDKV3Pool(
+      token0.wrapped,
+      token1.wrapped,
+      fee,
+      sqrtRatioX96,
+      liquidity,
+      TickMath.getTickAtSqrtRatio(sqrtRatioX96),
+    )
+    return v3Pool.token0.equals(base.wrapped) ? v3Pool.token0Price : v3Pool.token1Price
+  }
+
+  if (isV2Pool(pool)) {
+    const pair = new Pair(pool.reserve0.wrapped, pool.reserve1.wrapped)
+    return pair.token0.equals(base.wrapped) ? pair.token0Price : pair.token1Price
+  }
+  return new Price(base, quote, JSBI.BigInt(1), JSBI.BigInt(0))
 }
