@@ -13,16 +13,7 @@ const PieChartContainer = () => {
   return (
     <Box width="fit-content" margin="auto">
       <PieChart width={160} height={160}>
-        <Pie
-          cx={75}
-          cy={75}
-          data={data}
-          fill="#2ECFDC"
-          dataKey="value"
-          innerRadius={60}
-          outerRadius={80}
-          paddingAngle={0}
-        >
+        <Pie cx={75} cy={75} data={data} fill="#2ECFDC" stroke="0" dataKey="value" innerRadius={60} outerRadius={80}>
           {data.map((entry, index) => (
             <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
           ))}
