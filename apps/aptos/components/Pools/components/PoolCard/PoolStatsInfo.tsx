@@ -6,7 +6,9 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-
+import { getBlockExploreLinkDefault } from 'utils'
+import getContactAddress from 'utils/getContactAddress'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AprInfo } from './Stat'
 
 interface ExpandedFooterProps {
@@ -50,6 +52,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
 }) => {
   const { t } = useTranslation()
   const getNow = useLedgerTimestamp()
+  const { chainId } = useActiveWeb3React()
 
   const {
     stakingToken,
@@ -60,6 +63,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     endBlock = 0,
     startBlock = 0,
     stakeLimitEndBlock = 0,
+    contractAddress,
   } = pool
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
@@ -84,6 +88,8 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     tooltip: stakeLimitTooltip,
     tooltipVisible: stakeLimitTooltipVisible,
   } = useTooltip(<EndTimeTooltipComponent endTime={stakeLimitEndBlock + startBlock} />)
+
+  const poolContractAddress = getContactAddress(contractAddress[chainId])
 
   return (
     <>
@@ -147,6 +153,18 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           {t('View Project Site')}
         </LinkExternal>
       </Flex>
+      {poolContractAddress && (
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <LinkExternal
+            isAptosScan
+            href={getBlockExploreLinkDefault(poolContractAddress, 'address', chainId)}
+            bold={false}
+            small
+          >
+            {t('View Contract')}
+          </LinkExternal>
+        </Flex>
+      )}
     </>
   )
 }
