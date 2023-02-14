@@ -11,6 +11,7 @@ import {
   Box,
   NextLinkFromReactRouter,
   ConfirmationModalContent,
+  Toggle,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -26,7 +27,6 @@ import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
-// import { useSingleCallResult } from 'state/multicall/hooks'
 import { useTransactionAdder, useIsTransactionPending } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
@@ -43,6 +43,8 @@ import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { TransactionResponse } from '@ethersproject/providers'
 import RangeTag from 'views/AddLiquidityV3/components/RangeTag'
 import RateToggle from 'views/AddLiquidityV3/components/RateToggle'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -114,6 +116,7 @@ export default function PoolPage() {
 
   const [collecting, setCollecting] = useState<boolean>(false)
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
+  const [receiveWETH, setReceiveWETH] = useState(false)
 
   const { data: signer } = useSigner()
 
@@ -184,13 +187,12 @@ export default function PoolPage() {
       : undefined
   }, [inverted, pool, priceLower, priceUpper])
 
-  // TODO: add wrapped and unwrapped token support
   // fees
-  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, false)
+  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWETH)
 
   // these currencies will match the feeValue{0,1} currencies for the purposes of fee collection
-  const currency0ForFeeCollectionPurposes = pool ? unwrappedToken(pool.token0) : undefined
-  const currency1ForFeeCollectionPurposes = pool ? unwrappedToken(pool.token1) : undefined
+  const currency0ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token0 : unwrappedToken(pool.token0)) : undefined
+  const currency1ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token1 : unwrappedToken(pool.token1)) : undefined
 
   const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
@@ -291,8 +293,8 @@ export default function PoolPage() {
     addTransaction,
   ])
 
-  // const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId?.toString()]).result?.[0]
-  // const ownsNFT = owner === account || positionDetails?.operator === account
+  const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId?.toString()]).result?.[0]
+  const ownsNFT = owner === account || positionDetails?.operator === account
 
   const feeValueUpper = inverted ? feeValue0 : feeValue1
   const feeValueLower = inverted ? feeValue1 : feeValue0
@@ -301,6 +303,18 @@ export default function PoolPage() {
   const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
   const above = pool && typeof tickUpper === 'number' ? pool.tickCurrent >= tickUpper : undefined
   const inRange: boolean = typeof below === 'boolean' && typeof above === 'boolean' ? !below && !above : false
+
+  const nativeCurrency = useNativeCurrency()
+  const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
+
+  const showCollectAsWeth = Boolean(
+    ownsNFT &&
+      (feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0)) &&
+      currency0 &&
+      currency1 &&
+      (currency0.isNative || currency1.isNative) &&
+      !collectMigrationHash,
+  )
 
   const modalHeader = () => (
     <>
@@ -395,10 +409,12 @@ export default function PoolPage() {
                         {currencyQuote?.symbol}
                       </Text>
                     </Flex>
-                    <Text small bold>
-                      {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
-                    </Text>
-                    <Text>{inverted ? ratio : 100 - ratio}%</Text>
+                    <Flex justifyContent="center">
+                      <Text bold mr="4px">
+                        {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
+                      </Text>
+                      <Text>{inverted ? ratio : 100 - ratio}%</Text>
+                    </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between">
                     <Flex>
@@ -407,10 +423,12 @@ export default function PoolPage() {
                         {currencyBase?.symbol}
                       </Text>
                     </Flex>
-                    <Text small bold>
-                      {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
-                    </Text>
-                    <Text>{inverted ? 100 - ratio : ratio}%</Text>
+                    <Flex justifyContent="center">
+                      <Text bold mr="4px">
+                        {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
+                      </Text>
+                      <Text>{inverted ? 100 - ratio : ratio}%</Text>
+                    </Flex>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
@@ -462,6 +480,18 @@ export default function PoolPage() {
               </Box>
             </Flex>
           </AutoRow>
+          {showCollectAsWeth && (
+            <Flex mb="8px">
+              <Flex ml="auto" alignItems="center">
+                <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
+                <Toggle
+                  id="receive-as-weth"
+                  checked={receiveWETH}
+                  onChange={() => setReceiveWETH((prevState) => !prevState)}
+                />
+              </Flex>
+            </Flex>
+          )}
           <AutoRow justifyContent="space-between" mb="8px">
             <Flex>
               <Text>Price Range</Text>

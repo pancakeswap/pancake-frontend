@@ -648,6 +648,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                       }}
                       variant="secondary"
                       mb="16px"
+                      scale="sm"
                     >
                       Full Range
                     </Button>
