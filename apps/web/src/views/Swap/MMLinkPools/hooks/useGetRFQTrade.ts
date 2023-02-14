@@ -39,32 +39,33 @@ export const useGetRFQTrade = (
   error?: string
   rfqId?: string
 } | null => {
-  const { data } = useSWRImmutable(
-    isMMBetter && rfqId && [`RFQ/${rfqId}`],
-    () => getRFQById(rfqId),
-    { refreshInterval: 1500, keepPreviousData: true }, // 1.5 sec auto refresh
-  )
+  const { data, error } = useSWRImmutable(isMMBetter && rfqId && [`RFQ/${rfqId}`], () => getRFQById(rfqId), {
+    errorRetryCount: 10,
+    errorRetryInterval: 1000,
+  })
   const isExactIn: boolean = independentField === Field.INPUT
 
-  if (data?.messageType !== MessageType.RFQ_RESPONSE)
+  if (error && error?.message && !data?.message)
     return {
       rfq: null,
       trade: null,
       quoteExpiry: null,
       refreshRFQ: null,
-      error: data?.message?.error ?? '',
-      rfqId: data?.message?.rfqId ?? '',
+      error: error?.message === 'RFQ not found' ? 'fetching... RFQ' : error?.message,
+      rfqId,
     }
-  return {
-    rfq: data.message,
-    trade: parseMMTrade(
-      isExactIn,
-      inputCurrency,
-      outputCurrency,
-      data?.message?.takerSideTokenAmount,
-      data?.message?.makerSideTokenAmount,
-    ),
-    quoteExpiry: data?.message?.quoteExpiry ?? null,
-    refreshRFQ,
-  }
+  if (data?.messageType === MessageType.RFQ_RESPONSE)
+    return {
+      rfq: data?.message,
+      trade: parseMMTrade(
+        isExactIn,
+        inputCurrency,
+        outputCurrency,
+        data?.message?.takerSideTokenAmount,
+        data?.message?.makerSideTokenAmount,
+      ),
+      quoteExpiry: data?.message?.quoteExpiry ?? null,
+      refreshRFQ,
+    }
+  return null
 }

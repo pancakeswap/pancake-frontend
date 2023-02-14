@@ -14,7 +14,15 @@ export const MMAndAMMDealDisplay: React.FC<{
   mmQuoteExpiryRemainingSec?: number
   errorMessage?: string
   rfqId?: string
-}> = ({ isMMBetter = false, independentField, v2Trade, mmTrade, mmQuoteExpiryRemainingSec, errorMessage, rfqId }) => {
+}> = ({
+  isMMBetter = false,
+  independentField,
+  v2Trade,
+  mmTrade,
+  mmQuoteExpiryRemainingSec,
+  errorMessage = 'none',
+  rfqId = 'none',
+}) => {
   const isExactIn = independentField === Field.INPUT
   const dealInANdOut = isExactIn ? '(out)' : '(in)'
   const { query } = useRouter()

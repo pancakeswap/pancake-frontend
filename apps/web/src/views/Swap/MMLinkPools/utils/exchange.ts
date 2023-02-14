@@ -106,12 +106,21 @@ export const parseMMParameter = (
   independentField?: Field,
   typedValue?: string,
   account?: string,
+  isForRFQ?: boolean,
 ): OrderBookRequest => {
   if (!chainId || !inputCurrency || !outputCurrency || !outputCurrency || !independentField || !typedValue) return null
   return {
     networkId: chainId,
-    takerSideToken: inputCurrency?.isToken ? inputCurrency.address : NATIVE_CURRENCY_ADDRESS,
-    makerSideToken: outputCurrency?.isToken ? outputCurrency.address : NATIVE_CURRENCY_ADDRESS,
+    takerSideToken: inputCurrency?.isToken
+      ? inputCurrency.address
+      : isForRFQ // RFQ needs native address and order book use WETH to get quote
+      ? NATIVE_CURRENCY_ADDRESS
+      : inputCurrency.wrapped.address,
+    makerSideToken: outputCurrency?.isToken
+      ? outputCurrency.address
+      : isForRFQ
+      ? NATIVE_CURRENCY_ADDRESS
+      : inputCurrency.wrapped.address,
     takerSideTokenAmount:
       independentField === Field.INPUT && typedValue && typedValue !== '0'
         ? tryParseUnit(typedValue, inputCurrency.decimals)
@@ -160,6 +169,9 @@ export const parseMMError = (message?: string) => {
   }
   if (message?.includes('Amount is above')) {
     return `Maximum Amount to trade with MM: ${toNumber(message.split(':')?.[1] ?? 0).toFixed(3) ?? ''}`
+  }
+  if (message?.includes('insufficient_liquidity')) {
+    return `MM insufficient liquidity`
   }
   return message
 }

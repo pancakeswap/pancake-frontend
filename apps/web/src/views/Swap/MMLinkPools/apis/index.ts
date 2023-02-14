@@ -5,6 +5,8 @@ import {
   RFQIdResponse,
   RFQResponse,
   RFQErrorResponse,
+  zRFQResponse,
+  MessageType,
 } from '../types'
 
 // const API_ENDPOINT = `https://test.linked-pool.pancakeswap.com/quote-service`
@@ -42,7 +44,7 @@ export const sendRFQAndGetRFQId = async (param: QuoteRequest): Promise<RFQIdResp
   }
 }
 
-export const getRFQById = async (id: string | number): Promise<RFQResponse | RFQErrorResponse> => {
+export const getRFQById = async (id: string | number): Promise<RFQResponse> => {
   try {
     const response = await fetch(`${API_ENDPOINT}/rfq/${id}`, {
       method: 'GET',
@@ -51,7 +53,11 @@ export const getRFQById = async (id: string | number): Promise<RFQResponse | RFQ
         'Content-Type': 'application/json',
       },
     })
-    const data = await response.json()
+    const data = (await response.json()) as RFQResponse | RFQErrorResponse
+    if (data?.messageType === MessageType.RFQ_ERROR) {
+      throw new Error(data?.message?.error)
+    }
+    zRFQResponse.parse(data)
     return data as RFQResponse
   } catch (e) {
     return Promise.reject(e)
