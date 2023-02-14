@@ -2388,25 +2388,6 @@ exports[`renders correctly 1`] = `
   pointer-events: auto;
 }
 
-.c11:first-child {
-  color: var(--colors-secondary);
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.c6 {
-  margin-bottom: 24px;
-}
-
-.c29 {
-  border-color: var(--colors-cardBorder);
-  border-top-width: 1px;
-  border-bottom-width: 1px;
-  border-style: solid;
-  padding: 24px 0;
-  margin-bottom: 24px;
-}
-
 .c19 {
   border-bottom: 1px solid var(--colors-cardBorder);
 }
@@ -2474,6 +2455,21 @@ exports[`renders correctly 1`] = `
   -webkit-transition: background-color 200ms;
   transition: background-color 200ms;
   width: 56px;
+}
+
+.c50 {
+  color: var(--colors-text);
+  padding: 0 8px;
+  border-radius: 8px;
+}
+
+.c2 {
+  background: var(--colors-backgroundAlt);
+}
+
+.c10 {
+  list-style: none;
+  margin-bottom: 40px;
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
