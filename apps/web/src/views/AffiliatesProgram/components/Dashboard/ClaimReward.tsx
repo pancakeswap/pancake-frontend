@@ -3,17 +3,30 @@ import { LightGreyCard } from 'components/Card'
 import styled from 'styled-components'
 
 const CardContainer = styled(Flex)`
+  flex-direction: column;
+
   ${LightGreyCard} {
-    margin-right: 16px;
+    margin: 0 0 16px 0;
     &:last-child {
-      margin-right: 0;
+      margin: 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+
+    ${LightGreyCard} {
+      margin: 0 16px 0 0;
+      &:last-child {
+        margin: 0;
+      }
     }
   }
 `
 
 const ClaimReward = () => {
   return (
-    <Flex maxWidth={['1110px']} m="auto">
+    <Flex padding="0 16px" maxWidth={['1110px']} m="auto auto 100px auto">
       <Card style={{ width: '100%' }}>
         <Flex flexDirection="column" padding={['24px']}>
           <Text mb="16px" color="secondary" bold fontSize={['12px']} textTransform="uppercase">

@@ -9,7 +9,12 @@ const Dashboard = () => {
   return (
     <AffiliatesProgramLayout>
       <Banner />
-      <Flex m={['68px 0 24px 0']} justifyContent={['center']} flexDirection={['column', 'row']}>
+      <Flex
+        padding="0 16px"
+        m={['68px 0 24px 0']}
+        justifyContent={['center']}
+        flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+      >
         <CommissionInfo />
         <MyReferralLink />
       </Flex>

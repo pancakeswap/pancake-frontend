@@ -35,7 +35,7 @@ const CommissionInfo = () => {
   }, [])
 
   return (
-    <Box width={['387px']}>
+    <Box width={['100%', '100%', '100%', '387px']}>
       <Card>
         <Box padding={['24px']}>
           <CardInner mb="28px">

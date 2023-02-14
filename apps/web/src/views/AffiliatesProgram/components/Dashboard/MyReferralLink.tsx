@@ -10,6 +10,7 @@ import {
   ShareIcon,
   Button,
   ArrowForwardIcon,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
@@ -17,17 +18,27 @@ import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 
 const Wrapper = styled(Flex)`
   padding: 1px;
-  width: fit-content;
+  width: 100%;
   margin: auto auto 49px auto;
   background: linear-gradient(180deg, #53dee9, #7645d9);
   border-radius: ${({ theme }) => theme.radii.default};
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: fit-content;
+  }
 `
 
 const StyledCommission = styled(Flex)`
-  width: 150px;
+  width: 100%;
   align-items: center;
   flex-direction: column;
   align-self: center;
+  padding: 12px 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    width: 150px;
+    padding: 0;
+  }
 `
 
 const CardInner = styled(Flex)`
@@ -37,12 +48,26 @@ const CardInner = styled(Flex)`
   justify-content: space-between;
   border-radius: ${({ theme }) => theme.radii.default};
   background: ${({ theme }) => theme.colors.gradientBubblegum};
+  flex-direction: column;
 
   ${StyledCommission} {
-    border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+    border-bottom: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
 
     &:last-child {
       border: 0;
+    }
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+
+    ${StyledCommission} {
+      border-bottom: 0;
+      border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+
+      &:last-child {
+        border: 0;
+      }
     }
   }
 `
@@ -51,12 +76,13 @@ const receivePercentageList: Array<string> = ['0', '10', '25', '50']
 
 const MyReferralLink = () => {
   const { t } = useTranslation()
+  const { isMobile } = useMatchBreakpoints()
   const [percentage, setPercentage] = useState('0')
 
   const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [commissionList])
 
   return (
-    <Box width={['700px']} ml={['32px']}>
+    <Box width={['100%', '100%', '100%', '700px']} m={[' 0 0 32px 0', ' 0 0 32px 0', ' 0 0 32px 0', ' 0 0 0 32px']}>
       <Card>
         <Box padding={['24px']}>
           <Text bold mb={['17px']} color="secondary" fontSize="12px" textTransform="uppercase">
@@ -97,12 +123,14 @@ const MyReferralLink = () => {
               ))}
             </CardInner>
           </Wrapper>
-          <Flex>
-            <Flex>
+          <Flex flexDirection={['column', 'column', 'column', 'row']}>
+            <Flex mb={['8px', '8px', '8px', '0']}>
               {receivePercentageList.map((list) => (
                 <Button
+                  scale={isMobile ? 'sm' : 'md'}
+                  width={`${100 / receivePercentageList.length}%`}
                   key={list}
-                  mr={['8px']}
+                  mr="8px"
                   variant={list === percentage ? 'primary' : 'tertiary'}
                   onClick={() => setPercentage(list)}
                 >

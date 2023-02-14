@@ -163,12 +163,12 @@ const AffiliatesBanner = () => {
               Monetize your influence. Grow through robust analytics.
               <span style={{ display: 'block' }}>Join a tight-knit community</span>
             </Text>
-            {/* <Flex>
+            <Flex>
               <Button width="fit-content">Join our Affiliates Program</Button>
               <Button ml="12px" variant="secondary" width="fit-content">
                 How does it work?
               </Button>
-            </Flex> */}
+            </Flex>
           </Flex>
         </Flex>
       </StyledBannerSection>
