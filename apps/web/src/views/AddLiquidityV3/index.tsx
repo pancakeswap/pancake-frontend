@@ -1,7 +1,7 @@
 import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency, Percent } from '@pancakeswap/sdk'
+import { Currency, NATIVE, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
   FlexGap,
   AutoColumn,
@@ -17,18 +17,16 @@ import {
   NumericalInput,
   ConfirmationModalContent,
   useModal,
+  Message,
 } from '@pancakeswap/uikit'
+
 import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { LiquidityFormState } from 'hooks/v3/types'
-import {
-  useCallback,
-  // useEffect,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -44,7 +42,6 @@ import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
-import { useCurrencySelectRoute } from 'views/AddLiquidity/useCurrencySelectRoute'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useRangeHopCallbacks from 'hooks/v3/useRangeHopCallbacks'
@@ -67,6 +64,7 @@ import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
 import { DynamicSection } from './components/shared'
+import LockedDeposit from './components/LockedDeposit'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -130,14 +128,23 @@ export const RightContainer = styled(AutoColumn)`
 interface AddLiquidityV3PropsType {
   currencyA: Currency
   currencyB: Currency
+  currencyIdA: string
+  currencyIdB: string
 }
 
-export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
+export default function AddLiquidityV3({
+  currencyA: baseCurrency,
+  currencyB,
+  currencyIdA,
+  currencyIdB,
+}: AddLiquidityV3PropsType) {
   const router = useRouter()
   const { data: signer } = useSigner()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   const [, , feeAmountFromUrl] = router.query.currency || []
+
+  const { minPrice, maxPrice } = router.query
 
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
@@ -145,25 +152,20 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   const positionManager = useV3NFTPositionManagerContract()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
-  // // fee selection from url
+  // fee selection from url
   const feeAmount: FeeAmount | undefined =
     feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
       ? parseFloat(feeAmountFromUrl)
       : undefined
 
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
-  // // prevent an error if they input ETH/WETH
+
+  // prevent an error if they input ETH/WETH
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
   // mint state
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
-  const {
-    independentField,
-    typedValue,
-    startPriceTypedValue,
-    // rightRangeTypedValue,
-    //  leftRangeTypedValue
-  } = formState
+  const { independentField, typedValue, startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue } = formState
 
   const {
     pool,
@@ -197,31 +199,21 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
 
   const isValid = !errorMessage && !invalidRange
   // modal and loading
-  //   // capital efficiency warning
-  //   const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
-  //   useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
-  //   useEffect(() => {
-  //     if (
-  //       parsedQs.minPrice &&
-  //       typeof parsedQs.minPrice === 'string' &&
-  //       parsedQs.minPrice !== leftRangeTypedValue &&
-  //       !_isNaN(parsedQs.minPrice as any)
-  //     ) {
-  //       onLeftRangeInput(parsedQs.minPrice)
-  //     }
-  //     if (
-  //       parsedQs.maxPrice &&
-  //       typeof parsedQs.maxPrice === 'string' &&
-  //       parsedQs.maxPrice !== rightRangeTypedValue &&
-  //       !_isNaN(parsedQs.maxPrice as any)
-  //     ) {
-  //       onRightRangeInput(parsedQs.maxPrice)
-  //     }
-  //   }, [parsedQs, rightRangeTypedValue, leftRangeTypedValue, onRightRangeInput, onLeftRangeInput])
-  //   // txn values
+  // capital efficiency warning
+  const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)
+  useEffect(() => setShowCapitalEfficiencyWarning(false), [baseCurrency, quoteCurrency, feeAmount])
+  useEffect(() => {
+    if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !leftRangeTypedValue) {
+      onLeftRangeInput(minPrice)
+    }
+    if (maxPrice && typeof maxPrice === 'string' && maxPrice !== rightRangeTypedValue && !rightRangeTypedValue) {
+      onRightRangeInput(maxPrice)
+    }
+  }, [minPrice, maxPrice, onRightRangeInput, onLeftRangeInput, leftRangeTypedValue, rightRangeTypedValue])
+  // txn values
   const deadline = useTransactionDeadline() // custom from users settings
   const [txHash, setTxHash] = useState<string>('')
-  //   // get formatted amounts
+  // get formatted amounts
   const formattedAmounts = {
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
@@ -253,11 +245,11 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   //   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
-  //   // Philip TODO: Add 'auto' allowedSlippage
+  // Philip TODO: Add 'auto' allowedSlippage
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
-  //   // const allowedSlippage = useUserSlippageToleranceWithDefault(
-  //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
-  //   // )
+  // const allowedSlippage = useUserSlippageToleranceWithDefault(
+  //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
+  // )
 
   const onAdd = useCallback(async () => {
     if (!chainId || !signer || !account || !nftPositionManagerAddress) return
@@ -331,23 +323,73 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     signer,
   ])
 
-  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
-  const handleFeePoolSelect = useCallback(
-    (newFeeAmount: FeeAmount) => {
-      if (baseCurrency?.wrapped?.address && currencyB?.wrapped?.address) {
-        onLeftRangeInput('')
-        onRightRangeInput('')
+  const handleCurrencySelect = useCallback(
+    (currencyNew: Currency, currencyIdOther?: string): (string | undefined)[] => {
+      const currencyIdNew = currencyId(currencyNew)
 
-        router.replace(
-          `/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}/${newFeeAmount}`,
-          undefined,
-          {
-            shallow: true,
-          },
-        )
+      if (currencyIdNew === currencyIdOther) {
+        // not ideal, but for now clobber the other if the currency ids are equal
+        return [currencyIdNew, undefined]
+      }
+      // prevent weth + eth
+      const isETHOrWETHNew =
+        currencyNew?.isNative || (chainId !== undefined && currencyIdNew === WNATIVE[chainId]?.address)
+      const isETHOrWETHOther =
+        currencyIdOther !== undefined &&
+        (currencyIdOther === NATIVE[chainId]?.symbol ||
+          (chainId !== undefined && currencyIdOther === WNATIVE[chainId]?.address))
+
+      if (isETHOrWETHNew && isETHOrWETHOther) {
+        return [currencyIdNew, undefined]
+      }
+
+      return [currencyIdNew, currencyIdOther]
+    },
+    [chainId],
+  )
+
+  const handleCurrencyASelect = useCallback(
+    (currencyANew: Currency) => {
+      const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
+      if (idB === undefined) {
+        router.replace(`/add/${idA}`, undefined, {
+          shallow: true,
+        })
+      } else {
+        router.replace(`/add/${idA}/${idB}`, undefined, {
+          shallow: true,
+        })
       }
     },
-    [baseCurrency?.wrapped?.address, currencyB?.wrapped?.address, onLeftRangeInput, onRightRangeInput, router],
+    [handleCurrencySelect, currencyIdB, router],
+  )
+
+  const handleCurrencyBSelect = useCallback(
+    (currencyBNew: Currency) => {
+      const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
+      if (idA === undefined) {
+        router.replace(`/add/${idB}`, undefined, {
+          shallow: true,
+        })
+      } else {
+        router.replace(`/add/${idA}/${idB}`, undefined, {
+          shallow: true,
+        })
+      }
+    },
+    [handleCurrencySelect, currencyIdA, router],
+  )
+
+  const handleFeePoolSelect = useCallback(
+    (newFeeAmount: FeeAmount) => {
+      onLeftRangeInput('')
+      onRightRangeInput('')
+
+      router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, {
+        shallow: true,
+      })
+    },
+    [currencyIdA, currencyIdB, onLeftRangeInput, onRightRangeInput, router],
   )
   const handleDismissConfirmation = useCallback(() => {
     // if there was a tx hash, we want to clear the input
@@ -361,23 +403,12 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     setTxHash('')
   }, [onFieldAInput, router, txHash])
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
-  //   // const clearAll = useCallback(() => {
-  //   //   onFieldAInput('')
-  //   //   onFieldBInput('')
-  //   //   onLeftRangeInput('')
-  //   //   onRightRangeInput('')
-  //   //   navigate(`/add`)
-  //   // }, [navigate, onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput])
-  //   // get value and prices at ticks
+
+  // get value and prices at ticks
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
-  const {
-    getDecrementLower,
-    getIncrementLower,
-    getDecrementUpper,
-    getIncrementUpper,
-    // getSetFullRange
-  } = useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
+  const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper, getSetFullRange } =
+    useRangeHopCallbacks(baseCurrency ?? undefined, quoteCurrency ?? undefined, feeAmount, tickLower, tickUpper, pool)
   // we need an existence check on parsed amounts for single-asset deposits
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
@@ -423,7 +454,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
       </Button>
     )
   } else if (!account) {
-    buttons = <ConnectWalletButton />
+    buttons = <ConnectWalletButton width="100%" />
   } else if (isWrongNetwork) {
     buttons = <CommitButton />
   } else {
@@ -467,7 +498,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
             (approvalB !== ApprovalState.APPROVED && !depositBDisabled)
           }
         >
-          {errorMessage || t('Supply')}
+          {errorMessage || t('Add')}
         </CommitButton>
       </AutoColumn>
     )
@@ -495,7 +526,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                 <AddIcon color="textSubtle" />
                 <CurrencySelect
                   id="add-liquidity-select-tokenb"
-                  selectedCurrency={currencyB}
+                  selectedCurrency={quoteCurrency}
                   onCurrencySelect={handleCurrencyBSelect}
                   showCommonBases
                   commonBasesType={CommonBasesType.LIQUIDITY}
@@ -514,30 +545,36 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
               <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
                 Deposit Amount
               </Text>
-              <CurrencyInputPanel
-                disableCurrencySelect
-                showBUSD
-                value={formattedAmounts[Field.CURRENCY_A]}
-                onUserInput={onFieldAInput}
-                showQuickInputButton
-                showMaxButton
-                currency={currencies[Field.CURRENCY_A]}
-                id="add-liquidity-input-tokena"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
-              <CurrencyInputPanel
-                disableCurrencySelect
-                showBUSD
-                value={formattedAmounts[Field.CURRENCY_B]}
-                onUserInput={onFieldBInput}
-                showQuickInputButton
-                showMaxButton
-                currency={currencies[Field.CURRENCY_B]}
-                id="add-liquidity-input-tokenb"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
+
+              <LockedDeposit locked={depositADisabled} mb="8px">
+                <CurrencyInputPanel
+                  disableCurrencySelect
+                  showBUSD
+                  value={formattedAmounts[Field.CURRENCY_A]}
+                  onUserInput={onFieldAInput}
+                  showQuickInputButton
+                  showMaxButton
+                  currency={currencies[Field.CURRENCY_A]}
+                  id="add-liquidity-input-tokena"
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                />
+              </LockedDeposit>
+
+              <LockedDeposit locked={depositBDisabled}>
+                <CurrencyInputPanel
+                  disableCurrencySelect
+                  showBUSD
+                  value={formattedAmounts[Field.CURRENCY_B]}
+                  onUserInput={onFieldBInput}
+                  showQuickInputButton
+                  showMaxButton
+                  currency={currencies[Field.CURRENCY_B]}
+                  id="add-liquidity-input-tokenb"
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                />
+              </LockedDeposit>
             </AutoColumn>
             <HideMedium>{buttons}</HideMedium>
 
@@ -580,9 +617,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                           }
 
                           router.replace(
-                            `/add/${currencyB?.wrapped?.address}/${baseCurrency?.wrapped?.address}${
-                              feeAmount ? `/${feeAmount}` : ''
-                            }`,
+                            `/add/${currencyIdA}/${currencyIdB}${feeAmount ? `/${feeAmount}` : ''}`,
                             undefined,
                             {
                               shallow: true,
@@ -620,10 +655,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     />
                   </>
                 )}
-                <DynamicSection
-                  mb="24px"
-                  disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}
-                >
+                <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
                   <RangeSelector
                     priceLower={priceLower}
                     priceUpper={priceUpper}
@@ -638,6 +670,49 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                     feeAmount={feeAmount}
                     ticksAtLimit={ticksAtLimit}
                   />
+                  {showCapitalEfficiencyWarning ? (
+                    <Message variant="warning" mb="16px">
+                      <Box>
+                        <Text fontSize="16px">Efficiency Comparison</Text>
+                        <Text color="textSubtle">
+                          Full range positions may earn less fees than concentrated positions.
+                        </Text>
+                        <Button
+                          mt="16px"
+                          onClick={() => {
+                            setShowCapitalEfficiencyWarning(false)
+                            getSetFullRange()
+                          }}
+                          scale="md"
+                          variant="danger"
+                        >
+                          I understand
+                        </Button>
+                      </Box>
+                    </Message>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        setShowCapitalEfficiencyWarning(true)
+                      }}
+                      variant="secondary"
+                      mb="16px"
+                      scale="sm"
+                    >
+                      Full Range
+                    </Button>
+                  )}
+
+                  {outOfRange ? (
+                    <Message variant="warning">
+                      <RowBetween>
+                        <Text ml="12px" fontSize="12px">
+                          Your position will not earn fees or be used in trades until the market price moves into your
+                          range.
+                        </Text>
+                      </RowBetween>
+                    </Message>
+                  ) : null}
                 </DynamicSection>
                 <MediumOnly>{buttons}</MediumOnly>
               </AutoColumn>

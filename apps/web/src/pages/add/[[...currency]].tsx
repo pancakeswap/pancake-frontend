@@ -34,7 +34,7 @@ const AddLiquidityPage = () => {
 
   return (
     <LiquidityFormProvider>
-      <AddLiquidityV3 currencyA={currencyA} currencyB={currencyB} />
+      <AddLiquidityV3 currencyA={currencyA} currencyIdA={currencyIdA} currencyIdB={currencyIdB} currencyB={currencyB} />
     </LiquidityFormProvider>
   )
 }

@@ -11,6 +11,7 @@ import {
   Box,
   NextLinkFromReactRouter,
   ConfirmationModalContent,
+  Toggle,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -26,7 +27,6 @@ import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
-// import { useSingleCallResult } from 'state/multicall/hooks'
 import { useTransactionAdder, useIsTransactionPending } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
@@ -41,6 +41,10 @@ import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { TransactionResponse } from '@ethersproject/providers'
+import RangeTag from 'views/AddLiquidityV3/components/RangeTag'
+import RateToggle from 'views/AddLiquidityV3/components/RateToggle'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -75,35 +79,35 @@ const useInverter = ({
   }
 }
 
-// function getRatio(
-//   lower: Price<Currency, Currency>,
-//   current: Price<Currency, Currency>,
-//   upper: Price<Currency, Currency>,
-// ) {
-//   try {
-//     if (!current.greaterThan(lower)) {
-//       return 100
-//     }
+function getRatio(
+  lower: Price<Currency, Currency>,
+  current: Price<Currency, Currency>,
+  upper: Price<Currency, Currency>,
+) {
+  try {
+    if (!current.greaterThan(lower)) {
+      return 100
+    }
 
-//     if (!current.lessThan(upper)) {
-//       return 0
-//     }
+    if (!current.lessThan(upper)) {
+      return 0
+    }
 
-//     const a = Number.parseFloat(lower.toSignificant(15))
-//     const b = Number.parseFloat(upper.toSignificant(15))
-//     const c = Number.parseFloat(current.toSignificant(15))
+    const a = Number.parseFloat(lower.toSignificant(15))
+    const b = Number.parseFloat(upper.toSignificant(15))
+    const c = Number.parseFloat(current.toSignificant(15))
 
-//     const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
+    const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
 
-//     if (ratio < 0 || ratio > 100) {
-//       throw Error('Out of range')
-//     }
+    if (ratio < 0 || ratio > 100) {
+      throw Error('Out of range')
+    }
 
-//     return ratio
-//   } catch {
-//     return undefined
-//   }
-// }
+    return ratio
+  } catch {
+    return undefined
+  }
+}
 
 export default function PoolPage() {
   const {
@@ -112,6 +116,7 @@ export default function PoolPage() {
 
   const [collecting, setCollecting] = useState<boolean>(false)
   const [collectMigrationHash, setCollectMigrationHash] = useState<string | null>(null)
+  const [receiveWETH, setReceiveWETH] = useState(false)
 
   const { data: signer } = useSigner()
 
@@ -134,7 +139,7 @@ export default function PoolPage() {
     tokenId,
   } = positionDetails || {}
 
-  // const removed = liquidity?.eq(0)
+  const removed = liquidity?.eq(0)
 
   // const metadata = usePositionTokenURI(parsedTokenId)
 
@@ -157,10 +162,10 @@ export default function PoolPage() {
 
   const pricesFromPosition = getPriceOrderingFromPositionForUI(position)
 
-  const [manuallyInverted] = useState(false)
+  const [manuallyInverted, setManuallyInverted] = useState(false)
 
   // handle manual inversion
-  const { base } = useInverter({
+  const { priceLower, priceUpper, base } = useInverter({
     priceLower: pricesFromPosition.priceLower,
     priceUpper: pricesFromPosition.priceUpper,
     quote: pricesFromPosition.quote,
@@ -172,23 +177,22 @@ export default function PoolPage() {
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
-  // const ratio = useMemo(() => {
-  //   return priceLower && pool && priceUpper
-  //     ? getRatio(
-  //         inverted ? priceUpper.invert() : priceLower,
-  //         pool.token0Price,
-  //         inverted ? priceLower.invert() : priceUpper,
-  //       )
-  //     : undefined
-  // }, [inverted, pool, priceLower, priceUpper])
+  const ratio = useMemo(() => {
+    return priceLower && pool && priceUpper
+      ? getRatio(
+          inverted ? priceUpper.invert() : priceLower,
+          pool.token0Price,
+          inverted ? priceLower.invert() : priceUpper,
+        )
+      : undefined
+  }, [inverted, pool, priceLower, priceUpper])
 
-  // TODO: add wrapped and unwrapped token support
   // fees
-  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, false)
+  const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWETH)
 
   // these currencies will match the feeValue{0,1} currencies for the purposes of fee collection
-  const currency0ForFeeCollectionPurposes = pool ? unwrappedToken(pool.token0) : undefined
-  const currency1ForFeeCollectionPurposes = pool ? unwrappedToken(pool.token1) : undefined
+  const currency0ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token0 : unwrappedToken(pool.token0)) : undefined
+  const currency1ForFeeCollectionPurposes = pool ? (receiveWETH ? pool.token1 : unwrappedToken(pool.token1)) : undefined
 
   const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
@@ -289,8 +293,8 @@ export default function PoolPage() {
     addTransaction,
   ])
 
-  // const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId?.toString()]).result?.[0]
-  // const ownsNFT = owner === account || positionDetails?.operator === account
+  const owner = useSingleCallResult(tokenId ? positionManager : null, 'ownerOf', [tokenId?.toString()]).result?.[0]
+  const ownsNFT = owner === account || positionDetails?.operator === account
 
   const feeValueUpper = inverted ? feeValue0 : feeValue1
   const feeValueLower = inverted ? feeValue1 : feeValue0
@@ -299,6 +303,18 @@ export default function PoolPage() {
   const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
   const above = pool && typeof tickUpper === 'number' ? pool.tickCurrent >= tickUpper : undefined
   const inRange: boolean = typeof below === 'boolean' && typeof above === 'boolean' ? !below && !above : false
+
+  const nativeCurrency = useNativeCurrency()
+  const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
+
+  const showCollectAsWeth = Boolean(
+    ownsNFT &&
+      (feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0)) &&
+      currency0 &&
+      currency1 &&
+      (currency0.isNative || currency1.isNative) &&
+      !collectMigrationHash,
+  )
 
   const modalHeader = () => (
     <>
@@ -393,9 +409,12 @@ export default function PoolPage() {
                         {currencyQuote?.symbol}
                       </Text>
                     </Flex>
-                    <Text small bold>
-                      {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
-                    </Text>
+                    <Flex justifyContent="center">
+                      <Text bold mr="4px">
+                        {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
+                      </Text>
+                      <Text>{inverted ? ratio : 100 - ratio}%</Text>
+                    </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between">
                     <Flex>
@@ -404,9 +423,12 @@ export default function PoolPage() {
                         {currencyBase?.symbol}
                       </Text>
                     </Flex>
-                    <Text small bold>
-                      {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
-                    </Text>
+                    <Flex justifyContent="center">
+                      <Text bold mr="4px">
+                        {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
+                      </Text>
+                      <Text>{inverted ? 100 - ratio : ratio}%</Text>
+                    </Flex>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
@@ -458,19 +480,62 @@ export default function PoolPage() {
               </Box>
             </Flex>
           </AutoRow>
+          {showCollectAsWeth && (
+            <Flex mb="8px">
+              <Flex ml="auto" alignItems="center">
+                <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
+                <Toggle
+                  id="receive-as-weth"
+                  checked={receiveWETH}
+                  onChange={() => setReceiveWETH((prevState) => !prevState)}
+                />
+              </Flex>
+            </Flex>
+          )}
+          <AutoRow justifyContent="space-between" mb="8px">
+            <Flex>
+              <Text>Price Range</Text>
+              <RangeTag removed={removed} outOfRange={!inRange} />
+            </Flex>
+            {currencyBase && currencyQuote && (
+              <RateToggle currencyA={currencyBase} handleRateToggle={() => setManuallyInverted(!manuallyInverted)} />
+            )}
+          </AutoRow>
           <AutoRow mb="8px">
             <Flex alignItems="center" justifyContent="space-between" width="100%">
-              <LightGreyCard mr="4px">
+              <LightGreyCard
+                mr="4px"
+                style={{
+                  textAlign: 'center',
+                }}
+              >
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   MIN PRICE
                 </Text>
                 {tickLower}
+                <Text fontSize="12px" color="textSubtle" bold>
+                  {currencyQuote?.symbol} per {currencyBase?.symbol}
+                </Text>
+                {inRange && (
+                  <Text fontSize="12px">Your position will be 100% {currencyBase?.symbol} at this price.</Text>
+                )}
               </LightGreyCard>
-              <LightGreyCard ml="4px">
+              <LightGreyCard
+                ml="4px"
+                style={{
+                  textAlign: 'center',
+                }}
+              >
                 <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                   MAX PRICE
                 </Text>
                 {tickUpper}
+                <Text fontSize="12px" color="textSubtle" bold>
+                  {currencyQuote?.symbol} per {currencyBase?.symbol}
+                </Text>
+                {inRange && (
+                  <Text fontSize="12px">Your position will be 100% {currencyQuote?.symbol} at this price.</Text>
+                )}
               </LightGreyCard>
             </Flex>
           </AutoRow>
@@ -479,7 +544,10 @@ export default function PoolPage() {
               <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
                 CURRENT PRICE
               </Text>
-              {(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}{' '}
+              <Text>{(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}</Text>
+              <Text fontSize="12px" color="textSubtle" bold>
+                {currencyQuote?.symbol} per {currencyBase?.symbol}
+              </Text>
             </LightGreyCard>
           ) : null}
         </CardBody>

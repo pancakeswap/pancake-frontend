@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
   AutoRow,
   CardBody,
@@ -18,6 +18,7 @@ import {
   ConfirmationModalContent,
   RowBetween,
   RowFixed,
+  Toggle,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
@@ -41,6 +42,7 @@ import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { LightGreyCard } from 'components/Card'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 
 import { useBurnV3ActionHandlers } from './form/hooks'
 
@@ -70,6 +72,11 @@ export default function RemoveLiquidityV3() {
 function Remove({ tokenId }: { tokenId: BigNumber }) {
   const { t } = useTranslation()
 
+  // flag for receiving WETH
+  const [receiveWETH, setReceiveWETH] = useState(false)
+  const nativeCurrency = useNativeCurrency()
+  const nativeWrappedSymbol = nativeCurrency.wrapped.symbol
+
   const { percent } = useLocalSelector<{ percent: number }>((s) => s) as { percent: number }
 
   const { account, chainId } = useActiveWeb3React()
@@ -87,7 +94,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     feeValue1,
     outOfRange,
     error,
-  } = useDerivedV3BurnInfo(position, percent)
+  } = useDerivedV3BurnInfo(position, percent, receiveWETH)
 
   const { onPercentSelect } = useBurnV3ActionHandlers()
 
@@ -278,6 +285,15 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     'TransactionConfirmationModalRemoveLiquidity',
   )
 
+  const showCollectAsWeth = Boolean(
+    liquidityValue0?.currency &&
+      liquidityValue1?.currency &&
+      (liquidityValue0.currency.isNative ||
+        liquidityValue1.currency.isNative ||
+        WNATIVE[liquidityValue0.currency.chainId]?.equals(liquidityValue0.currency.wrapped) ||
+        WNATIVE[liquidityValue1.currency.chainId]?.equals(liquidityValue1.currency.wrapped)),
+  )
+
   return (
     <Page>
       <AppBody>
@@ -402,6 +418,18 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
               </Flex>
             </LightGreyCard>
           </AutoColumn>
+          {showCollectAsWeth && (
+            <Flex mb="8px">
+              <Flex ml="auto" alignItems="center">
+                <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
+                <Toggle
+                  id="receive-as-weth"
+                  checked={receiveWETH}
+                  onChange={() => setReceiveWETH((prevState) => !prevState)}
+                />
+              </Flex>
+            </Flex>
+          )}
           <Button
             disabled={attemptingTxn || removed || Boolean(error)}
             width="100%"

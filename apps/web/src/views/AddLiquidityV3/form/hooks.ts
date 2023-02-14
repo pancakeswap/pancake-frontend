@@ -1,4 +1,5 @@
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
+import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { Field, typeInput, typeLeftRangeInput, typeRightRangeInput, typeStartPriceInput } from './actions'
 
@@ -15,6 +16,8 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
   onRightRangeInput: (typedValue: string) => void
   onStartPriceInput: (typedValue: string) => void
 } {
+  const router = useRouter()
+
   const dispatch = useLocalDispatch()
 
   const onFieldAInput = useCallback(
@@ -34,18 +37,35 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
   const onLeftRangeInput = useCallback(
     (typedValue: string) => {
       dispatch(typeLeftRangeInput({ typedValue }))
-      // Philip TODO; Replace navigate with next
-      // navigate({ search: replaceURLParam(search, 'minPrice', typedValue) }, { replace: true })
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, minPrice: typedValue },
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
     },
-    [dispatch],
+    [dispatch, router],
   )
 
   const onRightRangeInput = useCallback(
     (typedValue: string) => {
       dispatch(typeRightRangeInput({ typedValue }))
-      // navigate({ search: replaceURLParam(search, 'maxPrice', typedValue) }, { replace: true })
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: { ...router.query, maxPrice: typedValue },
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
     },
-    [dispatch],
+    [dispatch, router],
   )
 
   const onStartPriceInput = useCallback(
