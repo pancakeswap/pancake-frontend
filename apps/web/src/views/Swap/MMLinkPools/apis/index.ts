@@ -9,8 +9,7 @@ import {
   MessageType,
 } from '../types'
 
-// const API_ENDPOINT = `https://test.linked-pool.pancakeswap.com/quote-service`
-const API_ENDPOINT = `https://linked-pool.pancakeswap.com/quote-service`
+const API_ENDPOINT = process.env.NEXT_PUBLIC_MM_API_URL
 
 export const getMMOrderBook = async (param: OrderBookRequest): Promise<OrderBookResponse> => {
   try {
@@ -44,7 +43,7 @@ export const sendRFQAndGetRFQId = async (param: QuoteRequest): Promise<RFQIdResp
   }
 }
 
-export const getRFQById = async (id: string | number): Promise<RFQResponse> => {
+export const getRFQById = async (id: string | number) => {
   try {
     const response = await fetch(`${API_ENDPOINT}/rfq/${id}`, {
       method: 'GET',
@@ -58,7 +57,7 @@ export const getRFQById = async (id: string | number): Promise<RFQResponse> => {
       throw new Error(data?.message?.error)
     }
     zRFQResponse.parse(data)
-    return data as RFQResponse
+    return data
   } catch (e) {
     return Promise.reject(e)
   }

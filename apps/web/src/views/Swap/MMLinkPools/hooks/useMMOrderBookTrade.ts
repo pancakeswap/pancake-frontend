@@ -1,17 +1,19 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useQuery } from '@tanstack/react-query'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMemo } from 'react'
+import { useMemo, useRef, MutableRefObject } from 'react'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
-import useSWR from 'swr'
+
 import { isAddress } from 'utils'
 
 import { getMMOrderBook } from '../apis'
 import { useIsMMQuotingPair } from './useIsMMQuotingPair'
 import { OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
 import { parseMMParameter, parseMMTrade } from '../utils/exchange'
+import { useMMParam } from './useMMParam'
 
 // TODO: update
 const BAD_RECIPIENT_ADDRESSES: string[] = [
@@ -27,21 +29,61 @@ function involvesAddress(trade: TradeWithMM<Currency, Currency, TradeType>, chec
   )
 }
 
-export const useOrderBookQuote = (request: OrderBookRequest | null): OrderBookResponse => {
-  const { data } = useSWR(
-    request &&
-      request.trader &&
-      (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
-      request.makerSideTokenAmount !== '0' &&
-      request.takerSideTokenAmount !== '0' && [
-        `orderBook/${request.networkId}/${request.makerSideToken}/${request.takerSideToken}/${request.makerSideTokenAmount}/${request.takerSideTokenAmount}/`,
-      ],
+// export const useOrderBookQuote = (request: OrderBookRequest | null): OrderBookResponse => {
+//   const { data } = useSWR(
+//     request &&
+//       request.trader &&
+//       (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
+//       request.makerSideTokenAmount !== '0' &&
+//       request.takerSideTokenAmount !== '0' && [
+//         `orderBook/${request.networkId}/${request.makerSideToken}/${request.takerSideToken}/${request.makerSideTokenAmount}/${request.takerSideTokenAmount}/`,
+//       ],
+//     () => {
+//       return getMMOrderBook(request)
+//     },
+//     { refreshInterval: 5000 },
+//   )
+//   return data
+// }
+
+const checkOrderBookShouldRefetch = (
+  inputPath: MutableRefObject<string>,
+  rfqUserInputPath: MutableRefObject<string>,
+  isRFQLive: MutableRefObject<boolean>,
+) => {
+  // if there is RFQ response and same input should stop refetch orderbook temporarily
+  const shouldRefetch = !(
+    Boolean(isRFQLive?.current) &&
+    Boolean(inputPath?.current === rfqUserInputPath?.current && rfqUserInputPath?.current !== undefined)
+  )
+  return shouldRefetch
+}
+
+export const useOrderBookQuote = (
+  request: OrderBookRequest | null,
+  rfqUserInputPath: MutableRefObject<string>,
+  isRFQLive: MutableRefObject<boolean>,
+): { data: OrderBookResponse; isLoading: boolean } => {
+  const inputPath = useRef<string>('')
+  inputPath.current = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
+  const { data, isLoading } = useQuery(
+    [`orderBook/${inputPath.current}`],
     () => {
       return getMMOrderBook(request)
     },
-    { refreshInterval: 5000 },
+    {
+      refetchInterval: 5000,
+      enabled: Boolean(
+        request &&
+          request.trader &&
+          (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
+          request.makerSideTokenAmount !== '0' &&
+          request.takerSideTokenAmount !== '0' &&
+          checkOrderBookShouldRefetch(inputPath, rfqUserInputPath, isRFQLive),
+      ),
+    },
   )
-  return data
+  return { data, isLoading }
 }
 
 export const useMMTrade = (
@@ -56,17 +98,15 @@ export const useMMTrade = (
   trade?: TradeWithMM<Currency, Currency, TradeType> | null
   inputError?: string
   mmParam: OrderBookRequest
+  rfqUserInputPath: MutableRefObject<string>
+  isRFQLive: MutableRefObject<boolean>
+  isLoading: boolean
 } | null => {
+  const rfqUserInputPath = useRef<string>('')
+  const isRFQLive = useRef<boolean>(false)
   const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const { account, chainId } = useActiveWeb3React()
-  const mmParam = useMemo(
-    () =>
-      isMMQuotingPair
-        ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account)
-        : null,
-    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
-  )
-
+  const mmParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency)
   const mmParamForRFQ = useMemo(
     () =>
       isMMQuotingPair
@@ -74,7 +114,7 @@ export const useMMTrade = (
         : null,
     [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
   )
-  const mmQoute = useOrderBookQuote(mmParam)
+  const { data: mmQoute, isLoading } = useOrderBookQuote(mmParam, rfqUserInputPath, isRFQLive)
   const { t } = useTranslation()
   const to: string | null = account ?? null
 
@@ -149,5 +189,8 @@ export const useMMTrade = (
     currencies,
     inputError,
     mmParam: mmParamForRFQ,
+    rfqUserInputPath,
+    isRFQLive,
+    isLoading,
   }
 }
