@@ -12,6 +12,7 @@ const HowItWork = () => {
       justifyContent="center"
       mt={['36px', '36px', '36px', '80px']}
       mb={['168px']}
+      padding="0 16px"
     >
       <GradientLogo height="36px" width="36px" mb="24px" />
       <Heading textAlign="center" scale="xl">
@@ -29,8 +30,8 @@ const HowItWork = () => {
       <Text textAlign="center" color="textSubtle" bold mb="32px">
         {t('How does it work?')}
       </Text>
-      <Flex maxWidth={['888px']}>
-        <Flex width="33.33%" mr={['16px']}>
+      <Flex width={['280px', '280px', '280px', '888px']} flexDirection={['column', 'column', 'column', 'row']}>
+        <Flex width={['100%', '100%', '100%', '33.33%']} m={['0 0 16px 0', '0 0 16px 0', '0 0 16px 0', '0 16px 0 0']}>
           <Card>
             <Box padding={['24px']}>
               <Text fontSize={['40px']} bold color="secondary">
@@ -49,7 +50,7 @@ const HowItWork = () => {
             </Box>
           </Card>
         </Flex>
-        <Flex width="33.33%" mr={['16px']}>
+        <Flex width={['100%', '100%', '100%', '33.33%']} m={['0 0 16px 0', '0 0 16px 0', '0 0 16px 0', '0 16px 0 0']}>
           <Card>
             <Box padding={['24px']}>
               <Text fontSize={['40px']} bold color="primary">
@@ -68,7 +69,7 @@ const HowItWork = () => {
             </Box>
           </Card>
         </Flex>
-        <Flex width="33.33%">
+        <Flex width={['100%', '100%', '100%', '33.33%']}>
           <Card>
             <Box padding={['24px']}>
               <Text fontSize={['40px']} bold color="failure">

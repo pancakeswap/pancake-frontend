@@ -15,11 +15,27 @@ const StyledContainer = styled(Flex)`
 
 const StyledCommission = styled(Flex)`
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
 
   ${CardInner} {
-    &:first-child {
+    margin-bottom: 25px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+    align-items: flex-start;
+
+    ${CardInner} {
+      margin-bottom: 0px;
       ${StyledContainer} {
         border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+      }
+
+      &:last-child {
+        ${StyledContainer} {
+          border: 0;
+        }
       }
     }
   }
@@ -34,7 +50,7 @@ const CommissionStructure = () => {
         <Text fontSize={['20px']} mb={['16px']} bold color="secondary">
           {t('Commission structure')}
         </Text>
-        <Text color="textSubtle" mb={['48px']}>
+        <Text color="textSubtle" mb={['24px', '24px', '48px']} textAlign="center">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
           magna aliqua.
         </Text>

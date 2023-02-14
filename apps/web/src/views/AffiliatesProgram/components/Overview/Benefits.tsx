@@ -1,21 +1,30 @@
 import { Flex, Text, Heading, PageSection } from '@pancakeswap/uikit'
 import { useTranslation, Trans } from '@pancakeswap/localization'
 import GradientLogo from 'views/Home/components/GradientLogoSvg'
-import useTheme from 'hooks/useTheme'
 import styled from 'styled-components'
 import Image from 'next/image'
 
 const StyledList = styled(Flex)`
-  margin-top: 48x;
+  margin-top: 24px;
+  flex-direction: column;
+  align-items: center;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    align-items: flex-start;
+    margin-top: 48px;
+    flex-direction: row;
+  }
 `
 
 const StyledContainer = styled(Flex)`
-  maxwidth: 723px;
+  max-width: 723px;
   flex-direction: column;
 
-  ${StyledList} {
-    &:nth-child(even) {
-      flex-direction: row-reverse;
+  ${({ theme }) => theme.mediaQueries.md} {
+    ${StyledList} {
+      &:nth-child(even) {
+        flex-direction: row-reverse;
+      }
     }
   }
 `
@@ -50,13 +59,20 @@ const BenefitsList = [
 
 const Benefits = () => {
   const { t } = useTranslation()
-  const { theme } = useTheme()
 
   return (
-    <PageSection index={1} dividerPosition="top" clipFill={{ light: theme.colors.gradientBubblegum }}>
+    <PageSection
+      index={1}
+      dividerPosition="top"
+      clipFill={{
+        light: 'linear-gradient(139.73deg, #E9F6FF 0%, #F1EEFF 100%)',
+        dark: 'linear-gradient(135deg, #2F2E4D 0%, #362649 100%)',
+      }}
+      innerProps={{ style: { padding: '0 16px' } }}
+    >
       <Flex alignItems="center" flexDirection="column" justifyContent="center">
         <GradientLogo height="36px" width="36px" mb="24px" />
-        <Heading width={['700px']} textAlign="center" scale="xl">
+        <Heading maxWidth={['700px']} textAlign="center" scale="xl">
           {t('Unlock the Power of PancakeSwap: Become an Affiliate Now')}
         </Heading>
         <Text color="textSubtle" margin={['48px 0']}>
@@ -68,8 +84,13 @@ const Benefits = () => {
             // eslint-disable-next-line react/no-array-index-key
             <StyledList key={`benefit-${index}`}>
               <Image width={220} height={180} src={benefit.imgUrl} alt="" />
-              <Flex m={['0 32px']} alignSelf={['center']} flexDirection="column">
-                <Text fontSize={['32px']} bold color="secondary" mb="24px">
+              <Flex
+                m={['0 32px']}
+                alignSelf={['center']}
+                flexDirection="column"
+                alignItems={['center', 'center', 'center', 'flex-start']}
+              >
+                <Text fontSize={['32px']} bold color="secondary" mb={['12px', '12px', '12px', '24px']}>
                   {benefit.title}
                 </Text>
                 <Text color="textSubtle">{benefit.desc}</Text>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   Flex,
   Text,
@@ -39,8 +39,10 @@ const CardInner = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 
   ${StyledCommission} {
-    &:first-child {
-      border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+    border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+
+    &:last-child {
+      border: 0;
     }
   }
 `
@@ -50,6 +52,8 @@ const receivePercentageList: Array<string> = ['0', '10', '25', '50']
 const MyReferralLink = () => {
   const { t } = useTranslation()
   const [percentage, setPercentage] = useState('0')
+
+  const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [commissionList])
 
   return (
     <Box width={['700px']} ml={['32px']}>
@@ -81,7 +85,7 @@ const MyReferralLink = () => {
           </Flex>
           <Wrapper>
             <CardInner>
-              {commissionList.map((list) => (
+              {dataList.map((list) => (
                 <StyledCommission key={list.image.url}>
                   <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
                     {list.title}

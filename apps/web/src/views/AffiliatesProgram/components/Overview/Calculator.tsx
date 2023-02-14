@@ -4,7 +4,6 @@ import { Flex, Text, Box, Button, ArrowDownIcon, Input, Balance } from '@pancake
 import BigNumber from 'bignumber.js'
 
 const CalculatorWrapper = styled(Flex)`
-  width: 375px;
   padding: 24px;
   flex-direction: column;
   background: ${({ theme }) => theme.colors.background};
@@ -39,7 +38,10 @@ const Calculator = () => {
   )
 
   return (
-    <Box ml={['48px']}>
+    <Box
+      width={['100%', '100%', '375px', 'auto']}
+      m={['64px auto', '64px auto', '64px auto', '64px auto', '0 0 0 48px']}
+    >
       <Text mb="24px" color="secondary" fontSize={['20px']} bold>
         Rewards calculator
       </Text>
@@ -63,7 +65,7 @@ const Calculator = () => {
                 scale="xs"
                 mr="4px"
                 p="4px 16px"
-                width="68px"
+                width={`${100 / referralList.length}%`}
                 variant={list === referral ? 'primary' : 'tertiary'}
                 onClick={() => setReferral(list)}
               >
@@ -91,7 +93,7 @@ const Calculator = () => {
                 scale="xs"
                 mr="4px"
                 p="4px 8px"
-                width="68px"
+                width={`${100 / amountList.length}%`}
                 variant={amount === volume ? 'primary' : 'tertiary'}
                 onClick={() => setVolume(amount)}
               >

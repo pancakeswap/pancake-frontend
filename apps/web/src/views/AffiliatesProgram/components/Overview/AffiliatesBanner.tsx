@@ -39,25 +39,51 @@ const Decorations = styled(Box)`
   height: 100%;
   pointer-events: none;
   overflow: hidden;
+  z-index: -1;
 
   > img {
     position: absolute;
   }
 
   & :nth-child(1) {
-    left: 15%;
-    top: 8%;
+    left: 2%;
+    top: 2%;
+    width: 69px;
     animation: ${floatingStarsLeft} 3s ease-in-out infinite;
+
+    ${({ theme }) => theme.mediaQueries.xl} {
+      left: 15%;
+      top: 8%;
+      width: auto;
+    }
   }
+
+
   & :nth-child(2) {
-    left: 15%;
-    bottom: 5%;
+    left: 0%;
+    bottom: 55%;
+    width: 126px;
     animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
+
+
+    ${({ theme }) => theme.mediaQueries.xl} {
+      left: 15%;
+      bottom: 5%;
+      width: auto;
+    }
   }
+
   & :nth-child(3) {
-    right: 10%;
-    top: 15%;
+    right: 0%;
+    top: 0%;
+    width: 71px;
+
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
+    ${({ theme }) => theme.mediaQueries.xl} {
+      right: 10%;
+      top: 15%;
+      width: auto;
+    }
   }
 }`
 
@@ -116,25 +142,33 @@ const AffiliatesBanner = () => {
             <SlideSvgLight className="slide-svg-light" width="100%" />
           </InnerWrapper>
         </BgWrapper>
-        <Flex>
-          <Box width={['560px']} height={['639px']}>
+        <Flex flexDirection={['column', 'column', 'column', 'row']}>
+          <Box
+            m={['auto', 'auto', 'auto', '0']}
+            width={['227px', '257px', '327px', '560px']}
+            height={['306px', '356px', '406px', '639px']}
+          >
             <Image src={bunnyImage} alt="banner-image" />
           </Box>
-          <Flex ml={['48px']} width={['697px']} alignSelf="center" flexDirection="column">
-            <Text fontSize={['64px']} lineHeight="110%" bold color="secondary">
-              Join our
-              <span style={{ display: 'block' }}>Affiliates program</span>
+          <Flex
+            m={['22px 0 0 0 0', '22px 0 0 0 0', '22px 0 0 0 0', '0 0 0 48px']}
+            maxWidth={['697px']}
+            alignSelf="center"
+            flexDirection="column"
+          >
+            <Text fontSize={['38px', '38px', '64px']} lineHeight="110%" bold color="secondary">
+              Join our Affiliates program
             </Text>
-            <Text fontSize={['24px']} lineHeight="110%" bold m="32px 0">
+            <Text fontSize={['16px', '24px']} lineHeight="110%" bold m="32px 0">
               Monetize your influence. Grow through robust analytics.
               <span style={{ display: 'block' }}>Join a tight-knit community</span>
             </Text>
-            <Flex>
+            {/* <Flex>
               <Button width="fit-content">Join our Affiliates Program</Button>
               <Button ml="12px" variant="secondary" width="fit-content">
                 How does it work?
               </Button>
-            </Flex>
+            </Flex> */}
           </Flex>
         </Flex>
       </StyledBannerSection>

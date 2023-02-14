@@ -29,6 +29,15 @@ const commissionList: CommissionType[] = [
       url: '/images/affiliates-program/perpetual.png',
     },
   },
+  {
+    title: <Trans>comming soon!</Trans>,
+    percentage: '?',
+    image: {
+      width: 110,
+      height: 148,
+      url: '/images/affiliates-program/comming-soon.png',
+    },
+  },
 ]
 
 export default commissionList

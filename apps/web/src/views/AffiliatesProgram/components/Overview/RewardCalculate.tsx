@@ -14,9 +14,16 @@ const Decorations = styled(Box)`
   height: 100%;
   pointer-events: none;
   overflow: hidden;
+  display: none;
+  z-index: -1;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    display: block;
+  }
 
   > img {
     position: absolute;
+    z-index: -1;
   }
 
   & :nth-child(1) {
@@ -56,7 +63,11 @@ const RewardCalculate = () => {
       dividerPosition="top"
       concaveDivider
       background={theme.colors.gradientBubblegum}
-      clipFill={{ light: theme.colors.gradientBubblegum }}
+      clipFill={{
+        light: 'linear-gradient(139.73deg, #E2FCFF 0%, #EBF3FF 100%)',
+        dark: 'linear-gradient(139.73deg, #313D5C 0%, #383258 100%)',
+      }}
+      innerProps={{ style: { padding: '0 16px' } }}
     >
       <Decorations>
         <img src="/images/affiliates-program/m-1.png" width="110px" height="79px" alt="" />
@@ -65,8 +76,8 @@ const RewardCalculate = () => {
         <img src="/images/affiliates-program/m-4.png" width="210px" height="210px" alt="" />
         <img src="/images/affiliates-program/m-5.png" width="72px" height="63px" alt="" />
       </Decorations>
-      <Flex>
-        <Flex width={['447px']} alignSelf={['center']} flexDirection="column">
+      <Flex flexDirection={['column', 'column', 'column', 'column', 'row']}>
+        <Flex width={['100%', '100%', '447px']} alignSelf={['center']} flexDirection="column">
           <Box m={['32px 0']}>
             <Text fontSize={['40px']} lineHeight="110%" color="body" bold>
               {t('Earn generous commissions on every referral')}

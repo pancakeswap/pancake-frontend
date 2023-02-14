@@ -7,12 +7,12 @@ import useTheme from 'hooks/useTheme'
 const Wrapper = styled(Flex)`
   width: 100%;
   margin: auto;
-  padding: 0 24px 72px 24px;
   flex-direction: column;
   align-items: center;
+  max-width: calc(100%) - 38px;
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    max-width: 1140px;
+    max-width: 1028px;
   }
 `
 
@@ -38,9 +38,10 @@ const Question = () => {
       concaveDivider
       clipFill={{ light: '#CAD6EE', dark: '#434575' }}
       background={theme.colors.gradientVioletAlt}
+      innerProps={{ style: { padding: '0 16px' } }}
     >
       <Wrapper>
-        <Text fontSize={['40px']} mb={['64px']} bold>
+        <Text fontSize={['32px', '32px', '40px']} mb={['64px']} bold textAlign="center">
           {t('Still Got Questions?')}
         </Text>
         <Card>
