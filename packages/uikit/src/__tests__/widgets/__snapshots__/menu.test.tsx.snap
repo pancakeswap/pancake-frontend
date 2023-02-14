@@ -455,12 +455,6 @@ exports[`renders correctly 1`] = `
   pointer-events: auto;
 }
 
-.c36 {
-  color: var(--colors-text);
-  padding: 0 8px;
-  border-radius: 8px;
-}
-
 .c9 {
   position: relative;
 }
@@ -685,6 +679,12 @@ exports[`renders correctly 1`] = `
   -moz-scroll-snap-align: start;
   -ms-scroll-snap-align: start;
   scroll-snap-align: start;
+}
+
+.c36 {
+  color: var(--colors-text);
+  padding: 0 8px;
+  border-radius: 8px;
 }
 
 .c5 {
