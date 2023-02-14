@@ -3,6 +3,7 @@ import { Pool as V3Pool, TickMath } from '@pancakeswap/v3-sdk'
 
 import {
   Pool as IPool,
+  Pool,
   QuoteProvider,
   QuoterOptions,
   RouteWithoutQuote,
@@ -14,8 +15,6 @@ import {
 import { StableSwap } from '../../stableSwap'
 import { getOutputCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 
-// TODO Gas Model
-
 export function createOffChainQuoteProvider(): QuoteProvider {
   const createGetRoutesWithQuotes = (isExactIn = true) => {
     const getV2Quote = createGetV2Quote(isExactIn)
@@ -25,7 +24,7 @@ export function createOffChainQuoteProvider(): QuoteProvider {
       let i = isExactIn ? 0 : pools.length - 1
       const hasNext = () => (isExactIn ? i < pools.length : i >= 0)
       while (hasNext()) {
-        yield pools[i]
+        yield [pools[i], i] as [Pool, number]
         if (isExactIn) {
           i += 1
         } else {
@@ -48,7 +47,8 @@ export function createOffChainQuoteProvider(): QuoteProvider {
       for (const route of routes) {
         const { pools, amount } = route
         let quote = amount
-        for (const pool of each(pools)) {
+        const initializedTickCrossedList = Array(pools.length).fill(0)
+        for (const [pool, i] of each(pools)) {
           if (isV2Pool(pool)) {
             quote = getV2Quote(pool, quote)
             continue
@@ -60,11 +60,13 @@ export function createOffChainQuoteProvider(): QuoteProvider {
           if (isV3Pool(pool)) {
             // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
             // eslint-disable-next-line no-await-in-loop
-            const v3Quote = await getV3Quote(pool, quote)
-            if (!v3Quote) {
+            const v3QuoteResult = await getV3Quote(pool, quote)
+            if (!v3QuoteResult) {
               break
             }
+            const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
             quote = v3Quote
+            initializedTickCrossedList[i] = numOfTicksCrossed
           }
         }
 
@@ -73,7 +75,7 @@ export function createOffChainQuoteProvider(): QuoteProvider {
             ...route,
             quote,
           },
-          { initializedTickCrossedList: [] },
+          { initializedTickCrossedList },
         )
         routesWithQuote.push({
           ...route,
@@ -123,7 +125,7 @@ function createGetV3Quote(isExactIn = true) {
   return async function getStableQuote(
     pool: IV3Pool,
     amount: CurrencyAmount<Currency>,
-  ): Promise<CurrencyAmount<Currency> | null> {
+  ): Promise<{ quote: CurrencyAmount<Currency>; numOfTicksCrossed: number } | null> {
     const { token0, token1, fee, sqrtRatioX96, liquidity, ticks } = pool
     if (!ticks?.length) {
       return null
@@ -138,6 +140,10 @@ function createGetV3Quote(isExactIn = true) {
     )
     const getQuotePromise = isExactIn ? v3Pool.getOutputAmount(amount.wrapped) : v3Pool.getInputAmount(amount.wrapped)
     const [quote] = await getQuotePromise
-    return quote
+    return {
+      quote,
+      // TODO get ticks crossed
+      numOfTicksCrossed: 0,
+    }
   }
 }

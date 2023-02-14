@@ -17,10 +17,6 @@ export function createHybridPoolProvider({ onChainProvider }: HybridProviderConf
       return hybridPoolProvider.getPools(pairs, blockNumber)
     },
 
-    getPool: async () => {
-      return null
-    },
-
     getPools: async (pairs, blockNumber) => {
       return getPools(pairs, { provider: onChainProvider, blockNumber })
     },
