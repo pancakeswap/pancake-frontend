@@ -3,16 +3,15 @@ import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useQuery } from '@tanstack/react-query'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMemo, useRef, MutableRefObject } from 'react'
+import { MutableRefObject, useRef } from 'react'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 
 import { isAddress } from 'utils'
 
 import { getMMOrderBook } from '../apis'
-import { useIsMMQuotingPair } from './useIsMMQuotingPair'
 import { OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
-import { parseMMParameter, parseMMTrade } from '../utils/exchange'
+import { parseMMTrade } from '../utils/exchange'
 import { useMMParam } from './useMMParam'
 
 // TODO: update
@@ -104,16 +103,10 @@ export const useMMTrade = (
 } | null => {
   const rfqUserInputPath = useRef<string>('')
   const isRFQLive = useRef<boolean>(false)
-  const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
-  const { account, chainId } = useActiveWeb3React()
+  const { account } = useActiveWeb3React()
   const mmParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency)
-  const mmParamForRFQ = useMemo(
-    () =>
-      isMMQuotingPair
-        ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account, true)
-        : null,
-    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
-  )
+  const mmRFQParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency, true)
+
   const { data: mmQoute, isLoading } = useOrderBookQuote(mmParam, rfqUserInputPath, isRFQLive)
   const { t } = useTranslation()
   const to: string | null = account ?? null
@@ -188,7 +181,7 @@ export const useMMTrade = (
     currencyBalances,
     currencies,
     inputError,
-    mmParam: mmParamForRFQ,
+    mmParam: mmRFQParam,
     rfqUserInputPath,
     isRFQLive,
     isLoading,
