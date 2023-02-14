@@ -537,6 +537,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
             pairs={tradeInfo.route.pairs}
             path={tradeInfo.route.path}
             priceImpactWithoutFee={tradeInfo.priceImpactWithoutFee}
+            isMM={isMMLoading}
             realizedLPFee={tradeInfo.realizedLPFee}
             slippageAdjustedAmounts={tradeInfo.slippageAdjustedAmounts}
             inputAmount={tradeInfo.inputAmount}
