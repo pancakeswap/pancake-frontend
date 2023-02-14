@@ -981,7 +981,7 @@ exports[`renders correctly 1`] = `
 }
 
 @media screen and (min-width:576px) {
-  
+
 }
 
 @media screen and (min-width:968px) {
@@ -2145,6 +2145,10 @@ exports[`renders correctly 1`] = `
   -webkit-order: 2;
   -ms-flex-order: 2;
   order: 2;
+  -webkit-box-pack: left;
+  -webkit-justify-content: left;
+  -ms-flex-pack: left;
+  justify-content: left;
 }
 
 .c28 {
@@ -2382,21 +2386,6 @@ exports[`renders correctly 1`] = `
   -webkit-transition: max-height 0s 0s,opacity 0.3s ease-in-out;
   transition: max-height 0s 0s,opacity 0.3s ease-in-out;
   pointer-events: auto;
-}
-
-.c2 {
-  background: var(--colors-backgroundAlt);
-}
-
-.c10 {
-  list-style: none;
-  margin-bottom: 40px;
-}
-
-.c11 {
-  font-size: 16px;
-  margin-bottom: 8px;
-  text-transform: capitalize;
 }
 
 .c11:first-child {
