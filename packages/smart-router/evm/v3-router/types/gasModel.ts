@@ -9,7 +9,7 @@ export type L1ToL2GasCosts = {
   gasCostL1QuoteToken: CurrencyAmount<Currency>
 }
 
-interface GasEstimateRequiredInfo {
+export interface GasEstimateRequiredInfo {
   initializedTickCrossedList: number[]
 }
 

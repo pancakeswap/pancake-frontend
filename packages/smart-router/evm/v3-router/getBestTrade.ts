@@ -79,7 +79,7 @@ async function getBestRoutes(
   }
 
   const baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools, maxHops)
-  const gasModel = await createGasModel({ gasPriceWei, poolProvider, quoteCurrency: currency })
+  const gasModel = await createGasModel({ gasPriceWei, poolProvider, quoteCurrency: currency, blockNumber })
   const routesWithValidQuote = await getRoutesWithValidQuote({
     amount,
     baseRoutes,
