@@ -7,7 +7,6 @@ import {
   Box,
   Button,
   Checkbox,
-  Dots,
   Flex,
   Message,
   MessageText,
@@ -179,6 +178,8 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   } = useWrapCallback(currencies[Field.INPUT], currencies[Field.OUTPUT], typedValue)
   const showWrap: boolean = wrapType !== WrapType.NOT_APPLICABLE
 
+  const isMMLoading = isMMQuotingPair && (mmRFQTrade?.isLoading || isRFQIdLoading || mmOrderBookTrade?.isLoading)
+
   const parsedAmounts = showWrap
     ? {
         [Field.INPUT]: parsedAmount,
@@ -188,7 +189,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         [Field.INPUT]:
           independentField === Field.INPUT
             ? parsedAmount
-            : isMMQuotingPair && (mmRFQTrade?.isLoading || isRFQIdLoading || mmOrderBookTrade?.isLoading)
+            : isMMLoading
             ? undefined
             : isMMBetter
             ? mmTradeInfo.inputAmount
@@ -196,7 +197,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         [Field.OUTPUT]:
           independentField === Field.OUTPUT
             ? parsedAmount
-            : isMMQuotingPair && (mmRFQTrade?.isLoading || isRFQIdLoading || mmOrderBookTrade?.isLoading)
+            : isMMLoading
             ? undefined
             : isMMBetter
             ? mmTradeInfo.outputAmount
@@ -448,10 +449,14 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         </AutoColumn>
 
         <Box mt="0.25rem">
-          {!tradeWithStableSwap &&
-          !v2Trade &&
-          mmOrderBookTrade?.inputError &&
-          shouldShowMMError(mmOrderBookTrade?.inputError) ? (
+          {isMMLoading ? (
+            <Button width="100%" disabled style={{ textAlign: 'left' }}>
+              {t('Swap')}
+            </Button>
+          ) : !tradeWithStableSwap &&
+            !v2Trade &&
+            mmOrderBookTrade?.inputError &&
+            shouldShowMMError(mmOrderBookTrade?.inputError) ? (
             <Button width="100%" disabled style={{ textAlign: 'left' }}>
               {parseMMError(mmOrderBookTrade?.inputError)}
             </Button>
@@ -463,7 +468,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               wrapInputError={wrapInputError}
               onWrap={onWrap}
               wrapType={wrapType}
-              parsedIndepentFieldAmount={parsedAmounts[independentField]}
               approval={approval}
               approveCallback={approveCallback}
               approvalSubmitted={approvalSubmitted}
@@ -471,12 +475,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               isExpertMode={isExpertMode}
               trade={mmRFQTrade?.trade}
               swapInputError={
-                mmOrderBookTrade?.inputError ||
-                (isMMBetter && !mmRFQTrade?.rfq ? (
-                  <Dots>{t('Checking RFQ with MM')}</Dots>
-                ) : (
-                  parseMMError(mmRFQTrade?.error)
-                ))
+                mmOrderBookTrade?.inputError || (isMMBetter && mmRFQTrade?.error && parseMMError(mmRFQTrade?.error))
               }
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
@@ -522,7 +521,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               currencies={currencies}
               isExpertMode={isExpertMode}
               trade={tradeWithStableSwap}
-              swapInputError={swapInputError}
+              swapInputError={!isMMLoading && swapInputError}
               currencyBalances={currencyBalances}
               recipient={recipient}
               allowedSlippage={allowedSlippage}

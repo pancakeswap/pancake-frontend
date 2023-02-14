@@ -1,4 +1,4 @@
-import { Svg } from '@pancakeswap/uikit'
+import { Svg, SvgProps } from '@pancakeswap/uikit'
 
 // NOTE: Temporary save icon here. Will move to uikit when the feature is done
 
@@ -23,7 +23,7 @@ const DisabledIcon = (props) => (
   </Svg>
 )
 
-const Icon = ({ disabled, ...props }) =>
+const Icon = ({ disabled, duration, ...props }: SvgProps & { disabled?: boolean; duration?: number | string }) =>
   disabled ? (
     <DisabledIcon {...props} />
   ) : (
@@ -61,7 +61,7 @@ const Icon = ({ disabled, ...props }) =>
             values="0;-30"
             begin="arrow_loading.click; 0.7s"
             repeatCount="indefinite"
-            dur="6.3s"
+            dur={`${duration || 6.3}s`}
           />
         </circle>
       </g>

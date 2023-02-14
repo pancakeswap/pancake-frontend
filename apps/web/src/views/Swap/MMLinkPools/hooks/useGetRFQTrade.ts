@@ -2,7 +2,6 @@ import { Currency, TradeType } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useDeferredValue } from 'react'
 import { Field } from 'state/swap/actions'
-import useSWRImmutable from 'swr/immutable'
 import { useQuery } from '@tanstack/react-query'
 import { getRFQById, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
@@ -40,6 +39,16 @@ export const useGetRFQId = (
   // eslint-disable-next-line no-param-reassign
   if (isRFQLive) isRFQLive.current = false
 
+  const enabled = Boolean(
+    isMMBetter &&
+      account &&
+      param &&
+      param?.trader &&
+      (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
+      param?.makerSideTokenAmount !== '0' &&
+      param?.takerSideTokenAmount !== '0',
+  )
+
   const { data, refetch, isLoading } = useQuery(
     [`RFQ/${rfqUserInputPath.current}`],
     () => sendRFQAndGetRFQId(param),
@@ -47,22 +56,14 @@ export const useGetRFQId = (
       refetchInterval: 20000,
       retry: true,
       refetchOnWindowFocus: false,
-      enabled: Boolean(
-        isMMBetter &&
-          account &&
-          param &&
-          param?.trader &&
-          (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
-          param?.makerSideTokenAmount !== '0' &&
-          param?.takerSideTokenAmount !== '0',
-      ),
+      enabled,
     }, // 20sec
   )
   return {
     rfqId: data?.message?.rfqId ?? '',
     refreshRFQ: refetch,
     rfqUserInputCache: rfqUserInputPath.current,
-    isLoading,
+    isLoading: enabled && isLoading,
   }
 }
 
