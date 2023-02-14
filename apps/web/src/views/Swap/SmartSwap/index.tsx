@@ -309,6 +309,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   return (
     <>
       <MMAndAMMDealDisplay
@@ -317,7 +318,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         v2Trade={v2Trade}
         mmTrade={mmTradeInfo?.trade}
         mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
-        errorMessage={mmRFQTrade?.error || mmOrderBookTrade?.inputError}
+        errorMessage={mmRFQTrade?.error?.message || mmOrderBookTrade?.inputError}
         rfqId={mmRFQTrade?.rfqId}
       />
       <CurrencyInputHeader
@@ -475,7 +476,8 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               isExpertMode={isExpertMode}
               trade={mmRFQTrade?.trade}
               swapInputError={
-                mmOrderBookTrade?.inputError || (isMMBetter && mmRFQTrade?.error && parseMMError(mmRFQTrade?.error))
+                mmOrderBookTrade?.inputError ||
+                (isMMBetter && mmRFQTrade?.error?.message && parseMMError(mmRFQTrade?.error?.message))
               }
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
