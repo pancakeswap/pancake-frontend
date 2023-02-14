@@ -1,7 +1,7 @@
 import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency, Percent } from '@pancakeswap/sdk'
+import { Currency, NATIVE, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
   FlexGap,
   AutoColumn,
@@ -42,7 +42,6 @@ import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
-import { useCurrencySelectRoute } from 'views/AddLiquidity/useCurrencySelectRoute'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useRangeHopCallbacks from 'hooks/v3/useRangeHopCallbacks'
@@ -129,9 +128,16 @@ export const RightContainer = styled(AutoColumn)`
 interface AddLiquidityV3PropsType {
   currencyA: Currency
   currencyB: Currency
+  currencyIdA: string
+  currencyIdB: string
 }
 
-export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: AddLiquidityV3PropsType) {
+export default function AddLiquidityV3({
+  currencyA: baseCurrency,
+  currencyB,
+  currencyIdA,
+  currencyIdB,
+}: AddLiquidityV3PropsType) {
   const router = useRouter()
   const { data: signer } = useSigner()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
@@ -153,6 +159,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
       : undefined
 
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
+
   // prevent an error if they input ETH/WETH
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
@@ -238,11 +245,11 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
   //   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
-  //   // Philip TODO: Add 'auto' allowedSlippage
+  // Philip TODO: Add 'auto' allowedSlippage
   const [allowedSlippage] = useUserSlippageTolerance() // custom from users
-  //   // const allowedSlippage = useUserSlippageToleranceWithDefault(
-  //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
-  //   // )
+  // const allowedSlippage = useUserSlippageToleranceWithDefault(
+  //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
+  // )
 
   const onAdd = useCallback(async () => {
     if (!chainId || !signer || !account || !nftPositionManagerAddress) return
@@ -316,23 +323,73 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     signer,
   ])
 
-  const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
-  const handleFeePoolSelect = useCallback(
-    (newFeeAmount: FeeAmount) => {
-      if (baseCurrency?.wrapped?.address && currencyB?.wrapped?.address) {
-        onLeftRangeInput('')
-        onRightRangeInput('')
+  const handleCurrencySelect = useCallback(
+    (currencyNew: Currency, currencyIdOther?: string): (string | undefined)[] => {
+      const currencyIdNew = currencyId(currencyNew)
 
-        router.replace(
-          `/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}/${newFeeAmount}`,
-          undefined,
-          {
-            shallow: true,
-          },
-        )
+      if (currencyIdNew === currencyIdOther) {
+        // not ideal, but for now clobber the other if the currency ids are equal
+        return [currencyIdNew, undefined]
+      }
+      // prevent weth + eth
+      const isETHOrWETHNew =
+        currencyNew?.isNative || (chainId !== undefined && currencyIdNew === WNATIVE[chainId]?.address)
+      const isETHOrWETHOther =
+        currencyIdOther !== undefined &&
+        (currencyIdOther === NATIVE[chainId]?.symbol ||
+          (chainId !== undefined && currencyIdOther === WNATIVE[chainId]?.address))
+
+      if (isETHOrWETHNew && isETHOrWETHOther) {
+        return [currencyIdNew, undefined]
+      }
+
+      return [currencyIdNew, currencyIdOther]
+    },
+    [chainId],
+  )
+
+  const handleCurrencyASelect = useCallback(
+    (currencyANew: Currency) => {
+      const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
+      if (idB === undefined) {
+        router.replace(`/add/${idA}`, undefined, {
+          shallow: true,
+        })
+      } else {
+        router.replace(`/add/${idA}/${idB}`, undefined, {
+          shallow: true,
+        })
       }
     },
-    [baseCurrency?.wrapped?.address, currencyB?.wrapped?.address, onLeftRangeInput, onRightRangeInput, router],
+    [handleCurrencySelect, currencyIdB, router],
+  )
+
+  const handleCurrencyBSelect = useCallback(
+    (currencyBNew: Currency) => {
+      const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
+      if (idA === undefined) {
+        router.replace(`/add/${idB}`, undefined, {
+          shallow: true,
+        })
+      } else {
+        router.replace(`/add/${idA}/${idB}`, undefined, {
+          shallow: true,
+        })
+      }
+    },
+    [handleCurrencySelect, currencyIdA, router],
+  )
+
+  const handleFeePoolSelect = useCallback(
+    (newFeeAmount: FeeAmount) => {
+      onLeftRangeInput('')
+      onRightRangeInput('')
+
+      router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, {
+        shallow: true,
+      })
+    },
+    [currencyIdA, currencyIdB, onLeftRangeInput, onRightRangeInput, router],
   )
   const handleDismissConfirmation = useCallback(() => {
     // if there was a tx hash, we want to clear the input
@@ -346,14 +403,8 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
     setTxHash('')
   }, [onFieldAInput, router, txHash])
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
-  //   // const clearAll = useCallback(() => {
-  //   //   onFieldAInput('')
-  //   //   onFieldBInput('')
-  //   //   onLeftRangeInput('')
-  //   //   onRightRangeInput('')
-  //   //   navigate(`/add`)
-  //   // }, [navigate, onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput])
-  //   // get value and prices at ticks
+
+  // get value and prices at ticks
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
   const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper, getSetFullRange } =
@@ -475,7 +526,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                 <AddIcon color="textSubtle" />
                 <CurrencySelect
                   id="add-liquidity-select-tokenb"
-                  selectedCurrency={currencyB}
+                  selectedCurrency={quoteCurrency}
                   onCurrencySelect={handleCurrencyBSelect}
                   showCommonBases
                   commonBasesType={CommonBasesType.LIQUIDITY}
@@ -566,9 +617,7 @@ export default function AddLiquidityV3({ currencyA: baseCurrency, currencyB }: A
                           }
 
                           router.replace(
-                            `/add/${currencyB?.wrapped?.address}/${baseCurrency?.wrapped?.address}${
-                              feeAmount ? `/${feeAmount}` : ''
-                            }`,
+                            `/add/${currencyIdA}/${currencyIdB}${feeAmount ? `/${feeAmount}` : ''}`,
                             undefined,
                             {
                               shallow: true,
