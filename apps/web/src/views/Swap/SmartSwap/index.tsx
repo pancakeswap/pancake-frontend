@@ -116,6 +116,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     parsedAmount,
     inputError: stableSwapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency)
+
   const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const deBounceTypedValue = useDebounce(typedValue, 300)
   const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)
@@ -129,7 +130,11 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     isExpertMode,
   })
 
-  const { refreshRFQ, rfqId } = useGetRFQId(
+  const {
+    refreshRFQ,
+    rfqId,
+    isLoading: isRFQIdLoading,
+  } = useGetRFQId(
     mmOrderBookTrade?.mmParam,
     isMMBetter,
     mmOrderBookTrade?.rfqUserInputPath,
@@ -183,12 +188,16 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         [Field.INPUT]:
           independentField === Field.INPUT
             ? parsedAmount
+            : isMMQuotingPair && (mmRFQTrade?.isLoading || isRFQIdLoading || mmOrderBookTrade?.isLoading)
+            ? undefined
             : isMMBetter
             ? mmTradeInfo.inputAmount
             : tradeInfo?.inputAmount,
         [Field.OUTPUT]:
           independentField === Field.OUTPUT
             ? parsedAmount
+            : isMMQuotingPair && (mmRFQTrade?.isLoading || isRFQIdLoading || mmOrderBookTrade?.isLoading)
+            ? undefined
             : isMMBetter
             ? mmTradeInfo.outputAmount
             : tradeInfo?.outputAmount,

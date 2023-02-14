@@ -63,10 +63,10 @@ export const useOrderBookQuote = (
   request: OrderBookRequest | null,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
-): OrderBookResponse => {
+): { data: OrderBookResponse; isLoading: boolean } => {
   const inputPath = useRef<string>('')
   inputPath.current = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     [`orderBook/${inputPath.current}`],
     () => {
       return getMMOrderBook(request)
@@ -83,7 +83,7 @@ export const useOrderBookQuote = (
       ),
     },
   )
-  return data
+  return { data, isLoading }
 }
 
 export const useMMTrade = (
@@ -100,6 +100,7 @@ export const useMMTrade = (
   mmParam: OrderBookRequest
   rfqUserInputPath: MutableRefObject<string>
   isRFQLive: MutableRefObject<boolean>
+  isLoading: boolean
 } | null => {
   const rfqUserInputPath = useRef<string>('')
   const isRFQLive = useRef<boolean>(false)
@@ -113,7 +114,7 @@ export const useMMTrade = (
         : null,
     [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
   )
-  const mmQoute = useOrderBookQuote(mmParam, rfqUserInputPath, isRFQLive)
+  const { data: mmQoute, isLoading } = useOrderBookQuote(mmParam, rfqUserInputPath, isRFQLive)
   const { t } = useTranslation()
   const to: string | null = account ?? null
 
@@ -190,5 +191,6 @@ export const useMMTrade = (
     mmParam: mmParamForRFQ,
     rfqUserInputPath,
     isRFQLive,
+    isLoading,
   }
 }
