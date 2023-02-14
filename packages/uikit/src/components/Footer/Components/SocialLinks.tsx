@@ -1,4 +1,5 @@
 import React from "react";
+import { isMobile } from "react-device-detect";
 import { FlexProps } from "../../Box";
 import Flex from "../../Box/Flex";
 import Dropdown from "../../Dropdown/Dropdown";
@@ -6,7 +7,7 @@ import Link from "../../Link/Link";
 import { socials } from "../config";
 
 const SocialLinks: React.FC<React.PropsWithChildren<FlexProps>> = ({ ...props }) => (
-  <Flex {...props} data-theme="dark">
+  <Flex {...props} data-theme="dark" justifyContent="left">
     {socials.map((social, index) => {
       const iconProps = {
         width: "20px",
@@ -14,7 +15,7 @@ const SocialLinks: React.FC<React.PropsWithChildren<FlexProps>> = ({ ...props })
         style: { cursor: "pointer" },
       };
       const Icon = social.icon;
-      const mr = index < socials.length - 1 ? "24px" : 0;
+      const mr = index < socials.length - 1 ? (isMobile ? "16px" : "24px") : 0;
       if (social.items) {
         return (
           <Dropdown key={social.label} position="top" target={<Icon {...iconProps} mr={mr} />}>
