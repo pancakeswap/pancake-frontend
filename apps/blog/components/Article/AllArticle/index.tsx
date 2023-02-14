@@ -136,11 +136,11 @@ const AllArticle = () => {
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
           >
             <Flex flexDirection={['column', 'row']}>
-              <Box width="100%">
-                {languageItems.length && (
+              {languageItems.length > 0 && (
+                <Box width="100%">
                   <ArticleSortSelect title={t('Languages')} options={languageItems} setOption={setLanguageOption} />
-                )}
-              </Box>
+                </Box>
+              )}
               <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>
                 <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
               </Box>
