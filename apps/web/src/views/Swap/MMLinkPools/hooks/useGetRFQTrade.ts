@@ -68,8 +68,9 @@ export const useGetRFQTrade = (
   rfqId?: string
 } | null => {
   const deferredRfqId = useDeferredValue(rfqId)
+  const enabled = Boolean(isMMBetter && deferredRfqId)
   const { error, data, isLoading } = useQuery([`RFQ/${deferredRfqId}`], () => getRFQById(deferredRfqId), {
-    enabled: Boolean(isMMBetter && deferredRfqId),
+    enabled,
     staleTime: Infinity,
     retry: (failureCount, err) => {
       if (err instanceof MMError) {
@@ -88,7 +89,7 @@ export const useGetRFQTrade = (
       refreshRFQ: null,
       error,
       rfqId,
-      isLoading,
+      isLoading: enabled && isLoading,
     }
   }
   if (data?.messageType === MessageType.RFQ_RESPONSE) {
@@ -105,14 +106,14 @@ export const useGetRFQTrade = (
       ),
       quoteExpiry: data?.message?.quoteExpiry ?? null,
       refreshRFQ,
-      isLoading,
+      isLoading: enabled && isLoading,
     }
   }
   return {
     rfq: null,
     trade: null,
     quoteExpiry: null,
-    isLoading,
+    isLoading: enabled && isLoading,
     refreshRFQ: null,
   }
 }
