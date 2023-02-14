@@ -964,6 +964,10 @@ exports[`renders correctly 1`] = `
 
 }
 
+@media screen and (min-width:852px) {
+
+}
+
 @media screen and (min-width:576px) {
 
 }
