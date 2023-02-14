@@ -35,4 +35,12 @@ export const pools: StableSwapPool[] = [
     stableSwapAddress: '0x3EFebC418efB585248A0D2140cfb87aFcc2C63DD',
     infoStableSwapAddress: '0xa680d27f63Fa5E213C502d1B3Ca1EB6a3C1b31D6',
   },
+  {
+    lpSymbol: 'axlUSDC-USDT LP',
+    lpAddress: '0x1c7e5a3A72b6D94DE5Ec20812E3e68713978a584',
+    token: bscTokens.axlusdc,
+    quoteToken: bscTokens.usdt,
+    stableSwapAddress: '0x6D8fba276ec6F1EDa2344DA48565AdbCA7e4FFa5',
+    infoStableSwapAddress: '0x0d396b1e47143221b7D9fbac73CCB647aC7BED3a',
+  },
 ]
