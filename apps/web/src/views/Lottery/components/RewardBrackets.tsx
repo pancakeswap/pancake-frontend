@@ -50,11 +50,11 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
 
   useEffect(() => {
     if (lotteryNodeData) {
-      const { treasuryFee, amountCollectedInCake, rewardsBreakdown, countWinnersPerBracket } = lotteryNodeData
+      const { treasuryFee, amountCollectedInCadinu, rewardsBreakdown, countWinnersPerBracket } = lotteryNodeData
 
       const feeAsPercentage = new BigNumber(treasuryFee).div(100)
-      const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCake))
-      const amountLessTreasuryFee = new BigNumber(amountCollectedInCake).minus(cakeToBurn)
+      const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCadinu))
+      const amountLessTreasuryFee = new BigNumber(amountCollectedInCadinu).minus(cakeToBurn)
       setState({
         isLoading: false,
         cakeToBurn,

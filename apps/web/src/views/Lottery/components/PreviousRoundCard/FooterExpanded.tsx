@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Heading, Box, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCadinuBusd } from 'state/farms/hooks'
 import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
 import { getGraphLotteries } from 'state/lottery/getLotteriesData'
 import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
@@ -26,7 +26,7 @@ const PreviousRoundCardFooter: React.FC<
   const { t } = useTranslation()
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
   const lotteryGraphDataFromState = useGetLotteryGraphDataById(lotteryId)
-  const cakePriceBusd = usePriceCakeBusd()
+  const cadinuPriceBusd = usePriceCadinuBusd()
 
   useEffect(() => {
     const getGraphData = async () => {
@@ -40,8 +40,8 @@ const PreviousRoundCardFooter: React.FC<
 
   let prizeInBusd = new BigNumber(NaN)
   if (lotteryNodeData) {
-    const { amountCollectedInCake } = lotteryNodeData
-    prizeInBusd = amountCollectedInCake.times(cakePriceBusd)
+    const { amountCollectedInCadinu } = lotteryNodeData
+    prizeInBusd = amountCollectedInCadinu.times(cadinuPriceBusd)
   }
 
   const getTotalUsers = (): string => {
@@ -72,8 +72,8 @@ const PreviousRoundCardFooter: React.FC<
           <Balance
             fontSize="14px"
             color="textSubtle"
-            unit=" CAKE"
-            value={getBalanceNumber(lotteryNodeData?.amountCollectedInCake)}
+            unit=" CADINU"
+            value={getBalanceNumber(lotteryNodeData?.amountCollectedInCadinu)}
             decimals={0}
           />
         )}

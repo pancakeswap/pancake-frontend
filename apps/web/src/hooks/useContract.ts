@@ -1,5 +1,6 @@
 import {
   Cake,
+  Cadinu,
   CakeFlexibleSideVaultV2,
   CakeVaultV2,
   Erc20,
@@ -26,6 +27,7 @@ import {
   getBunnySpecialPredictionContract,
   getBunnySpecialXmasContract,
   getCakeContract,
+  getCadinuContract,
   getCakeFlexibleSideVaultV2Contract,
   getCakePredictionsContract,
   getCakeVaultV2Contract,
@@ -118,7 +120,16 @@ export const useCake = (): { reader: Cake; signer: Cake } => {
     [providerOrSigner],
   )
 }
-
+export const useCadinu = (): { reader: Cadinu; signer: Cadinu } => {
+  const providerOrSigner = useProviderOrSigner(true, true)
+  return useMemo(
+    () => ({
+      reader: getCadinuContract(null),
+      signer: getCadinuContract(providerOrSigner),
+    }),
+    [providerOrSigner],
+  )
+}
 export const useBunnyFactory = () => {
   const { data: signer } = useSigner()
   return useMemo(() => getBunnyFactoryContract(signer), [signer])
