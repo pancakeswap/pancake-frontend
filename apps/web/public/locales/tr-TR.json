@@ -2116,5 +2116,8 @@
   "Input is estimated. You will sell at most or the transaction will revert.": "Input is estimated. You will sell at most or the transaction will revert.",
   "MM Linked Pool": "MM Linked Pool",
   "Trade through the market makers if they provide better deal": "Trade through the market makers if they provide better deal",
-  "Checking RFQ with MM": "Checking RFQ with MM"
+  "Checking RFQ with MM": "Checking RFQ with MM",
+  "Trade and win $10,000 Prize Pool": "Trade and win $10,000 Prize Pool",
+  "Trade now using Trust Wallet": "Trade now using Trust Wallet",
+  "Download Trust Wallet": "Download Trust Wallet"
 }
