@@ -47,6 +47,7 @@ export const Inner = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   max-height: 192px;
+  min-height: 181px;
   &::-webkit-scrollbar {
     display: none;
   }

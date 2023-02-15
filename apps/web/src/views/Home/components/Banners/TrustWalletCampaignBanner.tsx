@@ -51,11 +51,14 @@ const Title = styled.div`
     font-size: 21px;
   }
   ${({ theme }) => theme.mediaQueries.sm} {
-    font-size: 35px;
+    font-size: 26px;
     margin-top: 10px;
+    padding-right: 240px;
+    margin-bottom: 12px;
   }
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 40px;
+    padding-right: 0px;
     margin-bottom: 24px;
   }
 `
@@ -67,8 +70,9 @@ const StyledBox = styled(Box)`
   color: #ffffff;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   margin-top: -10px;
-  ${({ theme }) => theme.mediaQueries.lg} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     font-size: 24px;
+    margin-top: 0px;
   }
 `
 
@@ -76,7 +80,7 @@ const sharedStyle = css`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
   padding: 4px 8px;
   border-radius: 8px;
-  ${({ theme }) => theme.mediaQueries.md} {
+  ${({ theme }) => theme.mediaQueries.sm} {
     border-radius: 16px;
   }
 `
@@ -98,7 +102,7 @@ const StyledButtonRight = styled(Button)`
 
 const TrustWalletCampaignBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isDesktop } = useMatchBreakpoints()
+  const { isMobile } = useMatchBreakpoints()
   return (
     <S.Wrapper
       style={{
