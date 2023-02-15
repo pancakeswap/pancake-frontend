@@ -8,12 +8,12 @@ import { useSelector } from 'react-redux'
 import { BASES_TO_TRACK_LIQUIDITY_FOR, PINNED_PAIRS } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useSWRImmutable from 'swr/immutable'
-import { useFeeData } from 'wagmi'
 import { useOfficialsAndUserAddedTokens } from 'hooks/Tokens'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
+import { useFeeData } from 'wagmi'
 
 import { AppState, useAppDispatch } from '../../index'
 import {
@@ -407,8 +407,34 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
   )
 }
 
-export function useGasPrice(chainIdOverride?: number): string {
-  const { chainId: chainId_, chain } = useActiveWeb3React()
+export function useFeeDataWithGasPrice(chainIdOverride?: number): {
+  gasPrice: string
+  maxFeePerGas?: string
+  maxPriorityFeePerGas?: string
+} {
+  const { chainId: chainId_ } = useActiveWeb3React()
+  const chainId = chainIdOverride ?? chainId_
+  const gasPrice = useGasPrice(chainId)
+  const { data } = useFeeData({
+    chainId,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+    watch: true,
+  })
+
+  if (gasPrice) {
+    return {
+      gasPrice,
+    }
+  }
+
+  return data?.formatted
+}
+
+/**
+ * Note that this hook will only works well for BNB chain
+ */
+export function useGasPrice(chainIdOverride?: number): string | undefined {
+  const { chainId: chainId_ } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
   const chainId = chainIdOverride ?? chainId_
   const userGas = useSelector<AppState, AppState['user']['gasPrice']>((state) => state.user.gasPrice)
@@ -426,21 +452,13 @@ export function useGasPrice(chainIdOverride?: number): string {
       revalidateOnReconnect: false,
     },
   )
-  const { data } = useFeeData({
-    chainId,
-    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
-    watch: true,
-  })
   if (chainId === ChainId.BSC) {
     return userGas === GAS_PRICE_GWEI.rpcDefault ? bscProviderGasPrice : userGas
   }
   if (chainId === ChainId.BSC_TESTNET) {
     return GAS_PRICE_GWEI.testnet
   }
-  if (chain?.testnet) {
-    return data?.formatted?.maxPriorityFeePerGas
-  }
-  return data?.formatted?.gasPrice
+  return undefined
 }
 
 export function useGasPriceManager(): [string, (userGasPrice: string) => void] {
