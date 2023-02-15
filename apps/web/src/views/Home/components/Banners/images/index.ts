@@ -12,6 +12,7 @@ import perpetualMobileImage from './perpetualMobile.png'
 import Aptos from './Aptos.png'
 import AptosXPancakeSwap from './AptosXPancakeSwap.png'
 import trustwalletBg from './trustwalletBg.png'
+import trustwalletBunny from './trustwalletBunny.png'
 
 export {
   lotteryImage,
@@ -28,4 +29,5 @@ export {
   Aptos,
   AptosXPancakeSwap,
   trustwalletBg,
+  trustwalletBunny,
 }

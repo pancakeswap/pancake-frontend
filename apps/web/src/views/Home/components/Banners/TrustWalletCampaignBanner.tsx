@@ -2,12 +2,15 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
 import styled from 'styled-components'
-import { trustwalletBg } from './images'
+import { trustwalletBg, trustwalletBunny } from './images'
 import * as S from './Styled'
 
 const RightWrapper = styled.div`
   position: absolute;
+  width: 100%;
+  height: 100%;
   right: 0;
+  top: 0;
   ${({ theme }) => theme.mediaQueries.sm} {
     right: 1px;
     bottom: -18px;
@@ -15,6 +18,16 @@ const RightWrapper = styled.div`
   ${({ theme }) => theme.mediaQueries.lg} {
     right: 0px;
     bottom: -2px;
+  }
+  overflow: visible;
+  span:last-child {
+    position: absolute !important;
+    right: -24px;
+    bottom: -14px;
+    ${({ theme }) => theme.mediaQueries.lg} {
+      right: 55px;
+      bottom: -20px;
+    }
   }
 `
 const AptosTitle = styled.div`
@@ -25,8 +38,9 @@ const AptosTitle = styled.div`
   line-height: 110%;
   color: #ffffff;
   text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.25);
-  margin-bottom: 21px;
-  margin-top: 16px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-right: 80px;
 
   @media screen and (max-width: 375px) {
     font-size: 21px;
@@ -41,20 +55,30 @@ const AptosTitle = styled.div`
 `
 const StyledBox = styled(Box)`
   font-weight: 600;
-  font-size: 24px;
+  font-size: 12px;
   line-height: 110%;
   font-feature-settings: 'liga' off;
   color: #ffffff;
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  margin-top: -10px;
+  ${({ theme }) => theme.mediaQueries.lg} {
+    font-size: 24px;
+  }
 `
 
 const StyledButtonLeft = styled(Button)`
+  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 8px;
   > div {
     color: ${({ theme }) => theme.colors.white};
   }
 `
 
 const StyledButtonRight = styled(Button)`
+  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.white};
   > div {
     color: ${({ theme }) => theme.colors.primary};
@@ -67,41 +91,38 @@ const TrustWalletCampaignBanner = () => {
   return (
     <S.Wrapper
       style={{
-        background: `linear-gradient(180deg, #00BFA5 0%, #005A5A 100%)`,
-        overflow: isMobile ? 'hidden' : 'visible',
+        background: `radial-gradient(104.12% 231.19% at -4.12% -5.83%, #0057AE 0.52%, #667CC6 67.41%, #19E5F5 100%)`,
       }}
     >
       <S.Inner>
         <S.LeftWrapper>
           <StyledBox>PancakeSwap x Trust Wallet</StyledBox>
           <AptosTitle>{t('Trade and win $10,000 Prize Pool')}</AptosTitle>
-          <Flex style={{ gap: 8 }}>
-            <NextLinkFromReactRouter
-              target="_blank"
-              to="https://docs.pancakeswap.finance/aptos-deployment"
-              rel='"noopener noreferrer'
-            >
-              <StyledButtonLeft minHeight="48px">
+          <Flex style={{ gap: 8 }} flexWrap={isMobile ? 'wrap' : 'nowrap'}>
+            <NextLinkFromReactRouter to="/swap?chain=eth">
+              <StyledButtonLeft scale={isMobile ? 'sm' : 'md'}>
                 <Text bold fontSize="16px" mr="4px">
-                  {t('Trade now using Trust Wallet')}
+                  {isMobile ? t('Trade Now') : t('Trade now using Trust Wallet')}
                 </Text>
               </StyledButtonLeft>
             </NextLinkFromReactRouter>
-            <StyledButtonRight
-              minHeight="48px"
-              onClick={() =>
-                window?.open('https://docs.pancakeswap.finance/aptos-deployment', '_blank', 'noopener noreferrer')
-              }
-              variant="text"
-            >
-              <Text bold fontSize="16px" mr="4px">
-                {t('Download Trust Wallet')}
-              </Text>
-            </StyledButtonRight>
+            <NextLinkFromReactRouter target="_blank" to="https://rebrand.ly/tw-pcs" rel='"noopener noreferrer'>
+              <StyledButtonRight scale={isMobile ? 'sm' : 'md'}>
+                <Text bold fontSize="16px" mr="4px">
+                  {t('Download Trust Wallet')}
+                </Text>
+              </StyledButtonRight>
+            </NextLinkFromReactRouter>
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
           {isDesktop && <Image src={trustwalletBg} alt="trustwalletBg" width={1112} height={192} placeholder="blur" />}
+
+          {isMobile ? (
+            <Image src={trustwalletBunny} alt="trustwalletBunny" width={127} height={173} placeholder="blur" />
+          ) : (
+            <Image src={trustwalletBunny} alt="trustwalletBunny" width={193} height={263} placeholder="blur" />
+          )}
         </RightWrapper>
       </S.Inner>
     </S.Wrapper>
