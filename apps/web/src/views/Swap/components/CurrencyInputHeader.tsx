@@ -8,7 +8,6 @@ import {
   HotDisableIcon,
   HotIcon,
   IconButton,
-  NextLinkFromReactRouter,
   NotificationDot,
   Swap,
   Text,
