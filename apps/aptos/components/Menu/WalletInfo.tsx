@@ -69,7 +69,7 @@ const WalletInfo: React.FC<WalletInfoProps> = ({ hasLowNativeBalance, onDismiss 
       </Flex>
       {account && (
         <Flex alignItems="center" justifyContent="end" mb="24px">
-          <LinkExternal href={getBlockExploreLink(account.address, 'address', chainId)}>
+          <LinkExternal isAptosScan href={getBlockExploreLink(account.address, 'address', chainId)}>
             {t('View on %site%', {
               site: t('Explorer'),
             })}
