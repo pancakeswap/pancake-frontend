@@ -88,7 +88,7 @@ const sharedStyle = css`
 const StyledButtonLeft = styled(Button)`
   ${sharedStyle}
   > div {
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.invertedContrast};
   }
 `
 
