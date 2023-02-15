@@ -15,6 +15,15 @@ export interface GetLPOutputParams {
   fee: Percent
 }
 
+const PRECISION = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+
+const getPrecisedAmount = (amount: CurrencyAmount<Currency>) => {
+  return JSBI.divide(
+    JSBI.multiply(amount.quotient, PRECISION),
+    JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(amount.currency.decimals)),
+  )
+}
+
 export function getLPOutput({
   amplifier,
   balances,
@@ -26,7 +35,7 @@ export function getLPOutput({
   const lpTotalSupply = totalSupply.quotient
   // No liquidity in pool
   if (JSBI.equal(lpTotalSupply, ZERO) || !balances.length || balances.every((b) => JSBI.equal(b.quotient, ZERO))) {
-    const d = getD({ amplifier, balances: amounts.map((a) => a.quotient) })
+    const d = getD({ amplifier, balances: amounts.map(getPrecisedAmount) })
     return CurrencyAmount.fromRawAmount(lpToken, d)
   }
 
@@ -38,8 +47,10 @@ export function getLPOutput({
       amount.currency.equals(balance.currency),
       'User input currency should be the same as pool balance currency.',
     )
-    currentBalances.push(balance.quotient)
-    newBalances.push(JSBI.add(balance.quotient, amount.quotient))
+    const precisedBalance = getPrecisedAmount(balance)
+    const precisedAmount = getPrecisedAmount(amount)
+    currentBalances.push(precisedBalance)
+    newBalances.push(JSBI.add(precisedBalance, precisedAmount))
   }
 
   const d0 = getD({ amplifier, balances: currentBalances })
