@@ -95,7 +95,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
     tooltip: campaignTooltip,
     tooltipVisible: campaignTooltipVisible,
     targetRef: campaignTargetRef,
-  } = useTooltip(<Text>{t('Trade and Share $10,000')}</Text>, { trigger: isMobile ? 'focus' : 'hover' })
+  } = useTooltip(<Text>{t('Trade and Share $10,000')}</Text>, { avoidToStopPropagation: true })
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
