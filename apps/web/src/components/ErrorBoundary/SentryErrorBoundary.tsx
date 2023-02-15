@@ -12,7 +12,7 @@ export function SentryErrorBoundary({ children }) {
       beforeCapture={(scope) => {
         scope.setLevel('fatal')
       }}
-      fallback={({ eventId }) => {
+      fallback={({ eventId, error }) => {
         return (
           <Page>
             <Flex flexDirection="column" justifyContent="center" alignItems="center">
@@ -29,6 +29,7 @@ export function SentryErrorBoundary({ children }) {
                   </Flex>
                 </Flex>
               )}
+              {JSON.stringify(error)}
               <Button onClick={handleOnClick}>{t('Click here to reset!')}</Button>
             </Flex>
           </Page>
