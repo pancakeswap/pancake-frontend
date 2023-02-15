@@ -9,6 +9,7 @@ import ArticleSortSelect from 'components/Article/ArticleSortSelect'
 import { Categories } from 'types'
 import CategoriesSelector from 'components/Article/CategoriesSelector'
 import useAllArticle from 'hooks/useAllArticle'
+import useLanguage from 'hooks/useLanguage'
 import SkeletonArticle from 'components/SkeletonArticle'
 
 const StyledArticleContainer = styled(Box)`
@@ -69,27 +70,13 @@ const AllArticle = () => {
   const [selectedCategories, setSelectCategoriesSelected] = useState(0)
   const [sortBy, setSortBy] = useState('createAt:desc')
   const [languageOption, setLanguageOption] = useState('all')
-  const languageItems = [
-    { label: t('All'), value: 'all' },
-    { label: 'English', value: 'en' },
-    { label: '简体中文', value: 'zh-CN' },
-    { label: '日本語', value: 'ja' },
-    { label: 'Español', value: 'es' },
-    { label: 'Bahasa Indonesia', value: 'id' },
-    { label: 'Português', value: 'pt' },
-    { label: 'Georgian', value: 'ka' },
-    { label: 'Türkçe', value: 'tr' },
-    { label: 'हिंदी', value: 'hi' },
-    { label: 'Русский', value: 'ru' },
-    { label: 'Deutsch', value: 'de' },
-  ]
+  const languageItems = useLanguage()
   const sortByItems = [
     { label: t('Newest First'), value: 'createAt:desc' },
     { label: t('Oldest First'), value: 'createAt:asc' },
     { label: t('Sort Title A-Z'), value: 'title:asc' },
     { label: t('Sort Title Z-A'), value: 'title:desc' },
   ]
-
   const { data: categoriesData } = useSWR<Categories[]>('/categories')
 
   useEffect(() => {
@@ -141,7 +128,7 @@ const AllArticle = () => {
             childMargin="0 0 28px 0"
           />
         </StyledTagContainer>
-        <Flex width="100%" overflow="hidden" flexDirection="column">
+        <Flex width={['100%', '100%', '100%', '100%', '100%', '100%', '907px']} flexDirection="column">
           <Flex
             mb={['18px', '18px', '18px', '24px']}
             flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
@@ -149,9 +136,11 @@ const AllArticle = () => {
             p={['0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0 16px', '0']}
           >
             <Flex flexDirection={['column', 'row']}>
-              <Box width="100%">
-                <ArticleSortSelect title={t('Languages')} options={languageItems} setOption={setLanguageOption} />
-              </Box>
+              {languageItems.length > 0 && (
+                <Box width="100%">
+                  <ArticleSortSelect title={t('Languages')} options={languageItems} setOption={setLanguageOption} />
+                </Box>
+              )}
               <Box width="100%" m={['10px 0 0 0', '0 0 0 16px', '0 0 0 16px', '0 16px']}>
                 <ArticleSortSelect title={t('Sort By')} options={sortByItems} setOption={setSortBy} />
               </Box>

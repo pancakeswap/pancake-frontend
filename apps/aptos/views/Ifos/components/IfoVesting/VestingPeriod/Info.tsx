@@ -5,7 +5,9 @@ import BigNumber from 'bignumber.js'
 import { PoolIds } from 'config/constants/types'
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import { useGetPublicIfoData } from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
+import { format } from 'date-fns'
 import Claim from './Claim'
 
 const WhiteCard = styled.div`
@@ -30,15 +32,23 @@ interface InfoProps {
 const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
   const { token } = data.ifo
+  const { vestingStartTime } = data.userVestingData
   const {
     vestingComputeReleasableAmount,
     vestingAmountTotal,
     vestingInformationPercentage,
     vestingReleased,
     offeringAmountInToken,
+    vestingInformationDuration,
   } = data.userVestingData[poolId]
 
   const labelText = t('Unlimited Sale')
+
+  const publicIfoData = useGetPublicIfoData(data.ifo)
+  const { cliff } = publicIfoData[poolId]?.vestingInformation
+  const currentTimeStamp = new Date().getTime()
+  const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
+  const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
 
   const vestingPercentage = useMemo(
     () => new BigNumber(vestingInformationPercentage).times(0.01),
@@ -91,6 +101,22 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {t('Vesting Schedule')}
         </Text>
         <StyleTag isPrivate={poolId === PoolIds.poolBasic}>{labelText}</StyleTag>
+      </Flex>
+      <Flex justifyContent="space-between" mt="8px">
+        <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
+          {cliff === 0 ? t('Vesting Start') : t('Cliff')}
+        </Text>
+        <Text fontSize="12px" color="textSubtle">
+          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
+        </Text>
+      </Flex>
+      <Flex justifyContent="space-between">
+        <Text style={{ alignSelf: 'center' }} fontSize="12px" bold color="secondary" textTransform="uppercase">
+          {t('Vesting end')}
+        </Text>
+        <Text fontSize="12px" color="textSubtle">
+          {format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}
+        </Text>
       </Flex>
       <WhiteCard>
         <Progress primaryStep={percentage.receivedPercentage} secondaryStep={percentage.amountAvailablePercentage} />

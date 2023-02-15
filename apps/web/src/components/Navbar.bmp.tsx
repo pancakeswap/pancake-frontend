@@ -4,6 +4,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTheme from 'hooks/useTheme'
 import { useSystemInfo, bridgeUtils } from 'utils/mpBridge'
 import useAuth from 'hooks/useAuth'
+import { useActiveHandle } from 'hooks/useEagerConnect.bmp'
+import { useEffect } from 'react'
 
 const title = {
   dark: '/images/nav-title-dark.png',
@@ -20,6 +22,7 @@ const StyledWallet = styled(Flex)<{ isActive: boolean }>`
 const Wallet = () => {
   const { account } = useActiveWeb3React()
   const { logout } = useAuth()
+  const active = useActiveHandle()
   const isActive = !!account
   const handleWalletClick = () => {
     bridgeUtils.toWallet().then((result) => {
@@ -28,6 +31,10 @@ const Wallet = () => {
       }
     })
   }
+  useEffect(() => {
+    window.bn.connect = active
+    window.bn.disconnect = logout
+  }, [logout, active])
   const accountEllipsis = account ? `${account.substring(0, 2)}...${account.substring(account.length - 2)}` : null
   return (
     <StyledWallet isActive={isActive} onClick={handleWalletClick}>
