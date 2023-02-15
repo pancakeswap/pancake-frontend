@@ -1,10 +1,11 @@
-import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Price, TradeType } from '@pancakeswap/sdk'
 
 import { getBestTradeFromV2ExactIn, getBestTradeFromV2ExactOut } from './getBestTradeFromV2'
 import { getBestTradeWithStableSwap } from './getBestTradeWithStableSwap'
-import { getStableSwapPairs } from './getStableSwapPairs'
-import { createTradeWithStableSwapFromV2Trade } from './stableSwap'
-import { BestTradeOptions, TradeWithStableSwap } from './types'
+import { stableSwapPairsByChainId } from './getStableSwapPairs'
+import { getStableSwapFee, getStableSwapOutputAmount } from './onchain'
+import { createTradeWithStableSwap, createTradeWithStableSwapFromV2Trade, getFeePercent } from './stableSwap'
+import { BestTradeOptions, RouteType, TradeWithStableSwap } from './types'
 
 export const getBestTradeExactIn = createGetBestTrade(TradeType.EXACT_INPUT)
 
@@ -25,11 +26,40 @@ function createGetBestTrade<TTradeType extends TradeType>(tradeType: TTradeType)
     } = amountIn
 
     const bestTradeV2 = await getBestTradeFromV2(amountIn, output, options)
+
+    const stableSwapPairs = stableSwapPairsByChainId[chainId] || []
+
     if (!bestTradeV2) {
+      const directStablePair = stableSwapPairs.find(
+        (p) => p.involvesToken(amountIn.currency) && p.involvesToken(output),
+      )
+      if (directStablePair) {
+        const [outputAmount, fees] = await Promise.all([
+          getStableSwapOutputAmount(directStablePair, amountIn, { provider }),
+          getStableSwapFee(directStablePair, amountIn, { provider }),
+        ])
+        const { fee, adminFee } = getFeePercent(amountIn, outputAmount, fees)
+
+        const pairs = [
+          {
+            ...directStablePair,
+            price: new Price({ baseAmount: amountIn, quoteAmount: outputAmount.add(fees.fee) }),
+            fee,
+            adminFee,
+          },
+        ]
+
+        return createTradeWithStableSwap({
+          routeType: RouteType.STABLE_SWAP,
+          inputAmount: amountIn,
+          outputAmount,
+          pairs,
+          tradeType: TradeType.EXACT_INPUT,
+        })
+      }
       return null
     }
 
-    const stableSwapPairs = getStableSwapPairs(chainId)
     const bestTradeWithStableSwap = await getBestTradeWithStableSwap(bestTradeV2, stableSwapPairs, { provider })
     const { outputAmount: outputAmountWithStableSwap } = bestTradeWithStableSwap
 

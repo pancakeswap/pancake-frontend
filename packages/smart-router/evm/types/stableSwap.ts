@@ -6,6 +6,8 @@ import { BaseRoute } from './route'
 
 export interface StableSwapPair extends BasePair {
   stableSwapAddress: string
+  lpAddress: string
+  infoStableSwapAddress: string
   price: Price<Currency, Currency>
   fee: Percent
   adminFee: Percent
