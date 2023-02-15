@@ -116,7 +116,9 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   }, [])
 
   useEffect(() => {
-    setMobileCampaignTooltipShow(true)
+    setTimeout(() => {
+      setMobileCampaignTooltipShow(true)
+    }, 100)
   }, [])
 
   useEffect(() => {
