@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { trustwalletBg, trustwalletBunny } from './images'
 import * as S from './Styled'
 
@@ -20,7 +20,12 @@ const RightWrapper = styled.div`
     bottom: -2px;
   }
   overflow: visible;
-  span:last-child {
+  > span:first-child {
+    position: absolute !important;
+    right: 0px;
+    bottom: 0px;
+  }
+  > span:last-child {
     position: absolute !important;
     right: -24px;
     bottom: -14px;
@@ -30,7 +35,7 @@ const RightWrapper = styled.div`
     }
   }
 `
-const AptosTitle = styled.div`
+const Title = styled.div`
   font-family: 'Kanit';
   font-style: normal;
   font-weight: 600;
@@ -51,6 +56,7 @@ const AptosTitle = styled.div`
   }
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 40px;
+    margin-bottom: 24px;
   }
 `
 const StyledBox = styled(Box)`
@@ -66,19 +72,24 @@ const StyledBox = styled(Box)`
   }
 `
 
-const StyledButtonLeft = styled(Button)`
+const sharedStyle = css`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
   padding: 4px 8px;
   border-radius: 8px;
+  ${({ theme }) => theme.mediaQueries.md} {
+    border-radius: 16px;
+  }
+`
+
+const StyledButtonLeft = styled(Button)`
+  ${sharedStyle}
   > div {
     color: ${({ theme }) => theme.colors.white};
   }
 `
 
 const StyledButtonRight = styled(Button)`
-  box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
-  padding: 4px 8px;
-  border-radius: 8px;
+  ${sharedStyle}
   background-color: ${({ theme }) => theme.colors.white};
   > div {
     color: ${({ theme }) => theme.colors.primary};
@@ -97,7 +108,7 @@ const TrustWalletCampaignBanner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <StyledBox>PancakeSwap x Trust Wallet</StyledBox>
-          <AptosTitle>{t('Trade and win $10,000 Prize Pool')}</AptosTitle>
+          <Title>{t('Trade and win $10,000 Prize Pool')}</Title>
           <Flex style={{ gap: 8 }} flexWrap={isMobile ? 'wrap' : 'nowrap'}>
             <NextLinkFromReactRouter to="/swap?chain=eth">
               <StyledButtonLeft scale={isMobile ? 'sm' : 'md'}>
@@ -116,7 +127,7 @@ const TrustWalletCampaignBanner = () => {
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
-          {isDesktop && <Image src={trustwalletBg} alt="trustwalletBg" width={1112} height={192} placeholder="blur" />}
+          {!isMobile && <Image src={trustwalletBg} alt="trustwalletBg" width={1112} height={192} placeholder="blur" />}
 
           {isMobile ? (
             <Image src={trustwalletBunny} alt="trustwalletBunny" width={127} height={173} placeholder="blur" />
