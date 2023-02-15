@@ -1,21 +1,15 @@
-import { Currency, CurrencyAmount, Price, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import { getBestTradeFromStablePools } from './getBestTradeFromStablePools'
 
 import { getBestTradeFromV2ExactIn, getBestTradeFromV2ExactOut } from './getBestTradeFromV2'
 import { getBestTradeWithStableSwap } from './getBestTradeWithStableSwap'
 import { stableSwapPairsByChainId } from './getStableSwapPairs'
-import { getStableSwapFee, getStableSwapOutputAmount } from './onchain'
-import { createTradeWithStableSwap, createTradeWithStableSwapFromV2Trade, getFeePercent } from './stableSwap'
-import { BestTradeOptions, RouteType, StableSwapPair, TradeWithStableSwap } from './types'
+import { createTradeWithStableSwapFromV2Trade } from './stableSwap'
+import { BestTradeOptions, TradeWithStableSwap } from './types'
 
 export const getBestTradeExactIn = createGetBestTrade(TradeType.EXACT_INPUT)
 
 export const getBestTradeExactOut = createGetBestTrade(TradeType.EXACT_OUTPUT)
-
-const isDirectStableSwapTrade = (currencyIn: Currency, currencyOut: Currency, stableSwapPairs: StableSwapPair[]) => {
-  const directStablePair = stableSwapPairs.find((p) => p.involvesToken(currencyIn) && p.involvesToken(currencyOut))
-  return directStablePair
-}
 
 function createGetBestTrade<TTradeType extends TradeType>(tradeType: TTradeType) {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
