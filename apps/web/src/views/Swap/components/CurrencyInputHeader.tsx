@@ -1,5 +1,4 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import {
   ChartDisableIcon,
   ChartIcon,
@@ -19,7 +18,6 @@ import {
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
@@ -75,7 +73,8 @@ const ColoredIconButton = styled(IconButton)`
   }
 `
 
-const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlight', false)
+//  disable this during the eth trust wallet campaign
+const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
 
 const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   subtitle,
@@ -86,6 +85,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   const { t } = useTranslation()
   const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
+  const [mobileCampaignTooltipShow, setMobileCampaignTooltipShow] = useState(false)
   const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
     placement: isMobile ? 'top' : 'bottom',
     trigger: isMobile ? 'focus' : 'hover',
@@ -95,7 +95,12 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
     tooltip: campaignTooltip,
     tooltipVisible: campaignTooltipVisible,
     targetRef: campaignTargetRef,
-  } = useTooltip(<Text>{t('Trade and Share $10,000')}</Text>, { avoidToStopPropagation: true })
+  } = useTooltip(<Text>{t('Trade and Share $10,000')}</Text>, {
+    placement: 'top',
+    trigger: 'hover',
+    manualVisible: mobileCampaignTooltipShow,
+    avoidToStopPropagation: true,
+  })
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
@@ -107,8 +112,14 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
 
   const mobileTooltipClickOutside = useCallback(() => {
     setMobileTooltipShow(false)
+    setMobileCampaignTooltipShow(false)
   }, [])
-  const { chainId } = useActiveWeb3React()
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMobileCampaignTooltipShow(true)
+    }, 100)
+  }, [])
 
   useEffect(() => {
     if (isMobile && !mobileTooltipShowOnce) {
@@ -133,25 +144,28 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
         <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
       </Flex>
       <Flex width="100%" justifyContent="end">
-        {chainId === ChainId.ETHEREUM && (
-          <>
-            <ColoredIconButton className="is-shining" variant="text" scale="sm">
-              <TooltipText ref={campaignTargetRef} display="flex" style={{ justifyContent: 'center' }}>
-                <TrophyGoldIcon
-                  onClick={() => {
-                    window.open(
-                      'https://medium.com/pancakeswap/introducing-market-maker-integration-on-ethereum-pancakeswap-trade-and-share-10-000-usdc-in-724df104716',
-                      '_blank',
-                      'noreferrer noopener',
-                    )
-                  }}
-                  width={27}
-                />
-              </TooltipText>
-            </ColoredIconButton>
-            {campaignTooltipVisible && campaignTooltip}
-          </>
-        )}
+        <>
+          <ColoredIconButton className="is-shining" variant="text" scale="sm">
+            <TooltipText
+              ref={campaignTargetRef}
+              display="flex"
+              onClick={() => setMobileCampaignTooltipShow(false)}
+              style={{ justifyContent: 'center' }}
+            >
+              <TrophyGoldIcon
+                onClick={() => {
+                  window.open(
+                    'https://medium.com/pancakeswap/introducing-market-maker-integration-on-ethereum-pancakeswap-trade-and-share-10-000-usdc-in-724df104716',
+                    '_blank',
+                    'noreferrer noopener',
+                  )
+                }}
+                width={27}
+              />
+            </TooltipText>
+          </ColoredIconButton>
+          {campaignTooltipVisible && campaignTooltip}
+        </>
 
         {isChartSupported && setIsChartDisplayed && (
           <ColoredIconButton
