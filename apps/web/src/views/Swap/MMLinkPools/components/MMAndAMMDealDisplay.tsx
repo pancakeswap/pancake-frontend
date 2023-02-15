@@ -5,6 +5,11 @@ import { useRouter } from 'next/router'
 import { Field } from 'state/swap/actions'
 import { TradeWithMM } from '../types'
 
+export function useMMDevMode() {
+  const { query } = useRouter()
+  return Boolean(query['dev-mode'])
+}
+
 // for testing purpose, will remove later
 export const MMAndAMMDealDisplay: React.FC<{
   independentField: Field
@@ -25,8 +30,8 @@ export const MMAndAMMDealDisplay: React.FC<{
 }) => {
   const isExactIn = independentField === Field.INPUT
   const dealInANdOut = isExactIn ? '(out)' : '(in)'
-  const { query } = useRouter()
-  if (query['dev-mode'])
+  const isMMDev = useMMDevMode()
+  if (isMMDev)
     return (
       <Box pl="20px" pt="10px">
         <Text color="textSubtle">

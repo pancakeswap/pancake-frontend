@@ -46,7 +46,7 @@ import { ArrowWrapper, Wrapper } from '../components/styleds'
 import SwapCommitButton from '../components/SwapCommitButton'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
-import { MMAndAMMDealDisplay } from '../MMLinkPools/components/MMAndAMMDealDisplay'
+import { MMAndAMMDealDisplay, useMMDevMode } from '../MMLinkPools/components/MMAndAMMDealDisplay'
 import MMCommitButton from '../MMLinkPools/components/MMCommitButton'
 import { MMSlippageTolerance } from '../MMLinkPools/components/MMSlippageTolerance'
 import {
@@ -66,6 +66,7 @@ import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo 
 export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
 }) => {
+  const isMMDev = useMMDevMode()
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
@@ -134,7 +135,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     rfqId,
     isLoading: isRFQIdLoading,
   } = useGetRFQId(
-    mmOrderBookTrade?.mmParam,
+    (!mmOrderBookTrade.inputError || isMMDev) && mmOrderBookTrade?.mmParam,
     isMMBetter,
     mmOrderBookTrade?.rfqUserInputPath,
     mmOrderBookTrade?.isRFQLive,
@@ -309,6 +310,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   const allowRecipient = isExpertMode && !showWrap && !smartRouterOn
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   return (
     <>
       <MMAndAMMDealDisplay
@@ -317,7 +319,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         v2Trade={v2Trade}
         mmTrade={mmTradeInfo?.trade}
         mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
-        errorMessage={mmRFQTrade?.error || mmOrderBookTrade?.inputError}
+        errorMessage={mmRFQTrade?.error?.message || mmOrderBookTrade?.inputError}
         rfqId={mmRFQTrade?.rfqId}
       />
       <CurrencyInputHeader
@@ -475,7 +477,8 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               isExpertMode={isExpertMode}
               trade={mmRFQTrade?.trade}
               swapInputError={
-                mmOrderBookTrade?.inputError || (isMMBetter && mmRFQTrade?.error && parseMMError(mmRFQTrade?.error))
+                mmOrderBookTrade?.inputError ||
+                (isMMBetter && mmRFQTrade?.error?.message && parseMMError(mmRFQTrade?.error?.message))
               }
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}

@@ -3,27 +3,9 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useDeferredValue } from 'react'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
-import { getRFQById, sendRFQAndGetRFQId } from '../apis'
+import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
 import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
 import { parseMMTrade } from '../utils/exchange'
-
-// export const useGetRFQId = (param: QuoteRequest, isMMBetter: boolean): { rfqId: string; refreshRFQ: () => void } => {
-//   const { account } = useActiveWeb3React()
-//   const { data, mutate } = useSWRImmutable(
-//     isMMBetter &&
-//       account &&
-//       param &&
-//       param?.trader &&
-//       (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
-//       param?.makerSideTokenAmount !== '0' &&
-//       param?.takerSideTokenAmount !== '0' && [
-//         `RFQ/${param.networkId}/${param.makerSideToken}/${param.takerSideToken}/${param.makerSideTokenAmount}/${param.takerSideTokenAmount}`,
-//       ],
-//     () => sendRFQAndGetRFQId(param),
-//     { refreshInterval: 30000 }, // 30 sec auto refresh Id once
-//   )
-//   return { rfqId: data?.message?.rfqId ?? '', refreshRFQ: mutate }
-// }
 
 export const useGetRFQId = (
   param: QuoteRequest | null,
@@ -59,6 +41,7 @@ export const useGetRFQId = (
       enabled,
     }, // 20sec
   )
+
   return {
     rfqId: data?.message?.rfqId ?? '',
     refreshRFQ: refetch,
@@ -81,31 +64,34 @@ export const useGetRFQTrade = (
   refreshRFQ: () => void | null
   quoteExpiry: number | null
   isLoading: boolean
-  error?: string
+  error?: Error
   rfqId?: string
 } | null => {
-  const deferedRfqId = useDeferredValue(rfqId)
-  const { error, data, isLoading } = useQuery([`RFQ/${deferedRfqId}`], () => getRFQById(deferedRfqId), {
-    enabled: Boolean(isMMBetter && deferedRfqId),
-    retry: 6,
+  const deferredRfqId = useDeferredValue(rfqId)
+  const enabled = Boolean(isMMBetter && deferredRfqId)
+  const { error, data, isLoading } = useQuery([`RFQ/${deferredRfqId}`], () => getRFQById(deferredRfqId), {
+    enabled,
     staleTime: Infinity,
+    retry: (failureCount, err) => {
+      if (err instanceof MMError) {
+        return err.shouldRetry
+      }
+      return failureCount < 4
+    },
   })
-  // const { data, error, isLoading } = useSWRImmutable(isMMBetter && rfqId && [`RFQ/${rfqId}`], () => getRFQById(rfqId), {
-  //   errorRetryCount: 10,
-  //   errorRetryInterval: 1000,
-  // })
   const isExactIn: boolean = independentField === Field.INPUT
 
-  if (error && error instanceof Error && error?.message && !data?.message)
+  if (error && error instanceof Error && error?.message) {
     return {
       rfq: null,
       trade: null,
       quoteExpiry: null,
       refreshRFQ: null,
-      error: error?.message === 'RFQ not found' ? 'fetching... RFQ' : error?.message,
+      error,
       rfqId,
-      isLoading,
+      isLoading: enabled && isLoading,
     }
+  }
   if (data?.messageType === MessageType.RFQ_RESPONSE) {
     // eslint-disable-next-line no-param-reassign
     if (isRFQLive) isRFQLive.current = true
@@ -120,8 +106,14 @@ export const useGetRFQTrade = (
       ),
       quoteExpiry: data?.message?.quoteExpiry ?? null,
       refreshRFQ,
-      isLoading,
+      isLoading: enabled && isLoading,
     }
   }
-  return null
+  return {
+    rfq: null,
+    trade: null,
+    quoteExpiry: null,
+    isLoading: enabled && isLoading,
+    refreshRFQ: null,
+  }
 }
