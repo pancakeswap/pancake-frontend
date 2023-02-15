@@ -13,6 +13,7 @@ import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import useSWR from 'swr'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { isAddress } from 'utils'
+import { useFeeData } from 'wagmi'
 
 import { AppState, useAppDispatch } from '../../index'
 import {
@@ -406,6 +407,32 @@ export function useRemoveUserAddedToken(): (chainId: number, address: string) =>
   )
 }
 
+export function useFeeDataWithGasPrice(chainIdOverride?: number): {
+  gasPrice: string
+  maxFeePerGas?: string
+  maxPriorityFeePerGas?: string
+} {
+  const { chainId: chainId_ } = useActiveWeb3React()
+  const chainId = chainIdOverride ?? chainId_
+  const gasPrice = useGasPrice(chainId)
+  const { data } = useFeeData({
+    chainId,
+    enabled: chainId !== ChainId.BSC && chainId !== ChainId.BSC_TESTNET,
+    watch: true,
+  })
+
+  if (gasPrice) {
+    return {
+      gasPrice,
+    }
+  }
+
+  return data?.formatted
+}
+
+/**
+ * Note that this hook will only works well for BNB chain
+ */
 export function useGasPrice(chainIdOverride?: number): string | undefined {
   const { chainId: chainId_ } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
