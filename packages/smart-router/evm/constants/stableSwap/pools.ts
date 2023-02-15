@@ -15,7 +15,7 @@ export const STABLE_SUPPORTED_CHAIN_IDS = [ChainId.BSC, ChainId.BSC_TESTNET] as 
 
 export type StableSupportedChainId = (typeof STABLE_SUPPORTED_CHAIN_IDS)[number]
 
-export const STABLE_POOL_MAP = {
+export const STABLE_POOL_MAP: StableSwapPoolMap<StableSupportedChainId> = {
   [ChainId.BSC]: bscPools,
   [ChainId.BSC_TESTNET]: bscTestnetPools,
-} satisfies StableSwapPoolMap<StableSupportedChainId>
+}
