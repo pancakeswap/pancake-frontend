@@ -135,18 +135,25 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
       </Flex>
       <Flex width="100%" justifyContent="end">
         {chainId === ChainId.ETHEREUM && (
-          <NextLinkFromReactRouter
-            target="_blank"
-            rel="noreferrer noopener"
-            to="https://medium.com/pancakeswap/introducing-market-maker-integration-on-ethereum-pancakeswap-trade-and-share-10-000-usdc-in-724df104716"
-          >
-            <ColoredIconButton className="is-shining" variant="text" scale="sm">
+          <>
+            <ColoredIconButton
+              className="is-shining"
+              variant="text"
+              scale="sm"
+              onClick={() => {
+                window.open(
+                  'https://medium.com/pancakeswap/introducing-market-maker-integration-on-ethereum-pancakeswap-trade-and-share-10-000-usdc-in-724df104716',
+                  '_blank',
+                  'noreferrer noopener',
+                )
+              }}
+            >
               <TooltipText ref={campaignTargetRef} display="flex" style={{ justifyContent: 'center' }}>
                 <TrophyGoldIcon width={27} />
               </TooltipText>
             </ColoredIconButton>
             {campaignTooltipVisible && campaignTooltip}
-          </NextLinkFromReactRouter>
+          </>
         )}
 
         {isChartSupported && setIsChartDisplayed && (
