@@ -186,7 +186,11 @@ export const fetchPoolsPublicDataAsync =
         const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
 
         const earningTokenAddress = isAddress(pool.earningToken.address)
-        const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+        let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+        // FIXME: stable swap price is not available for axlusdc
+        if (typeof earningTokenAddress === 'string' && earningTokenAddress === bscTokens.axlusdc.address) {
+          earningTokenPrice = new BigNumber(1)
+        }
         const apr = !isPoolFinished
           ? getPoolApr(
               stakingTokenPrice,
