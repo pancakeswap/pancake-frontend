@@ -95,6 +95,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           stakingLimit={stakingLimit}
           stakingLimitEndBlock={stakingLimitEndBlock}
           stakingToken={stakingToken}
+          endBlock={endBlock}
         />
       )}
       {shouldShowBlockCountdown && (

@@ -13,6 +13,7 @@ interface MaxStakeRowProps {
   stakingLimitEndBlock: number
   stakingToken: Token
   hasPoolStarted: boolean
+  endBlock: number
 }
 
 const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
@@ -22,6 +23,7 @@ const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
   stakingLimitEndBlock,
   stakingToken,
   hasPoolStarted,
+  endBlock,
 }) => {
   const { t } = useTranslation()
 
@@ -33,7 +35,7 @@ const MaxStakeRow: React.FC<React.PropsWithChildren<MaxStakeRowProps>> = ({
           stakingToken.symbol
         }`}</Text>
       </Flex>
-      {hasPoolStarted && (
+      {hasPoolStarted && endBlock !== stakingLimitEndBlock && (
         <Flex justifyContent="space-between" alignItems="center">
           <Text small={small}>{t('Max. stake limit ends in')}:</Text>
           <Link external href={getBlockExploreLink(stakingLimitEndBlock, 'countdown')}>
