@@ -6,6 +6,7 @@ import PerpetualBanner from '../PerpetualBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import AptosBanner from '../AptosBanner'
+import TrustWalletCampaignBanner from '../TrustWalletCampaignBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -30,6 +31,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <TrustWalletCampaignBanner /> },
       { shouldRender: true, banner: <AptosBanner /> },
       {
         shouldRender: isRenderIFOBanner,

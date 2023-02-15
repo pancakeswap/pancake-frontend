@@ -53,7 +53,7 @@ const AptosBanner = () => {
     >
       <S.Inner>
         <S.LeftWrapper>
-          <Box>
+          <Box marginTop="3px">
             <Image src={AptosXPancakeSwap} alt="aptosXPancakeSwapImage" width={211} height={18} placeholder="blur" />
           </Box>
           <AptosTitle>{t('Hello Aptos Project Teams!')}</AptosTitle>
