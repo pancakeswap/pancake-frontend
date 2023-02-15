@@ -21,7 +21,20 @@ export const articles = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ message: 'An error occured please try again' })
   }
 
-  const data = await response.json()
+  let data = await response.json()
+  if (typeof process.env.STRAPI_OLD_IMAGE_HOST === 'string') {
+    data = JSON.parse(JSON.stringify(data), (key, value) => {
+      if (
+        key === 'url' &&
+        typeof value === 'string' &&
+        process.env.STRAPI_OLD_IMAGE_HOST &&
+        value.startsWith(process.env.STRAPI_OLD_IMAGE_HOST)
+      ) {
+        return value.replace(process.env.STRAPI_OLD_IMAGE_HOST, 'https://blog-cdn.pancakeswap.finance')
+      }
+      return value
+    })
+  }
   return res.status(200).json(data)
 }
 
