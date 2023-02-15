@@ -656,7 +656,7 @@
   "to check if you've won!": "hogy ellenőrizze, nyert-e!",
   "Why didn't I win?": "Miért nem nyertem?",
   "How to Play": "Így kell játszani",
-  "Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.": "Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.",
+  "Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.": "A kimeneti adat becslés. Legalább %amount%%symbol% összeget kap, különben az ügyletet sztornózza a rendszer.",
   "Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.": "Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.",
   "If the digits on your tickets match the winning numbers in the correct order, you win a portion of the prize pool.": "Ha a szelvényén a számjegyek a helyes sorrendben megegyeznek a nyerőszámokkal, akkor Ön elnyeri a nyereményalap egy részét.",
   "Simple!": "Egyszerű!",
@@ -2116,5 +2116,8 @@
   "Input is estimated. You will sell at most or the transaction will revert.": "Input is estimated. You will sell at most or the transaction will revert.",
   "MM Linked Pool": "MM Linked Pool",
   "Trade through the market makers if they provide better deal": "Trade through the market makers if they provide better deal",
-  "Checking RFQ with MM": "Checking RFQ with MM"
+  "Checking RFQ with MM": "Checking RFQ with MM",
+  "Trade and win $10,000 Prize Pool": "Trade and win $10,000 Prize Pool",
+  "Trade now using Trust Wallet": "Trade now using Trust Wallet",
+  "Download Trust Wallet": "Download Trust Wallet"
 }
