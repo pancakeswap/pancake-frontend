@@ -32,22 +32,22 @@ export const useMultipleBannerConfig = () => {
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <TrustWalletCampaignBanner /> },
-      // { shouldRender: true, banner: <AptosBanner /> },
-      // {
-      //   shouldRender: isRenderIFOBanner,
-      //   banner: <IFOBanner />,
-      // },
+      { shouldRender: true, banner: <AptosBanner /> },
+      {
+        shouldRender: isRenderIFOBanner,
+        banner: <IFOBanner />,
+      },
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
-      // {
-      //   shouldRender: isRenderCompetitionBanner,
-      //   banner: <CompetitionBanner />,
-      // },
-      // {
-      //   shouldRender: true,
-      //   banner: <PerpetualBanner />,
-      // },
+      {
+        shouldRender: isRenderCompetitionBanner,
+        banner: <CompetitionBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <PerpetualBanner />,
+      },
     ]
     return [...NO_SHUFFLE_BANNERS, ...shuffle(SHUFFLE_BANNERS)]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
