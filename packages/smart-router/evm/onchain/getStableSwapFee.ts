@@ -23,7 +23,7 @@ export function getStableSwapFeeCall(pair: StableSwapPair, inputAmount: Currency
   const isOutputToken0 = pair.token0.equals(outputToken)
   const args = isOutputToken0 ? [stableSwapAddress, 1, 0, inputRawAmount] : [stableSwapAddress, 0, 1, inputRawAmount]
   return {
-    address: STABLE_SWAP_INFO_ADDRESS[chainId as ChainId],
+    address: pair.infoStableSwapAddress || STABLE_SWAP_INFO_ADDRESS[chainId as ChainId],
     name: 'get_exchange_fee',
     params: args,
   }
