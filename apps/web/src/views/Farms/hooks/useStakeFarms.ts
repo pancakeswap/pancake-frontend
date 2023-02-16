@@ -8,6 +8,7 @@ import { useOraclePrice } from 'views/Farms/hooks/useFetchOraclePrice'
 const useStakeFarms = (pid: number, vaultPid?: number) => {
   const { account, chainId } = useActiveWeb3React()
   const { gasPrice } = useFeeDataWithGasPrice()
+
   const oraclePrice = useOraclePrice(chainId)
   const masterChefContract = useMasterchef()
   const nonBscVaultContract = useNonBscVault()

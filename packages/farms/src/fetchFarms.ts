@@ -291,7 +291,7 @@ const getStableFarmDynamicData = ({
   const lpTokenRatio =
     !lpTotalSupply.isZero() && !lpTokenBalanceMC.isZero() ? lpTokenBalanceMC.divUnsafe(lpTotalSupply) : FIXED_ZERO
 
-  const tokenPriceVsQuote = formatUnits(price1, token1Decimals)
+  const tokenPriceVsQuote = formatUnits(price1, token0Decimals)
 
   // Amount of quoteToken in the LP that are staked in the MC
   const quoteTokenAmountMcFixed = quoteTokenAmountTotal.mulUnsafe(lpTokenRatio)

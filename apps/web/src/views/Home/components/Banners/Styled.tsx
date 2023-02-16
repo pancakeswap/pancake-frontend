@@ -31,6 +31,7 @@ export const StyledHeading = styled(Heading)`
   }
 `
 export const Wrapper = styled.div`
+  position: relative;
   border-radius: 32px;
   width: 100%;
   max-height: max-content;
@@ -46,6 +47,10 @@ export const Inner = styled(Flex)`
   flex-direction: row;
   justify-content: space-between;
   max-height: 192px;
+  min-height: 181px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 export const LeftWrapper = styled(Flex)`

@@ -427,7 +427,11 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
     }
   }
 
-  return data?.formatted
+  return (
+    data?.formatted ?? {
+      gasPrice: undefined,
+    }
+  )
 }
 
 /**

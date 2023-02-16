@@ -8,7 +8,7 @@ import {
   ColumnCenter,
   ConfirmationPendingContent,
   InjectedModalProps,
-  Link,
+  LinkExternal,
   Modal,
   ModalProps,
   Text,
@@ -49,11 +49,11 @@ export function TransactionSubmittedContent({
         <AutoColumn gap="12px" justify="center">
           <Text fontSize="20px">{t('Transaction Submitted')}</Text>
           {chainId && hash && (
-            <Link external small href={getBlockExploreLink(hash, 'transaction', chainId)}>
+            <LinkExternal isAptosScan small href={getBlockExploreLink(hash, 'transaction', chainId)}>
               {t('View on %site%', {
-                site: 'Explorer',
+                site: t('Explorer'),
               })}
-            </Link>
+            </LinkExternal>
           )}
           <Button onClick={onDismiss} mt="20px">
             {t('Close')}

@@ -11,16 +11,20 @@ export interface CategoriesType {
 export interface ArticleImageType {
   id: number
   attributes: {
-    url: string
+    ext: string
+    hash: string
     formats: {
       medium: {
-        url: string
+        ext: string
+        hash: string
       }
       small: {
-        url: string
+        ext: string
+        hash: string
       }
       thumbnail: {
-        url: string
+        ext: string
+        hash: string
       }
     }
   }
