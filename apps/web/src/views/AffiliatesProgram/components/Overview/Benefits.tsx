@@ -31,28 +31,28 @@ const StyledContainer = styled(Flex)`
 
 const BenefitsList = [
   {
-    title: <Trans>High Commission Rates</Trans>,
-    desc: <Trans>Earn up to 3% of user trading fees on every successful referral.</Trans>,
+    title: <Trans>Market-Leading Commission</Trans>,
+    desc: <Trans>Earn up to 20% commissions on every successful referral.</Trans>,
     imgUrl: '/images/affiliates-program/high-commission-rates.png',
   },
   {
     title: <Trans>User-Friendly Platform</Trans>,
-    desc: <Trans>Give your referrals a smooth and hassle-free experience with our user-friendly platform</Trans>,
+    desc: <Trans>Provide a seamless experience for your referrals with our user-friendly platform</Trans>,
     imgUrl: '/images/affiliates-program/user-friendly-platform.png',
   },
   {
-    title: <Trans>Profit-Sharing</Trans>,
-    desc: <Trans>Share a percentage of rewards with your friends and followers</Trans>,
+    title: <Trans>Customize Profit-Sharing</Trans>,
+    desc: <Trans>Share a percentage of rewards with your community</Trans>,
     imgUrl: '/images/affiliates-program/profit-sharing.png',
   },
   {
     title: <Trans>Real-Time Reporting</Trans>,
-    desc: <Trans>Stay up-to-date with an easy-to-use dashboard to track your earnings and performance</Trans>,
+    desc: <Trans>Easily keep tabs on commission and earnings with our user-friendly dashboard</Trans>,
     imgUrl: '/images/affiliates-program/real-time-reporting.png',
   },
   {
     title: <Trans>Personalized Support</Trans>,
-    desc: <Trans>Our dedicated team of community manager is here to help support you</Trans>,
+    desc: <Trans>Personalized assistance from our account managers</Trans>,
     imgUrl: '/images/affiliates-program/personalized-support.png',
   },
 ]
@@ -73,7 +73,7 @@ const Benefits = () => {
       <Flex alignItems="center" flexDirection="column" justifyContent="center">
         <GradientLogo height="36px" width="36px" mb="24px" />
         <Heading maxWidth={['700px']} textAlign="center" scale="xl">
-          {t('Unlock the Power of PancakeSwap: Become an Affiliate Now')}
+          {t('Unlock the Power of PancakeSwap Affiliate Benefits')}
         </Heading>
         <Text color="textSubtle" margin={['48px 0']}>
           With a wide variety of cryptocurrency options and user-friendly platform, you&aposll be able to offer your

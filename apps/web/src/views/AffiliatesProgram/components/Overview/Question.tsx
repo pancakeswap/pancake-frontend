@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardBody, CardHeader, Heading, Text, Flex, Link, PageSection } from '@pancakeswap/uikit'
+import { Card, CardBody, CardHeader, Heading, Text, Flex, PageSection } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 import useTheme from 'hooks/useTheme'
@@ -22,9 +22,16 @@ const StyledCardBody = styled(CardBody)`
   }
 `
 
-const InlineLink = styled(Link)`
-  display: inline-block;
-  margin: 0 4px;
+const StyledListText = styled(Text)`
+  position: relative;
+  padding-left: 12px;
+
+  &:before {
+    content: '-';
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 `
 
 const Question = () => {
@@ -51,21 +58,53 @@ const Question = () => {
             </Heading>
           </CardHeader>
           <StyledCardBody>
-            <FoldableText title={t('What does the “1x” or “0.5x” multiplier on a farm mean?')} mt="24px">
-              <Text color="textSubtle">
+            <FoldableText title={t('What is the criteria to become a PancakeSwap affiliate?')} mt="24px">
+              <StyledListText color="textSubtle">
                 {t(
-                  'The multiplier represents the amount of CAKE rewards each farm gets.For example, if a 1x farm was getting 1 CAKE per block, a 40x farm would be getting 40 CAKE per block.',
+                  'At least 10,000 followers across social media platforms such as Twitter, Youtube, Discord, Instagram and Telegram',
                 )}
-              </Text>
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t('Proven track record of creating quality content related to crypto and especially DeFi')}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t('Strong understanding of PancakeSwap and our ecosystem')}
+              </StyledListText>
             </FoldableText>
-            <FoldableText title={t('Where can I apply for a farm for my project?')} mt="24px">
-              <Text color="textSubtle">
-                {t('Visit our')}
-                <InlineLink external href="https://docs.pancakeswap.finance/contact-us/business-partnerships">
-                  {t('business contacts')}
-                </InlineLink>
-                {t('page.')}
-              </Text>
+            <FoldableText title={t('Pairs must meet the following eligibility criteria:')} mt="24px">
+              <StyledListText color="textSubtle">
+                {t('Pairs must be in “PancakeSwap Extended” official token list')}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t('Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC)')}
+              </StyledListText>
+            </FoldableText>
+            <FoldableText title={t('How will I receive my commissions and how often will I be paid?')} mt="24px">
+              <StyledListText color="textSubtle">
+                {t(
+                  'You will receive your commissions on a monthly basis. This means that you will receive payments for your commissions earned in the previous month at the beginning of each month.',
+                )}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t(
+                  'You will be able to redeem your CAKE rewards from the affiliate dashboard page. Once redeemed, PancakeSwap will transfer the commission amount earned to your designated wallet. You will be able to see the details of each payment in your affiliate dashboard, including the amount, date, and status of each payment.',
+                )}
+              </StyledListText>
+            </FoldableText>
+            <FoldableText title={t('How do I track my referrals and commissions?')} mt="24px">
+              <StyledListText color="textSubtle">
+                {t('Affiliates can login to the affiliate dashboard and view your referral and commission information')}
+              </StyledListText>
+              <StyledListText color="textSubtle">
+                {t(
+                  'Your referrals will be listed in your affiliate dashboard, along with the date they were made, their status, and the commission amount earned',
+                )}
+              </StyledListText>
+            </FoldableText>
+            <FoldableText title={t('Is there a limited number of referrals i can refer?')} mt="24px">
+              <StyledListText color="textSubtle">
+                {t('No, users can refer as many friends as they wish')}
+              </StyledListText>
             </FoldableText>
           </StyledCardBody>
         </Card>

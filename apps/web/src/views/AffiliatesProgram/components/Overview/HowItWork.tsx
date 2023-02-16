@@ -22,31 +22,29 @@ const HowItWork = () => {
         {t('are meant to be shared')}
       </Heading>
       <Text textAlign="center" color="textSubtle">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit,sed do eiusmod tempor incididunt ut
-      </Text>
-      <Text mb="20px" textAlign="center" color="textSubtle">
-        labore et dolore magna aliqua.
+        Turn your love and passion for PancakeSwap into rewards. Become a PancakeSwap affiliate and watch your wallet
+        grow
       </Text>
       <Text textAlign="center" color="textSubtle" bold mb="32px">
-        {t('How does it work?')}
+        {t('How Do You Become a PancakeSwap Affiliate?')}
       </Text>
       <Flex width={['280px', '280px', '280px', '888px']} flexDirection={['column', 'column', 'column', 'row']}>
         <Flex width={['100%', '100%', '100%', '33.33%']} m={['0 0 16px 0', '0 0 16px 0', '0 0 16px 0', '0 16px 0 0']}>
-          <Card>
+          <Card style={{ width: '100%' }}>
             <Box padding={['24px']}>
               <Text fontSize={['40px']} bold color="secondary">
                 1
               </Text>
               <Text fontSize={['40px']} bold lineHeight="110%">
-                Apply for
+                Submit
               </Text>
               <Text fontSize={['40px']} bold color="secondary" lineHeight="110%">
-                Referral
+                Your
               </Text>
               <Text fontSize={['40px']} bold color="secondary" lineHeight="110%">
-                Link
+                Application
               </Text>
-              <Text fontSize={['14px']}>Fill out a form to apply to join our affiliate program</Text>
+              <Text fontSize={['14px']}>It&apos;s fast, easy, and completely free!</Text>
             </Box>
           </Card>
         </Flex>
@@ -57,15 +55,17 @@ const HowItWork = () => {
                 2
               </Text>
               <Text fontSize={['40px']} bold lineHeight="110%">
-                Invite
+                Share
               </Text>
               <Text fontSize={['40px']} bold color="primary" lineHeight="110%">
                 Your
               </Text>
               <Text fontSize={['40px']} bold color="primary" lineHeight="110%">
-                Friends
+                Love
               </Text>
-              <Text fontSize={['14px']}>Invite your friends using the referral link generated for you</Text>
+              <Text fontSize={['14px']}>
+                Share your unique affiliate link with your friends, followers, and anyone who loves a good adventure
+              </Text>
             </Box>
           </Card>
         </Flex>
@@ -84,7 +84,7 @@ const HowItWork = () => {
               <Text fontSize={['40px']} bold color="failure" lineHeight="110%">
                 CAKE
               </Text>
-              <Text fontSize={['14px']}>Receive referral rewards in CAKE from your friends’ earnings & swaps</Text>
+              <Text fontSize={['14px']}>Earn up to 20% referral commissions in CAKE</Text>
             </Box>
           </Card>
         </Flex>

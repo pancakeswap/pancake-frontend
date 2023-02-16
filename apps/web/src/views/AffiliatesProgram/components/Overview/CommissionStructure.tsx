@@ -48,11 +48,10 @@ const CommissionStructure = () => {
     <Box mt={['92px']}>
       <Flex flexDirection="column" alignItems={['center']}>
         <Text fontSize={['20px']} mb={['16px']} bold color="secondary">
-          {t('Commission structure')}
+          {t('Commission Structure')}
         </Text>
         <Text color="textSubtle" mb={['24px', '24px', '48px']} textAlign="center">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-          magna aliqua.
+          Invite and earn commission for every successful referral
         </Text>
       </Flex>
       <StyledCommission>

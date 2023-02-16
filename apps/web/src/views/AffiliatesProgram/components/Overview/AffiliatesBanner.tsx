@@ -157,16 +157,15 @@ const AffiliatesBanner = () => {
             flexDirection="column"
           >
             <Text fontSize={['38px', '38px', '64px']} lineHeight="110%" bold color="secondary">
-              Join our Affiliates program
+              Maximize Your Earnings with Pancakeswap&apos;s Affiliate Program
             </Text>
             <Text fontSize={['16px', '24px']} lineHeight="110%" bold m="32px 0">
-              Monetize your influence. Grow through robust analytics.
-              <span style={{ display: 'block' }}>Join a tight-knit community</span>
+              Join the Team and Earn Commission on Every Adventure
             </Text>
             <Flex>
-              <Button width="fit-content">Join our Affiliates Program</Button>
+              <Button width="fit-content">Join Our Affiliate Program</Button>
               <Button ml="12px" variant="secondary" width="fit-content">
-                How does it work?
+                Discover Your Commission Potential
               </Button>
             </Flex>
           </Flex>

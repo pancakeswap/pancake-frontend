@@ -76,19 +76,19 @@ const RewardCalculate = () => {
         <img src="/images/affiliates-program/m-4.png" width="210px" height="210px" alt="" />
         <img src="/images/affiliates-program/m-5.png" width="72px" height="63px" alt="" />
       </Decorations>
-      <Flex flexDirection={['column', 'column', 'column', 'column', 'row']}>
+      <Flex mt={['20px', '40px', '60px', '150px']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
         <Flex width={['100%', '100%', '447px']} alignSelf={['center']} flexDirection="column">
           <Box m={['32px 0']}>
             <Text fontSize={['40px']} lineHeight="110%" color="body" bold>
-              {t('Earn generous commissions on every referral')}
+              {t('Unleash Your Earning Potential with PancakeSwap')}
             </Text>
           </Box>
           <Text color="textSubtle" mb="32px">
             {t(
-              "As a member of our affiliate program, you'll have access to a range of marketing materials, personalized support, and real-time reporting to help you maximize your earnings.",
+              'oin our community of top-earning affiliates and make the most of every referral, with market-leading commission rates and endless earning opportunities.',
             )}
           </Text>
-          <Button width="fit-content">{t('Apply now!')}</Button>
+          <Button width="fit-content">{t('Join Now!')}</Button>
         </Flex>
         <Calculator />
       </Flex>
