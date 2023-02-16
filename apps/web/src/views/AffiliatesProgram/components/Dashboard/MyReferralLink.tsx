@@ -82,7 +82,7 @@ const MyReferralLink = () => {
   const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [commissionList])
 
   return (
-    <Box width={['100%', '100%', '100%', '700px']} m={[' 0 0 32px 0', ' 0 0 32px 0', ' 0 0 32px 0', ' 0 0 0 32px']}>
+    <Box width={['100%', '100%', '100%', '700px']} m={['32px 0 0 0', ' 32px 0 0 0', ' 32px 0 0 0', ' 0 0 0 32px']}>
       <Card>
         <Box padding={['24px']}>
           <Text bold mb={['17px']} color="secondary" fontSize="12px" textTransform="uppercase">

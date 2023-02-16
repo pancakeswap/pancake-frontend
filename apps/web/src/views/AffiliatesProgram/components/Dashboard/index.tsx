@@ -13,7 +13,7 @@ const Dashboard = () => {
         padding="0 16px"
         m={['68px 0 24px 0']}
         justifyContent={['center']}
-        flexDirection={['column-reverse', 'column-reverse', 'column-reverse', 'row']}
+        flexDirection={['column', 'column', 'column', 'row']}
       >
         <CommissionInfo />
         <MyReferralLink />
