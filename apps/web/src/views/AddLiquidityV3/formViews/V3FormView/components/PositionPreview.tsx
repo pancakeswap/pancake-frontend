@@ -9,7 +9,7 @@ import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import JSBI from 'jsbi'
 import { ReactNode, useState, useCallback } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { Bound } from '../form/actions'
+import { Bound } from 'config/constants/types'
 import RangeTag from './RangeTag'
 import RateToggle from './RateToggle'
 

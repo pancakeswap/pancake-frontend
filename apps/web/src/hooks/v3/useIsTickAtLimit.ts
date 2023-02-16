@@ -1,6 +1,6 @@
 import { FeeAmount, nearestUsableTick, TICK_SPACINGS, TickMath } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { Bound } from 'views/AddLiquidityV3/form/actions'
+import { Bound } from 'config/constants/types'
 
 export default function useIsTickAtLimit(
   feeAmount: FeeAmount | undefined,

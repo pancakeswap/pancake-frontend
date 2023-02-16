@@ -1,6 +1,6 @@
+import { Bound } from 'config/constants/types'
 import { max, scaleLinear, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Bound } from 'views/AddLiquidityV3/form/actions'
 
 import { Area } from './Area'
 import { AxisBottom } from './AxisBottom'

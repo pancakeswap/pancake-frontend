@@ -1,6 +1,6 @@
 import { Currency, Price, Token } from '@pancakeswap/sdk'
 import { FlexGap } from '@pancakeswap/uikit'
-import { Bound } from '../form/actions'
+import { Bound } from 'config/constants/types'
 import StepCounter from './StepCounter'
 
 // currencyA is the base token

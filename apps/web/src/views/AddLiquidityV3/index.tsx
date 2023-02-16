@@ -19,9 +19,9 @@ import styled from 'styled-components'
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 
-import FeeSelector from './components/FeeSelector'
+import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
-import V3FormView from './components/V3FormView'
+import V3FormView from './formViews/V3FormView'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -47,37 +47,12 @@ export const ResponsiveTwoColumns = styled.div`
   }
 `
 
-export const HideMedium = styled.div`
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: none;
-  }
-`
-
-export const MediumOnly = styled.div`
-  display: none;
-  ${({ theme }) => theme.mediaQueries.md} {
-    display: initial;
-  }
-`
-
-export const RightContainer = styled(AutoColumn)`
-  height: fit-content;
-
-  grid-row: 2 / 3;
-  grid-column: 1;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    grid-row: 1 / 3;
-    grid-column: 2;
-  }
-`
-
-interface AddLiquidityV3PropsType {
+interface UniversalAddLiquidityPropsType {
   currencyIdA: string
   currencyIdB: string
 }
 
-export default function AddLiquidityV3({ currencyIdA, currencyIdB }: AddLiquidityV3PropsType) {
+export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: UniversalAddLiquidityPropsType) {
   const { chainId } = useActiveWeb3React()
 
   const router = useRouter()

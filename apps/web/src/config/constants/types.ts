@@ -216,3 +216,8 @@ export type ITrade =
   | undefined
 
 export type V2TradeAndStableSwap = Trade<Currency, Currency, TradeType> | StableTrade | undefined
+
+export enum Bound {
+  LOWER = 'LOWER',
+  UPPER = 'UPPER',
+}

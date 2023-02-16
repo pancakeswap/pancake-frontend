@@ -8,7 +8,7 @@ import { ReactNode, useCallback, useMemo } from 'react'
 import { BarChart2, CloudOff, Inbox } from 'react-feather'
 import { batch } from 'react-redux'
 import styled, { useTheme } from 'styled-components'
-import { Bound } from 'views/AddLiquidityV3/form/actions'
+import { Bound } from 'config/constants/types'
 
 import { Chart } from './Chart'
 import { useDensityChartData } from './hooks'
