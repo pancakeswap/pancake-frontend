@@ -6,6 +6,7 @@ import {
   LinkExternal,
   Text,
   useMatchBreakpoints,
+  Flex,
 } from '@pancakeswap/uikit'
 
 import { FarmWithStakedValue } from '@pancakeswap/farms'
@@ -33,6 +34,7 @@ export interface ActionPanelProps {
   details: FarmWithStakedValue
   userDataReady: boolean
   expanded: boolean
+  alignLinksToRight?: boolean
 }
 
 const expandAnimation = keyframes`
@@ -124,6 +126,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   liquidity,
   userDataReady,
   expanded,
+  alignLinksToRight = true,
 }) => {
   const { chainId } = useActiveChainId()
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
@@ -189,16 +192,22 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
           )}
         </ValueContainer>
         {isActive && (
-          <StakeContainer>
-            <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
-              {t('Get %symbol%', { symbol: lpLabel })}
-            </StyledLinkExternal>
-          </StakeContainer>
+          <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+            <StakeContainer>
+              <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
+                {t('Get %symbol%', { symbol: lpLabel })}
+              </StyledLinkExternal>
+            </StakeContainer>
+          </Flex>
         )}
-        <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
-        <StyledLinkExternal isBscScan href={bsc}>
-          {t('View Contract')}
-        </StyledLinkExternal>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
+        </Flex>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <StyledLinkExternal isBscScan href={bsc}>
+            {t('View Contract')}
+          </StyledLinkExternal>
+        </Flex>
       </InfoContainer>
       <ActionContainer>
         {shouldUseProxyFarm ? (

@@ -14,6 +14,7 @@ export interface ExpandableSectionProps {
   addLiquidityUrl?: string;
   isCommunity?: boolean;
   auctionHostingEndDate?: string;
+  alignLinksToRight?: boolean;
 }
 
 const Wrapper = styled.div`
@@ -33,6 +34,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   addLiquidityUrl,
   isCommunity,
   auctionHostingEndDate,
+  alignLinksToRight = true,
 }) => {
   const {
     t,
@@ -58,13 +60,21 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
       </Flex>
       {!removed && (
-        <StyledLinkExternal href={addLiquidityUrl}>{t("Get %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
+          <StyledLinkExternal href={addLiquidityUrl}>{t("Get %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
+        </Flex>
       )}
-      {infoAddress && <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>}
+      {infoAddress && (
+        <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
+          <StyledLinkExternal href={infoAddress}>{t("See Pair Info")}</StyledLinkExternal>
+        </Flex>
+      )}
       {scanAddressLink && (
-        <StyledLinkExternal isBscScan href={scanAddressLink}>
-          {t("View Contract")}
-        </StyledLinkExternal>
+        <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
+          <StyledLinkExternal isBscScan href={scanAddressLink}>
+            {t("View Contract")}
+          </StyledLinkExternal>
+        </Flex>
       )}
     </Wrapper>
   );
