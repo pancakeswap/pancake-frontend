@@ -1,5 +1,4 @@
 import { CAKE, USDC } from '@pancakeswap/tokens'
-import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
@@ -23,9 +22,6 @@ const AddLiquidityPage = () => {
     CAKE[chainId]?.address ?? USDC[chainId]?.address,
   ]
 
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
-
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
       dispatch(resetMintState())
@@ -34,7 +30,7 @@ const AddLiquidityPage = () => {
 
   return (
     <LiquidityFormProvider>
-      <AddLiquidityV3 currencyA={currencyA} currencyIdA={currencyIdA} currencyIdB={currencyIdB} currencyB={currencyB} />
+      <AddLiquidityV3 currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
     </LiquidityFormProvider>
   )
 }
