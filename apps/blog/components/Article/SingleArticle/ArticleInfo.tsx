@@ -1,18 +1,11 @@
 import styled from 'styled-components'
 import { Box, Text, Flex, ReactMarkdown } from '@pancakeswap/uikit'
 import useSWR from 'swr'
+import NextImage from 'next/image'
 import Balancer from 'react-wrap-balancer'
 import { ArticleDataType } from 'utils/transformArticle'
 import { useRouter } from 'next/router'
 import SocialIcon from 'components/Article/SingleArticle/SocialIcon'
-
-const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-image: ${({ imgUrl }) => `url(${imgUrl})`};
-`
 
 const StyledTagGroup = styled(Flex)`
   flex-wrap: wrap;
@@ -69,8 +62,10 @@ const ArticleInfo = () => {
         <Text color="textSubtle" mb={['26px']} textAlign="right">
           {article?.createAt}
         </Text>
-        <Box mb="24px" height={['155px', '200px', '350px', '420px']}>
-          <StyledBackgroundImage imgUrl={article?.imgUrl ?? ''} />
+        <Box mb="24px" height={['155px', '200px', '350px', '420px']} position="relative">
+          {article && (
+            <NextImage src={article.imgUrl} alt={article.imgAlt} fill style={{ objectFit: 'cover' }} quality="100" />
+          )}
         </Box>
         <Box mb="24px" display={['block', 'block', 'block', 'none']}>
           <SocialIcon />

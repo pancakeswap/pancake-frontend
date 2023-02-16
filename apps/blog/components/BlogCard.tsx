@@ -1,16 +1,8 @@
 import { Box, BoxProps, Card, Flex, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import NextImage from 'next/image'
 import { HeightProps } from 'styled-system'
 import { ArticleDataType } from 'utils/transformArticle'
-
-const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: 0.5s;
-  background-image: ${({ imgUrl }) => `url(${imgUrl})`};
-`
 
 const StyledBlogCard = styled(Box)`
   cursor: pointer;
@@ -35,16 +27,23 @@ const StyledTagGroup = styled(Flex)`
 
 interface BlogCardProps extends BoxProps {
   imgUrl: string
+  imgAlt: string
   article?: ArticleDataType
   imgHeight?: HeightProps['height']
 }
 
-const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({ article, imgUrl, imgHeight, ...props }) => {
+const BlogCard: React.FC<React.PropsWithChildren<BlogCardProps>> = ({
+  article,
+  imgUrl,
+  imgAlt,
+  imgHeight,
+  ...props
+}) => {
   return (
     <StyledBlogCard {...props}>
       <Card>
-        <Box overflow="hidden" height={imgHeight ?? '200px'}>
-          <StyledBackgroundImage imgUrl={imgUrl} />
+        <Box overflow="hidden" height={imgHeight ?? '200px'} position="relative">
+          <NextImage src={imgUrl} alt={imgAlt} fill style={{ objectFit: 'cover' }} />
         </Box>
         <Box padding={['15px', '15px', '20px']}>
           <Flex justifyContent="space-between">
