@@ -27,5 +27,5 @@ export const MM_SIGNER = {
   [ChainId.GOERLI]: '0x13414B047539298D5aeD429722211681eAAb43B7',
 }
 
-export const SAFE_MM_QUOTE_EXPIRY_SEC = 20
+export const SAFE_MM_QUOTE_EXPIRY_SEC = 25
 export const IS_SUPPORT_NATIVE_TOKEN = false
