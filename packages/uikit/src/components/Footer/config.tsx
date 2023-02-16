@@ -176,11 +176,11 @@ export const socials = [
     icon: GithubIcon,
     href: "https://github.com/pancakeswap/",
   },
-  {
-    label: "Discord",
-    icon: DiscordIcon,
-    href: "https://discord.gg/pancakeswap",
-  },
+  // {
+  //   label: "Discord",
+  //   icon: DiscordIcon,
+  //   href: "https://discord.gg/pancakeswap",
+  // },
   {
     label: "Medium",
     icon: MediumIcon,

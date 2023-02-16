@@ -79,9 +79,9 @@ const FAQ = () => {
                 {t('Telegram')}
               </InlineLink>
               {t('or')}
-              <InlineLink fontSize="14px" external href="https://discord.gg/pancakeswap">
+              {/* <InlineLink fontSize="14px" external href="https://discord.gg/pancakeswap">
                 {t('Discord')}
-              </InlineLink>
+              </InlineLink> */}
               {t(
                 "if you're still unsure about the format! Please also let us know if you have any feedback for us to improve this further.",
               )}
