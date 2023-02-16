@@ -1,45 +1,46 @@
-import { gql, request } from 'graphql-request'
-import { stringify } from 'querystring'
-import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
-import { multicallv2 } from 'utils/multicall'
-import { isAddress } from 'utils'
-import erc721Abi from 'config/abi/erc721.json'
-import range from 'lodash/range'
-import groupBy from 'lodash/groupBy'
 import { BigNumber } from '@ethersproject/bignumber'
-import { getNftMarketContract } from 'utils/contractHelpers'
-import { NOT_ON_SALE_SELLER } from 'config/constants'
-import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
-import { pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
-import { getNftMarketAddress } from 'utils/addressHelpers'
+import erc721Abi from 'config/abi/erc721.json'
 import nftMarketAbi from 'config/abi/nftMarket.json'
+import { NOT_ON_SALE_SELLER } from 'config/constants'
+import { API_NFT, GRAPH_API_NFTMARKET } from 'config/constants/endpoints'
+import { COLLECTIONS_WITH_WALLET_OF_OWNER } from 'config/constants/nftsCollections'
+import DELIST_COLLECTIONS from 'config/constants/nftsCollections/delist'
+import { gql, request } from 'graphql-request'
 import fromPairs from 'lodash/fromPairs'
+import groupBy from 'lodash/groupBy'
 import pickBy from 'lodash/pickBy'
+import range from 'lodash/range'
 import lodashSize from 'lodash/size'
+import { stringify } from 'querystring'
+import { isAddress } from 'utils'
+import { getNftMarketAddress } from 'utils/addressHelpers'
+import { getNftMarketContract } from 'utils/contractHelpers'
+import { multicallv2 } from 'utils/multicall'
+import { pancakeBunniesAddress } from 'views/Nft/market/constants'
+import { baseNftFields, baseTransactionFields, collectionBaseFields } from './queries'
 import {
   ApiCollection,
   ApiCollections,
+  ApiCollectionsResponse,
   ApiResponseCollectionTokens,
   ApiResponseSpecificToken,
+  ApiSingleTokenData,
+  ApiTokenFilterResponse,
+  AskOrder,
   AskOrderType,
   Collection,
   CollectionMarketDataBaseFields,
+  MarketEvent,
   NftActivityFilter,
+  NftAttribute,
   NftLocation,
   NftToken,
   TokenIdWithCollectionAddress,
   TokenMarketData,
   Transaction,
-  AskOrder,
-  ApiSingleTokenData,
-  NftAttribute,
-  ApiTokenFilterResponse,
-  ApiCollectionsResponse,
-  MarketEvent,
   UserActivity,
 } from './types'
-import { baseNftFields, collectionBaseFields, baseTransactionFields } from './queries'
 
 /**
  * API HELPERS
@@ -953,6 +954,7 @@ export const fetchWalletTokenIdsForCollections = async (
   const balanceOfCallsResult = balanceOfCallsResultRaw.flat()
 
   const tokenIdCalls = Object.values(collections)
+    .filter((c) => !COLLECTIONS_WITH_WALLET_OF_OWNER.includes(c.address))
     .map((collection, index) => {
       const balanceOf = balanceOfCallsResult[index]?.toNumber() ?? 0
       const { address: collectionAddress } = collection
@@ -984,7 +986,38 @@ export const fetchWalletTokenIdsForCollections = async (
     return acc
   }, [])
 
-  return walletNfts
+  const walletOfOwnerCalls = Object.values(collections)
+    .filter((c) => COLLECTIONS_WITH_WALLET_OF_OWNER.includes(c.address))
+    .map((c) => {
+      return {
+        address: c.address,
+        name: 'walletOfOwner',
+        params: [account],
+      }
+    })
+
+  const walletOfOwnerCallResult = await multicallv2({
+    abi: [
+      {
+        inputs: [{ internalType: 'address', name: '_owner', type: 'address' }],
+        name: 'walletOfOwner',
+        outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+    calls: walletOfOwnerCalls,
+  })
+
+  const walletNftsWithWO = walletOfOwnerCallResult.flat().reduce((acc, wo, index) => {
+    if (wo) {
+      const { address: collectionAddress } = walletOfOwnerCalls[index]
+      acc.push(wo.map((w) => ({ tokenId: w.toString(), collectionAddress, nftLocation })))
+    }
+    return acc
+  }, [])
+
+  return walletNfts.concat(walletNftsWithWO.flat())
 }
 
 /**
