@@ -37,7 +37,7 @@
   "devDependencies": {
     "@blocto/sdk": "^0.3.1",
     "tsconfig": "*",
-    "tsup": "^6.2.3"
+    "tsup": "^6.6.3"
   },
   "exports": {
     "./package.json": "./package.json",

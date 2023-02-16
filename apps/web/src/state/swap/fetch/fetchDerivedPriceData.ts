@@ -1,4 +1,4 @@
-import { INFO_CLIENT } from 'config/constants/endpoints'
+import { INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
 import mapValues from 'lodash/mapValues'
@@ -9,11 +9,11 @@ import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
 import { PairDataTimeWindowEnum } from '../types'
 
-const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
+const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[], isStableStable?: boolean) => {
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    INFO_CLIENT,
+    isStableStable ? STABLESWAP_SUBGRAPH_CLIENT : INFO_CLIENT,
     200,
   )
 
@@ -84,6 +84,7 @@ const fetchDerivedPriceData = async (
   token0Address: string,
   token1Address: string,
   timeWindow: PairDataTimeWindowEnum,
+  isStableStable?: boolean,
 ) => {
   const interval = getInterval(timeWindow)
   const endTimestamp = getUnixTime(new Date())
@@ -103,8 +104,8 @@ const fetchDerivedPriceData = async (
     }
     blocks.pop() // the bsc graph is 32 block behind so pop the last
     const [token0DerivedBnb, token1DerivedBnb] = await Promise.all([
-      getTokenDerivedBnbPrices(token0Address, blocks),
-      getTokenDerivedBnbPrices(token1Address, blocks),
+      getTokenDerivedBnbPrices(token0Address, blocks, isStableStable),
+      getTokenDerivedBnbPrices(token1Address, blocks, isStableStable),
     ])
     return { token0DerivedBnb, token1DerivedBnb }
   } catch (error) {

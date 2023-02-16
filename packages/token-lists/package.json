@@ -1,7 +1,6 @@
 {
   "name": "@pancakeswap/token-lists",
   "version": "0.0.4",
-  "sideEffects": false,
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -23,7 +22,8 @@
   },
   "devDependencies": {
     "@reduxjs/toolkit": "^1.9.1",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "tsup": "^6.6.3"
   },
   "exports": {
     ".": {

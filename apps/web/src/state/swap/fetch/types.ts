@@ -3,6 +3,7 @@ import { PairDataTimeWindowEnum } from '../types'
 export type fetchPairDataParams = {
   pairId: string
   timeWindow: PairDataTimeWindowEnum
+  isStableSwap?: boolean
 }
 
 export type LastPairHourIdResponse = {
