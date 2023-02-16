@@ -38,7 +38,7 @@ import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 
-import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks'
+import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
 
 interface AddLiquidityV3PropsType {

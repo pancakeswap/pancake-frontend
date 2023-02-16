@@ -40,7 +40,6 @@ import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
-import useRangeHopCallbacks from 'views/AddLiquidityV3/formViews/V3FormView/hooks/useRangeHopCallbacks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
@@ -52,12 +51,13 @@ import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
 
-import { useV3MintActionHandlers } from './form/hooks'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
 import { DynamicSection } from './components/shared'
 import LockedDeposit from './components/LockedDeposit'
+import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
+import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;

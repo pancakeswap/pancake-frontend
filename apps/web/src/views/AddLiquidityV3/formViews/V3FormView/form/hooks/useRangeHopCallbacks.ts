@@ -4,7 +4,7 @@ import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useCallback, useMemo } from 'react'
 import { setFullRange } from 'views/AddLiquidityV3/formViews/V3FormView/form/actions'
 
-export default function useRangeHopCallbacks(
+export function useRangeHopCallbacks(
   baseCurrency: Currency | undefined,
   quoteCurrency: Currency | undefined,
   feeAmount: FeeAmount | undefined,

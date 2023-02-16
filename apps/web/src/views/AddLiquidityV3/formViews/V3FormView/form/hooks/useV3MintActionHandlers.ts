@@ -1,7 +1,7 @@
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
-import { Field, typeInput, typeLeftRangeInput, typeRightRangeInput, typeStartPriceInput } from './actions'
+import { Field, typeInput, typeLeftRangeInput, typeRightRangeInput, typeStartPriceInput } from '../actions'
 
 export const replaceURLParam = (search: string, param: string, newValue: string) => {
   const searchParams = new URLSearchParams(search)
