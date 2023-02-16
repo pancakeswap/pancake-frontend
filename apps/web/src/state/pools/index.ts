@@ -187,10 +187,10 @@ export const fetchPoolsPublicDataAsync =
 
         const earningTokenAddress = isAddress(pool.earningToken.address)
         let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
-        // FIXME: stable swap price is not available for axlusdc
-        if (typeof earningTokenAddress === 'string' && earningTokenAddress === bscTokens.axlusdc.address) {
-          earningTokenPrice = BIG_ONE
+        if (pool.isStableSwap) {
+          earningTokenPrice = BIG_ONE.toJSON()
         }
+
         const apr = !isPoolFinished
           ? getPoolApr(
               stakingTokenPrice,
