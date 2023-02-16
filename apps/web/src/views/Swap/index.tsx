@@ -17,6 +17,7 @@ import PriceChartContainer from './components/Chart/PriceChartContainer'
 import HotTokenList from './components/HotTokenList'
 import useWarningImport from './hooks/useWarningImport'
 import { SmartSwapForm } from './SmartSwap'
+import { V3SwapForm } from './V3Swap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 
@@ -116,6 +117,7 @@ export default function Swap() {
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
                 <QueryClientProvider client={queryClient}>
+                  <V3SwapForm handleOutputSelect={handleOutputSelect} />
                   <SmartSwapForm handleOutputSelect={handleOutputSelect} />
                 </QueryClientProvider>
               </AppBody>
