@@ -49,6 +49,7 @@ const SimilarArticles = () => {
                 <SwiperSlide key={article.id}>
                   <NextLink passHref href={`/articles/${article?.slug}`}>
                     <BlogCard
+                      imgAlt={article.imgAlt}
                       margin="auto"
                       padding={['0', '0', '18.5px']}
                       imgHeight={['200px']}
