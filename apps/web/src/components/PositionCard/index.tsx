@@ -54,7 +54,7 @@ interface PositionCardProps extends CardProps {
   poolTokenPercentage: Percent
 }
 
-const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
+export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   const [token0Deposited, token1Deposited] =
     !!pair &&
     !!totalPoolTokens &&

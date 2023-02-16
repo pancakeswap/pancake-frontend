@@ -13,10 +13,101 @@ import { Bound } from 'views/AddLiquidityV3/form/actions'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Percent } from '@pancakeswap/sdk'
 import RangeTag from 'views/AddLiquidityV3/components/RangeTag'
+import useV2Pairs from 'hooks/useV2Pairs'
+import useStableConfig, {
+  StableConfigContext,
+  useLPTokensWithBalanceByAccount,
+} from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { useTokenBalance } from 'state/wallet/hooks'
+import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
+import useTotalSupply from 'hooks/useTotalSupply'
+import { useTokensDeposited } from 'components/PositionCard'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
 `
+
+export const StableContextProvider = (props) => {
+  const stableConfig = useStableConfig({
+    tokenA: props.pair?.token0,
+    tokenB: props.pair?.token1,
+  })
+
+  if (!stableConfig.stableSwapConfig) return null
+
+  return (
+    <StableConfigContext.Provider value={stableConfig}>
+      <StablePairCard {...props} />
+    </StableConfigContext.Provider>
+  )
+}
+
+function StablePairCard({ pair, account }) {
+  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
+
+  const [token0Deposited, token1Deposited] = useGetRemovedTokenAmounts({
+    lpAmount: userPoolBalance?.quotient?.toString(),
+  })
+
+  return (
+    <Card mb="8px">
+      <NextLink href={`/stable/${pair.liquidityToken.address}`}>
+        <Flex justifyContent="space-between" p="16px">
+          <Flex flexDirection="column">
+            <Flex alignItems="center" mb="4px">
+              <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={20} />
+              <Text bold ml="8px">
+                {pair.token0.symbol}/{pair.token1.symbol} Stable LP
+              </Text>
+              <Tag ml="8px" variant="secondary" outline>
+                {new Percent(pair.stableLpFee * 1000000, 1_000_000).toSignificant()}%
+              </Tag>
+            </Flex>
+            <Text fontSize="14px" color="textSubtle">
+              {token0Deposited?.toSignificant(6)} {pair.token0.symbol} / {token1Deposited?.toSignificant(6)}{' '}
+              {pair.token1.symbol}
+            </Text>
+          </Flex>
+          <Tag ml="8px" variant="secondary" outline>
+            Stable LP
+          </Tag>
+        </Flex>
+      </NextLink>
+    </Card>
+  )
+}
+
+function V2PairCard({ pair, account }) {
+  const userPoolBalance = useTokenBalance(account ?? undefined, pair.liquidityToken)
+
+  const totalPoolTokens = useTotalSupply(pair.liquidityToken)
+
+  const [token0Deposited, token1Deposited] = useTokensDeposited({ pair, userPoolBalance, totalPoolTokens })
+
+  return (
+    <Card mb="8px">
+      <NextLink href={`/pool-v2/${pair.liquidityToken.address}`}>
+        <Flex justifyContent="space-between" p="16px">
+          <Flex flexDirection="column">
+            <Flex alignItems="center" mb="4px">
+              <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={20} />
+              <Text bold ml="8px">
+                {pair.token0.symbol}/{pair.token1.symbol} V2 LP
+              </Text>
+            </Flex>
+            <Text fontSize="14px" color="textSubtle">
+              {token0Deposited?.toSignificant(6)} {pair.token0.symbol} / {token1Deposited?.toSignificant(6)}{' '}
+              {pair.token1.symbol}
+            </Text>
+          </Flex>
+          <Tag ml="8px" variant="failure" outline>
+            V2 LP
+          </Tag>
+        </Flex>
+      </NextLink>
+    </Card>
+  )
+}
 
 export default function PoolListPage() {
   const { account } = useWeb3React()
@@ -27,16 +118,32 @@ export default function PoolListPage() {
 
   const { positions, loading: positionsLoading } = useV3Positions(account)
 
-  let bodyChildren = null
+  const { data: v2Pairs } = useV2Pairs(account)
+
+  const stablePairs = useLPTokensWithBalanceByAccount(account)
+
+  let v2PairsSection = null
+
+  if (v2Pairs?.length) {
+    v2PairsSection = v2Pairs.map((pair) => <V2PairCard pair={pair} account={account} />)
+  }
+
+  let stablePairsSection = null
+
+  if (stablePairs?.length) {
+    stablePairsSection = stablePairs.map((pair) => <StableContextProvider pair={pair} account={account} />)
+  }
+
+  let v3PairsSection = null
 
   if (positionsLoading) {
-    bodyChildren = (
+    v3PairsSection = (
       <Text color="textSubtle" textAlign="center">
         <Dots>{t('Loading')}</Dots>
       </Text>
     )
   } else if (positions?.length) {
-    bodyChildren = positions.map((p) => {
+    v3PairsSection = positions.map((p) => {
       return (
         <PositionListItem key={p.tokenId.toString()} positionDetails={p}>
           {({
@@ -83,7 +190,7 @@ export default function PoolListPage() {
       )
     })
   } else {
-    bodyChildren = (
+    v3PairsSection = (
       <Text color="textSubtle" textAlign="center">
         {t('No liquidity found.')}
       </Text>
@@ -94,7 +201,11 @@ export default function PoolListPage() {
     <Page>
       <AppBody>
         <AppHeader title="Your Liquidity" subtitle="List of your liquidity positions" />
-        <Body>{bodyChildren}</Body>
+        <Body>
+          {v3PairsSection}
+          {stablePairsSection}
+          {v2PairsSection}
+        </Body>
         <CardFooter style={{ textAlign: 'center' }}>
           <NextLink href="/add" passHref>
             <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="invertedContrast" />}>
