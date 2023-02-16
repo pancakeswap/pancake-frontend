@@ -1,12 +1,13 @@
-import { ReactElement, useMemo } from 'react'
 import shuffle from 'lodash/shuffle'
+import { ReactElement, useMemo } from 'react'
+import AptosBanner from '../AptosBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import IFOBanner from '../IFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
-import useIsRenderIfoBanner from './useIsRenderIFOBanner'
-import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
-import AptosBanner from '../AptosBanner'
 import TrustWalletCampaignBanner from '../TrustWalletCampaignBanner'
+import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
+import useIsRenderIfoBanner from './useIsRenderIFOBanner'
+import useIsRenderTrustWalletCampaignBanner from './useIsRenderTrustWalletCampaignBanner'
 
 interface IBannerConfig {
   shouldRender: boolean
@@ -28,10 +29,11 @@ interface IBannerConfig {
 export const useMultipleBannerConfig = () => {
   const isRenderIFOBanner = useIsRenderIfoBanner()
   const isRenderCompetitionBanner = useIsRenderCompetitionBanner()
+  const isRenderTrustWalletCampaignBanner = useIsRenderTrustWalletCampaignBanner()
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <TrustWalletCampaignBanner /> },
+      { shouldRender: isRenderTrustWalletCampaignBanner, banner: <TrustWalletCampaignBanner /> },
       { shouldRender: true, banner: <AptosBanner /> },
       {
         shouldRender: isRenderIFOBanner,
@@ -52,5 +54,5 @@ export const useMultipleBannerConfig = () => {
     return [...NO_SHUFFLE_BANNERS, ...shuffle(SHUFFLE_BANNERS)]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
       .map((bannerConfig: IBannerConfig) => bannerConfig.banner)
-  }, [isRenderIFOBanner, isRenderCompetitionBanner])
+  }, [isRenderIFOBanner, isRenderCompetitionBanner, isRenderTrustWalletCampaignBanner])
 }
