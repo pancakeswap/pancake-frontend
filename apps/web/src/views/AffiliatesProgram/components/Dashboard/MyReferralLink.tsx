@@ -94,16 +94,20 @@ const MyReferralLink = () => {
             </InputGroup>
             <ShareIcon width={24} height={24} ml="16px" color="primary" />
           </Flex>
-          <Flex width={['320px']} m={['auto auto 36px auto']} justifyContent={['space-between']}>
+          <Flex width={['100%', '320px']} m={['auto auto 36px auto']} justifyContent={['space-between']}>
             <Box>
-              <Text color="textSubtle">You will receive</Text>
+              <Text fontSize="14px" color="textSubtle">
+                You will receive
+              </Text>
               <Text color="secondary" bold fontSize={['32px']} textAlign="center">
                 100%
               </Text>
             </Box>
             <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
             <Box>
-              <Text color="textSubtle">Friends will receive</Text>
+              <Text fontSize="14px" color="textSubtle">
+                Friends will receive
+              </Text>
               <Text color="primary" bold fontSize={['32px']} textAlign="center">
                 0%
               </Text>

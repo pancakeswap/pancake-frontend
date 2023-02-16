@@ -46,7 +46,7 @@ const CommissionInfo = () => {
               <Text fontSize={['32px']} bold>
                 123
               </Text>
-              <Text color="success">{`${arrow} 31.53%`}</Text>
+              <Text fontSize="12px" color="success">{`${arrow} 31.53%`}</Text>
             </StyledFlex>
             <StyledFlex pl="10%">
               <Text color="secondary" bold fontSize={['12px']} textTransform="uppercase">
@@ -54,7 +54,7 @@ const CommissionInfo = () => {
               </Text>
               <Balance fontSize={['32px']} bold value={1234} decimals={0} />
               <Balance color="textSubtle" prefix="$ " unit=" USD" fontSize="14px" decimals={0} value={1234} />
-              <Text color="success">{`${arrow} 31.53%`}</Text>
+              <Text fontSize="12px" color="success">{`${arrow} 31.53%`}</Text>
             </StyledFlex>
           </CardInner>
           <Box mb="24px">
