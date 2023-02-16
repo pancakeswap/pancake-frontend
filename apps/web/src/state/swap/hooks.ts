@@ -318,7 +318,21 @@ export const useFetchPairPrices = ({
         // Try to get at least derived data for chart
         // This is used when there is no direct data for pool
         // i.e. when multihops are necessary
-        const derivedData = await fetchDerivedPriceData(token0Address, token1Address, timeWindow, isStableSwap)
+        const derivedData = await fetchDerivedPriceData(
+          token0Address,
+          token1Address,
+          timeWindow,
+          stableSwapPairs.some(
+            (p) =>
+              equalsIgnoreCase(p.token0.wrapped.address, token0Address) ||
+              equalsIgnoreCase(p.token1.wrapped.address, token0Address),
+          ),
+          stableSwapPairs.some(
+            (p) =>
+              equalsIgnoreCase(p.token0.wrapped.address, token1Address) ||
+              equalsIgnoreCase(p.token1.wrapped.address, token1Address),
+          ),
+        )
         if (derivedData) {
           const normalizedDerivedData = normalizeDerivedChartData(derivedData)
           dispatch(updateDerivedPairData({ pairData: normalizedDerivedData, pairId, timeWindow }))
@@ -405,6 +419,7 @@ export const useFetchPairPrices = ({
     isLoading,
     isStableSwap,
     stableSwapPair,
+    stableSwapPairs,
   ])
 
   useEffect(() => {
