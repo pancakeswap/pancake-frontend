@@ -1,17 +1,9 @@
 import styled from 'styled-components'
+import NextImage from 'next/image'
 import { Box, Text, Flex } from '@pancakeswap/uikit'
 import { ArticleDataType } from 'utils/transformArticle'
 import NextLink from 'next/link'
 import { StyledLineClamp } from 'components/StyledLineClamp'
-
-const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: 0.5s;
-  background-image: ${({ imgUrl }) => `url(${imgUrl})`};
-`
 
 const StyledArticle = styled(Flex)`
   cursor: pointer;
@@ -58,8 +50,9 @@ const CardArticle: React.FC<React.PropsWithChildren<CardArticleProps>> = ({ arti
             overflow="hidden"
             minWidth={['132px', '152px', '192px', '320px']}
             height={['71px', '91px', '111px', '180px']}
+            position="relative"
           >
-            <StyledBackgroundImage imgUrl={article.imgUrl} />
+            <NextImage src={article.imgUrl} fill style={{ objectFit: 'cover' }} alt={article.imgAlt} />
           </Box>
           <Flex overflow="hidden" flexDirection="column" width="100%">
             <Box mb="24px" display={['none', null, null, 'block']}>

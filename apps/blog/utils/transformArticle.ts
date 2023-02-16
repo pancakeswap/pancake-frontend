@@ -6,6 +6,7 @@ export interface ArticleDataType {
   title: string
   locale: string
   imgUrl: string
+  imgAlt: string
   content: string
   createAt: string
   publishedAt: string
@@ -38,6 +39,7 @@ export const transformArticle = (article: ResponseArticleDataType): ArticleDataT
     imgUrl: article?.attributes?.image?.data?.[0]?.attributes?.hash
       ? `https://blog-cdn.pancakeswap.finance/${article?.attributes?.image?.data?.[0]?.attributes?.hash}${article?.attributes?.image?.data?.[0]?.attributes?.ext}`
       : '',
+    imgAlt: article?.attributes?.image?.data?.[0]?.attributes?.alternativeText ?? '',
     categories: article.attributes?.categories?.data?.map((i) => i.attributes.name),
   }
 }

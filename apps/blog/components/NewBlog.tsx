@@ -1,6 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
+import NextImage from 'next/image'
 import { useMemo } from 'react'
 import styled from 'styled-components'
 import useSWR from 'swr'
@@ -26,14 +27,6 @@ const StyledGradientBg = styled('div')`
   ${({ theme }) => theme.mediaQueries.xl} {
     height: 90%;
   }
-`
-const StyledBackgroundImage = styled(Box)<{ imgUrl: string }>`
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: 0.5s;
-  background-image: ${({ imgUrl }) => `url(${imgUrl})`};
 `
 
 const StyleBlog = styled(Flex)`
@@ -84,12 +77,15 @@ const NewBlog = () => {
           <StyleBlog>
             <Box
               overflow="hidden"
+              position="relative"
               borderRadius={8}
               mr={['0', '0', '0', '0', '0', '50px']}
               minWidth={['152px', '192px', '488px']}
               height={['200px', '228px', '420px', '530px', '530px', '275px']}
             >
-              <StyledBackgroundImage imgUrl={article?.imgUrl ?? ''} />
+              {article?.imgUrl && (
+                <NextImage src={article.imgUrl} fill style={{ objectFit: 'cover' }} alt={article.imgAlt} />
+              )}
             </Box>
             <Flex
               overflow="hidden"

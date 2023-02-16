@@ -16,6 +16,14 @@ const nextConfig = {
       '@pancakeswap/utils',
     ],
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'blog-cdn.pancakeswap.finance',
+      },
+    ],
+  },
   compiler: {
     styledComponents: true,
   },
