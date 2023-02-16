@@ -12,7 +12,6 @@ import {
   Text,
   useTooltip,
   promotedGradient,
-  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useState } from 'react'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
@@ -93,14 +92,13 @@ const TOKEN_RISK_T = {
 
 const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   const { t } = useTranslation()
-  const { isMobile } = useMatchBreakpoints()
 
   const { data, mutate, error } = useTokenRisk(token)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text as="span">{t('Risk scan results are provided by a third party')}</Text>
-      <Link style={{ display: 'inline' }} ml="4px" external={!isMobile} href="https://www.avengerdao.org">
+      <Link style={{ display: 'inline' }} ml="4px" external href="https://www.avengerdao.org">
         AvengerDAO
       </Link>
       <Text my="8px">
@@ -110,12 +108,12 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
       </Text>
       <Flex mt="4px">
         <Text>{t('Learn more about risk rating')}</Text>
-        <Link ml="4px" external={!isMobile} href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
+        <Link ml="4px" external href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
           {t('here.')}
         </Link>
       </Flex>
     </>,
-    { placement: 'bottom', trigger: isMobile ? 'click' : 'hover' },
+    { placement: 'bottom' },
   )
 
   if (data) {
