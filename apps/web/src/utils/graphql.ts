@@ -25,6 +25,8 @@ export const infoClientWithChain = (chainId: number) => {
   return new GraphQLClient(INFO_CLIENT_WITH_CHAIN[chainId], { headers: getGQLHeaders(INFO_CLIENT_WITH_CHAIN[chainId]) })
 }
 
+export const uniswapClient = new GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3')
+
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
 
 export const infoStableSwapClient = new GraphQLClient(STABLESWAP_SUBGRAPH_CLIENT)

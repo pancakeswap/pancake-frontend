@@ -1,7 +1,7 @@
 import { Interface, FunctionFragment } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import {
   useSWRConfig,
@@ -17,7 +17,12 @@ import {
   parseCallKey,
   toCallKey,
   ListenerOptions,
+  ListenerOptionsWithGas,
 } from './actions'
+
+export interface CallStateResult extends ReadonlyArray<any> {
+  readonly [key: string]: any
+}
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any
@@ -129,6 +134,33 @@ export interface CallState {
 const INVALID_CALL_STATE: CallState = { valid: false, result: undefined, loading: false, syncing: false, error: false }
 const LOADING_CALL_STATE: CallState = { valid: true, result: undefined, loading: true, syncing: true, error: false }
 
+// Converts CallResult[] to CallState[], only updating if call states have changed.
+// Ensures that CallState results remain referentially stable when unchanged, preventing
+// spurious re-renders which would otherwise occur because mapping always creates a new object.
+export function useCallStates(
+  results: CallResult[],
+  contractInterface: Interface | undefined,
+  fragment: ((i: number) => FunctionFragment | undefined) | FunctionFragment | undefined,
+  latestBlockNumber: number | undefined,
+): CallState[] {
+  // Avoid refreshing the results with every changing block number (eg latestBlockNumber).
+  // Instead, only refresh the results if they need to be synced - if there is a result which is stale, for which blockNumber < latestBlockNumber.
+  const syncingBlockNumber = useMemo(() => {
+    const lowestBlockNumber = results.reduce<number | undefined>(
+      (memo, result) => (result.blockNumber ? Math.min(memo ?? result.blockNumber, result.blockNumber) : memo),
+      undefined,
+    )
+    return Math.max(lowestBlockNumber ?? 0, latestBlockNumber ?? 0)
+  }, [results, latestBlockNumber])
+
+  return useMemo(() => {
+    return results.map((result, i) => {
+      const resultFragment = typeof fragment === 'function' ? fragment(i) : fragment
+      return toCallState(result, contractInterface, resultFragment, syncingBlockNumber)
+    })
+  }, [contractInterface, fragment, results, syncingBlockNumber])
+}
+
 function toCallState(
   callResult: CallResult | undefined,
   contractInterface: Interface | undefined,
@@ -221,6 +253,39 @@ export function useSingleContractMultiMethods(
   return useMultiContractsMultiMethods(multiInputs, options)
 }
 
+export function useSingleContractWithCallData(
+  contract: Contract | null | undefined,
+  callDatas: string[],
+  options?: ListenerOptionsWithGas,
+): CallState[] {
+  const { chainId } = useActiveChainId()
+
+  const { gasRequired } = options ?? {}
+
+  // Create call objects
+  const calls = useMemo(() => {
+    if (!contract) return []
+    return callDatas.map<Call>((callData) => ({
+      address: contract.address,
+      callData,
+      gasRequired,
+    }))
+  }, [callDatas, contract, gasRequired])
+
+  const results = useCallsData(calls, options)
+
+  const { cache } = useSWRConfig()
+
+  const fragment = useCallback(
+    (i: number) => contract?.interface?.getFunction(callDatas[i].substring(0, 10)),
+    [callDatas, contract],
+  )
+
+  const currentBlockNumber = cache.get(unstable_serialize(['blockNumber', chainId]))?.data
+
+  return useCallStates(results, contract?.interface, fragment, currentBlockNumber)
+}
+
 export function useSingleContractMultipleData(
   contract: Contract | null | undefined,
   methodName: string,
@@ -299,7 +364,7 @@ export function useSingleCallResult(
   contract: Contract | null | undefined,
   methodName: string,
   inputs?: OptionalMethodInputs,
-  options?: ListenerOptions,
+  options?: ListenerOptionsWithGas,
 ): CallState {
   const fragment = useMemo(() => contract?.interface?.getFunction(methodName), [contract, methodName])
 
@@ -315,6 +380,7 @@ export function useSingleCallResult(
   }, [contract, fragment, inputs])
 
   const result = useCallsData(calls, options)[0]
+
   const { cache } = useSWRConfig()
   const { chainId } = useActiveChainId()
 
