@@ -14,8 +14,8 @@ import {
   ListLogo,
   useTooltip,
   HelpIcon,
+  AutoColumn,
 } from '@pancakeswap/uikit'
-import { AutoColumn } from 'components/Layout/Column'
 import { useAddUserToken } from 'state/user/hooks'
 import { getBlockExploreLink, getBlockExploreName } from 'utils'
 import useSWRImmutable from 'swr/immutable'

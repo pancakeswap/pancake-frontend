@@ -7,13 +7,14 @@ type SwapInfoType = {
   price: ReactNode;
   allowedSlippage: number;
   onSlippageClick: () => void;
+  allowedSlippageSlot?: React.ReactNode;
 };
 
 export const SwapInfoLabel = (props: PropsWithChildren<TextProps>) => (
   <Text fontSize="12px" bold color="secondary" {...props} />
 );
 
-export const SwapInfo = ({ allowedSlippage, price, onSlippageClick }: SwapInfoType) => {
+export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlippageSlot }: SwapInfoType) => {
   const { t } = useTranslation();
   const isMounted = useIsMounted();
 
@@ -27,11 +28,12 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick }: SwapInfoTy
             <PencilIcon color="primary" width="10px" />
           </IconButton>
         </SwapInfoLabel>
-        {isMounted && (
-          <Text bold color="primary">
-            {allowedSlippage / 100}%
-          </Text>
-        )}
+        {isMounted &&
+          (allowedSlippageSlot ?? (
+            <Text bold color="primary">
+              {allowedSlippage / 100}%
+            </Text>
+          ))}
       </RowBetween>
     </AutoColumn>
   );

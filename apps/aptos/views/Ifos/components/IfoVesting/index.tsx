@@ -1,11 +1,10 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Card, CardBody, CardHeader, Flex, Text, Image } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Flex, Text, Image, IfoNotTokens } from '@pancakeswap/uikit'
 import { useMemo, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import Trans from 'components/Trans'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { VestingStatus } from './types'
-import NotTokens from './NotTokens'
 import TokenInfo from './VestingPeriod/TokenInfo'
 import VestingEnded from './VestingEnded'
 import useFetchVestingData from '../../hooks/vesting/useFetchVestingData'
@@ -107,7 +106,9 @@ const IfoVesting = () => {
         </Flex>
       </CardHeader>
       <VestingCardBody>
-        {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && <NotTokens />}
+        {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && (
+          <IfoNotTokens showHowDoesItWork={false} participateText={t('Participate in our next IFO.')} />
+        )}
         {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM && (
           <TokenInfoContainer>
             {vestingIfoList.map((ifo, index) => (

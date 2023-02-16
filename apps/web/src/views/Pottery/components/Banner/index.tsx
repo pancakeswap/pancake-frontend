@@ -111,7 +111,6 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
           </Flex>
           <SkeletonV2
             isDataReady={Boolean(prizeTotal)}
-            width={['144px', '240px']}
             height={['60px', '97px']}
             wrapperProps={{ marginBottom: '8px' }}
           >
@@ -147,7 +146,7 @@ const Banner: React.FC<React.PropsWithChildren<BannerProps>> = ({ handleScroll }
               </DarkTextStyle>
             </SkeletonV2>
             <Text color="white" bold as="span">
-              {t('APY')}
+              {t('APR')}
             </Text>
           </Box>
           <Box>

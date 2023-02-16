@@ -1,9 +1,10 @@
 /* eslint-disable no-restricted-syntax */
 import { Currency, Token } from '@pancakeswap/sdk'
-import { Box, Input, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Input, Text, useMatchBreakpoints, AutoColumn, Column } from '@pancakeswap/uikit'
 import { KeyboardEvent, RefObject, useCallback, useMemo, useRef, useState, useEffect } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import { useDebounce } from '@pancakeswap/hooks'
+import { useDebounce, useSortedTokensByQuery } from '@pancakeswap/hooks'
+import { createFilterToken } from '@pancakeswap/utils/filtering'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
@@ -12,11 +13,9 @@ import { useAudioModeManager } from 'state/user/hooks'
 import { isAddress } from 'utils'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
-import Column, { AutoColumn } from '../Layout/Column'
 import Row from '../Layout/Row'
 import CommonBases from './CommonBases'
 import CurrencyList from './CurrencyList'
-import { createFilterToken, useSortedTokensByQuery } from './filtering'
 import useTokenComparator from './sorting'
 import { getSwapSound } from './swapSound'
 
@@ -42,7 +41,7 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
   const activeTokens = useAllTokens()
   return useMemo(() => {
     if (!search || search.trim().length === 0) return []
-    const filterToken = createFilterToken(search)
+    const filterToken = createFilterToken(search, (address) => Boolean(isAddress(address)))
     const exactMatches: WrappedTokenInfo[] = []
     const rest: WrappedTokenInfo[] = []
     const addressSet: { [address: string]: true } = {}
@@ -58,7 +57,10 @@ function useSearchInactiveTokenLists(search: string | undefined, minResults = 10
           !addressSet[tokenInfo.address] &&
           filterToken(tokenInfo)
         ) {
-          const wrapped: WrappedTokenInfo = new WrappedTokenInfo(tokenInfo)
+          const wrapped: WrappedTokenInfo = new WrappedTokenInfo({
+            ...tokenInfo,
+            address: isAddress(tokenInfo.address) || tokenInfo.address,
+          })
           addressSet[wrapped.address] = true
           if (
             tokenInfo.name?.toLowerCase() === trimmedSearchQuery ||
@@ -116,7 +118,7 @@ function CurrencySearch({
   }, [debouncedQuery, native, tokensToShow])
 
   const filteredTokens: Token[] = useMemo(() => {
-    const filterToken = createFilterToken(debouncedQuery)
+    const filterToken = createFilterToken(debouncedQuery, (address) => Boolean(isAddress(address)))
     return Object.values(tokensToShow || allTokens).filter(filterToken)
   }, [tokensToShow, allTokens, debouncedQuery])
 

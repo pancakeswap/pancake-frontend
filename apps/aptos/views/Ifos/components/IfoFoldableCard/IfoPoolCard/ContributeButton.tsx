@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, useModal, useToast } from '@pancakeswap/uikit'
+import { Button, IfoGetTokenModal, useModal, useToast } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import BigNumber from 'bignumber.js'
@@ -9,8 +9,8 @@ import { useCurrencyBalance } from 'hooks/Balances'
 import { useMemo } from 'react'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import ContributeModal from './ContributeModal'
-import GetTokenModal from './GetTokenModal'
 
 interface Props {
   poolId: PoolIds
@@ -25,11 +25,12 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
   const { isPendingTx, amountTokenCommittedInLP } = userPoolCharacteristics
   const { limitPerUserInLP } = publicPoolCharacteristics
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { toastSuccess } = useToast()
   const currencyBalance = useCurrencyBalance(ifo.currency.address)
   const { startTime, endTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 
@@ -62,7 +63,14 @@ const ContributeButton: React.FC<React.PropsWithChildren<Props>> = ({ poolId, if
     false,
   )
 
-  const [onPresentGetTokenModal] = useModal(<GetTokenModal currency={ifo.currency} />, false)
+  const [onPresentGetTokenModal] = useModal(
+    <IfoGetTokenModal
+      symbol={ifo.currency.symbol}
+      address={ifo.currency.address}
+      imageSrc={`https://tokens.pancakeswap.finance/images/aptos/${ifo.currency.address}.png`}
+    />,
+    false,
+  )
 
   const noNeedCredit = true
 

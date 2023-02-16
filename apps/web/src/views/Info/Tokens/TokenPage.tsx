@@ -15,6 +15,8 @@ import {
   useMatchBreakpoints,
   NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/sdk'
+import { NextSeo } from 'next-seo'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import truncateHash from '@pancakeswap/utils/truncateHash'
@@ -107,8 +109,10 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
   const chainPath = useMultiChainPath()
   const chainName = useGetChainName()
   const infoTypeParam = useStableSwapPath()
+
   return (
-    <Page symbol={tokenData?.symbol}>
+    <Page>
+      <NextSeo title={tokenData?.symbol} />
       {tokenData ? (
         !tokenData.exists ? (
           <Card>
@@ -139,6 +143,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
               </Breadcrumbs>
               <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
                 <LinkExternal
+                  isBscScan={multiChainId[chainName] === ChainId.BSC}
                   mr="8px"
                   color="primary"
                   href={getBlockExploreLink(address, 'address', multiChainId[chainName])}

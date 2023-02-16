@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Text, Flex, Box, Skeleton, TooltipText, useTooltip } from '@pancakeswap/uikit'
+import { Text, Flex, Box, Skeleton, TooltipText, useTooltip, IfoSkeletonCardDetails } from '@pancakeswap/uikit'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { Ifo, PoolIds } from 'config/constants/types'
@@ -9,7 +9,7 @@ import useStablePrice from 'hooks/useStablePrice'
 import { DAY_IN_SECONDS } from '@pancakeswap/utils/getTimePeriods'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { multiplyPriceByAmount } from 'utils/prices'
-import { SkeletonCardDetails } from './Skeletons'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 
 export interface IfoCardDetailsProps {
   poolId: PoolIds
@@ -105,11 +105,12 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
   publicIfoData,
 }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { startTime, endTime, currencyPriceInUSD } = publicIfoData
 
   const poolCharacteristic = publicIfoData[poolId]
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 
@@ -236,7 +237,7 @@ const IfoCardDetails: React.FC<React.PropsWithChildren<IfoCardDetailsProps>> = (
         </>
       )
     }
-    return <SkeletonCardDetails />
+    return <IfoSkeletonCardDetails />
   }
 
   return <Box paddingTop="24px">{renderBasedOnIfoStatus()}</Box>

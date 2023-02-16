@@ -6,6 +6,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { getStatus } from 'views/Ifos/hooks/helpers'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { CardConfigReturn } from '../types'
 import IfoCardActions from './IfoCardActions'
 import IfoCardDetails from './IfoCardDetails'
@@ -26,13 +27,7 @@ interface IfoCardProps {
   walletIfoData: WalletIfoData
 }
 
-export const cardConfig = (
-  t: ContextApi['t'],
-  poolId: PoolIds,
-  meta: {
-    version: number
-  },
-): CardConfigReturn => {
+export const cardConfig = (t: ContextApi['t'], poolId: PoolIds): CardConfigReturn => {
   switch (poolId) {
     case PoolIds.poolBasic:
       return {
@@ -44,7 +39,7 @@ export const cardConfig = (
       }
     case PoolIds.poolUnlimited:
       return {
-        title: meta?.version >= 3.1 ? t('Public Sale') : t('Unlimited Sale'),
+        title: t('Unlimited Sale'),
         variant: 'violet',
         tooltip: t('No limits on the amount you can commit. Additional fee applies when claiming.'),
       }
@@ -56,19 +51,18 @@ export const cardConfig = (
 
 const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, ifo, publicIfoData, walletIfoData }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { account } = useActiveWeb3React()
 
   const { startTime, endTime } = publicIfoData
 
   const { vestingInformation } = publicIfoData[poolId]
 
-  const config = cardConfig(t, poolId, {
-    version: ifo.version,
-  })
+  const config = cardConfig(t, poolId)
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(config.tooltip, { placement: 'bottom' })
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const status = getStatus(currentTime, startTime, endTime)
 

@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Link, NextLinkFromReactRouter as RouterLink } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Link, NextLinkFromReactRouter as RouterLink, OpenNewIcon } from '@pancakeswap/uikit'
 import CompositeImage, { CompositeImageProps } from '../CompositeImage'
 import ColoredWordHeading from '../ColoredWordHeading'
 
@@ -57,6 +57,7 @@ const SalesSection: React.FC<React.PropsWithChildren<SalesSectionProps>> = (prop
             {secondaryButton.external ? (
               <Link external href={secondaryButton.to}>
                 {secondaryButton.text}
+                <OpenNewIcon color="primary" ml="4px" />
               </Link>
             ) : (
               <RouterLink to={secondaryButton.to}>{secondaryButton.text}</RouterLink>

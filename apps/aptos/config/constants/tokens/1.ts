@@ -10,6 +10,7 @@ export const mainnetTokens = {
     6,
     'lzUSDC',
     'LayerZero - USDC',
+    'https://layerzero.network/',
   ),
   lzusdt: new Coin(
     ChainId.MAINNET,
@@ -17,6 +18,7 @@ export const mainnetTokens = {
     6,
     'lzUSDT',
     'LayerZero - Tether USD',
+    'https://layerzero.network/',
   ),
   lzweth: new Coin(
     ChainId.MAINNET,
@@ -24,6 +26,7 @@ export const mainnetTokens = {
     6,
     'lzWETH',
     'LayerZero - Wrapped Ether',
+    'https://layerzero.network/',
   ),
   ceusdc: new Coin(
     ChainId.MAINNET,
@@ -71,6 +74,7 @@ export const mainnetTokens = {
     6,
     'whUSDC',
     'Wormhole - USD Coin',
+    'https://wormhole.com/',
   ),
   whbusd: new Coin(
     ChainId.MAINNET,
@@ -78,6 +82,7 @@ export const mainnetTokens = {
     8,
     'whBUSD',
     'Wormhole - Binance USD',
+    'https://wormhole.com/',
   ),
   whweth: new Coin(
     ChainId.MAINNET,
@@ -85,5 +90,14 @@ export const mainnetTokens = {
     8,
     'whWETH',
     'Wormhole - Wrapped Ether',
+    'https://wormhole.com/',
+  ),
+  move: new Coin(
+    ChainId.MAINNET,
+    '0x27fafcc4e39daac97556af8a803dbb52bcb03f0821898dc845ac54225b9793eb::move_coin::MoveCoin',
+    8,
+    'MOVE',
+    'BlueMove',
+    'https://bluemove.net/',
   ),
 }

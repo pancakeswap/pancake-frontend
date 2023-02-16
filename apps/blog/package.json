@@ -9,14 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.4",
     "@pancakeswap/localization": "*",
-    "@pancakeswap/sdk": "*",
     "@pancakeswap/uikit": "*",
     "next": "13.0.7",
     "next-axiom": "^0.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-wrap-balancer": "^0.4.0",
     "styled-components": "^5.3.3",
     "swiper": "^8.4.2",
     "typescript": "^4.9.4"

@@ -17,6 +17,8 @@ import {
   useMatchBreakpoints,
   IconButton,
   PencilIcon,
+  AutoColumn,
+  ColumnCenter,
 } from '@pancakeswap/uikit'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -26,7 +28,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
-import { AutoColumn, ColumnCenter } from '../../../components/Layout/Column'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../../components/PositionCard'
 import { AppHeader, AppBody } from '../../../components/App'
@@ -376,7 +377,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
               <ColumnCenter>
                 <ArrowDownIcon color="textSubtle" width="24px" my="16px" />
               </ColumnCenter>
-              <AutoColumn gap="10px">
+              <AutoColumn gap="12px">
                 <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
                   {t('Receive')}
                 </Text>
@@ -498,7 +499,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
             </Box>
           )}
           {pair && (
-            <AutoColumn gap="10px" style={{ marginTop: '16px' }}>
+            <AutoColumn gap="12px" style={{ marginTop: '16px' }}>
               <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
                 {t('Prices')}
               </Text>

@@ -1,5 +1,11 @@
 # @pancakeswap/awgmi
 
+## 0.0.11
+
+### Patch Changes
+
+- e68ad6524: Add missing chains on connect
+
 ## 0.0.10
 
 ### Patch Changes

@@ -17,6 +17,8 @@ import {
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/sdk'
+import { NextSeo } from 'next-seo'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Page from 'components/Layout/Page'
@@ -122,7 +124,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   )
 
   return (
-    <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
+    <Page>
+      <NextSeo title={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null} />
       {poolData ? (
         <>
           <Flex justifyContent="space-between" mb="16px" flexDirection={['column', 'column', 'row']}>
@@ -138,7 +141,11 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <LinkExternal mr="8px" href={getBlockExploreLink(address, 'address', multiChainId[chainName])}>
+              <LinkExternal
+                isBscScan={multiChainId[chainName] === ChainId.BSC}
+                mr="8px"
+                href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+              >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </LinkExternal>
               <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} />

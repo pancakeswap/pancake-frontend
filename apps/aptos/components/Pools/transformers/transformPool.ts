@@ -155,6 +155,10 @@ const transformPool = (
 
   const startBlock = _toNumber(resource.data.start_timestamp)
 
+  const stakeLimitEndBlock = _toNumber(resource.data.seconds_for_user_limit)
+
+  const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentTimestamp / 1000
+
   return {
     sousId,
     contractAddress: {
@@ -172,7 +176,10 @@ const transformPool = (
     endBlock: _toNumber(resource.data.end_timestamp),
 
     tokenPerBlock: resource.data.reward_per_second,
-    stakingLimit: resource.data.pool_limit_per_user ? new BigNumber(resource.data.pool_limit_per_user) : BIG_ZERO,
+    stakingLimit:
+      stakeLimitTimeRemaining > 0 && resource.data.pool_limit_per_user
+        ? new BigNumber(resource.data.pool_limit_per_user)
+        : BIG_ZERO,
     stakeLimitEndBlock: _toNumber(resource.data.seconds_for_user_limit),
     totalStaked: new BigNumber(totalStakedToken),
 

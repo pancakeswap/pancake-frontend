@@ -1,9 +1,10 @@
+import { Token } from '@pancakeswap/sdk'
+import { bscTokens } from '@pancakeswap/tokens'
+import erc20ABI from 'config/abi/erc20.json'
 import map from 'lodash/map'
 import omitBy from 'lodash/omitBy'
-import erc20ABI from 'config/abi/erc20.json'
-import { bscTokens } from '@pancakeswap/tokens'
-import { Token } from '@pancakeswap/sdk'
 import multicall from 'utils/multicall'
+import { describe, it } from 'vitest'
 
 // remove BNB because it's not a Bep20 token
 // remove ONE because there are two tokens with the symbol ONE (Harmony ONE and BigONE)
@@ -19,7 +20,7 @@ const tokensToTest = omitBy(
     token.symbol.toLowerCase() === 'hero',
 )
 
-describe('Config tokens', () => {
+describe.concurrent('Config tokens', () => {
   it.each(map(tokensToTest, (token, key) => [key, token]))(
     'Token %s has the correct key, symbol, and decimal',
     async (key, token: Token) => {

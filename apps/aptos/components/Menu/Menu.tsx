@@ -1,18 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { ContextApi, languageList, useTranslation } from '@pancakeswap/localization'
-import {
-  DropdownMenuItems,
-  EarnFillIcon,
-  EarnIcon,
-  Menu as UIMenu,
-  MenuItemsType,
-  MoreIcon,
-  NextLinkFromReactRouter,
-  SwapFillIcon,
-  SwapIcon,
-  DropdownMenuItemType,
-  footerLinks,
-} from '@pancakeswap/uikit'
+import { languageList, useTranslation } from '@pancakeswap/localization'
+import { Menu as UIMenu, NextLinkFromReactRouter, footerLinks } from '@pancakeswap/uikit'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
 import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { useCakePrice } from 'hooks/useStablePrice'
@@ -21,71 +9,9 @@ import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
 import { ReactNode, useMemo } from 'react'
 import { usePhishingBanner } from 'state/user'
+import { useMenuItems, ConfigMenuItemsType } from './hooks/useMenuItems'
 import { SettingsButton } from './Settings/SettingsButton'
 import UserMenu from './UserMenu'
-
-export type ConfigMenuDropDownItemsType = DropdownMenuItems & { hideSubNav?: boolean }
-
-export type ConfigMenuItemsType = Omit<MenuItemsType, 'items'> & { hideSubNav?: boolean; image?: string } & {
-  items?: ConfigMenuDropDownItemsType[]
-}
-
-const config: (t: ContextApi['t']) => ConfigMenuItemsType[] = (t) => [
-  {
-    label: t('Trade'),
-    icon: SwapIcon,
-    fillIcon: SwapFillIcon,
-    href: '/swap',
-    showItemsOnMobile: false,
-    items: [
-      {
-        label: t('Swap'),
-        href: '/swap',
-      },
-      {
-        label: t('Liquidity'),
-        href: '/liquidity',
-      },
-      {
-        label: t('Bridge'),
-        href: 'https://bridge.pancakeswap.finance/aptos',
-        type: DropdownMenuItemType.EXTERNAL_LINK,
-      },
-    ],
-  },
-  {
-    label: t('Earn'),
-    href: '/farms',
-    icon: EarnIcon,
-    fillIcon: EarnFillIcon,
-    image: '/images/decorations/pe2.png',
-    items: [
-      {
-        label: t('Farms'),
-        href: '/farms',
-      },
-      {
-        label: t('Pools'),
-        href: '/pools',
-      },
-    ],
-  },
-  {
-    label: '',
-    href: '/ifo',
-    icon: MoreIcon,
-    hideSubNav: true,
-    disabled: true,
-    items: [
-      {
-        label: t('IFO'),
-        href: '/ifo',
-        disabled: true,
-        status: { text: t('Soon'), color: 'warning' },
-      },
-    ],
-  },
-]
 
 export const getActiveMenuItem = ({ pathname, menuConfig }: { pathname: string; menuConfig: ConfigMenuItemsType[] }) =>
   menuConfig.find((menuItem) => pathname.startsWith(menuItem.href) || getActiveSubMenuItem({ menuItem, pathname }))
@@ -113,7 +39,7 @@ export const getActiveSubMenuItem = ({ pathname, menuItem }: { pathname: string;
 export const Menu = ({ children }: { children: ReactNode }) => {
   const { currentLanguage, setLanguage, t } = useTranslation()
 
-  const menuItems = useMemo(() => config(t), [t])
+  const menuItems = useMenuItems()
   const { pathname } = useRouter()
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })

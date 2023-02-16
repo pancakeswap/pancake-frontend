@@ -17,8 +17,8 @@ const AptosBridgeMessage = () => {
       >
         <Flex flexDirection="column">
           <MessageText>
-            For CAKE bridging, the waiting time is around 3-10 mins. For assets other than CAKE, outbound transfers from
-            Aptos are subject to 1M block confirmations, estimated to last ~4 days.
+            For CAKE bridging, the waiting time is around 3-10 mins. For assets other than CAKE, outbound transfers are
+            subject to 500.000 block confirmations, estimated to last ~2 days.
           </MessageText>
           <MessageText mb="5px">
             Learn more in the

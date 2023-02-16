@@ -115,14 +115,14 @@ export class PontemConnector extends Connector<Window['pontem']> {
     }
   }
 
-  async signAndSubmitTransaction(payload: Types.TransactionPayload) {
+  async signAndSubmitTransaction(payload: Types.TransactionPayload, options?: Types.SubmitTransactionRequest) {
     const provider = await this.getProvider()
     if (!provider) throw new ConnectorNotFoundError()
 
     let response
 
     try {
-      response = await provider.signAndSubmit(payload)
+      response = await provider.signAndSubmit(payload, options)
     } catch (error) {
       if ((error as any)?.code === 1002) {
         throw new UserRejectedRequestError(error)

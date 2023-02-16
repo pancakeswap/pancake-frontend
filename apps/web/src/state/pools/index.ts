@@ -13,7 +13,7 @@ import {
   SerializedLockedCakeVault,
 } from 'state/types'
 import { getPoolApr } from 'utils/apr'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { BIG_ZERO, BIG_ONE } from '@pancakeswap/utils/bigNumber'
 import cakeAbi from 'config/abi/cake.json'
 import { getCakeVaultAddress, getCakeFlexibleSideVaultAddress } from 'utils/addressHelpers'
 import { multicallv2 } from 'utils/multicall'
@@ -186,7 +186,11 @@ export const fetchPoolsPublicDataAsync =
         const stakingTokenPrice = stakingTokenAddress ? prices[stakingTokenAddress] : 0
 
         const earningTokenAddress = isAddress(pool.earningToken.address)
-        const earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+        let earningTokenPrice = earningTokenAddress ? prices[earningTokenAddress] : 0
+        // FIXME: stable swap price is not available for axlusdc
+        if (typeof earningTokenAddress === 'string' && earningTokenAddress === bscTokens.axlusdc.address) {
+          earningTokenPrice = BIG_ONE
+        }
         const apr = !isPoolFinished
           ? getPoolApr(
               stakingTokenPrice,

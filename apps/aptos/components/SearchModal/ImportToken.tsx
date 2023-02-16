@@ -7,7 +7,7 @@ import {
   Flex,
   Message,
   Checkbox,
-  Link,
+  LinkExternal,
   Tag,
   Grid,
   AutoColumn,
@@ -78,13 +78,11 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
             {chainId && (
               <Flex justifyContent="space-between" width="100%">
                 <Text mr="4px">{address}</Text>
-                <Link href={getBlockExploreLink(token.address, 'token', chainId)} external>
-                  (
+                <LinkExternal isAptosScan href={getBlockExploreLink(token.address, 'token', chainId)}>
                   {t('View on %site%', {
-                    site: 'Explorer',
+                    site: t('Explorer'),
                   })}
-                  )
-                </Link>
+                </LinkExternal>
               </Flex>
             )}
           </Grid>

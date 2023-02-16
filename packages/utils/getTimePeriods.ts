@@ -18,6 +18,11 @@ const getTimePeriods = (seconds: number) => {
     hours: 0,
     minutes: 0,
     seconds: 0,
+    totalDays: 0,
+  }
+
+  if (delta >= DAY_IN_SECONDS) {
+    timeLeft.totalDays = Math.floor(delta / DAY_IN_SECONDS)
   }
 
   if (delta >= YEAR_IN_SECONDS) {

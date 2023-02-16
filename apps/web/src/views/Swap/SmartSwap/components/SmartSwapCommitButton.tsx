@@ -1,12 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { Button, Text, useModal, confirmPriceImpactWithoutFee } from '@pancakeswap/uikit'
+import { Button, Text, useModal, confirmPriceImpactWithoutFee, Column } from '@pancakeswap/uikit'
 
 import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import Column from 'components/Layout/Column'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'

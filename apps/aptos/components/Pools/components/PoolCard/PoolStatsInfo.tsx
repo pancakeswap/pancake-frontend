@@ -6,8 +6,10 @@ import { Token } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
-
-import { AprInfo, TotalStaked } from './Stat'
+import { getBlockExploreLinkDefault } from 'utils'
+import getContactAddress from 'utils/getContactAddress'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { AprInfo } from './Stat'
 
 interface ExpandedFooterProps {
   pool: Pool.DeserializedPool<Token> & { stakeLimitEndBlock?: number }
@@ -43,9 +45,14 @@ const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipCo
   )
 }
 
-const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({ pool, showTotalStaked = true }) => {
+const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
+  pool,
+  showTotalStaked = true,
+  alignLinksToRight = true,
+}) => {
   const { t } = useTranslation()
   const getNow = useLedgerTimestamp()
+  const { chainId } = useActiveWeb3React()
 
   const {
     stakingToken,
@@ -56,6 +63,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     endBlock = 0,
     startBlock = 0,
     stakeLimitEndBlock = 0,
+    contractAddress,
   } = pool
 
   const stakedBalance = poolUserData?.stakedBalance ? poolUserData.stakedBalance : BIG_ZERO
@@ -66,6 +74,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
   const stakeLimitTimeRemaining = stakeLimitEndBlock + startBlock - currentDate
 
   const endTimeObject = useMemo(() => getTimePeriods(poolTimeRemaining), [poolTimeRemaining])
+
   const stakeLimitTimeObject = useMemo(() => getTimePeriods(stakeLimitTimeRemaining), [stakeLimitTimeRemaining])
 
   const {
@@ -80,10 +89,19 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
     tooltipVisible: stakeLimitTooltipVisible,
   } = useTooltip(<EndTimeTooltipComponent endTime={stakeLimitEndBlock + startBlock} />)
 
+  const poolContractAddress = getContactAddress(contractAddress[chainId])
+
   return (
     <>
       <AprInfo pool={pool} stakedBalance={stakedBalance} />
-      {showTotalStaked && <TotalStaked totalStaked={totalStaked} stakingToken={stakingToken} />}
+      {showTotalStaked && (
+        <Pool.TotalStaked
+          totalStaked={totalStaked}
+          tokenDecimals={stakingToken.decimals}
+          decimalsToShow={3}
+          symbol={stakingToken.symbol}
+        />
+      )}
       {stakingLimit?.gt(0) ? (
         <>
           <Flex justifyContent="space-between" alignItems="center">
@@ -97,10 +115,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
             <Flex alignItems="center">
               <Text color="textSubtle" small>
                 {stakeLimitTimeRemaining > 0
-                  ? stakeLimitTimeObject?.days
-                    ? stakeLimitTimeObject?.days === 1
+                  ? stakeLimitTimeObject?.totalDays
+                    ? stakeLimitTimeObject?.totalDays === 1
                       ? t('1 day')
-                      : t('%days% days', { days: stakeLimitTimeObject?.days })
+                      : t('%days% days', { days: stakeLimitTimeObject?.totalDays })
                     : t('< 1 day')
                   : t('%days% days', { days: 0 })}
               </Text>
@@ -117,10 +135,10 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
         <Flex alignItems="center">
           <Text color="textSubtle" small>
             {poolTimeRemaining > 0
-              ? endTimeObject?.days
-                ? endTimeObject?.days === 1
+              ? endTimeObject?.totalDays
+                ? endTimeObject?.totalDays === 1
                   ? t('1 day')
-                  : t('%days% days', { days: endTimeObject?.days })
+                  : t('%days% days', { days: endTimeObject?.totalDays })
                 : t('< 1 day')
               : t('%days% days', { days: 0 })}
           </Text>
@@ -130,12 +148,23 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           </span>
         </Flex>
       </Flex>
-      <Flex justifyContent="space-between" alignItems="center">
-        <Flex />
+      <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
         <LinkExternal href={earningToken.projectLink} bold={false} small>
           {t('View Project Site')}
         </LinkExternal>
       </Flex>
+      {poolContractAddress && (
+        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+          <LinkExternal
+            isAptosScan
+            href={getBlockExploreLinkDefault(poolContractAddress, 'address', chainId)}
+            bold={false}
+            small
+          >
+            {t('View Contract')}
+          </LinkExternal>
+        </Flex>
+      )}
     </>
   )
 }

@@ -43,7 +43,9 @@ export const ADDITIONAL_BASES: { [chainId in ChainId]?: { [tokenAddress: string]
  * @example [AMPL.address]: [DAI, WNATIVE[ChainId.BSC]]
  */
 export const CUSTOM_BASES: { [chainId in ChainId]?: { [tokenAddress: string]: Token[] } } = {
-  [ChainId.BSC]: {},
+  [ChainId.BSC]: {
+    [bscTokens.axlusdc.address]: [bscTokens.usdt],
+  },
 }
 
 // used for display in the default list when adding liquidity

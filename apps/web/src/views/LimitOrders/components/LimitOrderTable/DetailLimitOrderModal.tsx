@@ -7,11 +7,11 @@ import {
   ChevronRightIcon,
   InjectedModalProps,
   Tag,
-  Spinner,
   useMatchBreakpoints,
   BscScanIcon,
+  TransactionErrorContent,
+  ConfirmationPendingContent,
 } from '@pancakeswap/uikit'
-import { AutoColumn } from 'components/Layout/Column'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { memo, useCallback, useState } from 'react'
@@ -19,7 +19,7 @@ import styled from 'styled-components'
 import { FormattedOrderData } from 'views/LimitOrders/hooks/useFormattedOrderData'
 import useGelatoLimitOrdersHandlers from 'hooks/limitOrders/useGelatoLimitOrdersHandlers'
 import { Order } from '@gelatonetwork/limit-orders-lib'
-import { TransactionErrorContent, TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
+import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import CurrencyFormat from './CurrencyFormat'
 import CellFormat from './CellFormat'
@@ -143,7 +143,7 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
           <>
             <Button variant="primary" mt="16px" as="a" external href={formattedOrder.bscScanUrls.created}>
               {t('View on BscScan')}
-              <BscScanIcon color="primary" ml="4px" />
+              <BscScanIcon color="invertedContrast" ml="4px" />
             </Button>
             {!isSubmissionPending && (
               <Button variant="danger" mt="16px" onClick={onCancelOrder}>
@@ -154,19 +154,19 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
         ) : (
           <Button variant="primary" mt="16px" as="a" external href={formattedOrder.bscScanUrls.created}>
             {t('View order creation on BSCScan')}
-            <BscScanIcon color="primary" ml="4px" />
+            <BscScanIcon color="invertedContrast" ml="4px" />
           </Button>
         )}
         {isCancelled && bscScanUrls.cancelled && (
           <Button variant="primary" mt="16px" as="a" external href={bscScanUrls.cancelled}>
             {t('View order cancellation on BSCScan')}
-            <BscScanIcon color="primary" ml="4px" />
+            <BscScanIcon color="invertedContrast" ml="4px" />
           </Button>
         )}
         {isExecuted && bscScanUrls.executed && (
           <Button variant="primary" mt="16px" as="a" external href={bscScanUrls.executed}>
             {t('View order execution on BSCScan')}
-            <BscScanIcon color="primary" ml="4px" />
+            <BscScanIcon color="invertedContrast" ml="4px" />
           </Button>
         )}
       </Flex>
@@ -180,7 +180,7 @@ export const DetailLimitOrderModal: React.FC<React.PropsWithChildren<DetailLimit
       onDismiss={onDismiss}
     >
       {attemptingTxn ? (
-        <LoadingContent />
+        <ConfirmationPendingContent />
       ) : txHash ? (
         <TransactionSubmittedContent chainId={chainId} hash={txHash} onDismiss={onDismiss} />
       ) : cancellationErrorMessage ? (
@@ -258,20 +258,3 @@ const LimitTradeInfoCard: React.FC<React.PropsWithChildren<LimitTradeInfoCardPro
     )
   },
 )
-
-const LoadingContent: React.FC<React.PropsWithChildren> = memo(() => {
-  const { t } = useTranslation()
-  return (
-    <Flex flexDirection="column">
-      <Box m="auto" padding="24px 0">
-        <Spinner />
-      </Box>
-      <AutoColumn gap="12px" justify="center">
-        <Text fontSize="20px">{t('Confirm')}</Text>
-        <Text small color="textSubtle" textAlign="center">
-          {t('Confirm this transaction in your wallet')}
-        </Text>
-      </AutoColumn>
-    </Flex>
-  )
-})
