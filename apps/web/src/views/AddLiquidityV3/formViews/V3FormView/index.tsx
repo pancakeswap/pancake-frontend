@@ -192,11 +192,13 @@ export default function V3FormView({
   }, [baseCurrency, quoteCurrency, feeAmount, onLeftRangeInput, onRightRangeInput])
 
   useEffect(() => {
-    if (!feeAmount) {
+    if (feeAmount) {
       onLeftRangeInput('')
       onRightRangeInput('')
     }
-  }, [feeAmount, onLeftRangeInput, onRightRangeInput])
+    // NOTE: ignore exhaustive-deps to avoid infinite re-render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feeAmount])
 
   useEffect(() => {
     if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !leftRangeTypedValue) {

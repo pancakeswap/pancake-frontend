@@ -1,7 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Box, AutoRow, Text, Button } from '@pancakeswap/uikit'
+import { Box, Text } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { LightGreyCard } from 'components/Card'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
@@ -9,9 +8,11 @@ import { usePools } from 'hooks/v3/usePools'
 import _toNumber from 'lodash/toNumber'
 import styled from 'styled-components'
 import { useEffect, useMemo, useState } from 'react'
+import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
+import { HandleFeePoolSelectFn } from 'views/AddLiquidityV3/types'
 import { FeeOption } from './FeeOption'
-import { DynamicSection, FEE_AMOUNT_DETAIL } from './shared'
 import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
+import { FEE_AMOUNT_DETAIL } from './shared'
 
 const Select = styled.div`
   align-items: flex-start;
@@ -21,15 +22,13 @@ const Select = styled.div`
 `
 
 export default function FeeSelector({
-  disabled = false,
   feeAmount,
   handleFeePoolSelect,
   currencyA,
   currencyB,
 }: {
-  disabled?: boolean
   feeAmount?: FeeAmount
-  handleFeePoolSelect: (feeAmount: FeeAmount) => void
+  handleFeePoolSelect: HandleFeePoolSelectFn
   currencyA?: Currency | undefined
   currencyB?: Currency | undefined
 }) {
@@ -86,53 +85,49 @@ export default function FeeSelector({
   }, [isError])
 
   return (
-    <DynamicSection disabled={disabled}>
-      <LightGreyCard padding="8px">
-        <AutoRow justifyContent="space-between" marginBottom="8px">
-          {feeAmount ? (
-            <>
-              <Box>
-                <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier fee tier</Text>
-                {distributions && (
-                  <FeeTierPercentageBadge
-                    distributions={distributions}
-                    feeAmount={feeAmount}
-                    poolState={poolsByFeeTier[feeAmount]}
-                  />
-                )}
-              </Box>
-              <Button scale="sm" onClick={() => setShowOptions((prev) => !prev)}>
-                {showOptions ? 'Hide' : 'Edit'}
-              </Button>
-            </>
-          ) : (
-            <>
-              <Text>Fee tier</Text>
-              <Text>The % you will earn in fees.</Text>
-            </>
-          )}
-        </AutoRow>
-        {showOptions && (
-          <Select>
-            {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
-              const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
-              if (supportedChains.includes(chainId)) {
-                return (
-                  <FeeOption
-                    feeAmount={_feeAmount}
-                    active={feeAmount === _feeAmount}
-                    onClick={() => handleFeePoolSelect(_feeAmount)}
-                    distributions={distributions}
-                    poolState={poolsByFeeTier[_feeAmount]}
-                    key={_feeAmount}
-                  />
-                )
-              }
-              return null
-            })}
-          </Select>
-        )}
-      </LightGreyCard>
-    </DynamicSection>
+    <HideShowSelectorSection
+      showOptions={showOptions}
+      noHideButton={!feeAmount}
+      setShowOptions={setShowOptions}
+      heading={
+        feeAmount ? (
+          <Box>
+            <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier fee tier</Text>
+            {distributions && (
+              <FeeTierPercentageBadge
+                distributions={distributions}
+                feeAmount={feeAmount}
+                poolState={poolsByFeeTier[feeAmount]}
+              />
+            )}
+          </Box>
+        ) : (
+          <>
+            <Text>Fee tier</Text>
+            <Text>The % you will earn in fees.</Text>
+          </>
+        )
+      }
+      content={
+        <Select>
+          {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
+            const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
+            if (supportedChains.includes(chainId)) {
+              return (
+                <FeeOption
+                  feeAmount={_feeAmount}
+                  active={feeAmount === _feeAmount}
+                  onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3, feeAmount: _feeAmount })}
+                  distributions={distributions}
+                  poolState={poolsByFeeTier[_feeAmount]}
+                  key={_feeAmount}
+                />
+              )
+            }
+            return null
+          })}
+        </Select>
+      }
+    />
   )
 }

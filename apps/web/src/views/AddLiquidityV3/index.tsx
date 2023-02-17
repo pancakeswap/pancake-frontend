@@ -5,7 +5,7 @@ import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
 import { FlexGap, AutoColumn, CardBody, Card, Text, AddIcon } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 
 import currencyId from 'utils/currencyId'
@@ -18,10 +18,14 @@ import styled from 'styled-components'
 
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
 
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
+import { DynamicSection } from './formViews/V3FormView/components/shared'
+import { HandleFeePoolSelectFn, SELECTOR_TYPE } from './types'
+import { StableV3Selector } from './components/StableV3Selector'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -58,6 +62,11 @@ export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: Univ
   const router = useRouter()
   const baseCurrency = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
+
+  const stableConfig = useStableConfig({
+    tokenA: baseCurrency,
+    tokenB: currencyB,
+  })
 
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
@@ -129,8 +138,20 @@ export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: Univ
     [handleCurrencySelect, currencyIdA, router],
   )
 
-  const handleFeePoolSelect = useCallback(
-    (newFeeAmount: FeeAmount) => {
+  const [selectorType, setSelectoType] = useState<SELECTOR_TYPE | null>(null)
+
+  useEffect(() => {
+    if (stableConfig.stableSwapConfig) {
+      setSelectoType(SELECTOR_TYPE.STABLE)
+    } else {
+      setSelectoType(SELECTOR_TYPE.V3)
+    }
+  }, [stableConfig.stableSwapConfig])
+
+  const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(
+    ({ type, feeAmount: newFeeAmount }) => {
+      setSelectoType(type)
+
       router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, {
         shallow: true,
       })
@@ -167,13 +188,19 @@ export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: Univ
                   hideBalance
                 />
               </FlexGap>
-
-              <FeeSelector
-                currencyA={baseCurrency ?? undefined}
-                currencyB={quoteCurrency ?? undefined}
-                handleFeePoolSelect={handleFeePoolSelect}
-                feeAmount={feeAmount}
-              />
+              <DynamicSection disabled={false}>
+                {selectorType === SELECTOR_TYPE.STABLE && (
+                  <StableV3Selector handleFeePoolSelect={handleFeePoolSelect} />
+                )}
+                {selectorType === SELECTOR_TYPE.V3 && (
+                  <FeeSelector
+                    currencyA={baseCurrency ?? undefined}
+                    currencyB={quoteCurrency ?? undefined}
+                    handleFeePoolSelect={handleFeePoolSelect}
+                    feeAmount={feeAmount}
+                  />
+                )}
+              </DynamicSection>
             </AutoColumn>
             <V3FormView
               feeAmount={feeAmount}
