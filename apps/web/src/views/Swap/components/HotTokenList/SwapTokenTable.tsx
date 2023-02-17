@@ -29,6 +29,7 @@ import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
+import ReactGA from 'react-ga'
 
 /**
  *  Columns on different layouts
@@ -206,6 +207,11 @@ const DataRow: React.FC<
             scale="sm"
             p="0"
             onClick={(e) => {
+              ReactGA.event({
+                category: 'TokenHighlight',
+                action: 'Click Track Button',
+                label: tokenData.symbol,
+              })
               e.stopPropagation()
               e.preventDefault()
               const currency = new Token(chainId, tokenData.address, tokenData.decimals, tokenData.symbol)

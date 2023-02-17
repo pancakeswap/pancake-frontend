@@ -6,6 +6,7 @@ import { AppBody } from 'components/App'
 import { useCallback, useContext } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
+import { useReactGAInitialize } from 'hooks/useReactGAInitialize'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
@@ -23,6 +24,7 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 const queryClient = new QueryClient()
 
 export default function Swap() {
+  useReactGAInitialize()
   const { isMobile } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
     useContext(SwapFeaturesContext)

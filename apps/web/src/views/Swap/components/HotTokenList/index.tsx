@@ -46,7 +46,6 @@ const HotTokenList: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency)
       ),
     [allTokens, chainId],
   )
-
   const { t } = useTranslation()
   return (
     <Wrapper>
