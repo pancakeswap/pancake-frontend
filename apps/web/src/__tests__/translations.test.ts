@@ -54,7 +54,7 @@ const whitelist = [
   'Learn how',
   'You might also like',
   'Chef’s choice',
-  'Read about our latest announcements and more',
+  'Recommended Readings by Chef’s',
   'Latest News about PancakeSwap and more!',
 ]
 
