@@ -9,7 +9,7 @@ import { useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
 import { AutoRow } from 'components/Layout/Row'
 
-import { useIsWrapping } from '../hooks'
+import { useAllowRecipient } from '../hooks'
 
 export function FlipButton() {
   const { t } = useTranslation()
@@ -20,8 +20,7 @@ export function FlipButton() {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const isWrapping = useIsWrapping(inputCurrencyId, outputCurrencyId)
-  const allowRecipient = isExpertMode && !isWrapping
+  const allowRecipient = useAllowRecipient()
 
   const onFlip = useCallback(() => {
     onSwitchTokens()

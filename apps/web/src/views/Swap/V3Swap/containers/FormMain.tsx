@@ -20,6 +20,7 @@ import useWarningImport from '../../hooks/useWarningImport'
 import { RiskCheck } from './RiskCheck'
 import { useIsWrapping } from '../hooks'
 import { FlipButton } from './FlipButton'
+import { Recipient } from './Recipient'
 
 export function FormMain() {
   const { account } = useWeb3React()
@@ -31,7 +32,7 @@ export function FormMain() {
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
-  const isWrapping = useIsWrapping(inputCurrencyId, outputCurrencyId)
+  const isWrapping = useIsWrapping()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
@@ -121,6 +122,7 @@ export function FormMain() {
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
       <RiskCheck currency={outputCurrency} />
+      <Recipient />
     </FormContainer>
   )
 }
