@@ -1,5 +1,6 @@
 import { getAddress } from '@ethersproject/address'
 import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from './useNetwork'
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -17,7 +18,6 @@ import {
 import { Currency, Token, ChainId } from '@pancakeswap/sdk'
 import { BAD_SRCS } from 'components/Logo/constants'
 import { CHAIN_QUERY_NAME } from 'config/chains'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
@@ -209,8 +209,10 @@ const DataRow: React.FC<
             onClick={(e) => {
               ReactGA.event({
                 category: 'TokenHighlight',
-                action: 'Click Track Button',
+                action: 'Click Trade Button',
                 label: tokenData.symbol,
+                dimension1: chainId,
+                dimension2: tokenData.address,
               })
               e.stopPropagation()
               e.preventDefault()
