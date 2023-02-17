@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback } from 'react'
+import { useCallback, ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { Currency, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
@@ -21,9 +21,15 @@ import { RiskCheck } from './RiskCheck'
 import { useIsWrapping } from '../hooks'
 import { FlipButton } from './FlipButton'
 import { Recipient } from './Recipient'
-import { PricingAndSlippage } from './PricingAndSlippage'
 
-export function FormMain() {
+interface Props {
+  inputAmount?: CurrencyAmount<Currency>
+  outputAmount?: CurrencyAmount<Currency>
+  tradeLoading?: boolean
+  pricingAndSlippage?: ReactNode
+}
+
+export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeLoading }: Props) {
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const warningSwapHandler = useWarningImport()
@@ -85,8 +91,8 @@ export function FormMain() {
   )
 
   const isTypingInput = independentField === Field.INPUT
-  const inputValue = isTypingInput ? typedValue : ''
-  const outputValue = isTypingInput ? '' : typedValue
+  const inputValue = isTypingInput ? typedValue : inputAmount?.toSignificant(6)
+  const outputValue = isTypingInput ? outputAmount?.toSignificant(6) : typedValue
 
   return (
     <FormContainer>
@@ -95,8 +101,9 @@ export function FormMain() {
         showBUSD
         showMaxButton
         showCommonBases
+        loading={!isTypingInput && tradeLoading}
         label={!isTypingInput && !isWrapping ? t('From (estimated)') : t('From')}
-        value={inputValue}
+        value={isWrapping ? typedValue : inputValue}
         maxAmount={maxAmountInput}
         showQuickInputButton
         currency={inputCurrency}
@@ -114,8 +121,9 @@ export function FormMain() {
         showBUSD
         showCommonBases
         showMaxButton={false}
+        loading={isTypingInput && tradeLoading}
         label={isTypingInput && !isWrapping ? t('To (estimated)') : t('To')}
-        value={outputValue}
+        value={isWrapping ? typedValue : outputValue}
         currency={outputCurrency}
         onUserInput={handleTypeOutput}
         onCurrencySelect={handleOutputSelect}
@@ -124,7 +132,7 @@ export function FormMain() {
       />
       <RiskCheck currency={outputCurrency} />
       <Recipient />
-      <PricingAndSlippage />
+      {pricingAndSlippage}
     </FormContainer>
   )
 }

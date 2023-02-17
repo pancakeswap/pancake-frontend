@@ -1,4 +1,6 @@
-import { Swap as SwapUI, useModal } from '@pancakeswap/uikit'
+import { Swap as SwapUI, useModal, Skeleton } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { Price, Currency } from '@pancakeswap/sdk'
 
 import { useUserSlippageTolerance } from 'state/user/hooks'
 
@@ -6,7 +8,13 @@ import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsMo
 import { SettingsMode } from '../../../../components/Menu/GlobalSettings/types'
 import { useIsWrapping } from '../hooks'
 
-export function PricingAndSlippage() {
+interface Props {
+  priceLoading?: boolean
+  price?: Price<Currency, Currency>
+}
+
+export function PricingAndSlippage({ priceLoading, price }: Props) {
+  const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippageTolerance()
   const isWrapping = useIsWrapping()
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
@@ -15,5 +23,17 @@ export function PricingAndSlippage() {
     return null
   }
 
-  return <SwapUI.Info price={null} allowedSlippage={allowedSlippage} onSlippageClick={onPresentSettingsModal} />
+  const priceContent = priceLoading ? (
+    <Skeleton width="80%" ml="8px" height="24px" />
+  ) : (
+    <SwapUI.TradePrice price={price} />
+  )
+  const priceNode = price ? (
+    <>
+      <SwapUI.InfoLabel>{t('Price')}</SwapUI.InfoLabel>
+      {priceContent}
+    </>
+  ) : null
+
+  return <SwapUI.Info price={priceNode} allowedSlippage={allowedSlippage} onSlippageClick={onPresentSettingsModal} />
 }

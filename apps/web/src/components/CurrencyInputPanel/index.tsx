@@ -1,6 +1,16 @@
 import { useMemo, useState } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
+import {
+  Button,
+  ChevronDownIcon,
+  Text,
+  useModal,
+  Flex,
+  Box,
+  NumericalInput,
+  CopyButton,
+  Skeleton,
+} from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
@@ -99,6 +109,7 @@ interface CurrencyInputPanelProps {
   error?: boolean
   showUSDPrice?: boolean
   tokensToShow?: Token[]
+  loading?: boolean
 }
 export default function CurrencyInputPanel({
   value,
@@ -127,6 +138,7 @@ export default function CurrencyInputPanel({
   error,
   showUSDPrice,
   tokensToShow,
+  loading,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -240,22 +252,28 @@ export default function CurrencyInputPanel({
       <InputPanel>
         <Container as="label" zapStyle={zapStyle} error={error}>
           <LabelRow>
-            <NumericalInput
-              error={error}
-              disabled={disabled}
-              className="token-amount-input"
-              value={value}
-              onBlur={onInputBlur}
-              onUserInput={(val) => {
-                onUserInput(val)
-                setCurrentClickedPercent('')
-              }}
-            />
+            {loading ? (
+              <Skeleton width="100%" height="22px" />
+            ) : (
+              <NumericalInput
+                error={error}
+                disabled={disabled}
+                className="token-amount-input"
+                value={value}
+                onBlur={onInputBlur}
+                onUserInput={(val) => {
+                  onUserInput(val)
+                  setCurrentClickedPercent('')
+                }}
+              />
+            )}
           </LabelRow>
           {!!currency && showUSDPrice && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
-                {Number.isFinite(amountInDollar) ? (
+                {loading ? (
+                  <Skeleton width="20%" height="16px" />
+                ) : Number.isFinite(amountInDollar) ? (
                   <Text fontSize="12px" color="textSubtle">
                     ~{formatNumber(amountInDollar)} USD
                   </Text>
