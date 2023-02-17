@@ -19,56 +19,65 @@ import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 const Wrapper = styled(Flex)`
   padding: 1px;
   width: 100%;
-  margin: auto auto 49px auto;
+  margin: 46px auto auto auto;
   background: linear-gradient(180deg, #53dee9, #7645d9);
   border-radius: ${({ theme }) => theme.radii.default};
 
   ${({ theme }) => theme.mediaQueries.md} {
     width: fit-content;
   }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin: auto auto auto 36px;
+  }
 `
 
 const StyledCommission = styled(Flex)`
-  width: 100%;
+  position: relative;
+  width: 50%;
+  min-width: 84px;
   align-items: center;
   flex-direction: column;
   align-self: center;
-  padding: 12px 0;
+  padding: 9px 0;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    height: 60px;
+    width: 1px;
+    transform: translateY(-50%);
+    background-color: ${({ theme }) => theme.colors.inputSecondary};
+  }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 150px;
-    padding: 0;
+    width: 124px;
   }
 `
 
 const CardInner = styled(Flex)`
+  position: relative;
   width: 100%;
   height: 100%;
-  padding: 8px 24px;
+  padding: 0 24px;
   justify-content: space-between;
   border-radius: ${({ theme }) => theme.radii.default};
   background: ${({ theme }) => theme.colors.gradientBubblegum};
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
 
   ${StyledCommission} {
-    border-bottom: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
-
-    &:last-child {
-      border: 0;
+    &:nth-child(even) {
+      &:before {
+        display: none;
+      }
     }
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
-
-    ${StyledCommission} {
-      border-bottom: 0;
-      border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
-
-      &:last-child {
-        border: 0;
-      }
-    }
+    width: 297px;
   }
 `
 
@@ -82,7 +91,10 @@ const MyReferralLink = () => {
   const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [commissionList])
 
   return (
-    <Box width={['100%', '100%', '100%', '700px']} m={['32px 0 0 0', ' 32px 0 0 0', ' 32px 0 0 0', ' 0 0 0 32px']}>
+    <Box
+      width={['100%', '100%', '100%', '100%', '100%', '700px']}
+      m={['32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '32px 0 0 0', '0 0 0 32px']}
+    >
       <Card>
         <Box padding={['24px']}>
           <Text bold mb={['17px']} color="secondary" fontSize="12px" textTransform="uppercase">
@@ -94,39 +106,41 @@ const MyReferralLink = () => {
             </InputGroup>
             <ShareIcon width={24} height={24} ml="16px" color="primary" />
           </Flex>
-          <Flex width={['100%', '320px']} m={['auto auto 36px auto']} justifyContent={['space-between']}>
-            <Box>
-              <Text fontSize="14px" color="textSubtle">
-                You will receive
-              </Text>
-              <Text color="secondary" bold fontSize={['32px']} textAlign="center">
-                100%
-              </Text>
-            </Box>
-            <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
-            <Box>
-              <Text fontSize="14px" color="textSubtle">
-                Friends will receive
-              </Text>
-              <Text color="primary" bold fontSize={['32px']} textAlign="center">
-                0%
-              </Text>
-            </Box>
+          <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mb="36px">
+            <Flex alignSelf="center" width={['100%', '320px']} justifyContent={['space-between']}>
+              <Box>
+                <Text fontSize="14px" color="textSubtle">
+                  You will receive
+                </Text>
+                <Text color="secondary" bold fontSize={['32px']} textAlign="center">
+                  100%
+                </Text>
+              </Box>
+              <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
+              <Box>
+                <Text fontSize="14px" color="textSubtle">
+                  Friends will receive
+                </Text>
+                <Text color="primary" bold fontSize={['32px']} textAlign="center">
+                  0%
+                </Text>
+              </Box>
+            </Flex>
+            <Wrapper>
+              <CardInner>
+                {dataList.map((list) => (
+                  <StyledCommission key={list.image.url}>
+                    <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
+                      {list.title}
+                    </Text>
+                    <Text fontSize={['32px']} bold>
+                      {list.percentage}
+                    </Text>
+                  </StyledCommission>
+                ))}
+              </CardInner>
+            </Wrapper>
           </Flex>
-          <Wrapper>
-            <CardInner>
-              {dataList.map((list) => (
-                <StyledCommission key={list.image.url}>
-                  <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
-                    {list.title}
-                  </Text>
-                  <Text fontSize={['32px']} bold>
-                    {list.percentage}
-                  </Text>
-                </StyledCommission>
-              ))}
-            </CardInner>
-          </Wrapper>
           <Flex flexDirection={['column', 'column', 'column', 'row']}>
             <Flex mb={['8px', '8px', '8px', '0']}>
               {receivePercentageList.map((list) => (

@@ -26,13 +26,24 @@ const CardContainer = styled(Flex)`
 
 const ClaimReward = () => {
   return (
-    <Box padding="0 16px">
-      <Flex maxWidth={['1110px']} m="auto auto 100px auto">
+    <Box mt="24px">
+      <Flex maxWidth={['100%', '100%', '100%', '100%', '100%', '700px']} m="auto 0 100px auto">
         <Card style={{ width: '100%' }}>
           <Flex flexDirection="column" padding={['24px']}>
-            <Text mb="16px" color="secondary" bold fontSize={['12px']} textTransform="uppercase">
-              claim your rewards
-            </Text>
+            <Flex justifyContent="space-between" mb="16px">
+              <Text
+                style={{ alignSelf: 'center' }}
+                color="secondary"
+                bold
+                fontSize={['12px']}
+                textTransform="uppercase"
+              >
+                claim your rewards
+              </Text>
+              <Button display={['none', 'none', 'none', 'block']} scale="sm" variant="secondary">
+                Claim Reward
+              </Button>
+            </Flex>
             <CardContainer>
               <LightGreyCard>
                 <Text bold fontSize="12px" mb="22px">
@@ -54,9 +65,6 @@ const ClaimReward = () => {
                     500 CAKE
                   </Text>
                 </Flex>
-                <Button mt="18px" width="100%">
-                  Claim Reward
-                </Button>
               </LightGreyCard>
 
               <LightGreyCard>
@@ -79,11 +87,11 @@ const ClaimReward = () => {
                     500 CAKE
                   </Text>
                 </Flex>
-                <Button mt="18px" width="100%">
-                  Claim Reward
-                </Button>
               </LightGreyCard>
             </CardContainer>
+            <Button display={['block', 'block', 'block', 'none']} variant="secondary" mt="18px" width="100%">
+              Claim Reward
+            </Button>
           </Flex>
         </Card>
       </Flex>

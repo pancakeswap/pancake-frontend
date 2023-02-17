@@ -11,14 +11,16 @@ const Dashboard = () => {
       <Banner />
       <Flex
         padding="0 16px"
-        m={['68px 0 24px 0']}
+        m={['24px 0', '24px 0', '24px 0', '68px 0 24px 0']}
         justifyContent={['center']}
-        flexDirection={['column', 'column', 'column', 'row']}
+        flexDirection={['column', 'column', 'column', 'column', 'column', 'row']}
       >
         <CommissionInfo />
-        <MyReferralLink />
+        <Flex flexDirection="column">
+          <MyReferralLink />
+          <ClaimReward />
+        </Flex>
       </Flex>
-      <ClaimReward />
     </AffiliatesProgramLayout>
   )
 }
