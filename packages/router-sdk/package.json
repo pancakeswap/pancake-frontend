@@ -1,0 +1,55 @@
+{
+  "name": "@pancakeswap/router-sdk",
+  "version": "1.4.0",
+  "description": "An sdk for routing swaps using Pancakeswap v2 and Pancakeswap v3.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "vitest --run",
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "keywords": [
+    "pancakeswap",
+    "bsc"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@uniswap/swap-router-contracts": "1.1.0",
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/v3-sdk": "*",
+    "tiny-invariant": "^1.1.0",
+    "jsbi": "^3.1.4"
+  },
+  "peerDependencies": {
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0"
+  },
+  "devDependencies": {
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0",
+    "@types/jest": "^24.0.25",
+    "prettier": "^2.4.1",
+    "tsup": "^6.5.0"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  }
+}

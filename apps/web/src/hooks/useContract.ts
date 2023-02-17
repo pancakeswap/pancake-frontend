@@ -9,7 +9,12 @@ import {
   Weth,
   Zap,
 } from 'config/abi/types'
+import QuoterJson from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
+import QuoterV2Json from '@uniswap/swap-router-contracts/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
+
 import zapAbi from 'config/abi/zap.json'
+import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
+import addresses from 'config/constants/contracts'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
@@ -296,23 +301,27 @@ export const useErc721CollectionContract = (
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
-  address: string | undefined,
+  addressOrAddressMap: string | { [chainId: number]: string } | undefined,
   ABI: any,
   withSignerIfPossible = true,
 ): T | null {
+  const { chainId } = useActiveChainId()
+
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
 
-  const canReturnContract = useMemo(() => address && ABI && providerOrSigner, [address, ABI, providerOrSigner])
-
   return useMemo(() => {
-    if (!canReturnContract) return null
+    if (!addressOrAddressMap || !ABI || !providerOrSigner || !chainId) return null
+    let address: string | undefined
+    if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
+    else address = addressOrAddressMap[chainId]
+    if (!address) return null
     try {
       return getContract(address, ABI, providerOrSigner)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, providerOrSigner, canReturnContract]) as T
+  }, [addressOrAddressMap, ABI, providerOrSigner, chainId]) as T
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
@@ -383,4 +392,16 @@ export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfP
     () => proxyContractAddress && getCrossFarmingProxyContract(proxyContractAddress, providerOrSigner, chainId),
     [proxyContractAddress, providerOrSigner, chainId],
   )
+}
+
+const { abi: QuoterABI } = QuoterJson
+const { abi: QuoterV2ABI } = QuoterV2Json
+
+export const useQuoterContract = (useQuoterV2 = false) => {
+  return useContract(addresses.quoter, useQuoterV2 ? QuoterV2ABI : QuoterABI)
+}
+
+// Philip TODO: Add NonfungiblePositionManager | null type
+export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean) {
+  return useContract(addresses.nftPositionManager, NFTPositionManagerABI, withSignerIfPossible)
 }

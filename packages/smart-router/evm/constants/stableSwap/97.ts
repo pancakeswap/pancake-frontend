@@ -1,6 +1,6 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
 
-import { StableSwapPool } from '../../types/pool'
+import { StableSwapPool } from './types'
 
 export const pools: StableSwapPool[] = [
   {
