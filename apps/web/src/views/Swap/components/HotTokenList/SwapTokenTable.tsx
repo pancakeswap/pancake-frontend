@@ -1,6 +1,6 @@
 import { getAddress } from '@ethersproject/address'
 import { useTranslation } from '@pancakeswap/localization'
-import { useActiveChainId } from './useNetwork'
+import { ChainId, Currency, Token } from '@pancakeswap/sdk'
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -15,21 +15,21 @@ import {
   TokenLogo,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { Currency, Token, ChainId } from '@pancakeswap/sdk'
 import { BAD_SRCS } from 'components/Logo/constants'
 import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
+import ReactGA from 'react-ga'
+import { multiChainPaths } from 'state/info/constant'
 import { useStableSwapPath } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
-import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
-import ReactGA from 'react-ga'
 
 /**
  *  Columns on different layouts
@@ -211,7 +211,7 @@ const DataRow: React.FC<
                 category: 'TokenHighlight',
                 action: 'Click Trade Button',
                 label: tokenData.symbol,
-                dimension1: chainId,
+                dimension1: chainId.toString(),
                 dimension2: tokenData.address,
               })
               e.stopPropagation()
