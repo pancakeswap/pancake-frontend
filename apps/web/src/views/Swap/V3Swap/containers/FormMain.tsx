@@ -21,6 +21,7 @@ import { RiskCheck } from './RiskCheck'
 import { useIsWrapping } from '../hooks'
 import { FlipButton } from './FlipButton'
 import { Recipient } from './Recipient'
+import { PricingAndSlippage } from './PricingAndSlippage'
 
 export function FormMain() {
   const { account } = useWeb3React()
@@ -123,6 +124,7 @@ export function FormMain() {
       />
       <RiskCheck currency={outputCurrency} />
       <Recipient />
+      <PricingAndSlippage />
     </FormContainer>
   )
 }
