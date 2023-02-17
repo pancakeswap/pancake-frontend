@@ -82,7 +82,9 @@ export const useAllPoolDataSWR = () => {
     () => fetchAllPoolData(blocks, chainName),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data ?? {}
+  return useMemo(() => {
+    return data ?? {}
+  }, [data])
 }
 
 export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
@@ -97,13 +99,13 @@ export const usePoolDatasSWR = (poolAddresses: string[]): PoolData[] => {
     SWR_SETTINGS,
   )
 
-  const poolsWithData = poolAddresses
-    .map((address) => {
-      return data?.[address]?.data
-    })
-    .filter((pool) => pool)
-
-  return poolsWithData
+  return useMemo(() => {
+    return poolAddresses
+      .map((address) => {
+        return data?.[address]?.data
+      })
+      .filter((pool) => pool)
+  }, [data, poolAddresses])
 }
 
 export const usePoolChartDataSWR = (address: string): ChartEntry[] | undefined => {
@@ -150,7 +152,9 @@ export const useAllTokenHighLight = (): TokenData[] => {
           .filter((d) => d && d.exists)
       : []
   }, [data])
-  return isLoading ? [] : tokensWithData ?? []
+  return useMemo(() => {
+    return isLoading ? [] : tokensWithData ?? []
+  }, [isLoading, tokensWithData])
 }
 
 export const useAllTokenDataSWR = (): {
@@ -209,7 +213,9 @@ export const useTokenDatasSWR = (addresses?: string[], withSettings = true): Tok
       .filter((d) => d && d.exists)
   }, [addresses, allData])
 
-  return isLoading ? [] : tokensWithData ?? undefined
+  return useMemo(() => {
+    return isLoading ? [] : tokensWithData ?? undefined
+  }, [isLoading, tokensWithData])
 }
 
 export const useTokenDataSWR = (address: string | undefined): TokenData | undefined => {
@@ -298,11 +304,16 @@ export const useStableSwapTopPoolsAPR = (addresses: string[]): Record<string, nu
     () => stableSwapAPRWithAddressesFetcher(addresses),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  const addressWithAPR: Record<string, number> = {}
-  data?.forEach((d, index) => {
-    addressWithAPR[addresses[index]] = d?.toNumber()
-  })
-  return isStableSwap ? addressWithAPR : {}
+  const addressWithAPR = useMemo(() => {
+    const result: Record<string, number> = {}
+    data?.forEach((d, index) => {
+      result[addresses[index]] = d?.toNumber()
+    })
+    return result
+  }, [addresses, data])
+  return useMemo(() => {
+    return isStableSwap ? addressWithAPR : {}
+  }, [isStableSwap, addressWithAPR])
 }
 
 export const useMultiChainPath = () => {
