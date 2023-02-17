@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import {useMemo, useState} from 'react'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import {ChainId} from "@pancakeswap/sdk"
+import BigNumber from 'bignumber.js'
 import styled from 'styled-components'
 import {
   Card,
@@ -19,12 +22,17 @@ import { useAccount } from 'wagmi'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import {CADINU, CAKE} from '@pancakeswap/tokens'
+
 import { useLottery } from 'state/lottery/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import ViewTicketsModal from './ViewTicketsModal'
 import BuyTicketsButton from './BuyTicketsButton'
 import { dateTimeOptions } from '../helpers'
 import RewardBrackets from './RewardBrackets'
+import useBUSDPrice from "../../../hooks/useBUSDPrice"
+
+
 
 const Grid = styled.div`
   display: grid;
@@ -66,22 +74,27 @@ const NextDrawCard = () => {
   const [isExpanded, setIsExpanded] = useState(false)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
-  const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCadinu
-//   .times(cakePriceBusd)
+  // const cakePriceBusd = usePriceCakeBusd()
+
+
+
+  const price = useBUSDPrice(CADINU[ChainId.BSC])
+  const cakePriceBusd = useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
+  console.log(cakePriceBusd)
+  const prizeInBusd = amountCollectedInCadinu.times(cakePriceBusd)
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)
   const isLotteryOpen = status === LotteryStatus.OPEN
   const userTicketCount = userTickets?.tickets?.length || 0
 
   const getPrizeBalances = () => {
-    if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
-      return (
-        <Heading scale="xl" color="secondary" textAlign={['center', null, null, 'left']}>
-          {t('Calculating')}...
-        </Heading>
-      )
-    }
+    // if (status === LotteryStatus.CLOSE || status === LotteryStatus.CLAIMABLE) {
+    //   return (
+    //     <Heading scale="xl" color="secondary" textAlign={['center', null, null, 'left']}>
+    //       {t('Calculating')}...
+    //     </Heading>
+    //   )
+    // }
     return (
       <>
         {prizeInBusd.isNaN() ? (
