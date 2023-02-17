@@ -10,7 +10,6 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
 import { useCurrency } from 'hooks/Tokens'
-import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { CommonBasesType } from 'components/SearchModal/types'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
@@ -18,6 +17,9 @@ import { currencyId } from 'utils/currencyId'
 
 import { FormContainer } from '../components'
 import useWarningImport from '../../hooks/useWarningImport'
+import { RiskCheck } from './RiskCheck'
+import { useIsWrapping } from '../hooks'
+import { FlipButton } from './FlipButton'
 
 export function FormMain() {
   const { account } = useWeb3React()
@@ -26,15 +28,14 @@ export function FormMain() {
   const {
     independentField,
     typedValue,
-    recipient,
     [Field.INPUT]: { currencyId: inputCurrencyId },
     [Field.OUTPUT]: { currencyId: outputCurrencyId },
   } = useSwapState()
+  const isWrapping = useIsWrapping(inputCurrencyId, outputCurrencyId)
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-  const { wrapType } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
-  const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
-  const [inputBalance, outputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
+  const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
+  const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
   const maxAmountInput = maxAmountSpend(inputBalance)
 
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
@@ -55,23 +56,33 @@ export function FormMain() {
     }
   }, [maxAmountInput, onUserInput])
 
-  const handleInputSelect = useCallback(
-    (newCurrencyInput: Currency) => {
-      onCurrencySelection(Field.INPUT, newCurrencyInput)
+  const handleCurrencySelect = useCallback(
+    (newCurrency: Currency, field: Field, currentInputCurrencyId: string, currentOutputCurrencyId: string) => {
+      onCurrencySelection(field, newCurrency)
 
-      warningSwapHandler(newCurrencyInput)
+      warningSwapHandler(newCurrency)
 
-      const newCurrencyInputId = currencyId(newCurrencyInput)
-      if (newCurrencyInputId === outputCurrencyId) {
-        replaceBrowserHistory('outputCurrency', inputCurrencyId)
+      const isInput = field === Field.INPUT
+      const oldCurrencyId = isInput ? currentInputCurrencyId : currentOutputCurrencyId
+      const otherCurrencyId = isInput ? currentOutputCurrencyId : currentInputCurrencyId
+      const newCurrencyId = currencyId(newCurrency)
+      if (newCurrencyId === otherCurrencyId) {
+        replaceBrowserHistory(isInput ? 'outputCurrency' : 'inputCurrency', oldCurrencyId)
       }
-      replaceBrowserHistory('inputCurrency', newCurrencyInputId)
+      replaceBrowserHistory(isInput ? 'inputCurrency' : 'outputCurrency', newCurrencyId)
     },
-    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
+    [onCurrencySelection, warningSwapHandler],
+  )
+  const handleInputSelect = useCallback(
+    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.INPUT, inputCurrencyId, outputCurrencyId),
+    [handleCurrencySelect, inputCurrencyId, outputCurrencyId],
+  )
+  const handleOutputSelect = useCallback(
+    (newCurrency: Currency) => handleCurrencySelect(newCurrency, Field.OUTPUT, inputCurrencyId, outputCurrencyId),
+    [handleCurrencySelect, inputCurrencyId, outputCurrencyId],
   )
 
   const isTypingInput = independentField === Field.INPUT
-  const isWrapping = wrapType !== WrapType.NOT_APPLICABLE
   const inputValue = isTypingInput ? typedValue : ''
   const outputValue = isTypingInput ? '' : typedValue
 
@@ -82,7 +93,7 @@ export function FormMain() {
         showBUSD
         showMaxButton
         showCommonBases
-        label={isTypingInput && !isWrapping ? t('From (estimated)') : t('From')}
+        label={!isTypingInput && !isWrapping ? t('From (estimated)') : t('From')}
         value={inputValue}
         maxAmount={maxAmountInput}
         showQuickInputButton
@@ -94,6 +105,22 @@ export function FormMain() {
         otherCurrency={outputCurrency}
         commonBasesType={CommonBasesType.SWAP_LIMITORDER}
       />
+      <RiskCheck currency={inputCurrency} />
+      <FlipButton />
+      <CurrencyInputPanel
+        id="swap-currency-output"
+        showBUSD
+        showCommonBases
+        showMaxButton={false}
+        label={isTypingInput && !isWrapping ? t('To (estimated)') : t('To')}
+        value={outputValue}
+        currency={outputCurrency}
+        onUserInput={handleTypeOutput}
+        onCurrencySelect={handleOutputSelect}
+        otherCurrency={outputCurrency}
+        commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+      />
+      <RiskCheck currency={outputCurrency} />
     </FormContainer>
   )
 }
