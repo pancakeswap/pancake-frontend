@@ -45,46 +45,50 @@ export function createOffChainQuoteProvider(): QuoteProvider {
     ): Promise<RouteWithQuote[]> {
       const routesWithQuote: RouteWithQuote[] = []
       for (const route of routes) {
-        const { pools, amount } = route
-        let quote = amount
-        const initializedTickCrossedList = Array(pools.length).fill(0)
-        for (const [pool, i] of each(pools)) {
-          if (isV2Pool(pool)) {
-            quote = getV2Quote(pool, quote)
-            continue
-          }
-          if (isStablePool(pool)) {
-            quote = getStableQuote(pool, quote)
-            continue
-          }
-          if (isV3Pool(pool)) {
-            // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
-            // eslint-disable-next-line no-await-in-loop
-            const v3QuoteResult = await getV3Quote(pool, quote)
-            if (!v3QuoteResult) {
-              break
+        try {
+          const { pools, amount } = route
+          let quote = amount
+          const initializedTickCrossedList = Array(pools.length).fill(0)
+          for (const [pool, i] of each(pools)) {
+            if (isV2Pool(pool)) {
+              quote = getV2Quote(pool, quote)
+              continue
             }
-            const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
-            quote = v3Quote
-            initializedTickCrossedList[i] = numOfTicksCrossed
+            if (isStablePool(pool)) {
+              quote = getStableQuote(pool, quote)
+              continue
+            }
+            if (isV3Pool(pool)) {
+              // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
+              // eslint-disable-next-line no-await-in-loop
+              const v3QuoteResult = await getV3Quote(pool, quote)
+              if (!v3QuoteResult) {
+                break
+              }
+              const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
+              quote = v3Quote
+              initializedTickCrossedList[i] = numOfTicksCrossed
+            }
           }
-        }
 
-        const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
-          {
+          const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
+            {
+              ...route,
+              quote,
+            },
+            { initializedTickCrossedList },
+          )
+          routesWithQuote.push({
             ...route,
             quote,
-          },
-          { initializedTickCrossedList },
-        )
-        routesWithQuote.push({
-          ...route,
-          quote,
-          quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
-          gasEstimate,
-          gasCostInUSD,
-          gasCostInToken,
-        })
+            quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
+            gasEstimate,
+            gasCostInUSD,
+            gasCostInToken,
+          })
+        } catch (e) {
+          console.warn('Failed to get quote from route', route, e)
+        }
       }
       return routesWithQuote
     }
