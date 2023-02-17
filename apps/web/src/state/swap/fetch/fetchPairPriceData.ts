@@ -1,8 +1,8 @@
 import requestWithTimeout from 'utils/requestWithTimeout'
-import { infoClient } from 'utils/graphql'
+import { infoClient, stableSwapClient } from 'utils/graphql'
 import lastPairDayId from '../queries/lastPairDayId'
-import pairHourDatas from '../queries/pairHourDatas'
-import pairDayDatasByIdsQuery from '../queries/pairDayDatasByIdsQuery'
+import pairHourDatas, { stableSwapPairHourDatas } from '../queries/pairHourDatas'
+import pairDayDatasByIdsQuery, { stableSwapPairDayDatasByIdsQuery } from '../queries/pairDayDatasByIdsQuery'
 import { PairDataTimeWindowEnum } from '../types'
 import { timeWindowIdsCountMapping } from './constants'
 import {
@@ -13,20 +13,24 @@ import {
   PairHoursDatasResponse,
 } from './types'
 import { getIdsByTimeWindow, getPairSequentialId } from './utils'
-import pairDayDatas from '../queries/pairDayDatas'
-import pairHourDatasByIds from '../queries/pairHourDatasByIds'
+import pairDayDatas, { stableSwapPairDayDatas } from '../queries/pairDayDatas'
+import pairHourDatasByIds, { stableSwapPairHourDatasByIds } from '../queries/pairHourDatasByIds'
 import lastPairHourId from '../queries/lastPairHourId'
 
-const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) => {
-  const client = infoClient
+const fetchPairPriceData = async ({ pairId, timeWindow, isStableSwap }: fetchPairDataParams) => {
+  const client = isStableSwap ? stableSwapClient : infoClient
 
   try {
     switch (timeWindow) {
       case PairDataTimeWindowEnum.DAY: {
-        const data = await requestWithTimeout<PairHoursDatasResponse>(client, pairHourDatas, {
-          pairId,
-          first: timeWindowIdsCountMapping[timeWindow],
-        })
+        const data = await requestWithTimeout<PairHoursDatasResponse>(
+          client,
+          isStableSwap ? stableSwapPairHourDatas : pairHourDatas,
+          {
+            pairId,
+            first: timeWindowIdsCountMapping[timeWindow],
+          },
+        )
         return { data, error: false }
       }
       case PairDataTimeWindowEnum.WEEK: {
@@ -43,16 +47,24 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
           idsCount: timeWindowIdsCountMapping[timeWindow],
         })
 
-        const pairHoursData = await requestWithTimeout<PairHoursDatasResponse>(client, pairHourDatasByIds, {
-          pairIds: pairHourIds,
-        })
+        const pairHoursData = await requestWithTimeout<PairHoursDatasResponse>(
+          client,
+          isStableSwap ? stableSwapPairHourDatasByIds : pairHourDatasByIds,
+          {
+            pairIds: pairHourIds,
+          },
+        )
         return { data: pairHoursData, error: false }
       }
       case PairDataTimeWindowEnum.MONTH: {
-        const data = await requestWithTimeout<PairHoursDatasResponse>(client, pairDayDatas, {
-          pairId,
-          first: timeWindowIdsCountMapping[timeWindow],
-        })
+        const data = await requestWithTimeout<PairHoursDatasResponse>(
+          client,
+          isStableSwap ? stableSwapPairDayDatas : pairDayDatas,
+          {
+            pairId,
+            first: timeWindowIdsCountMapping[timeWindow],
+          },
+        )
         return { data, error: false }
       }
       case PairDataTimeWindowEnum.YEAR: {
@@ -68,9 +80,13 @@ const fetchPairPriceData = async ({ pairId, timeWindow }: fetchPairDataParams) =
           timeWindow,
           idsCount: timeWindowIdsCountMapping[timeWindow],
         })
-        const pairDayData = await requestWithTimeout<PairDayDatasResponse>(client, pairDayDatasByIdsQuery, {
-          pairIds: pairDayIds,
-        })
+        const pairDayData = await requestWithTimeout<PairDayDatasResponse>(
+          client,
+          isStableSwap ? stableSwapPairDayDatasByIdsQuery : pairDayDatasByIdsQuery,
+          {
+            pairIds: pairDayIds,
+          },
+        )
         return { data: pairDayData, error: false }
       }
       default:

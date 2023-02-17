@@ -2,6 +2,7 @@ import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-moti
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
+import { isMobile } from "react-device-detect";
 import { DefaultTheme, ThemeProvider, useTheme } from "styled-components";
 import { dark, light } from "../../theme";
 import getPortalRoot from "../../util/getPortalRoot";
@@ -32,7 +33,7 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
   const { isDark } = useTheme();
   const {
     placement = "auto",
-    trigger = "hover",
+    trigger = isMobile ? "click" : "hover",
     arrowPadding = 16,
     tooltipPadding = { left: 16, right: 16 },
     tooltipOffset = [0, 10],

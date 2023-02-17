@@ -20,10 +20,12 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
   return ({
     pool,
     stakedBalance,
+    hideLocateAddress = false,
     ...rest
   }: {
     pool: DeserializedPool<T>;
     account?: string;
+    hideLocateAddress?: boolean;
     stakedBalance?: BigNumber;
   }) => {
     const { sousId, stakingToken, earningToken, userData, earningTokenPrice } = pool;
@@ -56,7 +58,7 @@ export function withTableActions<T>(HarvestActionsComp: any, StakeActionsComp: a
           stakedBalance={stakedBalance}
           isBnbPool={isBnbPool}
           isStaked={isStaked}
-          hideLocateAddress={false}
+          hideLocateAddress={hideLocateAddress}
           stakingTokenSymbol={stakingToken.symbol}
           {...rest}
         />
