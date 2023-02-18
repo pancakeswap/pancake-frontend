@@ -12,6 +12,7 @@ import {
   VerifiedIcon,
   VoteIcon,
   LockIcon,
+  RocketIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -145,6 +146,21 @@ const ClosedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   );
 };
 
+const BoostedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  const { t } = useTranslation();
+  return (
+    <Tag
+      variant="success"
+      style={{ background: "none", width: "100px" }}
+      outline
+      startIcon={<RocketIcon width="18px" color="success" mr="4px" />}
+      {...props}
+    >
+      {t("Boosted")}
+    </Tag>
+  );
+};
+
 const Tags = {
   CoreTag,
   FarmAuctionTag,
@@ -158,6 +174,7 @@ const Tags = {
   StableFarmTag,
   LockedPoolTag,
   LockedOrAutoPoolTag,
+  BoostedTag,
 };
 
 export default Tags;

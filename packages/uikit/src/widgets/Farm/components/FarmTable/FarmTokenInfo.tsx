@@ -30,6 +30,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
   label,
   isReady,
   isStable,
+  isBoosted,
   stakedBalance,
   children,
 }) => {
@@ -69,13 +70,14 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
     </Container>
   );
 
-  return isStable ? (
+  return (
     <Flex flexDirection="column">
       {pairContainer}
-      <Tags.StableFarmTag mt="4px" />
+      <Flex flexDirection="row" ml="32px">
+        {isStable ? <Tags.StableFarmTag mt="4px" /> : null}
+        {isBoosted ? <Tags.BoostedTag mt="4px" ml="4px" /> : null}
+      </Flex>
     </Flex>
-  ) : (
-    pairContainer
   );
 };
 
