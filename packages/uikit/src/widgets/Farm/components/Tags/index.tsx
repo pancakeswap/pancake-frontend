@@ -36,7 +36,7 @@ const FarmAuctionTagToolTipContent = memo(() => {
 
 const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(<FarmAuctionTagToolTipContent />, { placement: "right" });
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(<FarmAuctionTagToolTipContent />, { placement: "top" });
   return (
     <>
       {tooltipVisible && tooltip}
@@ -51,7 +51,7 @@ const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 
 const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
-  const { targetRef, tooltip, tooltipVisible } = useTooltip("Fees are lower for stable LP", { placement: "right" });
+  const { targetRef, tooltip, tooltipVisible } = useTooltip("Fees are lower for stable LP", { placement: "top" });
   return (
     <>
       {tooltipVisible && tooltip}
