@@ -1,5 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Button, Flex, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import {
+  Box,
+  Button,
+  Flex,
+  NextLinkFromReactRouter,
+  Text,
+  useMatchBreakpoints,
+  OpenNewIcon,
+  ArrowForwardIcon,
+} from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
 import styled, { css } from 'styled-components'
 import { trustwalletBg, trustwalletBunny } from './images'
@@ -119,6 +128,7 @@ const TrustWalletCampaignBanner = () => {
                 <Text bold fontSize="16px" mr="4px">
                   {isMobile ? t('Trade Now') : t('Trade now using Trust Wallet')}
                 </Text>
+                <ArrowForwardIcon />
               </StyledButtonLeft>
             </NextLinkFromReactRouter>
             <NextLinkFromReactRouter target="_blank" to="https://rebrand.ly/tw-pcs" rel='"noopener noreferrer'>
@@ -126,6 +136,7 @@ const TrustWalletCampaignBanner = () => {
                 <Text bold fontSize="16px" mr="4px">
                   {t('Download Trust Wallet')}
                 </Text>
+                <OpenNewIcon color="primary" />
               </StyledButtonRight>
             </NextLinkFromReactRouter>
           </Flex>
