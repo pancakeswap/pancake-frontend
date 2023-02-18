@@ -41,7 +41,13 @@ const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
     <>
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} style={{ textDecoration: "none" }}>
-        <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
+        <Tag
+          variant="failure"
+          style={{ background: "none" }}
+          outline
+          startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />}
+          {...props}
+        >
           {t("Farm Auction")}
         </Tag>
       </TooltipText>
@@ -56,7 +62,7 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
     <>
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} style={{ textDecoration: "none", alignSelf: "center" }}>
-        <Tag variant="failure" outline {...props}>
+        <Tag variant="failure" style={{ background: "none" }} outline {...props}>
           {t("Stable LP")}
         </Tag>
       </TooltipText>
