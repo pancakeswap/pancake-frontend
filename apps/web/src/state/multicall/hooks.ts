@@ -198,12 +198,14 @@ function toCallState(
   }
 }
 
+export interface MultiContractsMultiMethodsCallInput {
+  contract: Contract | null | undefined
+  methodName: string
+  inputs?: OptionalMethodInputs
+}
+
 export function useMultiContractsMultiMethods(
-  callInputs: {
-    contract: Contract | null | undefined
-    methodName: string
-    inputs?: OptionalMethodInputs
-  }[],
+  callInputs: MultiContractsMultiMethodsCallInput[],
   options?: ListenerOptions,
 ) {
   const { chainId } = useActiveChainId()

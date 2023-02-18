@@ -1,9 +1,11 @@
 import useSWR from 'swr'
-import { useDeferredValue } from 'react'
+import { useDeferredValue, useMemo } from 'react'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 
 import { provider } from 'utils/wagmi'
+
+import { useCommonPools } from './useCommonPools'
 
 interface Options {
   amount?: CurrencyAmount<Currency>
@@ -14,6 +16,8 @@ interface Options {
 }
 
 export function useBestAMMTrade({ amount, currency, tradeType, maxHops, maxSplits }: Options) {
+  const candidatePools = useCommonPools(amount?.currency, currency)
+  const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotient = useDeferredValue(amount?.quotient.toString())
   const { data: trade, isLoading } = useSWR(
     amount && currency
@@ -26,7 +30,7 @@ export function useBestAMMTrade({ amount, currency, tradeType, maxHops, maxSplit
           return price.toString()
         },
         maxHops,
-        poolProvider: SmartRouter.createPoolProvider({ onChainProvider: provider }),
+        poolProvider,
         quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
         blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
       }),
