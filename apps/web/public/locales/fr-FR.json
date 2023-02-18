@@ -2115,9 +2115,9 @@
   "Input is estimated. You will sell at most or the transaction will revert.": "Le gain est estimé. Vous vendrez au plus ou la transaction sera annulée.",
   "MM Linked Pool": "Pool associé au MM",
   "Trade through the market makers if they provide better deal": "Exécutez vos transactions par l'intermédiaire des teneurs de marché s'ils offrent de meilleures conditions",
-  "Checking RFQ with MM": "Checking RFQ with MM",
-  "Trade and win $10,000 Prize Pool": "Trade and win $10,000 Prize Pool",
-  "Trade now using Trust Wallet": "Trade now using Trust Wallet",
-  "Download Trust Wallet": "Download Trust Wallet",
-  "Trade and Share $10,000": "Trade and Share $10,000"
+  "Checking RFQ with MM": "Vérification du RFQ avec le MM",
+  "Trade and win $10,000 Prize Pool": "Effectuez des transactions et gagnez une cagnotte de 10 000 $",
+  "Trade now using Trust Wallet": "Effectuez des transactions via Trust Wallet",
+  "Download Trust Wallet": "Télécharger Trust Wallet",
+  "Trade and Share $10,000": "Effectuez des transactions et partagez 10 000 $"
 }
