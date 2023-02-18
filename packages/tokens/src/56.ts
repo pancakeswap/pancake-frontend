@@ -2465,4 +2465,12 @@ export const bscTokens = {
     'Axelar Wrapped USDC',
     'https://axelarscan.io/assets/',
   ),
+  csix: new ERC20Token(
+    ChainId.BSC,
+    '0x04756126F044634C9a0f0E985e60c88a51ACC206',
+    18,
+    'CSIX',
+    'Carbon',
+    'https://carbon.website/',
+  ),
 }

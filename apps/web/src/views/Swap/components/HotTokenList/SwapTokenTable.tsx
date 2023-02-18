@@ -1,4 +1,3 @@
-import { getAddress } from '@ethersproject/address'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   ArrowBackIcon,
@@ -14,6 +13,7 @@ import {
   TokenLogo,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
+import { isAddress } from 'utils'
 import { Currency, Token, ChainId } from '@pancakeswap/sdk'
 import { BAD_SRCS } from 'components/Logo/constants'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -156,17 +156,18 @@ const DataRow: React.FC<
     handleOutputSelect: (newCurrencyOutput: Currency) => void
   }>
 > = ({ tokenData, type, handleOutputSelect }) => {
+  const { t } = useTranslation()
+  const { theme } = useTheme()
   const { isXs, isSm, isMobile } = useMatchBreakpoints()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
-  const address = getAddress(tokenData.address)
+  const address = isAddress(tokenData.address)
+  if (!address) return null
   const tokenLogoURL = getTokenLogoURLByAddress(tokenData.address, chainId)
-  const { t } = useTranslation()
-  const { theme } = useTheme()
   const imagePath = chainId === ChainId.BSC ? '' : `${chainId}/tokens/`
   return (
     <LinkWrapper
-      to={`/info${multiChainPaths[chainId]}/tokens/${tokenData.address}?chain=${
+      to={`/info${multiChainPaths[chainId]}/tokens/${address}?chain=${
         CHAIN_QUERY_NAME[chainId]
       }${stableSwapPath.replace('?', '&')}`}
     >
@@ -208,7 +209,7 @@ const DataRow: React.FC<
             onClick={(e) => {
               e.stopPropagation()
               e.preventDefault()
-              const currency = new Token(chainId, tokenData.address, tokenData.decimals, tokenData.symbol)
+              const currency = new Token(chainId, address, tokenData.decimals, tokenData.symbol)
               handleOutputSelect(currency)
             }}
             style={{ color: theme.colors.textSubtle }}
