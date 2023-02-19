@@ -2,38 +2,38 @@ import React, { memo, useState, useRef, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { Heading, Text, Button, ArrowForwardIcon, Link, PageHeader, Pool } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import { usePollFarmsV1WithUserData } from 'state/farmsV1/hooks'
 import { VaultKey } from 'state/types'
 import { useFetchUserPools } from 'views/Migration/hook/V1/Pool/useFetchUserPools'
 import { useFetchPublicPoolsData } from 'views/Migration/hook/V1/Pool/useFetchPublicPoolsData'
 import Page from 'components/Layout/Page'
 import { Token } from '@pancakeswap/sdk'
-import ProgressSteps, { Step, ProgressStepsType } from './components/ProgressSteps'
+import { Step, MigrationProgressSteps } from './components/ProgressSteps'
 import MigrationSticky from './components/MigrationSticky'
 import OldPool from './components/MigrationStep1/OldPool'
 import OldFarm from './components/MigrationStep1/OldFarm'
 import NewPool from './components/MigrationStep2/NewPool'
 import NewFarm from './components/MigrationStep2/NewFarm'
 
+const steps: Step[] = [
+  {
+    stepId: 0,
+    canHover: true,
+    text: <Trans>Unstake LP tokens and CAKE from the old MasterChef contract.</Trans>,
+  },
+  {
+    stepId: 1,
+    canHover: true,
+    text: <Trans>Stake LP tokens and CAKE to the new MasterChef v2 contract.</Trans>,
+  },
+]
 const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const [step, setStep] = useState<ProgressStepsType>(ProgressStepsType.STEP1)
-  const steps: Step[] = [
-    {
-      stepId: ProgressStepsType.STEP1,
-      canHover: true,
-      text: t('Unstake LP tokens and CAKE from the old MasterChef contract.'),
-    },
-    {
-      stepId: ProgressStepsType.STEP2,
-      canHover: true,
-      text: t('Stake LP tokens and CAKE to the new MasterChef v2 contract.'),
-    },
-  ]
+  const [step, setStep] = useState<number>(0)
 
   // v1 Farms
   usePollFarmsV1WithUserData()
@@ -59,8 +59,8 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
 
   const handleMigrationStickyClick = () => {
     scrollToTop()
-    if (step === ProgressStepsType.STEP1) {
-      setStep(ProgressStepsType.STEP2)
+    if (step === 0) {
+      setStep(1)
     } else {
       router.push('/')
     }
@@ -85,8 +85,17 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
         </Link>
       </PageHeader>
       <Page>
-        <ProgressSteps pickedStep={step} steps={steps} onClick={setStep} />
-        {step === ProgressStepsType.STEP1 ? (
+        <MigrationProgressSteps
+          stepHairStyles={{
+            left: 'calc(-100% + -24px)',
+            width: '100%',
+          }}
+          width={['none', 'none', 'none', '653px']}
+          pickedStep={step}
+          steps={steps}
+          onClick={setStep}
+        />
+        {step === 0 ? (
           <>
             <OldPool pools={v1Pools} account={account} userDataLoaded={userDataLoaded} />
             <OldFarm />
@@ -98,7 +107,7 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
           </>
         )}
       </Page>
-      <MigrationSticky step={step} handleClick={handleMigrationStickyClick} />
+      <MigrationSticky version="v2" step={step} handleClick={handleMigrationStickyClick} />
     </div>
   )
 }
