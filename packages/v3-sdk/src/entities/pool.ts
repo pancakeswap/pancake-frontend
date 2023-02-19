@@ -98,7 +98,7 @@ export class Pool {
     this.sqrtRatioX96 = JSBI.BigInt(sqrtRatioX96)
     this.liquidity = JSBI.BigInt(liquidity)
     this.tickCurrent = tickCurrent
-    this.tickDataProvider = Array.isArray(ticks) ? new TickListDataProvider(ticks, TICK_SPACINGS[fee]) : ticks
+    this.tickDataProvider = Array.isArray(ticks) ? new TickListDataProvider(ticks) : ticks
   }
 
   /**
