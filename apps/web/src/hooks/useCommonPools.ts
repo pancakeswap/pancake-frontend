@@ -291,11 +291,11 @@ const useV3PoolsWithoutTicks = createOnChainPoolDataHook<V3Pool, V3PoolMeta>({
       methodName: 'slot0',
     },
   ],
-  buildPool: ({ currencyA, currencyB, fee }, [liquidity, slot0]) => {
+  buildPool: ({ currencyA, currencyB, fee, address }, [liquidity, slot0]) => {
     if (!liquidity || !slot0) {
       return null
     }
-    const { sqrtPriceX96 } = slot0
+    const { sqrtPriceX96, tick } = slot0
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
@@ -306,6 +306,8 @@ const useV3PoolsWithoutTicks = createOnChainPoolDataHook<V3Pool, V3PoolMeta>({
       fee,
       liquidity: JSBI.BigInt(liquidity),
       sqrtRatioX96: JSBI.BigInt(sqrtPriceX96),
+      tick: Number(tick),
+      address,
     }
   },
 })

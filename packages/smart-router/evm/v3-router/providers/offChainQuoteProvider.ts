@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, Pair, ZERO } from '@pancakeswap/sdk'
-import { Pool as V3Pool, TickMath } from '@pancakeswap/v3-sdk'
+import { Pool as V3Pool } from '@pancakeswap/v3-sdk'
 
 import {
   Pool as IPool,
@@ -135,19 +135,11 @@ function createGetV3Quote(isExactIn = true) {
     pool: IV3Pool,
     amount: CurrencyAmount<Currency>,
   ): Promise<{ quote: CurrencyAmount<Currency>; numOfTicksCrossed: number } | null> {
-    const { token0, token1, fee, sqrtRatioX96, liquidity, ticks } = pool
+    const { token0, token1, fee, sqrtRatioX96, liquidity, ticks, tick } = pool
     if (!ticks?.length) {
       return null
     }
-    const v3Pool = new V3Pool(
-      token0.wrapped,
-      token1.wrapped,
-      fee,
-      sqrtRatioX96,
-      liquidity,
-      TickMath.getTickAtSqrtRatio(sqrtRatioX96),
-      ticks,
-    )
+    const v3Pool = new V3Pool(token0.wrapped, token1.wrapped, fee, sqrtRatioX96, liquidity, tick, ticks)
     const getQuotePromise = isExactIn ? v3Pool.getOutputAmount(amount.wrapped) : v3Pool.getInputAmount(amount.wrapped)
     const [quote] = await getQuotePromise
     return {
