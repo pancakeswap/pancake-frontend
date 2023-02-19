@@ -18,7 +18,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "peerDependencies": {
-    "swr": "^2.0.1",
+    "swr": "^2.0.3",
     "wagmi": "^0.10.10",
     "@wagmi/core": "^0.8.14",
     "@blocto/sdk": "^0.3.1",
