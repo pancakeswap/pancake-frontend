@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, JSBI, Pair, ZERO } from '@pancakeswap/sdk'
 import { Pool as V3Pool, TickMath } from '@pancakeswap/v3-sdk'
 
 import {
@@ -49,6 +49,7 @@ export function createOffChainQuoteProvider(): QuoteProvider {
           const { pools, amount } = route
           let quote = amount
           const initializedTickCrossedList = Array(pools.length).fill(0)
+          let quoteSuccess = true
           for (const [pool, i] of each(pools)) {
             if (isV2Pool(pool)) {
               quote = getV2Quote(pool, quote)
@@ -62,13 +63,17 @@ export function createOffChainQuoteProvider(): QuoteProvider {
               // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
               // eslint-disable-next-line no-await-in-loop
               const v3QuoteResult = await getV3Quote(pool, quote)
-              if (!v3QuoteResult) {
+              if (!v3QuoteResult || JSBI.equal(v3QuoteResult.quote.quotient, ZERO)) {
+                quoteSuccess = false
                 break
               }
               const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
               quote = v3Quote
               initializedTickCrossedList[i] = numOfTicksCrossed
             }
+          }
+          if (!quoteSuccess) {
+            continue
           }
 
           const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
@@ -126,7 +131,7 @@ function createGetStableQuote(isExactIn = true) {
 }
 
 function createGetV3Quote(isExactIn = true) {
-  return async function getStableQuote(
+  return async function getV3Quote(
     pool: IV3Pool,
     amount: CurrencyAmount<Currency>,
   ): Promise<{ quote: CurrencyAmount<Currency>; numOfTicksCrossed: number } | null> {
