@@ -24,8 +24,8 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   const blockNumber = useCurrentBlock()
   const { pools: candidatePools, loading, syncing } = useCommonPools(baseCurrency || amount?.currency, currency)
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
-  // const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
-  const deferQuotient = useDebounce(amount?.quotient.toString(), 150)
+  const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
+  const deferQuotient = useDebounce(deferQuotientRaw, 150)
   const {
     data: trade,
     isLoading,
@@ -67,7 +67,6 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
       keepPreviousData: true,
     },
   )
-  console.log('hook values', deferQuotient, isLoading, isValidating)
   return {
     trade,
     isLoading: isLoading || loading || isValidating,

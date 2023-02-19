@@ -1,4 +1,5 @@
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import chunk from 'lodash/chunk'
 
 import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
 import { getAmountDistribution } from './functions'
@@ -38,5 +39,21 @@ export async function getRoutesWithValidQuote({
     tradeType === TradeType.EXACT_INPUT
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
-  return getRoutesWithQuote(routesWithoutQuote, { blockNumber, gasModel })
+
+  // FIXME won't work on server side
+  // Split into chunks so the calculation won't block the main thread
+  const getQuotes = (routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> =>
+    new Promise((resolve, reject) => {
+      requestIdleCallback(async () => {
+        try {
+          const result = await getRoutesWithQuote(routes, { blockNumber, gasModel })
+          resolve(result)
+        } catch (e) {
+          reject(e)
+        }
+      })
+    })
+  const chunks = chunk(routesWithoutQuote, 20)
+  const result = await Promise.all(chunks.map(getQuotes))
+  return result.reduce<RouteWithQuote[]>((acc, cur) => [...acc, ...cur], [])
 }
