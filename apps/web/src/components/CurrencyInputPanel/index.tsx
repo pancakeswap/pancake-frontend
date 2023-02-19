@@ -22,7 +22,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
+  padding: ${({ selected }) => (selected ? '0 0.5rem 0.75rem 1rem' : '0 0.75rem 0.75rem 1rem')};
 `
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ zapStyle?: ZapStyle }>`
   padding: 0 0.5rem;
@@ -253,7 +253,7 @@ export default function CurrencyInputPanel({
             />
           </LabelRow>
           {!!currency && showBUSD && (
-            <Flex justifyContent="flex-end" mr="1rem">
+            <Flex justifyContent="flex-end" mr="1rem" mb="0.5rem">
               <Flex maxWidth="200px">
                 {Number.isFinite(amountInDollar) ? (
                   <Text fontSize="12px" color="textSubtle">
@@ -265,8 +265,8 @@ export default function CurrencyInputPanel({
               </Flex>
             </Flex>
           )}
-          <InputRow selected={disableCurrencySelect}>
-            {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
+          {account && currency && selectedCurrencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
+            <InputRow selected={disableCurrencySelect}>
               <Flex alignItems="right" justifyContent="right">
                 {maxAmount?.greaterThan(0) &&
                   showQuickInputButton &&
@@ -309,8 +309,8 @@ export default function CurrencyInputPanel({
                   </Button>
                 )}
               </Flex>
-            )}
-          </InputRow>
+            </InputRow>
+          )}
         </Container>
         {disabled && <Overlay />}
       </InputPanel>
