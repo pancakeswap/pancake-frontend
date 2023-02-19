@@ -1,6 +1,9 @@
-import { useState, useEffect } from 'react'
+import {useState, useEffect, useMemo} from 'react'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
+import {ChainId} from "@pancakeswap/sdk";
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import {CADINU} from '@pancakeswap/tokens'
 import { Flex, Skeleton, Heading, Box, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
@@ -9,6 +12,8 @@ import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
 import { getGraphLotteries } from 'state/lottery/getLotteriesData'
 import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import RewardBrackets from '../RewardBrackets'
+import useBUSDPrice from "../../../../hooks/useBUSDPrice";
+
 
 const NextDrawWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.background};
@@ -26,7 +31,8 @@ const PreviousRoundCardFooter: React.FC<
   const { t } = useTranslation()
   const [fetchedLotteryGraphData, setFetchedLotteryGraphData] = useState<LotteryRoundGraphEntity>()
   const lotteryGraphDataFromState = useGetLotteryGraphDataById(lotteryId)
-  const cadinuPriceBusd = usePriceCadinuBusd()
+  const price = useBUSDPrice(CADINU[ChainId.BSC])
+  const cadinuPriceBusd = useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
 
   useEffect(() => {
     const getGraphData = async () => {
@@ -42,6 +48,7 @@ const PreviousRoundCardFooter: React.FC<
   if (lotteryNodeData) {
     const { amountCollectedInCadinu } = lotteryNodeData
     prizeInBusd = amountCollectedInCadinu.times(cadinuPriceBusd)
+
   }
 
   const getTotalUsers = (): string => {

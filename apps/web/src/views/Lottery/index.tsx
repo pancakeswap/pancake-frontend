@@ -27,7 +27,7 @@ const LotteryPage = styled.div`
 `
 
 const Lottery = () => {
-  useChineseNewYearEffect()
+  // useChineseNewYearEffect()
   useFetchLottery()
   useStatusTransitions()
   const { t } = useTranslation()

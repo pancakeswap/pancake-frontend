@@ -80,7 +80,6 @@ const NextDrawCard = () => {
 
   const price = useBUSDPrice(CADINU[ChainId.BSC])
   const cakePriceBusd = useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
-  console.log(cakePriceBusd)
   const prizeInBusd = amountCollectedInCadinu.times(cakePriceBusd)
   const endTimeMs = parseInt(endTime, 10) * 1000
   const endDate = new Date(endTimeMs)

@@ -11322,30 +11322,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"blog@workspace:apps/blog":
-  version: 0.0.0-use.local
-  resolution: "blog@workspace:apps/blog"
-  dependencies:
-    "@material-ui/core": ^4.12.4
-    "@next/eslint-plugin-next": 13.0.7
-    "@pancakeswap/localization": "*"
-    "@pancakeswap/sdk": "*"
-    "@pancakeswap/uikit": "*"
-    "@types/node": 18.0.4
-    "@types/react": ^18.0.17
-    "@types/react-dom": ^18.0.6
-    eslint: ^8.32.0
-    next: 13.0.7
-    next-axiom: ^0.16.0
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    styled-components: ^5.3.3
-    swiper: ^8.4.2
-    tsconfig: "*"
-    typescript: ^4.9.4
-  languageName: unknown
-  linkType: soft
-
 "bluebird@npm:3.7.2, bluebird@npm:^3.5.5, bluebird@npm:^3.7.2":
   version: 3.7.2
   resolution: "bluebird@npm:3.7.2"
@@ -28326,11 +28302,11 @@ __metadata:
 
 "typescript@patch:typescript@^4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
-  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
+  resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=23ec76"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 37f6e2c3c5e2aa5934b85b0fddbf32eeac8b1bacf3a5b51d01946936d03f5377fe86255d4e5a4ae628fd0cd553386355ad362c57f13b4635064400f3e8e05b9d
+  checksum: 3e2ab0772908676d9b9cb83398c70003a3b08e1c6b3b122409df9f4b520f2fdaefa20c3d7d57dce283fed760ac94b3ce94d4a7fa875127b67852904425a1f0dc
   languageName: node
   linkType: hard
 

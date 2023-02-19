@@ -70,11 +70,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <meta name="twitter:image" content="https://pancakeswap.finance/images/hero.png" />
         <meta
           name="twitter:description"
-          content="The most popular AMM on BSC! Earn CAKE through yield farming or win it in the Lottery, then stake it in Syrup Pools to earn more tokens! Initial Farm Offerings (new token launch model pioneered by PancakeSwap), NFTs, and more, on a platform you can trust."
+          content=" Earn CADINU. win it in the Lottery."
         />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="🥞 PancakeSwap - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
-        <title>Bridge | PancakeSwap</title>
+        <meta name="twitter:title" content=" Cadinu - A next evolution DeFi exchange on BNB Smart Chain (BSC)" />
+        <title>Bridge | CADINU</title>
       </Head>
       <NextThemeProvider>
         <StyledThemeProvider>
