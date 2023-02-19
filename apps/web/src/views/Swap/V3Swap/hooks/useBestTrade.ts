@@ -26,5 +26,12 @@ export function useBestTrade({ maxHops, maxSplits }: Options = {}) {
   const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
   const amount = tryParseAmount(typedValue, independentCurrency ?? undefined)
 
-  return useBestAMMTrade({ amount, currency: dependentCurrency, tradeType, maxHops, maxSplits })
+  return useBestAMMTrade({
+    amount,
+    currency: dependentCurrency,
+    baseCurrency: independentCurrency,
+    tradeType,
+    maxHops,
+    maxSplits,
+  })
 }

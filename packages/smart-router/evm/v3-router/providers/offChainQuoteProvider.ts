@@ -141,6 +141,7 @@ function createGetV3Quote(isExactIn = true) {
       sqrtRatioX96,
       liquidity,
       TickMath.getTickAtSqrtRatio(sqrtRatioX96),
+      ticks,
     )
     const getQuotePromise = isExactIn ? v3Pool.getOutputAmount(amount.wrapped) : v3Pool.getInputAmount(amount.wrapped)
     const [quote] = await getQuotePromise

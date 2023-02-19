@@ -9,14 +9,15 @@ import { useCommonPools } from './useCommonPools'
 
 interface Options {
   amount?: CurrencyAmount<Currency>
+  baseCurrency?: Currency
   currency?: Currency
   tradeType?: TradeType
   maxHops?: number
   maxSplits?: number
 }
 
-export function useBestAMMTrade({ amount, currency, tradeType, maxHops, maxSplits }: Options) {
-  const { pools: candidatePools, loading, syncing } = useCommonPools(amount?.currency, currency)
+export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
+  const { pools: candidatePools, loading, syncing } = useCommonPools(baseCurrency || amount?.currency, currency)
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotient = useDeferredValue(amount?.quotient.toString())
   const { data: trade, isLoading } = useSWR(
@@ -31,7 +32,8 @@ export function useBestAMMTrade({ amount, currency, tradeType, maxHops, maxSplit
         },
         maxHops,
         poolProvider,
-        quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+        // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+        quoteProvider: SmartRouter.createOffChainQuoteProvider(),
         blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
       }),
     {
