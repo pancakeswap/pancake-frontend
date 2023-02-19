@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
@@ -9,6 +10,7 @@ import {
   OpenNewIcon,
   ArrowForwardIcon,
 } from '@pancakeswap/uikit'
+import { getTrustWalletProvider } from '@pancakeswap/wagmi/connectors/trustWallet'
 import Image from 'next/legacy/image'
 import styled, { css } from 'styled-components'
 import { trustwalletBg, trustwalletBunny } from './images'
@@ -112,6 +114,10 @@ const StyledButtonRight = styled(Button)`
 const TrustWalletCampaignBanner = () => {
   const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
+  const hasTrustWallet = useMemo(() => {
+    return !!getTrustWalletProvider()
+  }, [])
+
   return (
     <S.Wrapper
       style={{
@@ -131,14 +137,16 @@ const TrustWalletCampaignBanner = () => {
                 <ArrowForwardIcon color="white" />
               </StyledButtonLeft>
             </NextLinkFromReactRouter>
-            <NextLinkFromReactRouter target="_blank" to="https://rebrand.ly/tw-pcs" rel='"noopener noreferrer'>
-              <StyledButtonRight scale={isMobile ? 'sm' : 'md'}>
-                <Text bold fontSize="16px" mr="4px">
-                  {t('Download Trust Wallet')}
-                </Text>
-                <OpenNewIcon color="primary" />
-              </StyledButtonRight>
-            </NextLinkFromReactRouter>
+            {!hasTrustWallet ? (
+              <NextLinkFromReactRouter target="_blank" to="https://rebrand.ly/tw-pcs" rel='"noopener noreferrer'>
+                <StyledButtonRight scale={isMobile ? 'sm' : 'md'}>
+                  <Text bold fontSize="16px" mr="4px">
+                    {t('Download Trust Wallet')}
+                  </Text>
+                  <OpenNewIcon color="primary" />
+                </StyledButtonRight>
+              </NextLinkFromReactRouter>
+            ) : null}
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
