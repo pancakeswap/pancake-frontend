@@ -120,7 +120,7 @@ export const parseMMParameter = (
       ? outputCurrency.address
       : isForRFQ
       ? NATIVE_CURRENCY_ADDRESS
-      : inputCurrency.wrapped.address,
+      : outputCurrency.wrapped.address,
     takerSideTokenAmount:
       independentField === Field.INPUT && typedValue && typedValue !== '0'
         ? tryParseUnit(typedValue, inputCurrency.decimals)

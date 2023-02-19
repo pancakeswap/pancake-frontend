@@ -4,7 +4,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
-import { MM_SIGNER } from '../constants'
+import { MM_SIGNER, NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { RFQResponse, TradeWithMM } from '../types'
 import { useMMSwapContract } from '../utils/exchange'
 
@@ -55,6 +55,8 @@ function swapCallParameters(
   const etherOut = trade.outputAmount.currency.isNative
   // the router does not support both ether in and out
   invariant(!(etherIn && etherOut), 'ETHER_IN_OUT')
+  invariant(rfq, 'RFQ_REQUIRED')
+  invariant(rfq.trader !== NATIVE_CURRENCY_ADDRESS, 'RFQ_REQUIRED')
 
   const methodName = 'swap'
   const args = [
@@ -70,7 +72,11 @@ function swapCallParameters(
     },
     rfq.signature,
   ]
-  const value = undefined
+  let value: string
+
+  if (etherIn) {
+    value = rfq.takerSideTokenAmount
+  }
 
   return {
     methodName,
