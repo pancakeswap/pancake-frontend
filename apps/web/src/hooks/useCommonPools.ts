@@ -22,16 +22,31 @@ import IPancakePairABI from 'config/abi/IPancakePair.json'
 import IStablePoolABI from 'config/abi/stableSwap.json'
 import IPancakeV3Pool from 'config/abi/IPancakeV3Pool.json'
 
-export function useCommonPools(currencyA?: Currency, currencyB?: Currency): Pool[] {
+interface PoolsWithState {
+  pools: Pool[]
+  loading: boolean
+  syncing: boolean
+}
+
+export function useCommonPools(currencyA?: Currency, currencyB?: Currency): PoolsWithState {
   const pairs = useMemo(() => SmartRouter.getPairCombinations(currencyA, currencyB), [currencyA, currencyB])
   return usePools(pairs)
 }
 
-export function usePools(pairs: [Currency, Currency][]): Pool[] {
-  const v2Pools = useV2Pools(pairs)
-  const stablePools = useStablePools(pairs)
-  const v3Pools = useV3PoolsWithoutTicks(pairs)
-  return useMemo(() => [...v2Pools, ...stablePools, ...v3Pools], [v2Pools, stablePools, v3Pools])
+export function usePools(pairs: [Currency, Currency][]): PoolsWithState {
+  const v2PoolState = useV2Pools(pairs)
+  const stablePoolState = useStablePools(pairs)
+  const v3PoolState = useV3PoolsWithoutTicks(pairs)
+  return useMemo(() => {
+    const { pools: v2Pools, loading: v2Loading, syncing: v2Syncing } = v2PoolState
+    const { pools: stablePools, loading: stableLoading, syncing: stableSyncing } = stablePoolState
+    const { pools: v3Pools, loading: v3Loading, syncing: v3Syncing } = v3PoolState
+    return {
+      pools: [...v2Pools, ...stablePools, ...v3Pools],
+      loading: v2Loading || v3Loading || stableLoading,
+      syncing: v2Syncing || v3Syncing || stableSyncing,
+    }
+  }, [v2PoolState, stablePoolState, v3PoolState])
 }
 
 interface PoolMeta {
@@ -53,7 +68,11 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
   buildPoolInfoCalls,
   buildPool,
 }: OnChainPoolDataHookFactoryParams<TPool, TPoolMeta>) {
-  return function usePools(pairs: [Currency, Currency][]): TPool[] {
+  return function usePools(pairs: [Currency, Currency][]): {
+    pools: TPool[]
+    loading: boolean
+    syncing: boolean
+  } {
     const provider = useProviderOrSigner()
     const poolMetas = useMemo<TPoolMeta[]>(() => {
       const poolAddressSet = new Set<string>()
@@ -90,13 +109,17 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
 
     const callStates = useMultiContractsMultiMethods(callInputs)
 
-    return useMemo<TPool[]>(() => {
+    return useMemo(() => {
       const pools: TPool[] = []
+      let isLoading = false
+      let isSyncing = false
       for (let i = 0; i < poolMetas.length; i += 1) {
         const poolCallStates = callStates.slice(i * poolCallSize, (i + 1) * poolCallSize)
         const results: any[] = []
         for (const { result, loading, syncing, error } of poolCallStates) {
-          if (loading || syncing || error) {
+          isLoading = isLoading || loading
+          isSyncing = isSyncing || syncing
+          if (loading || error) {
             break
           }
           results.push(result)
@@ -110,7 +133,11 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
           pools.push(pool)
         }
       }
-      return pools
+      return {
+        pools,
+        loading: isLoading,
+        syncing: isSyncing,
+      }
     }, [callStates, poolMetas, poolCallSize])
   }
 }

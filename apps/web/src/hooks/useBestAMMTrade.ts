@@ -16,7 +16,7 @@ interface Options {
 }
 
 export function useBestAMMTrade({ amount, currency, tradeType, maxHops, maxSplits }: Options) {
-  const candidatePools = useCommonPools(amount?.currency, currency)
+  const { pools: candidatePools, loading, syncing } = useCommonPools(amount?.currency, currency)
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotient = useDeferredValue(amount?.quotient.toString())
   const { data: trade, isLoading } = useSWR(
@@ -40,6 +40,7 @@ export function useBestAMMTrade({ amount, currency, tradeType, maxHops, maxSplit
   )
   return {
     trade,
-    isLoading,
+    isLoading: isLoading || loading,
+    syncing,
   }
 }
