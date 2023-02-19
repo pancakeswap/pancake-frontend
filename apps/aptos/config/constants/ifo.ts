@@ -27,3 +27,5 @@ export const ifos: Ifo[] = [
     vestingTitle: 'Stake $MOVE to access BlueMove Launchpad projects and earn platform fees',
   },
 ]
+
+export default ifos
