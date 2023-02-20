@@ -13,6 +13,7 @@ import {
   VoteIcon,
   LockIcon,
   RocketIcon,
+  CurrencyIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -56,8 +57,18 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   return (
     <>
       {tooltipVisible && tooltip}
-      <TooltipText ref={targetRef} style={{ textDecoration: "none", alignSelf: "center" }}>
-        <Tag variant="failure" outline {...props}>
+      <TooltipText
+        ref={targetRef}
+        display="flex"
+        style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
+      >
+        <Tag
+          variant="failure"
+          style={{ background: "none" }}
+          outline
+          startIcon={<CurrencyIcon width="18px" color="failure" mr="4px" />}
+          {...props}
+        >
           {t("Stable LP")}
         </Tag>
       </TooltipText>

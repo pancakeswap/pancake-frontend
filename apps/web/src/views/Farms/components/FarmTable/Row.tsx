@@ -23,7 +23,7 @@ import Farm from './Farm'
 import ActionPanel from './Actions/ActionPanel'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
 
-const { FarmAuctionTag, CoreTag } = FarmUI.Tags
+const { FarmAuctionTag, CoreTag, BoostedTag, StableFarmTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 
 export interface RowProps {
@@ -126,8 +126,10 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 return (
                   <td key={key}>
                     {userDataReady ? (
-                      <CellInner>
+                      <CellInner style={{ width: '140px' }}>
                         {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
+                        {props?.details?.isStable ? <StableFarmTag scale="sm" ml="6px" /> : null}
+                        {props?.details?.boosted ? <BoostedTag scale="sm" ml="6px" /> : null}
                       </CellInner>
                     ) : (
                       <Skeleton width={60} height={24} />
@@ -199,6 +201,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               ) : (
                 <Box style={{ marginRight: '16px' }}>
                   <CoreTag scale="sm" />
+                  {props?.details?.isStable ? (
+                    <StableFarmTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                  ) : null}
+                  {props?.details?.boosted ? (
+                    <BoostedTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                  ) : null}
                 </Box>
               )}
             </Flex>
