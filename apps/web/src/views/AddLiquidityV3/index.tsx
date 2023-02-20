@@ -18,14 +18,19 @@ import styled from 'styled-components'
 
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
+import AddLiquidity from 'views/AddLiquidity'
 
-import FeeSelector from './formViews/V3FormView/components/FeeSelector'
+// import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
 import { DynamicSection } from './formViews/V3FormView/components/shared'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from './types'
-import { StableV3Selector } from './components/StableV3Selector'
+// import { StableV3Selector } from './components/StableV3Selector'
+import StableFormView from './formViews/StableFormView'
+import { V2Selector } from './components/V2Selector'
+import L2FormView from './formViews/L2FormView'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -138,23 +143,26 @@ export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: Univ
     [handleCurrencySelect, currencyIdA, router],
   )
 
-  const [selectorType, setSelectoType] = useState<SELECTOR_TYPE | null>(null)
+  const [selectorType, setSelectoType] = useState<SELECTOR_TYPE | null>(SELECTOR_TYPE.V3)
 
   useEffect(() => {
+    if (!currencyIdA || !currencyIdB) return
+
     if (stableConfig.stableSwapConfig) {
       setSelectoType(SELECTOR_TYPE.STABLE)
     } else {
-      setSelectoType(SELECTOR_TYPE.V3)
+      setSelectoType(SELECTOR_TYPE.V2)
     }
-  }, [stableConfig.stableSwapConfig])
+  }, [currencyIdA, currencyIdB, stableConfig.stableSwapConfig])
 
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(
     ({ type, feeAmount: newFeeAmount }) => {
       setSelectoType(type)
-
-      router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, {
-        shallow: true,
-      })
+      if (newFeeAmount) {
+        router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, {
+          shallow: true,
+        })
+      }
     },
     [currencyIdA, currencyIdB, router],
   )
@@ -189,26 +197,42 @@ export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: Univ
                 />
               </FlexGap>
               <DynamicSection disabled={false}>
-                {selectorType === SELECTOR_TYPE.STABLE && (
-                  <StableV3Selector handleFeePoolSelect={handleFeePoolSelect} />
-                )}
-                {selectorType === SELECTOR_TYPE.V3 && (
+                {/* {selectorType === SELECTOR_TYPE.STABLE && (
+                  <StableV3Selector selectorType={selectorType} handleFeePoolSelect={handleFeePoolSelect} />
+                )} */}
+                <V2Selector selectorType={selectorType} handleFeePoolSelect={handleFeePoolSelect} />
+
+                {/* {selectorType === SELECTOR_TYPE.V3 && (
                   <FeeSelector
                     currencyA={baseCurrency ?? undefined}
                     currencyB={quoteCurrency ?? undefined}
                     handleFeePoolSelect={handleFeePoolSelect}
                     feeAmount={feeAmount}
                   />
-                )}
+                )} */}
               </DynamicSection>
             </AutoColumn>
-            <V3FormView
-              feeAmount={feeAmount}
-              baseCurrency={baseCurrency}
-              quoteCurrency={quoteCurrency}
-              currencyIdA={currencyIdA}
-              currencyIdB={currencyIdB}
-            />
+            {selectorType === SELECTOR_TYPE.STABLE && (
+              <StableConfigContext.Provider value={stableConfig}>
+                <AddStableLiquidity currencyA={baseCurrency} currencyB={quoteCurrency}>
+                  {(props) => <StableFormView {...props} />}
+                </AddStableLiquidity>
+              </StableConfigContext.Provider>
+            )}
+            {selectorType === SELECTOR_TYPE.V3 && (
+              <V3FormView
+                feeAmount={feeAmount}
+                baseCurrency={baseCurrency}
+                quoteCurrency={quoteCurrency}
+                currencyIdA={currencyIdA}
+                currencyIdB={currencyIdB}
+              />
+            )}
+            {selectorType === SELECTOR_TYPE.V2 && (
+              <AddLiquidity currencyA={baseCurrency} currencyB={quoteCurrency}>
+                {(props) => <L2FormView {...props} />}
+              </AddLiquidity>
+            )}
           </ResponsiveTwoColumns>
         </CardBody>
       </BodyWrapper>

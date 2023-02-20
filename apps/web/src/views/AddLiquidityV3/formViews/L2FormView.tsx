@@ -16,9 +16,9 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 
-// interface StableFormView {}
+// interface L2FormView {}
 
-export default function StableFormView({
+export default function L2FormView({
   formattedAmounts,
   addIsUnsupported,
   addIsWarning,

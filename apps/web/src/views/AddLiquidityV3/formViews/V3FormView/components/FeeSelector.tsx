@@ -9,7 +9,7 @@ import _toNumber from 'lodash/toNumber'
 import styled from 'styled-components'
 import { useEffect, useMemo, useState } from 'react'
 import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
-import { HandleFeePoolSelectFn } from 'views/AddLiquidityV3/types'
+import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { FeeOption } from './FeeOption'
 import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL } from './shared'
@@ -76,7 +76,10 @@ export default function FeeSelector({
     } else {
       setShowOptions(false)
 
-      handleFeePoolSelect(largestUsageFeeTier)
+      handleFeePoolSelect({
+        type: SELECTOR_TYPE.V3,
+        feeAmount: largestUsageFeeTier,
+      })
     }
   }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect])
 

@@ -9,7 +9,6 @@ import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/componen
 import Page from 'views/Page'
 import { useTranslation } from '@pancakeswap/localization'
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
-import { Bound } from 'views/AddLiquidityV3/formViews/V3FormView/form/actions'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Percent } from '@pancakeswap/sdk'
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
@@ -22,6 +21,7 @@ import { useTokenBalance } from 'state/wallet/hooks'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { useTokensDeposited } from 'components/PositionCard'
+import { Bound } from 'config/constants/types'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};

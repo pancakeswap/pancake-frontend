@@ -1,24 +1,23 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import { Button } from '@pancakeswap/uikit'
 
 import HideShowSelectorSection from './HideShowSelectorSection'
 import { SELECTOR_TYPE } from '../types'
 
-export function StableV3Selector({ handleFeePoolSelect }) {
+export function StableV3Selector({ handleFeePoolSelect, selectorType }) {
   const [showOptions, setShowOptions] = useState(false)
-
-  const onSelectorType = useCallback(() => {
-    handleFeePoolSelect({
-      type: SELECTOR_TYPE.STABLE,
-    })
-  }, [handleFeePoolSelect])
 
   return (
     <HideShowSelectorSection
       showOptions={showOptions}
       setShowOptions={setShowOptions}
-      heading="heading"
-      content={<Button onClick={onSelectorType}>Stable</Button>}
+      heading={selectorType === SELECTOR_TYPE.STABLE ? 'Stable' : 'LP V3'}
+      content={
+        <>
+          <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}>Stable</Button>
+          <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}>LP 3</Button>
+        </>
+      }
     />
   )
 }
