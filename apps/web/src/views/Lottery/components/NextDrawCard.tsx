@@ -21,8 +21,7 @@ import {
 import { useAccount } from 'wagmi'
 import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import {CADINU, CAKE} from '@pancakeswap/tokens'
+import {CADINU} from '@pancakeswap/tokens'
 
 import { useLottery } from 'state/lottery/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'

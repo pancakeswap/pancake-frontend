@@ -77,7 +77,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
             </StyledList>
           ))}
           <Box display={["none", null, "block"]}>
-            <LogoWithTextIcon width="160px" />
+            {/*<LogoWithTextIcon width="160px" />*/}
           </Box>
         </Flex>
         <StyledSocialLinks order={[2]} pb={["42px", null, "32px"]} mb={["0", null, "32px"]} />
@@ -99,21 +99,21 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
               dropdownPosition="top-right"
             />
           </Flex>
-          <Flex order={[1, null, 2]} mb={["24px", null, "0"]} justifyContent="space-between" alignItems="center">
-            <Box mr="20px">
-              <CakePrice cakePriceUsd={cakePriceUsd} color="textSubtle" />
-            </Box>
-            <Button
-              data-theme={isDark ? "dark" : "light"}
-              as="a"
-              href={buyCakeLink}
-              target="_blank"
-              scale="sm"
-              endIcon={<ArrowForwardIcon color="backgroundAlt" />}
-            >
-              {buyCakeLabel}
-            </Button>
-          </Flex>
+          {/*<Flex order={[1, null, 2]} mb={["24px", null, "0"]} justifyContent="space-between" alignItems="center">*/}
+          {/*  <Box mr="20px">*/}
+          {/*    <CakePrice cakePriceUsd={cakePriceUsd} color="textSubtle" />*/}
+          {/*  </Box>*/}
+          {/*  <Button*/}
+          {/*    data-theme={isDark ? "dark" : "light"}*/}
+          {/*    as="a"*/}
+          {/*    href={buyCakeLink}*/}
+          {/*    target="_blank"*/}
+          {/*    scale="sm"*/}
+          {/*    endIcon={<ArrowForwardIcon color="backgroundAlt" />}*/}
+          {/*  >*/}
+          {/*    {buyCakeLabel}*/}
+          {/*  </Button>*/}
+          {/*</Flex>*/}
         </StyledToolsContainer>
       </Flex>
     </StyledFooter>

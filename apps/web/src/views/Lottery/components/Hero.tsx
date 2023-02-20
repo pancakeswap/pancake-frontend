@@ -1,12 +1,17 @@
 import styled, { keyframes } from 'styled-components'
 import { Box, Flex, Heading, Skeleton, Balance } from '@pancakeswap/uikit'
+import {ChainId} from "@pancakeswap/sdk"
+import BigNumber from 'bignumber.js'
 import { LotteryStatus } from 'config/constants/types'
-import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useLottery } from 'state/lottery/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { TicketPurchaseCard } from '../svgs'
 import BuyTicketsButton from './BuyTicketsButton'
+import {useMemo} from "react";
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useTranslation } from '@pancakeswap/localization'
+import {CADINU} from '@pancakeswap/tokens'
+import useBUSDPrice from "../../../hooks/useBUSDPrice"
 
 export const floatingStarsLeft = keyframes`
   from {
@@ -262,10 +267,9 @@ const Hero = () => {
     currentRound: { amountCollectedInCadinu, status },
     isTransitioning,
   } = useLottery()
-
-  const cakePriceBusd = usePriceCakeBusd()
-  const prizeInBusd = amountCollectedInCadinu
-//   .times(cakePriceBusd)
+  const price = useBUSDPrice(CADINU[ChainId.BSC])
+  const cakePriceBusd = useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
+  const prizeInBusd = amountCollectedInCadinu.times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const ticketBuyIsDisabled = status !== LotteryStatus.OPEN || isTransitioning
 
