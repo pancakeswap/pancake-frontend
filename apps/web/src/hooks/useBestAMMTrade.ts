@@ -1,5 +1,6 @@
+/* eslint-disable no-console */
 import useSWR from 'swr'
-import { useDeferredValue, useMemo } from 'react'
+import { useDeferredValue, useEffect, useMemo } from 'react'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
@@ -30,25 +31,15 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     data: trade,
     isLoading,
     isValidating,
+    mutate,
   } = useSWR(
     amount && currency
-      ? [
-          amount.currency.chainId,
-          amount.currency.symbol,
-          currency.symbol,
-          tradeType,
-          deferQuotient,
-          maxHops,
-          maxSplits,
-          gasPrice,
-          blockNumber,
-        ]
+      ? [amount.currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
       : null,
     async () => {
       if (!deferQuotient) {
         return null
       }
-      console.log('start calculating')
       const start = Date.now()
       const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
         // TODO fix on ethereum
@@ -60,16 +51,22 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
         blockNumber,
       })
-      console.log('Getting best trade takes', Date.now() - start, deferQuotient)
+      console.log('[METRIC] Getting best trade takes', Date.now() - start, deferQuotient)
       return res
     },
     {
       keepPreviousData: true,
     },
   )
+
+  useEffect(() => {
+    // Revalidate if block height increases or gas price changed
+    mutate()
+  }, [blockNumber, gasPrice, mutate])
+
   return {
     trade,
-    isLoading: isLoading || loading || isValidating,
-    syncing,
+    isLoading: isLoading || loading,
+    syncing: syncing || isValidating,
   }
 }

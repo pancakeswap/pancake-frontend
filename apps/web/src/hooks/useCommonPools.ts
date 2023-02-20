@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition */
+/* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { Currency, Pair as V2Pair, CurrencyAmount, JSBI, Percent, ChainId } from '@pancakeswap/sdk'
 import { gql, GraphQLClient } from 'graphql-request'
 import { FeeAmount, computePoolAddress, Tick } from '@pancakeswap/v3-sdk'
@@ -109,7 +109,11 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
   buildPoolInfoCalls,
   buildPool,
 }: OnChainPoolDataHookFactoryParams<TPool, TPoolMeta>) {
-  return function usePools(pairs: [Currency, Currency][]): {
+  return function usePools(
+    pairs: [Currency, Currency][],
+    { key }: PoolsOptions = {},
+  ): {
+    key?: string
     pools: TPool[]
     loading: boolean
     syncing: boolean
@@ -161,11 +165,12 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
         }
       }
       return {
+        key,
         pools,
         loading: isLoading,
         syncing: isSyncing,
       }
-    }, [callStates, poolMetas, poolCallSize])
+    }, [callStates, poolMetas, poolCallSize, key])
   }
 }
 
@@ -327,13 +332,16 @@ const useV3PoolsWithoutTicks = createOnChainPoolDataHook<V3Pool, V3PoolMeta>({
 })
 
 export function useV3Pools(pairs: Pair[], { key }: PoolsOptions = {}) {
-  const { pools: v3Pools, loading, syncing } = useV3PoolsWithoutTicks(pairs)
-  const { isLoading, data: pools = [] } = useV3PoolsWithTicks(v3Pools, { key })
+  const { pools: v3Pools, loading, syncing, key: onChainKey } = useV3PoolsWithoutTicks(pairs, { key })
+  const { isLoading, data } = useV3PoolsWithTicks(v3Pools, { key })
+  const pools = data?.pools || []
+  const ticksKey = data?.key
 
   return {
+    key,
     pools,
-    loading: loading && !pools.length,
-    syncing: syncing || isLoading,
+    loading: loading || (onChainKey !== ticksKey && isLoading),
+    syncing: syncing || (onChainKey === ticksKey && isLoading),
   }
 }
 
@@ -362,10 +370,13 @@ export function useV3PoolsWithTicks(pools: V3Pool[], { key }: PoolsOptions = {})
       )
       console.log('[METRIC] Getting pool ticks takes', Date.now() - start)
 
-      return pools.map((pool, i) => ({
-        ...pool,
-        ticks: poolTicks[i],
-      }))
+      return {
+        pools: pools.map((pool, i) => ({
+          ...pool,
+          ticks: poolTicks[i],
+        })),
+        key,
+      }
     },
     {
       keepPreviousData: true,
