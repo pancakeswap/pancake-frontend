@@ -2,6 +2,7 @@ import { BigintIsh, CurrencyAmount, Currency, JSBI, Percent, ZERO, ONE_HUNDRED_P
 import invariant from 'tiny-invariant'
 
 import { getY } from './amm'
+import { getRawAmount, parseAmount } from './utils'
 
 export interface GetSwapOutputParams {
   amplifier: BigintIsh
@@ -26,7 +27,7 @@ export function getSwapOutput({
   let j: number | null = null
   const balances: JSBI[] = []
   for (const [index, b] of balanceAmounts.entries()) {
-    balances.push(b.quotient)
+    balances.push(getRawAmount(b))
     if (b.currency.equals(amount.currency)) {
       i = index
       // eslint-disable-next-line no-continue
@@ -46,16 +47,16 @@ export function getSwapOutput({
 
   // Exact output
   if (JSBI.lessThan(amount.quotient, ZERO)) {
-    const x = ONE_HUNDRED_PERCENT.subtract(fee).invert().multiply(amount.quotient).quotient
+    const x = ONE_HUNDRED_PERCENT.subtract(fee).invert().multiply(getRawAmount(amount)).quotient
     const y = getY({ amplifier, balances, i, j, x })
     const dy = JSBI.subtract(y, balances[j])
-    return CurrencyAmount.fromRawAmount(outputCurrency, dy)
+    return parseAmount(outputCurrency, dy)
   }
 
   const y = getY({ amplifier, balances, i, j, x: amount.quotient })
   const dy = JSBI.subtract(balances[j], y)
   const feeAmount = fee.multiply(dy).quotient
-  return CurrencyAmount.fromRawAmount(outputCurrency, JSBI.subtract(dy, feeAmount))
+  return parseAmount(outputCurrency, JSBI.subtract(dy, feeAmount))
 }
 
 export function getSwapOutputWithoutFee(params: Omit<GetSwapOutputParams, 'fee'>): CurrencyAmount<Currency> {

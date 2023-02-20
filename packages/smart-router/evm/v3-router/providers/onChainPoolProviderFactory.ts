@@ -146,11 +146,11 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       params: [],
     },
   ],
-  buildPool: ({ currencyA, currencyB, fee }, [liquidity, slot0]) => {
+  buildPool: ({ currencyA, currencyB, fee, address }, [liquidity, slot0]) => {
     if (!liquidity || !slot0) {
       return null
     }
-    const { sqrtPriceX96 } = slot0
+    const { sqrtPriceX96, tick } = slot0
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
@@ -161,6 +161,8 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       fee,
       liquidity: JSBI.BigInt(liquidity),
       sqrtRatioX96: JSBI.BigInt(sqrtPriceX96),
+      tick: Number(tick),
+      address,
     }
   },
 })

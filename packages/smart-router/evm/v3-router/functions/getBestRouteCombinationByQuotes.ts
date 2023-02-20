@@ -7,7 +7,7 @@ import map from 'lodash/map'
 import Queue from 'mnemonist/queue'
 
 import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
-import { getPoolAddress } from '../utils'
+import { getPoolAddress, isV2Pool, isV3Pool } from '../utils'
 import { usdGasTokensByChain } from '../../constants'
 
 interface Config {
@@ -243,7 +243,22 @@ export function getBestSwapRouteBy(
       {
         top5: map(
           Array.from(bestSwapsPerSplit.consume()),
-          (q) => `${q.quote.toExact()} (${map(q.routes, (r) => r.toString()).join(', ')})`,
+          (q) =>
+            `${q.quote.toExact()} (${map(
+              q.routes,
+              (r) =>
+                `${r.percent}% ${r.amount.toExact()} ${r.pools
+                  .map((p) => {
+                    if (isV2Pool(p)) {
+                      return `V2 ${p.reserve0.currency.symbol}-${p.reserve1.currency.symbol}`
+                    }
+                    if (isV3Pool(p)) {
+                      return `V3 fee ${p.fee} ${p.token0.symbol}-${p.token1.symbol}`
+                    }
+                    return `Stable ${p}`
+                  })
+                  .join(', ')} ${r.quote.toExact()}`,
+            ).join(', ')})`,
         ),
         onQueue: queue.size,
       },

@@ -5,10 +5,10 @@ import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '.
 import { wrappedCurrency } from '../../utils/currency'
 import { isCurrenciesSameChain } from '../utils'
 
-export const getPairCombinations = (currencyA: Currency, currencyB: Currency): [Currency, Currency][] => {
+export const getPairCombinations = (currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {
   // eslint-disable-next-line prefer-destructuring
-  const chainId: ChainId = currencyA.chainId
-  if (!chainId || !isCurrenciesSameChain(currencyA, currencyB)) {
+  const chainId: ChainId | undefined = currencyA?.chainId
+  if (!chainId || !currencyA || !currencyB || !isCurrenciesSameChain(currencyA, currencyB)) {
     return []
   }
 

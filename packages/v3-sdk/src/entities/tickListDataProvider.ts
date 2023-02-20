@@ -9,9 +9,9 @@ import { TickDataProvider } from './tickDataProvider'
 export class TickListDataProvider implements TickDataProvider {
   private ticks: readonly Tick[]
 
-  constructor(ticks: (Tick | TickConstructorArgs)[], tickSpacing: number) {
+  constructor(ticks: (Tick | TickConstructorArgs)[]) {
     const ticksMapped: Tick[] = ticks.map((t) => (t instanceof Tick ? t : new Tick(t)))
-    TickList.validateList(ticksMapped, tickSpacing)
+    // TickList.validateList(ticksMapped, tickSpacing)
     this.ticks = ticksMapped
   }
 

@@ -21,7 +21,7 @@ import {
 } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
-import { encodeMixedRouteToPath, getQuoteCurrency } from '../utils'
+import { encodeMixedRouteToPath, getQuoteCurrency, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
 
@@ -43,7 +43,7 @@ type QuoteBatchSuccess = {
   results: {
     blockNumber: JSBI
     results: Result<[JSBI, JSBI[], number[], JSBI]>[]
-    approxGasUsedPerSuccessCall: number
+    // approxGasUsedPerSuccessCall: number
   }
 }
 
@@ -54,7 +54,7 @@ type QuoteBatchFailed = {
   results?: {
     blockNumber: JSBI
     results: Result<[JSBI, JSBI[], number[], JSBI]>[]
-    approxGasUsedPerSuccessCall: number
+    // approxGasUsedPerSuccessCall: number
   }
 }
 
@@ -112,6 +112,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
         if (!routes.length) {
           return []
         }
+
         const chainId: ChainId = routes[0].amount.currency.chainId
         const chainProvider = onChainProvider({ chainId })
         let multicallChunk = 150
@@ -168,7 +169,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
         const {
           results: quoteResults,
           blockNumber,
-          approxGasUsedPerSuccessCall,
+          // approxGasUsedPerSuccessCall,
         } = await retry(
           async (_bail, attemptNumber) => {
             haveIncrementedBlockHeaderFailureCounter = false
@@ -371,15 +372,25 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
               })
             }
 
-            const callResults = map(successfulQuoteStates, (quoteState) => quoteState.results)
+            const callResults = map(quoteStates, (quoteState) =>
+              quoteState.status === 'success'
+                ? quoteState.results
+                : {
+                    inputs: quoteState.inputs,
+                    results:
+                      quoteState.status === 'failed' && quoteState.results
+                        ? quoteState.results
+                        : Array(quoteState.inputs.length).fill(null),
+                  },
+            )
 
             return {
               results: flatMap(callResults, (result) => result.results),
-              blockNumber: JSBI.BigInt(callResults[0]!.blockNumber),
-              approxGasUsedPerSuccessCall: stats.percentile(
-                map(callResults, (result) => result.approxGasUsedPerSuccessCall),
-                100,
-              ),
+              blockNumber: JSBI.BigInt(successfulQuoteStates[0]!.results.blockNumber),
+              // approxGasUsedPerSuccessCall: stats.percentile(
+              //   map(callResults, (result) => result.approxGasUsedPerSuccessCall),
+              //   100,
+              // ),
             }
           },
           {
@@ -387,6 +398,12 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
           },
         )
 
+        routes.forEach((route) => {
+          if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
+            console.log('[Found]100% route quote', route)
+          }
+        })
+        console.log('100% Quote result count', quoteResults.length, 'Route count', routes.length)
         const routesWithQuote = processQuoteResults(quoteResults, routes, gasModel, adjustQuoteForGas)
 
         // metric.putMetric('QuoteApproxGasUsedPerSuccessfulCall', approxGasUsedPerSuccessCall, MetricLoggerUnit.Count)
@@ -498,7 +515,7 @@ function validateBlockNumbers(
 }
 
 function processQuoteResults(
-  quoteResults: Result<[JSBI, JSBI[], number[], JSBI]>[],
+  quoteResults: (Result<[JSBI, JSBI[], number[], JSBI]> | null)[],
   routes: RouteWithoutQuote[],
   gasModel: GasModel,
   adjustQuoteForGas: (
@@ -515,10 +532,21 @@ function processQuoteResults(
   // }[] = []
 
   for (let i = 0; i < quoteResults.length; i += 1) {
-    const quoteResult = quoteResults[i]
-    const { success } = quoteResult
     const route = routes[i]
+    const quoteResult = quoteResults[i]
+    if (!quoteResult) {
+      if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
+        console.log('[No Quote]100% route quote', route)
+      }
+      continue
+    }
+
+    const { success } = quoteResult
+
     if (!success) {
+      if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
+        console.log('[Failed]100% route quote', route)
+      }
       // const amountStr = amount.toFixed(Math.min(amount.currency.decimals, 2))
       // const routeStr = routeToString(route)
       // debugFailedQuotes.push({
@@ -538,6 +566,11 @@ function processQuoteResults(
       },
       { initializedTickCrossedList: quoteResult.result[2] },
     )
+
+    if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
+      console.log('[Success]100% route quote getting', route, quote.toExact())
+    }
+
     routesWithQuote.push({
       ...route,
       quote,

@@ -1,5 +1,5 @@
-import { Currency, CurrencyAmount, Pair } from '@pancakeswap/sdk'
-import { Pool as V3Pool, TickMath } from '@pancakeswap/v3-sdk'
+import { Currency, CurrencyAmount, JSBI, Pair, ZERO } from '@pancakeswap/sdk'
+import { Pool as V3Pool, TickList } from '@pancakeswap/v3-sdk'
 
 import {
   Pool as IPool,
@@ -45,46 +45,55 @@ export function createOffChainQuoteProvider(): QuoteProvider {
     ): Promise<RouteWithQuote[]> {
       const routesWithQuote: RouteWithQuote[] = []
       for (const route of routes) {
-        const { pools, amount } = route
-        let quote = amount
-        const initializedTickCrossedList = Array(pools.length).fill(0)
-        for (const [pool, i] of each(pools)) {
-          if (isV2Pool(pool)) {
-            quote = getV2Quote(pool, quote)
-            continue
-          }
-          if (isStablePool(pool)) {
-            quote = getStableQuote(pool, quote)
-            continue
-          }
-          if (isV3Pool(pool)) {
-            // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
-            // eslint-disable-next-line no-await-in-loop
-            const v3QuoteResult = await getV3Quote(pool, quote)
-            if (!v3QuoteResult) {
-              break
+        try {
+          const { pools, amount } = route
+          let quote = amount
+          const initializedTickCrossedList = Array(pools.length).fill(0)
+          let quoteSuccess = true
+          for (const [pool, i] of each(pools)) {
+            if (isV2Pool(pool)) {
+              quote = getV2Quote(pool, quote)
+              continue
             }
-            const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
-            quote = v3Quote
-            initializedTickCrossedList[i] = numOfTicksCrossed
+            if (isStablePool(pool)) {
+              quote = getStableQuote(pool, quote)
+              continue
+            }
+            if (isV3Pool(pool)) {
+              // It's ok to await in loop because we only get quote from v3 pools who have local ticks data as tick provider
+              // eslint-disable-next-line no-await-in-loop
+              const v3QuoteResult = await getV3Quote(pool, quote)
+              if (!v3QuoteResult || JSBI.equal(v3QuoteResult.quote.quotient, ZERO)) {
+                quoteSuccess = false
+                break
+              }
+              const { quote: v3Quote, numOfTicksCrossed } = v3QuoteResult
+              quote = v3Quote
+              initializedTickCrossedList[i] = numOfTicksCrossed
+            }
           }
-        }
+          if (!quoteSuccess) {
+            continue
+          }
 
-        const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
-          {
+          const { gasEstimate, gasCostInUSD, gasCostInToken } = gasModel.estimateGasCost(
+            {
+              ...route,
+              quote,
+            },
+            { initializedTickCrossedList },
+          )
+          routesWithQuote.push({
             ...route,
             quote,
-          },
-          { initializedTickCrossedList },
-        )
-        routesWithQuote.push({
-          ...route,
-          quote,
-          quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
-          gasEstimate,
-          gasCostInUSD,
-          gasCostInToken,
-        })
+            quoteAdjustedForGas: adjustQuoteForGas(quote, gasCostInToken),
+            gasEstimate,
+            gasCostInUSD,
+            gasCostInToken,
+          })
+        } catch (e) {
+          console.warn('Failed to get quote from route', route, e)
+        }
       }
       return routesWithQuote
     }
@@ -122,28 +131,27 @@ function createGetStableQuote(isExactIn = true) {
 }
 
 function createGetV3Quote(isExactIn = true) {
-  return async function getStableQuote(
+  return async function getV3Quote(
     pool: IV3Pool,
     amount: CurrencyAmount<Currency>,
   ): Promise<{ quote: CurrencyAmount<Currency>; numOfTicksCrossed: number } | null> {
-    const { token0, token1, fee, sqrtRatioX96, liquidity, ticks } = pool
+    const { token0, token1, fee, sqrtRatioX96, liquidity, ticks, tick } = pool
     if (!ticks?.length) {
       return null
     }
-    const v3Pool = new V3Pool(
-      token0.wrapped,
-      token1.wrapped,
-      fee,
-      sqrtRatioX96,
-      liquidity,
-      TickMath.getTickAtSqrtRatio(sqrtRatioX96),
-    )
-    const getQuotePromise = isExactIn ? v3Pool.getOutputAmount(amount.wrapped) : v3Pool.getInputAmount(amount.wrapped)
-    const [quote] = await getQuotePromise
-    return {
-      quote,
-      // TODO get ticks crossed
-      numOfTicksCrossed: 0,
+    try {
+      const v3Pool = new V3Pool(token0.wrapped, token1.wrapped, fee, sqrtRatioX96, liquidity, tick, ticks)
+      const getQuotePromise = isExactIn ? v3Pool.getOutputAmount(amount.wrapped) : v3Pool.getInputAmount(amount.wrapped)
+      const [quote, poolAfter] = await getQuotePromise
+      const { tickCurrent: tickAfter } = poolAfter
+      const numOfTicksCrossed = TickList.countInitializedTicksCrossed(ticks, tick, tickAfter)
+      return {
+        quote,
+        numOfTicksCrossed,
+      }
+    } catch (e) {
+      // console.warn('No enough liquidity to perform swap', e)
+      return null
     }
   }
 }

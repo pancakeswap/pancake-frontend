@@ -128,4 +128,13 @@ export abstract class TickList {
     const nextInitializedTick = Math.min(maximum, index)
     return [nextInitializedTick, nextInitializedTick === index]
   }
+
+  public static countInitializedTicksCrossed(ticks: readonly Tick[], tickBefore: number, tickAfter: number) {
+    if (tickBefore === tickAfter) {
+      return 0
+    }
+    const beforeIndex = this.binarySearch(ticks, tickBefore)
+    const afterIndex = this.binarySearch(ticks, tickAfter)
+    return Math.abs(beforeIndex - afterIndex)
+  }
 }
