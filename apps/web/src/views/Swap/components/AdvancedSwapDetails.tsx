@@ -11,7 +11,7 @@ import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
 
-function TradeSummary({
+export function TradeSummary({
   inputAmount,
   outputAmount,
   tradeType,

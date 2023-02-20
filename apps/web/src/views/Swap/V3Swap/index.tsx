@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 
-import { FormHeader, FormMain, PricingAndSlippage } from './containers'
+import { FormHeader, FormMain, PricingAndSlippage, TradeDetails } from './containers'
 import { useBestTrade } from './hooks'
 
 export function V3SwapForm() {
@@ -19,6 +19,7 @@ export function V3SwapForm() {
         inputAmount={trade?.inputAmount}
         outputAmount={trade?.outputAmount}
       />
+      <TradeDetails loaded={!isLoading && !!trade} trade={trade} />
     </>
   )
 }
