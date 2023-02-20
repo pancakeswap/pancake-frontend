@@ -2,11 +2,11 @@
 import useSWR from 'swr'
 import { useDeferredValue, useEffect, useMemo } from 'react'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
-import { CurrencyAmount, TradeType, Currency } from '@pancakeswap/sdk'
+import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
 
-// import { provider } from 'utils/wagmi'
-import { useGasPrice } from 'state/user/hooks'
+import { provider } from 'utils/wagmi'
+// import { useGasPrice } from 'state/user/hooks'
 import { useCurrentBlock } from 'state/block/hooks'
 
 import { useCommonPools } from './useCommonPools'
@@ -21,7 +21,7 @@ interface Options {
 }
 
 export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
-  const gasPrice = useGasPrice()
+  // const gasPrice = useGasPrice()
   const blockNumber = useCurrentBlock()
   const { pools: candidatePools, loading, syncing } = useCommonPools(baseCurrency || amount?.currency, currency)
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
@@ -43,7 +43,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
       const start = Date.now()
       const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
         // TODO fix on ethereum
-        gasPriceWei: async () => gasPrice || '5',
+        gasPriceWei: async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
         maxHops,
         poolProvider,
         // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
@@ -62,7 +62,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   useEffect(() => {
     // Revalidate if block height increases or gas price changed
     mutate()
-  }, [blockNumber, gasPrice, mutate])
+  }, [blockNumber, mutate])
 
   return {
     trade,
