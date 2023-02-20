@@ -7,7 +7,7 @@ import map from 'lodash/map'
 import Queue from 'mnemonist/queue'
 
 import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
-import { getPoolAddress, isStablePool, isV2Pool, isV3Pool } from '../utils'
+import { getPoolAddress, isV2Pool, isV3Pool } from '../utils'
 import { usdGasTokensByChain } from '../../constants'
 
 interface Config {
