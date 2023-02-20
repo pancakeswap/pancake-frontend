@@ -13,7 +13,6 @@ export interface ArticleImageType {
   attributes: {
     ext: string
     hash: string
-    alternativeText: string | null
     formats: {
       medium: {
         ext: string

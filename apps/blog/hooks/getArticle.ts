@@ -40,7 +40,6 @@ export const getSingleArticle = async ({ url, urlParamsObject = {} }: GetArticle
       title: '',
       locale: '',
       imgUrl: '',
-      imgAlt: '',
       content: '',
       createAt: '',
       publishedAt: '',

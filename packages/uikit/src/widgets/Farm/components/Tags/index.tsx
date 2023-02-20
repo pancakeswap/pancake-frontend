@@ -43,7 +43,13 @@ const FarmAuctionTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
     <>
       {tooltipVisible && tooltip}
       <TooltipText ref={targetRef} style={{ textDecoration: "none" }}>
-        <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
+        <Tag
+          variant="failure"
+          style={{ background: "none" }}
+          outline
+          startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />}
+          {...props}
+        >
           {t("Farm Auction")}
         </Tag>
       </TooltipText>
@@ -79,7 +85,13 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const CommunityTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="failure" outline startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />} {...props}>
+    <Tag
+      variant="failure"
+      style={{ background: "none" }}
+      outline
+      startIcon={<CommunityIcon width="18px" color="failure" mr="4px" />}
+      {...props}
+    >
       {t("Community")}
     </Tag>
   );
@@ -88,7 +100,7 @@ const CommunityTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const DualTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="textSubtle" outline {...props}>
+    <Tag variant="textSubtle" style={{ background: "none" }} outline {...props}>
       {t("Dual")}
     </Tag>
   );
@@ -97,7 +109,13 @@ const DualTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const ManualPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="secondary" outline startIcon={<RefreshIcon width="18px" color="secondary" mr="4px" />} {...props}>
+    <Tag
+      variant="secondary"
+      style={{ background: "none" }}
+      outline
+      startIcon={<RefreshIcon width="18px" color="secondary" mr="4px" />}
+      {...props}
+    >
       {t("Manual")}
     </Tag>
   );
@@ -106,7 +124,7 @@ const ManualPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const LockedOrAutoPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="success" outline {...props}>
+    <Tag variant="success" style={{ background: "none" }} outline {...props}>
       {t("Auto")}/{t("Locked")}
     </Tag>
   );
@@ -115,7 +133,13 @@ const LockedOrAutoPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props)
 const LockedPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="success" outline startIcon={<LockIcon width="18px" color="success" mr="4px" />} {...props}>
+    <Tag
+      variant="success"
+      style={{ background: "none" }}
+      outline
+      startIcon={<LockIcon width="18px" color="success" mr="4px" />}
+      {...props}
+    >
       {t("Locked")}
     </Tag>
   );
@@ -124,7 +148,13 @@ const LockedPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
 const CompoundingPoolTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
-    <Tag variant="success" outline startIcon={<AutoRenewIcon width="18px" color="success" mr="4px" />} {...props}>
+    <Tag
+      variant="success"
+      style={{ background: "none" }}
+      outline
+      startIcon={<AutoRenewIcon width="18px" color="success" mr="4px" />}
+      {...props}
+    >
       {t("Auto")}
     </Tag>
   );
