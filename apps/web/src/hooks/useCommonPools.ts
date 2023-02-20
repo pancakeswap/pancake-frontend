@@ -15,7 +15,7 @@ import {
 } from '@pancakeswap/smart-router/evm'
 import { Contract } from '@ethersproject/contracts'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { MultiContractsMultiMethodsCallInput, useMultiContractsMultiMethods } from 'state/multicall/hooks'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -333,15 +333,15 @@ const useV3PoolsWithoutTicks = createOnChainPoolDataHook<V3Pool, V3PoolMeta>({
 
 export function useV3Pools(pairs: Pair[], { key }: PoolsOptions = {}) {
   const { pools: v3Pools, loading, syncing, key: onChainKey } = useV3PoolsWithoutTicks(pairs, { key })
-  const { isLoading, data } = useV3PoolsWithTicks(v3Pools, { key })
+  const { isLoading, data, isValidating } = useV3PoolsWithTicks(v3Pools, { key })
   const pools = data?.pools || []
   const ticksKey = data?.key
 
   return {
     key,
     pools,
-    loading: loading || (onChainKey !== ticksKey && isLoading),
-    syncing: syncing || (onChainKey === ticksKey && isLoading),
+    loading: loading || ticksKey !== onChainKey || isLoading,
+    syncing: syncing || isValidating,
   }
 }
 
@@ -360,7 +360,7 @@ const client = new GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswa
 export function useV3PoolsWithTicks(pools: V3Pool[], { key }: PoolsOptions = {}) {
   const blockNumber = useCurrentBlock()
   const poolsWithTicks = useSWR(
-    blockNumber && key ? ['v3_pool_ticks', blockNumber, key] : null,
+    key ? ['v3_pool_ticks', key] : null,
     async () => {
       const start = Date.now()
       const poolTicks = await Promise.all(
@@ -382,6 +382,13 @@ export function useV3PoolsWithTicks(pools: V3Pool[], { key }: PoolsOptions = {})
       keepPreviousData: true,
     },
   )
+
+  const { mutate } = poolsWithTicks
+  useEffect(() => {
+    // Revalidate pools if block number increases
+    mutate()
+  }, [blockNumber, mutate])
+
   return poolsWithTicks
 }
 
