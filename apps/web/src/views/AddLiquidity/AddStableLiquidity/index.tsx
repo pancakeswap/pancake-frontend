@@ -312,7 +312,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                 </ColumnCenter>
               )}
               <CurrencyInputPanel
-                showBUSD
+                showUSDPrice
                 onCurrencySelect={handleCurrencyASelect}
                 zapStyle="noZap"
                 value={formattedAmounts[Field.CURRENCY_A]}
@@ -337,7 +337,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                 <AddIcon width="16px" />
               </ColumnCenter>
               <CurrencyInputPanel
-                showBUSD
+                showUSDPrice
                 onCurrencySelect={handleCurrencyBSelect}
                 zapStyle="noZap"
                 value={formattedAmounts[Field.CURRENCY_B]}
