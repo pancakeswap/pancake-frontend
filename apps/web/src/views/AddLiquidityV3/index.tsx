@@ -549,7 +549,7 @@ export default function AddLiquidityV3({
               <LockedDeposit locked={depositADisabled} mb="8px">
                 <CurrencyInputPanel
                   disableCurrencySelect
-                  showBUSD
+                  // showBUSD
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onFieldAInput}
                   showQuickInputButton
@@ -564,7 +564,7 @@ export default function AddLiquidityV3({
               <LockedDeposit locked={depositBDisabled}>
                 <CurrencyInputPanel
                   disableCurrencySelect
-                  showBUSD
+                  // showBUSD
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onFieldBInput}
                   showQuickInputButton
