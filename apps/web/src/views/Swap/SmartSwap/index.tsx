@@ -62,6 +62,7 @@ import { parseMMError, shouldShowMMError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
+import { MMError } from '../MMLinkPools/apis'
 
 export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: Currency) => void }> = ({
   handleOutputSelect,
@@ -121,7 +122,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   const deBounceTypedValue = useDebounce(typedValue, 300)
   const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
-  const isMMBetter = useIsTradeWithMMBetter({
+  let isMMBetter = useIsTradeWithMMBetter({
     independentField,
     trade: tradeWithStableSwap,
     v2Trade,
@@ -150,6 +151,12 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     refreshRFQ,
     mmOrderBookTrade?.isRFQLive,
   )
+
+  if (mmRFQTrade.errorUpdateCount > 1 && isMMBetter && mmRFQTrade.error && !mmRFQTrade.trade) {
+    // if rfq failed count > 1, then we can try not using MM. the failed count will reset anyway
+    isMMBetter = false
+  }
+
   const tradeInfo = useTradeInfo({
     trade: tradeWithStableSwap,
     v2Trade,
@@ -317,9 +324,13 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         independentField={independentField}
         isMMBetter={isMMBetter}
         v2Trade={v2Trade}
-        mmTrade={mmTradeInfo?.trade}
+        mmTrade={mmTradeInfo?.trade || mmOrderBookTrade?.trade}
         mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
-        errorMessage={mmRFQTrade?.error?.message || mmOrderBookTrade?.inputError}
+        errorMessage={
+          mmRFQTrade?.error instanceof MMError
+            ? mmRFQTrade?.error?.internalError
+            : mmRFQTrade?.error?.message || mmOrderBookTrade?.inputError
+        }
         rfqId={mmRFQTrade?.rfqId}
       />
       <CurrencyInputHeader
