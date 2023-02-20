@@ -56,6 +56,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     },
     {
       keepPreviousData: true,
+      revalidateOnFocus: false,
     },
   )
 

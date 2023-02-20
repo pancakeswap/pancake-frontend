@@ -56,6 +56,7 @@ export function usePools(pairs: [Currency, Currency][], { key }: PoolsOptions = 
   const v2PoolState = useV2Pools(pairs)
   const stablePoolState = useStablePools(pairs)
   const v3PoolState = useV3Pools(pairs, { key })
+
   return useMemo(() => {
     const { pools: v2Pools, loading: v2Loading, syncing: v2Syncing } = v2PoolState
     const { pools: stablePools, loading: stableLoading, syncing: stableSyncing } = stablePoolState
