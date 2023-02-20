@@ -8,6 +8,7 @@ import {
   NextLinkFromReactRouter,
   AutoColumn,
   ColumnCenter,
+  Row,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
@@ -22,12 +23,12 @@ import { usePairAdder } from 'state/user/hooks'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { currencyId } from 'utils/currencyId'
 import { CommonBasesType } from 'components/SearchModal/types'
-import Page from '../Page'
-import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
-import { CurrencyLogo } from '../../components/Logo'
-import Dots from '../../components/Loader/Dots'
-import Row from '../../components/Layout/Row'
 import { AppBody, AppHeader } from '../../components/App'
+import { LightCard } from '../../components/Card'
+import Dots from '../../components/Loader/Dots'
+import { CurrencyLogo } from '../../components/Logo'
+import CurrencySearchModal from '../../components/SearchModal/CurrencySearchModal'
+import Page from '../Page'
 
 enum Fields {
   TOKEN0 = 0,

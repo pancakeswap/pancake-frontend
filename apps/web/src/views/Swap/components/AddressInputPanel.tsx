@@ -1,14 +1,12 @@
 import { useDebounce } from '@pancakeswap/hooks'
-import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
-import { AutoColumn, BscScanIcon, Link, Text } from '@pancakeswap/uikit'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useGetENSAddressByName } from 'hooks/useGetENSAddressByName'
 import { useCallback } from 'react'
 import styled from 'styled-components'
-import { isAddress } from 'utils'
-import { RowBetween } from '../../../components/Layout/Row'
-import { getBlockExploreLink, getBlockExploreName } from '../../../utils'
+import { ChainId } from '@pancakeswap/sdk'
+import { Text, Link, BscScanIcon, AutoColumn, RowBetween } from '@pancakeswap/uikit'
+import { isAddress, getBlockExploreLink, getBlockExploreName } from 'utils'
+import { useTranslation } from '@pancakeswap/localization'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const InputPanel = styled.div`
   display: flex;

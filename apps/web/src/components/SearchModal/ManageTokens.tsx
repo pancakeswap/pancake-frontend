@@ -10,9 +10,11 @@ import {
   Link,
   AutoColumn,
   Column,
+  RowBetween,
+  RowFixed,
+  Row,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import Row, { RowBetween, RowFixed } from 'components/Layout/Row'
 import { useToken } from 'hooks/Tokens'
 import { useRemoveUserAddedToken } from 'state/user/hooks'
 import useUserAddedTokens from 'state/user/hooks/useUserAddedTokens'

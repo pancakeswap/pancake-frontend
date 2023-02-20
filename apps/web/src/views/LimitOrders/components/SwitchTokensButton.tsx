@@ -1,7 +1,6 @@
 import React, { useCallback } from 'react'
-import { ArrowDownIcon, IconButton, ArrowUpDownIcon, AutoColumn } from '@pancakeswap/uikit'
+import { ArrowDownIcon, IconButton, ArrowUpDownIcon, AutoColumn, AutoRow } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { AutoRow } from 'components/Layout/Row'
 
 const StyledButton = styled(IconButton)`
   box-shadow: inset 0px -2px 0px rgba(0, 0, 0, 0.1);
@@ -31,7 +30,7 @@ const SwitchIconButton: React.FC<React.PropsWithChildren<SwitchIconButtonProps>>
 
   return (
     <AutoColumn justify="space-between">
-      <AutoRow justify="center" style={{ padding: '0 1rem' }}>
+      <AutoRow justifyContent="center" style={{ padding: '0 1rem' }}>
         <StyledButton variant="light" scale="sm" onClick={handleOnClick}>
           <ArrowDownIcon className="icon-down" color={color} />
           <ArrowUpDownIcon className="icon-up-down" color={color} />

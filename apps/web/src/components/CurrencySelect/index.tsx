@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex, BoxProps } from '@pancakeswap/uikit'
+import { ArrowDropDownIcon, Box, Button, Text, useModal, Flex, BoxProps, AutoRow, RowBetween } from '@pancakeswap/uikit'
 import CurrencySearchModal, { CurrencySearchModalProps } from 'components/SearchModal/CurrencySearchModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -8,7 +8,6 @@ import { useCurrencyBalance } from 'state/wallet/hooks'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useAccount } from 'wagmi'
 import { CurrencyLogo } from '../Logo'
-import { RowBetween, AutoRow } from '../Layout/Row'
 
 const DropDownHeader = styled.div`
   width: 100%;
@@ -108,7 +107,7 @@ export const CurrencySelect = ({
       </DropDownContainer>
       {account && !!selectedCurrency && !hideBalance && (
         <Box>
-          <AutoRow justify="space-between" gap="2px">
+          <AutoRow justifyContent="space-between" gap="2px">
             <Text color="textSubtle" fontSize="12px">
               {t('Balance')}:
             </Text>

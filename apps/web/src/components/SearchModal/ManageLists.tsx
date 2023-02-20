@@ -11,6 +11,9 @@ import {
   useTooltip,
   AutoColumn,
   Column,
+  RowFixed,
+  RowBetween,
+  Row,
 } from '@pancakeswap/uikit'
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
@@ -32,7 +35,6 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
 
-import Row, { RowBetween, RowFixed } from '../Layout/Row'
 import { CurrencyModalView } from './types'
 
 function listVersionLabel(version: Version): string {

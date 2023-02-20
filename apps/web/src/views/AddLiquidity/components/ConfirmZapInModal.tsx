@@ -9,10 +9,11 @@ import {
   TransactionErrorContent,
   ConfirmationModalContent,
   AutoColumn,
+  AutoRow,
+  RowFixed,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
-import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { CurrencyLogo } from 'components/Logo'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -189,7 +190,7 @@ const ConfirmZapInModal: React.FC<React.PropsWithChildren<InjectedModalProps & C
           currencies[zapSwapOutTokenField] && (
             <AutoColumn justify="center" gap="16px">
               <ArrowDownIcon color="textSubtle" />
-              <AutoRow gap="6px" justify="center">
+              <AutoRow gap="4px" justifyContent="center">
                 <RowFixed gap="2px">
                   <Text>{swapInTokenAmount?.toSignificant(6)}</Text>
                   <CurrencyLogo currency={currencies[zapSwapTokenField]} />

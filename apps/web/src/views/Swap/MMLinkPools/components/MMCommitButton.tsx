@@ -1,11 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { Button, Column, useModal } from '@pancakeswap/uikit'
 import { logGTMClickSwapEvent } from 'utils/customGTMEventTracking'
 import { SendTransactionResult } from 'wagmi/actions'
+import { Button, Column, useModal, AutoRow, RowBetween } from '@pancakeswap/uikit'
+
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
-import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
@@ -224,7 +224,7 @@ export function MMSwapCommitButton({
             width="48%"
           >
             {approval === ApprovalState.PENDING ? (
-              <AutoRow gap="6px" justify="center">
+              <AutoRow gap="4px" justifyContent="center">
                 {t('Enabling')} <CircleLoader stroke="white" />
               </AutoRow>
             ) : approvalSubmitted && approved ? (

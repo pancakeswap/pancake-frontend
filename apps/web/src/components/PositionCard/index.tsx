@@ -1,6 +1,18 @@
 import { useMemo, useContext } from 'react'
 import { Currency, CurrencyAmount, Pair, Percent } from '@pancakeswap/sdk'
-import { Text, Card, CardBody, Flex, CardProps, TooltipText, useTooltip, Link, AutoColumn } from '@pancakeswap/uikit'
+import {
+  Text,
+  Card,
+  CardBody,
+  Flex,
+  CardProps,
+  TooltipText,
+  useTooltip,
+  Link,
+  AutoColumn,
+  RowFixed,
+  RowBetween,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -16,7 +28,6 @@ import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 import { LightCard } from '../Card'
 import { DoubleCurrencyLogo } from '../Logo'
-import { RowBetween, RowFixed } from '../Layout/Row'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 
 const FixedHeightRow = styled(RowBetween)`

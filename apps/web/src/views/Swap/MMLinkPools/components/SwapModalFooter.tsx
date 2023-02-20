@@ -1,7 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { AutoRenewIcon, Button, Link, QuestionHelper, Text, AutoColumn, Dots } from '@pancakeswap/uikit'
-import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
+import {
+  AutoRenewIcon,
+  Button,
+  Link,
+  QuestionHelper,
+  Text,
+  AutoColumn,
+  Dots,
+  AutoRow,
+  RowBetween,
+  RowFixed,
+} from '@pancakeswap/uikit'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useMemo, useState } from 'react'
 import { Field } from 'state/swap/actions'
@@ -52,7 +62,7 @@ export default function SwapModalFooter({
   return (
     <>
       <SwapModalFooterContainer>
-        <RowBetween align="center">
+        <RowBetween alignItems="center">
           <Text fontSize="14px">{t('Price')}</Text>
           <Text
             fontSize="14px"

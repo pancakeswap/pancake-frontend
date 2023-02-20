@@ -1,12 +1,11 @@
 import { ReactElement, useMemo } from 'react'
 import { TradeType, CurrencyAmount, Currency, Percent } from '@pancakeswap/sdk'
-import { Button, Text, ErrorIcon, ArrowDownIcon, AutoColumn } from '@pancakeswap/uikit'
+import { Button, Text, ErrorIcon, ArrowDownIcon, AutoColumn, RowBetween, RowFixed } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { warningSeverity, basisPointsToPercent } from 'utils/exchange'
 import { CurrencyLogo } from 'components/Logo'
-import { RowBetween, RowFixed } from 'components/Layout/Row'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { TruncatedText, SwapShowAcceptChanges } from './styleds'
 
@@ -72,7 +71,7 @@ export default function SwapModalHeader({
 
   return (
     <AutoColumn gap="md">
-      <RowBetween align="flex-end">
+      <RowBetween alignItems="flex-end">
         <RowFixed gap="4px">
           <CurrencyLogo currency={inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color={inputTextColor}>
@@ -88,7 +87,7 @@ export default function SwapModalHeader({
       <RowFixed>
         <ArrowDownIcon width="16px" ml="4px" />
       </RowFixed>
-      <RowBetween align="flex-end">
+      <RowBetween alignItems="flex-end">
         <RowFixed gap="4px">
           <CurrencyLogo currency={outputAmount.currency} size="24px" />
           <TruncatedText

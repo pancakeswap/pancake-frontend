@@ -1,8 +1,7 @@
 import { Currency, Percent, Price } from '@pancakeswap/sdk'
-import { Text, AutoColumn } from '@pancakeswap/uikit'
+import { Text, AutoColumn, AutoRow } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { ONE_BIPS } from 'config/constants/exchange'
-import { AutoRow } from '../../components/Layout/Row'
 import { Field } from '../../state/mint/actions'
 
 function PoolPriceBar({
@@ -20,7 +19,7 @@ function PoolPriceBar({
 
   return (
     <AutoColumn gap="md">
-      <AutoRow justify="space-around" gap="4px">
+      <AutoRow justifyContent="space-around" gap="4px">
         <AutoColumn justify="center">
           <Text>{price?.toSignificant(6) ?? '-'}</Text>
           <Text fontSize="14px" pt={1}>

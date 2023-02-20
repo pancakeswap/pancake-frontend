@@ -1,9 +1,19 @@
 import React from 'react'
 import { Currency, Fraction, Percent, CurrencyAmount, Token } from '@pancakeswap/sdk'
-import { Text, useTooltip, TooltipText, Box, Flex, Svg, SvgProps, AutoColumn } from '@pancakeswap/uikit'
+import {
+  Text,
+  useTooltip,
+  TooltipText,
+  Box,
+  Flex,
+  Svg,
+  SvgProps,
+  AutoColumn,
+  AutoRow,
+  RowBetween,
+} from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { AutoRow, RowBetween } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { DoubleCurrencyLogo, CurrencyLogo } from 'components/Logo'
 import { GreyCard } from 'components/Card'

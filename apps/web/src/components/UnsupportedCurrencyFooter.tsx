@@ -1,8 +1,7 @@
 import { Currency, Token } from '@pancakeswap/sdk'
-import { Button, Text, Modal, useModal, InjectedModalProps, Link, AutoColumn } from '@pancakeswap/uikit'
+import { Button, Text, Modal, useModal, InjectedModalProps, Link, AutoColumn, AutoRow } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { AutoRow } from 'components/Layout/Row'
 import { CurrencyLogo } from 'components/Logo'
 import { getBlockExploreLink } from 'utils'
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -45,7 +44,7 @@ const UnsupportedModal: React.FC<React.PropsWithChildren<Props>> = ({ currencies
             unsupportedTokens &&
             Object.keys(unsupportedTokens).includes(token.address) && (
               <AutoColumn key={token.address?.concat('not-supported')} gap="12px">
-                <AutoRow gap="5px" align="center">
+                <AutoRow gap="4px" alignItems="center">
                   <CurrencyLogo currency={token} size="24px" />
                   <Text>{token.symbol}</Text>
                 </AutoRow>

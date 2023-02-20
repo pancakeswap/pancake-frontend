@@ -22,6 +22,7 @@ import {
   PencilIcon,
   AutoColumn,
   ColumnCenter,
+  RowBetween,
 } from '@pancakeswap/uikit'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useSignTypedData } from 'wagmi'
@@ -43,7 +44,6 @@ import { Hash } from 'viem'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../components/PositionCard'
 import { AppHeader, AppBody } from '../../components/App'
-import { RowBetween } from '../../components/Layout/Row'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
 import { LightGreyCard } from '../../components/Card'
 
