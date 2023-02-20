@@ -33,7 +33,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     isValidating,
     mutate,
   } = useSWR(
-    amount && currency && !loading
+    amount && currency && candidatePools && !loading
       ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
       : null,
     async () => {

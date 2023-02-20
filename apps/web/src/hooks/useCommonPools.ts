@@ -28,7 +28,7 @@ import IPancakeV3Pool from 'config/abi/IPancakeV3Pool.json'
 type Pair = [Currency, Currency]
 
 interface PoolsWithState {
-  pools: Pool[]
+  pools: Pool[] | null
   loading: boolean
   syncing: boolean
 }
@@ -61,9 +61,11 @@ export function usePools(pairs: [Currency, Currency][], { key }: PoolsOptions = 
     const { pools: v2Pools, loading: v2Loading, syncing: v2Syncing } = v2PoolState
     const { pools: stablePools, loading: stableLoading, syncing: stableSyncing } = stablePoolState
     const { pools: v3Pools, loading: v3Loading, syncing: v3Syncing } = v3PoolState
+
+    const loading = v2Loading || v3Loading || stableLoading
     return {
-      pools: [...v2Pools, ...stablePools, ...v3Pools],
-      loading: v2Loading || v3Loading || stableLoading,
+      pools: v2Pools && v3Pools && stablePools ? [...v2Pools, ...stablePools, ...v3Pools] : null,
+      loading,
       syncing: v2Syncing || v3Syncing || stableSyncing,
     }
   }, [v2PoolState, stablePoolState, v3PoolState])
@@ -115,7 +117,7 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
     { key }: PoolsOptions = {},
   ): {
     key?: string
-    pools: TPool[]
+    pools: TPool[] | null
     loading: boolean
     syncing: boolean
   } {
@@ -167,7 +169,7 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
       }
       return {
         key,
-        pools,
+        pools: isLoading ? null : pools,
         loading: isLoading,
         syncing: isSyncing,
       }
@@ -335,7 +337,7 @@ const useV3PoolsWithoutTicks = createOnChainPoolDataHook<V3Pool, V3PoolMeta>({
 export function useV3Pools(pairs: Pair[], { key }: PoolsOptions = {}) {
   const { pools: v3Pools, loading, syncing, key: onChainKey } = useV3PoolsWithoutTicks(pairs, { key })
   const { isLoading, data, isValidating } = useV3PoolsWithTicks(v3Pools, { key })
-  const pools = data?.pools || []
+  const pools = data?.pools || null
   const ticksKey = data?.key
 
   return {

@@ -91,17 +91,19 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   )
 
   const isTypingInput = independentField === Field.INPUT
-  const inputValue = isTypingInput ? typedValue : inputAmount?.toSignificant(6)
-  const outputValue = isTypingInput ? outputAmount?.toSignificant(6) : typedValue
+  const inputValue = typedValue && (isTypingInput ? typedValue : inputAmount?.toSignificant(6))
+  const outputValue = typedValue && (isTypingInput ? outputAmount?.toSignificant(6) : typedValue)
+  const inputLoading = typedValue ? !isTypingInput && tradeLoading : false
+  const outputLoading = typedValue ? isTypingInput && tradeLoading : false
 
   return (
     <FormContainer>
       <CurrencyInputPanel
         id="swap-currency-input"
-        showBUSD
+        // showBUSD
         showMaxButton
         showCommonBases
-        loading={!isTypingInput && tradeLoading}
+        loading={inputLoading}
         label={!isTypingInput && !isWrapping ? t('From (estimated)') : t('From')}
         value={isWrapping ? typedValue : inputValue}
         maxAmount={maxAmountInput}
@@ -118,10 +120,10 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
       <FlipButton />
       <CurrencyInputPanel
         id="swap-currency-output"
-        showBUSD
+        // showBUSD
         showCommonBases
         showMaxButton={false}
-        loading={isTypingInput && tradeLoading}
+        loading={outputLoading}
         label={isTypingInput && !isWrapping ? t('To (estimated)') : t('To')}
         value={isWrapping ? typedValue : outputValue}
         currency={outputCurrency}
