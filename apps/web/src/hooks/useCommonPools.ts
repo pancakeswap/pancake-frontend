@@ -34,14 +34,28 @@ interface PoolsWithState {
 }
 
 export function useCommonPools(currencyA?: Currency, currencyB?: Currency): PoolsWithState {
+  const key = useMemo(() => {
+    if (!currencyA || !currencyB) {
+      return ''
+    }
+    const symbols = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+      ? [currencyA.symbol, currencyB.symbol]
+      : [currencyB.symbol, currencyA.symbol]
+    return [...symbols, currencyA.chainId].join('_')
+  }, [currencyA, currencyB])
   const pairs = useMemo(() => SmartRouter.getPairCombinations(currencyA, currencyB), [currencyA, currencyB])
-  return usePools(pairs)
+  return usePools(pairs, { key })
 }
 
-export function usePools(pairs: [Currency, Currency][]): PoolsWithState {
+interface PoolsOptions {
+  // Used to identify pools to be cached
+  key?: string
+}
+
+export function usePools(pairs: [Currency, Currency][], { key }: PoolsOptions = {}): PoolsWithState {
   const v2PoolState = useV2Pools(pairs)
   const stablePoolState = useStablePools(pairs)
-  const v3PoolState = useV3Pools(pairs)
+  const v3PoolState = useV3Pools(pairs, { key })
   return useMemo(() => {
     const { pools: v2Pools, loading: v2Loading, syncing: v2Syncing } = v2PoolState
     const { pools: stablePools, loading: stableLoading, syncing: stableSyncing } = stablePoolState
@@ -312,9 +326,9 @@ const useV3PoolsWithoutTicks = createOnChainPoolDataHook<V3Pool, V3PoolMeta>({
   },
 })
 
-export function useV3Pools(pairs: Pair[]) {
+export function useV3Pools(pairs: Pair[], { key }: PoolsOptions = {}) {
   const { pools: v3Pools, loading, syncing } = useV3PoolsWithoutTicks(pairs)
-  const { isLoading, data: pools = [] } = useV3PoolsWithTicks(v3Pools)
+  const { isLoading, data: pools = [] } = useV3PoolsWithTicks(v3Pools, { key })
 
   return {
     pools,
@@ -335,16 +349,18 @@ const query = gql`
 
 const client = new GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3')
 
-export function useV3PoolsWithTicks(pools: V3Pool[]) {
+export function useV3PoolsWithTicks(pools: V3Pool[], { key }: PoolsOptions = {}) {
   const blockNumber = useCurrentBlock()
   const poolsWithTicks = useSWR(
-    ['v3_pool_ticks', blockNumber, pools],
+    blockNumber && key ? ['v3_pool_ticks', blockNumber, key] : null,
     async () => {
+      const start = Date.now()
       const poolTicks = await Promise.all(
         pools.map(({ token0, token1, fee }) => {
           return getPoolTicks(getV3PoolAddress(token0, token1, fee))
         }),
       )
+      console.log('[METRIC] Getting pool ticks takes', Date.now() - start)
 
       return pools.map((pool, i) => ({
         ...pool,
@@ -358,10 +374,10 @@ export function useV3PoolsWithTicks(pools: V3Pool[]) {
   return poolsWithTicks
 }
 
-async function _getPoolTicksByPage(poolAddress: string, page: number): Promise<Tick[]> {
+async function _getPoolTicksByPage(poolAddress: string, page: number, pageSize: number): Promise<Tick[]> {
   const res = await client.request(query, {
     address: poolAddress.toLocaleLowerCase(),
-    skip: page * 1000,
+    skip: page * pageSize,
   })
 
   return res.ticks.map(
@@ -370,21 +386,28 @@ async function _getPoolTicksByPage(poolAddress: string, page: number): Promise<T
 }
 
 async function getPoolTicks(poolAddress: string): Promise<Tick[]> {
-  const PAGE_SIZE = 3
+  const BATCH_PAGE = 3
+  const PAGE_SIZE = 1000
   let result: Tick[] = []
   let page = 0
   while (true) {
-    const [pool1, pool2, pool3] = await Promise.all([
-      _getPoolTicksByPage(poolAddress, page),
-      _getPoolTicksByPage(poolAddress, page + 1),
-      _getPoolTicksByPage(poolAddress, page + 2),
-    ])
+    const pageNums = Array(BATCH_PAGE)
+      .fill(page)
+      .map((p, i) => p + i)
+    const poolsCollections = await Promise.all(pageNums.map((p) => _getPoolTicksByPage(poolAddress, p, PAGE_SIZE)))
 
-    result = [...result, ...pool1, ...pool2, ...pool3]
-    if (pool1.length === 0 || pool2.length === 0 || pool3.length === 0) {
+    let hasMore = true
+    for (const pools of poolsCollections) {
+      result = [...result, ...pools]
+      if (pools.length !== PAGE_SIZE) {
+        hasMore = false
+      }
+    }
+    if (!hasMore) {
       break
     }
-    page += PAGE_SIZE
+
+    page += BATCH_PAGE
   }
   return result
 }
