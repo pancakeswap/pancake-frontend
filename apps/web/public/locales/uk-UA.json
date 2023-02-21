@@ -996,7 +996,7 @@
   "5Y": "5 р.",
   "Annual ROI at current rates": "Щорічний ROI на основі поточних ставок",
   "Default Transaction Speed (GWEI)": "Швидкість транзакції за замовчуванням (GWEI)",
-  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.",
+  "Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.": "Регулює ціну газу (комісію за транзакцію). Щоб більше GWEI, то вища швидкість і вища комісія.",
   "Standard (%gasPrice%)": "Стандартна (%gasPrice%)",
   "Fast (%gasPrice%)": "Швидка (%gasPrice%)",
   "Instant (%gasPrice%)": "Миттєва (%gasPrice%)",
@@ -2119,5 +2119,6 @@
   "Trade and win $10,000 Prize Pool": "Trade and win $10,000 Prize Pool",
   "Trade now using Trust Wallet": "Trade now using Trust Wallet",
   "Download Trust Wallet": "Download Trust Wallet",
-  "Trade and Share $10,000": "Trade and Share $10,000"
+  "Trade and Share $10,000": "Trade and Share $10,000",
+  "Unable request a quote": "Unable request a quote"
 }
