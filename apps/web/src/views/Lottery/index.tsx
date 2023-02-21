@@ -47,7 +47,7 @@ const Lottery = () => {
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
-        <CnyLotteryDraw />
+        {/*<CnyLotteryDraw />*/}
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={GET_TICKETS_BG}
