@@ -1395,7 +1395,7 @@ exports[`renders correctly 1`] = `
                 <circle
                   cx="48"
                   cy="48"
-                  fill="url(#paint0_linear_10493)"
+                  fill="#53DEE9"
                   r="48"
                 />
                 <path
@@ -3753,7 +3753,7 @@ exports[`renders correctly 1`] = `
                 <circle
                   cx="48"
                   cy="48"
-                  fill="url(#paint0_linear_10493)"
+                  fill="#53DEE9"
                   r="48"
                 />
                 <path
