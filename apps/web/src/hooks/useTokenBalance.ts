@@ -1,6 +1,6 @@
 import { useAccount } from 'wagmi'
 import BigNumber from 'bignumber.js'
-import { CAKE } from '@pancakeswap/tokens'
+import {CADINU, CAKE} from '@pancakeswap/tokens'
 import { FAST_INTERVAL } from 'config/constants'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { Zero } from '@ethersproject/constants'
@@ -57,5 +57,14 @@ export const useGetCakeBalance = () => {
   // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
   return { balance: EthersBigNumber.from(balance.toString()), fetchStatus }
 }
+
+export const useGetCadinuBalance = () => {
+  const { chainId } = useWeb3React()
+  const { balance, fetchStatus } = useTokenBalance(CADINU[chainId]?.address || CADINU[ChainId.BSC]?.address, true)
+
+  // TODO: Remove ethers conversion once useTokenBalance is converted to ethers.BigNumber
+  return { balance: EthersBigNumber.from(balance.toString()), fetchStatus }
+}
+
 
 export default useTokenBalance

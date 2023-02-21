@@ -1,16 +1,22 @@
 import styled, { keyframes } from 'styled-components'
-import { Box, Flex, Heading, Skeleton, Balance } from '@pancakeswap/uikit'
-import {ChainId} from "@pancakeswap/sdk"
-import BigNumber from 'bignumber.js'
-import { LotteryStatus } from 'config/constants/types'
-import { useLottery } from 'state/lottery/hooks'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { TicketPurchaseCard } from '../svgs'
-import BuyTicketsButton from './BuyTicketsButton'
 import {useMemo} from "react";
+
+import { Box, Flex, Heading, Skeleton, Balance } from '@pancakeswap/uikit'
+import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+
+import {ChainId} from "@pancakeswap/sdk"
+import {CADINU} from '@pancakeswap/tokens'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useTranslation } from '@pancakeswap/localization'
-import {CADINU} from '@pancakeswap/tokens'
+
+
+
+import BigNumber from 'bignumber.js'
+import { LotteryStatus } from 'config/constants/types'
+
+import { useLottery } from 'state/lottery/hooks'
+import { TicketPurchaseCard } from '../svgs'
+import BuyTicketsButton from './BuyTicketsButton'
 import useBUSDPrice from "../../../hooks/useBUSDPrice"
 
 export const floatingStarsLeft = keyframes`

@@ -5,7 +5,7 @@ import { LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { useFetchLottery, useLottery } from 'state/lottery/hooks'
-import useChineseNewYearEffect from 'hooks/useChineseNewYearEffect'
+// import useChineseNewYearEffect from 'hooks/useChineseNewYearEffect'
 import { CNY_TITLE_BG, GET_TICKETS_BG, CNY_FINISHED_ROUNDS_BG, CHECK_PRIZES_BG } from './pageSectionStyles'
 import useGetNextLotteryEvent from './hooks/useGetNextLotteryEvent'
 import useStatusTransitions from './hooks/useStatusTransitions'
@@ -20,7 +20,7 @@ import HowToPlay from './components/HowToPlay'
 import useShowMoreUserHistory from './hooks/useShowMoreUserRounds'
 import { PageMeta } from '../../components/Layout/Page'
 import CnyDecorations from './components/LotteryCnyEffect'
-import CnyLotteryDraw from './components/CnyLotteryDraw'
+// import CnyLotteryDraw from './components/CnyLotteryDraw'
 
 const LotteryPage = styled.div`
   min-height: calc(100vh - 64px);
@@ -47,7 +47,7 @@ const Lottery = () => {
         <PageSection background={CNY_TITLE_BG} index={1} hasCurvedDivider={false}>
           <Hero />
         </PageSection>
-        {/*<CnyLotteryDraw />*/}
+        {/* <CnyLotteryDraw /> */}
         <PageSection
           containerProps={{ style: { marginTop: '-30px' } }}
           background={GET_TICKETS_BG}

@@ -5,12 +5,13 @@ import {ChainId} from "@pancakeswap/sdk";
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import {CADINU} from '@pancakeswap/tokens'
 import { Flex, Skeleton, Heading, Box, Text, Balance } from '@pancakeswap/uikit'
+import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+
 import { useTranslation } from '@pancakeswap/localization'
 import { LotteryRound, LotteryRoundGraphEntity } from 'state/types'
-import { usePriceCadinuBusd } from 'state/farms/hooks'
+// import { usePriceCadinuBusd } from 'state/farms/hooks'
 import { useGetLotteryGraphDataById } from 'state/lottery/hooks'
 import { getGraphLotteries } from 'state/lottery/getLotteriesData'
-import { formatNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import RewardBrackets from '../RewardBrackets'
 import useBUSDPrice from "../../../../hooks/useBUSDPrice";
 

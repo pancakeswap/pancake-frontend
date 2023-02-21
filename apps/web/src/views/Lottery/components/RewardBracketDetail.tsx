@@ -2,11 +2,11 @@ import BigNumber from 'bignumber.js'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import {ChainId} from "@pancakeswap/sdk"
 import { Flex, Skeleton, Text, Balance } from '@pancakeswap/uikit'
+import {CADINU} from '@pancakeswap/tokens'
 import { useTranslation } from '@pancakeswap/localization'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import {useMemo} from "react";
 import useBUSDPrice from "../../../hooks/useBUSDPrice";
-import {CADINU} from '@pancakeswap/tokens'
 
 
 interface RewardBracketDetailProps {
