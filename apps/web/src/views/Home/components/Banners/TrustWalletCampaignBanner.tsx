@@ -128,7 +128,7 @@ const TrustWalletCampaignBanner = () => {
                 <Text bold fontSize="16px" mr="4px">
                   {isMobile ? t('Trade Now') : t('Trade now using Trust Wallet')}
                 </Text>
-                <ArrowForwardIcon />
+                <ArrowForwardIcon color="white" />
               </StyledButtonLeft>
             </NextLinkFromReactRouter>
             <NextLinkFromReactRouter target="_blank" to="https://rebrand.ly/tw-pcs" rel='"noopener noreferrer'>
