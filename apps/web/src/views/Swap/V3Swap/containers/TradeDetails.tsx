@@ -8,6 +8,7 @@ import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetails
 import { TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../utils/exchange'
+import { RoutesBreakdown } from '../components'
 
 interface Props {
   loaded: boolean
@@ -26,22 +27,25 @@ export function TradeDetails({ loaded, trade }: Props) {
     [trade],
   )
 
-  if (!loaded) {
+  if (!loaded || !trade) {
     return null
   }
+
+  const { inputAmount, outputAmount, tradeType, routes } = trade
 
   return (
     <AdvancedDetailsFooter show={loaded}>
       <AutoColumn gap="0px">
         <TradeSummary
           slippageAdjustedAmounts={slippageAdjustedAmounts}
-          inputAmount={trade?.inputAmount}
-          outputAmount={trade?.outputAmount}
-          tradeType={trade?.tradeType}
+          inputAmount={inputAmount}
+          outputAmount={outputAmount}
+          tradeType={tradeType}
           priceImpactWithoutFee={priceImpactWithoutFee}
           realizedLPFee={lpFeeAmount}
           hasStablePair={hasStablePool}
         />
+        <RoutesBreakdown routes={routes} />
       </AutoColumn>
     </AdvancedDetailsFooter>
   )

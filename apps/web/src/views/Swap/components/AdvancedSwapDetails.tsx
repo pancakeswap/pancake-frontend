@@ -41,7 +41,7 @@ export function TradeSummary({
   const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   return (
-    <AutoColumn style={{ padding: '0 16px' }}>
+    <AutoColumn style={{ padding: '0 24px' }}>
       <RowBetween>
         <RowFixed>
           <Text fontSize="14px" color="textSubtle">
@@ -64,7 +64,7 @@ export function TradeSummary({
         </RowFixed>
       </RowBetween>
       {priceImpactWithoutFee && (
-        <RowBetween>
+        <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
             <Text fontSize="14px" color="textSubtle">
               {t('Price Impact')}
@@ -96,7 +96,7 @@ export function TradeSummary({
       )}
 
       {realizedLPFee && (
-        <RowBetween>
+        <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
             <Text fontSize="14px" color="textSubtle">
               {t('Liquidity Provider Fee')}
@@ -200,7 +200,7 @@ export function AdvancedSwapDetails({
           />
           {showRoute && (
             <>
-              <RowBetween style={{ padding: '0 16px' }}>
+              <RowBetween style={{ padding: '0 24px' }}>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <Text fontSize="14px" color="textSubtle">
                     {t('Route')}
