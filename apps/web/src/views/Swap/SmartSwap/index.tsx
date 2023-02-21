@@ -81,7 +81,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
 
   // get custom setting values for user
   const [allowedSlippage] = useUserSlippageTolerance()
-  const [allowUseSmartRouter, setAllowUseSmartRouter] = useState(() => false)
+  const [allowUseSmartRouter, setAllowUseSmartRouter] = useState(false)
 
   // swap state & price data
 
@@ -176,6 +176,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   })
 
   const { remainingSec: mmQuoteExpiryRemainingSec } = useMMQuoteCountDown(
+    mmRFQTrade?.trade || mmOrderBookTrade?.trade,
     mmRFQTrade?.quoteExpiry,
     isMMBetter ? mmRFQTrade?.refreshRFQ : undefined,
   )

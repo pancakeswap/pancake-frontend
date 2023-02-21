@@ -1,18 +1,31 @@
+import { Currency, TradeType } from '@pancakeswap/swap-sdk-core'
 import { useEffect, useState, useMemo, useRef } from 'react'
 import { SAFE_MM_QUOTE_EXPIRY_SEC } from '../constants'
+import { TradeWithMM } from '../types'
 
-export const useMMQuoteCountDown = (quoteExpiry: number | null, refreshRFQ?: () => void) => {
+export const useMMQuoteCountDown = (
+  trade: TradeWithMM<Currency, Currency, TradeType> | null,
+  quoteExpiry: number | null,
+  refreshRFQ?: () => void,
+) => {
   const reFetched = useRef<boolean>(false)
   const countDownDate = useMemo(() => (quoteExpiry ? quoteExpiry * 1000 : Date.now()), [quoteExpiry])
 
   const [countDown, setCountDown] = useState(() => countDownDate - Date.now())
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCountDown(countDownDate - Date.now())
-    }, 1000)
+    let interval
+    if (trade) {
+      interval = setInterval(() => {
+        setCountDown(countDownDate - Date.now())
+      }, 1000)
+    }
 
-    return () => clearInterval(interval)
-  }, [countDownDate])
+    return () => {
+      if (interval) {
+        clearInterval(interval)
+      }
+    }
+  }, [countDownDate, trade])
   useEffect(() => {
     reFetched.current = false
   }, [quoteExpiry])

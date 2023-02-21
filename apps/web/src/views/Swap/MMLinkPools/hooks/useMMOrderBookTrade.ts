@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useQuery } from '@tanstack/react-query'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { MutableRefObject, useRef } from 'react'
+import { MutableRefObject, useMemo, useRef } from 'react'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 
@@ -117,51 +117,40 @@ export const useMMTrade = (
   ])
   const isExactIn: boolean = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
-  const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
-  let bestTradeWithMM = null
+  const parsedAmount = useMemo(() => {
+    return tryParseAmount(typedValue, independentCurrency ?? undefined)
+  }, [typedValue, independentCurrency])
+  const bestTradeWithMM = useMemo(() => {
+    let result
+    if (!inputCurrency || !outputCurrency || !mmQoute || !mmQoute?.message?.takerSideTokenAmount) result = null
+    else {
+      const { takerSideTokenAmount, makerSideTokenAmount } = mmQoute?.message
+      result = parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)
+    }
+    return result
+  }, [inputCurrency, isExactIn, mmQoute, outputCurrency])
 
-  if (!inputCurrency || !outputCurrency || !mmQoute || !mmQoute?.message?.takerSideTokenAmount) bestTradeWithMM = null
-  else {
-    const { takerSideTokenAmount, makerSideTokenAmount } = mmQoute?.message
-    bestTradeWithMM = parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)
-  }
+  const currencyBalances = useMemo(() => {
+    return {
+      [Field.INPUT]: relevantTokenBalances[0],
+      [Field.OUTPUT]: relevantTokenBalances[1],
+    }
+  }, [relevantTokenBalances])
+  const currencies: { [field in Field]?: Currency } = useMemo(() => {
+    return {
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined,
+    }
+  }, [inputCurrency, outputCurrency])
 
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
-  }
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
-
-  let inputError: string | undefined
-  if (!account) {
-    inputError = t('Connect Wallet')
-  }
-
-  if (!parsedAmount) {
-    inputError = inputError ?? t('Enter an amount')
-  }
-
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? t('Select a token')
-  }
-
-  const formattedTo = isAddress(to)
-  if (!to || !formattedTo) {
-    inputError = inputError ?? t('Enter a recipient')
-  } else if (
-    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (bestTradeWithMM && involvesAddress(bestTradeWithMM, formattedTo))
-  ) {
-    inputError = inputError ?? t('Invalid recipient')
-  }
-
-  const slippageAdjustedAmounts = bestTradeWithMM && {
-    [Field.INPUT]: bestTradeWithMM.inputAmount,
-    [Field.OUTPUT]: bestTradeWithMM.outputAmount,
-  }
+  const slippageAdjustedAmounts = useMemo(() => {
+    return (
+      bestTradeWithMM && {
+        [Field.INPUT]: bestTradeWithMM.inputAmount,
+        [Field.OUTPUT]: bestTradeWithMM.outputAmount,
+      }
+    )
+  }, [bestTradeWithMM])
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
@@ -169,21 +158,50 @@ export const useMMTrade = (
     slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
   ]
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
-  }
-  if (mmQoute?.message?.error) {
-    inputError = mmQoute?.message?.error
-  }
-  return {
-    trade: bestTradeWithMM,
-    parsedAmount,
-    currencyBalances,
-    currencies,
-    inputError,
-    mmParam: mmRFQParam,
-    rfqUserInputPath,
-    isRFQLive,
-    isLoading,
-  }
+  const inputError = useMemo(() => {
+    let result: string | undefined
+    if (!account) {
+      result = t('Connect Wallet')
+    }
+
+    if (!parsedAmount) {
+      result = result ?? t('Enter an amount')
+    }
+
+    if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+      result = result ?? t('Select a token')
+    }
+
+    const formattedTo = isAddress(to)
+    if (!to || !formattedTo) {
+      result = result ?? t('Enter a recipient')
+    } else if (
+      BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+      (bestTradeWithMM && involvesAddress(bestTradeWithMM, formattedTo))
+    ) {
+      result = result ?? t('Invalid recipient')
+    }
+
+    if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+      result = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
+    }
+    if (mmQoute?.message?.error) {
+      result = mmQoute?.message?.error
+    }
+    return result
+  }, [account, amountIn, balanceIn, bestTradeWithMM, currencies, mmQoute?.message?.error, parsedAmount, t, to])
+
+  return useMemo(() => {
+    return {
+      trade: bestTradeWithMM,
+      parsedAmount,
+      currencyBalances,
+      currencies,
+      inputError,
+      mmParam: mmRFQParam,
+      rfqUserInputPath,
+      isRFQLive,
+      isLoading,
+    }
+  }, [bestTradeWithMM, currencies, currencyBalances, inputError, isLoading, mmRFQParam, parsedAmount])
 }

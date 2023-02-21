@@ -1,6 +1,6 @@
 import { Currency, TradeType } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { MutableRefObject, useDeferredValue } from 'react'
+import { MutableRefObject, useDeferredValue, useMemo } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
@@ -88,42 +88,57 @@ export const useGetRFQTrade = (
   )
   const isExactIn: boolean = independentField === Field.INPUT
 
-  if (error && error instanceof Error && error?.message) {
+  return useMemo(() => {
+    if (error && error instanceof Error && error?.message) {
+      return {
+        rfq: null,
+        trade: null,
+        quoteExpiry: null,
+        refreshRFQ: null,
+        error,
+        rfqId,
+        isLoading: enabled && isLoading,
+        errorUpdateCount,
+      }
+    }
+    if (data?.messageType === MessageType.RFQ_RESPONSE) {
+      // eslint-disable-next-line no-param-reassign
+      if (isRFQLive) isRFQLive.current = true
+      return {
+        rfq: data?.message,
+        trade: parseMMTrade(
+          isExactIn,
+          inputCurrency,
+          outputCurrency,
+          data?.message?.takerSideTokenAmount,
+          data?.message?.makerSideTokenAmount,
+        ),
+        quoteExpiry: data?.message?.quoteExpiry ?? null,
+        refreshRFQ,
+        isLoading: enabled && isLoading,
+        errorUpdateCount,
+      }
+    }
     return {
       rfq: null,
       trade: null,
       quoteExpiry: null,
+      isLoading: enabled && isLoading,
       refreshRFQ: null,
-      error,
-      rfqId,
-      isLoading: enabled && isLoading,
       errorUpdateCount,
     }
-  }
-  if (data?.messageType === MessageType.RFQ_RESPONSE) {
-    // eslint-disable-next-line no-param-reassign
-    if (isRFQLive) isRFQLive.current = true
-    return {
-      rfq: data?.message,
-      trade: parseMMTrade(
-        isExactIn,
-        inputCurrency,
-        outputCurrency,
-        data?.message?.takerSideTokenAmount,
-        data?.message?.makerSideTokenAmount,
-      ),
-      quoteExpiry: data?.message?.quoteExpiry ?? null,
-      refreshRFQ,
-      isLoading: enabled && isLoading,
-      errorUpdateCount,
-    }
-  }
-  return {
-    rfq: null,
-    trade: null,
-    quoteExpiry: null,
-    isLoading: enabled && isLoading,
-    refreshRFQ: null,
+  }, [
+    data?.message,
+    data?.messageType,
+    enabled,
+    error,
     errorUpdateCount,
-  }
+    inputCurrency,
+    isExactIn,
+    isLoading,
+    isRFQLive,
+    outputCurrency,
+    refreshRFQ,
+    rfqId,
+  ])
 }
