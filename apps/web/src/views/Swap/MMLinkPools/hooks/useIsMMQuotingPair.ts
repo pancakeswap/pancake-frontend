@@ -1,6 +1,9 @@
 import { Currency } from '@pancakeswap/sdk'
 import { PANCAKE_ETH_DEFAULT } from 'config/constants/lists'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useAccount } from 'wagmi'
+import { ConnectorNames } from 'config/wallet'
+import { ExtendEthereum } from 'global'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
@@ -33,9 +36,17 @@ export const useIsMMQuotingPair = (
   const { chainId } = useActiveWeb3React()
   const list = useTokenList(QUOTING_WHITE_LIST[chainId])
   const isMMSupportChain = useIsMMSupportChain()
+  const { connector, isConnected } = useAccount()
 
   return useMemo(() => {
     if (!isMMSupportChain || !chainId || !list || !inputCurrency || !outputCurrency) return false
+    if (
+      isConnected &&
+      (connector?.id === ConnectorNames.Blocto ||
+        connector?.id === 'safe' ||
+        Boolean((window.ethereum as ExtendEthereum)?.isBlocto))
+    )
+      return false
     if (
       list[
         (inputCurrency.isToken
@@ -56,5 +67,5 @@ export const useIsMMQuotingPair = (
     )
       return true
     return false
-  }, [chainId, list, inputCurrency, outputCurrency, isMMSupportChain])
+  }, [isMMSupportChain, chainId, list, inputCurrency, outputCurrency, isConnected, connector?.id])
 }

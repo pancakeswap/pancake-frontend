@@ -1,6 +1,7 @@
 import { Currency, TradeType } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useDeferredValue } from 'react'
+import { useDebounce } from '@pancakeswap/hooks'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
 import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
@@ -66,19 +67,25 @@ export const useGetRFQTrade = (
   isLoading: boolean
   error?: Error
   rfqId?: string
+  errorUpdateCount: number
 } | null => {
   const deferredRfqId = useDeferredValue(rfqId)
-  const enabled = Boolean(isMMBetter && deferredRfqId)
-  const { error, data, isLoading } = useQuery([`RFQ/${deferredRfqId}`], () => getRFQById(deferredRfqId), {
-    enabled,
-    staleTime: Infinity,
-    retry: (failureCount, err) => {
-      if (err instanceof MMError) {
-        return err.shouldRetry
-      }
-      return failureCount < 4
+  const deferredIsMMBetter = useDebounce(isMMBetter, 300)
+  const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
+  const { error, data, isLoading, errorUpdateCount } = useQuery(
+    [`RFQ/${deferredRfqId}`],
+    () => getRFQById(deferredRfqId),
+    {
+      enabled,
+      staleTime: Infinity,
+      retry: (failureCount, err) => {
+        if (err instanceof MMError) {
+          return err.shouldRetry
+        }
+        return failureCount < 4
+      },
     },
-  })
+  )
   const isExactIn: boolean = independentField === Field.INPUT
 
   if (error && error instanceof Error && error?.message) {
@@ -90,6 +97,7 @@ export const useGetRFQTrade = (
       error,
       rfqId,
       isLoading: enabled && isLoading,
+      errorUpdateCount,
     }
   }
   if (data?.messageType === MessageType.RFQ_RESPONSE) {
@@ -107,6 +115,7 @@ export const useGetRFQTrade = (
       quoteExpiry: data?.message?.quoteExpiry ?? null,
       refreshRFQ,
       isLoading: enabled && isLoading,
+      errorUpdateCount,
     }
   }
   return {
@@ -115,5 +124,6 @@ export const useGetRFQTrade = (
     quoteExpiry: null,
     isLoading: enabled && isLoading,
     refreshRFQ: null,
+    errorUpdateCount,
   }
 }

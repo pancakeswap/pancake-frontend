@@ -54,9 +54,10 @@ export const getRFQById = async (id: string | number) => {
   const data = (await response.json()) as RFQResponse | RFQErrorResponse
 
   if (data?.messageType === MessageType.RFQ_ERROR) {
-    if (data?.message?.error === 'RFQ not found') throw new RFQErrorNotFound(response.status !== 404)
+    if (data?.message?.error === 'RFQ not found')
+      throw new RFQErrorNotFound(data?.message?.error, response.status !== 404)
     if (data?.message?.error.includes(RFQInsufficientError.originMessage)) throw new RFQInsufficientError()
-    throw new Error(data?.message?.error)
+    throw new MMError(data?.message?.error)
   }
   zRFQResponse.parse(data)
   return data
@@ -64,11 +65,20 @@ export const getRFQById = async (id: string | number) => {
 
 export class MMError extends Error {
   shouldRetry: boolean
+
+  internalError?: string
+
+  constructor(message?: string) {
+    super(message)
+    this.internalError = message
+    this.message = 'Unable request a quote'
+  }
 }
 
 export class RFQErrorNotFound extends MMError {
-  constructor(shouldRetry: boolean) {
+  constructor(message: string, shouldRetry: boolean) {
     super()
+    this.internalError = message
     if (shouldRetry) {
       this.message = 'Quoting'
     } else {

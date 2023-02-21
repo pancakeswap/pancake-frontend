@@ -2137,5 +2137,6 @@
   "Start earning CAKE by staking your liquidity positions to V3 Farms!": "Start earning CAKE by staking your liquidity positions to V3 Farms!",
   "Finish": "Finish",
   "V3": "V3",
-  "Split into %count% routes": "Split into %count% routes"
+  "Split into %count% routes": "Split into %count% routes",
+  "Unable request a quote": "Unable request a quote"
 }
