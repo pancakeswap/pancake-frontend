@@ -6,7 +6,7 @@ import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
 import { FIXED_ZERO } from './const'
 import { getTokenAmount } from './fetchFarmsV2'
-import { FarmData, SerializedFarmConfig, SerializedFarmPublicData } from './types'
+import { FarmV3Data, FarmV3DataWithPrice, SerializedFarmConfig, SerializedFarmPublicData } from './types'
 
 const whitelistedUSDValueTokens = {
   [ChainId.ETHEREUM]: {
@@ -181,9 +181,8 @@ export async function farmV3FetchFarms({
     }
   })
 
-  // @ts-expect-error
   const farmsWithPrice = await getFarmsPrices(farmsData, chainId, tvls)
-  console.log(farmsWithPrice)
+  return farmsWithPrice
 }
 
 const getClassicFarmsDynamicData = ({
@@ -341,7 +340,7 @@ export type TvlMap = {
   }
 }
 
-const getFarmsPrices = async (farms: FarmData[], chainId: number, tvls: TvlMap) => {
+const getFarmsPrices = async (farms: FarmV3Data[], chainId: number, tvls: TvlMap): Promise<FarmV3DataWithPrice[]> => {
   const commonPairsUSDValue: { [address: string]: string } = {}
   if (
     whitelistedUSDValueTokens[chainId as keyof typeof whitelistedUSDValueTokens] &&
@@ -391,10 +390,9 @@ const getFarmsPrices = async (farms: FarmData[], chainId: number, tvls: TvlMap) 
 
     return {
       ...farm,
-      activeTvl: tvl.toString(),
+      activeTVL: tvl.toString(),
       tokenPriceBusd: tokenPriceBusd.toString(),
       quoteTokenPriceBusd: quoteTokenPriceBusd.toString(),
-      lpTokenPrice: '-', // not support lpTokenPrice
     }
   })
 }

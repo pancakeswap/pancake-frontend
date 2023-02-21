@@ -11,7 +11,26 @@ export type FarmsDynamicDataResult = {
   poolWeight: string
   multiplier: string
 }
+
+export type FarmsDynamicDataResultV2 = {
+  tokenAmountTotal: string
+  quoteTokenAmountTotal: string
+  tokenPriceVsQuote: string
+  poolWeight: string
+  multiplier: string
+}
+
+export type FarmPriceV3 = {
+  activeTVL: string
+  tokenPriceBusd: string
+  quoteTokenPriceBusd: string
+}
+
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
+
+export type FarmV3Data = SerializedFarmConfig & FarmsDynamicDataResultV2
+
+export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3
 
 export interface FarmConfigBaseProps {
   pid: number
