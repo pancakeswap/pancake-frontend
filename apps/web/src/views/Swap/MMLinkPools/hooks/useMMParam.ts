@@ -11,14 +11,15 @@ export const useMMParam = (
   typedValue: string,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
+  isForRFQ?: boolean,
 ) => {
   const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const { account, chainId } = useActiveWeb3React()
   return useMemo(
     () =>
       isMMQuotingPair
-        ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account)
+        ? parseMMParameter(chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isForRFQ)
         : null,
-    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair],
+    [chainId, inputCurrency, outputCurrency, independentField, typedValue, account, isMMQuotingPair, isForRFQ],
   )
 }

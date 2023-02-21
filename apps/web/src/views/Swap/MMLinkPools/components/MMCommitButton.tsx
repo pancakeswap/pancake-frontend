@@ -75,12 +75,6 @@ export default function MMSwapCommitButton({
   mmQuoteExpiryRemainingSec = null,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
-  const [lastTrade, setLastTrade] = useState<TradeWithMM<Currency, Currency, TradeType> | null>(null)
-  useEffect(() => {
-    if (trade) {
-      setLastTrade(trade)
-    }
-  }, [trade])
   // the callback to execute the swap
 
   const swapCalls = useSwapCallArguments(trade, rfq, recipient)
@@ -144,7 +138,7 @@ export default function MMSwapCommitButton({
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
-      trade={trade || lastTrade} // show the info while refresh RFQ
+      trade={trade} // show the info while refresh RFQ
       originalTrade={tradeToConfirm}
       currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
@@ -153,7 +147,7 @@ export default function MMSwapCommitButton({
       recipient={recipient}
       allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
-      swapErrorMessage={swapErrorMessage}
+      swapErrorMessage={swapErrorMessage || (!trade && t('Unable request a quote'))}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
       isRFQReady={Boolean(rfq) && !isRFQLoading && mmQuoteExpiryRemainingSec >= SAFE_MM_QUOTE_EXPIRY_SEC}
