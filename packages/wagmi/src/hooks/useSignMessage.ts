@@ -1,7 +1,19 @@
-import { SignMessageArgs } from '@wagmi/core'
+import {Ethereum, SignMessageArgs} from '@wagmi/core'
 import { useCallback } from 'react'
 import { useAccount, useSignMessage as useSignMessageWagmi } from 'wagmi'
 
+declare global {
+  interface Window {
+    BinanceChain?: {
+      bnbSign?: (address: string, message: string) => Promise<{ publicKey: string; signature: string }>
+      switchNetwork?: (networkId: string) => Promise<string>
+    } & Ethereum
+  }
+}
+
+declare const window: Window & typeof globalThis;
+
+// declare window:Window & typeof globalThis
 export function useSignMessage() {
   const { address, connector } = useAccount()
   const { signMessageAsync: sign } = useSignMessageWagmi()
