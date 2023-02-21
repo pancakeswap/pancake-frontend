@@ -25,6 +25,8 @@ import IPancakePairABI from 'config/abi/IPancakePair.json'
 import IStablePoolABI from 'config/abi/stableSwap.json'
 import IPancakeV3Pool from 'config/abi/IPancakeV3Pool.json'
 
+import { useV3CandidatePools } from './useV3Pools'
+
 type Pair = [Currency, Currency]
 
 interface PoolsWithState {
@@ -34,17 +36,23 @@ interface PoolsWithState {
 }
 
 export function useCommonPools(currencyA?: Currency, currencyB?: Currency): PoolsWithState {
-  const key = useMemo(() => {
-    if (!currencyA || !currencyB) {
-      return ''
-    }
-    const symbols = currencyA.wrapped.sortsBefore(currencyB.wrapped)
-      ? [currencyA.symbol, currencyB.symbol]
-      : [currencyB.symbol, currencyA.symbol]
-    return [...symbols, currencyA.chainId].join('_')
-  }, [currencyA, currencyB])
   const pairs = useMemo(() => SmartRouter.getPairCombinations(currencyA, currencyB), [currencyA, currencyB])
-  return usePools(pairs, { key })
+  const v3PoolState = useV3CandidatePools(currencyA, currencyB)
+  const v2PoolState = useV2Pools(pairs)
+  const stablePoolState = useStablePools(pairs)
+
+  return useMemo(() => {
+    const { pools: v2Pools, loading: v2Loading, syncing: v2Syncing } = v2PoolState
+    const { pools: stablePools, loading: stableLoading, syncing: stableSyncing } = stablePoolState
+    const { pools: v3Pools, loading: v3Loading, syncing: v3Syncing } = v3PoolState
+
+    const loading = v2Loading || v3Loading || stableLoading
+    return {
+      pools: v2Pools && v3Pools && stablePools ? [...v2Pools, ...stablePools, ...v3Pools] : null,
+      loading,
+      syncing: v2Syncing || v3Syncing || stableSyncing,
+    }
+  }, [v2PoolState, stablePoolState, v3PoolState])
 }
 
 interface PoolsOptions {
