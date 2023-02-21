@@ -67,5 +67,5 @@ export const useIsMMQuotingPair = (
     )
       return true
     return false
-  }, [isMMSupportChain, chainId, list, inputCurrency, outputCurrency, isConnected, connector.id])
+  }, [isMMSupportChain, chainId, list, inputCurrency, outputCurrency, isConnected, connector?.id])
 }
