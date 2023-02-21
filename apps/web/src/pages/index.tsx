@@ -2,14 +2,24 @@ import { formatEther } from '@ethersproject/units'
 import { getUnixTime, sub } from 'date-fns'
 import { gql } from 'graphql-request'
 import { GetStaticProps } from 'next'
+import { useEffect } from 'react'
+import { createFarmFetcherV3 } from '@pancakeswap/farms'
 import { SWRConfig } from 'swr'
 import { getCakeVaultAddress } from 'utils/addressHelpers'
 import { getCakeContract } from 'utils/contractHelpers'
+import { farmsV3 } from '@pancakeswap/farms/constants/97'
+import { multicallv2 } from 'utils/multicall'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
 import Home from '../views/Home'
 
+const farmFetcherV3 = createFarmFetcherV3(multicallv2)
+
 const IndexPage = ({ totalTx30Days, addressCount30Days, tvl }) => {
+  useEffect(() => {
+    farmFetcherV3.fetchFarms({ chainId: 97, farms: farmsV3 })
+  }, [])
+
   return (
     <SWRConfig
       value={{
