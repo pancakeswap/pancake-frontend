@@ -42,8 +42,8 @@ export const useIsMMQuotingPair = (
     if (!isMMSupportChain || !chainId || !list || !inputCurrency || !outputCurrency) return false
     if (
       isConnected &&
-      (connector.id === ConnectorNames.Blocto ||
-        connector.id === 'safe' ||
+      (connector?.id === ConnectorNames.Blocto ||
+        connector?.id === 'safe' ||
         Boolean((window.ethereum as ExtendEthereum)?.isBlocto))
     )
       return false
