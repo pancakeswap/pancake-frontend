@@ -13,6 +13,7 @@ import {
   isV3Pool,
   isStablePool,
   getMidPrice,
+  involvesCurrency,
 } from './utils'
 import { getPairCombinations } from './functions'
 
@@ -30,4 +31,5 @@ export const SmartRouter = {
   isV2Pool,
   isStablePool,
   getMidPrice,
+  involvesCurrency,
 }
