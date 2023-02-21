@@ -6,6 +6,7 @@ import { QuestionHelper, SearchIcon, Text, ChevronDownIcon } from '@pancakeswap/
 
 import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
+import { RouteDisplayModal } from './RouteDisplayModal'
 
 interface Props {
   routes?: Route[]
@@ -26,14 +27,24 @@ const DropdownIcon = styled(ChevronDownIcon)<{ expanded: boolean }>`
 export function RoutesBreakdown({ routes = [] }: Props) {
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
+  const [displayRoute, setDisplayRoute] = useState<Route | null>(null)
+  const [showRouteDetail, setShowRouteDetail] = useState(false)
   const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded])
+  const onShowRoute = useCallback((route: Route) => {
+    setDisplayRoute(route)
+    setShowRouteDetail(true)
+  }, [])
+  const onCloseRouteDisplay = useCallback(() => setShowRouteDetail(false), [])
 
   if (!routes.length) {
     return null
   }
 
   const count = routes.length
-  const swapRoutes = expanded ? routes.map((route) => <Route route={route} />) : null
+  const swapRoutes = expanded ? routes.map((route) => <Route route={route} onCheckRouteDetail={onShowRoute} />) : null
+  const routeDetail = displayRoute && (
+    <RouteDisplayModal open={showRouteDetail} route={displayRoute} onClose={onCloseRouteDisplay} />
+  )
 
   return (
     <>
@@ -55,6 +66,7 @@ export function RoutesBreakdown({ routes = [] }: Props) {
           </span>
         </div>
       </RouteInfoContainer>
+      {routeDetail}
       {swapRoutes}
     </>
   )
