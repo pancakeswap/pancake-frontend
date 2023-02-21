@@ -39,6 +39,14 @@ const farms: SerializedFarmConfig[] = [
   },
   // * By order of release
   {
+    pid: 16,
+    lpSymbol: 'whUSDC-tAPT LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x5e156f1207d0ebfa19a9eeff00d62a282278fb8719f4fab3a586a0a2c0fffbea::coin::T, 0x84d7aeef42d38a5ffc3ccef853e1b82e4958659d16a7de736a29c55fbbeb0114::staked_aptos_coin::StakedAptosCoin>',
+    token: mainnetTokens.tapt,
+    quoteToken: mainnetTokens.whusdc,
+  },
+  {
     pid: 15,
     lpSymbol: 'APT-MOVE LP',
     lpAddress:

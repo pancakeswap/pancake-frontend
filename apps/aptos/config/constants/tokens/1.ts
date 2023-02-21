@@ -100,4 +100,12 @@ export const mainnetTokens = {
     'BlueMove',
     'https://bluemove.net/',
   ),
+  tapt: new Coin(
+    ChainId.MAINNET,
+    '0x84d7aeef42d38a5ffc3ccef853e1b82e4958659d16a7de736a29c55fbbeb0114::staked_aptos_coin::StakedAptosCoin',
+    8,
+    'tAPT',
+    'Tortuga Staked APT',
+    'https://app.tortuga.finance/',
+  ),
 }
