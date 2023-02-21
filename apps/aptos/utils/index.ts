@@ -13,16 +13,16 @@ export function getBlockExploreLink(
   if (!chain) return defaultChain.blockExplorers?.traceMove.url ?? ''
   switch (type) {
     case 'transaction': {
-      return `${chain.blockExplorers?.traceMove.url}/transaction/${data}`
+      return `${chain.blockExplorers?.traceMove.url}transaction/${data}`
     }
     case 'block': {
-      return `${chain.blockExplorers?.traceMove.url}/block/${data}`
+      return `${chain.blockExplorers?.traceMove.url}block/${data}`
     }
     case 'token': {
-      return `${chain.blockExplorers?.traceMove.url}/coin/${data}`
+      return `${chain.blockExplorers?.traceMove.url}coin/${data}`
     }
     default: {
-      return `${chain.blockExplorers?.traceMove.url}/search/${data}`
+      return `${chain.blockExplorers?.traceMove.url}search/${data}`
     }
   }
 }
