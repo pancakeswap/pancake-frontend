@@ -202,10 +202,10 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 <Box style={{ marginRight: '16px' }}>
                   <CoreTag scale="sm" />
                   {props?.details?.isStable ? (
-                    <StableFarmTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                    <StableFarmTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
                   ) : null}
                   {props?.details?.boosted ? (
-                    <BoostedTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
                   ) : null}
                 </Box>
               )}

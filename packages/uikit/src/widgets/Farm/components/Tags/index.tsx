@@ -192,7 +192,7 @@ const BoostedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   return (
     <Tag
       variant="success"
-      style={{ background: "none", width: "100px" }}
+      style={{ background: "none" }}
       outline
       startIcon={<RocketIcon width="18px" color="success" mr="4px" />}
       {...props}
