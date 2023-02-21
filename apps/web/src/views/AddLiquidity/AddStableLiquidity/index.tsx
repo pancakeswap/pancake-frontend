@@ -47,6 +47,7 @@ export default function AddStableLiquidity({ currencyA, currencyB, children }) {
     error,
     addError,
     loading: infoLoading,
+    reserves,
   } = useStableLPDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(true)
@@ -266,5 +267,7 @@ export default function AddStableLiquidity({ currencyA, currencyB, children }) {
     buttonDisabled,
     errorText,
     setLiquidityState,
+    reserves,
+    pair,
   })
 }

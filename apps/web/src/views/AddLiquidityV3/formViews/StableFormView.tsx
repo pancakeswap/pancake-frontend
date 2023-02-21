@@ -1,6 +1,6 @@
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { AutoColumn, Button, Dots, RowBetween, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Button, Dots, RowBetween, Text, Box, AutoRow, Flex } from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
 import _isNaN from 'lodash/isNaN'
@@ -14,6 +14,13 @@ import { useIsExpertMode } from 'state/user/hooks'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
+import { LightGreyCard } from 'components/Card'
+
+import { CurrencyLogo } from 'components/Logo'
+import { useTotalUSDValue } from 'components/PositionCard'
+import { CurrencyAmount } from '@pancakeswap/sdk'
+import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
+
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 
 // interface StableFormView {}
@@ -36,10 +43,24 @@ export default function StableFormView({
   errorText,
   onFieldAInput,
   onFieldBInput,
+  poolTokenPercentage,
+  pair,
+  reserves,
+  stableLpFee,
 }) {
   const { account, isWrongNetwork } = useActiveWeb3React()
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
+
+  const reservedToken0 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[0])
+  const reservedToken1 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[1])
+
+  const totalLiquidityUSD = useTotalUSDValue({
+    currency0: pair?.token0,
+    currency1: pair?.token1,
+    token0Deposited: reservedToken0,
+    token1Deposited: reservedToken1,
+  })
 
   let buttons = null
   if (addIsUnsupported || addIsWarning) {
@@ -125,6 +146,58 @@ export default function StableFormView({
 
       <RightContainer>
         <AutoColumn>
+          <Box>
+            <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
+              Pool Reserves
+            </Text>
+            <Text fontSize="24px" fontWeight={500}>
+              $
+              {totalLiquidityUSD
+                ? totalLiquidityUSD.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                : '-'}
+            </Text>
+            <LightGreyCard mr="4px">
+              <AutoRow justifyContent="space-between" mb="8px">
+                <Flex>
+                  <CurrencyLogo currency={currencies[Field.CURRENCY_A]} />
+                  <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                    {currencies[Field.CURRENCY_A]?.symbol}
+                  </Text>
+                </Flex>
+                <Flex justifyContent="center">
+                  <Text bold mr="4px">
+                    {reservedToken0?.toSignificant(4)}
+                  </Text>
+                </Flex>
+              </AutoRow>
+              <AutoRow justifyContent="space-between">
+                <Flex>
+                  <CurrencyLogo currency={currencies[Field.CURRENCY_B]} />
+                  <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                    {currencies[Field.CURRENCY_B]?.symbol}
+                  </Text>
+                </Flex>
+                <Flex justifyContent="center">
+                  <Text bold mr="4px">
+                    {reservedToken1?.toSignificant(4)}
+                  </Text>
+                </Flex>
+              </AutoRow>
+            </LightGreyCard>
+            <AutoRow justifyContent="space-between" mb="8px">
+              <Text>Fee Rate: </Text>
+
+              <Text>{BIG_ONE_HUNDRED.times(stableLpFee).toNumber()}%</Text>
+            </AutoRow>
+            <AutoRow justifyContent="space-between" mb="8px">
+              <Text>Your share in pool: </Text>
+
+              <Text>{poolTokenPercentage ? poolTokenPercentage?.toSignificant(4) : '-'}%</Text>
+            </AutoRow>
+          </Box>
           <MediumOnly>{buttons}</MediumOnly>
         </AutoColumn>
       </RightContainer>

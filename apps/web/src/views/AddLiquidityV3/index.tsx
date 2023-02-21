@@ -167,6 +167,8 @@ export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }
     [currencyIdA, currencyIdB, router],
   )
 
+  console.log('stableConfig:', stableConfig)
+
   return (
     <Page>
       <BodyWrapper>
@@ -224,7 +226,7 @@ export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }
             {selectorType === SELECTOR_TYPE.STABLE && (
               <StableConfigContext.Provider value={stableConfig}>
                 <AddStableLiquidity currencyA={baseCurrency} currencyB={quoteCurrency}>
-                  {(props) => <StableFormView {...props} />}
+                  {(props) => <StableFormView {...props} stableLpFee={stableConfig?.stableSwapConfig?.stableLpFee} />}
                 </AddStableLiquidity>
               </StableConfigContext.Provider>
             )}

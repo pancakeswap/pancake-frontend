@@ -13,6 +13,8 @@ import { useSingleCallResult } from 'state/multicall/hooks'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { useMintState } from 'state/mint/hooks'
+import BigNumber from 'bignumber.js'
+import { useTotalUSDValue } from 'components/PositionCard'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -106,13 +108,17 @@ function useMintedStableLP({
     inputs,
   )
 
+  // TODO: Combine get_add_liquidity_mint_amount + balances in one call
+  const balanceResult = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress])
+
   return useMemo(
     () => ({
+      reserves: balanceResult?.result?.[0] || [new BigNumber(0), new BigNumber(0)],
       data: result?.[0],
       loading: loading || syncing,
       error,
     }),
-    [result, loading, syncing, error],
+    [balanceResult?.result, result, loading, syncing, error],
   )
 }
 
@@ -133,6 +139,7 @@ export function useStableLPDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
   addError?: string
+  reserves: [BigNumber, BigNumber]
 } {
   const { address: account } = useAccount()
 
@@ -220,6 +227,7 @@ export function useStableLPDerivedMintInfo(
   }, [targetAmount, estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])
 
   const {
+    reserves,
     data: lpMinted,
     error: estimateLPError,
     loading,
@@ -306,5 +314,6 @@ export function useStableLPDerivedMintInfo(
     poolTokenPercentage,
     error,
     addError,
+    reserves,
   }
 }

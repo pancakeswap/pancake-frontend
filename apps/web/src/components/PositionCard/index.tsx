@@ -70,7 +70,7 @@ export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) =
   return [token0Deposited, token1Deposited]
 }
 
-const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
+export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
   const token0Price = useBUSDPrice(currency0)
   const token1Price = useBUSDPrice(currency1)
 
