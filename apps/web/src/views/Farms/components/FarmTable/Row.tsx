@@ -199,7 +199,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
-                <Box style={{ marginRight: '16px' }}>
+                <Flex mr="16px">
                   <CoreTag scale="sm" />
                   {props?.details?.isStable ? (
                     <StableFarmTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
@@ -207,7 +207,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   {props?.details?.boosted ? (
                     <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
                   ) : null}
-                </Box>
+                </Flex>
               )}
             </Flex>
           </FarmMobileCell>
