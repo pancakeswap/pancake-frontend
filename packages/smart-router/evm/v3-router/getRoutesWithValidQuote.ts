@@ -56,7 +56,7 @@ export async function getRoutesWithValidQuote({
         }
       })
     })
-  const chunks = chunk(routesWithoutQuote, 50)
+  const chunks = chunk(routesWithoutQuote, 10)
   const result = await Promise.all(chunks.map(getQuotes))
   const quotes = result.reduce<RouteWithQuote[]>((acc, cur) => [...acc, ...cur], [])
   console.log('[METRIC] Getting quotes takes', Date.now() - start, 'got', quotes.length, 'quoted routes')

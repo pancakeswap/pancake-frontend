@@ -31,9 +31,9 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     data: trade,
     isLoading,
     isValidating,
-    mutate,
+    // mutate,
   } = useSWR(
-    amount && currency && candidatePools && !loading
+    amount && currency && candidatePools
       ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
       : null,
     async () => {
@@ -60,10 +60,10 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     },
   )
 
-  useEffect(() => {
-    // Revalidate if block height increases or gas price changed
-    mutate()
-  }, [blockNumber, mutate])
+  // useEffect(() => {
+  //   // Revalidate if block height increases or gas price changed
+  //   mutate()
+  // }, [blockNumber, mutate])
 
   return {
     trade,
