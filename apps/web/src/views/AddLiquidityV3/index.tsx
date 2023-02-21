@@ -22,12 +22,12 @@ import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hook
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
 
-// import FeeSelector from './formViews/V3FormView/components/FeeSelector'
+import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
 import { DynamicSection } from './formViews/V3FormView/components/shared'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from './types'
-// import { StableV3Selector } from './components/StableV3Selector'
+import { StableV3Selector } from './components/StableV3Selector'
 import StableFormView from './formViews/StableFormView'
 import { V2Selector } from './components/V2Selector'
 import L2FormView from './formViews/L2FormView'
@@ -61,7 +61,7 @@ interface UniversalAddLiquidityPropsType {
   currencyIdB: string
 }
 
-export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: UniversalAddLiquidityPropsType) {
+export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }: UniversalAddLiquidityPropsType) {
   const { chainId } = useActiveWeb3React()
 
   const router = useRouter()
@@ -151,9 +151,9 @@ export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: Univ
     if (stableConfig.stableSwapConfig) {
       setSelectoType(SELECTOR_TYPE.STABLE)
     } else {
-      setSelectoType(SELECTOR_TYPE.V2)
+      setSelectoType(isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
     }
-  }, [currencyIdA, currencyIdB, stableConfig.stableSwapConfig])
+  }, [currencyIdA, currencyIdB, isV2, stableConfig.stableSwapConfig])
 
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(
     ({ type, feeAmount: newFeeAmount }) => {
@@ -197,19 +197,28 @@ export default function UniversalAddLiquidity({ currencyIdA, currencyIdB }: Univ
                 />
               </FlexGap>
               <DynamicSection disabled={false}>
-                {/* {selectorType === SELECTOR_TYPE.STABLE && (
-                  <StableV3Selector selectorType={selectorType} handleFeePoolSelect={handleFeePoolSelect} />
-                )} */}
-                <V2Selector selectorType={selectorType} handleFeePoolSelect={handleFeePoolSelect} />
+                {!isV2 &&
+                  stableConfig.stableSwapConfig &&
+                  [SELECTOR_TYPE.STABLE, SELECTOR_TYPE.V3].includes(selectorType) && (
+                    <StableV3Selector selectorType={selectorType} handleFeePoolSelect={handleFeePoolSelect} />
+                  )}
 
-                {/* {selectorType === SELECTOR_TYPE.V3 && (
+                {isV2 && selectorType !== SELECTOR_TYPE.V3 && (
+                  <V2Selector
+                    isStable={stableConfig.stableSwapConfig}
+                    selectorType={selectorType}
+                    handleFeePoolSelect={handleFeePoolSelect}
+                  />
+                )}
+
+                {!stableConfig.stableSwapConfig && selectorType === SELECTOR_TYPE.V3 && (
                   <FeeSelector
                     currencyA={baseCurrency ?? undefined}
                     currencyB={quoteCurrency ?? undefined}
                     handleFeePoolSelect={handleFeePoolSelect}
                     feeAmount={feeAmount}
                   />
-                )} */}
+                )}
               </DynamicSection>
             </AutoColumn>
             {selectorType === SELECTOR_TYPE.STABLE && (

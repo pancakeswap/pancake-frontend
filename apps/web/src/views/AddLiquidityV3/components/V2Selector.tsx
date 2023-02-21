@@ -4,7 +4,7 @@ import { Button } from '@pancakeswap/uikit'
 import HideShowSelectorSection from './HideShowSelectorSection'
 import { SELECTOR_TYPE } from '../types'
 
-export function V2Selector({ handleFeePoolSelect, selectorType }) {
+export function V2Selector({ isStable, handleFeePoolSelect, selectorType }) {
   const [showOptions, setShowOptions] = useState(false)
 
   return (
@@ -14,7 +14,7 @@ export function V2Selector({ handleFeePoolSelect, selectorType }) {
       heading={selectorType === SELECTOR_TYPE.STABLE ? 'Stable' : selectorType === SELECTOR_TYPE.V2 ? 'LP V2' : 'LP V3'}
       content={
         <>
-          {selectorType === SELECTOR_TYPE.STABLE ? (
+          {isStable ? (
             <>
               <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}>Stable</Button>
             </>
