@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 
-import { FormHeader, FormMain, PricingAndSlippage } from './containers'
+import { FormHeader, FormMain, PricingAndSlippage, TradeDetails, SwapCommitButton } from './containers'
 import { useBestTrade } from './hooks'
 
 export function V3SwapForm() {
@@ -10,6 +10,7 @@ export function V3SwapForm() {
   const pricingAndSlippage = (
     <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
   )
+  const swapCommitButton = <SwapCommitButton trade={trade} approvalSubmitted={false} />
   return (
     <>
       <FormHeader refreshDisabled />
@@ -18,7 +19,10 @@ export function V3SwapForm() {
         pricingAndSlippage={pricingAndSlippage}
         inputAmount={trade?.inputAmount}
         outputAmount={trade?.outputAmount}
+        swapCommitButton={swapCommitButton}
       />
+
+      <TradeDetails loaded={!isLoading && !!trade} trade={trade} />
     </>
   )
 }

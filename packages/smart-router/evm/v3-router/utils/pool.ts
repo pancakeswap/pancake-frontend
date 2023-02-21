@@ -65,12 +65,17 @@ export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Pric
   if (isV3Pool(pool)) {
     const { token0, token1, fee, liquidity, sqrtRatioX96, tick } = pool
     const v3Pool = new SDKV3Pool(token0.wrapped, token1.wrapped, fee, sqrtRatioX96, liquidity, tick)
-    return v3Pool.token0.equals(base.wrapped) ? v3Pool.token0Price : v3Pool.token1Price
+    return v3Pool.priceOf(base.wrapped)
   }
 
   if (isV2Pool(pool)) {
     const pair = new Pair(pool.reserve0.wrapped, pool.reserve1.wrapped)
-    return pair.token0.equals(base.wrapped) ? pair.token0Price : pair.token1Price
+    return pair.priceOf(base.wrapped)
+  }
+
+  // FIXME now assume price of stable pair is 1
+  if (isStablePool(pool)) {
+    return new Price(base, quote, JSBI.BigInt(1), JSBI.BigInt(1))
   }
   return new Price(base, quote, JSBI.BigInt(1), JSBI.BigInt(0))
 }

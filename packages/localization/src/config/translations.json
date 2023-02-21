@@ -2135,5 +2135,7 @@
   "Adding V3 Liquidity": "Adding V3 Liquidity",
   "Staking to V3 Farms": "Staking to V3 Farms",
   "Start earning CAKE by staking your liquidity positions to V3 Farms!": "Start earning CAKE by staking your liquidity positions to V3 Farms!",
-  "Finish": "Finish"
+  "Finish": "Finish",
+  "V3": "V3",
+  "Split into %count% routes": "Split into %count% routes"
 }
