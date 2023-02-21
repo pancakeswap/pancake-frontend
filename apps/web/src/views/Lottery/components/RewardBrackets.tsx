@@ -29,7 +29,7 @@ interface RewardMatchesProps {
 
 interface RewardsState {
   isLoading: boolean
-  cakeToBurn: BigNumber
+  cadinuToBurn: BigNumber
   rewardsLessTreasuryFee: BigNumber
   rewardsBreakdown: string[]
   countWinnersPerBracket: string[]
@@ -42,7 +42,7 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
   const { t } = useTranslation()
   const [state, setState] = useState<RewardsState>({
     isLoading: true,
-    cakeToBurn: BIG_ZERO,
+    cadinuToBurn: BIG_ZERO,
     rewardsLessTreasuryFee: BIG_ZERO,
     rewardsBreakdown: null,
     countWinnersPerBracket: null,
@@ -53,11 +53,11 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
       const { treasuryFee, amountCollectedInCadinu, rewardsBreakdown, countWinnersPerBracket } = lotteryNodeData
 
       const feeAsPercentage = new BigNumber(treasuryFee).div(100)
-      const cakeToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCadinu))
-      const amountLessTreasuryFee = new BigNumber(amountCollectedInCadinu).minus(cakeToBurn)
+      const cadinuToBurn = feeAsPercentage.div(100).times(new BigNumber(amountCollectedInCadinu))
+      const amountLessTreasuryFee = new BigNumber(amountCollectedInCadinu).minus(cadinuToBurn)
       setState({
         isLoading: false,
-        cakeToBurn,
+        cadinuToBurn,
         rewardsLessTreasuryFee: amountLessTreasuryFee,
         rewardsBreakdown,
         countWinnersPerBracket,
@@ -65,7 +65,7 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
     } else {
       setState({
         isLoading: true,
-        cakeToBurn: BIG_ZERO,
+        cadinuToBurn: BIG_ZERO,
         rewardsLessTreasuryFee: BIG_ZERO,
         rewardsBreakdown: null,
         countWinnersPerBracket: null,
@@ -73,12 +73,12 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
     }
   }, [lotteryNodeData])
 
-  const getCakeRewards = (bracket: number) => {
+  const getCadinuRewards = (bracket: number) => {
     const shareAsPercentage = new BigNumber(state.rewardsBreakdown[bracket]).div(100)
     return state.rewardsLessTreasuryFee.div(100).times(shareAsPercentage)
   }
 
-  const { isLoading, countWinnersPerBracket, cakeToBurn } = state
+  const { isLoading, countWinnersPerBracket, cadinuToBurn } = state
 
   const rewardBrackets = [0, 1, 2, 3, 4, 5]
 
@@ -93,13 +93,13 @@ const RewardBrackets: React.FC<React.PropsWithChildren<RewardMatchesProps>> = ({
           <RewardBracketDetail
             key={bracketIndex}
             rewardBracket={bracketIndex}
-            cakeAmount={!isLoading && getCakeRewards(bracketIndex)}
+            cadinuAmount={!isLoading && getCadinuRewards(bracketIndex)}
             numberWinners={!isLoading && countWinnersPerBracket[bracketIndex]}
             isHistoricRound={isHistoricRound}
             isLoading={isLoading}
           />
         ))}
-        <RewardBracketDetail rewardBracket={0} cakeAmount={cakeToBurn} isBurn isLoading={isLoading} />
+        <RewardBracketDetail rewardBracket={0} cadinuAmount={cadinuToBurn} isBurn isLoading={isLoading} />
       </RewardsInner>
     </Wrapper>
   )
