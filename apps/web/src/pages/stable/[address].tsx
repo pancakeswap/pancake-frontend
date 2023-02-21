@@ -6,10 +6,17 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 import styled from 'styled-components'
 import { useStableFarms } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { useContract } from 'hooks/useContract'
+import { useTotalUSDValue } from 'components/PositionCard'
+import { useAccount } from 'wagmi'
+import { useTokenBalance } from 'state/wallet/hooks'
+import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -20,6 +27,7 @@ export const BodyWrapper = styled(Card)`
 
 export default function StablePoolPage() {
   const router = useRouter()
+  const { address: account } = useAccount()
 
   const { address: poolAddress } = router.query
 
@@ -27,15 +35,45 @@ export default function StablePoolPage() {
 
   const selectedLp = lpTokens.find(({ liquidityToken }) => liquidityToken.address === poolAddress)
 
-  if (!selectedLp) return null
+  const stableSwapInfoContract = useContract(selectedLp?.infoStableSwapAddress, stableSwapInfoABI)
+
+  const { result } = useSingleCallResult(stableSwapInfoContract, 'balances', [selectedLp?.stableSwapAddress])
+
+  const reserves = result ? result[0] : ['0', '0']
 
   const stableLp = [selectedLp].map((lpToken) => ({
     ...lpToken,
     tokenAmounts: [],
-    reserve0: CurrencyAmount.fromRawAmount(lpToken?.token0, '0'),
-    reserve1: CurrencyAmount.fromRawAmount(lpToken?.token1, '0'),
+    reserve0: CurrencyAmount.fromRawAmount(lpToken?.token0, reserves[0]),
+    reserve1: CurrencyAmount.fromRawAmount(lpToken?.token1, reserves[1]),
     getLiquidityValue: () => CurrencyAmount.fromRawAmount(lpToken?.token0, '0'),
   }))[0]
+
+  const totalLiquidityUSD = useTotalUSDValue({
+    currency0: selectedLp?.token0,
+    currency1: selectedLp?.token1,
+    token0Deposited: stableLp.reserve0,
+    token1Deposited: stableLp.reserve1,
+  })
+
+  const userPoolBalance = useTokenBalance(account ?? undefined, selectedLp.liquidityToken)
+
+  const [token0Deposited, token1Deposited] = useGetRemovedTokenAmountsNoContext({
+    lpAmount: userPoolBalance?.quotient?.toString(),
+    token0: selectedLp?.token0,
+    token1: selectedLp?.token1,
+    stableSwapInfoContract,
+    stableSwapAddress: selectedLp?.stableSwapAddress,
+  })
+
+  const totalUSDValue = useTotalUSDValue({
+    currency0: selectedLp?.token0,
+    currency1: selectedLp?.token1,
+    token0Deposited,
+    token1Deposited,
+  })
+
+  if (!selectedLp) return null
 
   return (
     <Page>
@@ -65,7 +103,13 @@ export default function StablePoolPage() {
                   Liquidity
                 </Text>
                 <Text fontSize="24px" fontWeight={500}>
-                  $123
+                  $
+                  {totalUSDValue
+                    ? totalUSDValue.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
+                    : '-'}
                 </Text>
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -77,7 +121,7 @@ export default function StablePoolPage() {
                     </Flex>
                     <Flex justifyContent="center">
                       <Text bold mr="4px">
-                        123
+                        {token0Deposited?.toSignificant(6)}
                       </Text>
                     </Flex>
                   </AutoRow>
@@ -90,7 +134,7 @@ export default function StablePoolPage() {
                     </Flex>
                     <Flex justifyContent="center">
                       <Text bold mr="4px">
-                        123
+                        {token1Deposited?.toSignificant(6)}
                       </Text>
                     </Flex>
                   </AutoRow>
@@ -101,7 +145,13 @@ export default function StablePoolPage() {
                   Pool reserves
                 </Text>
                 <Text fontSize="24px" fontWeight={500}>
-                  $343,170,779.79
+                  $
+                  {totalLiquidityUSD
+                    ? totalLiquidityUSD.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })
+                    : '-'}
                 </Text>
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -113,7 +163,7 @@ export default function StablePoolPage() {
                     </Flex>
                     <Flex justifyContent="center">
                       <Text bold mr="4px">
-                        123
+                        {stableLp?.reserve0?.toSignificant(6)}
                       </Text>
                     </Flex>
                   </AutoRow>
@@ -126,7 +176,7 @@ export default function StablePoolPage() {
                     </Flex>
                     <Flex justifyContent="center">
                       <Text bold mr="4px">
-                        123
+                        {stableLp?.reserve1?.toSignificant(6)}
                       </Text>
                     </Flex>
                   </AutoRow>

@@ -13,17 +13,33 @@ import { useAccount } from 'wagmi'
 export function useGetRemovedTokenAmounts({ lpAmount }) {
   const { stableSwapInfoContract, stableSwapConfig } = useContext(StableConfigContext)
 
+  return useGetRemovedTokenAmountsNoContext({
+    stableSwapInfoContract,
+    stableSwapAddress: stableSwapConfig?.stableSwapAddress,
+    lpAmount,
+    token0: stableSwapConfig?.token0,
+    token1: stableSwapConfig?.token1,
+  })
+}
+
+export function useGetRemovedTokenAmountsNoContext({
+  lpAmount,
+  stableSwapAddress,
+  token0,
+  token1,
+  stableSwapInfoContract,
+}) {
   const { data } = useSWR(
-    !lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', stableSwapConfig?.stableSwapAddress, lpAmount],
+    !lpAmount ? null : ['stableSwapInfoContract', 'calc_coins_amount', stableSwapAddress, lpAmount],
     async () => {
-      return stableSwapInfoContract.calc_coins_amount(stableSwapConfig?.stableSwapAddress, lpAmount)
+      return stableSwapInfoContract.calc_coins_amount(stableSwapAddress, lpAmount)
     },
   )
 
   if (!Array.isArray(data)) return []
 
-  const tokenAAmount = CurrencyAmount.fromRawAmount(stableSwapConfig?.token0, data[0].toString())
-  const tokenBAmount = CurrencyAmount.fromRawAmount(stableSwapConfig?.token1, data[1].toString())
+  const tokenAAmount = CurrencyAmount.fromRawAmount(token0, data[0].toString())
+  const tokenBAmount = CurrencyAmount.fromRawAmount(token1, data[1].toString())
 
   return [tokenAAmount, tokenBAmount]
 }
