@@ -3,12 +3,12 @@ import { useMemo } from 'react'
 import { SmartRouter, Trade } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
 
-import { useUserSlippageTolerance } from 'state/user/hooks'
 import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetailsDropdown'
 import { TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 
-import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from '../utils/exchange'
+import { computeTradePriceBreakdown } from '../utils/exchange'
 import { RoutesBreakdown } from '../components'
+import { useSlippageAdjustedAmounts } from '../hooks'
 
 interface Props {
   loaded: boolean
@@ -16,11 +16,7 @@ interface Props {
 }
 
 export function TradeDetails({ loaded, trade }: Props) {
-  const [allowedSlippage] = useUserSlippageTolerance()
-  const slippageAdjustedAmounts = useMemo(
-    () => computeSlippageAdjustedAmounts(trade, allowedSlippage),
-    [allowedSlippage, trade],
-  )
+  const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
   const { priceImpactWithoutFee, lpFeeAmount } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const hasStablePool = useMemo(
     () => trade?.routes.some((route) => route.pools.some(SmartRouter.isStablePool)),

@@ -41,7 +41,9 @@ export function RoutesBreakdown({ routes = [] }: Props) {
   }
 
   const count = routes.length
-  const swapRoutes = expanded ? routes.map((route) => <Route route={route} onCheckRouteDetail={onShowRoute} />) : null
+  const swapRoutes = expanded
+    ? routes.map((route) => <RouteComp route={route} onCheckRouteDetail={onShowRoute} />)
+    : null
   const routeDetail = displayRoute && (
     <RouteDisplayModal open={showRouteDetail} route={displayRoute} onClose={onCloseRouteDisplay} />
   )
@@ -77,7 +79,7 @@ interface RouteProps {
   onCheckRouteDetail?: (route: Route) => void
 }
 
-function Route({
+function RouteComp({
   route,
   onCheckRouteDetail = () => {
     // default

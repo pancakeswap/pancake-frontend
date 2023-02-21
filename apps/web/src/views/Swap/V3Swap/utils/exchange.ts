@@ -1,15 +1,19 @@
-import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, JSBI } from '@pancakeswap/sdk'
 import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
 import { basisPointsToPercent } from 'utils/exchange'
 
+export type SlippageAdjustedAmounts = {
+  [field in Field]?: CurrencyAmount<Currency>
+}
+
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
 export function computeSlippageAdjustedAmounts(
   trade: Trade<TradeType> | undefined | null,
   allowedSlippage: number,
-): { [field in Field]?: CurrencyAmount<Currency> } {
+): SlippageAdjustedAmounts {
   const pct = basisPointsToPercent(allowedSlippage)
 
   return {
@@ -44,7 +48,9 @@ export function computeTradePriceBreakdown(trade?: Trade<TradeType> | null): {
           return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(pool.fee))
         }
         if (SmartRouter.isV3Pool(pool)) {
-          return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(new Percent(pool.fee, BIPS_BASE)))
+          return currentFee.multiply(
+            ONE_HUNDRED_PERCENT.subtract(new Percent(pool.fee, JSBI.multiply(BIPS_BASE, JSBI.BigInt(100)))),
+          )
         }
         return currentFee
       }, ONE_HUNDRED_PERCENT),
