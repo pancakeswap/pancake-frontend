@@ -25,6 +25,8 @@ const whitelistedUSDValueTokens = {
   }
 >
 
+const supportedChainIdSubgraph = [ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM]
+
 const masterchefV3Abi = [
   {
     inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -153,6 +155,16 @@ export async function farmV3FetchFarms({
 
   const slot0s = await fetchSlot0s(farms, chainId, multicallv2)
 
+  const tvls: TvlMap = {}
+  if (supportedChainIdSubgraph) {
+    const results = await Promise.all(
+      farms.map((f) => fetch(`/api/farm-tvl/${chainId}/${f.lpAddress}`).then((res) => res.json())),
+    )
+    results.forEach((r, i) => {
+      tvls[farms[i].lpAddress] = r.formatted
+    })
+  }
+
   const farmsData = farms.map((farm, index) => {
     return {
       ...farm,
@@ -170,7 +182,7 @@ export async function farmV3FetchFarms({
   })
 
   // @ts-expect-error
-  const farmsWithPrice = await getFarmsPrices(farmsData, chainId)
+  const farmsWithPrice = await getFarmsPrices(farmsData, chainId, tvls)
   console.log(farmsWithPrice)
 }
 
@@ -322,7 +334,14 @@ const fetchFarmCalls = (farm: SerializedFarmPublicData) => {
   ]
 }
 
-const getFarmsPrices = async (farms: FarmData[], chainId: number) => {
+export type TvlMap = {
+  [key: string]: {
+    token0: string
+    token1: string
+  }
+}
+
+const getFarmsPrices = async (farms: FarmData[], chainId: number, tvls: TvlMap) => {
   const commonPairsUSDValue: { [address: string]: string } = {}
   if (
     whitelistedUSDValueTokens[chainId as keyof typeof whitelistedUSDValueTokens] &&
@@ -348,6 +367,8 @@ const getFarmsPrices = async (farms: FarmData[], chainId: number) => {
     let tokenPriceBusd = FIXED_ZERO
     let quoteTokenPriceBusd = FIXED_ZERO
 
+    let tvl = FIXED_ZERO
+
     if (commonPairsUSDValue[farm.quoteToken.address]) {
       quoteTokenPriceBusd = FixedNumber.from(commonPairsUSDValue[farm.quoteToken.address])
     }
@@ -362,9 +383,15 @@ const getFarmsPrices = async (farms: FarmData[], chainId: number) => {
     if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
     }
+    if (!tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && tvls[farm.lpAddress]) {
+      tvl = tokenPriceBusd
+        .mulUnsafe(FixedNumber.from(tvls[farm.lpAddress].token0))
+        .addUnsafe(quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(tvls[farm.lpAddress].token1)))
+    }
 
     return {
       ...farm,
+      activeTvl: tvl.toString(),
       tokenPriceBusd: tokenPriceBusd.toString(),
       quoteTokenPriceBusd: quoteTokenPriceBusd.toString(),
       lpTokenPrice: '-', // not support lpTokenPrice

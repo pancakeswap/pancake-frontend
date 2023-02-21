@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { NextApiHandler } from 'next'
+import { PositionMath } from '@pancakeswap/v3-sdk'
+import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
 
@@ -12,28 +14,12 @@ const zParams = z.object({
   address: zAddress,
 })
 
-const zReponse = z.object({
-  pool: z
-    .object({
-      token0Price: z.string().min(1),
-      token1Price: z.string().min(1),
-    })
-    .required(),
-  positions: z
-    .object({
-      depositedToken0: z.string().min(1),
-      depositedToken1: z.string().min(1),
-      withdrawnToken0: z.string().min(1),
-      withdrawnToken1: z.string().min(1),
-    })
-    .required()
-    .array(),
-})
-
 const SUBGRAPH_URLS = {
   1: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
 }
 
+// currently can get the total active liquidity for a pool
+// TODO: update subgraph urls and add owner by master chef address
 const handler: NextApiHandler = async (req, res) => {
   const parsed = zParams.safeParse(req.query)
 
@@ -49,40 +35,82 @@ const handler: NextApiHandler = async (req, res) => {
     gql`
     query tvl {
         pool(id: "${address}") {
-          token0Price
-          token1Price
+          tick
+          sqrtPrice
+          token0 {
+            id
+            symbol
+            decimals
+          }
+          token1 {
+            id
+            symbol
+            decimals
+          }
         }
-        positions(where: { pool: "${address}" }, first: 1000, orderBy: liquidity orderDirection: desc) {
-          depositedToken0
-          depositedToken1
-          withdrawnToken0
-          withdrawnToken1
+        positions(where: { pool: "${address}" }, first: 1000, orderBy: liquidity orderDirection: desc, liquidity_gt: "0") {
+          liquidity
+          id
+          tickUpper {
+            tickIdx
+          }
+          tickLower {
+            tickIdx
+          }
         }
     }
     `,
   )
 
-  const parsedResponse = zReponse.safeParse(response)
-  if (parsedResponse.success === false) {
-    return res.status(400).json(parsedResponse.error)
+  const { pool, positions } = response
+
+  const currentTick = pool.tick
+  const sqrtRatio = JSBI.BigInt(pool.sqrtPrice)
+
+  let totalToken0 = JSBI.BigInt(0)
+  let totalToken1 = JSBI.BigInt(0)
+
+  for (const position of positions) {
+    const token0 = PositionMath.getToken0Amount(
+      currentTick,
+      +position.tickLower.tickIdx,
+      +position.tickUpper.tickIdx,
+      sqrtRatio,
+      JSBI.BigInt(position.liquidity),
+    )
+
+    const token1 = PositionMath.getToken1Amount(
+      currentTick,
+      +position.tickLower.tickIdx,
+      +position.tickUpper.tickIdx,
+      sqrtRatio,
+      JSBI.BigInt(position.liquidity),
+    )
+    totalToken0 = JSBI.add(totalToken0, token0)
+    totalToken1 = JSBI.add(totalToken1, token1)
   }
 
-  const { pool, positions } = parsedResponse.data
-  const sumTokens = {
-    token0: 0,
-    token1: 0,
-  }
-
-  for (const pos of positions) {
-    sumTokens.token0 += parseFloat(pos.depositedToken0) - parseFloat(pos.withdrawnToken0)
-    sumTokens.token1 += parseFloat(pos.depositedToken1) - parseFloat(pos.withdrawnToken1)
-  }
-
-  const finalResult = sumTokens.token0 * parseFloat(pool.token0Price) + sumTokens.token1 * parseFloat(pool.token1Price)
+  const curr0 = CurrencyAmount.fromRawAmount(
+    new Token(+chainId, pool.token0.id, +pool.token0.decimals, pool.token0.symbol),
+    totalToken0.toString(),
+  ).toExact()
+  const curr1 = CurrencyAmount.fromRawAmount(
+    new Token(+chainId, pool.token1.id, +pool.token1.decimals, pool.token1.symbol),
+    totalToken1.toString(),
+  ).toExact()
 
   res.setHeader('Cache-Control', 's-maxage=300, max-age=300')
 
-  return res.status(200).json({ tvl: finalResult, sumTokens })
+  return res.status(200).json({
+    tvl: {
+      token0: totalToken0.toString(),
+      token1: totalToken1.toString(),
+    },
+    formatted: {
+      token0: curr0,
+      token1: curr1,
+    },
+  })
 }
 
 export default handler
