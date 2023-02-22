@@ -268,27 +268,32 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
 
 const client = new GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3')
 
-export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key }: Options = {}) {
-  const blockNumber = useCurrentBlock()
-  const poolsWithTicks = useSWR(key && pools ? ['v3_pool_ticks', key] : null, async () => {
-    const start = Date.now()
-    console.log('[METRIC] Start getting pool ticks', key)
-    const poolTicks = await Promise.all(
-      pools.map(({ token0, token1, fee }) => {
-        return getPoolTicks(getV3PoolAddress(token0, token1, fee))
-      }),
-    )
-    console.log('[METRIC] Getting pool ticks of', key, 'takes', Date.now() - start, poolTicks)
+export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, blockNumber }: Options = {}) {
+  const poolsWithTicks = useSWR(
+    key && pools ? ['v3_pool_ticks', key] : null,
+    async () => {
+      const start = Date.now()
+      console.log('[METRIC] Start getting pool ticks', key)
+      const poolTicks = await Promise.all(
+        pools.map(({ token0, token1, fee }) => {
+          return getPoolTicks(getV3PoolAddress(token0, token1, fee))
+        }),
+      )
+      console.log('[METRIC] Getting pool ticks of', key, 'takes', Date.now() - start, poolTicks)
 
-    return {
-      pools: pools.map((pool, i) => ({
-        ...pool,
-        ticks: poolTicks[i],
-      })),
-      key,
-      blockNumber,
-    }
-  })
+      return {
+        pools: pools.map((pool, i) => ({
+          ...pool,
+          ticks: poolTicks[i],
+        })),
+        key,
+        blockNumber,
+      }
+    },
+    {
+      revalidateOnFocus: false,
+    },
+  )
 
   const { mutate } = poolsWithTicks
   useEffect(() => {
@@ -347,7 +352,8 @@ async function getPoolTicks(poolAddress: string): Promise<Tick[]> {
   return result
 }
 
-export function useV3PoolsFromSubgraph(pairs?: Pair[], { blockNumber, key }: Options = {}) {
+export function useV3PoolsFromSubgraph(pairs?: Pair[], { key }: Options = {}) {
+  const blockNumber = useCurrentBlock()
   const query = gql`
       query getPools($pageSize: Int!, $poolAddrs: [String]) {
         pools(
@@ -368,45 +374,57 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { blockNumber, key }: Opt
     pools: SubgraphPool[]
     key?: string
     blockNumber?: BigintIsh
-  }>(key && pairs?.length && [key], async () => {
-    const start = Date.now()
-    console.log('[METRIC] Start getting v3 pools from subgraph', key, pairs)
-    const metaMap = new Map<string, V3PoolMeta>()
-    for (const pair of pairs) {
-      const v3Metas = getV3PoolMetas(pair)
-      for (const meta of v3Metas) {
-        metaMap.set(meta.address.toLocaleLowerCase(), meta)
+  }>(
+    key && pairs?.length && [key],
+    async () => {
+      const start = Date.now()
+      console.log('[METRIC] Start getting v3 pools from subgraph', key, pairs)
+      const metaMap = new Map<string, V3PoolMeta>()
+      for (const pair of pairs) {
+        const v3Metas = getV3PoolMetas(pair)
+        for (const meta of v3Metas) {
+          metaMap.set(meta.address.toLocaleLowerCase(), meta)
+        }
       }
-    }
-    const addresses = Array.from(metaMap.keys())
-    const { pools: poolsFromSubgraph } = await client.request(query, {
-      pageSize: 1000,
-      poolAddrs: addresses,
-    })
-    const pools = poolsFromSubgraph.map(({ id, liquidity, sqrtPrice, tick, totalValueLockedUSD }) => {
-      const { fee, currencyA, currencyB, address } = metaMap.get(id)
-      const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
-        ? [currencyA, currencyB]
-        : [currencyB, currencyA]
+      const addresses = Array.from(metaMap.keys())
+      const { pools: poolsFromSubgraph } = await client.request(query, {
+        pageSize: 1000,
+        poolAddrs: addresses,
+      })
+      const pools = poolsFromSubgraph.map(({ id, liquidity, sqrtPrice, tick, totalValueLockedUSD }) => {
+        const { fee, currencyA, currencyB, address } = metaMap.get(id)
+        const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+          ? [currencyA, currencyB]
+          : [currencyB, currencyA]
+        return {
+          type: PoolType.V3,
+          fee,
+          token0,
+          token1,
+          liquidity: JSBI.BigInt(liquidity),
+          sqrtRatioX96: JSBI.BigInt(sqrtPrice),
+          tick: Number(tick),
+          address,
+          tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
+        }
+      })
+      console.log('[METRIC] Getting v3 pools from subgraph takes', Date.now() - start, key, pools)
       return {
-        type: PoolType.V3,
-        fee,
-        token0,
-        token1,
-        liquidity: JSBI.BigInt(liquidity),
-        sqrtRatioX96: JSBI.BigInt(sqrtPrice),
-        tick: Number(tick),
-        address,
-        tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
+        pools,
+        key,
+        blockNumber,
       }
-    })
-    console.log('[METRIC] Getting v3 pools from subgraph takes', Date.now() - start, key, pools)
-    return {
-      pools,
-      key,
-      blockNumber,
-    }
-  })
+    },
+    {
+      revalidateOnFocus: false,
+    },
+  )
+
+  const { mutate } = result
+  useEffect(() => {
+    // Revalidate pools if block number increases
+    mutate()
+  }, [blockNumber, mutate])
   return result
 }
 
