@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 import useSWR from 'swr'
-import { useDeferredValue, useEffect, useMemo } from 'react'
+import {
+  useDeferredValue,
+  // useEffect,
+  useMemo,
+} from 'react'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
