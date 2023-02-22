@@ -3,9 +3,9 @@ import addSeconds from 'date-fns/addSeconds'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { SerializedFarm, DeserializedFarm } from './types'
+import { SerializedFarm, DeserializedFarm } from '../types'
 import { deserializeFarmUserData } from './deserializeFarmUserData'
-import { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
+import { FARM_AUCTION_HOSTING_IN_SECONDS } from '../const'
 
 export const deserializeFarm = (
   farm: SerializedFarm,

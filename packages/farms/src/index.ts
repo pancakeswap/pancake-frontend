@@ -2,7 +2,7 @@ import { formatEther } from '@ethersproject/units'
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
-import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './fetchFarmsV2'
+import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
 import { farmV3FetchFarms, fetchMasterChefV3Data, TvlMap } from './fetchFarmsV3'
 import { FarmConfigV3 } from './types'
 
@@ -95,12 +95,12 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
   }
 }
 
-export * from './apr'
-export * from './farmsPriceHelpers'
+export * from './v2/apr'
+export * from './v2/farmsPriceHelpers'
 export * from './types'
-export * from './deserializeFarmUserData'
-export * from './deserializeFarm'
+export * from './v2/deserializeFarmUserData'
+export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
-export * from './filterFarmsByQuery'
+export * from './v2/filterFarmsByQuery'
 
 export { masterChefV3Addresses }

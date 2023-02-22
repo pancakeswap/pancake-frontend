@@ -1,8 +1,8 @@
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
-import { SerializedFarmPublicData, SerializedFarmConfig } from './types'
-import { nonBSCVaultAddresses } from './const'
+import { SerializedFarmPublicData, SerializedFarmConfig } from '../types'
+import { nonBSCVaultAddresses } from '../const'
 
 const abi = [
   {

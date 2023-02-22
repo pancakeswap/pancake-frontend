@@ -1,7 +1,7 @@
 import { ChainId, WBNB } from '@pancakeswap/sdk'
 import { BUSD } from '@pancakeswap/tokens'
 import { equalsIgnoreCase } from '@pancakeswap/utils/equalsIgnoreCase'
-import { FarmData } from './types'
+import { FarmData } from '../types'
 
 /**
  * Returns the first farm with a quote token that matches from an array of preferred quote tokens

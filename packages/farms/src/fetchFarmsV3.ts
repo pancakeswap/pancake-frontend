@@ -5,7 +5,7 @@ import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
 import { FIXED_100, FIXED_ZERO } from './const'
-import { getTokenAmount } from './fetchFarmsV2'
+import { getTokenAmount } from './v2/fetchFarmsV2'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 
 const whitelistedUSDValueTokens = {
