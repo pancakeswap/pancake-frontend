@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { NextApiHandler } from 'next'
 import { PositionMath } from '@pancakeswap/v3-sdk'
+import { farmsV3Map } from '@pancakeswap/farms/constants/index.v3'
 import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
@@ -28,6 +29,13 @@ const handler: NextApiHandler = async (req, res) => {
   }
 
   const { chainId, address: address_ } = parsed.data
+
+  const farms = farmsV3Map[chainId]
+
+  if (!farms.some((f) => f.lpAddress.toLowerCase() === address)) {
+    return res.status(400).json({ error: 'Invalid LP address' })
+  }
+
   const address = address_.toLowerCase()
 
   const response = await request(
