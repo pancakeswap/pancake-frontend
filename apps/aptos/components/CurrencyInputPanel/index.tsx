@@ -160,8 +160,8 @@ export const CurrencyInputPanel = ({
       }
       bottom={
         <>
-          {!!currency && showUSDPrice && (
-            <AtomBox display="flex" justifyContent="flex-end" mr="1rem">
+          <AtomBox display="flex" justifyContent="flex-end" mr="1rem" style={{ height: '18px' }}>
+            {!!currency && showUSDPrice && (
               <AtomBox style={{ maxWidth: '200px' }}>
                 {Number.isFinite(amountInDollar) && amountInDollar > 0 ? (
                   <Text fontSize="12px" color="textSubtle">
@@ -171,44 +171,46 @@ export const CurrencyInputPanel = ({
                   <AtomBox style={{ height: '18px' }} />
                 )}
               </AtomBox>
-            </AtomBox>
-          )}
-          {account && currency && currencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
-            <InputRow selected={!!disableCurrencySelect}>
-              {isShowPercentButton &&
-                showQuickInputButton &&
-                onPercentInput &&
-                [25, 50, 75].map((percent) => {
-                  const isAtCurrentPercent =
-                    (maxAmount && value === percentAmount[percent]) || (lpPercent && lpPercent === percent.toString())
+            )}
+          </AtomBox>
+          <InputRow selected={!!disableCurrencySelect}>
+            {account && currency && currencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
+              <>
+                {isShowPercentButton &&
+                  showQuickInputButton &&
+                  onPercentInput &&
+                  [25, 50, 75].map((percent) => {
+                    const isAtCurrentPercent =
+                      (maxAmount && value === percentAmount[percent]) || (lpPercent && lpPercent === percent.toString())
 
-                  return (
-                    <Button
-                      key={`btn_quickCurrency${percent}`}
-                      onClick={() => {
-                        onPercentInput(percent)
-                      }}
-                      scale="xs"
-                      mr="5px"
-                      variant={isAtCurrentPercent ? 'primary' : 'secondary'}
-                      style={{ textTransform: 'uppercase' }}
-                    >
-                      {percent}%
-                    </Button>
-                  )
-                })}
-              {isShowPercentButton && showMaxButton && (
-                <Button
-                  onClick={onMax}
-                  scale="xs"
-                  variant={isAtPercentMax ? 'primary' : 'secondary'}
-                  style={{ textTransform: 'uppercase' }}
-                >
-                  {t('Max')}
-                </Button>
-              )}
-            </InputRow>
-          )}
+                    return (
+                      <Button
+                        key={`btn_quickCurrency${percent}`}
+                        onClick={() => {
+                          onPercentInput(percent)
+                        }}
+                        scale="xs"
+                        mr="5px"
+                        variant={isAtCurrentPercent ? 'primary' : 'secondary'}
+                        style={{ textTransform: 'uppercase' }}
+                      >
+                        {percent}%
+                      </Button>
+                    )
+                  })}
+                {isShowPercentButton && showMaxButton && (
+                  <Button
+                    onClick={onMax}
+                    scale="xs"
+                    variant={isAtPercentMax ? 'primary' : 'secondary'}
+                    style={{ textTransform: 'uppercase' }}
+                  >
+                    {t('Max')}
+                  </Button>
+                )}
+              </>
+            )}
+          </InputRow>
         </>
       }
     />
