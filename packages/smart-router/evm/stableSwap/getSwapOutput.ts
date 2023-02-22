@@ -53,7 +53,7 @@ export function getSwapOutput({
     return parseAmount(outputCurrency, dy)
   }
 
-  const y = getY({ amplifier, balances, i, j, x: amount.quotient })
+  const y = getY({ amplifier, balances, i, j, x: getRawAmount(amount) })
   const dy = JSBI.subtract(balances[j], y)
   const feeAmount = fee.multiply(dy).quotient
   return parseAmount(outputCurrency, JSBI.subtract(dy, feeAmount))
