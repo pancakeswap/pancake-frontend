@@ -3,7 +3,7 @@ import { LightGreyCard } from 'components/Card'
 import { Dispatch, ReactElement, SetStateAction } from 'react'
 
 interface HideShowSelectorSectionPropsType {
-  noHideButton: boolean
+  noHideButton?: boolean
   showOptions: boolean
   setShowOptions: Dispatch<SetStateAction<boolean>>
   heading: ReactElement

@@ -203,7 +203,13 @@ export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }
                 {!isV2 &&
                   stableConfig.stableSwapConfig &&
                   [SELECTOR_TYPE.STABLE, SELECTOR_TYPE.V3].includes(selectorType) && (
-                    <StableV3Selector selectorType={selectorType} handleFeePoolSelect={handleFeePoolSelect} />
+                    <StableV3Selector
+                      currencyA={baseCurrency ?? undefined}
+                      currencyB={quoteCurrency ?? undefined}
+                      feeAmount={feeAmount}
+                      selectorType={selectorType}
+                      handleFeePoolSelect={handleFeePoolSelect}
+                    />
                   )}
 
                 {isV2 && selectorType !== SELECTOR_TYPE.V3 && (
