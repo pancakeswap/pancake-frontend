@@ -4,7 +4,7 @@ import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
-import { FIXED_ZERO } from './const'
+import { FIXED_100, FIXED_ZERO } from './const'
 import { getTokenAmount } from './fetchFarmsV2'
 import { FarmV3Data, FarmV3DataWithPrice, SerializedFarmConfig, SerializedFarmPublicData } from './types'
 
@@ -28,6 +28,13 @@ const whitelistedUSDValueTokens = {
 const supportedChainIdSubgraph = [ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM]
 
 const masterchefV3Abi = [
+  {
+    inputs: [],
+    name: 'lastestPeriodCakePerSecond',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
   {
     inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     name: 'poolInfo',
@@ -67,7 +74,7 @@ export async function fetchMasterChefV3Data({
   masterChefAddress: string
   chainId: number
 }) {
-  const [[poolLength], [totalAllocPoint]] = await multicallv2({
+  const [[poolLength], [totalAllocPoint], [latestPeriodCakePerSecond]] = await multicallv2({
     abi: masterchefV3Abi,
     calls: [
       {
@@ -78,6 +85,10 @@ export async function fetchMasterChefV3Data({
         address: masterChefAddress,
         name: 'totalAllocPoint',
       },
+      {
+        address: masterChefAddress,
+        name: 'lastestPeriodCakePerSecond',
+      },
     ],
     chainId,
   })
@@ -85,6 +96,7 @@ export async function fetchMasterChefV3Data({
   return {
     poolLength,
     totalAllocPoint,
+    latestPeriodCakePerSecond,
   }
 }
 
@@ -137,15 +149,17 @@ export async function farmV3FetchFarms({
   masterChefAddress,
   chainId,
   totalAllocPoint,
+  latestPeriodCakePerSecond,
 }: {
   farms: SerializedFarmConfig[]
   multicallv2: MultiCallV2
   masterChefAddress: string
   chainId: number
   totalAllocPoint: BigNumber
+  latestPeriodCakePerSecond: BigNumber
 }) {
   const poolInfos = await fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress)
-
+  const cakePriceUSD = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
   const lpData = await (
     await fetchPublicFarmsData(farms, chainId, multicallv2)
   ).map(([tokenBalanceLP, quoteTokenBalanceLP]: any[]) => ({
@@ -155,6 +169,7 @@ export async function farmV3FetchFarms({
 
   const slot0s = await fetchSlot0s(farms, chainId, multicallv2)
 
+  // optimized later
   const tvls: TvlMap = {}
   if (supportedChainIdSubgraph) {
     const results = await Promise.all(
@@ -181,8 +196,37 @@ export async function farmV3FetchFarms({
     }
   })
 
-  const farmsWithPrice = await getFarmsPrices(farmsData, chainId, tvls)
+  const farmsWithPrice = await getFarmsPrices(farmsData, chainId, tvls, cakePriceUSD, latestPeriodCakePerSecond)
   return farmsWithPrice
+}
+
+const getCakeApr = (poolWeight: string, activeTvlUSD: FixedNumber, cakePriceUSD: string, cakePerSeconds: BigNumber) => {
+  let cakeApr = '0'
+
+  if (
+    !cakePriceUSD ||
+    !activeTvlUSD ||
+    activeTvlUSD.isZero() ||
+    !cakePerSeconds ||
+    cakePerSeconds.isZero() ||
+    !poolWeight
+  ) {
+    return cakeApr
+  }
+
+  const cakeRewardPerYear = FixedNumber.from(cakePerSeconds.mul(365 * 60 * 60 * 24)).divUnsafe(FixedNumber.from(1e12))
+
+  const cakeRewardPerYearForPool = FixedNumber.from(poolWeight)
+    .mulUnsafe(cakeRewardPerYear)
+    .mulUnsafe(FixedNumber.from(cakePriceUSD))
+    .divUnsafe(FixedNumber.from(activeTvlUSD))
+    .mulUnsafe(FIXED_100)
+
+  if (!cakeRewardPerYearForPool.isZero()) {
+    cakeApr = cakeRewardPerYearForPool.toUnsafeFloat().toFixed(2)
+  }
+
+  return cakeApr
 }
 
 const getClassicFarmsDynamicData = ({
@@ -340,7 +384,13 @@ export type TvlMap = {
   }
 }
 
-const getFarmsPrices = async (farms: FarmV3Data[], chainId: number, tvls: TvlMap): Promise<FarmV3DataWithPrice[]> => {
+const getFarmsPrices = async (
+  farms: FarmV3Data[],
+  chainId: number,
+  tvls: TvlMap,
+  cakePriceUSD: string,
+  latestPeriodCakePerSecond: BigNumber,
+): Promise<FarmV3DataWithPrice[]> => {
   const commonPairsUSDValue: { [address: string]: string } = {}
   if (
     whitelistedUSDValueTokens[chainId as keyof typeof whitelistedUSDValueTokens] &&
@@ -390,7 +440,8 @@ const getFarmsPrices = async (farms: FarmV3Data[], chainId: number, tvls: TvlMap
 
     return {
       ...farm,
-      activeTVL: tvl.toString(),
+      cakeApr: getCakeApr(farm.poolWeight, tvl, cakePriceUSD, latestPeriodCakePerSecond),
+      activeTvlUSD: tvl.toString(),
       tokenPriceBusd: tokenPriceBusd.toString(),
       quoteTokenPriceBusd: quoteTokenPriceBusd.toString(),
     }

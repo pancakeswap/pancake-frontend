@@ -4,6 +4,8 @@ export const FIXED_ZERO = FixedNumber.from(0)
 export const FIXED_ONE = FixedNumber.from(1)
 export const FIXED_TWO = FixedNumber.from(2)
 
+export const FIXED_100 = FixedNumber.from(100)
+
 export const FARM_AUCTION_HOSTING_IN_SECONDS = 691200
 
 export const masterChefAddresses = {
@@ -14,7 +16,7 @@ export const masterChefAddresses = {
 export const masterChefV3Addresses = {
   97: '0x65aC33E4056B3D76DEB619b56F8e6F26D4c0CF4d',
   56: '',
-}
+} as const
 
 export const nonBSCVaultAddresses = {
   1: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',

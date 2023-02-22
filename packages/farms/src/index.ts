@@ -56,20 +56,30 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
   ) => {
     const { farms, chainId } = params
 
+    // @ts-ignore
     const masterChefAddress = masterChefV3Addresses[chainId]
     if (!masterChefAddress) {
       throw new Error('Unsupported chain')
     }
-    const { poolLength, totalAllocPoint } = await fetchMasterChefV3Data({
+    const { poolLength, totalAllocPoint, latestPeriodCakePerSecond } = await fetchMasterChefV3Data({
       multicallv2,
       masterChefAddress,
       chainId,
     })
 
-    await farmV3FetchFarms({ farms, chainId, multicallv2, masterChefAddress, totalAllocPoint })
+    const farmsWithPrice = await farmV3FetchFarms({
+      farms,
+      chainId,
+      multicallv2,
+      masterChefAddress,
+      totalAllocPoint,
+      latestPeriodCakePerSecond,
+    })
 
     return {
       poolLength: poolLength.toNumber(),
+      farmsWithPrice,
+      latestPeriodCakePerSecond,
     }
   }
 
@@ -88,3 +98,5 @@ export * from './deserializeFarmUserData'
 export * from './deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
 export * from './filterFarmsByQuery'
+
+export { masterChefV3Addresses }

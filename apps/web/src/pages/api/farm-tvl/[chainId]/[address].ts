@@ -99,6 +99,8 @@ const handler: NextApiHandler = async (req, res) => {
     totalToken1.toString(),
   ).toExact()
 
+  const lastUpdated = new Date().toISOString()
+
   res.setHeader('Cache-Control', 's-maxage=300, max-age=300')
 
   return res.status(200).json({
@@ -110,6 +112,7 @@ const handler: NextApiHandler = async (req, res) => {
       token0: curr0,
       token1: curr1,
     },
+    lastUpdated,
   })
 }
 

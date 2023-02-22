@@ -412,5 +412,5 @@ export const getMasterChefV3Contract = (signer?: Signer | Provider, chainId?: nu
     address: getMasterChefV3Address(chainId),
     chainId,
     signer,
-  })
+  }) as MasterChefV3
 }

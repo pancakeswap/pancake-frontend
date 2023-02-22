@@ -21,9 +21,10 @@ export type FarmsDynamicDataResultV2 = {
 }
 
 export type FarmPriceV3 = {
-  activeTVL: string
+  activeTvlUSD: string
   tokenPriceBusd: string
   quoteTokenPriceBusd: string
+  cakeApr: string
 }
 
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
