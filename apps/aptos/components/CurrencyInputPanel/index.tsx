@@ -42,7 +42,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
-  padding: ${({ selected }) => (selected ? '0 0.5rem 0.75rem 1rem' : '0 0.75rem 0.75rem 1rem')};
+  padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
 `
 
 export const CurrencyInputPanel = ({
