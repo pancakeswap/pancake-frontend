@@ -1,8 +1,8 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Cadinu, Erc20 } from 'config/abi/types'
+import { Cadinu, Erc20, Cake } from 'config/abi/types'
 
 export const requiresApproval = async (
-  contract: Erc20 | Cadinu,
+  contract: Erc20 | Cake | Cadinu,
   account: string,
   spenderAddress: string,
   minimumRequired: number | BigNumber = 0,
