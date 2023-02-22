@@ -31,12 +31,11 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   const userPool = walletIfoData[poolId]
   const { vestingInformation } = publicIfoData[poolId]
 
-  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed, totalPurchased } =
-    useIfoVesting({
-      poolId,
-      publicIfoData,
-      walletIfoData,
-    })
+  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed } = useIfoVesting({
+    poolId,
+    publicIfoData,
+    walletIfoData,
+  })
 
   const amountClaimed = useMemo(
     () =>
