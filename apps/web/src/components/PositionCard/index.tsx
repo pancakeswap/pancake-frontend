@@ -85,7 +85,7 @@ export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1
   return token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
 }
 
-const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
+export const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
   return !!userPoolBalance &&
     !!totalPoolTokens &&
     JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)

@@ -59,6 +59,7 @@ export const ResponsiveTwoColumns = styled.div`
 interface UniversalAddLiquidityPropsType {
   currencyIdA: string
   currencyIdB: string
+  isV2: boolean
 }
 
 export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }: UniversalAddLiquidityPropsType) {

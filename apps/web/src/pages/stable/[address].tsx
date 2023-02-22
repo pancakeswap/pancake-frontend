@@ -13,10 +13,11 @@ import { LightGreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { useContract } from 'hooks/useContract'
-import { useTotalUSDValue } from 'components/PositionCard'
+import { usePoolTokenPercentage, useTotalUSDValue } from 'components/PositionCard'
 import { useAccount } from 'wagmi'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
+import useTotalSupply from 'hooks/useTotalSupply'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -72,6 +73,10 @@ export default function StablePoolPage() {
     token0Deposited,
     token1Deposited,
   })
+
+  const totalPoolTokens = useTotalSupply(selectedLp.liquidityToken)
+
+  const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
 
   if (!selectedLp) return null
 
@@ -184,7 +189,7 @@ export default function StablePoolPage() {
               </Box>
             </Flex>
           </AutoRow>
-          <Text>Your share in pool: 0.00013%</Text>
+          <Text>Your share in pool: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}</Text>
         </CardBody>
       </BodyWrapper>
     </Page>
