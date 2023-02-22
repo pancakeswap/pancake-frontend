@@ -62,7 +62,9 @@ export default function PoolV2Page() {
               <NextLinkFromReactRouter to="/increase">
                 <Button width="100%">Add</Button>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to="/remove">
+              <NextLinkFromReactRouter
+                to={`/remove-v2/${baseCurrency?.wrapped?.address}/${currencyB.wrapped?.address}`}
+              >
                 <Button ml="16px" variant="secondary" width="100%">
                   Remove
                 </Button>
