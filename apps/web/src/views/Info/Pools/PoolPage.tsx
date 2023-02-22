@@ -168,7 +168,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
               <Flex flexDirection={['column', 'column', 'row']} mb={['8px', '8px', null]}>
-                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token0.address}`}>
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token0.address}${infoTypeParam}`}>
                   <TokenButton>
                     <CurrencyLogo address={poolData.token0.address} size="24px" chainName={chainName} />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -180,7 +180,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                     </Text>
                   </TokenButton>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token1.address}`}>
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token1.address}${infoTypeParam}`}>
                   <TokenButton ml={[null, null, '10px']}>
                     <CurrencyLogo address={poolData.token1.address} size="24px" chainName={chainName} />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
