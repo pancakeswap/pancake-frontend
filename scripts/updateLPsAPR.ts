@@ -1,8 +1,12 @@
+// @ts-ignore
 import fs from 'fs'
+// @ts-ignore
 import os from 'os'
 import { request, gql } from 'graphql-request'
 import BigNumber from 'bignumber.js'
+// @ts-ignore
 import chunk from 'lodash/chunk'
+// @ts-ignore
 import _toLower from 'lodash/toLower'
 import { sub, getUnixTime } from 'date-fns'
 import { ChainId } from '@pancakeswap/sdk'
