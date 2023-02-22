@@ -341,6 +341,7 @@ type GetResult<
            * | `[{ name: 'foo', type: 'uint256' }, { name: '', type: 'string' }]`    | `readonly [bigint, string] & { foo: bigint }`              |
            */
           {
+            // @ts-ignore
             [Output in TOutputs[number] as Output['name'] extends ''
               ? never
               : Output['name']]: AbiParameterToPrimitiveType<Output>
