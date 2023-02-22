@@ -56,10 +56,13 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
   const { data: poolsFromSubgraphState, isLoading, isValidating } = useV3PoolsFromSubgraph(pairs, { ...options, key })
 
   const candidatePoolsWithoutTicks = useMemo<V3Pool[] | null>(() => {
-    if (!poolsFromSubgraphState?.pools.length || !currencyA || !currencyB) {
+    if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
       return null
     }
     const { pools: poolsFromSubgraph } = poolsFromSubgraphState
+    if (!poolsFromSubgraph.length) {
+      return []
+    }
     const {
       token0: { chainId },
     } = poolsFromSubgraph[0]
@@ -377,6 +380,14 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key }: Options = {}) {
   }>(
     key && pairs?.length && [key],
     async () => {
+      if (pairs[0][0].chainId !== 1) {
+        console.log('[METRIC] Cannot get v3 on chain', pairs[0][0].chainId, 'for now')
+        return {
+          pools: [],
+          key,
+          blockNumber,
+        }
+      }
       const start = Date.now()
       console.log('[METRIC] Start getting v3 pools from subgraph', key, pairs)
       const metaMap = new Map<string, V3PoolMeta>()
