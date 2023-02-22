@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { BigintIsh, Currency, JSBI, ChainId, Token, WNATIVE } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, JSBI, ChainId, Token, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import {
   SmartRouter,
   V3Pool,
@@ -244,7 +244,7 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
       ...topByTVLUsingTokenOutSecondHops,
     ]
     // eslint-disable-next-line
-    return pools.map(({ tvlUSD, ...rest }) => rest)
+    return pools.map(({ tvlUSD, ...rest }) => rest).filter(({ liquidity }) => JSBI.greaterThan(liquidity, ZERO))
   }, [poolsFromSubgraphState, currencyA, currencyB])
 
   const {
