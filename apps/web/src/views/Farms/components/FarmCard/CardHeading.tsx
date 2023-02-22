@@ -4,7 +4,7 @@ import { Token } from '@pancakeswap/sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
-const { FarmAuctionTag, CoreTag, StableFarmTag } = FarmUI.Tags
+const { FarmAuctionTag, StableFarmTag } = FarmUI.Tags
 
 export interface ExpandableSectionProps {
   lpLabel?: string
@@ -49,7 +49,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         <Flex justifyContent="center">
           {isReady && isStable && <StableFarmTag mr="4px" />}
           {isReady && boosted && <BoostedTag mr="4px" />}
-          {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
+          {isReady && isCommunityFarm && <FarmAuctionTag />}
           {isReady ? (
             <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
           ) : (
