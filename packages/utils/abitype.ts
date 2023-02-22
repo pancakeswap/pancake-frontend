@@ -1,3 +1,7 @@
+/**
+ * types copy from wagmi core and tweak a bit to make it work with our custom multicall
+ */
+
 /* eslint-disable spaced-comment */
 import {
   Abi,
