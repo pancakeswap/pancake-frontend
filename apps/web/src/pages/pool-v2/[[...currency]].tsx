@@ -59,7 +59,7 @@ export default function PoolV2Page() {
           noConfig
           buttons={
             <>
-              <NextLinkFromReactRouter to="/increase">
+              <NextLinkFromReactRouter to={`/add-v2/${baseCurrency?.wrapped?.address}/${currencyB.wrapped?.address}`}>
                 <Button width="100%">Add</Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter

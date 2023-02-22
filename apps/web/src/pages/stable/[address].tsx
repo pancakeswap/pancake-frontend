@@ -89,7 +89,7 @@ export default function StablePoolPage() {
           noConfig
           buttons={
             <>
-              <NextLinkFromReactRouter to="/increase">
+              <NextLinkFromReactRouter to={`/add/${stableLp?.token0?.address}/${stableLp?.token1?.address}`}>
                 <Button width="100%">Add</Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter to={`/remove-v2/${stableLp?.token0?.address}/${stableLp?.token1?.address}`}>
