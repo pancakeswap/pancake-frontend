@@ -1,6 +1,8 @@
 import { Currency, JSBI, Pair, Price } from '@pancakeswap/sdk'
 import { Pool as SDKV3Pool } from '@pancakeswap/v3-sdk'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
+import { StableSwap } from '../../stableSwap'
 import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
 
 export function isV2Pool(pool: Pool): pool is V2Pool {
@@ -75,7 +77,23 @@ export function getTokenPrice(pool: Pool, base: Currency, quote: Currency): Pric
 
   // FIXME now assume price of stable pair is 1
   if (isStablePool(pool)) {
-    return new Price(base, quote, JSBI.BigInt(1), JSBI.BigInt(1))
+    const { amplifier, balances, fee } = pool
+    const baseIn = tryParseAmount('1', base)
+    if (!baseIn) {
+      throw new Error(`Cannot parse amount for ${base.symbol}`)
+    }
+    const quoteOut = StableSwap.getSwapOutput({
+      amplifier,
+      balances,
+      fee,
+      outputCurrency: quote,
+      amount: baseIn,
+    })
+
+    return new Price({
+      baseAmount: baseIn,
+      quoteAmount: quoteOut,
+    })
   }
   return new Price(base, quote, JSBI.BigInt(1), JSBI.BigInt(0))
 }
