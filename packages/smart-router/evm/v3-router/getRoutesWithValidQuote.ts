@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
+import { detect } from 'detect-browser'
 
 import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
 import { getAmountDistribution } from './functions'
+
+const browser = detect()
 
 interface Params {
   blockNumber: BigintIsh
@@ -41,13 +44,17 @@ export async function getRoutesWithValidQuote({
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
 
-  const start = Date.now()
-  console.log('[METRIC] Getting quotes from', routesWithoutQuote.length, 'routes')
+  let requestCallback: any = setTimeout
+  if (browser && browser.name !== 'safari') {
+    requestCallback = requestIdleCallback
+  }
+  console.time('[METRIC] Get quotes')
+  console.timeLog('[METRIC] Get quotes', 'from', routesWithoutQuote.length, 'routes', routesWithoutQuote)
   // FIXME won't work on server side
   // Split into chunks so the calculation won't block the main thread
   const getQuotes = (routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> =>
     new Promise((resolve, reject) => {
-      requestIdleCallback(async () => {
+      requestCallback(async () => {
         try {
           const result = await getRoutesWithQuote(routes, { blockNumber, gasModel })
           resolve(result)
@@ -59,6 +66,7 @@ export async function getRoutesWithValidQuote({
   const chunks = chunk(routesWithoutQuote, 10)
   const result = await Promise.all(chunks.map(getQuotes))
   const quotes = result.reduce<RouteWithQuote[]>((acc, cur) => [...acc, ...cur], [])
-  console.log('[METRIC] Getting quotes takes', Date.now() - start, 'got', quotes.length, 'quoted routes')
+  console.timeLog('[METRIC] Get quotes', 'success, got', quotes.length, 'quoted routes', quotes)
+  console.timeEnd('[METRIC] Get quotes')
   return quotes
 }

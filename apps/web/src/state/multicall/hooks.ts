@@ -129,6 +129,7 @@ export interface CallState {
   readonly syncing: boolean
   // true if the call was made and is synced, but the return data is invalid
   readonly error: boolean
+  readonly blockNumber?: number
 }
 
 const INVALID_CALL_STATE: CallState = { valid: false, result: undefined, loading: false, syncing: false, error: false }
@@ -186,6 +187,7 @@ function toCallState(
         error: true,
         syncing,
         result,
+        blockNumber,
       }
     }
   }
@@ -195,6 +197,7 @@ function toCallState(
     syncing,
     result,
     error: !success,
+    blockNumber,
   }
 }
 

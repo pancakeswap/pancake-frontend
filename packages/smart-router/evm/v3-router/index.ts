@@ -4,6 +4,8 @@ import {
   createQuoteProvider,
   createStaticPoolProvider,
   createOffChainQuoteProvider,
+  getV2PoolsOnChain,
+  getStablePoolsOnChain,
 } from './providers'
 import {
   getExecutionPrice,
@@ -32,4 +34,6 @@ export const SmartRouter = {
   isStablePool,
   getMidPrice,
   involvesCurrency,
+  getV2PoolsOnChain,
+  getStablePoolsOnChain,
 }
