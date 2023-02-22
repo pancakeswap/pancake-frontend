@@ -370,29 +370,23 @@ const client = new GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswa
 
 export function useV3PoolsWithTicks(pools: V3Pool[], { key }: PoolsOptions = {}) {
   const blockNumber = useCurrentBlock()
-  const poolsWithTicks = useSWR(
-    key ? ['v3_pool_ticks', key] : null,
-    async () => {
-      const start = Date.now()
-      const poolTicks = await Promise.all(
-        pools.map(({ token0, token1, fee }) => {
-          return getPoolTicks(getV3PoolAddress(token0, token1, fee))
-        }),
-      )
-      console.log('[METRIC] Getting pool ticks takes', Date.now() - start)
+  const poolsWithTicks = useSWR(key ? ['v3_pool_ticks', key] : null, async () => {
+    const start = Date.now()
+    const poolTicks = await Promise.all(
+      pools.map(({ token0, token1, fee }) => {
+        return getPoolTicks(getV3PoolAddress(token0, token1, fee))
+      }),
+    )
+    console.log('[METRIC] Getting pool ticks takes', Date.now() - start)
 
-      return {
-        pools: pools.map((pool, i) => ({
-          ...pool,
-          ticks: poolTicks[i],
-        })),
-        key,
-      }
-    },
-    {
-      keepPreviousData: true,
-    },
-  )
+    return {
+      pools: pools.map((pool, i) => ({
+        ...pool,
+        ticks: poolTicks[i],
+      })),
+      key,
+    }
+  })
 
   const { mutate } = poolsWithTicks
   useEffect(() => {

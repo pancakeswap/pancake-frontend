@@ -41,6 +41,14 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         return null
       }
       const start = Date.now()
+      console.log(
+        '[METRIC] Start getting best trade',
+        currency.chainId,
+        amount.currency.symbol,
+        currency.symbol,
+        tradeType,
+        deferQuotient,
+      )
       const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
         // TODO fix on ethereum
         gasPriceWei: async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
