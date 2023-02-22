@@ -1,10 +1,6 @@
 /* eslint-disable no-console */
 import useSWR from 'swr'
-import {
-  useDeferredValue,
-  // useEffect,
-  useMemo,
-} from 'react'
+import { useDeferredValue, useEffect, useMemo } from 'react'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
@@ -26,8 +22,13 @@ interface Options {
 
 export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
   // const gasPrice = useGasPrice()
-  const blockNumber = useCurrentBlock()
-  const { pools: candidatePools, loading, syncing } = useCommonPools(baseCurrency || amount?.currency, currency)
+  const blockNum = useCurrentBlock()
+  const blockNumber = useMemo(() => JSBI.BigInt(blockNum), [blockNum])
+  const {
+    pools: candidatePools,
+    loading,
+    syncing,
+  } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber: JSBI.BigInt(blockNumber) })
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 150)
@@ -35,7 +36,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     data: trade,
     isLoading,
     isValidating,
-    // mutate,
+    mutate,
   } = useSWR(
     amount && currency && candidatePools
       ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
@@ -44,9 +45,10 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
       if (!deferQuotient) {
         return null
       }
-      console.time('[METRIC] Get best AMM trade')
+      const label = '[METRIC] Get best AMM trade'
+      console.time(label)
       console.timeLog(
-        '[METRIC] Get best AMM trade',
+        label,
         'Start',
         currency.chainId,
         amount.currency.symbol,
@@ -64,8 +66,8 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
         blockNumber,
       })
-      console.timeLog('[METRIC] Get best AMM trade', res)
-      console.timeEnd('[METRIC] Get best AMM trade')
+      console.timeLog(label, res)
+      console.timeEnd(label)
       return res
     },
     {
@@ -74,9 +76,10 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   )
 
   // useEffect(() => {
-  //   // Revalidate if block height increases or gas price changed
+  //   // Revalidate if pools updated
   //   mutate()
-  // }, [blockNumber, mutate])
+  //   // eslint-disable-next-line
+  // }, [candidatePools])
 
   return {
     trade,

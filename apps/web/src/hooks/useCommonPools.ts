@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { Currency, Pair as V2Pair, CurrencyAmount, JSBI, Percent, ChainId } from '@pancakeswap/sdk'
+import { Currency, Pair as V2Pair, CurrencyAmount, JSBI, Percent, ChainId, ZERO } from '@pancakeswap/sdk'
 import { gql, GraphQLClient } from 'graphql-request'
 import { FeeAmount, computePoolAddress, Tick } from '@pancakeswap/v3-sdk'
 import useSWR from 'swr'
 import {
   Pool,
-  SmartRouter,
   PoolType,
   V2Pool,
   StablePool,
@@ -15,7 +14,7 @@ import {
 } from '@pancakeswap/smart-router/evm'
 import { Contract } from '@ethersproject/contracts'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { MultiContractsMultiMethodsCallInput, useMultiContractsMultiMethods } from 'state/multicall/hooks'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -26,6 +25,7 @@ import IStablePoolABI from 'config/abi/stableSwap.json'
 import IPancakeV3Pool from 'config/abi/IPancakeV3Pool.json'
 
 import { useV3CandidatePools } from './useV3Pools'
+import { useV2CandidatePools, useStableCandidatePools } from './usePoolsOnChain'
 
 type Pair = [Currency, Currency]
 
@@ -33,31 +33,91 @@ interface PoolsWithState {
   pools: Pool[] | null
   loading: boolean
   syncing: boolean
+  blockNumber?: JSBI
 }
 
-export function useCommonPools(currencyA?: Currency, currencyB?: Currency): PoolsWithState {
-  const pairs = useMemo(() => SmartRouter.getPairCombinations(currencyA, currencyB), [currencyA, currencyB])
-  const v3PoolState = useV3CandidatePools(currencyA, currencyB)
-  const v2PoolState = useV2Pools(pairs)
-  const stablePoolState = useStablePools(pairs)
+interface Options {
+  blockNumber?: JSBI
+}
 
-  return useMemo(() => {
-    const { pools: v2Pools, loading: v2Loading, syncing: v2Syncing } = v2PoolState
-    const { pools: stablePools, loading: stableLoading, syncing: stableSyncing } = stablePoolState
-    const { pools: v3Pools, loading: v3Loading, syncing: v3Syncing } = v3PoolState
+export function useCommonPools(
+  currencyA?: Currency,
+  currencyB?: Currency,
+  { blockNumber: latestBlockNumber }: Options = {},
+): PoolsWithState {
+  const [blockNumber, setBlockNumber] = useState<JSBI | null | undefined>(null)
+  const [pools, setPools] = useState<Pool[] | null | undefined>(null)
+  const {
+    pools: v3Pools,
+    loading: v3Loading,
+    syncing: v3Syncing,
+    blockNumber: v3BlockNumber,
+  } = useV3CandidatePools(currencyA, currencyB, { blockNumber })
+  const {
+    pools: v2Pools,
+    loading: v2Loading,
+    syncing: v2Syncing,
+    blockNumber: v2BlockNumber,
+  } = useV2CandidatePools(currencyA, currencyB, { blockNumber })
+  const {
+    pools: stablePools,
+    loading: stableLoading,
+    syncing: stableSyncing,
+    blockNumber: stableBlockNumber,
+  } = useStableCandidatePools(currencyA, currencyB, { blockNumber })
 
-    const loading = v2Loading || v3Loading || stableLoading
-    return {
-      pools: v2Pools && v3Pools && stablePools ? [...v2Pools, ...stablePools, ...v3Pools] : null,
-      loading,
-      syncing: v2Syncing || v3Syncing || stableSyncing,
+  const consistentBlockNumber = useMemo(
+    () =>
+      v2BlockNumber &&
+      stableBlockNumber &&
+      v3BlockNumber &&
+      JSBI.equal(v2BlockNumber, stableBlockNumber) &&
+      JSBI.equal(stableBlockNumber, v3BlockNumber)
+        ? v2BlockNumber
+        : null,
+    [v2BlockNumber, v3BlockNumber, stableBlockNumber],
+  )
+
+  useEffect(() => {
+    if (consistentBlockNumber && v2Pools && v3Pools && stablePools) {
+      console.log(
+        '[METRIC] Pools updated',
+        [...v2Pools, ...stablePools, ...v3Pools],
+        'block number',
+        consistentBlockNumber.toString(),
+      )
+      setPools([...v2Pools, ...stablePools, ...v3Pools])
     }
-  }, [v2PoolState, stablePoolState, v3PoolState])
+    if (!v2Pools || !v3Pools || !stablePools) {
+      setPools(null)
+    }
+  }, [consistentBlockNumber, v2Pools, v3Pools, stablePools])
+
+  useEffect(() => {
+    if (latestBlockNumber && JSBI.greaterThan(latestBlockNumber, ZERO) && !blockNumber) {
+      setBlockNumber(latestBlockNumber)
+    }
+  }, [latestBlockNumber, blockNumber])
+
+  useEffect(() => {
+    if (latestBlockNumber && consistentBlockNumber && JSBI.lessThan(consistentBlockNumber, latestBlockNumber)) {
+      setBlockNumber(latestBlockNumber)
+    }
+  }, [consistentBlockNumber, latestBlockNumber])
+
+  const loading = v2Loading || v3Loading || stableLoading
+  return {
+    pools,
+    loading,
+    syncing: v2Syncing || v3Syncing || stableSyncing,
+  }
 }
 
 interface PoolsOptions {
   // Used to identify pools to be cached
   key?: string
+
+  blockNumber?: JSBI
 }
 
 export function usePools(pairs: [Currency, Currency][], { key }: PoolsOptions = {}): PoolsWithState {
@@ -122,10 +182,11 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
 }: OnChainPoolDataHookFactoryParams<TPool, TPoolMeta>) {
   return function usePools(
     pairs: [Currency, Currency][],
-    { key }: PoolsOptions = {},
+    { key, blockNumber }: PoolsOptions = {},
   ): {
     key?: string
     pools: TPool[] | null
+    blockNumber?: JSBI
     loading: boolean
     syncing: boolean
   } {
@@ -152,13 +213,30 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
     const callStates = useMultiContractsMultiMethods(callInputs)
 
     return useMemo(() => {
+      if (!blockNumber) {
+        return {
+          key,
+          blockNumber,
+          pools: null,
+          loading: true,
+          syncing: false,
+        }
+      }
+
       const pools: TPool[] = []
       let isLoading = false
       let isSyncing = false
+      let blockNumberMismatch = false
+      const currentBlockNumber = JSBI.BigInt(blockNumber)
       for (let i = 0; i < poolMetas.length; i += 1) {
         const poolCallStates = callStates.slice(i * poolCallSize, (i + 1) * poolCallSize)
         const results: any[] = []
-        for (const { result, loading, syncing, error } of poolCallStates) {
+        for (const { result, loading, syncing, error, blockNumber: poolBlockNumber } of poolCallStates) {
+          if (!poolBlockNumber || !JSBI.equal(currentBlockNumber, JSBI.BigInt(poolBlockNumber))) {
+            blockNumberMismatch = true
+            break
+          }
+
           isLoading = isLoading || loading
           isSyncing = isSyncing || syncing
           if (loading || error) {
@@ -166,6 +244,18 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
           }
           results.push(result)
         }
+
+        // The data is not at required block number
+        if (blockNumberMismatch) {
+          return {
+            key,
+            blockNumber,
+            pools: null,
+            loading: false,
+            syncing: true,
+          }
+        }
+
         if (results.length !== poolCallSize) {
           continue
         }
@@ -177,11 +267,12 @@ function createOnChainPoolDataHook<TPool extends Pool, TPoolMeta extends PoolMet
       }
       return {
         key,
+        blockNumber,
         pools: isLoading ? null : pools,
         loading: isLoading,
         syncing: isSyncing,
       }
-    }, [callStates, poolMetas, poolCallSize, key])
+    }, [callStates, poolMetas, poolCallSize, key, blockNumber])
   }
 }
 

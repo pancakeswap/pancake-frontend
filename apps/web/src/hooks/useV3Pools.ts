@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { BigintIsh, Currency, JSBI, ChainId, Token, WNATIVE, ZERO } from '@pancakeswap/sdk'
+import { Currency, JSBI, ChainId, Token, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import {
   SmartRouter,
   V3Pool,
@@ -12,8 +12,6 @@ import { gql, GraphQLClient } from 'graphql-request'
 import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
 
-import { useCurrentBlock } from 'state/block/hooks'
-
 type Pair = [Currency, Currency]
 
 interface SubgraphPool extends V3Pool {
@@ -24,7 +22,7 @@ interface Options {
   // Used for caching
   key?: string
 
-  blockNumber?: BigintIsh
+  blockNumber?: JSBI
 }
 
 const POOL_SELECTION_CONFIG = {
@@ -262,10 +260,13 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
   const candidatePools = data?.pools ?? null
 
   console.log('[METRIC] Candidate pools of', data?.key, candidatePools)
+  console.log('getting pools v3 loading from subgraph', isLoading)
+  console.log('getting pools v3 loading ticks', ticksLoading)
   return {
     pools: candidatePools,
     loading: isLoading || ticksLoading,
     syncing: isValidating || ticksValidating,
+    blockNumber: data?.blockNumber,
   }
 }
 
@@ -275,15 +276,15 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   const poolsWithTicks = useSWR(
     key && pools ? ['v3_pool_ticks', key] : null,
     async () => {
-      console.time('[METRIC]Get V3 pool ticks')
-      console.timeLog('[METRIC]Get V3 pool ticks', key)
+      console.time('[METRIC] Get V3 pool ticks')
+      console.timeLog('[METRIC] Get V3 pool ticks', key)
       const poolTicks = await Promise.all(
         pools.map(({ token0, token1, fee }) => {
           return getPoolTicks(getV3PoolAddress(token0, token1, fee))
         }),
       )
-      console.timeLog('[METRIC]Get V3 pool ticks', key, poolTicks)
-      console.timeEnd('[METRIC]Get V3 pool ticks')
+      console.timeLog('[METRIC] Get V3 pool ticks', key, poolTicks)
+      console.timeEnd('[METRIC] Get V3 pool ticks')
 
       return {
         pools: pools.map((pool, i) => ({
@@ -356,9 +357,15 @@ async function getPoolTicks(poolAddress: string): Promise<Tick[]> {
   return result
 }
 
-export function useV3PoolsFromSubgraph(pairs?: Pair[], { key }: Options = {}) {
-  const blockNumber = useCurrentBlock()
-  const query = gql`
+export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Options = {}) {
+  const result = useSWR<{
+    pools: SubgraphPool[]
+    key?: string
+    blockNumber?: JSBI
+  }>(
+    key && pairs?.length && [key],
+    async () => {
+      const query = gql`
       query getPools($pageSize: Int!, $poolAddrs: [String]) {
         pools(
           first: $pageSize
@@ -374,13 +381,6 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key }: Options = {}) {
         }
       }
 `
-  const result = useSWR<{
-    pools: SubgraphPool[]
-    key?: string
-    blockNumber?: BigintIsh
-  }>(
-    key && pairs?.length && [key],
-    async () => {
       if (pairs[0][0].chainId !== 1) {
         console.log('[METRIC] Cannot get v3 on chain', pairs[0][0].chainId, 'for now')
         return {
