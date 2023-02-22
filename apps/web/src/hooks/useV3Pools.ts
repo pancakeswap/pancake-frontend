@@ -259,9 +259,6 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
 
   const candidatePools = data?.pools ?? null
 
-  console.log('[METRIC] Candidate pools of', data?.key, candidatePools)
-  console.log('getting pools v3 loading from subgraph', isLoading)
-  console.log('getting pools v3 loading ticks', ticksLoading)
   return {
     pools: candidatePools,
     loading: isLoading || ticksLoading,

@@ -92,7 +92,7 @@ export function createOffChainQuoteProvider(): QuoteProvider {
             gasCostInToken,
           })
         } catch (e) {
-          console.warn('Failed to get quote from route', route, e)
+          // console.warn('Failed to get quote from route', route, e)
         }
       }
       return routesWithQuote

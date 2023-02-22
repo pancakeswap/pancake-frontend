@@ -38,7 +38,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     isValidating,
     mutate,
   } = useSWR(
-    amount && currency && candidatePools
+    amount && currency && candidatePools && !loading
       ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
       : null,
     async () => {
@@ -55,6 +55,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         currency.symbol,
         tradeType,
         deferQuotient,
+        candidatePools,
       )
       const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
         // TODO fix on ethereum
@@ -75,11 +76,11 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     },
   )
 
-  // useEffect(() => {
-  //   // Revalidate if pools updated
-  //   mutate()
-  //   // eslint-disable-next-line
-  // }, [candidatePools])
+  useEffect(() => {
+    // Revalidate if pools updated
+    mutate()
+    // eslint-disable-next-line
+  }, [candidatePools])
 
   return {
     trade,
