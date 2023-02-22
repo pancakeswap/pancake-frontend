@@ -5,7 +5,7 @@ import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useContext } from 'react'
 import styled from 'styled-components'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
-import { HarvestActionContainer, ProxyHarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
+import { ProxyHarvestActionContainer } from '../FarmTable/Actions/HarvestAction'
 import { ProxyStakedContainer, StakedContainer } from '../FarmTable/Actions/StakedAction'
 import BoostedAction from '../YieldBooster/components/BoostedAction'
 import { YieldBoosterStateContext } from '../YieldBooster/components/ProxyFarmContainer'
@@ -55,7 +55,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
           {t('Earned')}
         </Text>
       </Flex>
-      {shouldUseProxyFarm ? (
+      {shouldUseProxyFarm && (
         <ProxyHarvestActionContainer
           lpAddress={lpAddress}
           earnings={earnings}
@@ -67,17 +67,6 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
         >
           {(props) => <HarvestAction {...props} />}
         </ProxyHarvestActionContainer>
-      ) : (
-        <HarvestActionContainer
-          earnings={earnings}
-          pid={pid}
-          vaultPid={vaultPid}
-          token={token}
-          quoteToken={quoteToken}
-          lpSymbol={lpSymbol}
-        >
-          {(props) => <HarvestAction {...props} />}
-        </HarvestActionContainer>
       )}
       {farm.boosted && (
         <BoostedAction

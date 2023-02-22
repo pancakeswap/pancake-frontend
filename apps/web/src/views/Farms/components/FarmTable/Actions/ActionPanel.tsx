@@ -21,7 +21,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 import Apr, { AprProps } from '../Apr'
-import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } from './HarvestAction'
+import { HarvestAction, ProxyHarvestActionContainer } from './HarvestAction'
 import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
 import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from './styles'
 
@@ -210,14 +210,10 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
         </Flex>
       </InfoContainer>
       <ActionContainer>
-        {shouldUseProxyFarm ? (
+        {shouldUseProxyFarm && (
           <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
             {(props) => <HarvestAction {...props} />}
           </ProxyHarvestActionContainer>
-        ) : (
-          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
-          </HarvestActionContainer>
         )}
         {farm?.boosted && (
           <ActionContainerSection style={{ minHeight: 124.5 }}>
