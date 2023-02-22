@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { AutoColumn, Button, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -7,6 +7,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
 import { PoolState } from 'hooks/v3/types'
+import { SelectButton } from 'components/SelectButton'
+import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
 
 import { FeeOption } from '../formViews/V3FormView/components/FeeOption'
 import { FEE_AMOUNT_DETAIL } from '../formViews/V3FormView/components/shared'
@@ -90,10 +92,20 @@ export function StableV3Selector({ handleFeePoolSelect, selectorType, feeAmount,
         )
       }
       content={
-        <>
-          <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}>Stable</Button>
+        <EvenWidthAutoRow gap="2">
+          <SelectButton
+            isActive={selectorType === SELECTOR_TYPE.STABLE}
+            onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}
+          >
+            StableSwap LP
+          </SelectButton>
           {FEE_AMOUNT_DETAIL[feeAmount]?.includes(chainId) && (
-            <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}>LP 3</Button>
+            <SelectButton
+              isActive={selectorType === SELECTOR_TYPE.V3}
+              onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
+            >
+              V3 LP
+            </SelectButton>
           )}
           {selectorType === SELECTOR_TYPE.V3 && (
             <Select>
@@ -115,7 +127,7 @@ export function StableV3Selector({ handleFeePoolSelect, selectorType, feeAmount,
               })}
             </Select>
           )}
-        </>
+        </EvenWidthAutoRow>
       }
     />
   )

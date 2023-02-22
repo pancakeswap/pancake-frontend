@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Button } from '@pancakeswap/uikit'
+import { SelectButton } from 'components/SelectButton'
+import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
 
 import HideShowSelectorSection from './HideShowSelectorSection'
 import { SELECTOR_TYPE } from '../types'
@@ -13,18 +14,33 @@ export function V2Selector({ isStable, handleFeePoolSelect, selectorType }) {
       setShowOptions={setShowOptions}
       heading={selectorType === SELECTOR_TYPE.STABLE ? 'Stable' : selectorType === SELECTOR_TYPE.V2 ? 'LP V2' : 'LP V3'}
       content={
-        <>
+        <EvenWidthAutoRow gap="1">
           {isStable ? (
             <>
-              <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}>Stable</Button>
+              <SelectButton
+                isActive={selectorType === SELECTOR_TYPE.STABLE}
+                onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}
+              >
+                StableSwap LP
+              </SelectButton>
             </>
           ) : (
             <>
-              <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}>LP 3</Button>
+              <SelectButton
+                isActive={selectorType === SELECTOR_TYPE.V3}
+                onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
+              >
+                V3 LP
+              </SelectButton>
             </>
           )}
-          <Button onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V2 })}>LP 2</Button>
-        </>
+          <SelectButton
+            isActive={selectorType === SELECTOR_TYPE.V2}
+            onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V2 })}
+          >
+            V2 LP
+          </SelectButton>
+        </EvenWidthAutoRow>
       }
     />
   )
