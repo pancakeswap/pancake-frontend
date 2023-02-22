@@ -29,9 +29,9 @@ const handler: NextApiHandler = async (req, res) => {
   const HOST = process.env.VERCEL_URL || 'http://localhost:3000'
 
   const tvls: TvlMap = {}
-  if (supportedChainIdSubgraph) {
+  if (supportedChainIdSubgraph.includes(chainId)) {
     const results = await Promise.all(
-      farms.map((f) => fetch(`${HOST}/api/farm/v3/tvl/${chainId}/${f.lpAddress}`).then((r) => r.json())),
+      farms.map((f) => fetch(`${HOST}/api/farms/v3/tvl/${chainId}/${f.lpAddress}`).then((r) => r.json())),
     )
     results.forEach((r, i) => {
       tvls[farms[i].lpAddress] = r.formatted

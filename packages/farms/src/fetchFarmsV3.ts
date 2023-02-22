@@ -173,24 +173,13 @@ export async function farmV3FetchFarms({
 
   const slot0s = await fetchSlot0s(farms, chainId, multicallv2)
 
-  // // optimized later
-  // const tvls: TvlMap = {}
-  // if (supportedChainIdSubgraph) {
-  //   const results = await Promise.all(
-  //     farms.map((f) => fetch(`/api/farm-tvl/${chainId}/${f.lpAddress}`).then((res) => res.json())),
-  //   )
-  //   results.forEach((r, i) => {
-  //     tvls[farms[i].lpAddress] = r.formatted
-  //   })
-  // }
-
   const farmsData = farms.map((farm, index) => {
     // alias backward compatible for v2 farms
     const { token0, token1, ...f } = farm
     return {
       ...f,
-      token: token0,
-      quoteToken: token1,
+      token: token0.serialize,
+      quoteToken: token1.serialize,
       ...getClassicFarmsDynamicData({
         ...lpData[index],
         ...slot0s[index],
