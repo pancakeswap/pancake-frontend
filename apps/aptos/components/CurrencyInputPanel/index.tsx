@@ -161,9 +161,17 @@ export const CurrencyInputPanel = ({
       bottom={
         <>
           {!!currency && showUSDPrice && (
-            <Text fontSize="12px" color="textSubtle" textAlign="right" mr="1rem" mb="0.5rem">
-              {Number.isFinite(amountInDollar) ? `~${amountInDollar.toFixed(2)} USD` : ``}
-            </Text>
+            <AtomBox display="flex" justifyContent="flex-end" mr="1rem">
+              <AtomBox style={{ maxWidth: '200px' }}>
+                {Number.isFinite(amountInDollar) && amountInDollar > 0 ? (
+                  <Text fontSize="12px" color="textSubtle">
+                    ~{amountInDollar.toFixed(2)} USD
+                  </Text>
+                ) : (
+                  <AtomBox style={{ height: '18px' }} />
+                )}
+              </AtomBox>
+            </AtomBox>
           )}
           {account && currency && currencyBalance?.greaterThan(0) && !disabled && label !== 'To' && (
             <InputRow selected={!!disableCurrencySelect}>
