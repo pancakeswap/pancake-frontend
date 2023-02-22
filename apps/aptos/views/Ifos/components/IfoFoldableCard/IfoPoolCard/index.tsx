@@ -116,8 +116,8 @@ const SmallCard: React.FC<React.PropsWithChildren<IfoCardProps>> = ({ poolId, if
         <CardBody p="12px">
           {isVesting ? (
             <>
-              <StyledCardFooter>
-                <IfoVestingCard ifo={ifo} poolId={poolId} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+              <IfoVestingCard ifo={ifo} poolId={poolId} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+              <StyledCardFooter>                
                 <ExpandableLabel expanded={isExpanded} onClick={() => setIsExpanded((prev) => !prev)}>
                   {isExpanded ? t('Hide') : t('Details')}
                 </ExpandableLabel>
