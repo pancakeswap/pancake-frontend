@@ -1,7 +1,6 @@
 import { Currency, Trade, TradeType, ZERO } from '@pancakeswap/sdk'
 import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
-import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import { Field } from 'state/swap/actions'
 import { TradeWithMM } from '../types'
 
@@ -22,11 +21,9 @@ export const useIsTradeWithMMBetter = ({
   isMMQuotingPair = false,
   isExpertMode = false,
 }: Options) => {
-  const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   return useMemo(() => {
     const isExactIn = independentField === Field.INPUT
     if (
-      !isMMLinkedPoolByDefault ||
       isExpertMode ||
       !isMMQuotingPair ||
       !tradeWithMM ||
@@ -43,5 +40,5 @@ export const useIsTradeWithMMBetter = ({
       (isExactIn && tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO)) || // exactIn
       (!isExactIn && tradeWithMM.inputAmount.lessThan(v2Trade?.inputAmount ?? ZERO)) // exactOut
     )
-  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair, isExpertMode, independentField, isMMLinkedPoolByDefault])
+  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair, isExpertMode, independentField])
 }

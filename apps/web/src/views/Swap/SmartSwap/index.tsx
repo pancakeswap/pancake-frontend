@@ -176,8 +176,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   })
 
   const { remainingSec: mmQuoteExpiryRemainingSec } = useMMQuoteCountDown(
-    mmRFQTrade?.trade || mmOrderBookTrade?.trade,
-    mmRFQTrade?.quoteExpiry,
+    mmRFQTrade?.trade ? mmRFQTrade?.quoteExpiry : null,
     isMMBetter ? mmRFQTrade?.refreshRFQ : undefined,
   )
   const {

@@ -6,6 +6,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useMemo, useRef } from 'react'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 
 import { isAddress } from 'utils'
 
@@ -46,39 +47,42 @@ function involvesAddress(trade: TradeWithMM<Currency, Currency, TradeType>, chec
 // }
 
 const checkOrderBookShouldRefetch = (
-  inputPath: MutableRefObject<string>,
+  rfqInputPath: string,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
 ) => {
   // if there is RFQ response and same input should stop refetch orderbook temporarily
   const shouldRefetch = !(
     Boolean(isRFQLive?.current) &&
-    Boolean(inputPath?.current === rfqUserInputPath?.current && rfqUserInputPath?.current !== undefined)
+    Boolean(rfqInputPath === rfqUserInputPath?.current && rfqUserInputPath?.current !== undefined)
   )
   return shouldRefetch
 }
 
 export const useOrderBookQuote = (
   request: OrderBookRequest | null,
+  rfqRequest: OrderBookRequest | null,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
 ): { data: OrderBookResponse; isLoading: boolean } => {
-  const inputPath = useRef<string>('')
-  inputPath.current = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
+  const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
+  const inputPath = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
+  const rfqInputPath = `${rfqRequest?.networkId}/${rfqRequest?.makerSideToken}/${rfqRequest?.takerSideToken}/${rfqRequest?.makerSideTokenAmount}/${rfqRequest?.takerSideTokenAmount}`
   const { data, isLoading } = useQuery(
-    [`orderBook/${inputPath.current}`],
+    [`orderBook/${inputPath}`],
     () => {
       return getMMOrderBook(request)
     },
     {
       refetchInterval: 5000,
       enabled: Boolean(
-        request &&
+        isMMLinkedPoolByDefault &&
+          request &&
           request.trader &&
           (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
           request.makerSideTokenAmount !== '0' &&
           request.takerSideTokenAmount !== '0' &&
-          checkOrderBookShouldRefetch(inputPath, rfqUserInputPath, isRFQLive),
+          checkOrderBookShouldRefetch(rfqInputPath, rfqUserInputPath, isRFQLive),
       ),
     },
   )
@@ -107,7 +111,7 @@ export const useMMTrade = (
   const mmParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency)
   const mmRFQParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency, true)
 
-  const { data: mmQoute, isLoading } = useOrderBookQuote(mmParam, rfqUserInputPath, isRFQLive)
+  const { data: mmQoute, isLoading } = useOrderBookQuote(mmParam, mmRFQParam, rfqUserInputPath, isRFQLive)
   const { t } = useTranslation()
   const to: string | null = account ?? null
 

@@ -19,17 +19,14 @@ export const useGetRFQId = (
   if (rfqUserInputPath)
     // eslint-disable-next-line no-param-reassign
     rfqUserInputPath.current = `${param?.networkId}/${param?.makerSideToken}/${param?.takerSideToken}/${param?.makerSideTokenAmount}/${param?.takerSideTokenAmount}`
-  // eslint-disable-next-line no-param-reassign
-  if (isRFQLive) isRFQLive.current = false
 
   const enabled = Boolean(
     isMMBetter &&
       account &&
       param &&
       param?.trader &&
-      (param?.makerSideTokenAmount || param?.takerSideTokenAmount) &&
-      param?.makerSideTokenAmount !== '0' &&
-      param?.takerSideTokenAmount !== '0',
+      ((param?.makerSideTokenAmount && param?.makerSideTokenAmount !== '0') ||
+        (param?.takerSideTokenAmount && param?.takerSideTokenAmount !== '0')),
   )
 
   const { data, refetch, isLoading } = useQuery(
@@ -42,6 +39,8 @@ export const useGetRFQId = (
       enabled,
     }, // 20sec
   )
+  // eslint-disable-next-line no-param-reassign
+  if (!data?.message?.rfqId) isRFQLive.current = false
 
   return {
     rfqId: data?.message?.rfqId ?? '',
@@ -90,6 +89,8 @@ export const useGetRFQTrade = (
 
   return useMemo(() => {
     if (error && error instanceof Error && error?.message) {
+      // eslint-disable-next-line no-param-reassign
+      if (isRFQLive) isRFQLive.current = false
       return {
         rfq: null,
         trade: null,
@@ -119,6 +120,8 @@ export const useGetRFQTrade = (
         errorUpdateCount,
       }
     }
+    // eslint-disable-next-line no-param-reassign
+    if (isRFQLive) isRFQLive.current = false
     return {
       rfq: null,
       trade: null,
