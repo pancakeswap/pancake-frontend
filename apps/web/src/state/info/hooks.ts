@@ -32,6 +32,7 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
 }
 const SWR_SETTINGS: SWRConfiguration = {
   refreshInterval: refreshIntervalForInfo,
+  keepPreviousData: true,
   ...SWR_SETTINGS_WITHOUT_REFETCH,
 }
 
