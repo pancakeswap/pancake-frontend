@@ -393,6 +393,7 @@ const LimitOrders = () => {
                       id="limit-order-currency-input"
                       showCommonBases
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+                      showBUSD
                     />
 
                     <Box id="yo">
@@ -416,6 +417,7 @@ const LimitOrders = () => {
                       id="limit-order-currency-output"
                       showCommonBases
                       commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+                      showBUSD
                     />
                     <Box>
                       {isAccessTokenSupported && currencies.output && currencies.output.isToken && (
