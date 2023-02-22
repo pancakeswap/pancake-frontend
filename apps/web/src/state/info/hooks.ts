@@ -276,7 +276,7 @@ export const useGetChainName = () => {
     if (pathname.includes('eth') || query.chain === 'eth') return 'ETH'
     return 'BSC'
   }, [pathname, query])
-  const [name, setName] = useState<MultiChainName | null>(getChain())
+  const [name, setName] = useState<MultiChainName | null>(() => getChain())
   const result = useMemo(() => name, [name])
 
   useEffect(() => {
