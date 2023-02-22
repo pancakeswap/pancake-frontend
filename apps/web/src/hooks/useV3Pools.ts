@@ -325,7 +325,7 @@ async function _getPoolTicksByPage(poolAddress: string, page: number, pageSize: 
   })
 
   return res.ticks.map(
-    ({ tick, liquidityNet, liquidityGross }) => new Tick({ index: tick, liquidityNet, liquidityGross }),
+    ({ tick, liquidityNet, liquidityGross }) => new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
   )
 }
 
