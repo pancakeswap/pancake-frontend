@@ -1,4 +1,5 @@
-import { AutoColumn, ColumnCenter, Text } from '@pancakeswap/uikit'
+import { ColumnCenter, Text } from '@pancakeswap/uikit'
+import { ReactNode } from 'react'
 
 export function InfoBox({ message, icon }: { message?: ReactNode; icon: ReactNode }) {
   return (

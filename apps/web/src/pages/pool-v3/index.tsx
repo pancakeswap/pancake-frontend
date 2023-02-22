@@ -260,7 +260,7 @@ export default function PoolListPage() {
               >
                 <ButtonMenuItem>{t('All')}</ButtonMenuItem>
                 <ButtonMenuItem>{t('V3')}</ButtonMenuItem>
-                <ButtonMenuItem>{t('Stable')}</ButtonMenuItem>
+                <ButtonMenuItem>{t('StableSwap')}</ButtonMenuItem>
                 <ButtonMenuItem>{t('V2')}</ButtonMenuItem>
               </ButtonMenu>
             </>

@@ -14,7 +14,6 @@ import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { useMintState } from 'state/mint/hooks'
 import BigNumber from 'bignumber.js'
-import { useTotalUSDValue } from 'components/PositionCard'
 
 export interface StablePair {
   liquidityToken: Token | null

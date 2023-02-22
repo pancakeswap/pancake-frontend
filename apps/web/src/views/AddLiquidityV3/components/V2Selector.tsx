@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { Text } from '@pancakeswap/uikit'
 import { SelectButton } from 'components/SelectButton'
 import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
+import { TOTAL_FEE } from 'config/constants/info'
 
 import HideShowSelectorSection from './HideShowSelectorSection'
 import { SELECTOR_TYPE } from '../types'
@@ -12,7 +14,15 @@ export function V2Selector({ isStable, handleFeePoolSelect, selectorType }) {
     <HideShowSelectorSection
       showOptions={showOptions}
       setShowOptions={setShowOptions}
-      heading={selectorType === SELECTOR_TYPE.STABLE ? 'Stable' : selectorType === SELECTOR_TYPE.V2 ? 'LP V2' : 'LP V3'}
+      heading={
+        selectorType === SELECTOR_TYPE.STABLE ? (
+          <Text>StableSwap LP</Text>
+        ) : selectorType === SELECTOR_TYPE.V2 ? (
+          <Text>V2 LP - {(TOTAL_FEE * 100).toFixed(2)} fee tier</Text>
+        ) : (
+          <Text>V3 LP</Text>
+        )
+      }
       content={
         <EvenWidthAutoRow gap="1">
           {isStable ? (

@@ -168,8 +168,6 @@ export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }
     [currencyIdA, currencyIdB, router],
   )
 
-  console.log('stableConfig:', stableConfig)
-
   return (
     <Page>
       <BodyWrapper>

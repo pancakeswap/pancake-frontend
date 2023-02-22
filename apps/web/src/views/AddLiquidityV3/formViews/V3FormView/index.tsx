@@ -445,7 +445,6 @@ export default function V3FormView({
         <LockedDeposit locked={depositADisabled} mb="8px">
           <CurrencyInputPanel
             disableCurrencySelect
-            showBUSD
             value={formattedAmounts[Field.CURRENCY_A]}
             onUserInput={onFieldAInput}
             showQuickInputButton
@@ -460,7 +459,6 @@ export default function V3FormView({
         <LockedDeposit locked={depositBDisabled}>
           <CurrencyInputPanel
             disableCurrencySelect
-            showBUSD
             value={formattedAmounts[Field.CURRENCY_B]}
             onUserInput={onFieldBInput}
             showQuickInputButton

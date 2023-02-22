@@ -118,7 +118,6 @@ export default function StableFormView({
 
         <CurrencyInputPanel
           disableCurrencySelect
-          showBUSD
           value={formattedAmounts[Field.CURRENCY_A]}
           onUserInput={onFieldAInput}
           showQuickInputButton
@@ -131,7 +130,6 @@ export default function StableFormView({
 
         <CurrencyInputPanel
           disableCurrencySelect
-          showBUSD
           value={formattedAmounts[Field.CURRENCY_B]}
           onUserInput={onFieldBInput}
           showQuickInputButton
