@@ -57,7 +57,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
           cliff={publicIfoData[poolId]?.vestingInformation?.cliff || 0}
           duration={publicIfoData[poolId]?.vestingInformation?.duration || 0}
         />
-        <TotalPurchased token={ifo.token} totalPurchased={totalPurchased} />
+        <TotalPurchased ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
         <ReleasedTokenInfo ifo={ifo} amountReleased={amountReleased} amountInVesting={amountInVesting} />
         <Divider />
         <TotalAvailableClaim ifo={ifo} amountAvailableToClaim={amountAvailableToClaim} />
