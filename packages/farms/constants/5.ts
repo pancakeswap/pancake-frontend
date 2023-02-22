@@ -1,5 +1,7 @@
 import { goerliTestnetTokens } from '@pancakeswap/tokens'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+
+export const farmsV3 = [] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
   {

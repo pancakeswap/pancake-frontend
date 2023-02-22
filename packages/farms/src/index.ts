@@ -3,7 +3,8 @@ import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './fetchFarmsV2'
-import { farmV3FetchFarms, fetchMasterChefV3Data } from './fetchFarmsV3'
+import { farmV3FetchFarms, fetchMasterChefV3Data, TvlMap } from './fetchFarmsV3'
+import { FarmConfigV3 } from './types'
 
 const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
 const supportedChainIdV3 = [ChainId.BSC_TESTNET]
@@ -49,13 +50,15 @@ export function createFarmFetcher(multicallv2: MultiCallV2) {
 }
 
 export function createFarmFetcherV3(multicallv2: MultiCallV2) {
-  const fetchFarms = async (
-    params: {
-      //
-    } & Pick<FetchFarmsParams, 'chainId' | 'farms'>,
-  ) => {
-    const { farms, chainId } = params
-
+  const fetchFarms = async ({
+    farms,
+    chainId,
+    tvlMap,
+  }: {
+    chainId: ChainId
+    farms: FarmConfigV3[]
+    tvlMap: TvlMap
+  }) => {
     // @ts-ignore
     const masterChefAddress = masterChefV3Addresses[chainId]
     if (!masterChefAddress) {
@@ -74,12 +77,13 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
       masterChefAddress,
       totalAllocPoint,
       latestPeriodCakePerSecond,
+      tvlMap,
     })
 
     return {
       poolLength: poolLength.toNumber(),
       farmsWithPrice,
-      latestPeriodCakePerSecond,
+      latestPeriodCakePerSecond: latestPeriodCakePerSecond.toString(),
     }
   }
 

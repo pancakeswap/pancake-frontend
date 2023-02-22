@@ -6,7 +6,7 @@ import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
 import { FIXED_100, FIXED_ZERO } from './const'
 import { getTokenAmount } from './fetchFarmsV2'
-import { FarmV3Data, FarmV3DataWithPrice, SerializedFarmConfig, SerializedFarmPublicData } from './types'
+import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 
 const whitelistedUSDValueTokens = {
   [ChainId.ETHEREUM]: {
@@ -24,8 +24,6 @@ const whitelistedUSDValueTokens = {
     list: ERC20Token[]
   }
 >
-
-const supportedChainIdSubgraph = [ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM]
 
 const masterchefV3Abi = [
   {
@@ -73,7 +71,11 @@ export async function fetchMasterChefV3Data({
   multicallv2: MultiCallV2
   masterChefAddress: string
   chainId: number
-}) {
+}): Promise<{
+  poolLength: BigNumber
+  totalAllocPoint: BigNumber
+  latestPeriodCakePerSecond: BigNumber
+}> {
   const [[poolLength], [totalAllocPoint], [latestPeriodCakePerSecond]] = await multicallv2({
     abi: masterchefV3Abi,
     calls: [
@@ -101,7 +103,7 @@ export async function fetchMasterChefV3Data({
 }
 
 const fetchPoolInfos = async (
-  farms: SerializedFarmConfig[],
+  farms: FarmConfigV3[],
   chainId: number,
   multicallv2: MultiCallV2,
   masterChefAddress: string,
@@ -150,13 +152,15 @@ export async function farmV3FetchFarms({
   chainId,
   totalAllocPoint,
   latestPeriodCakePerSecond,
+  tvlMap,
 }: {
-  farms: SerializedFarmConfig[]
+  farms: FarmConfigV3[]
   multicallv2: MultiCallV2
   masterChefAddress: string
   chainId: number
   totalAllocPoint: BigNumber
   latestPeriodCakePerSecond: BigNumber
+  tvlMap: TvlMap
 }) {
   const poolInfos = await fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress)
   const cakePriceUSD = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
@@ -169,25 +173,29 @@ export async function farmV3FetchFarms({
 
   const slot0s = await fetchSlot0s(farms, chainId, multicallv2)
 
-  // optimized later
-  const tvls: TvlMap = {}
-  if (supportedChainIdSubgraph) {
-    const results = await Promise.all(
-      farms.map((f) => fetch(`/api/farm-tvl/${chainId}/${f.lpAddress}`).then((res) => res.json())),
-    )
-    results.forEach((r, i) => {
-      tvls[farms[i].lpAddress] = r.formatted
-    })
-  }
+  // // optimized later
+  // const tvls: TvlMap = {}
+  // if (supportedChainIdSubgraph) {
+  //   const results = await Promise.all(
+  //     farms.map((f) => fetch(`/api/farm-tvl/${chainId}/${f.lpAddress}`).then((res) => res.json())),
+  //   )
+  //   results.forEach((r, i) => {
+  //     tvls[farms[i].lpAddress] = r.formatted
+  //   })
+  // }
 
   const farmsData = farms.map((farm, index) => {
+    // alias backward compatible for v2 farms
+    const { token0, token1, ...f } = farm
     return {
-      ...farm,
+      ...f,
+      token: token0,
+      quoteToken: token1,
       ...getClassicFarmsDynamicData({
         ...lpData[index],
         ...slot0s[index],
-        token0: farm.token,
-        token1: farm.quoteToken,
+        token0: farm.token0,
+        token1: farm.token1,
       }),
       ...getFarmAllocation({
         allocPoint: poolInfos[index]?.allocPoint,
@@ -196,7 +204,7 @@ export async function farmV3FetchFarms({
     }
   })
 
-  const farmsWithPrice = await getFarmsPrices(farmsData, chainId, tvls, cakePriceUSD, latestPeriodCakePerSecond)
+  const farmsWithPrice = await getFarmsPrices(farmsData, chainId, tvlMap, cakePriceUSD, latestPeriodCakePerSecond)
   return farmsWithPrice
 }
 
@@ -273,7 +281,7 @@ const getFarmAllocation = ({
   }
 }
 
-async function fetchPublicFarmsData(farms: SerializedFarmConfig[], chainId: number, multicallv2: MultiCallV2) {
+async function fetchPublicFarmsData(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
   try {
     const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm))
     const chunkSize = farmCalls.length / farms.length
@@ -347,7 +355,7 @@ const v3PoolAbi = [
   },
 ]
 
-async function fetchSlot0s(farms: SerializedFarmConfig[], chainId: number, multicallv2: MultiCallV2) {
+async function fetchSlot0s(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
   return multicallv2({
     abi: v3PoolAbi,
     calls: farms.map((f) => ({
@@ -358,19 +366,19 @@ async function fetchSlot0s(farms: SerializedFarmConfig[], chainId: number, multi
   })
 }
 
-const fetchFarmCalls = (farm: SerializedFarmPublicData) => {
-  const { lpAddress, token, quoteToken } = farm
+const fetchFarmCalls = (farm: FarmConfigV3) => {
+  const { lpAddress, token0, token1 } = farm
 
   return [
     // Balance of token in the LP contract
     {
-      address: token.address,
+      address: token0.address,
       name: 'balanceOf',
       params: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
-      address: quoteToken.address,
+      address: token1.address,
       name: 'balanceOf',
       params: [lpAddress],
     },
@@ -381,6 +389,7 @@ export type TvlMap = {
   [key: string]: {
     token0: string
     token1: string
+    updatedAt: string
   }
 }
 

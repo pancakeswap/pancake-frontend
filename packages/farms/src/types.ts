@@ -1,6 +1,6 @@
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
-import { Token } from '@pancakeswap/swap-sdk-core'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -61,7 +61,16 @@ export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   token: SerializedWrappedToken
   quoteToken: SerializedWrappedToken
-  version?: number
+}
+
+export type FarmConfigV3 = {
+  pid: number
+  lpSymbol: string
+  lpAddress: string
+  boosted?: boolean
+
+  token0: Token
+  token1: Token
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig
