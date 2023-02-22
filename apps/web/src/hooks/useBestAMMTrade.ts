@@ -1,6 +1,10 @@
 /* eslint-disable no-console */
 import useSWR from 'swr'
-import { useDeferredValue, useEffect, useMemo } from 'react'
+import {
+  useDeferredValue,
+  // useEffect,
+  useMemo,
+} from 'react'
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
@@ -31,16 +35,25 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     data: trade,
     isLoading,
     isValidating,
-    mutate,
+    // mutate,
   } = useSWR(
-    amount && currency && candidatePools && !loading
+    amount && currency && candidatePools
       ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
       : null,
     async () => {
       if (!deferQuotient) {
         return null
       }
-      const start = Date.now()
+      console.time('[METRIC] Get best AMM trade')
+      console.timeLog(
+        '[METRIC] Get best AMM trade',
+        'Start',
+        currency.chainId,
+        amount.currency.symbol,
+        currency.symbol,
+        tradeType,
+        deferQuotient,
+      )
       const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
         // TODO fix on ethereum
         gasPriceWei: async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
@@ -51,19 +64,19 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
         blockNumber,
       })
-      console.log('[METRIC] Getting best trade takes', Date.now() - start, deferQuotient)
+      console.timeLog('[METRIC] Get best AMM trade', res)
+      console.timeEnd('[METRIC] Get best AMM trade')
       return res
     },
     {
-      keepPreviousData: true,
       revalidateOnFocus: false,
     },
   )
 
-  useEffect(() => {
-    // Revalidate if block height increases or gas price changed
-    mutate()
-  }, [blockNumber, mutate])
+  // useEffect(() => {
+  //   // Revalidate if block height increases or gas price changed
+  //   mutate()
+  // }, [blockNumber, mutate])
 
   return {
     trade,

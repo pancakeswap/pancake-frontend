@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { TradeType, Percent } from '@pancakeswap/sdk'
+import { TradeType } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -8,9 +8,10 @@ import {
   Column,
   Box,
 } from '@pancakeswap/uikit'
+import { useCallback, useEffect, useState, useMemo } from 'react'
+import { Trade } from '@pancakeswap/smart-router/evm'
 
 import { useIsTransactionUnsupported } from 'hooks/Trades'
-import { Trade } from '@pancakeswap/smart-router/evm'
 import { GreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
@@ -24,7 +25,6 @@ import {
   ALLOWED_PRICE_IMPACT_HIGH,
 } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import { useUserSingleHopOnly, useExpertModeManager } from 'state/user/hooks'
 import { warningSeverity } from 'utils/exchange'
@@ -39,19 +39,18 @@ import { SwapCallbackError } from '../../components/styleds'
 // import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 // import { useSwapCallback } from '../hooks/useSwapCallback'
 import { useSlippageAdjustedAmounts, useRouterAddress, useSwapInputError, useParsedAmounts } from '../hooks'
+import { computeTradePriceBreakdown } from '../utils/exchange'
 // import ConfirmSwapModal from './ConfirmSwapModal'
 
 // const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
-  priceImpact?: Percent
   trade?: Trade<TradeType>
   approvalSubmitted: boolean
   // onUserInput: (field: Field, typedValue: string) => void
 }
 
 export function SwapCommitButton({
-  priceImpact: priceImpactWithoutFee,
   trade,
   approvalSubmitted,
 }: // onUserInput,
@@ -88,6 +87,7 @@ SwapCommitButtonPropsType) {
   }
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(amountToApprove, routerAddress)
+  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]

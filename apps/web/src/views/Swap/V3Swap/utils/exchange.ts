@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, JSBI } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, JSBI, Token } from '@pancakeswap/sdk'
 import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
@@ -36,7 +36,7 @@ export function computeTradePriceBreakdown(trade?: Trade<TradeType> | null): {
 
   const { routes, outputAmount, inputAmount } = trade
   let feePercent = new Percent(0)
-  let outputAmountWithoutPriceImpact = CurrencyAmount.fromRawAmount(trade.outputAmount.currency, 0)
+  let outputAmountWithoutPriceImpact = CurrencyAmount.fromRawAmount(trade.outputAmount.wrapped.currency, 0)
   for (const route of routes) {
     const { inputAmount: routeInputAmount, pools, percent } = route
     const routeFeePercent = ONE_HUNDRED_PERCENT.subtract(
@@ -59,10 +59,14 @@ export function computeTradePriceBreakdown(trade?: Trade<TradeType> | null): {
     feePercent = feePercent.add(routeFeePercent.multiply(new Percent(percent, 100)))
 
     const midPrice = SmartRouter.getMidPrice(route)
-    outputAmountWithoutPriceImpact = outputAmountWithoutPriceImpact.add(midPrice.quote(routeInputAmount.wrapped))
+    outputAmountWithoutPriceImpact = outputAmountWithoutPriceImpact.add(
+      midPrice.quote(routeInputAmount.wrapped) as CurrencyAmount<Token>,
+    )
   }
 
-  const priceImpactRaw = outputAmountWithoutPriceImpact.subtract(outputAmount).divide(outputAmountWithoutPriceImpact)
+  const priceImpactRaw = outputAmountWithoutPriceImpact
+    .subtract(outputAmount.wrapped)
+    .divide(outputAmountWithoutPriceImpact)
   const priceImpactPercent = new Percent(priceImpactRaw.numerator, priceImpactRaw.denominator)
   const priceImpactWithoutFee = priceImpactPercent.subtract(feePercent)
   const lpFeeAmount = inputAmount.multiply(feePercent)
