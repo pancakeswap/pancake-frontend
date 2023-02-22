@@ -275,14 +275,15 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   const poolsWithTicks = useSWR(
     key && pools ? ['v3_pool_ticks', key] : null,
     async () => {
-      const start = Date.now()
-      console.log('[METRIC] Start getting pool ticks', key)
+      console.time('[METRIC]Get V3 pool ticks')
+      console.timeLog('[METRIC]Get V3 pool ticks', key)
       const poolTicks = await Promise.all(
         pools.map(({ token0, token1, fee }) => {
           return getPoolTicks(getV3PoolAddress(token0, token1, fee))
         }),
       )
-      console.log('[METRIC] Getting pool ticks of', key, 'takes', Date.now() - start, poolTicks)
+      console.timeLog('[METRIC]Get V3 pool ticks', key, poolTicks)
+      console.timeEnd('[METRIC]Get V3 pool ticks')
 
       return {
         pools: pools.map((pool, i) => ({
@@ -388,8 +389,8 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key }: Options = {}) {
           blockNumber,
         }
       }
-      const start = Date.now()
-      console.log('[METRIC] Start getting v3 pools from subgraph', key, pairs)
+      console.time('[METRIC]Get V3 pools from subgraph')
+      console.timeLog('[METRIC]Get V3 pools from subgraph', key, pairs)
       const metaMap = new Map<string, V3PoolMeta>()
       for (const pair of pairs) {
         const v3Metas = getV3PoolMetas(pair)
@@ -419,7 +420,8 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key }: Options = {}) {
           tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
         }
       })
-      console.log('[METRIC] Getting v3 pools from subgraph takes', Date.now() - start, key, pools)
+      console.timeLog('[METRIC]Get V3 pools from subgraph', key, pools)
+      console.timeEnd('[METRIC]Get V3 pools from subgraph')
       return {
         pools,
         key,

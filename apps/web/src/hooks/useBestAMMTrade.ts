@@ -44,9 +44,10 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
       if (!deferQuotient) {
         return null
       }
-      const start = Date.now()
-      console.log(
-        '[METRIC] Start getting best trade',
+      console.time('[METRIC] Get best AMM trade')
+      console.timeLog(
+        '[METRIC] Get best AMM trade',
+        'Start',
         currency.chainId,
         amount.currency.symbol,
         currency.symbol,
@@ -63,7 +64,8 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
         blockNumber,
       })
-      console.log('[METRIC] Getting best trade takes', Date.now() - start, deferQuotient)
+      console.timeLog('[METRIC] Get best AMM trade', res)
+      console.timeEnd('[METRIC] Get best AMM trade')
       return res
     },
     {
