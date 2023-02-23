@@ -6,6 +6,7 @@ import StakedLP from "./components/StakedLP";
 import DepositModal from "./components/DepositModal";
 import WithdrawModal from "./components/WithdrawModal";
 import FarmTable from "./components/FarmTable";
+import FarmV3Table from "./components/FarmV3Table";
 
 const Farm = {
   FarmTabButtons,
@@ -16,6 +17,7 @@ const Farm = {
   DepositModal,
   WithdrawModal,
   FarmTable,
+  FarmV3Table,
 };
 
 export { Farm };
