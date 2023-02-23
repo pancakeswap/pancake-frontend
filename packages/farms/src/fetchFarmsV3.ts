@@ -148,7 +148,7 @@ export async function farmV3FetchFarms({
   commonPrice: CommonPrice
 }) {
   const poolInfos = await fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress)
-  const cakePriceUSD = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
+  const cakePrice = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
   const lpData = await (
     await fetchPublicFarmsData(farms, chainId, multicallv2)
   ).map(([tokenBalanceLP, quoteTokenBalanceLP]: any[]) => ({
@@ -187,7 +187,7 @@ export async function farmV3FetchFarms({
     farmsData,
     chainId,
     tvlMap,
-    cakePriceUSD,
+    cakePrice.price,
     latestPeriodCakePerSecond,
     combinedCommonPrice,
   )
