@@ -1,13 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  // useModal,
-  confirmPriceImpactWithoutFee,
-  Column,
-  Box,
-} from '@pancakeswap/uikit'
+import { Button, Text, useModal, confirmPriceImpactWithoutFee, Column, Box } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { Trade } from '@pancakeswap/smart-router/evm'
 
@@ -17,8 +10,8 @@ import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
-// import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
-// import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import {
   BIG_INT_ZERO,
   PRICE_IMPACT_WITHOUT_FEE_CONFIRM_MIN,
@@ -33,28 +26,23 @@ import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
-// import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
-// import { useSwapCallback } from '../hooks/useSwapCallback'
+import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
+import { useSwapCallback } from '../hooks/useSwapCallback'
 import { useSlippageAdjustedAmounts, useRouterAddress, useSwapInputError, useParsedAmounts } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
-// import ConfirmSwapModal from './ConfirmSwapModal'
+import { ConfirmSwapModal } from './ConfirmSwapModal'
 
-// const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
+const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
   trade?: Trade<TradeType>
-  approvalSubmitted: boolean
-  // onUserInput: (field: Field, typedValue: string) => void
 }
 
-export function SwapCommitButton({
-  trade,
-  approvalSubmitted,
-}: // onUserInput,
-SwapCommitButtonPropsType) {
+export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isExpertMode] = useExpertModeManager()
@@ -68,6 +56,7 @@ SwapCommitButtonPropsType) {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const swapIsUnsupported = useIsTransactionUnsupported(inputCurrency, outputCurrency)
+  const { onUserInput } = useSwapActionHandlers()
   const {
     wrapType,
     execute: onWrap,
@@ -92,31 +81,12 @@ SwapCommitButtonPropsType) {
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
-  // const swapCalls = useSwapCallArguments(legacyTrade, allowedSlippage, recipient)
+  const swapCalls = useSwapCallArguments(trade)
 
   // the callback to execute the swap
-  // const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(
-  //   legacyTrade,
-  //   allowedSlippage,
-  //   recipient,
-  //   swapCalls,
-  // )
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, swapCalls)
 
-  // eslint-disable-next-line
-  const swapCallback = async () => {
-    // TODO replace with real useCallback
-    return ''
-  }
-  const swapCallbackError = ''
-  const [
-    {
-      tradeToConfirm,
-      swapErrorMessage,
-      // attemptingTxn,
-      // txHash
-    },
-    setSwapState,
-  ] = useState<{
+  const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade<TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
@@ -127,6 +97,9 @@ SwapCommitButtonPropsType) {
     swapErrorMessage: undefined,
     txHash: undefined,
   })
+
+  // check if user has gone through approval process, used to show two step buttons, reset on token change
+  const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
   // Handlers
   const handleSwap = useCallback(() => {
@@ -159,49 +132,47 @@ SwapCommitButtonPropsType) {
       })
   }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState])
 
-  // const handleAcceptChanges = useCallback(() => {
-  //   setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
-  // }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
+  const handleAcceptChanges = useCallback(() => {
+    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
+  }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
 
-  // const handleConfirmDismiss = useCallback(() => {
-  //   setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
-  //   // if there was a tx hash, we want to clear the input
-  //   if (txHash) {
-  //     onUserInput(Field.INPUT, '')
-  //   }
-  // }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
+  const handleConfirmDismiss = useCallback(() => {
+    setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onUserInput(Field.INPUT, '')
+    }
+  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
 
   // End Handlers
 
   // Modals
   const [indirectlyOpenConfirmModalState, setIndirectlyOpenConfirmModalState] = useState(false)
 
-  // const [onPresentSettingsModal] = useModal(
-  //   <SettingsModalWithCustomDismiss
-  //     customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
-  //     mode={SettingsMode.SWAP_LIQUIDITY}
-  //   />,
-  // )
+  const [onPresentSettingsModal] = useModal(
+    <SettingsModalWithCustomDismiss
+      customOnDismiss={() => setIndirectlyOpenConfirmModalState(true)}
+      mode={SettingsMode.SWAP_LIQUIDITY}
+    />,
+  )
 
-  // const [onPresentConfirmModal] = useModal(
-  //   <ConfirmSwapModal
-  //     trade={trade}
-  //     originalTrade={tradeToConfirm}
-  //     currencyBalances={currencyBalances}
-  //     onAcceptChanges={handleAcceptChanges}
-  //     attemptingTxn={attemptingTxn}
-  //     txHash={txHash}
-  //     recipient={recipient}
-  //     allowedSlippage={allowedSlippage}
-  //     onConfirm={handleSwap}
-  //     swapErrorMessage={swapErrorMessage}
-  //     customOnDismiss={handleConfirmDismiss}
-  //     openSettingModal={onPresentSettingsModal}
-  //   />,
-  //   true,
-  //   true,
-  //   'confirmSwapModal',
-  // )
+  const [onPresentConfirmModal] = useModal(
+    <ConfirmSwapModal
+      trade={trade}
+      originalTrade={tradeToConfirm}
+      currencyBalances={currencyBalances}
+      onAcceptChanges={handleAcceptChanges}
+      attemptingTxn={attemptingTxn}
+      txHash={txHash}
+      onConfirm={handleSwap}
+      swapErrorMessage={swapErrorMessage}
+      customOnDismiss={handleConfirmDismiss}
+      openSettingModal={onPresentSettingsModal}
+    />,
+    true,
+    true,
+    'confirmSwapModal',
+  )
   // End Modals
 
   const onSwapHandler = useCallback(() => {
@@ -214,14 +185,9 @@ SwapCommitButtonPropsType) {
         swapErrorMessage: undefined,
         txHash: undefined,
       })
-      // onPresentConfirmModal()
+      onPresentConfirmModal()
     }
-  }, [
-    isExpertMode,
-    handleSwap,
-    // onPresentConfirmModal,
-    trade,
-  ])
+  }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
 
   // useEffect
   useEffect(() => {
@@ -231,13 +197,21 @@ SwapCommitButtonPropsType) {
         ...state,
         swapErrorMessage: undefined,
       }))
-      // onPresentConfirmModal()
+      onPresentConfirmModal()
     }
-  }, [
-    indirectlyOpenConfirmModalState,
-    // onPresentConfirmModal,
-    setSwapState,
-  ])
+  }, [indirectlyOpenConfirmModalState, onPresentConfirmModal, setSwapState])
+
+  // Reset approval flow if input currency changed
+  useEffect(() => {
+    setApprovalSubmitted(false)
+  }, [trade?.inputAmount.currency])
+
+  // mark when a user has submitted an approval, reset onTokenSelection for input field
+  useEffect(() => {
+    if (approval === ApprovalState.PENDING) {
+      setApprovalSubmitted(true)
+    }
+  }, [approval, approvalSubmitted])
 
   // warnings on slippage
   const priceImpactSeverity = warningSeverity(priceImpactWithoutFee)

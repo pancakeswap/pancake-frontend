@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, JSBI, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, JSBI, Token, Price } from '@pancakeswap/sdk'
 import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
@@ -75,4 +75,18 @@ export function computeTradePriceBreakdown(trade?: Trade<TradeType> | null): {
     priceImpactWithoutFee,
     lpFeeAmount,
   }
+}
+
+export function formatExecutionPrice(
+  executionPrice?: Price<Currency, Currency>,
+  inputAmount?: CurrencyAmount<Currency>,
+  outputAmount?: CurrencyAmount<Currency>,
+  inverted?: boolean,
+): string {
+  if (!executionPrice || !inputAmount || !outputAmount) {
+    return ''
+  }
+  return inverted
+    ? `${executionPrice.invert().toSignificant(6)} ${inputAmount.currency.symbol} / ${outputAmount.currency.symbol}`
+    : `${executionPrice.toSignificant(6)} ${outputAmount.currency.symbol} / ${inputAmount.currency.symbol}`
 }

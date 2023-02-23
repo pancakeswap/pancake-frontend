@@ -35,7 +35,7 @@ export function useBestTrade({ maxHops, maxSplits }: Options = {}) {
     maxSplits,
   })
   return {
-    isLoading,
+    isLoading: isLoading || (typedValue && !trade),
     trade: typedValue ? trade : null,
   }
 }

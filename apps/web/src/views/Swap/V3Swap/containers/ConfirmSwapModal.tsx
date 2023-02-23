@@ -1,68 +1,25 @@
 import { useCallback, memo, useMemo } from 'react'
 import { Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
-import {
-  InjectedModalProps,
-  LinkExternal,
-  Text,
-  TransactionErrorContent,
-  ConfirmationPendingContent,
-} from '@pancakeswap/uikit'
-import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
+import { InjectedModalProps, ConfirmationPendingContent } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { Trade } from '@pancakeswap/smart-router/evm'
+
+import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/swap/actions'
-import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useSwapState } from 'state/swap/hooks'
+
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
-import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSwapContent'
-
-const PancakeRouterSlippageErrorMsg =
-  'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
-
-export const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) => {
-  const isSlippagedErrorMsg = message?.includes(PancakeRouterSlippageErrorMsg)
-
-  const handleErrorDismiss = useCallback(() => {
-    onDismiss?.()
-    if (isSlippagedErrorMsg && openSettingModal) {
-      openSettingModal()
-    }
-  }, [isSlippagedErrorMsg, onDismiss, openSettingModal])
-  const { t } = useTranslation()
-
-  return isSlippagedErrorMsg ? (
-    <TransactionErrorContent
-      message={
-        <>
-          <Text mb="16px">
-            {t(
-              'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your',
-            )}{' '}
-            <Text bold display="inline" style={{ cursor: 'pointer' }} onClick={handleErrorDismiss}>
-              <u>{t('slippage tolerance.')}</u>
-            </Text>
-          </Text>
-          <LinkExternal
-            href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/trade-guide"
-            style={{ width: '100%', justifyContent: 'center' }}
-          >
-            {t('What are the potential issues with the token?')}
-          </LinkExternal>
-        </>
-      }
-    />
-  ) : (
-    <TransactionErrorContent message={message} onDismiss={onDismiss} />
-  )
-}
+import { SwapTransactionErrorContent } from '../../components/SwapTransactionErrorContent'
+import { TransactionConfirmSwapContent } from '../components'
 
 interface ConfirmSwapModalProps {
-  trade?: TradeWithStableSwap<Currency, Currency, TradeType>
-  originalTrade?: TradeWithStableSwap<Currency, Currency, TradeType>
+  trade?: Trade<TradeType>
+  originalTrade?: Trade<TradeType>
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string
-  recipient: string | null
-  allowedSlippage: number
   onAcceptChanges: () => void
   onConfirm: () => void
   swapErrorMessage?: string
@@ -70,23 +27,23 @@ interface ConfirmSwapModalProps {
   openSettingModal?: () => void
 }
 
-const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
+export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>(function ConfirmSwapModalComp({
   trade,
   originalTrade,
   currencyBalances,
   onAcceptChanges,
-  allowedSlippage,
   onConfirm,
   onDismiss,
   customOnDismiss,
-  recipient,
   swapErrorMessage,
   attemptingTxn,
   txHash,
   openSettingModal,
-}) => {
+}) {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
+  const [allowedSlippage] = useUserSlippageTolerance()
+  const { recipient } = useSwapState()
 
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
@@ -104,7 +61,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
           message={swapErrorMessage}
         />
       ) : (
-        <TransactionConfirmSwapContentWithSmartRouter
+        <TransactionConfirmSwapContent
           trade={trade}
           currencyBalances={currencyBalances}
           originalTrade={originalTrade}
@@ -156,6 +113,4 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       )}
     </ConfirmSwapModalContainer>
   )
-}
-
-export default memo(ConfirmSwapModal)
+})

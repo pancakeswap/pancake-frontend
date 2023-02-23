@@ -10,7 +10,7 @@ export function V3SwapForm() {
   const pricingAndSlippage = (
     <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
   )
-  const swapCommitButton = <SwapCommitButton trade={trade} approvalSubmitted={false} />
+  const swapCommitButton = <SwapCommitButton trade={trade} />
   return (
     <>
       <FormHeader refreshDisabled />

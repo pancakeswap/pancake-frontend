@@ -1,22 +1,21 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, SwapParameters, TradeType } from '@pancakeswap/sdk'
-import {
-  LegacyTrade as SmartTrade,
-  LegacyTradeWithStableSwap as TradeWithStableSwap,
-} from '@pancakeswap/smart-router/evm'
+import { SwapParameters, TradeType } from '@pancakeswap/sdk'
+import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import isZero from '@pancakeswap/utils/isZero'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useMemo } from 'react'
+
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useMemo } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useGasPrice } from 'state/user/hooks'
+import { useGasPrice, useUserSlippageTolerance } from 'state/user/hooks'
 import { calculateGasMargin, isAddress } from 'utils'
 import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { useSwapState } from 'state/swap/hooks'
 
 export enum SwapCallbackState {
   INVALID,
@@ -44,13 +43,14 @@ interface SwapCallEstimate {
 // returns a function that will execute a swap, if the parameters are all valid
 // and the user has approved the slippage adjusted input amount for the trade
 export function useSwapCallback(
-  trade: TradeWithStableSwap<Currency, Currency, TradeType>, // trade to execute, required
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
+  trade: Trade<TradeType> | null | undefined, // trade to execute, required
   swapCalls: SwapCall[],
 ): { state: SwapCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId } = useActiveWeb3React()
   const gasPrice = useGasPrice()
+  const [userSlippage] = useUserSlippageTolerance()
+  const allowedSlippage = userSlippage || INITIAL_ALLOWED_SLIPPAGE
+  const { recipient: recipientAddress } = useSwapState()
 
   const { t } = useTranslation()
 
@@ -136,11 +136,11 @@ export function useSwapCallback(
             const inputAmount =
               trade.tradeType === TradeType.EXACT_INPUT
                 ? trade.inputAmount.toSignificant(3)
-                : SmartTrade.maximumAmountIn(trade, pct).toSignificant(3)
+                : SmartRouter.maximumAmountIn(trade, pct).toSignificant(3)
             const outputAmount =
               trade.tradeType === TradeType.EXACT_OUTPUT
                 ? trade.outputAmount.toSignificant(3)
-                : SmartTrade.minimumAmountOut(trade, pct).toSignificant(3)
+                : SmartRouter.minimumAmountOut(trade, pct).toSignificant(3)
 
             const base = `Swap ${
               trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
