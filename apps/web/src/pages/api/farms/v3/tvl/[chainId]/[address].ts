@@ -6,7 +6,7 @@ import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
 
-const zChainId = z.enum(['56', '1'])
+const zChainId = z.enum(['56', '1', '5'])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 
@@ -17,6 +17,7 @@ const zParams = z.object({
 
 const SUBGRAPH_URLS = {
   1: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
+  5: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-goerli',
 }
 
 // currently can get the total active liquidity for a pool
@@ -32,11 +33,11 @@ const handler: NextApiHandler = async (req, res) => {
 
   const farms = farmsV3Map[chainId]
 
+  const address = address_.toLowerCase()
+
   if (!farms.some((f) => f.lpAddress.toLowerCase() === address)) {
     return res.status(400).json({ error: 'Invalid LP address' })
   }
-
-  const address = address_.toLowerCase()
 
   const response = await request(
     SUBGRAPH_URLS[chainId],
@@ -56,7 +57,7 @@ const handler: NextApiHandler = async (req, res) => {
             decimals
           }
         }
-        positions(where: { pool: "${address}" }, first: 1000, orderBy: liquidity orderDirection: desc, liquidity_gt: "0") {
+        positions(where: { pool: "${address}", liquidity_gt: "0" }, first: 1000, orderBy: liquidity orderDirection: desc) {
           liquidity
           id
           tickUpper {
