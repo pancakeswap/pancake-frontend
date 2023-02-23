@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { getAddress } from '@ethersproject/address'
 import { Contract } from '@ethersproject/contracts'
 import {
@@ -10,20 +11,17 @@ import {
   TradeOptionsDeadline,
   TradeType,
 } from '@pancakeswap/sdk'
-import {
-  LegacyRouter,
-  LegacyTrade as Trade,
-  LegacyTradeWithStableSwap as TradeWithStableSwap,
-} from '@pancakeswap/smart-router/evm'
+import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { useMemo } from 'react'
+import invariant from 'tiny-invariant'
+
+import { useSwapState } from 'state/swap/hooks'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { BIPS_BASE } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { useMemo } from 'react'
-import invariant from 'tiny-invariant'
 import { useSmartRouterContract } from 'views/Swap/SmartSwap/utils/exchange'
-
-const { isStableSwapPair } = LegacyRouter
+import { useUserSlippageTolerance } from 'state/user/hooks'
 
 const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
@@ -39,11 +37,12 @@ export interface SwapCall {
  * @param recipientAddressOrName
  */
 export function useSwapCallArguments(
-  trade: TradeWithStableSwap<Currency, Currency, TradeType> | undefined, // trade to execute, required
-  allowedSlippage: number = INITIAL_ALLOWED_SLIPPAGE, // in bips
-  recipientAddress: string | null, // the address of the recipient of the trade, or null if swap should be returned to sender
+  trade: Trade<TradeType> | undefined | null, // trade to execute, required
 ): SwapCall[] {
   const { account, chainId } = useActiveWeb3React()
+  const [userSlippage] = useUserSlippageTolerance()
+  const allowedSlippage = userSlippage || INITIAL_ALLOWED_SLIPPAGE
+  const { recipient: recipientAddress } = useSwapState()
 
   const recipient = recipientAddress === null ? account : recipientAddress
   const deadline = useTransactionDeadline()
@@ -78,52 +77,20 @@ function toHex(currencyAmount: CurrencyAmount<Currency>) {
 
 const ZERO_HEX = '0x0'
 
-function swapCallParameters(
-  trade: TradeWithStableSwap<Currency, Currency, TradeType>,
-  options: TradeOptions | TradeOptionsDeadline,
-): SwapParameters {
+function swapCallParameters(trade: Trade<TradeType>, options: TradeOptions | TradeOptionsDeadline): SwapParameters {
   const etherIn = trade.inputAmount.currency.isNative
   const etherOut = trade.outputAmount.currency.isNative
   // the router does not support both ether in and out
   invariant(!(etherIn && etherOut), 'ETHER_IN_OUT')
   invariant(!('ttl' in options) || options.ttl > 0, 'TTL')
 
-  const amountIn: string = toHex(Trade.maximumAmountIn(trade, options.allowedSlippage))
-  const amountOut: string = toHex(Trade.minimumAmountOut(trade, options.allowedSlippage))
+  const amountIn: string = toHex(SmartRouter.maximumAmountIn(trade, options.allowedSlippage))
+  const amountOut: string = toHex(SmartRouter.minimumAmountOut(trade, options.allowedSlippage))
 
-  const path: string[] = trade.route.path.map((token, index) => {
-    if (
-      // return the native address if input or output is native token
-      (index === 0 && trade.inputAmount.currency.isNative) ||
-      (index === trade.route.path.length - 1 && trade.outputAmount.currency.isNative)
-    )
-      return NATIVE_CURRENCY_ADDRESS
-    return token.isToken ? token.address : NATIVE_CURRENCY_ADDRESS
-  })
-  let methodName: string
-  let args: (string | string[])[]
-  let value: string
-  const flag: string[] = trade.route.pairs.map((pair) => {
-    if (isStableSwapPair(pair)) return '0x0'
-    return '0x1'
-  })
-  // singleHop
-  if (path.length === 2) {
-    methodName = 'swap'
-    //     [srcToken,dstToken,amount,minReturn,flag]
-    args = [path[0], path[1], amountIn, amountOut, flag[0]]
-    value = etherIn ? amountIn : ZERO_HEX
-  }
-  // multiHop
-  else {
-    methodName = 'swapMulti'
-    //     [tokens,amount,minReturn,flag]
-    args = [path, amountIn, amountOut, flag]
-    value = etherIn ? amountIn : ZERO_HEX
-  }
+  // TODO build arguments
   return {
-    methodName,
-    args,
-    value,
+    methodName: 'swapMulti',
+    args: [],
+    value: ZERO_HEX,
   }
 }
