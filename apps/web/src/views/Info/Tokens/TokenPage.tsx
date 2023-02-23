@@ -82,7 +82,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
 
   const tokenData = useTokenDataSWR(address)
   const poolsForToken = usePoolsForTokenSWR(address)
-  const poolDatas = usePoolDatasSWR(poolsForToken ?? [])
+  const poolDatas = usePoolDatasSWR(useMemo(() => poolsForToken ?? [], [poolsForToken]))
   const transactions = useTokenTransactionsSWR(address)
   const chartData = useTokenChartDataSWR(address)
 
