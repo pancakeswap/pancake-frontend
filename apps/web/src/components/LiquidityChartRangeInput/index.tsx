@@ -1,14 +1,15 @@
 import * as Sentry from '@sentry/react'
 import { Currency, Price, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { AutoColumn, ColumnCenter, Text } from '@pancakeswap/uikit'
+import { AutoColumn } from '@pancakeswap/uikit'
 import { format } from 'd3'
 import { saturate } from 'polished'
-import { ReactNode, useCallback, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { BarChart2, CloudOff, Inbox } from 'react-feather'
 import { batch } from 'react-redux'
 import styled, { useTheme } from 'styled-components'
-import { Bound } from 'views/AddLiquidityV3/form/actions'
+import { Bound } from 'config/constants/types'
+import { InfoBox } from 'components/InfoBox'
 
 import { Chart } from './Chart'
 import { useDensityChartData } from './hooks'
@@ -48,19 +49,6 @@ const ChartWrapper = styled.div`
   justify-content: center;
   align-content: center;
 `
-
-function InfoBox({ message, icon }: { message?: ReactNode; icon: ReactNode }) {
-  return (
-    <ColumnCenter style={{ height: '100%', justifyContent: 'center' }}>
-      {icon}
-      {message && (
-        <Text padding={10} marginTop="20px" textAlign="center">
-          {message}
-        </Text>
-      )}
-    </ColumnCenter>
-  )
-}
 
 export default function LiquidityChartRangeInput({
   currencyA,

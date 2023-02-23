@@ -1,4 +1,4 @@
-import { Bound } from 'views/AddLiquidityV3/form/actions'
+import { Bound } from 'config/constants/types'
 
 export interface ChartEntry {
   activeLiquidity: number

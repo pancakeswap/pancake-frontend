@@ -2,9 +2,9 @@ import { Currency, Rounding } from '@pancakeswap/sdk'
 import { FeeAmount, Pool, tickToPrice, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
 import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useCallback, useMemo } from 'react'
-import { setFullRange } from 'views/AddLiquidityV3/form/actions'
+import { setFullRange } from 'views/AddLiquidityV3/formViews/V3FormView/form/actions'
 
-export default function useRangeHopCallbacks(
+export function useRangeHopCallbacks(
   baseCurrency: Currency | undefined,
   quoteCurrency: Currency | undefined,
   feeAmount: FeeAmount | undefined,

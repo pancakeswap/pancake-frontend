@@ -8,7 +8,7 @@ import { useAppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import LiquidityFormProvider from 'views/AddLiquidityV3/form/LiquidityFormProvider'
+import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import IncreaseLiquidityV3 from 'views/AddLiquidityV3/IncreaseLiquidityV3'
 
 const AddLiquidityPage = () => {

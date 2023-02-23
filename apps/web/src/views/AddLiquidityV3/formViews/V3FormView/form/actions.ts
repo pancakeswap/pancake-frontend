@@ -5,11 +5,6 @@ export enum Field {
   CURRENCY_B = 'CURRENCY_B',
 }
 
-export enum Bound {
-  LOWER = 'LOWER',
-  UPPER = 'UPPER',
-}
-
 export const typeInput = createAction<{ field: Field; typedValue: string; noLiquidity: boolean }>(
   'mintV3/typeInputMint',
 )

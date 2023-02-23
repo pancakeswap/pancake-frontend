@@ -1,5 +1,4 @@
 import { CAKE, USDC } from '@pancakeswap/tokens'
-import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
@@ -9,7 +8,7 @@ import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidityV3 from 'views/AddLiquidityV3'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import LiquidityFormProvider from 'views/AddLiquidityV3/form/LiquidityFormProvider'
+import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -23,9 +22,6 @@ const AddLiquidityPage = () => {
     CAKE[chainId]?.address ?? USDC[chainId]?.address,
   ]
 
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
-
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
       dispatch(resetMintState())
@@ -34,7 +30,7 @@ const AddLiquidityPage = () => {
 
   return (
     <LiquidityFormProvider>
-      <AddLiquidityV3 currencyA={currencyA} currencyIdA={currencyIdA} currencyIdB={currencyIdB} currencyB={currencyB} />
+      <AddLiquidityV3 currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
     </LiquidityFormProvider>
   )
 }

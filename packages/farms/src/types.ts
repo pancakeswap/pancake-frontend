@@ -56,6 +56,7 @@ export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
   quoteToken: SerializedWrappedToken
   stableSwapAddress: string
   infoStableSwapAddress: string
+  stableLpFee?: number
 }
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
