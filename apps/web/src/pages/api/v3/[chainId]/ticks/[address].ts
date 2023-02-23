@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { ChainId } from '@pancakeswap/sdk'
 
 import { swapClientWithChain } from 'utils/graphql'
+import { TickMath } from '@pancakeswap/v3-sdk'
 
 const zChainId = z.enum(['56', '1', '5', '97'])
 
@@ -57,40 +58,28 @@ const handler: NextApiHandler = async (req, res) => {
 }
 
 async function getPoolTicks(chainId: string, poolAddress: string, blockNumber?: string) {
-  const BATCH_PAGE = 3
   const PAGE_SIZE = 1000
-  let result: any[] = []
-  let page = 0
+  let allTicks = []
+  let lastTick = TickMath.MIN_TICK - 1
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const pageNums = Array(BATCH_PAGE)
-      .fill(page)
-      .map((p, i) => p + i)
     // eslint-disable-next-line no-await-in-loop
-    const poolsCollections = await Promise.all(
-      pageNums.map((p) => _getPoolTicksByPage(chainId, poolAddress, p, PAGE_SIZE, blockNumber)),
-    )
+    const ticks = await _getPoolTicksGreaterThan(chainId, poolAddress, lastTick, PAGE_SIZE, blockNumber)
+    allTicks = [...allTicks, ...ticks]
+    const hasMore = ticks.length === PAGE_SIZE
 
-    let hasMore = true
-    for (const pools of poolsCollections) {
-      result = [...result, ...pools]
-      if (pools.length !== PAGE_SIZE) {
-        hasMore = false
-      }
-    }
     if (!hasMore) {
       break
     }
-
-    page += BATCH_PAGE
+    lastTick = Number(ticks[ticks.length - 1].tick)
   }
-  return result
+  return allTicks
 }
 
-async function _getPoolTicksByPage(
+async function _getPoolTicksGreaterThan(
   chainId: string,
   poolAddress: string,
-  page: number,
+  tick: number,
   pageSize: number,
   blockNumber?: string,
 ) {
@@ -100,12 +89,14 @@ async function _getPoolTicksByPage(
   }
   const response = await client.request(
     gql`
-        query AllV3Ticks($poolAddress: String!, $skip: Int!, $pageSize: Int!) {
+        query AllV3Ticks($poolAddress: String!, $lastTick: Int!, $pageSize: Int!) {
           ticks(
-            first: 1000,
+            first: $pageSize,
             ${blockNumber ? `block: { number: ${blockNumber} }` : ''}
-            skip: $skip,
-            where: { poolAddress: $poolAddress },
+            where: {
+              poolAddress: $poolAddress,
+              tickIdx_gt: $lastTick,
+            },
             orderBy: tickIdx
           ) {
         tick: tickIdx
@@ -116,7 +107,7 @@ async function _getPoolTicksByPage(
       `,
     {
       poolAddress,
-      skip: page * pageSize,
+      lastTick: tick,
       pageSize,
     },
   )
