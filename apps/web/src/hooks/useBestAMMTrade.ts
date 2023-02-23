@@ -25,6 +25,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   const blockNum = useCurrentBlock()
   const blockNumber = useMemo(() => JSBI.BigInt(blockNum), [blockNum])
   const {
+    refresh,
     pools: candidatePools,
     loading,
     syncing,
@@ -83,6 +84,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   }, [candidatePools])
 
   return {
+    refresh,
     trade,
     isLoading: isLoading || loading,
     syncing: syncing || isValidating,

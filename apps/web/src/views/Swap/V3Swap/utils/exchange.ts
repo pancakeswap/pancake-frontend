@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, JSBI, Token, Price } from '@pancakeswap/sdk'
 import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
@@ -48,9 +49,7 @@ export function computeTradePriceBreakdown(trade?: Trade<TradeType> | null): {
           return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(pool.fee))
         }
         if (SmartRouter.isV3Pool(pool)) {
-          return currentFee.multiply(
-            ONE_HUNDRED_PERCENT.subtract(new Percent(pool.fee, JSBI.multiply(BIPS_BASE, JSBI.BigInt(100)))),
-          )
+          return currentFee.multiply(ONE_HUNDRED_PERCENT.subtract(v3FeeToPercent(pool.fee)))
         }
         return currentFee
       }, ONE_HUNDRED_PERCENT),
@@ -89,4 +88,8 @@ export function formatExecutionPrice(
   return inverted
     ? `${executionPrice.invert().toSignificant(6)} ${inputAmount.currency.symbol} / ${outputAmount.currency.symbol}`
     : `${executionPrice.toSignificant(6)} ${outputAmount.currency.symbol} / ${inputAmount.currency.symbol}`
+}
+
+export function v3FeeToPercent(fee: FeeAmount): Percent {
+  return new Percent(fee, JSBI.multiply(BIPS_BASE, JSBI.BigInt(100)))
 }
