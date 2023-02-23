@@ -5,15 +5,17 @@ import { FormHeader, FormMain, PricingAndSlippage, TradeDetails, SwapCommitButto
 import { useBestTrade } from './hooks'
 
 export function V3SwapForm() {
-  const { isLoading, trade } = useBestTrade()
+  const { isLoading, trade, refresh } = useBestTrade()
 
   const pricingAndSlippage = (
     <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
   )
   const swapCommitButton = <SwapCommitButton trade={trade} />
+  const tradeLoaded = !isLoading && !!trade
+
   return (
     <>
-      <FormHeader refreshDisabled />
+      <FormHeader refreshDisabled={!tradeLoaded} onRefresh={refresh} />
       <FormMain
         tradeLoading={isLoading}
         pricingAndSlippage={pricingAndSlippage}
@@ -22,7 +24,7 @@ export function V3SwapForm() {
         swapCommitButton={swapCommitButton}
       />
 
-      <TradeDetails loaded={!isLoading && !!trade} trade={trade} />
+      <TradeDetails loaded={tradeLoaded} trade={trade} />
     </>
   )
 }
