@@ -5,6 +5,7 @@ import { farmsV3Map } from '@pancakeswap/farms/constants/index.v3'
 import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
+import { masterChefV3Addresses } from '@pancakeswap/farms'
 
 const zChainId = z.enum(['56', '1', '5', '97'])
 
@@ -22,7 +23,7 @@ const SUBGRAPH_URLS = {
 }
 
 // currently can get the total active liquidity for a pool
-// TODO: update subgraph urls and add owner by master chef address
+// TODO: v3 farms update subgraph urls
 const handler: NextApiHandler = async (req, res) => {
   const parsed = zParams.safeParse(req.query)
 
@@ -39,6 +40,8 @@ const handler: NextApiHandler = async (req, res) => {
   if (!farms.some((f) => f.lpAddress.toLowerCase() === address)) {
     return res.status(400).json({ error: 'Invalid LP address' })
   }
+
+  const masterChefV3Address = masterChefV3Addresses[chainId]
 
   const response = await request(
     SUBGRAPH_URLS[chainId],
@@ -58,7 +61,7 @@ const handler: NextApiHandler = async (req, res) => {
             decimals
           }
         }
-        positions(where: { pool: "${address}", liquidity_gt: "0" }, first: 1000, orderBy: liquidity orderDirection: desc) {
+        positions(where: { pool: "${address}", liquidity_gt: "0", owner: "${masterChefV3Address.toLowerCase()}" }, first: 1000, orderBy: liquidity orderDirection: desc) {
           liquidity
           id
           tickUpper {
