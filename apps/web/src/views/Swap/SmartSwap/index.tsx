@@ -261,7 +261,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     (newCurrencyInput) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, newCurrencyInput)
-      onUserInput(Field.INPUT, null)
+      onUserInput(Field.INPUT, '0')
 
       warningSwapHandler(newCurrencyInput)
 
