@@ -32,7 +32,7 @@ const handler: NextApiHandler = async (req, res) => {
   const tvls: TvlMap = {}
   if (supportedChainIdSubgraph.includes(chainId)) {
     const results = await Promise.all(
-      farms.map((f) => fetch(`${HOST}/api/farms/v3/tvl/${chainId}/${f.lpAddress}`).then((r) => r.json())),
+      farms.map((f) => fetch(`${HOST}/api/v3/${chainId}/farms/tvl/${f.lpAddress}`).then((r) => r.json())),
     )
     results.forEach((r, i) => {
       tvls[farms[i].lpAddress] = r.formatted
