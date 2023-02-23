@@ -1,5 +1,6 @@
-import { createFarmFetcherV3 } from '@pancakeswap/farms'
+import { createFarmFetcherV3, fetchCommonTokenUSDValue } from '@pancakeswap/farms'
 import { farmsV3Map } from '@pancakeswap/farms/constants/index.v3'
+import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import type { TvlMap } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { ChainId } from '@pancakeswap/sdk'
 import { NextApiHandler } from 'next'
@@ -38,10 +39,13 @@ const handler: NextApiHandler = async (req, res) => {
     })
   }
 
+  const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
+
   const data = await farmFetcherV3.fetchFarms({
     tvlMap: tvls,
     chainId: parsed.data,
     farms,
+    commonPrice,
   })
 
   res.setHeader('Cache-Control', 's-maxage=30, max-age=10')

@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { FarmConfigV3 } from '../src'
+import { FarmConfigV3 } from '../src/types'
 import { farmsV3 as farm1 } from './1'
 import { farmsV3 as farm5 } from './5'
 import { farmsV3 as farm56 } from './56'

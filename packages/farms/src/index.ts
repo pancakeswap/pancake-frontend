@@ -3,11 +3,11 @@ import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
-import { farmV3FetchFarms, fetchMasterChefV3Data, TvlMap } from './fetchFarmsV3'
+import { farmV3FetchFarms, fetchMasterChefV3Data, TvlMap, fetchCommonTokenUSDValue, CommonPrice } from './fetchFarmsV3'
 import { FarmConfigV3 } from './types'
 
 const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
-const supportedChainIdV3 = [ChainId.BSC_TESTNET]
+const supportedChainIdV3 = [ChainId.BSC_TESTNET, ChainId.GOERLI]
 export const bCakeSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
 
 export function createFarmFetcher(multicallv2: MultiCallV2) {
@@ -54,10 +54,12 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
     farms,
     chainId,
     tvlMap,
+    commonPrice,
   }: {
     chainId: ChainId
     farms: FarmConfigV3[]
     tvlMap: TvlMap
+    commonPrice: CommonPrice
   }) => {
     // @ts-ignore
     const masterChefAddress = masterChefV3Addresses[chainId]
@@ -78,6 +80,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
       totalAllocPoint,
       latestPeriodCakePerSecond,
       tvlMap,
+      commonPrice,
     })
 
     return {
@@ -103,4 +106,4 @@ export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
 export * from './v2/filterFarmsByQuery'
 
-export { masterChefV3Addresses }
+export { masterChefV3Addresses, fetchCommonTokenUSDValue }

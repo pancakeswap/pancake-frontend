@@ -1,29 +1,12 @@
 import { Call, MultiCallV2 } from '@pancakeswap/multicall'
-import { ChainId, ERC20Token } from '@pancakeswap/sdk'
-import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
+import { ERC20Token } from '@pancakeswap/sdk'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
-import { FIXED_100, FIXED_ZERO } from './const'
-import { getTokenAmount } from './v2/fetchFarmsV2'
+import { DEFAULT_STABLE_COINS, PriceHelper, DEFAULT_COMMON_PRICE } from '../constants/common'
+import { FIXED_100, FIXED_ONE, FIXED_ZERO } from './const'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
-
-const whitelistedUSDValueTokens = {
-  [ChainId.ETHEREUM]: {
-    chain: 'ethereum',
-    list: [ethereumTokens.weth, ethereumTokens.usdc],
-  },
-  [ChainId.BSC]: {
-    chain: 'bsc',
-    list: [bscTokens.wbnb, bscTokens.usdc, bscTokens.busd],
-  },
-} satisfies Record<
-  number,
-  {
-    chain: string
-    list: ERC20Token[]
-  }
->
+import { getTokenAmount } from './v2/fetchFarmsV2'
 
 const masterchefV3Abi = [
   {
@@ -153,6 +136,7 @@ export async function farmV3FetchFarms({
   totalAllocPoint,
   latestPeriodCakePerSecond,
   tvlMap,
+  commonPrice,
 }: {
   farms: FarmConfigV3[]
   multicallv2: MultiCallV2
@@ -161,6 +145,7 @@ export async function farmV3FetchFarms({
   totalAllocPoint: BigNumber
   latestPeriodCakePerSecond: BigNumber
   tvlMap: TvlMap
+  commonPrice: CommonPrice
 }) {
   const poolInfos = await fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress)
   const cakePriceUSD = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
@@ -193,7 +178,19 @@ export async function farmV3FetchFarms({
     }
   })
 
-  const farmsWithPrice = await getFarmsPrices(farmsData, chainId, tvlMap, cakePriceUSD, latestPeriodCakePerSecond)
+  const combinedCommonPrice = {
+    ...DEFAULT_COMMON_PRICE[chainId],
+    ...commonPrice,
+  }
+
+  const farmsWithPrice = await getFarmsPrices(
+    farmsData,
+    chainId,
+    tvlMap,
+    cakePriceUSD,
+    latestPeriodCakePerSecond,
+    combinedCommonPrice,
+  )
   return farmsWithPrice
 }
 
@@ -382,46 +379,57 @@ export type TvlMap = {
   }
 }
 
-const getFarmsPrices = async (
-  farms: FarmV3Data[],
-  chainId: number,
-  tvls: TvlMap,
-  cakePriceUSD: string,
-  latestPeriodCakePerSecond: BigNumber,
-): Promise<FarmV3DataWithPrice[]> => {
-  const commonPairsUSDValue: { [address: string]: string } = {}
-  if (
-    whitelistedUSDValueTokens[chainId as keyof typeof whitelistedUSDValueTokens] &&
-    whitelistedUSDValueTokens[chainId as keyof typeof whitelistedUSDValueTokens].list.length > 0
-  ) {
-    const list = whitelistedUSDValueTokens[chainId as keyof typeof whitelistedUSDValueTokens].list
-      .map(
-        (token) =>
-          `${whitelistedUSDValueTokens[chainId as keyof typeof whitelistedUSDValueTokens].chain}:${token.address}`,
-      )
-      .join(',')
+export type CommonPrice = {
+  [address: string]: string
+}
+
+export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promise<CommonPrice> => {
+  const commonTokenUSDValue: CommonPrice = {}
+  if (priceHelper && priceHelper.list.length > 0) {
+    const list = priceHelper.list.map((token) => `${priceHelper.chain}:${token.address}`).join(',')
     const result: { coins: { [key: string]: { price: string } } } = await fetch(
       `https://coins.llama.fi/prices/current/${list}`,
     ).then((res) => res.json())
 
     Object.entries(result.coins || {}).forEach(([key, value]) => {
       const [, address] = key.split(':')
-      commonPairsUSDValue[address] = value.price
+      commonTokenUSDValue[address] = value.price
     })
   }
 
+  return commonTokenUSDValue
+}
+
+const getFarmsPrices = async (
+  farms: FarmV3Data[],
+  chainId: number,
+  tvls: TvlMap,
+  cakePriceUSD: string,
+  latestPeriodCakePerSecond: BigNumber,
+  commonPrice: CommonPrice,
+): Promise<FarmV3DataWithPrice[]> => {
   return farms.map((farm) => {
     let tokenPriceBusd = FIXED_ZERO
     let quoteTokenPriceBusd = FIXED_ZERO
 
+    const stableTokens = DEFAULT_STABLE_COINS[chainId as keyof typeof DEFAULT_STABLE_COINS]
+
     let tvl = FIXED_ZERO
 
-    if (commonPairsUSDValue[farm.quoteToken.address]) {
-      quoteTokenPriceBusd = FixedNumber.from(commonPairsUSDValue[farm.quoteToken.address])
+    if (commonPrice[farm.quoteToken.address]) {
+      quoteTokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
     }
 
-    if (commonPairsUSDValue[farm.token.address]) {
-      tokenPriceBusd = FixedNumber.from(commonPairsUSDValue[farm.quoteToken.address])
+    if (commonPrice[farm.token.address]) {
+      tokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
+    }
+
+    if (stableTokens?.some((stableToken) => stableToken.address === farm.token.address)) {
+      tokenPriceBusd = FIXED_ONE
+    }
+
+    if (stableTokens?.some((stableToken) => stableToken.address === farm.quoteToken.address)) {
+      quoteTokenPriceBusd = FIXED_ONE
     }
 
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
@@ -430,6 +438,7 @@ const getFarmsPrices = async (
     if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
     }
+
     if (!tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && tvls[farm.lpAddress]) {
       tvl = tokenPriceBusd
         .mulUnsafe(FixedNumber.from(tvls[farm.lpAddress].token0))
