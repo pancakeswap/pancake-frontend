@@ -286,6 +286,7 @@ const SwapPage = () => {
   const handleInputSelect = useCallback(
     (currency: Currency) => {
       shouldShowWarningModal(currency)
+      dispatch(typeInput({ field: Field.INPUT, typedValue: '' }))
 
       if (outputCurrency?.wrapped.equals(currency.wrapped) && inputCurrency) {
         replaceBrowserHistory('outputCurrency', currencyId(inputCurrency))

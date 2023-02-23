@@ -156,6 +156,7 @@ const LimitOrders = () => {
     (newInputCurrency) => {
       setApprovalSubmitted(false)
       handleCurrencySelection(Field.INPUT, newInputCurrency)
+      handleInput(Field.INPUT, null)
 
       const newInputCurrencyId = currencyId(newInputCurrency)
       if (newInputCurrencyId === currencyIds.output) {
@@ -163,7 +164,7 @@ const LimitOrders = () => {
       }
       replaceBrowserHistory('inputCurrency', newInputCurrencyId)
     },
-    [currencyIds.input, currencyIds.output, handleCurrencySelection],
+    [currencyIds.input, currencyIds.output, handleCurrencySelection, handleInput],
   )
   const handleTypeDesiredRate = useCallback(
     (value: string) => {

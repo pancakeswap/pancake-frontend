@@ -261,6 +261,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     (newCurrencyInput) => {
       setApprovalSubmitted(false) // reset 2 step UI for approvals
       onCurrencySelection(Field.INPUT, newCurrencyInput)
+      onUserInput(Field.INPUT, null)
 
       warningSwapHandler(newCurrencyInput)
 
@@ -270,7 +271,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
       }
       replaceBrowserHistory('inputCurrency', newCurrencyInputId)
     },
-    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler],
+    [inputCurrencyId, outputCurrencyId, onCurrencySelection, warningSwapHandler, onUserInput],
   )
 
   const handleMaxInput = useCallback(() => {
