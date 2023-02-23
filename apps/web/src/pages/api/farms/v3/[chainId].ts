@@ -9,7 +9,7 @@ import { z } from 'zod'
 
 const farmFetcherV3 = createFarmFetcherV3(multicallv2)
 
-const supportedChainIdSubgraph = [ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM]
+const supportedChainIdSubgraph = [ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET]
 
 const zChainEnum = z.nativeEnum(ChainId)
 

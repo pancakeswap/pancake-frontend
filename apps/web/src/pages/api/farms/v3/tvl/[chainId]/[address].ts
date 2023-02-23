@@ -6,7 +6,7 @@ import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
 
-const zChainId = z.enum(['56', '1', '5'])
+const zChainId = z.enum(['56', '1', '5', '97'])
 
 const zAddress = z.string().regex(/^0x[a-fA-F0-9]{40}$/)
 
@@ -18,6 +18,7 @@ const zParams = z.object({
 const SUBGRAPH_URLS = {
   1: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
   5: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-goerli',
+  97: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-chapel',
 }
 
 // currently can get the total active liquidity for a pool
