@@ -136,3 +136,7 @@ export const getCrossFarmingReceiverAddress = (chainId?: number) => {
 export const getMMLinkedPoolAddress = (chainId?: number) => {
   return getAddress(addresses.mmLinkedPool, chainId)
 }
+
+export const getMasterChefV3Address = (chainId?: number) => {
+  return getAddress(addresses.masterChefV3, chainId)
+}

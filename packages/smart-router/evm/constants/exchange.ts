@@ -23,7 +23,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     WNATIVE[ChainId.ETHEREUM],
     USDC[ChainId.ETHEREUM],
     USDT[ChainId.ETHEREUM],
-    BUSD[ChainId.ETHEREUM],
+    // BUSD[ChainId.ETHEREUM],
     WBNB[ChainId.ETHEREUM],
   ],
   [ChainId.GOERLI]: [WNATIVE[ChainId.GOERLI], USDC[ChainId.GOERLI], BUSD[ChainId.GOERLI]],

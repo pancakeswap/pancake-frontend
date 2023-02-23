@@ -1,5 +1,5 @@
 import { ChainId, Currency, CurrencyAmount, Percent, Price, TradeType, ZERO_PERCENT } from '@pancakeswap/sdk'
-import { Pair } from '@pancakeswap/smart-router/evm'
+import { LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 

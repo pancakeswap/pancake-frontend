@@ -54,7 +54,7 @@ interface PositionCardProps extends CardProps {
   poolTokenPercentage: Percent
 }
 
-const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
+export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   const [token0Deposited, token1Deposited] =
     !!pair &&
     !!totalPoolTokens &&
@@ -70,7 +70,7 @@ const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) => {
   return [token0Deposited, token1Deposited]
 }
 
-const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
+export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
   const token0Price = useBUSDPrice(currency0)
   const token1Price = useBUSDPrice(currency1)
 
@@ -85,7 +85,7 @@ const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposit
   return token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
 }
 
-const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
+export const usePoolTokenPercentage = ({ userPoolBalance, totalPoolTokens }) => {
   return !!userPoolBalance &&
     !!totalPoolTokens &&
     JSBI.greaterThanOrEqual(totalPoolTokens.quotient, userPoolBalance.quotient)

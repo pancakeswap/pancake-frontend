@@ -1,10 +1,12 @@
 import { multicallAddresses } from '@pancakeswap/multicall'
+import { masterChefV3Addresses } from '@pancakeswap/farms'
 
 export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
   },
+  masterChefV3: masterChefV3Addresses,
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
@@ -164,5 +166,23 @@ export default {
   mmLinkedPool: {
     1: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
     5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92', // play MM role by my self contract
+  },
+  nftPositionManager: {
+    56: '0x59c864bf8bB8ABe4dC16516b2C70104706df113A',
+    97: '0x59c864bf8bB8ABe4dC16516b2C70104706df113A',
+    5: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+    1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+  },
+  v3Factory: {
+    56: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
+    97: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
+    5: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
+  quoter: {
+    56: '0x0E7DFe5Ea01a1E3009655dbC9da36d212AFB21A6',
+    97: '0x0E7DFe5Ea01a1E3009655dbC9da36d212AFB21A6',
+    5: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    1: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
   },
 }

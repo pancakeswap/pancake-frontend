@@ -1,5 +1,14 @@
 import styled from 'styled-components'
-import { Text, Flex, Heading, IconButton, ArrowBackIcon, NotificationDot, QuestionHelper } from '@pancakeswap/uikit'
+import {
+  Text,
+  Flex,
+  Heading,
+  IconButton,
+  ArrowBackIcon,
+  NotificationDot,
+  QuestionHelper,
+  AutoRow,
+} from '@pancakeswap/uikit'
 import { useExpertModeManager } from 'state/user/hooks'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
@@ -12,6 +21,8 @@ interface Props {
   helper?: string
   backTo?: string | (() => void)
   noConfig?: boolean
+  buttons?: React.ReactNode
+  filter?: React.ReactNode
 }
 
 const AppHeaderContainer = styled(Flex)`
@@ -22,7 +33,21 @@ const AppHeaderContainer = styled(Flex)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
+const FilterSection = styled(AutoRow)`
+  padding-top: 16px;
+  margin-top: 16px;
+  border-top: 1px solid ${({ theme }) => theme.colors.cardBorder};
+`
+
+const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
+  title,
+  subtitle,
+  helper,
+  backTo,
+  noConfig = false,
+  buttons,
+  filter,
+}) => {
   const [expertMode] = useExpertModeManager()
 
   return (
@@ -54,12 +79,18 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({ title, subtitle, 
                 <Transactions />
               </Flex>
             )}
+            {noConfig && buttons && (
+              <Flex alignItems="center" mr="16px">
+                {buttons}
+              </Flex>
+            )}
           </Flex>
           <Flex alignItems="center">
             <Text color="textSubtle" fontSize="14px">
               {subtitle}
             </Text>
           </Flex>
+          {filter && <FilterSection justifyContent="space-between">{filter}</FilterSection>}
         </Flex>
       </Flex>
     </AppHeaderContainer>

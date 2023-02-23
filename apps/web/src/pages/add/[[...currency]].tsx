@@ -1,5 +1,4 @@
 import { CAKE, USDC } from '@pancakeswap/tokens'
-import { useCurrency } from 'hooks/Tokens'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
@@ -7,10 +6,9 @@ import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
-import AddLiquidity from 'views/AddLiquidity'
-import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
-import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import AddLiquidityV3 from 'views/AddLiquidityV3'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -24,26 +22,16 @@ const AddLiquidityPage = () => {
     CAKE[chainId]?.address ?? USDC[chainId]?.address,
   ]
 
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
-
-  const stableConfig = useStableConfig({
-    tokenA: currencyA,
-    tokenB: currencyB,
-  })
-
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
       dispatch(resetMintState())
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
-  return stableConfig.stableSwapConfig ? (
-    <StableConfigContext.Provider value={stableConfig}>
-      <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
-    </StableConfigContext.Provider>
-  ) : (
-    <AddLiquidity currencyA={currencyA} currencyB={currencyB} />
+  return (
+    <LiquidityFormProvider>
+      <AddLiquidityV3 currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+    </LiquidityFormProvider>
   )
 }
 
