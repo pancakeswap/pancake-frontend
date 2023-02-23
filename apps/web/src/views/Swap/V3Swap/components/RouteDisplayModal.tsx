@@ -6,6 +6,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { CurrencyLogo } from 'components/Logo'
 import { RouterBox, RouterPoolBox, RouterTypeText, CurrencyLogoWrapper } from 'views/Swap/components/RouterViewer'
 import { useMemo } from 'react'
+import { v3FeeToPercent } from '../utils/exchange'
 
 type Pair = [Currency, Currency]
 
@@ -86,7 +87,11 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
           const isV3Pool = SmartRouter.isV3Pool(pool)
           const isV2Pool = SmartRouter.isV2Pool(pool)
           const key = isV2Pool ? `v2_${pool.reserve0.currency.symbol}_${pool.reserve1.currency.symbol}` : pool.address
-          const text = isV2Pool ? t('V2') : isV3Pool ? t('V3') : t('StableSwap')
+          const text = isV2Pool
+            ? t('V2')
+            : isV3Pool
+            ? `${t('V3')} (${v3FeeToPercent(pool.fee).toSignificant(6)}%)`
+            : t('StableSwap')
           return (
             <RouterPoolBox key={key} className={isV3Pool && 'highlight'}>
               <CurrencyLogo size="32px" currency={input} />
