@@ -277,7 +277,7 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
       console.timeLog('[METRIC] Get V3 pool ticks', key)
       const poolTicks = await Promise.all(
         pools.map(({ token0, token1, fee }) => {
-          return fetchTicks(token0.chainId, getV3PoolAddress(token0, token1, fee), blockNumber)
+          return fetchTicks(token0.chainId, getV3PoolAddress(token0, token1, fee))
         }),
       )
       console.timeLog('[METRIC] Get V3 pool ticks', key, poolTicks)
