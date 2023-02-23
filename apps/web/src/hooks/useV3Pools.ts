@@ -277,12 +277,11 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
       console.timeLog('[METRIC] Get V3 pool ticks', key)
       const poolTicks = await Promise.all(
         pools.map(({ token0, token1, fee }) => {
-          return getPoolTicks(getV3PoolAddress(token0, token1, fee))
+          return fetchTicks(token0.chainId, getV3PoolAddress(token0, token1, fee))
         }),
       )
       console.timeLog('[METRIC] Get V3 pool ticks', key, poolTicks)
       console.timeEnd('[METRIC] Get V3 pool ticks')
-
       return {
         pools: pools.map((pool, i) => ({
           ...pool,
@@ -306,52 +305,21 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   return poolsWithTicks
 }
 
-async function _getPoolTicksByPage(poolAddress: string, page: number, pageSize: number): Promise<Tick[]> {
-  const query = gql`
-    query AllV3Ticks($address: String!, $skip: Int!) {
-      ticks(first: 1000, skip: $skip, where: { poolAddress: $address }, orderBy: tickIdx) {
-        tick: tickIdx
-        liquidityNet
-        liquidityGross
-      }
-    }
-  `
+const fetchTicks = async (chainId: ChainId, address: string, blockNumber?: JSBI) => {
+  const response = await fetch(
+    `/api/v3/${chainId}/ticks/${address}${blockNumber ? `?blockNumber=${blockNumber.toString()}` : ''}`,
+    {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    },
+  )
 
-  const res = await client.request(query, {
-    address: poolAddress.toLocaleLowerCase(),
-    skip: page * pageSize,
-  })
-
-  return res.ticks.map(
+  const { data } = await response.json()
+  return data.map(
     ({ tick, liquidityNet, liquidityGross }) => new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
   )
-}
-
-async function getPoolTicks(poolAddress: string): Promise<Tick[]> {
-  const BATCH_PAGE = 3
-  const PAGE_SIZE = 1000
-  let result: Tick[] = []
-  let page = 0
-  while (true) {
-    const pageNums = Array(BATCH_PAGE)
-      .fill(page)
-      .map((p, i) => p + i)
-    const poolsCollections = await Promise.all(pageNums.map((p) => _getPoolTicksByPage(poolAddress, p, PAGE_SIZE)))
-
-    let hasMore = true
-    for (const pools of poolsCollections) {
-      result = [...result, ...pools]
-      if (pools.length !== PAGE_SIZE) {
-        hasMore = false
-      }
-    }
-    if (!hasMore) {
-      break
-    }
-
-    page += BATCH_PAGE
-  }
-  return result
 }
 
 export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Options = {}) {

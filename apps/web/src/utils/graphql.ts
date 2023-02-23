@@ -1,6 +1,7 @@
 import { BIT_QUERY, INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
-import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
+import { ChainId } from '@pancakeswap/sdk'
+import { INFO_CLIENT_WITH_CHAIN, V3_POOL_SUBGRAPH_WITH_CHAIN } from '../config/constants/endpoints'
 
 // Extra headers
 // Mostly for dev environment
@@ -26,6 +27,10 @@ export const infoClientWithChain = (chainId: number) => {
 }
 
 export const uniswapClient = new GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3')
+
+export const swapClientWithChain = (chainId: ChainId) => {
+  return new GraphQLClient(V3_POOL_SUBGRAPH_WITH_CHAIN[chainId])
+}
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)
 
