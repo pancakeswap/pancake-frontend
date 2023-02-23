@@ -1,7 +1,7 @@
-import { useCallback, useMemo, useState } from 'react'
+import { ReactElement, useCallback, useMemo, useState } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Percent, Price, Token } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
@@ -12,6 +12,8 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useLPApr } from 'state/swap/useLPApr'
+import { PairState } from 'hooks/usePairs'
+import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
@@ -30,7 +32,56 @@ import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
 
-export default function AddLiquidity({ currencyA, currencyB, children }) {
+export interface LP2ChildrenProps {
+  error: string
+  currencies: {
+    [Field.CURRENCY_A]?: Currency
+    [Field.CURRENCY_B]?: Currency
+  }
+  noLiquidity: boolean
+  handleCurrencyASelect: (currencyA_: Currency) => void
+  formattedAmounts: {
+    [Field.CURRENCY_A]?: string
+    [Field.CURRENCY_B]?: string
+  }
+  onFieldAInput: (typedValue: string) => void
+  maxAmounts: { [field in Field]?: CurrencyAmount<Token> }
+  handleCurrencyBSelect: (currencyB_: Currency) => void
+  onFieldBInput: (typedValue: string) => void
+  pairState: PairState
+  poolTokenPercentage: Percent
+  price: Price<Currency, Currency>
+  onPresentSettingsModal: Handler
+  allowedSlippage: number
+  pair: Pair
+  poolData: {
+    lpApr7d: number
+  }
+  shouldShowApprovalGroup: boolean
+  showFieldAApproval: boolean
+  approveACallback: () => Promise<void>
+  approvalA: ApprovalState
+  showFieldBApproval: boolean
+  approveBCallback: () => Promise<void>
+  approvalB: ApprovalState
+  onAdd: () => Promise<void>
+  onPresentAddLiquidityModal: Handler
+  buttonDisabled: boolean
+  errorText: string
+  addIsWarning: boolean
+  addIsUnsupported: boolean
+  pendingText: string
+}
+
+export default function AddLiquidity({
+  currencyA,
+  currencyB,
+  children,
+}: {
+  currencyA: Currency
+  currencyB: Currency
+  children: (props: LP2ChildrenProps) => ReactElement
+}) {
   const { account, chainId } = useActiveWeb3React()
 
   const addPair = usePairAdder()

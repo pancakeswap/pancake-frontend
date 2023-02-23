@@ -20,15 +20,13 @@ import { CurrencyLogo } from 'components/Logo'
 import { useTotalUSDValue } from 'components/PositionCard'
 import { CurrencyAmount } from '@pancakeswap/sdk'
 import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
+import { AddStableChildrenProps } from 'views/AddLiquidity/AddStableLiquidity'
+import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 
-// interface StableFormView {}
-
 export default function StableFormView({
   formattedAmounts,
-  addIsUnsupported,
-  addIsWarning,
   shouldShowApprovalGroup,
   approveACallback,
   approvalA,
@@ -47,13 +45,18 @@ export default function StableFormView({
   pair,
   reserves,
   stableLpFee,
+}: AddStableChildrenProps & {
+  stableLpFee: number
 }) {
+  const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+  const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
+
   const { account, isWrongNetwork } = useActiveWeb3React()
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
-  const reservedToken0 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[0])
-  const reservedToken1 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[1])
+  const reservedToken0 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[0].toString())
+  const reservedToken1 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[1].toString())
 
   const totalLiquidityUSD = useTotalUSDValue({
     currency0: pair?.token0,

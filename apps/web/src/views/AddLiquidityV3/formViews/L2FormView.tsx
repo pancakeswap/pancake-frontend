@@ -19,12 +19,11 @@ import { Inbox } from 'react-feather'
 import { useCallback } from 'react'
 import { Bound } from 'config/constants/types'
 import { InfoBox } from 'components/InfoBox'
+import { LP2ChildrenProps } from 'views/AddLiquidity'
 
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 import { DynamicSection } from './V3FormView/components/shared'
 import RangeSelector from './V3FormView/components/RangeSelector'
-
-// interface L2FormView {}
 
 export default function L2FormView({
   formattedAmounts,
@@ -44,7 +43,7 @@ export default function L2FormView({
   errorText,
   onFieldAInput,
   onFieldBInput,
-}) {
+}: LP2ChildrenProps) {
   const theme = useTheme()
 
   const mockFn = useCallback(() => '', [])

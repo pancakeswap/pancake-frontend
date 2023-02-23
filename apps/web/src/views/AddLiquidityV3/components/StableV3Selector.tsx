@@ -1,6 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
 import { AutoColumn, Text } from '@pancakeswap/uikit'
-import styled from 'styled-components'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -9,21 +8,26 @@ import { usePools } from 'hooks/v3/usePools'
 import { PoolState } from 'hooks/v3/types'
 import { SelectButton } from 'components/SelectButton'
 import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
+import { Currency } from '@pancakeswap/sdk'
 
 import { FeeOption } from '../formViews/V3FormView/components/FeeOption'
-import { FEE_AMOUNT_DETAIL } from '../formViews/V3FormView/components/shared'
-import { SELECTOR_TYPE } from '../types'
+import { FEE_AMOUNT_DETAIL, SelectContainer } from '../formViews/V3FormView/components/shared'
+import { HandleFeePoolSelectFn, SELECTOR_TYPE } from '../types'
 import HideShowSelectorSection from './HideShowSelectorSection'
 
-// DUPDALITE from FeeSelector
-const Select = styled.div`
-  align-items: flex-start;
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 8px;
-`
-
-export function StableV3Selector({ handleFeePoolSelect, selectorType, feeAmount, currencyA, currencyB }) {
+export function StableV3Selector({
+  handleFeePoolSelect,
+  selectorType,
+  feeAmount,
+  currencyA,
+  currencyB,
+}: {
+  selectorType: SELECTOR_TYPE
+  feeAmount: number
+  currencyA: Currency
+  currencyB: Currency
+  handleFeePoolSelect: HandleFeePoolSelectFn
+}) {
   const [showOptions, setShowOptions] = useState(false)
   const { chainId } = useActiveWeb3React()
 
@@ -108,7 +112,7 @@ export function StableV3Selector({ handleFeePoolSelect, selectorType, feeAmount,
             </SelectButton>
           )}
           {selectorType === SELECTOR_TYPE.V3 && (
-            <Select>
+            <SelectContainer>
               {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
                 const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
                 if (supportedChains.includes(chainId)) {
@@ -125,7 +129,7 @@ export function StableV3Selector({ handleFeePoolSelect, selectorType, feeAmount,
                 }
                 return null
               })}
-            </Select>
+            </SelectContainer>
           )}
         </EvenWidthAutoRow>
       }

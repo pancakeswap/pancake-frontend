@@ -6,20 +6,12 @@ import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
 import _toNumber from 'lodash/toNumber'
-import styled from 'styled-components'
 import { useEffect, useMemo, useState } from 'react'
 import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { FeeOption } from './FeeOption'
 import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
-import { FEE_AMOUNT_DETAIL } from './shared'
-
-const Select = styled.div`
-  align-items: flex-start;
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: 8px;
-`
+import { FEE_AMOUNT_DETAIL, SelectContainer } from './shared'
 
 export default function FeeSelector({
   feeAmount,
@@ -112,7 +104,7 @@ export default function FeeSelector({
         )
       }
       content={
-        <Select>
+        <SelectContainer>
           {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
             const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
             if (supportedChains.includes(chainId)) {
@@ -129,7 +121,7 @@ export default function FeeSelector({
             }
             return null
           })}
-        </Select>
+        </SelectContainer>
       }
     />
   )

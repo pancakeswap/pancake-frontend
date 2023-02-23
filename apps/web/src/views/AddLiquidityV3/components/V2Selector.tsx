@@ -5,9 +5,17 @@ import { EvenWidthAutoRow } from 'components/Layout/EvenWidthAutoRow'
 import { TOTAL_FEE } from 'config/constants/info'
 
 import HideShowSelectorSection from './HideShowSelectorSection'
-import { SELECTOR_TYPE } from '../types'
+import { HandleFeePoolSelectFn, SELECTOR_TYPE } from '../types'
 
-export function V2Selector({ isStable, handleFeePoolSelect, selectorType }) {
+export function V2Selector({
+  isStable,
+  handleFeePoolSelect,
+  selectorType,
+}: {
+  isStable: boolean
+  selectorType: SELECTOR_TYPE
+  handleFeePoolSelect: HandleFeePoolSelectFn
+}) {
   const [showOptions, setShowOptions] = useState(false)
 
   return (

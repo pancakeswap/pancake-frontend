@@ -8,7 +8,7 @@ export enum SELECTOR_TYPE {
 
 interface HandleFeePoolSelectArgs {
   type: SELECTOR_TYPE
-  feeAmount: FeeAmount
+  feeAmount?: FeeAmount
 }
 
 export type HandleFeePoolSelectFn = (arg: HandleFeePoolSelectArgs) => void

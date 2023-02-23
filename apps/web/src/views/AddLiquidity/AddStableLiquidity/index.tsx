@@ -1,5 +1,5 @@
-import { useCallback, useContext, useMemo, useState } from 'react'
-import { CurrencyAmount, Token, Percent } from '@pancakeswap/sdk'
+import { Dispatch, ReactElement, SetStateAction, useCallback, useContext, useMemo, useState } from 'react'
+import { CurrencyAmount, Token, Percent, Currency, Price } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useTranslation } from '@pancakeswap/localization'
@@ -8,6 +8,9 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
+import { PairState } from 'hooks/usePairs'
+import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
+import BigNumber from 'bignumber.js'
 
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { Field } from '../../../state/mint/actions'
@@ -20,11 +23,62 @@ import { calculateSlippageAmount } from '../../../utils/exchange'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
 import ConfirmAddLiquidityModal from '../components/ConfirmAddLiquidityModal'
 
-import { useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
+import { StablePair, useStableLPDerivedMintInfo } from './hooks/useStableLPDerivedMintInfo'
 import { useDerivedLPInfo } from './hooks/useDerivedLPInfo'
 import { warningSeverity } from './utils/slippage'
 
-export default function AddStableLiquidity({ currencyA, currencyB, children }) {
+export interface AddStableChildrenProps {
+  noLiquidity: boolean
+  formattedAmounts: {
+    [Field.CURRENCY_A]?: string
+    [Field.CURRENCY_B]?: string
+  }
+  onFieldAInput: (typedValue: string) => void
+  onFieldBInput: (typedValue: string) => void
+  maxAmounts: { [field in Field]?: CurrencyAmount<Token> }
+  currencies: {
+    [Field.CURRENCY_A]?: Currency
+    [Field.CURRENCY_B]?: Currency
+  }
+  pairState: PairState
+  poolTokenPercentage: Percent
+  price: Price<Currency, Currency>
+  executionSlippage: Percent
+  loading: boolean
+  infoLoading: boolean
+  allowedSlippage: number
+  stableAPR: number
+  shouldShowApprovalGroup: boolean
+  showFieldAApproval: boolean
+  approveACallback: () => Promise<void>
+  approvalA: ApprovalState
+  showFieldBApproval: boolean
+  approvalB: ApprovalState
+  approveBCallback: () => Promise<void>
+  onAdd: () => Promise<void>
+  onPresentAddLiquidityModal: Handler
+  buttonDisabled: boolean
+  errorText: string
+  setLiquidityState: Dispatch<
+    SetStateAction<{
+      attemptingTxn: boolean
+      liquidityErrorMessage: string | undefined
+      txHash: string | undefined
+    }>
+  >
+  reserves: [BigNumber, BigNumber]
+  pair: StablePair
+}
+
+export default function AddStableLiquidity({
+  currencyA,
+  currencyB,
+  children,
+}: {
+  currencyA: Currency
+  currencyB: Currency
+  children: (props: AddStableChildrenProps) => ReactElement
+}) {
   const { account, chainId } = useActiveWeb3React()
 
   const expertMode = useIsExpertMode()

@@ -35,3 +35,10 @@ export const DynamicSection = styled(AutoColumn)<{ disabled?: boolean }>`
   pointer-events: ${({ disabled }) => (disabled ? 'none' : 'initial')};
   width: 100%;
 `
+
+export const SelectContainer = styled.div`
+  align-items: flex-start;
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 8px;
+`
