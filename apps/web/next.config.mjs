@@ -57,6 +57,7 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
+    contentDispositionType: 'attachment',
     remotePatterns: [
       {
         protocol: 'https',
