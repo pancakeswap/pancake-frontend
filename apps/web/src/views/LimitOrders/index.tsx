@@ -51,7 +51,7 @@ const LimitOrders = () => {
   const { account, chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const router = useRouter()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
   const { theme } = useTheme()
   const [userChartPreference, setUserChartPreference] = useExchangeChartManager(isMobile)
   const [isChartExpanded, setIsChartExpanded] = useState(false)
@@ -347,7 +347,7 @@ const LimitOrders = () => {
         mb={isSideFooter ? null : '24px'}
         mt={isChartExpanded ? '24px' : null}
       >
-        {!isMobile && (
+        {isDesktop && (
           <Flex width={isChartExpanded ? '100%' : '50%'} maxWidth="928px" flexDirection="column">
             <PriceChartContainer
               inputCurrencyId={currencyIds.input}
@@ -492,7 +492,7 @@ const LimitOrders = () => {
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
-          {isMobile && (
+          {!isDesktop && (
             <Flex mt="24px" width="100%">
               <LimitOrderTable isCompact />
             </Flex>
@@ -516,6 +516,7 @@ const LimitOrders = () => {
             setIsChartExpanded={setIsChartExpanded}
             isChartDisplayed={isChartDisplayed}
             currentSwapPrice={singleTokenPrice}
+            isFullWidthContainer
             isMobile
           />
         }

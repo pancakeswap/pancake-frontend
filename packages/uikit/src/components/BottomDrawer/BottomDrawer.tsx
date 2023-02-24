@@ -19,14 +19,14 @@ interface BottomDrawerProps {
 const BottomDrawer: React.FC<React.PropsWithChildren<BottomDrawerProps>> = ({ content, isOpen, setIsOpen }) => {
   const ref = useRef<HTMLDivElement>(null);
   const shouldRender = useDelayedUnmount(isOpen, 350);
-  const { isMobile } = useMatchBreakpoints();
+  const { isDesktop } = useMatchBreakpoints();
 
   useOnClickOutside(
     ref?.current,
     useCallback(() => setIsOpen(false), [setIsOpen])
   );
 
-  if (!shouldRender || !isMobile) {
+  if (!shouldRender || isDesktop) {
     return null;
   }
 
