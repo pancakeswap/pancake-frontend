@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import styled from 'styled-components'
 import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
@@ -567,6 +568,326 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const isZapOutB = isZap && !removalCheckedA && removalCheckedB
 
   return (
+    <CardBody>
+      <AutoColumn gap="20px">
+        <RowBetween>
+          <Text>{t('Amount')}</Text>
+          <Button variant="text" scale="sm" onClick={() => setShowDetailed(!showDetailed)}>
+            {showDetailed ? t('Simple') : t('Detailed')}
+          </Button>
+        </RowBetween>
+        {!showDetailed && (
+          <BorderCard style={{ padding: isMobile ? '8px' : '16px' }}>
+            <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
+              {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
+            </Text>
+            <Slider
+              name="lp-amount"
+              min={0}
+              max={100}
+              value={innerLiquidityPercentage}
+              onValueChanged={handleChangePercent}
+              mb="16px"
+            />
+            <Flex flexWrap="wrap" justifyContent="space-evenly">
+              <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')}>
+                25%
+              </Button>
+              <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')}>
+                50%
+              </Button>
+              <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')}>
+                75%
+              </Button>
+              <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}>
+                {t('Max')}
+              </Button>
+            </Flex>
+          </BorderCard>
+        )}
+      </AutoColumn>
+      {!showDetailed && (
+        <>
+          <ColumnCenter>
+            <ArrowDownIcon color="textSubtle" width="24px" my="16px" />
+          </ColumnCenter>
+          <AutoColumn gap="12px">
+            <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
+              {t('Receive')}
+            </Text>
+            <LightGreyCard>
+              <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
+                <Flex alignItems="center">
+                  {zapModeStatus && (
+                    <Flex mr="9px">
+                      <Checkbox
+                        disabled={isZapOutA}
+                        scale="sm"
+                        checked={removalCheckedA}
+                        onChange={(e) => setRemovalCheckedA(e.target.checked)}
+                      />
+                    </Flex>
+                  )}
+                  <CurrencyLogo currency={currencyA} />
+                  <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
+                    {currencyA?.symbol}
+                  </Text>
+                </Flex>
+                <Flex>
+                  <Text small bold>
+                    {formattedAmounts[Field.CURRENCY_A] || '0'}
+                  </Text>
+                  <Text small ml="4px">
+                    ({isZapOutA ? '100' : !isZap ? '50' : '0'}%)
+                  </Text>
+                </Flex>
+              </Flex>
+              <Flex justifyContent="space-between" as="label" alignItems="center">
+                <Flex alignItems="center">
+                  {zapModeStatus && (
+                    <Flex mr="9px">
+                      <Checkbox
+                        disabled={isZapOutB}
+                        scale="sm"
+                        checked={removalCheckedB}
+                        onChange={(e) => setRemovalCheckedB(e.target.checked)}
+                      />
+                    </Flex>
+                  )}
+                  <CurrencyLogo currency={currencyB} />
+                  <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                    {currencyB?.symbol}
+                  </Text>
+                </Flex>
+                <Flex>
+                  <Text bold small>
+                    {formattedAmounts[Field.CURRENCY_B] || '0'}
+                  </Text>
+                  <Text small ml="4px">
+                    ({isZapOutB ? '100' : !isZap ? '50' : '0'}%)
+                  </Text>
+                </Flex>
+              </Flex>
+              {chainId && (oneCurrencyIsWNative || oneCurrencyIsNative) ? (
+                <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
+                  {oneCurrencyIsNative ? (
+                    <StyledInternalLink
+                      href={`/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
+                        currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
+                      }`}
+                    >
+                      {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}
+                    </StyledInternalLink>
+                  ) : oneCurrencyIsWNative ? (
+                    <StyledInternalLink
+                      href={`/remove/${
+                        currencyA && currencyA.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdA
+                      }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}`}
+                    >
+                      {t('Receive %currency%', { currency: native?.symbol })}
+                    </StyledInternalLink>
+                  ) : null}
+                </RowBetween>
+              ) : null}
+            </LightGreyCard>
+          </AutoColumn>
+        </>
+      )}
+
+      {showDetailed && (
+        <Box my="16px">
+          <CurrencyInputPanel
+            value={formattedAmounts[Field.LIQUIDITY]}
+            onUserInput={onLiquidityInput}
+            onPercentInput={(percent) => {
+              onUserInput(Field.LIQUIDITY_PERCENT, percent.toString())
+            }}
+            onMax={() => {
+              onUserInput(Field.LIQUIDITY_PERCENT, '100')
+            }}
+            showQuickInputButton
+            showMaxButton
+            lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
+            disableCurrencySelect
+            currency={pair?.liquidityToken}
+            pair={pair}
+            id="liquidity-amount"
+            onCurrencySelect={() => null}
+            showCommonBases
+            commonBasesType={CommonBasesType.LIQUIDITY}
+          />
+          <ColumnCenter>
+            <ArrowDownIcon width="24px" my="16px" />
+          </ColumnCenter>
+          <CurrencyInputPanel
+            beforeButton={
+              zapModeStatus && (
+                <ZapCheckbox
+                  disabled={!removalCheckedB && removalCheckedA}
+                  checked={removalCheckedA}
+                  onChange={(e) => {
+                    setRemovalCheckedA(e.target.checked)
+                  }}
+                />
+              )
+            }
+            zapStyle="zap"
+            hideBalance
+            disabled={isZap && !removalCheckedA}
+            value={formattedAmounts[Field.CURRENCY_A]}
+            onUserInput={onCurrencyAInput}
+            onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
+            showMaxButton
+            lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
+            currency={currencyA}
+            label={t('Output')}
+            onCurrencySelect={handleSelectCurrencyA}
+            id="remove-liquidity-tokena"
+            showCommonBases
+            commonBasesType={CommonBasesType.LIQUIDITY}
+          />
+          <ColumnCenter>
+            <AddIcon width="24px" my="16px" />
+          </ColumnCenter>
+          <CurrencyInputPanel
+            beforeButton={
+              zapModeStatus && (
+                <ZapCheckbox
+                  disabled={!removalCheckedA && removalCheckedB}
+                  checked={removalCheckedB}
+                  onChange={(e) => {
+                    setRemovalCheckedB(e.target.checked)
+                  }}
+                />
+              )
+            }
+            zapStyle="zap"
+            hideBalance
+            disabled={isZap && !removalCheckedB}
+            value={formattedAmounts[Field.CURRENCY_B]}
+            onUserInput={onCurrencyBInput}
+            showMaxButton={false}
+            currency={currencyB}
+            label={t('Output')}
+            onCurrencySelect={handleSelectCurrencyB}
+            id="remove-liquidity-tokenb"
+            showCommonBases
+            commonBasesType={CommonBasesType.LIQUIDITY}
+          />
+        </Box>
+      )}
+      {pair && (
+        <AutoColumn gap="12px" style={{ marginTop: '16px' }}>
+          <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
+            {t('Prices')}
+          </Text>
+          <LightGreyCard>
+            <Flex justifyContent="space-between">
+              <Text small color="textSubtle">
+                1 {currencyA?.symbol} =
+              </Text>
+              <Text small>
+                {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
+              </Text>
+            </Flex>
+            <Flex justifyContent="space-between">
+              <Text small color="textSubtle">
+                1 {currencyB?.symbol} =
+              </Text>
+              <Text small>
+                {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
+              </Text>
+            </Flex>
+          </LightGreyCard>
+        </AutoColumn>
+      )}
+      <RowBetween mt="16px">
+        <Text bold color="secondary" fontSize="12px">
+          {t('Slippage Tolerance')}
+          <IconButton scale="sm" variant="text" onClick={onPresentSettingsModal}>
+            <PencilIcon color="primary" width="10px" />
+          </IconButton>
+        </Text>
+        <Text bold color="primary">
+          {allowedSlippage / 100}%
+        </Text>
+      </RowBetween>
+      {poolData && (
+        <RowBetween mt="16px">
+          <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
+            {t('LP reward APR')}
+          </TooltipText>
+          {tooltipVisible && tooltip}
+          <Text bold color="primary">
+            {formatAmount(poolData.lpApr7d)}%
+          </Text>
+        </RowBetween>
+      )}
+      <Box position="relative" mt="16px">
+        {!account ? (
+          <ConnectWalletButton width="100%" />
+        ) : isWrongNetwork ? (
+          <CommitButton width="100%" />
+        ) : (
+          <RowBetween>
+            <Button
+              variant={
+                approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? 'success' : 'primary'
+              }
+              onClick={isZap ? approveCallback : onAttemptToApprove}
+              disabled={approval !== ApprovalState.NOT_APPROVED || (!isZap && signatureData !== null)}
+              width="100%"
+              mr="0.5rem"
+            >
+              {approval === ApprovalState.PENDING ? (
+                <Dots>{t('Enabling')}</Dots>
+              ) : approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? (
+                t('Enabled')
+              ) : (
+                t('Enable')
+              )}
+            </Button>
+            <Button
+              variant={
+                !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]
+                  ? 'danger'
+                  : 'primary'
+              }
+              onClick={() => {
+                setLiquidityState({
+                  attemptingTxn: false,
+                  liquidityErrorMessage: undefined,
+                  txHash: undefined,
+                })
+                onPresentRemoveLiquidity()
+              }}
+              width="100%"
+              disabled={
+                !isValid ||
+                (!isZap && signatureData === null && approval !== ApprovalState.APPROVED) ||
+                (isZap && approval !== ApprovalState.APPROVED)
+              }
+            >
+              {error || t('Remove')}
+            </Button>
+          </RowBetween>
+        )}
+      </Box>
+    </CardBody>
+  )
+}
+
+export const RemoveLiquidityLayout = ({ currencyA, currencyB, children }) => {
+  const { t } = useTranslation()
+  const { pair } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
+  const { chainId } = useActiveChainId()
+
+  const oneCurrencyIsWNative = Boolean(
+    chainId &&
+      ((currencyA && WNATIVE[chainId]?.equals(currencyA)) || (currencyB && WNATIVE[chainId]?.equals(currencyB))),
+  )
+
+  return (
     <Page>
       <AppBody>
         <AppHeader
@@ -581,315 +902,8 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           })}
           noConfig
         />
-
-        <CardBody>
-          <AutoColumn gap="20px">
-            <RowBetween>
-              <Text>{t('Amount')}</Text>
-              <Button variant="text" scale="sm" onClick={() => setShowDetailed(!showDetailed)}>
-                {showDetailed ? t('Simple') : t('Detailed')}
-              </Button>
-            </RowBetween>
-            {!showDetailed && (
-              <BorderCard style={{ padding: isMobile ? '8px' : '16px' }}>
-                <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
-                  {formattedAmounts[Field.LIQUIDITY_PERCENT]}%
-                </Text>
-                <Slider
-                  name="lp-amount"
-                  min={0}
-                  max={100}
-                  value={innerLiquidityPercentage}
-                  onValueChanged={handleChangePercent}
-                  mb="16px"
-                />
-                <Flex flexWrap="wrap" justifyContent="space-evenly">
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '25')}>
-                    25%
-                  </Button>
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '50')}>
-                    50%
-                  </Button>
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '75')}>
-                    75%
-                  </Button>
-                  <Button variant="tertiary" scale="sm" onClick={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}>
-                    {t('Max')}
-                  </Button>
-                </Flex>
-              </BorderCard>
-            )}
-          </AutoColumn>
-          {!showDetailed && (
-            <>
-              <ColumnCenter>
-                <ArrowDownIcon color="textSubtle" width="24px" my="16px" />
-              </ColumnCenter>
-              <AutoColumn gap="12px">
-                <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-                  {t('Receive')}
-                </Text>
-                <LightGreyCard>
-                  <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
-                    <Flex alignItems="center">
-                      {zapModeStatus && (
-                        <Flex mr="9px">
-                          <Checkbox
-                            disabled={isZapOutA}
-                            scale="sm"
-                            checked={removalCheckedA}
-                            onChange={(e) => setRemovalCheckedA(e.target.checked)}
-                          />
-                        </Flex>
-                      )}
-                      <CurrencyLogo currency={currencyA} />
-                      <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
-                        {currencyA?.symbol}
-                      </Text>
-                    </Flex>
-                    <Flex>
-                      <Text small bold>
-                        {formattedAmounts[Field.CURRENCY_A] || '0'}
-                      </Text>
-                      <Text small ml="4px">
-                        ({isZapOutA ? '100' : !isZap ? '50' : '0'}%)
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Flex justifyContent="space-between" as="label" alignItems="center">
-                    <Flex alignItems="center">
-                      {zapModeStatus && (
-                        <Flex mr="9px">
-                          <Checkbox
-                            disabled={isZapOutB}
-                            scale="sm"
-                            checked={removalCheckedB}
-                            onChange={(e) => setRemovalCheckedB(e.target.checked)}
-                          />
-                        </Flex>
-                      )}
-                      <CurrencyLogo currency={currencyB} />
-                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {currencyB?.symbol}
-                      </Text>
-                    </Flex>
-                    <Flex>
-                      <Text bold small>
-                        {formattedAmounts[Field.CURRENCY_B] || '0'}
-                      </Text>
-                      <Text small ml="4px">
-                        ({isZapOutB ? '100' : !isZap ? '50' : '0'}%)
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  {chainId && (oneCurrencyIsWNative || oneCurrencyIsNative) ? (
-                    <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
-                      {oneCurrencyIsNative ? (
-                        <StyledInternalLink
-                          href={`/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
-                            currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
-                          }`}
-                        >
-                          {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}
-                        </StyledInternalLink>
-                      ) : oneCurrencyIsWNative ? (
-                        <StyledInternalLink
-                          href={`/remove/${
-                            currencyA && currencyA.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdA
-                          }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}`}
-                        >
-                          {t('Receive %currency%', { currency: native?.symbol })}
-                        </StyledInternalLink>
-                      ) : null}
-                    </RowBetween>
-                  ) : null}
-                </LightGreyCard>
-              </AutoColumn>
-            </>
-          )}
-
-          {showDetailed && (
-            <Box my="16px">
-              <CurrencyInputPanel
-                value={formattedAmounts[Field.LIQUIDITY]}
-                onUserInput={onLiquidityInput}
-                onPercentInput={(percent) => {
-                  onUserInput(Field.LIQUIDITY_PERCENT, percent.toString())
-                }}
-                onMax={() => {
-                  onUserInput(Field.LIQUIDITY_PERCENT, '100')
-                }}
-                showQuickInputButton
-                showMaxButton
-                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
-                disableCurrencySelect
-                currency={pair?.liquidityToken}
-                pair={pair}
-                id="liquidity-amount"
-                onCurrencySelect={() => null}
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
-              <ColumnCenter>
-                <ArrowDownIcon width="24px" my="16px" />
-              </ColumnCenter>
-              <CurrencyInputPanel
-                beforeButton={
-                  zapModeStatus && (
-                    <ZapCheckbox
-                      disabled={!removalCheckedB && removalCheckedA}
-                      checked={removalCheckedA}
-                      onChange={(e) => {
-                        setRemovalCheckedA(e.target.checked)
-                      }}
-                    />
-                  )
-                }
-                zapStyle="zap"
-                hideBalance
-                disabled={isZap && !removalCheckedA}
-                value={formattedAmounts[Field.CURRENCY_A]}
-                onUserInput={onCurrencyAInput}
-                onMax={() => onUserInput(Field.LIQUIDITY_PERCENT, '100')}
-                showMaxButton
-                lpPercent={formattedAmounts[Field.LIQUIDITY_PERCENT]}
-                currency={currencyA}
-                label={t('Output')}
-                onCurrencySelect={handleSelectCurrencyA}
-                id="remove-liquidity-tokena"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
-              <ColumnCenter>
-                <AddIcon width="24px" my="16px" />
-              </ColumnCenter>
-              <CurrencyInputPanel
-                beforeButton={
-                  zapModeStatus && (
-                    <ZapCheckbox
-                      disabled={!removalCheckedA && removalCheckedB}
-                      checked={removalCheckedB}
-                      onChange={(e) => {
-                        setRemovalCheckedB(e.target.checked)
-                      }}
-                    />
-                  )
-                }
-                zapStyle="zap"
-                hideBalance
-                disabled={isZap && !removalCheckedB}
-                value={formattedAmounts[Field.CURRENCY_B]}
-                onUserInput={onCurrencyBInput}
-                showMaxButton={false}
-                currency={currencyB}
-                label={t('Output')}
-                onCurrencySelect={handleSelectCurrencyB}
-                id="remove-liquidity-tokenb"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
-            </Box>
-          )}
-          {pair && (
-            <AutoColumn gap="12px" style={{ marginTop: '16px' }}>
-              <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-                {t('Prices')}
-              </Text>
-              <LightGreyCard>
-                <Flex justifyContent="space-between">
-                  <Text small color="textSubtle">
-                    1 {currencyA?.symbol} =
-                  </Text>
-                  <Text small>
-                    {tokenA ? pair.priceOf(tokenA).toSignificant(6) : '-'} {currencyB?.symbol}
-                  </Text>
-                </Flex>
-                <Flex justifyContent="space-between">
-                  <Text small color="textSubtle">
-                    1 {currencyB?.symbol} =
-                  </Text>
-                  <Text small>
-                    {tokenB ? pair.priceOf(tokenB).toSignificant(6) : '-'} {currencyA?.symbol}
-                  </Text>
-                </Flex>
-              </LightGreyCard>
-            </AutoColumn>
-          )}
-          <RowBetween mt="16px">
-            <Text bold color="secondary" fontSize="12px">
-              {t('Slippage Tolerance')}
-              <IconButton scale="sm" variant="text" onClick={onPresentSettingsModal}>
-                <PencilIcon color="primary" width="10px" />
-              </IconButton>
-            </Text>
-            <Text bold color="primary">
-              {allowedSlippage / 100}%
-            </Text>
-          </RowBetween>
-          {poolData && (
-            <RowBetween mt="16px">
-              <TooltipText ref={targetRef} bold fontSize="12px" color="secondary">
-                {t('LP reward APR')}
-              </TooltipText>
-              {tooltipVisible && tooltip}
-              <Text bold color="primary">
-                {formatAmount(poolData.lpApr7d)}%
-              </Text>
-            </RowBetween>
-          )}
-          <Box position="relative" mt="16px">
-            {!account ? (
-              <ConnectWalletButton width="100%" />
-            ) : isWrongNetwork ? (
-              <CommitButton width="100%" />
-            ) : (
-              <RowBetween>
-                <Button
-                  variant={
-                    approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? 'success' : 'primary'
-                  }
-                  onClick={isZap ? approveCallback : onAttemptToApprove}
-                  disabled={approval !== ApprovalState.NOT_APPROVED || (!isZap && signatureData !== null)}
-                  width="100%"
-                  mr="0.5rem"
-                >
-                  {approval === ApprovalState.PENDING ? (
-                    <Dots>{t('Enabling')}</Dots>
-                  ) : approval === ApprovalState.APPROVED || (!isZap && signatureData !== null) ? (
-                    t('Enabled')
-                  ) : (
-                    t('Enable')
-                  )}
-                </Button>
-                <Button
-                  variant={
-                    !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]
-                      ? 'danger'
-                      : 'primary'
-                  }
-                  onClick={() => {
-                    setLiquidityState({
-                      attemptingTxn: false,
-                      liquidityErrorMessage: undefined,
-                      txHash: undefined,
-                    })
-                    onPresentRemoveLiquidity()
-                  }}
-                  width="100%"
-                  disabled={
-                    !isValid ||
-                    (!isZap && signatureData === null && approval !== ApprovalState.APPROVED) ||
-                    (isZap && approval !== ApprovalState.APPROVED)
-                  }
-                >
-                  {error || t('Remove')}
-                </Button>
-              </RowBetween>
-            )}
-          </Box>
-        </CardBody>
+        {children}
       </AppBody>
-
       {pair ? (
         <AutoColumn style={{ minWidth: '20rem', width: '100%', maxWidth: '400px', marginTop: '1rem' }}>
           <MinimalPositionCard showUnwrapped={oneCurrencyIsWNative} pair={pair} />

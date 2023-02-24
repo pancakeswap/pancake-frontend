@@ -7,6 +7,8 @@ import OldFarm from './components/v3/Step1'
 import { Step2 } from './components/v3/Step2'
 import MigrationSticky from './components/MigrationSticky'
 import { MigrationProgressSteps, Step } from './components/ProgressSteps'
+import { Step3 } from './components/v3/Step3'
+import { Step4 } from './components/v3/Step4'
 
 const steps: Step[] = [
   {
@@ -93,6 +95,8 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
         />
         {step === 0 && <OldFarm />}
         {step === 1 && <Step2 />}
+        {step === 2 && <Step3 />}
+        {step === 3 && <Step4 />}
       </Page>
       <MigrationSticky version="v3" step={step} handleClick={handleMigrationStickyClick} />
     </div>

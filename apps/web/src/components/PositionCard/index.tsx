@@ -42,7 +42,7 @@ const FixedHeightRow = styled(RowBetween)`
   height: 24px;
 `
 
-interface PositionCardProps extends CardProps {
+export interface PositionCardProps extends CardProps {
   pair: Pair
   showUnwrapped?: boolean
   currency0: Currency
@@ -136,7 +136,7 @@ const withLPValuesFactory =
     )
   }
 
-const withLPValues = withLPValuesFactory({
+export const withLPValues = withLPValuesFactory({
   useLPValuesHook: useTokensDeposited,
   hookArgFn: ({ pair, userPoolBalance, totalPoolTokens }) => ({ pair, userPoolBalance, totalPoolTokens }),
 })
