@@ -225,7 +225,7 @@ const HowToPlay: React.FC<React.PropsWithChildren> = () => {
     {
       label: t('Step %number%', { number: 1 }),
       title: t('Buy Tickets'),
-      subtitle: t('Prices are set when the round starts, equal to 5 USD in CADINU per ticket.'),
+      subtitle: t('Prices are set when the round starts, equal to 3 USD in CADINU per ticket.'),
     },
     {
       label: t('Step %number%', { number: 2 }),
@@ -332,9 +332,7 @@ const HowToPlay: React.FC<React.PropsWithChildren> = () => {
                 {t(
                   'An average total of 35,000 CADINU from the treasury is added to lottery rounds over the course of a week. This CADINU is of course also included in rollovers! Read more in our guide to ',
                 )}
-                <InlineLink href="https://docs.pancakeswap.finance/tokenomics/cake/cake-tokenomics">
-                  {t('CADINU Tokenomics')}
-                </InlineLink>
+
               </Text>
             </li>
           </BulletList>
@@ -343,21 +341,7 @@ const HowToPlay: React.FC<React.PropsWithChildren> = () => {
           <PoolAllocations />
         </Flex>
       </GappedFlex>
-      <Divider />
-      <Flex justifyContent="center" alignItems="center" flexDirection={['column', 'column', 'row']}>
-        <Image width={240} height={172} src="/images/lottery/tombola.png" alt="tombola bunny" mr="8px" mb="16px" />
-        <Flex maxWidth="300px" flexDirection="column">
-          <Heading mb="16px" scale="md">
-            {t('Still got questions?')}
-          </Heading>
-          <Text>
-            {t('Check our in-depth guide on')}{' '}
-            <InlineLink href="https://docs.pancakeswap.finance/products/lottery/lottery-guide">
-              {t('how to play the PancakeSwap lottery!')}
-            </InlineLink>
-          </Text>
-        </Flex>
-      </Flex>
+
     </Box>
   )
 }
