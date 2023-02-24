@@ -52,7 +52,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 export const V3_SUBGRAPH_URLS = {
   // TODO: v3 swap update
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
-  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/liqwiz/uniswap-v3-goerli',
+  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-goerli',
   [ChainId.BSC]: '',
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-chapel',
 }
