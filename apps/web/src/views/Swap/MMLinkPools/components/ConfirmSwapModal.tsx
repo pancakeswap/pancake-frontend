@@ -69,7 +69,6 @@ interface ConfirmSwapModalProps {
   customOnDismiss?: () => void
   openSettingModal?: () => void
   isRFQReady: boolean
-  isRFQLoading: boolean
 }
 
 const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & ConfirmSwapModalProps>> = ({
@@ -87,7 +86,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   txHash,
   openSettingModal,
   isRFQReady,
-  isRFQLoading,
 }) => {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
@@ -109,7 +107,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       ) : (
         <TransactionConfirmSwapContentWithSmartRouter
           isRFQReady={isRFQReady}
-          isRFQLoading={isRFQLoading}
           trade={trade}
           currencyBalances={currencyBalances}
           originalTrade={originalTrade}
@@ -131,7 +128,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       openSettingModal,
       currencyBalances,
       isRFQReady,
-      isRFQLoading,
     ],
   )
 

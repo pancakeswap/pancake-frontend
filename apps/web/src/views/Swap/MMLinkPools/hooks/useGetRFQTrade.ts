@@ -50,15 +50,7 @@ export const useGetRFQId = (
   }
 }
 
-export const useGetRFQTrade = (
-  rfqId: string,
-  independentField: Field,
-  inputCurrency: Currency | undefined,
-  outputCurrency: Currency | undefined,
-  isMMBetter: boolean,
-  refreshRFQ: () => void,
-  isRFQLive: MutableRefObject<boolean>,
-): {
+export interface RfqTrade {
   rfq: RFQResponse['message'] | null
   trade: TradeWithMM<Currency, Currency, TradeType> | null
   refreshRFQ: () => void | null
@@ -67,7 +59,17 @@ export const useGetRFQTrade = (
   error?: Error
   rfqId?: string
   errorUpdateCount: number
-} | null => {
+}
+
+export const useGetRFQTrade = (
+  rfqId: string,
+  independentField: Field,
+  inputCurrency: Currency | undefined,
+  outputCurrency: Currency | undefined,
+  isMMBetter: boolean,
+  refreshRFQ: () => void,
+  isRFQLive: MutableRefObject<boolean>,
+): RfqTrade | null => {
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
@@ -107,6 +109,7 @@ export const useGetRFQTrade = (
       if (isRFQLive) isRFQLive.current = true
       return {
         rfq: data?.message,
+        rfqId,
         trade: parseMMTrade(
           isExactIn,
           inputCurrency,

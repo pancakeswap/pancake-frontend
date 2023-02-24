@@ -23,6 +23,7 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useStableSwapByDefault } from 'state/user/smartRouter'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
+import Dots from 'components/Loader/Dots'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -464,7 +465,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         <Box mt="0.25rem">
           {isMMLoading ? (
             <Button width="100%" disabled style={{ textAlign: 'left' }}>
-              {t('Swap')}
+              <Dots>{t('Checking MM')}</Dots>
             </Button>
           ) : !tradeWithStableSwap &&
             !v2Trade &&
@@ -486,7 +487,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               approvalSubmitted={approvalSubmitted}
               currencies={currencies}
               isExpertMode={isExpertMode}
-              trade={mmRFQTrade?.trade}
+              rfqTrade={mmRFQTrade}
               swapInputError={
                 mmOrderBookTrade?.inputError ||
                 (isMMBetter && mmRFQTrade?.error?.message && parseMMError(mmRFQTrade?.error?.message))
@@ -495,8 +496,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               recipient={recipient}
               allowedSlippage={allowedSlippage}
               onUserInput={onUserInput}
-              rfq={mmRFQTrade?.rfq}
-              refreshRFQ={mmRFQTrade?.refreshRFQ}
               mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
             />
           ) : tradeInfo?.fallbackV2 ? (

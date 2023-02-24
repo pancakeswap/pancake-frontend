@@ -68,6 +68,15 @@ export const useOrderBookQuote = (
   const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const inputPath = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
   const rfqInputPath = `${rfqRequest?.networkId}/${rfqRequest?.makerSideToken}/${rfqRequest?.takerSideToken}/${rfqRequest?.makerSideTokenAmount}/${rfqRequest?.takerSideTokenAmount}`
+  const enabled = Boolean(
+    isMMLinkedPoolByDefault &&
+      request &&
+      request.trader &&
+      (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
+      request.makerSideTokenAmount !== '0' &&
+      request.takerSideTokenAmount !== '0' &&
+      checkOrderBookShouldRefetch(rfqInputPath, rfqUserInputPath, isRFQLive),
+  )
   const { data, isLoading } = useQuery(
     [`orderBook/${inputPath}`],
     () => {
@@ -75,18 +84,10 @@ export const useOrderBookQuote = (
     },
     {
       refetchInterval: 5000,
-      enabled: Boolean(
-        isMMLinkedPoolByDefault &&
-          request &&
-          request.trader &&
-          (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
-          request.makerSideTokenAmount !== '0' &&
-          request.takerSideTokenAmount !== '0' &&
-          checkOrderBookShouldRefetch(rfqInputPath, rfqUserInputPath, isRFQLive),
-      ),
+      enabled,
     },
   )
-  return { data, isLoading }
+  return { data, isLoading: enabled && isLoading }
 }
 
 export const useMMTrade = (
