@@ -2,7 +2,7 @@ import { defaultAbiCoder } from '@ethersproject/abi'
 import { getCreate2Address } from '@ethersproject/address'
 import { keccak256 } from '@ethersproject/solidity'
 import { Token } from '@pancakeswap/sdk'
-import { FeeAmount, POOL_INIT_CODE_HASH } from '../constants'
+import { FeeAmount, POOL_INIT_CODE_HASH, POOL_INIT_CODE_HASHES } from '../constants'
 
 /**
  * Computes a pool address
@@ -33,6 +33,6 @@ export function computePoolAddress({
       ['bytes'],
       [defaultAbiCoder.encode(['address', 'address', 'uint24'], [token0.address, token1.address, fee])]
     ),
-    initCodeHashManualOverride ?? POOL_INIT_CODE_HASH
+    initCodeHashManualOverride ?? POOL_INIT_CODE_HASHES[token0.chainId] ?? POOL_INIT_CODE_HASH
   )
 }

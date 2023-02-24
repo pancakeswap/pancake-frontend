@@ -6,6 +6,7 @@ import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
+import { V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 
 const zChainId = z.enum(['56', '1', '5', '97'])
 
@@ -15,12 +16,6 @@ const zParams = z.object({
   chainId: zChainId,
   address: zAddress,
 })
-
-const SUBGRAPH_URLS = {
-  1: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
-  5: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-goerli',
-  97: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-chapel',
-}
 
 // currently can get the total active liquidity for a pool
 // TODO: v3 farms update subgraph urls
@@ -44,7 +39,7 @@ const handler: NextApiHandler = async (req, res) => {
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
   const response = await request(
-    SUBGRAPH_URLS[chainId],
+    V3_SUBGRAPH_URLS[chainId],
     gql`
     query tvl {
         pool(id: "${address}") {

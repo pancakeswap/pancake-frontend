@@ -8,9 +8,11 @@ import {
   BASES_TO_CHECK_TRADES_AGAINST,
 } from '@pancakeswap/smart-router/evm'
 import { FeeAmount, computePoolAddress, Tick } from '@pancakeswap/v3-sdk'
-import { gql, GraphQLClient } from 'graphql-request'
+import { gql } from 'graphql-request'
+import { v3Clients } from 'utils/graphql'
 import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
+import { useActiveChainId } from './useActiveChainId'
 
 type Pair = [Currency, Currency]
 
@@ -267,11 +269,10 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
   }
 }
 
-const client = new GraphQLClient('https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3')
-
 export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, blockNumber }: Options = {}) {
+  const { chainId } = useActiveChainId()
   const poolsWithTicks = useSWR(
-    key && pools ? ['v3_pool_ticks', key] : null,
+    key && pools && v3Clients[chainId] ? ['v3_pool_ticks', key] : null,
     async () => {
       console.time('[METRIC] Get V3 pool ticks')
       console.timeLog('[METRIC] Get V3 pool ticks', key)
@@ -323,12 +324,13 @@ const fetchTicks = async (chainId: ChainId, address: string, blockNumber?: JSBI)
 }
 
 export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Options = {}) {
+  const { chainId } = useActiveChainId()
   const result = useSWR<{
     pools: SubgraphPool[]
     key?: string
     blockNumber?: JSBI
   }>(
-    key && pairs?.length && [key],
+    key && pairs?.length && v3Clients[chainId] && [key],
     async () => {
       const query = gql`
       query getPools($pageSize: Int!, $poolAddrs: [String]) {
@@ -364,7 +366,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Opt
         }
       }
       const addresses = Array.from(metaMap.keys())
-      const { pools: poolsFromSubgraph } = await client.request(query, {
+      const { pools: poolsFromSubgraph } = await v3Clients[chainId].request(query, {
         pageSize: 1000,
         poolAddrs: addresses,
       })

@@ -1,7 +1,8 @@
 import useSWRImmutable from 'swr/immutable'
 import { useMemo } from 'react'
-import { uniswapClient } from 'utils/graphql'
+import { v3Clients } from 'utils/graphql'
 import { gql } from 'graphql-request'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 const query = gql`
   query FeeTierDistribution($token0: String!, $token1: String!) {
@@ -37,10 +38,11 @@ export default function useFeeTierDistributionQuery(
   token1: string | undefined,
   interval: number,
 ) {
+  const { chainId } = useActiveChainId()
   const { data, isLoading, error } = useSWRImmutable(
-    token0 && token1 ? `useFeeTierDistributionQuery-${token0}-${token1}` : null,
+    token0 && token1 && v3Clients[chainId] ? `useFeeTierDistributionQuery-${token0}-${token1}` : null,
     async () => {
-      return uniswapClient.request(query, {
+      return v3Clients[chainId].request(query, {
         token0: token0?.toLowerCase(),
         token1: token1?.toLowerCase(),
       })
