@@ -14,6 +14,8 @@ import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
 import { useActiveChainId } from './useActiveChainId'
 
+import { swapClientWithChain } from 'utils/graphql'
+
 type Pair = [Currency, Currency]
 
 interface SubgraphPool extends V3Pool {
@@ -332,6 +334,8 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Opt
   }>(
     key && pairs?.length && v3Clients[chainId] && [key],
     async () => {
+      const { chainId } = pairs[0][0]
+      const client = swapClientWithChain(chainId)
       const query = gql`
       query getPools($pageSize: Int!, $poolAddrs: [String]) {
         pools(
@@ -348,7 +352,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Opt
         }
       }
 `
-      if (pairs[0][0].chainId !== 1) {
+      if (!client) {
         console.log('[METRIC] Cannot get v3 on chain', pairs[0][0].chainId, 'for now')
         return {
           pools: [],

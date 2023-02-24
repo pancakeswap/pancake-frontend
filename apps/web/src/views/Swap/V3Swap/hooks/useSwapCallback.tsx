@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-restricted-imports
 import { BigNumber } from '@ethersproject/bignumber'
-import type { TransactionResponse, JsonRpcProvider } from '@ethersproject/providers'
+import type { TransactionResponse } from '@ethersproject/providers'
 import { Trade } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
@@ -8,11 +8,11 @@ import { Trans } from '@pancakeswap/localization'
 import { ReactNode, useMemo } from 'react'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { provider as getProvider } from 'utils/wagmi'
 import { useSwapState } from 'state/swap/hooks'
 import { useUserSlippageTolerance } from 'state/user/hooks'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { basisPointsToPercent } from 'utils/exchange'
+import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 
 import useSendSwapTransaction from './useSendSwapTransaction'
 import { useSwapCallArguments } from './useSwapCallArguments'
@@ -46,11 +46,11 @@ export function useSwapCallback({
   feeOptions,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
   const { account, chainId } = useActiveWeb3React()
-  const provider = getProvider({ chainId })
+  const provider = useProviderOrSigner()
   const [allowedSlippageRaw] = useUserSlippageTolerance() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
-  const { recipient } = useSwapState()
-  const recipientAddress = recipient === null ? account : recipient
+  const { recipient: recipientAddress } = useSwapState()
+  const recipient = recipientAddress === null ? account : recipientAddress
 
   const swapCalls = useSwapCallArguments(
     trade,
@@ -60,7 +60,7 @@ export function useSwapCallback({
     deadline,
     feeOptions,
   )
-  const { callback } = useSendSwapTransaction(account, chainId, provider as JsonRpcProvider, trade, swapCalls)
+  const { callback } = useSendSwapTransaction(account, chainId, provider, trade, swapCalls)
 
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId || !callback) {

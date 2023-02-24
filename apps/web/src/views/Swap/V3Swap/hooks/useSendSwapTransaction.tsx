@@ -1,4 +1,5 @@
-import type { JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
+import { Provider, JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
+import { Signer } from '@ethersproject/abstract-signer'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
@@ -43,7 +44,7 @@ class InvalidSwapError extends Error {}
 export default function useSendSwapTransaction(
   account: string | null | undefined,
   chainId: number | undefined,
-  provider: JsonRpcProvider | undefined,
+  provider: Provider | Signer | undefined,
   trade: Trade<TradeType> | undefined, // trade to execute, required
   swapCalls: SwapCall[],
 ): { callback: null | (() => Promise<TransactionResponse>) } {
@@ -54,7 +55,13 @@ export default function useSendSwapTransaction(
   const recipientAddress = recipient === null ? account : recipient
 
   return useMemo(() => {
-    if (!trade || !provider || !account || !chainId) {
+    if (
+      !trade ||
+      !provider ||
+      !account ||
+      !chainId ||
+      (!Signer.isSigner(provider) && !(provider instanceof JsonRpcProvider))
+    ) {
       return { callback: null }
     }
     return {
@@ -122,8 +129,9 @@ export default function useSendSwapTransaction(
           call: { address, calldata, value },
         } = bestCallOption
 
-        return provider
-          .getSigner()
+        const signer = Signer.isSigner(provider) ? provider : provider.getSigner()
+
+        return signer
           .sendTransaction({
             from: account,
             to: address,
@@ -214,5 +222,5 @@ export default function useSendSwapTransaction(
           })
       },
     }
-  }, [account, chainId, provider, swapCalls, trade, t, addTransaction, allowedSlippage, recipientAddress])
+  }, [account, chainId, provider, swapCalls, trade, t, addTransaction, allowedSlippage, recipientAddress, recipient])
 }
