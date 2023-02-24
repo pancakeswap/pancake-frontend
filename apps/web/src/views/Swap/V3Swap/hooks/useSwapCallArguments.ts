@@ -1,96 +1,108 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { getAddress } from '@ethersproject/address'
-import { Contract } from '@ethersproject/contracts'
-import {
-  Currency,
-  CurrencyAmount,
-  JSBI,
-  Percent,
-  SwapParameters,
-  TradeOptions,
-  TradeOptionsDeadline,
-  TradeType,
-} from '@pancakeswap/sdk'
-import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { BigNumber } from '@ethersproject/bignumber'
+import { SwapRouter, Trade, SWAP_ROUTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
+import { Percent, TradeType } from '@pancakeswap/sdk'
+import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import invariant from 'tiny-invariant'
 
-import { useSwapState } from 'state/swap/hooks'
-import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
-import { BIPS_BASE } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { useSmartRouterContract } from 'views/Swap/SmartSwap/utils/exchange'
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 
-const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
-
-export interface SwapCall {
-  contract: Contract
-  parameters: SwapParameters
+interface SwapCall {
+  address: string
+  calldata: string
+  value: string
 }
 
 /**
  * Returns the swap calls that can be used to make the trade
  * @param trade trade to execute
  * @param allowedSlippage user allowed slippage
- * @param recipientAddressOrName
+ * @param recipientAddressOrName the ENS name or address of the recipient of the swap output
+ * @param signatureData the signature data of the permit of the input token amount, if available
  */
 export function useSwapCallArguments(
-  trade: Trade<TradeType> | undefined | null, // trade to execute, required
+  trade: Trade<TradeType> | undefined | null,
+  allowedSlippage: Percent,
+  recipientAddress: string | null | undefined,
+  // signatureData: SignatureData | null | undefined,
+  deadline: BigNumber | undefined,
+  feeOptions: FeeOptions | undefined,
 ): SwapCall[] {
   const { account, chainId } = useActiveWeb3React()
-  const [userSlippage] = useUserSlippageTolerance()
-  const allowedSlippage = userSlippage || INITIAL_ALLOWED_SLIPPAGE
-  const { recipient: recipientAddress } = useSwapState()
+  const provider = useProviderOrSigner()
 
   const recipient = recipientAddress === null ? account : recipientAddress
-  const deadline = useTransactionDeadline()
-  const contract = useSmartRouterContract()
 
   return useMemo(() => {
-    if (!trade || !recipient || !account || !chainId || !deadline) return []
+    if (!trade || !recipient || !provider || !account || !chainId || !deadline) return []
 
-    if (!contract) {
-      return []
-    }
+    const swapRouterAddress = chainId ? SWAP_ROUTER_ADDRESSES[chainId] : undefined
+    if (!swapRouterAddress) return []
 
-    const swapMethods = []
-    if (trade.tradeType === TradeType.EXACT_INPUT) {
-      swapMethods.push(
-        swapCallParameters(trade, {
-          feeOnTransfer: true,
-          allowedSlippage: new Percent(JSBI.BigInt(allowedSlippage), BIPS_BASE),
-          recipient,
-          deadline: deadline.toNumber(),
-        }),
-      )
-    }
+    const { value, calldata } = SwapRouter.swapCallParameters(trade, {
+      fee: feeOptions,
+      recipient,
+      slippageTolerance: allowedSlippage,
+      // ...(signatureData
+      //   ? {
+      //       inputTokenPermit:
+      //         'allowed' in signatureData
+      //           ? {
+      //               expiry: signatureData.deadline,
+      //               nonce: signatureData.nonce,
+      //               s: signatureData.s,
+      //               r: signatureData.r,
+      //               v: signatureData.v as any,
+      //             }
+      //           : {
+      //               deadline: signatureData.deadline,
+      //               amount: signatureData.amount,
+      //               s: signatureData.s,
+      //               r: signatureData.r,
+      //               v: signatureData.v as any,
+      //             },
+      //     }
+      //   : {}),
 
-    return swapMethods.map((parameters) => ({ parameters, contract }))
-  }, [account, allowedSlippage, chainId, contract, deadline, recipient, trade])
-}
+      deadlineOrPreviousBlockhash: deadline.toString(),
+    })
 
-function toHex(currencyAmount: CurrencyAmount<Currency>) {
-  return `0x${currencyAmount.quotient.toString(16)}`
-}
-
-const ZERO_HEX = '0x0'
-
-function swapCallParameters(trade: Trade<TradeType>, options: TradeOptions | TradeOptionsDeadline): SwapParameters {
-  const etherIn = trade.inputAmount.currency.isNative
-  const etherOut = trade.outputAmount.currency.isNative
-  // the router does not support both ether in and out
-  invariant(!(etherIn && etherOut), 'ETHER_IN_OUT')
-  invariant(!('ttl' in options) || options.ttl > 0, 'TTL')
-
-  const amountIn: string = toHex(SmartRouter.maximumAmountIn(trade, options.allowedSlippage))
-  const amountOut: string = toHex(SmartRouter.minimumAmountOut(trade, options.allowedSlippage))
-
-  // TODO build arguments
-  return {
-    methodName: 'swapMulti',
-    args: [],
-    value: ZERO_HEX,
-  }
+    // if (argentWalletContract && trade.inputAmount.currency.isToken) {
+    //   return [
+    //     {
+    //       address: argentWalletContract.address,
+    //       calldata: argentWalletContract.interface.encodeFunctionData('wc_multiCall', [
+    //         [
+    //           approveAmountCalldata(trade.maximumAmountIn(allowedSlippage), swapRouterAddress),
+    //           {
+    //             to: swapRouterAddress,
+    //             value,
+    //             data: calldata,
+    //           },
+    //         ],
+    //       ]),
+    //       value: '0x0',
+    //     },
+    //   ]
+    // }
+    return [
+      {
+        address: swapRouterAddress,
+        calldata,
+        value,
+      },
+    ]
+  }, [
+    account,
+    allowedSlippage,
+    // argentWalletContract,
+    chainId,
+    deadline,
+    feeOptions,
+    provider,
+    recipient,
+    // signatureData,
+    trade,
+  ])
 }
