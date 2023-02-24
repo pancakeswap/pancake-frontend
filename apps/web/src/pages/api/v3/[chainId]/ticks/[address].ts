@@ -4,7 +4,7 @@ import { NextApiHandler } from 'next'
 import { z } from 'zod'
 import { ChainId } from '@pancakeswap/sdk'
 
-import { swapClientWithChain } from 'utils/graphql'
+import { v3Clients } from 'utils/graphql'
 import { TickMath } from '@pancakeswap/v3-sdk'
 
 const zChainId = z.enum(['56', '1', '5', '97'])
@@ -83,7 +83,7 @@ async function _getPoolTicksGreaterThan(
   pageSize: number,
   blockNumber?: string,
 ) {
-  const client = swapClientWithChain(<ChainId>(<unknown>chainId))
+  const client = v3Clients[<ChainId>(<unknown>chainId)]
   if (!client) {
     return []
   }

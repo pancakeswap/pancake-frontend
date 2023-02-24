@@ -14,8 +14,6 @@ import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
 import { useActiveChainId } from './useActiveChainId'
 
-import { swapClientWithChain } from 'utils/graphql'
-
 type Pair = [Currency, Currency]
 
 interface SubgraphPool extends V3Pool {
@@ -42,7 +40,7 @@ const sortByTvl = (a: SubgraphPool, b: SubgraphPool) => (JSBI.greaterThanOrEqual
 
 export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, options?: Options) {
   const key = useMemo(() => {
-    if (!currencyA || !currencyB) {
+    if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
     }
     const symbols = currencyA.wrapped.sortsBefore(currencyB.wrapped)
@@ -326,16 +324,15 @@ const fetchTicks = async (chainId: ChainId, address: string, blockNumber?: JSBI)
 }
 
 export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Options = {}) {
-  const { chainId } = useActiveChainId()
   const result = useSWR<{
     pools: SubgraphPool[]
     key?: string
     blockNumber?: JSBI
   }>(
-    key && pairs?.length && v3Clients[chainId] && [key],
+    key && pairs?.length && [key],
     async () => {
       const { chainId } = pairs[0][0]
-      const client = swapClientWithChain(chainId)
+      const client = v3Clients[chainId]
       const query = gql`
       query getPools($pageSize: Int!, $poolAddrs: [String]) {
         pools(
@@ -370,7 +367,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Opt
         }
       }
       const addresses = Array.from(metaMap.keys())
-      const { pools: poolsFromSubgraph } = await v3Clients[chainId].request(query, {
+      const { pools: poolsFromSubgraph } = await client.request(query, {
         pageSize: 1000,
         poolAddrs: addresses,
       })

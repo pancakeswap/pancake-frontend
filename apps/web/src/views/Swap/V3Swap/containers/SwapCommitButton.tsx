@@ -30,8 +30,13 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
-import { useSwapCallback } from '../hooks/useSwapCallback'
-import { useSlippageAdjustedAmounts, useRouterAddress, useSwapInputError, useParsedAmounts } from '../hooks'
+import {
+  useSlippageAdjustedAmounts,
+  useRouterAddress,
+  useSwapInputError,
+  useParsedAmounts,
+  useSwapCallback,
+} from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
 

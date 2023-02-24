@@ -42,11 +42,6 @@ export const INFO_CLIENT_WITH_CHAIN = {
   [ChainId.ETHEREUM]: INFO_CLIENT_ETH,
 }
 
-export const V3_POOL_SUBGRAPH_WITH_CHAIN = {
-  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/liqwiz/uniswap-v3-goerli',
-  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
-}
-
 export const BLOCKS_CLIENT_WITH_CHAIN = {
   [ChainId.BSC]: BLOCKS_CLIENT,
   [ChainId.ETHEREUM]: BLOCKS_CLIENT_ETH,
@@ -57,7 +52,7 @@ export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 export const V3_SUBGRAPH_URLS = {
   // TODO: v3 swap update
   [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
-  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-goerli',
+  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/liqwiz/uniswap-v3-goerli',
   [ChainId.BSC]: '',
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-chapel',
 }
