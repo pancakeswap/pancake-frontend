@@ -1,4 +1,6 @@
+// @ts-ignore
 import noop from "lodash/noop";
+// @ts-ignore
 import React, { useState } from "react";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserRouter, Link, MemoryRouter } from "react-router-dom";

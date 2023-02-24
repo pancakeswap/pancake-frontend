@@ -54,7 +54,7 @@ const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailP
         {isLoading || cadinuAmount.isNaN() ? (
           <Skeleton my="4px" mr="10px" height={20} width={110} />
         ) : (
-          <Balance fontSize="20px" bold unit=" CADINU" value={getBalanceNumber(cadinuAmount)} decimals={0} />
+          <Balance fontSize="16px" bold unit=" CADINU" value={getBalanceNumber(cadinuAmount)} decimals={0} />
         )}
         {isLoading || cadinuAmount.isNaN() ? (
           <>
@@ -73,7 +73,7 @@ const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailP
           <>
             {numberWinners !== '0' && (
               <Text fontSize="12px" color="textSubtle">
-                {getFullDisplayBalance(cadinuAmount.div(parseInt(numberWinners, 10)), 18, 2)} CAKE {t('each')}
+                {getFullDisplayBalance(cadinuAmount.div(parseInt(numberWinners, 10)), 18, 2)} CADINU {t('each')}
               </Text>
             )}
             <Text fontSize="12px" color="textSubtle">
