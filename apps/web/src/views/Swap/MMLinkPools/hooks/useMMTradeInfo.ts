@@ -16,7 +16,7 @@ interface Options {
   mmSwapInputError: string
 }
 
-interface Info {
+export interface MMTradeInfo {
   tradeType: TradeType
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>
@@ -33,7 +33,12 @@ interface Info {
   trade: TradeWithMM<Currency, Currency, TradeType>
 }
 
-export function useMMTradeInfo({ mmTrade, useMMToTrade = false, chainId, mmSwapInputError }: Options): Info | null {
+export function useMMTradeInfo({
+  mmTrade,
+  useMMToTrade = false,
+  chainId,
+  mmSwapInputError,
+}: Options): MMTradeInfo | null {
   return useMemo(() => {
     if (!mmTrade || !useMMToTrade) {
       return null

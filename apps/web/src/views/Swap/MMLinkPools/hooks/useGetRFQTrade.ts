@@ -1,11 +1,11 @@
-import { Currency, TradeType } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { MutableRefObject, useDeferredValue, useMemo } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
 import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
-import { MessageType, QuoteRequest, RFQResponse, TradeWithMM } from '../types'
+import { MessageType, MMRfqTrade, QuoteRequest } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (
@@ -50,17 +50,6 @@ export const useGetRFQId = (
   }
 }
 
-export interface RfqTrade {
-  rfq: RFQResponse['message'] | null
-  trade: TradeWithMM<Currency, Currency, TradeType> | null
-  refreshRFQ: () => void | null
-  quoteExpiry: number | null
-  isLoading: boolean
-  error?: Error
-  rfqId?: string
-  errorUpdateCount: number
-}
-
 export const useGetRFQTrade = (
   rfqId: string,
   independentField: Field,
@@ -69,7 +58,7 @@ export const useGetRFQTrade = (
   isMMBetter: boolean,
   refreshRFQ: () => void,
   isRFQLive: MutableRefObject<boolean>,
-): RfqTrade | null => {
+): MMRfqTrade | null => {
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)

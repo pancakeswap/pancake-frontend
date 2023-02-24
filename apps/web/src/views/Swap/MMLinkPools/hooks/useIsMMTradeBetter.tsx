@@ -18,14 +18,12 @@ export const useIsTradeWithMMBetter = ({
   trade,
   v2Trade,
   tradeWithMM,
-  isMMQuotingPair = false,
   isExpertMode = false,
 }: Options) => {
   return useMemo(() => {
     const isExactIn = independentField === Field.INPUT
     if (
       isExpertMode ||
-      !isMMQuotingPair ||
       !tradeWithMM ||
       tradeWithMM.inputAmount.equalTo(ZERO) ||
       tradeWithMM.outputAmount.equalTo(ZERO)
@@ -40,5 +38,5 @@ export const useIsTradeWithMMBetter = ({
       (isExactIn && tradeWithMM.outputAmount.greaterThan(v2Trade?.outputAmount ?? ZERO)) || // exactIn
       (!isExactIn && tradeWithMM.inputAmount.lessThan(v2Trade?.inputAmount ?? ZERO)) // exactOut
     )
-  }, [trade, v2Trade, tradeWithMM, isMMQuotingPair, isExpertMode, independentField])
+  }, [trade, v2Trade, tradeWithMM, isExpertMode, independentField])
 }

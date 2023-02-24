@@ -1,5 +1,7 @@
 import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
 import { z } from 'zod'
+import { MutableRefObject } from 'react'
+import { Field } from '../../../state/swap/actions'
 
 export enum MessageType {
   RFQ_REQUEST = 'RFQ_REQUEST',
@@ -103,4 +105,27 @@ export interface TradeWithMM<TInput extends Currency, TOutput extends Currency, 
   route: BaseRoute<TInput, TOutput, Pair>
   inputAmount: CurrencyAmount<TInput>
   outputAmount: CurrencyAmount<TOutput>
+}
+
+export interface MMOrderBookTrade {
+  currencies: { [field in Field]?: Currency }
+  currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
+  parsedAmount: CurrencyAmount<Currency> | undefined
+  trade?: TradeWithMM<Currency, Currency, TradeType> | null
+  inputError?: string
+  mmParam: OrderBookRequest
+  rfqUserInputPath: MutableRefObject<string>
+  isRFQLive: MutableRefObject<boolean>
+  isLoading: boolean
+}
+
+export interface MMRfqTrade {
+  rfq: RFQResponse['message'] | null
+  trade: TradeWithMM<Currency, Currency, TradeType> | null
+  refreshRFQ: () => void | null
+  quoteExpiry: number | null
+  isLoading: boolean
+  error?: Error
+  rfqId?: string
+  errorUpdateCount: number
 }

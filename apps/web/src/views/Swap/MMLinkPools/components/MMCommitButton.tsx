@@ -15,10 +15,9 @@ import { Field } from 'state/swap/actions'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { SAFE_MM_QUOTE_EXPIRY_SEC } from '../constants'
-import { RfqTrade } from '../hooks/useGetRFQTrade'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
-import { TradeWithMM } from '../types'
+import { MMRfqTrade, TradeWithMM } from '../types'
 import ConfirmSwapModal from './ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
@@ -38,7 +37,7 @@ interface SwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  rfqTrade: RfqTrade
+  rfqTrade: MMRfqTrade
   swapInputError: string | ReactNode
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
