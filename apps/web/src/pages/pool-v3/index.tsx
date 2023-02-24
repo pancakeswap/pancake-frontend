@@ -144,7 +144,7 @@ export default function PoolListPage() {
           <Dots>{t('Loading')}</Dots>
         </Text>
       )
-    } else if (!v2PairsSection && !stablePairsSection && v3PairsSection) {
+    } else if (!v2PairsSection && !stablePairsSection && !v3PairsSection) {
       resultSection = (
         <Text color="textSubtle" textAlign="center">
           {t('No liquidity found.')}
