@@ -16,7 +16,7 @@ import { ExtendDurationModal } from '../types'
 import RoiCalculatorModalProvider from './RoiCalculatorModalProvider'
 import { ENABLE_EXTEND_LOCK_AMOUNT } from '../../../helpers'
 
-const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
+const ExtendDurationModalComponent: React.FC<ExtendDurationModal> = ({
   modalTitle,
   stakingToken,
   onDismiss,
@@ -125,4 +125,4 @@ const ExtendDurationModal: React.FC<ExtendDurationModal> = ({
   )
 }
 
-export default ExtendDurationModal
+export default ExtendDurationModalComponent
