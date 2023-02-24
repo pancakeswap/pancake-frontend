@@ -21,7 +21,6 @@ export function useDerivedSwapInfoWithMM(
 ): {
   mmTradeInfo: MMTradeInfo
   isMMBetter: boolean
-  isMMLoading: boolean
   mmQuoteExpiryRemainingSec: number
   mmOrderBookTrade: MMOrderBookTrade
   mmRFQTrade: MMRfqTrade
@@ -40,11 +39,7 @@ export function useDerivedSwapInfoWithMM(
     isExpertMode,
   })
 
-  const {
-    refreshRFQ,
-    rfqId,
-    isLoading: isRFQIdLoading,
-  } = useGetRFQId(
+  const { refreshRFQ, rfqId } = useGetRFQId(
     (!mmOrderBookTrade.inputError || isMMDev) && mmOrderBookTrade?.mmParam,
     isMMOrderBookTradeBetter,
     mmOrderBookTrade?.rfqUserInputPath,
@@ -82,7 +77,5 @@ export function useDerivedSwapInfoWithMM(
     isMMBetter ? mmRFQTrade?.refreshRFQ : undefined,
   )
 
-  const isMMLoading = isMMOrderBookTradeBetter && (mmRFQTrade?.isLoading || isRFQIdLoading)
-
-  return { mmTradeInfo, isMMBetter, isMMLoading, mmQuoteExpiryRemainingSec, mmOrderBookTrade, mmRFQTrade }
+  return { mmTradeInfo, isMMBetter, mmQuoteExpiryRemainingSec, mmOrderBookTrade, mmRFQTrade }
 }

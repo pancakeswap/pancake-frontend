@@ -22,7 +22,6 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useStableSwapByDefault } from 'state/user/smartRouter'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
-import Dots from 'components/Loader/Dots'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -109,8 +108,14 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     inputError: stableSwapInputError,
   } = useDerivedSwapInfoWithStableSwap(independentField, typedValue, inputCurrency, outputCurrency)
 
-  const { mmTradeInfo, mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, isMMLoading, isMMBetter } =
-    useDerivedSwapInfoWithMM(independentField, typedValue, inputCurrency, outputCurrency, v2Trade, tradeWithStableSwap)
+  const { mmTradeInfo, mmOrderBookTrade, mmRFQTrade, mmQuoteExpiryRemainingSec, isMMBetter } = useDerivedSwapInfoWithMM(
+    independentField,
+    typedValue,
+    inputCurrency,
+    outputCurrency,
+    v2Trade,
+    tradeWithStableSwap,
+  )
 
   const isSmartRouterBetter = useIsSmartRouterBetter({ trade: tradeWithStableSwap, v2Trade })
   const tradeInfo = useTradeInfo({
@@ -139,16 +144,12 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         [Field.INPUT]:
           independentField === Field.INPUT
             ? parsedAmount
-            : isMMLoading
-            ? undefined
             : isMMBetter
             ? mmTradeInfo.inputAmount
             : tradeInfo?.inputAmount,
         [Field.OUTPUT]:
           independentField === Field.OUTPUT
             ? parsedAmount
-            : isMMLoading
-            ? undefined
             : isMMBetter
             ? mmTradeInfo.outputAmount
             : tradeInfo?.outputAmount,
@@ -402,14 +403,10 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         </AutoColumn>
 
         <Box mt="0.25rem">
-          {isMMLoading ? (
-            <Button width="100%" disabled style={{ textAlign: 'left' }}>
-              <Dots>{t('Checking MM')}</Dots>
-            </Button>
-          ) : !tradeWithStableSwap &&
-            !v2Trade &&
-            mmOrderBookTrade?.inputError &&
-            shouldShowMMError(mmOrderBookTrade?.inputError) ? (
+          {!tradeWithStableSwap &&
+          !v2Trade &&
+          mmOrderBookTrade?.inputError &&
+          shouldShowMMError(mmOrderBookTrade?.inputError) ? (
             <Button width="100%" disabled style={{ textAlign: 'left' }}>
               {parseMMError(mmOrderBookTrade?.inputError)}
             </Button>
@@ -473,7 +470,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               currencies={currencies}
               isExpertMode={isExpertMode}
               trade={tradeWithStableSwap}
-              swapInputError={!isMMLoading && swapInputError}
+              swapInputError={swapInputError}
               currencyBalances={currencyBalances}
               recipient={recipient}
               allowedSlippage={allowedSlippage}
@@ -489,7 +486,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
             pairs={tradeInfo.route.pairs}
             path={tradeInfo.route.path}
             priceImpactWithoutFee={tradeInfo.priceImpactWithoutFee}
-            isMM={isMMLoading}
             realizedLPFee={tradeInfo.realizedLPFee}
             slippageAdjustedAmounts={tradeInfo.slippageAdjustedAmounts}
             inputAmount={tradeInfo.inputAmount}
