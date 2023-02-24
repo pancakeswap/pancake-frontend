@@ -20,11 +20,8 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import WalletNotConnected from 'views/Farms/components/FarmTable/Actions/V3/WalletNotConnected'
-
+import AvailableFarm from 'views/Farms/components/FarmTable/Actions/V3/FarmV3TableAction'
 import Apr, { AprProps } from '../Apr'
-// import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
-// import { HarvestAction, ProxyHarvestActionContainer } from './HarvestAction'
-// import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
 
 const { Multiplier, Liquidity } = FarmUI.FarmTable
 
@@ -43,13 +40,13 @@ const expandAnimation = keyframes`
     max-height: 0px;
   }
   to {
-    max-height: 700px;
+    max-height: 10000px;
   }
 `
 
 const collapseAnimation = keyframes`
   from {
-    max-height: 700px;
+    max-height: 10000px;
   }
   to {
     max-height: 0px;
@@ -109,6 +106,7 @@ const ActionContainer = styled.div`
 
 const InfoContainer = styled.div`
   min-width: 200px;
+  align-self: flex-start;
 `
 
 const ValueContainer = styled.div``
@@ -134,7 +132,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   // const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
 
   const farm = details
-  const hasNoPosition = true // TODO: FARM_V3
+  const hasNoPosition = false // TODO: FARM_V3
 
   const { isDesktop } = useMatchBreakpoints()
 
@@ -213,7 +211,10 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
       </InfoContainer>
       <ActionContainer>
         {account && !hasNoPosition ? (
-          <>HI</>
+          <>
+            <AvailableFarm title={t('%totalStakedFarm% Staked Farming', { totalStakedFarm: 2 })} />
+            <AvailableFarm title={t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: 2 })} />
+          </>
         ) : (
           <WalletNotConnected
             farm={farm}
@@ -222,20 +223,6 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
             liquidityUrlPathParts={`/add/${liquidityUrlPathParts}`}
           />
         )}
-        {/* {shouldUseProxyFarm && (
-          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
-          </ProxyHarvestActionContainer>
-        )}
-        {shouldUseProxyFarm ? (
-          <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-            {(props) => <StakedAction {...props} />}
-          </ProxyStakedContainer>
-        ) : (
-          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-            {(props) => <StakedAction {...props} />}
-          </StakedContainer>
-        )} */}
       </ActionContainer>
     </Container>
   )

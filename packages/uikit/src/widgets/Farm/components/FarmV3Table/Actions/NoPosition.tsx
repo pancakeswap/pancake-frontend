@@ -1,10 +1,31 @@
 import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import styled from "styled-components";
 import { Text } from "../../../../../components/Text";
 import { Button } from "../../../../../components/Button";
 import { Link } from "../../../../../components/Link";
+import { ActionTitles, ActionContent } from "./styles";
 import Flex from "../../../../../components/Box/Flex";
-import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from "./styles";
+
+const ActionContainer = styled.div`
+  padding: 16px;
+  border: 2px solid ${({ theme }) => theme.colors.input};
+  border-radius: 16px;
+  flex-grow: 1;
+  flex-basis: 0;
+  margin-bottom: 16px;
+
+  ${({ theme }) => theme.mediaQueries.sm} {
+    margin-left: 12px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+`;
 
 interface WalletNotConnectedProps {
   account: string;
@@ -25,9 +46,9 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
 
   return (
     <Flex width="100%" flexDirection={["column-reverse", "column-reverse", "row"]}>
-      {boostedAction && <ActionContainerSection style={{ minHeight: 124.5 }}>{boostedAction}</ActionContainerSection>}
+      {boostedAction && <ActionContainer style={{ minHeight: 124.5 }}>{boostedAction}</ActionContainer>}
       {account && hasNoPosition ? (
-        <ActionContainerSection>
+        <ActionContainer>
           <ActionTitles>
             <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
               {t("no position found")}
@@ -38,16 +59,16 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
               <Button width="100%">{t("Add Liquidity")}</Button>
             </Link>
           </ActionContent>
-        </ActionContainerSection>
+        </ActionContainer>
       ) : (
-        <ActionContainerSection>
+        <ActionContainer>
           <ActionTitles>
             <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px">
               {t("Start Farming")}
             </Text>
           </ActionTitles>
           <ActionContent>{connectWalletButton}</ActionContent>
-        </ActionContainerSection>
+        </ActionContainer>
       )}
     </Flex>
   );
