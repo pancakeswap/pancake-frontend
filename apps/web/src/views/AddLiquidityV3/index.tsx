@@ -171,7 +171,7 @@ export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }
   return (
     <Page>
       <BodyWrapper>
-        <AppHeader title={t('Add Liquidity')} backTo="/pool-v3" />
+        <AppHeader title={t('Add Liquidity')} backTo="/liquidity" />
         <CardBody>
           <ResponsiveTwoColumns>
             <AutoColumn>

@@ -277,7 +277,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           )}
         />
       )}
-      pendingText={`Removing ${liquidityValue0?.toSignificant(6)} ${liquidityValue0?.currency?.symbol} and 
+      pendingText={`Removing ${liquidityValue0?.toSignificant(6)} ${liquidityValue0?.currency?.symbol} and
       ${liquidityValue1?.toSignificant(6)} ${liquidityValue1?.currency?.symbol}`}
     />,
     true,
@@ -298,7 +298,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     <Page>
       <AppBody>
         <AppHeader
-          backTo={`/pool-v3/${tokenId}`}
+          backTo={`/liquidity/${tokenId}`}
           title={t('Remove %assetA%-%assetB% liquidity', {
             assetA: liquidityValue0?.currency?.symbol ?? '',
             assetB: liquidityValue1?.currency?.symbol ?? '',

@@ -85,14 +85,14 @@ export default function StablePoolPage() {
       <BodyWrapper>
         <AppHeader
           title={`${stableLp?.token0?.symbol}-${stableLp?.token1?.symbol} LP`}
-          backTo="/pool-v3"
+          backTo="/liquidity"
           noConfig
           buttons={
             <>
               <NextLinkFromReactRouter to={`/add/${stableLp?.token0?.address}/${stableLp?.token1?.address}`}>
                 <Button width="100%">Add</Button>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/remove-v2/${stableLp?.token0?.address}/${stableLp?.token1?.address}`}>
+              <NextLinkFromReactRouter to={`/v2/remove/${stableLp?.token0?.address}/${stableLp?.token1?.address}`}>
                 <Button ml="16px" variant="secondary" width="100%">
                   Remove
                 </Button>

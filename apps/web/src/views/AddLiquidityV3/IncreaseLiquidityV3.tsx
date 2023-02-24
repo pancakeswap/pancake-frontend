@@ -304,7 +304,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     <Page>
       <BodyWrapper>
         <AppHeader
-          backTo={`/pool-v3/${tokenId}`}
+          backTo={`/liquidity/${tokenId}`}
           title={t('Add %assetA%-%assetB% liquidity', {
             assetA: currencies[Field.CURRENCY_A]?.symbol ?? '',
             assetB: currencies[Field.CURRENCY_B]?.symbol ?? '',
