@@ -27,7 +27,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
 ) {
   return function useCandidatePools(currencyA?: Currency, currencyB?: Currency, { blockNumber }: Options = {}) {
     const key = useMemo(() => {
-      if (!currencyA || !currencyB) {
+      if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
         return ''
       }
       const symbols = currencyA.wrapped.sortsBefore(currencyB.wrapped)

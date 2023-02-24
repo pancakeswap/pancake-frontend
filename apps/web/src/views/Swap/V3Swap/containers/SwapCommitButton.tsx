@@ -30,9 +30,13 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
-import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
-import { useSwapCallback } from '../hooks/useSwapCallback'
-import { useSlippageAdjustedAmounts, useRouterAddress, useSwapInputError, useParsedAmounts } from '../hooks'
+import {
+  useSlippageAdjustedAmounts,
+  useRouterAddress,
+  useSwapInputError,
+  useParsedAmounts,
+  useSwapCallback,
+} from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
 
@@ -81,10 +85,8 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
-  const swapCalls = useSwapCallArguments(trade)
-
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, swapCalls)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade })
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: Trade<TradeType> | undefined
@@ -119,8 +121,8 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
     }
     setSwapState({ attemptingTxn: true, tradeToConfirm, swapErrorMessage: undefined, txHash: undefined })
     swapCallback()
-      .then((hash) => {
-        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: hash })
+      .then((res) => {
+        setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
       })
       .catch((error) => {
         setSwapState({

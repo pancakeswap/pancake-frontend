@@ -37,3 +37,5 @@ export const SmartRouter = {
   getV2PoolsOnChain,
   getStablePoolsOnChain,
 }
+
+export { SwapRouter } from './utils/swapRouter'

@@ -7,7 +7,7 @@ import {
   V3_SUBGRAPH_URLS,
 } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
-import { INFO_CLIENT_WITH_CHAIN, V3_POOL_SUBGRAPH_WITH_CHAIN } from '../config/constants/endpoints'
+import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
 
 // Extra headers
 // Mostly for dev environment
@@ -38,10 +38,6 @@ export const v3Clients = {
   // TODO: v3 swap update
   // [ChainId.BSC]: '',
   [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET]),
-}
-
-export const swapClientWithChain = (chainId: ChainId) => {
-  return new GraphQLClient(V3_POOL_SUBGRAPH_WITH_CHAIN[chainId])
 }
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)

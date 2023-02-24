@@ -104,7 +104,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         // showBUSD
         showMaxButton
         showCommonBases
-        loading={inputLoading}
+        loading={!isWrapping && inputLoading}
         label={!isTypingInput && !isWrapping ? t('From (estimated)') : t('From')}
         value={isWrapping ? typedValue : inputValue}
         maxAmount={maxAmountInput}
@@ -124,7 +124,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         // showBUSD
         showCommonBases
         showMaxButton={false}
-        loading={outputLoading}
+        loading={!isWrapping && outputLoading}
         label={isTypingInput && !isWrapping ? t('To (estimated)') : t('To')}
         value={isWrapping ? typedValue : outputValue}
         currency={outputCurrency}
