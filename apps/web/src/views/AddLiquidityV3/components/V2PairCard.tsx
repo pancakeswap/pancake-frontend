@@ -15,7 +15,7 @@ export function V2PairCard({ pair, account }: { pair: Pair; account: string }) {
 
   return (
     <Card mb="8px">
-      <NextLink href={`/pool-v2/${pair.token0.address}/${pair.token1.address}`}>
+      <NextLink href={`/v2/pair/${pair.token0.address}/${pair.token1.address}`}>
         <Flex justifyContent="space-between" p="16px">
           <Flex flexDirection="column">
             <Flex alignItems="center" mb="4px">
