@@ -7,7 +7,6 @@ import {
   V3_SUBGRAPH_URLS,
 } from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
-import { ChainId } from '@pancakeswap/sdk'
 import { INFO_CLIENT_WITH_CHAIN, V3_POOL_SUBGRAPH_WITH_CHAIN } from '../config/constants/endpoints'
 
 // Extra headers
