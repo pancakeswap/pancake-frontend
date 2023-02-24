@@ -55,15 +55,15 @@ export default function PoolV2Page() {
       <BodyWrapper>
         <AppHeader
           title={`${baseCurrency?.symbol} - ${currencyB?.symbol} LP`}
-          backTo="/pool-v3"
+          backTo="/liquidity"
           noConfig
           buttons={
             <>
-              <NextLinkFromReactRouter to={`/add-v2/${baseCurrency?.wrapped?.address}/${currencyB.wrapped?.address}`}>
+              <NextLinkFromReactRouter to={`/v2/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}>
                 <Button width="100%">Add</Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter
-                to={`/remove-v2/${baseCurrency?.wrapped?.address}/${currencyB.wrapped?.address}`}
+                to={`/v2/remove/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}
               >
                 <Button ml="16px" variant="secondary" width="100%">
                   Remove

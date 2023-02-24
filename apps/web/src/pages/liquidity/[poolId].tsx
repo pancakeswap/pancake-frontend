@@ -368,7 +368,7 @@ export default function PoolPage() {
       <BodyWrapper>
         <AppHeader
           title={`${currencyQuote?.symbol} / ${currencyBase?.symbol} - ${inRange ? 'In Range' : 'Out of Range'}`}
-          backTo="/pool-v3"
+          backTo="/liquidity"
           noConfig
           buttons={
             currency0 &&
