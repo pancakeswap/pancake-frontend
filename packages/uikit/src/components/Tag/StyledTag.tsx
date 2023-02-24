@@ -15,7 +15,7 @@ const getOutlineStyles = ({ outline, theme, variant: variantKey = variants.PRIMA
 
     return `
       color: ${color};
-      background: ${theme.colors.background};
+      background: none;
       border: 2px solid ${color};
     `;
   }
