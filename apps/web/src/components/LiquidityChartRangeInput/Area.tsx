@@ -4,8 +4,8 @@ import styled from 'styled-components'
 
 import { ChartEntry } from './types'
 
-const Path = styled.path<{ fill: string | undefined }>`
-  opacity: 0.5;
+const Path = styled.path<{ fill: string | undefined; opacity: number }>`
+  opacity: ${({ opacity }) => opacity || 1}};
   stroke: ${({ fill, theme }) => fill ?? theme.colors.failure};
   fill: ${({ fill, theme }) => fill ?? theme.colors.failure};
 `
@@ -17,6 +17,7 @@ export const Area = ({
   xValue,
   yValue,
   fill,
+  opacity,
 }: {
   series: ChartEntry[]
   xScale: ScaleLinear<number, number>
@@ -24,10 +25,12 @@ export const Area = ({
   xValue: (d: ChartEntry) => number
   yValue: (d: ChartEntry) => number
   fill?: string | undefined
+  opacity?: number
 }) =>
   useMemo(
     () => (
       <Path
+        opacity={opacity}
         fill={fill}
         d={
           area()
@@ -43,5 +46,5 @@ export const Area = ({
         }
       />
     ),
-    [fill, series, xScale, xValue, yScale, yValue],
+    [fill, opacity, series, xScale, xValue, yScale, yValue],
   )

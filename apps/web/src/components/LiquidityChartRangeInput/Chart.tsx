@@ -1,3 +1,4 @@
+import { useTheme } from '@pancakeswap/hooks'
 import { Bound } from 'config/constants/types'
 import { max, scaleLinear, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -26,6 +27,7 @@ export function Chart({
   zoomLevels,
 }: LiquidityChartRangeInputProps) {
   const zoomRef = useRef<SVGRectElement | null>(null)
+  const { theme } = useTheme()
 
   const [zoom, setZoom] = useState<ZoomTransform | null>(null)
 
@@ -105,12 +107,30 @@ export function Chart({
 
         <g transform={`translate(${margins.left},${margins.top})`}>
           <g clipPath={`url(#${id}-chart-clip)`}>
-            <Area series={series} xScale={xScale} yScale={yScale} xValue={xAccessor} yValue={yAccessor} />
+            <Area
+              series={series.filter((s) => +s.price0 < current)}
+              xScale={xScale}
+              yScale={yScale}
+              xValue={xAccessor}
+              yValue={yAccessor}
+              opacity={0.5}
+              fill={theme.colors.failure}
+            />
+            <Area
+              series={series.filter((s) => +s.price0 > current)}
+              xScale={xScale}
+              yScale={yScale}
+              xValue={xAccessor}
+              yValue={yAccessor}
+              opacity={0.5}
+              fill={theme.colors.success}
+            />
 
             {brushDomain && (
               // duplicate area chart with mask for selected area
               <g mask={`url(#${id}-chart-area-mask)`}>
                 <Area
+                  opacity={0.3}
                   series={series}
                   xScale={xScale}
                   yScale={yScale}
