@@ -14,9 +14,27 @@ const LinkExternal: React.FC<React.PropsWithChildren<LinkProps>> = ({
   return (
     <Link external {...props}>
       {children}
-      {isBscScan && <BscScanIcon color={props.color ? props.color : "primary"} ml="4px" />}
-      {isAptosScan && <AptosIcon width="18" height="18" color={props.color ? props.color : "primary"} ml="4px" />}
-      {!isBscScan && !isAptosScan && <OpenNewIcon color={props.color ? props.color : "primary"} ml="4px" />}
+      {isBscScan && (
+        <BscScanIcon
+          width={props.fontSize ? props.fontSize.toString() : "20px"}
+          color={props.color ? props.color : "primary"}
+          ml="4px"
+        />
+      )}
+      {isAptosScan && (
+        <AptosIcon
+          width={props.fontSize ? props.fontSize.toString() : "18px"}
+          color={props.color ? props.color : "primary"}
+          ml="4px"
+        />
+      )}
+      {!isBscScan && !isAptosScan && (
+        <OpenNewIcon
+          width={props.fontSize ? props.fontSize.toString() : "20px"}
+          color={props.color ? props.color : "primary"}
+          ml="4px"
+        />
+      )}
     </Link>
   );
 };

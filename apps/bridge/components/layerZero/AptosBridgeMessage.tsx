@@ -1,8 +1,8 @@
-import { Box, Message, MessageText, WarningIcon, Flex, Link } from '@pancakeswap/uikit'
+import { Box, Message, MessageText, WarningIcon, Flex, LinkExternal } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 
-const InlineLink = styled(Link)`
-  display: inline-block;
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
   margin: 0 4px;
 `
 
@@ -22,11 +22,7 @@ const AptosBridgeMessage = () => {
           </MessageText>
           <MessageText mb="5px">
             Learn more in the
-            <InlineLink
-              ml="4px"
-              external
-              href="https://docs.pancakeswap.finance/get-started-aptos/aptos-faq#cake-bridging"
-            >
+            <InlineLink ml="4px" href="https://docs.pancakeswap.finance/get-started-aptos/aptos-faq#cake-bridging">
               FAQ.
             </InlineLink>
           </MessageText>

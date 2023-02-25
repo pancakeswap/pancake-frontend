@@ -11,7 +11,7 @@ import {
   Flex,
   FlexGap,
   Heading,
-  Link,
+  LinkExternal,
   LogoRoundIcon,
   NextLinkFromReactRouter as RouterLink,
   Skeleton,
@@ -58,8 +58,8 @@ const Wrapper = styled(Container)`
   }
 `
 
-const InlineLink = styled(Link)`
-  display: inline;
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
 `
 
 const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
@@ -79,7 +79,7 @@ const Step1 = ({ hasProfile }: { hasProfile: boolean }) => {
           },
         )}
       </Text>
-      <InlineLink external href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
+      <InlineLink href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
         {t('Learn more about iCAKE')}
       </InlineLink>
     </Box>,

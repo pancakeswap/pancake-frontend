@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Box, Flex, Text, Heading, Link, Image, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Heading, LinkExternal, Image, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
 import { BallWithNumber, MatchExampleA, MatchExampleB, PoolAllocationChart } from '../svgs'
@@ -86,8 +86,8 @@ const BallsContainer = styled(Flex)`
   }
 `
 
-const InlineLink = styled(Link)`
-  display: inline;
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
 `
 
 const ExampleBalls = () => {

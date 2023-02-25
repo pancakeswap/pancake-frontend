@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Text, Heading, Card, CardHeader, CardBody, Flex, Link, Box } from '@pancakeswap/uikit'
+import { Text, Heading, Card, CardHeader, CardBody, Flex, Box, LinkExternal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 import { FORM_ADDRESS } from '../helpers'
@@ -9,8 +9,8 @@ const StyledCard = styled(Card)`
   height: fit-content;
 `
 
-const InlineLink = styled(Link)`
-  display: inline;
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
 `
 
 const List = styled.ul`
@@ -50,9 +50,7 @@ const FAQs = () => {
                 <Text display="inline" color="textSubtle">
                   {t('Projects can submit an application to sponsor a yield farm and/or pool on PancakeSwap via the ')}
                 </Text>
-                <InlineLink href={FORM_ADDRESS} external>
-                  {t('Application Form')}
-                </InlineLink>
+                <InlineLink href={FORM_ADDRESS}>{t('Application Form')}</InlineLink>
               </Box>
             </FoldableText>
             <FoldableText title={t('Step 2: Await whitelisting')} mt="24px">

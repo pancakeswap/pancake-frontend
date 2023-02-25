@@ -1,12 +1,12 @@
 import styled from 'styled-components'
-import { Flex, Text, TooltipText, useTooltip, Box, Link, BalanceWithLoading } from '@pancakeswap/uikit'
+import { Flex, Text, TooltipText, useTooltip, Box, LinkExternal, BalanceWithLoading } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useIfoCredit, useIfoCeiling } from 'state/pools/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { getICakeWeekDisplay } from 'views/Pools/helpers'
 
-const InlineLink = styled(Link)`
-  display: inline;
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
 `
 
 const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
@@ -25,7 +25,7 @@ const IfoCakeRow: React.FC<React.PropsWithChildren> = () => {
           },
         )}
       </Text>
-      <InlineLink external href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
+      <InlineLink href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
         {t('Learn more about iCAKE')}
       </InlineLink>
     </Box>,

@@ -1,9 +1,9 @@
 import Trans from 'components/Trans'
 import styled from 'styled-components'
-import { Link } from '@pancakeswap/uikit'
+import { LinkExternal } from '@pancakeswap/uikit'
 
-const InlineLink = styled(Link)`
-  display: inline;
+const InlineLink = styled(LinkExternal)`
+  display: inline-flex;
 `
 
 const config = [
@@ -22,7 +22,7 @@ const config = [
       </Trans>,
       <>
         <Trans>Learn more about iCAKE</Trans>
-        <InlineLink ml="4px" external href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
+        <InlineLink ml="4px" href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering/icake">
           <Trans>here</Trans>
         </InlineLink>
       </>,
@@ -79,7 +79,6 @@ const config = [
         <Trans>Learn more about cIFO</Trans>
         <InlineLink
           ml="4px"
-          external
           href="https://medium.com/pancakeswap/community-initial-farm-offering-cifo-the-new-ifo-subtype-ac1abacf66be"
         >
           <Trans>here</Trans>
