@@ -64,16 +64,13 @@ const SellStage: React.FC<React.PropsWithChildren<SellStageProps>> = ({
           </Text>
         </Flex>
         <Flex justifyContent="space-between" flex="3">
-          <Button
-            as={Link}
+          <LinkExternal
             p="0px"
             height="16px"
-            external
-            variant="text"
             href={`${nftsBaseUrl}/collections/${nftToSell.collectionAddress}/${itemPageUrlId}`}
           >
             {t('View Item')}
-          </Button>
+          </LinkExternal>
           <HorizontalDivider />
           <LinkExternal
             isBscScan
