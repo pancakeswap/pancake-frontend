@@ -12,7 +12,7 @@ const IfoHasVestingNotice: React.FC<React.PropsWithChildren<{ url: string }>> = 
           <Text fontSize="14px" color="#D67E0A">
             {t("This IFO has token vesting. Purchased tokens are released over a period of time.")}
           </Text>
-          <IfoMessageTextLink external href={url} color="#D67E0A" display="inline">
+          <IfoMessageTextLink href={url} color="#D67E0A" display="inline">
             {t("Learn more in the vote proposal")}
           </IfoMessageTextLink>
         </Box>

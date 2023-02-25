@@ -5,7 +5,7 @@ import {
   Button,
   Flex,
   Image,
-  Link,
+  LinkExternal,
   Modal,
   ModalBody,
   Text,
@@ -182,14 +182,9 @@ const ContributeModal: React.FC<React.PropsWithChildren<Props>> = ({
             {t(
               'If you don’t commit enough CAKE, you may not receive a meaningful amount of IFO tokens, or you may not receive any IFO tokens at all.',
             )}
-            <Link
-              fontSize="12px"
-              display="inline"
-              href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering"
-              external
-            >
+            <LinkExternal fontSize="12px" href="https://docs.pancakeswap.finance/products/ifo-initial-farm-offering">
               {t('Read more')}
-            </Link>
+            </LinkExternal>
           </Text>
           <ConfirmButton isConfirmDisabled={isConfirmDisabled} isConfirming={isConfirming} onConfirm={handleConfirm} />
         </Box>

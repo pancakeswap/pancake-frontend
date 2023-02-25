@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { Link } from "../../components";
+import { LinkExternal } from "../../components";
 
-export const IfoMessageTextLink = styled(Link)`
+export const IfoMessageTextLink = styled(LinkExternal)`
   display: inline;
   text-decoration: underline;
   font-weight: bold;

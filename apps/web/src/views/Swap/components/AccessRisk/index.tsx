@@ -6,7 +6,7 @@ import {
   Flex,
   HelpIcon,
   IconButton,
-  Link,
+  LinkExternal,
   RefreshIcon,
   Tag,
   Text,
@@ -98,9 +98,9 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text as="span">{t('Risk scan results are provided by a third party')}</Text>
-      <Link style={{ display: 'inline' }} ml="4px" external href="https://www.avengerdao.org">
+      <LinkExternal ml="4px" href="https://www.avengerdao.org">
         AvengerDAO
-      </Link>
+      </LinkExternal>
       <Text my="8px">
         {t(
           'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
@@ -108,9 +108,9 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
       </Text>
       <Flex mt="4px">
         <Text>{t('Learn more about risk rating')}</Text>
-        <Link ml="4px" external href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
+        <LinkExternal ml="4px" href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
           {t('here.')}
-        </Link>
+        </LinkExternal>
       </Flex>
     </>,
     { placement: 'bottom' },

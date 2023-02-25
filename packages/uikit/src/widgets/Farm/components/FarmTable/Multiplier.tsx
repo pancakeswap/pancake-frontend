@@ -5,7 +5,7 @@ import { HelpIcon } from "../../../../components/Svg";
 import { Skeleton } from "../../../../components/Skeleton";
 import { useTooltip } from "../../../../hooks/useTooltip";
 import { FarmTableMultiplierProps } from "../../types";
-import { Link } from "../../../../components/Link";
+import { LinkExternal } from "../../../../components/Link";
 
 const ReferenceElement = styled.div`
   display: inline-block;
@@ -65,14 +65,9 @@ const Multiplier: React.FunctionComponent<React.PropsWithChildren<FarmTableMulti
               "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives."
             )}
           </Text>
-          <Link
-            mt="8px"
-            display="inline"
-            href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd"
-            external
-          >
+          <LinkExternal mt="8px" href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd">
             {t("Read more")}
-          </Link>
+          </LinkExternal>
         </>
       )}
     </>

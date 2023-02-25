@@ -12,7 +12,7 @@ const LinkExternal: React.FC<React.PropsWithChildren<LinkProps>> = ({
   ...props
 }) => {
   return (
-    <Link external {...props}>
+    <Link external {...props} style={{ display: "inline-flex" }}>
       {children}
       {isBscScan && <BscScanIcon color={props.color ? props.color : "primary"} ml="4px" />}
       {isAptosScan && <AptosIcon width="18" height="18" color={props.color ? props.color : "primary"} ml="4px" />}

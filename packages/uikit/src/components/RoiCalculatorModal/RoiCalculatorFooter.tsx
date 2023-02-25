@@ -102,14 +102,9 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
               "We have recently rebased multipliers by a factor of 10, this is only a visual change and does not affect the amount of CAKE each farm receives."
             )}
           </Text>
-          <Link
-            mt="8px"
-            display="inline"
-            href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd"
-            external
-          >
+          <LinkExternal mt="8px" href="https://medium.com/pancakeswap/farm-mutlipliers-visual-update-1f5f5f615afd">
             {t("Read more")}
-          </Link>
+          </LinkExternal>
         </>
       )}
     </>,

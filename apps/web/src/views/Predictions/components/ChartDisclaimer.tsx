@@ -58,7 +58,6 @@ const ChartDisclaimer: React.FC<React.PropsWithChildren<InjectedModalProps>> = (
         </Text>
         <LinkExternal
           href="https://docs.pancakeswap.finance/products/prediction/prediction-faq#what-are-you-using-for-your-price-feed"
-          external
           mb="24px"
         >
           {t('Learn More')}
