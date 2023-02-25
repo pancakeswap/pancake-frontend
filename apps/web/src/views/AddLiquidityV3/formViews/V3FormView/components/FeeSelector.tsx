@@ -87,7 +87,7 @@ export default function FeeSelector({
       heading={
         feeAmount ? (
           <Box>
-            <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier fee tier</Text>
+            <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Text>
             {distributions && (
               <FeeTierPercentageBadge
                 distributions={distributions}

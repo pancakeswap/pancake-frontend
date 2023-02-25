@@ -3,9 +3,9 @@ import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useEffect, useState } from 'react'
+import { useCurrentBlock } from 'state/block/hooks'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { useBlockNumber } from 'wagmi'
 
 const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
 
@@ -21,7 +21,7 @@ export function useV3PositionFees(
   ]).result?.[0]
 
   const tokenIdHexString = tokenId?.toHexString()
-  const { data: latestBlockNumber } = useBlockNumber()
+  const latestBlockNumber = useCurrentBlock()
 
   // we can't use multicall for this because we need to simulate the call from a specific address
   // latestBlockNumber is included to ensure data stays up-to-date every block

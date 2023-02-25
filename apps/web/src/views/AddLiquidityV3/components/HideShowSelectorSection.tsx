@@ -1,4 +1,4 @@
-import { AutoRow, Button } from '@pancakeswap/uikit'
+import { AutoRow, Button, ChevronDownIcon } from '@pancakeswap/uikit'
 import { LightGreyCard } from 'components/Card'
 import { Dispatch, ReactElement, SetStateAction } from 'react'
 
@@ -18,12 +18,17 @@ export default function HideShowSelectorSection({
   content,
 }: HideShowSelectorSectionPropsType) {
   return (
-    <LightGreyCard padding="8px">
-      <AutoRow justifyContent="space-between" marginBottom="8px">
+    <LightGreyCard p="8px 16px">
+      <AutoRow justifyContent="space-between" marginBottom={showOptions ? '8px' : '0'}>
         {heading}
         {noHideButton || (
-          <Button scale="sm" onClick={() => setShowOptions((prev) => !prev)}>
-            {showOptions ? 'Hide' : 'Edit'}
+          <Button
+            scale="sm"
+            onClick={() => setShowOptions((prev) => !prev)}
+            variant="text"
+            endIcon={!showOptions && <ChevronDownIcon color="primary" />}
+          >
+            {showOptions ? 'Hide' : 'More'}
           </Button>
         )}
       </AutoRow>

@@ -2,7 +2,7 @@ import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
-import { FlexGap, AutoColumn, CardBody, Card, Text, AddIcon } from '@pancakeswap/uikit'
+import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect, useState } from 'react'
@@ -175,9 +175,7 @@ export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }
         <CardBody>
           <ResponsiveTwoColumns>
             <AutoColumn>
-              <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
-                Choose Token Pair
-              </Text>
+              <PreTitle mb="8px">Choose Token Pair</PreTitle>
               <FlexGap gap="4px" width="100%" mb="24px">
                 <CurrencySelect
                   id="add-liquidity-select-tokena"
@@ -197,7 +195,7 @@ export default function UniversalAddLiquidity({ isV2, currencyIdA, currencyIdB }
                   hideBalance
                 />
               </FlexGap>
-              <DynamicSection disabled={false}>
+              <DynamicSection disabled={!baseCurrency || !currencyB}>
                 {!isV2 &&
                   stableConfig.stableSwapConfig &&
                   [SELECTOR_TYPE.STABLE, SELECTOR_TYPE.V3].includes(selectorType) && (

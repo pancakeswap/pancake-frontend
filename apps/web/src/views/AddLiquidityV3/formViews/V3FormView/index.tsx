@@ -14,6 +14,8 @@ import {
   ConfirmationModalContent,
   useModal,
   Message,
+  MessageText,
+  PreTitle,
 } from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
@@ -26,7 +28,6 @@ import { useCallback, useEffect, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { LightGreyCard } from 'components/Card'
 
 // import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
@@ -437,51 +438,53 @@ export default function V3FormView({
 
   return (
     <>
-      <AutoColumn>
-        <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
-          Deposit Amount
-        </Text>
+      <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
+        <AutoColumn>
+          <PreTitle mb="8px">Deposit Amount</PreTitle>
 
-        <LockedDeposit locked={depositADisabled} mb="8px">
-          <CurrencyInputPanel
-            disableCurrencySelect
-            value={formattedAmounts[Field.CURRENCY_A]}
-            onUserInput={onFieldAInput}
-            showQuickInputButton
-            showMaxButton
-            currency={currencies[Field.CURRENCY_A]}
-            id="add-liquidity-input-tokena"
-            showCommonBases
-            commonBasesType={CommonBasesType.LIQUIDITY}
-          />
-        </LockedDeposit>
+          <LockedDeposit locked={depositADisabled} mb="8px">
+            <CurrencyInputPanel
+              disableCurrencySelect
+              value={formattedAmounts[Field.CURRENCY_A]}
+              onUserInput={onFieldAInput}
+              showQuickInputButton
+              showMaxButton
+              currency={currencies[Field.CURRENCY_A]}
+              id="add-liquidity-input-tokena"
+              showCommonBases
+              commonBasesType={CommonBasesType.LIQUIDITY}
+            />
+          </LockedDeposit>
 
-        <LockedDeposit locked={depositBDisabled}>
-          <CurrencyInputPanel
-            disableCurrencySelect
-            value={formattedAmounts[Field.CURRENCY_B]}
-            onUserInput={onFieldBInput}
-            showQuickInputButton
-            showMaxButton
-            currency={currencies[Field.CURRENCY_B]}
-            id="add-liquidity-input-tokenb"
-            showCommonBases
-            commonBasesType={CommonBasesType.LIQUIDITY}
-          />
-        </LockedDeposit>
-      </AutoColumn>
+          <LockedDeposit locked={depositBDisabled}>
+            <CurrencyInputPanel
+              disableCurrencySelect
+              value={formattedAmounts[Field.CURRENCY_B]}
+              onUserInput={onFieldBInput}
+              showQuickInputButton
+              showMaxButton
+              currency={currencies[Field.CURRENCY_B]}
+              id="add-liquidity-input-tokenb"
+              showCommonBases
+              commonBasesType={CommonBasesType.LIQUIDITY}
+            />
+          </LockedDeposit>
+        </AutoColumn>
+      </DynamicSection>
       <HideMedium>{buttons}</HideMedium>
 
       <RightContainer>
         <AutoColumn>
           {noLiquidity ? (
             <Box>
-              <Text>Set Starting Price</Text>
-              <LightGreyCard mb="16px">
-                This pool must be initialized before you can add liquidity. To initialize, select a starting price for
-                the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher than usual
-                due to the initialization transaction.
-              </LightGreyCard>
+              <PreTitle>Set Starting Price</PreTitle>
+              <Message variant="warning" mb="16px">
+                <MessageText>
+                  This pool must be initialized before you can add liquidity. To initialize, select a starting price for
+                  the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher than
+                  usual due to the initialization transaction.
+                </MessageText>
+              </Message>
               <StyledInput className="start-price-input" value={startPriceTypedValue} onUserInput={onStartPriceInput} />
               <AutoRow justifyContent="space-between" mb="24px">
                 <Text>Current {baseCurrency?.symbol} Price:</Text>
@@ -494,9 +497,7 @@ export default function V3FormView({
           ) : (
             <>
               <RowBetween mb="8px">
-                <Text bold fontSize="14px" textTransform="uppercase" color="secondary">
-                  Set Price Range
-                </Text>
+                <PreTitle>Set Price Range</PreTitle>
                 <RateToggle
                   currencyA={baseCurrency}
                   handleRateToggle={() => {

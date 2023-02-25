@@ -158,7 +158,7 @@ export default function AddStableLiquidity({
   )
 
   const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
-  const stableAPR = useStableSwapAPR(stableSwapContract.address)
+  const stableAPR = useStableSwapAPR(stableSwapContract?.address)
 
   // check whether the user has approved tokens for addling LPs
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], stableSwapContract?.address)

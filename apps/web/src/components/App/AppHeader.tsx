@@ -12,7 +12,6 @@ import {
 import { useExpertModeManager } from 'state/user/hooks'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
-import Transactions from './Transactions'
 import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {
@@ -76,7 +75,6 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
                 <NotificationDot show={expertMode}>
                   <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
                 </NotificationDot>
-                <Transactions />
               </Flex>
             )}
             {noConfig && buttons && (

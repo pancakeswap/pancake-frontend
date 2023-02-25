@@ -8,11 +8,15 @@ const Card = styled(Box)<{
   borderRadius?: string
 }>`
   width: ${({ width }) => width ?? '100%'};
-  padding: ${({ padding }) => padding ?? '1.25rem'};
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius ?? '16px'};
   background-color: ${({ theme }) => theme.colors.background};
 `
+
+Card.defaultProps = {
+  p: '1.25rem',
+}
+
 export default Card
 
 export const LightCard = styled(Card)`

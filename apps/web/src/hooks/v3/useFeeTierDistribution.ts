@@ -1,7 +1,7 @@
 import { Currency, Token } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
-import { useBlockNumber } from 'wagmi'
+import { useCurrentBlock } from 'state/block/hooks'
 import { PoolState } from './types'
 import useFeeTierDistributionQuery from './useFeeTierDistributionQuery'
 
@@ -74,7 +74,7 @@ export function useFeeTierDistribution(
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
-  const { data: latestBlock } = useBlockNumber()
+  const latestBlock = useCurrentBlock()
   const { isLoading, error, data } = useFeeTierDistributionQuery(token0?.address, token1?.address, 30000)
 
   const { asToken0, asToken1, _meta } = data ?? {}
