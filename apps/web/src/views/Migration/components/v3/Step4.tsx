@@ -26,15 +26,15 @@ export function Step4() {
       <AppHeader title="Your Liquidity" subtitle="List of your liquidity positions" />
       <AtomBox bg="gradientCardHeader" style={{ minHeight: '400px' }} pt="16px" px="24px">
         {!account ? (
-          <Text color="textSubtle" textAlign="center" bold fontSize="16px">
+          <Text color="textSubtle" pt="24px" textAlign="center" bold fontSize="16px">
             {t('Connect to a wallet to view your liquidity.')}
           </Text>
         ) : v3Loading ? (
-          <Text color="textSubtle" textAlign="center" bold fontSize="16px">
+          <Text color="textSubtle" pt="24px" textAlign="center" bold fontSize="16px">
             <Dots>{t('Loading')}</Dots>
           </Text>
         ) : !positions?.length ? (
-          <AtomBox textAlign="center">
+          <AtomBox textAlign="center" pt="24px">
             <Text color="textSubtle" textAlign="center" bold fontSize="16px">
               {t('No liquidity found.')}
             </Text>

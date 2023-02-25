@@ -2,6 +2,7 @@ import { useTheme } from '@pancakeswap/hooks'
 import { Bound } from 'config/constants/types'
 import { max, scaleLinear, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import partition from 'lodash/partition'
 
 import { Area } from './Area'
 import { AxisBottom } from './AxisBottom'
@@ -65,6 +66,19 @@ export function Chart({
     }
   }, [brushDomain, onBrushDomainChange, xScale])
 
+  const [leftSeries, rightSeries] = useMemo(() => {
+    let [left, right] = partition(series, (d) => +xAccessor(d) < current)
+
+    if (right.length && right[right.length - 1]) {
+      if (right[right.length - 1].price0 !== current) {
+        right = [...right, { activeLiquidity: right[right.length - 1].activeLiquidity, price0: current }]
+      }
+      left = [{ activeLiquidity: right[right.length - 1].activeLiquidity, price0: current }, ...left]
+    }
+
+    return [left, right]
+  }, [current, series])
+
   return (
     <>
       <Zoom
@@ -108,7 +122,7 @@ export function Chart({
         <g transform={`translate(${margins.left},${margins.top})`}>
           <g clipPath={`url(#${id}-chart-clip)`}>
             <Area
-              series={series.filter((s) => +s.price0 < current)}
+              series={leftSeries}
               xScale={xScale}
               yScale={yScale}
               xValue={xAccessor}
@@ -117,7 +131,7 @@ export function Chart({
               fill={theme.colors.failure}
             />
             <Area
-              series={series.filter((s) => +s.price0 > current)}
+              series={rightSeries}
               xScale={xScale}
               yScale={yScale}
               xValue={xAccessor}

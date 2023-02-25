@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Button, Heading, Link, PageHeader, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import React, { useRef, useState } from 'react'
+import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { usePollFarmsWithUserData } from 'state/farms/hooks'
 import OldFarm from './components/v3/Step1'
 import { Step2 } from './components/v3/Step2'
@@ -95,7 +96,11 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
         />
         {step === 0 && <OldFarm />}
         {step === 1 && <Step2 />}
-        {step === 2 && <Step3 />}
+        {step === 2 && (
+          <LiquidityFormProvider>
+            <Step3 />
+          </LiquidityFormProvider>
+        )}
         {step === 3 && <Step4 />}
       </Page>
       <MigrationSticky version="v3" step={step} handleClick={handleMigrationStickyClick} />
