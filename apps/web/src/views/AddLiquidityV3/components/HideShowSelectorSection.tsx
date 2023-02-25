@@ -18,7 +18,7 @@ export default function HideShowSelectorSection({
   content,
 }: HideShowSelectorSectionPropsType) {
   return (
-    <LightGreyCard p="8px 16px">
+    <LightGreyCard padding="8px 16px">
       <AutoRow justifyContent="space-between" marginBottom={showOptions ? '8px' : '0'}>
         {heading}
         {noHideButton || (
