@@ -28,7 +28,7 @@ export function useDerivedSwapInfoWithMM(
   const [isExpertMode] = useExpertModeManager()
   const isMMDev = useMMDevMode()
   const [allowedSlippage] = useUserSlippageTolerance()
-  const { chainId } = useActiveWeb3React()
+  const { account, chainId } = useActiveWeb3React()
   const deBounceTypedValue = useDebounce(typedValue, 300)
   const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)
   const isMMOrderBookTradeBetter = useIsTradeWithMMBetter({
@@ -66,7 +66,6 @@ export function useDerivedSwapInfoWithMM(
 
   const mmTradeInfo = useMMTradeInfo({
     mmTrade: mmRFQTrade?.trade || mmOrderBookTrade?.trade,
-    useMMToTrade: isMMBetter,
     allowedSlippage,
     chainId,
     mmSwapInputError: mmOrderBookTrade?.inputError,
@@ -77,5 +76,11 @@ export function useDerivedSwapInfoWithMM(
     isMMBetter ? mmRFQTrade?.refreshRFQ : undefined,
   )
 
-  return { mmTradeInfo, isMMBetter, mmQuoteExpiryRemainingSec, mmOrderBookTrade, mmRFQTrade }
+  return {
+    mmTradeInfo,
+    isMMBetter: account ? isMMBetter : isMMOrderBookTradeBetter,
+    mmQuoteExpiryRemainingSec,
+    mmOrderBookTrade,
+    mmRFQTrade,
+  }
 }

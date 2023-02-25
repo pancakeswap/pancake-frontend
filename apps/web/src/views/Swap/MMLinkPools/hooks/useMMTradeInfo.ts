@@ -10,7 +10,6 @@ import { TradeWithMM } from '../types'
 
 interface Options {
   mmTrade?: TradeWithMM<Currency, Currency, TradeType> | null
-  useMMToTrade: boolean
   allowedSlippage: number
   chainId: ChainId
   mmSwapInputError: string
@@ -33,14 +32,9 @@ export interface MMTradeInfo {
   trade: TradeWithMM<Currency, Currency, TradeType>
 }
 
-export function useMMTradeInfo({
-  mmTrade,
-  useMMToTrade = false,
-  chainId,
-  mmSwapInputError,
-}: Options): MMTradeInfo | null {
+export function useMMTradeInfo({ mmTrade, chainId, mmSwapInputError }: Options): MMTradeInfo | null {
   return useMemo(() => {
-    if (!mmTrade || !useMMToTrade) {
+    if (!mmTrade) {
       return null
     }
     return {
@@ -64,5 +58,5 @@ export function useMMTradeInfo({
       realizedLPFee: computeTradePriceBreakdown(mmTrade).realizedLPFee,
       inputError: mmSwapInputError,
     }
-  }, [mmTrade, chainId, mmSwapInputError, useMMToTrade])
+  }, [mmTrade, chainId, mmSwapInputError])
 }
