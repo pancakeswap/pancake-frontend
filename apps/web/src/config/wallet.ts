@@ -76,7 +76,7 @@ const walletsConfig = ({
         typeof window !== 'undefined' &&
         !(window.ethereum as ExtendEthereum)?.isSafePal && // SafePal has isTrust flag
         (Boolean(window.ethereum?.isTrust) || Boolean((window.ethereum as ExtendEthereum)?.isTrustWallet)),
-      deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://pancakeswap.finance/',
+      deepLink: 'https://link.trustwallet.com/open_url?coin_id=20000714&url=https://lottery.cadinu.io/',
       downloadLink: {
         desktop: 'https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph/related',
       },
