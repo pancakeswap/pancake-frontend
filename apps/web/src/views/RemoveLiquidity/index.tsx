@@ -877,9 +877,18 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   )
 }
 
-export const RemoveLiquidityLayout = ({ currencyA, currencyB, children }) => {
-  const { t } = useTranslation()
+export const RemoveLiquidityV2Layout = ({ currencyA, currencyB, children }) => {
   const { pair } = useDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
+
+  return (
+    <RemoveLiquidityLayout currencyA={currencyA} currencyB={currencyB} pair={pair}>
+      {children}
+    </RemoveLiquidityLayout>
+  )
+}
+
+export const RemoveLiquidityLayout = ({ currencyA, currencyB, children, pair }) => {
+  const { t } = useTranslation()
   const { chainId } = useActiveChainId()
 
   const oneCurrencyIsWNative = Boolean(

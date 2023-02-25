@@ -141,7 +141,7 @@ export const withLPValues = withLPValuesFactory({
   hookArgFn: ({ pair, userPoolBalance, totalPoolTokens }) => ({ pair, userPoolBalance, totalPoolTokens }),
 })
 
-const withStableLPValues = withLPValuesFactory({
+export const withStableLPValues = withLPValuesFactory({
   useLPValuesHook: useGetRemovedTokenAmounts,
   hookArgFn: ({ userPoolBalance }) => ({
     lpAmount: userPoolBalance?.quotient?.toString(),

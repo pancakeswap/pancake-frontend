@@ -1,21 +1,34 @@
+/* eslint-disable react/jsx-pascal-case */
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
-import { PositionCardProps, withLPValues } from 'components/PositionCard'
+import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'
 import { PairState, usePairs } from 'hooks/usePairs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { Field } from 'state/burn/actions'
+import { useBurnActionHandlers } from 'state/burn/hooks'
 import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import atomWithStorage from 'utils/atomWithStorageWithErrorCatch'
-import { useLPTokensWithBalanceByAccount } from 'views/Swap/StableSwap/hooks/useStableConfig'
-import { useAccount } from 'wagmi'
-import RemoveLiquidity from 'views/RemoveLiquidity'
 import currencyId from 'utils/currencyId'
+import RemoveLiquidity from 'views/RemoveLiquidity'
+import RemoveStableLiquidity from 'views/RemoveLiquidity/RemoveStableLiquidity'
+import useStableConfig, {
+  StableConfigContext,
+  useLPTokensWithBalanceByAccount,
+} from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { useAccount } from 'wagmi'
+
+const STABLE_LP_TO_MIGRATE = [
+  '0x36842F8fb99D55477C0Da638aF5ceb6bBf86aA98', // USDT-BUSD
+  '0x1A77C359D0019cD8F4d36b7CDf5a88043D801072', // USDT-BUSD
+  '0xee1bcc9F1692E81A281b3a302a4b67890BA4be76', // USDT-USDC
+]
 
 // TODO: v3 migration add whitelist stable pairs
 export function Step2() {
@@ -38,7 +51,9 @@ export function Step2() {
     liquidityTokens,
   )
 
-  const stablePairs = useLPTokensWithBalanceByAccount(account)
+  let stablePairs = useLPTokensWithBalanceByAccount(account)
+
+  stablePairs = stablePairs.filter((pair) => STABLE_LP_TO_MIGRATE.includes(pair.liquidityToken.address))
 
   // fetch the reserves for all V2 pools in which the user has a balance
   const liquidityTokensWithBalances = useMemo(
@@ -83,8 +98,11 @@ export function Step2() {
           </AtomBox>
         ) : (
           <>
-            {allV2PairsWithLiquidity.map((pair) => (
+            {allV2PairsWithLiquidity?.map((pair) => (
               <LpCard key={pair.liquidityToken.address} pair={pair} />
+            ))}
+            {stablePairs?.map((pair) => (
+              <StableLpCard key={pair.liquidityToken.address} pair={pair} />
             ))}
           </>
         )}
@@ -98,10 +116,42 @@ export const removedPairsAtom = atomWithStorage(
   {} as Record<ChainId, { [pairAddress: string]: boolean }>,
 )
 
-const LPCard_ = ({ currency0, currency1, userPoolBalance, totalUSDValue }: PositionCardProps) => {
-  const [, _setRemovedPairs] = useAtom(removedPairsAtom)
+interface MigrationPositionCardProps extends PositionCardProps {
+  type: 'V2' | 'Stable'
+}
+
+const LPCard_ = ({
+  currency0,
+  currency1,
+  userPoolBalance,
+  totalUSDValue,
+  children,
+  pair,
+  type,
+}: MigrationPositionCardProps) => {
+  const [, setRemovedPairs] = useAtom(removedPairsAtom)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
+  const { onUserInput } = useBurnActionHandlers()
+
+  useEffect(() => {
+    if (open) {
+      onUserInput(Field.LIQUIDITY_PERCENT, '100')
+    }
+  }, [onUserInput, open])
+
+  useEffect(() => {
+    if (open && pair) {
+      setRemovedPairs((s) => ({
+        ...s,
+        [pair.chainId]: {
+          ...s[pair.chainId],
+          [pair.liquidityToken.address]: true,
+        },
+      }))
+    }
+  }, [setRemovedPairs, open, pair])
+
   return (
     <Card mb="8px">
       <Flex justifyContent="space-between" p="16px">
@@ -124,29 +174,68 @@ const LPCard_ = ({ currency0, currency1, userPoolBalance, totalUSDValue }: Posit
         </Flex>
         <Flex alignItems="center">
           <Tag variant="textSubtle" outline mr="16px">
-            V2 LP
+            {type} LP
           </Tag>
           <Button onClick={() => setOpen(true)}>Remove</Button>
         </Flex>
+        <ModalV2 isOpen={open}>
+          <Modal
+            title={t('Remove %assetA%-%assetB% liquidity', {
+              assetA: currency0?.symbol ?? '',
+              assetB: currency1?.symbol ?? '',
+            })}
+            onDismiss={() => setOpen(false)}
+          >
+            {children}
+          </Modal>
+        </ModalV2>
       </Flex>
-      <ModalV2 isOpen={open}>
-        <Modal
-          title={t('Remove %assetA%-%assetB% liquidity', {
-            assetA: currency0?.symbol ?? '',
-            assetB: currency1?.symbol ?? '',
-          })}
-          onDismiss={() => setOpen(false)}
-        >
-          <RemoveLiquidity
-            currencyA={currency0}
-            currencyB={currency1}
-            currencyIdA={currencyId(currency0)}
-            currencyIdB={currencyId(currency1)}
-          />
-        </Modal>
-      </ModalV2>
     </Card>
   )
 }
 
-const LpCard = withLPValues(LPCard_)
+const StableLpCard_ = (props) => {
+  return (
+    <LPCard_ {...props} type="Stable">
+      <RemoveStableLiquidity
+        currencyA={props.currency0}
+        currencyB={props.currency1}
+        currencyIdA={currencyId(props.currency0)}
+        currencyIdB={currencyId(props.currency1)}
+      />
+    </LPCard_>
+  )
+}
+
+const V2LpCard_ = (props) => {
+  return (
+    <LPCard_ {...props} type="V2">
+      <RemoveLiquidity
+        currencyA={props.currency0}
+        currencyB={props.currency1}
+        currencyIdA={currencyId(props.currency0)}
+        currencyIdB={currencyId(props.currency1)}
+      />
+    </LPCard_>
+  )
+}
+
+const LpCard = withLPValues(V2LpCard_)
+
+const StableLpCardWithLPValues = withStableLPValues(StableLpCard_)
+
+const StableLpCard = (props) => {
+  const { pair } = props
+  const stableConfig = useStableConfig({
+    tokenA: pair?.token0,
+    tokenB: pair?.token1,
+  })
+
+  if (!stableConfig.stableSwapConfig) return null
+
+  return (
+    <StableConfigContext.Provider value={stableConfig}>
+      <StableLpCardWithLPValues {...props} />
+    </StableConfigContext.Provider>
+  )
+}
