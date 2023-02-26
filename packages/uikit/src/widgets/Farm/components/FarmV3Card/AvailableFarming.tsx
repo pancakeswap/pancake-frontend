@@ -3,12 +3,12 @@ import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "../../../../components/Text";
 import { Button } from "../../../../components/Button";
 import { Flex, Box } from "../../../../components/Box";
-import { Card } from "../../../../components/Card";
 
-const LightGreyCard = styled(Card)`
-  overflow: initial;
+const LightGreyCard = styled("div")`
+  padding: 0;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.dropdown};
+  border-radius: ${({ theme }) => theme.radii.card};
 `;
 
 interface AvailableFarmingProps {
@@ -27,8 +27,8 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
       <Text fontSize="12px" bold color="textSubtle" mb="8px">
         {t("%totalAvailableFarm% LP Available for Farming", { totalAvailableFarm: 2 })}
       </Text>
-      <LightGreyCard padding="16px">
-        <Flex justifyContent="space-between">
+      <LightGreyCard>
+        <Flex padding="16px" justifyContent="space-between">
           <Flex flexDirection="column">
             <Text bold color="textSubtle" mb="4px">
               {lpSymbol}

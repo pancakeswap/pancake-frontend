@@ -16,7 +16,7 @@ const ActionContainer = styled(Flex)`
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 8px;
-  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  background-color: ${({ theme }) => theme.colors.dropdown};
   flex-direction: column;
 
   > ${ActionTitles}, > ${ActionContent} {
