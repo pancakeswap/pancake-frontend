@@ -427,7 +427,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               swapInputError={mmOrderBookTrade?.inputError || parseMMError(mmRFQTrade?.error?.message)}
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
-              allowedSlippage={allowedSlippage}
               onUserInput={onUserInput}
               mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
             />

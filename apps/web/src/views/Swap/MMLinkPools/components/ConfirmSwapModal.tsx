@@ -62,7 +62,6 @@ interface ConfirmSwapModalProps {
   attemptingTxn: boolean
   txHash?: string
   recipient: string | null
-  allowedSlippage: number
   onAcceptChanges: () => void
   onConfirm: () => void
   swapErrorMessage?: string
@@ -76,7 +75,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
   originalTrade,
   currencyBalances,
   onAcceptChanges,
-  allowedSlippage,
   onConfirm,
   onDismiss,
   customOnDismiss,
@@ -111,7 +109,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
           currencyBalances={currencyBalances}
           originalTrade={originalTrade}
           onAcceptChanges={onAcceptChanges}
-          allowedSlippage={allowedSlippage}
           onConfirm={onConfirm}
           recipient={recipient}
         />
@@ -120,7 +117,6 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
       trade,
       originalTrade,
       onAcceptChanges,
-      allowedSlippage,
       onConfirm,
       recipient,
       swapErrorMessage,

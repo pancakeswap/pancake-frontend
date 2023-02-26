@@ -3,13 +3,14 @@ import { ConfirmationModalContent } from '@pancakeswap/uikit'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import SwapModalHeader from 'views/Swap/components/SwapModalHeader'
 import { TradeWithMM } from '../types'
 import {
   computeSlippageAdjustedAmounts as computeSlippageAdjustedAmountsWithSmartRouter,
   computeTradePriceBreakdown as computeTradePriceBreakdownWithSmartRouter,
 } from '../utils/exchange'
 import SwapModalFooter from './SwapModalFooter'
-import SwapModalHeader from './SwapModalHeader'
+import { MMSlippageTolerance } from './MMSlippageTolerance'
 
 /**
  * Returns true if the trade requires a confirmation of details before we can submit it
@@ -33,7 +34,6 @@ interface TransactionConfirmSwapContentProps {
   trade: TradeWithMM<Currency, Currency, TradeType> | undefined
   originalTrade: TradeWithMM<Currency, Currency, TradeType> | undefined
   onAcceptChanges: () => void
-  allowedSlippage: number
   onConfirm: () => void
   recipient: string
   currencyBalances: {
@@ -47,7 +47,6 @@ const TransactionConfirmSwapContent = ({
   trade,
   originalTrade,
   onAcceptChanges,
-  allowedSlippage,
   onConfirm,
   recipient,
   currencyBalances,
@@ -84,7 +83,7 @@ const TransactionConfirmSwapContent = ({
         outputAmount={trade.outputAmount}
         tradeType={trade.tradeType}
         priceImpactWithoutFee={priceImpactWithoutFee}
-        allowedSlippage={allowedSlippage}
+        allowedSlippage={<MMSlippageTolerance />}
         slippageAdjustedAmounts={slippageAdjustedAmounts}
         isEnoughInputBalance={isEnoughInputBalance}
         recipient={recipient}
@@ -94,7 +93,6 @@ const TransactionConfirmSwapContent = ({
     ) : null
   }, [
     priceImpactWithoutFee,
-    allowedSlippage,
     onAcceptChanges,
     recipient,
     showAcceptChanges,

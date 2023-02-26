@@ -44,7 +44,6 @@ interface SwapCommitButtonPropsType {
     OUTPUT?: CurrencyAmount<Currency>
   }
   recipient: string
-  allowedSlippage: number
   onUserInput: (field: Field, typedValue: string) => void
   mmQuoteExpiryRemainingSec?: number | null
 }
@@ -65,7 +64,6 @@ export default function MMSwapCommitButton({
   swapInputError,
   currencyBalances,
   recipient,
-  allowedSlippage,
   onUserInput,
   mmQuoteExpiryRemainingSec = null,
 }: SwapCommitButtonPropsType) {
@@ -140,7 +138,6 @@ export default function MMSwapCommitButton({
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       recipient={recipient}
-      allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
       swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
       customOnDismiss={handleConfirmDismiss}
