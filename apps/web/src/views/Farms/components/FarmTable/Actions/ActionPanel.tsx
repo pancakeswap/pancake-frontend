@@ -20,7 +20,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import WalletNotConnected from 'views/Farms/components/FarmTable/Actions/V3/WalletNotConnected'
-import AvailableFarm from 'views/Farms/components/FarmTable/Actions/V3/FarmV3TableAction'
+import FarmV3TableAction from 'views/Farms/components/FarmTable/Actions/V3/FarmV3TableAction'
 import Apr, { AprProps } from '../Apr'
 
 const { Multiplier, Liquidity } = FarmUI.FarmTable
@@ -123,14 +123,11 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   apr,
   multiplier,
   liquidity,
-  // userDataReady,
   expanded,
   alignLinksToRight = true,
 }) => {
   const { chainId } = useActiveChainId()
   const { account } = useActiveWeb3React()
-  // const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
-
   const farm = details
   const hasNoPosition = false // TODO: FARM_V3
 
@@ -211,10 +208,13 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
       </InfoContainer>
       <ActionContainer>
         {account && !hasNoPosition ? (
-          <>
-            <AvailableFarm title={t('%totalStakedFarm% Staked Farming', { totalStakedFarm: 2 })} />
-            <AvailableFarm title={t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: 2 })} />
-          </>
+          <Flex flexDirection="column">
+            <FarmV3TableAction title={t('%totalStakedFarm% Staked Farming', { totalStakedFarm: 2 })} farm={farm} />
+            <FarmV3TableAction
+              title={t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: 2 })}
+              farm={farm}
+            />
+          </Flex>
         ) : (
           <WalletNotConnected
             farm={farm}
