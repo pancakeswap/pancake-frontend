@@ -35,7 +35,7 @@ const FarmV3TableAction: React.FunctionComponent<React.PropsWithChildren<FarmV3T
         maxHeight={['500px', '500px', '500px', '100%']}
         overflowY={['auto', 'auto', 'auto', 'initial']}
       >
-        {[1, 2].map((i) => (
+        {[1, 2].map(() => (
           <Box width="100%">
             <ActionContainerSection>
               <ActionContent width="100%" flexDirection="column">

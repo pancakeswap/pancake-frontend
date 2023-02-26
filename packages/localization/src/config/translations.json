@@ -2128,5 +2128,8 @@
   "Missing dependencies": "Missing dependencies",
   "PCS v3 Migration": "PCS v3 Migration",
   "Migrate to continue farming CAKE rewards and earning trading fees.": "Migrate to continue farming CAKE rewards and earning trading fees.",
-  "Guide": "Guide"
+  "Guide": "Guide",
+  "%totalStakedFarm% Staked Farming": "%totalStakedFarm% Staked Farming",
+  "%totalAvailableFarm% LP Available for Farming": "%totalAvailableFarm% LP Available for Farming",
+  "no position found": "no position found"
 }

@@ -55,7 +55,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
         {title}
       </Text>
       <Flex flexWrap="wrap" width="100%">
-        {[1, 2].map((i) => (
+        {[1, 2].map(() => (
           <Box width="100%">
             <ActionContainer>
               <ActionContent width="100%" flexDirection="column">
