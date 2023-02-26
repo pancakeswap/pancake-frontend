@@ -208,7 +208,7 @@ export function AdvancedSwapDetails({
                   <QuestionHelper
                     text={t('Routing through these tokens resulted in the best price for your trade.')}
                     ml="4px"
-                    placement="top-start"
+                    placement="top"
                   />
                 </span>
                 <SwapRoute path={path} />
@@ -221,7 +221,7 @@ export function AdvancedSwapDetails({
                         <QuestionHelper
                           text={t('Routing through these tokens resulted in the best price for your trade.')}
                           ml="4px"
-                          placement="top-start"
+                          placement="top"
                         />
                       </Flex>
                     }

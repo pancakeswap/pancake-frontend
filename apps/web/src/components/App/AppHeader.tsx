@@ -44,7 +44,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({ title, subtitle, 
           <Flex mb="8px" alignItems="center" justifyContent="space-between">
             <Flex>
               <Heading as="h2">{title}</Heading>
-              {helper && <QuestionHelper text={helper} ml="4px" placement="top-start" />}
+              {helper && <QuestionHelper text={helper} ml="4px" placement="top" />}
             </Flex>
             {!noConfig && (
               <Flex alignItems="center">

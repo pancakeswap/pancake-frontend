@@ -86,7 +86,7 @@ const SlippageTabs = () => {
             text={t(
               'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
             )}
-            placement="top-start"
+            placement="top"
             ml="4px"
           />
         </Flex>
@@ -167,7 +167,7 @@ const SlippageTabs = () => {
           <Text>{t('Tx deadline (mins)')}</Text>
           <QuestionHelper
             text={t('Your transaction will revert if it is left confirming for longer than this time.')}
-            placement="top-start"
+            placement="top"
             ml="4px"
           />
         </Flex>
