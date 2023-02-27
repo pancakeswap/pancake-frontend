@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, StableSwapFeePercent } from '../types'
@@ -10,17 +10,22 @@ export function createStableSwapPair(
   stableSwapAddress = '',
   lpAddress = '',
   infoStableSwapAddress = '',
+  stableLpFee = 0,
+  stableLpFeeRateOfTotalFee = 0,
 ): StableSwapPair {
   return {
     ...pair,
     stableSwapAddress,
     lpAddress,
     infoStableSwapAddress,
+    liquidityToken: new ERC20Token(pair.token0.chainId, lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
     // default price & fees are zero, need to get the actual price from chain
     price: new Price(pair.token0, pair.token1, '0', '1'),
     fee: new Percent(0),
     adminFee: new Percent(0),
     involvesToken: (token) => token.equals(pair.token0) || token.equals(pair.token1),
+    stableLpFee,
+    stableLpFeeRateOfTotalFee,
   }
 }
 

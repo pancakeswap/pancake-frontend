@@ -130,10 +130,13 @@ export default {
     56: '0x01871991587d5671f3A2d4E2BcDC22F4E026396e',
     97: '0xDB9D365b50E62fce747A90515D2bd1254A16EbB9',
   },
-  // TODO: multi
   zap: {
     56: '0xD4c4a7C55c9f7B3c48bafb6E8643Ba79F42418dF',
     97: '0xD85835207054F25620109bdc745EC1D1f84F04e1',
+  },
+  stableSwapNativeHelper: {
+    56: '',
+    97: '0x494B692Fe0CF54f633dCDFbba0D0a8629Edb344F',
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',

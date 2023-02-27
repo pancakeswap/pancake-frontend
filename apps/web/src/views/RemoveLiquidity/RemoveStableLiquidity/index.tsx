@@ -27,6 +27,7 @@ import { CommitButton } from 'components/CommitButton'
 import { useTranslation } from '@pancakeswap/localization'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import { MinimalPositionCard } from '../../../components/PositionCard'
@@ -78,6 +79,10 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   // burn state
   const { independentField, typedValue } = useBurnState()
 
+  const nativeHelperContract = useStableSwapNativeHelperContract()
+
+  const needUnwrapped = currencyA?.isNative || currencyB?.isNative
+
   const { pair, parsedAmounts, error } = useStableDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   const { onUserInput: _onUserInput } = useBurnActionHandlers()
@@ -117,7 +122,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    stableSwapConfig?.stableSwapAddress,
+    needUnwrapped ? nativeHelperContract?.address : stableSwapConfig?.stableSwapAddress,
   )
 
   // wrapped onUserInput to clear signatures
@@ -136,7 +141,9 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   const addTransaction = useTransactionAdder()
 
   async function onRemove() {
-    if (!chainId || !account) throw new Error('missing dependencies')
+    const contract = needUnwrapped ? nativeHelperContract : stableSwapContract
+
+    if (!chainId || !account || !contract) throw new Error('missing dependencies')
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
     if (!currencyAmountA || !currencyAmountB) {
       toastError(t('Error'), t('Missing currency amounts'))
@@ -168,10 +175,18 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
     // we have approval, use normal remove liquidity
     if (approval === ApprovalState.APPROVED) {
       methodNames = ['remove_liquidity']
-      args = [
-        liquidityAmount.quotient.toString(),
-        [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
-      ]
+      if (needUnwrapped) {
+        args = [
+          stableSwapContract.address,
+          liquidityAmount.quotient.toString(),
+          [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
+        ]
+      } else {
+        args = [
+          liquidityAmount.quotient.toString(),
+          [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
+        ]
+      }
     }
     // we have a signature, use permit versions of remove liquidity
     else {
@@ -184,7 +199,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
-        safeGasEstimate = calculateGasMargin(await stableSwapContract.estimateGas[methodNames[i]](...args))
+        safeGasEstimate = calculateGasMargin(await contract.estimateGas[methodNames[i]](...args))
       } catch (e) {
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
@@ -202,7 +217,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-      await stableSwapContract[methodName](...args, {
+      await contract[methodName](...args, {
         gasLimit: safeGasEstimate,
         gasPrice,
       })
@@ -420,7 +435,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                         <StyledInternalLink
                           href={`/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
                             currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
-                          }`}
+                          }?stable=1`}
                         >
                           {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}
                         </StyledInternalLink>
@@ -428,7 +443,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                         <StyledInternalLink
                           href={`/remove/${
                             currencyA && currencyA.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdA
-                          }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}`}
+                          }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}?stable=1`}
                         >
                           {t('Receive %currency%', { currency: native?.symbol })}
                         </StyledInternalLink>
