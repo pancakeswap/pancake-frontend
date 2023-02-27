@@ -102,5 +102,5 @@ async function getBestRoutes(
   //     quote.currency.symbol,
   //   )
   // })
-  return getBestRouteCombinationByQuotes(amount, routesWithValidQuote, tradeType, { maxSplits })
+  return getBestRouteCombinationByQuotes(amount, currency, routesWithValidQuote, tradeType, { maxSplits })
 }
