@@ -53,6 +53,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 150,
+    lpSymbol: 'APX-BNB LP',
+    lpAddress: '0xAf839f4D3620a1EED00cCc21dDC01119C26a75E1',
+    token: bscTokens.apx,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
     pid: 148,
     lpSymbol: 'CSIX-CAKE LP',
     lpAddress: '0x43C2aBe5e3bceC619072D8668Ac83Ad825da707f',
