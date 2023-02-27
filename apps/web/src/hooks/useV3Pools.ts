@@ -6,7 +6,6 @@ import { gql } from 'graphql-request'
 import { v3Clients } from 'utils/graphql'
 import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
-import { useActiveChainId } from './useActiveChainId'
 
 type Pair = [Currency, Currency]
 
@@ -264,9 +263,8 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
 }
 
 export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, blockNumber }: Options = {}) {
-  const { chainId } = useActiveChainId()
   const poolsWithTicks = useSWR(
-    key && pools && v3Clients[chainId] ? ['v3_pool_ticks', key] : null,
+    key && pools ? ['v3_pool_ticks', key] : null,
     async () => {
       console.time('[METRIC] Get V3 pool ticks')
       console.timeLog('[METRIC] Get V3 pool ticks', key)
