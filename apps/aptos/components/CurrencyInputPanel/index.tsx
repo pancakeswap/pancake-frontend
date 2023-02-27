@@ -85,6 +85,7 @@ export const CurrencyInputPanel = ({
       onCurrencySelect={onCurrencySelect}
       selectedCurrency={currency}
       otherSelectedCurrency={otherCurrency}
+      showCommonBases
     />,
   )
 

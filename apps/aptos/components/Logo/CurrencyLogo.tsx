@@ -12,10 +12,7 @@ import { BAD_SRCS } from './constants'
 const getTokenLogoURL = memoize(
   (token?: Token) => {
     if (token && token.chainId === ChainId.MAINNET) {
-      return `https://assets-cdn.trustwallet.com/blockchains/aptos/assets/${token.address.replaceAll(
-        ':',
-        '%253A',
-      )}/logo.png` // hex encoding
+      return `https://tokens.pancakeswap.finance/images/aptos/${token.address}.png` // hex encoding
     }
     return null
   },
