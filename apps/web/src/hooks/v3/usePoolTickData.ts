@@ -32,7 +32,7 @@ function useTicksFromSubgraph(
         )
       : undefined
 
-  return useAllV3TicksQuery(poolAddress, 0, 30000)
+  return useAllV3TicksQuery(poolAddress, 30000)
 }
 
 // Fetches all ticks for a given pool
@@ -50,7 +50,7 @@ function useAllV3Ticks(
   return {
     isLoading: subgraphTickData.isLoading,
     error: subgraphTickData.error,
-    ticks: subgraphTickData.data?.ticks,
+    ticks: subgraphTickData.data,
   }
 }
 
