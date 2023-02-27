@@ -46,6 +46,9 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
         <Button width={["120px"]} style={{ alignSelf: "center" }}>
           {t("Stake")}
         </Button>
+        {/* <Button width={["120px"]} style={{ alignSelf: "center" }}>
+          {t("Enable")}
+        </Button> */}
         {/* <Button variant="secondary" width={['120px']} style={{ alignSelf: 'center' }}>{t('Unstake')}</Button> */}
       </Flex>
     </>

@@ -48,6 +48,13 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
     <Flex flexDirection="column">
       <AvailableFarming lpSymbol={lpSymbol} onClickViewAllButton={onClickViewAllButton} />
       <TotalStakedBalance onClickViewAllButton={onClickViewAllButton} />
+
+      {/* Show it when only single farm / stake
+      <FarmV3CardList title={t('%totalStakedFarm% Staked Farming', { totalStakedFarm: 1 })} farm={farm} />
+      <FarmV3CardList
+        title={t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: 1 })}
+        farm={farm}
+      /> */}
     </Flex>
   )
 }
