@@ -54,3 +54,11 @@ export const CAKE = {
     'PancakeSwap Token',
   ),
 }
+
+export const CE_BNB_MAINNET = new Coin(
+  ChainId.MAINNET,
+  '0x8d87a65ba30e09357fa2edea2c80dbac296e5dec2b18287113500b902942929d::celer_coin_manager::BnbCoin',
+  8,
+  'ceBNB',
+  'Celer - Binance Coin',
+)
