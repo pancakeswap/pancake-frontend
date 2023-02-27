@@ -21,7 +21,7 @@ import { Pool } from './entities'
 import { Multicall } from './multicall'
 import { Payments } from './payments'
 
-const MaxUint128 = toHex(JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)), JSBI.BigInt(1)))
+export const MaxUint128 = toHex(JSBI.subtract(JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128)), JSBI.BigInt(1)))
 
 export interface MintSpecificOptions {
   /**
@@ -99,7 +99,7 @@ export interface SafeTransferOptions {
 }
 
 // type guard
-function isMint(options: AddLiquidityOptions): options is MintOptions {
+export function isMint(options: AddLiquidityOptions): options is MintOptions {
   return Object.keys(options).some((k) => k === 'recipient')
 }
 
