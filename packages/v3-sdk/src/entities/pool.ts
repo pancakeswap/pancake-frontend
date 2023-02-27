@@ -319,6 +319,8 @@ export class Pool {
       }
     }
 
+    invariant(JSBI.equal(state.amountSpecifiedRemaining, ZERO), 'INSUFICIENT_LIQUIDITY')
+
     return {
       amountCalculated: state.amountCalculated,
       sqrtRatioX96: state.sqrtPriceX96,
