@@ -17,6 +17,7 @@ interface Config {
 
 export function getBestRouteCombinationByQuotes(
   amount: CurrencyAmount<Currency>,
+  quoteCurrency: Currency,
   routesWithQuote: RouteWithQuote[],
   tradeType: TradeType,
   config: Config,
@@ -98,10 +99,12 @@ export function getBestRouteCombinationByQuotes(
     `Found best swap route. ${routeAmounts.length} split.`,
   )
 
-  const { routes, quote, estimatedGasUsed, estimatedGasUsedUSD } = swapRoute
+  const { routes, quote: quoteAmount, estimatedGasUsed, estimatedGasUsedUSD } = swapRoute
+  const quote = CurrencyAmount.fromRawAmount(quoteCurrency, quoteAmount.quotient)
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   return {
-    routes: routes.map(({ type, amount: routeAmount, quote: routeQuote, pools, path, percent }) => {
+    routes: routes.map(({ type, amount: routeAmount, quote: routeQuoteAmount, pools, path, percent }) => {
+      const routeQuote = CurrencyAmount.fromRawAmount(quoteCurrency, routeQuoteAmount.quotient)
       return {
         percent,
         type,
