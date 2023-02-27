@@ -2083,7 +2083,7 @@
   "Learn how": "تعلم الكيفية",
   "You might also like": "قد يعجبك أيضًا",
   "Chef’s choice": "اختيار الطاهي",
-  "Recommended Readings by Chef’s": "Recommended Readings by Chef’s",
+  "Recommended Readings by Chef’s": "قراءات موصى بها من الطهاة",
   "Latest News about PancakeSwap and more!": "آخر الأخبار عن PancakeSwap وغيرها!",
   "Token Risk Scanning": "فحص مخاطر الرمز المميز",
   "Automatic risk scanning for the selected token": "فحص مخاطر تلقائي للرمز المميز المحدد",
@@ -2120,5 +2120,5 @@
   "Trade now using Trust Wallet": "تداول الآن باستخدام Trust Wallet",
   "Download Trust Wallet": "نزل Trust Wallet",
   "Trade and Share $10,000": "تداول وشارك 10000 دولار",
-  "Unable request a quote": "Unable request a quote"
+  "Unable request a quote": "تعذر طلب عرض الأسعار"
 }
