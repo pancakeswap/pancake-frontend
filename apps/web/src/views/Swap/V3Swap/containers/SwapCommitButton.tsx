@@ -128,7 +128,7 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
-          swapErrorMessage: error.message,
+          swapErrorMessage: typeof error === 'string' ? error : error.message,
           txHash: undefined,
         })
       })

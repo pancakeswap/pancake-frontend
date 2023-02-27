@@ -3,7 +3,7 @@ import { Signer } from '@ethersproject/abstract-signer'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
-import { Trans, useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { useMemo } from 'react'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 
@@ -97,7 +97,7 @@ export default function useSendSwapTransaction(
                     console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return {
                       call,
-                      error: <Trans>Unexpected issue with estimating the gas.Please try again.</Trans>,
+                      error: t('Unexpected issue with estimating the gas.Please try again.'),
                     }
                   })
                   .catch((callError) => {

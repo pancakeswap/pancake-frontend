@@ -52,8 +52,8 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
     onDismiss?.()
   }, [customOnDismiss, onDismiss])
 
-  const confirmationContent = useCallback(
-    () =>
+  const confirmationContent =
+    !attemptingTxn && !txHash ? (
       swapErrorMessage ? (
         <SwapTransactionErrorContent
           openSettingModal={openSettingModal}
@@ -70,20 +70,8 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           onConfirm={onConfirm}
           recipient={recipient}
         />
-      ),
-    [
-      trade,
-      originalTrade,
-      onAcceptChanges,
-      allowedSlippage,
-      onConfirm,
-      recipient,
-      swapErrorMessage,
-      onDismiss,
-      openSettingModal,
-      currencyBalances,
-    ],
-  )
+      )
+    ) : null
 
   // text to show while loading
   const pendingText = useMemo(() => {
@@ -108,9 +96,8 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
           onDismiss={handleDismiss}
           currencyToAdd={trade?.outputAmount.currency}
         />
-      ) : (
-        confirmationContent()
-      )}
+      ) : null}
+      {confirmationContent}
     </ConfirmSwapModalContainer>
   )
 })

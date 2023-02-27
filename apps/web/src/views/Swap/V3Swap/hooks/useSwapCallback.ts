@@ -4,7 +4,7 @@ import type { TransactionResponse } from '@ethersproject/providers'
 import { Trade } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
-import { Trans } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
 import { ReactNode, useMemo } from 'react'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -45,6 +45,7 @@ export function useSwapCallback({
   deadline,
   feeOptions,
 }: UseSwapCallbackArgs): UseSwapCallbackReturns {
+  const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
   const provider = useProviderOrSigner()
   const [allowedSlippageRaw] = useUserSlippageTolerance() || [INITIAL_ALLOWED_SLIPPAGE]
@@ -64,11 +65,11 @@ export function useSwapCallback({
 
   return useMemo(() => {
     if (!trade || !provider || !account || !chainId || !callback) {
-      return { state: SwapCallbackState.INVALID, error: <Trans>Missing dependencies</Trans> }
+      return { state: SwapCallbackState.INVALID, error: t('Missing dependencies') }
     }
     if (!recipient) {
       if (recipientAddress !== null) {
-        return { state: SwapCallbackState.INVALID, error: <Trans>Invalid recipient</Trans> }
+        return { state: SwapCallbackState.INVALID, error: t('Invalid recipient') }
       }
       return { state: SwapCallbackState.LOADING }
     }
@@ -77,5 +78,5 @@ export function useSwapCallback({
       state: SwapCallbackState.VALID,
       callback: async () => callback(),
     }
-  }, [trade, account, chainId, callback, recipient, recipientAddress, provider])
+  }, [trade, account, chainId, callback, recipient, recipientAddress, provider, t])
 }
