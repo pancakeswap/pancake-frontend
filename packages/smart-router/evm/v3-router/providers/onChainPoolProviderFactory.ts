@@ -1,14 +1,13 @@
 import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent, BigintIsh } from '@pancakeswap/sdk'
 import { Call, createMulticall } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { computePoolAddress, FeeAmount } from '@pancakeswap/v3-sdk'
+import { computePoolAddress, FeeAmount, FACTORY_ADDRESSES } from '@pancakeswap/v3-sdk'
 
 import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../types'
 import IPancakePairABI from '../../abis/IPancakePair.json'
 import IStablePoolABI from '../../abis/StableSwapPair.json'
 import IPancakeV3PoolABI from '../../abis/IPancakeV3Pool.json'
 import { getStableSwapPools } from '../../constants/stableSwap'
-import { V3_POOL_FACTORY_ADDRESS } from '../../constants'
 
 export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool>({
   abi: IPancakePairABI,
@@ -118,7 +117,7 @@ interface V3PoolMeta extends PoolMeta {
 export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3PoolMeta>({
   abi: IPancakeV3PoolABI,
   getPossiblePoolMetas: ([currencyA, currencyB]) => {
-    const factoryAddress = V3_POOL_FACTORY_ADDRESS[currencyA.chainId as ChainId]
+    const factoryAddress = FACTORY_ADDRESSES[currencyA.chainId as ChainId]
     if (!factoryAddress) {
       return []
     }
