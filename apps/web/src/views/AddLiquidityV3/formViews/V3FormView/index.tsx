@@ -589,7 +589,7 @@ export default function V3FormView({
             )}
 
             {outOfRange ? (
-              <Message variant="warning">
+              <Message variant="warning" mb="16px">
                 <RowBetween>
                   <Text ml="12px" fontSize="12px">
                     Your position will not earn fees or be used in trades until the market price moves into your range.
