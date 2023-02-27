@@ -1,9 +1,54 @@
 {
   "name": "@pancakeswap/token-lists",
-  "version": "0.0.1",
-  "private": true,
-  "main": "src/index.ts",
+  "version": "0.0.4",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "vitest --run"
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "ajv": "^6.12.3",
+    "@pancakeswap/swap-sdk-core": "*"
+  },
+  "peerDependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
+    "localforage": "^1.10.0",
+    "jotai": "^1.13.1",
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "@reduxjs/toolkit": "^1.9.1",
+    "react": "^18.2.0",
+    "tsup": "^6.6.3"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.mjs",
+      "require": "./dist/react.js"
+    }
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "@reduxjs/toolkit": {
+      "optional": true
+    },
+    "localforage": {
+      "optional": true
+    },
+    "jotai": {
+      "optional": true
+    }
   }
 }

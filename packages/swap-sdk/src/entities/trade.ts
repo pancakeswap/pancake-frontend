@@ -1,16 +1,22 @@
 import invariant from 'tiny-invariant'
-import { InsufficientInputAmountError, InsufficientReservesError } from '..'
+import {
+  InsufficientInputAmountError,
+  InsufficientReservesError,
+  ONE,
+  TradeType,
+  ZERO,
+  CurrencyAmount,
+  Currency,
+  Fraction,
+  Percent,
+  Price,
+  Token,
+  sortedInsert,
+  computePriceImpact,
+} from '@pancakeswap/swap-sdk-core'
 
-import { ONE, TradeType, ZERO } from '../constants'
-import { computePriceImpact, sortedInsert } from '../utils'
-import { Currency } from './currency'
-import { CurrencyAmount } from './fractions/currencyAmount'
-import { Fraction } from './fractions/fraction'
-import { Percent } from './fractions/percent'
-import { Price } from './fractions/price'
 import { Pair } from './pair'
 import { Route } from './route'
-import { Token } from './token'
 
 // minimal interface so the input output comparator may be shared across types
 interface InputOutput<TInput extends Currency, TOutput extends Currency> {
@@ -34,17 +40,14 @@ export function inputOutputComparator<TInput extends Currency, TOutput extends C
     // trade A requires less input than trade B, so A should come first
     if (a.inputAmount.lessThan(b.inputAmount)) {
       return -1
-    } else {
-      return 1
     }
-  } else {
-    // tradeA has less output than trade B, so should come second
-    if (a.outputAmount.lessThan(b.outputAmount)) {
-      return 1
-    } else {
-      return -1
-    }
+    return 1
   }
+  // tradeA has less output than trade B, so should come second
+  if (a.outputAmount.lessThan(b.outputAmount)) {
+    return 1
+  }
+  return -1
 }
 
 // extension of the input output comparator that also considers other dimensions of the trade in ranking them
@@ -60,7 +63,8 @@ export function tradeComparator<TInput extends Currency, TOutput extends Currenc
   // consider lowest slippage next, since these are less likely to fail
   if (a.priceImpact.lessThan(b.priceImpact)) {
     return -1
-  } else if (a.priceImpact.greaterThan(b.priceImpact)) {
+  }
+  if (a.priceImpact.greaterThan(b.priceImpact)) {
     return 1
   }
 
@@ -84,22 +88,27 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
    * The route of the trade, i.e. which pairs the trade goes through and the input/output currencies.
    */
   public readonly route: Route<TInput, TOutput>
+
   /**
    * The type of the trade, either exact in or exact out.
    */
   public readonly tradeType: TTradeType
+
   /**
    * The input amount for the trade assuming no slippage.
    */
   public readonly inputAmount: CurrencyAmount<TInput>
+
   /**
    * The output amount for the trade assuming no slippage.
    */
   public readonly outputAmount: CurrencyAmount<TOutput>
+
   /**
    * The price expressed in terms of output amount/input amount.
    */
   public readonly executionPrice: Price<TInput, TOutput>
+
   /**
    * The percent difference between the mid price before the trade and the trade execution price.
    */
@@ -184,13 +193,12 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
     invariant(!slippageTolerance.lessThan(ZERO), 'SLIPPAGE_TOLERANCE')
     if (this.tradeType === TradeType.EXACT_OUTPUT) {
       return this.outputAmount
-    } else {
-      const slippageAdjustedAmountOut = new Fraction(ONE)
-        .add(slippageTolerance)
-        .invert()
-        .multiply(this.outputAmount.quotient).quotient
-      return CurrencyAmount.fromRawAmount(this.outputAmount.currency, slippageAdjustedAmountOut)
     }
+    const slippageAdjustedAmountOut = new Fraction(ONE)
+      .add(slippageTolerance)
+      .invert()
+      .multiply(this.outputAmount.quotient).quotient
+    return CurrencyAmount.fromRawAmount(this.outputAmount.currency, slippageAdjustedAmountOut)
   }
 
   /**
@@ -201,12 +209,11 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
     invariant(!slippageTolerance.lessThan(ZERO), 'SLIPPAGE_TOLERANCE')
     if (this.tradeType === TradeType.EXACT_INPUT) {
       return this.inputAmount
-    } else {
-      const slippageAdjustedAmountIn = new Fraction(ONE)
-        .add(slippageTolerance)
-        .multiply(this.inputAmount.quotient).quotient
-      return CurrencyAmount.fromRawAmount(this.inputAmount.currency, slippageAdjustedAmountIn)
     }
+    const slippageAdjustedAmountIn = new Fraction(ONE)
+      .add(slippageTolerance)
+      .multiply(this.inputAmount.quotient).quotient
+    return CurrencyAmount.fromRawAmount(this.inputAmount.currency, slippageAdjustedAmountIn)
   }
 
   /**
@@ -242,15 +249,19 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i]
       // pair irrelevant
+      // eslint-disable-next-line no-continue
       if (!pair.token0.equals(amountIn.currency) && !pair.token1.equals(amountIn.currency)) continue
+      // eslint-disable-next-line no-continue
       if (pair.reserve0.equalTo(ZERO) || pair.reserve1.equalTo(ZERO)) continue
 
       let amountOut: CurrencyAmount<Token>
       try {
+        // eslint-disable-next-line @typescript-eslint/no-extra-semi
         ;[amountOut] = pair.getOutputAmount(amountIn)
       } catch (error) {
         // input too low
         if ((error as InsufficientInputAmountError).isInsufficientInputAmountError) {
+          // eslint-disable-next-line no-continue
           continue
         }
         throw error
@@ -336,15 +347,19 @@ export class Trade<TInput extends Currency, TOutput extends Currency, TTradeType
     for (let i = 0; i < pairs.length; i++) {
       const pair = pairs[i]
       // pair irrelevant
+      // eslint-disable-next-line no-continue
       if (!pair.token0.equals(amountOut.currency) && !pair.token1.equals(amountOut.currency)) continue
+      // eslint-disable-next-line no-continue
       if (pair.reserve0.equalTo(ZERO) || pair.reserve1.equalTo(ZERO)) continue
 
       let amountIn: CurrencyAmount<Token>
       try {
+        // eslint-disable-next-line @typescript-eslint/no-extra-semi
         ;[amountIn] = pair.getInputAmount(amountOut)
       } catch (error) {
         // not enough liquidity in this pair
         if ((error as InsufficientReservesError).isInsufficientReservesError) {
+          // eslint-disable-next-line no-continue
           continue
         }
         throw error

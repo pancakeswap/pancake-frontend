@@ -1,7 +1,9 @@
-import { Interface } from '@ethersproject/abi'
+import { Interface, Fragment } from '@ethersproject/abi'
 import { CallOverrides, Contract } from '@ethersproject/contracts'
 import { Provider } from '@ethersproject/providers'
 import { ChainId } from '@pancakeswap/sdk'
+import type { Multicallv2Typed, Multicallv3Typed } from '@pancakeswap/utils/abitype'
+
 import multicallAbi from './Multicall.json'
 
 export const multicallAddresses = {
@@ -12,7 +14,7 @@ export const multicallAddresses = {
   97: '0xcA11bde05977b3631167028862bE2a173976CA11',
 }
 
-export const getMulticallContract = (chainId: ChainId, provider) => {
+export const getMulticallContract = (chainId: ChainId, provider: Provider) => {
   if (multicallAddresses[chainId]) {
     return new Contract(multicallAddresses[chainId], multicallAbi, provider)
   }
@@ -58,7 +60,9 @@ interface MulticallV3Params {
 export type MultiCallV2 = <T = any>(params: MulticallV2Params) => Promise<T>
 export type MultiCall = <T = any>(abi: any[], calls: Call[], chainId?: ChainId) => Promise<T>
 
-export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: number | undefined }) => TProvider) {
+export function createMulticall<TProvider extends Provider>(
+  provider: ({ chainId }: { chainId?: number | undefined }) => TProvider,
+) {
   const multicall: MultiCall = async (abi: any[], calls: Call[], chainId = ChainId.BSC) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
@@ -70,7 +74,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     }))
     const { returnData } = await multi.callStatic.aggregate(calldata)
 
-    const res = returnData.map((call, i) => itf.decodeFunctionResult(calls[i].name, call))
+    const res = returnData.map((call: any, i: number) => itf.decodeFunctionResult(calls[i].name, call))
 
     return res as any
   }
@@ -87,9 +91,9 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     }))
 
     const returnData = await multi.callStatic.tryAggregate(requireSuccess, calldata, overrides)
-    const res = returnData.map((call, i) => {
+    const res = returnData.map((call: any, i: number) => {
       const [result, data] = call
-      return result ? itf.decodeFunctionResult(calls[i].name, data) : null
+      return result && data !== '0x' ? itf.decodeFunctionResult(calls[i].name, data) : null
     })
 
     return res as any
@@ -98,26 +102,53 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
   const multicallv3 = async ({ calls, chainId = ChainId.BSC, allowFailure, overrides }: MulticallV3Params) => {
     const multi = getMulticallContract(chainId, provider({ chainId }))
     if (!multi) throw new Error(`Multicall Provider missing for ${chainId}`)
+    const interfaceCache = new WeakMap()
     const _calls = calls.map(({ abi, address, name, params, allowFailure: _allowFailure }) => {
-      const contract = new Contract(address, abi)
-      const callData = contract.interface.encodeFunctionData(name, params ?? [])
-      if (!contract[name]) console.error(`${name} missing on ${address}`)
+      let itf = interfaceCache.get(abi)
+      if (!itf) {
+        itf = new Interface(abi)
+        interfaceCache.set(abi, itf)
+      }
+      if (!itf.fragments.some((fragment: Fragment) => fragment.name === name))
+        console.error(`${name} missing on ${address}`)
+      const callData = itf.encodeFunctionData(name, params ?? [])
       return {
-        target: address,
+        target: address.toLowerCase(),
         allowFailure: allowFailure || _allowFailure,
         callData,
       }
     })
 
-    const result = await multi.callStatic.aggregate3([...[_calls], ...(overrides ? [overrides] : [])])
+    const result = await multi.callStatic.aggregate3(_calls, ...(overrides ? [overrides] : []))
 
-    return result.map((call, i) => {
+    return result.map((call: any, i: number) => {
       const { returnData, success } = call
       if (!success || returnData === '0x') return null
-      const { address, abi, name } = calls[i]
-      const contract = new Contract(address, abi)
-      const decoded = contract.interface.decodeFunctionResult(name, returnData)
+      const { abi, name } = calls[i]
+      const itf = interfaceCache.get(abi)
+      const decoded = itf?.decodeFunctionResult(name, returnData)
       return decoded
+    })
+  }
+
+  const multicallv3Typed: typeof Multicallv3Typed = async ({ calls, allowFailure, chainId, overrides }) => {
+    return multicallv3({
+      // @ts-ignore
+      calls,
+      allowFailure,
+      chainId,
+      overrides,
+    })
+  }
+
+  const multicallv2Typed: typeof Multicallv2Typed = async ({ abi, calls, chainId, options }) => {
+    return multicallv2({
+      // @ts-ignore
+      abi,
+      // @ts-ignore
+      calls,
+      chainId,
+      options,
     })
   }
 
@@ -125,5 +156,7 @@ export function createMulticall<TProvider>(provider: ({ chainId }: { chainId?: n
     multicall,
     multicallv2,
     multicallv3,
+    multicallv3Typed,
+    multicallv2Typed,
   }
 }

@@ -1,4 +1,7 @@
 node_modules
 build
-src/config/abi/types
+apps/web/src/config/abi/types
 .next
+cli/aptos-codegen
+dist
+packages/farms/lists

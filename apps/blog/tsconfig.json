@@ -1,0 +1,9 @@
+{
+  "extends": "tsconfig/nextjs.json",
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "target": "ES2015",
+    "baseUrl": "."
+  },
+  "exclude": ["node_modules"]
+}

@@ -1,0 +1,51 @@
+{
+  "name": "@pancakeswap/aptos-swap-sdk",
+  "license": "MIT",
+  "version": "0.0.2",
+  "description": "🛠 An SDK for building applications on top of Pancakeswap Aptos.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/atpos-swap-sdk"
+  },
+  "keywords": [
+    "pancakeswap",
+    "aptos"
+  ],
+  "scripts": {
+    "lint": "eslint src",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run",
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "@pancakeswap/swap-sdk-core": "*"
+  },
+  "peerDependencies": {
+    "aptos": "^1.3.14"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.215",
+    "@swc/jest": "^0.2.21",
+    "@types/big.js": "^4.0.5",
+    "@types/jest": "^24.0.25",
+    "babel-plugin-transform-jsbi-to-bigint": "^1.3.1",
+    "tsup": "^6.6.3"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
+  }
+}

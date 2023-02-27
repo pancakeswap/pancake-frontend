@@ -34,5 +34,17 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Get changed files
+        id: changed-files
+        uses: Ana06/get-changed-files@v2.1.0
+        with:
+            format: space-delimited
+            filter: |
+              **/*.ts
+              **/*.tsx
+              **/*.js
+              **/*.jsx
+            token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run ESLint
-        run: yarn lint
+        run:  yarn lint:report ${{ steps.changed-files.outputs.added_modified }}

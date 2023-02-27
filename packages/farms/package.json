@@ -1,12 +1,20 @@
 {
   "name": "@pancakeswap/farms",
   "version": "0.0.1",
-  "main": "./src/index.ts",
   "sideEffects": false,
+  "private": true,
   "scripts": {
-    "build": "npx tsx scripts/build.ts"
+    "build": "npx tsx scripts/build.ts",
+    "test": "vitest --run"
   },
-  "peerDependencies": {
-    "@pancakeswap/sdk": "^3.0.0"
+  "devDependencies": {
+    "tsx": "^3.12.1"
+  },
+  "dependencies": {
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/tokens": "*",
+    "@pancakeswap/token-lists": "*",
+    "@pancakeswap/multicall": "*",
+    "@pancakeswap/utils": "*"
   }
 }

@@ -4,8 +4,10 @@
   "scripts": {
     "test": "vitest --run --globals"
   },
+  "private": true,
   "dependencies": {
     "@pancakeswap/tokens": "*",
-    "@pancakeswap/sdk": "*"
+    "@pancakeswap/swap-sdk-core": "*",
+    "@pancakeswap/token-lists": "*"
   }
 }

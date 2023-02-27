@@ -1,4 +1,4 @@
-import React, { cloneElement, ElementType, isValidElement } from "react";
+import { cloneElement, ElementType, isValidElement } from "react";
 import EXTERNAL_LINK_PROPS from "../../util/externalLinkProps";
 import StyledButton from "./StyledButton";
 import { ButtonProps, scales, variants } from "./types";
@@ -28,11 +28,13 @@ const Button = <E extends ElementType = "button">(props: ButtonProps<E>): JSX.El
       <>
         {isValidElement(startIcon) &&
           cloneElement(startIcon, {
+            // @ts-ignore
             mr: "0.5rem",
           })}
         {children}
         {isValidElement(endIcon) &&
           cloneElement(endIcon, {
+            // @ts-ignore
             ml: "0.5rem",
           })}
       </>

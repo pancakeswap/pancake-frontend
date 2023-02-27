@@ -1,5 +1,6 @@
 import { FixedNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
+import { formatUnits } from '@ethersproject/units'
 import { getFarmCakeRewardApr, SerializedFarmConfig } from '@pancakeswap/farms'
 import { ChainId, CurrencyAmount, Pair } from '@pancakeswap/sdk'
 import { BUSD, CAKE } from '@pancakeswap/tokens'
@@ -142,4 +143,23 @@ export async function saveLPsAPR(chainId: number, farmsConfig?: SerializedFarmCo
     return null
   }
   return null
+}
+
+const chainlinkAbi = [
+  {
+    inputs: [],
+    name: 'latestAnswer',
+    outputs: [{ internalType: 'int256', name: '', type: 'int256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+]
+
+export async function fetchCakePrice() {
+  const address = '0xB6064eD41d4f67e353768aA239cA86f4F73665a1'
+  const chainlinkOracleContract = new Contract(address, chainlinkAbi, bscProvider)
+
+  const latestAnswer = await chainlinkOracleContract.latestAnswer()
+
+  return formatUnits(latestAnswer, 8)
 }

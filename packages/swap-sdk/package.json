@@ -1,7 +1,7 @@
 {
   "name": "@pancakeswap/sdk",
   "license": "MIT",
-  "version": "3.0.0",
+  "version": "3.1.4",
   "description": "🛠 An SDK for building applications on top of Pancakeswap.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -19,13 +19,14 @@
   ],
   "module": "dist/index.mjs",
   "scripts": {
-    "lint": "eslint src test",
     "build": "tsup src/index.ts --format esm,cjs --dts",
-    "start": "tsup src/index.tsx --format esm,cjs --watch --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
     "test": "jest",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
+    "@pancakeswap/swap-sdk-core": "*",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
     "jsbi": "^3.1.4",
@@ -51,7 +52,7 @@
     "@types/big.js": "^4.0.5",
     "@types/jest": "^24.0.25",
     "babel-plugin-transform-jsbi-to-bigint": "^1.3.1",
-    "tsup": "^5.10.1"
+    "tsup": "^6.6.3"
   },
   "engines": {
     "node": ">=10"

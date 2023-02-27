@@ -6,6 +6,7 @@ import { BackgroundImageProps } from "./types";
 import Placeholder from "./Placeholder";
 
 const StyledBackgroundImage = styled(Wrapper)`
+  display: flex;
   background-repeat: no-repeat;
   background-size: contain;
 `;

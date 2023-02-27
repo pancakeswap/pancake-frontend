@@ -98,7 +98,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                   <>
                     {label}
                     {status && (
-                      <LinkStatus color={status.color} fontSize="14px">
+                      <LinkStatus textTransform="uppercase" color={status.color} fontSize="14px">
                         {status.text}
                       </LinkStatus>
                     )}
@@ -145,7 +145,7 @@ const DropdownMenu: React.FC<React.PropsWithChildren<DropdownMenuProps>> = ({
                       >
                         <Flex alignItems="center" justifyContent="space-between" width="100%">
                           {label}
-                          <LogoutIcon />
+                          <LogoutIcon color={disabled ? "textDisabled" : "textSubtle"} />
                         </Flex>
                       </DropdownMenuItem>
                     )}

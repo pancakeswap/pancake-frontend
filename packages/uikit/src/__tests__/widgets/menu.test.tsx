@@ -1,5 +1,5 @@
-import React from "react";
 import noop from "lodash/noop";
+import { vi } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 import { renderWithProvider } from "../../testHelpers";
 import { Menu, menuConfig, Language } from "../../widgets/Menu";
@@ -11,15 +11,15 @@ import { SubMenuItemsType } from "../../components/SubMenuItems/types";
  */
 Object.defineProperty(window, "matchMedia", {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+    addListener: vi.fn(), // deprecated
+    removeListener: vi.fn(), // deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn(),
   })),
 });
 
@@ -45,6 +45,7 @@ it("renders correctly", () => {
         activeItem="Trade"
         activeSubItem="Exchange"
         buyCakeLabel="Buy CAKE"
+        buyCakeLink="https://pancakeswap.finance/swap?outputCurrency=0x0e09fabb73bd3ade0a17ecc321fd13a19e81ce82&chainId=56"
       >
         body
       </Menu>

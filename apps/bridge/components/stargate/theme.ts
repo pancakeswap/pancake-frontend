@@ -337,7 +337,7 @@ export const darkTheme: Theme = {
         },
       },
       containedPrimary: {
-        color: '#FFF',
+        color: '#191326',
         '& [class^=MuiButton-label]': {
           position: 'relative',
           width: 'initial',

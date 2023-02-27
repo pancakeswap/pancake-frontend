@@ -1,0 +1,4 @@
+{
+  "main": "../../dist/connectors/safePal.js",
+  "module": "../../dist/connectors/safePal.mjs"
+}

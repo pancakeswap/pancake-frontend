@@ -29,6 +29,7 @@ export const DropdownMenuItem = styled.button<StyledDropdownMenuItemProps & { $i
   padding-left: 16px;
   padding-right: 16px;
   width: 100%;
+  pointer-events: ${({ disabled }) => (disabled ? "none" : "inherit")};
 
   &:is(button) {
     cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
@@ -45,12 +46,12 @@ export const DropdownMenuItem = styled.button<StyledDropdownMenuItemProps & { $i
 `;
 
 export const StyledDropdownMenuItemContainer = styled.div`
-  &:first-child > ${DropdownMenuItem} {
+  &:first-child ${DropdownMenuItem} {
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
   }
 
-  &:last-child > ${DropdownMenuItem} {
+  &:last-child ${DropdownMenuItem} {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
   }

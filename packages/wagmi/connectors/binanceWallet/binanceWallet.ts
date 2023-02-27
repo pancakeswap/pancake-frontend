@@ -11,6 +11,16 @@ import {
 } from 'wagmi'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { hexValue } from '@ethersproject/bytes'
+import type { Ethereum } from '@wagmi/core'
+
+declare global {
+  interface Window {
+    BinanceChain?: {
+      bnbSign?: (address: string, message: string) => Promise<{ publicKey: string; signature: string }>
+      switchNetwork?: (networkId: string) => Promise<string>
+    } & Ethereum
+  }
+}
 
 const mappingNetwork: Record<number, string> = {
   1: 'eth-mainnet',
@@ -112,11 +122,12 @@ export class BinanceWalletConnector extends InjectedConnector {
         await provider.switchNetwork?.(mappingNetwork[chainId])
 
         return (
-          this.chains.find((x) => x.id === chainId) ?? {
+          this.chains.find((x) => x.id === chainId) || {
             id: chainId,
             name: `Chain ${id}`,
             network: `${id}`,
-            rpcUrls: { default: '' },
+            nativeCurrency: { decimals: 18, name: 'BNB', symbol: 'BNB' },
+            rpcUrls: { default: { http: [''] } },
           }
         )
       } catch (error) {

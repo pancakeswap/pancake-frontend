@@ -1,9 +1,7 @@
 import invariant from 'tiny-invariant'
+import { Token, Currency, Price } from '@pancakeswap/swap-sdk-core'
 
-import { Currency } from './currency'
-import { Token } from './token'
 import { Pair } from './pair'
-import { Price } from './fractions/price'
 
 export class Route<TInput extends Currency, TOutput extends Currency> {
   public readonly pairs: Pair[]

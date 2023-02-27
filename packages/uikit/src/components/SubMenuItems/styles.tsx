@@ -39,13 +39,15 @@ const maskSharedStyle = css`
   top: 0px;
   display: flex;
   justify-content: center;
-  opacity: 1;
   will-change: opacity;
-  transition: 0.25s ease-in opacity;
-  &.hide {
-    pointer-events: none;
-    opacity: 0;
-    transition: 0.25s ease-out opacity;
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.25s ease-out opacity;
+
+  &.show {
+    pointer-events: auto;
+    opacity: 1;
+    transition: 0.25s ease-in opacity;
   }
 `;
 

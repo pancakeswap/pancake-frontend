@@ -1,3 +1,4 @@
+import { vars } from "@pancakeswap/ui/css/vars.css";
 import { scales, variants } from "./types";
 
 export const scaleVariants = {
@@ -19,7 +20,7 @@ export const scaleVariants = {
 export const styleVariants = {
   [variants.PRIMARY]: {
     backgroundColor: "primary",
-    color: "white",
+    color: "invertedContrast",
   },
   [variants.SECONDARY]: {
     backgroundColor: "transparent",
@@ -55,6 +56,11 @@ export const styleVariants = {
   },
   [variants.LIGHT]: {
     backgroundColor: "input",
+    color: "textSubtle",
+    boxShadow: "none",
+  },
+  [variants.BUBBLEGUM]: {
+    background: vars.colors.gradientBubblegum,
     color: "textSubtle",
     boxShadow: "none",
   },

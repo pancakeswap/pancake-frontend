@@ -1,8 +1,8 @@
-import React from "react";
+import { vi } from "vitest";
 import { renderWithProvider } from "../../testHelpers";
 import Checkbox from "../../components/Checkbox/Checkbox";
 
-const handleChange = jest.fn();
+const handleChange = vi.fn();
 
 it("renders correctly", () => {
   const { asFragment } = renderWithProvider(<Checkbox checked onChange={handleChange} />);

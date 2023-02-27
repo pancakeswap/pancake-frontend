@@ -39,7 +39,7 @@ it("renders correctly", () => {
       height: 48px;
       padding: 0 24px;
       background-color: var(--colors-primary);
-      color: var(--colors-white);
+      color: var(--colors-invertedContrast);
     }
 
     .c0:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {

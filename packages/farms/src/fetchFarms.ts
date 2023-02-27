@@ -1,15 +1,39 @@
 import { BigNumber, FixedNumber } from '@ethersproject/bignumber'
 import { formatUnits } from '@ethersproject/units'
-import { MultiCallV2 } from '@pancakeswap/multicall'
+import { Call, MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
-import { BIG_TEN, FIXED_TWO, FIXED_ZERO } from './const'
+import { FIXED_TWO, FIXED_ZERO } from './const'
 import { getFarmsPrices } from './farmPrices'
 import { fetchPublicFarmsData } from './fetchPublicFarmData'
 import { fetchStableFarmData } from './fetchStableFarmData'
 import { isStableFarm, SerializedFarmConfig } from './types'
+import { getFullDecimalMultiplier } from './getFullDecimalMultiplier'
+
+const evmNativeStableLpMap = {
+  [ChainId.ETHEREUM]: {
+    address: '0x2E8135bE71230c6B1B4045696d41C09Db0414226',
+    wNative: 'WETH',
+    stable: 'USDC',
+  },
+  [ChainId.GOERLI]: {
+    address: '0xf5bf0C34d3c428A74Ceb98d27d38d0036C587200',
+    wNative: 'WETH',
+    stable: 'tUSDC',
+  },
+  [ChainId.BSC]: {
+    address: '0x58F876857a02D6762E0101bb5C46A8c1ED44Dc16',
+    wNative: 'WBNB',
+    stable: 'BUSD',
+  },
+  [ChainId.BSC_TESTNET]: {
+    address: '0x4E96D2e92680Ca65D58A0e2eB5bd1c0f44cAB897',
+    wNative: 'WBNB',
+    stable: 'BUSD',
+  },
+}
 
 export const getTokenAmount = (balance: FixedNumber, decimals: number) => {
-  const tokenDividerFixed = FixedNumber.from(BIG_TEN.pow(decimals))
+  const tokenDividerFixed = FixedNumber.from(getFullDecimalMultiplier(decimals))
   return balance.divUnsafe(tokenDividerFixed)
 }
 
@@ -61,7 +85,7 @@ export async function farmV2FetchFarms({
               ...stableFarmsDataMap[farm.pid],
               token0Decimals: farm.token.decimals,
               token1Decimals: farm.quoteToken.decimals,
-              price0: stableFarmsDataMap[farm.pid].price0,
+              price1: stableFarmsDataMap[farm.pid].price1,
             })
           : getClassicFarmsDynamicData({
               ...lpData[index],
@@ -89,7 +113,7 @@ export async function farmV2FetchFarms({
     }
   })
 
-  const farmsDataWithPrices = getFarmsPrices(farmsData, chainId)
+  const farmsDataWithPrices = getFarmsPrices(farmsData, evmNativeStableLpMap[chainId], 18)
 
   return farmsDataWithPrices
 }
@@ -158,7 +182,7 @@ export const fetchMasterChefData = async (
 ): Promise<any[]> => {
   try {
     const masterChefCalls = farms.map((farm) => masterChefFarmCalls(farm, masterChefAddress))
-    const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null)
+    const masterChefAggregatedCalls = masterChefCalls.filter((masterChefCall) => masterChefCall !== null) as Call[]
 
     const masterChefMultiCallResult = await multicallv2({
       abi: masterChefV2Abi,
@@ -234,15 +258,15 @@ type StableLpData = [balanceResponse, balanceResponse, balanceResponse, balanceR
 type FormatStableFarmResponse = {
   tokenBalanceLP: FixedNumber
   quoteTokenBalanceLP: FixedNumber
-  price0: BigNumber
+  price1: BigNumber
 }
 
 const formatStableFarm = (stableFarmData: StableLpData): FormatStableFarmResponse => {
-  const [balance1, balance2, price0, _price1] = stableFarmData
+  const [balance1, balance2, _, _price1] = stableFarmData
   return {
     tokenBalanceLP: FixedNumber.from(balance1[0]),
     quoteTokenBalanceLP: FixedNumber.from(balance2[0]),
-    price0: price0[0],
+    price1: _price1[0],
   }
 }
 
@@ -253,11 +277,11 @@ const getStableFarmDynamicData = ({
   tokenBalanceLP,
   token0Decimals,
   token1Decimals,
-  price0,
+  price1,
 }: FormatClassicFarmResponse & {
   token1Decimals: number
   token0Decimals: number
-  price0: BigNumber
+  price1: BigNumber
 }) => {
   // Raw amount of token in the LP, including those not staked
   const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0Decimals)
@@ -267,7 +291,7 @@ const getStableFarmDynamicData = ({
   const lpTokenRatio =
     !lpTotalSupply.isZero() && !lpTokenBalanceMC.isZero() ? lpTokenBalanceMC.divUnsafe(lpTotalSupply) : FIXED_ZERO
 
-  const tokenPriceVsQuote = formatUnits(price0, token1Decimals)
+  const tokenPriceVsQuote = formatUnits(price1, token0Decimals)
 
   // Amount of quoteToken in the LP that are staked in the MC
   const quoteTokenAmountMcFixed = quoteTokenAmountTotal.mulUnsafe(lpTokenRatio)
@@ -337,7 +361,7 @@ const getFarmAllocation = ({
 
   return {
     poolWeight: poolWeight.toString(),
-    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(100)).toString()}X` : `0X`,
+    multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(10)).toString()}X` : `0X`,
   }
 }
 
@@ -351,6 +375,7 @@ const getClassicFarmsDynamicData = ({
 }: FormatClassicFarmResponse & {
   token0Decimals: number
   token1Decimals: number
+  lpTokenStakedAmount?: string
 }) => {
   // Raw amount of token in the LP, including those not staked
   const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0Decimals)
@@ -375,5 +400,6 @@ const getClassicFarmsDynamicData = ({
       !quoteTokenAmountTotal.isZero() && !tokenAmountTotal.isZero()
         ? quoteTokenAmountTotal.divUnsafe(tokenAmountTotal).toString()
         : FIXED_ZERO.toString(),
+    lpTokenStakedAmount: lpTokenBalanceMC.toString(),
   }
 }

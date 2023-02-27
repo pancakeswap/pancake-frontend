@@ -52,11 +52,11 @@ export const SequencePlayer: React.FC<React.PropsWithChildren<SequencePlayerProp
     coinInterval = setInterval(() => {
       isPlaying.current = true;
       requestAnimationFrame(coinDrawer);
-    }, msPerFrame);
+    }, msPerFrame) as unknown as NodeJS.Timeout;
   }, [coinDrawer, msPerFrame, onPlayStart]);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current) return undefined;
     const ctx = canvasRef.current.getContext("2d");
     const img = new Image();
     img.onload = () => {
@@ -84,7 +84,6 @@ export const SequencePlayer: React.FC<React.PropsWithChildren<SequencePlayerProp
         }
       };
     });
-    // eslint-disable-next-line consistent-return
     return () => {
       clearInterval(coinInterval);
     };

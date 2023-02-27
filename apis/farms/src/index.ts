@@ -12,13 +12,35 @@
 
 import { Router } from 'itty-router'
 import { error, json, missing } from 'itty-router-extras'
-import { saveFarms, saveLPsAPR } from './handler'
-import { farmFetcher, handleCors, requireChainId, wrapCorsHeader } from './helper'
+import { wrapCorsHeader, handleCors, CORS_ALLOW } from '@pancakeswap/worker-utils'
+import { fetchCakePrice, saveFarms, saveLPsAPR } from './handler'
+import { farmFetcher, requireChainId } from './helper'
 import { FarmKV } from './kv'
 
 const router = Router()
 
-const allowedOrigin = /[^\w](pancake\.run)|(localhost:3000)|(pancakeswap.finance)|(pancakeswap.com)$/
+router.get('/price/cake', async (_, event) => {
+  const cache = caches.default
+  const cacheResponse = await cache.match(event.request)
+  let response
+  if (!cacheResponse) {
+    const price = await fetchCakePrice()
+    response = json(
+      { price, updatedAt: new Date().toISOString() },
+      {
+        headers: {
+          'Cache-Control': 'public, max-age=10, s-maxage=10',
+        },
+      },
+    )
+
+    event.waitUntil(cache.put(event.request, response.clone()))
+  } else {
+    response = new Response(cacheResponse.body, cacheResponse)
+  }
+
+  return response
+})
 
 router.get('/apr', async ({ query }) => {
   if (typeof query?.key === 'string' && query.key === FORCE_UPDATE_KEY) {
@@ -46,23 +68,33 @@ router.get('/:chainId', async ({ params }, event) => {
     try {
       const savedFarms = await saveFarms(+chainId, event)
 
-      return json(savedFarms)
+      return json(savedFarms, {
+        headers: {
+          'Cache-Control': 'public, max-age=60, s-maxage=60',
+        },
+      })
     } catch (e) {
       console.log(e)
       return error(500, 'Fetch Farms error')
     }
   }
 
-  return json(cached)
+  return json(cached, {
+    headers: {
+      'Cache-Control': 'public, max-age=60, s-maxage=60',
+    },
+  })
 })
 
 router.all('*', () => missing('Not found'))
 
-router.options('*', handleCors(allowedOrigin))
+router.options('*', handleCors(CORS_ALLOW, `GET, HEAD, OPTIONS`, `referer, origin, content-type`))
 
 addEventListener('fetch', (event) =>
   event.respondWith(
-    router.handle(event.request, event).then((res) => wrapCorsHeader(event.request, res, { allowedOrigin })),
+    router
+      .handle(event.request, event)
+      .then((res) => wrapCorsHeader(event.request, res, { allowedOrigin: CORS_ALLOW })),
   ),
 )
 

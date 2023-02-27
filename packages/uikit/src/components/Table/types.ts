@@ -1,4 +1,4 @@
-export type ColumnType<T> = {
+export type ColumnType<T extends DataType> = {
   name: string;
   label?: string;
   hidden?: boolean;
@@ -8,7 +8,7 @@ export type ColumnType<T> = {
   headerRender?: HeaderRenderType;
 };
 
-export type ColumnStateType<T> = {
+export type ColumnStateType<T extends DataType> = {
   name: string;
   label: string;
   hidden: boolean;
@@ -23,7 +23,7 @@ export type ColumnStateType<T> = {
 export type HeaderRenderType = ({ label }: { label: React.ReactNode }) => React.ReactNode;
 
 // this is the type saved as state and returned
-export type HeaderType<T> = {
+export type HeaderType<T extends DataType> = {
   name: string;
   label?: string;
   hidden?: boolean;
@@ -38,7 +38,7 @@ export type HeaderType<T> = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type DataType = { [key: string]: any };
 
-export type ColumnByNamesType<T> = {
+export type ColumnByNamesType<T extends DataType> = {
   [key: string]: ColumnType<T>;
 };
 
@@ -50,7 +50,7 @@ type RenderFunctionArgsType<T> = {
   row: T;
 };
 
-export type ColumnByNameType<T> = Omit<Required<ColumnType<T>>, "name" | "sort">;
+export type ColumnByNameType<T extends DataType> = Omit<Required<ColumnType<T>>, "name" | "sort">;
 
 export interface RowType<T extends DataType> {
   id: number;
@@ -77,7 +77,7 @@ export interface UseTableTypeParams<T extends DataType> {
   };
 }
 
-export interface UseTablePropsType<T> {
+export interface UseTablePropsType<T extends DataType> {
   columns: ColumnType<T>[];
   data: T[];
   options?: {
@@ -87,7 +87,7 @@ export interface UseTablePropsType<T> {
   };
 }
 
-export interface UseTableOptionsType<T> {
+export interface UseTableOptionsType<T extends DataType> {
   sortable?: boolean;
   selectable?: boolean;
   pagination?: boolean;
@@ -95,7 +95,7 @@ export interface UseTableOptionsType<T> {
   filter?: (row: RowType<T>[]) => RowType<T>[];
 }
 
-export interface UseTableReturnType<T> {
+export interface UseTableReturnType<T extends DataType> {
   headers: HeaderType<T>[];
   originalRows: RowType<T>[];
   rows: RowType<T>[];

@@ -1,6 +1,6 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "baseBranch": "origin/develop",
+  "globalDependencies": ["**/.env.*local"],
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
@@ -10,18 +10,37 @@
       "outputs": ["coverage/**"],
       "dependsOn": ["^build"]
     },
+    "test:config": {
+      "dependsOn": ["^build"]
+    },
+    "build:storybook": {
+      "dependsOn": ["^build"],
+      "outputs": ["storybook-static/**"]
+    },
     "lint": {
       "outputs": []
     },
     "dev": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "persistent": true
+    },
+    "start": {
       "cache": false
     },
     "build:list": {
       "outputs": ["list/**"]
     },
     "integration-test": {
-      "outputs": [],
-      "inputs": ["cypress/integration/**.test.ts"]
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "clean": {
+      "cache": false
+    },
+    "postinstall": {
+      "inputs": ["src/config/abi/**"],
+      "outputs": ["src/config/abi/types/**"]
     }
   }
 }

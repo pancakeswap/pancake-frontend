@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "aptos": "https://esm.sh/aptos",
+    "camelcase": "https://deno.land/x/camelcase@v2.1.0/mod.ts",
+    "yargs": "https://deno.land/x/yargs@v17.5.1-deno/deno.ts"
+  }
+}

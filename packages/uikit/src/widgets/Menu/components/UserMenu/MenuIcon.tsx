@@ -57,9 +57,10 @@ export const DangerMenuIcon: React.FC<React.PropsWithChildren> = () => (
   </MenuIconWrapper>
 );
 
-const MenuIcon: React.FC<React.PropsWithChildren<{ avatarSrc?: string; variant: Variant }>> = ({
+const MenuIcon: React.FC<React.PropsWithChildren<{ avatarSrc?: string; variant: Variant; className?: string }>> = ({
   avatarSrc,
   variant,
+  className,
 }) => {
   if (variant === variants.DANGER) {
     return <DangerMenuIcon />;
@@ -77,7 +78,7 @@ const MenuIcon: React.FC<React.PropsWithChildren<{ avatarSrc?: string; variant: 
     return <NoProfileMenuIcon />;
   }
 
-  return <ProfileIcon src={avatarSrc} height={32} width={32} />;
+  return <ProfileIcon src={avatarSrc} height={32} width={32} className={className} />;
 };
 
 export default MenuIcon;

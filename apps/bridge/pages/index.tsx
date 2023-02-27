@@ -1,6 +1,6 @@
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
-import Image from 'next/future/image'
+import Image from 'next/image'
 import styled, { useTheme } from 'styled-components'
 import { Flex, Text, Box } from '@pancakeswap/uikit'
 import { STARGATE_JS } from '../components/stargate/config'
@@ -38,7 +38,6 @@ function Bridge() {
       setTimeout(() => {
         if (window.stargate) {
           window.stargate.setDstChainId(102)
-          window.stargate.setConfig({ dstChainIdList: [102] })
         }
       }, 600)
       console.info('stargate widget mount')

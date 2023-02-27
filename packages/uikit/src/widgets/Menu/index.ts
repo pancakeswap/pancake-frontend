@@ -2,10 +2,11 @@ export { default as Menu } from "./Menu";
 export type { MenuItemsType } from "../../components/MenuItems/types";
 export { DropdownMenuItemType } from "../../components/DropdownMenu/types";
 export type { FooterLinkType } from "../../components/Footer/types";
-export { status as menuStatus, links as menuConfig } from "./config";
+export { links as menuConfig } from "./testConfig";
 export type { NavProps, Language } from "./types";
 
 export { default as UserMenu } from "./components/UserMenu";
+export { footerLinks } from "./components/footerConfig";
 export * from "./components/UserMenu/styles";
 export type {
   UserMenuProps,

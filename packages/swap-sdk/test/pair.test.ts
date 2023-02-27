@@ -1,4 +1,6 @@
-import { ChainId, Token, Pair, CurrencyAmount, WNATIVE, Price } from '../src'
+import { Token, CurrencyAmount, Price } from '@pancakeswap/swap-sdk-core'
+import { Pair } from '../src/entities'
+import { ChainId, WNATIVE } from '../src/constants'
 
 describe('Pair', () => {
   const USDC = new Token(ChainId.BSC, '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d', 18, 'USDC', 'USD Coin')

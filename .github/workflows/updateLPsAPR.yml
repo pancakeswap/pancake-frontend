@@ -5,11 +5,12 @@ on:
   schedule:
     # 23:15 UTC
     # GitHub Actions might be delayed if time is at exact hour
-    - cron: '15 23 * * *'
+    - cron: "15 23 * * *"
 
 jobs:
   updateLPsAPRs:
     runs-on: ubuntu-latest
+    if: github.repository == 'pancakeswap/pancake-frontend'
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,10 +26,10 @@ jobs:
       - name: Fetch and save LP APR data
         run: yarn updateLPsAPR
         env:
-          NEXT_PUBLIC_SF_HEADER: ${{ secrets.SF_HEADER }}
+          NEXT_PUBLIC_NODE_REAL_HEADER: ${{ secrets.NODE_REAL_HEADER }}
 
       - name: Format
-        run: yarn format:write
+        run: yarn prettier --write "apps/web/src/config/constants/lpAprs/*.{ts,json}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
@@ -36,8 +37,8 @@ jobs:
           author: PancakeSwap Bot <pancakeswap-bot@protonmail.com>
           token: ${{ secrets.LP_APR_PANCAKE_BOT }}
           delete-branch: true
-          commit-message: 'chore: Update LP APRs for Farms'
-          title: 'chore: Update LP APRs for Farms'
+          commit-message: "chore: Update LP APRs for Farms"
+          title: "chore: Update LP APRs for Farms"
           body: |
             - Update LP APRs for Farms
 

@@ -17,10 +17,11 @@ export const variants = {
   SUBTLE: "subtle",
   SUCCESS: "success",
   LIGHT: "light",
+  BUBBLEGUM: "bubblegum",
 } as const;
 
-export type Scale = typeof scales[keyof typeof scales];
-export type Variant = typeof variants[keyof typeof variants];
+export type Scale = (typeof scales)[keyof typeof scales];
+export type Variant = (typeof variants)[keyof typeof variants];
 
 export interface BaseButtonProps extends LayoutProps, SpaceProps {
   as?: "a" | "button" | ElementType;

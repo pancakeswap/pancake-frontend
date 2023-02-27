@@ -1,0 +1,16 @@
+{
+  "name": "@pancakeswap/ui-wallets",
+  "version": "0.0.2",
+  "main": "src/index.ts",
+  "sideEffects": [
+    "*.css.ts"
+  ],
+  "private": true,
+  "dependencies": {
+    "@pancakeswap/uikit": "*",
+    "qrcode.react": "^3.1.0"
+  },
+  "peerDependencies": {
+    "swiper": "*"
+  }
+}

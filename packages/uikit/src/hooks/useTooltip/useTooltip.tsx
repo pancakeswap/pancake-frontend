@@ -2,7 +2,8 @@ import { AnimatePresence, Variants, LazyMotion, domAnimation } from "framer-moti
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { usePopper } from "react-popper";
-import { DefaultTheme, ThemeProvider } from "styled-components";
+import { isMobile } from "react-device-detect";
+import { DefaultTheme, ThemeProvider, useTheme } from "styled-components";
 import { dark, light } from "../../theme";
 import getPortalRoot from "../../util/getPortalRoot";
 import isTouchDevice from "../../util/isTouchDevice";
@@ -28,28 +29,39 @@ const invertTheme = (currentTheme: DefaultTheme) => {
   return dark;
 };
 
-const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipRefs => {
+const useTooltip = (content: React.ReactNode, options?: TooltipOptions): TooltipRefs => {
+  const { isDark } = useTheme();
   const {
     placement = "auto",
-    trigger = "hover",
+    trigger = isMobile ? "click" : "hover",
     arrowPadding = 16,
     tooltipPadding = { left: 16, right: 16 },
     tooltipOffset = [0, 10],
     hideTimeout = 100,
-  } = options;
+    manualVisible = false,
+    avoidToStopPropagation = false,
+  } = options || {};
+
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
   const [tooltipElement, setTooltipElement] = useState<HTMLElement | null>(null);
   const [arrowElement, setArrowElement] = useState<HTMLElement | null>(null);
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(manualVisible);
   const isHoveringOverTooltip = useRef(false);
   const hideTimeoutRef = useRef<number>();
+
+  useEffect(() => {
+    setVisible(manualVisible);
+  }, [manualVisible]);
 
   const hideTooltip = useCallback(
     (e: Event) => {
       const hide = () => {
-        e.stopPropagation();
-        e.preventDefault();
+        if (!avoidToStopPropagation) {
+          e.stopPropagation();
+          e.preventDefault();
+        }
+
         setVisible(false);
       };
 
@@ -71,13 +83,11 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
         hide();
       }
     },
-    [tooltipElement, trigger, hideTimeout]
+    [tooltipElement, trigger, hideTimeout, avoidToStopPropagation]
   );
 
   const showTooltip = useCallback(
     (e: Event) => {
-      e.stopPropagation();
-      e.preventDefault();
       setVisible(true);
       if (trigger === "hover") {
         if (e.target === targetElement) {
@@ -89,21 +99,25 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
           isHoveringOverTooltip.current = true;
         }
       }
+      if (!avoidToStopPropagation) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
     },
-    [tooltipElement, targetElement, trigger]
+    [tooltipElement, targetElement, trigger, avoidToStopPropagation]
   );
 
   const toggleTooltip = useCallback(
     (e: Event) => {
-      e.stopPropagation();
+      if (!avoidToStopPropagation) e.stopPropagation();
       setVisible(!visible);
     },
-    [visible]
+    [visible, avoidToStopPropagation]
   );
 
   // Trigger = hover
   useEffect(() => {
-    if (targetElement === null || trigger !== "hover") return undefined;
+    if (targetElement === null || trigger !== "hover" || manualVisible) return undefined;
 
     if (isTouchDevice()) {
       targetElement.addEventListener("touchstart", showTooltip);
@@ -118,11 +132,11 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
       targetElement.removeEventListener("mouseenter", showTooltip);
       targetElement.removeEventListener("mouseleave", showTooltip);
     };
-  }, [trigger, targetElement, hideTooltip, showTooltip]);
+  }, [trigger, targetElement, hideTooltip, showTooltip, manualVisible]);
 
   // Keep tooltip open when cursor moves from the targetElement to the tooltip
   useEffect(() => {
-    if (tooltipElement === null || trigger !== "hover") return undefined;
+    if (tooltipElement === null || trigger !== "hover" || manualVisible) return undefined;
 
     tooltipElement.addEventListener("mouseenter", showTooltip);
     tooltipElement.addEventListener("mouseleave", hideTooltip);
@@ -130,7 +144,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
       tooltipElement.removeEventListener("mouseenter", showTooltip);
       tooltipElement.removeEventListener("mouseleave", hideTooltip);
     };
-  }, [trigger, tooltipElement, hideTooltip, showTooltip]);
+  }, [trigger, tooltipElement, hideTooltip, showTooltip, manualVisible]);
 
   // Trigger = click
   useEffect(() => {
@@ -198,6 +212,7 @@ const useTooltip = (content: React.ReactNode, options: TooltipOptions): TooltipR
 
   const tooltip = (
     <StyledTooltip
+      data-theme={isDark ? "light" : "dark"}
       {...animationMap}
       variants={animationVariants}
       transition={{ duration: 0.3 }}

@@ -1,0 +1,53 @@
+{
+  "name": "@pancakeswap/swap-sdk-core",
+  "license": "MIT",
+  "version": "0.0.1",
+  "description": "🛠 An SDK for building applications on top of Pancakeswap.",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/swap-sdk"
+  },
+  "keywords": [
+    "pancakeswap"
+  ],
+  "module": "dist/index.mjs",
+  "scripts": {
+    "lint": "eslint src test",
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
+    "test": "jest",
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "big.js": "^5.2.2",
+    "decimal.js-light": "^2.5.0",
+    "jsbi": "^3.1.4",
+    "tiny-invariant": "^1.1.0",
+    "tiny-warning": "^1.0.3",
+    "toformat": "^2.0.0"
+  },
+  "peerDependencies": {},
+  "devDependencies": {
+    "@swc/core": "^1.2.215",
+    "@swc/jest": "^0.2.21",
+    "@types/big.js": "^4.0.5",
+    "@types/jest": "^24.0.25",
+    "babel-plugin-transform-jsbi-to-bigint": "^1.3.1",
+    "tsup": "^6.6.3"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
+  }
+}

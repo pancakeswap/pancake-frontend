@@ -11,7 +11,7 @@ export const disappearAnimation = keyframes`
   to { opacity:0 }
 `;
 
-export const animationHandler = (element: HTMLDivElement | null) => {
+export const animationHandler = (element: HTMLElement | null) => {
   if (!element) return;
   if (element.classList.contains("appear")) {
     element.classList.remove("appear");
@@ -33,3 +33,15 @@ export const animationMap = {
   animate: "animate",
   exit: "exit",
 };
+
+export const promotedGradient = keyframes`
+  0% {
+    background-position: 50% 0%;
+  }
+  50% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 50% 0%;
+  }
+`;

@@ -1,0 +1,42 @@
+{
+  "name": "@pancakeswap/smart-router",
+  "version": "0.6.1",
+  "description": "A SDK for getting best routes from AMM",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pancakeswap/pancake-frontend.git",
+    "directory": "packages/smart-router"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "peerDependencies": {
+    "@pancakeswap/sdk": "^3.1.3"
+  },
+  "dependencies": {
+    "@ethersproject/providers": "^5.0.0",
+    "@ethersproject/bignumber": "^5.0.0",
+    "@pancakeswap/multicall": "^0.0.2",
+    "lodash": "^4.17.21",
+    "tiny-invariant": "^1.1.0"
+  },
+  "devDependencies": {
+    "@pancakeswap/sdk": "^3.1.3",
+    "@pancakeswap/tokens": "*",
+    "@pancakeswap/token-lists": "*",
+    "@types/lodash": "^4.14.178",
+    "tsconfig": "*",
+    "tsup": "^6.6.3",
+    "typescript": "^4.9.4"
+  },
+  "exports": {
+    "./evm": {
+      "types": "./dist/evm.d.ts",
+      "import": "./dist/evm.mjs",
+      "require": "./dist/evm.js"
+    }
+  }
+}
