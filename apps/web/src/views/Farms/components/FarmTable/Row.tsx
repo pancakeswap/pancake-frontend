@@ -162,6 +162,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         />
                         {props?.details?.boosted && userDataReady ? (
                           <BoostedApr
+                            onlyShowAtDesktop
                             lpRewardsApr={props?.apr?.lpRewardsApr}
                             apr={props?.apr?.originalValue}
                             pid={props.farm?.pid}
@@ -249,19 +250,19 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           </td>
           <td width="15%">
             <CellInner style={{ justifyContent: 'flex-end' }}>
-              <CellLayout label={t('Available LP')}>
+              <CellLayout label={t('Available')}>
                 <LpAmount {...props.availableLp} userDataReady={userDataReady} />
               </CellLayout>
             </CellInner>
           </td>
-          <td width="15%">
+          <td width="18%">
             <CellInner style={{ justifyContent: 'flex-end' }}>
               <CellLayout label={t('Staked')}>
                 <LpAmount {...props.stakedLp} userDataReady={userDataReady} />
               </CellLayout>
             </CellInner>
           </td>
-          <td width="5%">
+          <td width="2%">
             <CellInner style={{ justifyContent: 'flex-end' }}>
               <Details actionPanelToggled={actionPanelExpanded} />
             </CellInner>

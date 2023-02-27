@@ -2132,5 +2132,6 @@
   "%totalStakedFarm% Staked Farming": "%totalStakedFarm% Staked Farming",
   "%totalAvailableFarm% LP Available for Farming": "%totalAvailableFarm% LP Available for Farming",
   "no position found": "no position found",
-  "Available LP": "Available LP"
+  "Available LP": "Available LP",
+  "Available": "Available"
 }
