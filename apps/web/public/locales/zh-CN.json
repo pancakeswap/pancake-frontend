@@ -2083,7 +2083,7 @@
   "Learn how": "了解方式",
   "You might also like": "您可能还喜欢",
   "Chef’s choice": "厨师精选",
-  "Recommended Readings by Chef’s": "Recommended Readings by Chef’s",
+  "Recommended Readings by Chef’s": "厨师的建议读物",
   "Latest News about PancakeSwap and more!": "关于 Pancakeswap 的最新资讯等！",
   "Token Risk Scanning": "代币风险扫描",
   "Automatic risk scanning for the selected token": "对所选代币进行自动风险扫描",
@@ -2120,5 +2120,5 @@
   "Trade now using Trust Wallet": "立即使用 Trust Wallet 进行交易",
   "Download Trust Wallet": "下载 Trust Wallet",
   "Trade and Share $10,000": "交易并分享 10,000 美元",
-  "Unable request a quote": "Unable request a quote"
+  "Unable request a quote": "无法请求报价"
 }
