@@ -50,9 +50,9 @@ describe.concurrent('retry', () => {
   })
 
   async function checkTime(fn: () => Promise<any>, min: number, max: number) {
-    const time = new Date().getTime()
+    const time = Date.now()
     await fn()
-    const diff = new Date().getTime() - time
+    const diff = Date.now() - time
     expect(diff).toBeGreaterThanOrEqual(min)
     expect(diff).toBeLessThanOrEqual(max)
   }
