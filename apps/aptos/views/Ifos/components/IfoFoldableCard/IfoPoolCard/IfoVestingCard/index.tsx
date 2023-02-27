@@ -7,6 +7,7 @@ import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIfoVesting from 'views/Ifos/hooks/useIfoVesting'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import TotalPurchased from './TotalPurchased'
 import TotalAvailableClaim from './TotalAvailableClaim'
 import ReleasedTokenInfo from './ReleasedTokenInfo'
@@ -27,6 +28,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   walletIfoData,
 }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { token } = ifo
   const userPool = walletIfoData[poolId]
   const { vestingInformation } = publicIfoData[poolId]
@@ -55,6 +57,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
           vestingStartTime={publicIfoData.vestingStartTime || 0}
           cliff={publicIfoData[poolId]?.vestingInformation?.cliff || 0}
           duration={publicIfoData[poolId]?.vestingInformation?.duration || 0}
+          getNow={getNow}
         />
         <TotalPurchased ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
         <ReleasedTokenInfo ifo={ifo} amountReleased={amountReleased} amountInVesting={amountInVesting} />
@@ -80,6 +83,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
         duration={publicIfoData[poolId]?.vestingInformation?.duration}
         vestingStartTime={publicIfoData.vestingStartTime}
         releaseRate={releaseRate}
+        getNow={getNow}
       />
     </Flex>
   )
