@@ -7,6 +7,10 @@ export interface FarmTableEarnedProps {
   pid: number;
 }
 
+export interface FarmTableAmountProps {
+  amount: number;
+}
+
 export interface FarmTableLiquidityProps {
   liquidity: BigNumber;
 }
@@ -98,6 +102,18 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
     name: "multiplier",
     sortable: true,
     label: "Multiplier",
+  },
+  {
+    id: 7,
+    name: "availableLp",
+    sortable: false,
+    label: "Available LP",
+  },
+  {
+    id: 8,
+    name: "stakedLp",
+    sortable: false,
+    label: "Staked",
   },
   {
     id: 7,

@@ -6,4 +6,5 @@ export type {
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
   FarmTableFarmTokenInfoProps,
+  FarmTableAmountProps,
 } from "./types";

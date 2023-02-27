@@ -12,18 +12,18 @@ import {
   FarmTableFarmTokenInfoProps,
   MobileColumnSchema,
   DesktopColumnSchema,
+  FarmTableAmountProps,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser } from 'state/farms/hooks'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
-
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
 import ActionPanel from './Actions/ActionPanel'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
 
 const { FarmAuctionTag, BoostedTag, StableFarmTag } = FarmUI.Tags
-const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
+const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount } = FarmUI.FarmTable
 
 export interface RowProps {
   apr: AprProps
@@ -34,6 +34,8 @@ export interface RowProps {
   details: FarmWithStakedValue
   type: 'core' | 'community'
   initialActivity?: boolean
+  availableLp: FarmTableAmountProps
+  stakedLp: FarmTableAmountProps
 }
 
 interface RowPropsWithLoading extends RowProps {
@@ -47,6 +49,8 @@ const cells = {
   details: Details,
   multiplier: Multiplier,
   liquidity: Liquidity,
+  availableLp: LpAmount,
+  stakedLp: LpAmount,
 }
 
 const CellInner = styled.div`
@@ -57,7 +61,7 @@ const CellInner = styled.div`
   padding-right: 8px;
 
   ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 32px;
+    padding-right: 14px;
   }
 `
 
@@ -211,14 +215,14 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           </FarmMobileCell>
         </tr>
         <StyledTr onClick={toggleActionPanel}>
-          <td width="33%">
+          <td width="20%">
             <EarnedMobileCell>
               <CellLayout label={t('Earned')}>
                 <Earned {...props.earned} userDataReady={userDataReady} />
               </CellLayout>
             </EarnedMobileCell>
           </td>
-          <td width="33%">
+          <td width="35%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 <Apr
@@ -243,7 +247,21 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               </CellLayout>
             </AprMobileCell>
           </td>
-          <td width="33%">
+          <td width="15%">
+            <CellInner style={{ justifyContent: 'flex-end' }}>
+              <CellLayout label={t('Available LP')}>
+                <LpAmount {...props.availableLp} userDataReady={userDataReady} />
+              </CellLayout>
+            </CellInner>
+          </td>
+          <td width="15%">
+            <CellInner style={{ justifyContent: 'flex-end' }}>
+              <CellLayout label={t('Staked')}>
+                <LpAmount {...props.stakedLp} userDataReady={userDataReady} />
+              </CellLayout>
+            </CellInner>
+          </td>
+          <td width="5%">
             <CellInner style={{ justifyContent: 'flex-end' }}>
               <Details actionPanelToggled={actionPanelExpanded} />
             </CellInner>
@@ -258,7 +276,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {handleRenderRow()}
       {shouldRenderChild && (
         <tr>
-          <td colSpan={7}>
+          <td colSpan={9}>
             <ActionPanel {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
           </td>
         </tr>

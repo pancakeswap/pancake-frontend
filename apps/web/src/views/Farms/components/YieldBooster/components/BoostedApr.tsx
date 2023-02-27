@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { RocketIcon, Text } from '@pancakeswap/uikit'
+import { RocketIcon, Flex, Text } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
@@ -52,12 +52,12 @@ function BoostedApr(props: BoostedAprPropsType) {
   // }
 
   return (
-    <>
-      <RocketIcon m="4px" color="success" />
+    <Flex ml="4px">
+      <RocketIcon color="success" />
       <Text bold color="success" {...rest} fontSize={16}>
         {msg}
       </Text>
-    </>
+    </Flex>
   )
 }
 

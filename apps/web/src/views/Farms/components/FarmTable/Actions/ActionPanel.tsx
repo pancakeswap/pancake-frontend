@@ -106,7 +106,10 @@ const ActionContainer = styled.div`
 
 const InfoContainer = styled.div`
   min-width: 200px;
-  align-self: flex-start;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    align-self: flex-start;
+  }
 `
 
 const ValueContainer = styled.div``
