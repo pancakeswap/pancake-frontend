@@ -1,9 +1,10 @@
 import { Interface } from '@ethersproject/abi'
 import { Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress, WNATIVE } from '@pancakeswap/sdk'
-import { abi } from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/ISwapRouter02.sol/ISwapRouter02.json'
 import { FeeOptions, MethodParameters, Payments, PermitOptions, Position, SelfPermit, toHex } from '@pancakeswap/v3-sdk'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
+
+import abi from '../../abis/ISwapRouter02.json'
 import { ADDRESS_THIS, MSG_SENDER } from '../../constants'
 import { ApproveAndCall, ApprovalTypes, CondensedAddLiquidityOptions } from './approveAndCall'
 import { Trade, V3Pool, BaseRoute, RouteType } from '../types'

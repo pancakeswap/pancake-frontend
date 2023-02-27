@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState, useCallback } from 'react'
 
 import { useV3CandidatePools } from './useV3Pools'
 import { useV2CandidatePools, useStableCandidatePools } from './usePoolsOnChain'
+import { useActiveChainId } from './useActiveChainId'
 
 interface PoolsWithState {
   refresh: () => void
@@ -23,6 +24,7 @@ export function useCommonPools(
   currencyB?: Currency,
   { blockNumber: latestBlockNumber }: Options = {},
 ): PoolsWithState {
+  const { chainId } = useActiveChainId()
   const [blockNumber, setBlockNumber] = useState<JSBI | null | undefined>(null)
   const [pools, setPools] = useState<Pool[] | null | undefined>(null)
   const {
@@ -57,6 +59,10 @@ export function useCommonPools(
   )
 
   const refresh = useCallback(() => latestBlockNumber && setBlockNumber(latestBlockNumber), [latestBlockNumber])
+
+  useEffect(() => {
+    setBlockNumber(null)
+  }, [chainId])
 
   useEffect(() => {
     if (consistentBlockNumber && v2Pools && v3Pools && stablePools) {
