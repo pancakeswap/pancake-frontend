@@ -12,7 +12,7 @@ import { PaymentsExtended } from './paymentsExtended'
 import { encodeMixedRouteToPath } from './encodeMixedRouteToPath'
 import { partitionMixedRouteByProtocol } from './partitionMixedRouteByProtocol'
 import { maximumAmountIn, minimumAmountOut } from './maximumAmount'
-import { isV3Pool } from './pool'
+import { isV2Pool, isV3Pool } from './pool'
 import { buildBaseRoute } from './route'
 import { getOutputOfPools } from './getOutputOfPools'
 import { getPriceImpact } from './getPriceImpact'
@@ -209,12 +209,14 @@ export abstract class SwapRouter {
     routerMustCustody: boolean,
     performAggregatedSlippageCheck: boolean,
   ): string[] {
-    const calldatas: string[] = []
+    let calldatas: string[] = []
 
-    invariant(trade.tradeType === TradeType.EXACT_INPUT, 'TRADE_TYPE')
+    // WARN: Not sure why this restriction. Remove for now to allow exact output on mixed route trading
+    // invariant(trade.tradeType === TradeType.EXACT_INPUT, 'TRADE_TYPE')
+    const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
 
     for (const route of trade.routes) {
-      const { inputAmount, outputAmount, pools, path } = route
+      const { inputAmount, outputAmount, pools } = route
       const amountIn: string = toHex(maximumAmountIn(trade, options.slippageTolerance, inputAmount).quotient)
       const amountOut: string = toHex(minimumAmountOut(trade, options.slippageTolerance, outputAmount).quotient)
 
@@ -230,28 +232,45 @@ export abstract class SwapRouter {
       const mixedRouteIsAllV3 = (r: Omit<BaseRoute, 'input' | 'output'>) => {
         return r.pools.every(isV3Pool)
       }
+      const mixedRouteIsAllV2 = (r: Omit<BaseRoute, 'input' | 'output'>) => {
+        return r.pools.every(isV2Pool)
+      }
 
       if (singleHop) {
         /// For single hop, since it isn't really a mixedRoute, we'll just mimic behavior of V3 or V2
         /// We don't use encodeV3Swap() or encodeV2Swap() because casting the trade to a V3Trade or V2Trade is overcomplex
         if (mixedRouteIsAllV3(route)) {
-          const exactInputSingleParams = {
-            tokenIn: path[0].wrapped.address,
-            tokenOut: path[1].wrapped.address,
-            fee: (pools[0] as V3Pool).fee,
-            recipient,
-            amountIn,
-            amountOutMinimum: performAggregatedSlippageCheck ? 0 : amountOut,
-            sqrtPriceLimitX96: 0,
-          }
-
-          calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInputSingle', [exactInputSingleParams]))
+          calldatas = [
+            ...calldatas,
+            ...SwapRouter.encodeV3Swap(
+              {
+                ...trade,
+                routes: [route],
+                inputAmount,
+                outputAmount,
+              },
+              options,
+              routerMustCustody,
+              performAggregatedSlippageCheck,
+            ),
+          ]
+        } else if (mixedRouteIsAllV2(route)) {
+          calldatas = [
+            ...calldatas,
+            SwapRouter.encodeV2Swap(
+              {
+                ...trade,
+                routes: [route],
+                inputAmount,
+                outputAmount,
+              },
+              options,
+              routerMustCustody,
+              performAggregatedSlippageCheck,
+            ),
+          ]
         } else {
-          const pathAddresses = path.map((currency) => currency.wrapped.address)
-
-          const exactInputParams = [amountIn, performAggregatedSlippageCheck ? 0 : amountOut, pathAddresses, recipient]
-
-          calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('swapExactTokensForTokens', exactInputParams))
+          // TODO encode stable swap
         }
       } else {
         const sections = partitionMixedRouteByProtocol(route)
@@ -273,29 +292,52 @@ export abstract class SwapRouter {
           /// Previous output is now input
           inputToken = outputToken.wrapped
 
+          const lastSectionInRoute = isLastSectionInRoute(i)
+          // By default router holds funds until the last swap, then it is sent to the recipient
+          // special case exists where we are unwrapping WETH output, in which case `routerMustCustody` is set to true
+          // and router still holds the funds. That logic bundled into how the value of `recipient` is calculated
+          const recipientAddress = lastSectionInRoute ? recipient : ADDRESS_THIS
+          const inAmount = i === 0 ? amountIn : 0
+          const outAmount = !lastSectionInRoute ? 0 : amountOut
           if (mixedRouteIsAllV3(newRoute)) {
-            // mixed only accept exact input
             const pathStr = encodeMixedRouteToPath(newRoute, false)
-            const exactInputParams = {
-              path: pathStr,
-              // By default router holds funds until the last swap, then it is sent to the recipient
-              // special case exists where we are unwrapping WETH output, in which case `routerMustCustody` is set to true
-              // and router still holds the funds. That logic bundled into how the value of `recipient` is calculated
-              recipient: isLastSectionInRoute(i) ? recipient : ADDRESS_THIS,
-              amountIn: i === 0 ? amountIn : 0,
-              amountOutMinimum: !isLastSectionInRoute(i) ? 0 : amountOut,
+            if (isExactIn) {
+              const exactInputParams = {
+                path: pathStr,
+                recipient: recipientAddress,
+                amountIn: inAmount,
+                amountOutMinimum: outAmount,
+              }
+
+              calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInput', [exactInputParams]))
+            } else {
+              const exactOutputParams = {
+                path: pathStr,
+                recipient,
+                amountOut: outAmount,
+                amountInMaximum: inAmount,
+              }
+
+              calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutput', [exactOutputParams]))
             }
+          } else if (mixedRouteIsAllV2(newRoute)) {
+            const path = newRoute.path.map((token) => token.wrapped.address)
+            if (isExactIn) {
+              const exactInputParams = [
+                inAmount, // amountIn
+                outAmount, // amountOutMin
+                path, // path
+                recipientAddress, // to
+              ]
 
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInput', [exactInputParams]))
+              calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('swapExactTokensForTokens', exactInputParams))
+            } else {
+              const exactOutputParams = [outAmount, inAmount, path, recipientAddress]
+
+              calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('swapTokensForExactTokens', exactOutputParams))
+            }
           } else {
-            const exactInputParams = [
-              i === 0 ? amountIn : 0, // amountIn
-              !isLastSectionInRoute(i) ? 0 : amountOut, // amountOutMin
-              newRoute.path.map((token) => token.wrapped.address), // path
-              isLastSectionInRoute(i) ? recipient : ADDRESS_THIS, // to
-            ]
-
-            calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('swapExactTokensForTokens', exactInputParams))
+            // TODO stable swap
           }
         }
       }
