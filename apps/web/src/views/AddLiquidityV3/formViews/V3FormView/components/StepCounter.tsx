@@ -81,8 +81,8 @@ const StepCounter = ({
   }, [localValue, useLocalValue, value])
 
   return (
-    <LightGreyCard padding="16px">
-      <AutoColumn textAlign="center" gap="8px" width="100%" onFocus={handleOnFocus} onBlur={handleOnBlur}>
+    <LightGreyCard padding="0">
+      <AutoColumn py="16px" textAlign="center" gap="8px" width="100%" onFocus={handleOnFocus} onBlur={handleOnBlur}>
         {title}
         <AutoRow>
           {!locked && (
@@ -91,7 +91,7 @@ const StepCounter = ({
               disabled={decrementDisabled}
               scale="xs"
               variant="text"
-              style={{ width: 20 }}
+              style={{ width: 20, padding: 16 }}
             >
               <RemoveIcon color="primary" width={20} height={20} />
             </IconButton>
@@ -109,11 +109,12 @@ const StepCounter = ({
 
           {!locked && (
             <IconButton
+              px="16px"
               onClick={handleIncrement}
               disabled={incrementDisabled}
               scale="xs"
               variant="text"
-              style={{ width: 20 }}
+              style={{ width: 20, padding: 16 }}
             >
               <AddCircleIcon color="primary" width={20} height={20} />
             </IconButton>
