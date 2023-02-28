@@ -44,7 +44,6 @@ export async function getRoutesWithValidQuote({
   const requestCallback = typeof window === 'undefined' ? setTimeout : window.requestIdleCallback || window.setTimeout
   console.time('[METRIC] Get quotes')
   console.timeLog('[METRIC] Get quotes', 'from', routesWithoutQuote.length, 'routes', routesWithoutQuote)
-  // FIXME won't work on server side
   // Split into chunks so the calculation won't block the main thread
   const getQuotes = (routes: RouteWithoutQuote[]): Promise<RouteWithQuote[]> =>
     new Promise((resolve, reject) => {
