@@ -18,19 +18,21 @@ interface IfoProgressStepperProps {
   vestingStartTime: number;
   cliff: number;
   duration: number;
+  getNow: () => number;
 }
 
 const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperProps>> = ({
   vestingStartTime,
   cliff,
   duration,
+  getNow,
 }) => {
   const { t } = useTranslation();
   const [steps, setSteps] = useState<{ key: string; text: string; timeStamp: number }[]>([]);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
   useEffect(() => {
-    const currentTimeStamp = new Date().getTime();
+    const currentTimeStamp = getNow();
     const timeSalesEnded = vestingStartTime * 1000;
     const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000;
     const timeVestingEnd = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + duration) * 1000;
@@ -56,7 +58,7 @@ const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperPro
       },
       { key: "endVesting", text: t("Vesting end"), timeStamp: timeVestingEnd },
     ]);
-  }, [t, cliff, duration, vestingStartTime]);
+  }, [t, cliff, duration, vestingStartTime, getNow]);
 
   return (
     <Flex>
