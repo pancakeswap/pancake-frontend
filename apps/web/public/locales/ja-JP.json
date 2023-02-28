@@ -2083,7 +2083,7 @@
   "Learn how": "方法を見る",
   "You might also like": "次もお勧めです",
   "Chef’s choice": "シェフのお勧め",
-  "Recommended Readings by Chef’s": "Recommended Readings by Chef’s",
+  "Recommended Readings by Chef’s": "シェフのおすすめの読み物",
   "Latest News about PancakeSwap and more!": "PancakeSwapなどに関する最新ニュース！",
   "Token Risk Scanning": "トークンリスクスキャン",
   "Automatic risk scanning for the selected token": "選択されたトークンの自動リスクスキャン",
@@ -2120,5 +2120,5 @@
   "Trade now using Trust Wallet": "Trust Walletで今すぐトレード",
   "Download Trust Wallet": "Trust Walletをダウンロード",
   "Trade and Share $10,000": "トレードして10,000ドルを山分け",
-  "Unable request a quote": "Unable request a quote"
+  "Unable request a quote": "見積りをリクエストできません"
 }
