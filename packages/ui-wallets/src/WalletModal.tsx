@@ -440,7 +440,7 @@ const Intro = ({ docLink, docText }: { docLink: string; docText: string }) => {
   return (
     <>
       <Heading as="h1" fontSize="20px" color="secondary">
-        {t('Haven’t got a wallet yet?')}
+        {t('Haven’t got a CADINU yet?')}
       </Heading>
       <Image src="/logo.png" width={198} height={178} />
       <Button as={LinkExternal} color="backgroundAlt" variant="subtle" href={docLink}>
