@@ -4,7 +4,7 @@ import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk
 import { computeAllRoutes, getBestRouteCombinationByQuotes } from './functions'
 import { createGasModel } from './gasModel'
 import { getRoutesWithValidQuote } from './getRoutesWithValidQuote'
-import { BestRoutes, PoolProvider, QuoteProvider, Trade } from './types'
+import { BestRoutes, PoolProvider, PoolType, QuoteProvider, Trade } from './types'
 
 interface TradeConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
@@ -14,6 +14,7 @@ interface TradeConfig {
   maxHops?: number
   maxSplits?: number
   distributionPercent?: number
+  allowedPoolTypes?: PoolType[]
 }
 
 export async function getBestTrade(
@@ -67,13 +68,17 @@ async function getBestRoutes(
     quoteProvider,
     blockNumber,
     gasPriceWei,
+    allowedPoolTypes,
   }: RouteConfig,
 ): Promise<BestRoutes | null> {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
   const inputCurrency = isExactIn ? amount.currency : currency
   const outputCurrency = isExactIn ? currency : amount.currency
 
-  const candidatePools = await poolProvider?.getCandidatePools(amount.currency, currency, blockNumber)
+  const candidatePools = await poolProvider?.getCandidatePools(amount.currency, currency, {
+    blockNumber,
+    protocols: allowedPoolTypes,
+  })
   if (!candidatePools.length) {
     return null
   }

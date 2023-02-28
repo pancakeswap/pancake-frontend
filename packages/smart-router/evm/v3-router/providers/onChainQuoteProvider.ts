@@ -8,7 +8,6 @@ import uniq from 'lodash/uniq'
 import flatMap from 'lodash/flatMap'
 import filter from 'lodash/filter'
 import retry, { Options as RetryOptions } from 'async-retry'
-import stats from 'stats-lite'
 
 import {
   BaseRoute,
