@@ -107,7 +107,7 @@ const CheckPrizesSection = () => {
               {t('Why not play again')}
             </Heading>
           </Flex>
-          <TicketImage src="//images/lottery/cadinu_ticket_3.svg" alt="lottery ticket" />
+          <TicketImage src="//images/lottery/cadinu_ticket_4.svg" alt="lottery ticket" />
         </Flex>
       )
     }
@@ -136,7 +136,7 @@ const CheckPrizesSection = () => {
             {checkNowText()}
           </Button>
         </Flex>
-        <TicketImage src="/images/lottery/cadinu_ticket_3.svg" alt="lottery ticket" />
+        <TicketImage src="/images/lottery/cadinu_ticket_4.svg" alt="lottery ticket" />
       </Flex>
     )
   }
