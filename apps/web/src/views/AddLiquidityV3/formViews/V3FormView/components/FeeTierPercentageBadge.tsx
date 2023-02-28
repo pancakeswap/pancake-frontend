@@ -14,7 +14,7 @@ export function FeeTierPercentageBadge({
 }) {
   return (
     <Tag
-      variant="textSubtle"
+      variant="secondary"
       outline
       fontSize="10px"
       padding="4px"

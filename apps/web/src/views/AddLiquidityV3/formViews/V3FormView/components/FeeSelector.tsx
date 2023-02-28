@@ -99,7 +99,7 @@ export default function FeeSelector({
           <>
             <Text>Fee tier</Text>
             <Text>The % you will earn in fees.</Text>
-            <CircleLoader />
+            {isLoading && <CircleLoader />}
           </>
         )
       }
@@ -110,6 +110,7 @@ export default function FeeSelector({
             if (supportedChains.includes(chainId)) {
               return (
                 <FeeOption
+                  largestUsageFeeTier={largestUsageFeeTier}
                   feeAmount={_feeAmount}
                   active={feeAmount === _feeAmount}
                   onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3, feeAmount: _feeAmount })}
