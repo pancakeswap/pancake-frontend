@@ -2,14 +2,19 @@ import { Currency, BigintIsh, ChainId } from '@pancakeswap/sdk'
 import { Provider as IProvider } from '@ethersproject/providers'
 import type { GraphQLClient } from 'graphql-request'
 
-import { Pool } from './pool'
+import { Pool, PoolType } from './pool'
 import { RouteWithoutQuote, RouteWithQuote } from './route'
 import { GasModel } from './gasModel'
 
-export interface PoolProvider {
-  getCandidatePools: (currencyA: Currency, currencyB: Currency, blockNumber: BigintIsh) => Promise<Pool[]>
+interface PoolOptions {
+  blockNumber: BigintIsh
+  protocols?: PoolType[]
+}
 
-  getPools: (pairs: [Currency, Currency][], blockNumber: BigintIsh) => Promise<Pool[]>
+export interface PoolProvider {
+  getCandidatePools: (currencyA: Currency, currencyB: Currency, options: PoolOptions) => Promise<Pool[]>
+
+  getPools: (pairs: [Currency, Currency][], options: PoolOptions) => Promise<Pool[]>
 }
 
 export interface QuoterOptions {
