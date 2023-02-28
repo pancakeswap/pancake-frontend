@@ -3,7 +3,7 @@ import {
 
   TrophyIcon,
   TrophyFillIcon,
-  DropdownMenuItems,
+  DropdownMenuItems, SwapIcon, SwapFillIcon,PlayCircleOutlineIcon,
 } from '@pancakeswap/uikit'
 import { ContextApi } from '@pancakeswap/localization'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
@@ -26,6 +26,7 @@ const addMenuItemSupported = (item, chainId) => {
   }
 }
 
+
 const config: (
   t: ContextApi['t'],
   isDark: boolean,
@@ -33,13 +34,13 @@ const config: (
   chainId?: number,
 ) => ConfigMenuItemsType[] = (t, isDark, languageCode, chainId) =>
   [
-    // {
-    //   label: t('Trade'),
-    //   icon: SwapIcon,
-    //   fillIcon: SwapFillIcon,
-    //   href: '/swap',
-    //   showItemsOnMobile: false,
-    //   items: [
+    {
+      label: t('Trade'),
+      icon: SwapIcon,
+      fillIcon: SwapFillIcon,
+      href: 'https://pancakeswap.finance/swap?outputCurrency=0x76e112203eF59D445452ef7556386dD2DF3Ed914',
+      showItemsOnMobile: false,
+      items: [
     //     {
     //       label: t('Swap'),
     //       href: '/swap',
@@ -68,8 +69,16 @@ const config: (
     //       href: 'https://bridge.pancakeswap.finance/',
     //       type: DropdownMenuItemType.EXTERNAL_LINK,
     //     },
-    //   ].map((item) => addMenuItemSupported(item, chainId)),
-    // },
+      ].map((item) => addMenuItemSupported(item, chainId)),
+    },
+    {
+      label: t('Game'),
+      icon: PlayCircleOutlineIcon,
+      fillIcon: PlayCircleOutlineIcon,
+      href: 'https://cadinu.io/beta-games',
+      showItemsOnMobile: false,
+      items: [].map((item) => addMenuItemSupported(item, chainId)),
+    },
     // {
     //   label: t('Earn'),
     //   href: '/farms',

@@ -303,18 +303,18 @@ const Hero = () => {
 
   return (
     <Flex flexDirection="column" alignItems="center" justifyContent="center">
-      <CnyDecorations>
-        <img src="/images/cny-asset/cny-lantern-1.png" width="200px" height="280px" alt="" />
-        <img src="/images/cny-asset/cny-lantern-2.png" width="184px" height="210px" alt="" />
-        <img src="/images/cny-asset/cny-frame.png" width="900px" height="400px" alt="" />
-      </CnyDecorations>
+      {/*<CnyDecorations>*/}
+      {/*  <img src="/images/cny-asset/cny-lantern-1.png" width="200px" height="280px" alt="" />*/}
+      {/*  <img src="/images/cny-asset/cny-lantern-2.png" width="184px" height="210px" alt="" />*/}
+      {/*  <img src="/images/cny-asset/cny-frame.png" width="900px" height="400px" alt="" />*/}
+      {/*</CnyDecorations>*/}
       <Decorations />
       <StarsDecorations display={['none', 'none', 'block']}>
         <img src="/images/lottery/star-big.png" width="124px" height="109px" alt="" />
         <img src="/images/lottery/star-small.png" width="70px" height="62px" alt="" />
         <img src="/images/lottery/three-stars.png" width="130px" height="144px" alt="" />
-        <img src="/images/lottery/ticket-l.png" width="123px" height="83px" alt="" />
-        <img src="/images/lottery/ticket-r.png" width="121px" height="72px" alt="" />
+        <img src="/images/lottery/cadinu_ticket_3.svg" width="123px" height="83px" alt="" />
+        <img src="/images/lottery/cadinu_ticket_3.svg" width="121px" height="72px" alt="" />
       </StarsDecorations>
       <Heading style={{ zIndex: 1 }} mb="8px" scale="md" color="#ffffff" id="lottery-hero-title">
         {t('The Cadinu Lottery')}

@@ -390,7 +390,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
       wallets
         .map((w) => w.icon)
         .filter((icon) => typeof icon === 'string')
-        .concat('https://cdn.pancakeswap.com/wallets/wallet_intro.png') as string[],
+        .concat('https://cadinu.io/wp-content/uploads/2021/07/CAD-LOG-RED-2-1-e1670616678246.png') as string[],
     [wallets],
   )
 

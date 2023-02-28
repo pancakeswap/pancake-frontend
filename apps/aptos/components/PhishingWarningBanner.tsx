@@ -84,7 +84,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
       </AtomBox>
       <AtomBox display={{ xs: 'none', lg: 'flex' }} alignItems="center" justifyContent="center" width="full">
         <InnerContainer>
-          <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="78px" />
+          {/* <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="78px" /> */}
           <SpeechBubble>{warningTextComponent}</SpeechBubble>
         </InnerContainer>
         <IconButton onClick={hideBanner} variant="text">

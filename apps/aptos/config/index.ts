@@ -1,6 +1,6 @@
 import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 
-export const DOMAIN = 'https://aptos.pancakeswap.finance'
+export const DOMAIN = 'https://lottery.cadinu.io'
 export const BASE_ADD_LIQUIDITY_URL = `${DOMAIN}/add`
 
 export const APEX_DOMAIN = process.env.NEXT_PUBLIC_APEX_URL

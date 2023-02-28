@@ -323,19 +323,7 @@ const HowToPlay: React.FC<React.PropsWithChildren> = () => {
               </Text>
             </li>
           </BulletList>
-          <Heading my="16px" scale="md">
-            {t('CADINU Injections')}
-          </Heading>
-          <BulletList>
-            <li>
-              <Text display="inline" color="textSubtle">
-                {t(
-                  'An average total of 35,000 CADINU from the treasury is added to lottery rounds over the course of a week. This CADINU is of course also included in rollovers! Read more in our guide to ',
-                )}
 
-              </Text>
-            </li>
-          </BulletList>
         </Flex>
         <Flex flex="1" justifyContent="center">
           <PoolAllocations />

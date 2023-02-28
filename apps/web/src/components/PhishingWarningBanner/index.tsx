@@ -48,7 +48,7 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const { isMobile, isMd } = useMatchBreakpoints()
   const warningTextAsParts = useMemo(() => {
     const warningText = t("please make sure you're visiting %domain% - check the URL carefully.", { domain })
-    return warningText.split(/(https:\/\/pancakeswap.finance)/g)
+    return warningText.split(/(https:\/\/cadinu.io)/g)
   }, [t])
   const warningTextComponent = (
     <>
@@ -81,18 +81,18 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
       ) : (
         <>
           <InnerContainer>
-            <img
-              src="/images/decorations/phishing-warning-bunny.webp"
-              alt="phishing-warning"
-              width="92px"
-              onError={(e) => {
-                const fallbackSrc = '/images/decorations/phishing-warning-bunny.png'
-                if (!e.currentTarget.src.endsWith(fallbackSrc)) {
-                  // eslint-disable-next-line no-param-reassign
-                  e.currentTarget.src = fallbackSrc
-                }
-              }}
-            />
+            {/* <img */}
+            {/*  src="/images/decorations/phishing-warning-bunny.webp" */}
+            {/*  alt="phishing-warning" */}
+            {/*  width="92px" */}
+            {/*  onError={(e) => { */}
+            {/*    const fallbackSrc = '/images/decorations/phishing-warning-bunny.png' */}
+            {/*    if (!e.currentTarget.src.endsWith(fallbackSrc)) { */}
+            {/*      // eslint-disable-next-line no-param-reassign */}
+            {/*      e.currentTarget.src = fallbackSrc */}
+            {/*    } */}
+            {/*  }} */}
+            {/* /> */}
             <SpeechBubble>{warningTextComponent}</SpeechBubble>
           </InnerContainer>
           <IconButton onClick={hideBanner} variant="text">

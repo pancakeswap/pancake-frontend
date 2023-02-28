@@ -129,7 +129,7 @@ const YourHistoryCard: React.FC<React.PropsWithChildren<YourHistoryCardProps>> =
         <StyledCardBody>
           <Box maxWidth="280px">
             <Flex alignItems="center" justifyContent="center" mb="16px">
-              <WhiteBunny height="24px" mr="8px" /> <Text textAlign="left">{t('No lottery history found')}</Text>
+              <Text textAlign="left">{t('No lottery history found')}</Text>
             </Flex>
             <Text textAlign="center" color="textSubtle" mb="16px">
               {t('Buy tickets for the next round!')}
@@ -154,11 +154,7 @@ const YourHistoryCard: React.FC<React.PropsWithChildren<YourHistoryCardProps>> =
     }
     return (
       <CardFooter>
-        <Flex flexDirection="column" justifyContent="center" alignItems="center">
-          <Text fontSize="12px" color="textSubtle">
-            {t('Only showing data for Lottery V2')}
-          </Text>
-        </Flex>
+
       </CardFooter>
     )
   }
