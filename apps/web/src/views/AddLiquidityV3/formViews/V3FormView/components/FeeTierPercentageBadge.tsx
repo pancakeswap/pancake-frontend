@@ -19,6 +19,7 @@ export function FeeTierPercentageBadge({
       fontSize="10px"
       padding="4px"
       style={{
+        width: 'fit-content',
         justifyContent: 'center',
         whiteSpace: 'inherit',
       }}

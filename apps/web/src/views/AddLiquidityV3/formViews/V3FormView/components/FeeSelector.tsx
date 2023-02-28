@@ -1,11 +1,10 @@
 import { Currency } from '@pancakeswap/sdk'
-import { Box, Text } from '@pancakeswap/uikit'
+import { AutoColumn, CircleLoader, Text } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
-import _toNumber from 'lodash/toNumber'
 import { useEffect, useMemo, useState } from 'react'
 import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
@@ -86,7 +85,7 @@ export default function FeeSelector({
       setShowOptions={setShowOptions}
       heading={
         feeAmount ? (
-          <Box>
+          <AutoColumn gap="8px">
             <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Text>
             {distributions && (
               <FeeTierPercentageBadge
@@ -95,11 +94,12 @@ export default function FeeSelector({
                 poolState={poolsByFeeTier[feeAmount]}
               />
             )}
-          </Box>
+          </AutoColumn>
         ) : (
           <>
             <Text>Fee tier</Text>
             <Text>The % you will earn in fees.</Text>
+            <CircleLoader />
           </>
         )
       }

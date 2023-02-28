@@ -22,6 +22,7 @@ const StyledSVG = styled.svg<{ size: string; stroke?: string }>`
  * Takes in custom size and stroke for circle color, default to primary color as fill,
  * need ...rest for layered styles on top
  */
+// TODO: v3 merge with UIkit strokeWidth
 export default function Loader({
   size = '16px',
   stroke,

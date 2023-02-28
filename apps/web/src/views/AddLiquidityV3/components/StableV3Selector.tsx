@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react'
-import { AutoColumn, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Message, MessageText, Text } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -18,12 +18,12 @@ import HideShowSelectorSection from './HideShowSelectorSection'
 export function StableV3Selector({
   handleFeePoolSelect,
   selectorType,
-  feeAmount,
+  feeAmount = FeeAmount.LOWEST,
   currencyA,
   currencyB,
 }: {
   selectorType: SELECTOR_TYPE
-  feeAmount: number
+  feeAmount: FeeAmount
   currencyA: Currency
   currencyB: Currency
   handleFeePoolSelect: HandleFeePoolSelectFn
@@ -88,7 +88,7 @@ export function StableV3Selector({
             <Text>StableSwap LP</Text>
           </AutoColumn>
         ) : (
-          FEE_AMOUNT_DETAIL[feeAmount]?.includes(chainId) && (
+          FEE_AMOUNT_DETAIL[feeAmount]?.supportedChains.includes(chainId) && (
             <AutoColumn>
               <Text>V3 LP - {FEE_AMOUNT_DETAIL[feeAmount]?.label}% fee tier</Text>
             </AutoColumn>
@@ -96,21 +96,23 @@ export function StableV3Selector({
         )
       }
       content={
-        <EvenWidthAutoRow gap="2">
-          <SelectButton
-            isActive={selectorType === SELECTOR_TYPE.STABLE}
-            onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}
-          >
-            StableSwap LP
-          </SelectButton>
-          {FEE_AMOUNT_DETAIL[feeAmount]?.includes(chainId) && (
+        <AutoColumn gap="8px">
+          <EvenWidthAutoRow gap="2">
             <SelectButton
-              isActive={selectorType === SELECTOR_TYPE.V3}
-              onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
+              isActive={selectorType === SELECTOR_TYPE.STABLE}
+              onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}
             >
-              V3 LP
+              StableSwap LP
             </SelectButton>
-          )}
+            {FEE_AMOUNT_DETAIL[feeAmount]?.supportedChains.includes(chainId) && (
+              <SelectButton
+                isActive={selectorType === SELECTOR_TYPE.V3}
+                onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
+              >
+                V3 LP
+              </SelectButton>
+            )}
+          </EvenWidthAutoRow>
           {selectorType === SELECTOR_TYPE.V3 && (
             <SelectContainer>
               {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
@@ -131,7 +133,13 @@ export function StableV3Selector({
               })}
             </SelectContainer>
           )}
-        </EvenWidthAutoRow>
+          <Message variant="warning">
+            <MessageText>
+              Stable coins work best with StableSwap LPs. Adding V3 or V2 LP may result in less fee earning or inability
+              to perform yield farming.
+            </MessageText>
+          </Message>
+        </AutoColumn>
       }
     />
   )
