@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "ajv": "^6.12.3",
+    "lodash": "^4.17.21",
     "@pancakeswap/swap-sdk-core": "*"
   },
   "peerDependencies": {
