@@ -1,12 +1,9 @@
 /* eslint-disable no-console */
 import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
 import chunk from 'lodash/chunk'
-import { detect } from 'detect-browser'
 
 import { BaseRoute, GasModel, QuoteProvider, RouteWithoutQuote, RouteWithQuote } from './types'
 import { getAmountDistribution } from './functions'
-
-const browser = detect()
 
 interface Params {
   blockNumber: BigintIsh
@@ -44,10 +41,7 @@ export async function getRoutesWithValidQuote({
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
 
-  let requestCallback: any = setTimeout
-  if (browser && browser.name !== 'safari') {
-    requestCallback = requestIdleCallback
-  }
+  const requestCallback = typeof window === 'undefined' ? setTimeout : window.requestIdleCallback || window.setTimeout
   console.time('[METRIC] Get quotes')
   console.timeLog('[METRIC] Get quotes', 'from', routesWithoutQuote.length, 'routes', routesWithoutQuote)
   // FIXME won't work on server side
