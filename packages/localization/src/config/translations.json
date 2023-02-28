@@ -2130,5 +2130,8 @@
   "Transaction rejected": "Transaction rejected",
   "Your swap was modified through your wallet. If this was a mistake, please cancel immediately or risk losing your funds.": "Your swap was modified through your wallet. If this was a mistake, please cancel immediately or risk losing your funds.",
   "Unexpected issue with estimating the gas.Please try again.": "Unexpected issue with estimating the gas.Please try again.",
-  "Missing dependencies": "Missing dependencies"
+  "Missing dependencies": "Missing dependencies",
+  "PCS v3 Migration": "PCS v3 Migration",
+  "Migrate to continue farming CAKE rewards and earning trading fees.": "Migrate to continue farming CAKE rewards and earning trading fees.",
+  "Guide": "Guide"
 }
