@@ -94,7 +94,7 @@ const TokenPage: React.FC<React.PropsWithChildren<{ routeAddress: string }>> = (
       return [
         ...priceData,
         {
-          time: new Date().getTime() / 1000,
+          time: Date.now() / 1000,
           open: priceData[priceData.length - 1].close,
           close: tokenData?.priceUSD,
           high: tokenData?.priceUSD,
