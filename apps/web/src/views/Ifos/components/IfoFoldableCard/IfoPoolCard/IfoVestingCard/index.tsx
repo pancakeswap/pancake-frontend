@@ -32,7 +32,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   const userPool = walletIfoData[poolId]
   const { vestingInformation } = publicIfoData[poolId]
 
-  const currentTimeStamp = new Date().getTime()
+  const currentTimeStamp = Date.now()
   const timeVestingEnd =
     vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + vestingInformation.duration) * 1000
   const isVestingOver = currentTimeStamp > timeVestingEnd

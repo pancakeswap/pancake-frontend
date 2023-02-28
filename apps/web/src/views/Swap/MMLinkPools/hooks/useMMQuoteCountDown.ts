@@ -8,7 +8,7 @@ export const useMMQuoteCountDown = (quoteExpiry: number | null, refreshRFQ?: () 
   const [countDown, setCountDown] = useState(() => countDownDate - Date.now())
   useEffect(() => {
     const interval = setInterval(() => {
-      setCountDown(countDownDate - new Date().getTime())
+      setCountDown(countDownDate - Date.now())
     }, 1000)
 
     return () => clearInterval(interval)
