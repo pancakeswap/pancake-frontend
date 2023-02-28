@@ -75,7 +75,7 @@ const CheckPrizesSection = () => {
             </Heading>
             <ConnectWalletButton width="190px" />
           </Flex>
-          <TicketImage src="/images/lottery/cadinu_ticket_3.svg" alt="lottery ticket" />
+          <TicketImage src="/images/lottery/cadinu_ticket_4.svg" alt="lottery ticket" />
         </Flex>
       )
     }
