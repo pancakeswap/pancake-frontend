@@ -35,6 +35,7 @@ import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
@@ -355,29 +356,36 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <FarmsContext.Provider value={providerValue}>
       <PageHeader>
-        <FarmFlexWrapper justifyContent="space-between">
-          <Box>
-            <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Farms')}
-            </FarmH1>
-            <FarmH2 scale="lg" color="text">
-              {t('Stake LP tokens to earn.')}
-            </FarmH2>
-            <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
-              <Button p="0" variant="text">
-                <Text color="primary" bold fontSize="16px" mr="4px">
-                  {t('Community Auctions')}
-                </Text>
-                <ArrowForwardIcon color="primary" />
-              </Button>
-            </NextLinkFromReactRouter>
-          </Box>
+        <Flex flexDirection="column">
           {chainId === ChainId.BSC && (
-            <Box>
-              <BCakeBoosterCard />
+            <Box m="24px 0">
+              <FarmV3MigrationBanner />
             </Box>
           )}
-        </FarmFlexWrapper>
+          <FarmFlexWrapper justifyContent="space-between">
+            <Box>
+              <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
+                {t('Farms')}
+              </FarmH1>
+              <FarmH2 scale="lg" color="text">
+                {t('Stake LP tokens to earn.')}
+              </FarmH2>
+              <NextLinkFromReactRouter to="/farms/auction" prefetch={false}>
+                <Button p="0" variant="text">
+                  <Text color="primary" bold fontSize="16px" mr="4px">
+                    {t('Community Auctions')}
+                  </Text>
+                  <ArrowForwardIcon color="primary" />
+                </Button>
+              </NextLinkFromReactRouter>
+            </Box>
+            {chainId === ChainId.BSC && (
+              <Box>
+                <BCakeBoosterCard />
+              </Box>
+            )}
+          </FarmFlexWrapper>
+        </Flex>
       </PageHeader>
       <Page>
         <ControlContainer>

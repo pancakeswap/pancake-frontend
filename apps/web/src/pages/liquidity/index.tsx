@@ -23,7 +23,7 @@ import Page from 'views/Page'
 import { useTranslation } from '@pancakeswap/localization'
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import { Percent } from '@pancakeswap/sdk'
+import { Percent, ChainId } from '@pancakeswap/sdk'
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
 import useV2Pairs from 'hooks/useV2Pairs'
 import useStableConfig, {
@@ -35,6 +35,8 @@ import { Bound } from 'config/constants/types'
 import { useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -61,6 +63,7 @@ export default function PoolListPage() {
     t,
     currentLanguage: { locale },
   } = useTranslation()
+  const { chainId } = useActiveChainId()
 
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(0)
   const [hideClosedPositions, setHideClosedPositions] = useState(false)
@@ -161,6 +164,11 @@ export default function PoolListPage() {
 
   return (
     <Page>
+      {chainId === ChainId.BSC && (
+        <Flex m="24px 0" maxWidth="854px">
+          <FarmV3MigrationBanner />
+        </Flex>
+      )}
       <AppBody
         style={{
           maxWidth: '854px',
