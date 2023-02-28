@@ -72,6 +72,9 @@ export const inputVariants = recipe({
       left: {
         textAlign: "left",
       },
+      center: {
+        textAlign: "center",
+      },
       right: {
         textAlign: "right",
       },

@@ -1,19 +1,7 @@
 import useSWRImmutable from 'swr/immutable'
-import { gql } from 'graphql-request'
 import { useMemo } from 'react'
 import { v3Clients } from 'utils/graphql'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-
-const query = gql`
-  query AllV3Ticks($poolAddress: String!, $skip: Int!) {
-    ticks(first: 1000, skip: $skip, where: { poolAddress: $poolAddress }, orderBy: tickIdx) {
-      tick: tickIdx
-      liquidityNet
-      price0
-      price1
-    }
-  }
-`
 
 export type AllV3TicksQuery = {
   __typename?: 'Query'
@@ -23,15 +11,14 @@ export type AllV3TicksQuery = {
 export type Ticks = AllV3TicksQuery['ticks']
 export type TickData = Ticks[number]
 
-export default function useAllV3TicksQuery(poolAddress: string | undefined, skip: number, interval: number) {
+export default function useAllV3TicksQuery(poolAddress: string | undefined, interval: number) {
   const { chainId } = useActiveChainId()
   const { data, isLoading, error } = useSWRImmutable(
     poolAddress && v3Clients[chainId] ? `useAllV3TicksQuery-${poolAddress}-${chainId}` : null,
     async () => {
-      return v3Clients[chainId].request(query, {
-        poolAddress: poolAddress?.toLowerCase(),
-        skip,
-      })
+      return fetch(`/api/v3/${chainId}/ticks/${poolAddress}`)
+        .then((res) => res.json())
+        .then((d) => d.data)
     },
     {
       refreshInterval: interval,
