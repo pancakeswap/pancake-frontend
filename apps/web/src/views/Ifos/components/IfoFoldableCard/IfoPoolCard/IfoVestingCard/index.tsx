@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
 import { Flex, Box, Text, IfoProgressStepper, IfoVestingFooter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
@@ -48,6 +48,10 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
     [token, amountAlreadyClaimed],
   )
 
+  const getNow = useCallback(() => {
+    return Date.now()
+  }, [])
+
   const releaseRate = useMemo(() => {
     const rate = new BigNumber(userPool?.vestingAmountTotal).div(vestingInformation.duration)
     const rateBalance = getFullDisplayBalance(rate, token.decimals, 5)
@@ -61,6 +65,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
           vestingStartTime={publicIfoData.vestingStartTime || 0}
           cliff={vestingInformation?.cliff || 0}
           duration={vestingInformation?.duration || 0}
+          getNow={getNow}
         />
         <TotalPurchased ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
         <ReleasedTokenInfo
@@ -90,6 +95,7 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
         duration={vestingInformation?.duration || 0}
         vestingStartTime={vestingStartTime}
         releaseRate={releaseRate}
+        getNow={getNow}
       />
     </Flex>
   )
