@@ -7,13 +7,13 @@ import JSBI from 'jsbi'
 import abi from '../../abis/ISwapRouter02.json'
 import { ADDRESS_THIS, MSG_SENDER } from '../../constants'
 import { ApproveAndCall, ApprovalTypes, CondensedAddLiquidityOptions } from './approveAndCall'
-import { Trade, V3Pool, BaseRoute, RouteType } from '../types'
+import { Trade, V3Pool, BaseRoute, RouteType, StablePool } from '../types'
 import { MulticallExtended, Validation } from './multicallExtended'
 import { PaymentsExtended } from './paymentsExtended'
 import { encodeMixedRouteToPath } from './encodeMixedRouteToPath'
 import { partitionMixedRouteByProtocol } from './partitionMixedRouteByProtocol'
 import { maximumAmountIn, minimumAmountOut } from './maximumAmount'
-import { isV2Pool, isV3Pool } from './pool'
+import { isStablePool, isV2Pool, isV3Pool } from './pool'
 import { buildBaseRoute } from './route'
 import { getOutputOfPools } from './getOutputOfPools'
 import { getPriceImpact } from './getPriceImpact'
@@ -106,6 +106,49 @@ export abstract class SwapRouter {
     const exactOutputParams = [amountOut, amountIn, path, recipient]
 
     return SwapRouter.INTERFACE.encodeFunctionData('swapTokensForExactTokens', exactOutputParams)
+  }
+
+  /**
+   * @notice Generates the calldata for a Swap with a Stable Route.
+   * @param trade The Trade to encode.
+   * @param options SwapOptions to use for the trade.
+   * @param routerMustCustody Flag for whether funds should be sent to the router
+   * @param performAggregatedSlippageCheck Flag for whether we want to perform an aggregated slippage check
+   * @returns A string array of calldatas for the trade.
+   */
+  private static encodeStableSwap(
+    trade: Trade<TradeType>,
+    options: SwapOptions,
+    routerMustCustody: boolean,
+    performAggregatedSlippageCheck: boolean,
+  ): string {
+    const amountIn: string = toHex(maximumAmountIn(trade, options.slippageTolerance).quotient)
+    const amountOut: string = toHex(minimumAmountOut(trade, options.slippageTolerance).quotient)
+
+    if (trade.routes.length > 1 || trade.routes[0].pools.some((p) => !isStablePool(p))) {
+      throw new Error('Unsupported trade to encode')
+    }
+
+    // Stable trade should have only one route
+    const route = trade.routes[0]
+    const path = route.path.map((token) => token.wrapped.address)
+    const flags = route.pools.map((p) => (p as StablePool).balances.length)
+    // TODO add recipient to params
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+    const recipient = routerMustCustody
+      ? ADDRESS_THIS
+      : typeof options.recipient === 'undefined'
+      ? MSG_SENDER
+      : validateAndParseAddress(options.recipient)
+
+    if (trade.tradeType === TradeType.EXACT_INPUT) {
+      const exactInputParams = [path, flags, amountIn, performAggregatedSlippageCheck ? 0 : amountOut]
+
+      return SwapRouter.INTERFACE.encodeFunctionData('exactInputStableSwap', exactInputParams)
+    }
+    const exactOutputParams = [path, flags, amountOut, amountIn]
+
+    return SwapRouter.INTERFACE.encodeFunctionData('exactOutputStableSwap', exactOutputParams)
   }
 
   /**
@@ -236,6 +279,9 @@ export abstract class SwapRouter {
       const mixedRouteIsAllV2 = (r: Omit<BaseRoute, 'input' | 'output'>) => {
         return r.pools.every(isV2Pool)
       }
+      const mixedRouteIsAllStable = (r: Omit<BaseRoute, 'input' | 'output'>) => {
+        return r.pools.every(isStablePool)
+      }
 
       if (singleHop) {
         /// For single hop, since it isn't really a mixedRoute, we'll just mimic behavior of V3 or V2
@@ -270,8 +316,23 @@ export abstract class SwapRouter {
               performAggregatedSlippageCheck,
             ),
           ]
+        } else if (mixedRouteIsAllStable(route)) {
+          calldatas = [
+            ...calldatas,
+            SwapRouter.encodeStableSwap(
+              {
+                ...trade,
+                routes: [route],
+                inputAmount,
+                outputAmount,
+              },
+              options,
+              routerMustCustody,
+              performAggregatedSlippageCheck,
+            ),
+          ]
         } else {
-          // TODO encode stable swap
+          throw new Error('Unsupported route to encode')
         }
       } else {
         const sections = partitionMixedRouteByProtocol(route)
@@ -337,8 +398,26 @@ export abstract class SwapRouter {
 
               calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('swapTokensForExactTokens', exactOutputParams))
             }
+          } else if (mixedRouteIsAllStable(newRoute)) {
+            const path = newRoute.path.map((token) => token.wrapped.address)
+            const flags = newRoute.pools.map((pool) => (pool as StablePool).balances.length)
+            // TODO need to set recipient
+            if (isExactIn) {
+              const exactInputParams = [
+                path, // path
+                flags, // stable pool types
+                inAmount, // amountIn
+                outAmount, // amountOutMin
+              ]
+
+              calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInputStableSwap', exactInputParams))
+            } else {
+              const exactOutputParams = [path, flags, outAmount, inAmount]
+
+              calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutputStableSwap', exactOutputParams))
+            }
           } else {
-            // TODO stable swap
+            throw new Error('Unsupported route')
           }
         }
       }
