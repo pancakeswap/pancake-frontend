@@ -38,20 +38,22 @@ interface IfoVestingFooterProps {
   duration: number;
   vestingStartTime: number | undefined;
   releaseRate: string;
+  getNow: () => number;
 }
 
 const IfoVestingFooter: React.FC<React.PropsWithChildren<IfoVestingFooterProps>> = ({
   duration,
   vestingStartTime,
   releaseRate,
+  getNow,
 }) => {
   const { t } = useTranslation();
 
   const releaseDate = useMemo(() => {
-    const currentTimeStamp = new Date().getTime();
+    const currentTimeStamp = getNow();
     const date = vestingStartTime === 0 ? currentTimeStamp : ((vestingStartTime || 0) + duration) * 1000;
     return format(date, "MM/dd/yyyy HH:mm");
-  }, [vestingStartTime, duration]);
+  }, [vestingStartTime, duration, getNow]);
 
   return (
     <StyledIfoVestingFooter flexDirection="column">
