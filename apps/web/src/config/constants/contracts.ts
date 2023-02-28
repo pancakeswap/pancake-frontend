@@ -135,7 +135,7 @@ export default {
     97: '0xD85835207054F25620109bdc745EC1D1f84F04e1',
   },
   stableSwapNativeHelper: {
-    56: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+    56: '0x52E5D1e24A4308ef1A221C949cb2F7cbbAFEE090',
     97: '0x494B692Fe0CF54f633dCDFbba0D0a8629Edb344F',
   },
   iCake: {
