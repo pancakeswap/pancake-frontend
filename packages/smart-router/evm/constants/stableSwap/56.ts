@@ -53,4 +53,14 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'WBNB-MOCK LP',
+    lpAddress: '0x748Ab866BA07769e284ba25a112A8628ca1E280C',
+    token: bscTokens.wbnb,
+    quoteToken: bscTokens.mock,
+    stableSwapAddress: '0xF564B174De6630f7D1D31a646b1DCc106c9e0204',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableLpFee: 0.0004,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]

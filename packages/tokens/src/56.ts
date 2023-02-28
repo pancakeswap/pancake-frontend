@@ -2473,4 +2473,5 @@ export const bscTokens = {
     'Carbon',
     'https://carbon.website/',
   ),
+  mock: new ERC20Token(ChainId.BSC, '0xe0041EF90dEA9C6830C75a4Ac0df57d9D0a8EE87', 18, 'MRT', 'Mock'),
 }
