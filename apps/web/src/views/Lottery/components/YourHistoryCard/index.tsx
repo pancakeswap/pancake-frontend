@@ -153,7 +153,9 @@ const YourHistoryCard: React.FC<React.PropsWithChildren<YourHistoryCardProps>> =
       return <PreviousRoundCardFooter lotteryNodeData={selectedLotteryNodeData} lotteryId={selectedLotteryId} />
     }
     return (
-      <CardFooter />
+      <CardFooter >
+        Cadinu Lottery Information
+      </CardFooter>
     )
   }
 
