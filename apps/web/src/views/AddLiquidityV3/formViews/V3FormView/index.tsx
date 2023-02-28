@@ -328,7 +328,7 @@ export default function V3FormView({
     if (txHash) {
       onFieldAInput('')
       // dont jump to pool page if creating
-      router.replace(`pool`, undefined, {
+      router.replace(`liquidity`, undefined, {
         shallow: true,
       })
     }
