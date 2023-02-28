@@ -10,16 +10,16 @@ import ClaimPrizesModal from './ClaimPrizesModal'
 import useGetUnclaimedRewards from '../hooks/useGetUnclaimedRewards'
 
 const TicketImage = styled.img`
-  height: 60px;
+  height: 25px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    height: 100px;
+    height: 45px;
   }
 `
 
 const TornTicketImage = styled.img`
-  height: 54px;
+  height: 27px;
   ${({ theme }) => theme.mediaQueries.sm} {
-    height: 84px;
+    height: 42px;
   }
 `
 
