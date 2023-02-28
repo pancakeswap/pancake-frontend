@@ -26,6 +26,7 @@ export function Chart({
   brushLabels,
   onBrushDomainChange,
   zoomLevels,
+  showZoomButtons = true,
 }: LiquidityChartRangeInputProps) {
   const zoomRef = useRef<SVGRectElement | null>(null)
   const { theme } = useTheme()
@@ -81,25 +82,37 @@ export function Chart({
 
   return (
     <>
-      <Zoom
-        svg={zoomRef.current}
-        xScale={xScale}
-        setZoom={setZoom}
-        width={innerWidth}
-        height={
-          // allow zooming inside the x-axis
-          height
-        }
-        resetBrush={() => {
-          onBrushDomainChange(
-            [current * zoomLevels.initialMin, current * zoomLevels.initialMax] as [number, number],
-            'reset',
-          )
-        }}
-        showResetButton={Boolean(ticksAtLimit[Bound.LOWER] || ticksAtLimit[Bound.UPPER])}
-        zoomLevels={zoomLevels}
-      />
+      {showZoomButtons && (
+        <Zoom
+          svg={zoomRef.current}
+          xScale={xScale}
+          setZoom={setZoom}
+          width={innerWidth}
+          height={
+            // allow zooming inside the x-axis
+            height
+          }
+          resetBrush={() => {
+            onBrushDomainChange(
+              [current * zoomLevels.initialMin, current * zoomLevels.initialMax] as [number, number],
+              'reset',
+            )
+          }}
+          showResetButton={Boolean(ticksAtLimit[Bound.LOWER] || ticksAtLimit[Bound.UPPER])}
+          zoomLevels={zoomLevels}
+        />
+      )}
       <svg width="100%" height="100%" viewBox={`0 0 ${width} ${height}`} style={{ overflow: 'visible' }}>
+        <defs>
+          <linearGradient id="green-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={theme.colors.success} stopOpacity={1} />
+            <stop offset="100%" stopColor={theme.colors.success} stopOpacity={0.2} />
+          </linearGradient>
+          <linearGradient id="red-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={theme.colors.failure} stopOpacity={1} />
+            <stop offset="100%" stopColor={theme.colors.failure} stopOpacity={0.2} />
+          </linearGradient>
+        </defs>
         <defs>
           <clipPath id={`${id}-chart-clip`}>
             <rect x="0" y="0" width={innerWidth} height={height} />
@@ -128,7 +141,7 @@ export function Chart({
               xValue={xAccessor}
               yValue={yAccessor}
               opacity={0.5}
-              fill={theme.colors.failure}
+              fill="url(#red-gradient)"
             />
             <Area
               series={rightSeries}
@@ -137,20 +150,20 @@ export function Chart({
               xValue={xAccessor}
               yValue={yAccessor}
               opacity={0.5}
-              fill={theme.colors.success}
+              fill="url(#green-gradient)"
             />
 
             {brushDomain && (
               // duplicate area chart with mask for selected area
               <g mask={`url(#${id}-chart-area-mask)`}>
                 <Area
-                  opacity={0.3}
+                  opacity={0.1}
                   series={series}
                   xScale={xScale}
                   yScale={yScale}
                   xValue={xAccessor}
                   yValue={yAccessor}
-                  fill={styles.area.selection}
+                  fill="white"
                 />
               </g>
             )}

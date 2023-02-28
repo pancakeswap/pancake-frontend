@@ -20,10 +20,8 @@ import {
   addSerializedPair,
   addSerializedToken,
   FarmStakedOnly,
-  muteAudio,
   removeSerializedToken,
   SerializedPair,
-  unmuteAudio,
   updateUserDeadline,
   updateUserExpertMode,
   updateUserFarmStakedOnly,
@@ -50,21 +48,6 @@ import {
   setZapDisabled,
 } from '../actions'
 import { GAS_PRICE_GWEI } from '../../types'
-
-export function useAudioModeManager(): [boolean, () => void] {
-  const dispatch = useAppDispatch()
-  const audioPlay = useSelector<AppState, AppState['user']['audioPlay']>((state) => state.user.audioPlay)
-
-  const toggleSetAudioMode = useCallback(() => {
-    if (audioPlay) {
-      dispatch(muteAudio())
-    } else {
-      dispatch(unmuteAudio())
-    }
-  }, [audioPlay, dispatch])
-
-  return [audioPlay, toggleSetAudioMode]
-}
 
 export function usePhishingBannerManager(): [boolean, () => void] {
   const dispatch = useAppDispatch()

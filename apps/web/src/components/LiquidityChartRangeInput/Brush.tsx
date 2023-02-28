@@ -1,4 +1,4 @@
-import { usePreviousValue } from '@pancakeswap/hooks'
+import { usePreviousValue, useTheme } from '@pancakeswap/hooks'
 import { brushHandleAccentPath, brushHandlePath, OffScreenHandle } from 'components/LiquidityChartRangeInput/svg'
 import { BrushBehavior, brushX, D3BrushEvent, ScaleLinear, select } from 'd3'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -77,6 +77,7 @@ export const Brush = ({
   westHandleColor: string
   eastHandleColor: string
 }) => {
+  const { theme } = useTheme()
   const brushRef = useRef<SVGGElement | null>(null)
   const brushBehavior = useRef<BrushBehavior<SVGGElement> | null>(null)
 
@@ -204,7 +205,7 @@ export const Brush = ({
                 }, 1)`}
               >
                 <g>
-                  <Handle color={westHandleColor} d={brushHandlePath(innerHeight)} />
+                  <Handle color={theme.colors.secondary} d={brushHandlePath(innerHeight)} />
                   <HandleAccent d={brushHandleAccentPath()} />
                 </g>
 
@@ -224,7 +225,7 @@ export const Brush = ({
             {eastHandleInView ? (
               <g transform={`translate(${xScale(localBrushExtent[1])}, 0), scale(${flipEastHandle ? '-1' : '1'}, 1)`}>
                 <g>
-                  <Handle color={eastHandleColor} d={brushHandlePath(innerHeight)} />
+                  <Handle color={theme.colors.secondary} d={brushHandlePath(innerHeight)} />
                   <HandleAccent d={brushHandleAccentPath()} />
                 </g>
 
@@ -259,6 +260,7 @@ export const Brush = ({
       flipWestHandle,
       hovering,
       id,
+      theme,
       innerHeight,
       innerWidth,
       localBrushExtent,

@@ -6,6 +6,7 @@ import { Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text } from '@pancakeswa
 import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PairState, usePairs } from 'hooks/usePairs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
@@ -113,7 +114,7 @@ export function Step2() {
 
 export const removedPairsAtom = atomWithStorage(
   'v3-migration-remove-pairs',
-  {} as Record<ChainId, { [pairAddress: string]: boolean }>,
+  {} as Record<ChainId, { [tokenAddresses: string]: [isV2: boolean] }>,
 )
 
 interface MigrationPositionCardProps extends PositionCardProps {
@@ -129,6 +130,7 @@ const LPCard_ = ({
   pair,
   type,
 }: MigrationPositionCardProps) => {
+  const { chainId } = useActiveChainId()
   const [, setRemovedPairs] = useAtom(removedPairsAtom)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -144,13 +146,13 @@ const LPCard_ = ({
     if (open && pair) {
       setRemovedPairs((s) => ({
         ...s,
-        [pair.chainId]: {
-          ...s[pair.chainId],
-          [pair.liquidityToken.address]: true,
+        [chainId]: {
+          ...s[chainId],
+          [`${pair.token0.address}-${pair.token1.address}-${type}`]: type === 'V2',
         },
       }))
     }
-  }, [setRemovedPairs, open, pair])
+  }, [setRemovedPairs, open, pair, type, chainId])
 
   return (
     <Card mb="8px">

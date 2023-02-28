@@ -1,16 +1,25 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Percent } from '@pancakeswap/sdk'
+import { ChainId, Percent } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
-import { Button, Card, Dots, Flex, Tag, Text } from '@pancakeswap/uikit'
+import { Button, Card, Dots, Flex, Modal, ModalV2, PreTitle, Tag, Text } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
+import { LightGreyCard } from 'components/Card'
+import { CommitButton } from 'components/CommitButton'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
+import { useToken } from 'hooks/Tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { PairState, usePair } from 'hooks/usePairs'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import { useAtom } from 'jotai'
 import Image from 'next/image'
+import { useState } from 'react'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
 import { useAccount } from 'wagmi'
+import { removedPairsAtom } from './Step2'
 
 export function Step4() {
   const { address: account } = useAccount()
@@ -19,7 +28,16 @@ export function Step4() {
     currentLanguage: { locale },
   } = useTranslation()
 
+  const { chainId } = useActiveChainId()
+
   const { positions, loading: v3Loading } = useV3Positions(account)
+  const [open, setOpen] = useState(false)
+
+  const [removedPairs] = useAtom(removedPairsAtom)
+
+  const removedPairsCurrentChain = removedPairs[chainId as ChainId]
+
+  const removedPairsCurrentChainAsArray = Object.entries(removedPairsCurrentChain || {})
 
   return (
     <AppBody style={{ maxWidth: '700px' }} m="auto">
@@ -84,9 +102,48 @@ export function Step4() {
           ))
         )}
       </AtomBox>
+      <ModalV2 isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
+        <Modal title="List of removed v2 liquidity" onDismiss={() => setOpen(false)}>
+          <PreTitle>{removedPairsCurrentChainAsArray.length} Previous LP</PreTitle>
+          {removedPairsCurrentChainAsArray.map(([tokenAddresses, isV2]) => (
+            <Flex key={tokenAddresses} alignItems="center" justifyContent="space-between" mb="8px">
+              {isV2 && <V2PairSelection tokenAddresses={tokenAddresses} />}
+            </Flex>
+          ))}
+        </Modal>
+      </ModalV2>
       <AtomBox p="24px">
-        <Button width="100%">{t('Add Liquidity')}</Button>
+        {!account ? (
+          <ConnectWalletButton width="100%" />
+        ) : removedPairsCurrentChainAsArray.length === 0 ? (
+          <Button width="100%" disabled>
+            No Previous Removed LP
+          </Button>
+        ) : (
+          <CommitButton onClick={() => setOpen(true)} width="100%">
+            {t('Add Liquidity')}
+          </CommitButton>
+        )}
       </AtomBox>
     </AppBody>
   )
+}
+
+function V2PairSelection({ tokenAddresses }: { tokenAddresses: string }) {
+  const [token0Address, token1Address] = tokenAddresses.split('-')
+  const [token0, token1] = [useToken(token0Address), useToken(token1Address)]
+  const [pairState, pair] = usePair(token0, token1)
+
+  if (pairState === PairState.EXISTS) {
+    return (
+      <LightGreyCard>
+        <Flex alignItems="center" justifyContent="space-between">
+          <DoubleCurrencyLogo currency0={token0} currency1={token1} size={20} />
+          <Text ml="8px" bold>
+            {token0?.symbol}/{token1?.symbol}
+          </Text>
+        </Flex>
+      </LightGreyCard>
+    )
+  }
 }

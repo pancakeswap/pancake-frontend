@@ -4,16 +4,20 @@ import { AutoRow, Heading, Text } from '@pancakeswap/uikit'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { format } from 'd3'
 // import { saturate } from 'polished'
-import { ethereumTokens } from '@pancakeswap/tokens'
+import { ChainId } from '@pancakeswap/sdk'
+import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { LightCard } from 'components/Card'
 import { Chart } from 'components/LiquidityChartRangeInput/Chart'
 import { Bound } from 'config/constants/types'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { LiquidityFormState } from 'hooks/v3/types'
 import { tryParseTick } from 'hooks/v3/utils'
 import { getTickToPrice } from 'hooks/v3/utils/getTickToPrice'
 import Image from 'next/image'
 import { useCallback, useMemo } from 'react'
 import { batch } from 'react-redux'
+import RangeSelector from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeSelector'
+import { useRangeHopCallbacks } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import mockData from './mock.json'
 
@@ -33,12 +37,17 @@ const ZOOM = {
   max: 1.5,
 }
 
-const token0 = ethereumTokens.wbtc
-const token1 = ethereumTokens.weth
+const MOCK_TOKENS = {
+  [ChainId.BSC]: [bscTokens.cake, bscTokens.wbnb],
+  [ChainId.ETHEREUM]: [ethereumTokens.wbtc, ethereumTokens.weth],
+}
 
 export function Step3() {
   // const { t } = useTranslation()
   const { theme } = useTheme()
+  const { chainId } = useActiveChainId()
+
+  const [token0, token1] = MOCK_TOKENS[chainId] || MOCK_TOKENS[ChainId.BSC]
 
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
 
@@ -56,7 +65,7 @@ export function Step3() {
 
   const { ticksAtLimit } = MOCK
 
-  const isSorted = true
+  const isSorted = token0.sortsBefore(token1)
 
   const leftRangeTypedValue = formState.leftRangeTypedValue || '0.75'
   const rightRangeTypedValue = formState.rightRangeTypedValue || '1.25'
@@ -68,16 +77,17 @@ export function Step3() {
       [Bound.LOWER]: tryParseTick(token0, token1, 3000, leftRangeTypedValue.toString()),
       [Bound.UPPER]: tryParseTick(token0, token1, 3000, rightRangeTypedValue.toString()),
     }
-  }, [leftRangeTypedValue, rightRangeTypedValue])
+  }, [leftRangeTypedValue, rightRangeTypedValue, token0, token1])
 
   const pricesAtTicks = useMemo(() => {
     return {
       [Bound.LOWER]: getTickToPrice(token0, token1, ticks[Bound.LOWER]),
       [Bound.UPPER]: getTickToPrice(token0, token1, ticks[Bound.UPPER]),
     }
-  }, [ticks])
+  }, [ticks, token0, token1])
 
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
+  const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
 
   const brushDomain: [number, number] | undefined = useMemo(() => {
     const leftPrice = priceLower
@@ -122,6 +132,14 @@ export function Step3() {
     [isSorted, onLeftRangeInput, onRightRangeInput, ticksAtLimit],
   )
 
+  const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper } = useRangeHopCallbacks(
+    token0 ?? undefined,
+    token1 ?? undefined,
+    3000,
+    tickLower,
+    tickUpper,
+  )
+
   return (
     <AtomBox textAlign="center">
       <Heading scale="lg" pb="16px">
@@ -156,32 +174,51 @@ export function Step3() {
           </Text>
         </LightCard>
         <LightCard minWidth={['100%', null, null, '50%']} p="32px">
-          <Heading scale="lg" color="secondary">
+          <Heading scale="lg" color="secondary" pb="24px">
             Introducing Price Range
           </Heading>
-          <Chart
-            data={{ current: MOCK.price, series: MOCK.formattedData as any[] }}
-            dimensions={{ width: 400, height: 200 }}
-            margins={{ top: 10, right: 2, bottom: 20, left: 0 }}
-            styles={{
-              area: {
-                selection: theme.colors.text,
-              },
-              brush: {
-                handle: {
-                  west: theme.colors.secondary,
-                  east: theme.colors.secondary,
-                },
-              },
-            }}
-            interactive
-            brushLabels={brushLabelValue}
-            brushDomain={brushDomain}
-            onBrushDomainChange={onBrushDomainChangeEnded}
-            zoomLevels={ZOOM}
-            ticksAtLimit={MOCK.ticksAtLimit}
-          />
-          <Text bold color="textSecondary" mt="24px">
+          <AutoRow gap="12px" width="full">
+            <AtomBox position="relative" width="full">
+              <Chart
+                showZoomButtons={false}
+                data={{ current: MOCK.price, series: MOCK.formattedData as any[] }}
+                dimensions={{ width: 400, height: 200 }}
+                margins={{ top: 10, right: 2, bottom: 20, left: 0 }}
+                styles={{
+                  area: {
+                    selection: theme.colors.text,
+                  },
+                  brush: {
+                    handle: {
+                      west: theme.colors.failure,
+                      east: theme.colors.secondary,
+                    },
+                  },
+                }}
+                interactive
+                brushLabels={brushLabelValue}
+                brushDomain={brushDomain}
+                onBrushDomainChange={onBrushDomainChangeEnded}
+                zoomLevels={ZOOM}
+                ticksAtLimit={MOCK.ticksAtLimit}
+              />
+            </AtomBox>
+            <RangeSelector
+              priceLower={priceLower}
+              priceUpper={priceUpper}
+              getDecrementLower={getDecrementLower}
+              getIncrementLower={getIncrementLower}
+              getDecrementUpper={getDecrementUpper}
+              getIncrementUpper={getIncrementUpper}
+              onLeftRangeInput={onLeftRangeInput}
+              onRightRangeInput={onRightRangeInput}
+              currencyA={token0}
+              currencyB={token1}
+              feeAmount={3000}
+              ticksAtLimit={ticksAtLimit}
+            />
+          </AutoRow>
+          <Text bold color="textSecondary">
             How it works on the LP?
           </Text>
           <Text mt="8px">

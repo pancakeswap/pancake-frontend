@@ -3,6 +3,7 @@ import { ArrowForwardIcon, Button, Heading, Link, PageHeader, Text } from '@panc
 import Page from 'components/Layout/Page'
 import React, { useRef, useState } from 'react'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
+import { useRouter } from 'next/router'
 import { usePollFarmsWithUserData } from 'state/farms/hooks'
 import OldFarm from './components/v3/Step1'
 import { Step2 } from './components/v3/Step2'
@@ -41,27 +42,27 @@ const steps: Step[] = [
 
 const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
+  const router = useRouter()
   // const { address: account } = useAccount()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
-  // const router = useRouter()
   const [step, setStep] = useState<number>(0)
 
   usePollFarmsWithUserData()
 
-  // const scrollToTop = (): void => {
-  //   window.scrollTo({
-  //     top: tableWrapperEl.current.offsetTop,
-  //     behavior: 'smooth',
-  //   })
-  // }
+  const scrollToTop = (): void => {
+    window.scrollTo({
+      top: tableWrapperEl.current.offsetTop,
+      behavior: 'smooth',
+    })
+  }
 
   const handleMigrationStickyClick = () => {
-    // scrollToTop()
-    // if (step === ProgressStepsType.STEP1) {
-    //   setStep(ProgressStepsType.STEP2)
-    // } else {
-    //   router.push('/')
-    // }
+    if (steps[step + 1]) {
+      setStep((s) => s + 1)
+      scrollToTop()
+    } else {
+      router.push('/farms')
+    }
   }
 
   return (

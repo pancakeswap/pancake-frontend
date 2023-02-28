@@ -18,6 +18,7 @@ export function useRangeHopCallbacks(
   const quoteToken = useMemo(() => quoteCurrency?.wrapped, [quoteCurrency])
 
   const getDecrementLower = useCallback(() => {
+    console.log(baseToken && quoteToken && typeof tickLower === 'number' && feeAmount)
     if (baseToken && quoteToken && typeof tickLower === 'number' && feeAmount) {
       const newPrice = tickToPrice(baseToken, quoteToken, tickLower - TICK_SPACINGS[feeAmount])
       return newPrice.toSignificant(5, undefined, Rounding.ROUND_UP)

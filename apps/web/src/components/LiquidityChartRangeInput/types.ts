@@ -58,4 +58,5 @@ export interface LiquidityChartRangeInputProps {
   onBrushDomainChange: (domain: [number, number], mode: string | undefined) => void
 
   zoomLevels: ZoomLevels
+  showZoomButtons?: boolean
 }

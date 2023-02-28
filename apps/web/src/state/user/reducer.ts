@@ -12,8 +12,6 @@ import {
   removeSerializedPair,
   removeSerializedToken,
   SerializedPair,
-  muteAudio,
-  unmuteAudio,
   updateGasPrice,
   updateUserDeadline,
   updateUserExpertMode,
@@ -69,7 +67,6 @@ export interface UserState {
     }
   }
 
-  audioPlay: boolean
   isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
   userChartViewMode: ChartViewMode
@@ -101,7 +98,6 @@ export const initialState: UserState = {
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
   tokens: {},
   pairs: {},
-  audioPlay: true,
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
   userChartViewMode: ChartViewMode.BASIC,
@@ -185,12 +181,6 @@ export default createReducer(initialState, (builder) =>
         // just delete both keys if either exists
         state.pairs[chainId] = omitBy(state.pairs[chainId], (value, key) => key === tokenAToB || key === tokenBToA)
       }
-    })
-    .addCase(muteAudio, (state) => {
-      state.audioPlay = false
-    })
-    .addCase(unmuteAudio, (state) => {
-      state.audioPlay = true
     })
     .addCase(updateUserFarmStakedOnly, (state, { payload: { userFarmStakedOnly } }) => {
       state.userFarmStakedOnly = userFarmStakedOnly
