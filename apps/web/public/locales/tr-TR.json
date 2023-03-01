@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "Piyasa yapıcının teklifinde sapma yok",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap, işlemler için hiçbir ücret talep etmez. Buna karşın piyasa yapıcılar, kendi sundukları tekliflere dâhil edilen %0,05 (stabil kripto para olmayan) / %0,01 (stabil kripto para) oranında zımni bir ücret alır.",
   "Trading Fee": "İşlem Ücreti",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Çıktı tahminîdir. En az miktarı alırsınız veya işlem geri çevrilir.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Girdi tahminîdir. En fazla miktarı satarsınız veya işlem geri çevrilir.",
   "MM Linked Pool": "MM Bağlantılı Havuz",
   "Trade through the market makers if they provide better deal": "Daha iyi teklif sunarlarsa piyasa yapıcılar aracılığıyla işlem yapın",
   "Checking RFQ with MM": "MM ile RFQ kontrol ediliyor",
   "Trade and win $10,000 Prize Pool": "İşlem yaparak 10.000 dolarlık Ödül Havuzunu kazanın",
   "Trade now using Trust Wallet": "Trust Wallet'ı kullanarak şimdi işlem yapın",
   "Download Trust Wallet": "Trust Wallet'ı indirin",
-  "Trade and Share $10,000": "İşlem Yaparak 10.000 Dolardan Pay Alın",
   "Unable request a quote": "Teklif talep edilemiyor"
 }
