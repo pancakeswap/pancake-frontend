@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "Walang slippage sa quote mula market maker",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "Hindi naniningil ang PancakeSwap ng anumang bayarin para sa mga pag-trade. Gayunpaman, naniningil ang mga market maker ng iminumungkahing bayarin na 0.05% (hindi stablecoin) / 0.01% (stablecoin) na hinati-hati sa mga quote na ibinigay nila.",
   "Trading Fee": "Bayarin sa Pag-trade",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Tinantya ang output. Makakatanggap ka ng hindi bababa sa o maibabalik ang transaksyon.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Tinantya ang input. Makakatanggap ka ng hindi bababa sa o maibabalik ang transaksyon.",
   "MM Linked Pool": "Naka-link na Pool ng MM",
   "Trade through the market makers if they provide better deal": "Mag-trade sa pamamagitan ng mga market maker kung magbibigay sila ng mas mahusay na deal",
   "Checking RFQ with MM": "Tinitingnan ng RFQ gamit ang MM",
   "Trade and win $10,000 Prize Pool": "Mag-trade at manalo ng $10,000 Prize Pool",
   "Trade now using Trust Wallet": "Mag-trade ngayong gamit ang Trust Wallet",
   "Download Trust Wallet": "I-download ang Trust Wallet",
-  "Trade and Share $10,000": "Mag-trade at Makakuha ng Bahagi sa $10,000",
   "Unable request a quote": "Hindi makahiling ng quote"
 }
