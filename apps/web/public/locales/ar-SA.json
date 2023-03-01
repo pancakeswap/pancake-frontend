@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "لا يوجد تذبذب سعر مقابل عرض السعر من صانع السوق (MM).",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "لا يفرض PancakeSwap أي رسوم لعمليات التداول. مع ذلك، يفرض صناع السوق رسومًا ضمنية بقيمة 0.05% (عملة غير مستقرة) / 0.01% (عملة مستقرة) تعتمد على عروض الأسعار التي يقدمونها.",
   "Trading Fee": "رسوم التداول",
-  "Output is estimated. You will receive at least or the transaction will revert.": "تم تقدير الإخراج. سوف تستلم على الأقل وإلا سيتم إلغاء المعاملة.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "تم تقدير الإدخال. سوف تبيع في الغالب بـ وإلا سيتم إلغاء المعاملة.",
   "MM Linked Pool": "تجمع مرتبط بـ MM",
   "Trade through the market makers if they provide better deal": "تداول عبر صناع السوق إذا قدموا صفقة أفضل",
   "Checking RFQ with MM": "فحص طلب عرض أسعار (RFQ) مع صانع السوق (MM)",
   "Trade and win $10,000 Prize Pool": "تداول وفز بتجمع جوائز قدره 10000 دولار",
   "Trade now using Trust Wallet": "تداول الآن باستخدام Trust Wallet",
   "Download Trust Wallet": "نزل Trust Wallet",
-  "Trade and Share $10,000": "تداول وشارك 10000 دولار",
   "Unable request a quote": "تعذر طلب عرض الأسعار"
 }
