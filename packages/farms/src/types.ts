@@ -70,8 +70,8 @@ export type FarmConfigV3 = {
   lpAddress: string
   boosted?: boolean
 
-  token0: Token
-  token1: Token
+  token: Token
+  quoteToken: Token
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig
@@ -117,6 +117,20 @@ export interface SerializedFarmUserData {
 
 export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
+}
+
+// Philip TODO: Define unstakedPositions and stakedPositions type
+export interface SerializedFarmV3 extends SerializedFarmPublicData {
+  unstakedPositions?: Record<string, string>
+  stakedPositions?: Record<string, string>
+}
+
+export interface SerializedFarmsV3State {
+  data: SerializedFarmV3[]
+  chainId?: number
+  userDataLoaded: boolean
+  loadingKeys: Record<string, boolean>
+  poolLength?: number
 }
 
 export interface SerializedFarmsState {

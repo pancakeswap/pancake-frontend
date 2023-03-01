@@ -160,16 +160,16 @@ export async function farmV3FetchFarms({
 
   const farmsData = farms.map((farm, index) => {
     // alias backward compatible for v2 farms
-    const { token0, token1, ...f } = farm
+    const { token, quoteToken, ...f } = farm
     return {
       ...f,
-      token: token0.serialize,
-      quoteToken: token1.serialize,
+      token: token.serialize,
+      quoteToken: quoteToken.serialize,
       ...getClassicFarmsDynamicData({
         ...lpData[index],
         ...slot0s[index],
-        token0: farm.token0,
-        token1: farm.token1,
+        token0: farm.token,
+        token1: farm.quoteToken,
       }),
       ...getFarmAllocation({
         allocPoint: poolInfos[index]?.allocPoint,
@@ -191,6 +191,7 @@ export async function farmV3FetchFarms({
     latestPeriodCakePerSecond,
     combinedCommonPrice,
   )
+
   return farmsWithPrice
 }
 
@@ -353,18 +354,18 @@ async function fetchSlot0s(farms: FarmConfigV3[], chainId: number, multicallv2: 
 }
 
 const fetchFarmCalls = (farm: FarmConfigV3) => {
-  const { lpAddress, token0, token1 } = farm
+  const { lpAddress, token, quoteToken } = farm
 
   return [
     // Balance of token in the LP contract
     {
-      address: token0.address,
+      address: token.address,
       name: 'balanceOf',
       params: [lpAddress],
     },
     // Balance of quote token on LP contract
     {
-      address: token1.address,
+      address: quoteToken.address,
       name: 'balanceOf',
       params: [lpAddress],
     },

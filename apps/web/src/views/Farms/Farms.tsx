@@ -41,6 +41,7 @@ import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsContext } from './context'
 import useMultiChainHarvestModal from './hooks/useMultiChainHarvestModal'
+// import { useFarmsV3 } from 'state/farmsV3/hooks'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -158,6 +159,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
+
+  // const result = useFarmsV3()
+
   const cakePrice = usePriceCakeBusd()
 
   const [_query, setQuery] = useState('')

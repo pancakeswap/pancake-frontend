@@ -66,6 +66,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
     if (!masterChefAddress) {
       throw new Error('Unsupported chain')
     }
+
     const { poolLength, totalAllocPoint, latestPeriodCakePerSecond } = await fetchMasterChefV3Data({
       multicallv2,
       masterChefAddress,

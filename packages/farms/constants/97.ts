@@ -6,8 +6,8 @@ export const farmsV3 = [
     pid: 1,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddress: '0xE8F08f0365b2875DbcF264A762B981bA3d612aEc',
-    token0: bscTestnetTokens.mockB,
-    token1: bscTestnetTokens.mockA,
+    token: bscTestnetTokens.mockB,
+    quoteToken: bscTestnetTokens.mockA,
   },
 ] satisfies FarmConfigV3[]
 

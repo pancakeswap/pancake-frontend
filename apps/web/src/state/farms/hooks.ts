@@ -13,6 +13,9 @@ import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { fetchFarmsV3PublicDataAsync, fetchInitialFarmsV3Data } from 'state/farmsV3'
+import { farmsV3Map } from '@pancakeswap/farms/constants/index.v3'
+
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
 import {
@@ -46,7 +49,11 @@ export const usePollFarmsWithUserData = () => {
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
+
+      const farmsV3Pids = farmsV3Map[chainId]?.map((f) => f.pid) ?? []
+
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
+      dispatch(fetchFarmsV3PublicDataAsync({ pids: farmsV3Pids, chainId }))
     },
     {
       refreshInterval: SLOW_INTERVAL,
