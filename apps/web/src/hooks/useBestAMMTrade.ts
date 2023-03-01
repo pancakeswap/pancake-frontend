@@ -6,7 +6,6 @@ import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
 
 import { provider } from 'utils/wagmi'
-// import { useGasPrice } from 'state/user/hooks'
 import { useCurrentBlock } from 'state/block/hooks'
 
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
@@ -21,6 +20,8 @@ interface Options {
   maxHops?: number
   maxSplits?: number
 }
+
+const quoteProvider = SmartRouter.createOffChainQuoteProvider()
 
 export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
   const { gasPrice } = useFeeDataWithGasPrice()
@@ -86,7 +87,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         maxHops,
         poolProvider,
         // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
-        quoteProvider: SmartRouter.createOffChainQuoteProvider(),
+        quoteProvider,
         // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
         blockNumber,
         allowedPoolTypes: poolTypes,
@@ -96,6 +97,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
       return res
     },
     {
+      keepPreviousData: true,
       revalidateOnFocus: false,
     },
   )
