@@ -9,7 +9,8 @@ import {
   MessageType,
 } from '../types'
 
-const API_ENDPOINT = process.env.NEXT_PUBLIC_MM_API_URL
+// const API_ENDPOINT = process.env.NEXT_PUBLIC_MM_API_URL
+const API_ENDPOINT = `https://test.linked-pool.pancakeswap.com//quote-service`
 
 export const getMMOrderBook = async (param: OrderBookRequest): Promise<OrderBookResponse> => {
   try {
