@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "Nu se permit niciun slippage împotriva cotației de la formatorul de piață",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap nu percepe niciun comision pentru tranzacții. Cu toate acestea, formatorii de piață percep o taxă implicită de 0,05% (non-stablecoin)/0,01% (stablecoin) aplicată în cotațiile oferite de ei.",
   "Trading Fee": "Comision de tranzacționare",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Rezultatul este estimat. Vei primi cel puțin sau tranzacția va fi anulată.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Intrarea este estimată. Vei vinde cel mult sau tranzacția va fi anulată.",
   "MM Linked Pool": "Portofoliu asociat MM",
   "Trade through the market makers if they provide better deal": "Tranzacționează prin formatorii de piață dacă au o ofertă mai bună",
   "Checking RFQ with MM": "Se verifică RFQ cu MM",
   "Trade and win $10,000 Prize Pool": "Tranzacționează acum și câștigă fondul de premii de 10.000 $",
   "Trade now using Trust Wallet": "Tranzacționează acum folosind Trust Wallet",
   "Download Trust Wallet": "Descarcă Trust Wallet",
-  "Trade and Share $10,000": "Tranzacționează și partajează 10.000 $",
   "Unable request a quote": "Nu se poate solicita o cotație"
 }
