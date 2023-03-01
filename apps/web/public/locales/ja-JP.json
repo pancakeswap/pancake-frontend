@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "マーケットメーカの見積もりに対するスリッページはありません",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwapはトレードに対する手数料を一切請求しません。ただし、マーケットメーカーが提示する見積もりには、0.05%（非ステーブルコイン）/0.01%（ステーブルコイン）の暗黙の手数料が織り込まれています。",
   "Trading Fee": "取引手数料",
-  "Output is estimated. You will receive at least or the transaction will revert.": "アウトプットは推定です。最低限受け取るか、そうでない場合は取引は取り消されます。",
-  "Input is estimated. You will sell at most or the transaction will revert.": "インプットは推定です。最大限売却するか、そうでない場合は取引は取り消されます。",
   "MM Linked Pool": "MMリンクプール",
   "Trade through the market makers if they provide better deal": "マーケットメーカーがより良い取引を提供する場合はMM経由でトレードする",
   "Checking RFQ with MM": "MMにRFQを確認中",
   "Trade and win $10,000 Prize Pool": "トレードして10,000ドル賞金プールを獲得",
   "Trade now using Trust Wallet": "Trust Walletで今すぐトレード",
   "Download Trust Wallet": "Trust Walletをダウンロード",
-  "Trade and Share $10,000": "トレードして10,000ドルを山分け",
   "Unable request a quote": "見積りをリクエストできません"
 }
