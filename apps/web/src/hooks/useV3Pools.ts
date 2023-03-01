@@ -325,22 +325,19 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Opt
     async () => {
       const { chainId } = pairs[0][0]
       const client = v3Clients[chainId]
+      // NOTE: remove block number for now for better performance
       const query = gql`
-      query getPools($pageSize: Int!, $poolAddrs: [String]) {
-        pools(
-          first: $pageSize
-          ${blockNumber ? `block: { number: ${blockNumber} }` : ``}
-          where: { id_in: $poolAddrs }
-        ) {
-          id
-          tick
-          sqrtPrice
-          feeTier
-          liquidity
-          totalValueLockedUSD
+        query getPools($pageSize: Int!, $poolAddrs: [String]) {
+          pools(first: $pageSize, where: { id_in: $poolAddrs }) {
+            id
+            tick
+            sqrtPrice
+            feeTier
+            liquidity
+            totalValueLockedUSD
+          }
         }
-      }
-`
+      `
       if (!client) {
         console.log('[METRIC] Cannot get v3 on chain', pairs[0][0].chainId, 'for now')
         return {
