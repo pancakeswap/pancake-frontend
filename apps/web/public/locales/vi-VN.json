@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "Không có trượt giá nào cho báo giá từ nhà tạo lập thị trường",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap không tính bất kỳ khoản phí nào cho các giao dịch. Tuy nhiên, nhà tạo lập thị trường sẽ tính một phí ngầm định là 0,05% (không phải stablecoin) / 0,01% (stablecoin), được bao gồm trong các báo giá mà họ cung cấp.",
   "Trading Fee": "Phí giao dịch",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Đầu ra được ước tính. Bạn sẽ nhận tối thiểu hoặc giao dịch sẽ được hoàn nguyên.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Đầu vào được ước tính. Bạn sẽ bán tối đa hoặc giao dịch sẽ được hoàn nguyên.",
   "MM Linked Pool": "Quỹ liên kết với MM",
   "Trade through the market makers if they provide better deal": "Giao dịch thông qua các nhà tạo lập thị trường nếu họ có giá tốt hơn",
   "Checking RFQ with MM": "Đang kiểm tra RFQ với MM",
   "Trade and win $10,000 Prize Pool": "Giao dịch và thắng Quỹ giải thưởng 10.000$",
   "Trade now using Trust Wallet": "Giao dịch ngay với Trust Wallet",
   "Download Trust Wallet": "Tải về Trust Wallet",
-  "Trade and Share $10,000": "Giao dịch và chia sẻ 10.000$",
   "Unable request a quote": "Không thể yêu cầu báo giá"
 }
