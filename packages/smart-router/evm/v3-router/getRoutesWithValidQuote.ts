@@ -41,10 +41,7 @@ export async function getRoutesWithValidQuote({
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
 
-  const requestCallback =
-    typeof window === 'undefined'
-      ? setTimeout
-      : window.requestIdleCallback || window.requestAnimationFrame || window.setTimeout
+  const requestCallback = typeof window === 'undefined' ? setTimeout : window.requestIdleCallback || window.setTimeout
   console.time('[METRIC] Get quotes')
   console.timeLog('[METRIC] Get quotes', 'from', routesWithoutQuote.length, 'routes', routesWithoutQuote)
   // Split into chunks so the calculation won't block the main thread

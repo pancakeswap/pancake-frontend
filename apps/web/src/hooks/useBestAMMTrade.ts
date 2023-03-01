@@ -36,7 +36,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber: JSBI.BigInt(blockNumber) })
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
-  const deferQuotient = useDebounce(deferQuotientRaw, 150)
+  const deferQuotient = useDebounce(deferQuotientRaw, 300)
   const [v2Swap] = useUserV2SwapEnable()
   const [v3Swap] = useUserV3SwapEnable()
   const [stableSwap] = useUserStableSwapEnable()
@@ -59,7 +59,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     data: trade,
     isLoading,
     isValidating,
-    mutate,
+    // mutate,
   } = useSWR(
     amount && currency && candidatePools && !loading
       ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
@@ -97,22 +97,15 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
       return res
     },
     {
-      keepPreviousData: true,
       revalidateOnFocus: false,
     },
   )
-
-  useEffect(() => {
-    // Revalidate if pools updated
-    mutate()
-    // eslint-disable-next-line
-  }, [candidatePools])
 
   return {
     refresh,
     trade,
     isLoading: isLoading || loading,
-    syncing: syncing || isValidating,
+    syncing: syncing || isValidating || (amount?.quotient.toString() !== deferQuotient && deferQuotient !== undefined),
   }
 }
 
