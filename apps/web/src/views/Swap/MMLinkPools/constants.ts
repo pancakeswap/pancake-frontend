@@ -7,7 +7,7 @@ export const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeee
 export const MM_SUPPORT_CHAIN = {
   1: true,
   5: true,
-  56: false,
+  56: true,
 }
 
 export const MM_SWAP_CONTRACT_ADDRESS = contract.mmLinkedPool
