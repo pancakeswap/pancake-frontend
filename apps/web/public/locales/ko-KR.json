@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "마켓 메이커의 견적에 대한 슬리피지 없음",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap은 거래에 대해 수수료를 부과하지 않습니다. 그러나 마켓 메이커는 제공한 견적에 포함된 0.05%(비 스테이블코인) / 0.01%(스테이블코인)의 묵시적 수수료를 부과합니다.",
   "Trading Fee": "거래 수수료",
-  "Output is estimated. You will receive at least or the transaction will revert.": "출력은 추정치입니다. 그 이상을 받게 되거나, 트랜잭션이 취소됩니다.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "입력은 추정치입니다. 그 이하를 판매하게 되거나, 트랜잭션이 취소됩니다.",
   "MM Linked Pool": "MM 링크 풀",
   "Trade through the market makers if they provide better deal": "마켓 메이커가 더 나은 딜을 제공하는 경우 마켓 메이커를 통해 거래",
   "Checking RFQ with MM": "MM과 RFQ 확인 중",
   "Trade and win $10,000 Prize Pool": "거래하고 $10,000 상금 풀 획득",
   "Trade now using Trust Wallet": "지금 Trust Wallet을 사용하여 거래",
   "Download Trust Wallet": "Trust Wallet 다운로드",
-  "Trade and Share $10,000": "$10,000 거래 및 공유",
   "Unable request a quote": "견적을 요청할 수 없음"
 }
