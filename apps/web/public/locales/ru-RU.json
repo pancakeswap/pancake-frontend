@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "Слипеджа относительно котировки маркетмейкера нет",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap не взимает комиссию за сделки. Маркетмейкеры взимают комиссию в размере 0,05% (если это не стейблкоин) или 0,01% (если это стейблкоин), которая учитывается в предлагаемых ими котировках.",
   "Trading Fee": "Комиссия за трейдинг",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Результат ориентировочный. Вы получите указанный минимум или транзакция будет возвращена.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Данные ввода ориентировочные. Вы продадите указанный максимум или транзакция будет возвращена.",
   "MM Linked Pool": "Связанный пул ММ",
   "Trade through the market makers if they provide better deal": "Торговать через маркетмейкеров, если это выгоднее",
   "Checking RFQ with MM": "Запрос предложения у ММ",
   "Trade and win $10,000 Prize Pool": "Торгуйте и выигрывайте: призовой фонд 10 000 $",
   "Trade now using Trust Wallet": "Торгуйте, используя Trust Wallet",
   "Download Trust Wallet": "Скачать Trust Wallet",
-  "Trade and Share $10,000": "Торгуйте и получите часть от 10 000 $",
   "Unable request a quote": "Не удается запросить котировку"
 }
