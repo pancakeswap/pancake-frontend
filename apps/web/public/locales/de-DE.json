@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "Keine Abweichung vom Kurs des Market-Makers",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap erhebt keine Gebühren für Trades. Market-Maker berechnen jedoch eine implizite Gebühr von 0,05 % (Non-Stablecoin) / 0,01 % (Stablecoin), die in den von ihnen bereitgestellten Kursen enthalten ist.",
   "Trading Fee": "Handelsgebühr",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Die Ausgabe wird geschätzt. Sie erhalten mindestens folgenden Betrag. Ansonsten wird die Transaktion rückgängig gemacht.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Der Input wird geschätzt. Sie verkaufen maximal den folgenden Betrag. Ansonsten wird die Transaktion rückgängig gemacht.",
   "MM Linked Pool": "Verknüpfter MM-Pool",
   "Trade through the market makers if they provide better deal": "Handeln Sie über die Market Maker, wenn diese bessere Konditionen bieten",
   "Checking RFQ with MM": "Anfrage mit MM prüfen",
   "Trade and win $10,000 Prize Pool": "Handeln Sie und gewinnen Sie 10.000 $ Preispool",
   "Trade now using Trust Wallet": "Jetzt handeln mit Trust Wallet",
   "Download Trust Wallet": "Trust Wallet herunterladen",
-  "Trade and Share $10,000": "Handeln Sie für einen Anteil an den 10.000 $",
   "Unable request a quote": "Kurs kann nicht abgerufen werden"
 }
