@@ -38,7 +38,6 @@ export default function SwapModalFooter({
   disabledConfirm: boolean
   isMM?: boolean
   isRFQReady: boolean
-  isRFQLoading: boolean
 }) {
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)

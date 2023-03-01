@@ -4,7 +4,7 @@ import { getAddress } from '@ethersproject/address'
 
 export const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 
-export const MM_SUPPORT_CHIAN = {
+export const MM_SUPPORT_CHAIN = {
   1: true,
   5: true,
   56: false,

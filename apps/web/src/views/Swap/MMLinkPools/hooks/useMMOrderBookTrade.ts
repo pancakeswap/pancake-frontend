@@ -1,18 +1,20 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
+import { Currency, Pair, TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useQuery } from '@tanstack/react-query'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { MutableRefObject, useRef } from 'react'
+import { MutableRefObject, useMemo, useRef } from 'react'
 import { Field } from 'state/swap/actions'
 import { useCurrencyBalances } from 'state/wallet/hooks'
+import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 
 import { isAddress } from 'utils'
 
 import { getMMOrderBook } from '../apis'
-import { OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
+import { MMOrderBookTrade, OrderBookRequest, OrderBookResponse, TradeWithMM } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 import { useMMParam } from './useMMParam'
+import { useIsMMQuotingPair } from './useIsMMQuotingPair'
 
 // TODO: update
 const BAD_RECIPIENT_ADDRESSES: string[] = [
@@ -46,43 +48,43 @@ function involvesAddress(trade: TradeWithMM<Currency, Currency, TradeType>, chec
 // }
 
 const checkOrderBookShouldRefetch = (
-  inputPath: MutableRefObject<string>,
+  rfqInputPath: string,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
 ) => {
   // if there is RFQ response and same input should stop refetch orderbook temporarily
   const shouldRefetch = !(
     Boolean(isRFQLive?.current) &&
-    Boolean(inputPath?.current === rfqUserInputPath?.current && rfqUserInputPath?.current !== undefined)
+    Boolean(rfqInputPath === rfqUserInputPath?.current && rfqUserInputPath?.current !== undefined)
   )
   return shouldRefetch
 }
 
 export const useOrderBookQuote = (
   request: OrderBookRequest | null,
+  rfqRequest: OrderBookRequest | null,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
+  isMMQuotingPair: boolean,
 ): { data: OrderBookResponse; isLoading: boolean } => {
-  const inputPath = useRef<string>('')
-  inputPath.current = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
-  const { data, isLoading } = useQuery(
-    [`orderBook/${inputPath.current}`],
-    () => {
-      return getMMOrderBook(request)
-    },
-    {
-      refetchInterval: 5000,
-      enabled: Boolean(
-        request &&
-          request.trader &&
-          (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
-          request.makerSideTokenAmount !== '0' &&
-          request.takerSideTokenAmount !== '0' &&
-          checkOrderBookShouldRefetch(inputPath, rfqUserInputPath, isRFQLive),
-      ),
-    },
+  const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
+  const inputPath = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
+  const rfqInputPath = `${rfqRequest?.networkId}/${rfqRequest?.makerSideToken}/${rfqRequest?.takerSideToken}/${rfqRequest?.makerSideTokenAmount}/${rfqRequest?.takerSideTokenAmount}`
+  const enabled = Boolean(
+    isMMLinkedPoolByDefault &&
+      isMMQuotingPair &&
+      request &&
+      request.trader &&
+      (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
+      request.makerSideTokenAmount !== '0' &&
+      request.takerSideTokenAmount !== '0' &&
+      checkOrderBookShouldRefetch(rfqInputPath, rfqUserInputPath, isRFQLive),
   )
-  return { data, isLoading }
+  const { data, isLoading } = useQuery([`orderBook/${inputPath}`], () => getMMOrderBook(request), {
+    refetchInterval: 5000,
+    enabled,
+  })
+  return { data, isLoading: enabled && isLoading }
 }
 
 export const useMMTrade = (
@@ -90,24 +92,21 @@ export const useMMTrade = (
   typedValue: string,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
-): {
-  currencies: { [field in Field]?: Currency }
-  currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
-  parsedAmount: CurrencyAmount<Currency> | undefined
-  trade?: TradeWithMM<Currency, Currency, TradeType> | null
-  inputError?: string
-  mmParam: OrderBookRequest
-  rfqUserInputPath: MutableRefObject<string>
-  isRFQLive: MutableRefObject<boolean>
-  isLoading: boolean
-} | null => {
+): MMOrderBookTrade | null => {
+  const { account } = useActiveWeb3React()
   const rfqUserInputPath = useRef<string>('')
   const isRFQLive = useRef<boolean>(false)
-  const { account } = useActiveWeb3React()
+  const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const mmParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency)
   const mmRFQParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency, true)
 
-  const { data: mmQoute, isLoading } = useOrderBookQuote(mmParam, rfqUserInputPath, isRFQLive)
+  const { data: mmQuote, isLoading } = useOrderBookQuote(
+    mmParam,
+    mmRFQParam,
+    rfqUserInputPath,
+    isRFQLive,
+    isMMQuotingPair,
+  )
   const { t } = useTranslation()
   const to: string | null = account ?? null
 
@@ -117,51 +116,40 @@ export const useMMTrade = (
   ])
   const isExactIn: boolean = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
-  const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
-  let bestTradeWithMM = null
+  const parsedAmount = useMemo(() => {
+    return tryParseAmount(typedValue, independentCurrency ?? undefined)
+  }, [typedValue, independentCurrency])
+  const bestTradeWithMM = useMemo(() => {
+    let result
+    if (!inputCurrency || !outputCurrency || !mmQuote || !mmQuote?.message?.takerSideTokenAmount) result = null
+    else {
+      const { takerSideTokenAmount, makerSideTokenAmount } = mmQuote?.message
+      result = parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)
+    }
+    return result
+  }, [inputCurrency, isExactIn, mmQuote, outputCurrency])
 
-  if (!inputCurrency || !outputCurrency || !mmQoute || !mmQoute?.message?.takerSideTokenAmount) bestTradeWithMM = null
-  else {
-    const { takerSideTokenAmount, makerSideTokenAmount } = mmQoute?.message
-    bestTradeWithMM = parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)
-  }
+  const currencyBalances = useMemo(() => {
+    return {
+      [Field.INPUT]: relevantTokenBalances[0],
+      [Field.OUTPUT]: relevantTokenBalances[1],
+    }
+  }, [relevantTokenBalances])
+  const currencies: { [field in Field]?: Currency } = useMemo(() => {
+    return {
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined,
+    }
+  }, [inputCurrency, outputCurrency])
 
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
-  }
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
-
-  let inputError: string | undefined
-  if (!account) {
-    inputError = t('Connect Wallet')
-  }
-
-  if (!parsedAmount) {
-    inputError = inputError ?? t('Enter an amount')
-  }
-
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? t('Select a token')
-  }
-
-  const formattedTo = isAddress(to)
-  if (!to || !formattedTo) {
-    inputError = inputError ?? t('Enter a recipient')
-  } else if (
-    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (bestTradeWithMM && involvesAddress(bestTradeWithMM, formattedTo))
-  ) {
-    inputError = inputError ?? t('Invalid recipient')
-  }
-
-  const slippageAdjustedAmounts = bestTradeWithMM && {
-    [Field.INPUT]: bestTradeWithMM.inputAmount,
-    [Field.OUTPUT]: bestTradeWithMM.outputAmount,
-  }
+  const slippageAdjustedAmounts = useMemo(() => {
+    return (
+      bestTradeWithMM && {
+        [Field.INPUT]: bestTradeWithMM.inputAmount,
+        [Field.OUTPUT]: bestTradeWithMM.outputAmount,
+      }
+    )
+  }, [bestTradeWithMM])
 
   // compare input balance to max input based on version
   const [balanceIn, amountIn] = [
@@ -169,21 +157,50 @@ export const useMMTrade = (
     slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
   ]
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
-  }
-  if (mmQoute?.message?.error) {
-    inputError = mmQoute?.message?.error
-  }
-  return {
-    trade: bestTradeWithMM,
-    parsedAmount,
-    currencyBalances,
-    currencies,
-    inputError,
-    mmParam: mmRFQParam,
-    rfqUserInputPath,
-    isRFQLive,
-    isLoading,
-  }
+  const inputError = useMemo(() => {
+    let result: string | undefined
+    if (!account) {
+      result = t('Connect Wallet')
+    }
+
+    if (!parsedAmount) {
+      result = result ?? t('Enter an amount')
+    }
+
+    if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+      result = result ?? t('Select a token')
+    }
+
+    const formattedTo = isAddress(to)
+    if (!to || !formattedTo) {
+      result = result ?? t('Enter a recipient')
+    } else if (
+      BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+      (bestTradeWithMM && involvesAddress(bestTradeWithMM, formattedTo))
+    ) {
+      result = result ?? t('Invalid recipient')
+    }
+
+    if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+      result = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
+    }
+    if (mmQuote?.message?.error) {
+      result = mmQuote?.message?.error
+    }
+    return result
+  }, [account, amountIn, balanceIn, bestTradeWithMM, currencies, mmQuote?.message?.error, parsedAmount, t, to])
+
+  return useMemo(() => {
+    return {
+      trade: bestTradeWithMM,
+      parsedAmount,
+      currencyBalances,
+      currencies,
+      inputError,
+      mmParam: mmRFQParam,
+      rfqUserInputPath,
+      isRFQLive,
+      isLoading,
+    }
+  }, [bestTradeWithMM, currencies, currencyBalances, inputError, isLoading, mmRFQParam, parsedAmount])
 }
