@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { PANCAKE_ETH_DEFAULT } from 'config/constants/lists'
+import { PANCAKE_ETH_MM, PANCAKE_BSC_MM } from 'config/constants/lists'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAccount } from 'wagmi'
 import { ConnectorNames } from 'config/wallet'
@@ -11,7 +11,8 @@ import { useIsMMSupportChain } from './useIsMMSupportChain'
 import { IS_SUPPORT_NATIVE_TOKEN, NATIVE_CURRENCY_ADDRESS } from '../constants'
 
 const QUOTING_WHITE_LIST = {
-  1: PANCAKE_ETH_DEFAULT,
+  1: PANCAKE_ETH_MM,
+  56: PANCAKE_BSC_MM,
 }
 
 export const useTokenList = (url?: string): Record<string, string> => {

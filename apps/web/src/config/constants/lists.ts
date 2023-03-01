@@ -2,6 +2,7 @@ export const PANCAKE_EXTENDED = 'https://tokens.pancakeswap.finance/pancakeswap-
 export const COINGECKO = 'https://tokens.pancakeswap.finance/coingecko.json'
 export const PANCAKE_ETH_DEFAULT = 'https://tokens.pancakeswap.finance/pancakeswap-eth-default.json'
 export const PANCAKE_ETH_MM = 'https://tokens.pancakeswap.finance/pancakeswap-eth-mm.json'
+export const PANCAKE_BSC_MM = 'https://tokens.pancakeswap.finance/pancakeswap-bnb-mm.json'
 export const COINGECKO_ETH = 'https://tokens.coingecko.com/uniswap/all.json'
 export const CMC = 'https://tokens.pancakeswap.finance/cmc.json'
 
