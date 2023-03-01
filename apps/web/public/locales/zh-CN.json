@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "相比做市商报价无滑点",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap 不收取任何交易费用。然而，做市商会收取 0.05%（非稳定币）/0.01%（稳定币）的隐含费用，并计入他们提供的报价中。",
   "Trading Fee": "交易费用",
-  "Output is estimated. You will receive at least or the transaction will revert.": "输出为估值。您将获得至少 ，或者交易将被撤回。",
-  "Input is estimated. You will sell at most or the transaction will revert.": "输入为估值。您将出售最多 ，或者交易将被撤回。",
   "MM Linked Pool": "MM 链接糖浆池",
   "Trade through the market makers if they provide better deal": "如果做市商提供的交易更佳，则通过做市商进行交易",
   "Checking RFQ with MM": "正在检查与 MM 的报价请求",
   "Trade and win $10,000 Prize Pool": "交易并赢取 10,000 美元奖金池",
   "Trade now using Trust Wallet": "立即使用 Trust Wallet 进行交易",
   "Download Trust Wallet": "下载 Trust Wallet",
-  "Trade and Share $10,000": "交易并分享 10,000 美元",
   "Unable request a quote": "无法请求报价"
 }
