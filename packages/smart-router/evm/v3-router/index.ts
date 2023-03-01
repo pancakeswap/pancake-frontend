@@ -6,6 +6,7 @@ import {
   createOffChainQuoteProvider,
   getV2PoolsOnChain,
   getStablePoolsOnChain,
+  getV3PoolsWithoutTicksOnChain,
 } from './providers'
 import {
   getExecutionPrice,
@@ -36,6 +37,7 @@ export const SmartRouter = {
   involvesCurrency,
   getV2PoolsOnChain,
   getStablePoolsOnChain,
+  getV3PoolsWithoutTicksOnChain,
 }
 
 export { SwapRouter } from './utils/swapRouter'

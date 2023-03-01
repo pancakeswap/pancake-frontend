@@ -90,3 +90,71 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     syncing: syncing || isValidating,
   }
 }
+
+export function useBestAMMTradeFromQuoter({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
+  // const gasPrice = useGasPrice()
+  const blockNum = useCurrentBlock()
+  const blockNumber = useMemo(() => JSBI.BigInt(blockNum), [blockNum])
+  const {
+    refresh,
+    pools: candidatePools,
+    loading,
+    syncing,
+  } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber: JSBI.BigInt(blockNumber) })
+  // const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
+  const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
+  const deferQuotient = useDebounce(deferQuotientRaw, 150)
+  const {
+    data: trade,
+    isLoading,
+    isValidating,
+    mutate,
+  } = useSWR(
+    amount && currency && candidatePools && !loading
+      ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
+      : null,
+    async () => {
+      if (!deferQuotient) {
+        return null
+      }
+      const label = '[METRIC] Get best AMM trade'
+      console.time(label)
+      console.timeLog(
+        label,
+        'Start',
+        currency.chainId,
+        amount.currency.symbol,
+        currency.symbol,
+        tradeType,
+        deferQuotient,
+        candidatePools,
+      )
+      const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
+        gasPriceWei: async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+        maxHops,
+        poolProvider: SmartRouter.createPoolProvider({ onChainProvider: provider }),
+        quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+        blockNumber,
+      })
+      console.timeLog(label, res)
+      console.timeEnd(label)
+      return res
+    },
+    {
+      revalidateOnFocus: false,
+    },
+  )
+
+  useEffect(() => {
+    // Revalidate if pools updated
+    mutate()
+    // eslint-disable-next-line
+  }, [candidatePools])
+
+  return {
+    refresh,
+    trade,
+    isLoading: isLoading || loading,
+    syncing: syncing || isValidating,
+  }
+}

@@ -20,9 +20,10 @@ import {
 } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
-import { encodeMixedRouteToPath, getQuoteCurrency, isV3Pool } from '../utils'
+import { encodeMixedRouteToPath, getQuoteCurrency } from '../utils'
 import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
+import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
 
 const DEFAULT_BATCH_RETRIES = 2
 
@@ -38,6 +39,7 @@ interface ProviderConfig {
 
 type QuoteBatchSuccess = {
   status: 'success'
+  order: number
   inputs: [string, string][]
   results: {
     blockNumber: JSBI
@@ -48,6 +50,7 @@ type QuoteBatchSuccess = {
 
 type QuoteBatchFailed = {
   status: 'failed'
+  order: number
   inputs: [string, string][]
   reason: Error
   results?: {
@@ -59,6 +62,7 @@ type QuoteBatchFailed = {
 
 type QuoteBatchPending = {
   status: 'pending'
+  order: number
   inputs: [string, string][]
 }
 
@@ -145,8 +149,9 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
 
         const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
         const inputsChunked = chunk(inputs, normalizedChunk)
-        let quoteStates: QuoteBatchState[] = map(inputsChunked, (inputChunk) => {
+        let quoteStates: QuoteBatchState[] = map(inputsChunked, (inputChunk, index) => {
           return {
+            order: index,
             status: 'pending',
             inputs: inputChunk,
           }
@@ -189,7 +194,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                 }
 
                 // QuoteChunk is pending or failed, so we try again
-                const { inputs } = quoteState
+                const { inputs, order } = quoteState
 
                 try {
                   totalCallsMade += 1
@@ -212,6 +217,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
 
                   if (successRateError) {
                     return {
+                      order,
                       status: 'failed',
                       inputs,
                       reason: successRateError,
@@ -220,6 +226,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                   }
 
                   return {
+                    order,
                     status: 'success',
                     inputs,
                     results,
@@ -229,6 +236,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                   // Catch them and rethrow with shorter message.
                   if (err.message.includes('header not found')) {
                     return {
+                      order,
                       status: 'failed',
                       inputs,
                       reason: new ProviderBlockHeaderError(err.message.slice(0, 500)),
@@ -237,6 +245,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
 
                   if (err.message.includes('timeout')) {
                     return {
+                      order,
                       status: 'failed',
                       inputs,
                       reason: new ProviderTimeoutError(
@@ -250,6 +259,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
 
                   if (err.message.includes('out of gas')) {
                     return {
+                      order,
                       status: 'failed',
                       inputs,
                       reason: new ProviderGasError(err.message.slice(0, 500)),
@@ -257,6 +267,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                   }
 
                   return {
+                    order,
                     status: 'failed',
                     inputs,
                     reason: new Error(`Unknown error from provider: ${err.message.slice(0, 500)}`),
@@ -363,25 +374,21 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
               const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
 
               const inputsChunked = chunk(inputs, normalizedChunk)
-              quoteStates = map(inputsChunked, (inputChunk) => {
+              quoteStates = map(inputsChunked, (inputChunk, index) => {
                 return {
+                  order: index,
                   status: 'pending',
                   inputs: inputChunk,
                 }
               })
             }
 
-            const callResults = map(quoteStates, (quoteState) =>
-              quoteState.status === 'success'
-                ? quoteState.results
-                : {
-                    inputs: quoteState.inputs,
-                    results:
-                      quoteState.status === 'failed' && quoteState.results
-                        ? quoteState.results
-                        : Array(quoteState.inputs.length).fill(null),
-                  },
-            )
+            if (failedQuoteStates.length > 0) {
+              throw new Error(`Failed to get ${failedQuoteStates.length} quotes. Reasons: ${reasonForFailureStr}`)
+            }
+
+            const orderedSuccessfulQuoteStates = successfulQuoteStates.sort((a, b) => (a.order < b.order ? -1 : 1))
+            const callResults = map(orderedSuccessfulQuoteStates, (quoteState) => quoteState.results)
 
             return {
               results: flatMap(callResults, (result) => result.results),
@@ -397,12 +404,6 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
           },
         )
 
-        routes.forEach((route) => {
-          if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
-            console.log('[Found]100% route quote', route)
-          }
-        })
-        console.log('100% Quote result count', quoteResults.length, 'Route count', routes.length)
         const routesWithQuote = processQuoteResults(quoteResults, routes, gasModel, adjustQuoteForGas)
 
         // metric.putMetric('QuoteApproxGasUsedPerSuccessfulCall', approxGasUsedPerSuccessCall, MetricLoggerUnit.Count)
@@ -534,18 +535,12 @@ function processQuoteResults(
     const route = routes[i]
     const quoteResult = quoteResults[i]
     if (!quoteResult) {
-      if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
-        console.log('[No Quote]100% route quote', route)
-      }
       continue
     }
 
     const { success } = quoteResult
 
     if (!success) {
-      if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
-        console.log('[Failed]100% route quote', route)
-      }
       // const amountStr = amount.toFixed(Math.min(amount.currency.decimals, 2))
       // const routeStr = routeToString(route)
       // debugFailedQuotes.push({
@@ -565,10 +560,6 @@ function processQuoteResults(
       },
       { initializedTickCrossedList: quoteResult.result[2] },
     )
-
-    if (route.percent === 100 && route.pools.length === 1 && isV3Pool(route.pools[0])) {
-      console.log('[Success]100% route quote getting', route, quote.toExact())
-    }
 
     routesWithQuote.push({
       ...route,
@@ -604,13 +595,13 @@ function processQuoteResults(
 }
 
 export const createMixedRouteOnChainQuoteProvider = onChainQuoteProviderFactory({
-  getQuoterAddress: () => '0x84E44095eeBfEC7793Cd7d5b57B7e401D7f1cA2E',
+  getQuoterAddress: (chainId) => MIXED_ROUTE_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: () => 'quoteExactInput',
   contractInterface: new Interface(IMixedRouteQuoterV1ABI),
 })
 
 export const createV3OnChainQuoteProvider = onChainQuoteProviderFactory({
-  getQuoterAddress: () => '0x61fFE014bA17989E743c5F6cB21bF9697530B21e',
+  getQuoterAddress: (chainId) => V3_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: (isExactIn) => (isExactIn ? 'quoteExactInput' : 'quoteExactOutput'),
   contractInterface: new Interface(IQuoterV2ABI),
 })

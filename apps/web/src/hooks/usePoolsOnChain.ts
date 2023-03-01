@@ -17,6 +17,11 @@ export const useV2CandidatePools = candidatePoolsOnChainHookFactory('V2', SmartR
 
 export const useStableCandidatePools = candidatePoolsOnChainHookFactory('Stable', SmartRouter.getStablePoolsOnChain)
 
+export const useV3PoolsWithoutTicksOnChain = candidatePoolsOnChainHookFactory(
+  'V3 without ticks',
+  SmartRouter.getV3PoolsWithoutTicksOnChain,
+)
+
 function candidatePoolsOnChainHookFactory<TPool extends Pool>(
   poolType: string,
   getPoolsOnChain: (
