@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "Tidak ada slip terhadap tawaran dari pembuat pasar",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap tidak membebankan biaya apa pun untuk perdagangan. Namun, pembuat pasar membebankan biaya tersirat sebesar 0,05% (non-stablecoin)/0,01% (stablecoin) yang difaktorkan ke dalam tawaran yang disediakan oleh mereka.",
   "Trading Fee": "Biaya Perdagangan",
-  "Output is estimated. You will receive at least or the transaction will revert.": "Output diperkirakan. Anda akan menerima minimal atau transaksi akan dibalik.",
-  "Input is estimated. You will sell at most or the transaction will revert.": "Input diperkirakan. Anda akan menjual maksimal atau transaksi akan dibalik.",
   "MM Linked Pool": "Pool Tertaut MM",
   "Trade through the market makers if they provide better deal": "Berdagang lewat pembuat pasar jika mereka memberikan tawaran yang lebih baik",
   "Checking RFQ with MM": "Memeriksa RFQ dengan MM",
   "Trade and win $10,000 Prize Pool": "Berdaganglah dan raih Pool Hadiah sebesar $10.000",
   "Trade now using Trust Wallet": "Berdaganglah sekarang menggunakan Trust Wallet",
   "Download Trust Wallet": "Unduh Trust Wallet",
-  "Trade and Share $10,000": "Berdagang dan Berbagi $10.000",
   "Unable request a quote": "Tidak dapat meminta kuotasi"
 }
