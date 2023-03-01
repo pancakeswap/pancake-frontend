@@ -2111,14 +2111,11 @@
   "No slippage against quote from market maker": "মার্কেট মেকারের উদ্ধৃতির বিপরীতে কোনো স্লিপেজ নেই।",
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwap ট্রেডের জন্য কোনো ফি ধার্য করে না। তবে, মার্কেট মেকাররা তাদের প্রদত্ত উদ্ধৃতির উপর ভিত্তি করে 0.05% (নন-স্টেবলকয়েন) / 0.01% (স্টেবলকয়েন) অন্তর্নিহিত ফি ধার্য করে।",
   "Trading Fee": "ট্রেডিং ফি",
-  "Output is estimated. You will receive at least or the transaction will revert.": "আউটপুট অনুমান করা হয়েছে। আপনি সর্বনিম্ন পাবেন অথবা লেনদেনটি ফিরে আসবে।",
-  "Input is estimated. You will sell at most or the transaction will revert.": "ইনপুট অনুমান করা হয়েছে। আপনি সর্বোচ্চ  বিক্রয় করবেন অথবা লেনদেনটি ফিরে আসবে।",
   "MM Linked Pool": "MM লিঙ্কড পুল",
   "Trade through the market makers if they provide better deal": "মার্কেট মেকাররা ভালো কারবার করলে তাদের মাধ্যমে ট্রেড করুন",
   "Checking RFQ with MM": "MM এর সাথে RFQ পরীক্ষা করা হচ্ছে",
   "Trade and win $10,000 Prize Pool": "ট্রেড করুন এবং $10,000 প্রাইজ পুল জিতে নিন",
   "Trade now using Trust Wallet": "ট্রাস্ট ওয়ালেট ব্যবহার করে এখনই ট্রেড করুন",
   "Download Trust Wallet": "ট্রাস্ট ওয়ালেট ডাউনলোড করুন",
-  "Trade and Share $10,000": "ট্রেড করুন এবং $10,000 শেয়ার করুন",
   "Unable request a quote": "কোনো কোট-এর অনুরোধ করা যায়নি"
 }
