@@ -28,12 +28,12 @@ import { useCallback, useEffect, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
+import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 
 // import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
-import { useIsExpertMode, useUserSlippageTolerance } from 'state/user/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
@@ -245,7 +245,7 @@ export default function V3FormView({
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
   // Philip TODO: Add 'auto' allowedSlippage
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  const [allowedSlippage] = useUserSlippage() // custom from users
   // const allowedSlippage = useUserSlippageToleranceWithDefault(
   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
   // )

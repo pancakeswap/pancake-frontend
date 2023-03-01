@@ -31,7 +31,7 @@ import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
 import Page from 'views/Page'
@@ -106,7 +106,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     [onPercentSelectForSlider],
   )
 
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  const [allowedSlippage] = useUserSlippage() // custom from users
   // const allowedSlippage = useUserSlippageToleranceWithDefault(DEFAULT_REMOVE_V3_LIQUIDITY_SLIPPAGE_TOLERANCE) // custom from users
 
   const deadline = useTransactionDeadline() // custom from users settings

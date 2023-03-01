@@ -9,7 +9,7 @@ import { ReactNode, useMemo } from 'react'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useSwapState } from 'state/swap/hooks'
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { basisPointsToPercent } from 'utils/exchange'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
@@ -48,7 +48,7 @@ export function useSwapCallback({
   const { t } = useTranslation()
   const { account, chainId } = useActiveWeb3React()
   const provider = useProviderOrSigner()
-  const [allowedSlippageRaw] = useUserSlippageTolerance() || [INITIAL_ALLOWED_SLIPPAGE]
+  const [allowedSlippageRaw] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const allowedSlippage = useMemo(() => basisPointsToPercent(allowedSlippageRaw), [allowedSlippageRaw])
   const { recipient: recipientAddress } = useSwapState()
   const recipient = recipientAddress === null ? account : recipientAddress

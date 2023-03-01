@@ -19,7 +19,7 @@ import {
 } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Field } from 'state/swap/actions'
-import { useUserSingleHopOnly, useExpertModeManager } from 'state/user/hooks'
+import { useExpertMode, useUserSingleHopOnly } from '@pancakeswap/utils/user'
 import { warningSeverity } from 'utils/exchange'
 import { useSwapState } from 'state/swap/hooks'
 import { useCurrency } from 'hooks/Tokens'
@@ -49,7 +49,7 @@ interface SwapCommitButtonPropsType {
 export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
   const [singleHopOnly] = useUserSingleHopOnly()
   const {
     typedValue,

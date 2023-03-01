@@ -9,8 +9,7 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { Field } from 'state/mint/actions'
 import { ApprovalState } from 'hooks/useApproveCallback'
 
-import { useIsExpertMode } from 'state/user/hooks'
-
+import { useIsExpertMode } from '@pancakeswap/utils/user'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'

@@ -11,13 +11,13 @@ import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { PairState } from 'hooks/usePairs'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import BigNumber from 'bignumber.js'
-
+import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { Field } from '../../../state/mint/actions'
 import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { useGasPrice, useIsExpertMode, useUserSlippageTolerance } from '../../../state/user/hooks'
+import { useGasPrice } from '../../../state/user/hooks'
 import { calculateGasMargin } from '../../../utils'
 import { calculateSlippageAmount } from '../../../utils/exchange'
 import { maxAmountSpend } from '../../../utils/maxAmountSpend'
@@ -118,7 +118,7 @@ export default function AddStableLiquidity({
   })
 
   // txn values
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  const [allowedSlippage] = useUserSlippage() // custom from users
   const {
     lpOutputWithoutFee: expectedOutputWithoutFee,
     loading,

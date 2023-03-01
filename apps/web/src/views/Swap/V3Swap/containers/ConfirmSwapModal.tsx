@@ -7,7 +7,7 @@ import { Trade } from '@pancakeswap/smart-router/evm'
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/swap/actions'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useSwapState } from 'state/swap/hooks'
 
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
@@ -42,7 +42,7 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
 }) {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
   const { recipient } = useSwapState()
 
   const handleDismiss = useCallback(() => {

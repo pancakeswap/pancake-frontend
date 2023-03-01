@@ -13,11 +13,10 @@ import { LiquidityFormState } from 'hooks/v3/types'
 import { useCallback, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-
+import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 // import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
 
-import { useIsExpertMode, useUserSlippageTolerance } from 'state/user/hooks'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
@@ -138,7 +137,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   //   // check whether the user has approved the router on the tokens
   //   // Philip TODO: Add 'auto' allowedSlippage
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  const [allowedSlippage] = useUserSlippage() // custom from users
   //   // const allowedSlippage = useUserSlippageToleranceWithDefault(
   //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
   //   // )

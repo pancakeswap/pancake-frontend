@@ -1,6 +1,7 @@
-import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants/exchange'
 import { atom, useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
+
+export const INITIAL_ALLOWED_SLIPPAGE = 50
 
 const userSlippageAtom = atomWithStorage('pcs:slippage', INITIAL_ALLOWED_SLIPPAGE)
 

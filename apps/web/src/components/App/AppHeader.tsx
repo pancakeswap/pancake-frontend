@@ -9,7 +9,7 @@ import {
   QuestionHelper,
   AutoRow,
 } from '@pancakeswap/uikit'
-import { useExpertModeManager } from 'state/user/hooks'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
 import { SettingsMode } from '../Menu/GlobalSettings/types'
@@ -47,7 +47,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
   buttons,
   filter,
 }) => {
-  const [expertMode] = useExpertModeManager()
+  const [expertMode] = useExpertMode()
 
   return (
     <AppHeaderContainer>

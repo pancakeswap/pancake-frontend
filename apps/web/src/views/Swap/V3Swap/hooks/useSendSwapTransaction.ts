@@ -6,12 +6,11 @@ import { TradeType } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useMemo } from 'react'
 import truncateHash from '@pancakeswap/utils/truncateHash'
-
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useUserSlippageTolerance } from 'state/user/hooks'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { calculateGasMargin, isAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
@@ -50,7 +49,7 @@ export default function useSendSwapTransaction(
 ): { callback: null | (() => Promise<TransactionResponse>) } {
   const { t } = useTranslation()
   const addTransaction = useTransactionAdder()
-  const [allowedSlippage] = useUserSlippageTolerance() || [INITIAL_ALLOWED_SLIPPAGE]
+  const [allowedSlippage] = useUserSlippage() || [INITIAL_ALLOWED_SLIPPAGE]
   const { recipient } = useSwapState()
   const recipientAddress = recipient === null ? account : recipient
 

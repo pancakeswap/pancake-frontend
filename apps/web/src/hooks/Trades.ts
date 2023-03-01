@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, isTradeBetter, Pair, Token, Trade, TradeType 
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 
-import { useUserSingleHopOnly } from 'state/user/hooks'
+import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 import {
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,

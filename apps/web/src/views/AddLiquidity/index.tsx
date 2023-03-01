@@ -8,6 +8,7 @@ import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trad
 import { useTranslation } from '@pancakeswap/localization'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
@@ -21,7 +22,7 @@ import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState } from '../../state/mint/hooks'
 
 import { useTransactionAdder } from '../../state/transactions/hooks'
-import { useGasPrice, usePairAdder, useUserSlippageTolerance } from '../../state/user/hooks'
+import { useGasPrice, usePairAdder } from '../../state/user/hooks'
 import { calculateGasMargin } from '../../utils'
 import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
@@ -123,7 +124,7 @@ export default function AddLiquidity({
 
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings
-  const [allowedSlippage] = useUserSlippageTolerance() // custom from users
+  const [allowedSlippage] = useUserSlippage() // custom from users
 
   // get the max amounts user can add
   const maxAmounts: { [field in Field]?: CurrencyAmount<Token> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(

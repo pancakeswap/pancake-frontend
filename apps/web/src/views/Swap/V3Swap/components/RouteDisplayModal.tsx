@@ -1,9 +1,10 @@
 import { Route, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { useTranslation } from '@pancakeswap/localization'
-import { Modal, ModalV2, QuestionHelper, Text, Flex, useTooltip } from '@pancakeswap/uikit'
+import { Modal, ModalV2, QuestionHelper, Text, Flex, useTooltip, AutoColumn } from '@pancakeswap/uikit'
 import { Currency } from '@pancakeswap/sdk'
 
 import { CurrencyLogo } from 'components/Logo'
+import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { RouterBox, RouterPoolBox, RouterTypeText, CurrencyLogoWrapper } from 'views/Swap/components/RouterViewer'
 import { useMemo } from 'react'
 import { v3FeeToPercent } from '../utils/exchange'
@@ -39,7 +40,7 @@ export function RouteDisplayModal({
         }
         onDismiss={onClose}
         style={{ minHeight: '0' }}
-        bodyPadding="24px 24px 48px"
+        bodyPadding="24px"
       >
         <RouteDisplay route={route} />
       </Modal>
@@ -103,16 +104,19 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
       : null
 
   return (
-    <RouterBox justifyContent="space-between" alignItems="center">
-      <CurrencyLogoWrapper ref={targetRef}>
-        <CurrencyLogo size="44px" currency={inputCurrency} />
-      </CurrencyLogoWrapper>
-      {tooltipVisible && tooltip}
-      {pairNodes}
-      <CurrencyLogoWrapper ref={outputTargetRef}>
-        <CurrencyLogo size="44px" currency={outputCurrency} />
-      </CurrencyLogoWrapper>
-      {outputTooltipVisible && outputTooltip}
-    </RouterBox>
+    <AutoColumn gap="24px">
+      <RouterBox justifyContent="space-between" alignItems="center">
+        <CurrencyLogoWrapper ref={targetRef}>
+          <CurrencyLogo size="44px" currency={inputCurrency} />
+        </CurrencyLogoWrapper>
+        {tooltipVisible && tooltip}
+        {pairNodes}
+        <CurrencyLogoWrapper ref={outputTargetRef}>
+          <CurrencyLogo size="44px" currency={outputCurrency} />
+        </CurrencyLogoWrapper>
+        {outputTooltipVisible && outputTooltip}
+      </RouterBox>
+      <RoutingSettingsButton />
+    </AutoColumn>
   )
 }

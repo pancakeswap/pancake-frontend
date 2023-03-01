@@ -1,8 +1,7 @@
 import { Swap as SwapUI, useModal, Skeleton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Price, Currency } from '@pancakeswap/sdk'
-
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from '../../../../components/Menu/GlobalSettings/types'
@@ -15,7 +14,7 @@ interface Props {
 
 export function PricingAndSlippage({ priceLoading, price }: Props) {
   const { t } = useTranslation()
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
   const isWrapping = useIsWrapping()
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 

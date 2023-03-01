@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { useTranslation } from '@pancakeswap/localization'
 
-import { useExpertModeManager } from 'state/user/hooks'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
@@ -13,7 +13,7 @@ import { useAllowRecipient } from '../hooks'
 
 export function FlipButton() {
   const { t } = useTranslation()
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
   const { onSwitchTokens, onChangeRecipient } = useSwapActionHandlers()
   const {
     recipient,

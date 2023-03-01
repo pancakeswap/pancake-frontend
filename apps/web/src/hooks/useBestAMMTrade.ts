@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import useSWR from 'swr'
 import { useDeferredValue, useEffect, useMemo } from 'react'
-import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, PoolType } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
 
@@ -9,6 +9,8 @@ import { provider } from 'utils/wagmi'
 // import { useGasPrice } from 'state/user/hooks'
 import { useCurrentBlock } from 'state/block/hooks'
 
+import { useFeeDataWithGasPrice } from 'state/user/hooks'
+import { useUserStableSwapEnable, useUserV2SwapEnable, useUserV3SwapEnable } from 'state/user/smartRouter'
 import { useCommonPools } from './useCommonPools'
 
 interface Options {
@@ -21,7 +23,8 @@ interface Options {
 }
 
 export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
-  // const gasPrice = useGasPrice()
+  const { gasPrice } = useFeeDataWithGasPrice()
+
   const blockNum = useCurrentBlock()
   const blockNumber = useMemo(() => JSBI.BigInt(blockNum), [blockNum])
   const {
@@ -33,6 +36,24 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 150)
+  const [v2Swap] = useUserV2SwapEnable()
+  const [v3Swap] = useUserV3SwapEnable()
+  const [stableSwap] = useUserStableSwapEnable()
+
+  const poolTypes = useMemo(() => {
+    const types: PoolType[] = []
+    if (v2Swap) {
+      types.push(PoolType.V2)
+    }
+    if (v3Swap) {
+      types.push(PoolType.V3)
+    }
+    if (stableSwap) {
+      types.push(PoolType.STABLE)
+    }
+    return types
+  }, [v2Swap, v3Swap, stableSwap])
+
   const {
     data: trade,
     isLoading,
@@ -59,14 +80,16 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         candidatePools,
       )
       const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
-        // TODO fix on ethereum
-        gasPriceWei: async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+        gasPriceWei: gasPrice
+          ? JSBI.BigInt(gasPrice)
+          : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
         maxHops,
         poolProvider,
         // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
         quoteProvider: SmartRouter.createOffChainQuoteProvider(),
         // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
         blockNumber,
+        allowedPoolTypes: poolTypes,
       })
       console.timeLog(label, res)
       console.timeEnd(label)

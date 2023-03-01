@@ -30,7 +30,7 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage, useExpertMode } from '@pancakeswap/utils/user'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
@@ -88,10 +88,10 @@ export default function StableSwapForm() {
   }, [stableFarms])
 
   // for expert mode
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
 
   // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
 
   // swap state & price data
   const {

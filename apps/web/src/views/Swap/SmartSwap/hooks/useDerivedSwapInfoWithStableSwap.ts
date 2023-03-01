@@ -8,7 +8,7 @@ import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useWeb3React } from '@pancakeswap/wagmi'
-import { useUserSingleHopOnly, useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage, useUserSingleHopOnly } from '@pancakeswap/utils/user'
 import { isAddress } from 'utils'
 
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'
@@ -107,7 +107,7 @@ export function useDerivedSwapInfoWithStableSwap(
     inputError = inputError ?? t('Invalid recipient')
   }
 
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
 
   const slippageAdjustedAmounts =
     bestTradeWithStableSwap &&

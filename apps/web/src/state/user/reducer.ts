@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import omitBy from 'lodash/omitBy'
-import { DEFAULT_DEADLINE_FROM_NOW, INITIAL_ALLOWED_SLIPPAGE } from '../../config/constants'
+import { DEFAULT_DEADLINE_FROM_NOW } from '../../config/constants'
 import { updateVersion } from '../global/actions'
 import {
   addSerializedPair,
@@ -14,20 +14,15 @@ import {
   SerializedPair,
   updateGasPrice,
   updateUserDeadline,
-  updateUserExpertMode,
   updateUserFarmStakedOnly,
   updateUserFarmsViewMode,
   updateUserPoolStakedOnly,
   updateUserPoolsViewMode,
-  updateUserSingleHopOnly,
-  updateUserSlippageTolerance,
   ViewMode,
   updateUserPredictionAcceptedRisk,
   updateUserPredictionChartDisclaimerShow,
   updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserUsernameVisibility,
-  updateUserExpertModeAcknowledgementShow,
-  hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   setChartViewMode,
   ChartViewMode,
@@ -42,14 +37,6 @@ const currentTimestamp = () => Date.now()
 export interface UserState {
   // the timestamp of the last updateVersion action
   lastUpdateVersionTimestamp?: number
-
-  userExpertMode: boolean
-
-  // only allow swaps on direct pairs
-  userSingleHopOnly: boolean
-
-  // user defined slippage tolerance in bips, used in all txns
-  userSlippageTolerance: number
 
   // deadline set by user in minutes, used in all txns
   userDeadline: number
@@ -78,7 +65,6 @@ export interface UserState {
   userLimitOrderAcceptedWarning: boolean
   userPredictionChartDisclaimerShow: boolean
   userPredictionChainlinkChartDisclaimerShow: boolean
-  userExpertModeAcknowledgementShow: boolean
   userUsernameVisibility: boolean
   userZapDisabled: boolean
   gasPrice: string
@@ -92,9 +78,6 @@ function pairKey(token0Address: string, token1Address: string) {
 }
 
 export const initialState: UserState = {
-  userExpertMode: false,
-  userSingleHopOnly: false,
-  userSlippageTolerance: INITIAL_ALLOWED_SLIPPAGE,
   userDeadline: DEFAULT_DEADLINE_FROM_NOW,
   tokens: {},
   pairs: {},
@@ -109,7 +92,6 @@ export const initialState: UserState = {
   userLimitOrderAcceptedWarning: false,
   userPredictionChartDisclaimerShow: true,
   userPredictionChainlinkChartDisclaimerShow: true,
-  userExpertModeAcknowledgementShow: true,
   userUsernameVisibility: false,
   userZapDisabled: false,
   gasPrice: GAS_PRICE_GWEI.rpcDefault,
@@ -123,9 +105,6 @@ export default createReducer(initialState, (builder) =>
     .addCase(updateVersion, (state) => {
       // slippage is'nt being tracked in local storage, reset to default
       // noinspection SuspiciousTypeOfGuard
-      if (typeof state.userSlippageTolerance !== 'number') {
-        state.userSlippageTolerance = INITIAL_ALLOWED_SLIPPAGE
-      }
 
       // deadline isnt being tracked in local storage, reset to default
       // noinspection SuspiciousTypeOfGuard
@@ -135,17 +114,8 @@ export default createReducer(initialState, (builder) =>
 
       state.lastUpdateVersionTimestamp = currentTimestamp()
     })
-    .addCase(updateUserExpertMode, (state, action) => {
-      state.userExpertMode = action.payload.userExpertMode
-    })
-    .addCase(updateUserSlippageTolerance, (state, action) => {
-      state.userSlippageTolerance = action.payload.userSlippageTolerance
-    })
     .addCase(updateUserDeadline, (state, action) => {
       state.userDeadline = action.payload.userDeadline
-    })
-    .addCase(updateUserSingleHopOnly, (state, action) => {
-      state.userSingleHopOnly = action.payload.userSingleHopOnly
     })
     .addCase(addSerializedToken, (state, { payload: { serializedToken } }) => {
       if (!state.tokens) {
@@ -206,9 +176,6 @@ export default createReducer(initialState, (builder) =>
     .addCase(updateUserPredictionChainlinkChartDisclaimerShow, (state, { payload: { userShowDisclaimer } }) => {
       state.userPredictionChainlinkChartDisclaimerShow = userShowDisclaimer
     })
-    .addCase(updateUserExpertModeAcknowledgementShow, (state, { payload: { userExpertModeAcknowledgementShow } }) => {
-      state.userExpertModeAcknowledgementShow = userExpertModeAcknowledgementShow
-    })
     .addCase(updateUserUsernameVisibility, (state, { payload: { userUsernameVisibility } }) => {
       state.userUsernameVisibility = userUsernameVisibility
     })
@@ -236,9 +203,6 @@ export default createReducer(initialState, (builder) =>
         const newPools = state.watchlistPools.filter((x) => x !== address)
         state.watchlistPools = newPools
       }
-    })
-    .addCase(hidePhishingWarningBanner, (state) => {
-      state.hideTimestampPhishingWarningBanner = currentTimestamp()
     })
     .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
       state.isExchangeChartDisplayed = payload

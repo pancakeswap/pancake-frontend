@@ -1,11 +1,10 @@
 import { TradeType } from '@pancakeswap/sdk'
 import { Trade } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
-
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { computeSlippageAdjustedAmounts } from '../utils/exchange'
 
 export function useSlippageAdjustedAmounts(trade?: Trade<TradeType>) {
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
   return useMemo(() => computeSlippageAdjustedAmounts(trade, allowedSlippage), [allowedSlippage, trade])
 }

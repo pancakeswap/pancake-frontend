@@ -27,6 +27,7 @@ import { CommitButton } from 'components/CommitButton'
 import { useTranslation } from '@pancakeswap/localization'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import { RowBetween } from '../../../components/Layout/Row'
@@ -46,7 +47,7 @@ import Dots from '../../../components/Loader/Dots'
 import { useBurnActionHandlers, useBurnState } from '../../../state/burn/hooks'
 
 import { Field } from '../../../state/burn/actions'
-import { useGasPrice, useUserSlippageTolerance } from '../../../state/user/hooks'
+import { useGasPrice } from '../../../state/user/hooks'
 import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../../utils/sentry'
 import { CommonBasesType } from '../../../components/SearchModal/types'
@@ -95,7 +96,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   })
 
   // txn values
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
 
   const formattedAmounts = {
     [Field.LIQUIDITY_PERCENT]: parsedAmounts[Field.LIQUIDITY_PERCENT].equalTo('0')
