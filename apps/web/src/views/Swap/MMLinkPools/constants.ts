@@ -23,6 +23,7 @@ export const MM_STABLE_TOKENS_WHITE_LIST: Record<number, Record<string, string>>
 }
 
 export const MM_SIGNER = {
+  [ChainId.BSC]: '0x945BCF562085De2D5875b9E2012ed5Fd5cfaB927',
   [ChainId.ETHEREUM]: '0x945BCF562085De2D5875b9E2012ed5Fd5cfaB927',
   [ChainId.GOERLI]: '0x13414B047539298D5aeD429722211681eAAb43B7',
 }
