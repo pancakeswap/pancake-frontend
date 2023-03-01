@@ -1,4 +1,14 @@
-import { Currency, CurrencyAmount, TradeType, Percent, ONE_HUNDRED_PERCENT, JSBI, Token, Price } from '@pancakeswap/sdk'
+import {
+  Currency,
+  CurrencyAmount,
+  TradeType,
+  Percent,
+  ONE_HUNDRED_PERCENT,
+  JSBI,
+  Token,
+  Price,
+  ZERO,
+} from '@pancakeswap/sdk'
 import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
@@ -61,6 +71,13 @@ export function computeTradePriceBreakdown(trade?: Trade<TradeType> | null): {
     outputAmountWithoutPriceImpact = outputAmountWithoutPriceImpact.add(
       midPrice.quote(routeInputAmount.wrapped) as CurrencyAmount<Token>,
     )
+  }
+
+  if (JSBI.equal(outputAmountWithoutPriceImpact.quotient, ZERO)) {
+    return {
+      priceImpactWithoutFee: undefined,
+      lpFeeAmount: null,
+    }
   }
 
   const priceImpactRaw = outputAmountWithoutPriceImpact
