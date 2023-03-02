@@ -9,7 +9,6 @@ import { useCurrentBlock } from 'state/block/hooks'
 import useGetPublicIfoV3Data from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import BigNumber from 'bignumber.js'
 import useSWRImmutable from 'swr/immutable'
-import { format } from 'date-fns'
 import Claim from './Claim'
 
 const WhiteCard = styled.div`

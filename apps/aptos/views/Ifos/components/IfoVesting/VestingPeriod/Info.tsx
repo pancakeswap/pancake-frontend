@@ -7,7 +7,6 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { useGetPublicIfoData } from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
-import { format } from 'date-fns'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import Claim from './Claim'
 
