@@ -108,4 +108,12 @@ export const mainnetTokens = {
     'Tortuga Staked APT',
     'https://app.tortuga.finance/',
   ),
+  etern: new Coin(
+    ChainId.MAINNET,
+    '0x25a64579760a4c64be0d692327786a6375ec80740152851490cfd0b53604cf95::coin::ETERN',
+    8,
+    'ETERN',
+    'Eternal Token',
+    'https://eternalfinance.io/',
+  ),
 }
