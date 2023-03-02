@@ -149,7 +149,7 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
         }
       })
     }
-  }, [chartCreated, data, setValue, setLabel, theme])
+  }, [chartCreated, data, setValue, setLabel, theme, locale])
 
   return (
     <>

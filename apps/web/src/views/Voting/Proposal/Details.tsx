@@ -19,7 +19,10 @@ const DetailBox = styled(Box)`
 `
 
 const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const startDate = new Date(proposal.start * 1000)
   const endDate = new Date(proposal.end * 1000)
 
@@ -55,13 +58,31 @@ const Details: React.FC<React.PropsWithChildren<DetailsProps>> = ({ proposal }) 
             <Text color="textSubtle" fontSize="14px">
               {t('Start Date')}
             </Text>
-            <Text ml="8px">{format(startDate, 'yyyy-MM-dd HH:mm')}</Text>
+            <Text ml="8px">
+              {new Date(startDate).toLocaleString(locale, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+              })}
+            </Text>
           </Flex>
           <Flex alignItems="center">
             <Text color="textSubtle" fontSize="14px">
               {t('End Date')}
             </Text>
-            <Text ml="8px">{format(endDate, 'yyyy-MM-dd HH:mm')}</Text>
+            <Text ml="8px">
+              {new Date(endDate).toLocaleString(locale, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+              })}
+            </Text>
           </Flex>
         </DetailBox>
       </CardBody>
