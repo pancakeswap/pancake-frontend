@@ -62,7 +62,16 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     // mutate,
   } = useSWR(
     amount && currency && candidatePools && !loading
-      ? [currency.chainId, amount.currency.symbol, currency.symbol, tradeType, deferQuotient, maxHops, maxSplits]
+      ? [
+          currency.chainId,
+          amount.currency.symbol,
+          currency.symbol,
+          tradeType,
+          deferQuotient,
+          maxHops,
+          maxSplits,
+          poolTypes,
+        ]
       : null,
     async () => {
       if (!deferQuotient) {
@@ -97,6 +106,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
       return res
     },
     {
+      keepPreviousData: true,
       revalidateOnFocus: false,
     },
   )

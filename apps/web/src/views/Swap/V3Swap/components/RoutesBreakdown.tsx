@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useDeferredValue, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router/evm'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import { QuestionHelper, SearchIcon, Text, ChevronDownIcon } from '@pancakeswap/uikit'
 
 import { RowBetween } from 'components/Layout/Row'
@@ -27,14 +28,20 @@ const DropdownIcon = styled(ChevronDownIcon)<{ expanded: boolean }>`
 export function RoutesBreakdown({ routes = [] }: Props) {
   const { t } = useTranslation()
   const [expanded, setExpanded] = useState(false)
-  const [displayRoute, setDisplayRoute] = useState<Route | null>(null)
+  const [displayRouteIndex, setDisplayRouteIndex] = useState<number | null>(null)
   const [showRouteDetail, setShowRouteDetail] = useState(false)
   const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded])
-  const onShowRoute = useCallback((route: Route) => {
-    setDisplayRoute(route)
+  const onShowRoute = useCallback((index: number) => {
+    setDisplayRouteIndex(index)
     setShowRouteDetail(true)
   }, [])
   const onCloseRouteDisplay = useCallback(() => setShowRouteDetail(false), [])
+
+  const previousRoutes = usePreviousValue(routes)
+
+  const shouldShowRoutes = useDeferredValue(
+    showRouteDetail && previousRoutes && previousRoutes.length === routes.length,
+  )
 
   if (!routes.length) {
     return null
@@ -42,10 +49,11 @@ export function RoutesBreakdown({ routes = [] }: Props) {
 
   const count = routes.length
   const swapRoutes = expanded
-    ? routes.map((route) => <RouteComp route={route} onCheckRouteDetail={onShowRoute} />)
+    ? // eslint-disable-next-line react/no-array-index-key
+      routes.map((route, i) => <RouteComp key={i} route={route} onClick={() => onShowRoute(i)} />)
     : null
-  const routeDetail = displayRoute && (
-    <RouteDisplayModal open={showRouteDetail} route={displayRoute} onClose={onCloseRouteDisplay} />
+  const routeDetail = routes[displayRouteIndex] && (
+    <RouteDisplayModal open={shouldShowRoutes} route={routes[displayRouteIndex]} onClose={onCloseRouteDisplay} />
   )
 
   return (
@@ -76,17 +84,11 @@ export function RoutesBreakdown({ routes = [] }: Props) {
 
 interface RouteProps {
   route: Route
-  onCheckRouteDetail?: (route: Route) => void
+  onClick?: () => void
 }
 
-function RouteComp({
-  route,
-  onCheckRouteDetail = () => {
-    // default
-  },
-}: RouteProps) {
+function RouteComp({ route, onClick }: RouteProps) {
   const { path, percent } = route
-  const onCheck = useCallback(() => onCheckRouteDetail(route), [route, onCheckRouteDetail])
 
   return (
     <RouteWrapper>
@@ -94,7 +96,7 @@ function RouteComp({
         {percent}%
       </Text>
       <SwapRoute path={path} />
-      <SearchIcon style={{ cursor: 'pointer' }} onClick={onCheck} color="textSubtle" />
+      <SearchIcon style={{ cursor: 'pointer' }} onClick={onClick} color="textSubtle" />
     </RouteWrapper>
   )
 }
