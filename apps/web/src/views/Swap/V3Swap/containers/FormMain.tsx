@@ -101,7 +101,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
     <FormContainer>
       <CurrencyInputPanel
         id="swap-currency-input"
-        // showBUSD
+        showUSDPrice
         showMaxButton
         showCommonBases
         loading={!isWrapping && inputLoading}
@@ -121,7 +121,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
       <FlipButton />
       <CurrencyInputPanel
         id="swap-currency-output"
-        // showBUSD
+        showUSDPrice
         showCommonBases
         showMaxButton={false}
         loading={!isWrapping && outputLoading}

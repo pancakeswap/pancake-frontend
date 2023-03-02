@@ -17,7 +17,6 @@ import {
 import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
-import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
@@ -33,8 +32,6 @@ interface Props {
   noConfig?: boolean
   setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed?: boolean
-  hasAmount: boolean
-  onRefreshPrice: () => void
 }
 
 const shineAnimation = keyframes`
@@ -75,12 +72,7 @@ const ColoredIconButton = styled(IconButton)`
 //  disable this during the eth trust wallet campaign
 const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
 
-const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
-  subtitle,
-  hasAmount,
-  onRefreshPrice,
-  title,
-}) => {
+const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitle, title }) => {
   const { t } = useTranslation()
   const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -97,7 +89,6 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
-  const handleOnClick = useCallback(() => onRefreshPrice?.(), [onRefreshPrice])
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
 
   const mobileTooltipClickOutside = useCallback(() => {
@@ -172,9 +163,6 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
         </NotificationDot>
         <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
           <HistoryIcon color="textSubtle" width="24px" />
-        </IconButton>
-        <IconButton variant="text" scale="sm" onClick={handleOnClick}>
-          <RefreshIcon disabled={!hasAmount} color="textSubtle" width="27px" />
         </IconButton>
       </Flex>
     </Flex>

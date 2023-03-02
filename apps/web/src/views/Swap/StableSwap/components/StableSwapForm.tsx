@@ -72,7 +72,7 @@ const SwitchIconButton = styled(IconButton)`
 
 export default function StableSwapForm() {
   const { t } = useTranslation()
-  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
+  const { isLoading } = useRefreshBlockNumberID()
   const { address: account } = useAccount()
   const stableFarms = useStableFarms()
   const stableTokens = useMemo(() => {
@@ -206,14 +206,6 @@ export default function StableSwapForm() {
     [maxAmountInput, onUserInput],
   )
 
-  const hasAmount = Boolean(parsedAmount)
-
-  const onRefreshPrice = useCallback(() => {
-    if (hasAmount) {
-      refreshBlockNumber()
-    }
-  }, [hasAmount, refreshBlockNumber])
-
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
   return (
@@ -229,8 +221,6 @@ export default function StableSwapForm() {
           </Flex>
         }
         subtitle={t('Trade tokens in an instant')}
-        hasAmount={hasAmount}
-        onRefreshPrice={onRefreshPrice}
       />
       <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
         <AutoColumn gap="sm">

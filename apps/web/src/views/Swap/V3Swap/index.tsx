@@ -7,18 +7,17 @@ import { useBestTrade } from './hooks'
 export function V3SwapForm() {
   const { isLoading, trade, refresh } = useBestTrade()
 
-  const pricingAndSlippage = (
-    <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
-  )
   const swapCommitButton = <SwapCommitButton trade={trade} />
   const tradeLoaded = !isLoading && !!trade
 
   return (
     <>
-      <FormHeader refreshDisabled={!tradeLoaded} onRefresh={refresh} />
+      <FormHeader />
       <FormMain
         tradeLoading={isLoading}
-        pricingAndSlippage={pricingAndSlippage}
+        pricingAndSlippage={
+          <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
+        }
         inputAmount={trade?.inputAmount}
         outputAmount={trade?.outputAmount}
         swapCommitButton={swapCommitButton}

@@ -4,8 +4,8 @@ import Button from "./Button";
 import { BaseButtonProps } from "./types";
 
 const IconButton: PolymorphicComponent<BaseButtonProps, "button"> = styled(Button)<BaseButtonProps>`
-  padding: 0;
-  width: ${({ scale }) => (scale === "sm" ? "32px" : "48px")};
+  padding: 2px;
+  width: ${({ scale }) => (scale === "xs" ? "auto" : scale === "sm" ? "32px" : "48px")};
 `;
 
 export default IconButton;

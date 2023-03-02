@@ -53,7 +53,7 @@ import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
-  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
+  const { isLoading } = useRefreshBlockNumberID()
   const stableFarms = useStableFarms()
   const warningSwapHandler = useWarningImport()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
@@ -209,24 +209,11 @@ export default function SwapForm() {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
-  const hasAmount = Boolean(parsedAmount)
-
-  const onRefreshPrice = useCallback(() => {
-    if (hasAmount) {
-      refreshBlockNumber()
-    }
-  }, [hasAmount, refreshBlockNumber])
-
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
   return (
     <>
-      <CurrencyInputHeader
-        title={t('Swap')}
-        subtitle={t('Trade tokens in an instant')}
-        hasAmount={hasAmount}
-        onRefreshPrice={onRefreshPrice}
-      />
+      <CurrencyInputHeader title={t('Swap')} subtitle={t('Trade tokens in an instant')} />
       <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
         <AutoColumn gap="sm">
           <CurrencyInputPanel
