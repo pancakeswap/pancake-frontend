@@ -14,7 +14,7 @@ interface UseV3PositionResults {
   position: PositionDetails | undefined
 }
 
-function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): UseV3PositionsResults {
+export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
   const inputs = useMemo(() => (tokenIds ? tokenIds.map((tokenId) => [BigNumber.from(tokenId)]) : []), [tokenIds])
   const results = useSingleContractMultipleData(positionManager, 'positions', inputs)
@@ -61,7 +61,7 @@ export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3P
   }
 }
 
-export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
+export function useV3TokenIdsByAccount(account: string | null | undefined) {
   const positionManager = useV3NFTPositionManagerContract()
 
   const { loading: balanceLoading, result: balanceResult } = useSingleCallResult(positionManager, 'balanceOf', [
@@ -95,10 +95,22 @@ export function useV3Positions(account: string | null | undefined): UseV3Positio
     return []
   }, [account, tokenIdResults])
 
+  return useMemo(
+    () => ({
+      tokenIds,
+      loading: someTokenIdsLoading || balanceLoading,
+    }),
+    [balanceLoading, someTokenIdsLoading, tokenIds],
+  )
+}
+
+export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
+  const { tokenIds, loading: tokenIdsLoading } = useV3TokenIdsByAccount(account)
+
   const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(tokenIds)
 
   return {
-    loading: someTokenIdsLoading || balanceLoading || positionsLoading,
+    loading: tokenIdsLoading || positionsLoading,
     positions,
   }
 }

@@ -36,12 +36,14 @@ import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
+// import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
+import _toLower from 'lodash/toLower'
+
 import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
 import { FarmsContext } from './context'
 import useMultiChainHarvestModal from './hooks/useMultiChainHarvestModal'
-// import { useFarmsV3 } from 'state/farmsV3/hooks'
 
 const ControlContainer = styled.div`
   display: flex;
@@ -160,7 +162,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { chainId } = useActiveChainId()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
 
-  // const result = useFarmsV3()
+  // const farmV3 = useFarmsV3WithPositions()
+
+  // console.log('farmV3: ', farmV3)
 
   const cakePrice = usePriceCakeBusd()
 

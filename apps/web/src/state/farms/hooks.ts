@@ -13,8 +13,7 @@ import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { fetchFarmsV3PublicDataAsync, fetchInitialFarmsV3Data } from 'state/farmsV3'
-import { farmsV3Map } from '@pancakeswap/farms/constants/index.v3'
+import { fetchFarmsV3PublicDataAsync, fetchFarmV3UserDataAsync } from 'state/farmsV3'
 
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
@@ -50,10 +49,8 @@ export const usePollFarmsWithUserData = () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
 
-      const farmsV3Pids = farmsV3Map[chainId]?.map((f) => f.pid) ?? []
-
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
-      dispatch(fetchFarmsV3PublicDataAsync({ pids: farmsV3Pids, chainId }))
+      dispatch(fetchFarmsV3PublicDataAsync({ chainId }))
     },
     {
       refreshInterval: SLOW_INTERVAL,
@@ -72,6 +69,8 @@ export const usePollFarmsWithUserData = () => {
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
 
       dispatch(fetchFarmUserDataAsync(params))
+
+      dispatch(fetchFarmV3UserDataAsync({ account, chainId }))
     },
     {
       refreshInterval: SLOW_INTERVAL,
