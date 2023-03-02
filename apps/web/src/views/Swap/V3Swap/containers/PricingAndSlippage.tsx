@@ -23,7 +23,7 @@ export function PricingAndSlippage({ priceLoading, price }: Props) {
   }
 
   const priceContent = priceLoading ? (
-    <Skeleton width="80%" ml="8px" height="24px" />
+    <Skeleton width="60%" ml="8px" height="20px" />
   ) : (
     <SwapUI.TradePrice price={price} />
   )

@@ -5,6 +5,7 @@ import { useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
+import { useDeferredValue } from 'react'
 
 interface Options {
   maxHops?: number
@@ -37,7 +38,7 @@ export function useBestTrade({ maxHops, maxSplits }: Options = {}) {
 
   return {
     refresh,
-    isLoading: isLoading || (typedValue && !trade),
+    isLoading: useDeferredValue(isLoading || (typedValue && !trade)),
     trade: typedValue ? trade : null,
   }
 }

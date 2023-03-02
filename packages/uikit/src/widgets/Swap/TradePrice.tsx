@@ -17,11 +17,11 @@ export function TradePrice({ price }: TradePriceProps) {
   const show = Boolean(price?.baseCurrency && price?.quoteCurrency);
 
   return (
-    <Text style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
+    <Text fontSize="14px" style={{ justifyContent: "center", alignItems: "center", display: "flex" }}>
       {show ? (
         <>
           {`1 ${showInverted ? price?.baseCurrency?.symbol : price?.quoteCurrency?.symbol}`}
-          <SyncAltIcon color="textSubtle" ml="4px" mr="4px" />
+          <SyncAltIcon width="14px" height="14px" color="textSubtle" ml="4px" mr="4px" />
           {`${formattedPrice} ${showInverted ? price?.quoteCurrency?.symbol : price?.baseCurrency?.symbol}`}
           <AtomBox className={balanceMaxMiniClass} onClick={() => setShowInverted(!showInverted)}>
             <AutoRenewIcon width="14px" />

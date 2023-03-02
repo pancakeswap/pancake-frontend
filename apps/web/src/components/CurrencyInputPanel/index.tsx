@@ -9,7 +9,7 @@ import {
   Box,
   NumericalInput,
   CopyButton,
-  Skeleton,
+  Loading,
 } from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
@@ -62,10 +62,15 @@ const InputPanel = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
-const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean }>`
+const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean; loading?: boolean }>`
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.input};
   box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
+  ${({ loading }) =>
+    loading &&
+    css`
+      opacity: 0.6;
+    `}
   ${({ zapStyle }) =>
     !!zapStyle &&
     css`
@@ -250,30 +255,26 @@ export default function CurrencyInputPanel({
         )}
       </Flex>
       <InputPanel>
-        <Container as="label" zapStyle={zapStyle} error={error}>
+        <Container as="label" zapStyle={zapStyle} error={error} loading={loading}>
           <LabelRow>
-            {loading ? (
-              <Skeleton width="100%" height="22px" />
-            ) : (
-              <NumericalInput
-                error={error}
-                disabled={disabled}
-                className="token-amount-input"
-                value={value}
-                onBlur={onInputBlur}
-                onUserInput={(val) => {
-                  onUserInput(val)
-                  setCurrentClickedPercent('')
-                }}
-              />
-            )}
+            <NumericalInput
+              error={error}
+              disabled={disabled}
+              className="token-amount-input"
+              value={value}
+              onBlur={onInputBlur}
+              onUserInput={(val) => {
+                onUserInput(val)
+                setCurrentClickedPercent('')
+              }}
+            />
           </LabelRow>
-          {!!currency && showUSDPrice && (
+          {!!currency && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
                 {loading ? (
-                  <Skeleton width="20%" height="16px" />
-                ) : Number.isFinite(amountInDollar) ? (
+                  <Loading width="16px" height="16px" />
+                ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
                   <Text fontSize="12px" color="textSubtle">
                     ~{formatNumber(amountInDollar)} USD
                   </Text>

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router/evm'
 import { usePreviousValue } from '@pancakeswap/hooks'
-import { QuestionHelper, SearchIcon, Text, ChevronDownIcon } from '@pancakeswap/uikit'
+import { QuestionHelper, SearchIcon, Text, ChevronDownIcon, IconButton } from '@pancakeswap/uikit'
 
 import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
@@ -96,7 +96,9 @@ function RouteComp({ route, onClick }: RouteProps) {
         {percent}%
       </Text>
       <SwapRoute path={path} />
-      <SearchIcon style={{ cursor: 'pointer' }} onClick={onClick} color="textSubtle" />
+      <IconButton ml="8px" variant="text" color="textSubtle" onClick={onClick} scale="xs">
+        <SearchIcon width="16px" height="16px" style={{ cursor: 'pointer' }} color="textSubtle" />
+      </IconButton>
     </RouteWrapper>
   )
 }
