@@ -81,9 +81,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const nativeHelperContract = useStableSwapNativeHelperContract()
 
-  // TODO: stable native helper
-  const needUnwrapped = false
-  // const needUnwrapped = currencyA?.isNative || currencyB?.isNative
+  const needUnwrapped = currencyA?.isNative || currencyB?.isNative
 
   const { pair, parsedAmounts, error } = useStableDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
