@@ -176,9 +176,8 @@ export const pageVariants = recipe({
   },
 });
 
-export const balanceMaxMiniClass = style([
+export const iconButtonClass = style([
   atoms({
-    backgroundColor: "background",
     borderRadius: "circle",
     cursor: "pointer",
     color: "text",
@@ -195,14 +194,5 @@ export const balanceMaxMiniClass = style([
     fontWeight: 400,
     marginLeft: "0.4rem",
     float: "right",
-    selectors: {
-      "&:hover": {
-        backgroundColor: vars.colors.dropdown,
-      },
-      "&:focus": {
-        backgroundColor: vars.colors.dropdown,
-        outline: "none",
-      },
-    },
   }),
 ]);

@@ -1,4 +1,4 @@
-import { Swap as SwapUI, useModal, Skeleton } from '@pancakeswap/uikit'
+import { Swap as SwapUI, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Price, Currency } from '@pancakeswap/sdk'
 import { useUserSlippage } from '@pancakeswap/utils/user'
@@ -22,15 +22,10 @@ export function PricingAndSlippage({ priceLoading, price }: Props) {
     return null
   }
 
-  const priceContent = priceLoading ? (
-    <Skeleton width="60%" ml="8px" height="20px" />
-  ) : (
-    <SwapUI.TradePrice price={price} />
-  )
   const priceNode = price ? (
     <>
       <SwapUI.InfoLabel>{t('Price')}</SwapUI.InfoLabel>
-      {priceContent}
+      <SwapUI.TradePrice price={price} loading={priceLoading} />
     </>
   ) : null
 
