@@ -1,7 +1,7 @@
 import { TradeType, Token, CurrencyAmount, Currency, Percent } from '@pancakeswap/swap-sdk-core'
+import invariant from 'tiny-invariant'
 import { Trade } from './entities'
 import { validateAndParseAddress } from './utils'
-import invariant from 'tiny-invariant'
 
 /**
  * Options for producing the arguments to send call to the router.
@@ -65,10 +65,6 @@ const ZERO_HEX = '0x0'
  */
 export abstract class Router {
   /**
-   * Cannot be constructed.
-   */
-  private constructor() {}
-  /**
    * Produces the on-chain method name to call and the hex encoded parameters to pass as arguments for a given trade.
    * @param trade to produce call parameters for
    * @param options options for the call parameters
@@ -97,6 +93,8 @@ export abstract class Router {
     let methodName: string
     let args: (string | string[])[]
     let value: string
+
+    // eslint-disable-next-line default-case
     switch (trade.tradeType) {
       case TradeType.EXACT_INPUT:
         if (etherIn) {
@@ -138,6 +136,7 @@ export abstract class Router {
         }
         break
     }
+
     return {
       methodName,
       args,

@@ -19,7 +19,7 @@ export const NumericalInput = memo(function InnerInput({
   onUserInput: (input: string) => void;
   error?: boolean;
   fontSize?: string;
-  align?: "right" | "left";
+  align?: "right" | "left" | "center";
 } & Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">) {
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === "" || inputRegex.test(escapeRegExp(nextUserInput))) {

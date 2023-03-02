@@ -14,6 +14,7 @@ import {
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
@@ -21,7 +22,6 @@ import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { useExpertModeManager } from 'state/user/hooks'
 import styled, { keyframes } from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
@@ -92,7 +92,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   })
 
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
-  const [expertMode] = useExpertModeManager()
+  const [expertMode] = useExpertMode()
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }

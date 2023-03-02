@@ -1,4 +1,5 @@
 import { BinanceWalletConnector } from '@pancakeswap/wagmi/connectors/binanceWallet'
+import type { JsonRpcProvider } from '@ethersproject/providers'
 import { BloctoConnector } from '@pancakeswap/wagmi/connectors/blocto'
 import { TrustWalletConnector } from '@pancakeswap/wagmi/connectors/trustWallet'
 import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
@@ -43,7 +44,7 @@ const getNodeRealUrl = (networkName: string) => {
   }
 }
 
-export const { provider, chains } = configureChains(CHAINS, [
+export const { provider, chains } = configureChains<JsonRpcProvider>(CHAINS, [
   jsonRpcProvider({
     rpc: (chain) => {
       if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {

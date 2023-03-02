@@ -1,11 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { isStableSwapPair, Pair } from '@pancakeswap/smart-router/evm'
+import { LegacyRouter, LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
 import { Box, Flex, Text, useTooltip } from '@pancakeswap/uikit'
 import { CurrencyLogo } from 'components/Logo'
 import styled from 'styled-components'
 
-const RouterBox = styled(Flex)`
+const { isStableSwapPair } = LegacyRouter
+
+export const RouterBox = styled(Flex)`
   position: relative;
   flex-direction: column;
   min-height: 450px;
@@ -37,7 +39,7 @@ const RouterBox = styled(Flex)`
     }
   }
 `
-const RouterPoolBox = styled(Box)`
+export const RouterPoolBox = styled(Box)`
   position: relative;
   border-radius: 50px;
   display: flex;
@@ -55,14 +57,15 @@ const RouterPoolBox = styled(Box)`
       }
     }
   }
-  &.isStableSwap {
+  &.isStableSwap,
+  &.highlight {
     background-color: ${({ theme }) => theme.colors.secondary};
   }
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
   }
 `
-const RouterTypeText = styled.div`
+export const RouterTypeText = styled.div`
   font-size: 16px;
   line-height: 20px;
   color: ${({ theme }) => theme.colors.text};
@@ -78,7 +81,7 @@ const RouterTypeText = styled.div`
   }
 `
 
-const CurrencyLogoWrapper = styled.div`
+export const CurrencyLogoWrapper = styled.div`
   position: relative;
   height: 48px;
   width: 48px;

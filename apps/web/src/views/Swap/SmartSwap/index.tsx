@@ -19,7 +19,7 @@ import { useIsTransactionUnsupported } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
-import { useStableSwapByDefault } from 'state/user/smartRouter'
+import { useUserStableSwapEnable } from 'state/user/smartRouter'
 import { maxAmountSpend } from 'utils/maxAmountSpend'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 
@@ -33,7 +33,7 @@ import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useAtomValue } from 'jotai'
 import { Field } from 'state/swap/actions'
 import { useDerivedSwapInfo, useSwapState } from 'state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage, useExpertMode } from '@pancakeswap/utils/user'
 import { currencyId } from 'utils/currencyId'
 import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
@@ -67,11 +67,11 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
   const { account, chainId } = useActiveWeb3React()
 
   // for expert mode
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
 
   // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance()
-  const [allowUseSmartRouter, setAllowUseSmartRouter] = useState(false)
+  const [allowedSlippage] = useUserSlippage()
+  const [allowUseSmartRouter, setAllowUseSmartRouter] = useState(() => false)
 
   // swap state & price data
 
@@ -92,7 +92,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
     }),
     [inputCurrency, outputCurrency],
   )
-  const [isStableSwapByDefault] = useStableSwapByDefault()
+  const [isStableSwapByDefault] = useUserStableSwapEnable()
 
   const { v2Trade, inputError: swapInputError } = useDerivedSwapInfo(
     independentField,
