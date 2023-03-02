@@ -37,6 +37,7 @@ import { useRouter } from 'next/router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import _toLower from 'lodash/toLower'
+// import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
 
 import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
@@ -160,6 +161,10 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
+
+  // const res = useFarmsV3WithPositions()
+
+  // console.log('res: ', res)
 
   const cakePrice = usePriceCakeBusd()
 
