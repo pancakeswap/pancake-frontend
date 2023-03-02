@@ -116,4 +116,12 @@ export const mainnetTokens = {
     'Eternal Token',
     'https://eternalfinance.io/',
   ),
+  blt: new Coin(
+    ChainId.MAINNET,
+    '0xfbab9fb68bd2103925317b6a540baa20087b1e7a7a4eb90badee04abb6b5a16f::blt::Blt',
+    8,
+    'BLT',
+    'Blocto Token',
+    'https://blocto.io/',
+  ),
 }

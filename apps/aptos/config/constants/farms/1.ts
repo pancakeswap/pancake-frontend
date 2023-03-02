@@ -39,6 +39,14 @@ const farms: SerializedFarmConfig[] = [
   },
   // * By order of release
   {
+    pid: 18,
+    lpSymbol: 'APT-BLT LP',
+    lpAddress:
+      '0xc7efb4076dbe143cbcd98cfaaa929ecfc8f299203dfff63b95ccb6bfe19850fa::swap::LPToken<0x1::aptos_coin::AptosCoin, 0xfbab9fb68bd2103925317b6a540baa20087b1e7a7a4eb90badee04abb6b5a16f::blt::Blt>',
+    token: mainnetTokens.blt,
+    quoteToken: mainnetTokens.apt,
+  },
+  {
     pid: 17,
     lpSymbol: 'ETERN-ceUSDC LP',
     lpAddress:
