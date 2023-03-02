@@ -231,12 +231,12 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                         {formatAmount(isStableSwap ? stableAPR : poolData.lpApr7d)}%
                       </Text>
                       <Flex alignItems="center">
+                        <Text mr="4px" fontSize="12px" color="textSubtle">
+                          {t('7D performance')}
+                        </Text>
                         <span ref={targetRef}>
                           <HelpIcon color="textSubtle" />
                         </span>
-                        <Text ml="4px" fontSize="12px" color="textSubtle">
-                          {t('7D performance')}
-                        </Text>
                         {tooltipVisible && tooltip}
                       </Flex>
                     </Flex>

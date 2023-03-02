@@ -182,7 +182,7 @@ export function AdvancedSwapDetails({
   isMM = false,
 }: AdvancedSwapDetailsProps) {
   const { t } = useTranslation()
-  const [isModalOpen, setIsModalOpen] = useState(() => false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const showRoute = Boolean(path && path.length > 1)
   return (
     <AutoColumn gap="0px">
