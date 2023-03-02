@@ -159,7 +159,6 @@ export async function farmV3FetchFarms({
   const slot0s = await fetchSlot0s(farms, chainId, multicallv2)
 
   const farmsData = farms.map((farm, index) => {
-    // alias backward compatible for v2 farms
     const { token, quoteToken, ...f } = farm
     return {
       ...f,

@@ -5,9 +5,9 @@ import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/use
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import useSWRImmutable from 'swr/immutable'
-import _sortedUniqBy from 'lodash/sortedUniqBy'
-import _partition from 'lodash/partition'
-import _toLower from 'lodash/toLower'
+import sortedUniqBy from 'lodash/sortedUniqBy'
+import partition from 'lodash/partition'
+import toLower from 'lodash/toLower'
 import { PositionDetails } from 'hooks/v3/types'
 import { SerializedFarmPublicData } from '@pancakeswap/farms'
 import { getStakedPositionsByUser } from './fetchMasterChefV3Subgraph'
@@ -33,7 +33,7 @@ export const usePositionsByUser = () => {
   const { tokenIds } = useV3TokenIdsByAccount(account)
 
   const uniqueTokenIds = useMemo(
-    () => _sortedUniqBy([...stakedIds, ...tokenIds], (v: BigNumber) => v.toString()),
+    () => sortedUniqBy([...stakedIds, ...tokenIds], (v: BigNumber) => v.toString()),
     [stakedIds, tokenIds],
   )
 
@@ -41,7 +41,7 @@ export const usePositionsByUser = () => {
 
   // return [unstakedPositions, stakedPositions]
   return useMemo(() => {
-    return _partition(positions, (p) => tokenIds.find((i) => i.eq(p.tokenId)))
+    return partition(positions, (p) => tokenIds.find((i) => i.eq(p.tokenId)))
   }, [positions, tokenIds])
 }
 
@@ -58,10 +58,10 @@ export function useFarmsV3WithPositions(): SerializedFarmV3[] {
     const { token, quoteToken } = farm
 
     const unstaked = unstakedPositions.filter(
-      (p) => _toLower(p.token0) === _toLower(token.address) || _toLower(p.token1) === _toLower(quoteToken.address),
+      (p) => toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address),
     )
     const staked = stakedPositions.filter(
-      (p) => _toLower(p.token0) === _toLower(token.address) || _toLower(p.token1) === _toLower(quoteToken.address),
+      (p) => toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address),
     )
 
     return {
