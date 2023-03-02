@@ -50,10 +50,11 @@ const AuctionSchedule: React.FC<React.PropsWithChildren<ScheduleProps>> = ({ auc
               <Text small>
                 {startDate.toLocaleString(locale, {
                   year: 'numeric',
-                  month: 'long',
+                  month: '2-digit',
                   day: '2-digit',
                   hour: '2-digit',
                   minute: '2-digit',
+                  hour12: false,
                 })}
               </Text>
               <Text small textAlign="right">
@@ -73,10 +74,11 @@ const AuctionSchedule: React.FC<React.PropsWithChildren<ScheduleProps>> = ({ auc
               <Text small>
                 {endDate.toLocaleString(locale, {
                   year: 'numeric',
-                  month: 'long',
+                  month: '2-digit',
                   day: '2-digit',
                   hour: '2-digit',
                   minute: '2-digit',
+                  hour12: false,
                 })}
               </Text>
               <Text small textAlign="right">

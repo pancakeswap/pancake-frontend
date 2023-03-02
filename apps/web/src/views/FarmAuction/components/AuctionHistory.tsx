@@ -75,12 +75,13 @@ const AuctionHistory: React.FC<React.PropsWithChildren<AuctionHistoryProps>> = (
   }
 
   const endDate = auction
-    ? auction.endDate.toLocaleString(locale, {
+    ? auction.endDate.toLocaleString(undefined, {
         year: 'numeric',
-        month: 'short',
+        month: '2-digit',
         day: '2-digit',
         hour: '2-digit',
         minute: '2-digit',
+        hour12: false,
       })
     : null
 
