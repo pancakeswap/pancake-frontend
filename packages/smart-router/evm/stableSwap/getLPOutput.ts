@@ -36,7 +36,7 @@ export function getLPOutput({
   for (const [i, balance] of balances.entries()) {
     const amount = amounts[i] || CurrencyAmount.fromRawAmount(balance.currency, 0)
     invariant(
-      amount.currency.equals(balance.currency),
+      amount.currency.wrapped.equals(balance.currency.wrapped),
       'User input currency should be the same as pool balance currency.',
     )
     const balanceRaw = getRawAmount(balance)
