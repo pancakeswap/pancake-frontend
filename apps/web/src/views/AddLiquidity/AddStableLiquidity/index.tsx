@@ -148,7 +148,9 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     },
   )
 
-  const needWrapped = currencyA?.isNative || currencyB?.isNative
+  // TODO: stable native helper
+  const needWrapped = false
+  // const needWrapped = currencyA?.isNative || currencyB?.isNative
 
   // check whether the user has approved tokens for addling LPs
   const [approvalA, approveACallback] = useApproveCallback(
