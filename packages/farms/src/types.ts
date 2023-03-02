@@ -119,14 +119,8 @@ export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
 }
 
-// Philip TODO: Define unstakedPositions and stakedPositions type
-export interface SerializedFarmV3 extends SerializedFarmPublicData {
-  unstakedPositions?: Record<string, string>
-  stakedPositions?: Record<string, string>
-}
-
 export interface SerializedFarmsV3State {
-  data: SerializedFarmV3[]
+  data: SerializedFarmPublicData[]
   chainId?: number
   userDataLoaded: boolean
   loadingKeys: Record<string, boolean>

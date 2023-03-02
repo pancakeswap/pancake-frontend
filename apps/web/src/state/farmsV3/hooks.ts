@@ -8,6 +8,8 @@ import useSWRImmutable from 'swr/immutable'
 import _sortedUniqBy from 'lodash/sortedUniqBy'
 import _partition from 'lodash/partition'
 import _toLower from 'lodash/toLower'
+import { PositionDetails } from 'hooks/v3/types'
+import { SerializedFarmPublicData } from '@pancakeswap/farms'
 import { getStakedPositionsByUser } from './fetchMasterChefV3Subgraph'
 import { farmSelector } from './selectors'
 
@@ -19,14 +21,8 @@ export const useFarmsV3 = () => {
 export const usePositionsByUser = () => {
   const { account } = useActiveWeb3React()
 
-  const { data: stakedTokenIds } = useSWRImmutable(
-    account ? ['getStakedPositionsByUser', account] : null,
-    () => getStakedPositionsByUser(account),
-    {
-      dedupingInterval: 1000 * 15,
-      refreshInterval: 1000 * 15,
-      keepPreviousData: true,
-    },
+  const { data: stakedTokenIds } = useSWRImmutable(account ? ['getStakedPositionsByUser', account] : null, () =>
+    getStakedPositionsByUser(account),
   )
 
   const stakedIds = useMemo(
@@ -49,7 +45,12 @@ export const usePositionsByUser = () => {
   }, [positions, tokenIds])
 }
 
-export function useFarmsV3WithPositions() {
+export interface SerializedFarmV3 extends SerializedFarmPublicData {
+  unstakedPositions: PositionDetails[]
+  stakedPositions: PositionDetails[]
+}
+
+export function useFarmsV3WithPositions(): SerializedFarmV3[] {
   const { data: farmsV3 } = useFarmsV3()
   const [unstakedPositions, stakedPositions] = usePositionsByUser()
 

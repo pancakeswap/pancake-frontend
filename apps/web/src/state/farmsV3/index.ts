@@ -14,7 +14,6 @@ import { FARM_API } from 'config/constants/endpoints'
 
 export const farmV3Fetcher = createFarmFetcherV3(multicallv2)
 
-// Philip TODO: Replace FarmsState
 const initialState: SerializedFarmsV3State = {
   data: [],
   chainId: null,
