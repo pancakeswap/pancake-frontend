@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect, useCallback, Dispatch, SetStateAction } from 'react'
+import { useTranslation } from '@pancakeswap/localization'
 import { createChart, IChartApi } from 'lightweight-charts'
 import { format } from 'date-fns'
 import { useTheme } from '@pancakeswap/hooks'
@@ -14,6 +15,9 @@ export type LineChartProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
   const { theme } = useTheme()
   const chartRef = useRef<HTMLDivElement>(null)
   const [chartCreated, setChart] = useState<IChartApi | undefined>()
@@ -131,7 +135,7 @@ const CandleChart = ({ data, setValue, setLabel, ...rest }: LineChartProps) => {
         } else if (series && param) {
           const timestamp = param.time as number
           const now = new Date(timestamp * 1000)
-          const time = now.toLocaleString(undefined, {
+          const time = now.toLocaleString(locale, {
             year: 'numeric',
             month: '2-digit',
             day: '2-digit',

@@ -32,9 +32,9 @@ const useUserDataInVaultPresenter: UserDataInVaultPresenterFn = ({ lockEndTime, 
   try {
     const _lockEndDate = new Date(lockEndTimeSeconds)
     lockEndDate = _lockEndDate.toLocaleString(locale, {
-      month: 'short',
-      day: 'numeric',
       year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,
@@ -42,9 +42,9 @@ const useUserDataInVaultPresenter: UserDataInVaultPresenterFn = ({ lockEndTime, 
 
     const _burnStartTime = new Date(lockEndTimeSeconds + 7 * 24 * 60 * 60 * 1000)
     burnStartTime = _burnStartTime.toLocaleString(locale, {
-      month: 'short',
-      day: 'numeric',
       year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
       hour12: false,

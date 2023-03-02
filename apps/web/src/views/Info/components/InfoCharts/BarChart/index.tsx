@@ -83,8 +83,8 @@ const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
             setHoverDate(
               props.payload.time.toLocaleString(locale, {
                 year: 'numeric',
-                day: 'numeric',
-                month: 'short',
+                month: '2-digit',
+                day: '2-digit',
               }),
             )
             return null

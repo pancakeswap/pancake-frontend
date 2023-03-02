@@ -44,7 +44,7 @@ const Overview: React.FC<React.PropsWithChildren> = () => {
   const transactions = useProtocolTransactionsSWR()
 
   const currentDate = useMemo(
-    () => new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' }),
+    () => new Date().toLocaleString(locale, { year: 'numeric', month: '2-digit', day: '2-digit' }),
     [locale],
   )
 

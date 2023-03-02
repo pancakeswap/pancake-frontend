@@ -135,10 +135,11 @@ const HoverData = ({ rounds }: { rounds: { [key: string]: NodeRound } }) => {
           <Text color="textSubtle" lineHeight={1.1}>
             {new Date(hoverData.startedAt * 1000).toLocaleString(locale, {
               year: 'numeric',
-              day: 'numeric',
-              month: 'short',
+              month: '2-digit',
+              day: '2-digit',
               hour: '2-digit',
               minute: '2-digit',
+              hour12: false,
             })}
           </Text>
           {rounds[hoverData.roundId] && (

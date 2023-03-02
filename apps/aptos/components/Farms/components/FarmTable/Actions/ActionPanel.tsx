@@ -143,9 +143,9 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
               <Text>{t('Auction Hosting Ends')}</Text>
               <Text paddingLeft="4px">
                 {new Date(farm.auctionHostingEndDate).toLocaleString(locale, {
-                  month: 'short',
-                  day: 'numeric',
                   year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
                 })}
               </Text>
             </ValueWrapper>

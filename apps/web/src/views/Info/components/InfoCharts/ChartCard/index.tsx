@@ -40,7 +40,7 @@ const ChartCard: React.FC<React.PropsWithChildren<ChartCardProps>> = ({
     currentLanguage: { locale },
   } = useTranslation()
 
-  const currentDate = new Date().toLocaleString(locale, { month: 'short', year: 'numeric', day: 'numeric' })
+  const currentDate = new Date().toLocaleString(locale, { year: 'numeric', month: '2-digit', day: '2-digit' })
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {

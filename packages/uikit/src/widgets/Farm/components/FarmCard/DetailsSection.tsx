@@ -48,9 +48,9 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
           <Text>{t("Auction Hosting Ends")}:</Text>
           <Text>
             {new Date(auctionHostingEndDate).toLocaleString(locale, {
-              month: "short",
-              day: "numeric",
               year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
             })}
           </Text>
         </Flex>

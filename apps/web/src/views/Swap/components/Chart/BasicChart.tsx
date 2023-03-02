@@ -35,8 +35,11 @@ const BasicChart = ({
   const { changePercentage, changeValue } = getTimeWindowChange(pairPrices)
   const isChangePositive = changeValue >= 0
   const chartHeight = isChartExpanded ? 'calc(100vh - 220px)' : '320px'
-  const { t } = useTranslation()
-  const currentDate = new Date().toLocaleString(undefined, {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+  const currentDate = new Date().toLocaleString(locale, {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

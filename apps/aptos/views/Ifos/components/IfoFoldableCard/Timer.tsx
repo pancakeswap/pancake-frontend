@@ -37,12 +37,12 @@ const TimeTooltipComponent: React.FC<React.PropsWithChildren<TimeTooltipComponen
       <Text bold>{t(label)}:</Text>
       <Text>
         {new Date(time * 1000).toLocaleString(locale, {
-          month: 'short',
-          day: 'numeric',
           year: 'numeric',
-          hour: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
           minute: '2-digit',
-          hour12: true,
+          hour12: false,
         })}
       </Text>
     </>

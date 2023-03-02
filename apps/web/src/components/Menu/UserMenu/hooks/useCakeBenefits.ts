@@ -57,12 +57,12 @@ const useCakeBenefits = () => {
     const lockedCake = [VaultPosition.None, VaultPosition.Flexible].includes(lockPosition)
       ? '0.00'
       : convertSharesToCake(
-          userSharesAsBignumber,
-          sharePriceAsBigNumber,
-          undefined,
-          undefined,
-          currentOverdueFeeAsBigNumber.plus(currentPerformanceFeeAsBigNumber).plus(userBoostedSharesAsBignumber),
-        ).cakeAsNumberBalance.toLocaleString('en', { maximumFractionDigits: 3 })
+        userSharesAsBignumber,
+        sharePriceAsBigNumber,
+        undefined,
+        undefined,
+        currentOverdueFeeAsBigNumber.plus(currentPerformanceFeeAsBigNumber).plus(userBoostedSharesAsBignumber),
+      ).cakeAsNumberBalance.toLocaleString('en', { maximumFractionDigits: 3 })
 
     let iCake = ''
     let vCake = { vaultScore: '0', totalScore: '0' }
@@ -92,9 +92,9 @@ const useCakeBenefits = () => {
       lockedCake,
       lockPosition,
       lockedEndTime: new Date(parseInt(userContractResponse.lockEndTime.toString()) * 1000).toLocaleString(locale, {
-        month: 'short',
         year: 'numeric',
-        day: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
       }),
       iCake,
       vCake,

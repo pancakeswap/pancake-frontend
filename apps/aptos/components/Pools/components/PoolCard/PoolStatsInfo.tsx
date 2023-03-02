@@ -33,12 +33,12 @@ const EndTimeTooltipComponent: React.FC<React.PropsWithChildren<EndTimeTooltipCo
       <Text bold>{t('End Time')}:</Text>
       <Text>
         {new Date(endTime * 1000).toLocaleString(locale, {
-          month: 'short',
-          day: 'numeric',
           year: 'numeric',
-          hour: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
           minute: '2-digit',
-          hour12: true,
+          hour12: false,
         })}
       </Text>
     </>

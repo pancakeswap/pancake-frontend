@@ -3,14 +3,17 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Flex, Text, HelpIcon, useTooltip } from '@pancakeswap/uikit'
 
 const ExpiredDate = () => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <Text>{t('After your order is expired it might never be executed. Please cancel your order once expired')}</Text>,
     { placement: 'bottom' },
   )
 
-  const expiryDate = new Date(Date.now() + constants.MAX_LIFETIME_IN_SECONDS * 1000).toLocaleString([], {
+  const expiryDate = new Date(Date.now() + constants.MAX_LIFETIME_IN_SECONDS * 1000).toLocaleString(locale, {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit',

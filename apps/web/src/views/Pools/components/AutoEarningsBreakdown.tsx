@@ -41,9 +41,9 @@ const AutoEarningsBreakdown: React.FC<React.PropsWithChildren<AutoEarningsBreakd
       <Text>{t('Earned since your last action')}:</Text>
       <Text bold>
         {new Date(lastActionInMs).toLocaleString(locale, {
-          month: 'short',
-          day: 'numeric',
           year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
           hour: '2-digit',
           minute: '2-digit',
           hour12: false,
