@@ -28,12 +28,12 @@ export function getSwapOutput({
   const balances: JSBI[] = []
   for (const [index, b] of balanceAmounts.entries()) {
     balances.push(getRawAmount(b))
-    if (b.currency.equals(amount.currency)) {
+    if (b.currency.wrapped.equals(amount.currency.wrapped)) {
       i = index
       // eslint-disable-next-line no-continue
       continue
     }
-    if (b.currency.equals(outputCurrency)) {
+    if (b.currency.wrapped.equals(outputCurrency.wrapped)) {
       j = index
       // eslint-disable-next-line no-continue
       continue
