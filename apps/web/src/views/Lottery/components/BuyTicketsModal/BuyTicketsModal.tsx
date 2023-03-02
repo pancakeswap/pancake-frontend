@@ -267,7 +267,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
     })
 
   const getErrorMessage = () => {
-    if (userNotEnoughCadinu) return t('Insufficient CAKE balance')
+    if (userNotEnoughCadinu) return t('Insufficient CADINU balance')
     return t('The maximum number of tickets you can buy in one transaction is %maxTickets%', {
       maxTickets: maxNumberTicketsPerBuyOrClaim.toString(),
     })
@@ -452,7 +452,7 @@ const BuyTicketsModal: React.FC<React.PropsWithChildren<BuyTicketsModalProps>> =
 
         <Text mt="24px" fontSize="12px" color="textSubtle">
           {t(
-            '"Buy Instantly" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $5 at that time. Purchases are final.',
+            '"Buy Instantly" chooses random numbers, with no duplicates among your tickets. Prices are set before each round starts, equal to $3 at that time. Purchases are final.',
           )}
         </Text>
       </Flex>
