@@ -1,5 +1,4 @@
 import { useEffect, Fragment, useState } from "react";
-import { format } from "date-fns";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { Flex } from "../../components/Box";
@@ -27,7 +26,10 @@ const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperPro
   duration,
   getNow,
 }) => {
-  const { t } = useTranslation();
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation();
   const [steps, setSteps] = useState<{ key: string; text: string; timeStamp: number }[]>([]);
   const [activeStepIndex, setActiveStepIndex] = useState(0);
 
@@ -64,7 +66,17 @@ const IfoProgressStepper: React.FC<React.PropsWithChildren<IfoProgressStepperPro
     <Flex>
       {steps.map((step, index: number) => {
         const isPastSpacer = index < activeStepIndex;
-        const dateText = step.timeStamp === 0 ? t("Now") : format(step.timeStamp, "MM/dd/yyyy HH:mm");
+        const dateText =
+          step.timeStamp === 0
+            ? t("Now")
+            : new Date(step.timeStamp).toLocaleString(locale, {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              });
 
         return (
           <Fragment key={step.key}>

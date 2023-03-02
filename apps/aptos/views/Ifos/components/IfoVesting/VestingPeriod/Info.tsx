@@ -31,7 +31,10 @@ interface InfoProps {
 }
 
 const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const getNow = useLedgerTimestamp()
   const { token } = data.ifo
   const { vestingStartTime } = data.userVestingData
@@ -108,7 +111,14 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {cliff === 0 ? t('Vesting Start') : t('Cliff')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeCliff, 'MM/dd/yyyy HH:mm')}
+          {new Date(timeCliff).toLocaleString(locale, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          })}
         </Text>
       </Flex>
       <Flex justifyContent="space-between">
@@ -116,7 +126,14 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
           {t('Vesting end')}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {format(timeVestingEnd, 'MM/dd/yyyy HH:mm')}
+          {new Date(timeVestingEnd).toLocaleString(locale, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          })}
         </Text>
       </Flex>
       <WhiteCard>
