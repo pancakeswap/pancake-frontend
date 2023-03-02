@@ -68,6 +68,17 @@ const Lottery = () => {
                 {t('Get your tickets now!')}
               </Heading>
             )}
+             <Flex alignItems="center" justifyContent="center" mb="48px">
+              {nextEventTime && (postCountdownText || preCountdownText) ? (
+                <Countdown
+                  nextEventTime={nextEventTime}
+                  postCountdownText={postCountdownText}
+                  preCountdownText={preCountdownText}
+                />
+              ) : (
+                <Skeleton height="41px" width="250px" />
+              )}
+            </Flex>
 
             <NextDrawCard />
           </Flex>
