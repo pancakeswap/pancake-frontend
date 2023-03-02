@@ -118,7 +118,7 @@ const PreviousRoundCardBody: React.FC<React.PropsWithChildren<PreviousRoundCardB
             <Flex flexDirection={['column', 'column', 'row']} alignSelf={['center', 'center', 'flex-start']}>
               <Text fontSize="14px">{t('Pottery deposited on:')}</Text>
               <Text bold ml="4px" fontSize="14px">
-                {getDrawnDate(locale, lockDate)}
+                {getDrawnDate(lockDate)}
               </Text>
             </Flex>
           </Flex>

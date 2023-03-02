@@ -35,12 +35,9 @@ const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps
   const amount = getBalanceNumber(amountAsBn)
   const amountInBusd = new BigNumber(amount).times(cakePriceBusd).toNumber()
 
-  const lockDate = useMemo(() => getDrawnDate(locale, lockedDate?.toString()), [lockedDate, locale])
+  const lockDate = useMemo(() => getDrawnDate(lockedDate?.toString()), [lockedDate])
   const withdrawableDate = addDays(new Date(parseInt(lockedDate, 10) * 1000), 70).getTime()
-  const withdrawableDateStr = useMemo(
-    () => getDrawnDate(locale, (withdrawableDate / 1000).toString()),
-    [withdrawableDate, locale],
-  )
+  const withdrawableDateStr = useMemo(() => getDrawnDate((withdrawableDate / 1000).toString()), [withdrawableDate])
 
   return (
     <Box>

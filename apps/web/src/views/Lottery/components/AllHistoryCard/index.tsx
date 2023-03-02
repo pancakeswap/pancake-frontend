@@ -112,7 +112,7 @@ const AllHistoryCard = () => {
           {selectedRoundId ? (
             selectedLotteryNodeData?.endTime ? (
               <Text fontSize="14px">
-                {t('Drawn')} {getDrawnDate(locale, selectedLotteryNodeData.endTime)}
+                {t('Drawn')} {getDrawnDate(selectedLotteryNodeData.endTime)}
               </Text>
             ) : (
               <Skeleton width="185px" height="21px" />

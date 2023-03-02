@@ -13,7 +13,7 @@ const ExpiredDate = () => {
   const expiryDate = new Date(Date.now() + constants.MAX_LIFETIME_IN_SECONDS * 1000).toLocaleString([], {
     year: 'numeric',
     month: '2-digit',
-    day: 'numeric',
+    day: '2-digit',
   })
 
   return (

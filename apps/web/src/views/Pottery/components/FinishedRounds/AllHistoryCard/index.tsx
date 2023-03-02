@@ -105,7 +105,7 @@ const AllHistoryCard = () => {
             (finishedRoundInfo.isFetched ? (
               finishedRoundInfo.drawDate && (
                 <Text fontSize="14px">
-                  {t('Drawn')} {getDrawnDate(locale, finishedRoundInfo.drawDate)}
+                  {t('Drawn')} {getDrawnDate(finishedRoundInfo.drawDate)}
                 </Text>
               )
             ) : (
