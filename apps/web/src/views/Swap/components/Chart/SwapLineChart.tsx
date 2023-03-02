@@ -1,5 +1,4 @@
 import { useRef, useState, useEffect, Dispatch, SetStateAction, useMemo } from 'react'
-import { useTranslation } from '@pancakeswap/localization'
 import { createChart, IChartApi, UTCTimestamp } from 'lightweight-charts'
 import { format } from 'date-fns'
 import { LineChartLoader } from 'components/ChartLoaders'
@@ -46,9 +45,6 @@ const SwapLineChart = ({
       }) || []
     )
   }, [data])
-  const {
-    currentLanguage: { locale },
-  } = useTranslation()
   const chartRef = useRef<HTMLDivElement>(null)
   const colors = useMemo(() => {
     return getChartColors({ isChangePositive })
@@ -121,14 +117,14 @@ const SwapLineChart = ({
       if (newSeries && param && param.seriesPrices.size) {
         const timestamp = param.time as number
         const now = new Date(timestamp * 1000)
-        const time = `${now.toLocaleString(locale, {
+        const time = now.toLocaleString(undefined, {
           year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
           minute: '2-digit',
-          timeZone: 'UTC',
-        })} (UTC)`
+          hour12: false,
+        })
         const parsed = param.seriesPrices.get(newSeries) as number | undefined
         if (setHoverValue) setHoverValue(parsed)
         if (setHoverDate) setHoverDate(time)
@@ -144,7 +140,7 @@ const SwapLineChart = ({
       window.removeEventListener('resize', handleResize)
       chart.remove()
     }
-  }, [transformedData, isDark, colors, isChartExpanded, locale, timeWindow, setHoverDate, setHoverValue])
+  }, [transformedData, isDark, colors, isChartExpanded, timeWindow, setHoverDate, setHoverValue])
 
   return (
     <>

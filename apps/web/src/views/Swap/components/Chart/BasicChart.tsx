@@ -35,16 +35,14 @@ const BasicChart = ({
   const { changePercentage, changeValue } = getTimeWindowChange(pairPrices)
   const isChangePositive = changeValue >= 0
   const chartHeight = isChartExpanded ? 'calc(100vh - 220px)' : '320px'
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
-  const currentDate = new Date().toLocaleString(locale, {
+  const { t } = useTranslation()
+  const currentDate = new Date().toLocaleString(undefined, {
     year: 'numeric',
-    month: 'short',
+    month: '2-digit',
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
+    hour12: false,
   })
 
   // Sometimes we might receive array full of zeros for obscure tokens while trying to derive data
