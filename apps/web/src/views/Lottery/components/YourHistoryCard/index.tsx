@@ -51,10 +51,7 @@ const YourHistoryCard: React.FC<React.PropsWithChildren<YourHistoryCardProps>> =
   handleShowMoreClick,
   numUserRoundsRequested,
 }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const { address: account } = useAccount()
   const [shouldShowRoundDetail, setShouldShowRoundDetail] = useState(false)
   const [selectedLotteryNodeData, setSelectedLotteryNodeData] = useState<LotteryRound>(null)

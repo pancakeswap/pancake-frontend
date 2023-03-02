@@ -51,10 +51,10 @@ const FinishedRoundRow: React.FC<React.PropsWithChildren<FinishedRoundRowProps>>
         flexDirection={['column', null, 'row']}
       >
         <Text fontSize="12px" mr={['0', null, '6px']}>
-          {endTimeAsDate.toLocaleString([], dateOptions)}
+          {endTimeAsDate.toLocaleString(locale, dateOptions)}
         </Text>
         <Text fontSize="12px" color="textSubtle">
-          {endTimeAsDate.toLocaleTimeString(undefined, timeOptions)}
+          {endTimeAsDate.toLocaleTimeString(locale, timeOptions)}
         </Text>
       </Flex>
       <Flex mx="6px" alignItems="center" justifyContent="space-between">

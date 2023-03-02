@@ -15,10 +15,7 @@ interface AvailableWithdrawProps {
 }
 
 const AvailableWithdraw: React.FC<React.PropsWithChildren<AvailableWithdrawProps>> = ({ withdrawData }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const cakePriceBusd = usePriceCakeBusd()
   const { previewRedeem, lockedDate, shares, status, potteryVaultAddress, totalSupply, totalLockCake, balanceOf } =
     withdrawData

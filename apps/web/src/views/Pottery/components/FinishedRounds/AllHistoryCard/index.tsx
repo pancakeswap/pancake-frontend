@@ -33,10 +33,7 @@ const StyledCardHeader = styled(CardHeader)`
 `
 
 const AllHistoryCard = () => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const dispatch = useAppDispatch()
   const { publicData, finishedRoundInfo } = usePotteryData()
   const currentPotteryId = publicData.latestRoundId
