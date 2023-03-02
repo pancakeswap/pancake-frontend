@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, ERC20Token, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Pair, Percent, Price, Trade, TradeType, JSBI } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, StableSwapFeePercent } from '../types'
@@ -118,4 +118,23 @@ export function getFeePercent(
     fee: new Percent(inputFee.quotient, inputAmount.quotient),
     adminFee: new Percent(inputAdminFee.quotient, inputAmount.quotient),
   }
+}
+
+const PRECISION = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+
+export const getRawAmount = (amount: CurrencyAmount<Currency>) => {
+  return JSBI.divide(
+    JSBI.multiply(amount.quotient, PRECISION),
+    JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(amount.currency.decimals)),
+  )
+}
+
+export const parseAmount = (currency: Currency, rawAmount: JSBI) => {
+  return CurrencyAmount.fromRawAmount(
+    currency,
+    JSBI.divide(
+      JSBI.multiply(rawAmount, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(currency.decimals))),
+      PRECISION,
+    ),
+  )
 }
