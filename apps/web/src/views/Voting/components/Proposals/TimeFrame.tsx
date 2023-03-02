@@ -1,5 +1,5 @@
 import { Text } from '@pancakeswap/uikit'
-import { toDate, format } from 'date-fns'
+import { toDate } from 'date-fns'
 import { useTranslation } from '@pancakeswap/localization'
 import { ProposalState } from 'state/types'
 
@@ -9,16 +9,24 @@ interface TimeFrameProps {
   proposalState: ProposalState
 }
 
-const getFormattedDate = (timestamp: number) => {
+const GetFormattedDate = (timestamp: number) => {
+  const {
+    currentLanguage: { locale },
+  } = useTranslation()
+
   const date = toDate(timestamp * 1000)
-  return format(date, 'MMM do, yyyy HH:mm')
+  return date.toLocaleString(locale, {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  })
 }
 
 const TimeFrame: React.FC<React.PropsWithChildren<TimeFrameProps>> = ({ startDate, endDate, proposalState }) => {
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
   const textProps = {
     fontSize: '16px',
     color: 'textSubtle',
@@ -29,14 +37,7 @@ const TimeFrame: React.FC<React.PropsWithChildren<TimeFrameProps>> = ({ startDat
     return (
       <Text {...textProps}>
         {t('Ended %date%', {
-          date: new Date(endDate).toLocaleString(locale, {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          }),
+          date: GetFormattedDate(endDate),
         })}
       </Text>
     )
@@ -46,20 +47,19 @@ const TimeFrame: React.FC<React.PropsWithChildren<TimeFrameProps>> = ({ startDat
     return (
       <Text {...textProps}>
         {t('Starts %date%', {
-          date: new Date(startDate).toLocaleString(locale, {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-          }),
+          date: GetFormattedDate(startDate),
         })}
       </Text>
     )
   }
 
-  return <Text {...textProps}>{t('Ends %date%', { date: getFormattedDate(endDate) })}</Text>
+  return (
+    <Text {...textProps}>
+      {t('Ends %date%', {
+        date: GetFormattedDate(endDate),
+      })}
+    </Text>
+  )
 }
 
 export default TimeFrame
