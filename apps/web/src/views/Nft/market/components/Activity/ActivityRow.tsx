@@ -43,10 +43,11 @@ const ActivityRow: React.FC<React.PropsWithChildren<ActivityRowProps>> = ({
   const timestampAsMs = parseFloat(activity.timestamp) * 1000
   const localeTimestamp = new Date(timestampAsMs).toLocaleString(undefined, {
     year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
   })
   const [onPresentMobileModal] = useModal(
     <MobileModal
