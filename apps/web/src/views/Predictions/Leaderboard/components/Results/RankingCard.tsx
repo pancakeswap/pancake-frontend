@@ -12,6 +12,7 @@ import {
   SubMenu,
   SubMenuItem,
   useModal,
+  BscScanIcon,
 } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import { useProfileForAddress } from 'state/profile/hooks'
@@ -93,6 +94,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
             <SubMenuItem as={Link} href={getBlockExploreLink(user.id, 'address')} bold={false} color="text" external>
               {t('View on BscScan')}
+              <BscScanIcon ml="4px" width="20px" color="textSubtle" />
             </SubMenuItem>
           </SubMenu>
         </Flex>
