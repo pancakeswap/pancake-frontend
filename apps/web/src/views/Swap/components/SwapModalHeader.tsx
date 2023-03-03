@@ -127,7 +127,7 @@ export default function SwapModalHeader({
           </Text>
           <Text bold color="primary" ml="auto" textAlign="end">
             {typeof allowedSlippage === 'number'
-              ? `${basisPointsToPercent(allowedSlippage).toFixed(1)}%`
+              ? `${basisPointsToPercent(allowedSlippage).toFixed(2)}%`
               : allowedSlippage}
           </Text>
         </RowFixed>
