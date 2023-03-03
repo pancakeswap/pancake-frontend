@@ -8,9 +8,10 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
+import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { PairState } from 'hooks/usePairs'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '@ethersproject/bignumber'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { Field } from '../../../state/mint/actions'
@@ -106,6 +107,8 @@ export default function AddStableLiquidity({
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(true)
 
+  const nativeHelperContract = useStableSwapNativeHelperContract()
+
   // modal and loading
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
     attemptingTxn: boolean
@@ -160,14 +163,24 @@ export default function AddStableLiquidity({
   const { stableSwapContract, stableSwapConfig } = useContext(StableConfigContext)
   const stableAPR = useStableSwapAPR(stableSwapContract?.address)
 
+  const needWrapped = currencyA?.isNative || currencyB?.isNative
+
   // check whether the user has approved tokens for addling LPs
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], stableSwapContract?.address)
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], stableSwapContract?.address)
+  const [approvalA, approveACallback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_A],
+    needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
+  )
+  const [approvalB, approveBCallback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_B],
+    needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
+  )
 
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
-    if (!chainId || !account || !stableSwapContract) return
+    const contract = needWrapped ? nativeHelperContract : stableSwapContract
+
+    if (!chainId || !account || !contract) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
 
@@ -180,24 +193,28 @@ export default function AddStableLiquidity({
 
     const lpMintedSlippage = calculateSlippageAmount(liquidityMinted, noLiquidity ? 0 : allowedSlippage)[0]
 
-    const estimate = stableSwapContract.estimateGas.add_liquidity
-    const method = stableSwapContract.add_liquidity
+    const estimate = contract.estimateGas.add_liquidity
+    const method = contract.add_liquidity
 
     const quotientA = parsedAmountA?.quotient?.toString() || '0'
     const quotientB = parsedAmountB?.quotient?.toString() || '0'
 
     // Ensure the token order [token0, token1]
     const tokenAmounts =
-      stableSwapConfig?.token0?.address === parsedAmountA?.currency?.wrapped?.address
+      stableSwapConfig?.token0?.wrapped.address === parsedAmountA?.currency?.wrapped?.address
         ? [quotientA, quotientB]
         : [quotientB, quotientA]
 
-    const args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
+    let args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
 
-    const value = null
+    let value: BigNumber | null = null
+    if (needWrapped) {
+      args = [stableSwapContract.address, tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
+      value = BigNumber.from((currencyB?.isNative ? parsedAmountB : parsedAmountA).quotient.toString())
+    }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    await estimate(...args, value ? { value } : {})
+    await estimate(...(args as [string, [string, string], string]), value ? { value } : {})
       .then((estimatedGasLimit) =>
         method(...args, {
           ...(value ? { value } : {}),

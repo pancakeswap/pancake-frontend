@@ -25,5 +25,7 @@ export const pools: StableSwapPool[] = [
     ), // coins[1]
     stableSwapAddress: '0xD38F21E8C575F85Ef3dFeeCfb177666aA62DEcd2',
     infoStableSwapAddress: '0x0A548d59D04096Bc01206D58C3D63c478e1e06dB',
+    stableLpFee: 0.0004,
+    stableLpFeeRateOfTotalFee: 0.5,
   },
 ]

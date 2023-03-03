@@ -14,8 +14,8 @@ export default function useStableSwapCallArgs(trade): SwapCall[] {
     if (!trade) return []
     const inputAmountAddress = trade?.inputAmount?.currency?.address
     const outputAmountAddress = trade?.outputAmount?.currency?.address
-    const token0Address = stableConfig?.stableSwapConfig?.token0?.address
-    const token1Address = stableConfig?.stableSwapConfig?.token1?.address
+    const token0Address = stableConfig?.stableSwapConfig?.token0?.wrapped.address
+    const token1Address = stableConfig?.stableSwapConfig?.token1?.wrapped.address
 
     const pct = basisPointsToPercent(allowedSlippage)
 
@@ -45,8 +45,8 @@ export default function useStableSwapCallArgs(trade): SwapCall[] {
   }, [
     swapContract,
     trade,
-    stableConfig?.stableSwapConfig?.token0?.address,
-    stableConfig?.stableSwapConfig?.token1?.address,
+    stableConfig?.stableSwapConfig?.token0?.wrapped.address,
+    stableConfig?.stableSwapConfig?.token1?.wrapped.address,
     allowedSlippage,
   ])
 

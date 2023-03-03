@@ -1,17 +1,18 @@
-import { useEffect } from 'react'
 import { useCurrency } from 'hooks/Tokens'
-import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { useEffect } from 'react'
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
+import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
+import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import StableSwapForm from './components/StableSwapForm'
-import useStableConfig, { StableConfigContext, useStableFarms } from './hooks/useStableConfig'
+import useStableConfig, { StableConfigContext } from './hooks/useStableConfig'
 
 const StableSwapFormContainer = () => {
-  const stableFarms = useStableFarms()
+  const stablePairs = useStableSwapPairs()
 
   const { onCurrencySelection } = useSwapActionHandlers()
 
-  const stableTokenPair = stableFarms?.length ? stableFarms[0] : null
+  const stableTokenPair = stablePairs?.length ? stablePairs[0] : null
 
   useEffect(() => {
     if (stableTokenPair) {

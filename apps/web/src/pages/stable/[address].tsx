@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 import styled from 'styled-components'
-import { useStableFarms } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 
 import { CurrencyAmount } from '@pancakeswap/sdk'
@@ -32,7 +32,7 @@ export default function StablePoolPage() {
 
   const { address: poolAddress } = router.query
 
-  const lpTokens = useStableFarms()
+  const lpTokens = useStableSwapPairs()
 
   const selectedLp = lpTokens.find(({ liquidityToken }) => liquidityToken.address === poolAddress)
 
@@ -61,8 +61,8 @@ export default function StablePoolPage() {
 
   const [token0Deposited, token1Deposited] = useGetRemovedTokenAmountsNoContext({
     lpAmount: userPoolBalance?.quotient?.toString(),
-    token0: selectedLp?.token0,
-    token1: selectedLp?.token1,
+    token0: selectedLp?.token0.wrapped,
+    token1: selectedLp?.token1.wrapped,
     stableSwapInfoContract,
     stableSwapAddress: selectedLp?.stableSwapAddress,
   })
@@ -89,11 +89,13 @@ export default function StablePoolPage() {
           noConfig
           buttons={
             <>
-              <NextLinkFromReactRouter to={`/add/${stableLp?.token0?.address}/${stableLp?.token1?.address}?stable=1`}>
+              <NextLinkFromReactRouter
+                to={`/add/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
+              >
                 <Button width="100%">Add</Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter
-                to={`/v2/remove/${stableLp?.token0?.address}/${stableLp?.token1?.address}?stable=1`}
+                to={`/v2/remove/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
               >
                 <Button ml="16px" variant="secondary" width="100%">
                   Remove

@@ -44,6 +44,7 @@ import {
   getCrossFarmingSenderAddress,
   getCrossFarmingReceiverAddress,
   getMMLinkedPoolAddress,
+  getStableSwapNativeHelperAddress,
   getMasterChefV3Address,
 } from 'utils/addressHelpers'
 
@@ -100,6 +101,7 @@ import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
 import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
 import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
 import mmLinkedPoolAbi from 'config/abi/mmLinkedPool.json'
+import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
 import masterChefV3Abi from 'config/abi/masterChefV3.json'
 
 // Types
@@ -152,6 +154,7 @@ import type {
   CrossFarmingReceiver,
   CrossFarmingProxy,
   MmLinkedPool,
+  StableSwapNativeHelper,
   MasterChefV3,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
@@ -404,6 +407,15 @@ export const getCrossFarmingProxyContract = (
   chainId?: number,
 ) => {
   return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer }) as CrossFarmingProxy
+}
+
+export const getStableSwapNativeHelperContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: stableSwapNativeHelperAbi,
+    address: getStableSwapNativeHelperAddress(chainId),
+    chainId,
+    signer,
+  }) as StableSwapNativeHelper
 }
 
 export const getMasterChefV3Contract = (signer?: Signer | Provider, chainId?: number) => {

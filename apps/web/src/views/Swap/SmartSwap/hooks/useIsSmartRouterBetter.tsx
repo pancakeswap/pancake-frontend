@@ -10,8 +10,12 @@ interface Options {
 }
 
 export const useIsSmartRouterBetter = ({ trade, v2Trade }: Options) => {
-  if (!trade || !v2Trade) {
+  if (!trade) {
     return false
+  }
+
+  if (!v2Trade && trade) {
+    return true
   }
 
   // trade might be outdated when currencies changed

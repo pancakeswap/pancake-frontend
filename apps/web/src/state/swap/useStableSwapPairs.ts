@@ -5,5 +5,5 @@ import { useMemo } from 'react'
 export function useStableSwapPairs() {
   const { chainId } = useActiveChainId()
 
-  return useMemo(() => LegacyRouter.stableSwapPairsByChainId[chainId], [chainId])
+  return useMemo(() => LegacyRouter.stableSwapPairsByChainId[chainId] || [], [chainId])
 }
