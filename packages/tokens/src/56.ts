@@ -2473,4 +2473,12 @@ export const bscTokens = {
     'Carbon',
     'https://carbon.website/',
   ),
+  bnbx: new ERC20Token(
+    ChainId.BSC,
+    '0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275',
+    18,
+    'BNBx',
+    'Liquid Staking BNB',
+    'https://www.staderlabs.com/bnb/liquid-staking/bnbx/',
+  ),
 }

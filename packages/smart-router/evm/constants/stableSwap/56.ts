@@ -63,4 +63,14 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.0002,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'BNBx-BNB LP',
+    lpAddress: '0x92357Ab9003CA881E08e32CDAE59B10B3161b05C',
+    token: bscTokens.bnbx,
+    quoteToken: bscTokens.wbnb,
+    stableSwapAddress: '0x9c138bE1D76ee4C5162E0fe9D4eEA5542a23D1bD',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]
