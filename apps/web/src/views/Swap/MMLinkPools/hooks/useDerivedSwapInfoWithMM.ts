@@ -1,9 +1,9 @@
 import { useDebounce } from '@pancakeswap/hooks'
 import { Currency } from '@pancakeswap/sdk'
+import { useUserSlippage, useExpertMode } from '@pancakeswap/utils/user'
 import { Field } from 'state/swap/actions'
 import { useMMTrade } from './useMMOrderBookTrade'
 import { useIsTradeWithMMBetter } from './useIsMMTradeBetter'
-import { useExpertModeManager, useUserSlippageTolerance } from '../../../../state/user/hooks'
 import { useGetRFQId, useGetRFQTrade } from './useGetRFQTrade'
 import { useMMDevMode } from '../components/MMAndAMMDealDisplay'
 import { MMTradeInfo, useMMTradeInfo } from './useMMTradeInfo'
@@ -25,9 +25,9 @@ export function useDerivedSwapInfoWithMM(
   mmOrderBookTrade: MMOrderBookTrade
   mmRFQTrade: MMRfqTrade
 } {
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
   const isMMDev = useMMDevMode()
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
   const { account, chainId } = useActiveWeb3React()
   const deBounceTypedValue = useDebounce(typedValue, 300)
   const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)

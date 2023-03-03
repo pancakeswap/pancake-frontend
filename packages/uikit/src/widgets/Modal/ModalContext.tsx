@@ -1,5 +1,6 @@
 import { AnimatePresence, domMax, LazyMotion, m } from "framer-motion";
 import React, { createContext, useRef, useState, useMemo, useCallback } from "react";
+import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
@@ -11,6 +12,7 @@ import {
   appearAnimation,
   disappearAnimation,
 } from "../../util/animationToolkit";
+import getPortalRoot from "../../util/getPortalRoot";
 import { ModalContainer } from "./styles";
 import { Handler } from "./types";
 
@@ -106,28 +108,34 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return { isOpen, nodeId, modalNode, setModalNode, onPresent: handlePresent, onDismiss: handleDismiss };
   }, [isOpen, nodeId, modalNode, setModalNode, handlePresent, handleDismiss]);
 
+  const portal = getPortalRoot();
+
   return (
     <Context.Provider value={providerValue}>
-      <LazyMotion features={domMax}>
-        <AnimatePresence>
-          {isOpen && (
-            <StyledModalWrapper
-              ref={animationRef}
-              onAnimationStart={() => animationHandler(animationRef.current)}
-              {...animationMap}
-              variants={animationVariants}
-              transition={{ duration: 0.3 }}
-            >
-              <Overlay onClick={handleOverlayDismiss} />
-              {React.isValidElement(modalNode) &&
-                React.cloneElement(modalNode, {
-                  // @ts-ignore
-                  onDismiss: handleDismiss,
-                })}
-            </StyledModalWrapper>
-          )}
-        </AnimatePresence>
-      </LazyMotion>
+      {portal &&
+        createPortal(
+          <LazyMotion features={domMax}>
+            <AnimatePresence>
+              {isOpen && (
+                <StyledModalWrapper
+                  ref={animationRef}
+                  onAnimationStart={() => animationHandler(animationRef.current)}
+                  {...animationMap}
+                  variants={animationVariants}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Overlay onClick={handleOverlayDismiss} />
+                  {React.isValidElement(modalNode) &&
+                    React.cloneElement(modalNode, {
+                      // @ts-ignore
+                      onDismiss: handleDismiss,
+                    })}
+                </StyledModalWrapper>
+              )}
+            </AnimatePresence>
+          </LazyMotion>,
+          portal
+        )}
       {children}
     </Context.Provider>
   );

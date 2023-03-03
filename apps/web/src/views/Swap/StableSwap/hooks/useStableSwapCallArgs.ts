@@ -1,6 +1,6 @@
 import { SwapCall } from 'hooks/useSwapCallArguments'
 import { useContext, useMemo } from 'react'
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { basisPointsToPercent } from 'utils/exchange'
 
 import { StableConfigContext } from './useStableConfig'
@@ -8,7 +8,7 @@ import { StableConfigContext } from './useStableConfig'
 export default function useStableSwapCallArgs(trade): SwapCall[] {
   const stableConfig = useContext(StableConfigContext)
   const swapContract = stableConfig?.stableSwapContract
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
 
   const swapCalls = useMemo(() => {
     if (!trade) return []

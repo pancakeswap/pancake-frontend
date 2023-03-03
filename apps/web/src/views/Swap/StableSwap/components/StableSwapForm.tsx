@@ -30,7 +30,7 @@ import { ApprovalState } from 'hooks/useApproveCallback'
 
 import { Field } from 'state/swap/actions'
 import { useSwapState } from 'state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage, useExpertMode } from '@pancakeswap/utils/user'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
@@ -73,7 +73,7 @@ const SwitchIconButton = styled(IconButton)`
 
 export default function StableSwapForm() {
   const { t } = useTranslation()
-  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
+  const { isLoading } = useRefreshBlockNumberID()
   const { address: account } = useAccount()
   const stablePairs = useStableSwapPairs()
   const stableTokens = useMemo(() => {
@@ -89,10 +89,10 @@ export default function StableSwapForm() {
   }, [stablePairs])
 
   // for expert mode
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
 
   // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
 
   // swap state & price data
   const {
@@ -207,14 +207,6 @@ export default function StableSwapForm() {
     [maxAmountInput, onUserInput],
   )
 
-  const hasAmount = Boolean(parsedAmount)
-
-  const onRefreshPrice = useCallback(() => {
-    if (hasAmount) {
-      refreshBlockNumber()
-    }
-  }, [hasAmount, refreshBlockNumber])
-
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
   return (
@@ -230,8 +222,6 @@ export default function StableSwapForm() {
           </Flex>
         }
         subtitle={t('Trade tokens in an instant')}
-        hasAmount={hasAmount}
-        onRefreshPrice={onRefreshPrice}
       />
       <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
         <AutoColumn gap="sm">

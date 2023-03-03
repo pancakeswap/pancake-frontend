@@ -49,8 +49,8 @@ import useSimulationAndSendTransaction from 'hooks/useSimulationAndSendTransacti
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Field, selectCurrency, switchCurrencies, typeInput, useDefaultsFromURLSearch, useSwapState } from 'state/swap'
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useUserSlippage } from 'state/user'
-import { useIsExpertMode } from 'state/user/expertMode'
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { useIsExpertMode } from '@pancakeswap/utils/user/expertMode'
 import useSWRImmutable from 'swr/immutable'
 import currencyId from 'utils/currencyId'
 import {

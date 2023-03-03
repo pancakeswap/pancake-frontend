@@ -44,6 +44,10 @@ export function useNetworkConnectorUpdater() {
           ...(uriHash && { hash: uriHash }),
         },
         undefined,
+        {
+          shallow: true,
+          scroll: false,
+        },
       )
     }
     return setPrevChainId()

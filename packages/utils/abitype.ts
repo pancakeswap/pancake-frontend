@@ -17,7 +17,15 @@ import {
   Narrow,
   ResolvedConfig,
 } from 'abitype'
-import { ethers } from 'ethers'
+import { ethers, BigNumber } from 'ethers'
+
+declare module 'abitype' {
+  export interface Config {
+    // TODO: Drop `BigNumber` once ethers supports `bigint` natively
+    BigIntType: BigNumber
+    IntType: number
+  }
+}
 
 /**
  * Count occurrences of {@link TType} in {@link TArray}
