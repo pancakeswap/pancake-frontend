@@ -258,6 +258,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
       <MMAndAMMDealDisplay
         independentField={independentField}
         isMMBetter={isMMBetter}
+        tradeWithStableSwap={tradeWithStableSwap}
         v2Trade={v2Trade}
         mmTrade={mmTradeInfo?.trade || mmOrderBookTrade?.trade}
         mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}

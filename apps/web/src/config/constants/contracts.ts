@@ -168,7 +168,8 @@ export default {
   },
   mmLinkedPool: {
     1: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
-    5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92', // play MM role by my self contract
+    5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92',
+    56: '0xfEACb05b373f1A08E68235bA7FC92636b92ced01',
   },
   // TODO: v3 swap update
   nftPositionManager: {
