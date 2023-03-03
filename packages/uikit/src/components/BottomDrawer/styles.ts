@@ -32,6 +32,9 @@ export const DrawerContainer = styled.div<{ isUnmounting: boolean }>`
   html[data-useragent*="TokenPocket_iOS"] & {
     padding-bottom: 45px;
   }
+  html[data-useragent*="SafepalWallet_iOS"] & {
+    padding-bottom: 45px;
+  }
   will-change: transform;
   z-index: 21;
   ${({ isUnmounting }) =>
