@@ -1,5 +1,6 @@
 import { goerliTestnetTokens } from '@pancakeswap/tokens'
 import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 
 export const farmsV3 = [
   {
@@ -9,6 +10,7 @@ export const farmsV3 = [
     feeAmount: 500,
     token: goerliTestnetTokens.mockB,
     quoteToken: goerliTestnetTokens.mockA,
+    fee: FeeAmount.LOW,
   },
 ] satisfies FarmConfigV3[]
 

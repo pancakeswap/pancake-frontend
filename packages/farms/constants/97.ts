@@ -1,4 +1,5 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 
 export const farmsV3 = [
@@ -8,7 +9,7 @@ export const farmsV3 = [
     lpAddress: '0x3709035aEaF6258D432eC1C50d2Ef1E0bF90a439',
     token: bscTestnetTokens.mockB,
     quoteToken: bscTestnetTokens.mockA,
-    feeAmount: 500,
+    fee: FeeAmount.LOW,
   },
 ] satisfies FarmConfigV3[]
 

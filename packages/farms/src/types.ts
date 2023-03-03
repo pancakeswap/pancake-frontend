@@ -1,4 +1,5 @@
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
 
@@ -73,6 +74,7 @@ export type FarmConfigV3 = {
 
   token: Token
   quoteToken: Token
+  fee: FeeAmount
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig

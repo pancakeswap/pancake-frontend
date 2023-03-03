@@ -182,7 +182,7 @@ export async function farmV3FetchFarms({
     ...commonPrice,
   }
 
-  const farmsWithPrice = await getFarmsPrices(
+  const farmsWithPrice = getFarmsPrices(
     farmsData,
     chainId,
     tvlMap,
@@ -400,14 +400,14 @@ export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promi
   return commonTokenUSDValue
 }
 
-const getFarmsPrices = async (
+function getFarmsPrices(
   farms: FarmV3Data[],
   chainId: number,
   tvls: TvlMap,
   cakePriceUSD: string,
   latestPeriodCakePerSecond: BigNumber,
   commonPrice: CommonPrice,
-): Promise<FarmV3DataWithPrice[]> => {
+): FarmV3DataWithPrice[] {
   return farms.map((farm) => {
     let tokenPriceBusd = FIXED_ZERO
     let quoteTokenPriceBusd = FIXED_ZERO
