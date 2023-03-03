@@ -1,14 +1,14 @@
-import { Currency } from '@pancakeswap/sdk'
-import { PANCAKE_ETH_MM, PANCAKE_BSC_MM } from 'config/constants/lists'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useAccount } from 'wagmi'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { PANCAKE_BSC_MM, PANCAKE_ETH_MM } from 'config/constants/lists'
 import { ConnectorNames } from 'config/wallet'
 import { ExtendEthereum } from 'global'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { selectorByUrlsAtom } from 'state/lists/hooks'
+import { useAccount } from 'wagmi'
+import { IS_SUPPORT_NATIVE_TOKEN, MM_STABLE_TOKENS_WHITE_LIST, NATIVE_CURRENCY_ADDRESS } from '../constants'
 import { useIsMMSupportChain } from './useIsMMSupportChain'
-import { IS_SUPPORT_NATIVE_TOKEN, NATIVE_CURRENCY_ADDRESS } from '../constants'
 
 const QUOTING_WHITE_LIST = {
   1: PANCAKE_ETH_MM,
@@ -38,7 +38,6 @@ export const useIsMMQuotingPair = (
   const list = useTokenList(QUOTING_WHITE_LIST[chainId])
   const isMMSupportChain = useIsMMSupportChain()
   const { connector, isConnected } = useAccount()
-
   return useMemo(() => {
     if (!isMMSupportChain || !chainId || !list || !inputCurrency || !outputCurrency) return false
     if (
@@ -47,6 +46,15 @@ export const useIsMMQuotingPair = (
         connector?.id === 'safe' ||
         Boolean((window.ethereum as ExtendEthereum)?.isBlocto))
     )
+      return false
+    if (
+      chainId === ChainId.BSC &&
+      inputCurrency.isToken &&
+      outputCurrency.isToken &&
+      MM_STABLE_TOKENS_WHITE_LIST[chainId][inputCurrency.address] &&
+      MM_STABLE_TOKENS_WHITE_LIST[chainId][outputCurrency.address]
+    )
+      // use StableSwap for BSC
       return false
     if (
       list[
