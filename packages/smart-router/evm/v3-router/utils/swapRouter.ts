@@ -133,8 +133,6 @@ export abstract class SwapRouter {
     const route = trade.routes[0]
     const path = route.path.map((token) => token.wrapped.address)
     const flags = route.pools.map((p) => (p as StablePool).balances.length)
-    // TODO add recipient to params
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
     const recipient = routerMustCustody
       ? ADDRESS_THIS
       : typeof options.recipient === 'undefined'
@@ -142,11 +140,11 @@ export abstract class SwapRouter {
       : validateAndParseAddress(options.recipient)
 
     if (trade.tradeType === TradeType.EXACT_INPUT) {
-      const exactInputParams = [path, flags, amountIn, performAggregatedSlippageCheck ? 0 : amountOut]
+      const exactInputParams = [path, flags, amountIn, performAggregatedSlippageCheck ? 0 : amountOut, recipient]
 
       return SwapRouter.INTERFACE.encodeFunctionData('exactInputStableSwap', exactInputParams)
     }
-    const exactOutputParams = [path, flags, amountOut, amountIn]
+    const exactOutputParams = [path, flags, amountOut, amountIn, recipient]
 
     return SwapRouter.INTERFACE.encodeFunctionData('exactOutputStableSwap', exactOutputParams)
   }
@@ -401,18 +399,18 @@ export abstract class SwapRouter {
           } else if (mixedRouteIsAllStable(newRoute)) {
             const path = newRoute.path.map((token) => token.wrapped.address)
             const flags = newRoute.pools.map((pool) => (pool as StablePool).balances.length)
-            // TODO need to set recipient
             if (isExactIn) {
               const exactInputParams = [
                 path, // path
                 flags, // stable pool types
                 inAmount, // amountIn
                 outAmount, // amountOutMin
+                recipientAddress, // to
               ]
 
               calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactInputStableSwap', exactInputParams))
             } else {
-              const exactOutputParams = [path, flags, outAmount, inAmount]
+              const exactOutputParams = [path, flags, outAmount, inAmount, recipientAddress]
 
               calldatas.push(SwapRouter.INTERFACE.encodeFunctionData('exactOutputStableSwap', exactOutputParams))
             }

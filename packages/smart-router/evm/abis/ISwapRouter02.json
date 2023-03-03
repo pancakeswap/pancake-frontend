@@ -307,6 +307,11 @@
         "internalType": "uint256",
         "name": "amountOutMin",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       }
     ],
     "name": "exactInputStableSwap",
@@ -438,6 +443,11 @@
         "internalType": "uint256",
         "name": "amountInMax",
         "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       }
     ],
     "name": "exactOutputStableSwap",
