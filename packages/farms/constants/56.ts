@@ -51,6 +51,17 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 151,
+    lpSymbol: 'WBNB-stkBNB LP',
+    lpAddress: '0x9976f5c8BEfDee650226d5571d5F5551e8722b75',
+    token: bscTokens.stkbnb,
+    quoteToken: bscTokens.wbnb,
+    stableSwapAddress: '0x0b03e3d6Ec0c5e5bBf993dED8D947C6fb6eEc18D',
+    infoStableSwapAddress: '0x150c8AbEB487137acCC541925408e73b92F39A50',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
+  {
     pid: 150,
     lpSymbol: 'APX-BNB LP',
     lpAddress: '0xAf839f4D3620a1EED00cCc21dDC01119C26a75E1',
