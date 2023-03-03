@@ -113,6 +113,7 @@
     "@testing-library/react-hooks": "^8.0.1",
     "@typechain/ethers-v5": "^8.0.5",
     "@types/canvas-confetti": "^1.4.2",
+    "@types/d3": "^7.4.0",
     "@types/jest": "^26.0.23",
     "@types/js-cookie": "^3.0.2",
     "@types/lodash": "^4.14.178",
