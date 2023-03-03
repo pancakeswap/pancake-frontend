@@ -11,7 +11,7 @@ import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { PairState } from 'hooks/usePairs'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
-import BigNumber from 'bignumber.js'
+import { BigNumber } from '@ethersproject/bignumber'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { Field } from '../../../state/mint/actions'
@@ -201,7 +201,7 @@ export default function AddStableLiquidity({
 
     // Ensure the token order [token0, token1]
     const tokenAmounts =
-      stableSwapConfig?.token0?.address === parsedAmountA?.currency?.wrapped?.address
+      stableSwapConfig?.token0?.wrapped.address === parsedAmountA?.currency?.wrapped?.address
         ? [quotientA, quotientB]
         : [quotientB, quotientA]
 
@@ -214,7 +214,7 @@ export default function AddStableLiquidity({
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-    await estimate(...args, value ? { value } : {})
+    await estimate(...(args as [string, [string, string], string]), value ? { value } : {})
       .then((estimatedGasLimit) =>
         method(...args, {
           ...(value ? { value } : {}),

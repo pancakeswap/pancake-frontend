@@ -2,6 +2,7 @@ import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { BigNumber } from '@ethersproject/bignumber'
 
 import { PairState } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -13,7 +14,6 @@ import { useSingleCallResult } from 'state/multicall/hooks'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useEstimatedAmount } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 import { useMintState } from 'state/mint/hooks'
-import BigNumber from 'bignumber.js'
 
 export interface StablePair {
   liquidityToken: Token | null
@@ -119,7 +119,7 @@ function useMintedStableLP({
 
   return useMemo(
     () => ({
-      reserves: balanceResult?.result?.[0] || [new BigNumber(0), new BigNumber(0)],
+      reserves: balanceResult?.result?.[0] || [BigNumber.from(0), BigNumber.from(0)],
       data: result?.[0],
       loading: loading || syncing,
       error,

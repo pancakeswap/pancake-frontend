@@ -18,8 +18,8 @@ export function useGetRemovedTokenAmounts({ lpAmount }: { lpAmount: string }) {
     stableSwapInfoContract,
     stableSwapAddress: stableSwapConfig?.stableSwapAddress,
     lpAmount,
-    token0: stableSwapConfig?.token0,
-    token1: stableSwapConfig?.token1,
+    token0: stableSwapConfig?.token0.wrapped,
+    token1: stableSwapConfig?.token1.wrapped,
   })
 }
 
