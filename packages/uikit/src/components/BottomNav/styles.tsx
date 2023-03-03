@@ -12,6 +12,9 @@ const StyledBottomNav = styled(Flex)`
   html[data-useragent*="TokenPocket_iOS"] & {
     padding-bottom: 45px;
   }
+  html[data-useragent*="SafepalWallet_iOS"] & {
+    padding-bottom: 45px;
+  }
   z-index: 20;
 `;
 
