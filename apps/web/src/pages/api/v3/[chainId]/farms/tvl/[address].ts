@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { NextApiHandler } from 'next'
 import { PositionMath } from '@pancakeswap/v3-sdk'
-import { farmsV3Map } from '@pancakeswap/farms/constants/index.v3'
+import { farmsV3Map } from '@pancakeswap/farms/constants/v3'
 import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'

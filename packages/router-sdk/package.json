@@ -14,7 +14,8 @@
   "scripts": {
     "test": "vitest --run",
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "keywords": [
     "pancakeswap",

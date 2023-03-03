@@ -1,5 +1,5 @@
 import { createFarmFetcherV3, fetchCommonTokenUSDValue } from '@pancakeswap/farms'
-import { farmsV3Map } from '@pancakeswap/farms/constants/index.v3'
+import { farmsV3Map } from '@pancakeswap/farms/constants/v3'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import type { TvlMap } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { ChainId } from '@pancakeswap/sdk'
