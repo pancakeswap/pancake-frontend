@@ -21,7 +21,7 @@ const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   return (
     <Tag
       variant="secondary"
-      style={{ background: "none" }}
+      style={{ background: "none", width: "fit-content" }}
       outline
       startIcon={<VerifiedIcon width="18px" color="secondary" mr="4px" />}
       {...props}
