@@ -10,6 +10,7 @@ import { StakeSpan } from "./StakeSpan";
 import { usePriceRange, useRangeHopCallbacks } from "./hooks";
 import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
+import { RoiRate } from "./RoiRate";
 
 interface Props {
   tickCurrent?: number;
@@ -121,6 +122,7 @@ export function RoiCalculator({
         <CompoundFrequency />
       </Section>
       <AnimatedArrow />
+      <RoiRate />
     </>
   );
 }
