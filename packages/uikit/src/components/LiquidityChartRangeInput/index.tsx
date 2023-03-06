@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/react";
-import { Currency, Price, Token, JSBI } from "@pancakeswap/sdk";
+import { Currency, Price, JSBI } from "@pancakeswap/sdk";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
 import { AutoColumn } from "@pancakeswap/uikit";
 import { format } from "d3";
@@ -79,9 +79,9 @@ export function LiquidityChartRangeInput({
   feeAmount?: FeeAmount;
   ticks?: TickDataRaw[];
   ticksAtLimit?: { [bound in Bound]?: boolean };
-  price?: Price<Token, Token>;
-  priceLower?: Price<Token, Token>;
-  priceUpper?: Price<Token, Token>;
+  price?: Price<Currency, Currency>;
+  priceLower?: Price<Currency, Currency>;
+  priceUpper?: Price<Currency, Currency>;
   onLeftRangeInput?: (typedValue: string) => void;
   onRightRangeInput?: (typedValue: string) => void;
   interactive?: boolean;
