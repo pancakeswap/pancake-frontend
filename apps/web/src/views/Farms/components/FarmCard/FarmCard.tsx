@@ -70,6 +70,14 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
       ? `$${liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
       : ''
 
+  // Philip TODO: Add Total liquidity
+  // const totalLiquidity = useV3LiquidityTotal({
+  //   token0: farm.token,
+  //   token1: farm.quoteToken,
+  //   feeAmount: farm.feeAmount,
+  //   positionsDetailsList: farm.stakedPositions
+  // })
+
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
   const earnLabel = farm.dual ? farm.dual.earnLabel : t('CAKE + Fees')
 
@@ -81,7 +89,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const { lpAddress, stableSwapAddress, stableLpFee } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
-  const { stakedBalance, proxy, tokenBalance } = farm.userData
+  const { stakedBalance, proxy, tokenBalance } = farm?.userData || {}
 
   const infoUrl = useMemo(() => {
     if (farm.isStable) {

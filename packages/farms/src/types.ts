@@ -187,3 +187,9 @@ export interface FarmWithStakedValue extends DeserializedFarm {
   lpRewardsApr?: number
   liquidity?: BigNumber
 }
+
+export interface FarmsV3Response {
+  poolLength: number
+  farmsWithPrice: FarmV3DataWithPrice[]
+  latestPeriodCakePerSecond: string
+}

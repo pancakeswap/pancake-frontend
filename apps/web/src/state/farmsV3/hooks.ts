@@ -8,25 +8,27 @@ import sortedUniqBy from 'lodash/sortedUniqBy'
 import partition from 'lodash/partition'
 import toLower from 'lodash/toLower'
 import { PositionDetails } from 'hooks/v3/types'
-import { SerializedFarmPublicData } from '@pancakeswap/farms'
+import { FarmsV3Response, SerializedFarmPublicData } from '@pancakeswap/farms'
 import { FARM_API } from 'config/constants/endpoints'
+import { useMasterchefV3 } from 'hooks/useContract'
+import { useSingleContractMultipleData } from 'state/multicall/hooks'
 
 import { getStakedPositionsByUser } from './fetchMasterChefV3Subgraph'
 
 const farmV3ApiFetch = (chainId: number) => fetch(`${FARM_API}/v3/${chainId}/farms`).then((res) => res.json())
 
-interface FarmsV3State {
-  farmsWithPrice: SerializedFarmV3[]
-  poolLength: number
-}
-
 export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
-  const { data } = useSWRImmutable<FarmsV3State>('farmV3ApiFetch', () => farmV3ApiFetch(chainId))
+  const { data } = useSWRImmutable<FarmsV3Response>('farmV3ApiFetch', () => farmV3ApiFetch(chainId))
 
-  return useMemo(() => data ?? { farmsWithPrice: [], poolLength: 0 }, [data])
+  return useMemo(
+    () => ({ farmsWithPrice: data?.farmsWithPrice || [], poolLength: data?.poolLength || 0 }),
+    [data?.farmsWithPrice, data?.poolLength],
+  )
 }
+
+export type IPendingCakeByTokenId = Record<string, BigNumber>
 
 export const usePositionsByUser = (farmsV3: SerializedFarmPublicData[]) => {
   const { account } = useActiveWeb3React()
@@ -53,32 +55,56 @@ export const usePositionsByUser = (farmsV3: SerializedFarmPublicData[]) => {
     return partition(positions, (p) => tokenIds.find((i) => i.eq(p.tokenId)))
   }, [positions, tokenIds])
 
-  const farmsWithPositions = farmsV3.map((farm) => {
-    const { token, quoteToken } = farm
+  const masterchefV3 = useMasterchefV3()
 
-    const idsOfFarmInV3Subgraph = stakedIds
-      .filter((userPosition) => userPosition.pool.id === farm.pid.toString())
-      .map(({ id }) => id)
+  const inputs = useMemo(
+    () => (stakedPositions ? stakedPositions.map(({ tokenId }) => [tokenId]) : []),
+    [stakedPositions],
+  )
 
-    const unstaked = unstakedPositions.filter(
-      (p) => toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address),
-    )
-    const staked = stakedPositions.filter((p) => {
-      const foundPosition = idsOfFarmInV3Subgraph.find((tokenId) => p.tokenId.eq(tokenId))
+  const tokenIdResults = useSingleContractMultipleData(masterchefV3, 'pendingCake', inputs)
 
-      if (foundPosition) return true
+  const pendingCakeByTokenIds = useMemo(
+    () =>
+      tokenIdResults.reduce<IPendingCakeByTokenId>((acc, ele, i) => {
+        const position = stakedPositions[i]
 
-      return toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address)
-    })
+        const [pendingCake] = ele?.result || []
 
-    return {
-      ...farm,
-      unstakedPositions: unstaked,
-      stakedPositions: staked,
-    }
-  })
+        return pendingCake ? { ...acc, [position.tokenId.toString()]: BigNumber.from(pendingCake) } : acc
+      }, {}),
+    [stakedPositions, tokenIdResults],
+  )
 
-  return farmsWithPositions
+  return useMemo(
+    () =>
+      farmsV3.map((farm) => {
+        const { token, quoteToken } = farm
+
+        const idsOfFarmInV3Subgraph = stakedIds
+          .filter((userPosition) => userPosition.pool.id === farm.pid.toString())
+          .map(({ id }) => id)
+
+        const unstaked = unstakedPositions.filter(
+          (p) => toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address),
+        )
+        const staked = stakedPositions.filter((p) => {
+          const foundPosition = idsOfFarmInV3Subgraph.find((tokenId) => p.tokenId.eq(tokenId))
+
+          if (foundPosition) return true
+
+          return toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address)
+        })
+
+        return {
+          ...farm,
+          unstakedPositions: unstaked,
+          stakedPositions: staked,
+          pendingCakeByTokenIds,
+        }
+      }),
+    [farmsV3, pendingCakeByTokenIds, stakedIds, stakedPositions, unstakedPositions],
+  )
 }
 
 export interface SerializedFarmV3 extends SerializedFarmPublicData {

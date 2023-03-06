@@ -45,6 +45,7 @@ import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/Range
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+import { usePositionV3Liquidity } from 'hooks/v3/usePositionV3Liquidity'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -214,13 +215,7 @@ export default function PoolPage() {
     return amount0.add(amount1)
   }, [price0, price1, feeValue0, feeValue1])
 
-  const fiatValueOfLiquidity: CurrencyAmount<Currency> | null = useMemo(() => {
-    if (!price0 || !price1 || !position) return null
-    const amount0 = price0.quote(position.amount0)
-    const amount1 = price1.quote(position.amount1)
-    return amount0.add(amount1)
-  }, [price0, price1, position])
-
+  const fiatValueOfLiquidity: CurrencyAmount<Currency> | null = usePositionV3Liquidity(position)
   const addTransaction = useTransactionAdder()
 
   const positionManager = useV3NFTPositionManagerContract()

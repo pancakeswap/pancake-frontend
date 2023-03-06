@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { CurrencyAmount, ONE, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
+import { BigintIsh, CurrencyAmount, ONE, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ADDRESS_ZERO } from './constants'
@@ -9,7 +9,6 @@ import IMasterChefABI from './abi/MasterChefV3.json'
 
 import {
   type AddLiquidityOptions,
-  NonfungiblePositionManager,
   isMint,
   CollectOptions,
   MaxUint128,
@@ -19,6 +18,16 @@ import { Payments } from './payments'
 import { SelfPermit } from './selfPermit'
 import { MethodParameters, toHex } from './utils'
 
+interface WidthDrawOptions {
+  tokenId: BigintIsh
+  to: string
+}
+
+interface HarvestOptions {
+  tokenId: BigintIsh
+  to: string
+}
+
 export abstract class MasterChefV3 {
   // TODO: Replace with MasterChef ABI
   public static INTERFACE: Interface = new Interface(IMasterChefABI)
@@ -26,6 +35,7 @@ export abstract class MasterChefV3 {
   /**
    * Cannot be constructed.
    */
+  // eslint-disable-next-line
   private constructor() {}
 
   // Copy from NonfungiblePositionManager
@@ -57,7 +67,7 @@ export abstract class MasterChefV3 {
 
     // increase
     calldatas.push(
-      NonfungiblePositionManager.INTERFACE.encodeFunctionData('increaseLiquidity', [
+      MasterChefV3.INTERFACE.encodeFunctionData('increaseLiquidity', [
         {
           tokenId: toHex(options.tokenId),
           amount0Desired: toHex(amount0Desired),
@@ -66,7 +76,7 @@ export abstract class MasterChefV3 {
           amount1Min,
           deadline,
         },
-      ])
+      ]),
     )
 
     let value: string = toHex(0)
@@ -104,14 +114,14 @@ export abstract class MasterChefV3 {
 
     // collect
     calldatas.push(
-      NonfungiblePositionManager.INTERFACE.encodeFunctionData('collect', [
+      MasterChefV3.INTERFACE.encodeFunctionData('collect', [
         {
           tokenId,
           recipient: involvesETH ? ADDRESS_ZERO : recipient,
           amount0Max: MaxUint128,
           amount1Max: MaxUint128,
         },
-      ])
+      ]),
     )
 
     if (involvesETH) {
@@ -158,25 +168,25 @@ export abstract class MasterChefV3 {
 
     // slippage-adjusted underlying amounts
     const { amount0: amount0Min, amount1: amount1Min } = partialPosition.burnAmountsWithSlippage(
-      options.slippageTolerance
+      options.slippageTolerance,
     )
 
     if (options.permit) {
       calldatas.push(
-        NonfungiblePositionManager.INTERFACE.encodeFunctionData('permit', [
+        MasterChefV3.INTERFACE.encodeFunctionData('permit', [
           validateAndParseAddress(options.permit.spender),
           tokenId,
           toHex(options.permit.deadline),
           options.permit.v,
           options.permit.r,
           options.permit.s,
-        ])
+        ]),
       )
     }
 
     // remove liquidity
     calldatas.push(
-      NonfungiblePositionManager.INTERFACE.encodeFunctionData('decreaseLiquidity', [
+      MasterChefV3.INTERFACE.encodeFunctionData('decreaseLiquidity', [
         {
           tokenId,
           liquidity: toHex(partialPosition.liquidity),
@@ -184,27 +194,27 @@ export abstract class MasterChefV3 {
           amount1Min: toHex(amount1Min),
           deadline,
         },
-      ])
+      ]),
     )
 
     const { expectedCurrencyOwed0, expectedCurrencyOwed1, ...rest } = options.collectOptions
     calldatas.push(
-      ...NonfungiblePositionManager.encodeCollect({
+      ...MasterChefV3.encodeCollect({
         tokenId: toHex(options.tokenId),
         // add the underlying value to the expected currency already owed
         expectedCurrencyOwed0: expectedCurrencyOwed0.add(
-          CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min)
+          CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min),
         ),
         expectedCurrencyOwed1: expectedCurrencyOwed1.add(
-          CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min)
+          CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min),
         ),
         ...rest,
-      })
+      }),
     )
 
     if (options.liquidityPercentage.equalTo(ONE)) {
       if (options.burnToken) {
-        calldatas.push(NonfungiblePositionManager.INTERFACE.encodeFunctionData('burn', [tokenId]))
+        calldatas.push(MasterChefV3.INTERFACE.encodeFunctionData('burn', [tokenId]))
       }
     } else {
       invariant(options.burnToken !== true, 'CANNOT_BURN')
@@ -216,15 +226,37 @@ export abstract class MasterChefV3 {
     }
   }
 
-  public static updateCallParameters() {}
+  // public static updateCallParameters() {}
 
-  public static harvestCallParameters() {}
+  public static harvestCallParameters(options: HarvestOptions) {
+    const { tokenId, to } = options
 
-  public static withdrawCallParameters() {}
+    const calldatas: string[] = []
 
-  public static userPositionInfosCallParameters() {}
+    // harvest pendingCake
+    calldatas.push(
+      MasterChefV3.INTERFACE.encodeFunctionData('harvest', [tokenId.toString(), validateAndParseAddress(to)]),
+    )
 
-  public static pendingCakeCallParameters() {}
+    return {
+      calldata: Multicall.encodeMulticall(calldatas),
+      value: toHex(0),
+    }
+  }
 
-  public static getLatestPeriodInfoCallParamaters() {}
+  public static withdrawCallParameters(options: WidthDrawOptions) {
+    const { tokenId, to } = options
+
+    const calldatas: string[] = []
+
+    // withdraw liquidity
+    calldatas.push(
+      MasterChefV3.INTERFACE.encodeFunctionData('withdraw', [tokenId.toString(), validateAndParseAddress(to)]),
+    )
+
+    return {
+      calldata: Multicall.encodeMulticall(calldatas),
+      value: toHex(0),
+    }
+  }
 }

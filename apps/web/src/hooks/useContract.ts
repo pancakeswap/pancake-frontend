@@ -14,6 +14,7 @@ import QuoterV2Json from '@uniswap/swap-router-contracts/artifacts/contracts/len
 
 import zapAbi from 'config/abi/zap.json'
 import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
+import MasterChefV3ABI from 'config/abi/masterChefV3.json'
 import addresses from 'config/constants/contracts'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'
@@ -411,4 +412,8 @@ export const useQuoterContract = (useQuoterV2 = false) => {
 // Philip TODO: Add NonfungiblePositionManager | null type
 export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean) {
   return useContract(addresses.nftPositionManager, NFTPositionManagerABI, withSignerIfPossible)
+}
+
+export function useMasterchefV3(withSignerIfPossible?: boolean) {
+  return useContract(addresses.masterChefV3, MasterChefV3ABI, withSignerIfPossible)
 }
