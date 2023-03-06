@@ -1,10 +1,11 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Trade, TradeType, isTradeBetter } from '@pancakeswap/sdk'
 import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
 import { IPancakeRouter02 } from 'config/abi/types/IPancakeRouter02'
 import {
   ALLOWED_PRICE_IMPACT_HIGH,
   ALLOWED_PRICE_IMPACT_LOW,
   ALLOWED_PRICE_IMPACT_MEDIUM,
+  BETTER_TRADE_LESS_HOPS_THRESHOLD,
   BIPS_BASE,
   BLOCKED_PRICE_IMPACT_NON_EXPERT,
   INPUT_FRACTION_AFTER_FEE,
@@ -108,4 +109,28 @@ export function formatExecutionPrice(
     : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.currency.symbol} / ${
         trade.inputAmount.currency.symbol
       }`
+}
+
+
+export function compareBestTradeHops(trades: Trade<Currency, Currency, TradeType>[], maxHops: number): Trade<Currency, Currency, TradeType> {
+  if(trades.length === 0) {
+    throw new Error("Invalid Trades")
+  }
+
+  let hopTrades: typeof trades = Array(maxHops).fill(undefined);
+  for(let i = 0; i < trades.length; i++){
+    const trade = trades[i];
+    const hops = trade.route.path.length - 1;
+    if(!hopTrades[hops]){
+      hopTrades[hops] = trade;
+    }
+    if(hopTrades.every(curr => curr !== undefined)) break;
+  }
+  hopTrades = hopTrades.filter(trade => trade !== undefined)
+  const bestTrade = hopTrades.reduce((trade, curr) => (
+    isTradeBetter(trade, curr, BETTER_TRADE_LESS_HOPS_THRESHOLD)
+      ? curr
+      : trade
+  ), hopTrades[0])
+  return bestTrade;
 }

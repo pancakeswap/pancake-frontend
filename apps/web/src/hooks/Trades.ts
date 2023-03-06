@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Currency, CurrencyAmount, isTradeBetter, Pair, Token, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Pair, Token, Trade, TradeType } from '@pancakeswap/sdk'
 import flatMap from 'lodash/flatMap'
 import { useMemo } from 'react'
 
@@ -7,9 +7,9 @@ import { useUserSingleHopOnly } from 'state/user/hooks'
 import {
   BASES_TO_CHECK_TRADES_AGAINST,
   CUSTOM_BASES,
-  BETTER_TRADE_LESS_HOPS_THRESHOLD,
   ADDITIONAL_BASES,
 } from 'config/constants/exchange'
+import { compareBestTradeHops } from 'utils/exchange'
 import { PairState, usePairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
@@ -112,9 +112,10 @@ export function useTradeExactIn(
         )
       }
 
-      const bestTrade: Trade<Currency, Currency, TradeType> | null =
-        Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: MAX_HOPS, maxNumResults: 1 })[0] ??
-        null
+      const bestTrades =
+        Trade.bestTradeExactIn(allowedPairs, currencyAmountIn, currencyOut, { maxHops: MAX_HOPS, maxNumResults: 10 });
+      
+      const bestTrade = bestTrades.length > 0 ? compareBestTradeHops(bestTrades, MAX_HOPS) : null;
       return bestTrade;
     }
 
@@ -142,9 +143,10 @@ export function useTradeExactOut(
         )
       }
 
-      const bestTrade =
-        Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: MAX_HOPS, maxNumResults: 1 })[0] ??
-        null
+      const bestTrades =
+        Trade.bestTradeExactOut(allowedPairs, currencyIn, currencyAmountOut, { maxHops: MAX_HOPS, maxNumResults: 10 });
+      
+      const bestTrade = bestTrades.length > 0 ? compareBestTradeHops(bestTrades, MAX_HOPS) : null;
       return bestTrade;
     }
     return null
