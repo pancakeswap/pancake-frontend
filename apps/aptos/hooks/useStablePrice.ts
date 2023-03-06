@@ -1,5 +1,5 @@
 import { Currency, JSBI, Price, Trade } from '@pancakeswap/aptos-swap-sdk'
-import { L0_USDC, CAKE } from 'config/coins'
+import { L0_USDC, CE_USDC, WH_USDC, CAKE } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
@@ -22,7 +22,12 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
   const native = useNativeCurrency(chainId)
   const wrapped = currency?.wrapped
   const wnative = native.wrapped
-  const stable = L0_USDC[chainId]
+  const stableArray = [
+    { key: 'lz', coin: L0_USDC[chainId] },
+    { key: 'wh', coin: WH_USDC[chainId] },
+    { key: 'ce', coin: CE_USDC[chainId] },
+  ]
+  const stable = stableArray.find((stableCoin) => currency?.symbol.startsWith(stableCoin.key))?.coin ?? CE_USDC[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
