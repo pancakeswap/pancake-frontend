@@ -159,7 +159,7 @@ const TooltipContent = ({
   const { t } = useTranslation()
   return (
     <Box>
-      <IndicatorWrapper pb="10px">
+      <IndicatorWrapper alignItems="center" pb="10px">
         <Dot $color={color} />
         <Text>{label}</Text>
       </IndicatorWrapper>
