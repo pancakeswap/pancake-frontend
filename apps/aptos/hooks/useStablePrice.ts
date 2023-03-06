@@ -27,7 +27,7 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
     { key: 'wh', coin: WH_USDC[chainId] },
     { key: 'ce', coin: CE_USDC[chainId] },
   ]
-  const stable = stableArray.find((stableCoin) => currency?.symbol.startsWith(stableCoin.key))?.coin ?? CE_USDC[chainId]
+  const stable = stableArray.find((stableCoin) => currency?.symbol.startsWith(stableCoin.key))?.coin ?? L0_USDC[chainId]
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
