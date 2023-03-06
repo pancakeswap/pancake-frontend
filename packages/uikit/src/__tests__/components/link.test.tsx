@@ -98,6 +98,7 @@ it("renders link external link correctly", () => {
         font-size="16px"
         href="https://pancakeswap.finance"
         rel="noreferrer noopener"
+        style="display: inline-flex;"
         target="_blank"
       >
         Link
