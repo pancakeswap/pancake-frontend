@@ -2487,6 +2487,6 @@ export const bscTokens = {
     18,
     'SD',
     'Stader (Wormhole)',
-    'https://www.staderlabs.com/bnb/liquid-staking/bnbx/',
+    'https://www.staderlabs.com/',
   ),
 }
