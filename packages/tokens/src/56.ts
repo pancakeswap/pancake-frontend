@@ -2481,4 +2481,12 @@ export const bscTokens = {
     'Liquid Staking BNB',
     'https://www.staderlabs.com/bnb/liquid-staking/bnbx/',
   ),
+  sd: new ERC20Token(
+    ChainId.BSC,
+    '0x3BC5AC0dFdC871B365d159f728dd1B9A0B5481E8',
+    18,
+    'SD',
+    'Stader (Wormhole)',
+    'https://www.staderlabs.com/bnb/liquid-staking/bnbx/',
+  ),
 }
