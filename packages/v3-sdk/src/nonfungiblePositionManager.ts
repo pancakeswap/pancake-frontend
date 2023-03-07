@@ -245,7 +245,7 @@ export abstract class NonfungiblePositionManager {
             recipient,
             deadline,
           },
-        ]),
+        ])
       )
     } else {
       // increase
@@ -259,7 +259,7 @@ export abstract class NonfungiblePositionManager {
             amount1Min,
             deadline,
           },
-        ]),
+        ])
       )
     }
 
@@ -304,7 +304,7 @@ export abstract class NonfungiblePositionManager {
           amount0Max: MaxUint128,
           amount1Max: MaxUint128,
         },
-      ]),
+      ])
     )
 
     if (involvesETH) {
@@ -357,7 +357,7 @@ export abstract class NonfungiblePositionManager {
 
     // slippage-adjusted underlying amounts
     const { amount0: amount0Min, amount1: amount1Min } = partialPosition.burnAmountsWithSlippage(
-      options.slippageTolerance,
+      options.slippageTolerance
     )
 
     if (options.permit) {
@@ -369,7 +369,7 @@ export abstract class NonfungiblePositionManager {
           options.permit.v,
           options.permit.r,
           options.permit.s,
-        ]),
+        ])
       )
     }
 
@@ -383,7 +383,7 @@ export abstract class NonfungiblePositionManager {
           amount1Min: toHex(amount1Min),
           deadline,
         },
-      ]),
+      ])
     )
 
     const { expectedCurrencyOwed0, expectedCurrencyOwed1, ...rest } = options.collectOptions
@@ -392,13 +392,13 @@ export abstract class NonfungiblePositionManager {
         tokenId: toHex(options.tokenId),
         // add the underlying value to the expected currency already owed
         expectedCurrencyOwed0: expectedCurrencyOwed0.add(
-          CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min),
+          CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min)
         ),
         expectedCurrencyOwed1: expectedCurrencyOwed1.add(
-          CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min),
+          CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min)
         ),
         ...rest,
-      }),
+      })
     )
 
     if (options.liquidityPercentage.equalTo(ONE)) {
@@ -423,7 +423,7 @@ export abstract class NonfungiblePositionManager {
     if (options.data) {
       calldata = NonfungiblePositionManager.INTERFACE.encodeFunctionData(
         'safeTransferFrom(address,address,uint256,bytes)',
-        [sender, recipient, toHex(options.tokenId), options.data],
+        [sender, recipient, toHex(options.tokenId), options.data]
       )
     } else {
       calldata = NonfungiblePositionManager.INTERFACE.encodeFunctionData('safeTransferFrom(address,address,uint256)', [

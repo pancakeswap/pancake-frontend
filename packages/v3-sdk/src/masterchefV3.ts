@@ -76,7 +76,7 @@ export abstract class MasterChefV3 {
           amount1Min,
           deadline,
         },
-      ]),
+      ])
     )
 
     let value: string = toHex(0)
@@ -121,7 +121,7 @@ export abstract class MasterChefV3 {
           amount0Max: MaxUint128,
           amount1Max: MaxUint128,
         },
-      ]),
+      ])
     )
 
     if (involvesETH) {
@@ -168,7 +168,7 @@ export abstract class MasterChefV3 {
 
     // slippage-adjusted underlying amounts
     const { amount0: amount0Min, amount1: amount1Min } = partialPosition.burnAmountsWithSlippage(
-      options.slippageTolerance,
+      options.slippageTolerance
     )
 
     if (options.permit) {
@@ -180,7 +180,7 @@ export abstract class MasterChefV3 {
           options.permit.v,
           options.permit.r,
           options.permit.s,
-        ]),
+        ])
       )
     }
 
@@ -194,7 +194,7 @@ export abstract class MasterChefV3 {
           amount1Min: toHex(amount1Min),
           deadline,
         },
-      ]),
+      ])
     )
 
     const { expectedCurrencyOwed0, expectedCurrencyOwed1, ...rest } = options.collectOptions
@@ -203,13 +203,13 @@ export abstract class MasterChefV3 {
         tokenId: toHex(options.tokenId),
         // add the underlying value to the expected currency already owed
         expectedCurrencyOwed0: expectedCurrencyOwed0.add(
-          CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min),
+          CurrencyAmount.fromRawAmount(expectedCurrencyOwed0.currency, amount0Min)
         ),
         expectedCurrencyOwed1: expectedCurrencyOwed1.add(
-          CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min),
+          CurrencyAmount.fromRawAmount(expectedCurrencyOwed1.currency, amount1Min)
         ),
         ...rest,
-      }),
+      })
     )
 
     if (options.liquidityPercentage.equalTo(ONE)) {
@@ -235,7 +235,7 @@ export abstract class MasterChefV3 {
 
     // harvest pendingCake
     calldatas.push(
-      MasterChefV3.INTERFACE.encodeFunctionData('harvest', [tokenId.toString(), validateAndParseAddress(to)]),
+      MasterChefV3.INTERFACE.encodeFunctionData('harvest', [tokenId.toString(), validateAndParseAddress(to)])
     )
 
     return {
@@ -251,7 +251,7 @@ export abstract class MasterChefV3 {
 
     // withdraw liquidity
     calldatas.push(
-      MasterChefV3.INTERFACE.encodeFunctionData('withdraw', [tokenId.toString(), validateAndParseAddress(to)]),
+      MasterChefV3.INTERFACE.encodeFunctionData('withdraw', [tokenId.toString(), validateAndParseAddress(to)])
     )
 
     return {
