@@ -26,7 +26,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           }
           currencyA={bscTokens.wbnb}
           currencyB={bscTokens.usdt}
-          tickCurrent={-202763}
+          sqrtRatioX96={JSBI.BigInt("2001337577267227747966810537")}
           liquidity={JSBI.BigInt("3799256509904881797")}
           feeAmount={FeeAmount.MEDIUM}
           ticks={mockData}

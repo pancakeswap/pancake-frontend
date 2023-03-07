@@ -1,20 +1,22 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token } from "@pancakeswap/sdk";
-import { FeeAmount } from "@pancakeswap/v3-sdk";
+import { FeeAmount, TickMath } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
+import { useCallback, useMemo } from "react";
 
 import { Bound, TickDataRaw } from "../../components/LiquidityChartRangeInput/types";
 import { LiquidityChartRangeInput, CurrencyInput, Box } from "../../components";
 import { DynamicSection, Section } from "./DynamicSection";
 import { RangeSelector } from "./RangeSelector";
 import { StakeSpan } from "./StakeSpan";
-import { usePriceRange, useRangeHopCallbacks } from "./hooks";
+import { usePriceRange, useRangeHopCallbacks, useAmounts } from "./hooks";
 import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
 import { RoiRate } from "./RoiRate";
 
 interface Props {
-  tickCurrent?: number;
+  sqrtRatioX96?: JSBI;
   liquidity?: JSBI;
+  independentAmount?: CurrencyAmount<Currency>;
   currencyA?: Currency;
   currencyB?: Currency;
   balanceA?: CurrencyAmount<Currency>;
@@ -29,8 +31,9 @@ interface Props {
 
 // Price is always price of token0
 export function RoiCalculator({
-  tickCurrent,
+  sqrtRatioX96,
   liquidity,
+  independentAmount,
   currencyA,
   currencyB,
   balanceA,
@@ -43,6 +46,7 @@ export function RoiCalculator({
   priceUpper,
 }: Props) {
   const { t } = useTranslation();
+  const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
   const priceRange = usePriceRange({
     feeAmount,
     baseCurrency: currencyA,
@@ -58,6 +62,17 @@ export function RoiCalculator({
     priceRange?.tickUpper,
     tickCurrent
   );
+  const { valueA, valueB, onChange } = useAmounts({
+    independentAmount,
+    currencyA,
+    currencyB,
+    tickLower: priceRange?.tickLower,
+    tickUpper: priceRange?.tickUpper,
+    sqrtRatioX96,
+  });
+
+  const onCurrencyAChange = useCallback((value: string) => onChange(value, currencyA), [currencyA, onChange]);
+  const onCurrencyBChange = useCallback((value: string) => onChange(value, currencyB), [currencyB, onChange]);
 
   return (
     <>
@@ -65,20 +80,16 @@ export function RoiCalculator({
         <Box mb="16px">
           <CurrencyInput
             currency={currencyA}
-            value={0}
-            onChange={() => {
-              // TODO
-            }}
+            value={valueA}
+            onChange={onCurrencyAChange}
             balance={balanceA}
             balanceText={t("Balance: %balance%", { balance: balanceA?.toSignificant(6) || "..." })}
           />
         </Box>
         <CurrencyInput
           currency={currencyB}
-          value={0}
-          onChange={() => {
-            // TODO
-          }}
+          value={valueB}
+          onChange={onCurrencyBChange}
           balance={balanceB}
           balanceText={t("Balance: %balance%", { balance: balanceB?.toSignificant(6) || "..." })}
         />

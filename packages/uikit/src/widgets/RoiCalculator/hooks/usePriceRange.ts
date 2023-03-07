@@ -1,13 +1,8 @@
 import { Currency, Price } from "@pancakeswap/sdk";
-import {
-  FeeAmount,
-  // nearestUsableTick,
-  // TickMath,
-  // TICK_SPACINGS
-} from "@pancakeswap/v3-sdk";
+import { FeeAmount, nearestUsableTick, TickMath, TICK_SPACINGS, tickToPrice } from "@pancakeswap/v3-sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-// import { Bound } from "../../../components/LiquidityChartRangeInput/types";
+import { Bound } from "../../../components/LiquidityChartRangeInput/types";
 import { tryParsePrice, tryParseTick } from "../utils";
 
 interface Params {
@@ -40,25 +35,48 @@ export function usePriceRange({
   const invertPrice = Boolean(baseCurrency && quoteCurrency && quoteCurrency.wrapped.sortsBefore(baseCurrency.wrapped));
 
   // lower and upper limits in the tick space for `feeAmoun<Trans>
-  // const tickSpaceLimits: {
-  //   [bound in Bound]: number | undefined;
-  // } = useMemo(
-  //   () => ({
-  //     [Bound.LOWER]: feeAmount ? nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[feeAmount]) : undefined,
-  //     [Bound.UPPER]: feeAmount ? nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[feeAmount]) : undefined,
-  //   }),
-  //   [feeAmount]
-  // );
-
-  const rightRangeTypedValue = useMemo(
-    () => (invertPrice ? priceLower?.toFixed(6) : priceUpper?.toFixed(6)),
-    [priceLower, priceUpper, invertPrice]
+  const tickSpaceLimits: {
+    [bound in Bound]: number | undefined;
+  } = useMemo(
+    () => ({
+      [Bound.LOWER]: feeAmount ? nearestUsableTick(TickMath.MIN_TICK, TICK_SPACINGS[feeAmount]) : undefined,
+      [Bound.UPPER]: feeAmount ? nearestUsableTick(TickMath.MAX_TICK, TICK_SPACINGS[feeAmount]) : undefined,
+    }),
+    [feeAmount]
   );
 
-  const leftRangeTypedValue = useMemo(
-    () => (invertPrice ? priceUpper?.toFixed(6) : priceLower?.toFixed(6)),
-    [priceLower, priceUpper, invertPrice]
-  );
+  const priceLimits: {
+    [bound in Bound]: Price<Currency, Currency> | undefined;
+  } = useMemo(() => {
+    const token0 = invertPrice ? quoteCurrency?.wrapped : baseCurrency?.wrapped;
+    const token1 = invertPrice ? baseCurrency?.wrapped : quoteCurrency?.wrapped;
+    return {
+      [Bound.LOWER]:
+        token0 && token1 && tickSpaceLimits[Bound.LOWER]
+          ? tickToPrice(token0, token1, tickSpaceLimits[Bound.LOWER])
+          : undefined,
+      [Bound.UPPER]:
+        token0 && token1 && tickSpaceLimits[Bound.UPPER]
+          ? tickToPrice(token0, token1, tickSpaceLimits[Bound.UPPER])
+          : undefined,
+    };
+  }, [tickSpaceLimits, invertPrice, quoteCurrency, baseCurrency]);
+
+  const rightRangeTypedValue = useMemo(() => {
+    try {
+      return invertPrice ? priceLower?.toFixed(6) : priceUpper?.toFixed(6);
+    } catch (e) {
+      return "0";
+    }
+  }, [priceLower, priceUpper, invertPrice]);
+
+  const leftRangeTypedValue = useMemo(() => {
+    try {
+      return invertPrice ? priceUpper?.toFixed(6) : priceLower?.toFixed(6);
+    } catch (e) {
+      return "0";
+    }
+  }, [priceLower, priceUpper, invertPrice]);
 
   // parse typed range values and determine closest ticks
   // lower should always be a smaller tick
@@ -78,28 +96,48 @@ export function usePriceRange({
     [leftRangeTypedValue, rightRangeTypedValue, invertPrice, baseCurrency, quoteCurrency, feeAmount]
   );
 
+  const saveSetPriceUpper = useCallback(
+    (price?: Price<Currency, Currency>) => {
+      if (!price || !priceLimits.UPPER) {
+        return;
+      }
+      const priceToSet = price.greaterThan(priceLimits.UPPER) ? priceLimits.UPPER : price;
+      setPriceUpper(priceToSet);
+    },
+    [priceLimits]
+  );
+
+  const saveSetPriceLower = useCallback(
+    (price?: Price<Currency, Currency>) => {
+      if (!price || !priceLimits.LOWER) {
+        return;
+      }
+      const priceToSet = price.lessThan(priceLimits.LOWER) ? priceLimits.LOWER : price;
+      setPriceLower(priceToSet);
+    },
+    [priceLimits]
+  );
+
   const onLeftRangeInput = useCallback(
     (leftRangeValue: string) => {
       const price = tryParsePrice(baseCurrency?.wrapped, quoteCurrency?.wrapped, leftRangeValue);
-      const token0Price = invertPrice ? price?.invert() : price;
       if (!invertPrice) {
-        return setPriceLower(token0Price);
+        return saveSetPriceLower(price);
       }
-      return setPriceUpper(token0Price);
+      return saveSetPriceUpper(price?.invert());
     },
-    [invertPrice, baseCurrency, quoteCurrency]
+    [baseCurrency, quoteCurrency, invertPrice, saveSetPriceUpper, saveSetPriceLower]
   );
 
   const onRightRangeInput = useCallback(
     (rightRangeValue: string) => {
       const price = tryParsePrice(baseCurrency?.wrapped, quoteCurrency?.wrapped, rightRangeValue);
-      const token0Price = invertPrice ? price?.invert() : price;
       if (!invertPrice) {
-        return setPriceUpper(token0Price);
+        return saveSetPriceUpper(price);
       }
-      return setPriceLower(token0Price);
+      return saveSetPriceLower(price?.invert());
     },
-    [invertPrice, baseCurrency, quoteCurrency]
+    [baseCurrency, quoteCurrency, invertPrice, saveSetPriceUpper, saveSetPriceLower]
   );
 
   useEffect(() => setPriceLower(initialPriceLower), [initialPriceLower]);
