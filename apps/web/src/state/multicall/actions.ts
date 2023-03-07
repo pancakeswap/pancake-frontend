@@ -33,6 +33,10 @@ export interface ListenerOptions {
   readonly blocksPerFetch?: number
 }
 
+export interface ListenerOptionsWithGas extends ListenerOptions {
+  readonly gasRequired?: number
+}
+
 export const addMulticallListeners = createAction<{ chainId: number; calls: Call[]; options?: ListenerOptions }>(
   'multicall/addMulticallListeners',
 )

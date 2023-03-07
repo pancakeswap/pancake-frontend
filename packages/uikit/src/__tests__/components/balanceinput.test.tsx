@@ -423,7 +423,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
     }
 
     .c10 {
-      padding: 0;
+      padding: 2px;
       width: 32px;
     }
 

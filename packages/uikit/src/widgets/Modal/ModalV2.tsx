@@ -1,5 +1,5 @@
 import { AnimatePresence, domMax, LazyMotion } from "framer-motion";
-import React, { useRef } from "react";
+import React, { createContext, useRef } from "react";
 import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
 import { Overlay } from "../../components/Overlay";
@@ -14,6 +14,10 @@ export interface ModalV2Props {
   children?: React.ReactNode;
 }
 
+export const ModalV2Context = createContext<{
+  onDismiss?: () => void;
+}>({});
+
 export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...props }: ModalV2Props & BoxProps) {
   const animationRef = useRef<HTMLDivElement>(null);
 
@@ -26,24 +30,26 @@ export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...p
 
   if (portal) {
     return createPortal(
-      <LazyMotion features={domMax}>
-        <AnimatePresence>
-          {isOpen && (
-            <StyledModalWrapper
-              ref={animationRef}
-              // @ts-ignore
-              onAnimationStart={() => animationHandler(animationRef.current)}
-              {...animationMap}
-              variants={animationVariants}
-              transition={{ duration: 0.3 }}
-              {...props}
-            >
-              <Overlay onClick={handleOverlayDismiss} />
-              {children}
-            </StyledModalWrapper>
-          )}
-        </AnimatePresence>
-      </LazyMotion>,
+      <ModalV2Context.Provider value={{ onDismiss }}>
+        <LazyMotion features={domMax}>
+          <AnimatePresence>
+            {isOpen && (
+              <StyledModalWrapper
+                ref={animationRef}
+                // @ts-ignore
+                onAnimationStart={() => animationHandler(animationRef.current)}
+                {...animationMap}
+                variants={animationVariants}
+                transition={{ duration: 0.3 }}
+                {...props}
+              >
+                <Overlay onClick={handleOverlayDismiss} />
+                {children}
+              </StyledModalWrapper>
+            )}
+          </AnimatePresence>
+        </LazyMotion>
+      </ModalV2Context.Provider>,
       portal
     );
   }

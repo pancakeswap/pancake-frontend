@@ -1,5 +1,15 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+
+export const farmsV3 = [
+  {
+    pid: 1,
+    lpSymbol: 'CAKE-BUSD LP',
+    lpAddress: '0xE8F08f0365b2875DbcF264A762B981bA3d612aEc',
+    token: bscTestnetTokens.mockB,
+    quoteToken: bscTestnetTokens.mockA,
+  },
+] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
   /**
@@ -41,6 +51,8 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTestnetTokens.usdc, // coins[1]
     stableSwapAddress: '0xd5E56CD4c8111643a94Ee084df31F44055a1EC9F',
     infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
   },
   {
     pid: 11,
@@ -50,6 +62,8 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTestnetTokens.mockBusd, // coins[1]
     stableSwapAddress: '0xc418d68751Cbe0407C8fdd90Cde73cE95b892f39',
     infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
   },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 

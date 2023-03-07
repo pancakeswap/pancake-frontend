@@ -13,6 +13,7 @@ const Card = styled(Box)<{
   border-radius: ${({ borderRadius }) => borderRadius ?? '16px'};
   background-color: ${({ theme }) => theme.colors.background};
 `
+
 export default Card
 
 export const LightCard = styled(Card)`
@@ -27,4 +28,9 @@ export const LightGreyCard = styled(Card)`
 
 export const GreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.dropdown};
+`
+
+export const LightTertiaryCard = styled(Card)`
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.tertiary};
 `

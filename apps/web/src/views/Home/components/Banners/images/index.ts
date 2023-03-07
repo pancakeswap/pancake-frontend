@@ -13,6 +13,8 @@ import Aptos from './Aptos.png'
 import AptosXPancakeSwap from './AptosXPancakeSwap.png'
 import trustwalletBg from './trustwalletBg.png'
 import trustwalletBunny from './trustwalletBunny.png'
+import farmV3MigrationBunny from './farmV3MigrationBunny.png'
+import farmV3MigrationMobileBunny from './farmV3MigrationMobileBunny.png'
 
 export {
   lotteryImage,
@@ -30,4 +32,6 @@ export {
   AptosXPancakeSwap,
   trustwalletBg,
   trustwalletBunny,
+  farmV3MigrationBunny,
+  farmV3MigrationMobileBunny,
 }

@@ -5,6 +5,7 @@ import CompetitionBanner from '../CompetitionBanner'
 import IFOBanner from '../IFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
 import TrustWalletCampaignBanner from '../TrustWalletCampaignBanner'
+import FarmV3MigrationBanner from '../FarmV3MigrationBanner'
 import useIsRenderCompetitionBanner from './useIsRenderCompetitionBanner'
 import useIsRenderIfoBanner from './useIsRenderIFOBanner'
 import useIsRenderTrustWalletCampaignBanner from './useIsRenderTrustWalletCampaignBanner'
@@ -33,6 +34,7 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
+      { shouldRender: true, banner: <FarmV3MigrationBanner /> },
       { shouldRender: isRenderTrustWalletCampaignBanner, banner: <TrustWalletCampaignBanner /> },
       { shouldRender: true, banner: <AptosBanner /> },
       {
