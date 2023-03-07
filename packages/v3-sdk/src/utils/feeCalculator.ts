@@ -5,7 +5,7 @@ import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
 import { TickMath } from './tickMath'
 import { PositionMath } from './positionMath'
 import { TICK_SPACINGS, FeeAmount } from '../constants'
-import { ONE_HUNDRED_PERCENT, MAX_FEE } from '../internalConstants'
+import { ONE_HUNDRED_PERCENT, MAX_FEE, ZERO_PERCENT } from '../internalConstants'
 import { Tick } from '../entities'
 import { TickList } from './tickList'
 
@@ -40,11 +40,24 @@ interface EstimateFeeOptions {
 
   // Proportion of time in future 24 hours when price staying inside given tick range
   insidePercentage?: Percent
+
+  // Proportion of protocol fee
+  protocolFee?: Percent
 }
 
-export function getEstimatedLPFee(options: EstimateFeeOptions) {
+export function getEstimatedLPFeeWithProtocolFee(options: EstimateFeeOptions) {
   try {
     return tryGetEstimatedLPFee(options)
+  } catch (e) {
+    console.error(e)
+    return new Fraction(ZERO)
+  }
+}
+
+export function getEstimatedLPFee({ protocolFee = ZERO_PERCENT, ...rest }: EstimateFeeOptions) {
+  try {
+    const fee = tryGetEstimatedLPFee(rest)
+    return ONE_HUNDRED_PERCENT.subtract(protocolFee).multiply(fee).asFraction
   } catch (e) {
     console.error(e)
     return new Fraction(ZERO)

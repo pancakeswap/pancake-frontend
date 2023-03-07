@@ -12,4 +12,5 @@ export const Q192 = JSBI.exponentiate(Q96, JSBI.BigInt(2))
 // used in fee calculation
 export const MAX_FEE = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(6))
 export const ONE_HUNDRED_PERCENT = new Percent('1')
+export const ZERO_PERCENT = new Percent('0')
 export const Q128 = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(128))
