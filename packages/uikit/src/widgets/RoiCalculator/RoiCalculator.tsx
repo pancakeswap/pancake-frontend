@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token } from "@pancakeswap/sdk";
-import { FeeAmount, TickMath } from "@pancakeswap/v3-sdk";
+import { FeeAmount, Tick, TickMath } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo } from "react";
 
@@ -8,7 +8,7 @@ import { LiquidityChartRangeInput, CurrencyInput, Box } from "../../components";
 import { DynamicSection, Section } from "./DynamicSection";
 import { RangeSelector } from "./RangeSelector";
 import { StakeSpan } from "./StakeSpan";
-import { usePriceRange, useRangeHopCallbacks, useAmounts } from "./hooks";
+import { usePriceRange, useRangeHopCallbacks, useAmounts, useFee24h } from "./hooks";
 import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
 import { RoiRate } from "./RoiRate";
@@ -27,25 +27,38 @@ interface Props {
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
   priceUpper?: Price<Token, Token>;
+
+  // Average 24h historical trading volume in USD
+  volume24H?: number;
 }
 
 // Price is always price of token0
 export function RoiCalculator({
   sqrtRatioX96,
   liquidity,
-  independentAmount,
+  independentAmount: initialIndependentAmount,
   currencyA,
   currencyB,
   balanceA,
   balanceB,
   feeAmount,
-  ticks,
+  ticks: ticksRaw,
   ticksAtLimit = {},
   price,
   priceLower,
   priceUpper,
+  volume24H,
 }: Props) {
   const { t } = useTranslation();
+  const ticks = useMemo(
+    () =>
+      ticksRaw?.map(
+        ({ tick, liquidityNet }) =>
+          new Tick({ index: parseInt(String(tick)), liquidityNet, liquidityGross: liquidityNet })
+      ),
+    [ticksRaw]
+  );
+
   const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
   const priceRange = usePriceRange({
     feeAmount,
@@ -62,13 +75,24 @@ export function RoiCalculator({
     priceRange?.tickUpper,
     tickCurrent
   );
-  const { valueA, valueB, onChange } = useAmounts({
-    independentAmount,
+  const { valueA, valueB, onChange, independentAmount, dependentCurrency } = useAmounts({
+    independentAmount: initialIndependentAmount,
     currencyA,
     currencyB,
     tickLower: priceRange?.tickLower,
     tickUpper: priceRange?.tickUpper,
     sqrtRatioX96,
+  });
+
+  const fee = useFee24h({
+    amount: independentAmount,
+    currency: dependentCurrency,
+    tickLower: priceRange?.tickLower,
+    tickUpper: priceRange?.tickUpper,
+    volume24H,
+    sqrtRatioX96,
+    ticks,
+    fee: feeAmount,
   });
 
   const onCurrencyAChange = useCallback((value: string) => onChange(value, currencyA), [currencyA, onChange]);
@@ -102,7 +126,7 @@ export function RoiCalculator({
           tickCurrent={tickCurrent}
           liquidity={liquidity}
           feeAmount={feeAmount}
-          ticks={ticks}
+          ticks={ticksRaw}
           ticksAtLimit={ticksAtLimit}
           priceLower={priceRange?.priceLower}
           priceUpper={priceRange?.priceUpper}
@@ -133,7 +157,7 @@ export function RoiCalculator({
         <CompoundFrequency />
       </Section>
       <AnimatedArrow />
-      <RoiRate />
+      <RoiRate usdAmount={parseFloat(fee.toSignificant(6))} />
     </>
   );
 }

@@ -28,7 +28,7 @@ export function RoiRate({ usdAmount = 0, tokenAmount, rate }: Props) {
         </Text>
         <Flex justifyContent="space-between" mt="4px" height="36px">
           <>
-            <RoiDisplayContainer>
+            <RoiDisplayContainer alignItems="flex-end">
               {/* Dollar sign is separate cause its not supposed to scroll with a number if number is huge */}
               <Text fontSize="24px" bold>
                 $
@@ -39,6 +39,22 @@ export function RoiRate({ usdAmount = 0, tokenAmount, rate }: Props) {
                   maximumFractionDigits: usdAmount > MILLION ? 0 : 2,
                 })}
               </RoiDollarAmount>
+              <Text
+                fontSize="16px"
+                color="textSubtle"
+                ml="6px"
+                mb="4px"
+                display="inline-block"
+                maxWidth="100%"
+                style={{ lineBreak: "anywhere" }}
+              >
+                (
+                {Number.parseFloat(rate?.toSignificant(6) || "0").toLocaleString("en", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+                %)
+              </Text>
             </RoiDisplayContainer>
             <IconButton scale="sm" variant="text">
               <PencilIcon color="primary" />
@@ -47,21 +63,6 @@ export function RoiRate({ usdAmount = 0, tokenAmount, rate }: Props) {
         </Flex>
         <Text fontSize="12px" color="textSubtle">
           ~ {tokenAmount?.toSignificant(6)} {tokenAmount?.currency.symbol}
-          <Text
-            fontSize="12px"
-            color="textSubtle"
-            ml="3px"
-            display="inline-block"
-            maxWidth="100%"
-            style={{ lineBreak: "anywhere" }}
-          >
-            (
-            {Number.parseFloat(rate?.toSignificant(6) || "0").toLocaleString("en", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}
-            %)
-          </Text>
         </Text>
       </RoiCardInner>
     </RoiCardWrapper>

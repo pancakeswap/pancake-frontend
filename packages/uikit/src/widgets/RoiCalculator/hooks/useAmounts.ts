@@ -12,10 +12,17 @@ interface Params {
   sqrtRatioX96?: JSBI;
 }
 
-export function useAmounts({ independentAmount, currencyA, currencyB, tickLower, tickUpper, sqrtRatioX96 }: Params) {
+export function useAmounts({
+  independentAmount: initialIndependentAmount,
+  currencyA,
+  currencyB,
+  tickLower,
+  tickUpper,
+  sqrtRatioX96,
+}: Params) {
   const [independentField, setIndependentField] = useState({
-    value: independentAmount?.toSignificant(6) || "0",
-    currency: independentAmount?.currency,
+    value: initialIndependentAmount?.toSignificant(6) || "0",
+    currency: initialIndependentAmount?.currency,
   });
 
   const amounts = useMemo(() => {
@@ -65,13 +72,13 @@ export function useAmounts({ independentAmount, currencyA, currencyB, tickLower,
   }, []);
 
   useEffect(() => {
-    if (independentAmount) {
+    if (initialIndependentAmount) {
       setIndependentField({
-        value: independentAmount.toSignificant(6),
-        currency: independentAmount.currency,
+        value: initialIndependentAmount.toSignificant(6),
+        currency: initialIndependentAmount.currency,
       });
     }
-  }, [independentAmount]);
+  }, [initialIndependentAmount]);
 
   const [amountA, amountB] = amounts;
   const { value, currency } = independentField;
@@ -80,6 +87,8 @@ export function useAmounts({ independentAmount, currencyA, currencyB, tickLower,
     amountB,
     valueA: currencyA && currency?.equals(currencyA) ? value : amountA?.toSignificant(6) || "0",
     valueB: currencyB && currency?.equals(currencyB) ? value : amountB?.toSignificant(6) || "0",
+    independentAmount: currencyA && currencyB && currency?.equals(currencyA) ? amountA : amountB,
+    dependentCurrency: currencyA && currencyB && currency?.equals(currencyA) ? currencyB : currencyA,
     onChange,
   };
 }

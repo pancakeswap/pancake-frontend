@@ -30,6 +30,7 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           liquidity={JSBI.BigInt("3799256509904881797")}
           feeAmount={FeeAmount.MEDIUM}
           ticks={mockData}
+          volume24H={1_000_000}
           priceLower={
             new Price({
               baseAmount: CurrencyAmount.fromRawAmount(bscTokens.usdt, "15671741929954778"),

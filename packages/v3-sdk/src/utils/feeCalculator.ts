@@ -79,6 +79,11 @@ function tryGetEstimatedLPFee({
   invariant(!Number.isNaN(fee) && fee >= 0, 'INVALID_FEE')
   TickList.validateList(ticks, tickSpacing)
 
+  const tickCurrent = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
+  if (tickCurrent < tickLower || tickCurrent > tickUpper) {
+    return new Fraction(ZERO)
+  }
+
   const liquidity = FeeCalculator.getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
   const liquidityInRange = FeeCalculator.getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96)
 
