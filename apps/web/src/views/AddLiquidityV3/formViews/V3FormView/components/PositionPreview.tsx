@@ -1,8 +1,8 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { AutoColumn, RowBetween, RowFixed, Text } from '@pancakeswap/uikit'
+import { AutoColumn, RowBetween, RowFixed, Text, Heading } from '@pancakeswap/uikit'
 import { Position } from '@pancakeswap/v3-sdk'
-import { LightCard } from 'components/Card'
+import { LightGreyCard } from 'components/Card'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import CurrencyLogo from 'components/Logo/CurrencyLogo'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
@@ -10,6 +10,9 @@ import JSBI from 'jsbi'
 import { ReactNode, useState, useCallback } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { Bound } from 'config/constants/types'
+import Divider from 'components/Divider'
+import { RangePriceSection } from 'components/RangePriceSection'
+import { formatPrice } from 'utils/formatCurrencyAmount'
 import RangeTag from './RangeTag'
 import RateToggle from './RateToggle'
 
@@ -63,19 +66,19 @@ export const PositionPreview = ({
       <RowBetween style={{ marginBottom: '0.5rem' }}>
         <RowFixed>
           <DoubleCurrencyLogo currency0={currency0 ?? undefined} currency1={currency1 ?? undefined} size={24} />
-          <Text ml="10px" fontSize="24px">
+          <Heading as="h2" ml="4px">
             {currency0?.symbol} / {currency1?.symbol}
-          </Text>
+          </Heading>
         </RowFixed>
         <RangeTag removed={removed} outOfRange={!inRange} />
       </RowBetween>
 
-      <LightCard>
-        <AutoColumn gap="md">
+      <LightGreyCard>
+        <AutoColumn gap="sm">
           <RowBetween>
             <RowFixed>
               <CurrencyLogo currency={currency0} />
-              <Text ml="8px">{currency0?.symbol}</Text>
+              <Text ml="4px">{currency0?.symbol}</Text>
             </RowFixed>
             <RowFixed>
               <Text mr="8px">{position.amount0.toSignificant(4)}</Text>
@@ -84,63 +87,54 @@ export const PositionPreview = ({
           <RowBetween>
             <RowFixed>
               <CurrencyLogo currency={currency1} />
-              <Text ml="8px">{currency1?.symbol}</Text>
+              <Text ml="4px">{currency1?.symbol}</Text>
             </RowFixed>
             <RowFixed>
               <Text mr="8px">{position.amount1.toSignificant(4)}</Text>
             </RowFixed>
           </RowBetween>
+          <Divider />
           <RowBetween>
-            <Text>Fee Tier</Text>
+            <Text color="textSubtle">Fee Tier</Text>
             <Text>{position?.pool?.fee / 10000}%</Text>
           </RowBetween>
         </AutoColumn>
-      </LightCard>
+      </LightGreyCard>
 
       <AutoColumn gap="md">
         <RowBetween>
-          {title ? <Text>{title}</Text> : <div />}
+          {title ? (
+            <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
+              {title}
+            </Text>
+          ) : (
+            <div />
+          )}
           <RateToggle currencyA={sorted ? currency0 : currency1} handleRateToggle={handleRateChange} />
         </RowBetween>
 
-        <RowBetween>{title ? <Text>{title}</Text> : <div />}</RowBetween>
-
         <RowBetween>
-          <LightCard width="48%" padding="8px">
-            <AutoColumn gap="4px" justify="center">
-              <Text fontSize="12px">Min Price</Text>
-              <Text textAlign="center">{`${formatTickPrice(priceLower, ticksAtLimit, Bound.LOWER, locale)}`}</Text>
-              <Text textAlign="center" fontSize="12px">
-                {quoteCurrency.symbol} per {baseCurrency.symbol}
-              </Text>
-              <Text textAlign="center">
-                Your position will be 100% composed of {baseCurrency?.symbol} at this price
-              </Text>
-            </AutoColumn>
-          </LightCard>
-
-          <LightCard width="48%" padding="8px">
-            <AutoColumn gap="4px" justify="center">
-              <Text fontSize="12px">Max Price</Text>
-              <Text textAlign="center">{`${formatTickPrice(priceUpper, ticksAtLimit, Bound.UPPER, locale)}`}</Text>
-              <Text textAlign="center" fontSize="12px">
-                {quoteCurrency.symbol} per {baseCurrency.symbol}
-              </Text>
-              <Text textAlign="center">
-                Your position will be 100% composed of {quoteCurrency?.symbol} at this price
-              </Text>
-            </AutoColumn>
-          </LightCard>
+          <RangePriceSection
+            width="48%"
+            title="Min Price"
+            currency0={quoteCurrency}
+            currency1={baseCurrency}
+            price={formatTickPrice(priceLower, ticksAtLimit, Bound.LOWER, locale)}
+          />
+          <RangePriceSection
+            width="48%"
+            title="Max Price"
+            currency0={quoteCurrency}
+            currency1={baseCurrency}
+            price={formatTickPrice(priceUpper, ticksAtLimit, Bound.UPPER, locale)}
+          />
         </RowBetween>
-        <LightCard padding="12px ">
-          <AutoColumn gap="4px" justify="center">
-            <Text fontSize="12px">Current price</Text>
-            <Text>{`${price.toSignificant(5)} `}</Text>
-            <Text textAlign="center" fontSize="12px">
-              {quoteCurrency.symbol} per {baseCurrency.symbol}
-            </Text>
-          </AutoColumn>
-        </LightCard>
+        <RangePriceSection
+          title="Current price"
+          currency0={quoteCurrency}
+          currency1={baseCurrency}
+          price={formatPrice(price, 5, locale)}
+        />
       </AutoColumn>
     </AutoColumn>
   )

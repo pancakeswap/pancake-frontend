@@ -39,6 +39,7 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
+import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
 
 interface AddLiquidityV3PropsType {
   currencyA: Currency
@@ -304,7 +305,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       <BodyWrapper>
         <AppHeader
           backTo={`/liquidity/${tokenId}`}
-          title={t('Add %assetA%-%assetB% liquidity', {
+          title={t('Add %assetA%-%assetB% Liquidity', {
             assetA: currencies[Field.CURRENCY_A]?.symbol ?? '',
             assetB: currencies[Field.CURRENCY_B]?.symbol ?? '',
           })}
@@ -321,30 +322,34 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
               />
             )}
             <Box mt="16px">
-              <CurrencyInputPanel
-                disableCurrencySelect
-                // showBUSD
-                value={formattedAmounts[Field.CURRENCY_A]}
-                onUserInput={onFieldAInput}
-                showQuickInputButton
-                showMaxButton
-                currency={currencies[Field.CURRENCY_A]}
-                id="add-liquidity-input-tokenb"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
-              <CurrencyInputPanel
-                disableCurrencySelect
-                // showBUSD
-                value={formattedAmounts[Field.CURRENCY_B]}
-                onUserInput={onFieldBInput}
-                showQuickInputButton
-                showMaxButton
-                currency={currencies[Field.CURRENCY_B]}
-                id="add-liquidity-input-tokenb"
-                showCommonBases
-                commonBasesType={CommonBasesType.LIQUIDITY}
-              />
+              <LockedDeposit locked={depositADisabled} mb="8px">
+                <CurrencyInputPanel
+                  disableCurrencySelect
+                  // showBUSD
+                  value={formattedAmounts[Field.CURRENCY_A]}
+                  onUserInput={onFieldAInput}
+                  showQuickInputButton
+                  showMaxButton
+                  currency={currencies[Field.CURRENCY_A]}
+                  id="add-liquidity-input-tokena"
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                />
+              </LockedDeposit>
+              <LockedDeposit locked={depositBDisabled} mt="8px">
+                <CurrencyInputPanel
+                  disableCurrencySelect
+                  // showBUSD
+                  value={formattedAmounts[Field.CURRENCY_B]}
+                  onUserInput={onFieldBInput}
+                  showQuickInputButton
+                  showMaxButton
+                  currency={currencies[Field.CURRENCY_B]}
+                  id="add-liquidity-input-tokenb"
+                  showCommonBases
+                  commonBasesType={CommonBasesType.LIQUIDITY}
+                />
+              </LockedDeposit>
             </Box>
           </Box>
           <AutoColumn

@@ -40,6 +40,7 @@ import { useSigner } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { LightGreyCard } from 'components/Card'
+import { RangePriceSection } from 'components/RangePriceSection'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -84,35 +85,35 @@ const useInverter = ({
   }
 }
 
-function getRatio(
-  lower: Price<Currency, Currency>,
-  current: Price<Currency, Currency>,
-  upper: Price<Currency, Currency>,
-) {
-  try {
-    if (!current.greaterThan(lower)) {
-      return 100
-    }
+// function getRatio(
+//   lower: Price<Currency, Currency>,
+//   current: Price<Currency, Currency>,
+//   upper: Price<Currency, Currency>,
+// ) {
+//   try {
+//     if (!current.greaterThan(lower)) {
+//       return 100
+//     }
 
-    if (!current.lessThan(upper)) {
-      return 0
-    }
+//     if (!current.lessThan(upper)) {
+//       return 0
+//     }
 
-    const a = Number.parseFloat(lower.toSignificant(15))
-    const b = Number.parseFloat(upper.toSignificant(15))
-    const c = Number.parseFloat(current.toSignificant(15))
+//     const a = Number.parseFloat(lower.toSignificant(15))
+//     const b = Number.parseFloat(upper.toSignificant(15))
+//     const c = Number.parseFloat(current.toSignificant(15))
 
-    const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
+//     const ratio = Math.floor((1 / ((Math.sqrt(a * b) - Math.sqrt(b * c)) / (c - Math.sqrt(b * c)) + 1)) * 100)
 
-    if (ratio < 0 || ratio > 100) {
-      throw Error('Out of range')
-    }
+//     if (ratio < 0 || ratio > 100) {
+//       throw Error('Out of range')
+//     }
 
-    return ratio
-  } catch {
-    return undefined
-  }
-}
+//     return ratio
+//   } catch {
+//     return undefined
+//   }
+// }
 
 export default function PoolPage() {
   const {
@@ -182,15 +183,15 @@ export default function PoolPage() {
   const currencyQuote = inverted ? currency0 : currency1
   const currencyBase = inverted ? currency1 : currency0
 
-  const ratio = useMemo(() => {
-    return priceLower && pool && priceUpper
-      ? getRatio(
-          inverted ? priceUpper.invert() : priceLower,
-          pool.token0Price,
-          inverted ? priceLower.invert() : priceUpper,
-        )
-      : undefined
-  }, [inverted, pool, priceLower, priceUpper])
+  // const ratio = useMemo(() => {
+  //   return priceLower && pool && priceUpper
+  //     ? getRatio(
+  //         inverted ? priceUpper.invert() : priceLower,
+  //         pool.token0Price,
+  //         inverted ? priceLower.invert() : priceUpper,
+  //       )
+  //     : undefined
+  // }, [inverted, pool, priceLower, priceUpper])
 
   // fees
   const [feeValue0, feeValue1] = useV3PositionFees(pool ?? undefined, positionDetails?.tokenId, receiveWETH)
@@ -391,11 +392,13 @@ export default function PoolPage() {
                 >
                   <Button width="100%">Add</Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                  <Button ml="16px" variant="secondary" width="100%">
-                    Remove
-                  </Button>
-                </NextLinkFromReactRouter>
+                {!removed && (
+                  <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
+                    <Button ml="16px" variant="secondary" width="100%">
+                      Remove
+                    </Button>
+                  </NextLinkFromReactRouter>
+                )}
               </>
             )
           }
@@ -515,47 +518,31 @@ export default function PoolPage() {
           </AutoRow>
           <AutoRow mb="8px">
             <Flex alignItems="center" justifyContent="space-between" width="100%">
-              <LightGreyCard
+              <RangePriceSection
                 mr="4px"
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                <Text fontSize="14px" color="secondary" bold textTransform="uppercase" mb="4px">
-                  MIN PRICE
-                </Text>
-                <Heading mb="4px">{formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}</Heading>
-                <Text fontSize="14px" color="textSubtle">
-                  {currencyQuote?.symbol} per {currencyBase?.symbol}
-                </Text>
-              </LightGreyCard>
+                title="MIN PRICE"
+                price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
+                currency0={currencyQuote}
+                currency1={currencyBase}
+              />
+
               <SyncAltIcon width="24px" mx="8px" />
-              <LightGreyCard
+              <RangePriceSection
                 ml="4px"
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                <Text fontSize="14px" color="secondary" bold textTransform="uppercase" mb="4px">
-                  MAX PRICE
-                </Text>
-                <Heading mb="4px">{formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}</Heading>
-                <Text fontSize="14px" color="textSubtle">
-                  {currencyQuote?.symbol} per {currencyBase?.symbol}
-                </Text>
-              </LightGreyCard>
+                title="MAX PRICE"
+                price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
+                currency0={currencyQuote}
+                currency1={currencyBase}
+              />
             </Flex>
           </AutoRow>
           {pool && currencyQuote && currencyBase ? (
-            <LightGreyCard style={{ textAlign: 'center' }}>
-              <Text fontSize="14px" color="secondary" bold textTransform="uppercase" mb="4px">
-                CURRENT PRICE
-              </Text>
-              <Heading mb="4px">{(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}</Heading>
-              <Text fontSize="14px" color="textSubtle" bld>
-                {currencyQuote?.symbol} per {currencyBase?.symbol}
-              </Text>
-            </LightGreyCard>
+            <RangePriceSection
+              title="CURRENT PRICE"
+              currency0={currencyQuote}
+              currency1={currencyBase}
+              price={(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}
+            />
           ) : null}
         </CardBody>
       </BodyWrapper>
