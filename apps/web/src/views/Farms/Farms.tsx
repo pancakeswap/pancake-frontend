@@ -162,10 +162,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { chainId } = useActiveChainId()
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
 
-  // const res = useFarmsV3WithPositions()
-
-  // console.log('res: ', res)
-
   const cakePrice = usePriceCakeBusd()
 
   const [_query, setQuery] = useState('')
@@ -358,6 +354,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const handleSortOptionChange = (option: OptionProps): void => {
     setSortOption(option.value)
   }
+
+  // const farmV3 = useFarmsV3WithPositions()
 
   const providerValue = useMemo(() => ({ chosenFarmsMemoized }), [chosenFarmsMemoized])
 

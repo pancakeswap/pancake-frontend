@@ -1,7 +1,7 @@
 import { BigintIsh, CurrencyAmount, Price, Token } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
-import { FACTORY_ADDRESSES, FACTORY_ADDRESS, FeeAmount, TICK_SPACINGS } from '../constants'
+import { FACTORY_ADDRESS, FeeAmount, TICK_SPACINGS, DEPLOYER_ADDRESSES } from '../constants'
 import { NEGATIVE_ONE, ONE, Q192, ZERO } from '../internalConstants'
 import { computePoolAddress } from '../utils/computePoolAddress'
 import { LiquidityMath } from '../utils/liquidityMath'
@@ -56,7 +56,7 @@ export class Pool {
     factoryAddressOverride?: string
   ): string {
     return computePoolAddress({
-      factoryAddress: factoryAddressOverride ?? FACTORY_ADDRESSES[tokenA.chainId] ?? FACTORY_ADDRESS,
+      factoryAddress: factoryAddressOverride ?? DEPLOYER_ADDRESSES[tokenA.chainId] ?? FACTORY_ADDRESS,
       fee,
       tokenA,
       tokenB,

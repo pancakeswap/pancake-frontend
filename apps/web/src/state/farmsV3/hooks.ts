@@ -122,5 +122,6 @@ export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): SerializedFa
 
 export function useFarmsV3WithPositions(): SerializedFarmV3[] {
   const { farmsWithPrice } = useFarmsV3()
+
   return usePositionsByUser(farmsWithPrice)
 }
