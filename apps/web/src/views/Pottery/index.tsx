@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { PageMeta } from 'components/Layout/Page'
 import { Box } from '@pancakeswap/uikit'
 import { usePotteryFetch } from 'state/pottery/hook'
 import Banner from 'views/Pottery/components/Banner/index'
@@ -24,7 +23,6 @@ const Pottery: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <Box position="relative">
-      <PageMeta />
       <Banner handleScroll={handleScroll} />
       <Box ref={potWrapperEl}>
         <Pot />

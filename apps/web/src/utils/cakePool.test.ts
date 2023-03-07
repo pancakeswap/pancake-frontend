@@ -1,11 +1,11 @@
 import BigNumber from 'bignumber.js'
 import { UNLOCK_FREE_DURATION, BOOST_WEIGHT, DURATION_FACTOR, MAX_LOCK_DURATION } from 'config/constants/pools'
 import { addWeeks, addDays } from 'date-fns'
-import { vi } from 'vitest'
+import { vi, describe, it } from 'vitest'
 import { VaultPosition, getVaultPosition } from './cakePool'
 import { getCakeVaultV2Contract } from './contractHelpers'
 
-describe('cakePool', () => {
+describe.concurrent('cakePool', () => {
   it.each([
     ['BOOST_WEIGHT', BOOST_WEIGHT],
     ['UNLOCK_FREE_DURATION', UNLOCK_FREE_DURATION],

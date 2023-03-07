@@ -1,19 +1,31 @@
-import { Currency, CurrencyAmount, Pair, Percent, Price, Trade, TradeType } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, ERC20Token, Pair, Percent, Price, Trade, TradeType, JSBI } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
 
 import { RouteType, RouteWithStableSwap, StableSwapFeeRaw, StableSwapPair, StableSwapFeePercent } from '../types'
 import { BasePair } from '../types/pair'
 import { getOutputToken } from '../utils/pair'
 
-export function createStableSwapPair(pair: Omit<BasePair, 'involvesToken'>, stableSwapAddress = ''): StableSwapPair {
+export function createStableSwapPair(
+  pair: Omit<BasePair, 'involvesToken'>,
+  stableSwapAddress = '',
+  lpAddress = '',
+  infoStableSwapAddress = '',
+  stableLpFee = 0,
+  stableLpFeeRateOfTotalFee = 0,
+): StableSwapPair {
   return {
     ...pair,
     stableSwapAddress,
+    lpAddress,
+    infoStableSwapAddress,
+    liquidityToken: new ERC20Token(pair.token0.chainId, lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
     // default price & fees are zero, need to get the actual price from chain
     price: new Price(pair.token0, pair.token1, '0', '1'),
     fee: new Percent(0),
     adminFee: new Percent(0),
     involvesToken: (token) => token.equals(pair.token0) || token.equals(pair.token1),
+    stableLpFee,
+    stableLpFeeRateOfTotalFee,
   }
 }
 
@@ -106,4 +118,23 @@ export function getFeePercent(
     fee: new Percent(inputFee.quotient, inputAmount.quotient),
     adminFee: new Percent(inputAdminFee.quotient, inputAmount.quotient),
   }
+}
+
+const PRECISION = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(18))
+
+export const getRawAmount = (amount: CurrencyAmount<Currency>) => {
+  return JSBI.divide(
+    JSBI.multiply(amount.quotient, PRECISION),
+    JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(amount.currency.decimals)),
+  )
+}
+
+export const parseAmount = (currency: Currency, rawAmount: JSBI) => {
+  return CurrencyAmount.fromRawAmount(
+    currency,
+    JSBI.divide(
+      JSBI.multiply(rawAmount, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(currency.decimals))),
+      PRECISION,
+    ),
+  )
 }

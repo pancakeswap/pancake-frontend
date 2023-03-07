@@ -14,6 +14,7 @@ import {
   useTooltip,
   NextLinkFromReactRouter,
   Link,
+  AutoColumn,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -31,7 +32,6 @@ import { currencyId } from '../../utils/currencyId'
 import { unwrappedToken } from '../../utils/wrappedCurrency'
 
 import { LightCard } from '../Card'
-import { AutoColumn } from '../Layout/Column'
 import CurrencyLogo from '../Logo/CurrencyLogo'
 import { DoubleCurrencyLogo } from '../Logo'
 import { RowBetween, RowFixed } from '../Layout/Row'

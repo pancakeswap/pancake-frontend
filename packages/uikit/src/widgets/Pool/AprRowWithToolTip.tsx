@@ -1,6 +1,8 @@
 import React, { ReactNode } from "react";
-import { Flex, TooltipText, useTooltip } from "@pancakeswap/uikit";
 import { useTranslation } from "@pancakeswap/localization";
+import { Flex } from "../../components/Box";
+import { TooltipText } from "../../components/Text";
+import { useTooltip } from "../../hooks";
 
 export const AprRowWithToolTip: React.FC<React.PropsWithChildren<{ questionTooltip?: ReactNode }>> = ({
   children,

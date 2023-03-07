@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Box, Card, Text } from '@pancakeswap/uikit'
+import { Box, Card, Text, IfoGenericIfoCard, BunnyKnownPlaceholder } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { PoolIds } from 'config/constants/types'
@@ -7,8 +7,6 @@ import { PoolIds } from 'config/constants/types'
 import { CardsWrapper } from './IfoCardStyles'
 import { StyledCardBody } from './IfoFoldableCard'
 import { cardConfig } from './IfoFoldableCard/IfoPoolCard'
-import GenericIfoCard from './IfoFoldableCard/GenericIfoCard'
-import BunnyKnownPlaceholder from './IfoFoldableCard/IfoPoolCard/Icons/BunnyKnownPlaceholder'
 
 const CurveBox = styled(Box)`
   border-bottom-left-radius: 100% 40px;
@@ -29,13 +27,7 @@ export default function ComingSoonSection() {
   //   [t],
   // )
 
-  const unlimitedConfig = useMemo(
-    () =>
-      cardConfig(t, PoolIds.poolUnlimited, {
-        version: 3.1,
-      }),
-    [t],
-  )
+  const unlimitedConfig = useMemo(() => cardConfig(t, PoolIds.poolUnlimited), [t])
 
   return (
     <Card
@@ -47,7 +39,7 @@ export default function ComingSoonSection() {
       <CurveBox height={[100, 110, 160, 160]} backgroundImage="url('/images/ifos/assets/ifo-coming-soon.png')" />
       <StyledCardBody>
         <CardsWrapper singleCard>
-          <GenericIfoCard
+          <IfoGenericIfoCard
             title={unlimitedConfig?.title}
             variant={unlimitedConfig?.variant}
             tooltip={unlimitedConfig?.tooltip}

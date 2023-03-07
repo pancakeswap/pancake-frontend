@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   Box,
   Button,
+  ExpertModal,
   Flex,
   InjectedModalProps,
   Input,
@@ -16,6 +17,7 @@ import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
 import { useTheme } from 'next-themes'
 import { useCallback, useState } from 'react'
 import { useAudioPlay, useUserSlippage } from 'state/user'
+import { useExpertMode, useUserExpertModeAcknowledgement } from 'state/user/expertMode'
 import { useUserSingleHopOnly } from 'state/user/singleHop'
 import styled from 'styled-components'
 
@@ -178,8 +180,30 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
 
   const { t } = useTranslation()
   const { resolvedTheme, setTheme } = useTheme()
+  const [expertMode, setExpertMode] = useExpertMode()
+  const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
+  const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgement()
 
   const isDark = resolvedTheme === 'dark'
+
+  const handleExpertModeToggle = () => {
+    if (expertMode || !showExpertModeAcknowledgement) {
+      setExpertMode((s) => !s)
+    } else {
+      setShowConfirmExpertModal(true)
+    }
+  }
+
+  if (showConfirmExpertModal) {
+    return (
+      <ExpertModal
+        setShowConfirmExpertModal={setShowConfirmExpertModal}
+        onDismiss={onDismiss}
+        toggleExpertMode={() => setExpertMode((s) => !s)}
+        setShowExpertModeAcknowledgement={setShowExpertModeAcknowledgement}
+      />
+    )
+  }
 
   return (
     <Modal
@@ -194,8 +218,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
           <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
         </Flex>
         <Flex pt="3px" flexDirection="column">
-          {/* TODO: aptos swap */}
-          {/* <Flex justifyContent="space-between" alignItems="center" mb="24px">
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>{t('Expert Mode')}</Text>
               <QuestionHelper
@@ -205,7 +228,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
               />
             </Flex>
             <Toggle id="toggle-expert-mode-button" scale="md" checked={expertMode} onChange={handleExpertModeToggle} />
-          </Flex> */}
+          </Flex>
           <SlippageSetting />
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">

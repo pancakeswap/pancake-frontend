@@ -10,6 +10,11 @@ export type SimulateTransactionArgs = {
   throwOnError?: boolean
   payload: Types.EntryFunctionPayload
   options?: Omit<Types.SubmitTransactionRequest, 'payload' | 'signature'>
+  query?: {
+    estimateGasUnitPrice?: boolean
+    estimateMaxGasAmount?: boolean
+    estimatePrioritizedGasUnitPrice: boolean
+  }
 }
 
 export type SimulateTransactionResult = Types.UserTransaction[]
@@ -19,6 +24,7 @@ export async function simulateTransaction({
   payload,
   throwOnError = true,
   options,
+  query,
 }: SimulateTransactionArgs): Promise<SimulateTransactionResult> {
   const { account } = getAccount()
   const provider = getProvider({ networkName })
@@ -51,6 +57,7 @@ export async function simulateTransaction({
       estimateGasUnitPrice: true,
       estimateMaxGasAmount: true,
       estimatePrioritizedGasUnitPrice: false,
+      ...query,
     },
   )
 

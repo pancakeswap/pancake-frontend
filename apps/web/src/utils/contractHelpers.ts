@@ -43,6 +43,8 @@ import {
   getNonBscVaultAddress,
   getCrossFarmingSenderAddress,
   getCrossFarmingReceiverAddress,
+  getMMLinkedPoolAddress,
+  getStableSwapNativeHelperAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -97,6 +99,8 @@ import nonBscVault from 'config/abi/nonBscVault.json'
 import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
 import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
 import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
+import mmLinkedPoolAbi from 'config/abi/mmLinkedPool.json'
+import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
 
 // Types
 import type {
@@ -147,6 +151,8 @@ import type {
   CrossFarmingSender,
   CrossFarmingReceiver,
   CrossFarmingProxy,
+  MmLinkedPool,
+  StableSwapNativeHelper,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -182,6 +188,9 @@ export const getIfoV2Contract = (address: string, signer?: Signer | Provider) =>
 }
 export const getIfoV3Contract = (address: string, signer?: Signer | Provider) => {
   return getContract({ abi: ifoV3Abi, address, signer })
+}
+export const getMMLinkedPoolContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({ abi: mmLinkedPoolAbi, address: getMMLinkedPoolAddress(chainId), signer }) as MmLinkedPool
 }
 export const getSouschefContract = (id: number, signer?: Signer | Provider) => {
   const config = poolsConfig.find((pool) => pool.sousId === id)
@@ -395,4 +404,13 @@ export const getCrossFarmingProxyContract = (
   chainId?: number,
 ) => {
   return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer }) as CrossFarmingProxy
+}
+
+export const getStableSwapNativeHelperContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: stableSwapNativeHelperAbi,
+    address: getStableSwapNativeHelperAddress(chainId),
+    chainId,
+    signer,
+  }) as StableSwapNativeHelper
 }

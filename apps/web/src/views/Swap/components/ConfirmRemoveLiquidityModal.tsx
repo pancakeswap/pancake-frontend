@@ -1,12 +1,16 @@
 import React, { useCallback } from 'react'
 import { Currency, CurrencyAmount, Pair, Percent, Token } from '@pancakeswap/sdk'
-import { AddIcon, Button, InjectedModalProps, Text } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import TransactionConfirmationModal, {
-  ConfirmationModalContent,
+import {
+  AddIcon,
+  Button,
+  InjectedModalProps,
+  Text,
   TransactionErrorContent,
-} from 'components/TransactionConfirmationModal'
-import { AutoColumn } from 'components/Layout/Column'
+  ConfirmationModalContent,
+  AutoColumn,
+} from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'

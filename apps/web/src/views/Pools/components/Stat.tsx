@@ -1,23 +1,12 @@
-import { Flex, Skeleton, Text, TooltipText, useTooltip, Balance, Pool } from '@pancakeswap/uikit'
+import { Flex, Text, TooltipText, useTooltip, Pool } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
-import { FC, ReactNode } from 'react'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { isLocked, isStaked } from 'utils/cakePool'
 import { Token } from '@pancakeswap/sdk'
 import useAvgLockDuration from './LockedPool/hooks/useAvgLockDuration'
 import Apr from './Apr'
 
-const StatWrapper: FC<React.PropsWithChildren<{ label: ReactNode }>> = ({ children, label }) => {
-  return (
-    <Flex mb="2px" justifyContent="space-between" alignItems="center" width="100%">
-      {label}
-      <Flex alignItems="center">{children}</Flex>
-    </Flex>
-  )
-}
-
-export const PerformanceFee: FC<
+export const PerformanceFee: React.FC<
   React.PropsWithChildren<{ userData?: Pool.DeserializedVaultUser; performanceFeeAsDecimal?: number }>
 > = ({ userData, performanceFeeAsDecimal }) => {
   const { t } = useTranslation()
@@ -34,7 +23,7 @@ export const PerformanceFee: FC<
   }
 
   return (
-    <StatWrapper
+    <Pool.StatWrapper
       label={
         <TooltipText ref={targetRef} small>
           {t('Performance Fee')}
@@ -45,27 +34,25 @@ export const PerformanceFee: FC<
       <Text ml="4px" small>
         {isStake ? `${performanceFeeAsDecimal}%` : `0~${performanceFeeAsDecimal}%`}
       </Text>
-    </StatWrapper>
+    </Pool.StatWrapper>
   )
 }
 
-const TotalToken = ({ total, token }: { total: BigNumber; token: Token }) => {
-  if (total && total.gte(0)) {
-    return <Balance small value={getBalanceNumber(total, token.decimals)} decimals={0} unit={` ${token.symbol}`} />
-  }
-  return <Skeleton width="90px" height="21px" />
-}
-
-export const TotalLocked: FC<React.PropsWithChildren<{ totalLocked: BigNumber; lockedToken: Token }>> = ({
+export const TotalLocked: React.FC<React.PropsWithChildren<{ totalLocked: BigNumber; lockedToken: Token }>> = ({
   totalLocked,
   lockedToken,
 }) => {
   const { t } = useTranslation()
 
   return (
-    <StatWrapper label={<Text small>{t('Total locked')}:</Text>}>
-      <TotalToken total={totalLocked} token={lockedToken} />
-    </StatWrapper>
+    <Pool.StatWrapper label={<Text small>{t('Total locked')}:</Text>}>
+      <Pool.TotalToken
+        total={totalLocked}
+        tokenDecimals={lockedToken.decimals}
+        decimalsToShow={0}
+        symbol={lockedToken.symbol}
+      />
+    </Pool.StatWrapper>
   )
 }
 
@@ -79,7 +66,7 @@ export const DurationAvg = () => {
   const { avgLockDurationsInWeeks } = useAvgLockDuration()
 
   return (
-    <StatWrapper
+    <Pool.StatWrapper
       label={
         <TooltipText ref={targetRef} small>
           {t('Average lock duration')}:
@@ -90,41 +77,13 @@ export const DurationAvg = () => {
       <Text ml="4px" small>
         {avgLockDurationsInWeeks}
       </Text>
-    </StatWrapper>
+    </Pool.StatWrapper>
   )
 }
 
-export const TotalStaked: FC<React.PropsWithChildren<{ totalStaked: BigNumber; stakingToken: Token }>> = ({
-  totalStaked,
-  stakingToken,
-}) => {
-  const { t } = useTranslation()
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    t('Total amount of %symbol% staked in this pool', { symbol: stakingToken.symbol }),
-    {
-      placement: 'bottom',
-    },
-  )
-
-  return (
-    <StatWrapper
-      label={
-        <TooltipText ref={targetRef} small>
-          {t('Total staked')}:
-        </TooltipText>
-      }
-    >
-      {tooltipVisible && tooltip}
-      <TotalToken total={totalStaked} token={stakingToken} />
-    </StatWrapper>
-  )
-}
-
-export const AprInfo: FC<React.PropsWithChildren<{ pool: Pool.DeserializedPool<Token>; stakedBalance: BigNumber }>> = ({
-  pool,
-  stakedBalance,
-}) => {
+export const AprInfo: React.FC<
+  React.PropsWithChildren<{ pool: Pool.DeserializedPool<Token>; stakedBalance: BigNumber }>
+> = ({ pool, stakedBalance }) => {
   const { t } = useTranslation()
   return (
     <Flex justifyContent="space-between" alignItems="center">

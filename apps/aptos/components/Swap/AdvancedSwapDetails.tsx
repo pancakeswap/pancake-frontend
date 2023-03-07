@@ -37,7 +37,7 @@ function TradeSummary({
               'Your transaction will revert if there is a large, unfavorable price movement before it is confirmed.',
             )}
             ml="4px"
-            placement="top-start"
+            placement="top"
           />
         </RowFixed>
         <RowFixed>
@@ -57,7 +57,7 @@ function TradeSummary({
           <QuestionHelper
             text={t('The difference between the market price and estimated price due to trade size.')}
             ml="4px"
-            placement="top-start"
+            placement="top"
           />
         </RowFixed>
         <FormattedPriceImpact priceImpact={priceImpactWithoutFee} />
@@ -78,7 +78,7 @@ function TradeSummary({
               </>
             }
             ml="4px"
-            placement="top-start"
+            placement="top"
           />
         </RowFixed>
         <Text fontSize="14px">

@@ -1,8 +1,17 @@
 import styled from 'styled-components'
-import { Button, Heading, Text, Flex, Link, Breadcrumbs, PageHeader, PageSection } from '@pancakeswap/uikit'
+import {
+  Button,
+  Heading,
+  Text,
+  Flex,
+  Link,
+  Breadcrumbs,
+  PageHeader,
+  PageSection,
+  OpenNewIcon,
+} from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { PageMeta } from 'components/Layout/Page'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import FAQs from './components/FAQs'
@@ -75,7 +84,6 @@ const FarmAuction = () => {
 
   return (
     <>
-      <PageMeta />
       <StyledHeader>
         <Breadcrumbs>
           <NextLink href="/" passHref>
@@ -109,6 +117,7 @@ const FarmAuction = () => {
                 <Text color="invertedContrast" bold fontSize="16px" mr="4px">
                   {t('Apply for a Farm/Pool')}
                 </Text>
+                <OpenNewIcon width="24px" color="invertedContrast" />
               </Button>
             </Link>
           </Left>

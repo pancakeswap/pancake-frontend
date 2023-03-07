@@ -1,3 +1,4 @@
+import { describe, it } from 'vitest'
 import generateTicketNumbers from 'views/Lottery/components/BuyTicketsModal/generateTicketNumbers'
 
 const withoutExistingNumbers = [
@@ -47,7 +48,7 @@ const withExistingTickets = [
   },
 ]
 
-describe('generateTicketNumbers', () => {
+describe.concurrent('generateTicketNumbers', () => {
   it(`generates 10 unique numbers between 0 & 9`, () => {
     const ticketsArray = generateTicketNumbers(10, null, 0, 9)
     const expectedNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]

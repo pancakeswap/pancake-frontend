@@ -1,6 +1,16 @@
 import { useRef, RefObject, useCallback, useState, useMemo } from 'react'
 import { Token } from '@pancakeswap/sdk'
-import { Text, Button, DeleteOutlineIcon, IconButton, BscScanIcon, Input, Link } from '@pancakeswap/uikit'
+import {
+  Text,
+  Button,
+  DeleteOutlineIcon,
+  IconButton,
+  BscScanIcon,
+  Input,
+  Link,
+  AutoColumn,
+  Column,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import Row, { RowBetween, RowFixed } from 'components/Layout/Row'
 import { useToken } from 'hooks/Tokens'
@@ -10,7 +20,6 @@ import { CurrencyLogo } from 'components/Logo'
 import { getBlockExploreLink, isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import Column, { AutoColumn } from '../Layout/Column'
 import ImportRow from './ImportRow'
 import { CurrencyModalView } from './types'
 

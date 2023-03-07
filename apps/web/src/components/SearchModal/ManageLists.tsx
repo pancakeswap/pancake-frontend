@@ -9,6 +9,8 @@ import {
   Text,
   Toggle,
   useTooltip,
+  AutoColumn,
+  Column,
 } from '@pancakeswap/uikit'
 import { TokenList, Version } from '@pancakeswap/token-lists'
 import Card from 'components/Card'
@@ -30,7 +32,6 @@ import { ChainId } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } from '../../state/lists/hooks'
 
-import Column, { AutoColumn } from '../Layout/Column'
 import Row, { RowBetween, RowFixed } from '../Layout/Row'
 import { CurrencyModalView } from './types'
 import { BAD_SRCS } from '../Logo/constants'

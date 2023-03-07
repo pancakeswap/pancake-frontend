@@ -1,16 +1,16 @@
 import { useMemo } from 'react'
-import { Flex, Box, Text } from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import { Flex, Box, Text, IfoProgressStepper, IfoVestingFooter } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Divider from 'components/Divider'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { PublicIfoData, WalletIfoData } from 'views/Ifos/types'
 import useIfoVesting from 'views/Ifos/hooks/useIfoVesting'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
-import ProgressStepper from './ProgressStepper'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import TotalPurchased from './TotalPurchased'
 import TotalAvailableClaim from './TotalAvailableClaim'
 import ReleasedTokenInfo from './ReleasedTokenInfo'
-import IfoVestingFooter from './IfoVestingFooter'
 import { ClaimButton } from '../ClaimButton'
 import VestingClaimButton from '../VestingClaimButton'
 
@@ -28,15 +28,16 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
   walletIfoData,
 }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { token } = ifo
   const userPool = walletIfoData[poolId]
+  const { vestingInformation } = publicIfoData[poolId]
 
-  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed, totalPurchased } =
-    useIfoVesting({
-      poolId,
-      publicIfoData,
-      walletIfoData,
-    })
+  const { amountReleased, amountInVesting, amountAvailableToClaim, amountAlreadyClaimed } = useIfoVesting({
+    poolId,
+    publicIfoData,
+    walletIfoData,
+  })
 
   const amountClaimed = useMemo(
     () =>
@@ -44,11 +45,21 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
     [token, amountAlreadyClaimed],
   )
 
+  const releaseRate = useMemo(() => {
+    const rate = new BigNumber(userPool.vestingAmountTotal).div(vestingInformation.duration)
+    return getFullDisplayBalance(rate, token.decimals, token.decimals)
+  }, [vestingInformation, userPool, token])
+
   return (
     <Flex flexDirection="column">
       <Box>
-        <ProgressStepper poolId={poolId} publicIfoData={publicIfoData} />
-        <TotalPurchased token={ifo.token} totalPurchased={totalPurchased} />
+        <IfoProgressStepper
+          vestingStartTime={publicIfoData.vestingStartTime || 0}
+          cliff={publicIfoData[poolId]?.vestingInformation?.cliff || 0}
+          duration={publicIfoData[poolId]?.vestingInformation?.duration || 0}
+          getNow={getNow}
+        />
+        <TotalPurchased ifo={ifo} poolId={poolId} walletIfoData={walletIfoData} />
         <ReleasedTokenInfo ifo={ifo} amountReleased={amountReleased} amountInVesting={amountInVesting} />
         <Divider />
         <TotalAvailableClaim ifo={ifo} amountAvailableToClaim={amountAvailableToClaim} />
@@ -68,7 +79,12 @@ const IfoVestingCard: React.FC<React.PropsWithChildren<IfoVestingCardProps>> = (
           )}
         </Box>
       </Box>
-      <IfoVestingFooter ifo={ifo} poolId={poolId} publicIfoData={publicIfoData} walletIfoData={walletIfoData} />
+      <IfoVestingFooter
+        duration={publicIfoData[poolId]?.vestingInformation?.duration}
+        vestingStartTime={publicIfoData.vestingStartTime}
+        releaseRate={releaseRate}
+        getNow={getNow}
+      />
     </Flex>
   )
 }

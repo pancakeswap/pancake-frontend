@@ -12,9 +12,16 @@ const GasSettings = () => {
       <Flex mb="12px" alignItems="center">
         <Text>{t('Default Transaction Speed (GWEI)')}</Text>
         <QuestionHelper
-          text={t(
-            'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees',
-          )}
+          text={
+            <Flex flexDirection="column">
+              <Text>
+                {t(
+                  'Adjusts the gas price (transaction fee) for your transaction. Higher GWEI = higher speed = higher fees.',
+                )}
+              </Text>
+              <Text mt="8px">{t('Choose “Default” to use the settings from your current blockchain RPC node.')}</Text>
+            </Flex>
+          }
           placement="top-start"
           ml="4px"
         />
@@ -29,7 +36,7 @@ const GasSettings = () => {
           }}
           variant={gasPrice === GAS_PRICE_GWEI.rpcDefault ? 'primary' : 'tertiary'}
         >
-          {t('RPC Default')}
+          {t('Default')}
         </Button>
         <Button
           mt="4px"

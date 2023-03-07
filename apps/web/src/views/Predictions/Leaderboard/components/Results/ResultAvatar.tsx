@@ -1,4 +1,15 @@
-import { Box, Flex, FlexProps, Link, ProfileAvatar, SubMenu, SubMenuItem, useModal, Text } from '@pancakeswap/uikit'
+import {
+  Box,
+  Flex,
+  FlexProps,
+  Link,
+  ProfileAvatar,
+  SubMenu,
+  SubMenuItem,
+  useModal,
+  Text,
+  BscScanIcon,
+} from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import { PredictionUser } from 'state/types'
@@ -73,6 +84,7 @@ const ResultAvatar: React.FC<React.PropsWithChildren<ResultAvatarProps>> = ({ us
       <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
       <SubMenuItem as={Link} href={getBlockExploreLink(user.id, 'address')} bold={false} color="text" external>
         {t('View on BscScan')}
+        <BscScanIcon ml="4px" width="20px" color="textSubtle" />
       </SubMenuItem>
     </SubMenu>
   )

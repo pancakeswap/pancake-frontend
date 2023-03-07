@@ -61,6 +61,7 @@ const config = {
       {
         protocol: 'https',
         hostname: 'static-nft.pancakeswap.com',
+        pathname: '/mainnet/**',
       },
     ],
   },

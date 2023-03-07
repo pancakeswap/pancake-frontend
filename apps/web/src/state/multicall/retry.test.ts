@@ -1,7 +1,7 @@
-import { vi } from 'vitest'
+import { vi, describe, it } from 'vitest'
 import { retry, RetryableError } from './retry'
 
-describe('retry', () => {
+describe.concurrent('retry', () => {
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {
       //
@@ -50,9 +50,9 @@ describe('retry', () => {
   })
 
   async function checkTime(fn: () => Promise<any>, min: number, max: number) {
-    const time = new Date().getTime()
+    const time = Date.now()
     await fn()
-    const diff = new Date().getTime() - time
+    const diff = Date.now() - time
     expect(diff).toBeGreaterThanOrEqual(min)
     expect(diff).toBeLessThanOrEqual(max)
   }

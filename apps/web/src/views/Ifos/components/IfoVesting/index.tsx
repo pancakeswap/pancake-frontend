@@ -2,11 +2,10 @@ import { useMemo, useState, useCallback, useEffect } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import Trans from 'components/Trans'
-import { Box, Card, CardBody, CardHeader, Flex, Text, Image, Pool } from '@pancakeswap/uikit'
+import { Box, Card, CardBody, CardHeader, Flex, Text, Image, Pool, IfoNotTokens } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { Token } from '@pancakeswap/sdk'
 import { VestingStatus } from './types'
-import NotTokens from './NotTokens'
 import TokenInfo from './VestingPeriod/TokenInfo'
 import VestingEnded from './VestingEnded'
 import useFetchVestingData from '../../hooks/vesting/useFetchVestingData'
@@ -113,7 +112,13 @@ const IfoVesting: React.FC<React.PropsWithChildren<IfoVestingProps>> = () => {
         </Flex>
       </CardHeader>
       <VestingCardBody>
-        {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && <NotTokens />}
+        {cardStatus.status === VestingStatus.NOT_TOKENS_CLAIM && (
+          <IfoNotTokens
+            participateText={t(
+              'Participate in our next IFO. and remember to lock your CAKE to increase your allocation!',
+            )}
+          />
+        )}
         {cardStatus.status === VestingStatus.HAS_TOKENS_CLAIM && (
           <TokenInfoContainer>
             {data.map((ifo, index) => (

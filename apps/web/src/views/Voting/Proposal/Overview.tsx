@@ -1,5 +1,4 @@
 import { ArrowBackIcon, Box, Button, Flex, Heading, NotFound, ReactMarkdown } from '@pancakeswap/uikit'
-import { PageMeta } from 'components/Layout/Page'
 import { getAllVotes, getProposal } from 'state/voting/helpers'
 import { useAccount } from 'wagmi'
 import useSWRImmutable from 'swr/immutable'
@@ -49,7 +48,6 @@ const Overview = () => {
 
   return (
     <Container py="40px">
-      <PageMeta />
       <Box mb="40px">
         <Link href="/voting" passHref>
           <Button as="a" variant="text" startIcon={<ArrowBackIcon color="primary" width="24px" />} px="0">

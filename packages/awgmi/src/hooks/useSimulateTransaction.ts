@@ -16,12 +16,13 @@ export const mutationKey = (
   // error TS4023: Exported variable 'mutationKey' has or is using name 'MoveFunctionVisibility' from external module
 ) => [{ entity: 'simulateTransaction', ...args }] as const
 
-const mutationFn = async ({ networkName, payload, options, throwOnError }: SimulateTransactionArgs) => {
+const mutationFn = async ({ networkName, payload, options, throwOnError, query }: SimulateTransactionArgs) => {
   return simulateTransaction({
     networkName,
     payload,
     options,
     throwOnError,
+    query,
   } as SimulateTransactionArgs)
 }
 
@@ -29,6 +30,7 @@ export function useSimulateTransaction({
   networkName: networkName_,
   payload,
   options,
+  query,
   throwOnError,
   onError,
   onMutate,
@@ -44,6 +46,7 @@ export function useSimulateTransaction({
         networkName,
         payload,
         options,
+        query,
         throwOnError,
       } as SimulateTransactionArgs),
       mutationFn,
@@ -61,10 +64,11 @@ export function useSimulateTransaction({
         networkName,
         payload,
         options,
+        query,
         throwOnError,
         ...args,
       } as SimulateTransactionArgs),
-    [mutate, networkName, options, payload, throwOnError],
+    [mutate, networkName, options, payload, query, throwOnError],
   )
 
   const _simulateTransactionAsync = React.useCallback(
@@ -73,10 +77,11 @@ export function useSimulateTransaction({
         networkName,
         payload,
         options,
+        query,
         throwOnError,
         ...args,
       } as SimulateTransactionArgs),
-    [mutateAsync, networkName, options, payload, throwOnError],
+    [mutateAsync, networkName, options, payload, query, throwOnError],
   )
 
   return {

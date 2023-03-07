@@ -51,6 +51,12 @@ const BannerPlaceHolder = styled.div<{ walletConnected: boolean }>`
     margin-top: ${({ walletConnected }) => (walletConnected ? '60px' : '-32px')};
     margin-bottom: ${({ walletConnected }) => (walletConnected ? '60px' : '30px')};
   }
+  .swiper-slide {
+    overflow: visible;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `
 
 const StyledSwiper = styled(Swiper)`

@@ -1,12 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, NextLinkFromReactRouter } from '@pancakeswap/uikit'
+import { Button, NextLinkFromReactRouter, IfoSkeletonCardActions } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { Ifo, PoolIds } from 'config/constants/types'
 import { WalletIfoData, PublicIfoData } from 'views/Ifos/types'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ContributeButton from './ContributeButton'
 import ClaimButton from './ClaimButton'
-import { SkeletonCardActions } from './Skeletons'
 import { EnableStatus } from '../types'
 
 interface Props {
@@ -35,7 +34,7 @@ const IfoCardActions: React.FC<React.PropsWithChildren<Props>> = ({
   const userPoolCharacteristics = walletIfoData[poolId]
 
   if (isLoading) {
-    return <SkeletonCardActions />
+    return <IfoSkeletonCardActions />
   }
 
   if (!account) {

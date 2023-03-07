@@ -1,7 +1,12 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { AutoRenewIcon, Button, Flex, Heading, Modal, Text } from "@pancakeswap/uikit";
 import { formatNumber } from "@pancakeswap/utils/formatBalance";
 import { useTheme } from "styled-components";
+import { Flex } from "../../components/Box";
+import { Heading } from "../../components/Heading";
+import { Button } from "../../components/Button";
+import { Text } from "../../components/Text";
+import { AutoRenewIcon } from "../../components/Svg";
+import { Modal } from "../Modal";
 import getThemeValue from "../../util/getThemeValue";
 
 export interface CollectModalProps {

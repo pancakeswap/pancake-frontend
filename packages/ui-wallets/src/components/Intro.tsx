@@ -1,7 +1,12 @@
 import { Trans } from '@pancakeswap/localization'
 import { AtomBox } from '@pancakeswap/ui/components/AtomBox'
 import { Button, Heading, Image, LinkExternal, Text } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+// eslint-disable-next-line import/no-unresolved
+import 'swiper/css/bundle'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Swiper as SwiperClass } from 'swiper/types'
+import { Autoplay } from 'swiper'
 
 const IntroSteps = [
   {
@@ -39,8 +44,21 @@ const StepDot = ({ active, place, onClick }: { active: boolean; place: 'left' | 
 
 export const StepIntro = ({ docLink, docText }: { docLink: string; docText: string }) => {
   const [step, setStep] = useState(0)
+  const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
-  const introStep = IntroSteps[step]
+  const handleRealIndexChange = useCallback((swiperInstance: SwiperClass) => {
+    setStep(swiperInstance.realIndex)
+  }, [])
+
+  const handleStepClick = useCallback(
+    (stepIndex: number) => {
+      return () => {
+        setStep(stepIndex)
+        swiper?.slideTo(stepIndex)
+      }
+    },
+    [swiper],
+  )
 
   return (
     <AtomBox
@@ -53,20 +71,35 @@ export const StepIntro = ({ docLink, docText }: { docLink: string; docText: stri
       textAlign="center"
       alignItems="center"
     >
-      {introStep && (
-        <>
-          <Heading as="h2" color="secondary">
-            {introStep.title}
-          </Heading>
-          <Image m="auto" src={introStep.icon} width={198} height={178} />
-          <Text maxWidth="368px" m="auto" small color="textSubtle">
-            {introStep.description}
-          </Text>
-        </>
-      )}
+      <Swiper
+        initialSlide={0}
+        modules={[Autoplay]}
+        slidesPerView="auto"
+        onSwiper={setSwiper}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        onRealIndexChange={handleRealIndexChange}
+        centeredSlides
+        loop
+        style={{ marginLeft: '0px', marginRight: '0px' }}
+      >
+        {IntroSteps.map((introStep) => (
+          <SwiperSlide key={introStep.icon}>
+            <Heading as="h2" color="secondary">
+              {introStep.title}
+            </Heading>
+            <Image m="auto" src={introStep.icon} width={198} height={178} />
+            <Text maxWidth="368px" m="auto" small color="textSubtle">
+              {introStep.description}
+            </Text>
+          </SwiperSlide>
+        ))}
+      </Swiper>
       <AtomBox display="flex">
-        <StepDot place="left" active={step === 0} onClick={() => setStep(0)} />
-        <StepDot place="right" active={step === 1} onClick={() => setStep(1)} />
+        <StepDot place="left" active={step === 0} onClick={handleStepClick(0)} />
+        <StepDot place="right" active={step === 1} onClick={handleStepClick(1)} />
       </AtomBox>
       <Button minHeight={40} variant="subtle" external as={LinkExternal} color="backgroundAlt" href={docLink}>
         {docText}

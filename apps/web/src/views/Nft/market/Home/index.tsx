@@ -12,7 +12,6 @@ import {
 import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import SectionsWithFoldableText from 'components/FoldableSection/SectionsWithFoldableText'
-import { PageMeta } from 'components/Layout/Page'
 import { useGetCollections } from 'state/nftMarket/hooks'
 import { FetchStatus } from 'config/constants/types'
 import PageLoader from 'components/Loader/PageLoader'
@@ -77,7 +76,6 @@ const Home = () => {
 
   return (
     <>
-      <PageMeta />
       <StyledPageHeader>
         <StyledHeaderInner>
           <div>

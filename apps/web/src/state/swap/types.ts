@@ -10,8 +10,8 @@ export type DerivedPairDataNormalized = {
   time: number
   token0Id: string
   token1Id: string
-  token0DerivedBNB: number
-  token1DerivedBNB: number
+  token0DerivedUSD: number
+  token1DerivedUSD: number
 }[]
 
 export type PairPricesNormalized = {

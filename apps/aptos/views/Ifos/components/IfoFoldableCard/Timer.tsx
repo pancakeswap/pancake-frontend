@@ -1,12 +1,17 @@
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
-import { Flex, Heading, PocketWatchIcon, Text, Skeleton, Link, TimerIcon } from '@pancakeswap/uikit'
+import { Flex, Heading, PocketWatchIcon, Text, Skeleton, TimerIcon, useTooltip } from '@pancakeswap/uikit'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
 import { PublicIfoData } from 'views/Ifos/types'
 import { getStatus } from 'views/Ifos/hooks/helpers'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 
 interface Props {
   publicIfoData: PublicIfoData
+}
+interface TimeTooltipComponentProps {
+  label: string
+  time: number
 }
 
 const GradientText = styled(Heading)`
@@ -21,11 +26,35 @@ const FlexGap = styled(Flex)<{ gap: string }>`
   gap: ${({ gap }) => gap};
 `
 
+const TimeTooltipComponent: React.FC<React.PropsWithChildren<TimeTooltipComponentProps>> = ({ label, time }) => {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+
+  return (
+    <>
+      <Text bold>{t(label)}:</Text>
+      <Text>
+        {new Date(time * 1000).toLocaleString(locale, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        })}
+      </Text>
+    </>
+  )
+}
+
 export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { startTime, endTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const secondsUntilStart = startTime - currentTime
 
@@ -33,12 +62,20 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
 
   const status = getStatus(currentTime, startTime, endTime)
 
+  const {
+    targetRef: startTimeTargetRef,
+    tooltip: startTimeTooltip,
+    tooltipVisible: startTimeTooltipVisible,
+  } = useTooltip(<TimeTooltipComponent label="Start Time" time={startTime} />, {
+    placement: 'top',
+  })
+
   return (
     <Flex justifyContent="center" position="relative">
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <Link external href="/" color="secondary">
+        <Flex ref={startTimeTargetRef}>
           <FlexGap gap="8px" alignItems="center">
             <Heading as="h3" scale="lg" color="secondary">
               {t('Start in')}
@@ -69,7 +106,8 @@ export const SoonTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoD
             </FlexGap>
           </FlexGap>
           <TimerIcon ml="4px" color="secondary" />
-        </Link>
+          {startTimeTooltipVisible && startTimeTooltip}
+        </Flex>
       )}
     </Flex>
   )
@@ -99,21 +137,31 @@ const LiveNowHeading = styled(EndInHeading)`
 
 const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { endTime, startTime } = publicIfoData
 
-  const currentTime = Date.now() / 1000
+  const currentTime = getNow() / 1000
 
   const secondsUntilEnd = endTime - currentTime
 
   const status = getStatus(currentTime, startTime, endTime)
 
   const timeUntil = getTimePeriods(secondsUntilEnd)
+
+  const {
+    targetRef: endTimeTargetRef,
+    tooltip: endTimeTooltip,
+    tooltipVisible: endTimeTooltipVisible,
+  } = useTooltip(<TimeTooltipComponent label="End Time" time={endTime} />, {
+    placement: 'top',
+  })
+
   return (
     <Flex justifyContent="center" position="relative">
       {status === 'idle' ? (
         <Skeleton animation="pulse" variant="rect" width="100%" height="48px" />
       ) : (
-        <Link external href="/" color="white">
+        <Flex color="white" ref={endTimeTargetRef}>
           <PocketWatchIcon width="42px" mr="8px" />
           <FlexGap gap="8px" alignItems="center">
             <LiveNowHeading textTransform="uppercase" as="h3">{`${t('Live Now')}!`}</LiveNowHeading>
@@ -141,8 +189,11 @@ const LiveTimer: React.FC<React.PropsWithChildren<Props>> = ({ publicIfoData }) 
               </>
             </FlexGap>
           </FlexGap>
-          <TimerIcon ml="4px" color="white" />
-        </Link>
+          <span>
+            <TimerIcon ml="4px" mt="10px" color="white" />
+          </span>
+          {endTimeTooltipVisible && endTimeTooltip}
+        </Flex>
       )}
     </Flex>
   )

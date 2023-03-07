@@ -15,7 +15,7 @@
     "format:check": "prettier --check --loglevel error 'src/**/*.{js,jsx,ts,tsx}'",
     "format:write": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "storybook": "start-storybook -p 6006",
-    "storybook:build": "build-storybook",
+    "build:storybook": "build-storybook",
     "test": "vitest --run",
     "prepublishOnly": "yarn build"
   },
@@ -69,6 +69,7 @@
     "@types/styled-system": "^5.1.15",
     "@vanilla-extract/css": "^1.9.1",
     "@vanilla-extract/recipes": "^0.2.5",
+    "date-fns": "^2.29.3",
     "framer-motion": "6.5.1",
     "lodash": "^4.17.20",
     "react-popper": "^2.2.5",

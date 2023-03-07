@@ -1,9 +1,12 @@
-import { Flex, Skeleton, Text, Balance } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import BigNumber from "bignumber.js";
 import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import { BaseCell, CellContent } from "./BaseCell";
+import { Text } from "../../../components/Text";
+import { Skeleton } from "../../../components/Skeleton";
+import { Flex } from "../../../components/Box";
+import { Balance } from "../../../components/Balance";
 
 interface TotalStakedCellProps {
   stakingTokenDecimals: number;

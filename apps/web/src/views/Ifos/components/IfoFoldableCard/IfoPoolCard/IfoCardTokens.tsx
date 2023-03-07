@@ -14,6 +14,9 @@ import {
   MessageText,
   ErrorIcon,
   BalanceWithLoading,
+  IfoSkeletonCardTokens,
+  IfoPercentageOfTotal,
+  IfoVestingAvailableToClaim,
 } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import { Token } from '@pancakeswap/sdk'
@@ -26,12 +29,9 @@ import { getBalanceNumber, formatNumber } from '@pancakeswap/utils/formatBalance
 import { useIfoCredit } from 'state/pools/hooks'
 import { TokenImage, TokenPairImage } from 'components/TokenImage'
 import { EnableStatus } from '../types'
-import PercentageOfTotal from './PercentageOfTotal'
-import { SkeletonCardTokens } from './Skeletons'
 import IFORequirements from './IFORequirements'
 import { MessageTextLink } from '../../IfoCardStyles'
 import StakeVaultButton from '../StakeVaultButton'
-import VestingAvailableToClaim from './VestingAvailableToClaim'
 
 interface TokenSectionProps extends FlexProps {
   primaryToken?: Token
@@ -174,7 +174,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
 
   const renderTokenSection = () => {
     if (isLoading) {
-      return <SkeletonCardTokens />
+      return <IfoSkeletonCardTokens />
     }
     if (!account) {
       return (
@@ -296,7 +296,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
           <CommitTokenSection commitToken={ifo.currency} mb="24px">
             <Label>{t('Your %symbol% committed', { symbol: currency.symbol })}</Label>
             <Value>{getBalanceNumber(amountTokenCommittedInLP, currency.decimals)}</Value>
-            <PercentageOfTotal
+            <IfoPercentageOfTotal
               userAmount={amountTokenCommittedInLP}
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />
@@ -322,10 +322,11 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
             <Label>{t('%symbol% to receive', { symbol: token.symbol })}</Label>
             <Value>{getBalanceNumber(offeringAmountInToken, token.decimals)}</Value>
             {version >= 3.2 && publicPoolCharacteristics.vestingInformation.percentage > 0 && (
-              <VestingAvailableToClaim
+              <IfoVestingAvailableToClaim
                 amountToReceive={offeringAmountInToken}
                 percentage={publicPoolCharacteristics.vestingInformation.percentage}
                 decimals={token.decimals}
+                displayDecimals={2}
               />
             )}
           </TokenSection>
@@ -363,7 +364,7 @@ const IfoCardTokens: React.FC<React.PropsWithChildren<IfoCardTokensProps>> = ({
               <Value>{getBalanceNumber(refundingAmountInLP, currency.decimals)}</Value>
               {hasClaimed && <CheckmarkCircleIcon color="success" ml="8px" />}
             </Flex>
-            <PercentageOfTotal
+            <IfoPercentageOfTotal
               userAmount={amountTokenCommittedInLP}
               totalAmount={publicPoolCharacteristics.totalAmountPool}
             />

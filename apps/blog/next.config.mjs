@@ -19,18 +19,6 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/blog',
-        permanent: false,
-      },
-    ]
-  },
-  publicRuntimeConfig: {
-    STRAPI_API_URL: process.env.STRAPI_API_URL
-  }
 }
 
 export default withAxiom(withVanillaExtract(nextConfig))

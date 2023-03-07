@@ -2,6 +2,7 @@ import { BigintIsh, CurrencyAmount, Currency, JSBI, ZERO, Percent } from '@panca
 import invariant from 'tiny-invariant'
 
 import { getD } from './amm'
+import { getRawAmount } from './utils'
 
 export interface GetLPOutputParams {
   amplifier: BigintIsh
@@ -26,7 +27,7 @@ export function getLPOutput({
   const lpTotalSupply = totalSupply.quotient
   // No liquidity in pool
   if (JSBI.equal(lpTotalSupply, ZERO) || !balances.length || balances.every((b) => JSBI.equal(b.quotient, ZERO))) {
-    const d = getD({ amplifier, balances: amounts.map((a) => a.quotient) })
+    const d = getD({ amplifier, balances: amounts.map(getRawAmount) })
     return CurrencyAmount.fromRawAmount(lpToken, d)
   }
 
@@ -35,11 +36,13 @@ export function getLPOutput({
   for (const [i, balance] of balances.entries()) {
     const amount = amounts[i] || CurrencyAmount.fromRawAmount(balance.currency, 0)
     invariant(
-      amount.currency.equals(balance.currency),
+      amount.currency.wrapped.equals(balance.currency.wrapped),
       'User input currency should be the same as pool balance currency.',
     )
-    currentBalances.push(balance.quotient)
-    newBalances.push(JSBI.add(balance.quotient, amount.quotient))
+    const balanceRaw = getRawAmount(balance)
+    const amountRaw = getRawAmount(amount)
+    currentBalances.push(balanceRaw)
+    newBalances.push(JSBI.add(balanceRaw, amountRaw))
   }
 
   const d0 = getD({ amplifier, balances: currentBalances })

@@ -17,6 +17,12 @@ interface TopTokensResponse {
   }[]
 }
 
+interface StableSwapTopTokensResponse {
+  tokens: {
+    id: string
+  }[]
+}
+
 /**
  * Tokens to display on Home page
  * The actual data is later requested in tokenData.ts
@@ -43,6 +49,29 @@ const fetchTopTokens = async (chainName: MultiChainName, timestamp24hAgo: number
         }
       }
     `
+
+    const stableSwapQuery = gql`
+      query topTokens {
+        tokens(
+          first: ${firstCount}
+          ${whereCondition}
+          orderBy: totalLiquidity
+          orderDirection: desc
+        ) {
+          id
+        }
+      }
+    `
+
+    if (checkIsStableSwap()) {
+      const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<StableSwapTopTokensResponse>(
+        stableSwapQuery,
+      )
+      return union(
+        data.tokens.map((t) => t.id),
+        multiChainTokenWhiteList[chainName],
+      )
+    }
     const data = await getMultiChainQueryEndPointWithStableSwap(chainName).request<TopTokensResponse>(query, {
       blacklist: multiChainTokenBlackList[chainName],
     })

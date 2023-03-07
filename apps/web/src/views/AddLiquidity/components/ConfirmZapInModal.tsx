@@ -1,13 +1,18 @@
 import React, { useCallback, useMemo } from 'react'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Currency, CurrencyAmount, Fraction, JSBI, Pair, Percent, Token } from '@pancakeswap/sdk'
-import { InjectedModalProps, Text, ArrowDownIcon, Button, useTooltip } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import TransactionConfirmationModal, {
-  ConfirmationModalContent,
+import {
+  InjectedModalProps,
+  Text,
+  ArrowDownIcon,
+  Button,
+  useTooltip,
   TransactionErrorContent,
-} from 'components/TransactionConfirmationModal'
-import { AutoColumn } from 'components/Layout/Column'
+  ConfirmationModalContent,
+  AutoColumn,
+} from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { AutoRow, RowFixed } from 'components/Layout/Row'
 import { Field } from 'state/burn/actions'
 import { CurrencyLogo } from 'components/Logo'

@@ -14,6 +14,8 @@ import {
   MessageText,
   IconButton,
   PencilIcon,
+  AutoColumn,
+  ColumnCenter,
 } from '@pancakeswap/uikit'
 import { logError } from 'utils/sentry'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
@@ -32,7 +34,6 @@ import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToU
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useLPApr } from 'state/swap/useLPApr'
 import { LightCard } from '../../components/Card'
-import { AutoColumn, ColumnCenter } from '../../components/Layout/Column'
 import CurrencyInputPanel from '../../components/CurrencyInputPanel'
 import { AppHeader, AppBody } from '../../components/App'
 import { MinimalPositionCard } from '../../components/PositionCard'
@@ -614,7 +615,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                 )}
                 <CurrencyInputPanel
                   disableCurrencySelect={canZap}
-                  showBUSD
+                  showUSDPrice
                   onInputBlur={canZap ? zapIn.onInputBlurOnce : undefined}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_A}
                   disabled={canZap && !zapTokenCheckedA}
@@ -653,7 +654,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                   <AddIcon width="16px" />
                 </ColumnCenter>
                 <CurrencyInputPanel
-                  showBUSD
+                  showUSDPrice
                   onInputBlur={canZap ? zapIn.onInputBlurOnce : undefined}
                   disabled={canZap && !zapTokenCheckedB}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_B}

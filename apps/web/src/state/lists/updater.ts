@@ -46,9 +46,11 @@ export default function Updater(): null {
 
   useSWRImmutable(
     includeListUpdater && isReady && listState !== initialState ? ['token-list'] : null,
-    () => {
-      Object.keys(lists).forEach((url) =>
-        fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
+    async () => {
+      return Promise.all(
+        Object.keys(lists).map((url) =>
+          fetchList(url).catch((error) => console.debug('interval list fetching error', error)),
+        ),
       )
     },
     {

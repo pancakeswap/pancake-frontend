@@ -25,14 +25,13 @@ export const useLedgerTimestamp = () => {
     },
   )
 
-  const getNowFallback = useCallback(() => Date.now(), [])
-
-  const getNow = useCallback(() => {
-    const timeDiff = Date.now() - lastCheck
-    return lastCheck && ledgerTimestamp ? ledgerTimestamp + timeDiff : Date.now()
-  }, [lastCheck, ledgerTimestamp])
-
-  return error ? getNowFallback : lastCheck && ledgerTimestamp ? getNow : getNowFallback
+  return useCallback(() => {
+    if (!error && lastCheck && ledgerTimestamp) {
+      const timeDiff = Date.now() - lastCheck
+      return ledgerTimestamp + timeDiff
+    }
+    return Date.now()
+  }, [error, lastCheck, ledgerTimestamp])
 }
 
 export default useLedgerTimestamp

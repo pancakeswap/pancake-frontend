@@ -8,6 +8,10 @@ export const ALLOWED_SLIPPAGE_HIGH: Percent = new Percent(JSBI.BigInt(15), BIPS_
 export const BLOCKED_SLIPPAGE_NON_EXPERT: Percent = new Percent(JSBI.BigInt(20), BIPS_BASE) // 0.2%
 
 export function warningSeverity(slippage?: Percent): 0 | 1 | 2 | 3 | 4 {
+  // Allow to add liquidity if there's no initial liquidity inside the pool
+  if (!slippage) {
+    return 0
+  }
   if (!slippage?.lessThan(BLOCKED_SLIPPAGE_NON_EXPERT)) return 4
   if (!slippage?.lessThan(ALLOWED_SLIPPAGE_HIGH)) return 3
   if (!slippage?.lessThan(ALLOWED_SLIPPAGE_MEDIUM)) return 2

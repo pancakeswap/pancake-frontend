@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react'
+import Cookie from 'js-cookie'
 import { ChainId, Token } from '@pancakeswap/sdk'
 import { BigNumber } from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -77,6 +78,12 @@ const MultiChainHarvestModal: React.FC<MultiChainHarvestModalProp> = ({
   }, [onDismiss])
 
   const handleSwitchNetwork = () => {
+    if (window.ethereum?.isTokenPocket === true) {
+      Cookie.set(
+        'multiChainHarvestModal',
+        JSON.stringify({ pid, token, lpSymbol, quoteToken, earningsBigNumber, earningsBusd }),
+      )
+    }
     switchNetworkAsync(network)
   }
 

@@ -5,7 +5,6 @@ import { Flex, Box, useMatchBreakpoints, PageSection } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import { useTradingCompetitionContractMoD } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
-import { PageMeta } from 'components/Layout/Page'
 import { TC_MOD_SUBGRAPH, API_PROFILE } from 'config/constants/endpoints'
 import { multicallv2 } from 'utils/multicall'
 import { ChainId } from '@pancakeswap/sdk'
@@ -155,7 +154,6 @@ const MoDCompetition = () => {
 
   return (
     <>
-      <PageMeta />
       <CompetitionPage id="pcs-competition-page">
         <PageSection
           style={{ paddingTop: '0px' }}

@@ -124,7 +124,7 @@ const ActionPanel: React.FC<React.PropsWithChildren<ActionPanelProps>> = ({ acco
       <ActionContainer>
         <Box width="100%">
           <ActionContainer isAutoVault={!!pool.vaultKey} hasBalance={poolStakingTokenBalance.gt(0)}>
-            <Actions pool={pool} account={account} stakedBalance={stakedBalance} />
+            <Actions hideLocateAddress pool={pool} account={account} stakedBalance={stakedBalance} />
           </ActionContainer>
         </Box>
       </ActionContainer>

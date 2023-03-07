@@ -4,7 +4,6 @@ import { Box, useMatchBreakpoints, PageSection } from '@pancakeswap/uikit'
 import { useTradingCompetitionContractFanToken } from 'hooks/useContract'
 import useTheme from 'hooks/useTheme'
 import { API_PROFILE } from 'config/constants/endpoints'
-import { PageMeta } from 'components/Layout/Page'
 import {
   SmartContractPhases,
   CompetitionPhases,
@@ -166,7 +165,6 @@ const FanTokenCompetition = () => {
 
   return (
     <>
-      <PageMeta />
       <CompetitionPage>
         <PageSection
           style={{ paddingTop: '0px' }}

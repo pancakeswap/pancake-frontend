@@ -42,7 +42,6 @@ export function useDerivedSwapInfoWithStableSwap(
   typedValue: string,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
-  recipient: string,
 ): {
   currencies: { [field in Field]?: Currency }
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
@@ -54,7 +53,7 @@ export function useDerivedSwapInfoWithStableSwap(
   const { t } = useTranslation()
   const [singleHop] = useUserSingleHopOnly()
 
-  const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
+  const to: string | null = account || null
 
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,

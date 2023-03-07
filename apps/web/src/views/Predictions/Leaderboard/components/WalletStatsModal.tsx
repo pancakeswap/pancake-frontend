@@ -82,7 +82,9 @@ const WalletStatsModal: React.FC<React.PropsWithChildren<WalletStatsModalProps>>
                 {profile?.username}
               </Heading>
             )}
-            <ExternalLink href={getBlockExploreLink(address, 'address')}>{truncateHash(address)}</ExternalLink>
+            <ExternalLink isBscScan href={getBlockExploreLink(address, 'address')}>
+              {truncateHash(address)}
+            </ExternalLink>
           </Box>
         </Flex>
         <IconButton variant="text" onClick={handleDismiss} aria-label="Close the dialog">

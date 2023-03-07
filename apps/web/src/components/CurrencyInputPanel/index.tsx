@@ -97,7 +97,7 @@ interface CurrencyInputPanelProps {
   beforeButton?: React.ReactNode
   disabled?: boolean
   error?: boolean
-  showBUSD?: boolean
+  showUSDPrice?: boolean
   tokensToShow?: Token[]
 }
 export default function CurrencyInputPanel({
@@ -125,7 +125,7 @@ export default function CurrencyInputPanel({
   showSearchInput,
   disabled,
   error,
-  showBUSD,
+  showUSDPrice,
   tokensToShow,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
@@ -136,7 +136,7 @@ export default function CurrencyInputPanel({
   const tokenAddress = token ? isAddress(token.address) : null
 
   const amountInDollar = useBUSDCurrencyAmount(
-    showBUSD ? currency : undefined,
+    showUSDPrice ? currency : undefined,
     Number.isFinite(+value) ? +value : undefined,
   )
 
@@ -252,12 +252,16 @@ export default function CurrencyInputPanel({
               }}
             />
           </LabelRow>
-          {!!currency && showBUSD && Number.isFinite(amountInDollar) && (
+          {!!currency && showUSDPrice && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
-                <Text fontSize="12px" color="textSubtle">
-                  ~{formatNumber(amountInDollar)} USD
-                </Text>
+                {Number.isFinite(amountInDollar) ? (
+                  <Text fontSize="12px" color="textSubtle">
+                    ~{formatNumber(amountInDollar)} USD
+                  </Text>
+                ) : (
+                  <Box height="18px" />
+                )}
               </Flex>
             </Flex>
           )}

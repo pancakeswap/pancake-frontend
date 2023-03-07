@@ -17,6 +17,8 @@ import {
   useMatchBreakpoints,
   useTooltip,
 } from '@pancakeswap/uikit'
+import { ChainId } from '@pancakeswap/sdk'
+import { NextSeo } from 'next-seo'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import Page from 'components/Layout/Page'
@@ -92,7 +94,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   // In case somebody pastes checksummed address into url (since GraphQL expects lowercase address)
   const address = routeAddress.toLowerCase()
 
-  const poolData = usePoolDatasSWR([address])[0]
+  const poolData = usePoolDatasSWR(useMemo(() => [address], [address]))[0]
   const chartData = usePoolChartDataSWR(address)
   const transactions = usePoolTransactionsSWR(address)
 
@@ -122,7 +124,8 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
   )
 
   return (
-    <Page symbol={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null}>
+    <Page>
+      <NextSeo title={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null} />
       {poolData ? (
         <>
           <Flex justifyContent="space-between" mb="16px" flexDirection={['column', 'column', 'row']}>
@@ -138,7 +141,11 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
               </Flex>
             </Breadcrumbs>
             <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
-              <LinkExternal mr="8px" href={getBlockExploreLink(address, 'address', multiChainId[chainName])}>
+              <LinkExternal
+                isBscScan={multiChainId[chainName] === ChainId.BSC}
+                mr="8px"
+                href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+              >
                 {t('View on %site%', { site: multiChainScan[chainName] })}
               </LinkExternal>
               <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} />
@@ -161,7 +168,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
             </Flex>
             <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
               <Flex flexDirection={['column', 'column', 'row']} mb={['8px', '8px', null]}>
-                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token0.address}`}>
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token0.address}${infoTypeParam}`}>
                   <TokenButton>
                     <CurrencyLogo address={poolData.token0.address} size="24px" chainName={chainName} />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -173,7 +180,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                     </Text>
                   </TokenButton>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token1.address}`}>
+                <NextLinkFromReactRouter to={`/info${chainPath}/tokens/${poolData.token1.address}${infoTypeParam}`}>
                   <TokenButton ml={[null, null, '10px']}>
                     <CurrencyLogo address={poolData.token1.address} size="24px" chainName={chainName} />
                     <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
@@ -224,12 +231,12 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                         {formatAmount(isStableSwap ? stableAPR : poolData.lpApr7d)}%
                       </Text>
                       <Flex alignItems="center">
+                        <Text mr="4px" fontSize="12px" color="textSubtle">
+                          {t('7D performance')}
+                        </Text>
                         <span ref={targetRef}>
                           <HelpIcon color="textSubtle" />
                         </span>
-                        <Text ml="4px" fontSize="12px" color="textSubtle">
-                          {t('7D performance')}
-                        </Text>
                         {tooltipVisible && tooltip}
                       </Flex>
                     </Flex>

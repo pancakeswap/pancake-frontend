@@ -22,6 +22,7 @@ import DEFAULT_TOKEN_LIST from '../../config/constants/tokenLists/pancake-defaul
 import UNSUPPORTED_TOKEN_LIST from '../../config/constants/tokenLists/pancake-unsupported.tokenlist.json'
 import WARNING_TOKEN_LIST from '../../config/constants/tokenLists/pancake-warning.tokenlist.json'
 import { listsAtom } from './lists'
+import { isAddress } from '../../utils'
 
 type TokenAddressMap = TTokenAddressMap<ChainId>
 
@@ -148,10 +149,15 @@ export function listToTokenMap(list: TokenList): TokenAddressMap {
   const result = listCache?.get(list)
   if (result) return result
 
-  const tokenMap: WrappedTokenInfo[] = uniqBy(
-    list.tokens,
-    (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`,
-  ).map((tokenInfo) => new WrappedTokenInfo(tokenInfo))
+  const tokenMap: WrappedTokenInfo[] = uniqBy(list.tokens, (tokenInfo) => `${tokenInfo.chainId}#${tokenInfo.address}`)
+    .map((tokenInfo) => {
+      const checksummedAddress = isAddress(tokenInfo.address)
+      if (checksummedAddress) {
+        return new WrappedTokenInfo({ ...tokenInfo, address: checksummedAddress })
+      }
+      return null
+    })
+    .filter(Boolean)
 
   const groupedTokenMap: { [chainId: string]: WrappedTokenInfo[] } = groupBy(tokenMap, 'chainId')
 

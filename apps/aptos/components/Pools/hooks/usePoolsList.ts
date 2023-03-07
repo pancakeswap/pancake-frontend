@@ -22,6 +22,8 @@ import { POOL_RESET_INTERVAL } from '../constants'
 import useAddressPriceMap from './useAddressPriceMap'
 import { getPriceInUSDC } from '../utils/getPriceInUSDC'
 
+const POOL_RESOURCE_STALE_TIME = 15_000
+
 export const usePoolsList = () => {
   // Since Aptos is timestamp-based update for earning, we will forcely refresh in 10 seconds.
   const { lastUpdated, setLastUpdated: refresh } = useLastUpdated()
@@ -39,7 +41,7 @@ export const usePoolsList = () => {
         (resource) => resource.type.includes(SMARTCHEF_POOL_INFO_TYPE_TAG) && !resource.type.includes(PAIR_LP_TYPE_TAG),
       )
     },
-    watch: true,
+    staleTime: POOL_RESOURCE_STALE_TIME,
   })
 
   const { data: balances } = useAccountResources({
@@ -47,7 +49,7 @@ export const usePoolsList = () => {
     select: (resources) => {
       return resources
     },
-    watch: true,
+    staleTime: POOL_RESOURCE_STALE_TIME,
   })
 
   const prices = useAddressPriceMap({ pools, chainId })
@@ -126,6 +128,8 @@ export const useCakePool = ({ balances, chainId }) => {
     },
   })
 
+  const getNow = useLedgerTimestamp()
+
   return useCallback(() => {
     if (!masterChef || !cakeFarm) return undefined
     const cakePoolInfo = masterChef.data.pool_info[CAKE_PID]
@@ -138,6 +142,7 @@ export const useCakePool = ({ balances, chainId }) => {
       cakeFarm,
       chainId,
       earningTokenPrice,
+      getNow,
     })
-  }, [masterChef, cakeFarm, balances, userInfo, chainId, earningTokenPrice])
+  }, [masterChef, cakeFarm, balances, userInfo, chainId, earningTokenPrice, getNow])
 }

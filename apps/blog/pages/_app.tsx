@@ -2,6 +2,8 @@ import '@pancakeswap/ui/css/reset.css'
 import { PancakeTheme, ResetCSS, dark, light, ModalProvider, UIKitProvider } from '@pancakeswap/uikit'
 import { AppProps } from 'next/app'
 import Script from 'next/script'
+import { Analytics } from '@vercel/analytics/react'
+import { Provider as WrapBalancerProvider } from 'react-wrap-balancer'
 import { LanguageProvider } from '@pancakeswap/localization'
 import { createGlobalStyle } from 'styled-components'
 import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from 'next-themes'
@@ -66,11 +68,14 @@ function MyApp({ Component, pageProps }: AppProps) {
               <ResetCSS />
               <GlobalStyle />
               <Menu />
-              <Component {...pageProps} />
+              <WrapBalancerProvider>
+                <Component {...pageProps} />
+              </WrapBalancerProvider>
             </ModalProvider>
           </LanguageProvider>
         </StyledThemeProvider>
       </NextThemeProvider>
+      <Analytics />
       <Script
         strategy="afterInteractive"
         id="google-tag"

@@ -1,9 +1,8 @@
 import styled from 'styled-components'
+import { NextSeo } from 'next-seo'
 import { useTranslation } from '@pancakeswap/localization'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { DEFAULT_META, getCustomMeta } from 'config/constants/meta'
-import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import Container from './Container'
 
 const StyledPage = styled(Container)`
@@ -23,40 +22,40 @@ const StyledPage = styled(Container)`
   }
 `
 
-export const PageMeta: React.FC<React.PropsWithChildren<{ symbol?: string }>> = ({ symbol }) => {
+export const PageMeta: React.FC<React.PropsWithChildren> = () => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
   const { pathname } = useRouter()
-  const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true })
-  const cakePriceUsdDisplay = cakePriceUsd ? `$${cakePriceUsd.toFixed(3)}` : '...'
 
-  const pageMeta = getCustomMeta(pathname, t, locale) || {}
-  const { title, description, image } = { ...DEFAULT_META, ...pageMeta }
-  let pageTitle = cakePriceUsdDisplay ? [title, cakePriceUsdDisplay].join(' - ') : title
-  if (symbol) {
-    pageTitle = [symbol, title].join(' - ')
+  const pageMeta = getCustomMeta(pathname, t, locale)
+
+  if (!pageMeta) {
+    return null
   }
 
+  const { description, image } = { ...DEFAULT_META, ...pageMeta }
+
   return (
-    <Head>
-      <title>{pageTitle}</title>
-      <meta property="og:title" content={title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:image" content={image} />
-    </Head>
+    <NextSeo
+      title={pageMeta.title}
+      description={description}
+      openGraph={
+        image
+          ? {
+              images: [{ url: image, alt: pageMeta?.title, type: 'image/jpeg' }],
+            }
+          : undefined
+      }
+    />
   )
 }
 
-interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
-  symbol?: string
-}
-
-const Page: React.FC<React.PropsWithChildren<PageProps>> = ({ children, symbol, ...props }) => {
+const Page: React.FC<React.PropsWithChildren<React.HTMLAttributes<HTMLDivElement>>> = ({ children, ...props }) => {
   return (
     <>
-      <PageMeta symbol={symbol} />
+      <PageMeta />
       <StyledPage {...props}>{children}</StyledPage>
     </>
   )

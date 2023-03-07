@@ -12,7 +12,7 @@ import { getBlockExploreLink } from 'utils'
 import { getAddress, getVaultPoolAddress } from 'utils/addressHelpers'
 import { getPoolBlockInfo } from 'views/Pools/helpers'
 import MaxStakeRow from './MaxStakeRow'
-import { AprInfo, DurationAvg, PerformanceFee, TotalLocked, TotalStaked } from './Stat'
+import { AprInfo, DurationAvg, PerformanceFee, TotalLocked } from './Stat'
 
 interface ExpandedFooterProps {
   pool: Pool.DeserializedPool<Token>
@@ -78,7 +78,12 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
       )}
       {!vaultKey && <AprInfo pool={pool} stakedBalance={stakedBalance} />}
       {showTotalStaked && (
-        <TotalStaked totalStaked={vaultKey ? totalCakeInVault : totalStaked} stakingToken={stakingToken} />
+        <Pool.TotalStaked
+          totalStaked={vaultKey ? totalCakeInVault : totalStaked}
+          tokenDecimals={stakingToken.decimals}
+          symbol={stakingToken.symbol}
+          decimalsToShow={0}
+        />
       )}
       {vaultKey === VaultKey.CakeVault && <TotalLocked totalLocked={totalLockedAmount} lockedToken={stakingToken} />}
       {vaultKey === VaultKey.CakeVault && <DurationAvg />}
@@ -90,6 +95,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
           stakingLimit={stakingLimit}
           stakingLimitEndBlock={stakingLimitEndBlock}
           stakingToken={stakingToken}
+          endBlock={endBlock}
         />
       )}
       {shouldShowBlockCountdown && (

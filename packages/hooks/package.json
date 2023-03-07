@@ -8,6 +8,7 @@
   "private": true,
   "scripts": {},
   "dependencies": {
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "@pancakeswap/swap-sdk-core": "*"
   }
 }

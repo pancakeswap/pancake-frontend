@@ -3,7 +3,6 @@ import { PageSection } from '@pancakeswap/uikit'
 import { useAccount } from 'wagmi'
 import useTheme from 'hooks/useTheme'
 import Container from 'components/Layout/Container'
-import { PageMeta } from 'components/Layout/Page'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainId } from '@pancakeswap/sdk'
@@ -54,7 +53,6 @@ const Home: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <>
-      <PageMeta />
       <style jsx global>
         {`
           #home-1 .page-bg {
