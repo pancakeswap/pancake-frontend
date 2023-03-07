@@ -48,18 +48,25 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
     return undefined
   }, [load, err, results, tokenIds])
 
-  return {
-    loading: load,
-    positions: positions?.map((position, i) => ({ ...position, tokenId: inputs[i][0] })),
-  }
+  return useMemo(
+    () => ({
+      loading: load,
+      positions: positions?.map((position, i) => ({ ...position, tokenId: inputs[i][0] })),
+    }),
+    [inputs, load, positions],
+  )
 }
 
 export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3PositionResults {
   const position = useV3PositionsFromTokenIds(tokenId ? [tokenId] : undefined)
-  return {
-    loading: position.loading,
-    position: position.positions?.[0],
-  }
+
+  return useMemo(
+    () => ({
+      loading: position.loading,
+      position: position.positions?.[0],
+    }),
+    [position.loading, position.positions],
+  )
 }
 
 export function useV3TokenIdsByAccount(contract: Contract, account: string | null | undefined) {
@@ -110,8 +117,11 @@ export function useV3Positions(account: string | null | undefined): UseV3Positio
 
   const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(tokenIds)
 
-  return {
-    loading: tokenIdsLoading || positionsLoading,
-    positions,
-  }
+  return useMemo(
+    () => ({
+      loading: tokenIdsLoading || positionsLoading,
+      positions,
+    }),
+    [positions, positionsLoading, tokenIdsLoading],
+  )
 }

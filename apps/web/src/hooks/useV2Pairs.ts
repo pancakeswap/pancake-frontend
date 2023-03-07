@@ -31,16 +31,19 @@ export default function useV2PairsByAccount(account: string) {
   )
 
   const v2Pairs = useV2Pairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
-  const v2IsLoading =
-    fetchingV2PairBalances ||
-    v2Pairs?.length < liquidityTokensWithBalances.length ||
-    (v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING))
-  const allV2PairsWithLiquidity: Pair[] = v2Pairs
-    ?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair))
-    .map(([, pair]) => pair)
 
-  return {
-    data: allV2PairsWithLiquidity,
-    loading: v2IsLoading,
-  }
+  return useMemo(() => {
+    const v2IsLoading =
+      fetchingV2PairBalances ||
+      v2Pairs?.length < liquidityTokensWithBalances.length ||
+      (v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING))
+    const allV2PairsWithLiquidity: Pair[] = v2Pairs
+      ?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair))
+      .map(([, pair]) => pair)
+
+    return {
+      data: allV2PairsWithLiquidity,
+      loading: v2IsLoading,
+    }
+  }, [fetchingV2PairBalances, liquidityTokensWithBalances.length, v2Pairs])
 }

@@ -23,7 +23,7 @@ import Page from 'views/Page'
 import { useTranslation } from '@pancakeswap/localization'
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import { Percent } from '@pancakeswap/sdk'
+import { Pair, Percent } from '@pancakeswap/sdk'
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
 import useV2PairsByAccount from 'hooks/useV2Pairs'
 import useStableConfig, {
@@ -75,13 +75,17 @@ export default function PoolListPage() {
   let v2PairsSection = null
 
   if (v2Pairs?.length) {
-    v2PairsSection = v2Pairs.map((pair) => <V2PairCard pair={pair} account={account} />)
+    v2PairsSection = v2Pairs.map((pair) => (
+      <V2PairCard key={Pair.getAddress(pair.token0, pair.token1)} pair={pair} account={account} />
+    ))
   }
 
   let stablePairsSection = null
 
   if (stablePairs?.length) {
-    stablePairsSection = stablePairs.map((pair) => <StableContextProvider pair={pair} account={account} />)
+    stablePairsSection = stablePairs.map((pair) => (
+      <StableContextProvider key={pair.lpAddress} pair={pair} account={account} />
+    ))
   }
 
   let v3PairsSection = null
