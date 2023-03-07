@@ -146,7 +146,7 @@ export default function MMSwapCommitButton({
     />,
     true,
     true,
-    'confirmSwapModal',
+    'MMconfirmSwapModal',
   )
   // End Modals
 
