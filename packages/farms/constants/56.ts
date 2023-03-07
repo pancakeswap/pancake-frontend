@@ -51,6 +51,13 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 153,
+    lpSymbol: 'agEUR-USDT LP',
+    lpAddress: '0x1DEC73074cE9cAbEd47D7748410277109B23Cda2',
+    token: bscTokens.ageur,
+    quoteToken: bscTokens.usdt,
+  },
+  {
     pid: 152,
     lpSymbol: 'BNBx-BNB LP',
     lpAddress: '0x92357Ab9003CA881E08e32CDAE59B10B3161b05C',
