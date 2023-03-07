@@ -12,10 +12,11 @@ import {
 import { useExpertMode } from '@pancakeswap/utils/user'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import Link from 'next/link'
+import _isString from 'lodash/isString'
 import { SettingsMode } from '../Menu/GlobalSettings/types'
 
 interface Props {
-  title: string
+  title: string | React.ReactNode
   subtitle?: string
   helper?: string
   backTo?: string | (() => void)
@@ -65,9 +66,9 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
             </IconButton>
           ))}
         <Flex flexDirection="column" width="100%">
-          <Flex mb="8px" alignItems="center" justifyContent="space-between">
+          <Flex mb="8px" alignItems="center" flexWrap="wrap" justifyContent="space-between">
             <Flex>
-              <Heading as="h2">{title}</Heading>
+              {_isString(title) ? <Heading as="h2">{title}</Heading> : title}
               {helper && <QuestionHelper text={helper} ml="4px" placement="top-start" />}
             </Flex>
             {!noConfig && (

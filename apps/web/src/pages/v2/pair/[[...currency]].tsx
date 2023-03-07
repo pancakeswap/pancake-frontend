@@ -1,10 +1,11 @@
-import { AutoRow, Button, Card, CardBody, Flex, NextLinkFromReactRouter, Text, Box } from '@pancakeswap/uikit'
+import { AutoRow, Button, Card, CardBody, Flex, NextLinkFromReactRouter, Text, Box, Heading } from '@pancakeswap/uikit'
 import { AppHeader } from 'components/App'
 
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 import styled from 'styled-components'
 // import { useStableFarms } from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 
 // import { CurrencyAmount } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
@@ -54,7 +55,14 @@ export default function PoolV2Page() {
     <Page>
       <BodyWrapper>
         <AppHeader
-          title={`${baseCurrency?.symbol} - ${currencyB?.symbol} LP`}
+          title={
+            <Flex justifyContent="center" alignItems="center">
+              <DoubleCurrencyLogo size={24} currency0={baseCurrency} currency1={currencyB} />
+              <Heading as="h2" ml="8px">
+                {baseCurrency?.symbol}-{currencyB?.symbol} LP
+              </Heading>
+            </Flex>
+          }
           backTo="/liquidity"
           noConfig
           buttons={
@@ -76,7 +84,7 @@ export default function PoolV2Page() {
           <AutoRow>
             <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
               <Box width="100%" mr="4px">
-                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
                   Liquidity
                 </Text>
                 <Text fontSize="24px" fontWeight={500}>
@@ -91,28 +99,24 @@ export default function PoolV2Page() {
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
                     <Flex>
-                      {/* <CurrencyLogo currency={stableLp?.token0} /> */}
+                      <CurrencyLogo currency={baseCurrency} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
                         {baseCurrency?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
-                        {token0Deposited?.toSignificant(4)}
-                      </Text>
+                      <Text mr="4px">{token0Deposited?.toSignificant(4)}</Text>
                     </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between" mb="8px">
                     <Flex>
-                      {/* <CurrencyLogo currency={stableLp?.token1} /> */}
+                      <CurrencyLogo currency={currencyB} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
                         {currencyB?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
-                        {token1Deposited?.toSignificant(4)}
-                      </Text>
+                      <Text mr="4px">{token1Deposited?.toSignificant(4)}</Text>
                     </Flex>
                   </AutoRow>
                 </LightGreyCard>

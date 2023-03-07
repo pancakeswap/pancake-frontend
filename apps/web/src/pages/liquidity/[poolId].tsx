@@ -1,5 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { Currency, CurrencyAmount, Fraction, Price, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import {
   Button,
   Card,
@@ -12,6 +12,8 @@ import {
   NextLinkFromReactRouter,
   ConfirmationModalContent,
   Toggle,
+  Heading,
+  SyncAltIcon,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -19,7 +21,7 @@ import { useToken } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
-// import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
+import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
 import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
@@ -38,7 +40,7 @@ import { useSigner } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { LightGreyCard } from 'components/Card'
-import { CurrencyLogo } from 'components/Logo'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { TransactionResponse } from '@ethersproject/providers'
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
@@ -46,6 +48,8 @@ import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/Rat
 import { useSingleCallResult } from 'state/multicall/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { usePositionV3Liquidity } from 'hooks/v3/usePositionV3Liquidity'
+import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import { Bound } from 'config/constants/types'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -159,7 +163,7 @@ export default function PoolPage() {
     return undefined
   }, [liquidity, pool, tickLower, tickUpper])
 
-  // const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
+  const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
   const pricesFromPosition = getPriceOrderingFromPositionForUI(position)
 
@@ -314,7 +318,7 @@ export default function PoolPage() {
   const modalHeader = () => (
     <>
       <LightGreyCard mb="16px">
-        <AutoRow justifyContent="space-between">
+        <AutoRow justifyContent="space-between" mb="8px">
           <Flex>
             <CurrencyLogo currency={feeValueUpper?.currency} size="24px" />
             <Text color="primary" ml="4px">
@@ -362,7 +366,20 @@ export default function PoolPage() {
     <Page>
       <BodyWrapper>
         <AppHeader
-          title={`${currencyQuote?.symbol} / ${currencyBase?.symbol} - ${inRange ? 'In Range' : 'Out of Range'}`}
+          title={
+            <Box mb={['8px', '8px', 0]}>
+              <Flex justifyContent="center" alignItems="center">
+                <DoubleCurrencyLogo size={24} currency0={currencyQuote} currency1={currencyBase} />
+                <Heading as="h2" ml="8px">
+                  {currencyQuote?.symbol}-{currencyBase?.symbol}
+                </Heading>
+                <RangeTag removed={removed} outOfRange={!inRange} />
+              </Flex>
+              <Text fontSize="14px" color="textSubtle">
+                V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
+              </Text>
+            </Box>
+          }
           backTo="/liquidity"
           noConfig
           buttons={
@@ -385,13 +402,19 @@ export default function PoolPage() {
         />
         <CardBody>
           <AutoRow>
-            <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
-              <Box width="100%" mr="4px">
-                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+            <Flex
+              alignItems="center"
+              justifyContent="space-between"
+              width="100%"
+              mb="8px"
+              flexWrap={['wrap', 'wrap', 'nowrap']}
+            >
+              <Box width="100%" mr="4px" mb={['8px', '8px', 0]}>
+                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
                   Liquidity
                 </Text>
 
-                <Text fontSize="24px" fontWeight={500}>
+                <Text fontSize="24px" fontWeight={500} mb="8px">
                   {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100))
                     ? fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })
                     : '$-'}
@@ -405,10 +428,9 @@ export default function PoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
+                      <Text mr="4px">
                         {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
                       </Text>
-                      <Text>{inverted ? ratio : 100 - ratio}%</Text>
                     </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between">
@@ -419,19 +441,18 @@ export default function PoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
+                      <Text mr="4px">
                         {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
                       </Text>
-                      <Text>{inverted ? 100 - ratio : ratio}%</Text>
                     </Flex>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
               <Box width="100%" ml="4px">
-                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
                   Unclaim Fees
                 </Text>
-                <AutoRow justifyContent="space-between">
+                <AutoRow justifyContent="space-between" mb="8px">
                   <Text fontSize="24px" fontWeight={500}>
                     {fiatValueOfFees?.greaterThan(new Fraction(1, 100))
                       ? fiatValueOfFees.toFixed(2, { groupSeparator: ',' })
@@ -444,32 +465,28 @@ export default function PoolPage() {
                         ? 'Collected'
                         : isCollectPending || collecting
                         ? 'Collecting...'
-                        : 'Collect fees'}
+                        : 'Collect'}
                     </Button>
                   ) : null}
                 </AutoRow>
                 <LightGreyCard mr="4px">
                   <AutoRow justifyContent="space-between" mb="8px">
                     <Flex>
-                      <CurrencyLogo currency={feeValue0?.currency} />
+                      <CurrencyLogo currency={feeValueUpper?.currency} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {feeValue0?.currency?.symbol}
+                        {feeValueUpper?.currency?.symbol}
                       </Text>
                     </Flex>
-                    <Text small bold>
-                      {feeValue0?.toSignificant(6) || '0'}
-                    </Text>
+                    <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
                   </AutoRow>
                   <AutoRow justifyContent="space-between">
                     <Flex>
-                      <CurrencyLogo currency={feeValue1?.currency} />
+                      <CurrencyLogo currency={feeValueLower?.currency} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {feeValue1?.currency?.symbol}
+                        {feeValueLower?.currency?.symbol}
                       </Text>
                     </Flex>
-                    <Text small bold>
-                      {feeValue1?.toSignificant(6) || '0'}
-                    </Text>
+                    <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
@@ -481,17 +498,17 @@ export default function PoolPage() {
                 <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
                 <Toggle
                   id="receive-as-weth"
+                  scale="sm"
                   checked={receiveWETH}
                   onChange={() => setReceiveWETH((prevState) => !prevState)}
                 />
               </Flex>
             </Flex>
           )}
-          <AutoRow justifyContent="space-between" mb="8px">
-            <Flex>
-              <Text>Price Range</Text>
-              <RangeTag removed={removed} outOfRange={!inRange} />
-            </Flex>
+          <AutoRow justifyContent="space-between" mb="8px" mt="24px">
+            <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
+              Price Range
+            </Text>
             {currencyBase && currencyQuote && (
               <RateToggle currencyA={currencyBase} handleRateToggle={() => setManuallyInverted(!manuallyInverted)} />
             )}
@@ -504,43 +521,38 @@ export default function PoolPage() {
                   textAlign: 'center',
                 }}
               >
-                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                <Text fontSize="14px" color="secondary" bold textTransform="uppercase" mb="4px">
                   MIN PRICE
                 </Text>
-                {tickLower}
-                <Text fontSize="12px" color="textSubtle" bold>
+                <Heading mb="4px">{formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}</Heading>
+                <Text fontSize="14px" color="textSubtle">
                   {currencyQuote?.symbol} per {currencyBase?.symbol}
                 </Text>
-                {inRange && (
-                  <Text fontSize="12px">Your position will be 100% {currencyBase?.symbol} at this price.</Text>
-                )}
               </LightGreyCard>
+              <SyncAltIcon width="24px" mx="8px" />
               <LightGreyCard
                 ml="4px"
                 style={{
                   textAlign: 'center',
                 }}
               >
-                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+                <Text fontSize="14px" color="secondary" bold textTransform="uppercase" mb="4px">
                   MAX PRICE
                 </Text>
-                {tickUpper}
-                <Text fontSize="12px" color="textSubtle" bold>
+                <Heading mb="4px">{formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}</Heading>
+                <Text fontSize="14px" color="textSubtle">
                   {currencyQuote?.symbol} per {currencyBase?.symbol}
                 </Text>
-                {inRange && (
-                  <Text fontSize="12px">Your position will be 100% {currencyQuote?.symbol} at this price.</Text>
-                )}
               </LightGreyCard>
             </Flex>
           </AutoRow>
           {pool && currencyQuote && currencyBase ? (
             <LightGreyCard style={{ textAlign: 'center' }}>
-              <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+              <Text fontSize="14px" color="secondary" bold textTransform="uppercase" mb="4px">
                 CURRENT PRICE
               </Text>
-              <Text>{(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}</Text>
-              <Text fontSize="12px" color="textSubtle" bold>
+              <Heading mb="4px">{(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}</Heading>
+              <Text fontSize="14px" color="textSubtle" bld>
                 {currencyQuote?.symbol} per {currencyBase?.symbol}
               </Text>
             </LightGreyCard>
