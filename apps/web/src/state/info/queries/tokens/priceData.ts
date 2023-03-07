@@ -5,7 +5,12 @@ import orderBy from 'lodash/orderBy'
 import { PriceChartEntry } from 'state/info/types'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-import { MultiChainName, multiChainQueryEndPoint, multiChainQueryMainToken, checkIsStableSwap } from '../../constant'
+import {
+  MultiChainName,
+  multiChainQueryMainToken,
+  checkIsStableSwap,
+  getMultiChainQueryEndPointWithStableSwap,
+} from '../../constant'
 
 const getPriceSubqueries = (chainName: MultiChainName, tokenAddress: string, blocks: any) =>
   blocks.map(
@@ -65,7 +70,7 @@ const fetchTokenPriceData = async (
     const prices: any | undefined = await multiQuery(
       priceQueryConstructor,
       getPriceSubqueries(chainName, address, blocks),
-      multiChainQueryEndPoint[chainName],
+      getMultiChainQueryEndPointWithStableSwap(chainName),
       200,
     )
 
