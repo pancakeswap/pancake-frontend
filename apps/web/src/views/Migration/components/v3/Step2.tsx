@@ -182,7 +182,7 @@ const LPCard_ = ({
         </Flex>
         <ModalV2 isOpen={open}>
           <Modal
-            title={t('Remove %assetA%-%assetB% liquidity', {
+            title={t('Remove %assetA%-%assetB% Liquidity', {
               assetA: currency0?.symbol ?? '',
               assetB: currency1?.symbol ?? '',
             })}

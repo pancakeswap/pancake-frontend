@@ -7,7 +7,6 @@ import {
   CardBody,
   Heading,
   Flex,
-  Tag,
   Slider,
   Button,
   Text,
@@ -19,6 +18,7 @@ import {
   RowBetween,
   RowFixed,
   Toggle,
+  Box,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
@@ -43,6 +43,9 @@ import { LightGreyCard } from 'components/Card'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import useNativeCurrency from 'hooks/useNativeCurrency'
+
+import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
+import Divider from 'components/Divider'
 
 import { useBurnV3ActionHandlers } from './form/hooks'
 
@@ -160,7 +163,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         }
 
         return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
-          // setTxnHash(response.hash)
+          setTxnHash(response.hash)
           setAttemptingTxn(false)
           addTransaction(response, {
             type: 'remove-liquidity-v3',
@@ -299,7 +302,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       <AppBody>
         <AppHeader
           backTo={`/liquidity/${tokenId}`}
-          title={t('Remove %assetA%-%assetB% liquidity', {
+          title={t('Remove %assetA%-%assetB% Liquidity', {
             assetA: liquidityValue0?.currency?.symbol ?? '',
             assetB: liquidityValue1?.currency?.symbol ?? '',
           })}
@@ -307,28 +310,25 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         />
         <CardBody>
           <AutoRow justifyContent="space-between" mb="24px">
-            <Flex>
-              <DoubleCurrencyLogo
-                size={24}
-                currency0={liquidityValue0?.currency}
-                currency1={liquidityValue1?.currency}
-              />
-              <Heading ml="8px" as="h2">
-                {liquidityValue0?.currency?.symbol} - {liquidityValue1?.currency?.symbol} LP
-              </Heading>
-            </Flex>
+            <Box>
+              <Flex>
+                <DoubleCurrencyLogo
+                  size={24}
+                  currency0={liquidityValue0?.currency}
+                  currency1={liquidityValue1?.currency}
+                />
+                <Heading ml="8px" as="h2">
+                  {liquidityValue0?.currency?.symbol}-{liquidityValue1?.currency?.symbol} LP
+                </Heading>
+              </Flex>
+              <Text color="textSubtle">#{tokenId?.toString()}</Text>
+            </Box>
 
-            {outOfRange ? (
-              <Tag ml="8px" variant="textSubtle" outline>
-                Out of range
-              </Tag>
-            ) : (
-              <Tag ml="8px" variant="success" outline>
-                In range
-              </Tag>
-            )}
+            <RangeTag outOfRange={outOfRange} />
           </AutoRow>
-          <Text mb="16px">Amount</Text>
+          <Text fontSize="12px" color="secondary" bold textTransform="uppercase" mb="4px">
+            Amount of Liquidity to Remove
+          </Text>
           <BorderCard style={{ padding: '16px' }}>
             <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
               {percentForSlider}%
@@ -359,9 +359,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           <ColumnCenter>
             <ArrowDownIcon color="textSubtle" width="24px" my="16px" />
           </ColumnCenter>
-          <AutoColumn gap="8px" mb="32px">
+          <AutoColumn gap="8px" mb="16px">
             <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-              {t('Receive')}
+              You will receive
             </Text>
             <LightGreyCard>
               <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
@@ -372,12 +372,10 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small bold>
-                    {liquidityValue0?.toSignificant(6) || '0'}
-                  </Text>
+                  <Text small>{liquidityValue0?.toSignificant(6) || '0'}</Text>
                 </Flex>
               </Flex>
-              <Flex justifyContent="space-between" as="label" alignItems="center" mb="16px">
+              <Flex justifyContent="space-between" as="label" alignItems="center" mb="8px">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={liquidityValue1?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
@@ -385,11 +383,10 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small bold>
-                    {liquidityValue1?.toSignificant(6) || '0'}
-                  </Text>
+                  <Text small>{liquidityValue1?.toSignificant(6) || '0'}</Text>
                 </Flex>
               </Flex>
+              <Divider />
               <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={feeValue0?.currency} />
@@ -398,9 +395,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small bold>
-                    {feeValue0?.toSignificant(6) || '0'}
-                  </Text>
+                  <Text small>{feeValue0?.toSignificant(6) || '0'}</Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
@@ -411,23 +406,20 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small bold>
-                    {feeValue1?.toSignificant(6) || '0'}
-                  </Text>
+                  <Text small>{feeValue1?.toSignificant(6) || '0'}</Text>
                 </Flex>
               </Flex>
             </LightGreyCard>
           </AutoColumn>
           {showCollectAsWeth && (
-            <Flex mb="8px">
-              <Flex ml="auto" alignItems="center">
-                <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
-                <Toggle
-                  id="receive-as-weth"
-                  checked={receiveWETH}
-                  onChange={() => setReceiveWETH((prevState) => !prevState)}
-                />
-              </Flex>
+            <Flex justifyContent="space-between" alignItems="center" mb="16px">
+              <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
+              <Toggle
+                id="receive-as-weth"
+                scale="sm"
+                checked={receiveWETH}
+                onChange={() => setReceiveWETH((prevState) => !prevState)}
+              />
             </Flex>
           )}
           <Button

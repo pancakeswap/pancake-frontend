@@ -1,6 +1,6 @@
 import { Tag } from '@pancakeswap/uikit'
 
-export default function RangeTag({ removed, outOfRange }) {
+export default function RangeTag({ removed, outOfRange }: { removed?: boolean; outOfRange: boolean }) {
   return removed ? (
     <Tag ml="8px" variant="failure" outline>
       Closed

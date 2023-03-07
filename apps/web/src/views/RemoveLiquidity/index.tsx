@@ -902,7 +902,7 @@ export const RemoveLiquidityLayout = ({ currencyA, currencyB, children, pair }) 
       <AppBody>
         <AppHeader
           backTo="/liquidity"
-          title={t('Remove %assetA%-%assetB% liquidity', {
+          title={t('Remove %assetA%-%assetB% Liquidity', {
             assetA: currencyA?.symbol ?? '',
             assetB: currencyB?.symbol ?? '',
           })}
