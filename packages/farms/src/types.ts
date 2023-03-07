@@ -31,7 +31,7 @@ export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
 
 export type FarmV3Data = SerializedFarmConfig & FarmsDynamicDataResultV2
 
-export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3
+export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & FarmConfigV3
 
 export interface FarmConfigBaseProps {
   pid: number
@@ -68,6 +68,7 @@ export type FarmConfigV3 = {
   pid: number
   lpSymbol: string
   lpAddress: string
+  feeAmount: number
   boosted?: boolean
 
   token: Token

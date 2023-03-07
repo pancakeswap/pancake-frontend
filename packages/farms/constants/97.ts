@@ -8,6 +8,7 @@ export const farmsV3 = [
     lpAddress: '0xE8F08f0365b2875DbcF264A762B981bA3d612aEc',
     token: bscTestnetTokens.mockB,
     quoteToken: bscTestnetTokens.mockA,
+    feeAmount: 500,
   },
 ] satisfies FarmConfigV3[]
 

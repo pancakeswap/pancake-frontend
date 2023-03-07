@@ -8,7 +8,7 @@ import sortedUniqBy from 'lodash/sortedUniqBy'
 import partition from 'lodash/partition'
 import toLower from 'lodash/toLower'
 import { PositionDetails } from 'hooks/v3/types'
-import { FarmsV3Response, SerializedFarmPublicData } from '@pancakeswap/farms'
+import { FarmPriceV3, FarmsV3Response, FarmV3DataWithPrice } from '@pancakeswap/farms'
 import { FARM_API } from 'config/constants/endpoints'
 import { useMasterchefV3 } from 'hooks/useContract'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
@@ -30,7 +30,13 @@ export const useFarmsV3 = () => {
 
 export type IPendingCakeByTokenId = Record<string, BigNumber>
 
-export const usePositionsByUser = (farmsV3: SerializedFarmPublicData[]) => {
+export interface SerializedFarmV3 extends FarmPriceV3 {
+  unstakedPositions: PositionDetails[]
+  stakedPositions: PositionDetails[]
+  pendingCakeByTokenIds: IPendingCakeByTokenId
+}
+
+export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): SerializedFarmV3[] => {
   const { account } = useActiveWeb3React()
 
   const pids = farmsV3.map((farm) => farm.pid)
@@ -79,21 +85,28 @@ export const usePositionsByUser = (farmsV3: SerializedFarmPublicData[]) => {
   return useMemo(
     () =>
       farmsV3.map((farm) => {
-        const { token, quoteToken } = farm
+        const { token, quoteToken, feeAmount } = farm
 
         const idsOfFarmInV3Subgraph = stakedIds
           .filter((userPosition) => userPosition.pool.id === farm.pid.toString())
           .map(({ id }) => id)
 
         const unstaked = unstakedPositions.filter(
-          (p) => toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address),
+          (p) =>
+            toLower(p.token0) === toLower(token.address) &&
+            toLower(p.token1) === toLower(quoteToken.address) &&
+            feeAmount === p.fee,
         )
         const staked = stakedPositions.filter((p) => {
           const foundPosition = idsOfFarmInV3Subgraph.find((tokenId) => p.tokenId.eq(tokenId))
 
           if (foundPosition) return true
 
-          return toLower(p.token0) === toLower(token.address) || toLower(p.token1) === toLower(quoteToken.address)
+          return (
+            toLower(p.token0) === toLower(token.address) &&
+            toLower(p.token1) === toLower(quoteToken.address) &&
+            feeAmount === p.fee
+          )
         })
 
         return {
@@ -105,11 +118,6 @@ export const usePositionsByUser = (farmsV3: SerializedFarmPublicData[]) => {
       }),
     [farmsV3, pendingCakeByTokenIds, stakedIds, stakedPositions, unstakedPositions],
   )
-}
-
-export interface SerializedFarmV3 extends SerializedFarmPublicData {
-  unstakedPositions: PositionDetails[]
-  stakedPositions: PositionDetails[]
 }
 
 export function useFarmsV3WithPositions(): SerializedFarmV3[] {
