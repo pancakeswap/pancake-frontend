@@ -9,7 +9,7 @@ import {
 } from '@pancakeswap/uikit'
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo, useState, useEffect } from 'react'
 import { Field } from 'state/swap/actions'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import { TradeWithMM } from '../types'
@@ -87,12 +87,16 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
 }) => {
   const { chainId } = useActiveChainId()
   const { t } = useTranslation()
+  const [txCache, setTxCache] = useState<string>(() => '')
   const handleDismiss = useCallback(() => {
     if (customOnDismiss) {
       customOnDismiss()
     }
     onDismiss?.()
   }, [customOnDismiss, onDismiss])
+  useEffect(() => {
+    if (txHash) setTxCache(txHash)
+  }, [txHash])
 
   const confirmationContent = useCallback(
     () =>
@@ -143,7 +147,7 @@ const ConfirmSwapModal: React.FC<React.PropsWithChildren<InjectedModalProps & Co
     <ConfirmSwapModalContainer handleDismiss={handleDismiss}>
       {attemptingTxn ? (
         <ConfirmationPendingContent pendingText={pendingText} />
-      ) : txHash ? (
+      ) : txHash || txCache ? (
         <TransactionSubmittedContent
           chainId={chainId}
           hash={txHash}
