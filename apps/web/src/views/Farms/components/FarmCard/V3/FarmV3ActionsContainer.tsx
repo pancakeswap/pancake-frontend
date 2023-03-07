@@ -1,11 +1,30 @@
 import { calculateGasMargin } from 'utils'
-import { useCallback, useState } from 'react'
+import { ReactElement, useCallback, useState } from 'react'
 
 import { MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { TransactionResponse } from '@ethersproject/providers'
+import { BigintIsh } from '@pancakeswap/swap-sdk-core'
+import { Signer } from '@wagmi/core'
 
-const FarmV3StakeAndUnStakeContainer = ({ children, tokenId, account, signer }) => {
+interface FarmV3ActionContainerChildrenProps {
+  attemptingTxn: boolean
+  onStake: () => void
+  onUnstake: () => void
+  onHarvest: () => void
+}
+
+const FarmV3ActionsContainer = ({
+  children,
+  tokenId,
+  account,
+  signer,
+}: {
+  tokenId: BigintIsh
+  account: string
+  signer: Signer
+  children: (props: FarmV3ActionContainerChildrenProps) => ReactElement
+}) => {
   const [attemptingTxn, setAttemptingTxn] = useState(false)
 
   const masterChefV3Address = useMasterchefV3()?.address
@@ -120,4 +139,4 @@ const FarmV3StakeAndUnStakeContainer = ({ children, tokenId, account, signer }) 
   return children({ attemptingTxn, onStake, onUnstake, onHarvest })
 }
 
-export default FarmV3StakeAndUnStakeContainer
+export default FarmV3ActionsContainer
