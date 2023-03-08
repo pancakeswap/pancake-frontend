@@ -1,4 +1,4 @@
-import { Button, Box } from '@pancakeswap/uikit'
+import { Box } from '@pancakeswap/uikit'
 import { ScaleLinear, select, zoom, ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef } from 'react'
 import { RefreshCcw, ZoomIn, ZoomOut } from 'react-feather'

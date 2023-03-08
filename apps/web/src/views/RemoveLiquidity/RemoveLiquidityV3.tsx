@@ -270,6 +270,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       onDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txnHash ?? ''}
+      style={{
+        minHeight: 'auto',
+      }}
       content={() => (
         <ConfirmationModalContent
           topContent={modalHeader}
