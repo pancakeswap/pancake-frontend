@@ -76,7 +76,7 @@ export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): SerializedFa
       farmsV3.map((farm) => {
         const { token, quoteToken, feeAmount } = farm
 
-        const stakedIdsInFarm = stakedIds.filter((userPosition) => userPosition.pool.id === farm.pid.toString())
+        const stakedIdsInFarm = stakedIds.filter((userPosition) => userPosition.toString() === farm.pid.toString())
 
         const unstaked = unstakedPositions.filter(
           (p) =>
