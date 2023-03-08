@@ -1,11 +1,11 @@
 import { Currency } from '@pancakeswap/sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { MutableRefObject, useDeferredValue, useMemo } from 'react'
+import { MutableRefObject, useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { useDebounce } from '@pancakeswap/hooks'
 import { Field } from 'state/swap/actions'
 import { useQuery } from '@tanstack/react-query'
 import { getRFQById, MMError, sendRFQAndGetRFQId } from '../apis'
-import { MessageType, MMRfqTrade, QuoteRequest } from '../types'
+import { MessageType, MMRfqTrade, QuoteRequest, RFQResponse } from '../types'
 import { parseMMTrade } from '../utils/exchange'
 
 export const useGetRFQId = (
@@ -62,21 +62,45 @@ export const useGetRFQTrade = (
   const deferredRfqId = useDeferredValue(rfqId)
   const deferredIsMMBetter = useDebounce(isMMBetter, 300)
   const enabled = Boolean(deferredIsMMBetter && deferredRfqId)
-  const { error, data, isLoading, errorUpdateCount } = useQuery(
-    [`RFQ/${deferredRfqId}`],
-    () => getRFQById(deferredRfqId),
+  const [{ error, data, isLoading }, setRfqState] = useState<{ error: unknown; data: RFQResponse; isLoading: boolean }>(
     {
-      enabled,
-      staleTime: Infinity,
-      retry: (failureCount, err) => {
-        if (err instanceof MMError) {
-          return err.shouldRetry
-        }
-        return failureCount < 4
-      },
+      error: null,
+      data: null,
+      isLoading: false,
     },
   )
+  const {
+    error: errorResponse,
+    data: dataResponse,
+    isLoading: isLoadingResponse,
+  } = useQuery([`RFQ/${deferredRfqId}`], () => getRFQById(deferredRfqId), {
+    enabled,
+    staleTime: Infinity,
+    retry: (failureCount, err) => {
+      if (err instanceof MMError) {
+        return err.shouldRetry
+      }
+      return failureCount < 4
+    },
+  })
   const isExactIn: boolean = independentField === Field.INPUT
+
+  useEffect(() => {
+    setRfqState((prevState) => {
+      if (!enabled)
+        return {
+          error: null,
+          data: null,
+          isLoading: false,
+        }
+      const { data: prevData } = prevState
+      return {
+        error: errorResponse,
+        data: !prevState ? dataResponse : isLoadingResponse ? prevData : dataResponse,
+        isLoading: isLoadingResponse,
+      }
+    })
+  }, [errorResponse, dataResponse, isLoadingResponse, enabled])
 
   return useMemo(() => {
     if (error && error instanceof Error && error?.message) {
@@ -90,7 +114,6 @@ export const useGetRFQTrade = (
         error,
         rfqId,
         isLoading: enabled && isLoading,
-        errorUpdateCount,
       }
     }
     if (data?.messageType === MessageType.RFQ_RESPONSE) {
@@ -109,7 +132,6 @@ export const useGetRFQTrade = (
         quoteExpiry: data?.message?.quoteExpiry ?? null,
         refreshRFQ,
         isLoading: enabled && isLoading,
-        errorUpdateCount,
       }
     }
     // eslint-disable-next-line no-param-reassign
@@ -120,14 +142,12 @@ export const useGetRFQTrade = (
       quoteExpiry: null,
       isLoading: enabled && isLoading,
       refreshRFQ: null,
-      errorUpdateCount,
     }
   }, [
     data?.message,
     data?.messageType,
     enabled,
     error,
-    errorUpdateCount,
     inputCurrency,
     isExactIn,
     isLoading,

@@ -127,5 +127,4 @@ export interface MMRfqTrade {
   isLoading: boolean
   error?: Error
   rfqId?: string
-  errorUpdateCount: number
 }
