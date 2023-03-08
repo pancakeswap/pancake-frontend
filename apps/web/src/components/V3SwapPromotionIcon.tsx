@@ -82,7 +82,7 @@ export const V3SwapPromotionIcon: React.FC<{ wrapperStyle?: React.CSSProperties 
             fontSize="20px"
             onClick={() => {
               window.open(
-                'https://blog.pancakeswap.finance/articles/participate-in-pancake-swap-v3-launch-claim-135[…]irdrop-and-receive-an-exclusive-nft-for-early-supporters',
+                'https://blog.pancakeswap.finance/articles/participate-in-pancake-swap-v3-launch-claim-135-k-cake-airdrop-and-receive-an-exclusive-nft-for-early-supporters',
                 '_blank',
                 'noreferrer noopener',
               )
