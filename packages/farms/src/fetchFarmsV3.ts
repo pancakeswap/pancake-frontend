@@ -162,8 +162,8 @@ export async function farmV3FetchFarms({
     const { token, quoteToken, ...f } = farm
     return {
       ...f,
-      token: token.serialize,
-      quoteToken: quoteToken.serialize,
+      token,
+      quoteToken,
       ...getClassicFarmsDynamicData({
         ...lpData[index],
         ...slot0s[index],

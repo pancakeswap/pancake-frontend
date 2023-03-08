@@ -29,7 +29,7 @@ export type FarmPriceV3 = {
 
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
 
-export type FarmV3Data = SerializedFarmConfig & FarmsDynamicDataResultV2
+export type FarmV3Data = FarmConfigV3 & FarmsDynamicDataResultV2
 
 export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & FarmConfigV3
 

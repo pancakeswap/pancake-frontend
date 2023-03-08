@@ -15,9 +15,9 @@ export interface SerializedToken {
  * Represents an ERC20 token with a unique address and some metadata.
  */
 export class Token extends BaseCurrency {
-  public readonly isNative: false = false
+  public readonly isNative: false = false as const
 
-  public readonly isToken: true = true
+  public readonly isToken: true = true as const
 
   /**
    * The contract address on the chain on which this token lives
@@ -75,5 +75,9 @@ export class Token extends BaseCurrency {
       name: this.name,
       projectLink: this.projectLink,
     }
+  }
+
+  public toString(): SerializedToken {
+    return this.serialize
   }
 }
