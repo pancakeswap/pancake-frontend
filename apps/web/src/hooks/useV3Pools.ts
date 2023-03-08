@@ -6,6 +6,7 @@ import { gql } from 'graphql-request'
 import { v3Clients } from 'utils/graphql'
 import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
+import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
 type Pair = [Currency, Currency]
 
@@ -270,7 +271,13 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
       console.timeLog('[METRIC] Get V3 pool ticks', key)
       const poolTicks = await Promise.all(
         pools.map(({ token0, token1, fee }) => {
-          return fetchTicks(token0.chainId, getV3PoolAddress(token0, token1, fee))
+          return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
+            console.log(data, 'data')
+            return data.map(
+              ({ tick, liquidityNet, liquidityGross }) =>
+                new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
+            )
+          })
         }),
       )
       console.timeLog('[METRIC] Get V3 pool ticks', key, poolTicks)
@@ -296,23 +303,6 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   }, [blockNumber, mutate])
 
   return poolsWithTicks
-}
-
-const fetchTicks = async (chainId: ChainId, address: string, blockNumber?: JSBI) => {
-  const response = await fetch(
-    `/api/v3/${chainId}/ticks/${address}${blockNumber ? `?blockNumber=${blockNumber.toString()}` : ''}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-    },
-  )
-
-  const { data } = await response.json()
-  return data.map(
-    ({ tick, liquidityNet, liquidityGross }) => new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
-  )
 }
 
 export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Options = {}) {

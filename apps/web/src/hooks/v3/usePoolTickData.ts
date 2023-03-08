@@ -1,14 +1,12 @@
 import { Currency } from '@pancakeswap/sdk'
-import { FeeAmount, Pool, TICK_SPACINGS, tickToPrice } from '@pancakeswap/v3-sdk'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { FeeAmount, Pool, tickToPrice, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
 import JSBI from 'jsbi'
 import { useMemo } from 'react'
-import addresses from 'config/constants/contracts'
 
 import { PoolState, TickProcessed } from './types'
+import useAllV3TicksQuery, { TickData } from './useAllV3TicksQuery'
 import { usePool } from './usePools'
 import computeSurroundingTicks from './utils/computeSurroundingTicks'
-import useAllV3TicksQuery, { TickData } from './useAllV3TicksQuery'
 
 const PRICE_FIXED_DIGITS = 8
 
@@ -20,16 +18,9 @@ function useTicksFromSubgraph(
   currencyB: Currency | undefined,
   feeAmount: FeeAmount | undefined,
 ) {
-  const { chainId } = useActiveWeb3React()
   const poolAddress =
     currencyA && currencyB && feeAmount
-      ? Pool.getAddress(
-          currencyA?.wrapped,
-          currencyB?.wrapped,
-          feeAmount,
-          undefined,
-          chainId ? addresses.v3Factory[chainId] : undefined,
-        )
+      ? Pool.getAddress(currencyA?.wrapped, currencyB?.wrapped, feeAmount, undefined)
       : undefined
 
   return useAllV3TicksQuery(poolAddress, 30000)
@@ -95,7 +86,7 @@ export function usePoolActiveLiquidity(
     // find where the active tick would be to partition the array
     // if the active tick is initialized, the pivot will be an element
     // if not, take the previous tick as pivot
-    const pivot = ticks.findIndex(({ tick }) => tick > activeTick) - 1
+    const pivot = ticks.findIndex(({ tick }) => Number(tick) > activeTick) - 1
 
     if (pivot < 0) {
       // consider setting a local error
