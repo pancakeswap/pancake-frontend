@@ -20,7 +20,7 @@ export const FEE_AMOUNT_DETAIL: Record<
     supportedChains: CHAIN_IDS,
   },
   [FeeAmount.MEDIUM]: {
-    label: '0.3',
+    label: '0.25',
     description: 'Best for most pairs.',
     supportedChains: CHAIN_IDS,
   },

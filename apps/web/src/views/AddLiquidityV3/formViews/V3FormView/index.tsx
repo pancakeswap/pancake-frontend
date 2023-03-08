@@ -439,7 +439,9 @@ export default function V3FormView({
 
   return (
     <>
-      <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
+      <DynamicSection
+        disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue) || (!priceLower && !priceUpper)}
+      >
         <AutoColumn>
           <PreTitle mb="8px">Deposit Amount</PreTitle>
 
