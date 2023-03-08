@@ -2083,7 +2083,7 @@
   "Learn how": "Tanulja meg, hogyan",
   "You might also like": "Ez is érdekelhet",
   "Chef’s choice": "Séf választása",
-  "Recommended Readings by Chef": "Recommended Readings by Chef",
+  "Recommended Readings by Chefs": "Recommended Readings by Chefs",
   "Latest News about PancakeSwap and more!": "Legfrissebb hírek a PancakeSwapról és egyebekről!",
   "Token Risk Scanning": "Zseton kockázatfelmérés",
   "Automatic risk scanning for the selected token": "Kiválasztott zseton automatikus kockázatfelmérése",
@@ -2114,8 +2114,8 @@
   "MM Linked Pool": "MM csatolt összevont alap",
   "Trade through the market makers if they provide better deal": "Kereskedjen az árjegyzőkön (MM) keresztül, ha jobb üzletet kínálnak",
   "Checking RFQ with MM": "RFQ ellenőrzése árjegyzőnél (MM)",
-  "Trade and win $10,000 Prize Pool": "Kereskedjen és nyerje el a $10,000 nyereményalapot",
-  "Trade now using Trust Wallet": "Kereskedjen most Trust Wallet használatával",
-  "Download Trust Wallet": "Trust Wallet letöltése",
-  "Unable request a quote": "Nem lehet árajánlatot kérni"
+  "PancakeSwap V3": "PancakeSwap V3",
+  "Claim $135K CAKE Airdrop & Exclusive NFT": "Claim $135K CAKE Airdrop & Exclusive NFT",
+  "Unable request a quote": "Nem lehet árajánlatot kérni",
+  "Buy new tokens launching on Aptos": "Buy new tokens launching on Aptos"
 }
