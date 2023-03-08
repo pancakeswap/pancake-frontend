@@ -154,6 +154,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
               style={{ justifyContent: 'center', textDecoration: 'none' }}
             >
               <Text
+                fontSize="20px"
                 onClick={() => {
                   window.open(
                     'https://medium.com/pancakeswap/participate-in-pancakeswap-v3-launch-claim-135k-cake-airdrop-and-receive-an-exclusive-nft-for-a1327ee80884',
