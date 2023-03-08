@@ -5,7 +5,7 @@ export const farmsV3 = [
   {
     pid: 1,
     lpSymbol: 'CAKE-BUSD LP',
-    lpAddress: '0xE8F08f0365b2875DbcF264A762B981bA3d612aEc',
+    lpAddress: '0x3709035aEaF6258D432eC1C50d2Ef1E0bF90a439',
     token: bscTestnetTokens.mockB,
     quoteToken: bscTestnetTokens.mockA,
     feeAmount: 500,
