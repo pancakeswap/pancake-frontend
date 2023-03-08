@@ -413,7 +413,7 @@ function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
   if (!deployerAddress) {
     return []
   }
-  return [FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => ({
+  return [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => ({
     address: getV3PoolAddress(currencyA, currencyB, fee),
     currencyA,
     currencyB,
