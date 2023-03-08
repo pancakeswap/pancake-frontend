@@ -157,7 +157,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
                 fontSize="20px"
                 onClick={() => {
                   window.open(
-                    'https://medium.com/pancakeswap/participate-in-pancakeswap-v3-launch-claim-135k-cake-airdrop-and-receive-an-exclusive-nft-for-a1327ee80884',
+                    'https://blog.pancakeswap.finance/articles/participate-in-pancake-swap-v3-launch-claim-135[…]irdrop-and-receive-an-exclusive-nft-for-early-supporters',
                     '_blank',
                     'noreferrer noopener',
                   )
