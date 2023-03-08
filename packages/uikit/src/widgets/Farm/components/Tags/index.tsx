@@ -14,6 +14,7 @@ import {
   LockIcon,
   RocketIcon,
   CurrencyIcon,
+  CheckmarkCircleIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
@@ -169,6 +170,21 @@ const VoteNowTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   );
 };
 
+const VotedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
+  const { t } = useTranslation();
+  return (
+    <Tag
+      variant="success"
+      style={{ background: "none" }}
+      outline
+      startIcon={<CheckmarkCircleIcon width="18px" color="success" mr="4px" />}
+      {...props}
+    >
+      {t("Voted")}
+    </Tag>
+  );
+};
+
 const SoonTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   const { t } = useTranslation();
   return (
@@ -216,6 +232,7 @@ const Tags = {
   LockedPoolTag,
   LockedOrAutoPoolTag,
   BoostedTag,
+  VotedTag,
 };
 
 export default Tags;
