@@ -384,7 +384,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
                 )
               }
               allowedSlippage={allowedSlippage}
-              onSlippageClick={onPresentSettingsModal}
+              onSlippageClick={!isMMBetter ? onPresentSettingsModal : null}
               allowedSlippageSlot={isMMBetter || (!v2Trade && !isExpertMode) ? <MMSlippageTolerance /> : undefined}
             />
           )}
