@@ -2083,7 +2083,7 @@
   "Learn how": "Katso miten",
   "You might also like": "Sinua saattaa myös kiinnostaa",
   "Chef’s choice": "Kokin valinta",
-  "Recommended Readings by Chef": "Recommended Readings by Chef",
+  "Recommended Readings by Chefs": "Recommended Readings by Chefs",
   "Latest News about PancakeSwap and more!": "Viimeisimpiä uutisia PancakeSwapista ja muuta!",
   "Token Risk Scanning": "Poletin riskin skannaus",
   "Automatic risk scanning for the selected token": "Automaattinen riskin skannaus valitulle poletille",
@@ -2114,8 +2114,8 @@
   "MM Linked Pool": "Markkinatakaajan linkitetty pooli",
   "Trade through the market makers if they provide better deal": "Käy kauppaa markkinatakaajien kautta, jos ne tarjoavat paremman tarjouksen",
   "Checking RFQ with MM": "Tarkistetaan RFQ markkinatakaajilta",
-  "Trade and win $10,000 Prize Pool": "Käy kauppaa ja voita 10 000 dollarin palkintopooli",
-  "Trade now using Trust Wallet": "Käy nyt kauppaa käyttämällä Trust Walletia",
-  "Download Trust Wallet": "Lataa Trust Wallet",
-  "Unable request a quote": "Tarjouksen pyytäminen ei onnistu"
+  "PancakeSwap V3": "PancakeSwap V3",
+  "Claim $135K CAKE Airdrop & Exclusive NFT": "Claim $135K CAKE Airdrop & Exclusive NFT",
+  "Unable request a quote": "Tarjouksen pyytäminen ei onnistu",
+  "Buy new tokens launching on Aptos": "Buy new tokens launching on Aptos"
 }
