@@ -272,7 +272,6 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
       const poolTicks = await Promise.all(
         pools.map(({ token0, token1, fee }) => {
           return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
-            console.log(data, 'data')
             return data.map(
               ({ tick, liquidityNet, liquidityGross }) =>
                 new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
