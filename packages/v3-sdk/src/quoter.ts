@@ -93,6 +93,7 @@ export abstract class SwapQuoter {
       const tradeTypeFunctionName = tradeType === TradeType.EXACT_INPUT ? 'quoteExactInput' : 'quoteExactOutput'
       calldata = swapInterface.encodeFunctionData(tradeTypeFunctionName, [path, quoteAmount])
     }
+
     return {
       calldata,
       value: toHex(0),
