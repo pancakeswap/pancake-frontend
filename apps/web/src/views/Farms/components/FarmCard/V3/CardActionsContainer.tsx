@@ -3,7 +3,6 @@ import { Flex, Text, Farm as FarmUI } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import styled from 'styled-components'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import FarmInfo from './FarmInfo'
 
@@ -21,7 +20,7 @@ const ActionContainer = styled.div`
 `
 
 interface FarmCardActionsProps {
-  farm: FarmWithStakedValue
+  farm: any
   account?: string
   addLiquidityUrl?: string
   lpLabel?: string

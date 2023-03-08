@@ -1,13 +1,13 @@
 import { Flex, Farm as FarmUI, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { FarmV3DataWithPrice } from '@pancakeswap/farms'
 import { TokenPairImage } from 'components/TokenImage'
 import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
 
 const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmUI.FarmV3Card
 
 interface FarmInfoProps {
-  farm: FarmWithStakedValue
+  farm: FarmV3DataWithPrice
   isReady: boolean
   liquidityUrlPathParts: string
 }
