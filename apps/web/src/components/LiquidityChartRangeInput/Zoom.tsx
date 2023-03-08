@@ -99,15 +99,22 @@ export default function Zoom({
   return (
     <Wrapper count={showResetButton ? 3 : 2}>
       {showResetButton && (
-        <Button
-          onClick={() => {
-            resetBrush()
-            zoomReset()
+        <Box
+          style={{
+            cursor: 'pointer',
+            textAlign: 'center',
+            paddingTop: '2px',
+            paddingLeft: '4px',
           }}
-          disabled={false}
         >
-          <RefreshCcw size={16} />
-        </Button>
+          <RefreshCcw
+            size={20}
+            onClick={() => {
+              resetBrush()
+              zoomReset()
+            }}
+          />
+        </Box>
       )}
       <Box
         style={{
