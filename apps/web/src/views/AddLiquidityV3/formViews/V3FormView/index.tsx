@@ -478,7 +478,7 @@ export default function V3FormView({
 
       <RightContainer>
         <AutoColumn gap="16px">
-          {noLiquidity ? (
+          {noLiquidity && (
             <Box>
               <PreTitle>Set Starting Price</PreTitle>
               <Message variant="warning">
@@ -497,26 +497,32 @@ export default function V3FormView({
                 </Text>
               </AutoRow>
             </Box>
-          ) : (
+          )}
+
+          <RowBetween mb="8px">
+            <PreTitle>Set Price Range</PreTitle>
+            <RateToggle
+              currencyA={baseCurrency}
+              handleRateToggle={() => {
+                if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
+                  onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
+                  onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
+                  onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
+                }
+
+                router.replace(
+                  `/add/${currencyIdB as string}/${currencyIdA as string}${feeAmount ? `/${feeAmount}` : ''}`,
+                  undefined,
+                  {
+                    shallow: true,
+                  },
+                )
+              }}
+            />
+          </RowBetween>
+
+          {!noLiquidity && (
             <>
-              <RowBetween mb="8px">
-                <PreTitle>Set Price Range</PreTitle>
-                <RateToggle
-                  currencyA={baseCurrency}
-                  handleRateToggle={() => {
-                    if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                      onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
-                      onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
-                      onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
-                    }
-
-                    router.replace(`/add/${currencyIdA}/${currencyIdB}${feeAmount ? `/${feeAmount}` : ''}`, undefined, {
-                      shallow: true,
-                    })
-                  }}
-                />
-              </RowBetween>
-
               {price && baseCurrency && quoteCurrency && !noLiquidity && (
                 <AutoRow gap="4px" justifyContent="center" style={{ marginTop: '0.5rem' }}>
                   <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">

@@ -56,6 +56,13 @@ export const StableContextProvider = (props: { pair: LPStablePair; account: stri
   )
 }
 
+enum FILTER {
+  ALL = 0,
+  V3 = 1,
+  STABLE = 2,
+  V2 = 3,
+}
+
 export default function PoolListPage() {
   const { account } = useWeb3React()
   const {
@@ -63,7 +70,7 @@ export default function PoolListPage() {
     currentLanguage: { locale },
   } = useTranslation()
 
-  const [selectedTypeIndex, setSelectedTypeIndex] = useState(0)
+  const [selectedTypeIndex, setSelectedTypeIndex] = useState(FILTER.ALL)
   const [hideClosedPositions, setHideClosedPositions] = useState(false)
 
   const { positions, loading: v3Loading } = useV3Positions(account)
@@ -156,6 +163,7 @@ export default function PoolListPage() {
         </Text>
       )
     } else {
+      // Order should be v3, stable, v2
       const sections = [v3PairsSection, stablePairsSection, v2PairsSection]
 
       resultSection = selectedTypeIndex ? sections.filter((_, index) => selectedTypeIndex === index + 1) : sections
@@ -181,7 +189,6 @@ export default function PoolListPage() {
             <>
               <Flex alignItems="center">
                 <Checkbox
-                  disabled={selectedTypeIndex !== 1}
                   scale="sm"
                   name="confirmed"
                   type="checkbox"
@@ -192,6 +199,7 @@ export default function PoolListPage() {
                   Hide closed positions
                 </Text>
               </Flex>
+
               <ButtonMenu
                 scale="sm"
                 activeIndex={selectedTypeIndex}
