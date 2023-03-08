@@ -327,13 +327,9 @@ export default function V3FormView({
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onFieldAInput('')
-      // dont jump to pool page if creating
-      router.replace(`liquidity`, undefined, {
-        shallow: true,
-      })
     }
     setTxHash('')
-  }, [onFieldAInput, router, txHash])
+  }, [onFieldAInput, txHash])
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
   // get value and prices at ticks
@@ -357,7 +353,7 @@ export default function V3FormView({
         width: '420px',
       }}
       title="Add Liquidity"
-      onDismiss={handleDismissConfirmation}
+      customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
       content={() => (

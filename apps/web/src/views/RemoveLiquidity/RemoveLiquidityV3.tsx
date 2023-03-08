@@ -267,7 +267,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const [onPresentRemoveLiquidityModal] = useModal(
     <TransactionConfirmationModal
       title="Remove Liquidity"
-      onDismiss={handleDismissConfirmation}
+      customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txnHash ?? ''}
       style={{

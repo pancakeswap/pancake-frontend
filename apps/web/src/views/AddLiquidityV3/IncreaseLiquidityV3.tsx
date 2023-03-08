@@ -233,12 +233,8 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     // if there was a tx hash, we want to clear the input
     if (txHash) {
       onFieldAInput('')
-      // dont jump to pool page if creating
-      router.replace(`liquidity`, undefined, {
-        shallow: true,
-      })
+      router.push('/liquidity')
     }
-    setTxHash('')
   }, [onFieldAInput, router, txHash])
 
   const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
@@ -253,7 +249,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
         width: '420px',
       }}
       title="Increase Liquidity"
-      onDismiss={handleDismissConfirmation}
+      customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
       content={() => (
