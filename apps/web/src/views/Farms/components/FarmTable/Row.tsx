@@ -55,6 +55,7 @@ const CellInner = styled.div`
   width: 100%;
   align-items: center;
   padding-right: 8px;
+
   ${({ theme }) => theme.mediaQueries.xl} {
     padding-right: 32px;
   }
