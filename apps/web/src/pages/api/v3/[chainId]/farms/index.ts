@@ -48,9 +48,18 @@ const handler: NextApiHandler = async (req, res) => {
     commonPrice,
   })
 
+  const farmsWithPrice = data.farmsWithPrice.map((f) => ({
+    ...f,
+    token: f.token.serialize,
+    quoteToken: f.quoteToken.serialize,
+  }))
+
   res.setHeader('Cache-Control', 's-maxage=30, max-age=10')
 
-  return res.status(200).json(data)
+  return res.status(200).json({
+    ...data,
+    farmsWithPrice,
+  })
 }
 
 export default handler

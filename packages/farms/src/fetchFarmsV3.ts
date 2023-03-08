@@ -11,8 +11,14 @@ import { getTokenAmount } from './v2/fetchFarmsV2'
 const masterchefV3Abi = [
   {
     inputs: [],
-    name: 'lastestPeriodCakePerSecond',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'latestPeriodCakePerSecond',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'view',
     type: 'function',
   },
@@ -72,7 +78,7 @@ export async function fetchMasterChefV3Data({
       },
       {
         address: masterChefAddress,
-        name: 'lastestPeriodCakePerSecond',
+        name: 'latestPeriodCakePerSecond',
       },
     ],
     chainId,
