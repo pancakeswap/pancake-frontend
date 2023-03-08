@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Button, NextLinkFromReactRouter, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
+import { Button, NextLinkFromReactRouter, Text, useMatchBreakpoints, OpenNewIcon } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
 import styled, { css, keyframes } from 'styled-components'
 import { v3AirdropBunny, v3BgBlingBlur, v3BgBlingNormal, v3BgCoinDown, v3BgCoinUp, v3Board } from './images'
@@ -44,6 +44,35 @@ const fading = keyframes`
   }
   to {
     opacity: 1;
+  }
+`
+const StyledSubheading = styled.div`
+  position: relative;
+  font-family: 'Kanit';
+  font-style: normal;
+  font-weight: 900;
+  font-size: 25px;
+  line-height: 98%;
+  letter-spacing: 0.01em;
+  font-feature-settings: 'liga' off;
+  background: linear-gradient(166.02deg, #ffb237 -5.1%, #ffeb37 75.24%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  &::after {
+    letter-spacing: 0.01em;
+    font-feature-settings: 'liga' off;
+    background: linear-gradient(166.02deg, #ffb237 -5.1%, #ffeb37 75.24%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    content: attr(data-text);
+    text-shadow: 1.27551px 1.27551px 1.02041px rgba(0, 0, 0, 0.2);
+    -webkit-text-stroke: 5px rgba(101, 50, 205, 1);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
   }
 `
 
@@ -180,9 +209,6 @@ const sharedStyle = css`
 
 const StyledButtonLeft = styled(Button)`
   ${sharedStyle}
-  > div {
-    color: ${({ theme }) => theme.colors.white};
-  }
   margin-top: 10px;
 `
 
@@ -198,17 +224,19 @@ const V3Banner = () => {
       <S.Inner>
         <S.LeftWrapper>
           <Title>{t('PancakeSwap V3')}</Title>
-          <S.StyledSubheading>{t('Claim $135K CAKE Airdrop & Exclusive NFT')}</S.StyledSubheading>
+          <StyledSubheading data-text={t('Claim $135K CAKE Airdrop & Exclusive NFT')}>
+            {t('Claim $135K CAKE Airdrop & Exclusive NFT')}
+          </StyledSubheading>
           <NextLinkFromReactRouter
             target="_blank"
-            to="https://medium.com/pancakeswap/participate-in-pancakeswap-v3-launch-claim-135k-cake-airdrop-and-receive-an-exclusive-nft-for-a1327ee80884"
+            to="https://blog.pancakeswap.finance/articles/participate-in-pancake-swap-v3-launch-claim-135[…]irdrop-and-receive-an-exclusive-nft-for-early-supporters"
             rel='"noopener noreferrer'
           >
             <StyledButtonLeft scale={isMobile ? 'sm' : 'md'}>
-              <Text bold fontSize="16px" mr="4px">
+              <Text bold fontSize="16px" mr="4px" color="invertedContrast">
                 {isMobile ? t('Learn More') : t('Learn More')}
               </Text>
-              {/* <ArrowForwardIcon color="white" /> */}
+              <OpenNewIcon color="invertedContrast" />
             </StyledButtonLeft>
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
