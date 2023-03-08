@@ -35,7 +35,7 @@ import { AppHeader, AppBody } from '../../../components/App'
 import { RowBetween } from '../../../components/Layout/Row'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import { LightGreyCard } from '../../../components/Card'
-
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { CurrencyLogo } from '../../../components/Logo'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 
@@ -347,6 +347,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
             assetB: currencyB?.symbol ?? '',
           })}
           noConfig
+          IconSlot={<V3SwapPromotionIcon wrapperStyle={{ marginRight: '10px' }} />}
         />
 
         <CardBody>

@@ -18,12 +18,13 @@ import {
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useExpertModeManager } from 'state/user/hooks'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
@@ -38,39 +39,9 @@ interface Props {
   onRefreshPrice: () => void
 }
 
-const shineAnimation = keyframes`
-	0% {transform:translateX(-100%); opacity: 1;}
-  20% {transform:translateX(100%); opacity: 1;}
-	100% {transform:translateX(100%); opacity: 0;}
-`
-
 const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
   overflow: hidden;
-  &.is-shining {
-    &::after {
-      content: '';
-      top: 0;
-      transform: translateX(100%);
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      z-index: 1;
-      animation: ${shineAnimation} 5s infinite 1s;
-      pointer-events: none;
-      background: -webkit-linear-gradient(
-        left,
-        ${({ theme }) =>
-          theme.isDark
-            ? `rgba(39,38,44, 0) 0%,
-        rgba(39,38,44, 0) 100%`
-            : `rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.8) 50%,
-        rgba(128, 186, 232, 0) 99%,
-        rgba(125, 185, 232, 0) 100%`}
-      );
-    }
-  }
 `
 
 //  disable this during the v3 campaign
@@ -85,22 +56,11 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   const { t } = useTranslation()
   const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
-  const [mobileCampaignTooltipShow, setMobileCampaignTooltipShow] = useState(false)
+
   const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
     placement: isMobile ? 'top' : 'bottom',
     trigger: isMobile ? 'focus' : 'hover',
     ...(isMobile && { manualVisible: mobileTooltipShow }),
-  })
-
-  const {
-    tooltip: campaignTooltip,
-    tooltipVisible: campaignTooltipVisible,
-    targetRef: campaignTargetRef,
-  } = useTooltip(<Text>{t('Claim $135K CAKE Airdrop & Exclusive NFT')}</Text>, {
-    placement: 'top',
-    trigger: 'hover',
-    avoidToStopPropagation: true,
-    manualVisible: mobileCampaignTooltipShow,
   })
 
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
@@ -114,13 +74,6 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
 
   const mobileTooltipClickOutside = useCallback(() => {
     setMobileTooltipShow(false)
-    setMobileCampaignTooltipShow(false)
-  }, [])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setMobileCampaignTooltipShow(true)
-    }, 100)
   }, [])
 
   useEffect(() => {
@@ -146,30 +99,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
         <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
       </Flex>
       <Flex width="100%" justifyContent="end">
-        <>
-          <ColoredIconButton className="is-shining" variant="text" scale="sm">
-            <TooltipText
-              ref={campaignTargetRef}
-              display="flex"
-              style={{ justifyContent: 'center', textDecoration: 'none' }}
-            >
-              <Text
-                fontSize="20px"
-                onClick={() => {
-                  window.open(
-                    'https://blog.pancakeswap.finance/articles/participate-in-pancake-swap-v3-launch-claim-135[…]irdrop-and-receive-an-exclusive-nft-for-early-supporters',
-                    '_blank',
-                    'noreferrer noopener',
-                  )
-                }}
-              >
-                🎁
-              </Text>
-            </TooltipText>
-          </ColoredIconButton>
-          {campaignTooltipVisible && campaignTooltip}
-        </>
-
+        <V3SwapPromotionIcon />
         {isChartSupported && setIsChartDisplayed && (
           <ColoredIconButton
             onClick={() => {
