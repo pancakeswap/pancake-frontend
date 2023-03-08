@@ -1,17 +1,18 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token } from "@pancakeswap/sdk";
 import { FeeAmount, Tick, TickMath } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
-import { Bound, TickDataRaw } from "../../components/LiquidityChartRangeInput/types";
-import { LiquidityChartRangeInput, CurrencyInput, Box } from "../../components";
+import { TickDataRaw } from "../../components/LiquidityChartRangeInput/types";
+import { LiquidityChartRangeInput, CurrencyInput, Box, Button } from "../../components";
 import { DynamicSection, Section } from "./DynamicSection";
 import { RangeSelector } from "./RangeSelector";
 import { StakeSpan } from "./StakeSpan";
-import { usePriceRange, useRangeHopCallbacks, useAmounts, useFee24h } from "./hooks";
+import { usePriceRange, useRangeHopCallbacks, useAmounts, useRoi } from "./hooks";
 import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
 import { RoiRate } from "./RoiRate";
+import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 
 interface Props {
   sqrtRatioX96?: JSBI;
@@ -23,10 +24,11 @@ interface Props {
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;
   ticks?: TickDataRaw[];
-  ticksAtLimit?: { [bound in Bound]?: boolean };
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
   priceUpper?: Price<Token, Token>;
+  currencyAUsdPrice?: Price<Currency, Currency>;
+  currencyBUsdPrice?: Price<Currency, Currency>;
 
   // Average 24h historical trading volume in USD
   volume24H?: number;
@@ -41,15 +43,19 @@ export function RoiCalculator({
   currencyB,
   balanceA,
   balanceB,
+  currencyAUsdPrice,
+  currencyBUsdPrice,
   feeAmount,
   ticks: ticksRaw,
-  ticksAtLimit = {},
   price,
   priceLower,
   priceUpper,
   volume24H,
 }: Props) {
   const { t } = useTranslation();
+  const [spanIndex, setSpanIndex] = useState(3);
+  const [compoundOn, setCompoundOn] = useState(true);
+  const [compoundIndex, setCompoundIndex] = useState(0);
   const ticks = useMemo(
     () =>
       ticksRaw?.map(
@@ -84,8 +90,9 @@ export function RoiCalculator({
     sqrtRatioX96,
   });
 
-  const fee = useFee24h({
+  const { fee, rate } = useRoi({
     amount: independentAmount,
+    amountUsdPrice: currencyA && independentAmount?.currency.equals(currencyA) ? currencyAUsdPrice : currencyBUsdPrice,
     currency: dependentCurrency,
     tickLower: priceRange?.tickLower,
     tickUpper: priceRange?.tickUpper,
@@ -93,6 +100,9 @@ export function RoiCalculator({
     sqrtRatioX96,
     ticks,
     fee: feeAmount,
+    compoundEvery: compoundingIndexToFrequency[compoundIndex],
+    stakeFor: spanIndexToSpan[spanIndex],
+    compoundOn,
   });
 
   const onCurrencyAChange = useCallback((value: string) => onChange(value, currencyA), [currencyA, onChange]);
@@ -127,7 +137,7 @@ export function RoiCalculator({
           liquidity={liquidity}
           feeAmount={feeAmount}
           ticks={ticksRaw}
-          ticksAtLimit={ticksAtLimit}
+          ticksAtLimit={priceRange?.ticksAtLimit}
           priceLower={priceRange?.priceLower}
           priceUpper={priceRange?.priceUpper}
           onLeftRangeInput={priceRange?.onLeftRangeInput}
@@ -146,18 +156,31 @@ export function RoiCalculator({
             currencyA={currencyA}
             currencyB={currencyB}
             feeAmount={feeAmount}
-            ticksAtLimit={ticksAtLimit}
+            ticksAtLimit={priceRange?.ticksAtLimit || {}}
           />
+          <Button
+            onClick={priceRange?.toggleFullRange}
+            variant={priceRange?.fullRange ? "primary" : "secondary"}
+            mb="16px"
+            scale="sm"
+          >
+            {t("Full Range")}
+          </Button>
         </DynamicSection>
       </Section>
       <Section title={t("Staked for")}>
-        <StakeSpan />
+        <StakeSpan spanIndex={spanIndex} onSpanChange={setSpanIndex} />
       </Section>
       <Section title={t("Compounding every")}>
-        <CompoundFrequency />
+        <CompoundFrequency
+          compoundIndex={compoundIndex}
+          onCompoundChange={setCompoundIndex}
+          on={compoundOn}
+          onToggleCompound={setCompoundOn}
+        />
       </Section>
-      <AnimatedArrow />
-      <RoiRate usdAmount={parseFloat(fee.toSignificant(6))} />
+      <AnimatedArrow state={{}} />
+      <RoiRate usdAmount={parseFloat(fee.toSignificant(6))} rate={rate} />
     </>
   );
 }

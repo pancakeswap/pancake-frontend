@@ -1,6 +1,35 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO, Price } from "@pancakeswap/sdk";
 import { FeeAmount, Tick, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { useMemo } from "react";
+
+import { useRate } from "./useRate";
+
+interface Params extends FeeParams {
+  stakeFor?: number; // num of days
+  compoundEvery?: number;
+  compoundOn?: boolean;
+  amountUsdPrice?: Price<Currency, Currency>;
+}
+
+export function useRoi({ compoundEvery, amountUsdPrice, stakeFor = 365, compoundOn, ...rest }: Params) {
+  const { amount } = rest;
+  const fee24h = useFee24h(rest);
+  const fee = useMemo(() => fee24h.multiply(JSBI.BigInt(stakeFor)), [fee24h, stakeFor]);
+  const principalUsdAmount = amount && amountUsdPrice?.quote(amount);
+  const { rate, apr } = useRate({
+    interest: parseFloat(fee24h.toSignificant(6)),
+    principal: parseFloat(principalUsdAmount?.toExact() || "0"),
+    compoundEvery,
+    compoundOn,
+    stakeFor,
+  });
+
+  return {
+    fee,
+    rate,
+    apr,
+  };
+}
 
 interface FeeParams {
   // Amount of token user input

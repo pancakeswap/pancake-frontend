@@ -20,6 +20,9 @@ interface PriceRangeInfo {
   priceUpper?: Price<Currency, Currency>;
   onLeftRangeInput: (leftRangeValue: string) => void;
   onRightRangeInput: (rightRangeValue: string) => void;
+  toggleFullRange: () => void;
+  fullRange?: boolean;
+  ticksAtLimit: { [bound in Bound]?: boolean };
 }
 
 export function usePriceRange({
@@ -29,6 +32,7 @@ export function usePriceRange({
   priceLower: initialPriceLower,
   priceUpper: initialPriceUpper,
 }: Params): PriceRangeInfo | null {
+  const [fullRange, setFullRange] = useState(false);
   const [priceLower, setPriceLower] = useState<Price<Currency, Currency> | undefined>(initialPriceLower);
   const [priceUpper, setPriceUpper] = useState<Price<Currency, Currency> | undefined>(initialPriceUpper);
 
@@ -62,38 +66,62 @@ export function usePriceRange({
     };
   }, [tickSpaceLimits, invertPrice, quoteCurrency, baseCurrency]);
 
-  const rightRangeTypedValue = useMemo(() => {
-    try {
-      return invertPrice ? priceLower?.toFixed(6) : priceUpper?.toFixed(6);
-    } catch (e) {
-      return "0";
-    }
-  }, [priceLower, priceUpper, invertPrice]);
+  const rightRangeTypedValue = useMemo(
+    () => (invertPrice ? priceLower?.toFixed(6) : priceUpper?.toFixed(6)),
+    [priceLower, priceUpper, invertPrice]
+  );
 
-  const leftRangeTypedValue = useMemo(() => {
-    try {
-      return invertPrice ? priceUpper?.toFixed(6) : priceLower?.toFixed(6);
-    } catch (e) {
-      return "0";
-    }
-  }, [priceLower, priceUpper, invertPrice]);
+  const leftRangeTypedValue = useMemo(
+    () => (invertPrice ? priceUpper?.toFixed(6) : priceLower?.toFixed(6)),
+    [priceLower, priceUpper, invertPrice]
+  );
 
   // parse typed range values and determine closest ticks
   // lower should always be a smaller tick
   const tickLower = useMemo(
     () =>
-      invertPrice
+      fullRange
+        ? tickSpaceLimits[Bound.LOWER]
+        : invertPrice
         ? tryParseTick(quoteCurrency?.wrapped, baseCurrency?.wrapped, feeAmount, rightRangeTypedValue)
         : tryParseTick(baseCurrency?.wrapped, quoteCurrency?.wrapped, feeAmount, leftRangeTypedValue),
-    [leftRangeTypedValue, rightRangeTypedValue, invertPrice, baseCurrency, quoteCurrency, feeAmount]
+    [
+      leftRangeTypedValue,
+      rightRangeTypedValue,
+      invertPrice,
+      baseCurrency,
+      quoteCurrency,
+      feeAmount,
+      tickSpaceLimits,
+      fullRange,
+    ]
   );
 
   const tickUpper = useMemo(
     () =>
-      invertPrice
+      fullRange
+        ? tickSpaceLimits[Bound.UPPER]
+        : invertPrice
         ? tryParseTick(quoteCurrency?.wrapped, baseCurrency?.wrapped, feeAmount, leftRangeTypedValue)
         : tryParseTick(baseCurrency?.wrapped, quoteCurrency?.wrapped, feeAmount, rightRangeTypedValue),
-    [leftRangeTypedValue, rightRangeTypedValue, invertPrice, baseCurrency, quoteCurrency, feeAmount]
+    [
+      leftRangeTypedValue,
+      rightRangeTypedValue,
+      invertPrice,
+      baseCurrency,
+      quoteCurrency,
+      feeAmount,
+      fullRange,
+      tickSpaceLimits,
+    ]
+  );
+
+  const ticksAtLimit = useMemo(
+    () => ({
+      [Bound.LOWER]: tickLower === tickSpaceLimits[Bound.LOWER],
+      [Bound.UPPER]: tickUpper === tickSpaceLimits[Bound.UPPER],
+    }),
+    [tickUpper, tickLower, tickSpaceLimits]
   );
 
   const saveSetPriceUpper = useCallback(
@@ -140,16 +168,21 @@ export function usePriceRange({
     [baseCurrency, quoteCurrency, invertPrice, saveSetPriceUpper, saveSetPriceLower]
   );
 
+  const toggleFullRange = useCallback(() => setFullRange(!fullRange), [fullRange]);
+
   useEffect(() => setPriceLower(initialPriceLower), [initialPriceLower]);
 
   useEffect(() => setPriceUpper(initialPriceUpper), [initialPriceUpper]);
 
   return {
+    ticksAtLimit,
     tickUpper,
     tickLower,
-    priceLower,
-    priceUpper,
+    priceLower: fullRange ? priceLimits[Bound.LOWER] : priceLower,
+    priceUpper: fullRange ? priceLimits[Bound.UPPER] : priceUpper,
     onRightRangeInput,
     onLeftRangeInput,
+    toggleFullRange,
+    fullRange,
   };
 }
