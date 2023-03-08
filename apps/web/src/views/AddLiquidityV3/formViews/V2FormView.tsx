@@ -25,7 +25,7 @@ import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 import { DynamicSection } from './V3FormView/components/shared'
 import RangeSelector from './V3FormView/components/RangeSelector'
 
-export default function L2FormView({
+export default function V2FormView({
   formattedAmounts,
   addIsUnsupported,
   addIsWarning,

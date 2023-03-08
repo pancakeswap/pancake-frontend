@@ -31,7 +31,7 @@ import { HandleFeePoolSelectFn, SELECTOR_TYPE } from './types'
 import { StableV3Selector } from './components/StableV3Selector'
 import StableFormView from './formViews/StableFormView'
 import { V2Selector } from './components/V2Selector'
-import L2FormView from './formViews/L2FormView'
+import V2FormView from './formViews/V2FormView'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -250,7 +250,7 @@ export default function UniversalAddLiquidity({
         )}
         {selectorType === SELECTOR_TYPE.V2 && (
           <AddLiquidity currencyA={baseCurrency} currencyB={quoteCurrency}>
-            {(props) => <L2FormView {...props} />}
+            {(props) => <V2FormView {...props} />}
           </AddLiquidity>
         )}
       </ResponsiveTwoColumns>

@@ -459,7 +459,7 @@ export default function V3FormView({
             />
           </LockedDeposit>
 
-          <LockedDeposit locked={depositBDisabled}>
+          <LockedDeposit locked={depositBDisabled} mb="8px">
             <CurrencyInputPanel
               disableCurrencySelect
               value={formattedAmounts[Field.CURRENCY_B]}
