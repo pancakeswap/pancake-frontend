@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { Contract } from '@ethersproject/contracts'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { CallStateResult, useSingleCallResult, useSingleContractMultipleData } from 'state/multicall/hooks'
@@ -61,10 +62,8 @@ export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3P
   }
 }
 
-export function useV3TokenIdsByAccount(account: string | null | undefined) {
-  const positionManager = useV3NFTPositionManagerContract()
-
-  const { loading: balanceLoading, result: balanceResult } = useSingleCallResult(positionManager, 'balanceOf', [
+export function useV3TokenIdsByAccount(contract: Contract, account: string | null | undefined) {
+  const { loading: balanceLoading, result: balanceResult } = useSingleCallResult(contract, 'balanceOf', [
     account ?? undefined,
   ])
 
@@ -82,7 +81,7 @@ export function useV3TokenIdsByAccount(account: string | null | undefined) {
     return []
   }, [account, accountBalance])
 
-  const tokenIdResults = useSingleContractMultipleData(positionManager, 'tokenOfOwnerByIndex', tokenIdsArgs)
+  const tokenIdResults = useSingleContractMultipleData(contract, 'tokenOfOwnerByIndex', tokenIdsArgs)
   const someTokenIdsLoading = useMemo(() => tokenIdResults.some(({ loading }) => loading), [tokenIdResults])
 
   const tokenIds = useMemo(() => {
@@ -105,7 +104,9 @@ export function useV3TokenIdsByAccount(account: string | null | undefined) {
 }
 
 export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
-  const { tokenIds, loading: tokenIdsLoading } = useV3TokenIdsByAccount(account)
+  const positionManager = useV3NFTPositionManagerContract()
+
+  const { tokenIds, loading: tokenIdsLoading } = useV3TokenIdsByAccount(positionManager, account)
 
   const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(tokenIds)
 
