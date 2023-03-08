@@ -3,7 +3,7 @@ import { Text, Farm as FarmUI } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import BoostedAction from '../../../YieldBooster/components/BoostedAction'
-import { ActionContent, ActionTitles } from '../styles'
+import { ActionContent, ActionTitles } from './styles'
 
 interface WalletNotConnectedProps {
   account: string

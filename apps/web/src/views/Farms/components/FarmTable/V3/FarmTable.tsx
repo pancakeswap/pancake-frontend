@@ -7,10 +7,10 @@ import latinise from '@pancakeswap/utils/latinise'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useRouter } from 'next/router'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
-import { getDisplayApr } from '../getDisplayApr'
+import { getDisplayApr } from '../../getDisplayApr'
 
 import Row, { RowProps } from './Row'
-import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
+import ProxyFarmContainer from '../../YieldBooster/components/ProxyFarmContainer'
 
 export interface ITableProps {
   farms: FarmWithStakedValue[]
@@ -111,6 +111,21 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
     return getBalanceNumber(earnings)
   }
 
+  const getFarmStakedBalance = (farm) => {
+    let staked = BIG_ZERO
+    const stakedBalance = new BigNumber(farm.userData.stakedBalance)
+
+    if (farm.boosted) {
+      const proxyStakedBalance = new BigNumber(farm.userData?.proxy?.stakedBalance)
+
+      staked = proxyStakedBalance.gt(0) ? proxyStakedBalance : stakedBalance
+    } else {
+      staked = stakedBalance
+    }
+
+    return getBalanceNumber(staked)
+  }
+
   const generateRow = (farm) => {
     const { token, quoteToken } = farm
     const tokenAddress = token.address
@@ -152,6 +167,12 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       },
       multiplier: {
         multiplier: farm.multiplier,
+      },
+      availableLp: {
+        amount: getBalanceNumber(farm.userData.tokenBalance),
+      },
+      stakedLp: {
+        amount: getFarmStakedBalance(farm),
       },
       type: farm.isCommunity ? 'community' : 'core',
       details: farm,

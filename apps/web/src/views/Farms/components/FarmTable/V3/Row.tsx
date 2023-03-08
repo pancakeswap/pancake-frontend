@@ -12,18 +12,18 @@ import {
   FarmTableFarmTokenInfoProps,
   MobileColumnSchema,
   DesktopColumnSchema,
+  FarmTableAmountProps,
 } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useFarmUser } from 'state/farms/hooks'
 import { useDelayedUnmount } from '@pancakeswap/hooks'
-
-import Apr, { AprProps } from './Apr'
-import Farm from './Farm'
+import Apr, { AprProps } from '../Apr'
+import Farm from '../Farm'
 import ActionPanel from './Actions/ActionPanel'
-import BoostedApr from '../YieldBooster/components/BoostedApr'
+import BoostedApr from '../../YieldBooster/components/BoostedApr'
 
-const { FarmAuctionTag, CoreTag, BoostedTag, StableFarmTag } = FarmUI.Tags
-const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
+const { FarmAuctionTag, BoostedTag, StableFarmTag } = FarmUI.Tags
+const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount } = FarmUI.FarmTable
 
 export interface RowProps {
   apr: AprProps
@@ -34,6 +34,8 @@ export interface RowProps {
   details: FarmWithStakedValue
   type: 'core' | 'community'
   initialActivity?: boolean
+  availableLp: FarmTableAmountProps
+  stakedLp: FarmTableAmountProps
 }
 
 interface RowPropsWithLoading extends RowProps {
@@ -47,6 +49,8 @@ const cells = {
   details: Details,
   multiplier: Multiplier,
   liquidity: Liquidity,
+  availableLp: LpAmount,
+  stakedLp: LpAmount,
 }
 
 const CellInner = styled.div`
@@ -55,8 +59,9 @@ const CellInner = styled.div`
   width: 100%;
   align-items: center;
   padding-right: 8px;
+
   ${({ theme }) => theme.mediaQueries.xl} {
-    padding-right: 32px;
+    padding-right: 14px;
   }
 `
 
@@ -125,9 +130,9 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   <td key={key}>
                     {userDataReady ? (
                       <CellInner style={{ width: '140px' }}>
-                        {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
-                        {props?.details?.isStable ? <StableFarmTag scale="sm" ml="6px" /> : null}
-                        {props?.details?.boosted ? <BoostedTag scale="sm" ml="6px" /> : null}
+                        {props[key] === 'community' && <FarmAuctionTag scale="sm" />}
+                        {props?.details?.isStable && <StableFarmTag scale="sm" ml="6px" />}
+                        {props?.details?.boosted && <BoostedTag scale="sm" ml="6px" />}
                       </CellInner>
                     ) : (
                       <Skeleton width={60} height={24} />
@@ -157,6 +162,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                         />
                         {props?.details?.boosted && userDataReady ? (
                           <BoostedApr
+                            onlyShowAtDesktop
                             lpRewardsApr={props?.apr?.lpRewardsApr}
                             apr={props?.apr?.originalValue}
                             pid={props.farm?.pid}
@@ -198,27 +204,26 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
                 <Flex mr="16px">
-                  <CoreTag scale="sm" />
-                  {props?.details?.isStable ? (
+                  {props?.details?.isStable && (
                     <StableFarmTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
-                  ) : null}
-                  {props?.details?.boosted ? (
+                  )}
+                  {props?.details?.boosted && (
                     <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
-                  ) : null}
+                  )}
                 </Flex>
               )}
             </Flex>
           </FarmMobileCell>
         </tr>
         <StyledTr onClick={toggleActionPanel}>
-          <td width="33%">
+          <td width="20%">
             <EarnedMobileCell>
               <CellLayout label={t('Earned')}>
                 <Earned {...props.earned} userDataReady={userDataReady} />
               </CellLayout>
             </EarnedMobileCell>
           </td>
-          <td width="33%">
+          <td width="35%">
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 <Apr
@@ -243,7 +248,21 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               </CellLayout>
             </AprMobileCell>
           </td>
-          <td width="33%">
+          <td width="15%">
+            <CellInner style={{ justifyContent: 'flex-end' }}>
+              <CellLayout label={t('Available')}>
+                <LpAmount {...props.availableLp} userDataReady={userDataReady} />
+              </CellLayout>
+            </CellInner>
+          </td>
+          <td width="18%">
+            <CellInner style={{ justifyContent: 'flex-end' }}>
+              <CellLayout label={t('Staked')}>
+                <LpAmount {...props.stakedLp} userDataReady={userDataReady} />
+              </CellLayout>
+            </CellInner>
+          </td>
+          <td width="2%">
             <CellInner style={{ justifyContent: 'flex-end' }}>
               <Details actionPanelToggled={actionPanelExpanded} />
             </CellInner>
@@ -258,7 +277,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {handleRenderRow()}
       {shouldRenderChild && (
         <tr>
-          <td colSpan={7}>
+          <td colSpan={9}>
             <ActionPanel {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
           </td>
         </tr>

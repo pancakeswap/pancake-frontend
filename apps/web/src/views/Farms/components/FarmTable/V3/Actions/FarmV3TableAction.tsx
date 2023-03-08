@@ -3,7 +3,7 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
 import { Flex, Text, Box, Farm as FarmUI } from '@pancakeswap/uikit'
 import BoostedAction from 'views/Farms/components//YieldBooster/components/BoostedAction'
-import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from '../styles'
+import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from './styles'
 
 const { FarmV3HarvestAction, FarmV3StakeAndUnStake } = FarmUI.FarmV3Table
 
@@ -85,33 +85,3 @@ const FarmV3TableAction: React.FunctionComponent<React.PropsWithChildren<FarmV3T
 }
 
 export default FarmV3TableAction
-
-// import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
-// import { HarvestAction, ProxyHarvestActionContainer } from './HarvestAction'
-// import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
-
-// {shouldUseProxyFarm ? (
-//   <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
-//     {(props) => <HarvestAction {...props} />}
-//   </ProxyHarvestActionContainer>
-// ) :  (
-//   <HarvestActionContainer
-//     earnings={earnings}
-//     pid={pid}
-//     vaultPid={vaultPid}
-//     token={token}
-//     quoteToken={quoteToken}
-//     lpSymbol={lpSymbol}
-//   >
-//     {(props) => <HarvestAction {...props} />}
-//   </HarvestActionContainer>
-// )}
-// {shouldUseProxyFarm ? (
-//   <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-//     {(props) => <StakedAction {...props} />}
-//   </ProxyStakedContainer>
-// ) : (
-//   <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-//     {(props) => <StakedAction {...props} />}
-//   </StakedContainer>
-// )}
