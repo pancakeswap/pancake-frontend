@@ -2083,7 +2083,7 @@
   "Learn how": "Dowiedz się jak",
   "You might also like": "Może Ci się również spodobać",
   "Chef’s choice": "Wybór szefa kuchni",
-  "Recommended Readings by Chef": "Recommended Readings by Chef",
+  "Recommended Readings by Chefs": "Recommended Readings by Chefs",
   "Latest News about PancakeSwap and more!": "Najnowsze wiadomości o PancakeSwap i nie tylko!",
   "Token Risk Scanning": "Skanowanie ryzyka związanego z tokenem",
   "Automatic risk scanning for the selected token": "Automatyczne skanowanie ryzyka dla wybranego tokena",
@@ -2114,8 +2114,8 @@
   "MM Linked Pool": "Pula powiązana z MM",
   "Trade through the market makers if they provide better deal": "Handluj za pośrednictwem animatorów rynku, jeśli zapewniają lepszą ofertę",
   "Checking RFQ with MM": "Sprawdzanie RFQ u MM",
-  "Trade and win $10,000 Prize Pool": "Handluj i wygraj pulę nagród 10 000 USD",
-  "Trade now using Trust Wallet": "Handluj teraz przy użyciu Trust Wallet",
-  "Download Trust Wallet": "Pobierz Trust Wallet",
-  "Unable request a quote": "Nie można zażądać wyceny"
+  "PancakeSwap V3": "PancakeSwap V3",
+  "Claim $135K CAKE Airdrop & Exclusive NFT": "Claim $135K CAKE Airdrop & Exclusive NFT",
+  "Unable request a quote": "Nie można zażądać wyceny",
+  "Buy new tokens launching on Aptos": "Buy new tokens launching on Aptos"
 }
