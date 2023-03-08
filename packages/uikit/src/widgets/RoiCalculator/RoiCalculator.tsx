@@ -27,8 +27,8 @@ interface Props {
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
   priceUpper?: Price<Token, Token>;
-  currencyAUsdPrice?: Price<Currency, Currency>;
-  currencyBUsdPrice?: Price<Currency, Currency>;
+  currencyAUsdPrice?: number;
+  currencyBUsdPrice?: number;
 
   // Average 24h historical trading volume in USD
   volume24H?: number;
@@ -81,7 +81,7 @@ export function RoiCalculator({
     priceRange?.tickUpper,
     tickCurrent
   );
-  const { valueA, valueB, onChange, independentAmount, dependentCurrency } = useAmounts({
+  const { valueA, valueB, onChange, amountA, amountB } = useAmounts({
     independentAmount: initialIndependentAmount,
     currencyA,
     currencyB,
@@ -91,9 +91,10 @@ export function RoiCalculator({
   });
 
   const { fee, rate } = useRoi({
-    amount: independentAmount,
-    amountUsdPrice: currencyA && independentAmount?.currency.equals(currencyA) ? currencyAUsdPrice : currencyBUsdPrice,
-    currency: dependentCurrency,
+    amountA,
+    amountB,
+    currencyAUsdPrice,
+    currencyBUsdPrice,
     tickLower: priceRange?.tickLower,
     tickUpper: priceRange?.tickUpper,
     volume24H,

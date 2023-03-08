@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Percent } from "@pancakeswap/sdk";
+import { Percent } from "@pancakeswap/sdk";
 import { useTranslation } from "@pancakeswap/localization";
 
 import { Flex, Text, PencilIcon, IconButton } from "../../components";
@@ -13,11 +13,10 @@ import {
 
 interface Props {
   usdAmount?: number;
-  tokenAmount?: CurrencyAmount<Currency>;
   rate?: Percent;
 }
 
-export function RoiRate({ usdAmount = 0, tokenAmount, rate }: Props) {
+export function RoiRate({ usdAmount = 0, rate }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -61,9 +60,6 @@ export function RoiRate({ usdAmount = 0, tokenAmount, rate }: Props) {
             </IconButton>
           </>
         </Flex>
-        <Text fontSize="12px" color="textSubtle">
-          ~ {tokenAmount?.toSignificant(6)} {tokenAmount?.currency.symbol}
-        </Text>
       </RoiCardInner>
     </RoiCardWrapper>
   );

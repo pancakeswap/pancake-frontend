@@ -26,18 +26,8 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           }
           currencyA={ethereumTokens.weth}
           currencyB={ethereumTokens.usdc}
-          currencyAUsdPrice={
-            new Price({
-              baseAmount: CurrencyAmount.fromRawAmount(ethereumTokens.weth, "1000000000000000000"),
-              quoteAmount: CurrencyAmount.fromRawAmount(ethereumTokens.usdc, "1564567634"),
-            })
-          }
-          currencyBUsdPrice={
-            new Price({
-              baseAmount: CurrencyAmount.fromRawAmount(ethereumTokens.usdc, "10000000000000"),
-              quoteAmount: CurrencyAmount.fromRawAmount(ethereumTokens.usdc, "10000000000000"),
-            })
-          }
+          currencyAUsdPrice={1564.567634}
+          currencyBUsdPrice={0.999999}
           sqrtRatioX96={JSBI.BigInt("2002509526268673110418559843593160")}
           liquidity={JSBI.BigInt("26477362146968540419")}
           feeAmount={FeeAmount.LOW}

@@ -1,28 +1,58 @@
-import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO, Price } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO } from "@pancakeswap/sdk";
 import { FeeAmount, Tick, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { useMemo } from "react";
 
 import { useRate } from "./useRate";
 
-interface Params extends FeeParams {
+interface Params extends Omit<FeeParams, "amount" | "currency"> {
   stakeFor?: number; // num of days
   compoundEvery?: number;
   compoundOn?: boolean;
-  amountUsdPrice?: Price<Currency, Currency>;
+  currencyAUsdPrice?: number;
+  currencyBUsdPrice?: number;
+  amountA?: CurrencyAmount<Currency>;
+  amountB?: CurrencyAmount<Currency>;
 }
 
-export function useRoi({ compoundEvery, amountUsdPrice, stakeFor = 365, compoundOn, ...rest }: Params) {
-  const { amount } = rest;
-  const fee24h = useFee24h(rest);
-  const fee = useMemo(() => fee24h.multiply(JSBI.BigInt(stakeFor)), [fee24h, stakeFor]);
-  const principalUsdAmount = amount && amountUsdPrice?.quote(amount);
-  const { rate, apr } = useRate({
+const scale = 1_000_000_000_000_000;
+
+const decimalToFraction = (decimal: number) => {
+  return new Fraction(Math.floor(decimal * scale), scale);
+};
+
+export function useRoi({
+  amountA,
+  amountB,
+  compoundEvery,
+  currencyAUsdPrice,
+  currencyBUsdPrice,
+  stakeFor = 365,
+  compoundOn,
+  ...rest
+}: Params) {
+  const fee24h = useFee24h({
+    ...rest,
+    amount: amountA,
+    currency: amountB?.currency,
+  });
+  const principal = useMemo(
+    () =>
+      amountA &&
+      amountB &&
+      currencyAUsdPrice &&
+      currencyBUsdPrice &&
+      parseFloat(amountA.toExact()) * currencyAUsdPrice + parseFloat(amountB.toExact()) * currencyBUsdPrice,
+    [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice]
+  );
+  const { rate, apr, reward } = useRate({
     interest: parseFloat(fee24h.toSignificant(6)),
-    principal: parseFloat(principalUsdAmount?.toExact() || "0"),
+    principal,
     compoundEvery,
     compoundOn,
     stakeFor,
   });
+
+  const fee = useMemo(() => decimalToFraction(reward), [reward]);
 
   return {
     fee,

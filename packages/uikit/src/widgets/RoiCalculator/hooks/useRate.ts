@@ -16,16 +16,32 @@ const formatDecimalToPercent = (decimal: number) => {
 export function useRate({ stakeFor = 1, ...rest }: Params) {
   const apr = useApr(rest);
   const { principal } = rest;
-  const rate = useMemo(() => {
+  const accrued = useMemo(() => {
     if (!principal) {
+      return 0;
+    }
+
+    return principal * (1 + parseFloat(apr.asFraction.toSignificant(6))) ** (stakeFor / 365);
+  }, [apr, principal, stakeFor]);
+
+  const reward = useMemo(() => {
+    if (!principal || !accrued) {
+      return 0;
+    }
+    return accrued - principal;
+  }, [accrued, principal]);
+
+  const rate = useMemo(() => {
+    if (!accrued || !principal) {
       return ZERO_PERCENT;
     }
 
-    const accrued = principal * (1 + parseFloat(apr.asFraction.toSignificant(6))) ** (stakeFor / 365);
     const decimal = (accrued - principal) / principal;
     return formatDecimalToPercent(decimal);
-  }, [apr, principal, stakeFor]);
+  }, [principal, accrued]);
+
   return {
+    reward,
     rate,
     apr,
   };
