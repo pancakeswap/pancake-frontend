@@ -2083,7 +2083,7 @@
   "Learn how": "Инструкция",
   "You might also like": "Вам также может быть интересно",
   "Chef’s choice": "Выбор шеф-повара",
-  "Recommended Readings by Chef": "Recommended Readings by Chef",
+  "Recommended Readings by Chefs": "Recommended Readings by Chefs",
   "Latest News about PancakeSwap and more!": "Последние новости о PancakeSwap и многое другое!",
   "Token Risk Scanning": "Оценка риска для токена",
   "Automatic risk scanning for the selected token": "Автоматическая оценка риска для выбранного токена",
@@ -2114,8 +2114,8 @@
   "MM Linked Pool": "Связанный пул ММ",
   "Trade through the market makers if they provide better deal": "Торговать через маркетмейкеров, если это выгоднее",
   "Checking RFQ with MM": "Запрос предложения у ММ",
-  "Trade and win $10,000 Prize Pool": "Торгуйте и выигрывайте: призовой фонд 10 000 $",
-  "Trade now using Trust Wallet": "Торгуйте, используя Trust Wallet",
-  "Download Trust Wallet": "Скачать Trust Wallet",
-  "Unable request a quote": "Не удается запросить котировку"
+  "PancakeSwap V3": "PancakeSwap V3",
+  "Claim $135K CAKE Airdrop & Exclusive NFT": "Claim $135K CAKE Airdrop & Exclusive NFT",
+  "Unable request a quote": "Не удается запросить котировку",
+  "Buy new tokens launching on Aptos": "Buy new tokens launching on Aptos"
 }
