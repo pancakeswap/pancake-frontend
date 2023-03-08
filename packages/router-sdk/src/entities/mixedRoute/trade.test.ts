@@ -533,11 +533,11 @@ describe('MixedRouteTrade', () => {
         expect(result[0].swaps[0].route.pools).toHaveLength(1) // 0 -> 2 at 10:11
         expect(result[0].swaps[0].route.path).toEqual([token0, token2])
         expect(result[0].inputAmount.equalTo(CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10000)))).toBeTruthy()
-        expect(result[0].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(9971)))).toBeTruthy()
+        expect(result[0].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(9976)))).toBeTruthy()
         expect(result[1].swaps[0].route.pools).toHaveLength(2) // 0 -> 1 -> 2 at 12:12:10
         expect(result[1].swaps[0].route.path).toEqual([token0, token1, token2])
         expect(result[1].inputAmount.equalTo(CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10000)))).toBeTruthy()
-        expect(result[1].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(7004)))).toBeTruthy()
+        expect(result[1].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(7010)))).toBeTruthy()
       })
 
       it('respects maxHops', async () => {
@@ -674,13 +674,13 @@ describe('MixedRouteTrade', () => {
 
         it('returns exact if nonzero', () => {
           expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(0), 100))).toEqual(
-            CurrencyAmount.fromRawAmount(token2, 7004)
+            CurrencyAmount.fromRawAmount(token2, 7010)
           )
           expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(5), 100))).toEqual(
-            CurrencyAmount.fromRawAmount(token2, 6670)
+            CurrencyAmount.fromRawAmount(token2, 6676)
           )
           expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(200), 100))).toEqual(
-            CurrencyAmount.fromRawAmount(token2, 2334)
+            CurrencyAmount.fromRawAmount(token2, 2336)
           )
         })
       })
@@ -1227,11 +1227,11 @@ describe('MixedRouteTrade', () => {
         expect(result[0].swaps[0].route.pools).toHaveLength(1) // 0 -> 2 at 10:11
         expect(result[0].swaps[0].route.path).toEqual([token0, token2])
         expect(result[0].inputAmount.equalTo(CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10000)))).toBeTruthy()
-        expect(result[0].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(9971)))).toBeTruthy()
+        expect(result[0].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(9976)))).toBeTruthy()
         expect(result[1].swaps[0].route.pools).toHaveLength(2) // 0 -> 1 -> 2 at 12:12:10
         expect(result[1].swaps[0].route.path).toEqual([token0, token1, token2])
         expect(result[1].inputAmount.equalTo(CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10000)))).toBeTruthy()
-        expect(result[1].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(7007)))).toBeTruthy()
+        expect(result[1].outputAmount.equalTo(CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(7010)))).toBeTruthy()
       })
 
       it('respects maxHops', async () => {
@@ -1374,13 +1374,13 @@ describe('MixedRouteTrade', () => {
 
         it('returns exact if nonzero', () => {
           expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(0), 100))).toEqual(
-            CurrencyAmount.fromRawAmount(token2, 7007)
+            CurrencyAmount.fromRawAmount(token2, 7010)
           )
           expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(5), 100))).toEqual(
-            CurrencyAmount.fromRawAmount(token2, 6673)
+            CurrencyAmount.fromRawAmount(token2, 6676)
           )
           expect(exactIn.minimumAmountOut(new Percent(JSBI.BigInt(200), 100))).toEqual(
-            CurrencyAmount.fromRawAmount(token2, 2335)
+            CurrencyAmount.fromRawAmount(token2, 2336)
           )
         })
       })
