@@ -12,6 +12,7 @@ import { usePriceRange, useRangeHopCallbacks, useAmounts, useRoi } from "./hooks
 import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
 import { RoiRate } from "./RoiRate";
+import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 
 interface Props {
@@ -180,6 +181,7 @@ export function RoiCalculator({
           onToggleCompound={setCompoundOn}
         />
       </Section>
+      <ImpermanentLossCalculator />
       <AnimatedArrow state={{}} />
       <RoiRate usdAmount={parseFloat(fee.toSignificant(6))} rate={rate} />
     </>
