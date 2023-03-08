@@ -6,7 +6,7 @@ export const ifos: Ifo[] = [
   {
     id: 'move',
     address: `${IFO_POOL_STORE_TAG}<${mainnetTokens.cake.address}, ${mainnetTokens.move.address}, ${getIFOUID(1)}>`,
-    isActive: true,
+    isActive: false,
     name: 'MOVE',
     poolUnlimited: {
       saleAmount: '10,000,000 MOVE',
