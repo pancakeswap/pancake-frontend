@@ -76,8 +76,4 @@ export class Token extends BaseCurrency {
       projectLink: this.projectLink,
     }
   }
-
-  public toString(): SerializedToken {
-    return this.serialize
-  }
 }
