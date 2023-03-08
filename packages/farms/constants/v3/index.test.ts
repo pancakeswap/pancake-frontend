@@ -24,7 +24,7 @@ describe('Config farms V3', () => {
   })
 
   it.each(mainnetFarms.flat())('should has correct lpAddress', (farm) => {
-    expect(Pool.getAddress(farm.token, farm.quoteToken, farm.fee)).toEqual(farm.lpAddress)
+    expect(Pool.getAddress(farm.token, farm.quoteToken, farm.feeAmount)).toEqual(farm.lpAddress)
   })
 
   it.each(mainnetFarms)('should has related common price', (...farms) => {

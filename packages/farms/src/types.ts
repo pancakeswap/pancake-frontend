@@ -69,12 +69,11 @@ export type FarmConfigV3 = {
   pid: number
   lpSymbol: string
   lpAddress: string
-  feeAmount: number
   boosted?: boolean
 
   token: Token
   quoteToken: Token
-  fee: FeeAmount
+  feeAmount: FeeAmount
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig
