@@ -6,7 +6,7 @@ import { FeeAmount, POOL_INIT_CODE_HASH, POOL_INIT_CODE_HASHES } from '../consta
 
 /**
  * Computes a pool address
- * @param factoryAddress The Uniswap V3 factory address
+ * @param deployerAddress The Pancake V3 deployer address
  * @param tokenA The first token of the pair, irrespective of sort order
  * @param tokenB The second token of the pair, irrespective of sort order
  * @param fee The fee tier of the pool
@@ -14,13 +14,13 @@ import { FeeAmount, POOL_INIT_CODE_HASH, POOL_INIT_CODE_HASHES } from '../consta
  * @returns The pool address
  */
 export function computePoolAddress({
-  factoryAddress,
+  deployerAddress,
   tokenA,
   tokenB,
   fee,
   initCodeHashManualOverride,
 }: {
-  factoryAddress: string
+  deployerAddress: string
   tokenA: Token
   tokenB: Token
   fee: FeeAmount
@@ -29,7 +29,7 @@ export function computePoolAddress({
   const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA] // does safety checks
 
   return getCreate2Address(
-    factoryAddress,
+    deployerAddress,
     keccak256(
       ['bytes'],
       [defaultAbiCoder.encode(['address', 'address', 'uint24'], [token0.address, token1.address, fee])]

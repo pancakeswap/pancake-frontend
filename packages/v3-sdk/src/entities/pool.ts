@@ -53,10 +53,10 @@ export class Pool {
     tokenB: Token,
     fee: FeeAmount,
     initCodeHashManualOverride?: string,
-    factoryAddressOverride?: string
+    deployerAddressOverride?: string
   ): string {
     return computePoolAddress({
-      factoryAddress: factoryAddressOverride ?? DEPLOYER_ADDRESSES[tokenA.chainId] ?? FACTORY_ADDRESS,
+      deployerAddress: deployerAddressOverride ?? DEPLOYER_ADDRESSES[tokenA.chainId] ?? FACTORY_ADDRESS,
       fee,
       tokenA,
       tokenB,

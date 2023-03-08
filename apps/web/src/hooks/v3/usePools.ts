@@ -1,10 +1,9 @@
 import { Interface } from '@ethersproject/abi'
 import { BigintIsh, Currency, Token } from '@pancakeswap/swap-sdk-core'
-import { computePoolAddress, FeeAmount, Pool } from '@pancakeswap/v3-sdk'
+import { computePoolAddress, FeeAmount, Pool, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import JSBI from 'jsbi'
 import { useMemo } from 'react'
 import { useMultipleContractSingleData } from 'state/multicall/hooks'
-import addresses from 'config/constants/contracts'
 import IUniswapV3PoolStateABI from 'config/abi/v3PoolState.json'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { PoolState } from './types'
@@ -23,14 +22,14 @@ class PoolCache {
 
   private static addresses: { key: string; address: string }[] = []
 
-  static getPoolAddress(factoryAddress: string, tokenA: Token, tokenB: Token, fee: FeeAmount): string {
+  static getPoolAddress(deployerAddress: string, tokenA: Token, tokenB: Token, fee: FeeAmount): string {
     if (this.addresses.length > this.MAX_ENTRIES) {
       this.addresses = this.addresses.slice(0, this.MAX_ENTRIES / 2)
     }
 
     const { address: addressA } = tokenA
     const { address: addressB } = tokenB
-    const key = `${factoryAddress}:${addressA}:${addressB}:${fee.toString()}`
+    const key = `${deployerAddress}:${addressA}:${addressB}:${fee.toString()}`
 
     const found = this.addresses.find((address) => address.key === key)
     if (found) return found.address
@@ -38,7 +37,7 @@ class PoolCache {
     const address = {
       key,
       address: computePoolAddress({
-        factoryAddress,
+        deployerAddress,
         tokenA,
         tokenB,
         fee,
@@ -99,10 +98,10 @@ export function usePools(
   }, [chainId, poolKeys])
 
   const poolAddresses: (string | undefined)[] = useMemo(() => {
-    const v3CoreFactoryAddress = chainId && addresses.v3Factory[chainId]
-    if (!v3CoreFactoryAddress) return new Array(poolTokens.length)
+    const v3CoreDeployerAddress = chainId && DEPLOYER_ADDRESSES[chainId]
+    if (!v3CoreDeployerAddress) return new Array(poolTokens.length)
 
-    return poolTokens.map((value) => value && PoolCache.getPoolAddress(v3CoreFactoryAddress, ...value))
+    return poolTokens.map((value) => value && PoolCache.getPoolAddress(v3CoreDeployerAddress, ...value))
   }, [chainId, poolTokens])
 
   const slot0s = useMultipleContractSingleData(poolAddresses, POOL_STATE_INTERFACE, 'slot0')

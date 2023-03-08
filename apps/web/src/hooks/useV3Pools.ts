@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { Currency, JSBI, ChainId, Token, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool, PoolType, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
-import { FeeAmount, computePoolAddress, Tick, FACTORY_ADDRESSES } from '@pancakeswap/v3-sdk'
+import { FeeAmount, computePoolAddress, Tick, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { gql } from 'graphql-request'
 import { v3Clients } from 'utils/graphql'
 import useSWR from 'swr'
@@ -409,8 +409,8 @@ interface V3PoolMeta extends PoolMeta {
 }
 
 function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
-  const factoryAddress = FACTORY_ADDRESSES[currencyA.chainId as ChainId]
-  if (!factoryAddress) {
+  const deployerAddress = DEPLOYER_ADDRESSES[currencyA.chainId as ChainId]
+  if (!deployerAddress) {
     return []
   }
   return [FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => ({
@@ -422,12 +422,12 @@ function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
 }
 
 function getV3PoolAddress(currencyA: Currency, currencyB: Currency, fee: FeeAmount) {
-  const factoryAddress = FACTORY_ADDRESSES[currencyA.chainId as ChainId]
-  if (!factoryAddress) {
+  const deployerAddress = DEPLOYER_ADDRESSES[currencyA.chainId as ChainId]
+  if (!deployerAddress) {
     return ''
   }
   return computePoolAddress({
-    factoryAddress,
+    deployerAddress,
     tokenA: currencyA.wrapped,
     tokenB: currencyB.wrapped,
     fee,

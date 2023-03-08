@@ -178,6 +178,12 @@ export default {
     5: '0x09C65bC891bf39DAF771e85F2203B898402fF3CF',
     1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
   },
+  v3PoolDeployer: {
+    96: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
+    56: '0',
+    5: '0',
+    1: '0',
+  },
   // TODO: v3 swap update
   v3Factory: {
     56: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
