@@ -6,11 +6,11 @@ import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import partition from 'lodash/partition'
 import toLower from 'lodash/toLower'
-import { PositionDetails } from 'hooks/v3/types'
-import { FarmPriceV3, FarmsV3Response, FarmV3DataWithPrice } from '@pancakeswap/farms'
+import { FarmsV3Response, FarmV3DataWithPrice } from '@pancakeswap/farms'
 import { FARM_API } from 'config/constants/endpoints'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
+import { FarmV3DataWithPriceAndUserInfo, IPendingCakeByTokenId } from './types'
 
 const farmV3ApiFetch = (chainId: number) => fetch(`${FARM_API}/v3/${chainId}/farms`).then((res) => res.json())
 
@@ -25,15 +25,7 @@ export const useFarmsV3 = () => {
   )
 }
 
-export type IPendingCakeByTokenId = Record<string, BigNumber>
-
-export interface SerializedFarmV3 extends FarmPriceV3 {
-  unstakedPositions: PositionDetails[]
-  stakedPositions: PositionDetails[]
-  pendingCakeByTokenIds: IPendingCakeByTokenId
-}
-
-export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): SerializedFarmV3[] => {
+export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): FarmV3DataWithPriceAndUserInfo[] => {
   const { account } = useActiveWeb3React()
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
@@ -107,7 +99,7 @@ export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): SerializedFa
   )
 }
 
-export function useFarmsV3WithPositions(): SerializedFarmV3[] {
+export function useFarmsV3WithPositions(): FarmV3DataWithPriceAndUserInfo[] {
   const { farmsWithPrice } = useFarmsV3()
 
   return usePositionsByUser(farmsWithPrice)
