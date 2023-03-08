@@ -1,7 +1,15 @@
+import { Currency } from '@pancakeswap/sdk'
 import { Text, Heading } from '@pancakeswap/uikit'
-import { LightGreyCard } from 'components/Card'
+import { LightGreyCard, LightCardProps } from 'components/Card'
 
-export const RangePriceSection = ({ title, currency0, currency1, price, ...props }) => {
+interface RangePriceSectionProps extends LightCardProps {
+  title: string
+  currency0: Currency
+  currency1: Currency
+  price: string
+}
+
+export const RangePriceSection = ({ title, currency0, currency1, price, ...props }: RangePriceSectionProps) => {
   return (
     <LightGreyCard
       {...props}
