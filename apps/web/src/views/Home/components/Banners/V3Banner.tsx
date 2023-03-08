@@ -209,9 +209,6 @@ const sharedStyle = css`
 
 const StyledButtonLeft = styled(Button)`
   ${sharedStyle}
-  > div {
-    color: ${({ theme }) => theme.colors.white};
-  }
   margin-top: 10px;
 `
 
@@ -236,10 +233,10 @@ const V3Banner = () => {
             rel='"noopener noreferrer'
           >
             <StyledButtonLeft scale={isMobile ? 'sm' : 'md'}>
-              <Text bold fontSize="16px" mr="4px">
+              <Text bold fontSize="16px" mr="4px" color="invertedContrast">
                 {isMobile ? t('Learn More') : t('Learn More')}
               </Text>
-              <OpenNewIcon color="white" />
+              <OpenNewIcon color="invertedContrast" />
             </StyledButtonLeft>
           </NextLinkFromReactRouter>
         </S.LeftWrapper>
