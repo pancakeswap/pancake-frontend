@@ -198,7 +198,7 @@ const BCakeCalculator: React.FC<React.PropsWithChildren<BCakeCalculatorProps>> =
 export default BCakeCalculator
 
 const CA = 0.5
-const CB = 3 // TODO: read from SC later
+const CB = 2 // TODO: read from SC later
 
 export const getBCakeMultiplier = (
   userBalanceInFarm: BigNumber,
