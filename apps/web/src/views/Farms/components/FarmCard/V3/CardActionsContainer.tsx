@@ -30,7 +30,7 @@ interface FarmCardActionsProps {
 const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ farm, account, addLiquidityUrl }) => {
   const { t } = useTranslation()
   const isReady = farm.multiplier !== undefined
-  const { stakedBalance, tokenBalance, proxy } = farm.userData
+  const { stakedBalance, tokenBalance, proxy } = farm?.userData
   const hasNoPosition = false // TODO: FARM_V3
 
   return (

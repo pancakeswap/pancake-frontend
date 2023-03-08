@@ -1,7 +1,8 @@
 import { useContext } from 'react'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { FarmsPageLayout, FarmsContext } from 'views/Farms'
+import { FarmsPageLayout, FarmsV3PageLayout, FarmsContext, FarmsV3Context } from 'views/Farms'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
+import FarmV3Card from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAccount } from 'wagmi'
@@ -30,11 +31,21 @@ const ProxyFarmCardContainer = ({ farm }) => {
 
 const FarmsPage = () => {
   const { address: account } = useAccount()
-  const { chosenFarmsMemoized } = useContext(FarmsContext)
+  const { chosenFarmsMemoized } = useContext(FarmsV3Context)
   const cakePrice = usePriceCakeBusd()
   return (
     <>
-      {chosenFarmsMemoized.map((farm) =>
+      {chosenFarmsMemoized?.map((farm) => (
+        <FarmV3Card
+          key={farm.pid}
+          farm={farm}
+          displayApr={farm.cakeApr}
+          cakePrice={cakePrice}
+          account={account}
+          removed={false}
+        />
+      ))}
+      {/* {chosenFarmsMemoized?.map((farm) =>
         farm.boosted ? (
           <ProxyFarmContainer farm={farm} key={farm.pid}>
             <ProxyFarmCardContainer farm={farm} />
@@ -48,13 +59,13 @@ const FarmsPage = () => {
             account={account}
             removed={false}
           />
-        ),
-      )}
+        )
+      )} */}
     </>
   )
 }
 
-FarmsPage.Layout = FarmsPageLayout
+FarmsPage.Layout = FarmsV3PageLayout
 
 FarmsPage.chains = SUPPORT_FARMS
 

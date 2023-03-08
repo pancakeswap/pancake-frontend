@@ -63,4 +63,13 @@ export const getFarmApr = (
   return { cakeRewardsApr: cakeRewardsAprAsNumber, lpRewardsApr }
 }
 
+export const getFarmV3Apr = (
+  chainId: number,
+  cakeApr: string,
+  farmAddress: string,
+): { cakeRewardsApr: number; lpRewardsApr: number } => {
+  const lpRewardsApr = (getLpApr(chainId)[farmAddress?.toLowerCase()] || getLpApr(chainId)[farmAddress]) ?? 0 // can get both checksummed or lowercase
+  return { cakeRewardsApr: Number(cakeApr), lpRewardsApr }
+}
+
 export default null
