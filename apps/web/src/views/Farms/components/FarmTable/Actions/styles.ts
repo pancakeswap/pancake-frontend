@@ -7,12 +7,14 @@ export const ActionContainer = styled.div`
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 16px;
+
   ${({ theme }) => theme.mediaQueries.sm} {
     margin-left: 12px;
     margin-right: 12px;
     margin-bottom: 12px;
     /* max-height: 130px; */
   }
+
   ${({ theme }) => theme.mediaQueries.xl} {
     margin-right: 0;
     margin-bottom: 0;

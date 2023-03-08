@@ -70,6 +70,7 @@ const Container = styled.div<{ expanded }>`
   width: 100%;
   flex-direction: column-reverse;
   padding: 24px;
+
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     align-items: center;
@@ -86,6 +87,7 @@ const StakeContainer = styled.div`
   align-items: center;
   display: flex;
   justify-content: space-between;
+
   ${({ theme }) => theme.mediaQueries.sm} {
     justify-content: flex-start;
   }
@@ -94,6 +96,7 @@ const StakeContainer = styled.div`
 const ActionContainer = styled.div`
   display: flex;
   flex-direction: column;
+
   ${({ theme }) => theme.mediaQueries.sm} {
     flex-direction: row;
     align-items: center;
