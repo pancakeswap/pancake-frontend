@@ -7,10 +7,9 @@ export const farmsV3 = [
     pid: 1,
     lpSymbol: 'CAKE-BUSD LP',
     lpAddress: '0xC6D589DC1E1041a45d7347520bdaA113392E7249',
-    feeAmount: 500,
     token: goerliTestnetTokens.mockB,
     quoteToken: goerliTestnetTokens.mockA,
-    fee: FeeAmount.LOW,
+    feeAmount: FeeAmount.LOW,
   },
 ] satisfies FarmConfigV3[]
 
