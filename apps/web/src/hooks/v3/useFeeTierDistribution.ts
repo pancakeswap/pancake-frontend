@@ -103,8 +103,14 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
       (acc: Record<FeeAmount, [number | undefined, number | undefined]>, value) => {
         const result = acc
 
-        result[value.feeTier][0] = (result[value.feeTier][0] ?? 0) + Number(value.totalValueLockedToken0)
-        result[value.feeTier][1] = (result[value.feeTier][1] ?? 0) + Number(value.totalValueLockedToken1)
+        if (result[value.feeTier]?.[0]) {
+          result[value.feeTier][0] = (result[value.feeTier]?.[0] ?? 0) + Number(value.totalValueLockedToken0)
+        }
+
+        if (result[value.feeTier]?.[1]) {
+          result[value.feeTier][1] = (result[value.feeTier]?.[1] ?? 0) + Number(value.totalValueLockedToken1)
+        }
+
         return result
       },
       {
