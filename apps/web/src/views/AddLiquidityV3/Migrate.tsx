@@ -569,8 +569,6 @@ function V2PairMigrate({
 
                 <RowBetween>
                   <Text fontSize={14} color="inherit">
-                    {/* <Trans> */}
-                    {/* </Trans> */}
                     Price Difference:
                   </Text>
                   <Text fontSize={14} color="inherit">
