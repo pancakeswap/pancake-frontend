@@ -16,7 +16,7 @@ export function formatCurrencyAmount(
   }
 
   if (amount.divide(amount.decimalScale).lessThan(new Fraction(1, 100000))) {
-    return `<${formatLocaleNumber({ number: 0.00001, locale })}`
+    return `<0.0001`
   }
 
   return formatLocaleNumber({ number: amount, locale, sigFigs, fixedDecimals })
@@ -28,7 +28,7 @@ export function formatPrice(price: Price<Currency, Currency> | undefined, sigFig
   }
 
   if (parseFloat(price.toFixed(sigFigs)) < 0.0001) {
-    return `<${formatLocaleNumber({ number: 0.00001, locale })}`
+    return `<0.0001`
   }
 
   return formatLocaleNumber({ number: price, locale, sigFigs })
