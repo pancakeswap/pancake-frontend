@@ -37,6 +37,7 @@ import _toLower from 'lodash/toLower'
 import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
 import { FarmV3DataWithPriceAndUserInfo, filterFarmsV3ByQuery } from '@pancakeswap/farms'
 import { getFarmV3Apr } from 'utils/apr'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
@@ -259,12 +260,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             (farm: FarmV3DataWithPriceAndUserInfo) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
             'desc',
           )
-        // case 'earned':
-        //   return orderBy(
-        //     farms,
-        //     (farm: FarmV3DataWithPriceAndUserInfo) => (farm.userData ? Number(farm.userData.earnings) : 0),
-        //     'desc',
-        //   )
+        case 'earned':
+          return orderBy(
+            farms,
+            (farm: FarmV3DataWithPriceAndUserInfo) => {
+              const totalEarned = Object.values(farm.pendingCakeByTokenIds)
+                .reduce((a, b) => a.add(b), EthersBigNumber.from('0'))
+                .toNumber()
+              return account && farm.stakedPositions.length > 0 ? totalEarned : 0
+            },
+            'desc',
+          )
         case 'liquidity':
           return orderBy(farms, (farm: FarmV3DataWithPriceAndUserInfo) => Number(farm.activeTvlUSD), 'desc')
         case 'latest':
@@ -275,7 +281,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     }
 
     return sortFarms(chosenFarms).slice(0, numberOfFarmsVisible)
-  }, [chosenFarms, sortOption, numberOfFarmsVisible])
+  }, [chosenFarms, numberOfFarmsVisible, sortOption, account])
 
   chosenFarmsLength.current = chosenFarmsMemoized.length
 
