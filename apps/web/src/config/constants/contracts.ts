@@ -180,15 +180,15 @@ export default {
   },
   v3PoolDeployer: {
     97: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
-    56: '0',
-    5: '0',
-    1: '0',
+    56: '',
+    5: '',
+    1: '',
   },
   v3Migrator: {
     97: '0x6A3A0144184Ea7B56307e3bcFb5E23131600A5C8',
-    56: '0',
-    5: '0',
-    1: '0',
+    56: '',
+    5: '',
+    1: '',
   },
   // TODO: v3 swap update
   v3Factory: {

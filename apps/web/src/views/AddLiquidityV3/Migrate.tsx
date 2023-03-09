@@ -569,7 +569,9 @@ function V2PairMigrate({
 
                 <RowBetween>
                   <Text fontSize={14} color="inherit">
-                    <Trans>Price Difference:</Trans>
+                    {/* <Trans> */}
+                    {/* </Trans> */}
+                    Price Difference:
                   </Text>
                   <Text fontSize={14} color="inherit">
                     {priceDifferenceFraction?.toSignificant(4)}%
@@ -706,9 +708,7 @@ function V2PairMigrate({
                 {isSuccessfullyMigrated ? (
                   'Success!'
                 ) : isMigrationPending ? (
-                  <Dots>
-                    <Trans>Migrating</Trans>
-                  </Dots>
+                  <Dots>Migrating</Dots>
                 ) : (
                   <Trans>Migrate</Trans>
                 )}

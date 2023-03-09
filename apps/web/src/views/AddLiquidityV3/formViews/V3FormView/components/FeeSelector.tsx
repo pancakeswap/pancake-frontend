@@ -1,6 +1,6 @@
 import { Currency } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
+import { AutoColumn, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
