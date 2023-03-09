@@ -39,7 +39,7 @@ const FarmsPage = () => {
         <FarmV3Card
           key={farm.pid}
           farm={farm}
-          displayApr={farm.cakeApr}
+          displayApr={getDisplayApr(Number(farm.cakeApr), Number(farm.lpRewardsApr))}
           cakePrice={cakePrice}
           account={account}
           removed={false}

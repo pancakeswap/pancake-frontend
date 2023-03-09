@@ -106,5 +106,6 @@ export * from './v2/deserializeFarmUserData'
 export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
 export * from './v2/filterFarmsByQuery'
+export * from './v3/filterFarmsV3ByQuery'
 
 export { masterChefV3Addresses, fetchCommonTokenUSDValue }
