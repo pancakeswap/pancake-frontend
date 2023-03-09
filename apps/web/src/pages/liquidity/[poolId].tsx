@@ -14,6 +14,7 @@ import {
   Toggle,
   Heading,
   SyncAltIcon,
+  Spinner,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -51,6 +52,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { usePositionV3Liquidity } from 'hooks/v3/usePositionV3Liquidity'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Bound } from 'config/constants/types'
+import { PoolState } from 'hooks/v3/types'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -133,7 +135,7 @@ export default function PoolPage() {
 
   const parsedTokenId = tokenIdFromUrl ? BigNumber.from(tokenIdFromUrl) : undefined
 
-  const { position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
+  const { loading, position: positionDetails } = useV3PositionFromTokenId(parsedTokenId)
 
   const {
     token0: token0Address,
@@ -156,7 +158,7 @@ export default function PoolPage() {
   const currency1 = token1 ? unwrappedToken(token1) : undefined
 
   // construct Position from details returned
-  const [, pool] = usePool(token0 ?? undefined, token1 ?? undefined, feeAmount)
+  const [poolState, pool] = usePool(token0 ?? undefined, token1 ?? undefined, feeAmount)
   const position = useMemo(() => {
     if (pool && liquidity && typeof tickLower === 'number' && typeof tickUpper === 'number') {
       return new Position({ pool, liquidity: liquidity.toString(), tickLower, tickUpper })
@@ -363,188 +365,201 @@ export default function PoolPage() {
     'TransactionConfirmationModalColelctFees',
   )
 
+  const isLoading = loading || poolState === PoolState.LOADING || !feeAmount
+
   return (
     <Page>
       <BodyWrapper>
-        <AppHeader
-          title={
-            <Box mb={['8px', '8px', 0]}>
-              <Flex justifyContent="center" alignItems="center">
-                <DoubleCurrencyLogo size={24} currency0={currencyQuote} currency1={currencyBase} />
-                <Heading as="h2" ml="8px">
-                  {currencyQuote?.symbol}-{currencyBase?.symbol}
-                </Heading>
-                <RangeTag removed={removed} outOfRange={!inRange} />
-              </Flex>
-              <Text fontSize="14px" color="textSubtle">
-                V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
-              </Text>
-            </Box>
-          }
-          backTo="/liquidity"
-          noConfig
-          buttons={
-            currency0 &&
-            currency1 && (
-              <>
-                <NextLinkFromReactRouter
-                  to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
-                >
-                  <Button width="100%">Add</Button>
-                </NextLinkFromReactRouter>
-                {!removed && (
-                  <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                    <Button ml="16px" variant="secondary" width="100%">
-                      Remove
-                    </Button>
-                  </NextLinkFromReactRouter>
-                )}
-              </>
-            )
-          }
-        />
-        <CardBody>
-          <AutoRow>
-            <Flex
-              alignItems="center"
-              justifyContent="space-between"
-              width="100%"
-              mb="8px"
-              flexWrap={['wrap', 'wrap', 'nowrap']}
-            >
-              <Box width="100%" mr="4px" mb={['8px', '8px', 0]}>
-                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
-                  Liquidity
-                </Text>
-
-                <Text fontSize="24px" fontWeight={500} mb="8px">
-                  {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100))
-                    ? fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })
-                    : '$-'}
-                </Text>
-                <LightGreyCard mr="4px">
-                  <AutoRow justifyContent="space-between" mb="8px">
-                    <Flex>
-                      <CurrencyLogo currency={currencyQuote} />
-                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {currencyQuote?.symbol}
-                      </Text>
-                    </Flex>
-                    <Flex justifyContent="center">
-                      <Text mr="4px">
-                        {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
-                      </Text>
-                    </Flex>
-                  </AutoRow>
-                  <AutoRow justifyContent="space-between">
-                    <Flex>
-                      <CurrencyLogo currency={currencyBase} />
-                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {currencyBase?.symbol}
-                      </Text>
-                    </Flex>
-                    <Flex justifyContent="center">
-                      <Text mr="4px">
-                        {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
-                      </Text>
-                    </Flex>
-                  </AutoRow>
-                </LightGreyCard>
-              </Box>
-              <Box width="100%" ml="4px">
-                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
-                  Unclaim Fees
-                </Text>
-                <AutoRow justifyContent="space-between" mb="8px">
-                  <Text fontSize="24px" fontWeight={500}>
-                    {fiatValueOfFees?.greaterThan(new Fraction(1, 100))
-                      ? fiatValueOfFees.toFixed(2, { groupSeparator: ',' })
-                      : '$-'}
+        {isLoading ? (
+          <Flex width="100%" justifyContent="center" alignItems="center" minHeight="200px" mb="32px">
+            <Spinner />
+          </Flex>
+        ) : (
+          <>
+            <AppHeader
+              title={
+                <Box mb={['8px', '8px', 0]}>
+                  <Flex justifyContent="center" alignItems="center">
+                    <DoubleCurrencyLogo size={24} currency0={currencyQuote} currency1={currencyBase} />
+                    <Heading as="h2" ml="8px">
+                      {currencyQuote?.symbol}-{currencyBase?.symbol}
+                    </Heading>
+                    <RangeTag removed={removed} outOfRange={!inRange} />
+                  </Flex>
+                  <Text fontSize="14px" color="textSubtle">
+                    V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
                   </Text>
-
-                  {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash ? (
-                    <Button scale="sm" disabled={collecting || isCollectPending} onClick={onClaimFee}>
-                      {!!collectMigrationHash && !isCollectPending
-                        ? 'Collected'
-                        : isCollectPending || collecting
-                        ? 'Collecting...'
-                        : 'Collect'}
-                    </Button>
-                  ) : null}
-                </AutoRow>
-                <LightGreyCard mr="4px">
-                  <AutoRow justifyContent="space-between" mb="8px">
-                    <Flex>
-                      <CurrencyLogo currency={feeValueUpper?.currency} />
-                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {feeValueUpper?.currency?.symbol}
-                      </Text>
-                    </Flex>
-                    <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
-                  </AutoRow>
-                  <AutoRow justifyContent="space-between">
-                    <Flex>
-                      <CurrencyLogo currency={feeValueLower?.currency} />
-                      <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {feeValueLower?.currency?.symbol}
-                      </Text>
-                    </Flex>
-                    <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
-                  </AutoRow>
-                </LightGreyCard>
-              </Box>
-            </Flex>
-          </AutoRow>
-          {showCollectAsWeth && (
-            <Flex mb="8px">
-              <Flex ml="auto" alignItems="center">
-                <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
-                <Toggle
-                  id="receive-as-weth"
-                  scale="sm"
-                  checked={receiveWETH}
-                  onChange={() => setReceiveWETH((prevState) => !prevState)}
-                />
-              </Flex>
-            </Flex>
-          )}
-          <AutoRow justifyContent="space-between" mb="8px" mt="24px">
-            <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
-              Price Range
-            </Text>
-            {currencyBase && currencyQuote && (
-              <RateToggle currencyA={currencyBase} handleRateToggle={() => setManuallyInverted(!manuallyInverted)} />
-            )}
-          </AutoRow>
-          <AutoRow mb="8px">
-            <Flex alignItems="center" justifyContent="space-between" width="100%">
-              <RangePriceSection
-                mr="4px"
-                title="MIN PRICE"
-                price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
-                currency0={currencyQuote}
-                currency1={currencyBase}
-              />
-
-              <SyncAltIcon width="24px" mx="8px" />
-              <RangePriceSection
-                ml="4px"
-                title="MAX PRICE"
-                price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
-                currency0={currencyQuote}
-                currency1={currencyBase}
-              />
-            </Flex>
-          </AutoRow>
-          {pool && currencyQuote && currencyBase ? (
-            <RangePriceSection
-              title="CURRENT PRICE"
-              currency0={currencyQuote}
-              currency1={currencyBase}
-              price={(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}
+                </Box>
+              }
+              backTo="/liquidity"
+              noConfig
+              buttons={
+                currency0 &&
+                currency1 && (
+                  <>
+                    <NextLinkFromReactRouter
+                      to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
+                    >
+                      <Button width="100%">Add</Button>
+                    </NextLinkFromReactRouter>
+                    {!removed && (
+                      <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
+                        <Button ml="16px" variant="secondary" width="100%">
+                          Remove
+                        </Button>
+                      </NextLinkFromReactRouter>
+                    )}
+                  </>
+                )
+              }
             />
-          ) : null}
-        </CardBody>
+            <CardBody>
+              <AutoRow>
+                <Flex
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width="100%"
+                  mb="8px"
+                  flexWrap={['wrap', 'wrap', 'nowrap']}
+                >
+                  <Box width="100%" mr="4px" mb={['8px', '8px', 0]}>
+                    <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
+                      Liquidity
+                    </Text>
+
+                    <Text fontSize="24px" fontWeight={500} mb="8px">
+                      {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100))
+                        ? fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })
+                        : '$-'}
+                    </Text>
+                    <LightGreyCard mr="4px">
+                      <AutoRow justifyContent="space-between" mb="8px">
+                        <Flex>
+                          <CurrencyLogo currency={currencyQuote} />
+                          <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                            {currencyQuote?.symbol}
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent="center">
+                          <Text mr="4px">
+                            {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
+                          </Text>
+                        </Flex>
+                      </AutoRow>
+                      <AutoRow justifyContent="space-between">
+                        <Flex>
+                          <CurrencyLogo currency={currencyBase} />
+                          <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                            {currencyBase?.symbol}
+                          </Text>
+                        </Flex>
+                        <Flex justifyContent="center">
+                          <Text mr="4px">
+                            {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
+                          </Text>
+                        </Flex>
+                      </AutoRow>
+                    </LightGreyCard>
+                  </Box>
+                  <Box width="100%" ml="4px">
+                    <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
+                      Unclaim Fees
+                    </Text>
+                    <AutoRow justifyContent="space-between" mb="8px">
+                      <Text fontSize="24px" fontWeight={500}>
+                        {fiatValueOfFees?.greaterThan(new Fraction(1, 100))
+                          ? fiatValueOfFees.toFixed(2, { groupSeparator: ',' })
+                          : '$-'}
+                      </Text>
+
+                      {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash ? (
+                        <Button scale="sm" disabled={collecting || isCollectPending} onClick={onClaimFee}>
+                          {!!collectMigrationHash && !isCollectPending
+                            ? 'Collected'
+                            : isCollectPending || collecting
+                            ? 'Collecting...'
+                            : 'Collect'}
+                        </Button>
+                      ) : null}
+                    </AutoRow>
+                    <LightGreyCard mr="4px">
+                      <AutoRow justifyContent="space-between" mb="8px">
+                        <Flex>
+                          <CurrencyLogo currency={feeValueUpper?.currency} />
+                          <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                            {feeValueUpper?.currency?.symbol}
+                          </Text>
+                        </Flex>
+                        <Text small>{feeValueUpper ? formatCurrencyAmount(feeValueUpper, 4, locale) : '-'}</Text>
+                      </AutoRow>
+                      <AutoRow justifyContent="space-between">
+                        <Flex>
+                          <CurrencyLogo currency={feeValueLower?.currency} />
+                          <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
+                            {feeValueLower?.currency?.symbol}
+                          </Text>
+                        </Flex>
+                        <Text small>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
+                      </AutoRow>
+                    </LightGreyCard>
+                  </Box>
+                </Flex>
+              </AutoRow>
+              {showCollectAsWeth && (
+                <Flex mb="8px">
+                  <Flex ml="auto" alignItems="center">
+                    <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
+                    <Toggle
+                      id="receive-as-weth"
+                      scale="sm"
+                      checked={receiveWETH}
+                      onChange={() => setReceiveWETH((prevState) => !prevState)}
+                    />
+                  </Flex>
+                </Flex>
+              )}
+              <AutoRow justifyContent="space-between" mb="8px" mt="24px">
+                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
+                  Price Range
+                </Text>
+                {currencyBase && currencyQuote && (
+                  <RateToggle
+                    currencyA={currencyBase}
+                    handleRateToggle={() => setManuallyInverted(!manuallyInverted)}
+                  />
+                )}
+              </AutoRow>
+              <AutoRow mb="8px">
+                <Flex alignItems="center" justifyContent="space-between" width="100%">
+                  <RangePriceSection
+                    mr="4px"
+                    title="MIN PRICE"
+                    price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
+                    currency0={currencyQuote}
+                    currency1={currencyBase}
+                  />
+
+                  <SyncAltIcon width="24px" mx="8px" />
+                  <RangePriceSection
+                    ml="4px"
+                    title="MAX PRICE"
+                    price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
+                    currency0={currencyQuote}
+                    currency1={currencyBase}
+                  />
+                </Flex>
+              </AutoRow>
+              {pool && currencyQuote && currencyBase ? (
+                <RangePriceSection
+                  title="CURRENT PRICE"
+                  currency0={currencyQuote}
+                  currency1={currencyBase}
+                  price={(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}
+                />
+              ) : null}
+            </CardBody>
+          </>
+        )}
       </BodyWrapper>
     </Page>
   )
