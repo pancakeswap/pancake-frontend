@@ -1,7 +1,7 @@
 import { Percent } from "@pancakeswap/sdk";
 import { useTranslation } from "@pancakeswap/localization";
 
-import { Flex, Text, PencilIcon, IconButton } from "../../components";
+import { Flex, Text } from "../../components";
 import {
   RoiCardInner,
   RoiCardWrapper,
@@ -55,9 +55,6 @@ export function RoiRate({ usdAmount = 0, rate }: Props) {
                 %)
               </Text>
             </RoiDisplayContainer>
-            <IconButton scale="sm" variant="text">
-              <PencilIcon color="primary" />
-            </IconButton>
           </>
         </Flex>
       </RoiCardInner>

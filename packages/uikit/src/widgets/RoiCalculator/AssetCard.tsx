@@ -1,10 +1,12 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { SpaceProps } from "styled-system";
-import { ReactNode, useCallback, useMemo, PropsWithChildren } from "react";
-import { CurrencyAmount, Currency } from "@pancakeswap/sdk";
+import { ReactNode, useCallback, PropsWithChildren } from "react";
+import { Currency, Percent } from "@pancakeswap/sdk";
+import styled from "styled-components";
 
-import { Card, Table, Th, Box, Text, Button, RowBetween, Td, CurrencyLogo, Row } from "../../components";
+import { Card, Table, Th, Box, Text, RowBetween, Td, CurrencyLogo, Row, Flex, Tag, TagProps } from "../../components";
 import { NumericalInput } from "../Swap/NumericalInput";
+import { toSignificant } from "./utils";
 
 export function CardSection({ header, children, ...rest }: { header?: ReactNode } & PropsWithChildren & SpaceProps) {
   return (
@@ -27,22 +29,43 @@ interface Props extends SpaceProps {
   assets?: Asset[];
   header?: ReactNode;
   showPrice?: boolean;
+  priceEditable?: boolean;
   isActive?: boolean;
-  onChange?: (assets: Asset[], info: { index: number; asset: Asset }) => void;
+  onChange?: (assets: Asset[], info: { index: number }) => void;
+  extraRows?: ReactNode;
 }
 
 export interface Asset {
   // price in usd
   price: number;
 
-  amount: CurrencyAmount<Currency>;
+  currency: Currency;
+
+  value: number | string;
+
+  amount: number | string;
+}
+
+export function CurrencyLogoDisplay({ logo, name }: { logo?: ReactNode; name?: string }) {
+  return (
+    <>
+      {logo}
+      <Text ml="4px">{name}</Text>
+    </>
+  );
+}
+
+export function AssetCardHeader({ children }: PropsWithChildren) {
+  return <RowBetween>{children}</RowBetween>;
 }
 
 export function AssetCard({
   header,
   showPrice = true,
+  priceEditable = true,
   isActive = false,
   assets = [],
+  extraRows,
   onChange = () => {
     // default
   },
@@ -50,22 +73,24 @@ export function AssetCard({
 }: Props) {
   const { t } = useTranslation();
 
-  const assetNodes = assets.map((asset, index) => (
+  const assetNodes = assets.map(({ price, value, amount, currency }, index) => (
     <AssetRow
-      key={asset.amount.currency.symbol}
-      asset={asset}
-      onChange={(newAsset) =>
+      key={currency.symbol}
+      price={price}
+      value={value}
+      amount={amount}
+      showPrice={showPrice}
+      priceEditable={priceEditable}
+      name={<CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />}
+      onPriceChange={(newPrice) =>
         onChange(
-          assets.map((a, i) => (i === index ? newAsset : a)),
-          { index, asset: newAsset }
+          assets.map<Asset>((a, i) => (i === index ? { ...a, price: newPrice } : a)),
+          { index }
         )
       }
     />
   ));
 
-  <Button variant="secondary" scale="xs">
-    {t("Reset")}
-  </Button>;
   return (
     <Box {...rest}>
       {header && <RowBetween mb="8px">{header}</RowBetween>}
@@ -79,7 +104,10 @@ export function AssetCard({
               <Th textAlign="left">{t("Value")}</Th>
             </tr>
           </thead>
-          <tbody>{assetNodes}</tbody>
+          <tbody>
+            {assetNodes}
+            {extraRows}
+          </tbody>
         </Table>
       </Card>
     </Box>
@@ -87,57 +115,87 @@ export function AssetCard({
 }
 
 interface AssetRowProps {
-  asset: Asset;
+  name: ReactNode;
+  amount?: string | number;
+  price?: number;
+  priceEditable?: boolean;
+  value?: string | number;
   showPrice?: boolean;
-  onChange?: (asset: Asset) => void;
+  onPriceChange?: (price: number) => void;
 }
 
-const toSignificant = (decimal: number | string, significant = 6) => {
-  return parseFloat(parseFloat(String(decimal)).toPrecision(significant));
-};
-
-function AssetRow({
-  asset,
+export function AssetRow({
+  price = 0,
+  value = 0,
+  amount,
+  name,
   showPrice = true,
-  onChange = () => {
+  priceEditable = true,
+  onPriceChange = () => {
     // default
   },
 }: AssetRowProps) {
-  const { amount, price } = asset;
-  const { currency } = amount;
-
-  const onPriceUpdate = useCallback(
-    (newPrice: string) => onChange({ ...asset, price: parseFloat(newPrice) || 0 }),
-    [onChange, asset]
-  );
-  const usdValue = useMemo(() => toSignificant(parseFloat(amount.toExact()) * price), [price, amount]);
+  const onPriceUpdate = useCallback((newPrice: string) => onPriceChange(parseFloat(newPrice) || 0), [onPriceChange]);
 
   return (
     <tr>
       <Td>
-        <Row>
-          <CurrencyLogo currency={currency} />
-          <Text ml="4px">{currency.symbol}</Text>
-        </Row>
+        <Row>{name}</Row>
       </Td>
       {showPrice && (
         <Td style={{ minWidth: "98px" }}>
           <Row>
             <Text>$</Text>
-            <NumericalInput align="left" value={toSignificant(price)} onUserInput={onPriceUpdate} />
+            <NumericalInput
+              align="left"
+              value={toSignificant(price)}
+              onUserInput={onPriceUpdate}
+              disabled={!priceEditable}
+            />
           </Row>
         </Td>
       )}
       <Td>
-        <Row>
-          <Text>{amount.toSignificant(6)}</Text>
-        </Row>
+        <Row>{amount && <Text>{toSignificant(amount)}</Text>}</Row>
       </Td>
       <Td>
         <Row>
-          <Text>${usdValue}</Text>
+          <Text>${toSignificant(value)}</Text>
         </Row>
       </Td>
     </tr>
   );
+}
+
+interface InterestDisplayProps {
+  amount?: number | string;
+  interest?: Percent;
+}
+
+export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
+  return (
+    <Flex>
+      {amount && <Text bold>${toSignificant(amount)}</Text>}
+      {interest && (
+        <Text ml="4px" color={interest.lessThan(0) ? "failure" : "success"}>
+          ({interest.toSignificant(2)}%)
+        </Text>
+      )}
+    </Flex>
+  );
+}
+
+interface CardTagProps extends TagProps {
+  isActive?: boolean;
+}
+
+const ActiveTag = styled(Tag)`
+  background: ${({ theme }) => theme.colors.gradientBold};
+`;
+
+export function CardTag({ isActive, ...rest }: PropsWithChildren<CardTagProps>) {
+  if (isActive) {
+    return <ActiveTag {...rest} />;
+  }
+  return <Tag variant="textSubtle" outline {...rest} />;
 }

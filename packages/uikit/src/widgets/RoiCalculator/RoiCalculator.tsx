@@ -109,16 +109,6 @@ export function RoiCalculator({
 
   const onCurrencyAChange = useCallback((value: string) => onChange(value, currencyA), [currencyA, onChange]);
   const onCurrencyBChange = useCallback((value: string) => onChange(value, currencyB), [currencyB, onChange]);
-  const assets = useMemo(
-    () =>
-      amountA && amountB && currencyAUsdPrice && currencyBUsdPrice
-        ? [
-            { price: currencyAUsdPrice, amount: amountA },
-            { price: currencyBUsdPrice, amount: amountB },
-          ]
-        : undefined,
-    [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice]
-  );
 
   return (
     <>
@@ -192,7 +182,11 @@ export function RoiCalculator({
         />
       </Section>
       <ImpermanentLossCalculator
-        assets={assets}
+        lpReward={parseFloat(fee.toSignificant(6))}
+        amountA={amountA}
+        amountB={amountB}
+        currencyAUsdPrice={currencyAUsdPrice}
+        currencyBUsdPrice={currencyBUsdPrice}
         tickLower={priceRange?.tickLower}
         tickUpper={priceRange?.tickUpper}
         sqrtRatioX96={sqrtRatioX96}

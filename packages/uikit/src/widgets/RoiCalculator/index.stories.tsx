@@ -26,6 +26,8 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
           }
           currencyA={ethereumTokens.weth}
           currencyB={ethereumTokens.usdc}
+          balanceA={CurrencyAmount.fromRawAmount(ethereumTokens.weth, "1000000000000000000")}
+          balanceB={CurrencyAmount.fromRawAmount(ethereumTokens.usdc, "1464567634")}
           currencyAUsdPrice={1564.567634}
           currencyBUsdPrice={0.999999}
           sqrtRatioX96={JSBI.BigInt("2002509526268673110418559843593160")}

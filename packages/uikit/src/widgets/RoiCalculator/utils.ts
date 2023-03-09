@@ -1,4 +1,4 @@
-import { Price, Token, JSBI } from "@pancakeswap/sdk";
+import { Price, Token, JSBI, Currency, Percent } from "@pancakeswap/sdk";
 import {
   encodeSqrtRatioX96,
   FeeAmount,
@@ -7,6 +7,7 @@ import {
   TICK_SPACINGS,
   TickMath,
 } from "@pancakeswap/v3-sdk";
+import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 
 export function tryParsePrice(baseToken?: Token, quoteToken?: Token, value?: string) {
   if (!baseToken || !quoteToken || !value) {
@@ -61,4 +62,35 @@ export function tryParseTick(
   }
 
   return nearestUsableTick(tick, TICK_SPACINGS[feeAmount]);
+}
+
+export function toSignificant(decimal: number | string, significant = 6) {
+  return parseFloat(parseFloat(String(decimal)).toPrecision(significant));
+}
+
+export function toToken0Price(
+  currencyA?: Currency,
+  currencyB?: Currency,
+  currencyAUsdPrice?: number,
+  currencyBUsdPrice?: number
+): Price<Token, Token> | undefined {
+  const scaler = 1_000_000_000;
+  if (!currencyA || !currencyB || typeof currencyAUsdPrice !== "number" || typeof currencyBUsdPrice !== "number") {
+    return undefined;
+  }
+  const isToken0 = currencyA.wrapped.sortsBefore(currencyB.wrapped);
+  const amountA = tryParseAmount(String(scaler / currencyAUsdPrice), currencyA);
+  const amountB = tryParseAmount(String(scaler / currencyBUsdPrice), currencyB);
+  const [baseAmount, quoteAmount] = isToken0
+    ? [amountA?.wrapped, amountB?.wrapped]
+    : [amountB?.wrapped, amountA?.wrapped];
+  if (!baseAmount || !quoteAmount) {
+    return undefined;
+  }
+  return new Price({ baseAmount, quoteAmount });
+}
+
+export function toPercent(numerator: number, denominator: number) {
+  const scaler = 1_000_000_000_000;
+  return new Percent(JSBI.BigInt(Math.floor((numerator / denominator) * scaler)), JSBI.BigInt(scaler));
 }

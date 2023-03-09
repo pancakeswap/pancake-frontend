@@ -1,59 +1,101 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useEffect, useState, useMemo } from "react";
-import { Currency, JSBI, Price, Token } from "@pancakeswap/sdk";
-import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
+import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { priceToClosestTick, TickMath, FeeCalculator } from "@pancakeswap/v3-sdk";
 
 import { Section } from "./DynamicSection";
-import { Toggle, Button } from "../../components";
-import { AssetCard, Asset, CardSection, SectionTitle } from "./AssetCard";
+import { Toggle, Button, RowBetween, DoubleCurrencyLogo } from "../../components";
+import {
+  AssetCard,
+  Asset,
+  CardSection,
+  SectionTitle,
+  InterestDisplay,
+  AssetRow,
+  CurrencyLogoDisplay,
+  CardTag,
+} from "./AssetCard";
+import { toPercent, toToken0Price } from "./utils";
 
 interface Props {
-  assets?: Asset[];
+  amountA?: CurrencyAmount<Currency>;
+  amountB?: CurrencyAmount<Currency>;
+  currencyAUsdPrice?: number;
+  currencyBUsdPrice?: number;
   tickLower?: number;
   tickUpper?: number;
   sqrtRatioX96?: JSBI;
+  lpReward?: number;
 }
 
-const toToken0Price = (
-  currencyA?: Currency,
-  currencyB?: Currency,
-  currencyAUsdPrice?: number,
-  currencyBUsdPrice?: number
-): Price<Token, Token> | undefined => {
-  const scaler = 1_000_000_000;
-  if (!currencyA || !currencyB || typeof currencyAUsdPrice !== "number" || typeof currencyBUsdPrice !== "number") {
-    return undefined;
-  }
-  const isToken0 = currencyA.wrapped.sortsBefore(currencyB.wrapped);
-  const amountA = tryParseAmount(String(scaler / currencyAUsdPrice), currencyA);
-  const amountB = tryParseAmount(String(scaler / currencyBUsdPrice), currencyB);
-  const [baseAmount, quoteAmount] = isToken0
-    ? [amountA?.wrapped, amountB?.wrapped]
-    : [amountB?.wrapped, amountA?.wrapped];
-  if (!baseAmount || !quoteAmount) {
-    return undefined;
-  }
-  return new Price({ baseAmount, quoteAmount });
-};
-
-export function ImpermanentLossCalculator({ assets, tickLower, tickUpper, sqrtRatioX96 }: Props) {
+export function ImpermanentLossCalculator({
+  tickLower,
+  tickUpper,
+  sqrtRatioX96,
+  amountA,
+  amountB,
+  currencyAUsdPrice,
+  currencyBUsdPrice,
+  lpReward = 0,
+}: Props) {
   const { t } = useTranslation();
   const [on, setOn] = useState(false);
+  const assets = useMemo<Asset[] | undefined>(
+    () =>
+      amountA && amountB && currencyAUsdPrice && currencyBUsdPrice
+        ? [
+            {
+              currency: amountA.currency,
+              amount: amountA.toExact(),
+              price: currencyAUsdPrice,
+              value: parseFloat(amountA.toExact()) * currencyAUsdPrice,
+            },
+            {
+              currency: amountB.currency,
+              amount: amountB.toExact(),
+              price: currencyBUsdPrice,
+              value: parseFloat(amountB.toExact()) * currencyBUsdPrice,
+            },
+          ]
+        : undefined,
+    [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice]
+  );
   const [entry, setEntry] = useState<Asset[] | undefined>(assets);
   const [exit, setExit] = useState<Asset[] | undefined>(assets);
   const toggle = useCallback(() => setOn(!on), [on]);
-  const resetEntry = useCallback(() => setEntry(assets), [assets]);
+  // const resetEntry = useCallback(() => setEntry(assets), [assets]);
   const resetExit = useCallback(() => setExit(assets), [assets]);
-  const principal = useMemo(
-    () => entry?.reduce((total, cur) => total + cur.price * parseFloat(cur.amount.toExact()), 0) || 0,
-    [entry]
+  const principal = useMemo(() => entry?.reduce((sum, { value }) => sum + parseFloat(String(value)), 0), [entry]);
+  const hodlValue = useMemo(() => {
+    if (!entry || !exit) {
+      return 0;
+    }
+    return exit.reduce((sum, { price }, i) => sum + parseFloat(String(entry[i]?.amount || 0)) * price, 0);
+  }, [entry, exit]);
+  const hodlAssets = useMemo<Asset[] | undefined>(() => {
+    if (!entry || !exit) {
+      return undefined;
+    }
+    return exit.map(({ price }, i) => ({ ...entry[i], price, value: parseFloat(String(entry[i].amount)) * price }));
+  }, [entry, exit]);
+  const hodlRate = useMemo(
+    () => (hodlValue && principal ? toPercent(hodlValue, principal).subtract(ONE_HUNDRED_PERCENT) : ZERO_PERCENT),
+    [hodlValue, principal]
   );
+  const exitValue = useMemo(() => {
+    return (exit?.reduce((sum, { price, amount }) => sum + parseFloat(String(amount || 0)) * price, 0) || 0) + lpReward;
+  }, [exit, lpReward]);
+  const exitRate = useMemo(
+    () => (exitValue && principal ? toPercent(exitValue, principal).subtract(ONE_HUNDRED_PERCENT) : ZERO_PERCENT),
+    [exitValue, principal]
+  );
+  const lpBetter = useMemo(() => !hodlRate.greaterThan(exitRate), [exitRate, hodlRate]);
 
   const getPriceAdjustedAssets = useCallback(
     (newAssets?: Asset[]) => {
       if (
-        !assets ||
+        !amountA ||
+        !amountB ||
         !newAssets ||
         newAssets.length < 2 ||
         typeof tickLower !== "number" ||
@@ -62,8 +104,9 @@ export function ImpermanentLossCalculator({ assets, tickLower, tickUpper, sqrtRa
       ) {
         return newAssets;
       }
-      const [{ amount: amountA }, { amount: amountB }] = assets;
-      const [{ price: priceA }, { price: priceB }] = newAssets;
+      const [assetA, assetB] = newAssets;
+      const { price: priceA } = assetA;
+      const { price: priceB } = assetB;
       const token0Price = toToken0Price(amountA.currency.wrapped, amountB.currency.wrapped, priceA, priceB);
       if (!token0Price) {
         return newAssets;
@@ -78,12 +121,14 @@ export function ImpermanentLossCalculator({ assets, tickLower, tickUpper, sqrtRa
         amountA,
         amountB,
       });
+      const amountAStr = adjustedAmountA.toExact();
+      const amountBStr = adjustedAmountB.toExact();
       return [
-        { price: priceA, amount: adjustedAmountA },
-        { price: priceB, amount: adjustedAmountB },
+        { ...assetA, amount: amountAStr, value: parseFloat(amountAStr) * priceA },
+        { ...assetB, amount: amountBStr, value: parseFloat(amountBStr) * priceB },
       ];
     },
-    [tickLower, tickUpper, sqrtRatioX96, assets]
+    [tickLower, tickUpper, sqrtRatioX96, amountA, amountB]
   );
 
   const updateEntry = useCallback(
@@ -112,13 +157,10 @@ export function ImpermanentLossCalculator({ assets, tickLower, tickUpper, sqrtRa
         header={
           <>
             <SectionTitle>{t("Entry price")}</SectionTitle>
-            <Button variant="secondary" scale="xs" onClick={resetEntry}>
-              {t("Reset")}
-            </Button>
           </>
         }
       >
-        <AssetCard assets={entry} onChange={updateEntry} />
+        <AssetCard assets={entry} onChange={updateEntry} priceEditable={false} />
       </CardSection>
       <CardSection
         header={
@@ -133,8 +175,41 @@ export function ImpermanentLossCalculator({ assets, tickLower, tickUpper, sqrtRa
         <AssetCard assets={exit} onChange={updateExit} />
       </CardSection>
       <CardSection header={<SectionTitle>{t("Projected results")}</SectionTitle>}>
-        <AssetCard mb={16} showPrice={false} assets={exit} />
-        <AssetCard showPrice={false} assets={exit} isActive />
+        <AssetCard
+          isActive={!lpBetter}
+          mb={24}
+          showPrice={false}
+          assets={hodlAssets}
+          header={
+            <RowBetween>
+              <InterestDisplay amount={hodlValue} interest={hodlRate} />
+              <CardTag isActive={!lpBetter}>{t("HODL Tokens")}</CardTag>
+            </RowBetween>
+          }
+        />
+        <AssetCard
+          isActive={lpBetter}
+          showPrice={false}
+          assets={exit}
+          header={
+            <RowBetween>
+              <InterestDisplay amount={exitValue} interest={exitRate} />
+              <CardTag isActive={lpBetter}>{t("Provide Liquidity")}</CardTag>
+            </RowBetween>
+          }
+          extraRows={
+            <AssetRow
+              name={
+                <CurrencyLogoDisplay
+                  logo={<DoubleCurrencyLogo currency0={exit?.[0].currency} currency1={exit?.[1].currency} />}
+                  name={t("LP Rewards")}
+                />
+              }
+              showPrice={false}
+              value={lpReward}
+            />
+          }
+        />
       </CardSection>
     </>
   ) : null;
