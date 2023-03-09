@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
 import { Button, Text, useModal, confirmPriceImpactWithoutFee, Column, Box } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo } from 'react'
-import { Trade } from '@pancakeswap/smart-router/evm'
+import { SWAP_ROUTER_ADDRESSES, Trade } from '@pancakeswap/smart-router/evm'
 
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { GreyCard } from 'components/Card'
@@ -30,13 +30,7 @@ import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
-import {
-  useSlippageAdjustedAmounts,
-  useRouterAddress,
-  useSwapInputError,
-  useParsedAmounts,
-  useSwapCallback,
-} from '../hooks'
+import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
 
@@ -68,7 +62,7 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
-  const routerAddress = useRouterAddress(trade)
+  const routerAddress = SWAP_ROUTER_ADDRESSES[trade?.inputAmount?.currency.chainId]
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
   const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
     inputCurrency ?? undefined,
