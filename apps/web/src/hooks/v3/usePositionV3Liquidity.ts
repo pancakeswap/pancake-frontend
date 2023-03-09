@@ -2,7 +2,7 @@ import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import { FeeAmount, Position } from '@pancakeswap/v3-sdk'
 import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useMemo } from 'react'
-import { PositionDetails } from './types'
+import { PositionDetails } from '@pancakeswap/farms'
 import { usePool } from './usePools'
 
 export function usePositionV3Liquidity(position: Position) {

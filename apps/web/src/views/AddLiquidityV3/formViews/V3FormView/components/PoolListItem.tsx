@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { usePool } from 'hooks/v3/usePools'
-import { PositionDetails } from 'hooks/v3/types'
+import { PositionDetails } from '@pancakeswap/farms'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { Currency, Price, Token } from '@pancakeswap/sdk'
 

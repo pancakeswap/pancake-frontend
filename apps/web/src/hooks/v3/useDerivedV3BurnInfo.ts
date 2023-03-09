@@ -5,7 +5,7 @@ import { useWeb3React } from '@pancakeswap/wagmi'
 import { useToken } from 'hooks/Tokens'
 import { ReactNode, useMemo } from 'react'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import { PositionDetails } from './types'
+import { PositionDetails } from '@pancakeswap/farms'
 import { usePool } from './usePools'
 import { useV3PositionFees } from './useV3PositionFees'
 
