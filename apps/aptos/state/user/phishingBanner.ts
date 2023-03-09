@@ -8,8 +8,8 @@ const hidePhishingBannerAtom = atom(
   (get) => {
     const now = Date.now()
     const last = get(phishingBannerAtom)
-    const isPCS = typeof window !== 'undefined' && window.location.hostname === 'pancakeswap.finance'
-    return last ? differenceInDays(now, last) >= 1 && isPCS : isPCS
+    const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
+    return last ? differenceInDays(now, last) >= 1 && notPreview : notPreview
   },
   (_, set) => set(phishingBannerAtom, Date.now()),
 )
