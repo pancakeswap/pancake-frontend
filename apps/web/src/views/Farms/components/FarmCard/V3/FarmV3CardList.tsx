@@ -10,7 +10,7 @@ interface FarmV3CardListProps {
 
 const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3CardListProps>> = ({ farm, onDismiss }) => {
   const { t } = useTranslation()
-  const { stakedPositions, unstakedPositions, lpSymbol } = farm
+  const { stakedPositions, unstakedPositions, lpSymbol, token, quoteToken } = farm
 
   return (
     <Box>
@@ -22,10 +22,13 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
           <Flex flexWrap="wrap" width="100%">
             {stakedPositions.map((position) => (
               <SingleFarmV3Card
+                positionType="staked"
                 key={position.tokenId.toString()}
                 lpSymbol={lpSymbol}
                 position={position}
-                positionType="staked"
+                token={token}
+                quoteToken={quoteToken}
+                onDismiss={onDismiss}
               />
             ))}
           </Flex>
@@ -34,15 +37,18 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
       {unstakedPositions.length > 0 && (
         <Flex flexDirection="column" width="100%" mb="24px">
           <Text bold fontSize="12px" color="textSubtle" m="0 0 8px 0">
-            {t('%totalAvailableFarm% LP Available for Farming', { totalStakedFarm: unstakedPositions.length })}
+            {t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: unstakedPositions.length })}
           </Text>
           <Flex flexWrap="wrap" width="100%">
             {unstakedPositions.map((position) => (
               <SingleFarmV3Card
+                positionType="unstaked"
                 key={position.tokenId.toString()}
                 lpSymbol={lpSymbol}
                 position={position}
-                positionType="unstaked"
+                token={token}
+                quoteToken={quoteToken}
+                onDismiss={onDismiss}
               />
             ))}
           </Flex>

@@ -18,7 +18,7 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   liquidityUrlPathParts,
 }) => {
   const [show, setShow] = useState(false)
-  const { lpSymbol, token, quoteToken, multiplier, stakedPositions, unstakedPositions } = farm
+  const { lpSymbol, token, quoteToken, multiplier, stakedPositions, unstakedPositions, pendingCakeByTokenIds } = farm
 
   const onlyOnePosition = useMemo(
     () => stakedPositions.length === 1 || unstakedPositions.length === 1,
@@ -36,7 +36,12 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
             unstakedPositions={unstakedPositions}
             onClickViewAllButton={() => setShow(true)}
           />
-          <TotalStakedBalance stakedPositions={stakedPositions} onClickViewAllButton={() => setShow(true)} />
+          <TotalStakedBalance
+            stakedPositions={stakedPositions}
+            earnings={0}
+            earningsBusd={0}
+            onClickViewAllButton={() => setShow(true)}
+          />
         </>
       )}
       <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>

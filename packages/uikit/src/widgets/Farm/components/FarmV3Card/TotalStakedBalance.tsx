@@ -16,11 +16,15 @@ const LightGreyCard = styled("div")`
 
 interface TotalStakedBalanceProps {
   stakedPositions: PositionDetails[];
+  earnings: number;
+  earningsBusd: number;
   onClickViewAllButton: () => void;
 }
 
 const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalStakedBalanceProps>> = ({
   stakedPositions,
+  earnings,
+  earningsBusd,
   onClickViewAllButton,
 }) => {
   const { t } = useTranslation();
@@ -43,8 +47,8 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
             </Flex>
             <Box>
               <Flex flexDirection="column" alignItems="flex-start">
-                <Heading>123</Heading>
-                <Balance fontSize="12px" color="textSubtle" decimals={2} value={123} unit=" USD" prefix="~" />
+                <Heading>{earnings}</Heading>
+                <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
               </Flex>
             </Box>
           </Flex>

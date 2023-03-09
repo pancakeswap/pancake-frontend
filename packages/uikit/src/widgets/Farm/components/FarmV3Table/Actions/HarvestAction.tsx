@@ -2,10 +2,9 @@ import { useTranslation } from "@pancakeswap/localization";
 import BigNumber from "bignumber.js";
 import { Button } from "../../../../../components/Button";
 import { Heading } from "../../../../../components/Heading";
-import { Text, TooltipText } from "../../../../../components/Text";
+import { Text } from "../../../../../components/Text";
 import { Balance } from "../../../../../components/Balance";
 import { Skeleton } from "../../../../../components/Skeleton";
-import { useTooltip } from "../../../../../hooks/useTooltip";
 import { ActionContent, ActionTitles } from "./styles";
 import { FARMS_SMALL_AMOUNT_THRESHOLD } from "../../../constants";
 import Flex from "../../../../../components/Box/Flex";
@@ -16,7 +15,6 @@ interface HarvestActionProps {
   displayBalance: string | JSX.Element;
   pendingTx: boolean;
   userDataReady: boolean;
-  proxyCakeBalance?: number;
   handleHarvest: () => void;
 }
 
@@ -26,27 +24,9 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   displayBalance,
   pendingTx,
   userDataReady,
-  proxyCakeBalance,
   handleHarvest,
 }) => {
   const { t } = useTranslation();
-
-  const toolTipBalance = !userDataReady ? (
-    <Skeleton width={60} />
-  ) : earnings.isGreaterThan(FARMS_SMALL_AMOUNT_THRESHOLD) ? (
-    earnings.toFixed(5, BigNumber.ROUND_DOWN)
-  ) : (
-    `< 0.00001`
-  );
-
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    `${toolTipBalance} ${t(
-      `CAKE has been harvested to the farm booster contract and will be automatically sent to your wallet upon the next harvest.`
-    )}`,
-    {
-      placement: "bottom",
-    }
-  );
 
   return (
     <Flex height="100%" flexDirection="column">
@@ -60,16 +40,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
       </ActionTitles>
       <ActionContent style={{ height: "100%" }}>
         <div>
-          {proxyCakeBalance ? (
-            <>
-              <TooltipText ref={targetRef} decorationColor="secondary">
-                <Heading>{displayBalance}</Heading>
-              </TooltipText>
-              {tooltipVisible && tooltip}
-            </>
-          ) : (
-            <Heading>{displayBalance}</Heading>
-          )}
+          <Heading>{displayBalance}</Heading>
           {earningsBusd > 0 && (
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}

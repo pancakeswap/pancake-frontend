@@ -3,6 +3,9 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { PositionDetails } from '@pancakeswap/farms'
 import { Flex, Box, Farm as FarmUI } from '@pancakeswap/uikit'
 import { ActionContent, ActionTitles } from 'views/Farms/components/FarmTable/V3/Actions/styles'
+import { CHAIN_QUERY_NAME } from 'config/chains'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { Token } from '@pancakeswap/swap-sdk-core'
 
 const { FarmV3HarvestAction, FarmV3StakeAndUnStake } = FarmUI.FarmV3Table
 
@@ -44,20 +47,48 @@ interface SingleFarmV3CardProps {
   lpSymbol: string
   position: PositionDetails
   positionType: PositionType
+  token: Token
+  quoteToken: Token
+  onDismiss?: () => void
 }
 
 const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFarmV3CardProps>> = ({
   lpSymbol,
   position,
+  token,
+  quoteToken,
   positionType,
+  onDismiss,
 }) => {
+  const { chainId } = useActiveChainId()
+  const title = `${lpSymbol} (#${position.tokenId.toString()})`
+  const liquidityUrl = `/liquidity/${position.tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
+
+  const handleStake = () => {
+    onDismiss?.()
+  }
+
+  const handleUnStake = () => {
+    onDismiss?.()
+  }
+
+  const handleHarvest = () => {
+    onDismiss?.()
+  }
+
   return (
     <Box width="100%">
       <ActionContainer>
         <ActionContent width="100%" flexDirection="column">
           <FarmV3StakeAndUnStake
-            title={`${lpSymbol}
-            (#${position.tokenId.toString()})`}
+            title={title}
+            position={position}
+            token={token}
+            quoteToken={quoteToken}
+            positionType={positionType}
+            liquidityUrl={liquidityUrl}
+            handleStake={handleStake}
+            handleUnStake={handleUnStake}
           />
         </ActionContent>
         {positionType !== 'unstaked' && (
@@ -68,8 +99,7 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
               displayBalance="123"
               pendingTx={false}
               userDataReady={false}
-              proxyCakeBalance={0}
-              handleHarvest={() => 123}
+              handleHarvest={handleHarvest}
             />
           </ActionContent>
         )}
