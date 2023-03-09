@@ -1,4 +1,4 @@
-import { FarmV3DataWithPrice } from '@pancakeswap/farms'
+import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
@@ -11,10 +11,10 @@ import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { useV3LiquidityTotal } from 'hooks/v3/usePositionV3Liquidity'
 import ApyButton from '../ApyButton'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from '../CardHeading'
-import BoostedApr from '../../YieldBooster/components/BoostedApr'
 
 const { DetailsSection } = FarmUI.FarmCard
 
@@ -41,7 +41,7 @@ const ExpandingWrapper = styled.div`
 `
 
 interface FarmCardProps {
-  farm: FarmV3DataWithPrice
+  farm: FarmV3DataWithPriceAndUserInfo
   displayApr: string
   removed: boolean
   cakePrice?: BigNumber
@@ -78,7 +78,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   // })
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
-  // const earnLabel = farm.dual ? farm.dual.earnLabel : t('CAKE + Fees')
   const earnLabel = t('CAKE + Fees')
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -87,16 +86,12 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     chainId,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
-  // const { lpAddress, stableSwapAddress, stableLpFee } = farm
+  const { lpAddress } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
-  // const { stakedBalance, proxy, tokenBalance } = farm?.userData || {}
 
-  // const infoUrl = useMemo(() => {
-  //   if (farm.isStable) {
-  //     return `/info${multiChainPaths[chainId]}/pairs/${stableSwapAddress}?type=stableSwap&chain=${CHAIN_QUERY_NAME[chainId]}`
-  //   }
-  //   return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
-  // }, [chainId, farm.isStable, lpAddress, stableSwapAddress])
+  const infoUrl = useMemo(() => {
+    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
+  }, [chainId, lpAddress])
 
   const toggleExpandableSection = useCallback(() => {
     setShowExpandableSection((prev) => !prev)
@@ -105,87 +100,65 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   return (
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
-        <CardHeading
-          lpLabel={lpLabel}
-          multiplier={farm.multiplier}
-          isCommunityFarm={false}
-          token={farm.token}
-          quoteToken={farm.quoteToken}
-          boosted={false}
-          isStable={false}
-        />
-        {/* {!removed && (
+        <CardHeading lpLabel={lpLabel} multiplier={farm.multiplier} token={farm.token} quoteToken={farm.quoteToken} />
+        {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
             <Text>{t('APR')}:</Text>
             <Text bold style={{ display: 'flex', alignItems: 'center' }}>
-              {farm.apr ? (
+              {farm.cakeApr ? (
                 <>
-                  {farm.boosted ? (
-                    <BoostedApr
-                      mr="4px"
-                      lpRewardsApr={farm.lpRewardsApr}
-                      apr={farm.apr}
-                      pid={farm?.pid}
-                      lpTotalSupply={farm.lpTotalSupply}
-                      userBalanceInFarm={
-                        (stakedBalance.plus(tokenBalance).gt(0)
-                          ? stakedBalance?.plus(tokenBalance)
-                          : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
-                      }
-                    />
-                  ) : null}
-                  <ApyButton
+                  APY BUTTON
+                  {/* <ApyButton
                     variant="text-and-button"
                     pid={farm.pid}
-                    lpTokenPrice={farm.lpTokenPrice}
+                    // lpTokenPrice={farm.lpTokenPrice}
+                    lpTokenPrice={BIG_ZERO}
                     lpSymbol={farm.lpSymbol}
                     multiplier={farm.multiplier}
                     lpLabel={lpLabel}
                     addLiquidityUrl={addLiquidityUrl}
                     cakePrice={cakePrice}
-                    apr={farm.apr}
+                    apr={Number(farm.cakeApr)}
                     displayApr={displayApr}
                     lpRewardsApr={farm.lpRewardsApr}
-                    strikethrough={farm.boosted}
                     useTooltipText
-                    boosted={farm.boosted}
-                    stableSwapAddress={stableSwapAddress}
-                    stableLpFee={stableLpFee}
-                  />
+                  /> */}
                 </>
               ) : (
                 <Skeleton height={24} width={80} />
               )}
             </Text>
           </Flex>
-        )} */}
+        )}
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
           <Text bold>{earnLabel}</Text>
         </Flex>
-        {/* <CardActionsContainer
+        <CardActionsContainer
           farm={farm}
           lpLabel={lpLabel}
           account={account}
           addLiquidityUrl={addLiquidityUrl}
           displayApr={displayApr}
-        /> */}
+        />
       </FarmCardInnerContainer>
 
       <ExpandingWrapper>
         <ExpandableSectionButton onClick={toggleExpandableSection} expanded={showExpandableSection} />
-        {/* {showExpandableSection && (
+        {showExpandableSection && (
           <DetailsSection
             removed={removed}
             scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
             infoAddress={infoUrl}
-            totalValueFormatted={totalValueFormatted}
+            totalValueFormatted="20"
+            // totalValueFormatted={totalValueFormatted}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
             isCommunity={false}
-            auctionHostingEndDate={farm.auctionHostingEndDate}
+            auctionHostingEndDate="0"
+            // auctionHostingEndDate={farm.auctionHostingEndDate}
           />
-        )} */}
+        )}
       </ExpandingWrapper>
     </StyledCard>
   )

@@ -1,9 +1,8 @@
-import { useTranslation } from '@pancakeswap/localization'
-import { Flex, Text, Farm as FarmUI } from '@pancakeswap/uikit'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useMemo } from 'react'
+import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
+import { Farm as FarmUI } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import styled from 'styled-components'
-import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import FarmInfo from './FarmInfo'
 
 const { NoPosition } = FarmUI.FarmV3Card
@@ -12,15 +11,8 @@ const Action = styled.div`
   padding-top: 16px;
 `
 
-const ActionContainer = styled.div`
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
 interface FarmCardActionsProps {
-  farm: any
+  farm: FarmV3DataWithPriceAndUserInfo
   account?: string
   addLiquidityUrl?: string
   lpLabel?: string
@@ -28,10 +20,13 @@ interface FarmCardActionsProps {
 }
 
 const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ farm, account, addLiquidityUrl }) => {
-  const { t } = useTranslation()
-  const isReady = farm.multiplier !== undefined
-  const { stakedBalance, tokenBalance, proxy } = farm?.userData
-  const hasNoPosition = false // TODO: FARM_V3
+  const { multiplier, stakedPositions, unstakedPositions } = farm
+  const isReady = multiplier !== undefined
+
+  const hasNoPosition = useMemo(
+    () => stakedPositions.length === 0 && unstakedPositions.length === 0,
+    [stakedPositions, unstakedPositions],
+  )
 
   return (
     <Action>
@@ -43,30 +38,6 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ 
           hasNoPosition={hasNoPosition}
           liquidityUrlPathParts={addLiquidityUrl}
           connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
-          boostedAction={
-            farm.boosted && (
-              <BoostedAction
-                title={(status) => (
-                  <Flex>
-                    <Text bold textTransform="uppercase" color="textSubtle" fontSize="12px" pr="4px">
-                      {t('Yield Booster')}
-                    </Text>
-                    <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
-                      {status}
-                    </Text>
-                  </Flex>
-                )}
-                desc={(actionBtn) => <ActionContainer>{actionBtn}</ActionContainer>}
-                farmPid={farm.pid}
-                lpTokenStakedAmount={farm.lpTokenStakedAmount}
-                userBalanceInFarm={
-                  (stakedBalance.plus(tokenBalance).gt(0)
-                    ? stakedBalance.plus(tokenBalance)
-                    : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
-                }
-              />
-            )
-          }
         />
       )}
     </Action>

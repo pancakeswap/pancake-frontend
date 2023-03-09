@@ -38,9 +38,9 @@ interface ViewAllFarmModalProps extends ModalProps {
   lpSymbol: string;
   liquidityUrlPathParts: string;
   tokenPairImage: ReactNode;
-  isStable: boolean;
-  boosted: boolean;
-  isCommunityFarm: boolean;
+  isStable?: boolean;
+  boosted?: boolean;
+  isCommunityFarm?: boolean;
   multiplier: string;
   children: ReactNode;
 }

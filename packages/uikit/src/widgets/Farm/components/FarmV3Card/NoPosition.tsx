@@ -8,7 +8,7 @@ import Flex from "../../../../components/Box/Flex";
 interface NoPositionProps {
   account: string;
   hasNoPosition: boolean;
-  boostedAction: ReactNode;
+  boostedAction?: ReactNode;
   connectWalletButton: ReactNode;
   liquidityUrlPathParts: string;
 }

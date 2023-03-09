@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { useTranslation } from '@pancakeswap/localization'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Flex, Text, Box, Farm as FarmUI } from '@pancakeswap/uikit'
-import BoostedAction from 'views/Farms/components//YieldBooster/components/BoostedAction'
+import { PositionDetails } from '@pancakeswap/farms'
+import { Flex, Box, Farm as FarmUI } from '@pancakeswap/uikit'
 import { ActionContent, ActionTitles } from 'views/Farms/components/FarmTable/V3/Actions/styles'
 
 const { FarmV3HarvestAction, FarmV3StakeAndUnStake } = FarmUI.FarmV3Table
@@ -39,52 +38,38 @@ const ActionContainer = styled(Flex)`
   }
 `
 
+type PositionType = 'staked' | 'unstaked'
+
 interface SingleFarmV3CardProps {
-  farm: any
+  lpSymbol: string
+  position: PositionDetails
+  positionType: PositionType
 }
 
-const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFarmV3CardProps>> = ({ farm }) => {
-  const { t } = useTranslation()
-
+const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFarmV3CardProps>> = ({
+  lpSymbol,
+  position,
+  positionType,
+}) => {
   return (
     <Box width="100%">
       <ActionContainer>
         <ActionContent width="100%" flexDirection="column">
-          <FarmV3StakeAndUnStake title={`${farm.lpSymbol} (#0123456)`} />
-        </ActionContent>
-        <ActionContent width="100%" flexDirection="column">
-          <FarmV3HarvestAction
-            earnings={BIG_ZERO}
-            earningsBusd={323}
-            displayBalance="123"
-            pendingTx={false}
-            userDataReady={false}
-            proxyCakeBalance={0}
-            handleHarvest={() => 123}
+          <FarmV3StakeAndUnStake
+            title={`${lpSymbol}
+            (#${position.tokenId.toString()})`}
           />
         </ActionContent>
-        {farm?.boosted && (
+        {positionType !== 'unstaked' && (
           <ActionContent width="100%" flexDirection="column">
-            <BoostedAction
-              title={(status) => (
-                <ActionTitles>
-                  <Text mr="3px" bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-                    {t('Yield Booster')}
-                  </Text>
-                  <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
-                    {status}
-                  </Text>
-                </ActionTitles>
-              )}
-              desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
-              farmPid={farm.pid}
-              lpTokenStakedAmount={farm.lpTokenStakedAmount}
-              userBalanceInFarm={BIG_ZERO}
-              // userBalanceInFarm={
-              //   (stakedBalance.plus(tokenBalance).gt(0)
-              //     ? stakedBalance.plus(tokenBalance)
-              //     : proxy?.stakedBalance.plus(proxy?.tokenBalance)) ?? BIG_ZERO
-              // }
+            <FarmV3HarvestAction
+              earnings={BIG_ZERO}
+              earningsBusd={323}
+              displayBalance="123"
+              pendingTx={false}
+              userDataReady={false}
+              proxyCakeBalance={0}
+              handleHarvest={() => 123}
             />
           </ActionContent>
         )}

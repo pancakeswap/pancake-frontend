@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
+import { PositionDetails } from "@pancakeswap/farms";
 import { Text } from "../../../../components/Text";
 import { Button } from "../../../../components/Button";
 import { Flex, Box } from "../../../../components/Box";
@@ -14,10 +15,12 @@ const LightGreyCard = styled("div")`
 `;
 
 interface TotalStakedBalanceProps {
+  stakedPositions: PositionDetails[];
   onClickViewAllButton: () => void;
 }
 
 const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalStakedBalanceProps>> = ({
+  stakedPositions,
   onClickViewAllButton,
 }) => {
   const { t } = useTranslation();
@@ -25,7 +28,7 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
   return (
     <Box mt="24px">
       <Text fontSize="12px" bold color="textSubtle" mb="8px">
-        {t("%totalStakedFarm% Staked Farming", { totalStakedFarm: 2 })}
+        {t("%totalStakedFarm% Staked Farming", { totalStakedFarm: stakedPositions.length })}
       </Text>
       <LightGreyCard>
         <Flex padding="16px" justifyContent="space-between">

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
+import { PositionDetails } from "@pancakeswap/farms";
 import { Text } from "../../../../components/Text";
 import { Button } from "../../../../components/Button";
 import { Flex, Box } from "../../../../components/Box";
@@ -13,11 +14,13 @@ const LightGreyCard = styled("div")`
 
 interface AvailableFarmingProps {
   lpSymbol: string;
+  unstakedPositions: PositionDetails[];
   onClickViewAllButton: () => void;
 }
 
 const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<AvailableFarmingProps>> = ({
   lpSymbol,
+  unstakedPositions,
   onClickViewAllButton,
 }) => {
   const { t } = useTranslation();
@@ -25,7 +28,7 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
   return (
     <Box>
       <Text fontSize="12px" bold color="textSubtle" mb="8px">
-        {t("%totalAvailableFarm% LP Available for Farming", { totalAvailableFarm: 2 })}
+        {t("%totalAvailableFarm% LP Available for Farming", { totalAvailableFarm: unstakedPositions.length })}
       </Text>
       <LightGreyCard>
         <Flex padding="16px" justifyContent="space-between">
@@ -34,12 +37,11 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
               {lpSymbol}
             </Text>
             <Box>
-              <Text fontSize="12px" color="textSubtle">
-                (#0123456)
-              </Text>
-              <Text fontSize="12px" color="textSubtle">
-                (#0123456)
-              </Text>
+              {unstakedPositions.map((position) => (
+                <Text fontSize="12px" color="textSubtle" key={position.tokenId.toString()}>
+                  {`(${position.tokenId.toString()})`}
+                </Text>
+              ))}
             </Box>
           </Flex>
           <Button style={{ alignSelf: "center" }} onClick={onClickViewAllButton}>

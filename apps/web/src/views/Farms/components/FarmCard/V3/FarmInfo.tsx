@@ -1,13 +1,13 @@
+import { useMemo } from 'react'
 import { Flex, Farm as FarmUI, useModal } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
-import { FarmV3DataWithPrice } from '@pancakeswap/farms'
+import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { TokenPairImage } from 'components/TokenImage'
 import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
 
 const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmUI.FarmV3Card
 
 interface FarmInfoProps {
-  farm: FarmV3DataWithPrice
+  farm: FarmV3DataWithPriceAndUserInfo
   isReady: boolean
   liquidityUrlPathParts: string
 }
@@ -17,17 +17,18 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   isReady,
   liquidityUrlPathParts,
 }) => {
-  const { t } = useTranslation()
-  const { lpSymbol, token, quoteToken, boosted, isStable, isCommunity, multiplier } = farm
+  const { lpSymbol, token, quoteToken, multiplier, stakedPositions, unstakedPositions } = farm
+
+  const onlyOnePosition = useMemo(
+    () => stakedPositions.length === 1 || unstakedPositions.length === 1,
+    [stakedPositions, unstakedPositions],
+  )
 
   const [onClickViewAllButton] = useModal(
     <ViewAllFarmModal
       title={lpSymbol}
       isReady={isReady}
       lpSymbol={lpSymbol}
-      isStable={isStable}
-      boosted={boosted}
-      isCommunityFarm={isCommunity}
       multiplier={multiplier}
       liquidityUrlPathParts={liquidityUrlPathParts}
       tokenPairImage={
@@ -35,26 +36,25 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
       }
     >
       <Flex flexDirection="column">
-        <FarmV3CardList title={t('%totalStakedFarm% Staked Farming', { totalStakedFarm: 2 })} farm={farm} />
-        <FarmV3CardList
-          title={t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: 2 })}
-          farm={farm}
-        />
+        <FarmV3CardList farm={farm} />
       </Flex>
     </ViewAllFarmModal>,
   )
 
   return (
     <Flex flexDirection="column">
-      <AvailableFarming lpSymbol={lpSymbol} onClickViewAllButton={onClickViewAllButton} />
-      <TotalStakedBalance onClickViewAllButton={onClickViewAllButton} />
-
-      {/* Show it when only single farm / stake
-      <FarmV3CardList title={t('%totalStakedFarm% Staked Farming', { totalStakedFarm: 1 })} farm={farm} />
-      <FarmV3CardList
-        title={t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: 1 })}
-        farm={farm}
-      /> */}
+      {onlyOnePosition ? (
+        <FarmV3CardList farm={farm} />
+      ) : (
+        <>
+          <AvailableFarming
+            lpSymbol={lpSymbol}
+            unstakedPositions={unstakedPositions}
+            onClickViewAllButton={onClickViewAllButton}
+          />
+          <TotalStakedBalance stakedPositions={stakedPositions} onClickViewAllButton={onClickViewAllButton} />
+        </>
+      )}
     </Flex>
   )
 }
