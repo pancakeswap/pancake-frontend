@@ -111,6 +111,15 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           `,
         }}
       />
+      <noscript>
+        <iframe
+          title="customEvent"
+          src="https://www.googletagmanager.com/ns.html?id=GTM-PP4GC4F"
+          height="0"
+          width="0"
+          style={{ display: 'none', visibility: 'hidden' }}
+        />
+      </noscript>
     </>
   )
 }
