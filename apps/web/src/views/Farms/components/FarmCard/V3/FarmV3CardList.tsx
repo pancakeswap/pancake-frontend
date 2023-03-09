@@ -5,15 +5,16 @@ import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Car
 
 interface FarmV3CardListProps {
   farm: FarmV3DataWithPriceAndUserInfo
+  onDismiss?: () => void
 }
 
-const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3CardListProps>> = ({ farm }) => {
+const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3CardListProps>> = ({ farm, onDismiss }) => {
   const { t } = useTranslation()
   const { stakedPositions, unstakedPositions, lpSymbol } = farm
 
   return (
     <Box>
-      {stakedPositions && (
+      {stakedPositions.length > 0 && (
         <Flex flexDirection="column" width="100%" mb="24px">
           <Text bold fontSize="12px" color="textSubtle" m="0 0 8px 0">
             {t('%totalStakedFarm% Staked Farming', { totalStakedFarm: stakedPositions.length })}
