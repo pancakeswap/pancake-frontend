@@ -1,5 +1,6 @@
 import { ZERO_PERCENT, Percent } from "@pancakeswap/sdk";
 import { useMemo } from "react";
+import { getAccrued } from "../aprHelper";
 
 interface Params extends AprParams {
   // Num of days staked
@@ -21,7 +22,7 @@ export function useRate({ stakeFor = 1, ...rest }: Params) {
       return 0;
     }
 
-    return principal * (1 + parseFloat(apr.asFraction.toSignificant(6))) ** (stakeFor / 365);
+    return getAccrued(principal, apr, stakeFor);
   }, [apr, principal, stakeFor]);
 
   const reward = useMemo(() => {

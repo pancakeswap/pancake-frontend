@@ -1,15 +1,33 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { space, SpaceProps } from "styled-system";
-import styled from "styled-components";
-import { ReactNode, useCallback, useMemo } from "react";
+import { SpaceProps } from "styled-system";
+import { ReactNode, useCallback, useMemo, PropsWithChildren } from "react";
 import { CurrencyAmount, Currency } from "@pancakeswap/sdk";
 
 import { Card, Table, Th, Box, Text, Button, RowBetween, Td, CurrencyLogo, Row } from "../../components";
 import { NumericalInput } from "../Swap/NumericalInput";
 
+export function CardSection({ header, children, ...rest }: { header?: ReactNode } & PropsWithChildren & SpaceProps) {
+  return (
+    <Box mb="24px" {...rest}>
+      <RowBetween mb="12px">{header}</RowBetween>
+      {children}
+    </Box>
+  );
+}
+
+export function SectionTitle({ children }: PropsWithChildren) {
+  return (
+    <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
+      {children}
+    </Text>
+  );
+}
+
 interface Props extends SpaceProps {
-  title?: ReactNode;
   assets?: Asset[];
+  header?: ReactNode;
+  showPrice?: boolean;
+  isActive?: boolean;
   onChange?: (assets: Asset[], info: { index: number; asset: Asset }) => void;
 }
 
@@ -20,8 +38,10 @@ export interface Asset {
   amount: CurrencyAmount<Currency>;
 }
 
-function AssetCardComp({
-  title,
+export function AssetCard({
+  header,
+  showPrice = true,
+  isActive = false,
   assets = [],
   onChange = () => {
     // default
@@ -43,22 +63,18 @@ function AssetCardComp({
     />
   ));
 
+  <Button variant="secondary" scale="xs">
+    {t("Reset")}
+  </Button>;
   return (
-    <Box mb="24px" {...rest}>
-      <RowBetween mb="12px">
-        <Text color="secondary" bold fontSize="12px" textTransform="uppercase">
-          {title}
-        </Text>
-        <Button variant="secondary" scale="xs">
-          {t("Reset")}
-        </Button>
-      </RowBetween>
-      <Card>
+    <Box {...rest}>
+      {header && <RowBetween mb="8px">{header}</RowBetween>}
+      <Card isActive={isActive}>
         <Table>
           <thead>
             <tr>
               <Th textAlign="left">{t("Asset")}</Th>
-              <Th textAlign="left">{t("Price")}</Th>
+              {showPrice && <Th textAlign="left">{t("Price")}</Th>}
               <Th textAlign="left">{t("Balance")}</Th>
               <Th textAlign="left">{t("Value")}</Th>
             </tr>
@@ -72,6 +88,7 @@ function AssetCardComp({
 
 interface AssetRowProps {
   asset: Asset;
+  showPrice?: boolean;
   onChange?: (asset: Asset) => void;
 }
 
@@ -81,6 +98,7 @@ const toSignificant = (decimal: number | string, significant = 6) => {
 
 function AssetRow({
   asset,
+  showPrice = true,
   onChange = () => {
     // default
   },
@@ -102,12 +120,14 @@ function AssetRow({
           <Text ml="4px">{currency.symbol}</Text>
         </Row>
       </Td>
-      <Td style={{ minWidth: "98px" }}>
-        <Row>
-          <Text>$</Text>
-          <NumericalInput align="left" value={toSignificant(price)} onUserInput={onPriceUpdate} />
-        </Row>
-      </Td>
+      {showPrice && (
+        <Td style={{ minWidth: "98px" }}>
+          <Row>
+            <Text>$</Text>
+            <NumericalInput align="left" value={toSignificant(price)} onUserInput={onPriceUpdate} />
+          </Row>
+        </Td>
+      )}
       <Td>
         <Row>
           <Text>{amount.toSignificant(6)}</Text>
@@ -121,7 +141,3 @@ function AssetRow({
     </tr>
   );
 }
-
-export const AssetCard = styled(AssetCardComp)<SpaceProps>`
-  ${space}
-`;

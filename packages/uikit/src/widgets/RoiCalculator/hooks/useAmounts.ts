@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, JSBI } from "@pancakeswap/sdk";
 import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
-import { FeeCalculator } from "@pancakeswap/v3-sdk";
+import { FeeCalculator, TickMath } from "@pancakeswap/v3-sdk";
 import { useCallback, useMemo, useState, useEffect } from "react";
 
 interface Params {
@@ -41,24 +41,21 @@ export function useAmounts({
     if (!amount) {
       return [];
     }
-    const amountA = currencyA.equals(currency)
-      ? amount
-      : FeeCalculator.getDependentAmount({
+    const tickCurrent = TickMath.getTickAtSqrtRatio(sqrtRatioX96);
+    const tickInRange = tickCurrent > tickLower && tickCurrent < tickUpper;
+    const isAIndependent = currencyA.equals(currency);
+    const dependentCurrency = isAIndependent ? currencyB : currencyA;
+    const dependentAmount = tickInRange
+      ? FeeCalculator.getDependentAmount({
           amount,
-          currency: currencyA,
+          currency: dependentCurrency,
           tickLower,
           tickUpper,
           sqrtRatioX96,
-        });
-    const amountB = currencyB.equals(currency)
-      ? amount
-      : FeeCalculator.getDependentAmount({
-          amount,
-          currency: currencyB,
-          tickLower,
-          tickUpper,
-          sqrtRatioX96,
-        });
+        })
+      : CurrencyAmount.fromRawAmount(dependentCurrency, "0");
+    const amountA = isAIndependent ? amount : dependentAmount;
+    const amountB = !isAIndependent ? amount : dependentAmount;
     return [amountA, amountB];
   }, [currencyA, currencyB, sqrtRatioX96, tickLower, tickUpper, independentField]);
 

@@ -191,7 +191,12 @@ export function RoiCalculator({
           onToggleCompound={setCompoundOn}
         />
       </Section>
-      <ImpermanentLossCalculator assets={assets} />
+      <ImpermanentLossCalculator
+        assets={assets}
+        tickLower={priceRange?.tickLower}
+        tickUpper={priceRange?.tickUpper}
+        sqrtRatioX96={sqrtRatioX96}
+      />
       <AnimatedArrow state={{}} />
       <RoiRate usdAmount={parseFloat(fee.toSignificant(6))} rate={rate} />
     </>

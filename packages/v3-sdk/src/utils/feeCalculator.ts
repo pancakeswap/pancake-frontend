@@ -16,6 +16,9 @@ export const FeeCalculator = {
   getAverageLiquidity,
   getLiquidityBySingleAmount,
   getDependentAmount,
+  getLiquidityByAmountsAndPrice,
+  getAmountsByLiquidityAndPrice,
+  getAmountsAtNewPrice,
 }
 
 interface EstimateFeeOptions {
@@ -117,18 +120,70 @@ export function getDependentAmount(options: GetAmountOptions) {
   )
 }
 
-export function getLiquidityBySingleAmount({
-  amount,
-  currency,
+export function getLiquidityBySingleAmount({ amount, currency, ...rest }: GetAmountOptions): JSBI {
+  return getLiquidityByAmountsAndPrice({
+    amountA: amount,
+    amountB: CurrencyAmount.fromRawAmount(currency, MaxUint256),
+    ...rest,
+  })
+}
+
+interface GetLiquidityOptions extends Omit<GetAmountOptions, 'amount' | 'currency'> {
+  amountA: CurrencyAmount<Currency>
+  amountB: CurrencyAmount<Currency>
+}
+
+export function getLiquidityByAmountsAndPrice({
+  amountA,
+  amountB,
   tickUpper,
   tickLower,
   sqrtRatioX96,
-}: GetAmountOptions): JSBI {
-  const isToken0 = amount.currency.wrapped.sortsBefore(currency.wrapped)
-  const [inputAmount0, inputAmount1] = isToken0 ? [amount.quotient, MaxUint256] : [MaxUint256, amount.quotient]
+}: GetLiquidityOptions) {
+  const isToken0 = amountA.currency.wrapped.sortsBefore(amountB.currency.wrapped)
+  const [inputAmount0, inputAmount1] = isToken0
+    ? [amountA.quotient, amountB.quotient]
+    : [amountB.quotient, amountA.quotient]
   const sqrtRatioAX96 = TickMath.getSqrtRatioAtTick(tickLower)
   const sqrtRatioBX96 = TickMath.getSqrtRatioAtTick(tickUpper)
   return maxLiquidityForAmounts(sqrtRatioX96, sqrtRatioAX96, sqrtRatioBX96, inputAmount0, inputAmount1, true)
+}
+
+interface GetAmountsOptions extends Omit<GetAmountOptions, 'amount' | 'currency'> {
+  currencyA: Currency
+  currencyB: Currency
+  liquidity: JSBI
+}
+
+export function getAmountsByLiquidityAndPrice(options: GetAmountsOptions) {
+  const { currencyA, currencyB, liquidity, sqrtRatioX96, tickLower, tickUpper } = options
+  const currentTick = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
+  const isToken0 = currencyA.wrapped.sortsBefore(currencyB.wrapped)
+  const adjustedAmount0 = PositionMath.getToken0Amount(currentTick, tickLower, tickUpper, sqrtRatioX96, liquidity)
+  const adjustedAmount1 = PositionMath.getToken1Amount(currentTick, tickLower, tickUpper, sqrtRatioX96, liquidity)
+  return [
+    CurrencyAmount.fromRawAmount(currencyA, isToken0 ? adjustedAmount0 : adjustedAmount1),
+    CurrencyAmount.fromRawAmount(currencyB, isToken0 ? adjustedAmount1 : adjustedAmount0),
+  ]
+}
+
+interface GetAmountsAtNewPriceOptions extends Omit<GetAmountOptions, 'amount' | 'currency'> {
+  amountA: CurrencyAmount<Currency>
+  amountB: CurrencyAmount<Currency>
+  newSqrtRatioX96: JSBI
+}
+
+export function getAmountsAtNewPrice({ newSqrtRatioX96, ...rest }: GetAmountsAtNewPriceOptions) {
+  const { tickLower, tickUpper, amountA, amountB } = rest
+  const liquidity = FeeCalculator.getLiquidityByAmountsAndPrice(rest)
+  return FeeCalculator.getAmountsByLiquidityAndPrice({
+    liquidity,
+    currencyA: amountA.currency,
+    currencyB: amountB.currency,
+    tickLower,
+    tickUpper,
+    sqrtRatioX96: newSqrtRatioX96,
+  })
 }
 
 export function getAverageLiquidity(ticks: Tick[], tickSpacing: number, tickLower: number, tickUpper: number): JSBI {
