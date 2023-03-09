@@ -2,6 +2,7 @@ import { Token } from '@pancakeswap/swap-sdk-core'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
+import { BigNumber as EtherBigNumber } from '@ethersproject/bignumber'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -26,6 +27,7 @@ export type FarmPriceV3 = {
   tokenPriceBusd: string
   quoteTokenPriceBusd: string
   cakeApr: string
+  lpRewardsApr?: number
 }
 
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
@@ -190,8 +192,33 @@ export interface FarmWithStakedValue extends DeserializedFarm {
   liquidity?: BigNumber
 }
 
+// V3
 export interface FarmsV3Response {
   poolLength: number
   farmsWithPrice: FarmV3DataWithPrice[]
   latestPeriodCakePerSecond: string
+}
+
+export type IPendingCakeByTokenId = Record<string, EtherBigNumber>
+
+export interface PositionDetails {
+  nonce: EtherBigNumber
+  tokenId: EtherBigNumber
+  operator: string
+  token0: string
+  token1: string
+  fee: number
+  tickLower: number
+  tickUpper: number
+  liquidity: EtherBigNumber
+  feeGrowthInside0LastX128: EtherBigNumber
+  feeGrowthInside1LastX128: EtherBigNumber
+  tokensOwed0: EtherBigNumber
+  tokensOwed1: EtherBigNumber
+}
+
+export interface FarmV3DataWithPriceAndUserInfo extends FarmV3DataWithPrice {
+  unstakedPositions: PositionDetails[]
+  stakedPositions: PositionDetails[]
+  pendingCakeByTokenIds: IPendingCakeByTokenId
 }

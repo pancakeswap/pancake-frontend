@@ -6,11 +6,15 @@ import { useMemo } from 'react'
 import useSWRImmutable from 'swr/immutable'
 import partition from 'lodash/partition'
 import toLower from 'lodash/toLower'
-import { FarmsV3Response, FarmV3DataWithPrice } from '@pancakeswap/farms'
+import {
+  FarmsV3Response,
+  FarmV3DataWithPrice,
+  FarmV3DataWithPriceAndUserInfo,
+  IPendingCakeByTokenId,
+} from '@pancakeswap/farms'
 import { FARM_API } from 'config/constants/endpoints'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
-import { FarmV3DataWithPriceAndUserInfo, IPendingCakeByTokenId } from './types'
 
 const farmV3ApiFetch = (chainId: number) => fetch(`${FARM_API}/v3/${chainId}/farms`).then((res) => res.json())
 
