@@ -10,7 +10,7 @@ interface FarmV3CardListProps {
 
 const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3CardListProps>> = ({ farm, onDismiss }) => {
   const { t } = useTranslation()
-  const { stakedPositions, unstakedPositions, lpSymbol, token, quoteToken } = farm
+  const { stakedPositions, unstakedPositions, lpSymbol, token, quoteToken, pendingCakeByTokenIds } = farm
 
   return (
     <Box>
@@ -28,6 +28,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
                 position={position}
                 token={token}
                 quoteToken={quoteToken}
+                pendingCakeByTokenIds={pendingCakeByTokenIds}
                 onDismiss={onDismiss}
               />
             ))}
@@ -48,6 +49,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
                 position={position}
                 token={token}
                 quoteToken={quoteToken}
+                pendingCakeByTokenIds={pendingCakeByTokenIds}
                 onDismiss={onDismiss}
               />
             ))}

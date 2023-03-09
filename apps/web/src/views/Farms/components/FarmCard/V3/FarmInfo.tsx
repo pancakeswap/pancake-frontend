@@ -3,6 +3,9 @@ import { Flex, Farm as FarmUI, ModalV2 } from '@pancakeswap/uikit'
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { TokenPairImage } from 'components/TokenImage'
 import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
+import { BigNumber } from 'bignumber.js'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 
 const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmUI.FarmV3Card
 
@@ -17,12 +20,27 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   isReady,
   liquidityUrlPathParts,
 }) => {
+  const cakePrice = usePriceCakeBusd()
   const [show, setShow] = useState(false)
+
   const { lpSymbol, token, quoteToken, multiplier, stakedPositions, unstakedPositions, pendingCakeByTokenIds } = farm
 
   const onlyOnePosition = useMemo(
-    () => stakedPositions.length === 1 || unstakedPositions.length === 1,
+    () => new BigNumber(stakedPositions.length).plus(unstakedPositions.length).eq(1),
     [stakedPositions, unstakedPositions],
+  )
+
+  const totalEarnings = useMemo(
+    () =>
+      Object.values(pendingCakeByTokenIds)
+        .reduce((total, vault) => total.add(vault), EthersBigNumber.from('0'))
+        .toNumber(),
+    [pendingCakeByTokenIds],
+  )
+
+  const earningsBusd = useMemo(
+    () => new BigNumber(totalEarnings).times(cakePrice).toNumber(),
+    [cakePrice, totalEarnings],
   )
 
   return (
@@ -31,17 +49,21 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
         <FarmV3CardList farm={farm} />
       ) : (
         <>
-          <AvailableFarming
-            lpSymbol={lpSymbol}
-            unstakedPositions={unstakedPositions}
-            onClickViewAllButton={() => setShow(true)}
-          />
-          <TotalStakedBalance
-            stakedPositions={stakedPositions}
-            earnings={0}
-            earningsBusd={0}
-            onClickViewAllButton={() => setShow(true)}
-          />
+          {unstakedPositions.length > 0 && (
+            <AvailableFarming
+              lpSymbol={lpSymbol}
+              unstakedPositions={unstakedPositions}
+              onClickViewAllButton={() => setShow(true)}
+            />
+          )}
+          {stakedPositions.length > 0 && (
+            <TotalStakedBalance
+              stakedPositions={stakedPositions}
+              earnings={totalEarnings}
+              earningsBusd={earningsBusd}
+              onClickViewAllButton={() => setShow(true)}
+            />
+          )}
         </>
       )}
       <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>

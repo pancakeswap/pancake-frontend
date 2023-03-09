@@ -39,7 +39,7 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
             <Box>
               {unstakedPositions.map((position) => (
                 <Text fontSize="12px" color="textSubtle" key={position.tokenId.toString()}>
-                  {`(${position.tokenId.toString()})`}
+                  {`(#${position.tokenId.toString()})`}
                 </Text>
               ))}
             </Box>

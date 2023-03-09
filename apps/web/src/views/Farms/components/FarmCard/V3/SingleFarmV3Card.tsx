@@ -1,11 +1,17 @@
 import styled from 'styled-components'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { PositionDetails } from '@pancakeswap/farms'
+import { useMemo } from 'react'
+import { PositionDetails, IPendingCakeByTokenId } from '@pancakeswap/farms'
 import { Flex, Box, Farm as FarmUI } from '@pancakeswap/uikit'
 import { ActionContent, ActionTitles } from 'views/Farms/components/FarmTable/V3/Actions/styles'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { useAccount, useSigner } from 'wagmi'
+import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
+import JSBI from 'jsbi'
+import { BigNumber } from 'bignumber.js'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { usePriceCakeBusd } from 'state/farms/hooks'
 
 const { FarmV3HarvestAction, FarmV3StakeAndUnStake } = FarmUI.FarmV3Table
 
@@ -49,6 +55,7 @@ interface SingleFarmV3CardProps {
   positionType: PositionType
   token: Token
   quoteToken: Token
+  pendingCakeByTokenIds: IPendingCakeByTokenId
   onDismiss?: () => void
 }
 
@@ -58,23 +65,54 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
   token,
   quoteToken,
   positionType,
+  pendingCakeByTokenIds,
   onDismiss,
 }) => {
   const { chainId } = useActiveChainId()
-  const title = `${lpSymbol} (#${position.tokenId.toString()})`
-  const liquidityUrl = `/liquidity/${position.tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
+  const { address: account } = useAccount()
+  const { data: signer } = useSigner()
+  const cakePrice = usePriceCakeBusd()
+  const { tokenId } = position
 
-  const handleStake = () => {
-    onDismiss?.()
+  const title = `${lpSymbol} (#${tokenId.toString()})`
+  const liquidityUrl = `/liquidity/${tokenId.toString()}?chain=${CHAIN_QUERY_NAME[chainId]}`
+
+  const { onStake, onUnstake, onHarvest, attemptingTxn } = useFarmV3Actions({
+    tokenId: JSBI.BigInt(tokenId),
+    account,
+    signer,
+  })
+
+  const handleStake = async () => {
+    await onStake()
+    if (!attemptingTxn) {
+      onDismiss?.()
+    }
   }
 
-  const handleUnStake = () => {
-    onDismiss?.()
+  const handleUnStake = async () => {
+    await onUnstake()
+    if (!attemptingTxn) {
+      onDismiss?.()
+    }
   }
 
-  const handleHarvest = () => {
-    onDismiss?.()
+  const handleHarvest = async () => {
+    await onHarvest()
+    if (!attemptingTxn) {
+      onDismiss?.()
+    }
   }
+
+  const totalEarnings = useMemo(() => {
+    return Object.values(pendingCakeByTokenIds)
+      .reduce((total, vault) => total.add(vault), EthersBigNumber.from('0'))
+      .toNumber()
+  }, [pendingCakeByTokenIds])
+
+  const earningsBusd = useMemo(() => {
+    return new BigNumber(totalEarnings).times(cakePrice).toNumber()
+  }, [cakePrice, totalEarnings])
 
   return (
     <Box width="100%">
@@ -87,6 +125,7 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
             quoteToken={quoteToken}
             positionType={positionType}
             liquidityUrl={liquidityUrl}
+            isPending={attemptingTxn}
             handleStake={handleStake}
             handleUnStake={handleUnStake}
           />
@@ -94,9 +133,8 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
         {positionType !== 'unstaked' && (
           <ActionContent width="100%" flexDirection="column">
             <FarmV3HarvestAction
-              earnings={BIG_ZERO}
-              earningsBusd={323}
-              displayBalance="123"
+              earnings={totalEarnings}
+              earningsBusd={earningsBusd}
               pendingTx={false}
               userDataReady={false}
               handleHarvest={handleHarvest}

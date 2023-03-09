@@ -46,7 +46,6 @@ interface FarmCardProps {
   removed: boolean
   cakePrice?: BigNumber
   account?: string
-  originalLiquidity?: BigNumber
 }
 
 const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
@@ -55,7 +54,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   removed,
   cakePrice,
   account,
-  originalLiquidity,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()

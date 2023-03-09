@@ -24,6 +24,7 @@ interface FarmV3StakeAndUnStakeProps {
   token: Token;
   quoteToken: Token;
   positionType: PositionType;
+  isPending: boolean;
   handleStake: () => void;
   handleUnStake: () => void;
 }
@@ -35,6 +36,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
   quoteToken,
   position,
   positionType,
+  isPending,
   handleStake,
   handleUnStake,
 }) => {
@@ -78,11 +80,17 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
           </Box>
         </Box>
         {positionType === "unstaked" ? (
-          <Button width={["120px"]} style={{ alignSelf: "center" }} onClick={handleStake}>
+          <Button width={["120px"]} style={{ alignSelf: "center" }} disabled={isPending} onClick={handleStake}>
             {t("Stake")}
           </Button>
         ) : (
-          <Button variant="secondary" width={["120px"]} style={{ alignSelf: "center" }} onClick={handleUnStake}>
+          <Button
+            variant="secondary"
+            width={["120px"]}
+            style={{ alignSelf: "center" }}
+            disabled={isPending}
+            onClick={handleUnStake}
+          >
             {t("Unstake")}
           </Button>
         )}
