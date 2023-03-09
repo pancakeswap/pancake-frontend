@@ -21,7 +21,7 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
-import { PairState, usePairs } from './usePairs'
+import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
 
 /**
@@ -42,7 +42,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
     ],
     [wnative, stable, chainId, currency, wrapped],
   )
-  const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = usePairs(tokenPairs)
+  const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = useV2Pairs(tokenPairs)
 
   return useMemo(() => {
     if (!currency || !wrapped || !chainId || !wnative) {

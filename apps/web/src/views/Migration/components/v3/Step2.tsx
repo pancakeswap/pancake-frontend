@@ -7,7 +7,7 @@ import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { PairState, usePairs } from 'hooks/usePairs'
+import { PairState, useV2Pairs } from 'hooks/usePairs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
@@ -65,7 +65,7 @@ export function Step2() {
     [tokenPairsWithLiquidityTokens, v2PairsBalances],
   )
 
-  const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+  const v2Pairs = useV2Pairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
   const v2IsLoading =
     fetchingV2PairBalances ||
     v2Pairs?.length < liquidityTokensWithBalances.length ||

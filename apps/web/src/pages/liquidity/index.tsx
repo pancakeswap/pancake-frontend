@@ -25,7 +25,7 @@ import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Percent } from '@pancakeswap/sdk'
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
-import useV2Pairs from 'hooks/useV2Pairs'
+import useV2PairsByAccount from 'hooks/useV2Pairs'
 import useStableConfig, {
   LPStablePair,
   StableConfigContext,
@@ -68,7 +68,7 @@ export default function PoolListPage() {
 
   const { positions, loading: v3Loading } = useV3Positions(account)
 
-  const { data: v2Pairs, loading: v2Loading } = useV2Pairs(account)
+  const { data: v2Pairs, loading: v2Loading } = useV2PairsByAccount(account)
 
   const stablePairs = useLPTokensWithBalanceByAccount(account)
 

@@ -10,7 +10,7 @@ import { DoubleCurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
 import { useToken } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { PairState, usePair } from 'hooks/usePairs'
+import { PairState, useV2Pair } from 'hooks/usePairs'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { useAtom } from 'jotai'
@@ -143,7 +143,7 @@ export function Step4() {
 function V2PairSelection({ tokenAddresses }: { tokenAddresses: string }) {
   const [token0Address, token1Address] = tokenAddresses.split('-')
   const [token0, token1] = [useToken(token0Address), useToken(token1Address)]
-  const [pairState] = usePair(token0, token1)
+  const [pairState] = useV2Pair(token0, token1)
 
   if (pairState === PairState.EXISTS) {
     return <PairSelection token0={token0} token1={token1} />

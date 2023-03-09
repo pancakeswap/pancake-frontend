@@ -15,6 +15,7 @@ export type TransactionType =
   | 'limit-order-cancellation'
   | 'limit-order-approval'
   | 'non-bsc-farm'
+  | 'migrate-v3'
 
 export interface SerializableTransactionReceipt {
   to: string

@@ -5,7 +5,7 @@ import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
 import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import _isNaN from 'lodash/isNaN'
 
 import currencyId from 'utils/currencyId'
@@ -15,6 +15,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
 import styled from 'styled-components'
+import { atom, useAtom } from 'jotai'
 
 import { useCurrency } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -49,12 +50,12 @@ export const ResponsiveTwoColumns = styled.div`
   grid-template-rows: max-content;
   grid-auto-flow: row;
 
-  padding-top: 20px;
-
   ${({ theme }) => theme.mediaQueries.md} {
     grid-template-columns: 1fr 1fr;
   }
 `
+
+const selectTypeAtom = atom(SELECTOR_TYPE.V3)
 
 interface UniversalAddLiquidityPropsType {
   currencyIdA: string
@@ -148,7 +149,7 @@ export default function UniversalAddLiquidity({
     [handleCurrencySelect, currencyIdA, router],
   )
 
-  const [selectorType, setSelectoType] = useState<SELECTOR_TYPE | null>(SELECTOR_TYPE.V3)
+  const [selectorType, setSelectorType] = useAtom(selectTypeAtom)
 
   useEffect(() => {
     if (!currencyIdA || !currencyIdB) return
@@ -158,22 +159,22 @@ export default function UniversalAddLiquidity({
     }
 
     if (stableConfig.stableSwapConfig) {
-      setSelectoType(SELECTOR_TYPE.STABLE)
+      setSelectorType(SELECTOR_TYPE.STABLE)
     } else {
-      setSelectoType(isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
+      setSelectorType(isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
     }
-  }, [currencyIdA, currencyIdB, isV2, preferredSelectType, stableConfig.stableSwapConfig])
+  }, [currencyIdA, currencyIdB, isV2, preferredSelectType, setSelectorType, stableConfig.stableSwapConfig])
 
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(
     ({ type, feeAmount: newFeeAmount }) => {
-      setSelectoType(type)
+      setSelectorType(type)
       if (newFeeAmount) {
         router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, {
           shallow: true,
         })
       }
     },
-    [currencyIdA, currencyIdB, router],
+    [currencyIdA, currencyIdB, router, setSelectorType],
   )
 
   return (
@@ -257,12 +258,23 @@ export default function UniversalAddLiquidity({
   )
 }
 
+const SELECTOR_TYPE_T = {
+  [SELECTOR_TYPE.STABLE]: 'Stable',
+  [SELECTOR_TYPE.V2]: 'V2',
+  [SELECTOR_TYPE.V3]: 'V3',
+} as const satisfies Record<SELECTOR_TYPE, string>
+
 export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation()
+
+  const [selectType] = useAtom(selectTypeAtom)
+
+  const title = `Add ${SELECTOR_TYPE_T[selectType]} Liquidity` || t('Add Liquidity')
+
   return (
     <Page>
       <BodyWrapper>
-        <AppHeader title={t('Add Liquidity')} backTo="/liquidity" />
+        <AppHeader title={title} backTo="/liquidity" />
         {children}
       </BodyWrapper>
     </Page>

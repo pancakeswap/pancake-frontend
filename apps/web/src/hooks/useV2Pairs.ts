@@ -2,9 +2,9 @@ import { Pair } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
-import { PairState, usePairs } from './usePairs'
+import { PairState, useV2Pairs } from './usePairs'
 
-export default function useV2Pairs(account: string) {
+export default function useV2PairsByAccount(account: string) {
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
 
@@ -30,7 +30,7 @@ export default function useV2Pairs(account: string) {
     [tokenPairsWithLiquidityTokens, v2PairsBalances],
   )
 
-  const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+  const v2Pairs = useV2Pairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
   const v2IsLoading =
     fetchingV2PairBalances ||
     v2Pairs?.length < liquidityTokensWithBalances.length ||

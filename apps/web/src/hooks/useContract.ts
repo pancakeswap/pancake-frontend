@@ -66,6 +66,7 @@ import {
   getTradingCompetitionContractMobox,
   getTradingCompetitionContractMoD,
   getStableSwapNativeHelperContract,
+  getV3MigratorContract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -416,4 +417,10 @@ export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean) 
 
 export function useMasterchefV3(withSignerIfPossible?: boolean) {
   return useContract(addresses.masterChefV3, MasterChefV3ABI, withSignerIfPossible)
+}
+
+export function useV3MigratorContract() {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useSigner()
+  return useMemo(() => getV3MigratorContract(signer, chainId), [chainId, signer])
 }

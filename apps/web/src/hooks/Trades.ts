@@ -10,7 +10,7 @@ import {
   BETTER_TRADE_LESS_HOPS_THRESHOLD,
   ADDITIONAL_BASES,
 } from 'config/constants/exchange'
-import { PairState, usePairs } from './usePairs'
+import { PairState, useV2Pairs } from './usePairs'
 import { wrappedCurrency } from '../utils/wrappedCurrency'
 
 import { useUnsupportedTokens, useWarningTokens } from './Tokens'
@@ -139,7 +139,7 @@ export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): P
     [tokenA, tokenB, bases, basePairs, chainId],
   )
 
-  const allPairs = usePairs(allPairCombinations)
+  const allPairs = useV2Pairs(allPairCombinations)
 
   // only pass along valid pairs, non-duplicated pairs
   return useMemo(

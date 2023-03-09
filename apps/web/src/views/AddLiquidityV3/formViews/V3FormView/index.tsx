@@ -477,11 +477,11 @@ export default function V3FormView({
       <HideMedium>{buttons}</HideMedium>
 
       <RightContainer>
-        <AutoColumn>
+        <AutoColumn gap="16px">
           {noLiquidity ? (
             <Box>
               <PreTitle>Set Starting Price</PreTitle>
-              <Message variant="warning" mb="16px">
+              <Message variant="warning">
                 <MessageText>
                   This pool must be initialized before you can add liquidity. To initialize, select a starting price for
                   the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher than
@@ -545,7 +545,7 @@ export default function V3FormView({
               />
             </>
           )}
-          <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)}>
+          <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)} gap="16px">
             <RangeSelector
               priceLower={priceLower}
               priceUpper={priceUpper}
@@ -561,7 +561,7 @@ export default function V3FormView({
               ticksAtLimit={ticksAtLimit}
             />
             {showCapitalEfficiencyWarning ? (
-              <Message variant="warning" mb="16px">
+              <Message variant="warning">
                 <Box>
                   <Text fontSize="16px">Efficiency Comparison</Text>
                   <Text color="textSubtle">Full range positions may earn less fees than concentrated positions.</Text>
@@ -584,7 +584,6 @@ export default function V3FormView({
                   setShowCapitalEfficiencyWarning(true)
                 }}
                 variant="secondary"
-                mb="16px"
                 scale="sm"
               >
                 Full Range
@@ -592,12 +591,17 @@ export default function V3FormView({
             )}
 
             {outOfRange ? (
-              <Message variant="warning" mb="16px">
+              <Message variant="warning">
                 <RowBetween>
                   <Text ml="12px" fontSize="12px">
                     Your position will not earn fees or be used in trades until the market price moves into your range.
                   </Text>
                 </RowBetween>
+              </Message>
+            ) : null}
+            {invalidRange ? (
+              <Message variant="warning">
+                <MessageText>Invalid range selected. The min price must be lower than the max price.</MessageText>
               </Message>
             ) : null}
           </DynamicSection>

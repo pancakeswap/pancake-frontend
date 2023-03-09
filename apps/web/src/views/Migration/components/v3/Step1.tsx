@@ -6,21 +6,36 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import React, { useCallback, useMemo } from 'react'
 import { useFarms } from 'state/farms/hooks'
 import { usePriceCakeBusd } from 'state/farmsV1/hooks'
+import { useFarmsV3 } from 'state/farmsV3/hooks'
 import { getFarmApr } from 'utils/apr'
 import { useAccount } from 'wagmi'
 import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
 
+const showV3FarmsOnly = false
+
 const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { data: farmsLP, userDataLoaded } = useFarms()
+  const { farmsWithPrice } = useFarmsV3()
   const cakePrice = usePriceCakeBusd()
   const { chainId } = useActiveChainId()
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  const farms = farmsLP.filter((farm) => farm.pid !== 0)
+  const farms = farmsLP
+    .filter((farm) => farm.pid !== 0)
+    .filter((farm) => {
+      if (showV3FarmsOnly) {
+        return farmsWithPrice.find(
+          (farmV3) =>
+            (farmV3.quoteToken.address === farm.quoteToken.address && farmV3.token.address === farm.token.address) ||
+            (farmV3.quoteToken.address === farm.token.address && farmV3.token.address === farm.quoteToken.address),
+        )
+      }
+      return true
+    })
 
   const stakedOrHasTokenBalance = farms.filter((farm) => {
     return (

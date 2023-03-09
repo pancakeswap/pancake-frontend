@@ -14,6 +14,7 @@ interface FeeTierDistribution {
   isLoading: boolean
   isError: boolean
   largestUsageFeeTier?: FeeAmount | undefined
+  largestUsageFeeTierTvl?: [number, number]
 
   // distributions as percentages of overall liquidity
   distributions?: Record<FeeAmount, number | undefined>
@@ -23,7 +24,7 @@ export function useFeeTierDistribution(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined,
 ): FeeTierDistribution {
-  const { isLoading, error, distributions } = usePoolTVL(currencyA?.wrapped, currencyB?.wrapped)
+  const { isLoading, error, distributions, tvlByFeeTier } = usePoolTVL(currencyA?.wrapped, currencyB?.wrapped)
 
   // fetch all pool states to determine pool state
   const [poolStateVeryLow] = usePool(currencyA, currencyB, FeeAmount.LOWEST)
@@ -69,8 +70,9 @@ export function useFeeTierDistribution(
       isError: !!error,
       distributions: percentages,
       largestUsageFeeTier: largestUsageFeeTier === -1 ? undefined : largestUsageFeeTier,
+      largestUsageFeeTierTvl: tvlByFeeTier[largestUsageFeeTier],
     }
-  }, [isLoading, error, distributions, poolStateVeryLow, poolStateLow, poolStateMedium, poolStateHigh])
+  }, [isLoading, error, distributions, tvlByFeeTier, poolStateVeryLow, poolStateLow, poolStateMedium, poolStateHigh])
 }
 
 function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
@@ -155,6 +157,7 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
       isLoading,
       error,
       distributions,
+      tvlByFeeTier,
     }
   }, [_meta, asToken0, asToken1, isLoading, error, latestBlock])
 }

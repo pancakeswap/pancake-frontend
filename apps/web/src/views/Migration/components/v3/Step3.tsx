@@ -6,6 +6,7 @@ import { format } from 'd3'
 // import { saturate } from 'polished'
 import { ChainId } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightCard } from 'components/Card'
 import { Chart } from 'components/LiquidityChartRangeInput/Chart'
 import { Bound } from 'config/constants/types'
@@ -36,6 +37,8 @@ const ZOOM = {
   min: 0.5,
   max: 1.5,
 }
+
+const feeAmount = FeeAmount.MEDIUM
 
 const MOCK_TOKENS = {
   [ChainId.BSC]: [bscTokens.cake, bscTokens.wbnb],
@@ -74,8 +77,8 @@ export function Step3() {
     [key: string]: number | undefined
   } = useMemo(() => {
     return {
-      [Bound.LOWER]: tryParseTick(token0, token1, 3000, leftRangeTypedValue.toString()),
-      [Bound.UPPER]: tryParseTick(token0, token1, 3000, rightRangeTypedValue.toString()),
+      [Bound.LOWER]: tryParseTick(token0, token1, feeAmount, leftRangeTypedValue.toString()),
+      [Bound.UPPER]: tryParseTick(token0, token1, feeAmount, rightRangeTypedValue.toString()),
     }
   }, [leftRangeTypedValue, rightRangeTypedValue, token0, token1])
 
@@ -135,7 +138,7 @@ export function Step3() {
   const { getDecrementLower, getIncrementLower, getDecrementUpper, getIncrementUpper } = useRangeHopCallbacks(
     token0 ?? undefined,
     token1 ?? undefined,
-    3000,
+    feeAmount,
     tickLower,
     tickUpper,
   )
@@ -214,7 +217,7 @@ export function Step3() {
               onRightRangeInput={onRightRangeInput}
               currencyA={token0}
               currencyB={token1}
-              feeAmount={3000}
+              feeAmount={feeAmount}
               ticksAtLimit={ticksAtLimit}
             />
           </AutoRow>

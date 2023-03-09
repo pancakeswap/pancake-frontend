@@ -1,11 +1,16 @@
 import { Currency } from '@pancakeswap/sdk'
-import { AutoColumn, CircleLoader, Text } from '@pancakeswap/uikit'
+import { AtomBox } from '@pancakeswap/ui'
+import { AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
+import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useV2Pair } from 'hooks/usePairs'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
+import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import currencyId from 'utils/currencyId'
 import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { FeeOption } from './FeeOption'
@@ -25,7 +30,29 @@ export default function FeeSelector({
 }) {
   const { chainId } = useActiveWeb3React()
 
-  const { isLoading, isError, largestUsageFeeTier, distributions } = useFeeTierDistribution(currencyA, currencyB)
+  const { isLoading, isError, largestUsageFeeTier, distributions, largestUsageFeeTierTvl } = useFeeTierDistribution(
+    currencyA,
+    currencyB,
+  )
+
+  const [, pair] = useV2Pair(currencyA, currencyB)
+
+  const v2PairHasBetterTokenAmounts = useMemo(() => {
+    if (isLoading || isError || !pair || !currencyA || !currencyB) {
+      return false
+    }
+    if (!isLoading && !largestUsageFeeTier) {
+      return true
+    }
+    if (largestUsageFeeTierTvl) {
+      if (!largestUsageFeeTierTvl[0] || !largestUsageFeeTier[1]) return true
+      return (
+        pair.reserve0.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[0]), pair.token0)) ||
+        pair.reserve1.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[1]), pair.token1))
+      )
+    }
+    return true
+  }, [currencyA, currencyB, isError, isLoading, largestUsageFeeTier, largestUsageFeeTierTvl, pair])
 
   const [showOptions, setShowOptions] = useState(false)
   // get pool data on-chain for latest states
@@ -65,6 +92,7 @@ export default function FeeSelector({
       // cannot recommend, open options
       setShowOptions(true)
     } else {
+      if (v2PairHasBetterTokenAmounts) return
       setShowOptions(false)
 
       handleFeePoolSelect({
@@ -72,7 +100,7 @@ export default function FeeSelector({
         feeAmount: largestUsageFeeTier,
       })
     }
-  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect])
+  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect, v2PairHasBetterTokenAmounts])
 
   useEffect(() => {
     setShowOptions(isError)
@@ -104,25 +132,36 @@ export default function FeeSelector({
         )
       }
       content={
-        <SelectContainer>
-          {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
-            const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
-            if (supportedChains.includes(chainId)) {
-              return (
-                <FeeOption
-                  largestUsageFeeTier={largestUsageFeeTier}
-                  feeAmount={_feeAmount}
-                  active={feeAmount === _feeAmount}
-                  onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3, feeAmount: _feeAmount })}
-                  distributions={distributions}
-                  poolState={poolsByFeeTier[_feeAmount]}
-                  key={_feeAmount}
-                />
-              )
-            }
-            return null
-          })}
-        </SelectContainer>
+        <>
+          <SelectContainer>
+            {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
+              const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
+              if (supportedChains.includes(chainId)) {
+                return (
+                  <FeeOption
+                    largestUsageFeeTier={largestUsageFeeTier}
+                    feeAmount={_feeAmount}
+                    active={feeAmount === _feeAmount}
+                    onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3, feeAmount: _feeAmount })}
+                    distributions={distributions}
+                    poolState={poolsByFeeTier[_feeAmount]}
+                    key={_feeAmount}
+                  />
+                )
+              }
+              return null
+            })}
+          </SelectContainer>
+          {currencyA && currencyB && (
+            <AtomBox textAlign="center" pt="24px">
+              <Link href={`/v2/add/${currencyId(currencyA)}/${currencyId(currencyB)}`}>
+                <Text color="textSubtle" bold>
+                  Add V2 Liquidity
+                </Text>
+              </Link>
+            </AtomBox>
+          )}
+        </>
       }
     />
   )

@@ -11,7 +11,7 @@ import { LightGreyCard } from 'components/Card'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { useCurrency } from 'hooks/Tokens'
-import { usePair } from 'hooks/usePairs'
+import { useV2Pair } from 'hooks/usePairs'
 import { useTokenBalance } from 'state/wallet/hooks'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'components/PositionCard'
@@ -33,7 +33,7 @@ export default function PoolV2Page() {
   const baseCurrency = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const [, pair] = usePair(baseCurrency, currencyB)
+  const [, pair] = useV2Pair(baseCurrency, currencyB)
 
   const userPoolBalance = useTokenBalance(account ?? undefined, pair?.liquidityToken)
 

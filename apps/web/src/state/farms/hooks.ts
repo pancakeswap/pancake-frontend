@@ -33,6 +33,15 @@ export function useFarmsLength() {
   })
 }
 
+export function useFarmV2Config() {
+  const { chainId } = useActiveWeb3React()
+  return useSWRImmutable(chainId ? ['farm-v2-config', chainId] : null, async () => {
+    const farmsConfig = await getFarmConfig(chainId)
+
+    return farmsConfig
+  })
+}
+
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()

@@ -144,3 +144,7 @@ export const getStableSwapNativeHelperAddress = (chainId?: number) => {
 export const getMasterChefV3Address = (chainId?: number) => {
   return getAddress(addresses.masterChefV3, chainId)
 }
+
+export const getV3MigratorAddress = (chainId?: number) => {
+  return getAddress(addresses.v3Migrator, chainId)
+}
