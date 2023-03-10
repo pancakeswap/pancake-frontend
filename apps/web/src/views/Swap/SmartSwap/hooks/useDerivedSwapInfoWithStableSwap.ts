@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Currency, CurrencyAmount, Pair, TradeType } from '@pancakeswap/sdk'
 import { StableSwapPair, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { Field } from 'state/swap/actions'
@@ -52,18 +53,24 @@ export function useDerivedSwapInfoWithStableSwap(
   const { account } = useWeb3React()
   const { t } = useTranslation()
   const [singleHop] = useUserSingleHopOnly()
+  const [allowedSlippage] = useUserSlippageTolerance()
 
   const to: string | null = account || null
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ])
+  const relevantTokenBalances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => {
+      return [inputCurrency ?? undefined, outputCurrency ?? undefined]
+    }, [inputCurrency, outputCurrency]),
+  )
 
   const isExactIn: boolean = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const dependentCurrency = isExactIn ? outputCurrency : inputCurrency
-  const parsedAmount = tryParseAmount(typedValue, independentCurrency ?? undefined)
+  const parsedAmount = useMemo(
+    () => tryParseAmount(typedValue, independentCurrency ?? undefined),
+    [typedValue, independentCurrency],
+  )
 
   const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
   const bestTradeWithStableSwap = useBestTrade(parsedAmount, dependentCurrency, tradeType, {
@@ -71,61 +78,69 @@ export function useDerivedSwapInfoWithStableSwap(
   })
   // TODO add invariant make sure v2 trade has the same input & output amount as trade with stable swap
 
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
-  }
+  const currencyBalances = useMemo(() => {
+    return {
+      [Field.INPUT]: relevantTokenBalances[0],
+      [Field.OUTPUT]: relevantTokenBalances[1],
+    }
+  }, [relevantTokenBalances])
 
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
+  const currencies: { [field in Field]?: Currency } = useMemo(() => {
+    return {
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined,
+    }
+  }, [inputCurrency, outputCurrency])
 
-  let inputError: string | undefined
-  if (!account) {
-    inputError = t('Connect Wallet')
-  }
-
-  if (!parsedAmount) {
-    inputError = inputError ?? t('Enter an amount')
-  }
-
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? t('Select a token')
-  }
-
-  const formattedTo = isAddress(to)
-  if (!to || !formattedTo) {
-    inputError = inputError ?? t('Enter a recipient')
-  } else if (
-    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (bestTradeWithStableSwap && involvesAddress(bestTradeWithStableSwap, formattedTo))
-  ) {
-    inputError = inputError ?? t('Invalid recipient')
-  }
-
-  const [allowedSlippage] = useUserSlippageTolerance()
-
-  const slippageAdjustedAmounts =
-    bestTradeWithStableSwap &&
-    allowedSlippage &&
-    computeSlippageAdjustedAmounts(bestTradeWithStableSwap, allowedSlippage)
+  const slippageAdjustedAmounts = useMemo(() => {
+    return (
+      bestTradeWithStableSwap &&
+      allowedSlippage &&
+      computeSlippageAdjustedAmounts(bestTradeWithStableSwap, allowedSlippage)
+    )
+  }, [bestTradeWithStableSwap, allowedSlippage])
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
-    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
-  ]
+  const [balanceIn, amountIn] = useMemo(() => {
+    return [currencyBalances[Field.INPUT], slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null]
+  }, [currencyBalances, slippageAdjustedAmounts])
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
-  }
+  const inputError = useMemo(() => {
+    let result: string | undefined
+    if (!account) {
+      result = t('Connect Wallet')
+    }
 
-  return {
-    trade: bestTradeWithStableSwap,
-    currencies,
-    currencyBalances,
-    parsedAmount,
-    inputError,
-  }
+    if (!parsedAmount) {
+      result = result ?? t('Enter an amount')
+    }
+
+    if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+      result = result ?? t('Select a token')
+    }
+
+    const formattedTo = isAddress(to)
+    if (!to || !formattedTo) {
+      result = result ?? t('Enter a recipient')
+    } else if (
+      BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+      (bestTradeWithStableSwap && involvesAddress(bestTradeWithStableSwap, formattedTo))
+    ) {
+      result = result ?? t('Invalid recipient')
+    }
+    if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+      result = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
+    }
+    return result
+  }, [account, amountIn, balanceIn, bestTradeWithStableSwap, currencies, parsedAmount, t, to])
+
+  return useMemo(() => {
+    return {
+      trade: bestTradeWithStableSwap,
+      currencies,
+      currencyBalances,
+      parsedAmount,
+      inputError,
+    }
+  }, [bestTradeWithStableSwap, currencies, currencyBalances, parsedAmount, inputError])
 }

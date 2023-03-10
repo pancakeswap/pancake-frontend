@@ -135,5 +135,5 @@ export function useBestTrade(
   // const bestTradeFromApi = useBestTradeFromApi(amount, currency, tradeType)
 
   // return bestTradeFromApi || bestTradeFromChain
-  return bestTradeFromChain
+  return amount ? bestTradeFromChain : undefined
 }

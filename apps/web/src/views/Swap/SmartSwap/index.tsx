@@ -399,7 +399,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               }
               allowedSlippage={allowedSlippage}
               onSlippageClick={!isMMBetter ? onPresentSettingsModal : null}
-              allowedSlippageSlot={isMMBetter || (!v2Trade && !isExpertMode) ? <MMSlippageTolerance /> : undefined}
+              allowedSlippageSlot={isMMBetter ? <MMSlippageTolerance /> : undefined}
             />
           )}
         </AutoColumn>
