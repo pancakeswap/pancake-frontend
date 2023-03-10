@@ -266,6 +266,12 @@ export default function AddStableLiquidity({
       onFieldAInput('')
       onFieldBInput('')
     }
+
+    setLiquidityState({
+      attemptingTxn: false,
+      liquidityErrorMessage: undefined,
+      txHash: undefined,
+    })
   }, [onFieldAInput, onFieldBInput, txHash])
 
   const [onPresentAddLiquidityModal] = useModal(
