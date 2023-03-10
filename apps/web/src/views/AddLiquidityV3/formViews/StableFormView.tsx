@@ -150,7 +150,7 @@ export default function StableFormView({
             <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
               Pool Reserves
             </Text>
-            <Text fontSize="24px" fontWeight={500}>
+            <Text fontSize="24px" fontWeight={500} mb="8px">
               $
               {totalLiquidityUSD
                 ? totalLiquidityUSD.toLocaleString(undefined, {
@@ -159,7 +159,7 @@ export default function StableFormView({
                   })
                 : '-'}
             </Text>
-            <LightGreyCard mr="4px">
+            <LightGreyCard mr="4px" mb="8px">
               <AutoRow justifyContent="space-between" mb="8px">
                 <Flex>
                   <CurrencyLogo currency={currencies[Field.CURRENCY_A]} />
@@ -168,9 +168,7 @@ export default function StableFormView({
                   </Text>
                 </Flex>
                 <Flex justifyContent="center">
-                  <Text bold mr="4px">
-                    {reservedToken0?.toSignificant(4)}
-                  </Text>
+                  <Text mr="4px">{reservedToken0?.toSignificant(4)}</Text>
                 </Flex>
               </AutoRow>
               <AutoRow justifyContent="space-between">
@@ -181,19 +179,17 @@ export default function StableFormView({
                   </Text>
                 </Flex>
                 <Flex justifyContent="center">
-                  <Text bold mr="4px">
-                    {reservedToken1?.toSignificant(4)}
-                  </Text>
+                  <Text mr="4px">{reservedToken1?.toSignificant(4)}</Text>
                 </Flex>
               </AutoRow>
             </LightGreyCard>
             <AutoRow justifyContent="space-between" mb="8px">
-              <Text>Fee Rate: </Text>
+              <Text color="textSubtle">Fee rate: </Text>
 
               <Text>{BIG_ONE_HUNDRED.times(stableLpFee).toNumber()}%</Text>
             </AutoRow>
-            <AutoRow justifyContent="space-between" mb="8px">
-              <Text>Your share in pool: </Text>
+            <AutoRow justifyContent="space-between" mb="24px">
+              <Text color="textSubtle">Your share in pool: </Text>
 
               <Text>{poolTokenPercentage ? poolTokenPercentage?.toSignificant(4) : '-'}%</Text>
             </AutoRow>
