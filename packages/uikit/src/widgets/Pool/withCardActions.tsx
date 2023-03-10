@@ -83,7 +83,7 @@ export function withCardActions<T>(HarvestActionsComp: any, StakeActionsComp: an
         <Flex flexDirection="column">
           <>
             <Box display="inline">
-              <InlineText color="secondary" textTransform="uppercase" bold fontSize="12px">
+              <InlineText color="secondary" bold fontSize="12px">
                 {`${earningToken.symbol} `}
               </InlineText>
               <InlineText color="textSubtle" textTransform="uppercase" bold fontSize="12px">
