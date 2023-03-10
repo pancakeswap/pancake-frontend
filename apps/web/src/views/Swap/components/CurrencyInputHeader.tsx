@@ -14,6 +14,8 @@ import {
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
+
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
@@ -21,7 +23,7 @@ import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
@@ -34,42 +36,12 @@ interface Props {
   isChartDisplayed?: boolean
 }
 
-const shineAnimation = keyframes`
-	0% {transform:translateX(-100%); opacity: 1;}
-  20% {transform:translateX(100%); opacity: 1;}
-	100% {transform:translateX(100%); opacity: 0;}
-`
-
 const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
   overflow: hidden;
-  &.is-shining {
-    &::after {
-      content: '';
-      top: 0;
-      transform: translateX(100%);
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      z-index: 1;
-      animation: ${shineAnimation} 5s infinite 1s;
-      pointer-events: none;
-      background: -webkit-linear-gradient(
-        left,
-        ${({ theme }) =>
-          theme.isDark
-            ? `rgba(39,38,44, 0) 0%,
-        rgba(39,38,44, 0) 100%`
-            : `rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.8) 50%,
-        rgba(128, 186, 232, 0) 99%,
-        rgba(125, 185, 232, 0) 100%`}
-      );
-    }
-  }
 `
 
-//  disable this during the eth trust wallet campaign
+//  disable this during the v3 campaign
 const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
 
 const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitle, title }) => {
@@ -118,6 +90,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitl
         <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
       </Flex>
       <Flex width="100%" justifyContent="end">
+        <V3SwapPromotionIcon />
         {isChartSupported && setIsChartDisplayed && (
           <ColoredIconButton
             onClick={() => {

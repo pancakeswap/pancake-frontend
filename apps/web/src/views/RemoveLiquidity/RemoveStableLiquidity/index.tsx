@@ -1,51 +1,50 @@
-import { useCallback, useMemo, useState, useContext } from 'react'
-import styled from 'styled-components'
+import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { useRouter } from 'next/router'
+import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
-  useToast,
-  Button,
-  Text,
   AddIcon,
   ArrowDownIcon,
-  CardBody,
-  Slider,
+  AutoColumn,
   Box,
+  Button,
+  CardBody,
+  ColumnCenter,
   Flex,
-  useModal,
-  useMatchBreakpoints,
   IconButton,
   PencilIcon,
-  AutoColumn,
-  ColumnCenter,
+  Slider,
+  Text,
+  useMatchBreakpoints,
+  useModal,
+  useToast,
 } from '@pancakeswap/uikit'
-import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
-import { BigNumber } from '@ethersproject/bignumber'
-import useNativeCurrency from 'hooks/useNativeCurrency'
 import { CommitButton } from 'components/CommitButton'
-import { useTranslation } from '@pancakeswap/localization'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useRouter } from 'next/router'
+import { useCallback, useContext, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 
+import { LightGreyCard } from '../../../components/Card'
+import ConnectWalletButton from '../../../components/ConnectWalletButton'
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import { RowBetween } from '../../../components/Layout/Row'
-import ConnectWalletButton from '../../../components/ConnectWalletButton'
-import { LightGreyCard } from '../../../components/Card'
-
 import { CurrencyLogo } from '../../../components/Logo'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 
-import { useTransactionAdder } from '../../../state/transactions/hooks'
 import StyledInternalLink from '../../../components/Links'
-import { calculateGasMargin } from '../../../utils'
-import { calculateSlippageAmount } from '../../../utils/exchange'
-import { currencyId } from '../../../utils/currencyId'
-import { useApproveCallback, ApprovalState } from '../../../hooks/useApproveCallback'
 import Dots from '../../../components/Loader/Dots'
+import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useBurnActionHandlers, useBurnState } from '../../../state/burn/hooks'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { calculateGasMargin } from '../../../utils'
+import { currencyId } from '../../../utils/currencyId'
+import { calculateSlippageAmount } from '../../../utils/exchange'
 
 import { Field } from '../../../state/burn/actions'
 import { useGasPrice } from '../../../state/user/hooks'

@@ -416,7 +416,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
               onUserInput={onUserInput}
-              mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
             />
           ) : tradeInfo?.fallbackV2 ? (
             <SwapCommitButton

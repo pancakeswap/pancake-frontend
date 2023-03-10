@@ -21,6 +21,7 @@ interface Props {
   helper?: string
   backTo?: string | (() => void)
   noConfig?: boolean
+  IconSlot?: React.ReactNode
   buttons?: React.ReactNode
   filter?: React.ReactNode
 }
@@ -45,6 +46,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
   helper,
   backTo,
   noConfig = false,
+  IconSlot = null,
   buttons,
   filter,
 }) => {
@@ -73,6 +75,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
             </Flex>
             {!noConfig && (
               <Flex alignItems="center">
+                {IconSlot}
                 <NotificationDot show={expertMode}>
                   <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
                 </NotificationDot>
@@ -83,6 +86,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
                 {buttons}
               </Flex>
             )}
+            {noConfig && <Flex alignItems="center">{IconSlot}</Flex>}
           </Flex>
           <Flex alignItems="center">
             <Text color="textSubtle" fontSize="14px">
