@@ -1,5 +1,6 @@
 import { AutoRow, Button, Card, CardBody, Flex, NextLinkFromReactRouter, Text, Box } from '@pancakeswap/uikit'
 import { AppHeader } from 'components/App'
+import { useMemo } from 'react'
 
 import { useRouter } from 'next/router'
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -40,24 +41,28 @@ export default function StablePoolPage() {
 
   const { result } = useSingleCallResult(stableSwapInfoContract, 'balances', [selectedLp?.stableSwapAddress])
 
-  const reserves = result ? result[0] : ['0', '0']
+  const reserves = useMemo(() => (result ? result[0] : ['0', '0']), [result])
 
-  const stableLp = [selectedLp].map((lpToken) => ({
-    ...lpToken,
-    tokenAmounts: [],
-    reserve0: CurrencyAmount.fromRawAmount(lpToken?.token0, reserves[0]),
-    reserve1: CurrencyAmount.fromRawAmount(lpToken?.token1, reserves[1]),
-    getLiquidityValue: () => CurrencyAmount.fromRawAmount(lpToken?.token0, '0'),
-  }))[0]
+  const stableLp = useMemo(() => {
+    return selectedLp
+      ? [selectedLp].map((lpToken) => ({
+          ...lpToken,
+          tokenAmounts: [],
+          reserve0: CurrencyAmount.fromRawAmount(lpToken?.token0, reserves[0]),
+          reserve1: CurrencyAmount.fromRawAmount(lpToken?.token1, reserves[1]),
+          getLiquidityValue: () => CurrencyAmount.fromRawAmount(lpToken?.token0, '0'),
+        }))[0]
+      : null
+  }, [reserves, selectedLp])
 
   const totalLiquidityUSD = useTotalUSDValue({
     currency0: selectedLp?.token0,
     currency1: selectedLp?.token1,
-    token0Deposited: stableLp.reserve0,
-    token1Deposited: stableLp.reserve1,
+    token0Deposited: stableLp?.reserve0,
+    token1Deposited: stableLp?.reserve1,
   })
 
-  const userPoolBalance = useTokenBalance(account ?? undefined, selectedLp.liquidityToken)
+  const userPoolBalance = useTokenBalance(account ?? undefined, selectedLp?.liquidityToken)
 
   const [token0Deposited, token1Deposited] = useGetRemovedTokenAmountsNoContext({
     lpAmount: userPoolBalance?.quotient?.toString(),
@@ -74,7 +79,7 @@ export default function StablePoolPage() {
     token1Deposited,
   })
 
-  const totalPoolTokens = useTotalSupply(selectedLp.liquidityToken)
+  const totalPoolTokens = useTotalSupply(selectedLp?.liquidityToken)
 
   const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
 

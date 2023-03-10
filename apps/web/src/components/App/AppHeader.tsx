@@ -86,13 +86,15 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
                 {buttons}
               </Flex>
             )}
-            {noConfig && <Flex alignItems="center">{IconSlot}</Flex>}
+            {noConfig && IconSlot && <Flex alignItems="center">{IconSlot}</Flex>}
           </Flex>
-          <Flex alignItems="center">
-            <Text color="textSubtle" fontSize="14px">
-              {subtitle}
-            </Text>
-          </Flex>
+          {subtitle && (
+            <Flex alignItems="center">
+              <Text color="textSubtle" fontSize="14px">
+                {subtitle}
+              </Text>
+            </Flex>
+          )}
           {filter && <FilterSection justifyContent="space-between">{filter}</FilterSection>}
         </Flex>
       </Flex>
