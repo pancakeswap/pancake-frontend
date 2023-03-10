@@ -218,7 +218,13 @@ export default function UniversalAddLiquidity({
               <V2Selector
                 isStable={Boolean(stableConfig.stableSwapConfig)}
                 selectorType={selectorType}
-                handleFeePoolSelect={handleFeePoolSelect}
+                handleFeePoolSelect={({ type }) => {
+                  if (type === SELECTOR_TYPE.V3) {
+                    router.push(`/add/${currencyIdA}/${currencyIdB}`)
+                  } else {
+                    handleFeePoolSelect({ type })
+                  }
+                }}
               />
             )}
 
