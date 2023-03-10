@@ -17,7 +17,7 @@ import { Details } from "./Details";
 import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 
-interface Props {
+export interface RoiCalculatorProps {
   sqrtRatioX96?: JSBI;
   liquidity?: JSBI;
   independentAmount?: CurrencyAmount<Currency>;
@@ -54,7 +54,7 @@ export function RoiCalculator({
   priceLower,
   priceUpper,
   volume24H,
-}: Props) {
+}: RoiCalculatorProps) {
   const { t } = useTranslation();
   const [spanIndex, setSpanIndex] = useState(3);
   const [compoundOn, setCompoundOn] = useState(true);
