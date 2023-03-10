@@ -65,9 +65,22 @@ const NameCell: React.FC<React.PropsWithChildren<NameCellProps>> = ({ pool }) =>
       {isLoaded ? (
         <>
           {vaultKey ? (
-            <UITokenPairImage {...vaultPoolConfig[vaultKey].tokenImage} mr="8px" width={40} height={40} />
+            <UITokenPairImage
+              {...vaultPoolConfig[vaultKey].tokenImage}
+              mr="8px"
+              width={40}
+              height={40}
+              style={{ minWidth: 40 }}
+            />
           ) : (
-            <TokenPairImage primaryToken={earningToken} secondaryToken={stakingToken} mr="8px" width={40} height={40} />
+            <TokenPairImage
+              primaryToken={earningToken}
+              secondaryToken={stakingToken}
+              mr="8px"
+              width={40}
+              height={40}
+              style={{ minWidth: 40 }}
+            />
           )}
           <Pool.CellContent>
             {showStakedTag &&
