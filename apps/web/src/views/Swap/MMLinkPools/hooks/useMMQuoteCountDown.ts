@@ -12,11 +12,7 @@ export const useMMQuoteCountDown = (quoteExpiry: number | null, refreshRFQ?: () 
     if (quoteExpiry) {
       interval = setInterval(() => {
         const newRemainingSec = Math.floor(((quoteExpiry * 1000 - Date.now()) / 1000) % 60)
-        if (newRemainingSec > 0) {
-          setRemainingSec(newRemainingSec)
-        } else {
-          setRemainingSec(null)
-        }
+        setRemainingSec(newRemainingSec > 0 ? newRemainingSec : null)
         if (
           !reFetched.current &&
           newRemainingSec &&
@@ -38,5 +34,5 @@ export const useMMQuoteCountDown = (quoteExpiry: number | null, refreshRFQ?: () 
     }
   }, [quoteExpiry, refreshRFQ])
 
-  return { remainingSec }
+  return remainingSec
 }
