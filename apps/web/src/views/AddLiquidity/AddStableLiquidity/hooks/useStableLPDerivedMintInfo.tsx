@@ -2,6 +2,7 @@ import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { BigNumber } from '@ethersproject/bignumber'
 
 import { PairState } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -113,13 +114,17 @@ function useMintedStableLP({
     inputs,
   )
 
+  // TODO: Combine get_add_liquidity_mint_amount + balances in one call
+  const balanceResult = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress])
+
   return useMemo(
     () => ({
+      reserves: balanceResult?.result?.[0] || [BigNumber.from(0), BigNumber.from(0)],
       data: result?.[0],
       loading: loading || syncing,
       error,
     }),
-    [result, loading, syncing, error],
+    [balanceResult?.result, result, loading, syncing, error],
   )
 }
 
@@ -140,6 +145,7 @@ export function useStableLPDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
   addError?: string
+  reserves: [BigNumber, BigNumber]
 } {
   const { address: account } = useAccount()
 
@@ -227,6 +233,7 @@ export function useStableLPDerivedMintInfo(
   }, [targetAmount, estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])
 
   const {
+    reserves,
     data: lpMinted,
     error: estimateLPError,
     loading,
@@ -313,5 +320,6 @@ export function useStableLPDerivedMintInfo(
     poolTokenPercentage,
     error,
     addError,
+    reserves,
   }
 }

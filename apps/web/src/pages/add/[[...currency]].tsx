@@ -1,21 +1,22 @@
 import { CAKE, USDC } from '@pancakeswap/tokens'
-import { useCurrency } from 'hooks/Tokens'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useAppDispatch } from 'state'
+import { useFarmV2Config } from 'state/farms/hooks'
 import { resetMintState } from 'state/mint/actions'
+import { useCurrency } from 'hooks/Tokens'
 import { CHAIN_IDS } from 'utils/wagmi'
-import AddLiquidity from 'views/AddLiquidity'
-import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
-import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import AddLiquidityV3, { AddLiquidityV3Layout } from 'views/AddLiquidityV3'
+import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
   const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
+
+  const { data: farmsV2Configs } = useFarmV2Config()
 
   const native = useNativeCurrency()
 
@@ -24,13 +25,23 @@ const AddLiquidityPage = () => {
     CAKE[chainId]?.address ?? USDC[chainId]?.address,
   ]
 
-  const currencyA = useCurrency(currencyIdA)
-  const currencyB = useCurrency(currencyIdB)
+  const tokenA = useCurrency(currencyIdA)
+  const tokenB = useCurrency(currencyIdB)
 
-  const stableConfig = useStableConfig({
-    tokenA: currencyA,
-    tokenB: currencyB,
-  })
+  // Redirect to v2 if there is a farm for the pair
+  useEffect(() => {
+    if (farmsV2Configs?.length && tokenA && tokenB) {
+      if (
+        farmsV2Configs.some(
+          (farm) =>
+            (farm.token.address === tokenA.wrapped.address && farm.quoteToken.address === tokenB.wrapped.address) ||
+            (farm.token.address === tokenB.wrapped.address && farm.quoteToken.address === tokenA.wrapped.address),
+        )
+      ) {
+        router.push(`/v2/add/${currencyIdA}/${currencyIdB}`)
+      }
+    }
+  }, [currencyIdA, currencyIdB, farmsV2Configs, router, tokenA, tokenB])
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
@@ -38,52 +49,15 @@ const AddLiquidityPage = () => {
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
-  return stableConfig.stableSwapConfig ? (
-    <StableConfigContext.Provider value={stableConfig}>
-      <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
-    </StableConfigContext.Provider>
-  ) : (
-    <AddLiquidity currencyA={currencyA} currencyB={currencyB} />
+  return (
+    <LiquidityFormProvider>
+      <AddLiquidityV3Layout>
+        <AddLiquidityV3 currencyIdA={currencyIdA} currencyIdB={currencyIdB} />
+      </AddLiquidityV3Layout>
+    </LiquidityFormProvider>
   )
 }
 
 AddLiquidityPage.chains = CHAIN_IDS
 
 export default AddLiquidityPage
-
-const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [{ params: { currency: [] } }],
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { currency = [] } = params
-  const [currencyIdA, currencyIdB] = currency
-  const match = currencyIdA?.match(OLD_PATH_STRUCTURE)
-
-  if (match?.length) {
-    return {
-      redirect: {
-        statusCode: 301,
-        destination: `/add/${match[1]}/${match[2]}`,
-      },
-    }
-  }
-
-  if (currencyIdA && currencyIdB && currencyIdA.toLowerCase() === currencyIdB.toLowerCase()) {
-    return {
-      redirect: {
-        statusCode: 303,
-        destination: `/add/${currencyIdA}`,
-      },
-    }
-  }
-
-  return {
-    props: {},
-  }
-}

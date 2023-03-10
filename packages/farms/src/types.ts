@@ -1,6 +1,7 @@
+import { Token } from '@pancakeswap/swap-sdk-core'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
-import { Token } from '@pancakeswap/swap-sdk-core'
 
 export type FarmsDynamicDataResult = {
   tokenAmountTotal: string
@@ -11,7 +12,27 @@ export type FarmsDynamicDataResult = {
   poolWeight: string
   multiplier: string
 }
+
+export type FarmsDynamicDataResultV2 = {
+  tokenAmountTotal: string
+  quoteTokenAmountTotal: string
+  tokenPriceVsQuote: string
+  poolWeight: string
+  multiplier: string
+}
+
+export type FarmPriceV3 = {
+  activeTvlUSD: string
+  tokenPriceBusd: string
+  quoteTokenPriceBusd: string
+  cakeApr: string
+}
+
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
+
+export type FarmV3Data = FarmConfigV3 & FarmsDynamicDataResultV2
+
+export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & FarmConfigV3
 
 export interface FarmConfigBaseProps {
   pid: number
@@ -30,14 +51,29 @@ export interface FarmConfigBaseProps {
   }
   boosted?: boolean
 }
-export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
+
+export interface SerializedStableFarmConfig extends FarmConfigBaseProps {
+  token: SerializedWrappedToken
+  quoteToken: SerializedWrappedToken
   stableSwapAddress: string
   infoStableSwapAddress: string
+  stableLpFee?: number
 }
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
   token: SerializedWrappedToken
   quoteToken: SerializedWrappedToken
+}
+
+export type FarmConfigV3 = {
+  pid: number
+  lpSymbol: string
+  lpAddress: string
+  boosted?: boolean
+
+  token: Token
+  quoteToken: Token
+  feeAmount: FeeAmount
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig
@@ -83,6 +119,14 @@ export interface SerializedFarmUserData {
 
 export interface SerializedFarm extends SerializedFarmPublicData {
   userData?: SerializedFarmUserData
+}
+
+export interface SerializedFarmsV3State {
+  data: SerializedFarmPublicData[]
+  chainId?: number
+  userDataLoaded: boolean
+  loadingKeys: Record<string, boolean>
+  poolLength?: number
 }
 
 export interface SerializedFarmsState {
@@ -144,4 +188,10 @@ export interface FarmWithStakedValue extends DeserializedFarm {
   apr?: number
   lpRewardsApr?: number
   liquidity?: BigNumber
+}
+
+export interface FarmsV3Response {
+  poolLength: number
+  farmsWithPrice: FarmV3DataWithPrice[]
+  latestPeriodCakePerSecond: string
 }
