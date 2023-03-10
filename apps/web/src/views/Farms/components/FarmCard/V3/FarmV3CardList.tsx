@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text, PreTitle } from '@pancakeswap/uikit'
+import { Box, Flex, PreTitle } from '@pancakeswap/uikit'
 import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
 import { V3Farm } from 'views/Farms/FarmsV3'
 

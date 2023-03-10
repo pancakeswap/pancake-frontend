@@ -9,7 +9,6 @@ import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-// import { useV3LiquidityTotal } from 'hooks/v3/usePositionV3Liquidity'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
@@ -50,28 +49,12 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   farm,
   displayApr,
   removed,
-  cakePrice,
+  // cakePrice,
   account,
 }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const [showExpandableSection, setShowExpandableSection] = useState(false)
-
-  // const liquidity =
-  //   farm?.liquidity && originalLiquidity?.gt(0) ? farm.liquidity.plus(originalLiquidity) : farm.liquidity
-
-  // const totalValueFormatted =
-  //   liquidity && liquidity.gt(0)
-  //     ? `$${liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
-  //     : ''
-
-  // Philip TODO: Add Total liquidity
-  // const totalLiquidity = useV3LiquidityTotal({
-  //   token0: farm.token,
-  //   token1: farm.quoteToken,
-  //   feeAmount: farm.feeAmount,
-  //   positionsDetailsList: farm.stakedPositions
-  // })
 
   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
   const earnLabel = t('CAKE + Fees')
@@ -111,7 +94,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             <Text style={{ display: 'flex', alignItems: 'center' }}>
               {farm.cakeApr ? (
                 <>
-                  {/* TODO: ROI calculator */}
+                  {/* TODO: v3 farm ROI calculator */}
                   <FarmUI.FarmApyButton
                     variant="text"
                     handleClickButton={() => {

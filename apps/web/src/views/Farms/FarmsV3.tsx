@@ -44,7 +44,7 @@ import { getFarmApr, getFarmV3Apr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
-import Table from './components/FarmTable/V3/FarmTable'
+// import Table from './components/FarmTable/V3/FarmTable'
 import { FarmsV3Context } from './context'
 
 const ControlContainer = styled.div`
@@ -215,7 +215,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // Users with no wallet connected should see 0 as Earned amount
   // Connected users should see loading indicator until first userData has loaded
-  const userDataReady = !account || (!!account && farmsV3.length > 0 && userDataLoaded)
+  const _userDataReady = !account || (!!account && farmsV3.length > 0 && userDataLoaded)
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 

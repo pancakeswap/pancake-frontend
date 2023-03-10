@@ -1,8 +1,8 @@
-import { useMemo } from 'react'
-import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { Farm as FarmUI } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { useMemo } from 'react'
 import styled from 'styled-components'
+import { V3Farm } from 'views/Farms/FarmsV3'
 import FarmInfo from './FarmInfo'
 
 const { NoPosition } = FarmUI.FarmV3Card
@@ -12,7 +12,7 @@ const Action = styled.div`
 `
 
 interface FarmCardActionsProps {
-  farm: FarmV3DataWithPriceAndUserInfo
+  farm: V3Farm
   account?: string
   addLiquidityUrl?: string
   lpLabel?: string
