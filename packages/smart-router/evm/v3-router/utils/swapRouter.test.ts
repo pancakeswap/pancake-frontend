@@ -25,7 +25,7 @@ import {
   Pool as V3PoolSDK,
 } from '@pancakeswap/v3-sdk'
 import { SwapRouter } from './swapRouter'
-import { Trade, V3Pool, PoolType, V2Pool, RouteType, Pool } from '../types'
+import { SmartRouterTrade, V3Pool, PoolType, V2Pool, RouteType, Pool } from '../types'
 import { ApprovalTypes } from './approveAndCall'
 import { isV2Pool, isV3Pool } from './pool'
 
@@ -78,7 +78,7 @@ describe('SwapRouter', () => {
     tokenOut: Currency,
     amount: CurrencyAmount<Currency>,
     tradeType: TradeType,
-  ): Promise<Trade<TradeType>> => {
+  ): Promise<SmartRouterTrade<TradeType>> => {
     const v3Pools = pools.map(convertV3PoolToSDKPool)
     const v3Trade = await V3Trade.fromRoute(new V3Route(v3Pools, tokenIn, tokenOut), amount, tradeType)
     return {
@@ -118,7 +118,7 @@ describe('SwapRouter', () => {
     tokenOut: Currency,
     amount: CurrencyAmount<Currency>,
     tradeType: TradeType,
-  ): Trade<TradeType> => {
+  ): SmartRouterTrade<TradeType> => {
     const v2Pools = pools.map(convertV2PoolToSDKPool)
     const getTrade = tradeType === TradeType.EXACT_INPUT ? V2Trade.exactIn : V2Trade.exactOut
     const v2Trade = getTrade(new V2Route(v2Pools, tokenIn, tokenOut), amount)
@@ -147,7 +147,7 @@ describe('SwapRouter', () => {
     tokenOut: Currency,
     amount: CurrencyAmount<Currency>,
     tradeType: TradeType,
-  ): Promise<Trade<TradeType>> => {
+  ): Promise<SmartRouterTrade<TradeType>> => {
     const sdkPools: (Pair | V3PoolSDK)[] = pools.map((pool) => {
       if (isV3Pool(pool)) {
         return convertV3PoolToSDKPool(pool)

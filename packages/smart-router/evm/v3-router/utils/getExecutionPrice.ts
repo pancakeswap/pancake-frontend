@@ -1,8 +1,8 @@
 import { Price, TradeType, JSBI, ZERO } from '@pancakeswap/sdk'
 
-import { Trade } from '../types'
+import { SmartRouterTrade } from '../types'
 
-export function getExecutionPrice({ inputAmount, outputAmount }: Trade<TradeType>) {
+export function getExecutionPrice({ inputAmount, outputAmount }: SmartRouterTrade<TradeType>) {
   if (JSBI.equal(inputAmount.quotient, ZERO) || JSBI.equal(outputAmount.quotient, ZERO)) {
     return null
   }

@@ -7,7 +7,7 @@ import JSBI from 'jsbi'
 import abi from '../../abis/ISwapRouter02.json'
 import { ADDRESS_THIS, MSG_SENDER } from '../../constants'
 import { ApproveAndCall, ApprovalTypes, CondensedAddLiquidityOptions } from './approveAndCall'
-import { Trade, V3Pool, BaseRoute, RouteType, StablePool } from '../types'
+import { SmartRouterTrade, V3Pool, BaseRoute, RouteType, StablePool } from '../types'
 import { MulticallExtended, Validation } from './multicallExtended'
 import { PaymentsExtended } from './paymentsExtended'
 import { encodeMixedRouteToPath } from './encodeMixedRouteToPath'
@@ -58,7 +58,7 @@ export interface SwapAndAddOptions extends SwapOptions {
   outputTokenPermit?: PermitOptions
 }
 
-type AnyTradeType = Trade<TradeType> | Trade<TradeType>[]
+type AnyTradeType = SmartRouterTrade<TradeType> | SmartRouterTrade<TradeType>[]
 
 /**
  * Represents the Uniswap V2 + V3 SwapRouter02, and has static methods for helping execute trades.
@@ -81,7 +81,7 @@ export abstract class SwapRouter {
    * @returns A string array of calldatas for the trade.
    */
   private static encodeV2Swap(
-    trade: Trade<TradeType>,
+    trade: SmartRouterTrade<TradeType>,
     options: SwapOptions,
     routerMustCustody: boolean,
     performAggregatedSlippageCheck: boolean,
@@ -117,7 +117,7 @@ export abstract class SwapRouter {
    * @returns A string array of calldatas for the trade.
    */
   private static encodeStableSwap(
-    trade: Trade<TradeType>,
+    trade: SmartRouterTrade<TradeType>,
     options: SwapOptions,
     routerMustCustody: boolean,
     performAggregatedSlippageCheck: boolean,
@@ -158,7 +158,7 @@ export abstract class SwapRouter {
    * @returns A string array of calldatas for the trade.
    */
   private static encodeV3Swap(
-    trade: Trade<TradeType>,
+    trade: SmartRouterTrade<TradeType>,
     options: SwapOptions,
     routerMustCustody: boolean,
     performAggregatedSlippageCheck: boolean,
@@ -246,7 +246,7 @@ export abstract class SwapRouter {
    * @returns A string array of calldatas for the trade.
    */
   private static encodeMixedRouteSwap(
-    trade: Trade<TradeType>,
+    trade: SmartRouterTrade<TradeType>,
     options: SwapOptions,
     routerMustCustody: boolean,
     performAggregatedSlippageCheck: boolean,
@@ -430,7 +430,7 @@ export abstract class SwapRouter {
     isSwapAndAdd?: boolean,
   ): {
     calldatas: string[]
-    sampleTrade: Trade<TradeType>
+    sampleTrade: SmartRouterTrade<TradeType>
     routerMustCustody: boolean
     inputIsNative: boolean
     outputIsNative: boolean
@@ -698,7 +698,7 @@ export abstract class SwapRouter {
     return SwapRouter.v3TradeWithHighPriceImpact(trades)
   }
 
-  private static v3TradeWithHighPriceImpact(trade: Trade<TradeType>): boolean {
+  private static v3TradeWithHighPriceImpact(trade: SmartRouterTrade<TradeType>): boolean {
     return (
       !(trade.routes.length === 1 && trade.routes[0].type === RouteType.V2) &&
       getPriceImpact(trade).greaterThan(REFUND_ETH_PRICE_IMPACT_THRESHOLD)

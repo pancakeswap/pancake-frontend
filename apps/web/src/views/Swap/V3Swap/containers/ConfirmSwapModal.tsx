@@ -2,7 +2,7 @@ import { useCallback, memo, useMemo } from 'react'
 import { Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, ConfirmationPendingContent } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { Trade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/swap/actions'
@@ -15,8 +15,8 @@ import { SwapTransactionErrorContent } from '../../components/SwapTransactionErr
 import { TransactionConfirmSwapContent } from '../components'
 
 interface ConfirmSwapModalProps {
-  trade?: Trade<TradeType>
-  originalTrade?: Trade<TradeType>
+  trade?: SmartRouterTrade<TradeType>
+  originalTrade?: SmartRouterTrade<TradeType>
   currencyBalances: { [field in Field]?: CurrencyAmount<Currency> }
   attemptingTxn: boolean
   txHash?: string

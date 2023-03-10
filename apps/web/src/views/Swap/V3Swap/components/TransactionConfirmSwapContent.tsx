@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { ConfirmationModalContent } from '@pancakeswap/uikit'
 import { memo, useCallback, useMemo } from 'react'
 import { Field } from 'state/swap/actions'
@@ -16,7 +16,7 @@ import SwapModalHeader from '../../components/SwapModalHeader'
  * @param tradeA trade A
  * @param tradeB trade B
  */
-function tradeMeaningfullyDiffers(tradeA: Trade<TradeType>, tradeB: Trade<TradeType>): boolean {
+function tradeMeaningfullyDiffers(tradeA: SmartRouterTrade<TradeType>, tradeB: SmartRouterTrade<TradeType>): boolean {
   return (
     tradeA.tradeType !== tradeB.tradeType ||
     !tradeA.inputAmount.currency.equals(tradeB.inputAmount.currency) ||
@@ -27,8 +27,8 @@ function tradeMeaningfullyDiffers(tradeA: Trade<TradeType>, tradeB: Trade<TradeT
 }
 
 interface TransactionConfirmSwapContentProps {
-  trade: Trade<TradeType> | undefined
-  originalTrade: Trade<TradeType> | undefined
+  trade: SmartRouterTrade<TradeType> | undefined
+  originalTrade: SmartRouterTrade<TradeType> | undefined
   onAcceptChanges: () => void
   allowedSlippage: number
   onConfirm: () => void

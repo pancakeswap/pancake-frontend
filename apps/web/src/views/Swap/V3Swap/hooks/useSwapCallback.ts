@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-restricted-imports
 import { BigNumber } from '@ethersproject/bignumber'
 import type { TransactionResponse } from '@ethersproject/providers'
-import { Trade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useTranslation } from '@pancakeswap/localization'
@@ -29,7 +29,7 @@ interface UseSwapCallbackReturns {
   error?: ReactNode
 }
 interface UseSwapCallbackArgs {
-  trade: Trade<TradeType> | undefined | null // trade to execute, required
+  trade: SmartRouterTrade<TradeType> | undefined | null // trade to execute, required
   // allowedSlippage: Percent // in bips
   // recipientAddressOrName: string | null | undefined // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
   // signatureData: SignatureData | null | undefined

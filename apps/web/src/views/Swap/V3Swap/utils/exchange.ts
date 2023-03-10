@@ -9,7 +9,7 @@ import {
   Price,
   ZERO,
 } from '@pancakeswap/sdk'
-import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
@@ -22,7 +22,7 @@ export type SlippageAdjustedAmounts = {
 
 // computes the minimum amount out and maximum amount in for a trade given a user specified allowed slippage in bips
 export function computeSlippageAdjustedAmounts(
-  trade: Trade<TradeType> | undefined | null,
+  trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: number,
 ): SlippageAdjustedAmounts {
   const pct = basisPointsToPercent(allowedSlippage)
@@ -34,7 +34,7 @@ export function computeSlippageAdjustedAmounts(
 }
 
 // computes price breakdown for the trade
-export function computeTradePriceBreakdown(trade?: Trade<TradeType> | null): {
+export function computeTradePriceBreakdown(trade?: SmartRouterTrade<TradeType> | null): {
   priceImpactWithoutFee?: Percent | null
   lpFeeAmount?: CurrencyAmount<Currency> | null
 } {

@@ -2,7 +2,7 @@ import { Currency, CurrencyAmount, JSBI, TradeType } from '@pancakeswap/sdk'
 
 import { Route } from './route'
 
-export interface Trade<TTradeType extends TradeType> {
+export interface SmartRouterTrade<TTradeType extends TradeType> {
   tradeType: TTradeType
   inputAmount: CurrencyAmount<Currency>
   outputAmount: CurrencyAmount<Currency>

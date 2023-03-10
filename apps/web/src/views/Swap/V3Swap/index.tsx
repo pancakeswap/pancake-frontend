@@ -1,14 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 
-import { FormHeader, FormMain, PricingAndSlippage, TradeDetails, SwapCommitButton } from './containers'
+import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
+import { MMCommitButton } from './containers/MMCommitButton'
 import { useBestTrade } from './hooks'
 
 export function V3SwapForm() {
-  const { isLoading, trade, refresh } = useBestTrade()
+  const { isLoading, trade } = useBestTrade()
 
-  const swapCommitButton = <SwapCommitButton trade={trade} />
+  const mm = useDerivedBestTradeWithMM(trade)
+
   const tradeLoaded = !isLoading && !!trade
+
+  const finalTrade = mm.isMMBetter ? mm?.mmTradeInfo?.trade : trade
 
   return (
     <>
@@ -18,12 +22,16 @@ export function V3SwapForm() {
         pricingAndSlippage={
           <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
         }
-        inputAmount={trade?.inputAmount}
-        outputAmount={trade?.outputAmount}
-        swapCommitButton={swapCommitButton}
+        inputAmount={finalTrade?.inputAmount}
+        outputAmount={finalTrade?.outputAmount}
+        swapCommitButton={mm?.isMMBetter ? <MMCommitButton {...mm} /> : <SwapCommitButton trade={trade} />}
       />
 
-      <TradeDetails loaded={tradeLoaded} trade={trade} />
+      {mm.isMMBetter ? (
+        <MMTradeDetail loaded={!mm.mmOrderBookTrade.isLoading} mmTrade={mm.mmTradeInfo} />
+      ) : (
+        <TradeDetails loaded={tradeLoaded} trade={trade} />
+      )}
     </>
   )
 }

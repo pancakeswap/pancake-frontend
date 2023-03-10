@@ -4,7 +4,7 @@ import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk
 import { computeAllRoutes, getBestRouteCombinationByQuotes } from './functions'
 import { createGasModel } from './gasModel'
 import { getRoutesWithValidQuote } from './getRoutesWithValidQuote'
-import { BestRoutes, PoolProvider, PoolType, QuoteProvider, Trade } from './types'
+import { BestRoutes, PoolProvider, PoolType, QuoteProvider, SmartRouterTrade } from './types'
 
 interface TradeConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
@@ -22,7 +22,7 @@ export async function getBestTrade(
   currency: Currency,
   tradeType: TradeType,
   config: TradeConfig,
-): Promise<Trade<TradeType> | null> {
+): Promise<SmartRouterTrade<TradeType> | null> {
   try {
     const { blockNumber: blockNumberFromConfig } = config
     const blockNumber: BigintIsh =

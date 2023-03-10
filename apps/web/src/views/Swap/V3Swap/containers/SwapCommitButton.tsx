@@ -2,7 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
 import { Button, Text, useModal, confirmPriceImpactWithoutFee, Column, Box } from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo } from 'react'
-import { SWAP_ROUTER_ADDRESSES, Trade } from '@pancakeswap/smart-router/evm'
+import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
 import { useIsTransactionUnsupported } from 'hooks/Trades'
 import { GreyCard } from 'components/Card'
@@ -37,7 +37,7 @@ import { ConfirmSwapModal } from './ConfirmSwapModal'
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
-  trade?: Trade<TradeType>
+  trade?: SmartRouterTrade<TradeType>
 }
 
 export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
@@ -83,7 +83,7 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade })
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
-    tradeToConfirm: Trade<TradeType> | undefined
+    tradeToConfirm: SmartRouterTrade<TradeType> | undefined
     attemptingTxn: boolean
     swapErrorMessage: string | undefined
     txHash: string | undefined

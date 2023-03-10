@@ -1,18 +1,43 @@
-import { AutoColumn } from '@pancakeswap/uikit'
-import { useMemo } from 'react'
-import { SmartRouter, Trade } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
+import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { AutoColumn } from '@pancakeswap/uikit'
+import useLastTruthy from 'hooks/useLast'
+import { useMemo } from 'react'
 
+import { AdvancedSwapDetails, TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetailsDropdown'
-import { TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 
-import { computeTradePriceBreakdown } from '../utils/exchange'
+import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
 import { RoutesBreakdown } from '../components'
 import { useSlippageAdjustedAmounts } from '../hooks'
+import { computeTradePriceBreakdown } from '../utils/exchange'
 
 interface Props {
   loaded: boolean
-  trade?: Trade<TradeType> | null
+  trade?: SmartRouterTrade<TradeType> | null
+}
+
+export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: MMTradeInfo }) {
+  const lastTrade = useLastTruthy(mmTrade?.trade)
+
+  return (
+    <AdvancedDetailsFooter show={loaded}>
+      <AutoColumn gap="0px">
+        {lastTrade && (
+          <AdvancedSwapDetails
+            pairs={lastTrade?.route.pairs}
+            path={lastTrade?.route.path}
+            slippageAdjustedAmounts={mmTrade.slippageAdjustedAmounts}
+            inputAmount={mmTrade.inputAmount}
+            outputAmount={mmTrade.outputAmount}
+            tradeType={mmTrade.tradeType}
+            priceImpactWithoutFee={mmTrade.priceImpactWithoutFee}
+            isMM
+          />
+        )}
+      </AutoColumn>
+    </AdvancedDetailsFooter>
+  )
 }
 
 export function TradeDetails({ loaded, trade }: Props) {

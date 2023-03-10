@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
-import { Trade } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useTranslation } from '@pancakeswap/localization'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useWeb3React } from '@pancakeswap/wagmi'
@@ -20,7 +20,7 @@ interface Balances {
  * @param trade to check for the given address
  * @param checksummedAddress address to check in the pairs and tokens
  */
-function involvesAddress(trade: Trade<TradeType>, checksummedAddress: string): boolean {
+function involvesAddress(trade: SmartRouterTrade<TradeType>, checksummedAddress: string): boolean {
   // TODO check for pools
   return trade.routes.some((r) => r.path.some((token) => token.isToken && token.address === checksummedAddress))
 }
@@ -32,7 +32,10 @@ const BAD_RECIPIENT_ADDRESSES: string[] = [
   '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // v2 router 02
 ]
 
-export function useSwapInputError(trade: Trade<TradeType> | null | undefined, currencyBalances: Balances): string {
+export function useSwapInputError(
+  trade: SmartRouterTrade<TradeType> | null | undefined,
+  currencyBalances: Balances,
+): string {
   const { t } = useTranslation()
   const { account } = useWeb3React()
   const { independentField, typedValue } = useSwapState()

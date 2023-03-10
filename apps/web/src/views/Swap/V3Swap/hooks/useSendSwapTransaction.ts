@@ -1,7 +1,7 @@
 import { Provider, JsonRpcProvider, TransactionResponse } from '@ethersproject/providers'
 import { Signer } from '@ethersproject/abstract-signer'
 import { BigNumber } from '@ethersproject/bignumber'
-import { Trade, SmartRouter } from '@pancakeswap/smart-router/evm'
+import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { TradeType } from '@pancakeswap/sdk'
 import { useTranslation } from '@pancakeswap/localization'
 import { useMemo } from 'react'
@@ -44,7 +44,7 @@ export default function useSendSwapTransaction(
   account: string | null | undefined,
   chainId: number | undefined,
   provider: Provider | Signer | undefined,
-  trade: Trade<TradeType> | undefined, // trade to execute, required
+  trade: SmartRouterTrade<TradeType> | undefined, // trade to execute, required
   swapCalls: SwapCall[],
 ): { callback: null | (() => Promise<TransactionResponse>) } {
   const { t } = useTranslation()

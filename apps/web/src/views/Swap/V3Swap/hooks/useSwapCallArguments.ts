@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { BigNumber } from '@ethersproject/bignumber'
-import { SwapRouter, Trade, SWAP_ROUTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
+import { SwapRouter, SmartRouterTrade, SWAP_ROUTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
 import { Percent, TradeType } from '@pancakeswap/sdk'
 import { FeeOptions } from '@pancakeswap/v3-sdk'
 import { useMemo } from 'react'
@@ -22,7 +22,7 @@ interface SwapCall {
  * @param signatureData the signature data of the permit of the input token amount, if available
  */
 export function useSwapCallArguments(
-  trade: Trade<TradeType> | undefined | null,
+  trade: SmartRouterTrade<TradeType> | undefined | null,
   allowedSlippage: Percent,
   recipientAddress: string | null | undefined,
   // signatureData: SignatureData | null | undefined,
