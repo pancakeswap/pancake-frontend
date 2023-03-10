@@ -10,6 +10,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidityV3, { AddLiquidityV3Layout } from 'views/AddLiquidityV3'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
+import { useIsMounted } from '@pancakeswap/hooks'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
@@ -28,9 +29,11 @@ const AddLiquidityPage = () => {
   const tokenA = useCurrency(currencyIdA)
   const tokenB = useCurrency(currencyIdB)
 
+  const isMounted = useIsMounted()
+
   // Redirect to v2 if there is a farm for the pair
   useEffect(() => {
-    if (farmsV2Configs?.length && tokenA && tokenB) {
+    if (isMounted && farmsV2Configs?.length && tokenA && tokenB) {
       if (
         farmsV2Configs.some(
           (farm) =>
@@ -41,7 +44,7 @@ const AddLiquidityPage = () => {
         router.push(`/v2/add/${currencyIdA}/${currencyIdB}`)
       }
     }
-  }, [currencyIdA, currencyIdB, farmsV2Configs, router, tokenA, tokenB])
+  }, [currencyIdA, currencyIdB, farmsV2Configs, isMounted, router, tokenA, tokenB])
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {

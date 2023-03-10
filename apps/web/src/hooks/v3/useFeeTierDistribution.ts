@@ -101,17 +101,11 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
     // sum tvl for token0 and token1 by fee tier
     const tvlByFeeTier = all.reduce(
       (acc: Record<FeeAmount, [number | undefined, number | undefined]>, value) => {
-        const result = acc
-
-        if (result[value.feeTier]?.[0]) {
-          result[value.feeTier][0] = (result[value.feeTier]?.[0] ?? 0) + Number(value.totalValueLockedToken0)
-        }
-
-        if (result[value.feeTier]?.[1]) {
-          result[value.feeTier][1] = (result[value.feeTier]?.[1] ?? 0) + Number(value.totalValueLockedToken1)
-        }
-
-        return result
+        // eslint-disable-next-line no-param-reassign
+        acc[value.feeTier][0] = (acc[value.feeTier][0] ?? 0) + Number(value.totalValueLockedToken0)
+        // eslint-disable-next-line no-param-reassign
+        acc[value.feeTier][1] = (acc[value.feeTier][1] ?? 0) + Number(value.totalValueLockedToken1)
+        return acc
       },
       {
         [FeeAmount.LOWEST]: [undefined, undefined],

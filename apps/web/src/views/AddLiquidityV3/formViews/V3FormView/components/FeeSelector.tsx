@@ -45,7 +45,9 @@ export default function FeeSelector({
       return true
     }
     if (largestUsageFeeTierTvl) {
-      if (!largestUsageFeeTierTvl[0] || !largestUsageFeeTier[1]) return true
+      if (!(largestUsageFeeTierTvl[0] && !largestUsageFeeTier[1])) {
+        return true
+      }
       return (
         pair.reserve0.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[0]), pair.token0)) ||
         pair.reserve1.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[1]), pair.token1))
@@ -152,7 +154,7 @@ export default function FeeSelector({
               return null
             })}
           </SelectContainer>
-          {currencyA && currencyB && (
+          {currencyA && currencyB && v2PairHasBetterTokenAmounts && (
             <AtomBox textAlign="center" pt="24px">
               <Link href={`/v2/add/${currencyId(currencyA)}/${currencyId(currencyB)}`}>
                 <Text color="textSubtle" bold>
