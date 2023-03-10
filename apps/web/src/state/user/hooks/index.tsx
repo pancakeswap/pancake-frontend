@@ -73,13 +73,13 @@ export function usePhishingBannerManager(): [boolean, () => void] {
     AppState['user']['hideTimestampPhishingWarningBanner']
   >((state) => state.user.hideTimestampPhishingWarningBanner)
   const now = Date.now()
-  const isPCS = typeof window !== 'undefined' && window.location.hostname === 'pancakeswap.finance'
+  const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
   const hideBanner = useCallback(() => {
     dispatch(hidePhishingWarningBanner())
   }, [dispatch])
   const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
-    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1 && isPCS
-    : isPCS
+    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1 && notPreview
+    : notPreview
 
   return [showPhishingWarningBanner, hideBanner]
 }
