@@ -1,12 +1,12 @@
 import styled from 'styled-components'
-import { Tag, Flex, Heading, Skeleton, Farm as FarmUI } from '@pancakeswap/uikit'
+import { Tag, Flex, Heading, Skeleton, Farm as FarmUI, AutoRow } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, StableFarmTag } = FarmUI.Tags
 
-export interface ExpandableSectionProps {
+type ExpandableSectionProps = {
   lpLabel?: string
   multiplier?: string
   isCommunityFarm?: boolean
@@ -14,6 +14,8 @@ export interface ExpandableSectionProps {
   quoteToken: Token
   boosted?: boolean
   isStable?: boolean
+  version: 3 | 2
+  feePercent?: number
 }
 
 const Wrapper = styled(Flex)`
@@ -34,6 +36,8 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   quoteToken,
   boosted,
   isStable,
+  version,
+  feePercent,
 }) => {
   const isReady = multiplier !== undefined
 
@@ -46,16 +50,27 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
       )}
       <Flex flexDirection="column" alignItems="flex-end">
         {isReady ? <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading> : <Skeleton mb="4px" width={60} height={18} />}
-        <Flex justifyContent="center">
-          {isReady && isStable && <StableFarmTag mr="4px" />}
-          {isReady && boosted && <BoostedTag mr="4px" />}
+        <AutoRow gap="4px" justifyContent="flex-end">
+          {isReady && isStable ? (
+            <StableFarmTag />
+          ) : version === 2 ? (
+            <Tag variant="textDisabled" outline>
+              V2
+            </Tag>
+          ) : null}
+          {isReady && version === 3 && (
+            <Tag variant="secondary" outline>
+              {feePercent}%
+            </Tag>
+          )}
+          {isReady && boosted && <BoostedTag />}
           {isReady && isCommunityFarm && <FarmAuctionTag />}
           {isReady ? (
             <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-        </Flex>
+        </AutoRow>
       </Flex>
     </Wrapper>
   )

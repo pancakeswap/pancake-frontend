@@ -1,10 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { Text, Box, Farm as FarmUI } from '@pancakeswap/uikit'
+import FarmV3StakeAndUnStake from 'views/Farms/components/FarmCard/V3/FarmV3StakeAndUnStake'
 import BoostedAction from 'views/Farms/components//YieldBooster/components/BoostedAction'
 import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from './styles'
 
-const { FarmV3HarvestAction, FarmV3StakeAndUnStake } = FarmUI.FarmV3Table
+const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
 interface SingleFarmV3TableProps {
   farm: any
@@ -20,6 +21,7 @@ const SingleFarmV3Table: React.FunctionComponent<React.PropsWithChildren<SingleF
           <FarmV3StakeAndUnStake title={`${farm.lpSymbol} (#0123456)`} />
         </ActionContent>
         <ActionContent width="100%" flexDirection="column">
+          {/* TODO: v3 farms earning */}
           <FarmV3HarvestAction
             earnings={BIG_ZERO}
             earningsBusd={323}

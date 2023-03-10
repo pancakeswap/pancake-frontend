@@ -1,4 +1,3 @@
-import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Skeleton, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
@@ -11,8 +10,9 @@ import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 // import { useV3LiquidityTotal } from 'hooks/v3/usePositionV3Liquidity'
-import CardActionsContainer from './CardActionsContainer'
+import { V3Farm } from 'views/Farms/FarmsV3'
 import CardHeading from '../CardHeading'
+import CardActionsContainer from './CardActionsContainer'
 
 const { DetailsSection } = FarmUI.FarmCard
 
@@ -39,7 +39,7 @@ const ExpandingWrapper = styled.div`
 `
 
 interface FarmCardProps {
-  farm: FarmV3DataWithPriceAndUserInfo
+  farm: V3Farm
   displayApr: string
   removed: boolean
   cakePrice?: BigNumber
@@ -50,7 +50,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   farm,
   displayApr,
   removed,
-  // cakePrice,
+  cakePrice,
   account,
 }) => {
   const { t } = useTranslation()
@@ -80,6 +80,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     quoteTokenAddress: farm.quoteToken.address,
     tokenAddress: farm.token.address,
     chainId,
+    feeAmount: farm.feeAmount,
   })
   const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
   const { lpAddress } = farm
@@ -96,14 +97,29 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   return (
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
-        <CardHeading lpLabel={lpLabel} multiplier={farm.multiplier} token={farm.token} quoteToken={farm.quoteToken} />
+        <CardHeading
+          lpLabel={lpLabel}
+          multiplier={farm.multiplier}
+          token={farm.token}
+          quoteToken={farm.quoteToken}
+          version={3}
+          feePercent={farm.feeAmount / 10_000}
+        />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
             <Text>{t('APR')}:</Text>
-            <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+            <Text style={{ display: 'flex', alignItems: 'center' }}>
               {farm.cakeApr ? (
                 <>
-                  APY BUTTON
+                  {/* TODO: ROI calculator */}
+                  <FarmUI.FarmApyButton
+                    variant="text"
+                    handleClickButton={() => {
+                      //
+                    }}
+                  >
+                    {displayApr}%
+                  </FarmUI.FarmApyButton>
                   {/* <ApyButton
                     variant="text-and-button"
                     pid={farm.pid}
@@ -128,7 +144,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         )}
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
-          <Text bold>{earnLabel}</Text>
+          <Text>{earnLabel}</Text>
         </Flex>
         <CardActionsContainer
           farm={farm}
@@ -146,13 +162,12 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
             removed={removed}
             scanAddressLink={getBlockExploreLink(lpAddress, 'address', chainId)}
             infoAddress={infoUrl}
-            totalValueFormatted="20"
-            // totalValueFormatted={totalValueFormatted}
+            totalValueFormatted={`$${parseInt(farm.activeTvlUSD).toLocaleString(undefined, {
+              maximumFractionDigits: 0,
+            })}`}
             lpLabel={lpLabel}
             addLiquidityUrl={addLiquidityUrl}
             isCommunity={false}
-            auctionHostingEndDate="0"
-            // auctionHostingEndDate={farm.auctionHostingEndDate}
           />
         )}
       </ExpandingWrapper>

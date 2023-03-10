@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
+import { AtomBox } from "@pancakeswap/ui";
 import { ModalContainer, ModalCloseButton, ModalBody, ModalActions, ModalProps } from "../../../Modal";
 import { Link } from "../../../../components/Link";
 import { Text } from "../../../../components/Text";
@@ -60,36 +61,38 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
   const { t } = useTranslation();
 
   return (
-    <ModalContainer padding="24px" $minWidth="300px">
-      <ModalHeader>
-        <Flex alignSelf="center" width="100%">
-          {tokenPairImage}
-          <Text bold m="0 8px">
-            {lpSymbol.split(" ")[0]}
-          </Text>
-          <Flex justifyContent="center">
-            {isReady && multiplier && (
-              <Tag mr="4px" variant="secondary">
-                {multiplier}
-              </Tag>
-            )}
-            {isReady && isStable && <StableFarmTag mr="4px" />}
-            {isReady && boosted && <BoostedTag mr="4px" />}
-            {isReady && isCommunityFarm && <FarmAuctionTag />}
+    <ModalContainer $minWidth="300px">
+      <AtomBox bg="gradientBubblegum" p="24px">
+        <ModalHeader>
+          <Flex alignSelf="center" width="100%">
+            {tokenPairImage}
+            <Text bold m="0 8px">
+              {lpSymbol.split(" ")[0]}
+            </Text>
+            <Flex justifyContent="center">
+              {isReady && multiplier && (
+                <Tag mr="4px" variant="secondary">
+                  {multiplier}
+                </Tag>
+              )}
+              {isReady && isStable && <StableFarmTag mr="4px" />}
+              {isReady && boosted && <BoostedTag mr="4px" />}
+              {isReady && isCommunityFarm && <FarmAuctionTag />}
+            </Flex>
           </Flex>
-        </Flex>
-        <ModalCloseButton onDismiss={onDismiss} />
-      </ModalHeader>
-      <ModalBody mt="16px" width={["100%", "100%", "100%", "416px"]}>
-        <ScrollableContainer>{children}</ScrollableContainer>
-      </ModalBody>
-      <ModalActions>
-        <StyledLink external href={liquidityUrlPathParts}>
-          <Button width="100%" variant="secondary">
-            {t("Add Liquidity")}
-          </Button>
-        </StyledLink>
-      </ModalActions>
+          <ModalCloseButton onDismiss={onDismiss} />
+        </ModalHeader>
+        <ModalBody mt="16px" width={["100%", "100%", "100%", "416px"]}>
+          <ScrollableContainer>{children}</ScrollableContainer>
+        </ModalBody>
+        <ModalActions>
+          <StyledLink external href={liquidityUrlPathParts}>
+            <Button width="100%" variant="secondary">
+              {t("Add Liquidity")}
+            </Button>
+          </StyledLink>
+        </ModalActions>
+      </AtomBox>
     </ModalContainer>
   );
 };

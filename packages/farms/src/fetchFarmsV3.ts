@@ -153,16 +153,17 @@ export async function farmV3FetchFarms({
   tvlMap: TvlMap
   commonPrice: CommonPrice
 }) {
-  const poolInfos = await fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress)
-  const cakePrice = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
-  const lpData = await (
-    await fetchPublicFarmsData(farms, chainId, multicallv2)
-  ).map(([tokenBalanceLP, quoteTokenBalanceLP]: any[]) => ({
-    tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
-    quoteTokenBalanceLP: FixedNumber.from(quoteTokenBalanceLP[0]),
-  }))
-
-  const slot0s = await fetchSlot0s(farms, chainId, multicallv2)
+  const [poolInfos, cakePrice, lpData, slot0s] = await Promise.all([
+    fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress),
+    (await fetch('https://farms-api.pancakeswap.com/price/cake')).json(),
+    (
+      await fetchPublicFarmsData(farms, chainId, multicallv2)
+    ).map(([tokenBalanceLP, quoteTokenBalanceLP]: any[]) => ({
+      tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
+      quoteTokenBalanceLP: FixedNumber.from(quoteTokenBalanceLP[0]),
+    })),
+    fetchSlot0s(farms, chainId, multicallv2),
+  ])
 
   const farmsData = farms.map((farm, index) => {
     const { token, quoteToken, ...f } = farm

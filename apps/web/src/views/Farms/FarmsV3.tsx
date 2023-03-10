@@ -158,19 +158,26 @@ const FinishedTextLink = styled(Link)`
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
-interface V3Farm extends FarmV3DataWithPriceAndUserInfo {
-  version: '3'
-}
-interface V2Farm extends DeserializedFarm {
-  version: '2'
+export interface V3FarmWithoutStakedValue extends FarmV3DataWithPriceAndUserInfo {
+  version: 3
 }
 
-interface V2FarmWithStakedValue extends FarmWithStakedValue {
-  version: '2'
+export interface V3Farm extends V3FarmWithoutStakedValue {
+  lpRewardsApr?: number
+  version: 3
 }
 
-type V2AndV3Farms = Array<V3Farm | V2Farm>
-export type V2StakeValueAndV3Farms = Array<V3Farm | V2FarmWithStakedValue>
+interface V2FarmWithoutStakedValue extends DeserializedFarm {
+  version: 2
+}
+
+export interface V2Farm extends FarmWithStakedValue {
+  version: 2
+}
+
+type V2AndV3Farms = Array<V3FarmWithoutStakedValue | V2FarmWithoutStakedValue>
+
+export type V2StakeValueAndV3Farm = V3Farm | V2Farm
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
@@ -181,8 +188,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const farmsLP: V2AndV3Farms = useMemo(() => {
     return [
-      ...farmsV3.map((f) => ({ ...f, version: '3' } as V3Farm)),
-      ...farmsV2.map((f) => ({ ...f, version: '2' } as V2Farm)),
+      ...farmsV3.map((f) => ({ ...f, version: 3 } as V3FarmWithoutStakedValue)),
+      ...farmsV2.map((f) => ({ ...f, version: 2 } as V2FarmWithoutStakedValue)),
     ]
   }, [farmsV2, farmsV3])
 
@@ -216,7 +223,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     (farm) =>
       farm.pid !== 0 &&
       farm.multiplier !== '0X' &&
-      (farm.version === '3' ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
+      (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
   )
 
   const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
@@ -224,7 +231,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const archivedFarms = farmsLP
 
   const stakedOnlyFarms = activeFarms.filter((farm) => {
-    if (farm.version === '3') {
+    if (farm.version === 3) {
       return farm.stakedPositions.length > 0
     }
     return (
@@ -235,7 +242,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   })
 
   const stakedInactiveFarms = inactiveFarms.filter((farm) => {
-    if (farm.version === '3') {
+    if (farm.version === 3) {
       return farm.stakedPositions.length > 0
     }
     return (
@@ -246,7 +253,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   })
 
   const stakedArchivedFarms = archivedFarms.filter((farm) => {
-    if (farm.version === '3') {
+    if (farm.version === 3) {
       return farm.stakedPositions.length > 0
     }
     return (
@@ -257,13 +264,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   })
 
   const farmsList = useCallback(
-    (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farms => {
+    (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farm[] => {
       const farmsToDisplayWithAPR: any = farmsToDisplay.map((farm) => {
         if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
 
-        if (farm.version === '3') {
+        if (farm.version === 3) {
           const { lpRewardsApr } = isActive ? getFarmV3Apr(chainId, farm.lpAddress) : { lpRewardsApr: 0 }
 
           return { ...farm, lpRewardsApr }
@@ -322,17 +329,17 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   ])
 
   const chosenFarmsMemoized = useMemo(() => {
-    const sortFarms = (farms: V2StakeValueAndV3Farms): V2StakeValueAndV3Farms => {
+    const sortFarms = (farms: V2StakeValueAndV3Farm[]): V2StakeValueAndV3Farm[] => {
       switch (sortOption) {
         case 'apr':
-          return orderBy(farms, (farm) => (farm.version === '3' ? farm.cakeApr : farm.apr), 'desc')
+          return orderBy(farms, (farm) => (farm.version === 3 ? farm.cakeApr : farm.apr), 'desc')
         case 'multiplier':
           return orderBy(farms, (farm) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0), 'desc')
         case 'earned':
           return orderBy(
             farms,
             (farm) => {
-              if (farm.version === '2') {
+              if (farm.version === 2) {
                 return farm.userData ? Number(farm.userData.earnings) : 0
               }
               const totalEarned = Object.values(farm.pendingCakeByTokenIds)
@@ -346,7 +353,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           return orderBy(
             farms,
             (farm) => {
-              if (farm.version === '3') {
+              if (farm.version === 3) {
                 return Number(farm.activeTvlUSD)
               }
               return Number(farm.liquidity)

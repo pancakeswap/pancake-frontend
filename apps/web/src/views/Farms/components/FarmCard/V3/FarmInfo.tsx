@@ -1,16 +1,16 @@
-import { useMemo, useState } from 'react'
-import { Flex, Farm as FarmUI, ModalV2 } from '@pancakeswap/uikit'
-import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
-import { TokenPairImage } from 'components/TokenImage'
-import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
-import { BigNumber } from 'bignumber.js'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { Farm as FarmUI, Flex, ModalV2 } from '@pancakeswap/uikit'
+import { BigNumber } from 'bignumber.js'
+import { TokenPairImage } from 'components/TokenImage'
+import { useMemo, useState } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
+import { V3Farm } from 'views/Farms/FarmsV3'
 
 const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmUI.FarmV3Card
 
 interface FarmInfoProps {
-  farm: FarmV3DataWithPriceAndUserInfo
+  farm: V3Farm
   isReady: boolean
   liquidityUrlPathParts: string
 }

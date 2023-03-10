@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
 import { PositionDetails } from "@pancakeswap/farms";
-import { Text } from "../../../../components/Text";
+import { PreTitle, Text } from "../../../../components/Text";
 import { Button } from "../../../../components/Button";
 import { Flex, Box } from "../../../../components/Box";
 import { Heading } from "../../../../components/Heading";
@@ -31,9 +31,9 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
 
   return (
     <Box mt="24px">
-      <Text fontSize="12px" bold color="textSubtle" mb="8px">
+      <PreTitle color="textSubtle" mb="8px">
         {t("%totalStakedFarm% Staked Farming", { totalStakedFarm: stakedPositions.length })}
-      </Text>
+      </PreTitle>
       <LightGreyCard>
         <Flex padding="16px" justifyContent="space-between">
           <Flex flexDirection="column">

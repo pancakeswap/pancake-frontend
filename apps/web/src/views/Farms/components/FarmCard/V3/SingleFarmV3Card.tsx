@@ -12,8 +12,10 @@ import JSBI from 'jsbi'
 import { BigNumber } from 'bignumber.js'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import { V3Farm } from 'views/Farms/FarmsV3'
+import FarmV3StakeAndUnStake from './FarmV3StakeAndUnStake'
 
-const { FarmV3HarvestAction, FarmV3StakeAndUnStake } = FarmUI.FarmV3Table
+const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
 const ActionContainer = styled(Flex)`
   width: 100%;
@@ -23,7 +25,7 @@ const ActionContainer = styled(Flex)`
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 8px;
-  background-color: ${({ theme }) => theme.colors.dropdown};
+  // background-color: ${({ theme }) => theme.colors.dropdown};
   flex-direction: column;
 
   > ${ActionTitles}, > ${ActionContent} {
@@ -47,9 +49,14 @@ const ActionContainer = styled(Flex)`
   }
 `
 
+ActionContainer.defaultProps = {
+  bg: 'dropdown',
+}
+
 type PositionType = 'staked' | 'unstaked'
 
 interface SingleFarmV3CardProps {
+  farm: V3Farm
   lpSymbol: string
   position: PositionDetails
   positionType: PositionType
@@ -60,6 +67,7 @@ interface SingleFarmV3CardProps {
 }
 
 const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFarmV3CardProps>> = ({
+  farm,
   lpSymbol,
   position,
   token,
@@ -116,10 +124,11 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
 
   return (
     <Box width="100%">
-      <ActionContainer>
+      <ActionContainer bg="background">
         <ActionContent width="100%" flexDirection="column">
           <FarmV3StakeAndUnStake
             title={title}
+            farm={farm}
             position={position}
             token={token}
             quoteToken={quoteToken}

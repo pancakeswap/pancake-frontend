@@ -194,7 +194,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
         {isActive && (
           <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
             <StakeContainer>
-              <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
+              <StyledLinkExternal href={`/v2/add/${liquidityUrlPathParts}`}>
                 {t('Get %symbol%', { symbol: lpLabel })}
               </StyledLinkExternal>
             </StakeContainer>

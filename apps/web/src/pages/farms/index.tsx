@@ -37,7 +37,7 @@ const FarmsPage = () => {
   return (
     <>
       {chosenFarmsMemoized?.map((farm) => {
-        if (farm.version === '2') {
+        if (farm.version === 2) {
           return farm.boosted ? (
             <ProxyFarmContainer farm={farm} key={farm.pid}>
               <ProxyFarmCardContainer farm={farm} />

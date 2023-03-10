@@ -9,7 +9,7 @@
   "rules": {
     "no-restricted-syntax": 0,
     "import/no-unresolved": 0,
-    "no-console": ["warn", { "allow": ["info", "warn", "error", "debug"] }],
+    "no-console": ["warn", { "allow": ["info", "warn", "error", "debug", "time", "timeLog", "timeEnd"] }],
     "no-plusplus": 0,
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "no-underscore-dangle": 0,
