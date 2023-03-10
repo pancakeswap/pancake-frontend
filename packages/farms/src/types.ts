@@ -1,4 +1,4 @@
-import { Token } from '@pancakeswap/swap-sdk-core'
+import { SerializedToken, Token } from '@pancakeswap/swap-sdk-core'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { SerializedWrappedToken } from '@pancakeswap/token-lists'
 import BigNumber from 'bignumber.js'
@@ -35,6 +35,7 @@ export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
 export type FarmV3Data = FarmConfigV3 & FarmsDynamicDataResultV2
 
 export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & FarmConfigV3
+export type SerializedFarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & SerializedFarmConfigV3
 
 export interface FarmConfigBaseProps {
   pid: number
@@ -76,6 +77,11 @@ export type FarmConfigV3 = {
   token: Token
   quoteToken: Token
   feeAmount: FeeAmount
+}
+
+export type SerializedFarmConfigV3 = FarmConfigV3 & {
+  token: SerializedToken
+  quoteToken: SerializedToken
 }
 
 export type SerializedFarmConfig = SerializedStableFarmConfig | SerializedClassicFarmConfig
@@ -195,7 +201,7 @@ export interface FarmWithStakedValue extends DeserializedFarm {
 // V3
 export interface FarmsV3Response {
   poolLength: number
-  farmsWithPrice: FarmV3DataWithPrice[]
+  farmsWithPrice: SerializedFarmV3DataWithPrice[]
   latestPeriodCakePerSecond: string
 }
 

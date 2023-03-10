@@ -1,45 +1,50 @@
-import { useEffect, useCallback, useState, useMemo, useRef } from 'react'
-import { ChainId } from '@pancakeswap/sdk'
-import { useAccount } from 'wagmi'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import {
-  Image,
-  Heading,
-  Toggle,
-  Text,
-  Button,
-  ArrowForwardIcon,
-  Flex,
-  Link,
-  Box,
-  Farm as FarmUI,
-  Loading,
-  SearchInput,
-  Select,
-  OptionProps,
-  FlexLayout,
-  PageHeader,
-  NextLinkFromReactRouter,
-  ToggleView,
-} from '@pancakeswap/uikit'
-import styled from 'styled-components'
-import Page from 'components/Layout/Page'
-import { usePriceCakeBusd } from 'state/farms/hooks'
-import { useCakeVaultUserData } from 'state/pools/hooks'
+  DeserializedFarm,
+  FarmV3DataWithPriceAndUserInfo,
+  FarmWithStakedValue,
+  filterFarmsByQuery,
+} from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import orderBy from 'lodash/orderBy'
-import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
-import { ViewMode } from 'state/user/actions'
-import { useRouter } from 'next/router'
+import { ChainId } from '@pancakeswap/sdk'
+import {
+  ArrowForwardIcon,
+  Box,
+  Button,
+  Farm as FarmUI,
+  Flex,
+  FlexLayout,
+  Heading,
+  Image,
+  Link,
+  Loading,
+  NextLinkFromReactRouter,
+  OptionProps,
+  PageHeader,
+  SearchInput,
+  Select,
+  Text,
+  Toggle,
+  ToggleView,
+} from '@pancakeswap/uikit'
+import BigNumber from 'bignumber.js'
+import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
-import _toLower from 'lodash/toLower'
+import orderBy from 'lodash/orderBy'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
 import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
-import { FarmV3DataWithPriceAndUserInfo, filterFarmsV3ByQuery } from '@pancakeswap/farms'
-import { getFarmV3Apr } from 'utils/apr'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
-import Table from './components/FarmTable/V3/FarmTable'
+import { useCakeVaultUserData } from 'state/pools/hooks'
+import { ViewMode } from 'state/user/actions'
+import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
+import styled from 'styled-components'
+import { getFarmApr, getFarmV3Apr } from 'utils/apr'
+import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
+import { useAccount } from 'wagmi'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
+import Table from './components/FarmTable/V3/FarmTable'
 import { FarmsV3Context } from './context'
 
 const ControlContainer = styled.div`
@@ -153,11 +158,33 @@ const FinishedTextLink = styled(Link)`
 
 const NUMBER_OF_FARMS_VISIBLE = 12
 
+interface V3Farm extends FarmV3DataWithPriceAndUserInfo {
+  version: '3'
+}
+interface V2Farm extends DeserializedFarm {
+  version: '2'
+}
+
+interface V2FarmWithStakedValue extends FarmWithStakedValue {
+  version: '2'
+}
+
+type V2AndV3Farms = Array<V3Farm | V2Farm>
+export type V2StakeValueAndV3Farms = Array<V3Farm | V2FarmWithStakedValue>
+
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const farmsV3: FarmV3DataWithPriceAndUserInfo[] = useFarmsV3WithPositions()
+  const { data: farmsV2, userDataLoaded, poolLength: v2PoolLength, regularCakePerBlock } = useFarms()
+  const { farmsWithPositions: farmsV3, poolLength: v3PoolLength } = useFarmsV3WithPositions()
+
+  const farmsLP: V2AndV3Farms = useMemo(() => {
+    return [
+      ...farmsV3.map((f) => ({ ...f, version: '3' } as V3Farm)),
+      ...farmsV2.map((f) => ({ ...f, version: '2' } as V2Farm)),
+    ]
+  }, [farmsV2, farmsV3])
 
   const cakePrice = usePriceCakeBusd()
 
@@ -177,41 +204,88 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   useCakeVaultUserData()
 
+  usePollFarmsWithUserData()
+
   // Users with no wallet connected should see 0 as Earned amount
   // Connected users should see loading indicator until first userData has loaded
-  const userDataReady = !account || (!!account && farmsV3.length > 0)
+  const userDataReady = !account || (!!account && farmsV3.length > 0 && userDataLoaded)
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
-  const activeFarms = farmsV3.filter(
-    (farm) => farm.pid !== 0 && farm.multiplier !== '0X' && (!farmsV3.length || farmsV3.length >= farm.pid),
+  const activeFarms = farmsLP.filter(
+    (farm) =>
+      farm.pid !== 0 &&
+      farm.multiplier !== '0X' &&
+      (farm.version === '3' ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
   )
 
-  const inactiveFarms = farmsV3.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
-  const archivedFarms = farmsV3
+  const archivedFarms = farmsLP
 
-  const stakedOnlyFarms = activeFarms.filter((farm) => farm.stakedPositions.length > 0)
+  const stakedOnlyFarms = activeFarms.filter((farm) => {
+    if (farm.version === '3') {
+      return farm.stakedPositions.length > 0
+    }
+    return (
+      farm.userData &&
+      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+    )
+  })
 
-  const stakedInactiveFarms = inactiveFarms.filter((farm) => farm.stakedPositions.length > 0)
+  const stakedInactiveFarms = inactiveFarms.filter((farm) => {
+    if (farm.version === '3') {
+      return farm.stakedPositions.length > 0
+    }
+    return (
+      farm.userData &&
+      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+    )
+  })
 
-  const stakedArchivedFarms = archivedFarms.filter((farm) => farm.stakedPositions.length > 0)
+  const stakedArchivedFarms = archivedFarms.filter((farm) => {
+    if (farm.version === '3') {
+      return farm.stakedPositions.length > 0
+    }
+    return (
+      farm.userData &&
+      (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
+        new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0))
+    )
+  })
 
   const farmsList = useCallback(
-    (farmsToDisplay: FarmV3DataWithPriceAndUserInfo[]): FarmV3DataWithPriceAndUserInfo[] => {
+    (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farms => {
       const farmsToDisplayWithAPR: any = farmsToDisplay.map((farm) => {
         if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
 
-        const { lpRewardsApr } = isActive ? getFarmV3Apr(chainId, farm.lpAddress) : { lpRewardsApr: 0 }
+        if (farm.version === '3') {
+          const { lpRewardsApr } = isActive ? getFarmV3Apr(chainId, farm.lpAddress) : { lpRewardsApr: 0 }
 
-        return { ...farm, lpRewardsApr }
+          return { ...farm, lpRewardsApr }
+        }
+        const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
+        const { cakeRewardsApr, lpRewardsApr } = isActive
+          ? getFarmApr(
+              chainId,
+              new BigNumber(farm.poolWeight),
+              cakePrice,
+              totalLiquidity,
+              farm.lpAddress,
+              regularCakePerBlock,
+            )
+          : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+
+        return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
 
-      return filterFarmsV3ByQuery(farmsToDisplayWithAPR, query)
+      return filterFarmsByQuery(farmsToDisplayWithAPR, query)
     },
-    [query, isActive, chainId],
+    [query, isActive, chainId, cakePrice, regularCakePerBlock],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -248,20 +322,19 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   ])
 
   const chosenFarmsMemoized = useMemo(() => {
-    const sortFarms = (farms: FarmV3DataWithPriceAndUserInfo[]): FarmV3DataWithPriceAndUserInfo[] => {
+    const sortFarms = (farms: V2StakeValueAndV3Farms): V2StakeValueAndV3Farms => {
       switch (sortOption) {
         case 'apr':
-          return orderBy(farms, (farm: FarmV3DataWithPriceAndUserInfo) => farm.cakeApr, 'desc')
+          return orderBy(farms, (farm) => (farm.version === '3' ? farm.cakeApr : farm.apr), 'desc')
         case 'multiplier':
-          return orderBy(
-            farms,
-            (farm: FarmV3DataWithPriceAndUserInfo) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0),
-            'desc',
-          )
+          return orderBy(farms, (farm) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0), 'desc')
         case 'earned':
           return orderBy(
             farms,
-            (farm: FarmV3DataWithPriceAndUserInfo) => {
+            (farm) => {
+              if (farm.version === '2') {
+                return farm.userData ? Number(farm.userData.earnings) : 0
+              }
               const totalEarned = Object.values(farm.pendingCakeByTokenIds)
                 .reduce((a, b) => a.add(b), EthersBigNumber.from('0'))
                 .toNumber()
@@ -270,9 +343,18 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             'desc',
           )
         case 'liquidity':
-          return orderBy(farms, (farm: FarmV3DataWithPriceAndUserInfo) => Number(farm.activeTvlUSD), 'desc')
+          return orderBy(
+            farms,
+            (farm) => {
+              if (farm.version === '3') {
+                return Number(farm.activeTvlUSD)
+              }
+              return Number(farm.liquidity)
+            },
+            'desc',
+          )
         case 'latest':
-          return orderBy(farms, (farm: FarmV3DataWithPriceAndUserInfo) => Number(farm.pid), 'desc')
+          return orderBy(farms, (farm) => Number(farm.pid), 'desc')
         default:
           return farms
       }
@@ -418,7 +500,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           </FinishedTextContainer>
         )}
         {viewMode === ViewMode.TABLE ? (
-          <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+          // <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+          <div>todo</div>
         ) : (
           <FlexLayout>{children}</FlexLayout>
         )}

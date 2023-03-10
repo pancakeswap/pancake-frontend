@@ -15,13 +15,28 @@ import {
 import { FARM_API } from 'config/constants/endpoints'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
+import { deserializeToken } from '@pancakeswap/token-lists'
 
-const farmV3ApiFetch = (chainId: number) => fetch(`${FARM_API}/v3/${chainId}/farms`).then((res) => res.json())
+const farmV3ApiFetch = (chainId: number) =>
+  fetch(`${FARM_API}/v3/${chainId}/farms`)
+    .then((res) => res.json())
+    .then((data: FarmsV3Response) => {
+      const farmsWithPrice = data.farmsWithPrice.map((f) => ({
+        ...f,
+        token: deserializeToken(f.token),
+        quoteToken: deserializeToken(f.quoteToken),
+      }))
+
+      return {
+        ...data,
+        farmsWithPrice,
+      }
+    })
 
 export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
-  const { data } = useSWRImmutable<FarmsV3Response>('farmV3ApiFetch', () => farmV3ApiFetch(chainId))
+  const { data } = useSWRImmutable('farmV3ApiFetch', () => farmV3ApiFetch(chainId))
 
   return useMemo(
     () => ({ farmsWithPrice: data?.farmsWithPrice || [], poolLength: data?.poolLength || 0 }),
@@ -103,8 +118,14 @@ export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): FarmV3DataWi
   )
 }
 
-export function useFarmsV3WithPositions(): FarmV3DataWithPriceAndUserInfo[] {
-  const { farmsWithPrice } = useFarmsV3()
+export function useFarmsV3WithPositions(): {
+  farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
+  poolLength: number
+} {
+  const { farmsWithPrice, poolLength } = useFarmsV3()
 
-  return usePositionsByUser(farmsWithPrice)
+  return {
+    farmsWithPositions: usePositionsByUser(farmsWithPrice),
+    poolLength,
+  }
 }

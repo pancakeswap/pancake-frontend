@@ -4,7 +4,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
 import { farmV3FetchFarms, fetchMasterChefV3Data, TvlMap, fetchCommonTokenUSDValue, CommonPrice } from './fetchFarmsV3'
-import { FarmConfigV3, FarmsV3Response } from './types'
+import { FarmConfigV3 } from './types'
 
 const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
 const supportedChainIdV3 = [ChainId.BSC_TESTNET, ChainId.GOERLI]
@@ -60,7 +60,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
     farms: FarmConfigV3[]
     tvlMap: TvlMap
     commonPrice: CommonPrice
-  }): Promise<FarmsV3Response> => {
+  }) => {
     // @ts-ignore
     const masterChefAddress = masterChefV3Addresses[chainId]
     if (!masterChefAddress) {
@@ -106,6 +106,5 @@ export * from './v2/deserializeFarmUserData'
 export * from './v2/deserializeFarm'
 export { FARM_AUCTION_HOSTING_IN_SECONDS } from './const'
 export * from './v2/filterFarmsByQuery'
-export * from './v3/filterFarmsV3ByQuery'
 
 export { masterChefV3Addresses, fetchCommonTokenUSDValue }
