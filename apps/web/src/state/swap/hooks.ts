@@ -115,6 +115,7 @@ export function useDerivedSwapInfo(
 } {
   const { address: account } = useAccount()
   const { t } = useTranslation()
+  const [allowedSlippage] = useUserSlippageTolerance()
 
   const to: string | null = (recipient === null ? account : isAddress(recipient) || null) ?? null
 
@@ -124,68 +125,77 @@ export function useDerivedSwapInfo(
   )
 
   const isExactIn: boolean = independentField === Field.INPUT
-  const parsedAmount = tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  const parsedAmount = useMemo(() => {
+    return tryParseAmount(typedValue, (isExactIn ? inputCurrency : outputCurrency) ?? undefined)
+  }, [typedValue, isExactIn, inputCurrency, outputCurrency])
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
-  const currencyBalances = {
-    [Field.INPUT]: relevantTokenBalances[0],
-    [Field.OUTPUT]: relevantTokenBalances[1],
-  }
+  const currencyBalances = useMemo(() => {
+    return {
+      [Field.INPUT]: relevantTokenBalances[0],
+      [Field.OUTPUT]: relevantTokenBalances[1],
+    }
+  }, [relevantTokenBalances])
 
-  const currencies: { [field in Field]?: Currency } = {
-    [Field.INPUT]: inputCurrency ?? undefined,
-    [Field.OUTPUT]: outputCurrency ?? undefined,
-  }
-
-  let inputError: string | undefined
-  if (!account) {
-    inputError = t('Connect Wallet')
-  }
-
-  if (!parsedAmount) {
-    inputError = inputError ?? t('Enter an amount')
-  }
-
-  if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
-    inputError = inputError ?? t('Select a token')
-  }
-
-  const formattedTo = isAddress(to)
-  if (!to || !formattedTo) {
-    inputError = inputError ?? t('Enter a recipient')
-  } else if (
-    BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
-    (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
-    (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
-  ) {
-    inputError = inputError ?? t('Invalid recipient')
-  }
-
-  const [allowedSlippage] = useUserSlippageTolerance()
-
-  const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+  const slippageAdjustedAmounts = useMemo(() => {
+    return v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
+  }, [v2Trade, allowedSlippage])
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
-    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
-  ]
+  const [balanceIn, amountIn] = useMemo(() => {
+    return [currencyBalances[Field.INPUT], slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null]
+  }, [currencyBalances, slippageAdjustedAmounts])
 
-  if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
-    inputError = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
-  }
+  const currencies: { [field in Field]?: Currency } = useMemo(() => {
+    return {
+      [Field.INPUT]: inputCurrency ?? undefined,
+      [Field.OUTPUT]: outputCurrency ?? undefined,
+    }
+  }, [inputCurrency, outputCurrency])
 
-  return {
-    currencies,
-    currencyBalances,
-    parsedAmount,
-    v2Trade: v2Trade ?? undefined,
-    inputError,
-  }
+  const inputError = useMemo(() => {
+    let result: string | undefined
+    if (!account) {
+      result = t('Connect Wallet')
+    }
+
+    if (!parsedAmount) {
+      result = result ?? t('Enter an amount')
+    }
+
+    if (!currencies[Field.INPUT] || !currencies[Field.OUTPUT]) {
+      result = result ?? t('Select a token')
+    }
+
+    const formattedTo = isAddress(to)
+    if (!to || !formattedTo) {
+      result = result ?? t('Enter a recipient')
+    } else if (
+      BAD_RECIPIENT_ADDRESSES.indexOf(formattedTo) !== -1 ||
+      (bestTradeExactIn && involvesAddress(bestTradeExactIn, formattedTo)) ||
+      (bestTradeExactOut && involvesAddress(bestTradeExactOut, formattedTo))
+    ) {
+      result = result ?? t('Invalid recipient')
+    }
+    if (balanceIn && amountIn && balanceIn.lessThan(amountIn)) {
+      result = t('Insufficient %symbol% balance', { symbol: amountIn.currency.symbol })
+    }
+    return result
+  }, [account, amountIn, balanceIn, bestTradeExactIn, bestTradeExactOut, currencies, parsedAmount, t, to])
+
+  return useMemo(() => {
+    return {
+      currencies,
+      currencyBalances,
+      parsedAmount,
+      v2Trade: v2Trade ?? undefined,
+      inputError,
+    }
+  }, [currencies, currencyBalances, parsedAmount, v2Trade, inputError])
 }
 
 function parseTokenAmountURLParameter(urlParam: any): string {
