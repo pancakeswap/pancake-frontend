@@ -44,7 +44,7 @@ export function useRoi({
       parseFloat(amountA.toExact()) * currencyAUsdPrice + parseFloat(amountB.toExact()) * currencyBUsdPrice,
     [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice]
   );
-  const { rate, apr, reward } = useRate({
+  const { rate, apr, reward, apy } = useRate({
     interest: parseFloat(fee24h.toSignificant(6)),
     principal,
     compoundEvery,
@@ -58,6 +58,7 @@ export function useRoi({
     fee,
     rate,
     apr,
+    apy,
   };
 }
 

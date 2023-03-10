@@ -15,15 +15,18 @@ const formatDecimalToPercent = (decimal: number) => {
 
 // @see https://www.calculatorsoup.com/calculators/financial/compound-interest-calculator.php
 export function useRate({ stakeFor = 1, ...rest }: Params) {
-  const apr = useApr(rest);
-  const { principal } = rest;
+  const { apr, apy } = useApr(rest);
+  const { principal, compoundEvery } = rest;
   const accrued = useMemo(() => {
     if (!principal) {
       return 0;
     }
 
-    return getAccrued(principal, apr, stakeFor);
-  }, [apr, principal, stakeFor]);
+    if (compoundEvery && compoundEvery >= stakeFor) {
+      return getAccrued(principal, apr, stakeFor);
+    }
+    return getAccrued(principal, apy, stakeFor);
+  }, [apy, principal, stakeFor, apr, compoundEvery]);
 
   const reward = useMemo(() => {
     if (!principal || !accrued) {
@@ -45,6 +48,7 @@ export function useRate({ stakeFor = 1, ...rest }: Params) {
     reward,
     rate,
     apr,
+    apy,
   };
 }
 
@@ -67,17 +71,28 @@ interface AprParams {
 export function useApr({ interest, principal, compoundEvery = 1, compoundOn = true }: Params) {
   return useMemo(() => {
     if (!interest || !principal) {
-      return ZERO_PERCENT;
+      return {
+        apr: ZERO_PERCENT,
+        apy: ZERO_PERCENT,
+      };
     }
 
+    const aprDecimal = (principal + interest * 365) / principal - 1;
+    const apr = formatDecimalToPercent(aprDecimal);
     if (!compoundOn) {
-      const decimal = (principal + interest * 365) / principal - 1;
-      return formatDecimalToPercent(decimal);
+      return {
+        apr,
+        apy: apr,
+      };
     }
 
     const ratePerPeriod = (principal + interest * compoundEvery) / principal;
     const compoundTimes = 365 / compoundEvery;
     const decimal = ratePerPeriod ** compoundTimes - 1;
-    return formatDecimalToPercent(decimal);
+    const apy = formatDecimalToPercent(decimal);
+    return {
+      apr,
+      apy,
+    };
   }, [interest, principal, compoundEvery, compoundOn]);
 }

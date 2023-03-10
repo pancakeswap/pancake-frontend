@@ -11,12 +11,12 @@ import { Link, LinkExternal } from "../Link";
 import { HelpIcon } from "../Svg";
 import { Text } from "../Text";
 
-const Footer = styled(Flex)`
+export const Footer = styled(Flex)`
   width: 100%;
   background: ${({ theme }) => theme.colors.dropdown};
 `;
 
-const BulletList = styled.ul`
+export const BulletList = styled.ul`
   list-style-type: none;
   margin-top: 16px;
   padding: 0;
