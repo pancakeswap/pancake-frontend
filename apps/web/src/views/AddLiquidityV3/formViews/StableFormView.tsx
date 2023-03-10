@@ -54,8 +54,8 @@ export default function StableFormView({
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
-  const reservedToken0 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[0].toString())
-  const reservedToken1 = CurrencyAmount.fromRawAmount(pair?.token0, reserves[1].toString())
+  const reservedToken0 = pair?.token0 ? CurrencyAmount.fromRawAmount(pair.token0, reserves[0].toString()) : null
+  const reservedToken1 = pair?.token1 ? CurrencyAmount.fromRawAmount(pair.token1, reserves[1].toString()) : null
 
   const totalLiquidityUSD = useTotalUSDValue({
     currency0: pair?.token0,
