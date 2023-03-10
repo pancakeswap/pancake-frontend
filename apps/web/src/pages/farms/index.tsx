@@ -1,33 +1,34 @@
 import { useContext } from 'react'
 import { SUPPORT_FARMS } from 'config/constants/supportChains'
-import { FarmsPageLayout, FarmsV3PageLayout, FarmsContext, FarmsV3Context } from 'views/Farms'
-import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
+import { FarmsV3PageLayout, FarmsV3Context } from 'views/Farms'
 import FarmV3Card from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
 import { usePriceCakeBusd } from 'state/farms/hooks'
 import { useAccount } from 'wagmi'
-import ProxyFarmContainer, {
-  YieldBoosterStateContext,
-} from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
+// import { FarmsPageLayout, FarmsContext } from 'views/Farms'
+// import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
+// import ProxyFarmContainer, {
+//   YieldBoosterStateContext,
+// } from 'views/Farms/components/YieldBooster/components/ProxyFarmContainer'
 
-const ProxyFarmCardContainer = ({ farm }) => {
-  const { address: account } = useAccount()
-  const cakePrice = usePriceCakeBusd()
+// const ProxyFarmCardContainer = ({ farm }) => {
+//   const { address: account } = useAccount()
+//   const cakePrice = usePriceCakeBusd()
 
-  const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
-  const finalFarm = shouldUseProxyFarm ? proxyFarm : farm
+//   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
+//   const finalFarm = shouldUseProxyFarm ? proxyFarm : farm
 
-  return (
-    <FarmCard
-      key={finalFarm.pid}
-      farm={finalFarm}
-      displayApr={getDisplayApr(finalFarm.apr, finalFarm.lpRewardsApr)}
-      cakePrice={cakePrice}
-      account={account}
-      removed={false}
-    />
-  )
-}
+//   return (
+//     <FarmCard
+//       key={finalFarm.pid}
+//       farm={finalFarm}
+//       displayApr={getDisplayApr(finalFarm.apr, finalFarm.lpRewardsApr)}
+//       cakePrice={cakePrice}
+//       account={account}
+//       removed={false}
+//     />
+//   )
+// }
 
 const FarmsPage = () => {
   const { address: account } = useAccount()

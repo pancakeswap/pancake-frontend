@@ -1,7 +1,6 @@
 import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Skeleton, Text } from '@pancakeswap/uikit'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -11,8 +10,7 @@ import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
-import { useV3LiquidityTotal } from 'hooks/v3/usePositionV3Liquidity'
-import ApyButton from '../ApyButton'
+// import { useV3LiquidityTotal } from 'hooks/v3/usePositionV3Liquidity'
 import CardActionsContainer from './CardActionsContainer'
 import CardHeading from '../CardHeading'
 
@@ -52,7 +50,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   farm,
   displayApr,
   removed,
-  cakePrice,
+  // cakePrice,
   account,
 }) => {
   const { t } = useTranslation()

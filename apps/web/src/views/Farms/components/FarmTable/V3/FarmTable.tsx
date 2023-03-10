@@ -1,19 +1,17 @@
-import { useRef, useMemo } from 'react'
+import { useRef } from 'react'
 import styled from 'styled-components'
-import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
+// import { RowType, DesktopColumnSchema } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
-import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import latinise from '@pancakeswap/utils/latinise'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { useRouter } from 'next/router'
-import { FarmWithStakedValue } from '@pancakeswap/farms'
-import { getDisplayApr } from '../../getDisplayApr'
-
-import Row, { RowProps } from './Row'
-import ProxyFarmContainer from '../../YieldBooster/components/ProxyFarmContainer'
+// import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
+// import latinise from '@pancakeswap/utils/latinise'
+// import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+// import { useRouter } from 'next/router'
+import { FarmV3DataWithPriceAndUserInfo } from '@pancakeswap/farms'
+// import { getDisplayApr } from '../../getDisplayApr'
+// import Row, { RowProps } from './Row'
 
 export interface ITableProps {
-  farms: FarmWithStakedValue[]
+  farms: FarmV3DataWithPriceAndUserInfo[]
   userDataReady: boolean
   cakePrice: BigNumber
   sortColumn?: string
@@ -65,155 +63,146 @@ const TableContainer = styled.div`
   position: relative;
 `
 
-const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cakePrice, userDataReady }) => {
+const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = () => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
-  const { query } = useRouter()
+  // const { query } = useRouter()
 
-  const columns = useMemo(
-    () =>
-      DesktopColumnSchema.map((column) => ({
-        id: column.id,
-        name: column.name,
-        label: column.label,
-        sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
-          switch (column.name) {
-            case 'farm':
-              return b.id - a.id
-            case 'apr':
-              if (a.original.apr.value && b.original.apr.value) {
-                return Number(a.original.apr.value) - Number(b.original.apr.value)
-              }
+  // const columns = useMemo(
+  //   () =>
+  //     DesktopColumnSchema.map((column) => ({
+  //       id: column.id,
+  //       name: column.name,
+  //       label: column.label,
+  //       sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
+  //         switch (column.name) {
+  //           case 'farm':
+  //             return b.id - a.id
+  //           case 'apr':
+  //             if (a.original.apr.value && b.original.apr.value) {
+  //               return Number(a.original.apr.value) - Number(b.original.apr.value)
+  //             }
 
-              return 0
-            case 'earned':
-              return a.original.earned.earnings - b.original.earned.earnings
-            default:
-              return 1
-          }
-        },
-        sortable: column.sortable,
-      })),
-    [],
-  )
+  //             return 0
+  //           case 'earned':
+  //             return a.original.earned.earnings - b.original.earned.earnings
+  //           default:
+  //             return 1
+  //         }
+  //       },
+  //       sortable: column.sortable,
+  //     })),
+  //   [],
+  // )
 
-  const getFarmEarnings = (farm) => {
-    let earnings = BIG_ZERO
-    const existingEarnings = new BigNumber(farm.userData.earnings)
+  // const getFarmEarnings = (farm) => {
+  //   let earnings = BIG_ZERO
+  //   // const existingEarnings = new BigNumber(farm.userData.earnings)
 
-    if (farm.boosted) {
-      const proxyEarnings = new BigNumber(farm.userData?.proxy?.earnings)
+  //   // if (farm.boosted) {
+  //   //   const proxyEarnings = new BigNumber(farm.userData?.proxy?.earnings)
 
-      earnings = proxyEarnings.gt(0) ? proxyEarnings : existingEarnings
-    } else {
-      earnings = existingEarnings
-    }
+  //   //   earnings = proxyEarnings.gt(0) ? proxyEarnings : existingEarnings
+  //   // } else {
+  //   //   earnings = existingEarnings
+  //   // }
 
-    return getBalanceNumber(earnings)
-  }
+  //   return getBalanceNumber(earnings)
+  // }
 
-  const getFarmStakedBalance = (farm) => {
-    let staked = BIG_ZERO
-    const stakedBalance = new BigNumber(farm.userData.stakedBalance)
+  // const getFarmStakedBalance = (farm) => {
+  //   let staked = BIG_ZERO
+  //   // const stakedBalance = new BigNumber(farm.userData.stakedBalance)
 
-    if (farm.boosted) {
-      const proxyStakedBalance = new BigNumber(farm.userData?.proxy?.stakedBalance)
+  //   // if (farm.boosted) {
+  //   //   const proxyStakedBalance = new BigNumber(farm.userData?.proxy?.stakedBalance)
 
-      staked = proxyStakedBalance.gt(0) ? proxyStakedBalance : stakedBalance
-    } else {
-      staked = stakedBalance
-    }
+  //   //   staked = proxyStakedBalance.gt(0) ? proxyStakedBalance : stakedBalance
+  //   // } else {
+  //   //   staked = stakedBalance
+  //   // }
 
-    return getBalanceNumber(staked)
-  }
+  //   return getBalanceNumber(staked)
+  // }
 
-  const generateRow = (farm) => {
-    const { token, quoteToken } = farm
-    const tokenAddress = token.address
-    const quoteTokenAddress = quoteToken.address
-    const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
-    const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
-    const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
-    const row: RowProps = {
-      apr: {
-        value: getDisplayApr(farm.apr, farm.lpRewardsApr),
-        pid: farm.pid,
-        multiplier: farm.multiplier,
-        lpLabel,
-        lpSymbol: farm.lpSymbol,
-        lpTokenPrice: farm.lpTokenPrice,
-        tokenAddress,
-        quoteTokenAddress,
-        cakePrice,
-        lpRewardsApr: farm.lpRewardsApr,
-        originalValue: farm.apr,
-        stableSwapAddress: farm.stableSwapAddress,
-        stableLpFee: farm.stableLpFee,
-      },
-      farm: {
-        label: lpLabel,
-        pid: farm.pid,
-        token: farm.token,
-        quoteToken: farm.quoteToken,
-        isReady: farm.multiplier !== undefined,
-        isStable: farm.isStable,
-        isBoosted: farm.boosted,
-      },
-      earned: {
-        earnings: getFarmEarnings(farm),
-        pid: farm.pid,
-      },
-      liquidity: {
-        liquidity: farm?.liquidity,
-      },
-      multiplier: {
-        multiplier: farm.multiplier,
-      },
-      availableLp: {
-        amount: getBalanceNumber(farm.userData.tokenBalance),
-      },
-      stakedLp: {
-        amount: getFarmStakedBalance(farm),
-      },
-      type: farm.isCommunity ? 'community' : 'core',
-      details: farm,
-      initialActivity,
-    }
+  // const generateRow = (farm) => {
+  //   const { token, quoteToken } = farm
+  //   const tokenAddress = token.address
+  //   const quoteTokenAddress = quoteToken.address
+  //   const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
+  //   const lowercaseQuery = latinise(typeof query?.search === 'string' ? query.search.toLowerCase() : '')
+  //   const initialActivity = latinise(lpLabel?.toLowerCase()) === lowercaseQuery
+  //   const row: RowProps = {
+  //     apr: {
+  //       value: getDisplayApr(farm.apr, farm.lpRewardsApr),
+  //       pid: farm.pid,
+  //       multiplier: farm.multiplier,
+  //       lpLabel,
+  //       lpSymbol: farm.lpSymbol,
+  //       lpTokenPrice: farm.lpTokenPrice,
+  //       tokenAddress,
+  //       quoteTokenAddress,
+  //       cakePrice,
+  //       lpRewardsApr: farm.lpRewardsApr,
+  //       originalValue: farm.apr,
+  //       stableSwapAddress: farm.stableSwapAddress,
+  //       stableLpFee: farm.stableLpFee,
+  //     },
+  //     farm: {
+  //       label: lpLabel,
+  //       pid: farm.pid,
+  //       token: farm.token,
+  //       quoteToken: farm.quoteToken,
+  //       isReady: farm.multiplier !== undefined,
+  //       isStable: farm.isStable,
+  //       isBoosted: farm.boosted,
+  //     },
+  //     earned: {
+  //       earnings: getFarmEarnings(farm),
+  //       pid: farm.pid,
+  //     },
+  //     liquidity: {
+  //       liquidity: farm?.liquidity,
+  //     },
+  //     multiplier: {
+  //       multiplier: farm.multiplier,
+  //     },
+  //     availableLp: {
+  //       amount: getBalanceNumber(farm.userData.tokenBalance),
+  //     },
+  //     stakedLp: {
+  //       amount: getFarmStakedBalance(farm),
+  //     },
+  //     details: farm,
+  //     initialActivity,
+  //   }
 
-    return row
-  }
+  //   return row
+  // }
 
-  const rowData = farms.map((farm) => generateRow(farm))
+  // const rowData = farms.map((farm) => generateRow(farm))
 
-  const generateSortedRow = (row) => {
-    // @ts-ignore
-    const newRow: RowProps = {}
-    columns.forEach((column) => {
-      if (!(column.name in row)) {
-        throw new Error(`Invalid row data, ${column.name} not found`)
-      }
-      newRow[column.name] = row[column.name]
-    })
-    newRow.initialActivity = row.initialActivity
-    return newRow
-  }
+  // const generateSortedRow = (row) => {
+  //   // @ts-ignore
+  //   const newRow: RowProps = {}
+  //   columns.forEach((column) => {
+  //     if (!(column.name in row)) {
+  //       throw new Error(`Invalid row data, ${column.name} not found`)
+  //     }
+  //     newRow[column.name] = row[column.name]
+  //   })
+  //   newRow.initialActivity = row.initialActivity
+  //   return newRow
+  // }
 
-  const sortedRows = rowData.map(generateSortedRow)
+  // const sortedRows = rowData.map(generateSortedRow)
 
   return (
-    <Container id="farms-table">
+    <Container id="farms-v3-table">
       <TableContainer id="table-container">
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>
             <TableBody>
-              {sortedRows.map((row) => {
-                return row?.details?.boosted ? (
-                  <ProxyFarmContainer key={`table-row-${row.farm.pid}`} farm={row.details}>
-                    <Row {...row} userDataReady={userDataReady} />
-                  </ProxyFarmContainer>
-                ) : (
-                  <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} />
-                )
-              })}
+              {/* {sortedRows.map((row) => <Row {...row} userDataReady={userDataReady} key={`table-row-${row.farm.pid}`} /> )} */}
             </TableBody>
           </StyledTable>
         </TableWrapper>

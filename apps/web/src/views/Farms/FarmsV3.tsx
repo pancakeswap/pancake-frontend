@@ -38,7 +38,7 @@ import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
 import { FarmV3DataWithPriceAndUserInfo, filterFarmsV3ByQuery } from '@pancakeswap/farms'
 import { getFarmV3Apr } from 'utils/apr'
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
-import Table from './components/FarmTable/FarmTable'
+import Table from './components/FarmTable/V3/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmsV3Context } from './context'
 
@@ -158,7 +158,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
   const farmsV3: FarmV3DataWithPriceAndUserInfo[] = useFarmsV3WithPositions()
-  console.log('farmsV3', farmsV3)
 
   const cakePrice = usePriceCakeBusd()
 
@@ -205,7 +204,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           return farm
         }
 
-        // const totalLiquidity = new BigNumber(farm.quoteTokenAmountTotal).times(farm.quoteTokenPriceBusd)
         const { lpRewardsApr } = isActive ? getFarmV3Apr(chainId, farm.lpAddress) : { lpRewardsApr: 0 }
 
         return { ...farm, lpRewardsApr }
@@ -419,8 +417,9 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </Flex>
           </FinishedTextContainer>
         )}
-        {viewMode === ViewMode.TABLE ? null : (
-          // <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+        {viewMode === ViewMode.TABLE ? (
+          <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+        ) : (
           <FlexLayout>{children}</FlexLayout>
         )}
         {account && farmsV3.length === 0 && stakedOnly && (
