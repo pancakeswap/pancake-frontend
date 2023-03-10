@@ -29,7 +29,7 @@ export function V2PairCard({ pair, account }: { pair: Pair; account: string }) {
               {pair.token1.symbol}
             </Text>
           </Flex>
-          <Tag ml="8px" variant="failure" outline>
+          <Tag ml="8px" variant="secondary">
             V2 LP
           </Tag>
         </Flex>

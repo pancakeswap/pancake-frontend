@@ -70,9 +70,8 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
         style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
       >
         <Tag
-          variant="failure"
+          variant="secondary"
           style={{ background: "none" }}
-          outline
           startIcon={<CurrencyIcon width="18px" color="failure" mr="4px" />}
           {...props}
         >
