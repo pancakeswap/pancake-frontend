@@ -2,7 +2,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import styled from "styled-components";
 
 import { RoiCalculatorProps, RoiCalculator } from "./RoiCalculator";
-import { Modal } from "../Modal";
+import { Modal, ModalV2, ModalV2Props } from "../Modal";
 
 export const StyledModal = styled(Modal)`
   & > :nth-child(2) {
@@ -14,22 +14,19 @@ export const StyledModal = styled(Modal)`
   }
 `;
 
-interface Props extends RoiCalculatorProps {
-  onBack?: () => void;
-  onDismiss?: () => void;
-}
-
-export function RoiCalculatorModal({ onBack, onDismiss, ...rest }: Props) {
+export function RoiCalculatorModal({
+  isOpen,
+  closeOnOverlayClick,
+  onDismiss,
+  ...rest
+}: RoiCalculatorProps & ModalV2Props) {
   const { t } = useTranslation();
 
   return (
-    <StyledModal
-      title={t("ROI Calculator")}
-      onDismiss={onBack || onDismiss}
-      onBack={onBack}
-      headerBackground="gradientCardHeader"
-    >
-      <RoiCalculator {...rest} />
-    </StyledModal>
+    <ModalV2 onDismiss={onDismiss} isOpen={isOpen} closeOnOverlayClick={closeOnOverlayClick}>
+      <StyledModal title={t("ROI Calculator")}>
+        <RoiCalculator {...rest} />
+      </StyledModal>
+    </ModalV2>
   );
 }

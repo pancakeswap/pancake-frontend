@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { LanguageProvider } from "@pancakeswap/localization";
 import { CurrencyAmount, JSBI, Price } from "@pancakeswap/sdk";
 import { ethereumTokens } from "@pancakeswap/tokens";
@@ -6,7 +6,6 @@ import { FeeAmount } from "@pancakeswap/v3-sdk";
 
 import { RoiCalculator } from "./RoiCalculator";
 import { RoiCalculatorModal } from "./RoiCalculatorModal";
-import { useModal } from "../Modal";
 import { Button } from "../../components/Button";
 import mockData from "../../components/LiquidityChartRangeInput/mockData.json";
 
@@ -57,9 +56,13 @@ export const Default: React.FC<React.PropsWithChildren> = () => {
 };
 
 export const CalculatorModal: React.FC<React.PropsWithChildren> = () => {
-  const [open] = useModal(
+  const [isOpen, setOpen] = useState(false);
+  return (
     <LanguageProvider>
+      <Button onClick={() => setOpen(true)}>Show modal</Button>
       <RoiCalculatorModal
+        isOpen={isOpen}
+        onDismiss={() => setOpen(false)}
         price={
           new Price({
             baseAmount: CurrencyAmount.fromRawAmount(ethereumTokens.usdc, "1564567634"),
@@ -92,5 +95,4 @@ export const CalculatorModal: React.FC<React.PropsWithChildren> = () => {
       />
     </LanguageProvider>
   );
-  return <Button onClick={open}>Show modal</Button>;
 };
