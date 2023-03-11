@@ -3,7 +3,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
+import useSWR from 'swr'
 import partition from 'lodash/partition'
 import toLower from 'lodash/toLower'
 import {
@@ -16,6 +16,7 @@ import { FARM_API } from 'config/constants/endpoints'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import { deserializeToken } from '@pancakeswap/token-lists'
+import { FAST_INTERVAL } from 'config/constants'
 
 const farmV3ApiFetch = (chainId: number) =>
   fetch(`${FARM_API}/v3/${chainId}/farms`)
@@ -36,15 +37,22 @@ const farmV3ApiFetch = (chainId: number) =>
 export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
-  const { data } = useSWRImmutable('farmV3ApiFetch', () => farmV3ApiFetch(chainId))
-
-  return useMemo(
-    () => ({ farmsWithPrice: data?.farmsWithPrice || [], poolLength: data?.poolLength || 0 }),
-    [data?.farmsWithPrice, data?.poolLength],
-  )
+  return useSWR('farmV3ApiFetch', () => farmV3ApiFetch(chainId), {
+    refreshInterval: FAST_INTERVAL,
+    fallbackData: {
+      farmsWithPrice: [],
+      poolLength: 0,
+      latestPeriodCakePerSecond: '0',
+    },
+  })
 }
 
-export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): FarmV3DataWithPriceAndUserInfo[] => {
+export const usePositionsByUser = (
+  farmsV3: FarmV3DataWithPrice[],
+): {
+  farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
+  userDataLoaded: boolean
+} => {
   const { account } = useActiveWeb3React()
   const positionManager = useV3NFTPositionManagerContract()
   const masterchefV3 = useMasterchefV3()
@@ -82,7 +90,10 @@ export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): FarmV3DataWi
     [stakedPositions, tokenIdResults],
   )
 
-  return useMemo(
+  // assume that if any of the tokenIds have a valid result, the data is ready
+  const userDataLoaded = useMemo(() => tokenIdResults.some((c) => c.valid), [tokenIdResults])
+
+  const farmsWithPositions = useMemo(
     () =>
       farmsV3.map((farm) => {
         const { token, quoteToken, feeAmount } = farm
@@ -116,16 +127,24 @@ export const usePositionsByUser = (farmsV3: FarmV3DataWithPrice[]): FarmV3DataWi
       }),
     [farmsV3, pendingCakeByTokenIds, stakedIds, stakedPositions, unstakedPositions],
   )
+
+  return {
+    farmsWithPositions,
+    userDataLoaded,
+  }
 }
 
 export function useFarmsV3WithPositions(): {
   farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
+  userDataLoaded: boolean
   poolLength: number
+  isLoading: boolean
 } {
-  const { farmsWithPrice, poolLength } = useFarmsV3()
+  const { data, isLoading } = useFarmsV3()
 
   return {
-    farmsWithPositions: usePositionsByUser(farmsWithPrice),
-    poolLength,
+    ...usePositionsByUser(data.farmsWithPrice),
+    poolLength: data.poolLength,
+    isLoading,
   }
 }

@@ -31,11 +31,12 @@ const handler: NextApiHandler = async (req, res) => {
 
   const tvls: TvlMap = {}
   if (supportedChainIdSubgraph.includes(chainId)) {
-    const results = await Promise.all(
+    const results = await Promise.allSettled(
       farms.map((f) => fetch(`${HOST}/api/v3/${chainId}/farms/tvl/${f.lpAddress}`).then((r) => r.json())),
     )
     results.forEach((r, i) => {
-      tvls[farms[i].lpAddress] = r.formatted
+      tvls[farms[i].lpAddress] =
+        r.status === 'fulfilled' ? { ...r.value.formatted, updatedAt: r.value.updatedAt } : null
     })
   }
 
@@ -54,7 +55,7 @@ const handler: NextApiHandler = async (req, res) => {
     quoteToken: f.quoteToken.serialize,
   }))
 
-  res.setHeader('Cache-Control', 's-maxage=30, max-age=10')
+  res.setHeader('Cache-Control', 's-maxage=60, max-age=30, stale-while-revalidate=300')
 
   return res.status(200).json({
     ...data,

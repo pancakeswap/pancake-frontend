@@ -1,5 +1,6 @@
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
 import { Farm as FarmUI, Flex, ModalV2 } from '@pancakeswap/uikit'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
 import { BigNumber } from 'bignumber.js'
 import { TokenPairImage } from 'components/TokenImage'
 import { useMemo, useState } from 'react'
@@ -32,9 +33,10 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
 
   const totalEarnings = useMemo(
     () =>
-      Object.values(pendingCakeByTokenIds)
-        .reduce((total, vault) => total.add(vault), EthersBigNumber.from('0'))
-        .toNumber(),
+      +formatBigNumber(
+        Object.values(pendingCakeByTokenIds).reduce((total, vault) => total.add(vault), EthersBigNumber.from('0')),
+        4,
+      ),
     [pendingCakeByTokenIds],
   )
 
@@ -53,7 +55,12 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
             <AvailableFarming
               lpSymbol={lpSymbol}
               unstakedPositions={unstakedPositions}
-              onClickViewAllButton={() => setShow(true)}
+              onClickViewAllButton={() => {
+                setShow(true)
+                setTimeout(() => {
+                  document.getElementById(`${farm.pid}-farm-v3-available`)?.scrollIntoView()
+                })
+              }}
             />
           )}
           {stakedPositions.length > 0 && (
@@ -61,7 +68,12 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
               stakedPositions={stakedPositions}
               earnings={totalEarnings}
               earningsBusd={earningsBusd}
-              onClickViewAllButton={() => setShow(true)}
+              onClickViewAllButton={() => {
+                setShow(true)
+                setTimeout(() => {
+                  document.getElementById(`${farm.pid}-farm-v3-staking`)?.scrollIntoView()
+                })
+              }}
             />
           )}
         </>
@@ -72,6 +84,8 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
           isReady={isReady}
           lpSymbol={lpSymbol}
           multiplier={multiplier}
+          boosted={farm.boosted}
+          feeAmount={farm.feeAmount}
           liquidityUrlPathParts={liquidityUrlPathParts}
           tokenPairImage={
             <TokenPairImage

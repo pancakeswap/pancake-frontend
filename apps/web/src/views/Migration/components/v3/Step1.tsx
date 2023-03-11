@@ -18,7 +18,9 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { data: farmsLP, userDataLoaded } = useFarms()
-  const { farmsWithPrice } = useFarmsV3()
+  const {
+    data: { farmsWithPrice },
+  } = useFarmsV3()
   const cakePrice = usePriceCakeBusd()
   const { chainId } = useActiveChainId()
 

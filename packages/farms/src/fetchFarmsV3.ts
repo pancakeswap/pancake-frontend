@@ -383,7 +383,7 @@ export type TvlMap = {
     token0: string
     token1: string
     updatedAt: string
-  }
+  } | null
 }
 
 export type CommonPrice = {
@@ -446,9 +446,14 @@ function getFarmsPrices(
       quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
     }
 
-    if (!tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && tvls[farm.lpAddress]) {
+    if (
+      !tokenPriceBusd.isZero() &&
+      !quoteTokenPriceBusd.isZero() &&
+      !!tvls[farm.lpAddress]?.token0 &&
+      !!tvls[farm.lpAddress]?.token1
+    ) {
       tvl = tokenPriceBusd
-        .mulUnsafe(FixedNumber.from(tvls[farm.lpAddress].token0))
+        .mulUnsafe(FixedNumber.from(tvls[farm.lpAddress]?.token0))
         .addUnsafe(quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(tvls[farm.lpAddress].token1)))
     }
 

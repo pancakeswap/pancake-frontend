@@ -1,23 +1,24 @@
-import styled from 'styled-components'
-import { useMemo } from 'react'
-import { PositionDetails, IPendingCakeByTokenId } from '@pancakeswap/farms'
-import { Flex, Box, Farm as FarmUI } from '@pancakeswap/uikit'
-import { ActionContent, ActionTitles } from 'views/Farms/components/FarmTable/V3/Actions/styles'
+import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { IPendingCakeByTokenId, PositionDetails } from '@pancakeswap/farms'
+import { Token } from '@pancakeswap/swap-sdk-core'
+import { AtomBox, AtomBoxProps } from '@pancakeswap/ui'
+import { Farm as FarmUI, Flex, RowBetween } from '@pancakeswap/uikit'
+import { formatBigNumber } from '@pancakeswap/utils/formatBalance'
+import { BigNumber } from 'bignumber.js'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { Token } from '@pancakeswap/swap-sdk-core'
-import { useAccount, useSigner } from 'wagmi'
-import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import JSBI from 'jsbi'
-import { BigNumber } from 'bignumber.js'
-import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
+import { useMemo } from 'react'
 import { usePriceCakeBusd } from 'state/farms/hooks'
+import styled from 'styled-components'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
+import { useAccount, useSigner } from 'wagmi'
 import FarmV3StakeAndUnStake from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
-const ActionContainer = styled(Flex)`
+const ActionContainer = styled(Flex)<{ $direction: 'row' | 'column' }>`
   width: 100%;
   padding: 0 16px;
   border: 2px solid ${({ theme }) => theme.colors.input};
@@ -25,28 +26,10 @@ const ActionContainer = styled(Flex)`
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 8px;
-  // background-color: ${({ theme }) => theme.colors.dropdown};
-  flex-direction: column;
-
-  > ${ActionTitles}, > ${ActionContent} {
-    padding: 16px 0;
-
-    &:first-child {
-      padding-left: 0;
-    }
-
-    &:last-child {
-      padding-right: 0;
-    }
-  }
-
-  ${ActionContent} {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.input};
-
-    &:last-child {
-      border: 0;
-    }
-  }
+  flex-direction: ${({ $direction }) => $direction};
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 24px;
 `
 
 ActionContainer.defaultProps = {
@@ -64,9 +47,12 @@ interface SingleFarmV3CardProps {
   quoteToken: Token
   pendingCakeByTokenIds: IPendingCakeByTokenId
   onDismiss?: () => void
+  direction?: 'row' | 'column'
 }
 
-const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFarmV3CardProps>> = ({
+const SingleFarmV3Card: React.FunctionComponent<
+  React.PropsWithChildren<SingleFarmV3CardProps & Omit<AtomBoxProps, 'position'>>
+> = ({
   farm,
   lpSymbol,
   position,
@@ -75,6 +61,8 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
   positionType,
   pendingCakeByTokenIds,
   onDismiss,
+  direction = 'column',
+  ...atomBoxProps
 }) => {
   const { chainId } = useActiveChainId()
   const { address: account } = useAccount()
@@ -112,20 +100,23 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
     }
   }
 
-  const totalEarnings = useMemo(() => {
-    return Object.values(pendingCakeByTokenIds)
-      .reduce((total, vault) => total.add(vault), EthersBigNumber.from('0'))
-      .toNumber()
-  }, [pendingCakeByTokenIds])
+  const totalEarnings = useMemo(
+    () =>
+      +formatBigNumber(
+        Object.values(pendingCakeByTokenIds).reduce((total, vault) => total.add(vault), EthersBigNumber.from('0')),
+        4,
+      ),
+    [pendingCakeByTokenIds],
+  )
 
   const earningsBusd = useMemo(() => {
     return new BigNumber(totalEarnings).times(cakePrice).toNumber()
   }, [cakePrice, totalEarnings])
 
   return (
-    <Box width="100%">
-      <ActionContainer bg="background">
-        <ActionContent width="100%" flexDirection="column">
+    <AtomBox {...atomBoxProps}>
+      <ActionContainer bg="background" $direction={direction}>
+        <RowBetween flexDirection="column" alignItems="flex-start" flex={1}>
           <FarmV3StakeAndUnStake
             title={title}
             farm={farm}
@@ -138,20 +129,23 @@ const SingleFarmV3Card: React.FunctionComponent<React.PropsWithChildren<SingleFa
             handleStake={handleStake}
             handleUnStake={handleUnStake}
           />
-        </ActionContent>
+        </RowBetween>
         {positionType !== 'unstaked' && (
-          <ActionContent width="100%" flexDirection="column">
-            <FarmV3HarvestAction
-              earnings={totalEarnings}
-              earningsBusd={earningsBusd}
-              pendingTx={false}
-              userDataReady={false}
-              handleHarvest={handleHarvest}
-            />
-          </ActionContent>
+          <>
+            <AtomBox border="1" />
+            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="full">
+              <FarmV3HarvestAction
+                earnings={totalEarnings}
+                earningsBusd={earningsBusd}
+                pendingTx={false}
+                userDataReady={false}
+                handleHarvest={handleHarvest}
+              />
+            </RowBetween>
+          </>
         )}
       </ActionContainer>
-    </Box>
+    </AtomBox>
   )
 }
 

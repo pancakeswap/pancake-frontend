@@ -86,7 +86,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           token={farm.token}
           quoteToken={farm.quoteToken}
           version={3}
-          feePercent={farm.feeAmount / 10_000}
+          feeAmount={farm.feeAmount}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
@@ -103,21 +103,6 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
                   >
                     {displayApr}%
                   </FarmUI.FarmApyButton>
-                  {/* <ApyButton
-                    variant="text-and-button"
-                    pid={farm.pid}
-                    // lpTokenPrice={farm.lpTokenPrice}
-                    lpTokenPrice={BIG_ZERO}
-                    lpSymbol={farm.lpSymbol}
-                    multiplier={farm.multiplier}
-                    lpLabel={lpLabel}
-                    addLiquidityUrl={addLiquidityUrl}
-                    cakePrice={cakePrice}
-                    apr={Number(farm.cakeApr)}
-                    displayApr={displayApr}
-                    lpRewardsApr={farm.lpRewardsApr}
-                    useTooltipText
-                  /> */}
                 </>
               ) : (
                 <Skeleton height={24} width={80} />

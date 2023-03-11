@@ -3,21 +3,23 @@ import {
   Farm as FarmUI,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
+  Flex,
   LinkExternal,
   Text,
   useMatchBreakpoints,
-  Flex,
 } from '@pancakeswap/uikit'
-
-import { FarmWithStakedValue } from '@pancakeswap/farms'
+import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { useContext, useMemo } from 'react'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { FC, useContext, useMemo } from 'react'
 import { multiChainPaths } from 'state/info/constant'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 
+import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
+import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
 import Apr, { AprProps } from '../Apr'
@@ -26,12 +28,26 @@ import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAct
 import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from './styles'
 
 const { Multiplier, Liquidity } = FarmUI.FarmTable
+const { NoPosition } = FarmUI.FarmV3Table
 
 export interface ActionPanelProps {
   apr: AprProps
   multiplier: FarmTableMultiplierProps
   liquidity: FarmTableLiquidityProps
-  details: FarmWithStakedValue
+  details: V2Farm
+  userDataReady: boolean
+  expanded: boolean
+  alignLinksToRight?: boolean
+}
+
+export interface ActionPanelV3Props {
+  apr: {
+    value: string
+    pid: number
+  }
+  multiplier: FarmTableMultiplierProps
+  liquidity: FarmTableLiquidityProps
+  details: V3Farm
   userDataReady: boolean
   expanded: boolean
   alignLinksToRight?: boolean
@@ -69,12 +85,13 @@ const Container = styled.div<{ expanded }>`
   display: flex;
   width: 100%;
   flex-direction: column-reverse;
-  padding: 24px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 
   ${({ theme }) => theme.mediaQueries.lg} {
     flex-direction: row;
     align-items: center;
-    padding: 16px 32px;
+    padding: 16px 24px;
   }
 `
 
@@ -95,6 +112,9 @@ const StakeContainer = styled.div`
 
 const ActionContainer = styled.div`
   display: flex;
+  overflow: auto;
+  padding-left: 24px;
+  padding-right: 24px;
   flex-direction: column;
 
   ${({ theme }) => theme.mediaQueries.sm} {
@@ -108,6 +128,8 @@ const ActionContainer = styled.div`
 
 const InfoContainer = styled.div`
   min-width: 200px;
+  padding-left: 24px;
+  padding-right: 24px;
 `
 
 const ValueContainer = styled.div``
@@ -119,7 +141,123 @@ const ValueWrapper = styled.div`
   margin: 4px 0px;
 `
 
-const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelProps>> = ({
+const ActionPanelContainer = ({ expanded, values, infos, children }) => {
+  return (
+    <Container expanded={expanded}>
+      <InfoContainer>
+        <ValueContainer>{values}</ValueContainer>
+        {infos}
+      </InfoContainer>
+      <ActionContainer>{children}</ActionContainer>
+    </Container>
+  )
+}
+
+export const ActionPanelV3: FC<ActionPanelV3Props> = ({
+  apr,
+  expanded,
+  details,
+  multiplier,
+  liquidity,
+  alignLinksToRight,
+  userDataReady,
+}) => {
+  const { isDesktop } = useMatchBreakpoints()
+  const { t } = useTranslation()
+  const farm = details
+  const isActive = farm.multiplier !== '0X'
+  const { quoteToken, token } = farm
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
+
+  const liquidityUrlPathParts = getLiquidityUrlPathParts({
+    quoteTokenAddress: quoteToken.address,
+    tokenAddress: token.address,
+    chainId: token.chainId,
+    feeAmount: farm.feeAmount,
+  })
+  const { lpAddress } = farm
+  const bsc = getBlockExploreLink(lpAddress, 'address', token.chainId)
+
+  const infoUrl = useMemo(() => {
+    return `/info${multiChainPaths[token.chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[token.chainId]}`
+  }, [lpAddress, token.chainId])
+
+  const { account } = useActiveWeb3React()
+
+  const hasNoPosition = useMemo(
+    () => userDataReady && farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
+    [farm.stakedPositions.length, farm.unstakedPositions.length, userDataReady],
+  )
+
+  return (
+    <ActionPanelContainer
+      expanded={expanded}
+      values={
+        <>
+          {!isDesktop && (
+            <>
+              <ValueWrapper>
+                <Text>{t('APR')}</Text>
+                {/* TODO: v3 farm ROI calculator */}
+                <FarmUI.FarmApyButton
+                  variant="text"
+                  handleClickButton={() => {
+                    //
+                  }}
+                >
+                  {apr.value}%
+                </FarmUI.FarmApyButton>
+              </ValueWrapper>
+              <ValueWrapper>
+                <Text>{t('Multiplier')}</Text>
+                <Multiplier {...multiplier} />
+              </ValueWrapper>
+              <ValueWrapper>
+                <Text>{t('Liquidity')}</Text>
+                <Liquidity {...liquidity} />
+              </ValueWrapper>
+            </>
+          )}
+        </>
+      }
+      infos={
+        <>
+          {isActive && (
+            <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+              <StakeContainer>
+                <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
+                  {t('Get %symbol%', { symbol: lpLabel })}
+                </StyledLinkExternal>
+              </StakeContainer>
+            </Flex>
+          )}
+          <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+            <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
+          </Flex>
+          <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+            <StyledLinkExternal isBscScan href={bsc}>
+              {t('View Contract')}
+            </StyledLinkExternal>
+          </Flex>
+        </>
+      }
+    >
+      {userDataReady && account && !hasNoPosition ? (
+        <FarmV3CardList farm={farm} direction="row" />
+      ) : (
+        <NoPosition
+          boostedAction={null}
+          account={account}
+          hasNoPosition={hasNoPosition}
+          liquidityUrlPathParts={`/add/${liquidityUrlPathParts}`}
+          connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
+        />
+      )}
+    </ActionPanelContainer>
+  )
+}
+
+export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<ActionPanelProps>> = ({
   details,
   apr,
   multiplier,
@@ -159,9 +297,10 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
   }, [chainId, farm.isStable, lpAddress, stableSwapAddress])
 
   return (
-    <Container expanded={expanded}>
-      <InfoContainer>
-        <ValueContainer>
+    <ActionPanelContainer
+      expanded={expanded}
+      values={
+        <>
           {farm.isCommunity && farm.auctionHostingEndDate && (
             <ValueWrapper>
               <Text>{t('Auction Hosting Ends')}</Text>
@@ -190,71 +329,72 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
               </ValueWrapper>
             </>
           )}
-        </ValueContainer>
-        {isActive && (
+        </>
+      }
+      infos={
+        <>
+          {isActive && (
+            <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+              <StakeContainer>
+                <StyledLinkExternal href={`/v2/add/${liquidityUrlPathParts}`}>
+                  {t('Get %symbol%', { symbol: lpLabel })}
+                </StyledLinkExternal>
+              </StakeContainer>
+            </Flex>
+          )}
           <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-            <StakeContainer>
-              <StyledLinkExternal href={`/v2/add/${liquidityUrlPathParts}`}>
-                {t('Get %symbol%', { symbol: lpLabel })}
-              </StyledLinkExternal>
-            </StakeContainer>
+            <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
           </Flex>
-        )}
-        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <StyledLinkExternal href={infoUrl}>{t('See Pair Info')}</StyledLinkExternal>
-        </Flex>
-        <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
-          <StyledLinkExternal isBscScan href={bsc}>
-            {t('View Contract')}
-          </StyledLinkExternal>
-        </Flex>
-      </InfoContainer>
-      <ActionContainer>
-        {shouldUseProxyFarm ? (
-          <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
-          </ProxyHarvestActionContainer>
-        ) : (
-          <HarvestActionContainer {...farm} userDataReady={userDataReady}>
-            {(props) => <HarvestAction {...props} />}
-          </HarvestActionContainer>
-        )}
-        {farm?.boosted && (
-          <ActionContainerSection style={{ minHeight: 124.5 }}>
-            <BoostedAction
-              title={(status) => (
-                <ActionTitles>
-                  <Text mr="3px" bold textTransform="uppercase" color="textSubtle" fontSize="12px">
-                    {t('Yield Booster')}
-                  </Text>
-                  <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
-                    {status}
-                  </Text>
-                </ActionTitles>
-              )}
-              desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
-              farmPid={farm?.pid}
-              lpTokenStakedAmount={farm?.lpTokenStakedAmount}
-              userBalanceInFarm={
-                stakedBalance.plus(tokenBalance).gt(0)
-                  ? stakedBalance.plus(tokenBalance)
-                  : proxy.stakedBalance.plus(proxy.tokenBalance)
-              }
-            />
-          </ActionContainerSection>
-        )}
-        {shouldUseProxyFarm ? (
-          <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-            {(props) => <StakedAction {...props} />}
-          </ProxyStakedContainer>
-        ) : (
-          <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
-            {(props) => <StakedAction {...props} />}
-          </StakedContainer>
-        )}
-      </ActionContainer>
-    </Container>
+          <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
+            <StyledLinkExternal isBscScan href={bsc}>
+              {t('View Contract')}
+            </StyledLinkExternal>
+          </Flex>
+        </>
+      }
+    >
+      {shouldUseProxyFarm ? (
+        <ProxyHarvestActionContainer {...proxyFarm} userDataReady={userDataReady}>
+          {(props) => <HarvestAction {...props} />}
+        </ProxyHarvestActionContainer>
+      ) : (
+        <HarvestActionContainer {...farm} userDataReady={userDataReady}>
+          {(props) => <HarvestAction {...props} />}
+        </HarvestActionContainer>
+      )}
+      {farm?.boosted && (
+        <ActionContainerSection style={{ minHeight: 124.5 }}>
+          <BoostedAction
+            title={(status) => (
+              <ActionTitles>
+                <Text mr="3px" bold textTransform="uppercase" color="textSubtle" fontSize="12px">
+                  {t('Yield Booster')}
+                </Text>
+                <Text bold textTransform="uppercase" color="secondary" fontSize="12px">
+                  {status}
+                </Text>
+              </ActionTitles>
+            )}
+            desc={(actionBtn) => <ActionContent>{actionBtn}</ActionContent>}
+            farmPid={farm?.pid}
+            lpTokenStakedAmount={farm?.lpTokenStakedAmount}
+            userBalanceInFarm={
+              stakedBalance.plus(tokenBalance).gt(0)
+                ? stakedBalance.plus(tokenBalance)
+                : proxy.stakedBalance.plus(proxy.tokenBalance)
+            }
+          />
+        </ActionContainerSection>
+      )}
+      {shouldUseProxyFarm ? (
+        <ProxyStakedContainer {...proxyFarm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+          {(props) => <StakedAction {...props} />}
+        </ProxyStakedContainer>
+      ) : (
+        <StakedContainer {...farm} userDataReady={userDataReady} lpLabel={lpLabel} displayApr={apr.value}>
+          {(props) => <StakedAction {...props} />}
+        </StakedContainer>
+      )}
+    </ActionPanelContainer>
   )
 }
-
-export default ActionPanel

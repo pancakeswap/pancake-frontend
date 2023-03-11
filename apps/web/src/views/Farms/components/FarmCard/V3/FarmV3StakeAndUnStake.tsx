@@ -15,6 +15,7 @@ import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { Bound } from 'config/constants/types'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import BigNumber from 'bignumber.js'
+import { RowBetween } from '@pancakeswap/uikit'
 
 const StyledLink = styled(Link)`
   &:hover {
@@ -73,9 +74,9 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
         </Text>
         <ChevronRightIcon color="secondary" fontSize="12px" />
       </StyledLink>
-      <Flex justifyContent="space-between">
+      <RowBetween gap="16px">
         <Box>
-          <Text bold fontSize={['12px', '12px', '12px', '14px']}>
+          <Text bold fontSize="12px">
             {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
               minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
               maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
@@ -118,7 +119,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
             {t('Unstake')}
           </Button>
         )}
-      </Flex>
+      </RowBetween>
     </>
   )
 }

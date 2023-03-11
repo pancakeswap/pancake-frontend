@@ -26,9 +26,7 @@ export interface FarmTableFarmTokenInfoProps {
   token: Token;
   quoteToken: Token;
   isReady: boolean;
-  isStable?: boolean;
-  isBoosted?: boolean;
-  stakedBalance?: BigNumber;
+  isStaking?: boolean;
   children?: ReactNode;
 }
 
@@ -103,18 +101,19 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
     sortable: true,
     label: "Multiplier",
   },
-  {
-    id: 7,
-    name: "availableLp",
-    sortable: false,
-    label: "Available",
-  },
-  {
-    id: 8,
-    name: "stakedLp",
-    sortable: false,
-    label: "Staked",
-  },
+  // TODO: v3 farms
+  // {
+  //   id: 7,
+  //   name: "availableLp",
+  //   sortable: false,
+  //   label: "Available",
+  // },
+  // {
+  //   id: 8,
+  //   name: "stakedLp",
+  //   sortable: false,
+  //   label: "Staked",
+  // },
   {
     id: 7,
     name: "details",

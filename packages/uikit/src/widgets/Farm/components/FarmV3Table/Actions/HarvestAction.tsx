@@ -24,7 +24,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   const { t } = useTranslation();
 
   return (
-    <Flex height="100%" flexDirection="column">
+    <Flex height="100%" flexDirection="column" width="100%">
       <ActionTitles>
         <Text bold textTransform="uppercase" color="secondary" fontSize="12px" pr="4px">
           CAKE

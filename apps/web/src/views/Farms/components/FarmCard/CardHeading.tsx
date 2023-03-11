@@ -1,10 +1,11 @@
 import styled from 'styled-components'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { Tag, Flex, Heading, Skeleton, Farm as FarmUI, AutoRow } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
-const { FarmAuctionTag, StableFarmTag } = FarmUI.Tags
+const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
 
 type ExpandableSectionProps = {
   lpLabel?: string
@@ -15,7 +16,7 @@ type ExpandableSectionProps = {
   boosted?: boolean
   isStable?: boolean
   version: 3 | 2
-  feePercent?: number
+  feeAmount?: FeeAmount
 }
 
 const Wrapper = styled(Flex)`
@@ -37,7 +38,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   boosted,
   isStable,
   version,
-  feePercent,
+  feeAmount,
 }) => {
   const isReady = multiplier !== undefined
 
@@ -51,18 +52,8 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
       <Flex flexDirection="column" alignItems="flex-end">
         {isReady ? <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading> : <Skeleton mb="4px" width={60} height={18} />}
         <AutoRow gap="4px" justifyContent="flex-end">
-          {isReady && isStable ? (
-            <StableFarmTag />
-          ) : version === 2 ? (
-            <Tag variant="textDisabled" outline>
-              V2
-            </Tag>
-          ) : null}
-          {isReady && version === 3 && (
-            <Tag variant="secondary" outline>
-              {feePercent}%
-            </Tag>
-          )}
+          {isReady && isStable ? <StableFarmTag /> : version === 2 ? <V2Tag /> : null}
+          {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
           {isReady && boosted && <BoostedTag />}
           {isReady && isCommunityFarm && <FarmAuctionTag />}
           {isReady ? (

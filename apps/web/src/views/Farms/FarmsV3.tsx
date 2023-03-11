@@ -44,7 +44,7 @@ import { getFarmApr, getFarmV3Apr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
-// import Table from './components/FarmTable/V3/FarmTable'
+import Table from './components/FarmTable/FarmTable'
 import { FarmsV3Context } from './context'
 
 const ControlContainer = styled.div`
@@ -64,6 +64,7 @@ const ControlContainer = styled.div`
     margin-bottom: 0;
   }
 `
+
 const FarmFlexWrapper = styled(Flex)`
   flex-wrap: wrap;
   ${({ theme }) => theme.mediaQueries.md} {
@@ -183,8 +184,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
   const { chainId } = useActiveChainId()
-  const { data: farmsV2, userDataLoaded, poolLength: v2PoolLength, regularCakePerBlock } = useFarms()
-  const { farmsWithPositions: farmsV3, poolLength: v3PoolLength } = useFarmsV3WithPositions()
+  const { data: farmsV2, userDataLoaded: v2UserDataLoaded, poolLength: v2PoolLength, regularCakePerBlock } = useFarms()
+  const {
+    farmsWithPositions: farmsV3,
+    poolLength: v3PoolLength,
+    isLoading,
+    userDataLoaded: v3UserDataLoaded,
+  } = useFarmsV3WithPositions()
 
   const farmsLP: V2AndV3Farms = useMemo(() => {
     return [
@@ -215,7 +221,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   // Users with no wallet connected should see 0 as Earned amount
   // Connected users should see loading indicator until first userData has loaded
-  const _userDataReady = !account || (!!account && farmsV3.length > 0 && userDataLoaded)
+  const userDataReady = !account || (!!account && v2UserDataLoaded && v3UserDataLoaded)
 
   const [stakedOnly, setStakedOnly] = useUserFarmStakedOnly(isActive)
 
@@ -344,7 +350,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               }
               const totalEarned = Object.values(farm.pendingCakeByTokenIds)
                 .reduce((a, b) => a.add(b), EthersBigNumber.from('0'))
-                .toNumber()
+                .toString()
               return account && farm.stakedPositions.length > 0 ? totalEarned : 0
             },
             'desc',
@@ -506,12 +512,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             </Flex>
           </FinishedTextContainer>
         )}
-        {viewMode === ViewMode.TABLE ? (
-          // <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
-          <div>todo</div>
-        ) : (
-          <FlexLayout>{children}</FlexLayout>
-        )}
+
+        {!isLoading && // FarmV3 initial data will be slower, wait for it loads for now to prevent showing the v2 farm from config and then v3 pop up later
+          (viewMode === ViewMode.TABLE ? (
+            <Table farms={chosenFarmsMemoized} cakePrice={cakePrice} userDataReady={userDataReady} />
+          ) : (
+            <FlexLayout>{children}</FlexLayout>
+          ))}
         {account && farmsV3.length === 0 && stakedOnly && (
           <Flex justifyContent="center">
             <Loading />
