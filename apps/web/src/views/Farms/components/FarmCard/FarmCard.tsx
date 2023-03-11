@@ -106,6 +106,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           boosted={farm.boosted}
           isStable={farm.isStable}
           version={2}
+          pid={farm.pid}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">

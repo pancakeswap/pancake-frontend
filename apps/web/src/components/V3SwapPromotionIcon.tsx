@@ -5,6 +5,13 @@ import { useCallback, useEffect, useState } from 'react'
 
 import styled, { keyframes } from 'styled-components'
 
+export const v3PromotionFarms = {
+  3: true, // BUSD-WBNB LP pid
+  10: true, // ETH-BNB LP pid
+  11: true, // BTCB-BNB LP pid
+  13: true, // USDT-BNB LP pid
+}
+
 const shineAnimation = keyframes`
 	0% {transform:translateX(-100%); opacity: 1;}
   20% {transform:translateX(100%); opacity: 1;}
@@ -71,7 +78,7 @@ export const V3SwapPromotionIcon: React.FC<{ wrapperStyle?: React.CSSProperties 
     manualVisible: mobileCampaignTooltipShow,
   })
   return (
-    <Text style={wrapperStyle}>
+    <Text style={wrapperStyle} display="inline-block">
       <ColoredIconButton className="is-shining" variant="text" scale="sm">
         <TooltipText
           ref={campaignTargetRef}
