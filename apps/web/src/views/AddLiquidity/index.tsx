@@ -37,6 +37,7 @@ import { ethereumTokens } from '@pancakeswap/tokens'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { ContractMethodName } from 'utils/types'
 import { STGWarningModal } from 'components/STGWarningModal'
+import { oldSTGTokenOnBSC } from 'components/STGWarningModal/constants'
 
 import { AppBody, AppHeader } from '../../components/App'
 import { LightCard } from '../../components/Card'
@@ -583,8 +584,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
       ethereumTokens.stg.address,
     ) ||
     [currencies[Field.CURRENCY_A]?.wrapped?.address, currencies[Field.CURRENCY_B]?.wrapped?.address].includes(
-      // STG address on bsc
-      '0xB0D502E938ed5f4df2E681fE6E419ff29631d62b',
+      oldSTGTokenOnBSC.address,
     )
 
   return (
