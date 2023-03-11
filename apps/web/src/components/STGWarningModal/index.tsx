@@ -18,7 +18,7 @@ export function STGWarningModal({ openWarning }: { openWarning: boolean }) {
     <ModalV2 isOpen={openWarning && !close} closeOnOverlayClick={false}>
       <DisclaimerModal
         id="stg-migration"
-        modalHeader={t('Unsupported Token')}
+        modalHeader={t('Caution - Stargate Token')}
         header={<STGWarning />}
         checks={[
           {

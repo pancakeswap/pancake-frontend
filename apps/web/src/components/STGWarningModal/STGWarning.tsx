@@ -8,12 +8,16 @@ const STGWarning = () => {
     <>
       <Text>
         {t(
-          'On 15 March 2023, the STG token will migrate to a new address. You must remove your own DEX liquidity before 15 March 2023, otherwise your LP position may be negatively affected by the price action as the old STG token will be completely worthless',
+          'Please exercise caution when trading / providing liquidity for the STG token, as the token may migrate to a new contract address on 15 Mar 2023',
         )}
       </Text>
       <LinkExternal href="https://twitter.com/StargateFinance/status/1629277447962214402">
         {t('For more information, please refer to Stargate’s announcement')}
-      </LinkExternal>{' '}
+      </LinkExternal>
+      <br />
+      <LinkExternal href="https://snapshot.org/#/stgdao.eth/proposal/0xd0e742caae098261a030feaed2f10d1a36646bdf0ac8d4a128bfb241ca87d8f5">
+        {t('To keep track of developments surrounding the reissuance, please refer to this snapshot vote')}
+      </LinkExternal>
     </>
   )
 }
