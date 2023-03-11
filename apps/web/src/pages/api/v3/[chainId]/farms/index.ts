@@ -31,11 +31,20 @@ const handler: NextApiHandler = async (req, res) => {
 
   const tvls: TvlMap = {}
   if (supportedChainIdSubgraph.includes(chainId)) {
-    console.log(HOST)
     const results = await Promise.allSettled(
-      farms.map((f) => fetch(`${HOST}/api/v3/${chainId}/farms/tvl/${f.lpAddress}`).then((r) => r.json())),
+      farms.map((f) =>
+        fetch(`${HOST}/api/v3/${chainId}/farms/tvl/${f.lpAddress}`, {
+          headers: {
+            'x-vercel-protection-bypass': process.env.VERCEL_BYPASS,
+          },
+        })
+          .then((r) => r.json())
+          .catch((err) => {
+            console.error(err)
+            throw err
+          }),
+      ),
     )
-    console.log(results)
     results.forEach((r, i) => {
       tvls[farms[i].lpAddress] =
         r.status === 'fulfilled' ? { ...r.value.formatted, updatedAt: r.value.updatedAt } : null

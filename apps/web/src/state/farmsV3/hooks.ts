@@ -37,7 +37,7 @@ export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
   return useSWR('farmV3ApiFetch', () => farmV3ApiFetch(chainId), {
-    refreshInterval: FAST_INTERVAL,
+    refreshInterval: FAST_INTERVAL * 3,
     keepPreviousData: true,
     fallbackData: {
       farmsWithPrice: [],
