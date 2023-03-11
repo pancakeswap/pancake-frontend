@@ -27,7 +27,7 @@ const handler: NextApiHandler = async (req, res) => {
   }
   const farms = farmsV3Map[chainId]
 
-  const HOST = `https://${process.env.VERCEL_URL}` || 'http://localhost:3000'
+  const HOST = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
 
   const tvls: TvlMap = {}
   if (supportedChainIdSubgraph.includes(chainId)) {

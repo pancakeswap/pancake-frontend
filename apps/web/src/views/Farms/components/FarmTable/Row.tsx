@@ -11,6 +11,7 @@ import {
   Flex,
   MobileColumnSchema,
   useMatchBreakpoints,
+  V3DesktopColumnSchema,
 } from '@pancakeswap/uikit'
 import { ErrorBoundary } from 'components/ErrorBoundary'
 import { createElement, useEffect, useRef, useState } from 'react'
@@ -23,7 +24,7 @@ import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
 
 const { FarmAuctionTag, BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
-const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
+const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount } = FarmUI.FarmTable
 
 export type RowProps = {
   earned: FarmTableEarnedProps
@@ -51,6 +52,14 @@ export type V3RowProps = {
   }
   farm: FarmTableFarmTokenInfoProps & { version: 3 }
   details: V3Farm
+  availableLp: {
+    pid: number
+    amount: number
+  }
+  stakedLp: {
+    pid: number
+    amount: number
+  }
 }
 
 type RowPropsWithLoading = {
@@ -64,6 +73,8 @@ const cells = {
   details: Details,
   multiplier: Multiplier,
   liquidity: Liquidity,
+  availableLp: LpAmount,
+  stakedLp: LpAmount,
 }
 
 const CellInner = styled.div`
@@ -123,7 +134,11 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const { isDesktop, isMobile } = useMatchBreakpoints()
 
   const isSmallerScreen = !isDesktop
-  const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
+  const tableSchema = isSmallerScreen
+    ? MobileColumnSchema
+    : props.type === 'v3'
+    ? V3DesktopColumnSchema
+    : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
 
   const handleRenderRow = () => {
@@ -156,8 +171,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 )
               case 'details':
                 return (
-                  <td key={key}>
-                    <CellInner>
+                  <td key={key} colSpan={props.type === 'v3' ? 1 : 3}>
+                    <CellInner
+                      style={{
+                        justifyContent: props.type !== 'v3' ? 'flex-end' : 'center',
+                      }}
+                    >
                       <CellLayout>
                         <Details actionPanelToggled={actionPanelExpanded} />
                       </CellLayout>
@@ -166,7 +185,13 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 )
               case 'apr':
                 if (props.type === 'v3') {
-                  return <td />
+                  return (
+                    <td key={key}>
+                      <CellInner>
+                        <CellLayout label={t('APR')}>{props.apr.value}%</CellLayout>
+                      </CellInner>
+                    </td>
+                  )
                 }
 
                 const { stakedBalance, proxy, tokenBalance } = props.details.userData
@@ -304,7 +329,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {handleRenderRow()}
       {shouldRenderChild && (
         <tr>
-          <td colSpan={7}>
+          <td colSpan={9}>
             {props.type === 'v3' ? (
               <ActionPanelV3 {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
             ) : (

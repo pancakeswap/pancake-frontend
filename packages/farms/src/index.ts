@@ -8,7 +8,7 @@ import { FarmConfigV3 } from './types'
 
 const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
 const supportedChainIdV3 = [ChainId.BSC_TESTNET, ChainId.GOERLI]
-export const bCakeSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
+export const bCakeSupportedChainId = [ChainId.BSC]
 
 export function createFarmFetcher(multicallv2: MultiCallV2) {
   const fetchFarms = async (

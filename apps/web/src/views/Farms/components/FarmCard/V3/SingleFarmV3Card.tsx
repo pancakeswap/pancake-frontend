@@ -116,7 +116,14 @@ const SingleFarmV3Card: React.FunctionComponent<
   return (
     <AtomBox {...atomBoxProps}>
       <ActionContainer bg="background" $direction={direction}>
-        <RowBetween flexDirection="column" alignItems="flex-start" flex={1}>
+        <RowBetween
+          flexDirection="column"
+          alignItems="flex-start"
+          flex={{
+            xs: 'auto',
+            md: 1,
+          }}
+        >
           <FarmV3StakeAndUnStake
             title={title}
             farm={farm}
@@ -132,7 +139,13 @@ const SingleFarmV3Card: React.FunctionComponent<
         </RowBetween>
         {positionType !== 'unstaked' && (
           <>
-            <AtomBox border="1" />
+            <AtomBox
+              border="1"
+              width={{
+                xs: 'full',
+                md: 'auto',
+              }}
+            />
             <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="full">
               <FarmV3HarvestAction
                 earnings={totalEarnings}

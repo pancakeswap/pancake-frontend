@@ -121,7 +121,6 @@ const ActionContainer = styled.div`
     flex-direction: row;
     align-items: center;
     flex-grow: 1;
-    flex-basis: 0;
     flex-wrap: wrap;
   }
 `
@@ -185,8 +184,8 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const { account } = useActiveWeb3React()
 
   const hasNoPosition = useMemo(
-    () => userDataReady && farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
-    [farm.stakedPositions.length, farm.unstakedPositions.length, userDataReady],
+    () => farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
+    [farm.stakedPositions.length, farm.unstakedPositions.length],
   )
 
   return (

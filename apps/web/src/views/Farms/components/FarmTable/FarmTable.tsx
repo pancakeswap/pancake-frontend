@@ -1,5 +1,5 @@
 import { BigNumber as EthersBigNumber } from '@ethersproject/bignumber'
-import { DesktopColumnSchema, RowType } from '@pancakeswap/uikit'
+import { DesktopColumnSchema, RowType, V3DesktopColumnSchema } from '@pancakeswap/uikit'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import latinise from '@pancakeswap/utils/latinise'
@@ -104,10 +104,34 @@ const COLUMNS = DesktopColumnSchema.map((column) => ({
   sortable: column.sortable,
 }))
 
+const COLUMNS_V3 = V3DesktopColumnSchema.map((column) => ({
+  id: column.id,
+  name: column.name,
+  label: column.label,
+  sort: (a: RowType<RowProps>, b: RowType<RowProps>) => {
+    switch (column.name) {
+      case 'farm':
+        return b.id - a.id
+      case 'apr':
+        if (a.original.apr.value && b.original.apr.value) {
+          return Number(a.original.apr.value) - Number(b.original.apr.value)
+        }
+
+        return 0
+      case 'earned':
+        return a.original.earned.earnings - b.original.earned.earnings
+      default:
+        return 1
+    }
+  },
+  sortable: column.sortable,
+}))
+
 const generateSortedRow = (row: RowProps) => {
   // @ts-ignore
   const newRow: RowProps = {}
-  COLUMNS.forEach((column) => {
+  const columns = row.type === 'v3' ? COLUMNS_V3 : COLUMNS
+  columns.forEach((column) => {
     if (!(column.name in row)) {
       throw new Error(`Invalid row data, ${column.name} not found`)
     }
@@ -204,6 +228,14 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
             4,
           ),
           pid: farm.pid,
+        },
+        availableLp: {
+          pid: farm.pid,
+          amount: farm.unstakedPositions.length,
+        },
+        stakedLp: {
+          pid: farm.pid,
+          amount: farm.stakedPositions.length,
         },
       }
     },

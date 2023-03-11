@@ -91,7 +91,10 @@ export const usePositionsByUser = (
   )
 
   // assume that if any of the tokenIds have a valid result, the data is ready
-  const userDataLoaded = useMemo(() => tokenIdResults.some((c) => c.valid), [tokenIdResults])
+  const userDataLoaded = useMemo(
+    () => (inputs.length > 0 ? tokenIdResults.some((c) => c.valid) : true),
+    [inputs.length, tokenIdResults],
+  )
 
   const farmsWithPositions = useMemo(
     () =>
