@@ -1,25 +1,24 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import { useMemo } from 'react'
-import useSWR from 'swr'
-import partition from 'lodash/partition'
-import toLower from 'lodash/toLower'
 import {
   FarmsV3Response,
   FarmV3DataWithPrice,
   FarmV3DataWithPriceAndUserInfo,
   IPendingCakeByTokenId,
 } from '@pancakeswap/farms'
-import { FARM_API } from 'config/constants/endpoints'
-import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { FAST_INTERVAL } from 'config/constants'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
+import partition from 'lodash/partition'
+import toLower from 'lodash/toLower'
+import { useMemo } from 'react'
+import { useSingleContractMultipleData } from 'state/multicall/hooks'
+import useSWR from 'swr'
 
 const farmV3ApiFetch = (chainId: number) =>
-  fetch(`${FARM_API}/v3/${chainId}/farms`)
+  fetch(`/api/v3/${chainId}/farms`)
     .then((res) => res.json())
     .then((data: FarmsV3Response) => {
       const farmsWithPrice = data.farmsWithPrice.map((f) => ({
@@ -39,6 +38,7 @@ export const useFarmsV3 = () => {
 
   return useSWR('farmV3ApiFetch', () => farmV3ApiFetch(chainId), {
     refreshInterval: FAST_INTERVAL,
+    keepPreviousData: true,
     fallbackData: {
       farmsWithPrice: [],
       poolLength: 0,
