@@ -4,6 +4,9 @@ import { Tag, Flex, Heading, Skeleton, Farm as FarmUI, AutoRow } from '@pancakes
 import { Token } from '@pancakeswap/sdk'
 import { TokenPairImage } from 'components/TokenImage'
 import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { STGWarningTooltip } from 'components/STGWarningModal/STGWarningTooltip'
+import { ethereumTokens } from '@pancakeswap/tokens'
+
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
@@ -48,7 +51,10 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
       {isReady ? (
-        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
+        <Flex width="100%" alignItems="center">
+          <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
+          {token.address === ethereumTokens.stg.address && <STGWarningTooltip />}
+        </Flex>
       ) : (
         <Skeleton mr="8px" width={63} height={63} variant="circle" />
       )}

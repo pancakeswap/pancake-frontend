@@ -11,8 +11,11 @@ import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trad
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useLPApr } from 'state/swap/useLPApr'
 import { logError } from 'utils/sentry'
+import { ethereumTokens } from '@pancakeswap/tokens'
+
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
+import { oldSTGTokenOnBSC } from 'components/STGWarningModal/constants'
 
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
 import { PairState } from '../../hooks/usePairs'
@@ -31,6 +34,7 @@ import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
 
 export interface LP2ChildrenProps {
+  hasSTG: boolean
   error: string
   currencies: {
     [Field.CURRENCY_A]?: Currency
@@ -297,7 +301,16 @@ export default function AddLiquidity({
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
+  const hasSTG =
+    [currencies[Field.CURRENCY_A]?.wrapped?.address, currencies[Field.CURRENCY_B]?.wrapped?.address].includes(
+      ethereumTokens.stg.address,
+    ) ||
+    [currencies[Field.CURRENCY_A]?.wrapped?.address, currencies[Field.CURRENCY_B]?.wrapped?.address].includes(
+      oldSTGTokenOnBSC.address,
+    )
+
   return children({
+    hasSTG,
     error,
     currencies,
     noLiquidity,

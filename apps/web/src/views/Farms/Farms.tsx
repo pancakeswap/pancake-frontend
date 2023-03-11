@@ -36,6 +36,7 @@ import styled from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
+import { STGWarningModal } from 'components/STGWarningModal'
 
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import Table from './components/FarmTable/FarmTable'
@@ -217,6 +218,15 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
   )
 
+  const hasSTGLP = Boolean(
+    farmsLP.find(
+      (farm) =>
+        farm.lpAddress === '0x6cCA86CC27EB8c7C2d10B0672FE392CFC88e62ff' &&
+        farm.userData &&
+        new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
+    ),
+  )
+
   const stakedInactiveFarms = inactiveFarms.filter(
     (farm) =>
       farm.userData &&
@@ -358,6 +368,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <FarmsContext.Provider value={providerValue}>
+      <STGWarningModal openWarning={hasSTGLP} />
       <PageHeader>
         <Flex flexDirection="column">
           <Box m="24px 0">
