@@ -105,6 +105,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           quoteToken={farm.quoteToken}
           boosted={farm.boosted}
           isStable={farm.isStable}
+          pid={farm.pid}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">

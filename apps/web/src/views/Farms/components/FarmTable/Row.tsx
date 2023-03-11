@@ -1,26 +1,27 @@
-import { useEffect, useState, createElement, useRef } from 'react'
-import styled from 'styled-components'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Flex,
-  useMatchBreakpoints,
-  Skeleton,
+  DesktopColumnSchema,
   Farm as FarmUI,
   FarmTableEarnedProps,
+  FarmTableFarmTokenInfoProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
-  FarmTableFarmTokenInfoProps,
+  Flex,
   MobileColumnSchema,
-  DesktopColumnSchema,
+  Skeleton,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { createElement, useEffect, useRef, useState } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
-import { useDelayedUnmount } from '@pancakeswap/hooks'
+import styled from 'styled-components'
 
+import BoostedApr from '../YieldBooster/components/BoostedApr'
+import ActionPanel from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
-import ActionPanel from './Actions/ActionPanel'
-import BoostedApr from '../YieldBooster/components/BoostedApr'
 
 const { FarmAuctionTag, CoreTag, BoostedTag, StableFarmTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
@@ -109,7 +110,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const isSmallerScreen = !isDesktop
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
-
   const handleRenderRow = () => {
     if (!isMobile) {
       return (
@@ -179,6 +179,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <CellInner>
                       <CellLayout label={t(tableSchema[columnIndex].label)}>
                         {createElement(cells[key], { ...props[key], userDataReady })}
+                        {v3PromotionFarms[details.pid] && key === 'farm' && <V3SwapPromotionIcon />}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -195,6 +196,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
               <Farm {...props.farm} />
+              {v3PromotionFarms[details.pid] && <V3SwapPromotionIcon />}
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
