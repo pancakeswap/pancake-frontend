@@ -32,8 +32,13 @@ import { getZapAddress } from 'utils/addressHelpers'
 import { callWithEstimateGas } from 'utils/calls'
 import { getLPSymbol } from 'utils/getLpSymbol'
 import { logError } from 'utils/sentry'
+import { ethereumTokens } from '@pancakeswap/tokens'
+
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { ContractMethodName } from 'utils/types'
+import { STGWarningModal } from 'components/STGWarningModal'
+import { oldSTGTokenOnBSC } from 'components/STGWarningModal/constants'
+
 import { AppBody, AppHeader } from '../../components/App'
 import { LightCard } from '../../components/Card'
 import ConnectWalletButton from '../../components/ConnectWalletButton'
@@ -574,8 +579,17 @@ export default function AddLiquidity({ currencyA, currencyB }) {
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
+  const hasSTG =
+    [currencies[Field.CURRENCY_A]?.wrapped?.address, currencies[Field.CURRENCY_B]?.wrapped?.address].includes(
+      ethereumTokens.stg.address,
+    ) ||
+    [currencies[Field.CURRENCY_A]?.wrapped?.address, currencies[Field.CURRENCY_B]?.wrapped?.address].includes(
+      oldSTGTokenOnBSC.address,
+    )
+
   return (
     <Page>
+      <STGWarningModal openWarning={hasSTG} />
       <AppBody>
         {!showAddLiquidity && (
           <ChoosePair
