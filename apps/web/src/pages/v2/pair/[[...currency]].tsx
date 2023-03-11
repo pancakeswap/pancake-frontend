@@ -1,4 +1,15 @@
-import { AutoRow, Button, Card, CardBody, Flex, NextLinkFromReactRouter, Text, Box, Heading } from '@pancakeswap/uikit'
+import {
+  AutoRow,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  NextLinkFromReactRouter,
+  Text,
+  Box,
+  Heading,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { AppHeader } from 'components/App'
 
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -51,6 +62,8 @@ export default function PoolV2Page() {
     token1Deposited,
   })
 
+  const { isMobile } = useMatchBreakpoints()
+
   return (
     <Page>
       <BodyWrapper>
@@ -66,21 +79,41 @@ export default function PoolV2Page() {
           backTo="/liquidity"
           noConfig
           buttons={
+            !isMobile && (
+              <>
+                <NextLinkFromReactRouter
+                  to={`/v2/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}
+                >
+                  <Button width="100%">Add</Button>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter
+                  to={`/v2/remove/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}
+                >
+                  <Button ml="16px" variant="secondary" width="100%">
+                    Remove
+                  </Button>
+                </NextLinkFromReactRouter>
+              </>
+            )
+          }
+        />
+        <CardBody>
+          {isMobile && (
             <>
               <NextLinkFromReactRouter to={`/v2/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}>
-                <Button width="100%">Add</Button>
+                <Button width="100%" mb="8px">
+                  Add
+                </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter
                 to={`/v2/remove/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}
               >
-                <Button ml="16px" variant="secondary" width="100%">
+                <Button variant="secondary" width="100%" mb="8px">
                   Remove
                 </Button>
               </NextLinkFromReactRouter>
             </>
-          }
-        />
-        <CardBody>
+          )}
           <AutoRow>
             <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
               <Box width="100%" mr="4px">

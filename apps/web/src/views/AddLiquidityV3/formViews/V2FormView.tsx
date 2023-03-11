@@ -102,7 +102,7 @@ export default function V2FormView({
   return (
     <>
       <AutoColumn>
-        <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
+        <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
           Deposit Amount
         </Text>
 

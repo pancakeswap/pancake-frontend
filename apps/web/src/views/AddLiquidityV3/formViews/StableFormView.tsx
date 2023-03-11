@@ -114,7 +114,7 @@ export default function StableFormView({
   return (
     <>
       <AutoColumn>
-        <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
+        <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
           Deposit Amount
         </Text>
 
@@ -147,7 +147,7 @@ export default function StableFormView({
       <RightContainer>
         <AutoColumn>
           <Box>
-            <Text mb="8px" bold fontSize="14px" textTransform="uppercase" color="secondary">
+            <Text mb="8px" bold fontSize="12px" textTransform="uppercase" color="secondary">
               Pool Reserves
             </Text>
             <Text fontSize="24px" fontWeight={500} mb="8px">

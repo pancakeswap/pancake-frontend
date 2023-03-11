@@ -1,4 +1,14 @@
-import { AutoRow, Button, Card, CardBody, Flex, NextLinkFromReactRouter, Text, Box } from '@pancakeswap/uikit'
+import {
+  AutoRow,
+  Button,
+  Card,
+  CardBody,
+  Flex,
+  NextLinkFromReactRouter,
+  Text,
+  Box,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import { AppHeader } from 'components/App'
 import { useMemo } from 'react'
 
@@ -83,6 +93,8 @@ export default function StablePoolPage() {
 
   const poolTokenPercentage = usePoolTokenPercentage({ totalPoolTokens, userPoolBalance })
 
+  const { isMobile } = useMatchBreakpoints()
+
   if (!selectedLp) return null
 
   return (
@@ -93,27 +105,47 @@ export default function StablePoolPage() {
           backTo="/liquidity"
           noConfig
           buttons={
+            !isMobile && (
+              <>
+                <NextLinkFromReactRouter
+                  to={`/add/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
+                >
+                  <Button width="100%">Add</Button>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter
+                  to={`/v2/remove/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
+                >
+                  <Button ml="16px" variant="secondary" width="100%">
+                    Remove
+                  </Button>
+                </NextLinkFromReactRouter>
+              </>
+            )
+          }
+        />
+        <CardBody>
+          {isMobile && (
             <>
               <NextLinkFromReactRouter
                 to={`/add/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
               >
-                <Button width="100%">Add</Button>
+                <Button mb="8px" width="100%">
+                  Add
+                </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter
                 to={`/v2/remove/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
               >
-                <Button ml="16px" variant="secondary" width="100%">
+                <Button mb="8px" variant="secondary" width="100%">
                   Remove
                 </Button>
               </NextLinkFromReactRouter>
             </>
-          }
-        />
-        <CardBody>
+          )}
           <AutoRow>
-            <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
-              <Box width="100%" mr="4px">
-                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+            <Flex alignItems="center" justifyContent="space-between" width="100%" flexWrap={['wrap', 'wrap', 'nowrap']}>
+              <Box width="100%" mr="4px" mb="16px">
+                <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   Liquidity
                 </Text>
                 <Text fontSize="24px" fontWeight={500}>
@@ -134,9 +166,7 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
-                        {token0Deposited?.toSignificant(6)}
-                      </Text>
+                      <Text mr="4px">{token0Deposited?.toSignificant(6)}</Text>
                     </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -147,15 +177,13 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
-                        {token1Deposited?.toSignificant(6)}
-                      </Text>
+                      <Text mr="4px">{token1Deposited?.toSignificant(6)}</Text>
                     </Flex>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
-              <Box width="100%" mr="4px">
-                <Text fontSize="12px" color="textSubtle" bold textTransform="uppercase">
+              <Box width="100%" mr="4px" mb="16px">
+                <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   Pool reserves
                 </Text>
                 <Text fontSize="24px" fontWeight={500}>
@@ -176,9 +204,7 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
-                        {stableLp?.reserve0?.toSignificant(6)}
-                      </Text>
+                      <Text mr="4px">{stableLp?.reserve0?.toSignificant(6)}</Text>
                     </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -189,16 +215,16 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text bold mr="4px">
-                        {stableLp?.reserve1?.toSignificant(6)}
-                      </Text>
+                      <Text mr="4px">{stableLp?.reserve1?.toSignificant(6)}</Text>
                     </Flex>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
             </Flex>
           </AutoRow>
-          <Text>Your share in pool: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}</Text>
+          <Text color="textSubtle">
+            Your share in pool: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
+          </Text>
         </CardBody>
       </BodyWrapper>
     </Page>

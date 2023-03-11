@@ -15,6 +15,7 @@ import {
   Heading,
   SyncAltIcon,
   Spinner,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -367,6 +368,8 @@ export default function PoolPage() {
 
   const isLoading = loading || poolState === PoolState.LOADING || !feeAmount
 
+  const { isMobile } = useMatchBreakpoints()
+
   return (
     <Page>
       <BodyWrapper>
@@ -394,6 +397,7 @@ export default function PoolPage() {
               backTo="/liquidity"
               noConfig
               buttons={
+                !isMobile &&
                 currency0 &&
                 currency1 && (
                   <>
@@ -414,6 +418,24 @@ export default function PoolPage() {
               }
             />
             <CardBody>
+              {isMobile && (
+                <>
+                  <NextLinkFromReactRouter
+                    to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
+                  >
+                    <Button width="100%" mb="8px">
+                      Add
+                    </Button>
+                  </NextLinkFromReactRouter>
+                  {!removed && (
+                    <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
+                      <Button variant="secondary" width="100%" mb="8px">
+                        Remove
+                      </Button>
+                    </NextLinkFromReactRouter>
+                  )}
+                </>
+              )}
               <AutoRow>
                 <Flex
                   alignItems="center"
