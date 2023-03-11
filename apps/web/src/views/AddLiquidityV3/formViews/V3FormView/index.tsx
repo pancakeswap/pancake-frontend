@@ -534,6 +534,7 @@ export default function V3FormView({
               )}
 
               <LiquidityChartRangeInput
+                key={baseCurrency?.wrapped?.address}
                 currencyA={baseCurrency ?? undefined}
                 currencyB={quoteCurrency ?? undefined}
                 feeAmount={feeAmount}
