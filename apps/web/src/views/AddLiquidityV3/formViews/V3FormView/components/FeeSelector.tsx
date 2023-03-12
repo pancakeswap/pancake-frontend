@@ -27,7 +27,10 @@ export default function FeeSelector({
   handleFeePoolSelect: HandleFeePoolSelectFn
   currencyA?: Currency | undefined
   currencyB?: Currency | undefined
-  handleSelectV2: () => void
+  /**
+   * If this is set, the selector will show a button to select the V2 pair when V2 has better token amounts
+   */
+  handleSelectV2?: () => void
 }) {
   const { chainId } = useActiveWeb3React()
   const farmV3Config = farmsV3ConfigChainMap[currencyA?.chainId as ChainId]
@@ -49,6 +52,7 @@ export default function FeeSelector({
   const [, pair] = useV2Pair(currencyA, currencyB)
 
   const v2PairHasBetterTokenAmounts = useMemo(() => {
+    if (!handleSelectV2) return false
     if (isLoading || isError || !pair || !currencyA || !currencyB) {
       return false
     }
@@ -65,7 +69,7 @@ export default function FeeSelector({
       )
     }
     return true
-  }, [currencyA, currencyB, isError, isLoading, largestUsageFeeTier, largestUsageFeeTierTvl, pair])
+  }, [currencyA, currencyB, handleSelectV2, isError, isLoading, largestUsageFeeTier, largestUsageFeeTierTvl, pair])
 
   const [showOptions, setShowOptions] = useState(false)
   // get pool data on-chain for latest states
@@ -178,7 +182,7 @@ export default function FeeSelector({
               return null
             })}
           </SelectContainer>
-          {currencyA && currencyB && v2PairHasBetterTokenAmounts && (
+          {currencyA && currencyB && v2PairHasBetterTokenAmounts && handleSelectV2 && (
             <AtomBox textAlign="center">
               {/*
                 using state instead of replacing url to /v2 here
