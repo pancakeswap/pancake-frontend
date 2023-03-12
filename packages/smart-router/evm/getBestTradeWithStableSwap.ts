@@ -43,9 +43,12 @@ export async function getBestTradeWithStableSwap(
     if (stableSwapPair) {
       // Get latest output amount from v2 and use it as input to get output amount from stable swap
       const stableInputAmount = await getLatestOutputAmount()
+      const midStableInputAmount = CurrencyAmount.fromRawAmount(baseTrade.inputAmount.currency, '1')
       const results = await Promise.all([
         getStableSwapOutputAmount(stableSwapPair, stableInputAmount, { provider }),
         getStableSwapFee(stableSwapPair, stableInputAmount, { provider }),
+        getStableSwapOutputAmount(stableSwapPair, midStableInputAmount, { provider }),
+        getStableSwapFee(stableSwapPair, midStableInputAmount, { provider }),
       ])
       outputAmount = results[0]
       const fees = results[1]
@@ -54,6 +57,7 @@ export async function getBestTradeWithStableSwap(
       pairsWithStableSwap.push({
         ...stableSwapPair,
         price: new Price({ baseAmount: stableInputAmount, quoteAmount: outputAmount.add(fees.fee) }),
+        midPrice: new Price({ baseAmount: midStableInputAmount, quoteAmount: results[2].add(results[3].fee) }),
         fee,
         adminFee,
       })

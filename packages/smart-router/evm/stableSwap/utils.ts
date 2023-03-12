@@ -21,6 +21,7 @@ export function createStableSwapPair(
     liquidityToken: new ERC20Token(pair.token0.chainId, lpAddress, 18, 'Stable-LP', 'Pancake StableSwap LPs'),
     // default price & fees are zero, need to get the actual price from chain
     price: new Price(pair.token0, pair.token1, '0', '1'),
+    midPrice: new Price(pair.token0, pair.token1, '0', '1'),
     fee: new Percent(0),
     adminFee: new Percent(0),
     involvesToken: (token) => token.equals(pair.token0) || token.equals(pair.token1),

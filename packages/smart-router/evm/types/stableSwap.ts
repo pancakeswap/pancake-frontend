@@ -9,6 +9,7 @@ export interface StableSwapPair extends BasePair {
   lpAddress: string
   infoStableSwapAddress: string
   price: Price<Currency, Currency>
+  midPrice: Price<Currency, Currency>
   fee: Percent
   adminFee: Percent
   liquidityToken: ERC20Token
