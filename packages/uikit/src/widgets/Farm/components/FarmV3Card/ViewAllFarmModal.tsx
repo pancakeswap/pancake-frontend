@@ -6,7 +6,6 @@ import { AtomBox } from "@pancakeswap/ui";
 import type { FeeAmount } from "@pancakeswap/v3-sdk";
 
 import { ModalContainer, ModalCloseButton, ModalBody, ModalActions, ModalProps } from "../../../Modal";
-import { Link } from "../../../../components/Link";
 import { Text } from "../../../../components/Text";
 import { Button } from "../../../../components/Button";
 import Flex from "../../../../components/Box/Flex";
@@ -15,13 +14,6 @@ import { Tag } from "../../../../components/Tag";
 import { AutoRow, RowBetween } from "../../../../components";
 
 const { BoostedTag, FarmAuctionTag, V3FeeTag } = Tags;
-
-const StyledLink = styled(Link)`
-  width: 100%;
-  &:hover {
-    text-decoration: initial;
-  }
-`;
 
 const ScrollableContainer = styled(Flex)`
   flex-direction: column;
@@ -32,7 +24,7 @@ const ScrollableContainer = styled(Flex)`
 interface ViewAllFarmModalProps extends ModalProps {
   isReady: boolean;
   lpSymbol: string;
-  liquidityUrlPathParts: string;
+  onAddLiquidity: () => void;
   tokenPairImage: ReactNode;
   boosted?: boolean;
   feeAmount?: FeeAmount;
@@ -44,7 +36,7 @@ interface ViewAllFarmModalProps extends ModalProps {
 const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllFarmModalProps>> = ({
   isReady,
   lpSymbol,
-  liquidityUrlPathParts,
+  onAddLiquidity,
   tokenPairImage,
   boosted,
   feeAmount,
@@ -82,11 +74,9 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
         </ModalBody>
         <AtomBox px="24px">
           <ModalActions>
-            <StyledLink external href={liquidityUrlPathParts}>
-              <Button width="100%" variant="secondary">
-                {t("Add Liquidity")}
-              </Button>
-            </StyledLink>
+            <Button width="100%" variant="secondary" onClick={onAddLiquidity}>
+              {t("Add Liquidity")}
+            </Button>
           </ModalActions>
         </AtomBox>
       </AtomBox>

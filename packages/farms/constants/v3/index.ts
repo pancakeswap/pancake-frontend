@@ -5,8 +5,7 @@ import { farmsV3 as farm5 } from '../5'
 import { farmsV3 as farm56 } from '../56'
 import { farmsV3 as farm97 } from '../97'
 
-// It's okay to import all farms directly, we will only use it on server side
-export const farmsV3Map: Record<ChainId, FarmConfigV3[]> = {
+export const farmsV3ConfigChainMap: Record<ChainId, FarmConfigV3[]> = {
   [ChainId.ETHEREUM]: farm1,
   [ChainId.GOERLI]: farm5,
   [ChainId.BSC]: farm56,

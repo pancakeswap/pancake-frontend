@@ -1,5 +1,5 @@
 import { createFarmFetcherV3, fetchCommonTokenUSDValue } from '@pancakeswap/farms'
-import { farmsV3Map } from '@pancakeswap/farms/constants/v3'
+import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import type { TvlMap } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { ChainId } from '@pancakeswap/sdk'
@@ -25,7 +25,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (farmFetcherV3.isChainSupported(chainId) === false) {
     return res.status(400).json({ error: 'Chain not supported' })
   }
-  const farms = farmsV3Map[chainId]
+  const farms = farmsV3ConfigChainMap[chainId]
 
   const HOST = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
 

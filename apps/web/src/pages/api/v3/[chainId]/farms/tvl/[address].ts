@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { NextApiHandler } from 'next'
 import { PositionMath } from '@pancakeswap/v3-sdk'
-import { farmsV3Map } from '@pancakeswap/farms/constants/v3'
+import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
@@ -28,7 +28,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const { chainId, address: address_ } = parsed.data
 
-  const farms = farmsV3Map[chainId]
+  const farms = farmsV3ConfigChainMap[chainId]
 
   const address = address_.toLowerCase()
 
@@ -109,7 +109,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   const updatedAt = new Date().toISOString()
 
-  res.setHeader('Cache-Control', 's-maxage=300, max-age=300, stale-while-revalidate=600')
+  res.setHeader('Cache-Control', 's-maxage=600, max-age=600, stale-while-revalidate=1200')
 
   return res.status(200).json({
     tvl: {

@@ -114,13 +114,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <Text>{t('Earn')}:</Text>
           <Text>{earnLabel}</Text>
         </Flex>
-        <CardActionsContainer
-          farm={farm}
-          lpLabel={lpLabel}
-          account={account}
-          addLiquidityUrl={addLiquidityUrl}
-          displayApr={displayApr}
-        />
+        <CardActionsContainer farm={farm} lpLabel={lpLabel} account={account} displayApr={displayApr} />
       </FarmCardInnerContainer>
 
       <ExpandingWrapper>

@@ -507,7 +507,13 @@ export default function V3FormView({
                 }
 
                 router.replace(
-                  `/add/${currencyIdB as string}/${currencyIdA as string}${feeAmount ? `/${feeAmount}` : ''}`,
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      currency: [currencyIdB, currencyIdA, feeAmount ? feeAmount.toString() : ''],
+                    },
+                  },
                   undefined,
                   {
                     shallow: true,

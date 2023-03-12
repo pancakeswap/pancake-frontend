@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Percent, Token } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoRow, Button, Card, Dots, Flex, Modal, ModalV2, PreTitle, Tag, Text } from '@pancakeswap/uikit'
+import { AutoRow, Button, Card, Dots, Flex, Modal, ModalV2, PreTitle, Tag, Text, useModalV2 } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
@@ -18,10 +18,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
-import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
-import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
-import AddLiquidityV3 from 'views/AddLiquidityV3'
-import currencyId from 'utils/currencyId'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useAccount } from 'wagmi'
 import { removedPairsAtom } from './Step2'
@@ -164,8 +161,7 @@ function StablePairSelection({ tokenAddresses }: { tokenAddresses: string }) {
 }
 
 function PairSelection({ token0, token1 }: { token0: Token; token1: Token }) {
-  const [isOpen, setIsOpen] = useState(false)
-  const { t } = useTranslation()
+  const addLiquidityModal = useModalV2()
   return (
     <LightGreyCard>
       <Flex alignItems="center" justifyContent="space-between">
@@ -175,19 +171,9 @@ function PairSelection({ token0, token1 }: { token0: Token; token1: Token }) {
             {token0?.symbol}/{token1?.symbol}
           </Text>
         </AutoRow>
-        <Button onClick={() => setIsOpen(true)}>Add</Button>
+        <Button onClick={addLiquidityModal.handleOpen}>Add</Button>
       </Flex>
-      <ModalV2 isOpen={isOpen} onDismiss={() => setIsOpen(false)} closeOnOverlayClick>
-        <Modal title={t('Add Liquidity')} onDismiss={() => setIsOpen(false)}>
-          <LiquidityFormProvider>
-            <AddLiquidityV3
-              currencyIdA={currencyId(token0)}
-              currencyIdB={currencyId(token1)}
-              preferredSelectType={SELECTOR_TYPE.V3}
-            />
-          </LiquidityFormProvider>
-        </Modal>
-      </ModalV2>
+      <AddLiquidityV3Modal {...addLiquidityModal} token0={token0} token1={token1} />
     </LightGreyCard>
   )
 }

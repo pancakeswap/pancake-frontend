@@ -1,7 +1,8 @@
-import { Farm as FarmUI } from '@pancakeswap/uikit'
+import { Farm as FarmUI, useModalV2 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import FarmInfo from './FarmInfo'
 
@@ -14,12 +15,11 @@ const Action = styled.div`
 interface FarmCardActionsProps {
   farm: V3Farm
   account?: string
-  addLiquidityUrl?: string
   lpLabel?: string
   displayApr?: string
 }
 
-const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ farm, account, addLiquidityUrl }) => {
+const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ farm, account }) => {
   const { multiplier, stakedPositions, unstakedPositions } = farm
   const isReady = multiplier !== undefined
 
@@ -28,15 +28,23 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ 
     [stakedPositions, unstakedPositions],
   )
 
+  const addLiquidityModal = useModalV2()
+
   return (
     <Action>
+      <AddLiquidityV3Modal
+        {...addLiquidityModal}
+        token0={farm.token}
+        token1={farm.quoteToken}
+        feeAmount={farm.feeAmount}
+      />
       {account && !hasNoPosition ? (
-        <FarmInfo farm={farm} isReady={isReady} liquidityUrlPathParts={addLiquidityUrl} />
+        <FarmInfo farm={farm} isReady={isReady} onAddLiquidity={addLiquidityModal.handleOpen} />
       ) : (
         <NoPosition
           account={account}
           hasNoPosition={hasNoPosition}
-          liquidityUrlPathParts={addLiquidityUrl}
+          onAddLiquidityClick={addLiquidityModal.handleOpen}
           connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
         />
       )}

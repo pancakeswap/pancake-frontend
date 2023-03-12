@@ -1,4 +1,5 @@
-import { Currency } from '@pancakeswap/sdk'
+import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { ChainId, Currency } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -29,6 +30,16 @@ export default function FeeSelector({
   currencyB?: Currency | undefined
 }) {
   const { chainId } = useActiveWeb3React()
+  const farmV3Config = farmsV3ConfigChainMap[currencyA?.chainId as ChainId]
+
+  const farmV3 = useMemo(() => {
+    if (currencyA && currencyB) {
+      const [tokenA, tokenB] = [currencyA.wrapped, currencyB.wrapped]
+      const [token0, token1] = tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]
+      return farmV3Config?.length > 0 && farmV3Config.find((f) => f.token.equals(token0) && f.quoteToken.equals(token1))
+    }
+    return null
+  }, [currencyA, currencyB, farmV3Config])
 
   const { isLoading, isError, largestUsageFeeTier, distributions, largestUsageFeeTierTvl } = useFeeTierDistribution(
     currencyA,
@@ -86,7 +97,19 @@ export default function FeeSelector({
   )
 
   useEffect(() => {
-    if (feeAmount || isLoading || isError) {
+    if (feeAmount) {
+      return
+    }
+
+    if (farmV3) {
+      handleFeePoolSelect({
+        type: SELECTOR_TYPE.V3,
+        feeAmount: farmV3.feeAmount,
+      })
+      return
+    }
+
+    if (isLoading || isError) {
       return
     }
 
@@ -102,7 +125,7 @@ export default function FeeSelector({
         feeAmount: largestUsageFeeTier,
       })
     }
-  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect, v2PairHasBetterTokenAmounts])
+  }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect, v2PairHasBetterTokenAmounts, farmV3])
 
   useEffect(() => {
     setShowOptions(isError)

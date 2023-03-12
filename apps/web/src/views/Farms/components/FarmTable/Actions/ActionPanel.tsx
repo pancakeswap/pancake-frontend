@@ -7,6 +7,7 @@ import {
   LinkExternal,
   Text,
   useMatchBreakpoints,
+  useModalV2,
 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -17,6 +18,7 @@ import { multiChainPaths } from 'state/info/constant'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
@@ -187,6 +189,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
     () => farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
     [farm.stakedPositions.length, farm.unstakedPositions.length],
   )
+  const addLiquidityModal = useModalV2()
 
   return (
     <ActionPanelContainer
@@ -244,13 +247,21 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
       {userDataReady && account && !hasNoPosition ? (
         <FarmV3CardList farm={farm} direction="row" />
       ) : (
-        <NoPosition
-          boostedAction={null}
-          account={account}
-          hasNoPosition={hasNoPosition}
-          liquidityUrlPathParts={`/add/${liquidityUrlPathParts}`}
-          connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
-        />
+        <>
+          <NoPosition
+            boostedAction={null}
+            account={account}
+            hasNoPosition={hasNoPosition}
+            onAddLiquidity={addLiquidityModal.handleOpen}
+            connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
+          />
+          <AddLiquidityV3Modal
+            {...addLiquidityModal}
+            token0={farm.token}
+            token1={farm.quoteToken}
+            feeAmount={farm.feeAmount}
+          />
+        </>
       )}
     </ActionPanelContainer>
   )

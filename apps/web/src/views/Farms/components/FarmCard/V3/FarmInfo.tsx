@@ -13,13 +13,13 @@ const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmUI.FarmV3
 interface FarmInfoProps {
   farm: V3Farm
   isReady: boolean
-  liquidityUrlPathParts: string
+  onAddLiquidity: () => void
 }
 
 const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> = ({
   farm,
   isReady,
-  liquidityUrlPathParts,
+  onAddLiquidity,
 }) => {
   const cakePrice = usePriceCakeBusd()
   const [show, setShow] = useState(false)
@@ -86,7 +86,7 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
           multiplier={multiplier}
           boosted={farm.boosted}
           feeAmount={farm.feeAmount}
-          liquidityUrlPathParts={liquidityUrlPathParts}
+          onAddLiquidity={onAddLiquidity}
           tokenPairImage={
             <TokenPairImage
               variant="inverted"

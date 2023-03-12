@@ -3,7 +3,6 @@ import { useTranslation } from "@pancakeswap/localization";
 import styled from "styled-components";
 import { Text } from "../../../../../components/Text";
 import { Button } from "../../../../../components/Button";
-import { Link } from "../../../../../components/Link";
 import { ActionTitles, ActionContent } from "./styles";
 import Flex from "../../../../../components/Box/Flex";
 
@@ -32,7 +31,7 @@ interface WalletNotConnectedProps {
   boostedAction: ReactNode;
   connectWalletButton: ReactNode;
   hasNoPosition: boolean;
-  liquidityUrlPathParts: string;
+  onAddLiquidity: () => void;
 }
 
 const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConnectedProps>> = ({
@@ -40,7 +39,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
   hasNoPosition,
   boostedAction,
   connectWalletButton,
-  liquidityUrlPathParts,
+  onAddLiquidity,
 }) => {
   const { t } = useTranslation();
 
@@ -55,9 +54,9 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
             </Text>
           </ActionTitles>
           <ActionContent>
-            <Link width="100% !important" external href={liquidityUrlPathParts}>
-              <Button width="100%">{t("Add Liquidity")}</Button>
-            </Link>
+            <Button width="100%" onClick={onAddLiquidity}>
+              {t("Add Liquidity")}
+            </Button>
           </ActionContent>
         </ActionContainer>
       ) : (

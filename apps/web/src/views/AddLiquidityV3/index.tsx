@@ -62,6 +62,7 @@ interface UniversalAddLiquidityPropsType {
   currencyIdB: string
   isV2?: boolean
   preferredSelectType?: SELECTOR_TYPE
+  preferredFeeAmount?: FeeAmount
 }
 
 export default function UniversalAddLiquidity({
@@ -69,6 +70,7 @@ export default function UniversalAddLiquidity({
   currencyIdA,
   currencyIdB,
   preferredSelectType,
+  preferredFeeAmount,
 }: UniversalAddLiquidityPropsType) {
   const { chainId } = useActiveWeb3React()
 
@@ -88,7 +90,7 @@ export default function UniversalAddLiquidity({
 
   // fee selection from url
   const feeAmount: FeeAmount | undefined =
-    feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
+    preferredFeeAmount || (feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl)))
       ? parseFloat(feeAmountFromUrl)
       : undefined
 
@@ -121,13 +123,29 @@ export default function UniversalAddLiquidity({
     (currencyANew: Currency) => {
       const [idA, idB] = handleCurrencySelect(currencyANew, currencyIdB)
       if (idB === undefined) {
-        router.replace(`/add/${idA}`, undefined, {
-          shallow: true,
-        })
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              currency: [idA],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
       } else {
-        router.replace(`/add/${idA}/${idB}`, undefined, {
-          shallow: true,
-        })
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              currency: [idA, idB],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
       }
     },
     [handleCurrencySelect, currencyIdB, router],
@@ -137,13 +155,29 @@ export default function UniversalAddLiquidity({
     (currencyBNew: Currency) => {
       const [idB, idA] = handleCurrencySelect(currencyBNew, currencyIdA)
       if (idA === undefined) {
-        router.replace(`/add/${idB}`, undefined, {
-          shallow: true,
-        })
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              currency: [idB],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
       } else {
-        router.replace(`/add/${idA}/${idB}`, undefined, {
-          shallow: true,
-        })
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              currency: [idA, idB],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
       }
     },
     [handleCurrencySelect, currencyIdA, router],
@@ -161,7 +195,7 @@ export default function UniversalAddLiquidity({
     if (stableConfig.stableSwapConfig) {
       setSelectorType(SELECTOR_TYPE.STABLE)
     } else {
-      setSelectorType(isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
+      setSelectorType(preferredSelectType || isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
     }
   }, [currencyIdA, currencyIdB, isV2, preferredSelectType, setSelectorType, stableConfig.stableSwapConfig])
 
@@ -169,9 +203,17 @@ export default function UniversalAddLiquidity({
     ({ type, feeAmount: newFeeAmount }) => {
       setSelectorType(type)
       if (newFeeAmount) {
-        router.replace(`/add/${currencyIdA}/${currencyIdB}/${newFeeAmount}`, undefined, {
-          shallow: true,
-        })
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...router.query,
+              currency: [currencyIdA, currencyIdB, newFeeAmount.toString()],
+            },
+          },
+          undefined,
+          { shallow: true },
+        )
       }
     },
     [currencyIdA, currencyIdB, router, setSelectorType],
@@ -220,10 +262,9 @@ export default function UniversalAddLiquidity({
                 selectorType={selectorType}
                 handleFeePoolSelect={({ type }) => {
                   if (type === SELECTOR_TYPE.V3) {
-                    router.push(`/add/${currencyIdA}/${currencyIdB}`)
-                  } else {
-                    handleFeePoolSelect({ type })
+                    router.replace(`/add/${currencyIdA}/${currencyIdB}`, undefined, { shallow: true })
                   }
+                  handleFeePoolSelect({ type })
                 }}
               />
             )}

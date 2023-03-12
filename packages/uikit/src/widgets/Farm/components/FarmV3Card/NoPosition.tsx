@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { Text } from "../../../../components/Text";
 import { Button } from "../../../../components/Button";
-import { Link } from "../../../../components/Link";
 import Flex from "../../../../components/Box/Flex";
 
 interface NoPositionProps {
@@ -10,7 +9,7 @@ interface NoPositionProps {
   hasNoPosition: boolean;
   boostedAction?: ReactNode;
   connectWalletButton: ReactNode;
-  liquidityUrlPathParts: string;
+  onAddLiquidityClick: () => void;
 }
 
 const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProps>> = ({
@@ -18,7 +17,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
   hasNoPosition,
   boostedAction,
   connectWalletButton,
-  liquidityUrlPathParts,
+  onAddLiquidityClick,
 }) => {
   const { t } = useTranslation();
 
@@ -30,9 +29,9 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
           <Text color="textSubtle" bold textTransform="uppercase" fontSize="12px" mb="8px">
             {t("no position found")}
           </Text>
-          <Link width="100% !important" external href={liquidityUrlPathParts}>
-            <Button width="100%">{t("Add Liquidity")}</Button>
-          </Link>
+          <Button width="100%" onClick={onAddLiquidityClick}>
+            {t("Add Liquidity")}
+          </Button>
         </Flex>
       ) : (
         <>{connectWalletButton}</>
