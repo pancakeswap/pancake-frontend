@@ -256,14 +256,12 @@ export default function UniversalAddLiquidity({
                 />
               )}
 
-            {isV2 && selectorType !== SELECTOR_TYPE.V3 && (
+            {((isV2 && selectorType !== SELECTOR_TYPE.V3) || selectorType === SELECTOR_TYPE.V2) && (
               <V2Selector
                 isStable={Boolean(stableConfig.stableSwapConfig)}
                 selectorType={selectorType}
                 handleFeePoolSelect={({ type }) => {
-                  if (type === SELECTOR_TYPE.V3) {
-                    router.replace(`/add/${currencyIdA}/${currencyIdB}`, undefined, { shallow: true })
-                  }
+                  // keep using state instead of replacing url in UniversalLiquidity
                   handleFeePoolSelect({ type })
                 }}
               />
@@ -275,6 +273,7 @@ export default function UniversalAddLiquidity({
                 currencyB={quoteCurrency ?? undefined}
                 handleFeePoolSelect={handleFeePoolSelect}
                 feeAmount={feeAmount}
+                handleSelectV2={() => setSelectorType(SELECTOR_TYPE.V2)}
               />
             )}
           </DynamicSection>

@@ -1,7 +1,7 @@
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoColumn, CircleLoader, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -9,9 +9,7 @@ import { useV2Pair } from 'hooks/usePairs'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
-import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import currencyId from 'utils/currencyId'
 import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 import { FeeOption } from './FeeOption'
@@ -23,11 +21,13 @@ export default function FeeSelector({
   handleFeePoolSelect,
   currencyA,
   currencyB,
+  handleSelectV2,
 }: {
   feeAmount?: FeeAmount
   handleFeePoolSelect: HandleFeePoolSelectFn
   currencyA?: Currency | undefined
   currencyB?: Currency | undefined
+  handleSelectV2: () => void
 }) {
   const { chainId } = useActiveWeb3React()
   const farmV3Config = farmsV3ConfigChainMap[currencyA?.chainId as ChainId]
@@ -113,11 +113,10 @@ export default function FeeSelector({
       return
     }
 
-    if (!largestUsageFeeTier) {
+    if (!largestUsageFeeTier || v2PairHasBetterTokenAmounts) {
       // cannot recommend, open options
       setShowOptions(true)
     } else {
-      if (v2PairHasBetterTokenAmounts) return
       setShowOptions(false)
 
       handleFeePoolSelect({
@@ -128,8 +127,10 @@ export default function FeeSelector({
   }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect, v2PairHasBetterTokenAmounts, farmV3])
 
   useEffect(() => {
-    setShowOptions(isError)
-  }, [isError])
+    if (!v2PairHasBetterTokenAmounts) {
+      setShowOptions(isError)
+    }
+  }, [isError, v2PairHasBetterTokenAmounts])
 
   return (
     <HideShowSelectorSection
@@ -178,12 +179,16 @@ export default function FeeSelector({
             })}
           </SelectContainer>
           {currencyA && currencyB && v2PairHasBetterTokenAmounts && (
-            <AtomBox textAlign="center" pt="24px">
-              <Link href={`/v2/add/${currencyId(currencyA)}/${currencyId(currencyB)}`}>
+            <AtomBox textAlign="center">
+              {/*
+                using state instead of replacing url to /v2 here
+                avoid pages keep in v2 when user change the tokens in selection
+              */}
+              <Button variant="text" onClick={handleSelectV2}>
                 <Text color="textSubtle" bold>
                   Add V2 Liquidity
                 </Text>
-              </Link>
+              </Button>
             </AtomBox>
           )}
         </>
