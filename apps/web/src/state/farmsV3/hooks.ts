@@ -1,10 +1,15 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import {
+  createFarmFetcherV3,
   FarmsV3Response,
   FarmV3DataWithPrice,
   FarmV3DataWithPriceAndUserInfo,
   IPendingCakeByTokenId,
 } from '@pancakeswap/farms'
+import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
+import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { fetchCommonTokenUSDValue, TvlMap } from '@pancakeswap/farms/src/fetchFarmsV3'
+import { ChainId } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { FAST_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -16,6 +21,7 @@ import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import useSWR from 'swr'
+import { multicallv2 } from 'utils/multicall'
 
 const farmV3ApiFetch = (chainId: number) =>
   fetch(`/api/v3/${chainId}/farms`)
@@ -38,16 +44,60 @@ const fallback = {
   poolLength: 0,
   latestPeriodCakePerSecond: '0',
 }
+
+const API_FLAG = false
+
+const farmFetcherV3 = createFarmFetcherV3(multicallv2)
+
 export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
   return useSWR(
     [chainId, 'farmV3ApiFetch'],
-    () =>
-      farmV3ApiFetch(chainId).catch((err) => {
-        console.error(err)
-        return fallback
-      }),
+    async () => {
+      if (API_FLAG) {
+        return farmV3ApiFetch(chainId).catch((err) => {
+          console.error(err)
+          return fallback
+        })
+      }
+
+      // direct copy from api routes, the client side fetch is preventing cache due to migration phase we want fresh data
+      const farms = farmsV3ConfigChainMap[chainId as ChainId]
+
+      const HOST = process.env.NEXT_PUBLIC_VERCEL_URL
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+        : 'http://localhost:3000'
+
+      const tvls: TvlMap = {}
+      if ([ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET].includes(chainId)) {
+        const results = await Promise.allSettled(
+          farms.map((f) =>
+            fetch(`${HOST}/api/v3/${chainId}/farms/tvl/${f.lpAddress}`)
+              .then((r) => r.json())
+              .catch((err) => {
+                console.error(err)
+                throw err
+              }),
+          ),
+        )
+        results.forEach((r, i) => {
+          tvls[farms[i].lpAddress] =
+            r.status === 'fulfilled' ? { ...r.value.formatted, updatedAt: r.value.updatedAt } : null
+        })
+      }
+
+      const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
+
+      const data = await farmFetcherV3.fetchFarms({
+        tvlMap: tvls,
+        chainId,
+        farms,
+        commonPrice,
+      })
+
+      return data
+    },
     {
       refreshInterval: FAST_INTERVAL * 3,
       keepPreviousData: true,
