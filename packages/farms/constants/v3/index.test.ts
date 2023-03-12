@@ -1,9 +1,9 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { priceHelperTokens, DEFAULT_STABLE_COINS } from '../common'
-import { farmsV3Map } from '.'
+import { farmsV3ConfigChainMap } from '.'
 
-const mainnetFarms = [farmsV3Map[ChainId.BSC], farmsV3Map[ChainId.ETHEREUM]]
+const mainnetFarms = [farmsV3ConfigChainMap[ChainId.BSC], farmsV3ConfigChainMap[ChainId.ETHEREUM]]
 
 function hasDuplicates(array: any[]) {
   return new Set(array).size !== array.length
