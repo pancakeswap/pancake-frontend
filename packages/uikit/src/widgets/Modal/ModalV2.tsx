@@ -22,8 +22,8 @@ export type UseModalV2Props = ReturnType<typeof useModalV2>;
 export function useModalV2() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleDismiss = useCallback(() => setIsOpen(false), [setIsOpen]);
-  const handleOpen = useCallback(() => setIsOpen(true), [setIsOpen]);
+  const handleDismiss = useCallback(() => setIsOpen(false), []);
+  const handleOpen = useCallback(() => setIsOpen(true), []);
 
   return {
     handleDismiss,
