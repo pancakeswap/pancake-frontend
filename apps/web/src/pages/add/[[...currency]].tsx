@@ -4,7 +4,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAppDispatch } from 'state'
-import { useFarmV2Config } from 'state/farms/hooks'
+import { useFarmV2PublicAPI } from 'state/farms/hooks'
 import { resetMintState } from 'state/mint/actions'
 import { useCurrency } from 'hooks/Tokens'
 import { CHAIN_IDS } from 'utils/wagmi'
@@ -18,7 +18,8 @@ const AddLiquidityPage = () => {
   const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
 
-  const { data: farmsV2Configs } = useFarmV2Config()
+  // fetching farm api instead of using redux store here to avoid huge amount of actions and hooks needed
+  const { data: farmsV2Public } = useFarmV2PublicAPI()
 
   const native = useNativeCurrency()
 
@@ -32,20 +33,21 @@ const AddLiquidityPage = () => {
 
   const isMounted = useIsMounted()
 
-  // Redirect to v2 if there is a farm for the pair
+  // Initial prefer v2 if there is a farm for the pair
   const preferV2 = useMemo(
     () =>
       isMounted &&
-      farmsV2Configs?.length &&
+      farmsV2Public?.length &&
       tokenA &&
       tokenB &&
       router.isReady &&
-      farmsV2Configs.some(
+      farmsV2Public.some(
         (farm) =>
-          (farm.token.address === tokenA.wrapped.address && farm.quoteToken.address === tokenB.wrapped.address) ||
-          (farm.token.address === tokenB.wrapped.address && farm.quoteToken.address === tokenA.wrapped.address),
+          farm.multiplier !== '0X' &&
+          ((farm.token.address === tokenA.wrapped.address && farm.quoteToken.address === tokenB.wrapped.address) ||
+            (farm.token.address === tokenB.wrapped.address && farm.quoteToken.address === tokenA.wrapped.address)),
       ),
-    [farmsV2Configs, isMounted, router.isReady, tokenA, tokenB],
+    [farmsV2Public, isMounted, router.isReady, tokenA, tokenB],
   )
 
   useEffect(() => {

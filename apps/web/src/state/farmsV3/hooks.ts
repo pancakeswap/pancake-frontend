@@ -65,9 +65,7 @@ export const useFarmsV3 = () => {
       // direct copy from api routes, the client side fetch is preventing cache due to migration phase we want fresh data
       const farms = farmsV3ConfigChainMap[chainId as ChainId]
 
-      const HOST = process.env.NEXT_PUBLIC_VERCEL_URL
-        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-        : 'http://localhost:3000'
+      const HOST = process.env.NEXT_PUBLIC_VERCEL_URL ? `` : 'http://localhost:3000'
 
       const tvls: TvlMap = {}
       if ([ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET].includes(chainId)) {

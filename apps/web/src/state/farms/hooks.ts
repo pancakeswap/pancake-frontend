@@ -33,12 +33,12 @@ export function useFarmsLength() {
   })
 }
 
-export function useFarmV2Config() {
+export function useFarmV2PublicAPI() {
   const { chainId } = useActiveWeb3React()
-  return useSWRImmutable(chainId ? ['farm-v2-config', chainId] : null, async () => {
-    const farmsConfig = await getFarmConfig(chainId)
-
-    return farmsConfig
+  return useSWRImmutable(chainId ? ['farm-v2-pubic-api', chainId] : null, async () => {
+    return fetch(`https://farms-api.pancakeswap.com/${chainId}`)
+      .then((res) => res.json())
+      .then((res) => res.data)
   })
 }
 
