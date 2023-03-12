@@ -45,7 +45,7 @@ interface FarmCardProps {
   account?: string
 }
 
-const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
+export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   farm,
   displayApr,
   removed,
@@ -142,5 +142,3 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     </StyledCard>
   )
 }
-
-export default FarmCard

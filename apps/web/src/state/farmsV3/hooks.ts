@@ -33,18 +33,27 @@ const farmV3ApiFetch = (chainId: number) =>
       }
     })
 
+const fallback = {
+  farmsWithPrice: [],
+  poolLength: 0,
+  latestPeriodCakePerSecond: '0',
+}
 export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
-  return useSWR('farmV3ApiFetch', () => farmV3ApiFetch(chainId), {
-    refreshInterval: FAST_INTERVAL * 3,
-    keepPreviousData: true,
-    fallbackData: {
-      farmsWithPrice: [],
-      poolLength: 0,
-      latestPeriodCakePerSecond: '0',
+  return useSWR(
+    [chainId, 'farmV3ApiFetch'],
+    () =>
+      farmV3ApiFetch(chainId).catch((err) => {
+        console.error(err)
+        return fallback
+      }),
+    {
+      refreshInterval: FAST_INTERVAL * 3,
+      keepPreviousData: true,
+      fallbackData: fallback,
     },
-  })
+  )
 }
 
 export const usePositionsByUser = (

@@ -5,7 +5,7 @@ import { formatBigNumber, getBalanceNumber } from '@pancakeswap/utils/formatBala
 import latinise from '@pancakeswap/utils/latinise'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useRef } from 'react'
+import { ReactNode, useCallback, useMemo, useRef } from 'react'
 import styled from 'styled-components'
 import { V2Farm, V2StakeValueAndV3Farm } from 'views/Farms/FarmsV3'
 import { getDisplayApr } from '../getDisplayApr'
@@ -14,6 +14,7 @@ import ProxyFarmContainer from '../YieldBooster/components/ProxyFarmContainer'
 import Row, { RowProps } from './Row'
 
 export interface ITableProps {
+  header?: ReactNode
   farms: V2StakeValueAndV3Farm[]
   userDataReady: boolean
   cakePrice: BigNumber
@@ -23,7 +24,7 @@ export interface ITableProps {
 const Container = styled.div`
   width: 100%;
   background: ${({ theme }) => theme.card.background};
-  border-radius: 16px;
+  border-radius: 32px;
   margin: 16px 0px;
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
@@ -141,7 +142,7 @@ const generateSortedRow = (row: RowProps) => {
   return newRow
 }
 
-const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cakePrice, userDataReady }) => {
+const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cakePrice, userDataReady, header }) => {
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const { query } = useRouter()
 
@@ -249,6 +250,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
 
   return (
     <Container id="farms-table">
+      {header}
       <TableContainer id="table-container">
         <TableWrapper ref={tableWrapperEl}>
           <StyledTable>

@@ -11,6 +11,7 @@ import MigrationSticky from './components/MigrationSticky'
 import { MigrationProgressSteps, Step } from './components/ProgressSteps'
 import { Step3 } from './components/v3/Step3'
 import { Step4 } from './components/v3/Step4'
+import { Step5 } from './components/v3/Step5'
 
 const steps: Step[] = [
   {
@@ -103,6 +104,7 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
           </LiquidityFormProvider>
         )}
         {step === 3 && <Step4 />}
+        {step === 4 && <Step5 />}
       </Page>
       <MigrationSticky version="v3" step={step} handleClick={handleMigrationStickyClick} />
     </div>
