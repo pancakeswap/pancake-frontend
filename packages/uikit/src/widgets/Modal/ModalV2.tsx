@@ -1,5 +1,5 @@
 import { AnimatePresence, domMax, LazyMotion } from "framer-motion";
-import React, { createContext, useMemo, useRef, useState } from "react";
+import React, { createContext, useCallback, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
 import { Overlay } from "../../components/Overlay";
@@ -22,8 +22,8 @@ export type UseModalV2Props = ReturnType<typeof useModalV2>;
 export function useModalV2() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleDismiss = useMemo(() => () => setIsOpen(false), [setIsOpen]);
-  const handleOpen = useMemo(() => () => setIsOpen(true), [setIsOpen]);
+  const handleDismiss = useCallback(() => setIsOpen(false), [setIsOpen]);
+  const handleOpen = useCallback(() => setIsOpen(true), [setIsOpen]);
 
   return {
     handleDismiss,
