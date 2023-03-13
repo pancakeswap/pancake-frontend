@@ -85,7 +85,7 @@ const RewardCalculate = () => {
           </Box>
           <Text color="textSubtle" mb="32px">
             {t(
-              'oin our community of top-earning affiliates and make the most of every referral, with market-leading commission rates and endless earning opportunities.',
+              'Join our community of top-earning affiliates and make the most of every referral, with market-leading commission rates and endless earning opportunities.',
             )}
           </Text>
           <Button width="fit-content">{t('Join Now!')}</Button>
