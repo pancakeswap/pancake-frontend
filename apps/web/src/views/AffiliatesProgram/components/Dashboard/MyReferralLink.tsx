@@ -12,7 +12,7 @@ import {
   ArrowForwardIcon,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+// import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 
@@ -84,11 +84,11 @@ const CardInner = styled(Flex)`
 const receivePercentageList: Array<string> = ['0', '10', '25', '50']
 
 const MyReferralLink = () => {
-  const { t } = useTranslation()
+  // const { t } = useTranslation()
   const { isMobile } = useMatchBreakpoints()
   const [percentage, setPercentage] = useState('0')
 
-  const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [commissionList])
+  const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [])
 
   return (
     <Box

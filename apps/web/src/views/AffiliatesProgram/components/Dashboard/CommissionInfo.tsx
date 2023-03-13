@@ -30,6 +30,7 @@ const StyledCircle = styled(Flex)`
 
 const CommissionInfo = () => {
   const arrow = useMemo(() => {
+    // eslint-disable-next-line no-constant-condition
     const directionArrow = true ? '↑' : '↓'
     return directionArrow
   }, [])
