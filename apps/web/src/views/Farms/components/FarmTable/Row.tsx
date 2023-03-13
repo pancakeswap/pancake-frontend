@@ -230,7 +230,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                       <CellInner>
                         <CellLayout label={t(tableSchema[columnIndex].label)}>
                           {createElement(cells[key], { ...props[key], userDataReady })}
-                          {v3PromotionFarms[details.pid] && key === 'farm' && <V3SwapPromotionIcon />}
+                          {v3PromotionFarms[props.details?.pid] && key === 'farm' && <V3SwapPromotionIcon />}
                         </CellLayout>
                       </CellInner>
                     </td>
@@ -249,7 +249,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
               <FarmCell {...props.farm} />
-              {v3PromotionFarms[details.pid] && <V3SwapPromotionIcon />}
+              {v3PromotionFarms[props.details?.pid] && <V3SwapPromotionIcon />}
 
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
