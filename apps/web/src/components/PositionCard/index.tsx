@@ -19,7 +19,7 @@ import {
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
-import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useAccount } from 'wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
@@ -71,8 +71,8 @@ export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) =
 }
 
 export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
-  const token0Price = useBUSDPrice(currency0)
-  const token1Price = useBUSDPrice(currency1)
+  const token0Price = useStablecoinPrice(currency0)
+  const token1Price = useStablecoinPrice(currency1)
 
   const token0USDValue =
     token0Deposited && token0Price

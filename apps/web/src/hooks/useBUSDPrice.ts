@@ -10,6 +10,7 @@ import {
   WBNB,
   ERC20Token,
   WETH9,
+  TradeType,
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
 import { BUSD, CAKE, USDC } from '@pancakeswap/tokens'
@@ -23,6 +24,43 @@ import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
 import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
+import { useBestAMMTrade } from './useBestAMMTrade'
+
+export function useStablecoinPrice(currency?: Currency): Price<Currency, Currency> | undefined {
+  const { chainId } = useActiveChainId()
+
+  const stableCoin = BUSD[chainId] as ERC20Token
+
+  const amountIn = currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined
+
+  const { trade } = useBestAMMTrade({
+    amount: amountIn,
+    currency: stableCoin,
+    baseCurrency: currency,
+    tradeType: TradeType.EXACT_INPUT,
+  })
+
+  const price = useMemo(() => {
+    if (!currency || !stableCoin) {
+      return undefined
+    }
+
+    // handle busd
+    if (currency?.wrapped.equals(stableCoin)) {
+      return new Price(stableCoin, stableCoin, '1', '1')
+    }
+
+    if (trade) {
+      const { inputAmount, outputAmount } = trade.routes[0]
+
+      return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
+    }
+
+    return undefined
+  }, [currency, stableCoin, trade])
+
+  return price
+}
 
 /**
  * Returns the price in BUSD of the input currency

@@ -21,7 +21,7 @@ import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import useBUSDPrice from 'hooks/useBUSDPrice'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
@@ -50,7 +50,6 @@ import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/Range
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import { useSingleCallResult } from 'state/multicall/hooks'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { usePositionV3Liquidity } from 'hooks/v3/usePositionV3Liquidity'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Bound } from 'config/constants/types'
 import { PoolState } from 'hooks/v3/types'
@@ -206,8 +205,8 @@ export default function PoolPage() {
   const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
   // usdc prices always in terms of tokens
-  const price0 = useBUSDPrice(token0 ?? undefined)
-  const price1 = useBUSDPrice(token1 ?? undefined)
+  const price0 = useStablecoinPrice(token0 ?? undefined)
+  const price1 = useStablecoinPrice(token1 ?? undefined)
 
   const fiatValueOfFees: CurrencyAmount<Currency> | null = useMemo(() => {
     if (!price0 || !price1 || !feeValue0 || !feeValue1) return null
@@ -223,7 +222,14 @@ export default function PoolPage() {
     return amount0.add(amount1)
   }, [price0, price1, feeValue0, feeValue1])
 
-  const fiatValueOfLiquidity: CurrencyAmount<Currency> | null = usePositionV3Liquidity(position)
+  const fiatValueOfLiquidity: CurrencyAmount<Currency> | null = useMemo(() => {
+    if (!price0 || !price1 || !position) return null
+    const amount0 = price0.quote(position.amount0)
+    const amount1 = price1.quote(position.amount1)
+
+    return amount0.add(amount1)
+  }, [price0, price1, position])
+
   const addTransaction = useTransactionAdder()
 
   const positionManager = useV3NFTPositionManagerContract()
@@ -450,9 +456,10 @@ export default function PoolPage() {
                     </Text>
 
                     <Text fontSize="24px" fontWeight={500} mb="8px">
+                      $
                       {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100))
                         ? fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })
-                        : '$-'}
+                        : '-'}
                     </Text>
                     <LightGreyCard mr="4px">
                       <AutoRow justifyContent="space-between" mb="8px">
@@ -489,9 +496,10 @@ export default function PoolPage() {
                     </Text>
                     <AutoRow justifyContent="space-between" mb="8px">
                       <Text fontSize="24px" fontWeight={500}>
+                        $
                         {fiatValueOfFees?.greaterThan(new Fraction(1, 100))
                           ? fiatValueOfFees.toFixed(2, { groupSeparator: ',' })
-                          : '$-'}
+                          : '-'}
                       </Text>
 
                       {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash ? (
