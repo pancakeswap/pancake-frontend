@@ -15,15 +15,14 @@ import {
   useTooltip,
 } from '@pancakeswap/uikit'
 
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
-import RefreshIcon from 'components/Svg/RefreshIcon'
-import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { useExpertModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
@@ -35,8 +34,6 @@ interface Props {
   noConfig?: boolean
   setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed?: boolean
-  hasAmount: boolean
-  onRefreshPrice: () => void
 }
 
 const ColoredIconButton = styled(IconButton)`
@@ -47,12 +44,7 @@ const ColoredIconButton = styled(IconButton)`
 //  disable this during the v3 campaign
 const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
 
-const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
-  subtitle,
-  hasAmount,
-  onRefreshPrice,
-  title,
-}) => {
+const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitle, title }) => {
   const { t } = useTranslation()
   const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
@@ -64,12 +56,11 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   })
 
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
-  const [expertMode] = useExpertModeManager()
+  const [expertMode] = useExpertMode()
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
-  const handleOnClick = useCallback(() => onRefreshPrice?.(), [onRefreshPrice])
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
 
   const mobileTooltipClickOutside = useCallback(() => {
@@ -145,9 +136,6 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
         </NotificationDot>
         <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
           <HistoryIcon color="textSubtle" width="24px" />
-        </IconButton>
-        <IconButton variant="text" scale="sm" onClick={handleOnClick}>
-          <RefreshIcon disabled={!hasAmount} color="textSubtle" width="27px" />
         </IconButton>
       </Flex>
     </Flex>

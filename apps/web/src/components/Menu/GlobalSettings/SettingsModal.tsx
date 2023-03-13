@@ -12,6 +12,9 @@ import {
   Text,
   ThemeSwitcher,
   Toggle,
+  Button,
+  ModalV2,
+  PreTitle,
 } from '@pancakeswap/uikit'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -19,16 +22,14 @@ import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import {
-  useAudioModeManager,
-  useExpertModeManager,
-  useSubgraphHealthIndicatorManager,
-  useUserExpertModeAcknowledgementShow,
+  useAudioPlay,
+  useExpertMode,
   useUserSingleHopOnly,
-  useUserUsernameVisibility,
-  useZapModeManager,
-} from 'state/user/hooks'
+  useUserExpertModeAcknowledgement,
+} from '@pancakeswap/utils/user'
+import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility, useZapModeManager } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
-import { useStableSwapByDefault } from 'state/user/smartRouter'
+import { useUserStableSwapEnable, useUserV2SwapEnable, useUserV3SwapEnable } from 'state/user/smartRouter'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import styled from 'styled-components'
 import GasSettings from './GasSettings'
@@ -70,16 +71,14 @@ export const withCustomOnDismiss =
 
 const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ onDismiss, mode }) => {
   const [showConfirmExpertModal, setShowConfirmExpertModal] = useState(false)
-  const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgementShow()
-  const [expertMode, toggleExpertMode] = useExpertModeManager()
-  const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
-  const [audioPlay, toggleSetAudioMode] = useAudioModeManager()
+  const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgement()
+  const [expertMode, setExpertMode] = useExpertMode()
+  const [audioPlay, setAudioMode] = useAudioPlay()
   const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
-  const [isStableSwapByDefault, setIsStableSwapByDefault] = useStableSwapByDefault()
   const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [tokenRisk, setTokenRisk] = useUserTokenRisk()
 
@@ -91,7 +90,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
       <ExpertModal
         setShowConfirmExpertModal={setShowConfirmExpertModal}
         onDismiss={onDismiss}
-        toggleExpertMode={toggleExpertMode}
+        toggleExpertMode={() => setExpertMode((s) => !s)}
         setShowExpertModeAcknowledgement={setShowExpertModeAcknowledgement}
       />
     )
@@ -100,7 +99,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const handleExpertModeToggle = () => {
     if (expertMode || !showExpertModeAcknowledgement) {
       onChangeRecipient(null)
-      toggleExpertMode()
+      setExpertMode((s) => !s)
     } else {
       setShowConfirmExpertModal(true)
     }
@@ -257,20 +256,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
-                <Text>{t('Disable Multihops')}</Text>
-                <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
-              </Flex>
-              <Toggle
-                id="toggle-disable-multihop-button"
-                checked={singleHopOnly}
-                scale="md"
-                onChange={() => {
-                  setSingleHopOnly(!singleHopOnly)
-                }}
-              />
-            </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
                 <Text>{t('Flippy sounds')}</Text>
                 <QuestionHelper
                   text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
@@ -278,7 +263,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                   ml="4px"
                 />
               </Flex>
-              <PancakeToggle checked={audioPlay} onChange={toggleSetAudioMode} scale="md" />
+              <PancakeToggle checked={audioPlay} onChange={() => setAudioMode((s) => !s)} scale="md" />
             </Flex>
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
@@ -296,30 +281,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 scale="md"
               />
             </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('Use StableSwap by default')}</Text>
-                <QuestionHelper
-                  text={
-                    <Flex>
-                      <Text mr="5px">
-                        {t(
-                          'Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap',
-                        )}
-                      </Text>
-                    </Flex>
-                  }
-                  placement="top-start"
-                  ml="4px"
-                />
-              </Flex>
-              <Toggle
-                id="toggle-disable-smartRouter-button"
-                checked={isStableSwapByDefault}
-                onChange={(e) => setIsStableSwapByDefault(e.target.checked)}
-                scale="md"
-              />
-            </Flex>
+            <RoutingSettingsButton />
           </>
         )}
       </ScrollableContainer>
@@ -328,3 +290,78 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
 }
 
 export default SettingsModal
+
+export function RoutingSettingsButton() {
+  const [show, setShow] = useState(false)
+  return (
+    <>
+      <Button variant="text" width="100%" onClick={() => setShow(true)}>
+        Customize Routing
+      </Button>
+      <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>
+        <RoutingSettings />
+      </ModalV2>
+    </>
+  )
+}
+
+function RoutingSettings() {
+  const { t } = useTranslation()
+
+  const [isStableSwapByDefault, setIsStableSwapByDefault] = useUserStableSwapEnable()
+  const [v2Enable, setV2Enable] = useUserV2SwapEnable()
+  const [v3Enable, setV3Enable] = useUserV3SwapEnable()
+  const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
+
+  return (
+    <Modal title="Customize Routing">
+      <PreTitle mb="24px">liquidity source</PreTitle>
+      <Flex justifyContent="space-between" alignItems="center" mb="24px">
+        <Flex alignItems="center">
+          <Text>PancakeSwap {t('StableSwap')}</Text>
+          <QuestionHelper
+            text={
+              <Flex>
+                <Text mr="5px">
+                  {t(
+                    'Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap',
+                  )}
+                </Text>
+              </Flex>
+            }
+            placement="top-start"
+            ml="4px"
+          />
+        </Flex>
+        <Toggle scale="md" checked={isStableSwapByDefault} onChange={() => setIsStableSwapByDefault((s) => !s)} />
+      </Flex>
+      <Flex justifyContent="space-between" alignItems="center" mb="24px">
+        <Flex alignItems="center">
+          <Text>PancakeSwap V2</Text>
+        </Flex>
+        <Toggle scale="md" checked={v2Enable} onChange={() => setV2Enable((s) => !s)} />
+      </Flex>
+      <Flex justifyContent="space-between" alignItems="center" mb="24px">
+        <Flex alignItems="center">
+          <Text>PancakeSwap V3</Text>
+        </Flex>
+        <Toggle scale="md" checked={v3Enable} onChange={() => setV3Enable((s) => !s)} />
+      </Flex>
+      <PreTitle mb="24px">Routing preference</PreTitle>
+      <Flex justifyContent="space-between" alignItems="center" mb="24px">
+        <Flex alignItems="center">
+          <Text>{t('Disable Multihops')}</Text>
+          <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
+        </Flex>
+        <Toggle
+          id="toggle-disable-multihop-button"
+          checked={singleHopOnly}
+          scale="md"
+          onChange={() => {
+            setSingleHopOnly(!singleHopOnly)
+          }}
+        />
+      </Flex>
+    </Modal>
+  )
+}

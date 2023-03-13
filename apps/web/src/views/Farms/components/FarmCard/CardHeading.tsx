@@ -1,16 +1,18 @@
 import { Token } from '@pancakeswap/sdk'
 import { ethereumTokens } from '@pancakeswap/tokens'
-import { Box, Farm as FarmUI, Flex, Heading, Skeleton, Tag } from '@pancakeswap/uikit'
+import { AutoRow, Farm as FarmUI, Flex, Heading, Skeleton, Tag } from '@pancakeswap/uikit'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { STGWarningTooltip } from 'components/STGWarningModal/STGWarningTooltip'
 import { TokenPairImage } from 'components/TokenImage'
 import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import styled from 'styled-components'
+
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
-const { FarmAuctionTag, CoreTag, StableFarmTag } = FarmUI.Tags
+const { FarmAuctionTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
 
-export interface ExpandableSectionProps {
+type ExpandableSectionProps = {
   lpLabel?: string
   multiplier?: string
   isCommunityFarm?: boolean
@@ -18,6 +20,8 @@ export interface ExpandableSectionProps {
   quoteToken: Token
   boosted?: boolean
   isStable?: boolean
+  version: 3 | 2
+  feeAmount?: FeeAmount
   pid?: number
 }
 
@@ -39,6 +43,8 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   quoteToken,
   boosted,
   isStable,
+  version,
+  feeAmount,
   pid,
 }) => {
   const isReady = multiplier !== undefined
@@ -62,16 +68,17 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
         ) : (
           <Skeleton mb="4px" width={60} height={18} />
         )}
-        <Flex justifyContent="center">
-          {isReady && isStable && <StableFarmTag mr="4px" />}
-          {isReady && boosted && <BoostedTag mr="4px" />}
-          {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
+        <AutoRow gap="4px" justifyContent="flex-end">
+          {isReady && isStable ? <StableFarmTag /> : version === 2 ? <V2Tag /> : null}
+          {isReady && version === 3 && <V3FeeTag feeAmount={feeAmount} />}
+          {isReady && boosted && <BoostedTag />}
+          {isReady && isCommunityFarm && <FarmAuctionTag />}
           {isReady ? (
             <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
           ) : (
             <Skeleton ml="4px" width={42} height={28} />
           )}
-        </Flex>
+        </AutoRow>
       </Flex>
     </Wrapper>
   )

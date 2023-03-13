@@ -1,6 +1,5 @@
 import { ChainId, Pair, ERC20Token } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { differenceInDays } from 'date-fns'
 import flatMap from 'lodash/flatMap'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { useCallback, useMemo } from 'react'
@@ -20,15 +19,10 @@ import {
   addSerializedPair,
   addSerializedToken,
   FarmStakedOnly,
-  muteAudio,
   removeSerializedToken,
   SerializedPair,
-  unmuteAudio,
   updateUserDeadline,
-  updateUserExpertMode,
   updateUserFarmStakedOnly,
-  updateUserSingleHopOnly,
-  updateUserSlippageTolerance,
   updateGasPrice,
   addWatchlistToken,
   addWatchlistPool,
@@ -40,8 +34,6 @@ import {
   updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserPredictionAcceptedRisk,
   updateUserUsernameVisibility,
-  updateUserExpertModeAcknowledgementShow,
-  hidePhishingWarningBanner,
   setIsExchangeChartDisplayed,
   ChartViewMode,
   setChartViewMode,
@@ -50,39 +42,6 @@ import {
   setZapDisabled,
 } from '../actions'
 import { GAS_PRICE_GWEI } from '../../types'
-
-export function useAudioModeManager(): [boolean, () => void] {
-  const dispatch = useAppDispatch()
-  const audioPlay = useSelector<AppState, AppState['user']['audioPlay']>((state) => state.user.audioPlay)
-
-  const toggleSetAudioMode = useCallback(() => {
-    if (audioPlay) {
-      dispatch(muteAudio())
-    } else {
-      dispatch(unmuteAudio())
-    }
-  }, [audioPlay, dispatch])
-
-  return [audioPlay, toggleSetAudioMode]
-}
-
-export function usePhishingBannerManager(): [boolean, () => void] {
-  const dispatch = useAppDispatch()
-  const hideTimestampPhishingWarningBanner = useSelector<
-    AppState,
-    AppState['user']['hideTimestampPhishingWarningBanner']
-  >((state) => state.user.hideTimestampPhishingWarningBanner)
-  const now = Date.now()
-  const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
-  const hideBanner = useCallback(() => {
-    dispatch(hidePhishingWarningBanner())
-  }, [dispatch])
-  const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
-    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1 && notPreview
-    : notPreview
-
-  return [showPhishingWarningBanner, hideBanner]
-}
 
 // Get user preference for exchange price chart
 // For mobile layout chart is hidden by default
@@ -147,54 +106,6 @@ export function useSubgraphHealthIndicatorManager() {
   )
 
   return [isSubgraphHealthIndicatorDisplayed, setSubgraphHealthIndicatorDisplayedPreference] as const
-}
-
-export function useIsExpertMode(): boolean {
-  return useSelector<AppState, AppState['user']['userExpertMode']>((state) => state.user.userExpertMode)
-}
-
-export function useExpertModeManager(): [boolean, () => void] {
-  const dispatch = useAppDispatch()
-  const expertMode = useIsExpertMode()
-
-  const toggleSetExpertMode = useCallback(() => {
-    dispatch(updateUserExpertMode({ userExpertMode: !expertMode }))
-  }, [expertMode, dispatch])
-
-  return [expertMode, toggleSetExpertMode]
-}
-
-export function useUserSingleHopOnly(): [boolean, (newSingleHopOnly: boolean) => void] {
-  const dispatch = useAppDispatch()
-
-  const singleHopOnly = useSelector<AppState, AppState['user']['userSingleHopOnly']>(
-    (state) => state.user.userSingleHopOnly,
-  )
-
-  const setSingleHopOnly = useCallback(
-    (newSingleHopOnly: boolean) => {
-      dispatch(updateUserSingleHopOnly({ userSingleHopOnly: newSingleHopOnly }))
-    },
-    [dispatch],
-  )
-
-  return [singleHopOnly, setSingleHopOnly]
-}
-
-export function useUserSlippageTolerance(): [number, (slippage: number) => void] {
-  const dispatch = useAppDispatch()
-  const userSlippageTolerance = useSelector<AppState, AppState['user']['userSlippageTolerance']>((state) => {
-    return state.user.userSlippageTolerance
-  })
-
-  const setUserSlippageTolerance = useCallback(
-    (slippage: number) => {
-      dispatch(updateUserSlippageTolerance({ userSlippageTolerance: slippage }))
-    },
-    [dispatch],
-  )
-
-  return [userSlippageTolerance, setUserSlippageTolerance]
 }
 
 export function useUserFarmStakedOnly(isActive: boolean): [boolean, (stakedOnly: boolean) => void] {
@@ -335,25 +246,6 @@ export function useUserPredictionChainlinkChartDisclaimerShow(): [boolean, (show
   )
 
   return [userPredictionChainlinkChartDisclaimerShow, setPredictionUserChainlinkChartDisclaimerShow]
-}
-
-export function useUserExpertModeAcknowledgementShow(): [boolean, (showAcknowledgement: boolean) => void] {
-  const dispatch = useAppDispatch()
-  const userExpertModeAcknowledgementShow = useSelector<
-    AppState,
-    AppState['user']['userExpertModeAcknowledgementShow']
-  >((state) => {
-    return state.user.userExpertModeAcknowledgementShow
-  })
-
-  const setUserExpertModeAcknowledgementShow = useCallback(
-    (showAcknowledgement: boolean) => {
-      dispatch(updateUserExpertModeAcknowledgementShow({ userExpertModeAcknowledgementShow: showAcknowledgement }))
-    },
-    [dispatch],
-  )
-
-  return [userExpertModeAcknowledgementShow, setUserExpertModeAcknowledgementShow]
 }
 
 export function useUserUsernameVisibility(): [boolean, (usernameVisibility: boolean) => void] {

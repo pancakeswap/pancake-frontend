@@ -1,10 +1,12 @@
 import { multicallAddresses } from '@pancakeswap/multicall'
+import { masterChefV3Addresses } from '@pancakeswap/farms'
 
 export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
   },
+  masterChefV3: masterChefV3Addresses,
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
@@ -136,7 +138,7 @@ export default {
   },
   stableSwapNativeHelper: {
     56: '0x52E5D1e24A4308ef1A221C949cb2F7cbbAFEE090',
-    97: '0x494B692Fe0CF54f633dCDFbba0D0a8629Edb344F',
+    97: '0x6e4B1D7C65E86f1723720a5fE8993f0908108b64',
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
@@ -168,5 +170,45 @@ export default {
     1: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
     5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92',
     56: '0xfEACb05b373f1A08E68235bA7FC92636b92ced01',
+  },
+  // TODO: v3 swap update
+  nftPositionManager: {
+    56: '0x59c864bf8bB8ABe4dC16516b2C70104706df113A',
+    97: '0x7ac1781fbC0221edA1ba4D63F44f6851784DE9DD',
+    5: '0x09C65bC891bf39DAF771e85F2203B898402fF3CF',
+    1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+  },
+  v3PoolDeployer: {
+    97: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
+    56: '',
+    5: '',
+    1: '',
+  },
+  v3Migrator: {
+    97: '0x6A3A0144184Ea7B56307e3bcFb5E23131600A5C8',
+    56: '',
+    5: '',
+    1: '',
+  },
+  // TODO: v3 swap update
+  v3Factory: {
+    56: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
+    97: '0x6C816814D8c03F6B4e55c7965d9814B151336775',
+    5: '0x6e906fC1d75c9559E4E8b0F1Fa002C4a9724988f',
+    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
+  // NOTE: Keep 1 and 5 as v3Factory for testing
+  v3FactoryDeployer: {
+    56: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
+    97: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
+    5: '0x6e906fC1d75c9559E4E8b0F1Fa002C4a9724988f',
+    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
+  // TODO: v3 swap update
+  quoter: {
+    56: '0x93a775Ab5B2500F23717ffB69B42bfAbb0c8e91E',
+    97: '0x93a775Ab5B2500F23717ffB69B42bfAbb0c8e91E',
+    5: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    1: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
   },
 }

@@ -7,9 +7,9 @@ import { CurrencySelect } from 'components/CurrencySelect'
 import { RowBetween } from 'components/Layout/Row'
 import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { usePair } from 'hooks/usePairs'
-import { useLPApr } from 'state/swap/useLPApr'
+import { useV2Pair } from 'hooks/usePairs'
 import { formatAmount } from 'utils/formatInfoNumbers'
+import { useLPApr } from 'state/swap/useLPApr'
 import { AppHeader } from '../../components/App'
 import { CommonBasesType } from '../../components/SearchModal/types'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
@@ -29,7 +29,7 @@ export function ChoosePair({
   const { t } = useTranslation()
   const isValid = !error
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
-  const [, pair] = usePair(currencyA, currencyB)
+  const [, pair] = useV2Pair(currencyA, currencyB)
   const poolData = useLPApr(pair)
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     t(`Based on last 7 days' performance. Does not account for impermanent loss`),

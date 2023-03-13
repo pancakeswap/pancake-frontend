@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@pancakeswap/sdk": "*",
+    "@pancakeswap/v3-sdk": "*",
     "@pancakeswap/tokens": "*",
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/multicall": "*",

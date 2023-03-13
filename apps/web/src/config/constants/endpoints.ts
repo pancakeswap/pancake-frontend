@@ -29,8 +29,6 @@ export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
 export const TC_MOBOX_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v3'
 export const TC_MOD_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v4'
 
-export const FARM_API = 'https://farms-api.pancakeswap.com'
-
 export const BIT_QUERY = 'https://graphql.bitquery.io'
 
 export const ACCESS_RISK_API = '/api/risk'
@@ -48,3 +46,11 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
 }
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
+
+export const V3_SUBGRAPH_URLS = {
+  // TODO: v3 swap update
+  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
+  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-goerli',
+  [ChainId.BSC]: '',
+  [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-chapel',
+}

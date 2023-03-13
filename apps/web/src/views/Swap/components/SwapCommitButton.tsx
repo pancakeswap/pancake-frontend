@@ -13,7 +13,7 @@ import { Field } from 'state/swap/actions'
 import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCallback, useEffect, useState } from 'react'
-import { useUserSingleHopOnly } from 'state/user/hooks'
+import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 import {
   BIG_INT_ZERO,
   ALLOWED_PRICE_IMPACT_HIGH,

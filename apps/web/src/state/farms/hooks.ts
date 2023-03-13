@@ -13,6 +13,7 @@ import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
 import {
@@ -32,6 +33,15 @@ export function useFarmsLength() {
   })
 }
 
+export function useFarmV2PublicAPI() {
+  const { chainId } = useActiveWeb3React()
+  return useSWRImmutable(chainId ? ['farm-v2-pubic-api', chainId] : null, async () => {
+    return fetch(`https://farms-api.pancakeswap.com/${chainId}`)
+      .then((res) => res.json())
+      .then((res) => res.data)
+  })
+}
+
 export const usePollFarmsWithUserData = () => {
   const dispatch = useAppDispatch()
   const { account, chainId } = useActiveWeb3React()
@@ -46,6 +56,7 @@ export const usePollFarmsWithUserData = () => {
     async () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
+
       dispatch(fetchFarmsPublicDataAsync({ pids, chainId }))
     },
     {
@@ -63,7 +74,6 @@ export const usePollFarmsWithUserData = () => {
       const farmsConfig = await getFarmConfig(chainId)
       const pids = farmsConfig.map((farmToFetch) => farmToFetch.pid)
       const params = proxyCreated ? { account, pids, proxyAddress, chainId } : { account, pids, chainId }
-
       dispatch(fetchFarmUserDataAsync(params))
     },
     {

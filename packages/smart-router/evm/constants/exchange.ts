@@ -3,6 +3,13 @@ import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT } from '@pancakeswap/toke
 
 import { ChainMap, ChainTokenList } from '../types'
 
+export const SWAP_ROUTER_ADDRESSES: ChainMap<string> = {
+  [ChainId.ETHEREUM]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
+  [ChainId.GOERLI]: '0xb8541F86CB4E9fAf4975883A932b7d70Adc24a2f',
+  [ChainId.BSC]: '',
+  [ChainId.BSC_TESTNET]: '0x2858E8c932F2f24e67278BA19903b82695A7F1b9',
+}
+
 export const ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.ETHEREUM]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
   [ChainId.GOERLI]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
@@ -23,7 +30,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     WNATIVE[ChainId.ETHEREUM],
     USDC[ChainId.ETHEREUM],
     USDT[ChainId.ETHEREUM],
-    BUSD[ChainId.ETHEREUM],
+    // BUSD[ChainId.ETHEREUM],
     WBNB[ChainId.ETHEREUM],
   ],
   [ChainId.GOERLI]: [WNATIVE[ChainId.GOERLI], USDC[ChainId.GOERLI], BUSD[ChainId.GOERLI]],

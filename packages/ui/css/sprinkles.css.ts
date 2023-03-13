@@ -46,6 +46,7 @@ const responsiveProperties = defineProperties({
     display: ['block', 'flex', 'grid', 'inline', 'inline-flex', 'inline-block', 'none', 'contents'],
     flexDirection: ['column', 'row', 'column-reverse'],
     alignItems: ['center', 'end', 'baseLine', 'inherit', ...flexAlignment],
+    alignSelf: flexAlignment,
     flexWrap: ['wrap', 'nowrap'],
     flexGrow: [1],
     overflow: ['auto', 'hidden', 'scroll', 'unset'],
