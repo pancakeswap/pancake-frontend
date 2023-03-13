@@ -202,13 +202,18 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
-                <Flex mr="16px">
+                <Flex
+                  mr="16px"
+                  alignItems={isMobile ? 'end' : 'center'}
+                  flexDirection={isMobile ? 'column' : 'row'}
+                  style={{ gap: '4px' }}
+                >
                   <CoreTag scale="sm" />
                   {props?.details?.isStable ? (
-                    <StableFarmTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                    <StableFarmTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
                   ) : null}
                   {props?.details?.boosted ? (
-                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
                   ) : null}
                 </Flex>
               )}
