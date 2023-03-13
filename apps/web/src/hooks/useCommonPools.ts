@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { Currency, JSBI, ZERO } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/smart-router/evm'
 import { useEffect, useMemo, useState, useCallback } from 'react'
 
@@ -80,13 +80,13 @@ export function useCommonPools(
   }, [consistentBlockNumber, v2Pools, v3Pools, stablePools])
 
   useEffect(() => {
-    if (latestBlockNumber && JSBI.greaterThan(latestBlockNumber, ZERO) && !blockNumber) {
+    if (latestBlockNumber && latestBlockNumber > 0 && !blockNumber) {
       setBlockNumber(latestBlockNumber)
     }
   }, [latestBlockNumber, blockNumber])
 
   useEffect(() => {
-    if (latestBlockNumber && consistentBlockNumber && JSBI.lessThan(consistentBlockNumber, latestBlockNumber)) {
+    if (latestBlockNumber && consistentBlockNumber && consistentBlockNumber < latestBlockNumber) {
       refresh()
     }
   }, [consistentBlockNumber, latestBlockNumber, refresh])
