@@ -29,7 +29,7 @@ import { HarvestAction, HarvestActionContainer, ProxyHarvestActionContainer } fr
 import StakedAction, { ProxyStakedContainer, StakedContainer } from './StakedAction'
 import { ActionContainer as ActionContainerSection, ActionContent, ActionTitles } from './styles'
 
-const { Multiplier, Liquidity } = FarmUI.FarmTable
+const { Multiplier, Liquidity, StakedLiquidity } = FarmUI.FarmTable
 const { NoPosition } = FarmUI.FarmV3Table
 
 export interface ActionPanelProps {
@@ -48,7 +48,7 @@ export interface ActionPanelV3Props {
     pid: number
   }
   multiplier: FarmTableMultiplierProps
-  liquidity: FarmTableLiquidityProps
+  stakedLiquidity: FarmTableLiquidityProps
   details: V3Farm
   userDataReady: boolean
   expanded: boolean
@@ -159,7 +159,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   expanded,
   details,
   multiplier,
-  liquidity,
+  stakedLiquidity,
   alignLinksToRight,
   userDataReady,
 }) => {
@@ -215,8 +215,8 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
                 <Multiplier {...multiplier} />
               </ValueWrapper>
               <ValueWrapper>
-                <Text>{t('Liquidity')}</Text>
-                <Liquidity {...liquidity} />
+                <Text>{t('Staked Liquidity')}</Text>
+                <StakedLiquidity {...stakedLiquidity} />
               </ValueWrapper>
             </>
           )}
@@ -252,7 +252,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
             boostedAction={null}
             account={account}
             hasNoPosition={hasNoPosition}
-            onAddLiquidity={addLiquidityModal.handleOpen}
+            onAddLiquidity={addLiquidityModal.onOpen}
             connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
           />
           <AddLiquidityV3Modal

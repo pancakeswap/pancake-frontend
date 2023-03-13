@@ -13,6 +13,7 @@ export interface FarmTableAmountProps {
 
 export interface FarmTableLiquidityProps {
   liquidity: BigNumber;
+  updatedAt?: number;
 }
 
 export interface FarmTableMultiplierProps {
@@ -136,9 +137,9 @@ export const V3DesktopColumnSchema: ColumnsDefTypes[] = [
   },
   {
     id: 5,
-    name: "liquidity",
+    name: "stakedLiquidity",
     sortable: true,
-    label: "Liquidity",
+    label: "Staked Liquidity",
   },
   {
     id: 6,

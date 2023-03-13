@@ -38,22 +38,31 @@ interface FarmV3StakeAndUnStakeProps {
   handleUnStake: () => void
 }
 
-const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<FarmV3StakeAndUnStakeProps>> = ({
-  farm,
-  title,
-  liquidityUrl,
+export const FarmV3LPTitle = ({ liquidityUrl, title }: { liquidityUrl: string; title: string }) => (
+  <StyledLink external href={liquidityUrl}>
+    <Text bold color="secondary">
+      {title}
+    </Text>
+    <ChevronRightIcon color="secondary" fontSize="12px" />
+  </StyledLink>
+)
+
+export const FarmV3LPPosition = ({
+  position: position_,
   token,
   quoteToken,
-  position: position_,
-  positionType,
-  isPending,
-  handleStake,
-  handleUnStake,
+  farm,
+}: {
+  position: PositionDetails
+  token: Token
+  quoteToken: Token
+  farm: V3Farm
 }) => {
   const {
     t,
     currentLanguage: { locale },
   } = useTranslation()
+
   const { position } = useDerivedPositionInfo(position_)
   const { tickLower, tickUpper, fee: feeAmount } = position_
   const { priceLower, priceUpper } = getPriceOrderingFromPositionForUI(position)
@@ -67,43 +76,57 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
       .toNumber()
 
   return (
+    <Box>
+      <Text bold fontSize="12px">
+        {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
+          minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
+          maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
+          token: token.symbol,
+          quoteToken: quoteToken.symbol,
+        })}
+      </Text>
+      <Box>
+        <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
+        <Flex style={{ gap: '4px' }}>
+          <Balance
+            fontSize="12px"
+            color="textSubtle"
+            decimals={2}
+            value={position ? +position.amount0.toSignificant(4) : 0}
+            unit={` ${token.symbol}`}
+          />
+          <Balance
+            fontSize="12px"
+            color="textSubtle"
+            decimals={2}
+            value={position ? +position.amount1.toSignificant(4) : 0}
+            unit={` ${quoteToken.symbol}`}
+          />
+        </Flex>
+      </Box>
+    </Box>
+  )
+}
+
+const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<FarmV3StakeAndUnStakeProps>> = ({
+  farm,
+  title,
+  liquidityUrl,
+  token,
+  quoteToken,
+  position,
+  positionType,
+  isPending,
+  handleStake,
+  handleUnStake,
+}) => {
+  const { t } = useTranslation()
+
+  return (
     <>
-      <StyledLink external href={liquidityUrl}>
-        <Text bold color="secondary">
-          {title}
-        </Text>
-        <ChevronRightIcon color="secondary" fontSize="12px" />
-      </StyledLink>
+      <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} />
       <RowBetween gap="16px">
-        <Box>
-          <Text bold fontSize="12px">
-            {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
-              minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
-              maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
-              token: token.symbol,
-              quoteToken: quoteToken.symbol,
-            })}
-          </Text>
-          <Box>
-            <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
-            <Flex style={{ gap: '4px' }}>
-              <Balance
-                fontSize="12px"
-                color="textSubtle"
-                decimals={2}
-                value={position ? +position.amount0.toSignificant(4) : 0}
-                unit={` ${token.symbol}`}
-              />
-              <Balance
-                fontSize="12px"
-                color="textSubtle"
-                decimals={2}
-                value={position ? +position.amount1.toSignificant(4) : 0}
-                unit={` ${quoteToken.symbol}`}
-              />
-            </Flex>
-          </Box>
-        </Box>
+        <FarmV3LPPosition farm={farm} token={token} quoteToken={quoteToken} position={position} />
         {positionType === 'unstaked' ? (
           <Button width={['120px']} style={{ alignSelf: 'center' }} disabled={isPending} onClick={handleStake}>
             {t('Stake')}

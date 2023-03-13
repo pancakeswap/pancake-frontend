@@ -217,8 +217,9 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         multiplier: {
           multiplier: farm.multiplier,
         },
-        liquidity: {
+        stakedLiquidity: {
           liquidity: new BigNumber(farm.activeTvlUSD),
+          updatedAt: farm.activeTvlUSDUpdatedAt ? new Date(farm.activeTvlUSDUpdatedAt).getTime() : undefined,
         },
         earned: {
           earnings: +formatBigNumber(

@@ -24,6 +24,7 @@ export type FarmsDynamicDataResultV2 = {
 
 export type FarmPriceV3 = {
   activeTvlUSD: string
+  activeTvlUSDUpdatedAt?: string
   tokenPriceBusd: string
   quoteTokenPriceBusd: string
   cakeApr: string

@@ -422,6 +422,7 @@ function getFarmsPrices(
     const stableTokens = DEFAULT_STABLE_COINS[chainId as keyof typeof DEFAULT_STABLE_COINS]
 
     let tvl = FIXED_ZERO
+    let tvlUpdatedAt: string | undefined
 
     if (commonPrice[farm.quoteToken.address]) {
       quoteTokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
@@ -455,12 +456,15 @@ function getFarmsPrices(
       tvl = tokenPriceBusd
         .mulUnsafe(FixedNumber.from(tvls[farm.lpAddress]?.token0))
         .addUnsafe(quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(tvls[farm.lpAddress].token1)))
+
+      tvlUpdatedAt = tvls[farm.lpAddress]?.updatedAt
     }
 
     return {
       ...farm,
       cakeApr: getCakeApr(farm.poolWeight, tvl, cakePriceUSD, latestPeriodCakePerSecond),
       activeTvlUSD: tvl.toString(),
+      activeTvlUSDUpdatedAt: tvlUpdatedAt,
       tokenPriceBusd: tokenPriceBusd.toString(),
       quoteTokenPriceBusd: quoteTokenPriceBusd.toString(),
     }

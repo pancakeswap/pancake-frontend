@@ -39,12 +39,12 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ 
         feeAmount={farm.feeAmount}
       />
       {account && !hasNoPosition ? (
-        <FarmInfo farm={farm} isReady={isReady} onAddLiquidity={addLiquidityModal.handleOpen} />
+        <FarmInfo farm={farm} isReady={isReady} onAddLiquidity={addLiquidityModal.onOpen} />
       ) : (
         <NoPosition
           account={account}
           hasNoPosition={hasNoPosition}
-          onAddLiquidityClick={addLiquidityModal.handleOpen}
+          onAddLiquidityClick={addLiquidityModal.onOpen}
           connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
         />
       )}

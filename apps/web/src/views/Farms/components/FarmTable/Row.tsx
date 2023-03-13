@@ -25,18 +25,18 @@ import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
 
 const { FarmAuctionTag, BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
-const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount } = FarmUI.FarmTable
+const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount, StakedLiquidity } = FarmUI.FarmTable
 
 export type RowProps = {
   earned: FarmTableEarnedProps
   initialActivity?: boolean
   multiplier: FarmTableMultiplierProps
-  liquidity: FarmTableLiquidityProps
 } & (V2RowProps | V3RowProps | CommunityRowPRops)
 
 export type V2RowProps = {
   type: 'v2'
   farm: FarmTableFarmTokenInfoProps & { version: 2 }
+  liquidity: FarmTableLiquidityProps
   apr: AprProps
   details: V2Farm
 }
@@ -51,6 +51,7 @@ export type V3RowProps = {
     value: string
     pid: number
   }
+  stakedLiquidity: FarmTableLiquidityProps
   farm: FarmTableFarmTokenInfoProps & { version: 3 }
   details: V3Farm
   availableLp: {
@@ -74,6 +75,7 @@ const cells = {
   details: Details,
   multiplier: Multiplier,
   liquidity: Liquidity,
+  stakedLiquidity: StakedLiquidity,
   availableLp: LpAmount,
   stakedLp: LpAmount,
 }

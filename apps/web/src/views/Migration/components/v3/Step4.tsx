@@ -171,7 +171,7 @@ function PairSelection({ token0, token1 }: { token0: Token; token1: Token }) {
             {token0?.symbol}/{token1?.symbol}
           </Text>
         </AutoRow>
-        <Button onClick={addLiquidityModal.handleOpen}>Add</Button>
+        <Button onClick={addLiquidityModal.onOpen}>Add</Button>
       </Flex>
       <AddLiquidityV3Modal {...addLiquidityModal} token0={token0} token1={token1} />
     </LightGreyCard>
