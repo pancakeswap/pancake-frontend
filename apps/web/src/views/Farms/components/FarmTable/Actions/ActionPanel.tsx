@@ -149,7 +149,7 @@ const ActionPanelContainer = ({ expanded, values, infos, children }) => {
         <ValueContainer>{values}</ValueContainer>
         {infos}
       </InfoContainer>
-      <ActionContainer>{children}</ActionContainer>
+      <ActionContainer style={{ maxHeight: 700 }}>{children}</ActionContainer>
     </Container>
   )
 }

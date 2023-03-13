@@ -33,7 +33,7 @@ import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPTitle } from './FarmV3
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
-const ActionContainer = styled(Flex)<{ $direction: 'row' | 'column' }>`
+const ActionContainer = styled(Flex)`
   width: 100%;
   padding: 0 16px;
   border: 2px solid ${({ theme }) => theme.colors.input};
@@ -41,7 +41,6 @@ const ActionContainer = styled(Flex)<{ $direction: 'row' | 'column' }>`
   flex-grow: 1;
   flex-basis: 0;
   margin-bottom: 8px;
-  flex-direction: ${({ $direction }) => $direction};
   flex-wrap: wrap;
   padding: 16px;
   gap: 24px;
@@ -119,12 +118,8 @@ const SingleFarmV3Card: React.FunctionComponent<
   }
 
   const totalEarnings = useMemo(
-    () =>
-      +formatBigNumber(
-        Object.values(pendingCakeByTokenIds).reduce((total, vault) => total.add(vault), EthersBigNumber.from('0')),
-        4,
-      ),
-    [pendingCakeByTokenIds],
+    () => +formatBigNumber(pendingCakeByTokenIds[position.tokenId.toString()] || EthersBigNumber.from('0'), 4),
+    [pendingCakeByTokenIds, position.tokenId],
   )
 
   const earningsBusd = useMemo(() => {
@@ -148,7 +143,7 @@ const SingleFarmV3Card: React.FunctionComponent<
 
   return (
     <AtomBox {...atomBoxProps}>
-      <ActionContainer bg="background" $direction={direction}>
+      <ActionContainer bg="background" flexDirection={direction}>
         <RowBetween
           flexDirection="column"
           alignItems="flex-start"
@@ -205,7 +200,7 @@ const SingleFarmV3Card: React.FunctionComponent<
                     </NextLink>
                   </AutoColumn>
                 </LightCard>
-                <Button onClick={handleUnStake} width="100%">
+                <Button onClick={handleUnStake} disabled={attemptingTxn} width="100%">
                   {t('Unstake')}
                 </Button>
                 <Text color="textSubtle">
@@ -230,8 +225,8 @@ const SingleFarmV3Card: React.FunctionComponent<
               <FarmV3HarvestAction
                 earnings={totalEarnings}
                 earningsBusd={earningsBusd}
-                pendingTx={false}
-                userDataReady={false}
+                pendingTx={attemptingTxn}
+                userDataReady
                 handleHarvest={handleHarvest}
               />
             </RowBetween>

@@ -26,6 +26,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
+  // TODO: v3 farms only show farms with multiples === '0x'
   const farms = farmsLP
     .filter((farm) => farm.pid !== 0)
     .filter((farm) => {
