@@ -22,7 +22,14 @@ const PoolRow: React.FC<
       <Pool.NameCell<Coin>
         pool={pool}
         tokenPairImage={
-          <TokenPairImage mr="8px" width={40} height={40} primaryToken={earningToken} secondaryToken={stakingToken} />
+          <TokenPairImage
+            mr="8px"
+            width={40}
+            height={40}
+            style={{ minWidth: 40 }}
+            primaryToken={earningToken}
+            secondaryToken={stakingToken}
+          />
         }
       />
       <Pool.EarningsCell<Coin> pool={pool} account={account} />
