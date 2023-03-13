@@ -1,18 +1,17 @@
 import BigNumber from 'bignumber.js'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { SLOW_INTERVAL } from 'config/constants'
-import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
 import { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useAppDispatch } from 'state'
 import useSWRImmutable from 'swr/immutable'
-import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useBCakeProxyContractAddress } from 'views/Farms/hooks/useBCakeProxyContractAddress'
 import { getMasterchefContract } from 'utils/contractHelpers'
 import { useFastRefreshEffect } from 'hooks/useRefreshEffect'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { DeserializedFarm, DeserializedFarmsState, DeserializedFarmUserData } from '@pancakeswap/farms'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 
 import { fetchFarmsPublicDataAsync, fetchFarmUserDataAsync, fetchInitialFarmsData } from '.'
 import { State } from '../types'
@@ -146,10 +145,6 @@ export const useLpTokenPrice = (symbol: string) => {
   return useSelector(lpTokenPriceFromLpSymbol)
 }
 
-/**
- * @deprecated use the BUSD hook in /hooks
- */
-export const usePriceCakeBusd = ({ forceMainnet } = { forceMainnet: false }): BigNumber => {
-  const price = useCakeBusdPrice({ forceMainnet })
-  return useMemo(() => (price ? new BigNumber(price.toSignificant(6)) : BIG_ZERO), [price])
+export const usePriceCakeUSD = (): BigNumber => {
+  return useCakePriceAsBN()
 }

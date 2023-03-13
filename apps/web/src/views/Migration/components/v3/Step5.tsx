@@ -3,7 +3,7 @@ import { AtomBox } from '@pancakeswap/ui'
 import { Heading } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
 import { getFarmV3Apr } from 'utils/apr'
 import FarmTable from 'views/Farms/components/FarmTable/FarmTable'
@@ -29,7 +29,7 @@ export function Step5() {
     [farmsLP],
   )
 
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
 
   const { t } = useTranslation()
 

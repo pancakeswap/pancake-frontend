@@ -3,7 +3,7 @@ import { SUPPORT_FARMS } from 'config/constants/supportChains'
 import { FarmsV3PageLayout, FarmsV3Context } from 'views/Farms'
 import { FarmV3Card } from 'views/Farms/components/FarmCard/V3/FarmV3Card'
 import { getDisplayApr } from 'views/Farms/components/getDisplayApr'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useAccount } from 'wagmi'
 import FarmCard from 'views/Farms/components/FarmCard/FarmCard'
 import ProxyFarmContainer, {
@@ -12,7 +12,7 @@ import ProxyFarmContainer, {
 
 export const ProxyFarmCardContainer = ({ farm }) => {
   const { address: account } = useAccount()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
 
   const { proxyFarm, shouldUseProxyFarm } = useContext(YieldBoosterStateContext)
   const finalFarm = shouldUseProxyFarm ? proxyFarm : farm
@@ -32,7 +32,7 @@ export const ProxyFarmCardContainer = ({ farm }) => {
 const FarmsPage = () => {
   const { address: account } = useAccount()
   const { chosenFarmsMemoized } = useContext(FarmsV3Context)
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
 
   return (
     <>

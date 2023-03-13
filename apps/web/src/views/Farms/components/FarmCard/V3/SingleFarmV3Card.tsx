@@ -24,7 +24,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import JSBI from 'jsbi'
 import Image from 'next/image'
 import { useEffect, useMemo } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import styled from 'styled-components'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
@@ -82,7 +82,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   const { address: account } = useAccount()
   const { data: signer } = useSigner()
   const { t } = useTranslation()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
   const { tokenId } = position
 
   const title = `${lpSymbol} (#${tokenId.toString()})`

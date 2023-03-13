@@ -3,7 +3,7 @@ import maxBy from 'lodash/maxBy'
 import { L0_USDC, CAKE, CE_USDC, WH_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
+import { useCakePrice } from '@pancakeswap/utils/useCakePrice'
 import BigNumber from 'bignumber.js'
 import { useAllCommonPairs } from 'hooks/Trades'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -148,18 +148,7 @@ export const useStableCakeAmount = (_amount: number): number | undefined => {
   return undefined
 }
 
-export const useCakePrice = () => {
-  return useSWRImmutable(
-    ['cake-usd-price'],
-    async () => {
-      const cake = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
-      return cake.price
-    },
-    {
-      refreshInterval: 1_000 * 10,
-    },
-  )
-}
+export { useCakePrice }
 
 export const usePriceCakeUsdc = () => {
   const { chainId } = useActiveWeb3React()

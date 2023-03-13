@@ -65,6 +65,7 @@ export function useStablecoinPrice(currency?: Currency): Price<Currency, Currenc
 /**
  * Returns the price in BUSD of the input currency
  * @param currency currency to compute the BUSD price of
+ * @deprecated it's using v2 pair
  */
 export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
@@ -155,6 +156,9 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   ])
 }
 
+/**
+ * @deprecated it's using v2 pair
+ */
 export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
   const pairAddress = getLpAddress(tokenA, tokenB)
@@ -184,6 +188,9 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   return price
 }
 
+/**
+ * @deprecated it's using v2 pair
+ */
 export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): number | undefined => {
   const busdPrice = useBUSDPrice(currency?.chainId === ChainId.ETHEREUM ? undefined : currency)
   // we don't have too many AMM pools on ethereum yet, try to get it from api
@@ -214,6 +221,9 @@ export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): num
   return undefined
 }
 
+/**
+ * @deprecated it's using v2 pair
+ */
 export const useBUSDCakeAmount = (amount: number): number | undefined => {
   const cakeBusdPrice = useCakeBusdPrice()
   if (cakeBusdPrice) {
@@ -222,7 +232,10 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
   return undefined
 }
 
-// @Note: only fetch from one pair
+/**
+ * @deprecated it's using v2 pair
+ * @Note: only fetch from one pair
+ */
 export const useCakeBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
@@ -232,6 +245,11 @@ export const useCakeBusdPrice = (
   const cake: Token = isTestnet ? CAKE[ChainId.BSC_TESTNET] : CAKE[ChainId.BSC]
   return usePriceByPairs(BUSD[cake.chainId], cake)
 }
+
+/**
+ * @deprecated it's using v2 pair
+ * @Note: only fetch from one pair
+ */
 
 // @Note: only fetch from one pair
 export const useBNBBusdPrice = (

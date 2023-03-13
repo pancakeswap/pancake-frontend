@@ -34,7 +34,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import orderBy from 'lodash/orderBy'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useFarms, usePollFarmsWithUserData, usePriceCakeBusd } from 'state/farms/hooks'
+import { useFarms, usePollFarmsWithUserData, usePriceCakeUSD } from 'state/farms/hooks'
 import { useFarmsV3WithPositions } from 'state/farmsV3/hooks'
 import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
@@ -199,7 +199,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     ]
   }, [farmsV2, farmsV3])
 
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])

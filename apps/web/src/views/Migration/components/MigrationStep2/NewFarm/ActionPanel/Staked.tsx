@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { useTranslation } from '@pancakeswap/localization'
 import { Heading, Text, Balance } from '@pancakeswap/uikit'
 import { ActionContainer, ActionContent, ActionTitles } from 'views/Pools/components/PoolsTable/ActionPanel/styles'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { EarnedProps } from 'views/Migration/components/Farm/Cells/Earned'
 import { FarmProps } from 'views/Migration/components/Farm/Cells/Farm'
 import StakeButton from '../StakeButton'
@@ -23,7 +23,7 @@ const Staked: React.FC<React.PropsWithChildren<StakedProps>> = ({ earned, farm }
   const { t } = useTranslation()
   const { earnings } = earned
   const earningsBigNumber = new BigNumber(earnings)
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
   let earningsBusd = 0
   let displayBalance = earnings.toLocaleString()
 
