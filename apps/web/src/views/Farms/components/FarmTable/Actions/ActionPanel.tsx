@@ -281,7 +281,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
 
   const farm = details
 
-  const { isDesktop, isMobile, isMobile } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
   const {
     t,
