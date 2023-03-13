@@ -5,8 +5,8 @@ import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 export const farmsV3 = [
   {
     pid: 1,
-    lpSymbol: 'MockB-MockK LP',
-    lpAddress: '0x3709035aEaF6258D432eC1C50d2Ef1E0bF90a439',
+    lpSymbol: 'MockB-MockA LP',
+    lpAddress: '0x058058F5847598618f911A59BC2010999eACDFa3',
     token: bscTestnetTokens.mockB,
     quoteToken: bscTestnetTokens.mockA,
     feeAmount: FeeAmount.LOW,
