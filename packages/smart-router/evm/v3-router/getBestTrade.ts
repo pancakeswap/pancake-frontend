@@ -4,7 +4,7 @@ import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk
 import { computeAllRoutes, getBestRouteCombinationByQuotes } from './functions'
 import { createGasModel } from './gasModel'
 import { getRoutesWithValidQuote } from './getRoutesWithValidQuote'
-import { BestRoutes, PoolProvider, PoolType, QuoteProvider, SmartRouterTrade } from './types'
+import { BestRoutes, PoolProvider, PoolType, QuoteProvider, SmartRouterTrade, RouteType } from './types'
 
 interface TradeConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
@@ -83,7 +83,12 @@ async function getBestRoutes(
     return null
   }
 
-  const baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools, maxHops)
+  let baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools, maxHops)
+  // Do not support mix route on exact output
+  if (tradeType === TradeType.EXACT_OUTPUT) {
+    baseRoutes = baseRoutes.filter(({ type }) => type !== RouteType.MIXED)
+  }
+
   const gasModel = await createGasModel({ gasPriceWei, poolProvider, quoteCurrency: currency, blockNumber })
   const routesWithValidQuote = await getRoutesWithValidQuote({
     amount,
