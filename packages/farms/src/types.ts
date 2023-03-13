@@ -33,6 +33,7 @@ export interface FarmConfigBaseProps {
 export interface SerializedStableFarmConfig extends SerializedClassicFarmConfig {
   stableSwapAddress: string
   infoStableSwapAddress: string
+  stableLpFee?: number
 }
 
 export interface SerializedClassicFarmConfig extends FarmConfigBaseProps {
@@ -55,7 +56,6 @@ export interface SerializedFarmPublicData extends SerializedClassicFarmConfig {
   boosted?: boolean
   infoStableSwapAddress?: string
   stableSwapAddress?: string
-  stableLpFee?: number
   stableLpFeeRateOfTotalFee?: number
   lpTokenStakedAmount?: string
 }

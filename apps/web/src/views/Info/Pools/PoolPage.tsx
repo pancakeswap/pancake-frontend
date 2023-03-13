@@ -45,6 +45,7 @@ import SaveIcon from 'views/Info/components/SaveIcon'
 import useSWRImmutable from 'swr/immutable'
 import BigNumber from 'bignumber.js'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
+import { isStableFarm, SerializedStableFarmConfig } from '@pancakeswap/farms'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -106,8 +107,10 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
 
   const feeDisplay = useMemo(() => {
     if (isStableSwap && farmConfig) {
-      const stableLpFee =
-        farmConfig?.default.find((d) => d.stableSwapAddress?.toLowerCase() === address)?.stableLpFee ?? 0
+      const stableLp = farmConfig?.find(
+        (d) => isStableFarm(d) && d.stableSwapAddress?.toLowerCase() === address,
+      ) as SerializedStableFarmConfig
+      const stableLpFee = stableLp?.stableLpFee ?? 0
       return new BigNumber(stableLpFee)
         .times(showWeeklyData ? poolData?.volumeOutUSDWeek : poolData?.volumeOutUSD)
         .toNumber()
