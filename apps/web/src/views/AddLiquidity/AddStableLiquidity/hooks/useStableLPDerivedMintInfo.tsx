@@ -191,7 +191,8 @@ export function useStableLPDerivedMintInfo(
 
   const dependentCurrency = currencies[dependentField]
   const dependentAmount: CurrencyAmount<Currency> | undefined =
-    tryParseAmount(otherTypedValue, dependentCurrency) || CurrencyAmount.fromRawAmount(dependentCurrency, '0')
+    tryParseAmount(otherTypedValue, dependentCurrency) ||
+    (dependentCurrency ? CurrencyAmount.fromRawAmount(dependentCurrency, '0') : undefined)
 
   const parsedAmounts: { [field in Field]: CurrencyAmount<Currency> | undefined } = useMemo(
     () => ({
@@ -221,6 +222,8 @@ export function useStableLPDerivedMintInfo(
     const isEstimatedOutputAmountZero = estimatedOutputAmount?.equalTo(0)
 
     if (
+      currencyA &&
+      currencyB &&
       (currencyAAmountQuotient || currencyBAmountQuotient) &&
       targetAmount &&
       estimatedOutputAmount &&
