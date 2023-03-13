@@ -1,10 +1,11 @@
 import { Token } from '@pancakeswap/sdk'
+import { ethereumTokens } from '@pancakeswap/tokens'
 import { Box, Farm as FarmUI, Flex, Heading, Skeleton, Tag } from '@pancakeswap/uikit'
+import { STGWarningTooltip } from 'components/STGWarningModal/STGWarningTooltip'
 import { TokenPairImage } from 'components/TokenImage'
 import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import styled from 'styled-components'
-import { STGWarningTooltip } from 'components/STGWarningModal/STGWarningTooltip'
-import { ethereumTokens } from '@pancakeswap/tokens'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, CoreTag, StableFarmTag } = FarmUI.Tags
@@ -41,6 +42,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   pid,
 }) => {
   const isReady = multiplier !== undefined
+  const { chainId } = useActiveChainId()
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
@@ -55,7 +57,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
       <Flex flexDirection="column" alignItems="flex-end">
         {isReady ? (
           <Heading mb="4px">
-            {v3PromotionFarms[pid] && <V3SwapPromotionIcon />} {lpLabel.split(' ')[0]}
+            {v3PromotionFarms?.[chainId]?.[pid] && <V3SwapPromotionIcon />} {lpLabel.split(' ')[0]}
           </Heading>
         ) : (
           <Skeleton mb="4px" width={60} height={18} />
