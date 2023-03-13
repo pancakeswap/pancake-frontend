@@ -373,7 +373,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
         </HarvestActionContainer>
       )}
       {farm?.boosted && (
-        <ActionContainerSection style={{ minHeight: isMobile ? 'auto' : 124.5 }}>
+        <ActionContainerSection style={{ minHeight: isMobile ? 'auto' : isMobile ? 'auto' : 124.5 }}>
           <BoostedAction
             title={(status) => (
               <ActionTitles>

@@ -5,6 +5,14 @@ export const farmsV3 = [] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
   {
+    pid: 154,
+    vaultPid: 7,
+    lpSymbol: 'CAPS-WETH LP',
+    lpAddress: '0x829e9CC8D05d0D55B4494Ecb5a43D71546dd4DDb',
+    quoteToken: ethereumTokens.weth,
+    token: ethereumTokens.caps,
+  },
+  {
     pid: 145,
     vaultPid: 6,
     lpSymbol: 'FUSE-WETH LP',

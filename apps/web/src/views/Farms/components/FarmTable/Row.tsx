@@ -17,6 +17,7 @@ import { ErrorBoundary } from 'components/ErrorBoundary'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
 import BoostedApr from '../YieldBooster/components/BoostedApr'
@@ -143,6 +144,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
     ? V3DesktopColumnSchema
     : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
+  const { chainId } = useActiveChainId()
   const handleRenderRow = () => {
     if (!isMobile) {
       return (
@@ -232,7 +234,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                       <CellInner>
                         <CellLayout label={t(tableSchema[columnIndex].label)}>
                           {createElement(cells[key], { ...props[key], userDataReady })}
-                          {v3PromotionFarms[props.details?.pid] && key === 'farm' && <V3SwapPromotionIcon />}
+                          {v3PromotionFarms[chainId][props.details?.pid] && key === 'farm' && <V3SwapPromotionIcon />}
                         </CellLayout>
                       </CellInner>
                     </td>
@@ -251,7 +253,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
               <FarmCell {...props.farm} />
-              {v3PromotionFarms[props.details?.pid] && <V3SwapPromotionIcon />}
+              {v3PromotionFarms[chainId][props.details?.pid] && <V3SwapPromotionIcon />}
 
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
