@@ -174,18 +174,19 @@ export default {
   // TODO: v3 swap update
   nftPositionManager: {
     56: '0x59c864bf8bB8ABe4dC16516b2C70104706df113A',
-    97: '0x7ac1781fbC0221edA1ba4D63F44f6851784DE9DD',
+    97: '0x8A45515E2F31AD06Ba3196155092a60FaC6C2110',
     5: '0x09C65bC891bf39DAF771e85F2203B898402fF3CF',
     1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
   },
+  // keep the test fail as we know the contract is missing
   v3PoolDeployer: {
-    97: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
+    97: '0x6d1B57F1B10ec4b868B7F34CB30234F8C8d6A40B',
     56: '',
     5: '',
     1: '',
   },
   v3Migrator: {
-    97: '0x6A3A0144184Ea7B56307e3bcFb5E23131600A5C8',
+    97: '0xAdD2220B760cEb1D0f975710BE586a7367Ef6843',
     56: '',
     5: '',
     1: '',
@@ -193,18 +194,12 @@ export default {
   // TODO: v3 swap update
   v3Factory: {
     56: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
-    97: '0x6C816814D8c03F6B4e55c7965d9814B151336775',
-    5: '0x6e906fC1d75c9559E4E8b0F1Fa002C4a9724988f',
-    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-  },
-  // NOTE: Keep 1 and 5 as v3Factory for testing
-  v3FactoryDeployer: {
-    56: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
-    97: '0x4fdbcAD9aD3B53506651D64261264683C2F03915',
+    97: '0xBf12Bb25090505045Be1884538CBDfFFa348d714',
     5: '0x6e906fC1d75c9559E4E8b0F1Fa002C4a9724988f',
     1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
   },
   // TODO: v3 swap update
+  // we might not need v1
   quoter: {
     56: '0x93a775Ab5B2500F23717ffB69B42bfAbb0c8e91E',
     97: '0x93a775Ab5B2500F23717ffB69B42bfAbb0c8e91E',
