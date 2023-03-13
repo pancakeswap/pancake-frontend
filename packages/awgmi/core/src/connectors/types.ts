@@ -44,3 +44,15 @@ export interface Aptos {
   onNetworkChange?(listener: (network: { networkName: string }) => void): void
   onDisconnect?(listener: () => void): void
 }
+
+export enum WalletAdapterNetwork {
+  Mainnet = 'mainnet',
+  Testnet = 'testnet',
+  Devnet = 'devnet',
+}
+
+export type NetworkInfo = {
+  api?: string
+  chainId?: string
+  name: WalletAdapterNetwork | undefined
+}

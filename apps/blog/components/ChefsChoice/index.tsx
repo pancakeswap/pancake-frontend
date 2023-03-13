@@ -24,7 +24,7 @@ const ChefsChoice = () => {
 
   return (
     <StyledChefsChoiceContainer justifyContent="center">
-      <ArticleView title={t('Chef’s choice')} subTitle={t('Read about our latest announcements and more')}>
+      <ArticleView title={t('Chef’s choice')} subTitle={t('Recommended Readings by Chefs')}>
         <Swiper
           loop
           resizeObserver

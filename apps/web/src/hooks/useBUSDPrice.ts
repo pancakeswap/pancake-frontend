@@ -165,15 +165,13 @@ export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): num
     },
   )
 
-  if (data) {
-    return parseFloat(data) * amount
-  }
-
-  if (!amount) {
-    return undefined
-  }
-  if (busdPrice) {
-    return multiplyPriceByAmount(busdPrice, amount)
+  if (amount) {
+    if (data) {
+      return parseFloat(data) * amount
+    }
+    if (busdPrice) {
+      return multiplyPriceByAmount(busdPrice, amount)
+    }
   }
   return undefined
 }

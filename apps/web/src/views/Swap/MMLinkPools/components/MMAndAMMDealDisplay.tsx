@@ -1,4 +1,5 @@
 import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
+import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { Box, Text } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 
@@ -14,6 +15,7 @@ export function useMMDevMode() {
 export const MMAndAMMDealDisplay: React.FC<{
   independentField: Field
   isMMBetter: boolean
+  tradeWithStableSwap?: TradeWithStableSwap<Currency, Currency, TradeType>
   v2Trade?: Trade<Currency, Currency, TradeType>
   mmTrade?: TradeWithMM<Currency, Currency, TradeType>
   mmQuoteExpiryRemainingSec?: number
@@ -22,6 +24,7 @@ export const MMAndAMMDealDisplay: React.FC<{
 }> = ({
   isMMBetter = false,
   independentField,
+  tradeWithStableSwap,
   v2Trade,
   mmTrade,
   mmQuoteExpiryRemainingSec,
@@ -47,9 +50,17 @@ export const MMAndAMMDealDisplay: React.FC<{
           </Text>
         </Text>
         <Text color="textSubtle">
-          AMM Deal{dealInANdOut}:{' '}
+          V2 AMM Deal{dealInANdOut}:{' '}
           <Text display="inline-block">
             {(isExactIn ? v2Trade?.outputAmount?.toSignificant(6) : v2Trade?.inputAmount?.toSignificant(6)) ?? 'null'}
+          </Text>
+        </Text>
+        <Text color="textSubtle">
+          V2+Stable AMM Deal{dealInANdOut}:{' '}
+          <Text display="inline-block">
+            {(isExactIn
+              ? tradeWithStableSwap?.outputAmount?.toSignificant(6)
+              : tradeWithStableSwap?.inputAmount?.toSignificant(6)) ?? 'null'}
           </Text>
         </Text>
         <Text color="textSubtle">

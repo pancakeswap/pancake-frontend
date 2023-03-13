@@ -14,10 +14,9 @@ import { ReactNode, useCallback, useEffect, useState } from 'react'
 import { Field } from 'state/swap/actions'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
-import { SAFE_MM_QUOTE_EXPIRY_SEC } from '../constants'
 import { useSwapCallArguments } from '../hooks/useSwapCallArguments'
 import { useSwapCallback } from '../hooks/useSwapCallback'
-import { RFQResponse, TradeWithMM } from '../types'
+import { MMRfqTrade, TradeWithMM } from '../types'
 import ConfirmSwapModal from './ConfirmSwapModal'
 
 const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
@@ -37,18 +36,14 @@ interface SwapCommitButtonPropsType {
     OUTPUT?: Currency
   }
   isExpertMode: boolean
-  trade: TradeWithMM<Currency, Currency, TradeType>
+  rfqTrade: MMRfqTrade
   swapInputError: string | ReactNode
   currencyBalances: {
     INPUT?: CurrencyAmount<Currency>
     OUTPUT?: CurrencyAmount<Currency>
   }
   recipient: string
-  allowedSlippage: number
   onUserInput: (field: Field, typedValue: string) => void
-  rfq?: RFQResponse['message']
-  refreshRFQ?: () => void
-  isRFQLoading?: boolean
   mmQuoteExpiryRemainingSec?: number | null
 }
 
@@ -64,28 +59,18 @@ export default function MMSwapCommitButton({
   approvalSubmitted,
   currencies,
   isExpertMode,
-  trade,
+  rfqTrade,
   swapInputError,
   currencyBalances,
   recipient,
-  allowedSlippage,
   onUserInput,
-  rfq,
-  isRFQLoading = false,
-  mmQuoteExpiryRemainingSec = null,
 }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
-  const [lastTrade, setLastTrade] = useState<TradeWithMM<Currency, Currency, TradeType> | null>(null)
-  useEffect(() => {
-    if (trade) {
-      setLastTrade(trade)
-    }
-  }, [trade])
   // the callback to execute the swap
 
-  const swapCalls = useSwapCallArguments(trade, rfq, recipient)
+  const swapCalls = useSwapCallArguments(rfqTrade.trade, rfqTrade.rfq, recipient)
 
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(trade, recipient, swapCalls)
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback(rfqTrade.trade, recipient, swapCalls)
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: TradeWithMM<Currency, Currency, TradeType> | undefined
     attemptingTxn: boolean
@@ -119,8 +104,8 @@ export default function MMSwapCommitButton({
   }, [swapCallback, tradeToConfirm, setSwapState])
 
   const handleAcceptChanges = useCallback(() => {
-    setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
-  }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
+    setSwapState({ tradeToConfirm: rfqTrade.trade, swapErrorMessage, txHash, attemptingTxn })
+  }, [attemptingTxn, swapErrorMessage, rfqTrade, txHash, setSwapState])
 
   const handleConfirmDismiss = useCallback(() => {
     setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
@@ -144,24 +129,22 @@ export default function MMSwapCommitButton({
 
   const [onPresentConfirmModal] = useModal(
     <ConfirmSwapModal
-      trade={trade || lastTrade} // show the info while refresh RFQ
+      trade={rfqTrade.trade} // show the info while refresh RFQ
       originalTrade={tradeToConfirm}
       currencyBalances={currencyBalances}
       onAcceptChanges={handleAcceptChanges}
       attemptingTxn={attemptingTxn}
       txHash={txHash}
       recipient={recipient}
-      allowedSlippage={allowedSlippage}
       onConfirm={handleSwap}
-      swapErrorMessage={swapErrorMessage}
+      swapErrorMessage={swapErrorMessage || (!rfqTrade.trade && t('Unable request a quote'))}
       customOnDismiss={handleConfirmDismiss}
       openSettingModal={onPresentSettingsModal}
-      isRFQReady={Boolean(rfq) && !isRFQLoading && mmQuoteExpiryRemainingSec >= SAFE_MM_QUOTE_EXPIRY_SEC}
-      isRFQLoading={isRFQLoading}
+      isRFQReady={Boolean(rfqTrade.rfq) && !rfqTrade.isLoading}
     />,
     true,
     true,
-    'confirmSwapModal',
+    'MMconfirmSwapModal',
   )
   // End Modals
 
@@ -170,14 +153,14 @@ export default function MMSwapCommitButton({
       handleSwap()
     } else {
       setSwapState({
-        tradeToConfirm: trade,
+        tradeToConfirm: rfqTrade.trade,
         attemptingTxn: false,
         swapErrorMessage: undefined,
         txHash: undefined,
       })
       onPresentConfirmModal()
     }
-  }, [isExpertMode, handleSwap, onPresentConfirmModal, trade])
+  }, [isExpertMode, handleSwap, onPresentConfirmModal, rfqTrade])
 
   // useEffect
   useEffect(() => {
@@ -271,7 +254,7 @@ export default function MMSwapCommitButton({
         }}
         id="swap-button"
         width="100%"
-        disabled={!rfq || !isValid || !!swapCallbackError || !approved}
+        disabled={!rfqTrade.rfq || !isValid || !!swapCallbackError || !approved}
       >
         {swapInputError || t('Swap')}
       </CommitButton>

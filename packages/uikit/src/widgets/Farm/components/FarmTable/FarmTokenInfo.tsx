@@ -4,7 +4,6 @@ import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import { Text } from "../../../../components/Text";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Flex } from "../../../../components/Box";
-import Tags from "../Tags";
 import { FarmTableFarmTokenInfoProps } from "../../types";
 
 const Container = styled.div`
@@ -29,7 +28,6 @@ const TokenWrapper = styled.div`
 const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenInfoProps>> = ({
   label,
   isReady,
-  isStable,
   stakedBalance,
   children,
 }) => {
@@ -69,14 +67,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
     </Container>
   );
 
-  return isStable ? (
-    <Flex flexDirection="column">
-      {pairContainer}
-      <Tags.StableFarmTag mt="4px" />
-    </Flex>
-  ) : (
-    pairContainer
-  );
+  return <Flex flexDirection="column">{pairContainer}</Flex>;
 };
 
 export default Farm;

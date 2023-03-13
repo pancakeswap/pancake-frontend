@@ -20,7 +20,7 @@ const useLanguage = () => {
           label: i.name,
           value: i.code,
         }))
-        return [defaultLanguage, ...languages]
+        return [defaultLanguage, ...languages].sort((a) => (a.value === 'en' ? -1 : 1))
       } catch (error) {
         console.error('Get all language error: ', error)
         return [defaultLanguage]

@@ -73,12 +73,13 @@ export function usePhishingBannerManager(): [boolean, () => void] {
     AppState['user']['hideTimestampPhishingWarningBanner']
   >((state) => state.user.hideTimestampPhishingWarningBanner)
   const now = Date.now()
-  const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
-    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1
-    : true
+  const notPreview = process.env.NEXT_PUBLIC_VERCEL_ENV !== 'preview'
   const hideBanner = useCallback(() => {
     dispatch(hidePhishingWarningBanner())
   }, [dispatch])
+  const showPhishingWarningBanner = hideTimestampPhishingWarningBanner
+    ? differenceInDays(now, hideTimestampPhishingWarningBanner) >= 1 && notPreview
+    : notPreview
 
   return [showPhishingWarningBanner, hideBanner]
 }
@@ -427,7 +428,11 @@ export function useFeeDataWithGasPrice(chainIdOverride?: number): {
     }
   }
 
-  return data?.formatted
+  return (
+    data?.formatted ?? {
+      gasPrice: undefined,
+    }
+  )
 }
 
 /**
@@ -584,24 +589,30 @@ export function useTrackedTokenPairs(): [ERC20Token, ERC20Token][] {
 
 export const useWatchlistTokens = (): [string[], (address: string) => void] => {
   const dispatch = useAppDispatch()
-  const savedTokens = useSelector((state: AppState) => state.user.watchlistTokens) ?? []
+  const savedTokensFromSelector = useSelector((state: AppState) => state.user.watchlistTokens)
   const updatedSavedTokens = useCallback(
     (address: string) => {
       dispatch(addWatchlistToken({ address }))
     },
     [dispatch],
   )
+  const savedTokens = useMemo(() => {
+    return savedTokensFromSelector ?? []
+  }, [savedTokensFromSelector])
   return [savedTokens, updatedSavedTokens]
 }
 
 export const useWatchlistPools = (): [string[], (address: string) => void] => {
   const dispatch = useAppDispatch()
-  const savedPools = useSelector((state: AppState) => state.user.watchlistPools) ?? []
+  const savedPoolsFromSelector = useSelector((state: AppState) => state.user.watchlistPools)
   const updateSavedPools = useCallback(
     (address: string) => {
       dispatch(addWatchlistPool({ address }))
     },
     [dispatch],
   )
+  const savedPools = useMemo(() => {
+    return savedPoolsFromSelector ?? []
+  }, [savedPoolsFromSelector])
   return [savedPools, updateSavedPools]
 }

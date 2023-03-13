@@ -1,7 +1,10 @@
-import styled from 'styled-components'
-import { Tag, Flex, Heading, Box, Skeleton, Farm as FarmUI } from '@pancakeswap/uikit'
 import { Token } from '@pancakeswap/sdk'
+import { Box, Farm as FarmUI, Flex, Heading, Skeleton, Tag } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
+import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import styled from 'styled-components'
+import { STGWarningTooltip } from 'components/STGWarningModal/STGWarningTooltip'
+import { ethereumTokens } from '@pancakeswap/tokens'
 import BoostedTag from '../YieldBooster/components/BoostedTag'
 
 const { FarmAuctionTag, CoreTag, StableFarmTag } = FarmUI.Tags
@@ -14,6 +17,7 @@ export interface ExpandableSectionProps {
   quoteToken: Token
   boosted?: boolean
   isStable?: boolean
+  pid?: number
 }
 
 const Wrapper = styled(Flex)`
@@ -34,22 +38,32 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   quoteToken,
   boosted,
   isStable,
+  pid,
 }) => {
   const isReady = multiplier !== undefined
 
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
       {isReady ? (
-        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
+        <Flex width="100%" alignItems="center">
+          <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
+          {token.address === ethereumTokens.stg.address && <STGWarningTooltip />}
+        </Flex>
       ) : (
         <Skeleton mr="8px" width={63} height={63} variant="circle" />
       )}
       <Flex flexDirection="column" alignItems="flex-end">
-        {isReady ? <Heading mb="4px">{lpLabel.split(' ')[0]}</Heading> : <Skeleton mb="4px" width={60} height={18} />}
+        {isReady ? (
+          <Heading mb="4px">
+            {v3PromotionFarms[pid] && <V3SwapPromotionIcon />} {lpLabel.split(' ')[0]}
+          </Heading>
+        ) : (
+          <Skeleton mb="4px" width={60} height={18} />
+        )}
         <Flex justifyContent="center">
-          {isStable ? <StableFarmTag mr="4px" /> : null}
+          {isReady && isStable && <StableFarmTag mr="4px" />}
+          {isReady && boosted && <BoostedTag mr="4px" />}
           {isReady ? <Box>{isCommunityFarm ? <FarmAuctionTag /> : <CoreTag />}</Box> : null}
-          {isReady && boosted && <BoostedTag ml="4px" />}
           {isReady ? (
             <MultiplierTag variant="secondary">{multiplier}</MultiplierTag>
           ) : (

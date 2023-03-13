@@ -19,6 +19,7 @@ export default function ChoosePair({ onNext }: { onNext: () => void }) {
           onCurrencySelect={handleCurrencyASelect}
           otherSelectedCurrency={currencyB}
           selectedCurrency={currencyA}
+          showCommonBases
         />
       }
       selectCurrencyB={
@@ -26,6 +27,7 @@ export default function ChoosePair({ onNext }: { onNext: () => void }) {
           onCurrencySelect={handleCurrencyBSelect}
           otherSelectedCurrency={currencyA}
           selectedCurrency={currencyB}
+          showCommonBases
         />
       }
       footer={

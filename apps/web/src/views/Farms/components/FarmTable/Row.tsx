@@ -1,30 +1,29 @@
-import { useEffect, useState, createElement, useRef } from 'react'
-import styled from 'styled-components'
 import { FarmWithStakedValue } from '@pancakeswap/farms'
+import { useDelayedUnmount } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import {
-  Box,
-  Flex,
-  useMatchBreakpoints,
-  Skeleton,
+  DesktopColumnSchema,
   Farm as FarmUI,
   FarmTableEarnedProps,
+  FarmTableFarmTokenInfoProps,
   FarmTableLiquidityProps,
   FarmTableMultiplierProps,
-  FarmTableFarmTokenInfoProps,
+  Flex,
   MobileColumnSchema,
-  DesktopColumnSchema,
+  Skeleton,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { useTranslation } from '@pancakeswap/localization'
+import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { createElement, useEffect, useRef, useState } from 'react'
 import { useFarmUser } from 'state/farms/hooks'
-import { useDelayedUnmount } from '@pancakeswap/hooks'
+import styled from 'styled-components'
 
+import BoostedApr from '../YieldBooster/components/BoostedApr'
+import ActionPanel from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import Farm from './Farm'
-import ActionPanel from './Actions/ActionPanel'
-import BoostedApr from '../YieldBooster/components/BoostedApr'
-import BoostedTag from '../YieldBooster/components/BoostedTag'
 
-const { FarmAuctionTag, CoreTag } = FarmUI.Tags
+const { FarmAuctionTag, CoreTag, BoostedTag, StableFarmTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned } = FarmUI.FarmTable
 
 export interface RowProps {
@@ -111,7 +110,6 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   const isSmallerScreen = !isDesktop
   const tableSchema = isSmallerScreen ? MobileColumnSchema : DesktopColumnSchema
   const columnNames = tableSchema.map((column) => column.name)
-
   const handleRenderRow = () => {
     if (!isMobile) {
       return (
@@ -129,7 +127,8 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     {userDataReady ? (
                       <CellInner style={{ width: '140px' }}>
                         {props[key] === 'community' ? <FarmAuctionTag scale="sm" /> : <CoreTag scale="sm" />}
-                        {props?.details?.boosted ? <BoostedTag scale="sm" ml="16px" /> : null}
+                        {props?.details?.isStable ? <StableFarmTag scale="sm" ml="6px" /> : null}
+                        {props?.details?.boosted ? <BoostedTag scale="sm" ml="6px" /> : null}
                       </CellInner>
                     ) : (
                       <Skeleton width={60} height={24} />
@@ -180,6 +179,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <CellInner>
                       <CellLayout label={t(tableSchema[columnIndex].label)}>
                         {createElement(cells[key], { ...props[key], userDataReady })}
+                        {v3PromotionFarms[details.pid] && key === 'farm' && <V3SwapPromotionIcon />}
                       </CellLayout>
                     </CellInner>
                   </td>
@@ -196,15 +196,19 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           <FarmMobileCell colSpan={3}>
             <Flex justifyContent="space-between" alignItems="center">
               <Farm {...props.farm} />
+              {v3PromotionFarms[details.pid] && <V3SwapPromotionIcon />}
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
-                <Box style={{ marginRight: '16px' }}>
+                <Flex mr="16px">
                   <CoreTag scale="sm" />
-                  {props?.details?.boosted ? (
-                    <BoostedTag style={{ verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                  {props?.details?.isStable ? (
+                    <StableFarmTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
                   ) : null}
-                </Box>
+                  {props?.details?.boosted ? (
+                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                  ) : null}
+                </Flex>
               )}
             </Flex>
           </FarmMobileCell>
@@ -258,7 +262,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {shouldRenderChild && (
         <tr>
           <td colSpan={7}>
-            <ActionPanel {...props} expanded={actionPanelExpanded} />
+            <ActionPanel {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
           </td>
         </tr>
       )}

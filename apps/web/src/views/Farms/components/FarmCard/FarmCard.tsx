@@ -70,7 +70,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
       ? `$${liquidity.toNumber().toLocaleString(undefined, { maximumFractionDigits: 0 })}`
       : ''
 
-  const lpLabel = farm.lpSymbol && farm.lpSymbol.toUpperCase().replace('PANCAKE', '')
+  const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
   const earnLabel = farm.dual ? farm.dual.earnLabel : t('CAKE + Fees')
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
@@ -105,6 +105,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           quoteToken={farm.quoteToken}
           boosted={farm.boosted}
           isStable={farm.isStable}
+          pid={farm.pid}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">

@@ -100,4 +100,28 @@ export const mainnetTokens = {
     'BlueMove',
     'https://bluemove.net/',
   ),
+  tapt: new Coin(
+    ChainId.MAINNET,
+    '0x84d7aeef42d38a5ffc3ccef853e1b82e4958659d16a7de736a29c55fbbeb0114::staked_aptos_coin::StakedAptosCoin',
+    8,
+    'tAPT',
+    'Tortuga Staked APT',
+    'https://app.tortuga.finance/',
+  ),
+  etern: new Coin(
+    ChainId.MAINNET,
+    '0x25a64579760a4c64be0d692327786a6375ec80740152851490cfd0b53604cf95::coin::ETERN',
+    8,
+    'ETERN',
+    'Eternal Token',
+    'https://eternalfinance.io/',
+  ),
+  blt: new Coin(
+    ChainId.MAINNET,
+    '0xfbab9fb68bd2103925317b6a540baa20087b1e7a7a4eb90badee04abb6b5a16f::blt::Blt',
+    8,
+    'BLT',
+    'Blocto Token',
+    'https://blocto.io/',
+  ),
 }

@@ -23,7 +23,7 @@ import { SwapFeaturesContext } from './SwapFeaturesContext'
 const queryClient = new QueryClient()
 
 export default function Swap() {
-  const { isMobile } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const { isChartExpanded, isChartDisplayed, setIsChartDisplayed, setIsChartExpanded, isChartSupported } =
     useContext(SwapFeaturesContext)
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
@@ -64,7 +64,7 @@ export default function Swap() {
   return (
     <Page removePadding={isChartExpanded} hideFooterOnDesktop={isChartExpanded}>
       <Flex width={['328px', '100%']} height="100%" justifyContent="center" position="relative" alignItems="flex-start">
-        {!isMobile && isChartSupported && (
+        {isDesktop && isChartSupported && (
           <PriceChartContainer
             inputCurrencyId={inputCurrencyId}
             inputCurrency={currencies[Field.INPUT]}
@@ -76,7 +76,7 @@ export default function Swap() {
             currentSwapPrice={singleTokenPrice}
           />
         )}
-        {isChartSupported && (
+        {!isDesktop && isChartSupported && (
           <BottomDrawer
             content={
               <PriceChartContainer
@@ -88,6 +88,7 @@ export default function Swap() {
                 setIsChartExpanded={setIsChartExpanded}
                 isChartDisplayed={isChartDisplayed}
                 currentSwapPrice={singleTokenPrice}
+                isFullWidthContainer
                 isMobile
               />
             }
@@ -95,8 +96,8 @@ export default function Swap() {
             setIsOpen={setIsChartDisplayed}
           />
         )}
-        {!isMobile && isSwapHotTokenDisplay && <HotTokenList handleOutputSelect={handleOutputSelect} />}
-        <ModalV2 isOpen={isMobile && isSwapHotTokenDisplay} onDismiss={() => setIsSwapHotTokenDisplay(false)}>
+        {isDesktop && isSwapHotTokenDisplay && <HotTokenList handleOutputSelect={handleOutputSelect} />}
+        <ModalV2 isOpen={!isDesktop && isSwapHotTokenDisplay} onDismiss={() => setIsSwapHotTokenDisplay(false)}>
           <Modal
             style={{ padding: 0 }}
             title={t('Top Token')}

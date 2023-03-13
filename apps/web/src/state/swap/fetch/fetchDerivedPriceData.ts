@@ -1,4 +1,4 @@
-import { INFO_CLIENT } from 'config/constants/endpoints'
+import { INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
 import mapValues from 'lodash/mapValues'
@@ -9,11 +9,11 @@ import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
 import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
 import { PairDataTimeWindowEnum } from '../types'
 
-const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) => {
+const getTokenDerivedUSDCPrices = async (tokenAddress: string, blocks: Block[], isStableStable?: boolean) => {
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    INFO_CLIENT,
+    isStableStable ? STABLESWAP_SUBGRAPH_CLIENT : INFO_CLIENT,
     200,
   )
 
@@ -23,14 +23,14 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
   }
 
   const prices = mapValues(rawPrices, (value) => {
-    return value.derivedBNB
+    return value.derivedUSD
   })
 
   // format token BNB price results
   const tokenPrices: {
     tokenAddress: string
     timestamp: string
-    derivedBNB: number
+    derivedUSD: number
   }[] = []
 
   // Get Token prices in BNB
@@ -40,7 +40,7 @@ const getTokenDerivedBnbPrices = async (tokenAddress: string, blocks: Block[]) =
       tokenPrices.push({
         tokenAddress,
         timestamp,
-        derivedBNB: prices[priceKey] ? parseFloat(prices[priceKey]) : 0,
+        derivedUSD: prices[priceKey] ? parseFloat(prices[priceKey]) : 0,
       })
     }
   })
@@ -84,6 +84,10 @@ const fetchDerivedPriceData = async (
   token0Address: string,
   token1Address: string,
   timeWindow: PairDataTimeWindowEnum,
+  // token0 has StableSwap involved
+  token0StableStable?: boolean,
+  // token1 has StableSwap involved
+  token1StableStable?: boolean,
 ) => {
   const interval = getInterval(timeWindow)
   const endTimestamp = getUnixTime(new Date())
@@ -102,11 +106,11 @@ const fetchDerivedPriceData = async (
       return null
     }
     blocks.pop() // the bsc graph is 32 block behind so pop the last
-    const [token0DerivedBnb, token1DerivedBnb] = await Promise.all([
-      getTokenDerivedBnbPrices(token0Address, blocks),
-      getTokenDerivedBnbPrices(token1Address, blocks),
+    const [token0DerivedUSD, token1DerivedUSD] = await Promise.all([
+      getTokenDerivedUSDCPrices(token0Address, blocks, token0StableStable),
+      getTokenDerivedUSDCPrices(token1Address, blocks, token1StableStable),
     ])
-    return { token0DerivedBnb, token1DerivedBnb }
+    return { token0DerivedUSD, token1DerivedUSD }
   } catch (error) {
     console.error('Failed to fetched derived price data for chart', error)
     return null

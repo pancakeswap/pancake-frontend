@@ -12,6 +12,7 @@ interface Props {
   helper?: string
   backTo?: string | (() => void)
   noConfig?: boolean
+  IconSlot?: React.ReactNode
 }
 
 const AppHeaderContainer = styled(Flex)`
@@ -22,7 +23,14 @@ const AppHeaderContainer = styled(Flex)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.cardBorder};
 `
 
-const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({ title, subtitle, helper, backTo, noConfig = false }) => {
+const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
+  title,
+  subtitle,
+  helper,
+  backTo,
+  noConfig = false,
+  IconSlot = null,
+}) => {
   const [expertMode] = useExpertModeManager()
 
   return (
@@ -48,12 +56,14 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({ title, subtitle, 
             </Flex>
             {!noConfig && (
               <Flex alignItems="center">
+                {IconSlot}
                 <NotificationDot show={expertMode}>
                   <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
                 </NotificationDot>
                 <Transactions />
               </Flex>
             )}
+            {noConfig && <Flex alignItems="center">{IconSlot}</Flex>}
           </Flex>
           <Flex alignItems="center">
             <Text color="textSubtle" fontSize="14px">

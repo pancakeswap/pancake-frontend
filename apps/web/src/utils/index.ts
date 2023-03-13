@@ -11,21 +11,13 @@ import { TokenAddressMap } from '@pancakeswap/token-lists'
 import { chains } from './wagmi'
 
 // returns the checksummed address if the address is valid, otherwise returns false
-export const isAddress = memoize(
-  (value: any): string | false => {
-    try {
-      return getAddress(value)
-    } catch {
-      return false
-    }
-  },
-  (value) => {
-    if (typeof value === 'string') {
-      return value.toLowerCase()
-    }
-    return value
-  },
-)
+export const isAddress = memoize((value: any): string | false => {
+  try {
+    return getAddress(value)
+  } catch {
+    return false
+  }
+})
 
 export function getBlockExploreLink(
   data: string | number,

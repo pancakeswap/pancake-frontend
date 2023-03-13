@@ -15,7 +15,7 @@ import {
 } from './actions'
 import { resetUserState } from '../global/actions'
 
-const now = () => new Date().getTime()
+const now = () => Date.now()
 
 export interface TransactionDetails {
   hash: string

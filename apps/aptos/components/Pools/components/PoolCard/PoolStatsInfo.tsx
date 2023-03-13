@@ -2,7 +2,7 @@ import { Flex, LinkExternal, Pool, Text, TimerIcon, useTooltip } from '@pancakes
 import { memo, useMemo } from 'react'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
@@ -110,24 +110,26 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
               stakingToken.symbol
             }`}</Text>
           </Flex>
-          <Flex justifyContent="space-between" alignItems="center">
-            <Text small>{t('Max. stake limit ends in')}:</Text>
-            <Flex alignItems="center">
-              <Text color="textSubtle" small>
-                {stakeLimitTimeRemaining > 0
-                  ? stakeLimitTimeObject?.totalDays
-                    ? stakeLimitTimeObject?.totalDays === 1
-                      ? t('1 day')
-                      : t('%days% days', { days: stakeLimitTimeObject?.totalDays })
-                    : t('< 1 day')
-                  : t('%days% days', { days: 0 })}
-              </Text>
-              <span ref={stakeLimitTargetRef}>
-                <TimerIcon ml="4px" color="primary" />
-                {stakeLimitTooltipVisible && stakeLimitTooltip}
-              </span>
+          {poolTimeRemaining !== stakeLimitTimeRemaining && (
+            <Flex justifyContent="space-between" alignItems="center">
+              <Text small>{t('Max. stake limit ends in')}:</Text>
+              <Flex alignItems="center">
+                <Text color="textSubtle" small>
+                  {stakeLimitTimeRemaining > 0
+                    ? stakeLimitTimeObject?.totalDays
+                      ? stakeLimitTimeObject?.totalDays === 1
+                        ? t('1 day')
+                        : t('%days% days', { days: stakeLimitTimeObject?.totalDays })
+                      : t('< 1 day')
+                    : t('%days% days', { days: 0 })}
+                </Text>
+                <span ref={stakeLimitTargetRef}>
+                  <TimerIcon ml="4px" color="primary" />
+                  {stakeLimitTooltipVisible && stakeLimitTooltip}
+                </span>
+              </Flex>
             </Flex>
-          </Flex>
+          )}
         </>
       ) : null}
       <Flex justifyContent="space-between" alignItems="center">

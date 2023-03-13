@@ -8,8 +8,8 @@ export interface MulticallOptions extends CallOverrides {
   requireSuccess?: boolean
 }
 
-const { multicall, multicallv2, multicallv3 } = createMulticall(provider)
+const { multicall, multicallv2, multicallv3, multicallv2Typed, multicallv3Typed } = createMulticall(provider)
 
 export default multicall
 
-export { multicallv2, multicallv3 }
+export { multicallv2, multicallv3, multicallv2Typed, multicallv3Typed }

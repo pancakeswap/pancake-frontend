@@ -14,9 +14,11 @@ import {
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
+
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import RefreshIcon from 'components/Svg/RefreshIcon'
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
@@ -39,9 +41,11 @@ interface Props {
 
 const ColoredIconButton = styled(IconButton)`
   color: ${({ theme }) => theme.colors.textSubtle};
+  overflow: hidden;
 `
 
-const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlight', false)
+//  disable this during the v3 campaign
+const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
 
 const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   subtitle,
@@ -52,11 +56,13 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   const { t } = useTranslation()
   const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
+
   const { tooltip, tooltipVisible, targetRef } = useTooltip(<Text>{t('Check out the top traded tokens')}</Text>, {
     placement: isMobile ? 'top' : 'bottom',
     trigger: isMobile ? 'focus' : 'hover',
     ...(isMobile && { manualVisible: mobileTooltipShow }),
   })
+
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
   const [expertMode] = useExpertModeManager()
   const toggleChartDisplayed = () => {
@@ -93,6 +99,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
         <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
       </Flex>
       <Flex width="100%" justifyContent="end">
+        <V3SwapPromotionIcon />
         {isChartSupported && setIsChartDisplayed && (
           <ColoredIconButton
             onClick={() => {

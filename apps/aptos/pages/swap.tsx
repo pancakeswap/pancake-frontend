@@ -454,6 +454,7 @@ const SwapPage = () => {
             onPercentInput={handlePercentInput}
             label={independentField === Field.OUTPUT && trade ? t('From (estimated)') : t('From')}
             showBridgeWarning={showBridgeWarning}
+            showUSDPrice
           />
           {showBridgeWarning && (
             <AtomBox width="full">
@@ -493,6 +494,7 @@ const SwapPage = () => {
             currency={isLoaded ? outputCurrency : undefined}
             otherCurrency={inputCurrency}
             onUserInput={(value) => dispatch(typeInput({ field: Field.OUTPUT, typedValue: value }))}
+            showUSDPrice
           />
 
           <Info

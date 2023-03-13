@@ -1,51 +1,62 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
 import { BigNumber, BigNumberish } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { JSBI, CurrencyAmount, Token, WNATIVE, MINIMUM_LIQUIDITY, Percent } from '@pancakeswap/sdk'
-import {
-  Button,
-  Text,
-  AddIcon,
-  CardBody,
-  Message,
-  useModal,
-  TooltipText,
-  useTooltip,
-  MessageText,
-  IconButton,
-  PencilIcon,
-  AutoColumn,
-  ColumnCenter,
-} from '@pancakeswap/uikit'
-import { logError } from 'utils/sentry'
-import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { useTranslation } from '@pancakeswap/localization'
-import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
-import { useZapContract } from 'hooks/useContract'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { getZapAddress } from 'utils/addressHelpers'
+import { CurrencyAmount, JSBI, MINIMUM_LIQUIDITY, Percent, Token, WNATIVE } from '@pancakeswap/sdk'
+import {
+  AddIcon,
+  AutoColumn,
+  Button,
+  CardBody,
+  ColumnCenter,
+  IconButton,
+  Message,
+  MessageText,
+  PencilIcon,
+  Text,
+  TooltipText,
+  useModal,
+  useTooltip,
+} from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
-import { getLPSymbol } from 'utils/getLpSymbol'
-import { useRouter } from 'next/router'
-import { callWithEstimateGas } from 'utils/calls'
-import { SUPPORT_ZAP } from 'config/constants/supportChains'
-import { ContractMethodName } from 'utils/types'
-import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { ROUTER_ADDRESS } from 'config/constants/exchange'
+import { SUPPORT_ZAP } from 'config/constants/supportChains'
+import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useZapContract } from 'hooks/useContract'
+import { useRouter } from 'next/router'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLPApr } from 'state/swap/useLPApr'
-import { LightCard } from '../../components/Card'
-import CurrencyInputPanel from '../../components/CurrencyInputPanel'
-import { AppHeader, AppBody } from '../../components/App'
-import { MinimalPositionCard } from '../../components/PositionCard'
-import { RowBetween, RowFixed } from '../../components/Layout/Row'
-import ConnectWalletButton from '../../components/ConnectWalletButton'
+import { getZapAddress } from 'utils/addressHelpers'
+import { callWithEstimateGas } from 'utils/calls'
+import { getLPSymbol } from 'utils/getLpSymbol'
+import { logError } from 'utils/sentry'
+import { ethereumTokens } from '@pancakeswap/tokens'
 
-import { PairState } from '../../hooks/usePairs'
+import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
+import { ContractMethodName } from 'utils/types'
+import { STGWarningModal } from 'components/STGWarningModal'
+import { oldSTGTokenOnBSC } from 'components/STGWarningModal/constants'
+
+import { AppBody, AppHeader } from '../../components/App'
+import { LightCard } from '../../components/Card'
+import ConnectWalletButton from '../../components/ConnectWalletButton'
+import CurrencyInputPanel from '../../components/CurrencyInputPanel'
+import { RowBetween, RowFixed } from '../../components/Layout/Row'
+import { MinimalPositionCard } from '../../components/PositionCard'
+
 import { ApprovalState, useApproveCallback } from '../../hooks/useApproveCallback'
+import { PairState } from '../../hooks/usePairs'
 import useTransactionDeadline from '../../hooks/useTransactionDeadline'
 import { Field } from '../../state/mint/actions'
 import { useDerivedMintInfo, useMintActionHandlers, useMintState, useZapIn } from '../../state/mint/hooks'
 
+import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
+import Dots from '../../components/Loader/Dots'
+import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
+import { CommonBasesType } from '../../components/SearchModal/types'
 import { useTransactionAdder } from '../../state/transactions/hooks'
 import {
   useGasPrice,
@@ -56,20 +67,15 @@ import {
 } from '../../state/user/hooks'
 import { calculateGasMargin } from '../../utils'
 import { calculateSlippageAmount, useRouterContract } from '../../utils/exchange'
+import { formatAmount } from '../../utils/formatInfoNumbers'
 import { maxAmountSpend } from '../../utils/maxAmountSpend'
 import { wrappedCurrency } from '../../utils/wrappedCurrency'
-import Dots from '../../components/Loader/Dots'
-import PoolPriceBar from './PoolPriceBar'
 import Page from '../Page'
+import { ChoosePair } from './ChoosePair'
 import ConfirmAddLiquidityModal from './components/ConfirmAddLiquidityModal'
 import ConfirmZapInModal from './components/ConfirmZapInModal'
-import { ChoosePair } from './ChoosePair'
-import { ZapCheckbox } from '../../components/CurrencyInputPanel/ZapCheckbox'
-import { formatAmount } from '../../utils/formatInfoNumbers'
+import PoolPriceBar from './PoolPriceBar'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
-import { CommonBasesType } from '../../components/SearchModal/types'
-import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
-import { SettingsMode } from '../../components/Menu/GlobalSettings/types'
 
 enum Steps {
   Choose,
@@ -573,8 +579,17 @@ export default function AddLiquidity({ currencyA, currencyB }) {
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
+  const hasSTG =
+    [currencies[Field.CURRENCY_A]?.wrapped?.address, currencies[Field.CURRENCY_B]?.wrapped?.address].includes(
+      ethereumTokens.stg.address,
+    ) ||
+    [currencies[Field.CURRENCY_A]?.wrapped?.address, currencies[Field.CURRENCY_B]?.wrapped?.address].includes(
+      oldSTGTokenOnBSC.address,
+    )
+
   return (
     <Page>
+      <STGWarningModal openWarning={hasSTG} />
       <AppBody>
         {!showAddLiquidity && (
           <ChoosePair
@@ -597,6 +612,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                 'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pair.',
               )}
               backTo={canZap ? () => setSteps(Steps.Choose) : '/liquidity'}
+              IconSlot={<V3SwapPromotionIcon wrapperStyle={{ marginRight: '10px' }} />}
             />
             <CardBody>
               <AutoColumn gap="20px">
@@ -615,7 +631,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                 )}
                 <CurrencyInputPanel
                   disableCurrencySelect={canZap}
-                  showBUSD
+                  showUSDPrice
                   onInputBlur={canZap ? zapIn.onInputBlurOnce : undefined}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_A}
                   disabled={canZap && !zapTokenCheckedA}
@@ -654,7 +670,7 @@ export default function AddLiquidity({ currencyA, currencyB }) {
                   <AddIcon width="16px" />
                 </ColumnCenter>
                 <CurrencyInputPanel
-                  showBUSD
+                  showUSDPrice
                   onInputBlur={canZap ? zapIn.onInputBlurOnce : undefined}
                   disabled={canZap && !zapTokenCheckedB}
                   error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_B}

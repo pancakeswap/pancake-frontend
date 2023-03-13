@@ -47,7 +47,7 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
     const { token, quoteToken } = farm
     const tokenAddress = token.address
     const quoteTokenAddress = quoteToken.address
-    const lpLabel = farm.lpSymbol && farm.lpSymbol.split(' ')[0].toUpperCase().replace('PANCAKE', '')
+    const lpLabel = farm.lpSymbol && farm.lpSymbol.replace(/pancake/gi, '')
     const customRows =
       columnSchema === DesktopV2ColumnSchema
         ? {

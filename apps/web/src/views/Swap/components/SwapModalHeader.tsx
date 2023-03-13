@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { ReactElement, useMemo } from 'react'
 import { TradeType, CurrencyAmount, Currency, Percent } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon, AutoColumn } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
@@ -30,7 +30,7 @@ export default function SwapModalHeader({
   recipient: string | null
   showAcceptChanges: boolean
   onAcceptChanges: () => void
-  allowedSlippage: number
+  allowedSlippage: number | ReactElement
 }) {
   const { t } = useTranslation()
 
@@ -126,7 +126,9 @@ export default function SwapModalHeader({
             {t('Slippage Tolerance')}
           </Text>
           <Text bold color="primary" ml="auto" textAlign="end">
-            {`${basisPointsToPercent(allowedSlippage).toFixed(1)}%`}
+            {typeof allowedSlippage === 'number'
+              ? `${basisPointsToPercent(allowedSlippage).toFixed(2)}%`
+              : allowedSlippage}
           </Text>
         </RowFixed>
         {tradeType === TradeType.EXACT_OUTPUT && !isEnoughInputBalance && (

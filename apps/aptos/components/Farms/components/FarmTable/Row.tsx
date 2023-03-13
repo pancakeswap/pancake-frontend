@@ -218,7 +218,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
       {shouldRenderChild && (
         <tr>
           <td colSpan={7}>
-            <ActionPanel {...props} expanded={actionPanelExpanded} />
+            <ActionPanel {...props} expanded={actionPanelExpanded} alignLinksToRight={isMobile} />
           </td>
         </tr>
       )}
