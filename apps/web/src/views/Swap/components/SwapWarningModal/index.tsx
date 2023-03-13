@@ -14,6 +14,7 @@ import RugPullWarning from './RugPullWarning'
 import FREEWarning from './FREEWarning'
 import GalaWarning from './GalaWarning'
 import ABNBWarning from './ABNBWarning'
+import EURWarning from './EURWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -69,6 +70,10 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
     [SwapWarningTokensConfig.abnbc.address]: {
       symbol: SwapWarningTokensConfig.abnbc.symbol,
       component: <ABNBWarning />,
+    },
+    [SwapWarningTokensConfig.ageur.address]: {
+      symbol: SwapWarningTokensConfig.ageur.symbol,
+      component: <EURWarning />,
     },
   }
 
