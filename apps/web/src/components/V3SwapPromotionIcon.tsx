@@ -1,15 +1,18 @@
 import { IconButton, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import { useCallback, useEffect, useState } from 'react'
 
 import styled, { keyframes } from 'styled-components'
 
 export const v3PromotionFarms = {
-  3: true, // BUSD-WBNB LP pid
-  10: true, // ETH-BNB LP pid
-  11: true, // BTCB-BNB LP pid
-  13: true, // USDT-BNB LP pid
+  [ChainId.BSC]: {
+    3: true, // BUSD-WBNB LP pid
+    10: true, // ETH-BNB LP pid
+    11: true, // BTCB-BNB LP pid
+    13: true, // USDT-BNB LP pid
+  },
 }
 
 const shineAnimation = keyframes`
