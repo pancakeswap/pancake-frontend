@@ -1,7 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { Currency, Price, JSBI } from "@pancakeswap/sdk";
 import { FeeAmount } from "@pancakeswap/v3-sdk";
-import { AutoColumn } from "@pancakeswap/uikit";
 import { format } from "d3";
 import { saturate } from "polished";
 import { useCallback, useMemo } from "react";
@@ -13,6 +12,7 @@ import { InfoBox } from "./InfoBox";
 import { Chart } from "./Chart";
 import { useDensityChartData } from "./hooks";
 import { ZoomLevels, Bound, TickDataRaw } from "./types";
+import { AutoColumn } from "../Column";
 import Loader from "./Loader";
 
 const ZOOM_LEVELS: Record<FeeAmount, ZoomLevels> = {
