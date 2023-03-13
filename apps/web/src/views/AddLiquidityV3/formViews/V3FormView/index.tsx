@@ -4,7 +4,6 @@ import { Currency, Percent } from '@pancakeswap/sdk'
 import {
   AutoColumn,
   Button,
-  Dots,
   RowBetween,
   Card,
   Text,
@@ -18,7 +17,6 @@ import {
   PreTitle,
 } from '@pancakeswap/uikit'
 
-import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
@@ -42,7 +40,6 @@ import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 // import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useSigner } from 'wagmi'
@@ -51,6 +48,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
+import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
@@ -358,7 +356,9 @@ export default function V3FormView({
       hash={txHash}
       content={() => (
         <ConfirmationModalContent
-          topContent={() => <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} />}
+          topContent={() =>
+            position ? <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} /> : null
+          }
           bottomContent={() => (
             <Button width="100%" mt="16px" onClick={onAdd}>
               Add
@@ -375,63 +375,34 @@ export default function V3FormView({
 
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
-  let buttons = null
-  if (addIsUnsupported || addIsWarning) {
-    buttons = (
-      <Button disabled mb="4px">
-        {t('Unsupported Asset')}
-      </Button>
-    )
-  } else if (!account) {
-    buttons = <ConnectWalletButton width="100%" />
-  } else if (isWrongNetwork) {
-    buttons = <CommitButton />
-  } else {
-    buttons = (
-      <AutoColumn gap="md">
-        {(approvalA === ApprovalState.NOT_APPROVED ||
-          approvalA === ApprovalState.PENDING ||
-          approvalB === ApprovalState.NOT_APPROVED ||
-          approvalB === ApprovalState.PENDING) &&
-          isValid && (
-            <RowBetween style={{ gap: '8px' }}>
-              {showApprovalA && (
-                <Button onClick={approveACallback} disabled={approvalA === ApprovalState.PENDING} width="100%">
-                  {approvalA === ApprovalState.PENDING ? (
-                    <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })}</Dots>
-                  ) : (
-                    t('Enable %asset%', { asset: currencies[Field.CURRENCY_A]?.symbol })
-                  )}
-                </Button>
-              )}
-              {showApprovalB && (
-                <Button onClick={approveBCallback} disabled={approvalB === ApprovalState.PENDING} width="100%">
-                  {approvalB === ApprovalState.PENDING ? (
-                    <Dots>{t('Enabling %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })}</Dots>
-                  ) : (
-                    t('Enable %asset%', { asset: currencies[Field.CURRENCY_B]?.symbol })
-                  )}
-                </Button>
-              )}
-            </RowBetween>
-          )}
-        <CommitButton
-          variant={
-            !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B] ? 'danger' : 'primary'
-          }
-          onClick={() => (expertMode ? onAdd() : onPresentAddLiquidityModal())}
-          disabled={
-            !isValid ||
-            attemptingTxn ||
-            (approvalA !== ApprovalState.APPROVED && !depositADisabled) ||
-            (approvalB !== ApprovalState.APPROVED && !depositBDisabled)
-          }
-        >
-          {errorMessage || t('Add')}
-        </CommitButton>
-      </AutoColumn>
-    )
-  }
+  const handleButtonSubmit = useCallback(
+    () => (expertMode ? onAdd() : onPresentAddLiquidityModal()),
+    [expertMode, onAdd, onPresentAddLiquidityModal],
+  )
+
+  const buttons = (
+    <V3SubmitButton
+      addIsUnsupported={addIsUnsupported}
+      addIsWarning={addIsWarning}
+      account={account}
+      isWrongNetwork={isWrongNetwork}
+      approvalA={approvalA}
+      approvalB={approvalB}
+      isValid={isValid}
+      showApprovalA={showApprovalA}
+      approveACallback={approveACallback}
+      currencies={currencies}
+      approveBCallback={approveBCallback}
+      showApprovalB={showApprovalB}
+      parsedAmounts={parsedAmounts}
+      onClick={handleButtonSubmit}
+      attemptingTxn={attemptingTxn}
+      errorMessage={errorMessage}
+      buttonText={t('Add')}
+      depositADisabled={depositADisabled}
+      depositBDisabled={depositBDisabled}
+    />
+  )
 
   return (
     <>

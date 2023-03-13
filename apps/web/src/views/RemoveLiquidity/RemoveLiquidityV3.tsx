@@ -20,14 +20,14 @@ import {
   Toggle,
   Box,
 } from '@pancakeswap/uikit'
-import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useDerivedV3BurnInfo } from 'hooks/v3/useDerivedV3BurnInfo'
-import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
+import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
@@ -86,6 +86,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const { data: signer } = useSigner()
   const addTransaction = useTransactionAdder()
 
+  const masterchefV3 = useMasterchefV3()
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
+
   const { position } = useV3PositionFromTokenId(tokenId)
 
   const {
@@ -119,8 +122,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
   const positionManager = useV3NFTPositionManagerContract()
 
   const onRemove = useCallback(async () => {
-    setAttemptingTxn(true)
     if (
+      tokenIdsInMCv3Loading ||
+      !masterchefV3 ||
       !positionManager ||
       !liquidityValue0 ||
       !liquidityValue1 ||
@@ -134,9 +138,16 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       return
     }
 
+    const isStakedInMCv3 = Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
+
+    const manager = isStakedInMCv3 ? masterchefV3 : positionManager
+    const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
+
+    setAttemptingTxn(true)
+
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { calldata, value } = NonfungiblePositionManager.removeCallParameters(positionSDK, {
+    const { calldata, value } = interfaceManager.removeCallParameters(positionSDK, {
       tokenId: tokenId.toString(),
       liquidityPercentage,
       slippageTolerance: new Percent(allowedSlippage, 100),
@@ -149,7 +160,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     })
 
     const txn = {
-      to: positionManager.address,
+      to: manager.address,
       data: calldata,
       value,
     }
@@ -179,19 +190,22 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         console.error(err)
       })
   }, [
+    tokenIdsInMCv3Loading,
     positionManager,
     liquidityValue0,
     liquidityValue1,
     deadline,
     account,
     chainId,
-    feeValue0,
-    feeValue1,
     positionSDK,
     liquidityPercentage,
     signer,
+    stakedTokenIds,
+    masterchefV3,
     tokenId,
     allowedSlippage,
+    feeValue0,
+    feeValue1,
     addTransaction,
   ])
 

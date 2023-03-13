@@ -3,12 +3,11 @@ import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, Percent } from '@pancakeswap/sdk'
 import { AutoColumn, Box, Button, CardBody, ConfirmationModalContent, useModal } from '@pancakeswap/uikit'
-import { CommitButton } from 'components/CommitButton'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
-import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
+import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { FeeAmount, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
+import { FeeAmount, MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
 import { LiquidityFormState } from 'hooks/v3/types'
 import { useCallback, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
@@ -18,14 +17,13 @@ import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 import { Field } from 'state/mint/actions'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
-import { useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 // import { TransactionResponse } from '@ethersproject/providers'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
 // import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useSigner } from 'wagmi'
@@ -36,10 +34,12 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
+import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
 import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
+import { V3SubmitButton } from './components/V3SubmitButton'
 
 interface AddLiquidityV3PropsType {
   currencyA: Currency
@@ -56,8 +56,10 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
-  const positionManager = useV3NFTPositionManagerContract()
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
+
+  const masterchefV3 = useMasterchefV3()
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
 
   const [txHash, setTxHash] = useState<string>('')
 
@@ -71,6 +73,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const { position: existingPositionDetails, loading: positionLoading } = useV3PositionFromTokenId(
     tokenId ? BigNumber.from(tokenId) : undefined,
   )
+
   const hasExistingPosition = !!existingPositionDetails && !positionLoading
   const { position: existingPosition } = useDerivedPositionInfo(existingPositionDetails)
   // prevent an error if they input ETH/WETH
@@ -135,7 +138,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   //   {},
   // )
 
-  const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
+  const positionManager = useV3NFTPositionManagerContract()
   //   // check whether the user has approved the router on the tokens
   //   // Philip TODO: Add 'auto' allowedSlippage
   const [allowedSlippage] = useUserSlippage() // custom from users
@@ -143,10 +146,22 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
   //   // )
 
-  const onIncrease = useCallback(async () => {
-    if (!chainId || !signer || !account || !nftPositionManagerAddress) return
+  const isStakedInMCv3 = Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
 
-    if (!positionManager || !baseCurrency || !quoteCurrency) {
+  const manager = isStakedInMCv3 ? masterchefV3 : positionManager
+  const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
+
+  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], manager?.address)
+  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], manager?.address)
+
+  // we need an existence check on parsed amounts for single-asset deposits
+  const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
+  const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
+
+  const onIncrease = useCallback(async () => {
+    if (!chainId || !signer || !account || !positionManager || !masterchefV3) return
+
+    if (tokenIdsInMCv3Loading || !positionManager || !baseCurrency || !quoteCurrency) {
       return
     }
 
@@ -154,13 +169,13 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
       const { calldata, value } =
         hasExistingPosition && tokenId
-          ? NonfungiblePositionManager.addCallParameters(position, {
+          ? interfaceManager.addCallParameters(position, {
               tokenId,
               slippageTolerance: new Percent(allowedSlippage, 100),
               deadline: deadline.toString(),
               useNative,
             })
-          : NonfungiblePositionManager.addCallParameters(position, {
+          : interfaceManager.addCallParameters(position, {
               slippageTolerance: new Percent(allowedSlippage, 100),
               recipient: account,
               deadline: deadline.toString(),
@@ -169,7 +184,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             })
 
       const txn: { to: string; data: string; value: string } = {
-        to: nftPositionManagerAddress,
+        to: manager.address,
         data: calldata,
         value,
       }
@@ -215,14 +230,16 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     chainId,
     deadline,
     hasExistingPosition,
-    nftPositionManagerAddress,
+    masterchefV3,
     noLiquidity,
     parsedAmounts,
     position,
     positionManager,
     quoteCurrency,
     signer,
+    stakedTokenIds,
     tokenId,
+    tokenIdsInMCv3Loading,
   ])
 
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
@@ -254,7 +271,9 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
       hash={txHash}
       content={() => (
         <ConfirmationModalContent
-          topContent={() => <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} />}
+          topContent={() =>
+            position ? <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} /> : null
+          }
           bottomContent={() => (
             <Button width="100%" mt="16px" onClick={onIncrease}>
               Increase
@@ -269,32 +288,34 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     'TransactionConfirmationModalIncreaseLiquidity',
   )
 
-  let buttons
-  if (addIsUnsupported || addIsWarning) {
-    buttons = (
-      <Button disabled mb="4px">
-        {t('Unsupported Asset')}
-      </Button>
-    )
-  } else if (!account) {
-    buttons = <ConnectWalletButton />
-  } else if (isWrongNetwork) {
-    buttons = <CommitButton />
-  } else {
-    buttons = (
-      <AutoColumn gap="md">
-        <CommitButton
-          variant={
-            !isValid && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B] ? 'danger' : 'primary'
-          }
-          onClick={() => (expertMode ? onIncrease() : onPresentIncreaseLiquidityModal())}
-          disabled={!isValid || attemptingTxn}
-        >
-          {errorMessage || t('Supply')}
-        </CommitButton>
-      </AutoColumn>
-    )
-  }
+  const handleButtonSubmit = useCallback(
+    () => (expertMode ? onIncrease() : onPresentIncreaseLiquidityModal()),
+    [expertMode, onIncrease, onPresentIncreaseLiquidityModal],
+  )
+
+  const buttons = (
+    <V3SubmitButton
+      addIsUnsupported={addIsUnsupported}
+      addIsWarning={addIsWarning}
+      account={account}
+      isWrongNetwork={isWrongNetwork}
+      approvalA={approvalA}
+      approvalB={approvalB}
+      isValid={isValid}
+      showApprovalA={showApprovalA}
+      approveACallback={approveACallback}
+      currencies={currencies}
+      approveBCallback={approveBCallback}
+      showApprovalB={showApprovalB}
+      parsedAmounts={parsedAmounts}
+      onClick={handleButtonSubmit}
+      attemptingTxn={attemptingTxn}
+      errorMessage={errorMessage}
+      buttonText={t('Increase')}
+      depositADisabled={depositADisabled}
+      depositBDisabled={depositBDisabled}
+    />
+  )
 
   return (
     <Page>

@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
-import { useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useMemo } from 'react'
 import { CallStateResult, useSingleCallResult, useSingleContractMultipleData } from 'state/multicall/hooks'
 import { PositionDetails } from '@pancakeswap/farms'
@@ -17,6 +17,7 @@ interface UseV3PositionResults {
 
 export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
+
   const inputs = useMemo(() => (tokenIds ? tokenIds.map((tokenId) => [BigNumber.from(tokenId)]) : []), [tokenIds])
   const results = useSingleContractMultipleData(positionManager, 'positions', inputs)
 
@@ -112,10 +113,15 @@ export function useV3TokenIdsByAccount(contract: Contract, account: string | nul
 
 export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
+  const masterchefV3 = useMasterchefV3()
 
   const { tokenIds, loading: tokenIdsLoading } = useV3TokenIdsByAccount(positionManager, account)
 
-  const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(tokenIds)
+  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3, account)
+
+  const totalTokenIds = useMemo(() => [...stakedTokenIds, ...tokenIds], [stakedTokenIds, tokenIds])
+
+  const { positions, loading: positionsLoading } = useV3PositionsFromTokenIds(totalTokenIds)
 
   return useMemo(
     () => ({
