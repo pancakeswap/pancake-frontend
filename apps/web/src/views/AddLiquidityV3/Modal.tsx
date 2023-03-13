@@ -11,7 +11,7 @@ export function AddLiquidityV3Modal({
   token0,
   token1,
   isOpen,
-  handleDismiss,
+  onDismiss,
   feeAmount,
 }: {
   token0: Currency
@@ -20,7 +20,7 @@ export function AddLiquidityV3Modal({
 } & UseModalV2Props) {
   const { t } = useTranslation()
   return (
-    <ModalV2 isOpen={isOpen} onDismiss={handleDismiss} closeOnOverlayClick>
+    <ModalV2 isOpen={isOpen} onDismiss={onDismiss} closeOnOverlayClick>
       <Modal title={t('Add Liquidity')}>
         <Box maxWidth="856px">
           <LiquidityFormProvider>
