@@ -149,7 +149,7 @@ export async function farmV3FetchFarms({
   masterChefAddress: string
   chainId: number
   totalAllocPoint: BigNumber
-  latestPeriodCakePerSecond: BigNumber
+  latestPeriodCakePerSecond: FixedNumber
   tvlMap: TvlMap
   commonPrice: CommonPrice
 }) {
@@ -201,7 +201,12 @@ export async function farmV3FetchFarms({
   return farmsWithPrice
 }
 
-const getCakeApr = (poolWeight: string, activeTvlUSD: FixedNumber, cakePriceUSD: string, cakePerSeconds: BigNumber) => {
+const getCakeApr = (
+  poolWeight: string,
+  activeTvlUSD: FixedNumber,
+  cakePriceUSD: string,
+  cakePerSeconds: FixedNumber,
+) => {
   let cakeApr = '0'
 
   if (
@@ -215,7 +220,7 @@ const getCakeApr = (poolWeight: string, activeTvlUSD: FixedNumber, cakePriceUSD:
     return cakeApr
   }
 
-  const cakeRewardPerYear = FixedNumber.from(cakePerSeconds.mul(365 * 60 * 60 * 24)).divUnsafe(FixedNumber.from(1e12))
+  const cakeRewardPerYear = cakePerSeconds.mulUnsafe(FixedNumber.from(365 * 60 * 60 * 24))
 
   const cakeRewardPerYearForPool = FixedNumber.from(poolWeight)
     .mulUnsafe(cakeRewardPerYear)
@@ -412,7 +417,7 @@ function getFarmsPrices(
   chainId: number,
   tvls: TvlMap,
   cakePriceUSD: string,
-  latestPeriodCakePerSecond: BigNumber,
+  latestPeriodCakePerSecond: FixedNumber,
   commonPrice: CommonPrice,
 ): FarmV3DataWithPrice[] {
   return farms.map((farm) => {

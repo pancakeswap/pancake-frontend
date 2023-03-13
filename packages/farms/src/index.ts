@@ -1,6 +1,7 @@
 import { formatEther } from '@ethersproject/units'
 import { MultiCallV2 } from '@pancakeswap/multicall'
 import { ChainId } from '@pancakeswap/sdk'
+import { FixedNumber } from '@ethersproject/bignumber'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
 import { farmV3FetchFarms, fetchMasterChefV3Data, TvlMap, fetchCommonTokenUSDValue, CommonPrice } from './fetchFarmsV3'
@@ -67,11 +68,17 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
       throw new Error('Unsupported chain')
     }
 
-    const { poolLength, totalAllocPoint, latestPeriodCakePerSecond } = await fetchMasterChefV3Data({
+    const {
+      poolLength,
+      totalAllocPoint,
+      latestPeriodCakePerSecond: latestPeriodCakePerSecond_,
+    } = await fetchMasterChefV3Data({
       multicallv2,
       masterChefAddress,
       chainId,
     })
+
+    const latestPeriodCakePerSecond = FixedNumber.from(latestPeriodCakePerSecond_).divUnsafe(FixedNumber.from(1e12))
 
     const farmsWithPrice = await farmV3FetchFarms({
       farms,

@@ -193,8 +193,8 @@ const SingleFarmV3Card: React.FunctionComponent<
                   <AutoColumn gap="8px">
                     <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} />
                     <FarmV3LPPosition farm={farm} token={token} quoteToken={quoteToken} position={position} />
-                    <NextLink href={liquidityUrl}>
-                      <Button variant="tertiary" width="100%">
+                    <NextLink href={liquidityUrl} onClick={unstakedModal.onDismiss}>
+                      <Button variant="tertiary" width="100%" as="a">
                         {t('Manage Position')}
                       </Button>
                     </NextLink>
