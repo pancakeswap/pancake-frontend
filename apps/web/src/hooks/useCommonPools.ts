@@ -12,11 +12,11 @@ interface PoolsWithState {
   pools: Pool[] | null
   loading: boolean
   syncing: boolean
-  blockNumber?: JSBI
+  blockNumber?: number
 }
 
 interface Options {
-  blockNumber?: JSBI
+  blockNumber?: number
 }
 
 export function useCommonPools(
@@ -25,7 +25,7 @@ export function useCommonPools(
   { blockNumber: latestBlockNumber }: Options = {},
 ): PoolsWithState {
   const { chainId } = useActiveChainId()
-  const [blockNumber, setBlockNumber] = useState<JSBI | null | undefined>(null)
+  const [blockNumber, setBlockNumber] = useState<number | null | undefined>(null)
   const [pools, setPools] = useState<Pool[] | null | undefined>(null)
   const {
     pools: v3Pools,
@@ -51,8 +51,8 @@ export function useCommonPools(
       v2BlockNumber &&
       stableBlockNumber &&
       v3BlockNumber &&
-      JSBI.equal(v2BlockNumber, stableBlockNumber) &&
-      JSBI.equal(stableBlockNumber, v3BlockNumber)
+      v2BlockNumber === stableBlockNumber &&
+      stableBlockNumber === v3BlockNumber
         ? v2BlockNumber
         : null,
     [v2BlockNumber, v3BlockNumber, stableBlockNumber],

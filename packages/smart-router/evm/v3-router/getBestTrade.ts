@@ -8,7 +8,7 @@ import { BestRoutes, PoolProvider, PoolType, QuoteProvider, SmartRouterTrade, Ro
 
 interface TradeConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
-  blockNumber: BigintIsh | (() => Promise<BigintIsh>)
+  blockNumber: number | (() => Promise<number>)
   poolProvider: PoolProvider
   quoteProvider: QuoteProvider
   maxHops?: number
@@ -45,6 +45,7 @@ export async function getBestTrade(
       gasEstimateInUSD,
       inputAmount,
       outputAmount,
+      blockNumber,
     }
   } catch (e) {
     console.error(e)
@@ -53,7 +54,7 @@ export async function getBestTrade(
 }
 
 interface RouteConfig extends TradeConfig {
-  blockNumber: BigintIsh
+  blockNumber: number
 }
 
 async function getBestRoutes(

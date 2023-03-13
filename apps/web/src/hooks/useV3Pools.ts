@@ -18,7 +18,7 @@ interface Options {
   // Used for caching
   key?: string
 
-  blockNumber?: JSBI
+  blockNumber?: number
 }
 
 const POOL_SELECTION_CONFIG = {
@@ -308,7 +308,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Opt
   const result = useSWR<{
     pools: SubgraphPool[]
     key?: string
-    blockNumber?: JSBI
+    blockNumber?: number
   }>(
     key && pairs?.length && [key],
     async () => {

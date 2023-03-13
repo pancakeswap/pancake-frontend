@@ -60,7 +60,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
       ) : (
         <Skeleton mr="8px" width={63} height={63} variant="circle" />
       )}
-      <Flex flexDirection="column" alignItems="flex-end">
+      <Flex flexDirection="column" alignItems="flex-end" width="100%">
         {isReady ? (
           <Heading mb="4px">
             {v3PromotionFarms?.[chainId]?.[pid] && <V3SwapPromotionIcon />} {lpLabel.split(' ')[0]}

@@ -60,7 +60,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
 }) => {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
-  const { isLoading } = useRefreshBlockNumberID()
+  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const warningSwapHandler = useWarningImport()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
@@ -253,6 +253,14 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
 
   const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
+  const hasAmount = Boolean(parsedAmount)
+
+  const onRefreshPrice = useCallback(() => {
+    if (hasAmount) {
+      refreshBlockNumber()
+    }
+  }, [hasAmount, refreshBlockNumber])
+
   return (
     <>
       <MMAndAMMDealDisplay
@@ -269,7 +277,12 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
         }
         rfqId={mmRFQTrade?.rfqId}
       />
-      <CurrencyInputHeader title={t('Swap')} subtitle={t('Trade tokens in an instant')} />
+      <CurrencyInputHeader
+        title={t('Swap')}
+        subtitle={t('Trade tokens in an instant')}
+        hasAmount={hasAmount}
+        onRefreshPrice={onRefreshPrice}
+      />
       <Wrapper id="swap-page" style={{ minHeight: '412px' }}>
         <AutoColumn gap="sm">
           <CurrencyInputPanel

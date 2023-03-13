@@ -26,14 +26,13 @@ const quoteProvider = SmartRouter.createOffChainQuoteProvider()
 export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
   const { gasPrice } = useFeeDataWithGasPrice()
 
-  const blockNum = useCurrentBlock()
-  const blockNumber = useMemo(() => JSBI.BigInt(blockNum), [blockNum])
+  const blockNumber = useCurrentBlock()
   const {
     refresh,
     pools: candidatePools,
     loading,
     syncing,
-  } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber: JSBI.BigInt(blockNumber) })
+  } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber })
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 300)
@@ -115,20 +114,20 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
     refresh,
     trade,
     isLoading: isLoading || loading,
+    isStale: trade?.blockNumber !== blockNumber,
     syncing: syncing || isValidating || (amount?.quotient.toString() !== deferQuotient && deferQuotient !== undefined),
   }
 }
 
 export function useBestAMMTradeFromQuoter({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
   // const gasPrice = useGasPrice()
-  const blockNum = useCurrentBlock()
-  const blockNumber = useMemo(() => JSBI.BigInt(blockNum), [blockNum])
+  const blockNumber = useCurrentBlock()
   const {
     refresh,
     pools: candidatePools,
     loading,
     syncing,
-  } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber: JSBI.BigInt(blockNumber) })
+  } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber })
   // const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 150)

@@ -11,6 +11,14 @@ export const farmsV3 = [
     quoteToken: bscTestnetTokens.mockA,
     feeAmount: FeeAmount.LOW,
   },
+  {
+    pid: 2,
+    lpSymbol: 'MockB-MockA LP',
+    lpAddress: '0x7038Abe91B2Edf9769D846f5a42708c3aB9e9A39',
+    token: bscTestnetTokens.mockB,
+    quoteToken: bscTestnetTokens.mockA,
+    feeAmount: FeeAmount.MEDIUM,
+  },
 ] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [

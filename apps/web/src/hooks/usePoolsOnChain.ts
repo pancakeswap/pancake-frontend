@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { BigintIsh, Currency, JSBI, ChainId } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, ChainId } from '@pancakeswap/sdk'
 import { SmartRouter, Pool } from '@pancakeswap/smart-router/evm'
 import { Provider as IProvider } from '@ethersproject/providers'
 import useSWR from 'swr'
@@ -8,7 +8,7 @@ import { useMemo, useEffect } from 'react'
 import { provider } from 'utils/wagmi'
 
 interface Options {
-  blockNumber?: JSBI
+  blockNumber?: number
 }
 
 type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => IProvider

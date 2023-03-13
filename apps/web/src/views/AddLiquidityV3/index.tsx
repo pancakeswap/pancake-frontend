@@ -90,9 +90,10 @@ export default function UniversalAddLiquidity({
 
   // fee selection from url
   const feeAmount: FeeAmount | undefined =
-    preferredFeeAmount || (feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl)))
+    preferredFeeAmount ||
+    (feeAmountFromUrl && Object.values(FeeAmount).includes(parseFloat(feeAmountFromUrl))
       ? parseFloat(feeAmountFromUrl)
-      : undefined
+      : undefined)
 
   const handleCurrencySelect = useCallback(
     (currencyNew: Currency, currencyIdOther?: string): (string | undefined)[] => {

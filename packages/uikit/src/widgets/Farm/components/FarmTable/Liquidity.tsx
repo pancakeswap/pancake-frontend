@@ -8,8 +8,10 @@ import { TooltipRefs, useTooltip } from "../../../../hooks/useTooltip";
 import { FarmTableLiquidityProps } from "../../types";
 
 const distanceToNow = (timeInMilliSeconds: number) => {
-  const endTime = new Date(timeInMilliSeconds);
-  return new Date() > endTime || !Number.isFinite(timeInMilliSeconds) ? `now` : formatDistanceToNow(endTime);
+  const time = new Date(timeInMilliSeconds);
+  return time > new Date() || !Number.isFinite(timeInMilliSeconds)
+    ? `now`
+    : formatDistanceToNow(time, { addSuffix: true });
 };
 
 const ReferenceElement = styled.div`

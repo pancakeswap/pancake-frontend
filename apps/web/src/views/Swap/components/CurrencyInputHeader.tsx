@@ -14,12 +14,14 @@ import {
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
-
+import RefreshIcon from 'components/Svg/RefreshIcon'
+import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
 import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -34,6 +36,8 @@ interface Props {
   noConfig?: boolean
   setIsChartDisplayed?: React.Dispatch<React.SetStateAction<boolean>>
   isChartDisplayed?: boolean
+  hasAmount: boolean
+  onRefreshPrice: () => void
 }
 
 const ColoredIconButton = styled(IconButton)`
@@ -44,8 +48,14 @@ const ColoredIconButton = styled(IconButton)`
 //  disable this during the v3 campaign
 const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mobileShowOnceTokenHighlightV2', true)
 
-const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitle, title }) => {
+const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
+  subtitle,
+  title,
+  hasAmount,
+  onRefreshPrice,
+}) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
 
@@ -136,6 +146,14 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({ subtitl
         </NotificationDot>
         <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
           <HistoryIcon color="textSubtle" width="24px" />
+        </IconButton>
+        <IconButton variant="text" scale="sm" onClick={onRefreshPrice}>
+          <RefreshIcon
+            disabled={!hasAmount}
+            color="textSubtle"
+            width="27px"
+            duration={CHAIN_REFRESH_TIME[chainId] ? CHAIN_REFRESH_TIME[chainId] / 1000 : undefined}
+          />
         </IconButton>
       </Flex>
     </Flex>

@@ -14,7 +14,6 @@ import {
   VoteIcon,
   LockIcon,
   RocketIcon,
-  CurrencyIcon,
   CheckmarkCircleIcon,
 } from "../../../../components/Svg";
 
@@ -70,12 +69,7 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
         display="flex"
         style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
       >
-        <Tag
-          variant="secondary"
-          style={{ background: "none" }}
-          startIcon={<CurrencyIcon width="18px" color="failure" mr="4px" />}
-          {...props}
-        >
+        <Tag variant="failure" style={{ background: "none" }} outline {...props}>
           {t("Stable LP")}
         </Tag>
       </TooltipText>
