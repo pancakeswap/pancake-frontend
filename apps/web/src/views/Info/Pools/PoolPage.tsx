@@ -44,6 +44,7 @@ import Percent from 'views/Info/components/Percent'
 import SaveIcon from 'views/Info/components/SaveIcon'
 import useSWRImmutable from 'swr/immutable'
 import BigNumber from 'bignumber.js'
+import { getFarmConfig } from '@pancakeswap/farms/constants'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -75,11 +76,6 @@ const LockedTokensContainer = styled(Flex)`
   border-radius: 16px;
   max-width: 280px;
 `
-
-const getFarmConfig = async (chainId: number) => {
-  const config = await import(`@pancakeswap/farms/constants/${chainId}`)
-  return config
-}
 
 const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ address: routeAddress }) => {
   const { isXs, isSm } = useMatchBreakpoints()
