@@ -166,11 +166,6 @@ const config: (
           image: '/images/ifos/ifo-bunny.png',
         },
         {
-          label: t('Affiliates Program'),
-          href: '/affiliates-program',
-          supportChainIds: SUPPORT_ONLY_BSC,
-        },
-        {
           label: t('Voting'),
           href: '/voting',
           supportChainIds: SUPPORT_ONLY_BSC,

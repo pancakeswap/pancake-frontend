@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { Box, SubMenuItems, DropdownMenuItemType } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
@@ -21,10 +21,6 @@ const AffiliatesProgramLayout = ({ children }) => {
       {
         label: t('Dashboard'),
         href: '/affiliates-program/dashboard',
-      },
-      {
-        label: t('Leaderboard'),
-        href: '/affiliates-program/leaderboard',
       },
     ]
   }, [t])
