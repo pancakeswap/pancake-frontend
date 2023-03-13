@@ -260,7 +260,12 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
               {props.type === 'community' ? (
                 <FarmAuctionTag marginRight="16px" scale="sm" />
               ) : (
-                <Flex mr="16px">
+                <Flex
+                  mr="16px"
+                  alignItems={isMobile ? 'end' : 'center'}
+                  flexDirection={isMobile ? 'column' : 'row'}
+                  style={{ gap: '4px' }}
+                >
                   {props.type === 'v2' ? (
                     props?.details?.isStable ? (
                       <StableFarmTag scale="sm" />
@@ -270,7 +275,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                   ) : null}
                   {props.type === 'v3' && <V3FeeTag feeAmount={props.details.feeAmount} scale="sm" />}
                   {props?.details?.boosted ? (
-                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" ml="4px" />
+                    <BoostedTag style={{ background: 'none', verticalAlign: 'bottom' }} scale="sm" />
                   ) : null}
                 </Flex>
               )}
