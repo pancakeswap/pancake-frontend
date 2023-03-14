@@ -1,11 +1,11 @@
 import { Call, MultiCallV2 } from '@pancakeswap/multicall'
 import { ERC20Token } from '@pancakeswap/sdk'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
+import BN from 'bignumber.js'
 import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
-import BN from 'bignumber.js'
-import { DEFAULT_STABLE_COINS, PriceHelper, DEFAULT_COMMON_PRICE } from '../constants/common'
-import { FIXED_ONE, FIXED_ZERO } from './const'
+import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
+import { FIXED_ZERO } from './const'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getTokenAmount } from './v2/fetchFarmsV2'
 
@@ -421,8 +421,6 @@ function getFarmsPrices(
     let tokenPriceBusd = FIXED_ZERO
     let quoteTokenPriceBusd = FIXED_ZERO
 
-    const stableTokens = DEFAULT_STABLE_COINS[chainId as keyof typeof DEFAULT_STABLE_COINS]
-
     let tvl = FIXED_ZERO
     let tvlUpdatedAt: string | undefined
 
@@ -432,14 +430,6 @@ function getFarmsPrices(
 
     if (commonPrice[farm.token.address]) {
       tokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
-    }
-
-    if (stableTokens?.some((stableToken) => stableToken.address === farm.token.address)) {
-      tokenPriceBusd = FIXED_ONE
-    }
-
-    if (stableTokens?.some((stableToken) => stableToken.address === farm.quoteToken.address)) {
-      quoteTokenPriceBusd = FIXED_ONE
     }
 
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {

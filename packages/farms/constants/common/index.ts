@@ -11,14 +11,15 @@ export type PriceHelper = {
 export const priceHelperTokens = {
   [ChainId.ETHEREUM]: {
     chain: 'ethereum',
-    list: [ethereumTokens.weth],
+    list: [ethereumTokens.weth, ethereumTokens.usdc, ethereumTokens.usdt],
   },
   [ChainId.BSC]: {
     chain: 'bsc',
-    list: [bscTokens.wbnb, bscTokens.usdc, bscTokens.busd, bscTokens.btcb],
+    list: [bscTokens.wbnb, bscTokens.usdt, bscTokens.busd, bscTokens.btcb],
   },
 } satisfies Record<number, PriceHelper>
 
+// for testing purposes
 export const DEFAULT_COMMON_PRICE = {
   [ChainId.ETHEREUM]: {},
   [ChainId.GOERLI]: {
@@ -28,11 +29,4 @@ export const DEFAULT_COMMON_PRICE = {
   [ChainId.BSC_TESTNET]: {
     [bscTestnetTokens.mockA.address]: '10',
   },
-}
-
-export const DEFAULT_STABLE_COINS = {
-  [ChainId.ETHEREUM]: [ethereumTokens.usdc, ethereumTokens.usdt],
-  [ChainId.GOERLI]: [goerliTestnetTokens.mockB],
-  [ChainId.BSC]: [bscTokens.usdc, bscTokens.usdt, bscTokens.busd],
-  [ChainId.BSC_TESTNET]: [bscTestnetTokens.mockB],
 }
