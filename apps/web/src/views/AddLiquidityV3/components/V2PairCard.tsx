@@ -21,7 +21,7 @@ export function V2PairCard({ pair, account }: { pair: Pair; account: string }) {
             <Flex alignItems="center" mb="4px">
               <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={20} />
               <Text bold ml="8px">
-                {pair.token0.symbol}/{pair.token1.symbol} V2 LP
+                {pair.token0.symbol}-{pair.token1.symbol} V2 LP
               </Text>
             </Flex>
             <Text fontSize="14px" color="textSubtle">

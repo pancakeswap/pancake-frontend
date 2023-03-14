@@ -124,9 +124,10 @@ export default function PoolListPage() {
                           {!currencyQuote || !currencyBase ? (
                             <Dots>{t('Loading')}</Dots>
                           ) : (
-                            `${currencyQuote.symbol}/${currencyBase.symbol}`
+                            `${currencyQuote.symbol}-${currencyBase.symbol} LP`
                           )}
                         </Text>
+                        <Text ml="4px">{`(#${p.tokenId.toString()})`}</Text>
                         <Tag ml="8px" variant="secondary" outline>
                           {new Percent(feeAmount, 1_000_000).toSignificant()}%
                         </Tag>

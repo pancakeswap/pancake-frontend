@@ -21,7 +21,7 @@ export function StablePairCard({ pair, account }: { pair: LPStablePair; account:
             <Flex alignItems="center" mb="4px">
               <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={20} />
               <Text bold ml="8px">
-                {pair.token0.symbol}/{pair.token1.symbol} Stable LP
+                {pair.token0.symbol}-{pair.token1.symbol} Stable LP
               </Text>
               <Tag ml="8px" variant="secondary" outline>
                 {new Percent(pair.stableLpFee * 1000000, 1_000_000).toSignificant()}%

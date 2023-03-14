@@ -351,6 +351,9 @@ export default function PoolPage() {
           <Text>{feeValueLower ? formatCurrencyAmount(feeValueLower, 4, locale) : '-'}</Text>
         </AutoRow>
       </LightGreyCard>
+      <Text mb="16px" px="16px">
+        Collecting fees will withdraw currently available fees for you
+      </Text>
     </>
   )
 
