@@ -230,6 +230,8 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     chainId,
     deadline,
     hasExistingPosition,
+    interfaceManager,
+    manager.address,
     masterchefV3,
     noLiquidity,
     parsedAmounts,
@@ -237,7 +239,6 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     positionManager,
     quoteCurrency,
     signer,
-    stakedTokenIds,
     tokenId,
     tokenIdsInMCv3Loading,
   ])
