@@ -94,8 +94,14 @@ const handler: NextApiHandler = async (req, res) => {
     const resp = await request(
       V3_SUBGRAPH_URLS[chainId],
       gql`
-        query tvl($poolAddress: String!, $owner: String!, $posId: String!) {
-          positions(where: { pool: $poolAddress, liquidity_gt: "0", owner: $owner }, first: 1000, orderBy: id) {
+        query tvl($poolAddress: String!, $owner: String!, $posId: String!, $currentTick: String!) {
+          positions(
+            where: { pool: $poolAddress, liquidity_gt: "0", owner: $owner, id_gt: $posId }
+            first: 1000
+            orderBy: id
+            tickLower_: { tickIdx_lte: currentTick }
+            tickUpper_: { tickIdx_gt: currentTick }
+          ) {
             liquidity
             id
             tickUpper {
@@ -110,7 +116,7 @@ const handler: NextApiHandler = async (req, res) => {
       {
         poolAddress: address,
         owner: masterChefV3Address.toLowerCase(),
-        // currentTick: slot0.tick.toString(),
+        currentTick: slot0.tick.toString(),
         posId,
       },
     )
@@ -136,7 +142,10 @@ const handler: NextApiHandler = async (req, res) => {
   let totalToken0 = JSBI.BigInt(0)
   let totalToken1 = JSBI.BigInt(0)
 
-  for (const position of allActivePositions) {
+  for (const position of allActivePositions.filter(
+    // double check that the position is within the current tick range
+    (p) => +p.tickLower.tickIdx >= slot0.tick && +p.tickUpper.tickIdx < slot0.tick,
+  )) {
     const token0 = PositionMath.getToken0Amount(
       currentTick,
       +position.tickLower.tickIdx,

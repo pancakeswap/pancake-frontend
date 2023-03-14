@@ -5,6 +5,22 @@ import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 export const farmsV3 = [
   {
     pid: 1,
+    lpSymbol: 'USDT-MSIX LP',
+    lpAddress: '0x51A9337DC14EFbfA2903946E0BDE26D60B14800D',
+    token: bscTestnetTokens.usdt,
+    quoteToken: bscTestnetTokens.msix,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 2,
+    lpSymbol: 'USDT-BUSD LP',
+    lpAddress: '0x87Ad85098e1e3e11D3C514a84f6Fdd6e90Dc11Fe',
+    token: bscTestnetTokens.usdt,
+    quoteToken: bscTestnetTokens.busd,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 3,
     lpSymbol: 'MockB-MockA LP',
     lpAddress: '0x058058F5847598618f911A59BC2010999eACDFa3',
     token: bscTestnetTokens.mockB,
@@ -12,7 +28,7 @@ export const farmsV3 = [
     feeAmount: FeeAmount.LOW,
   },
   {
-    pid: 2,
+    pid: 4,
     lpSymbol: 'MockB-MockA LP',
     lpAddress: '0x7038Abe91B2Edf9769D846f5a42708c3aB9e9A39',
     token: bscTestnetTokens.mockB,
