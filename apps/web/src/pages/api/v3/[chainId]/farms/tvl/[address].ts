@@ -136,6 +136,8 @@ const handler: NextApiHandler = async (req, res) => {
     posId = pos[pos.length - 1].id
   }
 
+  console.info('allActivePositions', address, allActivePositions.length)
+
   const currentTick = slot0.tick
   const sqrtRatio = JSBI.BigInt(slot0.sqrtPriceX96.toString())
 
@@ -144,7 +146,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   for (const position of allActivePositions.filter(
     // double check that the position is within the current tick range
-    (p) => +p.tickLower.tickIdx >= slot0.tick && +p.tickUpper.tickIdx < slot0.tick,
+    (p) => +p.tickLower.tickIdx <= slot0.tick && +p.tickUpper.tickIdx > slot0.tick,
   )) {
     const token0 = PositionMath.getToken0Amount(
       currentTick,
