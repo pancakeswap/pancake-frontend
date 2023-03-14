@@ -64,35 +64,6 @@ interface SingleFarmV3CardProps {
   direction?: 'row' | 'column'
 }
 
-// const lmAbi = [
-//   {
-//     inputs: [],
-//     name: 'lastRewardTimestamp',
-//     outputs: [
-//       {
-//         internalType: 'uint32',
-//         name: '',
-//         type: 'uint32',
-//       },
-//     ],
-//     stateMutability: 'view',
-//     type: 'function',
-//   },
-//   {
-//     inputs: [],
-//     name: 'lmLiquidity',
-//     outputs: [
-//       {
-//         internalType: 'uint128',
-//         name: '',
-//         type: 'uint128',
-//       },
-//     ],
-//     stateMutability: 'view',
-//     type: 'function',
-//   },
-// ] as const
-
 const SingleFarmV3Card: React.FunctionComponent<
   React.PropsWithChildren<SingleFarmV3CardProps & Omit<AtomBoxProps, 'position'>>
 > = ({
@@ -145,25 +116,6 @@ const SingleFarmV3Card: React.FunctionComponent<
       onDismiss?.()
     }
   }
-
-  // const lmPoolInfo = useContractReads({
-  //   contracts: [
-  //     {
-  //       abi: lmAbi,
-  //       address: farm.lmPool as `0x${string}`,
-  //       chainId: farm.token.chainId,
-  //       functionName: 'lmLiquidity',
-  //     },
-  //     {
-  //       abi: lmAbi,
-  //       address: farm.lmPool as `0x${string}`,
-  //       chainId: farm.token.chainId,
-  //       functionName: 'lastRewardTimestamp',
-  //     },
-  //   ],
-  // })
-
-  // console.log(lmPoolInfo.data, 'lmPoolInfo', farm.lmPool)
 
   const totalEarnings = useMemo(
     () => +formatBigNumber(pendingCakeByTokenIds[position.tokenId.toString()] || EthersBigNumber.from('0'), 4),

@@ -1,4 +1,3 @@
-import { BigNumber } from '@ethersproject/bignumber'
 import {
   createFarmFetcherV3,
   FarmsV3Response,
@@ -133,25 +132,40 @@ export const usePositionsByUser = (
     [stakedPositions],
   )
 
-  const tokenIdResults = useSingleContractMultipleData(masterchefV3, 'pendingCake', inputs)
+  const harvestCalls = useMemo(() => {
+    if (!account) return []
+    const callData = []
+    for (const stakedPosition of stakedPositions) {
+      callData.push(masterchefV3.interface.encodeFunctionData('harvest', [stakedPosition.tokenId.toString(), account]))
+    }
+    return callData
+  }, [account, masterchefV3.interface, stakedPositions])
+
+  const { data: tokenIdResults, isLoading } = useSWR(account && [harvestCalls], () => {
+    return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
+      return res
+        .map((r) => masterchefV3.interface.decodeFunctionResult('harvest', r))
+        .map((r) => {
+          if ('reward' in r) {
+            return r.reward
+          }
+          return null
+        })
+    })
+  })
 
   const pendingCakeByTokenIds = useMemo(
     () =>
-      tokenIdResults.reduce<IPendingCakeByTokenId>((acc, ele, i) => {
+      tokenIdResults?.reduce<IPendingCakeByTokenId>((acc, pendingCake, i) => {
         const position = stakedPositions[i]
 
-        const [pendingCake] = ele?.result || []
-
-        return pendingCake ? { ...acc, [position.tokenId.toString()]: BigNumber.from(pendingCake) } : acc
+        return pendingCake ? { ...acc, [position.tokenId.toString()]: pendingCake } : acc
       }, {} as IPendingCakeByTokenId),
     [stakedPositions, tokenIdResults],
   )
 
   // assume that if any of the tokenIds have a valid result, the data is ready
-  const userDataLoaded = useMemo(
-    () => (inputs.length > 0 ? tokenIdResults.some((c) => c.valid) : true),
-    [inputs.length, tokenIdResults],
-  )
+  const userDataLoaded = harvestCalls.length > 0 && !isLoading
 
   const farmsWithPositions = useMemo(
     () =>
