@@ -1,5 +1,6 @@
 import { ZERO_PERCENT, Percent } from "@pancakeswap/sdk";
 import { useMemo } from "react";
+
 import { getAccrued } from "../aprHelper";
 
 interface Params extends AprParams {
@@ -52,7 +53,7 @@ export function useRate({ stakeFor = 1, ...rest }: Params) {
   };
 }
 
-interface AprParams {
+export interface AprParams {
   // interest accrued in usd within 24h
   interest?: number;
   // in usd

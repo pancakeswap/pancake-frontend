@@ -62,7 +62,7 @@ export function useRoi({
   };
 }
 
-interface FeeParams {
+export interface FeeParams {
   // Amount of token user input
   amount?: CurrencyAmount<Currency>;
   // Currency of the other token in the pool
