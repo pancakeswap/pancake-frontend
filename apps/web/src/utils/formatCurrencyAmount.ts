@@ -33,3 +33,7 @@ export function formatPrice(price: Price<Currency, Currency> | undefined, sigFig
 
   return formatLocaleNumber({ number: price, locale, sigFigs })
 }
+
+export function formatRawAmount(amountRaw: string, decimals: number, sigFigs: number): string {
+  return new Fraction(amountRaw, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals))).toSignificant(sigFigs)
+}

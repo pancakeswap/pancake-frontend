@@ -46,6 +46,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 
 import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
 import Divider from 'components/Divider'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
 
 import { useBurnV3ActionHandlers } from './form/hooks'
 
@@ -174,10 +175,14 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         }
 
         return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+          const amount0 = formatRawAmount(liquidityValue0.quotient.toString(), liquidityValue0.currency.decimals, 4)
+          const amount1 = formatRawAmount(liquidityValue1.quotient.toString(), liquidityValue1.currency.decimals, 4)
+
           setTxnHash(response.hash)
           setAttemptingTxn(false)
           addTransaction(response, {
             type: 'remove-liquidity-v3',
+            summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
             baseCurrencyId: currencyId(liquidityValue0.currency),
             quoteCurrencyId: currencyId(liquidityValue1.currency),
             expectedAmountBaseRaw: liquidityValue0.quotient.toString(),

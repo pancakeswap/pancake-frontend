@@ -7,6 +7,7 @@ export type TransactionType =
   | 'swap'
   | 'wrap'
   | 'add-liquidity'
+  | 'increase-liquidity-v3'
   | 'add-liquidity-v3'
   | 'remove-liquidity-v3'
   | 'collect-fee'

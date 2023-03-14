@@ -49,6 +49,7 @@ import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
 
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
@@ -283,9 +284,21 @@ export default function V3FormView({
           }
 
           return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+            const baseAmount = formatRawAmount(
+              parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+              baseCurrency.decimals,
+              4,
+            )
+            const quoteAmount = formatRawAmount(
+              parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+              quoteCurrency.decimals,
+              4,
+            )
+
             setAttemptingTxn(false)
             addTransaction(response, {
               type: 'add-liquidity-v3',
+              summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
               baseCurrencyId: currencyId(baseCurrency),
               quoteCurrencyId: currencyId(quoteCurrency),
               createPool: Boolean(noLiquidity),

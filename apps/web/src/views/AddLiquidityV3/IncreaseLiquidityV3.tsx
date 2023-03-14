@@ -35,6 +35,7 @@ import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
+import { formatRawAmount } from 'utils/formatCurrencyAmount'
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
@@ -200,9 +201,21 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
           }
 
           return signer.sendTransaction(newTxn).then((response: TransactionResponse) => {
+            const baseAmount = formatRawAmount(
+              parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
+              baseCurrency.decimals,
+              4,
+            )
+            const quoteAmount = formatRawAmount(
+              parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
+              quoteCurrency.decimals,
+              4,
+            )
+
             setAttemptingTxn(false)
             addTransaction(response, {
-              type: 'add-liquidity-v3',
+              type: 'increase-liquidity-v3',
+              summary: `Increase ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
               baseCurrencyId: currencyId(baseCurrency),
               quoteCurrencyId: currencyId(quoteCurrency),
               createPool: Boolean(noLiquidity),
