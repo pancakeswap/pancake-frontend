@@ -1,12 +1,14 @@
+/* eslint-disable no-await-in-loop */
 /* eslint-disable no-param-reassign */
 import { NextApiHandler } from 'next'
 import { PositionMath } from '@pancakeswap/v3-sdk'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
-import { JSBI, Token, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
+import { JSBI, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
 import { request, gql } from 'graphql-request'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
+import { multicallv2Typed } from 'utils/multicall'
 
 const zChainId = z.enum(['56', '1', '5', '97'])
 
@@ -16,6 +18,44 @@ const zParams = z.object({
   chainId: zChainId,
   address: zAddress,
 })
+
+const v3PoolAbi = [
+  {
+    inputs: [],
+    name: 'slot0',
+    outputs: [
+      {
+        internalType: 'uint160',
+        name: 'sqrtPriceX96',
+        type: 'uint160',
+      },
+      { internalType: 'int24', name: 'tick', type: 'int24' },
+      {
+        internalType: 'uint16',
+        name: 'observationIndex',
+        type: 'uint16',
+      },
+      {
+        internalType: 'uint16',
+        name: 'observationCardinality',
+        type: 'uint16',
+      },
+      {
+        internalType: 'uint16',
+        name: 'observationCardinalityNext',
+        type: 'uint16',
+      },
+      {
+        internalType: 'uint8',
+        name: 'feeProtocol',
+        type: 'uint8',
+      },
+      { internalType: 'bool', name: 'unlocked', type: 'bool' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const
 
 // currently can get the total active liquidity for a pool
 // TODO: v3 farms update subgraph urls
@@ -32,53 +72,71 @@ const handler: NextApiHandler = async (req, res) => {
 
   const address = address_.toLowerCase()
 
-  if (!farms.some((f) => f.lpAddress.toLowerCase() === address)) {
+  const farm = farms.find((f) => f.lpAddress.toLowerCase() === address)
+
+  if (!farm) {
     return res.status(400).json({ error: 'Invalid LP address' })
   }
 
+  const slot = await multicallv2Typed({ abi: v3PoolAbi, calls: [{ address, name: 'slot0' }], chainId: +chainId })
+
+  if (!slot[0]) {
+    return res.status(400).json({ error: 'Invalid LP address' })
+  }
+
+  const slot0 = slot[0]
+
   const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  const response = await request(
-    V3_SUBGRAPH_URLS[chainId],
-    gql`
-    query tvl {
-        pool(id: "${address}") {
-          tick
-          sqrtPrice
-          token0 {
+  let allActivePositions = []
+
+  async function fetchPositionByMasterChefId(posId = '0') {
+    const resp = await request(
+      V3_SUBGRAPH_URLS[chainId],
+      gql`
+        query tvl($poolAddress: String!, $owner: String!, $posId: String!) {
+          positions(where: { pool: $poolAddress, liquidity_gt: "0", owner: $owner }, first: 1000, orderBy: id) {
+            liquidity
             id
-            symbol
-            decimals
-          }
-          token1 {
-            id
-            symbol
-            decimals
+            tickUpper {
+              tickIdx
+            }
+            tickLower {
+              tickIdx
+            }
           }
         }
-        positions(where: { pool: "${address}", liquidity_gt: "0", owner: "${masterChefV3Address.toLowerCase()}" }, first: 1000, orderBy: liquidity orderDirection: desc) {
-          liquidity
-          id
-          tickUpper {
-            tickIdx
-          }
-          tickLower {
-            tickIdx
-          }
-        }
+      `,
+      {
+        poolAddress: address,
+        owner: masterChefV3Address.toLowerCase(),
+        // currentTick: slot0.tick.toString(),
+        posId,
+      },
+    )
+
+    return resp.positions
+  }
+
+  let posId = '0'
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const pos = await fetchPositionByMasterChefId(posId)
+    allActivePositions = [...allActivePositions, ...pos]
+    if (pos.length < 1000) {
+      break
     }
-    `,
-  )
+    posId = pos[pos.length - 1].id
+  }
 
-  const { pool, positions } = response
-
-  const currentTick = pool.tick
-  const sqrtRatio = JSBI.BigInt(pool.sqrtPrice)
+  const currentTick = slot0.tick
+  const sqrtRatio = JSBI.BigInt(slot0.sqrtPriceX96.toString())
 
   let totalToken0 = JSBI.BigInt(0)
   let totalToken1 = JSBI.BigInt(0)
 
-  for (const position of positions) {
+  for (const position of allActivePositions) {
     const token0 = PositionMath.getToken0Amount(
       currentTick,
       +position.tickLower.tickIdx,
@@ -98,14 +156,8 @@ const handler: NextApiHandler = async (req, res) => {
     totalToken1 = JSBI.add(totalToken1, token1)
   }
 
-  const curr0 = CurrencyAmount.fromRawAmount(
-    new Token(+chainId, pool.token0.id, +pool.token0.decimals, pool.token0.symbol),
-    totalToken0.toString(),
-  ).toExact()
-  const curr1 = CurrencyAmount.fromRawAmount(
-    new Token(+chainId, pool.token1.id, +pool.token1.decimals, pool.token1.symbol),
-    totalToken1.toString(),
-  ).toExact()
+  const curr0 = CurrencyAmount.fromRawAmount(farm.token, totalToken0.toString()).toExact()
+  const curr1 = CurrencyAmount.fromRawAmount(farm.quoteToken, totalToken1.toString()).toExact()
 
   const updatedAt = new Date().toISOString()
 

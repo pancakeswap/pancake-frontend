@@ -64,6 +64,35 @@ interface SingleFarmV3CardProps {
   direction?: 'row' | 'column'
 }
 
+// const lmAbi = [
+//   {
+//     inputs: [],
+//     name: 'lastRewardTimestamp',
+//     outputs: [
+//       {
+//         internalType: 'uint32',
+//         name: '',
+//         type: 'uint32',
+//       },
+//     ],
+//     stateMutability: 'view',
+//     type: 'function',
+//   },
+//   {
+//     inputs: [],
+//     name: 'lmLiquidity',
+//     outputs: [
+//       {
+//         internalType: 'uint128',
+//         name: '',
+//         type: 'uint128',
+//       },
+//     ],
+//     stateMutability: 'view',
+//     type: 'function',
+//   },
+// ] as const
+
 const SingleFarmV3Card: React.FunctionComponent<
   React.PropsWithChildren<SingleFarmV3CardProps & Omit<AtomBoxProps, 'position'>>
 > = ({
@@ -117,13 +146,32 @@ const SingleFarmV3Card: React.FunctionComponent<
     }
   }
 
+  // const lmPoolInfo = useContractReads({
+  //   contracts: [
+  //     {
+  //       abi: lmAbi,
+  //       address: farm.lmPool as `0x${string}`,
+  //       chainId: farm.token.chainId,
+  //       functionName: 'lmLiquidity',
+  //     },
+  //     {
+  //       abi: lmAbi,
+  //       address: farm.lmPool as `0x${string}`,
+  //       chainId: farm.token.chainId,
+  //       functionName: 'lastRewardTimestamp',
+  //     },
+  //   ],
+  // })
+
+  // console.log(lmPoolInfo.data, 'lmPoolInfo', farm.lmPool)
+
   const totalEarnings = useMemo(
     () => +formatBigNumber(pendingCakeByTokenIds[position.tokenId.toString()] || EthersBigNumber.from('0'), 4),
     [pendingCakeByTokenIds, position.tokenId],
   )
 
   const earningsBusd = useMemo(() => {
-    return new BigNumber(totalEarnings).times(cakePrice).toNumber()
+    return new BigNumber(totalEarnings).times(cakePrice.toString()).toNumber()
   }, [cakePrice, totalEarnings])
 
   const unstakingTooltip = useTooltip(
@@ -223,6 +271,7 @@ const SingleFarmV3Card: React.FunctionComponent<
             />
             <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="full">
               <FarmV3HarvestAction
+                pendingEarnings={totalEarnings}
                 earnings={totalEarnings}
                 earningsBusd={earningsBusd}
                 pendingTx={attemptingTxn}

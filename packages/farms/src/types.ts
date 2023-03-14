@@ -15,6 +15,7 @@ export type FarmsDynamicDataResult = {
 }
 
 export type FarmsDynamicDataResultV2 = {
+  lmPool: string
   tokenAmountTotal: string
   quoteTokenAmountTotal: string
   tokenPriceVsQuote: string
@@ -203,7 +204,7 @@ export interface FarmWithStakedValue extends DeserializedFarm {
 export interface FarmsV3Response {
   poolLength: number
   farmsWithPrice: SerializedFarmV3DataWithPrice[]
-  latestPeriodCakePerSecond: string
+  cakePerSecond: string
 }
 
 export type IPendingCakeByTokenId = Record<string, EtherBigNumber>

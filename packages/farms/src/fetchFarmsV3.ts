@@ -3,8 +3,9 @@ import { ERC20Token } from '@pancakeswap/sdk'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
+import BN from 'bignumber.js'
 import { DEFAULT_STABLE_COINS, PriceHelper, DEFAULT_COMMON_PRICE } from '../constants/common'
-import { FIXED_100, FIXED_ONE, FIXED_ZERO } from './const'
+import { FIXED_ONE, FIXED_ZERO } from './const'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getTokenAmount } from './v2/fetchFarmsV2'
 
@@ -27,11 +28,12 @@ const masterchefV3Abi = [
     name: 'poolInfo',
     outputs: [
       { internalType: 'uint256', name: 'allocPoint', type: 'uint256' },
-      { internalType: 'contract ILMPool', name: 'LMPool', type: 'address' },
-      { internalType: 'contract IUniswapV3Pool', name: 'v3Pool', type: 'address' },
+      { internalType: 'contract IPancakeV3Pool', name: 'v3Pool', type: 'address' },
       { internalType: 'address', name: 'token0', type: 'address' },
       { internalType: 'address', name: 'token1', type: 'address' },
       { internalType: 'uint24', name: 'fee', type: 'uint24' },
+      { internalType: 'uint256', name: 'totalLiquidity', type: 'uint256' },
+      { internalType: 'uint256', name: 'totalBoostLiquidity', type: 'uint256' },
     ],
     stateMutability: 'view',
     type: 'function',
@@ -98,12 +100,13 @@ const fetchPoolInfos = async (
   masterChefAddress: string,
 ): Promise<
   {
-    LMPool: string
     allocPoint: BigNumber
-    fee: number
+    v3Pool: string
     token0: string
     token1: string
-    v3Pool: string
+    fee: number
+    totalLiquidity: BigNumber
+    totalBoostLiquidity: BigNumber
   }[]
 > => {
   try {
@@ -140,7 +143,7 @@ export async function farmV3FetchFarms({
   masterChefAddress,
   chainId,
   totalAllocPoint,
-  latestPeriodCakePerSecond,
+  cakePerSeconds,
   tvlMap,
   commonPrice,
 }: {
@@ -149,11 +152,11 @@ export async function farmV3FetchFarms({
   masterChefAddress: string
   chainId: number
   totalAllocPoint: BigNumber
-  latestPeriodCakePerSecond: FixedNumber
+  cakePerSeconds: string
   tvlMap: TvlMap
   commonPrice: CommonPrice
 }) {
-  const [poolInfos, cakePrice, lpData, slot0s] = await Promise.all([
+  const [poolInfos, cakePrice, lpData, v3PoolData] = await Promise.all([
     fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress),
     (await fetch('https://farms-api.pancakeswap.com/price/cake')).json(),
     (
@@ -162,7 +165,7 @@ export async function farmV3FetchFarms({
       tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
       quoteTokenBalanceLP: FixedNumber.from(quoteTokenBalanceLP[0]),
     })),
-    fetchSlot0s(farms, chainId, multicallv2),
+    fetchV3Pools(farms, chainId, multicallv2),
   ])
 
   const farmsData = farms.map((farm, index) => {
@@ -171,9 +174,10 @@ export async function farmV3FetchFarms({
       ...f,
       token,
       quoteToken,
+      lmPool: v3PoolData[index][1][0],
       ...getClassicFarmsDynamicData({
         ...lpData[index],
-        ...slot0s[index],
+        ...(v3PoolData[index][0] as any),
         token0: farm.token,
         token1: farm.quoteToken,
       }),
@@ -194,19 +198,14 @@ export async function farmV3FetchFarms({
     chainId,
     tvlMap,
     cakePrice.price,
-    latestPeriodCakePerSecond,
+    cakePerSeconds,
     combinedCommonPrice,
   )
 
   return farmsWithPrice
 }
 
-const getCakeApr = (
-  poolWeight: string,
-  activeTvlUSD: FixedNumber,
-  cakePriceUSD: string,
-  cakePerSeconds: FixedNumber,
-) => {
+const getCakeApr = (poolWeight: string, activeTvlUSD: FixedNumber, cakePriceUSD: string, cakePerSeconds: string) => {
   let cakeApr = '0'
 
   if (
@@ -214,22 +213,22 @@ const getCakeApr = (
     !activeTvlUSD ||
     activeTvlUSD.isZero() ||
     !cakePerSeconds ||
-    cakePerSeconds.isZero() ||
+    +cakePerSeconds === 0 ||
     !poolWeight
   ) {
     return cakeApr
   }
 
-  const cakeRewardPerYear = cakePerSeconds.mulUnsafe(FixedNumber.from(365 * 60 * 60 * 24))
+  const cakeRewardPerYear = new BN(cakePerSeconds).times(365 * 60 * 60 * 24)
 
-  const cakeRewardPerYearForPool = FixedNumber.from(poolWeight)
-    .mulUnsafe(cakeRewardPerYear)
-    .mulUnsafe(FixedNumber.from(cakePriceUSD))
-    .divUnsafe(FixedNumber.from(activeTvlUSD))
-    .mulUnsafe(FIXED_100)
+  const cakeRewardPerYearForPool = new BN(poolWeight)
+    .times(cakeRewardPerYear)
+    .times(cakePriceUSD)
+    .div(activeTvlUSD.toString())
+    .times(100)
 
   if (!cakeRewardPerYearForPool.isZero()) {
-    cakeApr = cakeRewardPerYearForPool.toUnsafeFloat().toFixed(2)
+    cakeApr = cakeRewardPerYearForPool.toFixed(2)
   }
 
   return cakeApr
@@ -318,34 +317,21 @@ async function fetchPublicFarmsData(farms: FarmConfigV3[], chainId: number, mult
 const v3PoolAbi = [
   {
     inputs: [],
+    name: 'lmPool',
+    outputs: [{ internalType: 'contract IPancakeV3LmPool', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'slot0',
     outputs: [
-      {
-        internalType: 'uint160',
-        name: 'sqrtPriceX96',
-        type: 'uint160',
-      },
+      { internalType: 'uint160', name: 'sqrtPriceX96', type: 'uint160' },
       { internalType: 'int24', name: 'tick', type: 'int24' },
-      {
-        internalType: 'uint16',
-        name: 'observationIndex',
-        type: 'uint16',
-      },
-      {
-        internalType: 'uint16',
-        name: 'observationCardinality',
-        type: 'uint16',
-      },
-      {
-        internalType: 'uint16',
-        name: 'observationCardinalityNext',
-        type: 'uint16',
-      },
-      {
-        internalType: 'uint8',
-        name: 'feeProtocol',
-        type: 'uint8',
-      },
+      { internalType: 'uint16', name: 'observationIndex', type: 'uint16' },
+      { internalType: 'uint16', name: 'observationCardinality', type: 'uint16' },
+      { internalType: 'uint16', name: 'observationCardinalityNext', type: 'uint16' },
+      { internalType: 'uint32', name: 'feeProtocol', type: 'uint32' },
       { internalType: 'bool', name: 'unlocked', type: 'bool' },
     ],
     stateMutability: 'view',
@@ -353,15 +339,26 @@ const v3PoolAbi = [
   },
 ]
 
-async function fetchSlot0s(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
-  return multicallv2({
-    abi: v3PoolAbi,
-    calls: farms.map((f) => ({
+async function fetchV3Pools(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
+  const v3PoolCalls = farms.flatMap((f) => [
+    {
       address: f.lpAddress,
       name: 'slot0',
-    })),
+    },
+    {
+      address: f.lpAddress,
+      name: 'lmPool',
+    },
+  ])
+
+  const chunkSize = v3PoolCalls.length / farms.length
+  const resp = await multicallv2({
+    abi: v3PoolAbi,
+    calls: v3PoolCalls,
     chainId,
   })
+
+  return chunk(resp, chunkSize)
 }
 
 const fetchFarmCalls = (farm: FarmConfigV3) => {
@@ -417,7 +414,7 @@ function getFarmsPrices(
   chainId: number,
   tvls: TvlMap,
   cakePriceUSD: string,
-  latestPeriodCakePerSecond: FixedNumber,
+  cakePerSeconds: string,
   commonPrice: CommonPrice,
 ): FarmV3DataWithPrice[] {
   return farms.map((farm) => {
@@ -467,7 +464,7 @@ function getFarmsPrices(
 
     return {
       ...farm,
-      cakeApr: getCakeApr(farm.poolWeight, tvl, cakePriceUSD, latestPeriodCakePerSecond),
+      cakeApr: getCakeApr(farm.poolWeight, tvl, cakePriceUSD, cakePerSeconds),
       activeTvlUSD: tvl.toString(),
       activeTvlUSDUpdatedAt: tvlUpdatedAt,
       tokenPriceBusd: tokenPriceBusd.toString(),

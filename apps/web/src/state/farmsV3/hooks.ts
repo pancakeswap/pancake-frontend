@@ -143,7 +143,7 @@ export const usePositionsByUser = (
         const [pendingCake] = ele?.result || []
 
         return pendingCake ? { ...acc, [position.tokenId.toString()]: BigNumber.from(pendingCake) } : acc
-      }, {}),
+      }, {} as IPendingCakeByTokenId),
     [stakedPositions, tokenIdResults],
   )
 
@@ -182,7 +182,18 @@ export const usePositionsByUser = (
           ...farm,
           unstakedPositions: unstaked,
           stakedPositions: staked,
-          pendingCakeByTokenIds,
+          pendingCakeByTokenIds: Object.entries(pendingCakeByTokenIds).reduce<IPendingCakeByTokenId>(
+            (acc, [tokenId, cake]) => {
+              const foundPosition = staked.find((p) => p.tokenId.eq(tokenId))
+
+              if (foundPosition) {
+                return { ...acc, [tokenId]: cake }
+              }
+
+              return acc
+            },
+            {},
+          ),
         }
       }),
     [farmsV3, pendingCakeByTokenIds, stakedIds, stakedPositions, unstakedPositions],
@@ -200,7 +211,7 @@ export function useFarmsV3WithPositions(): {
   poolLength: number
   isLoading: boolean
 } {
-  const { data, isLoading } = useFarmsV3()
+  const { data, isLoading, error: _error } = useFarmsV3()
 
   return {
     ...usePositionsByUser(data.farmsWithPrice),
