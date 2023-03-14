@@ -1,6 +1,6 @@
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { AutoColumn, Button, Dots, RowBetween, Text, Box, AutoRow, Flex } from '@pancakeswap/uikit'
+import { AutoColumn, Button, Dots, RowBetween, Text, Box, AutoRow, Flex, QuestionHelper } from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
 import _isNaN from 'lodash/isNaN'
@@ -21,6 +21,9 @@ import { CurrencyAmount } from '@pancakeswap/sdk'
 import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { AddStableChildrenProps } from 'views/AddLiquidity/AddStableLiquidity'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
+import { FormattedSlippage } from 'views/AddLiquidity/AddStableLiquidity/components/FormattedSlippage'
+
+import { RowFixed } from '../../../components/Layout/Row'
 
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 
@@ -44,6 +47,10 @@ export default function StableFormView({
   pair,
   reserves,
   stableLpFee,
+  executionSlippage,
+  loading,
+  infoLoading,
+  price,
 }: AddStableChildrenProps & {
   stableLpFee: number
 }) {
@@ -183,15 +190,48 @@ export default function StableFormView({
                 </Flex>
               </AutoRow>
             </LightGreyCard>
-            <AutoRow justifyContent="space-between" mb="8px">
+
+            <AutoRow justifyContent="space-between" mb="4px">
+              <Text color="textSubtle">Price: </Text>
+
+              <Text>
+                {price?.toSignificant(6) ?? '-'}{' '}
+                {t('%assetA% per %assetB%', {
+                  assetB: currencies[Field.CURRENCY_B]?.symbol ?? '',
+                  assetA: currencies[Field.CURRENCY_A]?.symbol ?? '',
+                })}
+              </Text>
+            </AutoRow>
+
+            <AutoRow justifyContent="space-between" mb="4px">
+              <Text color="textSubtle">Your share in pool: </Text>
+
+              <Text>{poolTokenPercentage ? poolTokenPercentage?.toSignificant(4) : '-'}%</Text>
+            </AutoRow>
+
+            <AutoRow justifyContent="space-between" mb="4px">
               <Text color="textSubtle">Fee rate: </Text>
 
               <Text>{BIG_ONE_HUNDRED.times(stableLpFee).toNumber()}%</Text>
             </AutoRow>
-            <AutoRow justifyContent="space-between" mb="24px">
-              <Text color="textSubtle">Your share in pool: </Text>
 
-              <Text>{poolTokenPercentage ? poolTokenPercentage?.toSignificant(4) : '-'}%</Text>
+            <AutoRow justifyContent="space-between" mb="16px">
+              <RowFixed>
+                <Text color="textSubtle">{t('Slippage')}</Text>
+                <QuestionHelper
+                  text={t(
+                    'Based on % contributed to stable pair, fees will vary. Deposits with fees >= 0.15% will be rejected',
+                  )}
+                  size="14px"
+                  ml="4px"
+                  placement="top-start"
+                />
+              </RowFixed>
+
+              <FormattedSlippage
+                slippage={executionSlippage}
+                loading={!executionSlippage && (loading || infoLoading)}
+              />
             </AutoRow>
           </Box>
           <MediumOnly>{buttons}</MediumOnly>
