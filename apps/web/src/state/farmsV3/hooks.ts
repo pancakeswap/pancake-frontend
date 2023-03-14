@@ -154,7 +154,7 @@ export const usePositionsByUser = (
         const position = stakedPositions[i]
 
         return pendingCake ? { ...acc, [position.tokenId.toString()]: pendingCake } : acc
-      }, {} as IPendingCakeByTokenId),
+      }, {} as IPendingCakeByTokenId) ?? {},
     [stakedPositions, tokenIdResults],
   )
 
