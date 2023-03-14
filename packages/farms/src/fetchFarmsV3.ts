@@ -1,5 +1,6 @@
 import { Call, MultiCallV2 } from '@pancakeswap/multicall'
 import { ERC20Token } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
 import { BigNumber, FixedNumber } from 'ethers'
@@ -430,6 +431,14 @@ function getFarmsPrices(
 
     if (commonPrice[farm.token.address]) {
       tokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
+    }
+
+    if (tokenPriceBusd.isZero() && farm.token.equals(CAKE[farm.token.chainId])) {
+      tokenPriceBusd = FixedNumber.from(cakePriceUSD)
+    }
+
+    if (quoteTokenPriceBusd.isZero() && farm.quoteToken.equals(CAKE[farm.quoteToken.chainId])) {
+      quoteTokenPriceBusd = FixedNumber.from(cakePriceUSD)
     }
 
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
