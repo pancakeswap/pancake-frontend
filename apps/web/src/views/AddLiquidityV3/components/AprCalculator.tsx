@@ -92,13 +92,13 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
         currencyB={quoteCurrency}
         balanceA={currencyBalances[Field.CURRENCY_A]}
         balanceB={currencyBalances[Field.CURRENCY_B]}
-        currencyAUsdPrice={1}
-        currencyBUsdPrice={1}
+        currencyAUsdPrice={currencyAUsdPrice}
+        currencyBUsdPrice={currencyBUsdPrice}
         sqrtRatioX96={sqrtRatioX96}
         liquidity={pool?.liquidity}
         feeAmount={feeAmount}
         ticks={data}
-        volume24H={10}
+        volume24H={volume24H}
         priceUpper={priceUpper}
         priceLower={priceLower}
       />

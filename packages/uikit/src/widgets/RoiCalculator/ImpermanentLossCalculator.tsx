@@ -40,25 +40,29 @@ export function ImpermanentLossCalculator({
 }: Props) {
   const { t } = useTranslation();
   const [on, setOn] = useState(false);
+  const currencyA = amountA?.currency;
+  const currencyB = amountB?.currency;
+  const valueA = amountA?.toExact();
+  const valueB = amountB?.toExact();
   const assets = useMemo<Asset[] | undefined>(
     () =>
-      amountA && amountB && currencyAUsdPrice && currencyBUsdPrice
+      currencyA && currencyB && valueA && valueB && currencyAUsdPrice && currencyBUsdPrice
         ? [
             {
-              currency: amountA.currency,
-              amount: amountA.toExact(),
+              currency: currencyA,
+              amount: valueA,
               price: currencyAUsdPrice,
-              value: parseFloat(amountA.toExact()) * currencyAUsdPrice,
+              value: parseFloat(valueA) * currencyAUsdPrice,
             },
             {
-              currency: amountB.currency,
-              amount: amountB.toExact(),
+              currency: currencyB,
+              amount: valueB,
               price: currencyBUsdPrice,
-              value: parseFloat(amountB.toExact()) * currencyBUsdPrice,
+              value: parseFloat(valueB) * currencyBUsdPrice,
             },
           ]
         : undefined,
-    [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice]
+    [valueA, currencyA, valueB, currencyB, currencyAUsdPrice, currencyBUsdPrice]
   );
   const [entry, setEntry] = useState<Asset[] | undefined>(assets);
   const [exit, setExit] = useState<Asset[] | undefined>(assets);
