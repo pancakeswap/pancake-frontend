@@ -389,7 +389,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{liquidityValue0?.toSignificant(6) || '0'}</Text>
+                  <Text small>{liquidityValue0?.toFixed(4, { groupSeparator: ',' }) || '0'}</Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="space-between" as="label" alignItems="center" mb="8px">
@@ -400,7 +400,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{liquidityValue1?.toSignificant(6) || '0'}</Text>
+                  <Text small>{liquidityValue1?.toFixed(4, { groupSeparator: ',' }) || '0'}</Text>
                 </Flex>
               </Flex>
               <Divider />

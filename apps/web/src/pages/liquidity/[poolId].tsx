@@ -53,6 +53,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Bound } from 'config/constants/types'
 import { PoolState } from 'hooks/v3/types'
+import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -308,6 +309,9 @@ export default function PoolPage() {
   const feeValueUpper = inverted ? feeValue0 : feeValue1
   const feeValueLower = inverted ? feeValue1 : feeValue0
 
+  const positionValueUpper = inverted ? position?.amount0 : position?.amount1
+  const positionValueLower = inverted ? position?.amount1 : position?.amount0
+
   // check if price is within range
   const below = pool && typeof tickLower === 'number' ? pool.tickCurrent < tickLower : undefined
   const above = pool && typeof tickUpper === 'number' ? pool.tickCurrent >= tickUpper : undefined
@@ -466,12 +470,12 @@ export default function PoolPage() {
                         <Flex>
                           <CurrencyLogo currency={currencyQuote} />
                           <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                            {currencyQuote?.symbol}
+                            {positionValueUpper?.currency?.symbol}
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
                           <Text mr="4px">
-                            {inverted ? position?.amount0.toSignificant(4) : position?.amount1.toSignificant(4)}
+                            <FormattedCurrencyAmount currencyAmount={positionValueUpper} />
                           </Text>
                         </Flex>
                       </AutoRow>
@@ -479,12 +483,12 @@ export default function PoolPage() {
                         <Flex>
                           <CurrencyLogo currency={currencyBase} />
                           <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                            {currencyBase?.symbol}
+                            {positionValueLower?.currency?.symbol}
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
                           <Text mr="4px">
-                            {inverted ? position?.amount1.toSignificant(4) : position?.amount0.toSignificant(4)}
+                            <FormattedCurrencyAmount currencyAmount={positionValueLower} />
                           </Text>
                         </Flex>
                       </AutoRow>

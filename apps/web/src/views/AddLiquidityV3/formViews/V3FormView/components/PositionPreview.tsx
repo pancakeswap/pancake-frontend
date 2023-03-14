@@ -13,6 +13,8 @@ import { Bound } from 'config/constants/types'
 import Divider from 'components/Divider'
 import { RangePriceSection } from 'components/RangePriceSection'
 import { formatPrice } from 'utils/formatCurrencyAmount'
+import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+
 import RangeTag from './RangeTag'
 import RateToggle from './RateToggle'
 
@@ -81,7 +83,9 @@ export const PositionPreview = ({
               <Text ml="4px">{currency0?.symbol}</Text>
             </RowFixed>
             <RowFixed>
-              <Text mr="8px">{position.amount0.toSignificant(4)}</Text>
+              <Text mr="8px">
+                <FormattedCurrencyAmount currencyAmount={position.amount0} />
+              </Text>
             </RowFixed>
           </RowBetween>
           <RowBetween>
@@ -90,7 +94,9 @@ export const PositionPreview = ({
               <Text ml="4px">{currency1?.symbol}</Text>
             </RowFixed>
             <RowFixed>
-              <Text mr="8px">{position.amount1.toSignificant(4)}</Text>
+              <Text mr="8px">
+                <FormattedCurrencyAmount currencyAmount={position.amount1} />
+              </Text>
             </RowFixed>
           </RowBetween>
           <Divider />
