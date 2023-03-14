@@ -4,7 +4,7 @@ import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } fro
 import { priceToClosestTick, TickMath, FeeCalculator } from "@pancakeswap/v3-sdk";
 
 import { Section } from "./DynamicSection";
-import { Toggle, Button, RowBetween, DoubleCurrencyLogo } from "../../components";
+import { Toggle, Button, RowBetween, DoubleCurrencyLogo, PencilIcon, Flex } from "../../components";
 import {
   AssetCard,
   Asset,
@@ -157,9 +157,12 @@ export function ImpermanentLossCalculator({
         header={
           <>
             <SectionTitle>{t("Entry price")}</SectionTitle>
-            <Button variant="secondary" scale="xs" onClick={resetEntry} style={{ textTransform: "uppercase" }}>
-              {t("Current")}
-            </Button>
+            <Flex>
+              <PencilIcon width="12px" color="primary" mr="0.5em" />
+              <Button variant="secondary" scale="xs" onClick={resetEntry} style={{ textTransform: "uppercase" }}>
+                {t("Current")}
+              </Button>
+            </Flex>
           </>
         }
       >
@@ -169,9 +172,12 @@ export function ImpermanentLossCalculator({
         header={
           <>
             <SectionTitle>{t("Exit price")}</SectionTitle>
-            <Button variant="secondary" scale="xs" onClick={resetExit} style={{ textTransform: "uppercase" }}>
-              {t("Current")}
-            </Button>
+            <Flex>
+              <PencilIcon width="12px" color="primary" mr="0.5em" />
+              <Button variant="secondary" scale="xs" onClick={resetExit} style={{ textTransform: "uppercase" }}>
+                {t("Current")}
+              </Button>
+            </Flex>
           </>
         }
       >
