@@ -63,7 +63,7 @@ export function ImpermanentLossCalculator({
   const [entry, setEntry] = useState<Asset[] | undefined>(assets);
   const [exit, setExit] = useState<Asset[] | undefined>(assets);
   const toggle = useCallback(() => setOn(!on), [on]);
-  // const resetEntry = useCallback(() => setEntry(assets), [assets]);
+  const resetEntry = useCallback(() => setEntry(assets), [assets]);
   const resetExit = useCallback(() => setExit(assets), [assets]);
   const principal = useMemo(() => entry?.reduce((sum, { value }) => sum + parseFloat(String(value)), 0), [entry]);
   const hodlValue = useMemo(() => {
@@ -157,17 +157,20 @@ export function ImpermanentLossCalculator({
         header={
           <>
             <SectionTitle>{t("Entry price")}</SectionTitle>
+            <Button variant="secondary" scale="xs" onClick={resetEntry} style={{ textTransform: "uppercase" }}>
+              {t("Current")}
+            </Button>
           </>
         }
       >
-        <AssetCard assets={entry} onChange={updateEntry} priceEditable={false} />
+        <AssetCard assets={entry} onChange={updateEntry} />
       </CardSection>
       <CardSection
         header={
           <>
             <SectionTitle>{t("Exit price")}</SectionTitle>
-            <Button variant="secondary" scale="xs" onClick={resetExit}>
-              {t("Reset")}
+            <Button variant="secondary" scale="xs" onClick={resetExit} style={{ textTransform: "uppercase" }}>
+              {t("Current")}
             </Button>
           </>
         }

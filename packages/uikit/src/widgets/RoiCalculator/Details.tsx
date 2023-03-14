@@ -84,7 +84,23 @@ export function Details({
       <BulletList>
         <li>
           <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
-            {t("Calculated based on current rates.")}
+            {t(
+              "Yields and rewards are calculated at the current rates and subject to change based on various external variables."
+            )}
+          </Text>
+        </li>
+        <li>
+          <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
+            {t(
+              "LP Fee Rewards: 0.01% ~ 0.1% according to the specific fee tier of the trading pair, claimed and compounded manually."
+            )}
+          </Text>
+        </li>
+        <li>
+          <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>
+            {t(
+              "LP Fee APR figures are calculated using Subgraph and may subject to indexing delays. For more accurate LP Fee APR, please visit the Info Page."
+            )}
           </Text>
         </li>
         <li>
