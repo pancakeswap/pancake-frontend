@@ -18,11 +18,11 @@ import {
 
 type Props = UsdAmountInputProps & TokenAmountsDisplayProps;
 
-export function DepositAmountInput({ value, max, onChange, amountA, amountB, currencyA, currencyB }: Props) {
+export function DepositAmountInput({ value, max, onChange, amountA, amountB, currencyA, currencyB, maxLabel }: Props) {
   return (
     <>
       <Box mb="1em">
-        <DepositUsdAmountInput value={value} max={max} onChange={onChange} />
+        <DepositUsdAmountInput value={value} max={max} onChange={onChange} maxLabel={maxLabel} />
       </Box>
       <TokenAmountsDisplay amountA={amountA} amountB={amountB} currencyA={currencyA} currencyB={currencyB} />
     </>
@@ -35,12 +35,14 @@ const StyledBalanceInput = styled(BalanceInput)`
 
 const StyledButton = styled(Button)`
   width: 100%;
+  text-transform: uppercase;
 `;
 
 interface UsdAmountInputProps {
   value?: string;
   max?: string;
   onChange?: (val: string) => void;
+  maxLabel?: string;
 }
 
 export function DepositUsdAmountInput({
@@ -49,6 +51,7 @@ export function DepositUsdAmountInput({
   onChange = () => {
     // default
   },
+  maxLabel,
 }: UsdAmountInputProps) {
   const { t } = useTranslation();
 
@@ -72,7 +75,7 @@ export function DepositUsdAmountInput({
         </Flex>
         <Flex flex="4">
           <StyledButton variant="tertiary" scale="xs" mr="0.25em" onClick={onMax}>
-            {t("Max")}
+            {maxLabel || t("Max")}
           </StyledButton>
           <QuestionHelper text="Tips" />
         </Flex>

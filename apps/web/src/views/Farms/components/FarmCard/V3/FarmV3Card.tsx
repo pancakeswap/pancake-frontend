@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Skeleton, Text } from '@pancakeswap/uikit'
+import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Text } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -12,6 +12,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import CardHeading from '../CardHeading'
 import CardActionsContainer from './CardActionsContainer'
+import { FarmV3ApyButton } from './FarmV3ApyButton'
 
 const { DetailsSection } = FarmUI.FarmCard
 
@@ -39,7 +40,6 @@ const ExpandingWrapper = styled.div`
 
 interface FarmCardProps {
   farm: V3Farm
-  displayApr: string
   removed: boolean
   cakePrice?: BigNumber
   account?: string
@@ -47,7 +47,6 @@ interface FarmCardProps {
 
 export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   farm,
-  displayApr,
   removed,
   // cakePrice,
   account,
@@ -92,21 +91,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <Flex justifyContent="space-between" alignItems="center">
             <Text>{t('APR')}:</Text>
             <Text style={{ display: 'flex', alignItems: 'center' }}>
-              {farm.cakeApr ? (
-                <>
-                  {/* TODO: v3 farm ROI calculator */}
-                  <FarmUI.FarmApyButton
-                    variant="text"
-                    handleClickButton={() => {
-                      //
-                    }}
-                  >
-                    {displayApr}%
-                  </FarmUI.FarmApyButton>
-                </>
-              ) : (
-                <Skeleton height={24} width={80} />
-              )}
+              <FarmV3ApyButton farm={farm} variant="text-and-button" />
             </Text>
           </Flex>
         )}
@@ -114,7 +99,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           <Text>{t('Earn')}:</Text>
           <Text>{earnLabel}</Text>
         </Flex>
-        <CardActionsContainer farm={farm} lpLabel={lpLabel} account={account} displayApr={displayApr} />
+        <CardActionsContainer farm={farm} lpLabel={lpLabel} account={account} />
       </FarmCardInnerContainer>
 
       <ExpandingWrapper>

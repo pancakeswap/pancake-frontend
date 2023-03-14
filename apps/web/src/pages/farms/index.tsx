@@ -39,12 +39,12 @@ const FarmsPage = () => {
       {chosenFarmsMemoized?.map((farm) => {
         if (farm.version === 2) {
           return farm.boosted ? (
-            <ProxyFarmContainer farm={farm} key={farm.pid}>
+            <ProxyFarmContainer farm={farm} key={`${farm.pid}-${farm.version}`}>
               <ProxyFarmCardContainer farm={farm} />
             </ProxyFarmContainer>
           ) : (
             <FarmCard
-              key={farm.pid}
+              key={`${farm.pid}-${farm.version}`}
               farm={farm}
               displayApr={getDisplayApr(farm.apr, farm.lpRewardsApr)}
               cakePrice={cakePrice}
@@ -55,9 +55,8 @@ const FarmsPage = () => {
         }
         return (
           <FarmV3Card
-            key={farm.pid}
+            key={`${farm.pid}-${farm.version}`}
             farm={farm}
-            displayApr={getDisplayApr(Number(farm.cakeApr), Number(farm.lpRewardsApr))}
             cakePrice={cakePrice}
             account={account}
             removed={false}

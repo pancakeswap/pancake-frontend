@@ -16,7 +16,6 @@ interface FarmCardActionsProps {
   farm: V3Farm
   account?: string
   lpLabel?: string
-  displayApr?: string
 }
 
 const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ farm, account }) => {

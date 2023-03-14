@@ -21,6 +21,7 @@ import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
+import { FarmV3ApyButton } from '../../FarmCard/V3/FarmV3ApyButton'
 import FarmV3CardList from '../../FarmCard/V3/FarmV3CardList'
 import BoostedAction from '../../YieldBooster/components/BoostedAction'
 import { YieldBoosterStateContext } from '../../YieldBooster/components/ProxyFarmContainer'
@@ -155,7 +156,6 @@ const ActionPanelContainer = ({ expanded, values, infos, children }) => {
 }
 
 export const ActionPanelV3: FC<ActionPanelV3Props> = ({
-  apr,
   expanded,
   details,
   multiplier,
@@ -200,15 +200,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
             <>
               <ValueWrapper>
                 <Text>{t('APR')}</Text>
-                {/* TODO: v3 farm ROI calculator */}
-                <FarmUI.FarmApyButton
-                  variant="text"
-                  handleClickButton={() => {
-                    //
-                  }}
-                >
-                  {apr.value}%
-                </FarmUI.FarmApyButton>
+                <FarmV3ApyButton farm={farm} variant="text-and-button" />
               </ValueWrapper>
               <ValueWrapper>
                 <Text>{t('Multiplier')}</Text>

@@ -1,5 +1,5 @@
 import { AnimatePresence, domMax, LazyMotion } from "framer-motion";
-import React, { createContext, useCallback, useRef, useState } from "react";
+import React, { createContext, ReactEventHandler, useCallback, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
 import { Overlay } from "../../components/Overlay";
@@ -36,7 +36,9 @@ export function useModalV2() {
 export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...props }: ModalV2Props & BoxProps) {
   const animationRef = useRef<HTMLDivElement>(null);
 
-  const handleOverlayDismiss = () => {
+  const handleOverlayDismiss: ReactEventHandler = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     if (closeOnOverlayClick) {
       onDismiss?.();
     }

@@ -1,21 +1,22 @@
 import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
+import { RowBetween } from '@pancakeswap/uikit'
 import { Balance } from '@pancakeswap/uikit/src/components/Balance'
 import { Box, Flex } from '@pancakeswap/uikit/src/components/Box'
 import { Button } from '@pancakeswap/uikit/src/components/Button'
 import { Link } from '@pancakeswap/uikit/src/components/Link'
 import { ChevronRightIcon } from '@pancakeswap/uikit/src/components/Svg'
 import { Text } from '@pancakeswap/uikit/src/components/Text'
-import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
-import styled from 'styled-components'
-import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
-import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
-import { Bound } from 'config/constants/types'
-import { V3Farm } from 'views/Farms/FarmsV3'
 import BigNumber from 'bignumber.js'
-import { RowBetween } from '@pancakeswap/uikit'
+import { Bound } from 'config/constants/types'
+import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
+import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
+import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
+import styled from 'styled-components'
+import { V3Farm } from 'views/Farms/FarmsV3'
+import { FarmV3ApyButton } from './FarmV3ApyButton'
 
 const StyledLink = styled(Link)`
   &:hover {
@@ -102,6 +103,7 @@ export const FarmV3LPPosition = ({
             value={position ? +position.amount1.toSignificant(4) : 0}
             unit={` ${quoteToken.symbol}`}
           />
+          <FarmV3ApyButton farm={farm} existingPosition={position} variant="icon" />
         </Flex>
       </Box>
     </Box>

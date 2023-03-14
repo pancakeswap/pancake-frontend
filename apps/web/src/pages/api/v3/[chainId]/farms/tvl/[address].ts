@@ -136,7 +136,11 @@ const handler: NextApiHandler = async (req, res) => {
     posId = pos[pos.length - 1].id
   }
 
-  console.info('allActivePositions', address, allActivePositions.length)
+  console.info('fetching farms active liquidity', {
+    address,
+    chainId,
+    allActivePositions: allActivePositions.length,
+  })
 
   const currentTick = slot0.tick
   const sqrtRatio = JSBI.BigInt(slot0.sqrtPriceX96.toString())

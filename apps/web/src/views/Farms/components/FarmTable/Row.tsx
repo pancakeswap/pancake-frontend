@@ -24,6 +24,7 @@ import BoostedApr from '../YieldBooster/components/BoostedApr'
 import { ActionPanelV2, ActionPanelV3 } from './Actions/ActionPanel'
 import Apr, { AprProps } from './Apr'
 import { FarmCell } from './Farm'
+import { FarmV3ApyButton } from '../FarmCard/V3/FarmV3ApyButton'
 
 const { FarmAuctionTag, BoostedTag, StableFarmTag, V2Tag, V3FeeTag } = FarmUI.Tags
 const { CellLayout, Details, Multiplier, Liquidity, Earned, LpAmount, StakedLiquidity } = FarmUI.FarmTable
@@ -191,8 +192,10 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                 if (props.type === 'v3') {
                   return (
                     <td key={key}>
-                      <CellInner>
-                        <CellLayout label={t('APR')}>{props.apr.value}%</CellLayout>
+                      <CellInner onClick={(e) => e.stopPropagation()}>
+                        <CellLayout label={t('APR')}>
+                          <FarmV3ApyButton farm={props.details} variant="text-and-button" />
+                        </CellLayout>
                       </CellInner>
                     </td>
                   )
@@ -294,14 +297,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 {props.type === 'v3' ? (
-                  <FarmUI.FarmApyButton
-                    variant="text"
-                    handleClickButton={() => {
-                      //
-                    }}
-                  >
-                    {props.apr.value}%
-                  </FarmUI.FarmApyButton>
+                  <FarmV3ApyButton farm={props.details} variant="text-and-button" />
                 ) : (
                   <>
                     <Apr

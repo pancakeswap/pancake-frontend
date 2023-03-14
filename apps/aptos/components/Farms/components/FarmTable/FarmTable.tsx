@@ -126,7 +126,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         token: farm.token,
         quoteToken: farm.quoteToken,
         isReady: farm.multiplier !== undefined,
-        isStable: farm.isStable,
+        isStaking: farm.userData?.stakedBalance.gt(0),
       },
       earned: {
         pid: farm.pid,

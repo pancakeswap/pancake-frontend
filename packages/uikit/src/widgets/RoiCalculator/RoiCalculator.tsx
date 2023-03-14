@@ -37,6 +37,7 @@ export interface RoiCalculatorProps {
 
   // Average 24h historical trading volume in USD
   volume24H?: number;
+  maxLabel?: string;
 }
 
 // Price is always price of token0
@@ -56,6 +57,7 @@ export function RoiCalculator({
   priceLower,
   priceUpper,
   volume24H,
+  maxLabel,
 }: RoiCalculatorProps) {
   const { t } = useTranslation();
   const [usdValue, setUsdValue] = useState(String(depositAmountInUsd));
@@ -129,6 +131,7 @@ export function RoiCalculator({
         <Section title={t("Deposit amount")}>
           <DepositAmountInput
             value={usdValue}
+            maxLabel={maxLabel}
             onChange={setUsdValue}
             currencyA={currencyA}
             currencyB={currencyB}
