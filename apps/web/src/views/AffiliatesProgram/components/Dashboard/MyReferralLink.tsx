@@ -12,9 +12,10 @@ import {
   ArrowForwardIcon,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-// import { useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import commissionList from 'views/AffiliatesProgram/utils/commisionList'
+import BigNumber from 'bignumber.js'
 
 const Wrapper = styled(Flex)`
   padding: 1px;
@@ -84,11 +85,21 @@ const CardInner = styled(Flex)`
 const receivePercentageList: Array<string> = ['0', '10', '25', '50']
 
 const MyReferralLink = () => {
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
+  const [linkId, setLinkId] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { isMobile } = useMatchBreakpoints()
   const [percentage, setPercentage] = useState('0')
 
+  const youWillReceive = useMemo(() => new BigNumber(100).minus(percentage).toString(), [percentage])
+
   const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [])
+
+  const isReady = useMemo(() => linkId !== '' && !isLoading, [linkId, isLoading])
+
+  const handleGenerateLink = async () => {
+    console.log('123')
+  }
 
   return (
     <Box
@@ -98,11 +109,11 @@ const MyReferralLink = () => {
       <Card>
         <Box padding={['24px']}>
           <Text bold mb={['17px']} color="secondary" fontSize="12px" textTransform="uppercase">
-            create a new link
+            {t('create a new link')}
           </Text>
           <Flex mb="24px">
             <InputGroup endIcon={<CopyIcon width="18px" color="textSubtle" />} scale="lg">
-              <Input type="text" placeholder="http://" />
+              <Input value={linkId} type="text" placeholder="http://" onChange={(e) => setLinkId(e.target.value)} />
             </InputGroup>
             <ShareIcon width={24} height={24} ml="16px" color="primary" />
           </Flex>
@@ -110,19 +121,19 @@ const MyReferralLink = () => {
             <Flex alignSelf="center" width={['100%', '320px']} justifyContent={['space-between']}>
               <Box>
                 <Text fontSize="14px" color="textSubtle">
-                  You will receive
+                  {t('You will receive')}
                 </Text>
                 <Text color="secondary" bold fontSize={['32px']} textAlign="center">
-                  100%
+                  {`${youWillReceive}%`}
                 </Text>
               </Box>
               <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
               <Box>
                 <Text fontSize="14px" color="textSubtle">
-                  Friends will receive
+                  {t('Friends will receive')}
                 </Text>
                 <Text color="primary" bold fontSize={['32px']} textAlign="center">
-                  0%
+                  {`${percentage}%`}
                 </Text>
               </Box>
             </Flex>
@@ -141,25 +152,22 @@ const MyReferralLink = () => {
               </CardInner>
             </Wrapper>
           </Flex>
-          <Flex flexDirection={['column', 'column', 'column', 'row']}>
-            <Flex mb={['8px', '8px', '8px', '0']}>
-              {receivePercentageList.map((list) => (
-                <Button
-                  scale={isMobile ? 'sm' : 'md'}
-                  width={`${100 / receivePercentageList.length}%`}
-                  key={list}
-                  mr="8px"
-                  variant={list === percentage ? 'primary' : 'tertiary'}
-                  onClick={() => setPercentage(list)}
-                >
-                  {`${list}%`}
-                </Button>
-              ))}
-            </Flex>
-            <Input scale="lg" type="text" maxLength={100} placeholder="Note (100 characters)" />
+          <Flex mb={['8px', '8px', '8px', '0']}>
+            {receivePercentageList.map((list) => (
+              <Button
+                scale={isMobile ? 'sm' : 'md'}
+                width={`${100 / receivePercentageList.length}%`}
+                key={list}
+                mr="8px"
+                variant={list === percentage ? 'primary' : 'tertiary'}
+                onClick={() => setPercentage(list)}
+              >
+                {`${list}%`}
+              </Button>
+            ))}
           </Flex>
-          <Button mt="24px" width="100%">
-            Generate a referral link
+          <Button mt="24px" width="100%" disabled={!isReady} onClick={handleGenerateLink}>
+            {t('Generate a referral link')}
           </Button>
         </Box>
       </Card>

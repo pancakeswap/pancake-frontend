@@ -76,8 +76,9 @@ const Benefits = () => {
           {t('Unlock the Power of PancakeSwap Affiliate Benefits')}
         </Heading>
         <Text color="textSubtle" margin={['48px 0']}>
-          With a wide variety of cryptocurrency options and user-friendly platform, you&aposll be able to offer your
-          audience a seamless investment experience.
+          {t(
+            'With a wide variety of cryptocurrency options and user-friendly platform, you&aposll be able to offer your audience a seamless investment experience.',
+          )}
         </Text>
         <StyledContainer>
           {BenefitsList.map((benefit, index) => (

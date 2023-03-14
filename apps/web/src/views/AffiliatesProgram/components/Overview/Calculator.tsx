@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { Flex, Text, Box, Button, ArrowDownIcon, Input, Balance } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { useTranslation } from '@pancakeswap/localization'
 
 const CalculatorWrapper = styled(Flex)`
   padding: 24px;
@@ -27,6 +28,7 @@ const referralList: Array<string> = ['15', '25', '35', '50', '100']
 const amountList: Array<string> = ['1000', '3000', '5000', '10000', '20000']
 
 const Calculator = () => {
+  const { t } = useTranslation()
   const [referral, setReferral] = useState('50')
   const [volume, setVolume] = useState('5000')
 
@@ -43,12 +45,12 @@ const Calculator = () => {
       m={['64px auto', '64px auto', '64px auto', '64px auto', '0 0 0 48px']}
     >
       <Text mb="24px" color="secondary" fontSize={['20px']} bold>
-        Rewards calculator
+        {t('Rewards calculator')}
       </Text>
       <CalculatorWrapper>
         <Flex flexDirection="column">
           <Text mb="8px" color="secondary" textTransform="uppercase" fontSize="12px" bold>
-            number of referrals
+            {t('number of referrals')}
           </Text>
           <Input
             min="1"
@@ -76,7 +78,7 @@ const Calculator = () => {
         </Flex>
         <Flex flexDirection="column" mt="28px">
           <Text mb="8px" color="secondary" textTransform="uppercase" fontSize="12px" bold>
-            volume per month
+            {t('volume per month')}
           </Text>
           <Input
             min="1"
@@ -106,7 +108,7 @@ const Calculator = () => {
         <EarnWrapper>
           <EarnCardInner>
             <Text color="secondary" textTransform="uppercase" fontSize="12px" bold>
-              affiliate fees per month
+              {t('affiliate fees per month')}
             </Text>
             <Balance bold prefix="$ " fontSize="24px" decimals={0} value={totalPerMonth} />
           </EarnCardInner>

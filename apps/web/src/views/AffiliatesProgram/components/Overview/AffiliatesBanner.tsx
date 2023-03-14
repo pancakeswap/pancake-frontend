@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
-// import { useTranslation } from '@pancakeswap/localization'
+import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import bunnyImage from '../../../../../public/images/affiliates-program/banner.png'
@@ -88,7 +88,7 @@ const Decorations = styled(Box)`
 }`
 
 const AffiliatesBanner = () => {
-  // const { t } = useTranslation()
+  const { t } = useTranslation()
 
   return (
     <>
@@ -157,15 +157,15 @@ const AffiliatesBanner = () => {
             flexDirection="column"
           >
             <Text fontSize={['38px', '38px', '64px']} lineHeight="110%" bold color="secondary">
-              Maximize Your Earnings with Pancakeswap&apos;s Affiliate Program
+              {t('Maximize Your Earnings with Pancakeswap&apos;s Affiliate Program')}
             </Text>
             <Text fontSize={['16px', '24px']} lineHeight="110%" bold m="32px 0">
-              Join the Team and Earn Commission on Every Adventure
+              {t('Join the Team and Earn Commission on Every Adventure')}
             </Text>
             <Flex>
-              <Button width="fit-content">Join Our Affiliate Program</Button>
+              <Button width="fit-content">{t('Join Our Affiliate Program')}</Button>
               <Button ml="12px" variant="secondary" width="fit-content">
-                Discover Your Commission Potential
+                {t('Discover Your Commission Potential')}
               </Button>
             </Flex>
           </Flex>

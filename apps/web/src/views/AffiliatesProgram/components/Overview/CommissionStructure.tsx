@@ -51,7 +51,7 @@ const CommissionStructure = () => {
           {t('Commission Structure')}
         </Text>
         <Text color="textSubtle" mb={['24px', '24px', '48px']} textAlign="center">
-          Invite and earn commission for every successful referral
+          {t('Invite and earn commission for every successful referral')}
         </Text>
       </Flex>
       <StyledCommission>
