@@ -1,4 +1,4 @@
-import { Price, Token, JSBI, Currency, Percent } from "@pancakeswap/sdk";
+import { Price, Token, JSBI, Currency, Percent, Fraction } from "@pancakeswap/sdk";
 import {
   encodeSqrtRatioX96,
   FeeAmount,
@@ -93,4 +93,9 @@ export function toToken0Price(
 export function toPercent(numerator: number, denominator: number) {
   const scaler = 1_000_000_000_000;
   return new Percent(JSBI.BigInt(Math.floor((numerator / denominator) * scaler)), JSBI.BigInt(scaler));
+}
+
+export function toFraction(numerator: number, denominator: number) {
+  const scaler = 1_000_000_000_000;
+  return new Fraction(JSBI.BigInt(Math.floor((numerator / denominator) * scaler)), JSBI.BigInt(scaler));
 }

@@ -18,6 +18,7 @@ interface Props {
   lpApy?: Percent;
   externalLink?: ReactNode;
   compoundIndex?: number;
+  compoundOn?: boolean;
 }
 
 export function Details({
@@ -27,6 +28,7 @@ export function Details({
   lpApy = ZERO_PERCENT,
   lpApr = ZERO_PERCENT,
   compoundIndex = 0,
+  compoundOn = true,
 }: Props) {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
@@ -69,14 +71,16 @@ export function Details({
           ${lpApr.toSignificant(5)}%
         </Text>
       </Grid>
-      <Grid gridTemplateColumns="2.5fr 1fr" gridRowGap="8px" gridTemplateRows="repeat(1, auto)">
-        <Text color="textSubtle" small>
-          {t("APY")} {compoundText && `(${compoundText})`}
-        </Text>
-        <Text small bold textAlign="right">
-          ${lpApy.toSignificant(5)}%
-        </Text>
-      </Grid>
+      {compoundOn && (
+        <Grid gridTemplateColumns="2.5fr 1fr" gridRowGap="8px" gridTemplateRows="repeat(1, auto)">
+          <Text color="textSubtle" small>
+            {t("APY")} {compoundText && `(${compoundText})`}
+          </Text>
+          <Text small bold textAlign="right">
+            ${lpApy.toSignificant(5)}%
+          </Text>
+        </Grid>
+      )}
       <BulletList>
         <li>
           <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline" lineHeight={1.1}>

@@ -1,15 +1,16 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token } from "@pancakeswap/sdk";
 import { FeeAmount, Tick, TickMath } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { TickDataRaw } from "../../components/LiquidityChartRangeInput/types";
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
-import { LiquidityChartRangeInput, CurrencyInput, Box, Button } from "../../components";
+import { LiquidityChartRangeInput, Button } from "../../components";
 import { DynamicSection, Section } from "./DynamicSection";
+import { DepositAmountInput } from "./DepositAmount";
 import { RangeSelector } from "./RangeSelector";
 import { StakeSpan } from "./StakeSpan";
-import { usePriceRange, useRangeHopCallbacks, useAmounts, useRoi } from "./hooks";
+import { usePriceRange, useRangeHopCallbacks, useRoi, useAmountsByUsdValue } from "./hooks";
 import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
 import { RoiRate } from "./RoiRate";
@@ -32,6 +33,7 @@ export interface RoiCalculatorProps {
   priceUpper?: Price<Token, Token>;
   currencyAUsdPrice?: number;
   currencyBUsdPrice?: number;
+  depositAmountInUsd?: number | string;
 
   // Average 24h historical trading volume in USD
   volume24H?: number;
@@ -41,7 +43,7 @@ export interface RoiCalculatorProps {
 export function RoiCalculator({
   sqrtRatioX96,
   liquidity,
-  independentAmount: initialIndependentAmount,
+  depositAmountInUsd = "0",
   currencyA,
   currencyB,
   balanceA,
@@ -56,6 +58,7 @@ export function RoiCalculator({
   volume24H,
 }: RoiCalculatorProps) {
   const { t } = useTranslation();
+  const [usdValue, setUsdValue] = useState(String(depositAmountInUsd));
   const [spanIndex, setSpanIndex] = useState(3);
   const [compoundOn, setCompoundOn] = useState(true);
   const [compoundIndex, setCompoundIndex] = useState(0);
@@ -84,14 +87,25 @@ export function RoiCalculator({
     priceRange?.tickUpper,
     tickCurrent
   );
-  const { valueA, valueB, onChange, amountA, amountB } = useAmounts({
-    independentAmount: initialIndependentAmount,
+  const { amountA, amountB } = useAmountsByUsdValue({
+    usdValue,
     currencyA,
     currencyB,
-    tickLower: priceRange?.tickLower,
-    tickUpper: priceRange?.tickUpper,
+    price,
+    priceLower: priceRange?.priceLower,
+    priceUpper: priceRange?.priceUpper,
     sqrtRatioX96,
+    currencyAUsdPrice,
+    currencyBUsdPrice,
   });
+  const maxUsdValue = useMemo<string | undefined>(() => {
+    if (!balanceA || !balanceB || typeof currencyAUsdPrice !== "number" || typeof currencyBUsdPrice !== "number") {
+      return undefined;
+    }
+    const maxA = parseFloat(balanceA.toExact()) * currencyAUsdPrice;
+    const maxB = parseFloat(balanceA.toExact()) * currencyBUsdPrice;
+    return String(Math.max(maxA, maxB));
+  }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice]);
 
   const { fee, rate, apr, apy } = useRoi({
     amountA,
@@ -109,28 +123,18 @@ export function RoiCalculator({
     compoundOn,
   });
 
-  const onCurrencyAChange = useCallback((value: string) => onChange(value, currencyA), [currencyA, onChange]);
-  const onCurrencyBChange = useCallback((value: string) => onChange(value, currencyB), [currencyB, onChange]);
-
   return (
     <>
       <ScrollableContainer>
         <Section title={t("Deposit amount")}>
-          <Box mb="16px">
-            <CurrencyInput
-              currency={currencyA}
-              value={valueA}
-              onChange={onCurrencyAChange}
-              balance={balanceA}
-              balanceText={t("Balance: %balance%", { balance: balanceA?.toSignificant(6) || "..." })}
-            />
-          </Box>
-          <CurrencyInput
-            currency={currencyB}
-            value={valueB}
-            onChange={onCurrencyBChange}
-            balance={balanceB}
-            balanceText={t("Balance: %balance%", { balance: balanceB?.toSignificant(6) || "..." })}
+          <DepositAmountInput
+            value={usdValue}
+            onChange={setUsdValue}
+            currencyA={currencyA}
+            currencyB={currencyB}
+            amountA={amountA}
+            amountB={amountB}
+            max={maxUsdValue}
           />
         </Section>
         <Section title={t("Set price range")}>
@@ -197,7 +201,14 @@ export function RoiCalculator({
         <AnimatedArrow state={{}} />
         <RoiRate usdAmount={parseFloat(fee.toSignificant(6))} rate={rate} />
       </ScrollableContainer>
-      <Details totalYield={fee.toSignificant(6)} lpReward={fee.toSignificant(6)} lpApr={apr} lpApy={apy} />
+      <Details
+        totalYield={fee.toSignificant(6)}
+        lpReward={fee.toSignificant(6)}
+        lpApr={apr}
+        lpApy={apy}
+        compoundIndex={compoundIndex}
+        compoundOn={compoundOn}
+      />
     </>
   );
 }
