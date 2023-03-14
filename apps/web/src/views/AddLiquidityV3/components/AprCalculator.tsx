@@ -47,19 +47,35 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
   const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
+  const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
+
+  // TODO get data from subgraph
+  const currencyAUsdPrice = 1
+  const currencyBUsdPrice = 1
+  const volume24H = 10
+
+  const depositUsd = useMemo(
+    () =>
+      amountA &&
+      amountB &&
+      currencyAUsdPrice &&
+      currencyBUsdPrice &&
+      String(parseFloat(amountA.toExact()) * currencyAUsdPrice + parseFloat(amountB.toExact()) * currencyBUsdPrice),
+    [amountA, amountB],
+  )
+
   const { apr } = useRoi({
     tickLower,
     tickUpper,
     sqrtRatioX96,
     fee: feeAmount,
     ticks: poolTicks,
-    amountA: parsedAmounts[Field.CURRENCY_A],
-    amountB: parsedAmounts[Field.CURRENCY_B],
+    amountA,
+    amountB,
     compoundOn: false,
-    // TODO prices from subgraph
-    currencyAUsdPrice: 1,
-    currencyBUsdPrice: 1,
-    volume24H: 10,
+    currencyAUsdPrice,
+    currencyBUsdPrice,
+    volume24H,
   })
 
   return (
@@ -70,6 +86,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
       <RoiCalculatorModalV2
         isOpen={isOpen}
         onDismiss={() => setOpen(false)}
+        depositAmountInUsd={depositUsd}
         price={price}
         currencyA={baseCurrency}
         currencyB={quoteCurrency}
