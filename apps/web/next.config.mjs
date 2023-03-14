@@ -29,8 +29,6 @@ const sentryWebpackPluginOptions =
         dryRun: !process.env.SENTRY_AUTH_TOKEN,
       }
 
-const blocksPage = ['/affiliates-program', '/affiliates-program/dashboard']
-
 /** @type {import('next').NextConfig} */
 const config = {
   compiler: {
@@ -162,11 +160,6 @@ const config = {
         destination: '/info/pairs/:address',
         permanent: true,
       },
-      ...blocksPage.map((p) => ({
-        source: p,
-        destination: '/404',
-        permanent: false
-      }))
     ]
   },
   webpack: (webpackConfig, { webpack }) => {

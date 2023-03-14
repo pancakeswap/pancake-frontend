@@ -2,13 +2,15 @@ import { useMemo } from 'react'
 import { Box, SubMenuItems, DropdownMenuItemType } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
+import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 
 const AffiliatesProgramLayout = ({ children }) => {
   const { t } = useTranslation()
   const { pathname } = useRouter()
+  const { isAffiliateExist } = useAuthAffiliateExist()
 
   const subMenuItems = useMemo(() => {
-    return [
+    const menu = [
       {
         label: t('Overview'),
         href: '/affiliates-program',
@@ -18,12 +20,17 @@ const AffiliatesProgramLayout = ({ children }) => {
         href: 'https://docs.pancakeswap.finance/ambassador-program',
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
-      {
+    ]
+
+    if (isAffiliateExist) {
+      menu.push({
         label: t('Dashboard'),
         href: '/affiliates-program/dashboard',
-      },
-    ]
-  }, [t])
+      })
+    }
+
+    return menu
+  }, [t, isAffiliateExist])
 
   const activeSubItem = useMemo(() => {
     return subMenuItems.find((subMenuItem) => subMenuItem.href === pathname)?.href
