@@ -18,7 +18,6 @@ import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/use
 import partition from 'lodash/partition'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
-import { useSingleContractMultipleData } from 'state/multicall/hooks'
 import useSWR from 'swr'
 import { multicallv2 } from 'utils/multicall'
 
@@ -70,7 +69,7 @@ export const useFarmsV3 = () => {
       if ([ChainId.BSC, ChainId.GOERLI, ChainId.ETHEREUM, ChainId.BSC_TESTNET].includes(chainId)) {
         const results = await Promise.allSettled(
           farms.map((f) =>
-            fetch(`${HOST}/api/v3/${chainId}/farms/tvl/${f.lpAddress}`)
+            fetch(`${HOST}/api/v3/${chainId}/farms/liquidity/${f.lpAddress}`)
               .then((r) => r.json())
               .catch((err) => {
                 console.error(err)
@@ -126,11 +125,6 @@ export const usePositionsByUser = (
   const [unstakedPositions, stakedPositions] = useMemo(() => {
     return partition(positions, (p) => tokenIds.find((i) => i.eq(p.tokenId)))
   }, [positions, tokenIds])
-
-  const inputs = useMemo(
-    () => (stakedPositions ? stakedPositions.map(({ tokenId }) => [tokenId]) : []),
-    [stakedPositions],
-  )
 
   const harvestCalls = useMemo(() => {
     if (!account) return []

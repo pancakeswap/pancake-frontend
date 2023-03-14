@@ -1,7 +1,8 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { CAKE } from '@pancakeswap/tokens'
 import { Pool } from '@pancakeswap/v3-sdk'
-import { priceHelperTokens, DEFAULT_STABLE_COINS } from '../common'
 import { farmsV3ConfigChainMap } from '.'
+import { priceHelperTokens } from '../common'
 
 const mainnetFarms = [farmsV3ConfigChainMap[ChainId.BSC], farmsV3ConfigChainMap[ChainId.ETHEREUM]]
 
@@ -30,18 +31,17 @@ describe('Config farms V3', () => {
   it.each(mainnetFarms)('should has related common price', (...farms) => {
     for (const farm of farms) {
       const priceHelper = priceHelperTokens[farm.token.chainId].list
-      const stableCoins = DEFAULT_STABLE_COINS[farm.token.chainId]
       let isOneOfPriceHelper = false
-      let isOneOfStableCoin = false
+      let isOneOfCake = false
 
       if (priceHelper.some((t) => t.equals(farm.token) || t.equals(farm.quoteToken))) {
         isOneOfPriceHelper = true
       }
-      if (stableCoins.some((t) => t.equals(farm.token) || t.equals(farm.quoteToken))) {
-        isOneOfStableCoin = true
+      if (farm.token.equals(CAKE[farm.token.chainId]) || farm.quoteToken.equals(CAKE[farm.quoteToken.chainId])) {
+        isOneOfCake = true
       }
 
-      expect(isOneOfPriceHelper || isOneOfStableCoin).toBeTruthy()
+      expect(isOneOfPriceHelper || isOneOfCake).toBeTruthy()
     }
   })
 })

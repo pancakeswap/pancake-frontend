@@ -223,7 +223,6 @@ const SingleFarmV3Card: React.FunctionComponent<
             />
             <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="full">
               <FarmV3HarvestAction
-                pendingEarnings={totalEarnings}
                 earnings={totalEarnings}
                 earningsBusd={earningsBusd}
                 pendingTx={attemptingTxn}

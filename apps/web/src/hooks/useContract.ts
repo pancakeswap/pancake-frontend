@@ -14,7 +14,6 @@ import QuoterV2Json from '@uniswap/swap-router-contracts/artifacts/contracts/len
 
 import zapAbi from 'config/abi/zap.json'
 import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
-import MasterChefV3ABI from 'config/abi/masterChefV3.json'
 import addresses from 'config/constants/contracts'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'

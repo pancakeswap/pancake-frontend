@@ -3,12 +3,10 @@ import { Balance } from "../../../../../components/Balance";
 import Flex from "../../../../../components/Box/Flex";
 import { Button } from "../../../../../components/Button";
 import { Text } from "../../../../../components/Text";
-import { useTooltip } from "../../../../../hooks";
 import { ActionContent, ActionTitles } from "./styles";
 
 interface HarvestActionProps {
   earnings: number;
-  pendingEarnings: number;
   earningsBusd: number;
   pendingTx: boolean;
   userDataReady: boolean;
@@ -21,13 +19,8 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   pendingTx,
   userDataReady,
   handleHarvest,
-  pendingEarnings,
 }) => {
   const { t } = useTranslation();
-
-  const tooltip = useTooltip(`Estimated earnings: ~${pendingEarnings || 0} CAKE`, {
-    placement: "top",
-  });
 
   return (
     <Flex height="100%" flexDirection="column" width="100%">
@@ -41,10 +34,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
       </ActionTitles>
       <ActionContent style={{ height: "100%" }}>
         <div>
-          <div ref={tooltip.targetRef}>
-            <Balance fontSize={20} bold decimals={2} value={earnings} strikeThrough={!!pendingEarnings} />
-            {pendingEarnings && tooltip.tooltipVisible && tooltip.tooltip}
-          </div>
+          <Balance fontSize={20} bold decimals={2} value={earnings} />
           {earningsBusd > 0 && (
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}

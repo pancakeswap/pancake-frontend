@@ -33,7 +33,7 @@ const handler: NextApiHandler = async (req, res) => {
   if (supportedChainIdSubgraph.includes(chainId)) {
     const results = await Promise.allSettled(
       farms.map((f) =>
-        fetch(`${HOST}/api/v3/${chainId}/farms/tvl/${f.lpAddress}`, {
+        fetch(`${HOST}/api/v3/${chainId}/farms/liquidity/${f.lpAddress}`, {
           headers: {
             'x-vercel-protection-bypass': process.env.VERCEL_BYPASS,
           },
