@@ -29,7 +29,6 @@ export type FarmPriceV3 = {
   tokenPriceBusd: string
   quoteTokenPriceBusd: string
   cakeApr: string
-  lpRewardsApr?: number
 }
 
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult

@@ -40,7 +40,7 @@ import { useCakeVaultUserData } from 'state/pools/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import styled from 'styled-components'
-import { getFarmApr, getFarmV3Apr } from 'utils/apr'
+import { getFarmApr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
@@ -164,7 +164,6 @@ export interface V3FarmWithoutStakedValue extends FarmV3DataWithPriceAndUserInfo
 }
 
 export interface V3Farm extends V3FarmWithoutStakedValue {
-  lpRewardsApr?: number
   version: 3
 }
 
@@ -277,9 +276,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         }
 
         if (farm.version === 3) {
-          const { lpRewardsApr } = isActive ? getFarmV3Apr(chainId, farm.lpAddress) : { lpRewardsApr: 0 }
-
-          return { ...farm, lpRewardsApr }
+          return farm
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
         const { cakeRewardsApr, lpRewardsApr } = isActive

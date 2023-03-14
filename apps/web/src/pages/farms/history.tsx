@@ -33,16 +33,7 @@ const FarmsHistoryPage = () => {
             />
           )
         }
-        return (
-          <FarmV3Card
-            key={farm.pid}
-            farm={farm}
-            displayApr={getDisplayApr(Number(farm.cakeApr), Number(farm.lpRewardsApr))}
-            cakePrice={cakePrice}
-            account={account}
-            removed={false}
-          />
-        )
+        return <FarmV3Card key={farm.pid} farm={farm} cakePrice={cakePrice} account={account} removed={false} />
       })}
     </>
   )

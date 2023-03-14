@@ -200,7 +200,8 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
       return {
         initialActivity,
         apr: {
-          value: getDisplayApr(+farm.cakeApr, farm.lpRewardsApr),
+          // TODO: v3 farms can remove
+          value: '',
           pid: farm.pid,
         },
         farm: {
