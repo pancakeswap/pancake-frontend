@@ -11,7 +11,9 @@ import computeSurroundingTicks from './utils/computeSurroundingTicks'
 const PRICE_FIXED_DIGITS = 8
 
 const getActiveTick = (tickCurrent: number | undefined, feeAmount: FeeAmount | undefined) =>
-  tickCurrent && feeAmount ? Math.floor(tickCurrent / TICK_SPACINGS[feeAmount]) * TICK_SPACINGS[feeAmount] : undefined
+  tickCurrent !== undefined && feeAmount
+    ? Math.floor(tickCurrent / TICK_SPACINGS[feeAmount]) * TICK_SPACINGS[feeAmount]
+    : undefined
 
 function useTicksFromSubgraph(
   currencyA: Currency | undefined,
