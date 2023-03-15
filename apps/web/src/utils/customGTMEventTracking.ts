@@ -1,6 +1,24 @@
-export type dataLayerKeys = 'event' | 'category' | 'action' | 'label'
+export enum GTMEvent {
+  EventTracking = 'eventTracking',
+}
+
+export enum GTMCategory {
+  TokenHighlight = 'TokenHighlight',
+}
+
+export enum GTMAction {
+  ClickTradeButton = 'Click Trade Button',
+}
+
+interface CustomGTMDataLayer {
+  event: GTMEvent
+  category: GTMCategory
+  action: GTMAction
+  label: string
+}
+
 type WindowWithDataLayer = Window & {
-  customDataLayer: Record<dataLayerKeys, string>[] | undefined
+  customDataLayer: CustomGTMDataLayer[] | undefined
 }
 
 declare const window: WindowWithDataLayer
