@@ -10,6 +10,7 @@ import {
 import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 
 export * from "./computeSurroundingTicks";
+export * from "./getTokenAmountsFromDepositUsd";
 
 export function tryParsePrice(baseToken?: Token, quoteToken?: Token, value?: string) {
   if (!baseToken || !quoteToken || !value) {

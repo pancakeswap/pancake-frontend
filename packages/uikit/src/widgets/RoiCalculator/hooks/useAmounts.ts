@@ -2,6 +2,7 @@ import { Currency, CurrencyAmount, JSBI, Price } from "@pancakeswap/sdk";
 import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 import { FeeCalculator, TickMath } from "@pancakeswap/v3-sdk";
 import { useCallback, useMemo, useState, useEffect } from "react";
+import { getTokenAmountsFromDepositUsd } from "../utils";
 
 interface Params {
   independentAmount?: CurrencyAmount<Currency>;
@@ -94,47 +95,17 @@ export function useAmountsByUsdValue({
   currencyBUsdPrice,
 }: AmountsByUsdValueParams) {
   const amounts = useMemo(() => {
-    if (
-      !usdValue ||
-      !currencyA ||
-      !currencyB ||
-      !currencyAUsdPrice ||
-      !currencyBUsdPrice ||
-      !sqrtRatioX96 ||
-      !priceUpper ||
-      !priceLower ||
-      !price
-    ) {
-      return [];
-    }
-
-    const usdAmount = parseFloat(usdValue);
-    const isToken0 = currencyA.wrapped.sortsBefore(currencyB.wrapped);
-    const token0 = isToken0 ? currencyA : currencyB;
-    const token1 = isToken0 ? currencyB : currencyA;
-    const p = parseFloat(price.toFixed(6));
-    const pl = parseFloat(priceLower.toFixed(6));
-    const pu = parseFloat(priceUpper.toFixed(6));
-    const priceUSDX = isToken0 ? currencyAUsdPrice : currencyBUsdPrice;
-    const priceUSDY = isToken0 ? currencyBUsdPrice : currencyAUsdPrice;
-    const deltaL =
-      usdAmount / ((Math.sqrt(p) - Math.sqrt(pl)) * priceUSDY + (1 / Math.sqrt(p) - 1 / Math.sqrt(pu)) * priceUSDX);
-
-    let deltaY = deltaL * (Math.sqrt(p) - Math.sqrt(pl));
-    if (deltaY * priceUSDY < 0) deltaY = 0;
-    if (deltaY * priceUSDY > usdAmount) deltaY = usdAmount / priceUSDY;
-
-    let deltaX = deltaL * (1 / Math.sqrt(p) - 1 / Math.sqrt(pu));
-    if (deltaX * priceUSDX < 0) deltaX = 0;
-    if (deltaX * priceUSDX > usdAmount) deltaX = usdAmount / priceUSDX;
-
-    const amount0 = deltaX.toFixed(token0.decimals);
-    const amount1 = deltaY.toFixed(token1.decimals);
-    const amountARaw = isToken0 ? amount0 : amount1;
-    const amountBRaw = isToken0 ? amount1 : amount0;
-    const amountA = tryParseAmount(amountARaw, currencyA);
-    const amountB = tryParseAmount(amountBRaw, currencyB);
-    return [amountA, amountB];
+    return getTokenAmountsFromDepositUsd({
+      usdValue,
+      currencyA,
+      currencyB,
+      price: price?.toFixed(6),
+      priceLower: priceLower?.toFixed(6),
+      priceUpper: priceUpper?.toFixed(6),
+      sqrtRatioX96,
+      currencyAUsdPrice,
+      currencyBUsdPrice,
+    });
   }, [
     usdValue,
     currencyA,

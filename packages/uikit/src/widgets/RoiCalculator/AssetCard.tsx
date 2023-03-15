@@ -5,7 +5,7 @@ import { Currency, Percent } from "@pancakeswap/sdk";
 import styled from "styled-components";
 
 import { Card, Table, Th, Box, Text, RowBetween, Td, CurrencyLogo, Row, Flex, Tag, TagProps } from "../../components";
-import { NumericalInput } from "../Swap/NumericalInput";
+import { StyledInput } from "./StyledInput";
 import { toSignificant } from "./utils";
 
 export function CardSection({ header, children, ...rest }: { header?: ReactNode } & PropsWithChildren & SpaceProps) {
@@ -37,7 +37,7 @@ interface Props extends SpaceProps {
 
 export interface Asset {
   // price in usd
-  price: number;
+  price: string;
 
   currency: Currency;
 
@@ -117,17 +117,19 @@ export function AssetCard({
 interface AssetRowProps {
   name: ReactNode;
   amount?: string | number;
-  price?: number;
+  price?: string;
   priceEditable?: boolean;
+  decimals?: number;
   value?: string | number;
   showPrice?: boolean;
-  onPriceChange?: (price: number) => void;
+  onPriceChange?: (price: string) => void;
 }
 
 export function AssetRow({
-  price = 0,
+  price = "0",
   value = 0,
   amount,
+  decimals = 6,
   name,
   showPrice = true,
   priceEditable = true,
@@ -135,7 +137,14 @@ export function AssetRow({
     // default
   },
 }: AssetRowProps) {
-  const onPriceUpdate = useCallback((newPrice: string) => onPriceChange(parseFloat(newPrice) || 0), [onPriceChange]);
+  const onPriceUpdate = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.currentTarget.validity.valid) {
+        onPriceChange(e.currentTarget.value.replace(/,/g, ".") || "0");
+      }
+    },
+    [onPriceChange]
+  );
 
   return (
     <tr>
@@ -146,10 +155,12 @@ export function AssetRow({
         <Td style={{ minWidth: "98px" }}>
           <Row>
             <Text>$</Text>
-            <NumericalInput
-              align="left"
-              value={toSignificant(price)}
-              onUserInput={onPriceUpdate}
+            <StyledInput
+              pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
+              inputMode="decimal"
+              min="0"
+              value={price}
+              onChange={onPriceUpdate}
               disabled={!priceEditable}
             />
           </Row>
