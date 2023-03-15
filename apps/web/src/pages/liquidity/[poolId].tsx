@@ -17,17 +17,17 @@ import {
   Spinner,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
-import { NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
+import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
 import { useToken } from 'hooks/Tokens'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
-import { useV3NFTPositionManagerContract } from 'hooks/useContract'
+import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
 import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
-import { useV3PositionFromTokenId } from 'hooks/v3/useV3Positions'
+import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useRouter } from 'next/router'
 import { useCallback, useMemo, useState } from 'react'
@@ -234,13 +234,22 @@ export default function PoolPage() {
   const addTransaction = useTransactionAdder()
 
   const positionManager = useV3NFTPositionManagerContract()
+  const masterchefV3 = useMasterchefV3()
+  const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
+
+  const isStakedInMCv3 = Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
+
+  const manager = isStakedInMCv3 ? masterchefV3 : positionManager
+  const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
 
   const collect = useCallback(() => {
     if (
+      tokenIdsInMCv3Loading ||
       !currency0ForFeeCollectionPurposes ||
       !currency1ForFeeCollectionPurposes ||
       !chainId ||
       !positionManager ||
+      !masterchefV3 ||
       !account ||
       !tokenId ||
       !provider
@@ -251,7 +260,7 @@ export default function PoolPage() {
 
     // we fall back to expecting 0 fees in case the fetch fails, which is safe in the
     // vast majority of cases
-    const { calldata, value } = NonfungiblePositionManager.collectCallParameters({
+    const { calldata, value } = interfaceManager.collectCallParameters({
       tokenId: tokenId.toString(),
       expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0),
       expectedCurrencyOwed1: feeValue1 ?? CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0),
@@ -259,7 +268,7 @@ export default function PoolPage() {
     })
 
     const txn = {
-      to: positionManager.address,
+      to: manager.address,
       data: calldata,
       value,
     }
@@ -290,15 +299,19 @@ export default function PoolPage() {
         console.error(error)
       })
   }, [
+    tokenIdsInMCv3Loading,
     currency0ForFeeCollectionPurposes,
     currency1ForFeeCollectionPurposes,
     chainId,
     positionManager,
+    masterchefV3,
     account,
     tokenId,
     provider,
+    interfaceManager,
     feeValue0,
     feeValue1,
+    manager.address,
     signer,
     addTransaction,
   ])
