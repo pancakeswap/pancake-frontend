@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getCookie } from 'cookies-next'
-import { AFFILIATE_SID } from './affiliate-login'
+import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
 
 const affiliateLogin = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!process.env.AFFILIATE_PROGRAM_API_URL && req.method === 'POST') {

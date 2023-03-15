@@ -94,6 +94,7 @@
     "recharts": "2.1.15",
     "redux-persist": "^6.0.0",
     "remark-gfm": "^1.0.0",
+    "siwe": "^1.1.6",
     "split-grid": "^1.0.11",
     "styled-components": "^5.3.3",
     "swiper": "^8.4.2",
