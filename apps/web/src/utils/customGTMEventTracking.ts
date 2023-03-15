@@ -5,4 +5,5 @@ type WindowWithDataLayer = Window & {
 
 declare const window: WindowWithDataLayer
 
-export const customGTMEvent: WindowWithDataLayer['customDataLayer'] = window?.customDataLayer
+export const customGTMEvent: WindowWithDataLayer['customDataLayer'] =
+  typeof window !== 'undefined' ? window?.customDataLayer : undefined
