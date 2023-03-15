@@ -12,7 +12,7 @@ import LoginButton from 'views/AffiliatesProgram/components/Dashboard/LoginButto
 
 const Dashboard = () => {
   const router = useRouter()
-  const { isAffiliate } = useAuthAffiliate()
+  const { isAffiliate, affiliate } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const Dashboard = () => {
         >
           {/* <CommissionInfo /> */}
           <Flex flexDirection="column">
-            <MyReferralLink />
+            <MyReferralLink affiliate={affiliate} />
             {/* <ClaimReward /> */}
           </Flex>
         </Flex>

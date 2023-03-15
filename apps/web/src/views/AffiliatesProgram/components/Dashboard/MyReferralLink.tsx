@@ -7,7 +7,6 @@ import {
   Box,
   Card,
   CopyIcon,
-  ShareIcon,
   Button,
   ArrowForwardIcon,
   useMatchBreakpoints,
@@ -20,6 +19,7 @@ import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
+import { InfoDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useDefaultLinkId from 'views/AffiliatesProgram/hooks/useDefaultLinkId'
 import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 
@@ -88,9 +88,13 @@ const CardInner = styled(Flex)`
   }
 `
 
+interface MyReferralLinkProps {
+  affiliate: InfoDetail
+}
+
 const receivePercentageList: Array<string> = ['0', '25', '50', '75', '100']
 
-const MyReferralLink = () => {
+const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = ({ affiliate }) => {
   const { t } = useTranslation()
   const { address } = useAccount()
   const { toastSuccess, toastError } = useToast()
@@ -106,7 +110,10 @@ const MyReferralLink = () => {
   const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [])
 
   const linkId = useMemo(() => note || defaultLinkId, [note, defaultLinkId])
-  const shareLinkUrl = useMemo(() => `https://pancakeswap.finance/affiliates-program?ref=${linkId}`, [linkId])
+  const shareLinkUrl = useMemo(() => {
+    const discount = new BigNumber(percentage).gt(0) ? new BigNumber(percentage).times(3).div(100).toFixed(2) : 0
+    return `https://pancakeswap.finance/affiliates-program?ref=${linkId}&user=${affiliate.name}&discount=${discount}`
+  }, [affiliate.name, linkId, percentage])
 
   const handleGenerateLink = async () => {
     try {
@@ -169,7 +176,6 @@ const MyReferralLink = () => {
             >
               <Input disabled value={shareLinkUrl} type="text" placeholder="http://" />
             </InputGroup>
-            <ShareIcon cursor="pointer" width={24} height={24} ml="16px" color="primary" />
           </Flex>
           <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mb="36px">
             <Flex alignSelf="center" width={['100%', '320px']} justifyContent={['space-between']}>
