@@ -10,13 +10,13 @@ import {
   useRoi,
 } from '@pancakeswap/uikit'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
-import { encodeSqrtRatioX96, Position, Tick } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
 import { Bound } from 'config/constants/types'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { LiquidityFormState } from 'hooks/v3/types'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -45,23 +45,12 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
 
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
 
-  const poolTicks = useMemo(
-    () =>
-      data?.map(
-        ({ tick, liquidityNet }) =>
-          new Tick({ index: parseInt(String(tick)), liquidityNet, liquidityGross: liquidityNet }),
-      ),
-    [data],
-  )
-
-  const [existingPosition] = useState(existingPosition_)
-
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
     feeAmount,
     baseCurrency ?? undefined,
-    existingPosition,
+    existingPosition_,
     formState,
   )
 
@@ -83,7 +72,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
     tickUpper,
     sqrtRatioX96,
     fee: feeAmount,
-    ticks: poolTicks,
+    mostActiveLiquidity: pool?.liquidity,
     amountA,
     amountB,
     compoundOn: false,
@@ -131,10 +120,10 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
       )}
       <RoiCalculatorModalV2
         {...roiModal}
-        maxLabel={existingPosition ? t('My Position') : undefined}
+        maxLabel={existingPosition_ ? t('My Position') : undefined}
         closeOnOverlayClick
         depositAmountInUsd={depositUsd}
-        max={existingPosition && depositUsd}
+        max={existingPosition_ && depositUsd}
         balanceA={balanceA}
         balanceB={balanceB}
         price={price}

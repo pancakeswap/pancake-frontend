@@ -1,6 +1,6 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO } from "@pancakeswap/sdk";
 import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
-import { FeeAmount, Tick, FeeCalculator } from "@pancakeswap/v3-sdk";
+import { FeeAmount, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { useMemo } from "react";
 
 import { useRate } from "./useRate";
@@ -83,7 +83,7 @@ export interface FeeParams {
   // tick current may have rounding error since it's a floor rounding
   sqrtRatioX96?: JSBI;
   // All ticks inside the pool
-  ticks?: Tick[];
+  mostActiveLiquidity?: JSBI;
   // Fee tier of the pool, in hundreds of a bip, i.e. 1e-6
   fee?: FeeAmount;
 
@@ -98,7 +98,7 @@ export function useFee24h({
   tickUpper,
   volume24H,
   sqrtRatioX96,
-  ticks,
+  mostActiveLiquidity,
   fee,
   protocolFee,
 }: FeeParams) {
@@ -110,7 +110,7 @@ export function useFee24h({
       typeof tickUpper !== "number" ||
       !volume24H ||
       !sqrtRatioX96 ||
-      !ticks ||
+      !mostActiveLiquidity ||
       !fee
     ) {
       return new Fraction(ZERO, ONE);
@@ -122,9 +122,9 @@ export function useFee24h({
       tickUpper,
       volume24H,
       sqrtRatioX96,
-      ticks,
+      mostActiveLiquidity,
       fee,
       protocolFee,
     });
-  }, [amount, currency, tickLower, tickUpper, volume24H, sqrtRatioX96, ticks, fee, protocolFee]);
+  }, [amount, currency, tickLower, tickUpper, volume24H, sqrtRatioX96, mostActiveLiquidity, fee, protocolFee]);
 }

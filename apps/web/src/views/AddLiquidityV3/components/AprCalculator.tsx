@@ -1,6 +1,6 @@
 import { Currency, ZERO_PERCENT } from '@pancakeswap/sdk'
 import { useRoi, RoiCalculatorModalV2, TooltipText, Flex, CalculateIcon, Text, IconButton } from '@pancakeswap/uikit'
-import { encodeSqrtRatioX96, Tick } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -30,14 +30,6 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
-  const poolTicks = useMemo(
-    () =>
-      data?.map(
-        ({ tick, liquidityNet, liquidityGross }) =>
-          new Tick({ index: parseInt(String(tick)), liquidityNet, liquidityGross }),
-      ),
-    [data],
-  )
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
@@ -71,7 +63,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
     tickUpper,
     sqrtRatioX96,
     fee: feeAmount,
-    ticks: poolTicks,
+    mostActiveLiquidity: pool?.liquidity,
     amountA,
     amountB,
     compoundOn: false,

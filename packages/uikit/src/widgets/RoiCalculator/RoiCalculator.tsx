@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token } from "@pancakeswap/sdk";
-import { FeeAmount, Tick, TickMath } from "@pancakeswap/v3-sdk";
+import { FeeAmount, FeeCalculator, Tick, TickMath } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, useState } from "react";
 
@@ -87,6 +87,10 @@ export function RoiCalculator({
       ),
     [ticksRaw]
   );
+  const mostActiveLiquidity = useMemo(
+    () => ticks && sqrtRatioX96 && FeeCalculator.getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96),
+    [ticks, sqrtRatioX96]
+  );
 
   const priceRange = usePriceRange({
     feeAmount,
@@ -133,7 +137,7 @@ export function RoiCalculator({
     tickUpper: priceRange?.tickUpper,
     volume24H,
     sqrtRatioX96,
-    ticks,
+    mostActiveLiquidity,
     fee: feeAmount,
     compoundEvery: compoundingIndexToFrequency[compoundIndex],
     stakeFor: spanIndexToSpan[spanIndex],

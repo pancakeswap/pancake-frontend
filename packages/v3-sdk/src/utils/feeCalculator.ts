@@ -4,7 +4,6 @@ import invariant from 'tiny-invariant'
 import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
 import { TickMath } from './tickMath'
 import { PositionMath } from './positionMath'
-import { TICK_SPACINGS, FeeAmount } from '../constants'
 import { ONE_HUNDRED_PERCENT, MAX_FEE, ZERO_PERCENT } from '../internalConstants'
 import { Tick } from '../entities'
 import { TickList } from './tickList'
@@ -34,12 +33,10 @@ interface EstimateFeeOptions {
   // The reason of using price sqrt X96 instead of tick current is that
   // tick current may have rounding error since it's a floor rounding
   sqrtRatioX96: JSBI
-  // All ticks inside the pool
-  ticks: Tick[]
+  // Most active liquidity of the pool
+  mostActiveLiquidity: JSBI
   // Fee tier of the pool, in hundreds of a bip, i.e. 1e-6
   fee: number
-  // Tick spacing of the pool, default derived by the fee
-  tickSpacing?: number
 
   // Proportion of time in future 24 hours when price staying inside given tick range
   insidePercentage?: Percent
@@ -74,13 +71,11 @@ function tryGetEstimatedLPFee({
   sqrtRatioX96,
   tickLower,
   tickUpper,
-  ticks,
+  mostActiveLiquidity,
   fee,
-  tickSpacing = TICK_SPACINGS[fee as FeeAmount],
   insidePercentage = ONE_HUNDRED_PERCENT,
 }: EstimateFeeOptions): Fraction {
   invariant(!Number.isNaN(fee) && fee >= 0, 'INVALID_FEE')
-  TickList.validateList(ticks, tickSpacing)
 
   const tickCurrent = TickMath.getTickAtSqrtRatio(sqrtRatioX96)
   if (tickCurrent < tickLower || tickCurrent > tickUpper) {
@@ -88,11 +83,10 @@ function tryGetEstimatedLPFee({
   }
 
   const liquidity = FeeCalculator.getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
-  const liquidityInRange = FeeCalculator.getLiquidityFromSqrtRatioX96(ticks, sqrtRatioX96)
 
   return insidePercentage
     .multiply(JSBI.multiply(JSBI.multiply(JSBI.BigInt(Math.floor(volume24H)), JSBI.BigInt(fee)), liquidity))
-    .divide(JSBI.multiply(MAX_FEE, JSBI.add(liquidity, liquidityInRange))).asFraction
+    .divide(JSBI.multiply(MAX_FEE, JSBI.add(liquidity, mostActiveLiquidity))).asFraction
 }
 
 interface GetAmountOptions {
