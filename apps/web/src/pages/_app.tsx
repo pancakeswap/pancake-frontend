@@ -23,7 +23,6 @@ import { PageMeta } from 'components/Layout/Page'
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistor, useStore } from 'state'
 import { usePollBlockNumber } from 'state/block/hooks'
-import { STGWarningModalContainer } from 'components/STGWarningModal/STGWarningModalContainer'
 import { Blocklist, Updaters } from '..'
 import { SEO } from '../../next-seo.config'
 import { SentryErrorBoundary } from '../components/ErrorBoundary'
@@ -174,7 +173,6 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
       <ToastListener />
       <FixedSubgraphHealthIndicator />
       <NetworkModal pageSupportedChains={Component.chains} />
-      <STGWarningModalContainer />
       <TransactionsDetailModal />
       {isShowScrollToTopButton && <ScrollToTopButtonV2 />}
     </ProductionErrorBoundary>

@@ -35,8 +35,6 @@ import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { STGWarningModal } from 'components/STGWarningModal'
-
 import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
@@ -215,15 +213,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
         new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
   )
 
-  const hasSTGLP = Boolean(
-    farmsLP.find(
-      (farm) =>
-        farm.lpAddress === '0x6cCA86CC27EB8c7C2d10B0672FE392CFC88e62ff' &&
-        farm.userData &&
-        new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-    ),
-  )
-
   const stakedInactiveFarms = inactiveFarms.filter(
     (farm) =>
       farm.userData &&
@@ -365,7 +354,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <FarmsContext.Provider value={providerValue}>
-      <STGWarningModal openWarning={hasSTGLP} />
       <PageHeader>
         <FarmFlexWrapper justifyContent="space-between">
           <Box>
