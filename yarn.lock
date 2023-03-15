@@ -20265,10 +20265,10 @@ swiper@^8.4.2:
     dom7 "^4.0.4"
     ssr-window "^4.0.2"
 
-swr@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-2.0.3.tgz#9fe59a17f55b0fdddccd76b7b2f723f9f8e2263e"
-  integrity sha512-sGvQDok/AHEWTPfhUWXEHBVEXmgGnuahyhmRQbjl9XBYxT/MSlAzvXEKQpyM++bMPaI52vcWS2HiKNaW7+9OFw==
+swr@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-2.1.0.tgz#10245d5a50f6d5d208ea9278f76839ab3058d5b8"
+  integrity sha512-4hYl5p3/KalQ1MORealM79g/DtLohmud6yyfXw5l4wjtFksYUnocRFudvyaoUtgj3FrVNK9lS25Av9dsZYvz0g==
   dependencies:
     use-sync-external-store "^1.2.0"
 
