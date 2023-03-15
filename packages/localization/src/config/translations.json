@@ -1988,6 +1988,8 @@
   "1x weekly compound": "1x weekly compound",
   "1x monthly compound": "1x monthly compound",
   "Yield": "Yield",
+  "Farm Yield": "Farm Yield",
+  "Farm APR": "Farm APR",
   "LP Fee Yield": "LP Fee Yield",
   "LP Fee APR": "LP Fee APR",
   "Yields and rewards are calculated at the current rates and subject to change based on various external variables.": "Yields and rewards are calculated at the current rates and subject to change based on various external variables.",

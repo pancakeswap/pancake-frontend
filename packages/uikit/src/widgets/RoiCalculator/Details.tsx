@@ -13,20 +13,26 @@ const StyledFooter = styled(Footer)`
 
 interface Props {
   totalYield?: number | string;
+  farmReward?: number | string;
   lpReward?: number | string;
   lpApr?: Percent;
   lpApy?: Percent;
+  farmApr?: string;
   externalLink?: ReactNode;
   compoundIndex?: number;
   compoundOn?: boolean;
+  isFarm?: boolean;
 }
 
 export function Details({
   totalYield = 0,
   externalLink,
   lpReward = 0,
+  farmReward = 0,
   lpApy = ZERO_PERCENT,
+  farmApr,
   lpApr = ZERO_PERCENT,
+  isFarm = false,
   compoundIndex = 0,
   compoundOn = true,
 }: Props) {
@@ -56,20 +62,40 @@ export function Details({
         <Text small color="textSubtle" textAlign="right">
           ${toSignificant(lpReward)}
         </Text>
+        {isFarm && (
+          <>
+            <Text color="textSubtle" small style={{ textIndent: "1em" }}>
+              {t("Farm Yield")}
+            </Text>
+            <Text small color="textSubtle" textAlign="right">
+              ${toSignificant(farmReward)}
+            </Text>
+          </>
+        )}
       </Grid>
       <Grid gridTemplateColumns="2.5fr 1fr" gridRowGap="8px" gridTemplateRows="repeat(2, auto)" mb="8px">
         <Text color="textSubtle" small>
           {t("APR")}
         </Text>
         <Text small bold textAlign="right">
-          ${lpApr.toSignificant(5)}%
+          ${+lpApr.toSignificant(5) + +(farmApr || "0")}%
         </Text>
         <Text color="textSubtle" small style={{ textIndent: "1em" }}>
           {t("LP Fee APR")}
         </Text>
         <Text small color="textSubtle" textAlign="right">
-          ${lpApr.toSignificant(5)}%
+          {lpApr.toSignificant(5)}%
         </Text>
+        {isFarm && farmApr && (
+          <>
+            <Text color="textSubtle" small style={{ textIndent: "1em" }}>
+              {t("Farm APR")}
+            </Text>
+            <Text small color="textSubtle" textAlign="right">
+              {farmApr}%
+            </Text>
+          </>
+        )}
       </Grid>
       {compoundOn && (
         <Grid gridTemplateColumns="2.5fr 1fr" gridRowGap="8px" gridTemplateRows="repeat(1, auto)">

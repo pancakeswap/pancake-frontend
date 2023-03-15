@@ -1,4 +1,5 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, ONE, Percent, ZERO } from "@pancakeswap/sdk";
+import { getApy } from "@pancakeswap/utils/compoundApyHelpers";
 import { FeeAmount, Tick, FeeCalculator } from "@pancakeswap/v3-sdk";
 import { useMemo } from "react";
 
@@ -12,6 +13,8 @@ interface Params extends Omit<FeeParams, "amount" | "currency"> {
   currencyBUsdPrice?: number;
   amountA?: CurrencyAmount<Currency>;
   amountB?: CurrencyAmount<Currency>;
+  cakeApr?: number;
+  cakePrice?: number;
 }
 
 const scale = 1_000_000_000_000_000;
@@ -28,6 +31,7 @@ export function useRoi({
   currencyBUsdPrice,
   stakeFor = 365,
   compoundOn,
+  cakeApr,
   ...rest
 }: Params) {
   const fee24h = useFee24h({
@@ -54,11 +58,14 @@ export function useRoi({
 
   const fee = useMemo(() => decimalToFraction(reward), [reward]);
 
+  const cakeApy = cakeApr && getApy(cakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
+
   return {
     fee,
     rate,
     apr,
     apy,
+    cakeApy,
   };
 }
 

@@ -2,6 +2,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { priceToClosestTick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
+import { CAKE } from "@pancakeswap/tokens";
 
 import { Section } from "./DynamicSection";
 import { Toggle, Button, RowBetween, DoubleCurrencyLogo, PencilIcon, Flex } from "../../components";
@@ -26,6 +27,10 @@ interface Props {
   tickUpper?: number;
   sqrtRatioX96?: JSBI;
   lpReward?: number;
+  isFarm?: boolean;
+  cakePrice?: string;
+  cakeApy?: number;
+  usdValue?: string;
 }
 
 export function ImpermanentLossCalculator({
@@ -37,6 +42,10 @@ export function ImpermanentLossCalculator({
   currencyAUsdPrice,
   currencyBUsdPrice,
   lpReward = 0,
+  isFarm,
+  cakePrice = "0",
+  cakeApy,
+  usdValue,
 }: Props) {
   const { t } = useTranslation();
   const [on, setOn] = useState(false);
@@ -69,11 +78,34 @@ export function ImpermanentLossCalculator({
     [assets]
   );
 
+  const exitAssets = useMemo<Asset[] | undefined>(
+    () =>
+      assets &&
+      isFarm &&
+      currencyA &&
+      currencyA.chainId in CAKE &&
+      cakePrice &&
+      cakeApy &&
+      usdValue &&
+      Number.isFinite(cakeApy)
+        ? [
+            ...assets,
+            {
+              currency: CAKE[currencyA.chainId as keyof typeof CAKE],
+              amount: (+usdValue * cakeApy) / +cakePrice,
+              price: cakePrice,
+              value: +usdValue * cakeApy,
+            },
+          ]
+        : undefined,
+    [assets, cakeApy, cakePrice, currencyA, isFarm, usdValue]
+  );
+
   const [entry, setEntry] = useState<Asset[] | undefined>(assets);
-  const [exit, setExit] = useState<Asset[] | undefined>(assets);
+  const [exit, setExit] = useState<Asset[] | undefined>(exitAssets);
   const toggle = useCallback(() => setOn(!on), [on]);
   const resetEntry = useCallback(() => setEntry(assets), [assets]);
-  const resetExit = useCallback(() => setExit(assets), [assets]);
+  const resetExit = useCallback(() => setExit(exitAssets), [exitAssets]);
   const principal = useMemo(() => entry?.reduce((sum, { value }) => sum + parseFloat(String(value)), 0), [entry]);
   const hodlValue = useMemo(() => {
     if (!entry || !exit) {
@@ -85,7 +117,7 @@ export function ImpermanentLossCalculator({
     if (!entry || !exit) {
       return undefined;
     }
-    return exit.map(({ price }, i) => ({
+    return exit?.slice(0, 2).map(({ price }, i) => ({
       ...entry[i],
       price,
       value: parseFloat(String(entry[i].amount)) * parseFloat(price),
@@ -97,7 +129,9 @@ export function ImpermanentLossCalculator({
   );
   const exitValue = useMemo(() => {
     return (
-      (exit?.reduce((sum, { price, amount }) => sum + parseFloat(String(amount || 0)) * parseFloat(price), 0) || 0) +
+      (exit
+        ?.slice(0, 2)
+        ?.reduce((sum, { price, amount }) => sum + parseFloat(String(amount || 0)) * parseFloat(price), 0) || 0) +
       lpReward
     );
   }, [exit, lpReward]);
@@ -120,7 +154,7 @@ export function ImpermanentLossCalculator({
       ) {
         return newAssets;
       }
-      const [assetA, assetB] = newAssets;
+      const [assetA, assetB, maybeAssetCake] = newAssets;
       const { price: priceA, currency: assetCurrencyA } = assetA;
       const { price: priceB, currency: assetCurrencyB } = assetB;
       const token0Price = toToken0Price(
@@ -152,12 +186,24 @@ export function ImpermanentLossCalculator({
       }
       const amountAStr = adjustedAmountA.toExact();
       const amountBStr = adjustedAmountB.toExact();
-      return [
+      let adjusted = [
         { ...assetA, amount: amountAStr, value: parseFloat(amountAStr) * parseFloat(priceA) },
         { ...assetB, amount: amountBStr, value: parseFloat(amountBStr) * parseFloat(priceB) },
       ];
+      if (maybeAssetCake) {
+        adjusted = [
+          ...adjusted,
+          {
+            ...maybeAssetCake,
+            amount: String((+maybeAssetCake.amount * +cakePrice) / +maybeAssetCake.price),
+            value: +maybeAssetCake.value * (+cakePrice / +maybeAssetCake.price),
+          },
+        ];
+      }
+
+      return adjusted;
     },
-    [tickLower, tickUpper, sqrtRatioX96, amountA, amountB, totalUsdDeposit]
+    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, totalUsdDeposit, cakePrice]
   );
 
   const updateEntry = useCallback(
@@ -172,8 +218,11 @@ export function ImpermanentLossCalculator({
 
   useEffect(() => {
     setEntry(assets);
-    setExit(assets);
   }, [assets]);
+
+  useEffect(() => {
+    setExit(exitAssets);
+  }, [exitAssets]);
 
   if (!assets?.length) {
     return null;

@@ -9,13 +9,14 @@ import {
   useModalV2,
   useRoi,
 } from '@pancakeswap/uikit'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { encodeSqrtRatioX96, Position, Tick } from '@pancakeswap/v3-sdk'
 import { Bound } from 'config/constants/types'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { LiquidityFormState } from 'hooks/v3/types'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -35,7 +36,7 @@ export function FarmV3ApyButton({ farm, existingPosition, variant }: FarmV3ApyBu
   )
 }
 
-function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonProps) {
+function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }: FarmV3ApyButtonProps) {
   const roiModal = useModalV2()
   const { t } = useTranslation()
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount } = farm
@@ -53,6 +54,8 @@ function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonPr
     [data],
   )
 
+  const [existingPosition] = useState(existingPosition_)
+
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
@@ -61,6 +64,8 @@ function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonPr
     existingPosition,
     formState,
   )
+
+  const cakePrice = useCakePriceAsBN()
 
   const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
@@ -72,16 +77,6 @@ function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonPr
   const currencyAUsdPrice = +farm.tokenPriceBusd
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
   const volume24H = 10
-
-  const depositUsd = useMemo(
-    () =>
-      amountA &&
-      amountB &&
-      currencyAUsdPrice &&
-      currencyBUsdPrice &&
-      String(parseFloat(amountA.toExact()) * currencyAUsdPrice + parseFloat(amountB.toExact()) * currencyBUsdPrice),
-    [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice],
-  )
 
   const { apr } = useRoi({
     tickLower,
@@ -97,8 +92,18 @@ function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonPr
     volume24H,
   })
 
-  const balanceA = existingPosition?.amount0 ?? currencyBalances[Field.CURRENCY_A]
-  const balanceB = existingPosition?.amount1 ?? currencyBalances[Field.CURRENCY_B]
+  const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
+  const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
+
+  const depositUsd = useMemo(
+    () =>
+      balanceA &&
+      balanceB &&
+      currencyAUsdPrice &&
+      currencyBUsdPrice &&
+      String(parseFloat(balanceA.toExact()) * currencyAUsdPrice + parseFloat(balanceB.toExact()) * currencyBUsdPrice),
+    [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice],
+  )
 
   const displayApr = getDisplayApr(+farm.cakeApr, +apr.toSignificant(2))
 
@@ -129,6 +134,7 @@ function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonPr
         maxLabel={existingPosition ? t('My Position') : undefined}
         closeOnOverlayClick
         depositAmountInUsd={depositUsd}
+        max={existingPosition && depositUsd}
         balanceA={balanceA}
         balanceB={balanceB}
         price={price}
@@ -143,6 +149,9 @@ function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonPr
         volume24H={volume24H}
         priceUpper={priceUpper}
         priceLower={priceLower}
+        isFarm
+        cakeApr={farm.cakeApr}
+        cakePrice={cakePrice.toString()}
       />
     </>
   )

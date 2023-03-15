@@ -94,7 +94,7 @@ export function AssetCard({
   return (
     <Box {...rest}>
       {header && <RowBetween mb="8px">{header}</RowBetween>}
-      <Card isActive={isActive}>
+      <Card isActive={isActive} style={{ overflowX: "auto" }}>
         <Table>
           <thead>
             <tr>

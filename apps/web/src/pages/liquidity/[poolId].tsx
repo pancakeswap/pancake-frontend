@@ -1,4 +1,5 @@
 import { BigNumber } from '@ethersproject/bignumber'
+import { NextSeo } from 'next-seo'
 import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import {
   Button,
@@ -398,6 +399,7 @@ export default function PoolPage() {
 
   return (
     <Page>
+      {!isLoading && <NextSeo title={`${currencyQuote?.symbol}-${currencyBase?.symbol} V3 LP #${tokenIdFromUrl}`} />}
       <BodyWrapper>
         {isLoading ? (
           <Flex width="100%" justifyContent="center" alignItems="center" minHeight="200px" mb="32px">

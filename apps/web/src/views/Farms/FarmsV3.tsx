@@ -7,7 +7,6 @@ import {
 } from '@pancakeswap/farms'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId } from '@pancakeswap/sdk'
 import {
   ArrowForwardIcon,
   Box,
@@ -43,7 +42,6 @@ import styled from 'styled-components'
 import { getFarmApr } from 'utils/apr'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import { useAccount } from 'wagmi'
-import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import Table from './components/FarmTable/FarmTable'
 import { FarmsV3Context } from './context'
 
@@ -416,11 +414,12 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 </Button>
               </NextLinkFromReactRouter>
             </Box>
-            {chainId === ChainId.BSC && (
+            {/* After boosted enable */}
+            {/* {chainId === ChainId.BSC && (
               <Box>
                 <BCakeBoosterCard />
               </Box>
-            )}
+            )} */}
           </FarmFlexWrapper>
         </Flex>
       </PageHeader>
@@ -516,12 +515,12 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           ) : (
             <FlexLayout>{children}</FlexLayout>
           ))}
-        {account && farmsV3.length === 0 && stakedOnly && (
+        {account && !v2UserDataLoaded && !v3UserDataLoaded && stakedOnly && (
           <Flex justifyContent="center">
             <Loading />
           </Flex>
         )}
-        {farmsV3.length > 0 && <div ref={observerRef} />}
+        {chosenFarms.length > 0 && <div ref={observerRef} />}
         <StyledImage src="/images/decorations/3dpan.png" alt="Pancake illustration" width={120} height={103} />
       </Page>
     </FarmsV3Context.Provider>

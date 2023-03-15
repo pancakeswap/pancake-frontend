@@ -135,18 +135,24 @@ export const usePositionsByUser = (
     return callData
   }, [account, masterchefV3.interface, stakedPositions])
 
-  const { data: tokenIdResults, isLoading } = useSWR(account && [harvestCalls], () => {
-    return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
-      return res
-        .map((r) => masterchefV3.interface.decodeFunctionResult('harvest', r))
-        .map((r) => {
-          if ('reward' in r) {
-            return r.reward
-          }
-          return null
-        })
-    })
-  })
+  const { data: tokenIdResults = [], isLoading } = useSWR(
+    account && [harvestCalls],
+    () => {
+      return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
+        return res
+          .map((r) => masterchefV3.interface.decodeFunctionResult('harvest', r))
+          .map((r) => {
+            if ('reward' in r) {
+              return r.reward
+            }
+            return null
+          })
+      })
+    },
+    {
+      keepPreviousData: true,
+    },
+  )
 
   const pendingCakeByTokenIds = useMemo(
     () =>

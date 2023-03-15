@@ -19,7 +19,7 @@ import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 import { TickData } from "./types";
 import { useActiveTicks } from "./hooks/useActiveTicks";
 
-export interface RoiCalculatorProps {
+export type RoiCalculatorProps = {
   sqrtRatioX96?: JSBI;
   liquidity?: JSBI;
   independentAmount?: CurrencyAmount<Currency>;
@@ -38,8 +38,19 @@ export interface RoiCalculatorProps {
 
   // Average 24h historical trading volume in USD
   volume24H?: number;
+  max?: string;
   maxLabel?: string;
-}
+} & (RoiCalculatorFarmProps | RoiCalculatorLPProps);
+
+type RoiCalculatorLPProps = {
+  isFarm?: false;
+};
+
+type RoiCalculatorFarmProps = {
+  isFarm: true;
+  cakePrice?: string;
+  cakeApr?: string;
+};
 
 // Price is always price of token0
 export function RoiCalculator({
@@ -59,6 +70,8 @@ export function RoiCalculator({
   priceUpper,
   volume24H,
   maxLabel,
+  max,
+  ...props
 }: RoiCalculatorProps) {
   const { t } = useTranslation();
   const [usdValue, setUsdValue] = useState(String(depositAmountInUsd));
@@ -102,15 +115,16 @@ export function RoiCalculator({
     currencyBUsdPrice,
   });
   const maxUsdValue = useMemo<string | undefined>(() => {
+    if (max) return max;
     if (!balanceA || !balanceB || typeof currencyAUsdPrice !== "number" || typeof currencyBUsdPrice !== "number") {
       return undefined;
     }
     const maxA = parseFloat(balanceA.toExact()) * currencyAUsdPrice;
     const maxB = parseFloat(balanceA.toExact()) * currencyBUsdPrice;
     return String(Math.max(maxA, maxB));
-  }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice]);
+  }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice, max]);
 
-  const { fee, rate, apr, apy } = useRoi({
+  const { fee, rate, apr, apy, cakeApy } = useRoi({
     amountA,
     amountB,
     currencyAUsdPrice,
@@ -124,7 +138,15 @@ export function RoiCalculator({
     compoundEvery: compoundingIndexToFrequency[compoundIndex],
     stakeFor: spanIndexToSpan[spanIndex],
     compoundOn,
+    cakeApr:
+      props.isFarm && props.cakeApr && Number.isFinite(+props.cakeApr) && +props.cakeApr > 0
+        ? +props.cakeApr
+        : undefined,
   });
+
+  const lpReward = parseFloat(fee.toSignificant(6));
+  const totalRoi =
+    lpReward + (props.isFarm && props.cakeApr && Number.isFinite(+props.cakeApr) ? +props.cakeApr * +usdValue : 0);
 
   return (
     <>
@@ -193,7 +215,7 @@ export function RoiCalculator({
           />
         </Section>
         <ImpermanentLossCalculator
-          lpReward={parseFloat(fee.toSignificant(6))}
+          lpReward={lpReward}
           amountA={amountA}
           amountB={amountB}
           currencyAUsdPrice={currencyAUsdPrice}
@@ -201,17 +223,24 @@ export function RoiCalculator({
           tickLower={priceRange?.tickLower}
           tickUpper={priceRange?.tickUpper}
           sqrtRatioX96={sqrtRatioX96}
+          isFarm={props.isFarm}
+          usdValue={usdValue}
+          cakeApy={cakeApy}
+          cakePrice={props.isFarm ? props.cakePrice : undefined}
         />
         <AnimatedArrow state={{}} />
-        <RoiRate usdAmount={parseFloat(fee.toSignificant(6))} rate={rate} />
+        <RoiRate usdAmount={totalRoi} rate={rate} />
       </ScrollableContainer>
       <Details
-        totalYield={fee.toSignificant(6)}
+        totalYield={totalRoi}
         lpReward={fee.toSignificant(6)}
         lpApr={apr}
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
+        farmApr={props.isFarm ? props.cakeApr : undefined}
+        farmReward={props.isFarm && props.cakeApr ? +props.cakeApr * +usdValue : undefined}
+        isFarm={props.isFarm}
       />
     </>
   );
