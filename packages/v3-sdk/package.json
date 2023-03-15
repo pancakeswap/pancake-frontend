@@ -13,6 +13,7 @@
     "pancakeswap",
     "bsc"
   ],
+  "sideEffects": false,
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/index.mjs",
@@ -24,8 +25,6 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@uniswap/swap-router-contracts": "^1.2.1",
-    "@uniswap/v3-periphery": "^1.1.1",
     "@uniswap/v3-staker": "1.0.0",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",

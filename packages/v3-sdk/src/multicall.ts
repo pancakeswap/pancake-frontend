@@ -1,8 +1,29 @@
 import { Interface } from '@ethersproject/abi'
-import IMulticall from '@uniswap/v3-periphery/artifacts/contracts/interfaces/IMulticall.sol/IMulticall.json'
+
+const IMulticall = [
+  {
+    inputs: [
+      {
+        internalType: 'bytes[]',
+        name: 'data',
+        type: 'bytes[]',
+      },
+    ],
+    name: 'multicall',
+    outputs: [
+      {
+        internalType: 'bytes[]',
+        name: 'results',
+        type: 'bytes[]',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+] as const
 
 export abstract class Multicall {
-  public static INTERFACE: Interface = new Interface(IMulticall.abi)
+  public static INTERFACE: Interface = new Interface(IMulticall)
 
   /**
    * Cannot be constructed.

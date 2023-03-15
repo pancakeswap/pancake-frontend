@@ -1,6 +1,5 @@
 import { Interface } from '@ethersproject/abi'
 import invariant from 'tiny-invariant'
-import IApproveAndCall from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IApproveAndCall.sol/IApproveAndCall.json'
 import { Currency, Percent, Token } from '@pancakeswap/sdk'
 import {
   MintSpecificOptions,
@@ -10,6 +9,7 @@ import {
   toHex,
 } from '@pancakeswap/v3-sdk'
 import JSBI from 'jsbi'
+import IApproveAndCall from './abi/IApproveAndCall.json'
 
 // condensed version of v3-sdk AddLiquidityOptions containing only necessary swap + add attributes
 export type CondensedAddLiquidityOptions = Omit<MintSpecificOptions, 'createPool'> | IncreaseSpecificOptions
@@ -28,7 +28,7 @@ export function isMint(options: CondensedAddLiquidityOptions): options is Omit<M
 }
 
 export abstract class ApproveAndCall {
-  public static INTERFACE: Interface = new Interface(IApproveAndCall.abi)
+  public static INTERFACE: Interface = new Interface(IApproveAndCall)
 
   public static encodeApproveMax(token: Token): string {
     return ApproveAndCall.INTERFACE.encodeFunctionData('approveMax', [token.address])

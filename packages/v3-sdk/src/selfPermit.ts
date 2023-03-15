@@ -1,6 +1,6 @@
 import { BigintIsh, Token } from '@pancakeswap/sdk'
 import { Interface } from '@ethersproject/abi'
-import ISelfPermit from '@uniswap/v3-periphery/artifacts/contracts/interfaces/ISelfPermit.sol/ISelfPermit.json'
+import ISelfPermit from './abi/SelfPermit.json'
 import { toHex } from './utils'
 
 export interface StandardPermitArguments {
@@ -26,7 +26,7 @@ function isAllowedPermit(permitOptions: PermitOptions): permitOptions is Allowed
 }
 
 export abstract class SelfPermit {
-  public static INTERFACE: Interface = new Interface(ISelfPermit.abi)
+  public static INTERFACE: Interface = new Interface(ISelfPermit)
 
   /**
    * Cannot be constructed.

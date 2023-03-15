@@ -1,15 +1,15 @@
 import { Interface } from '@ethersproject/abi'
 import { Percent, Token, validateAndParseAddress } from '@pancakeswap/sdk'
-import IPeripheryPaymentsWithFeeExtended from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IPeripheryPaymentsWithFeeExtended.sol/IPeripheryPaymentsWithFeeExtended.json'
 import { FeeOptions, Payments, toHex } from '@pancakeswap/v3-sdk'
 import JSBI from 'jsbi'
+import IPeripheryPaymentsWithFeeExtended from './abi/IPeripheryPaymentsWithFeeExtended.json'
 
 function encodeFeeBips(fee: Percent): string {
   return toHex(fee.multiply(10_000).quotient)
 }
 
 export abstract class PaymentsExtended {
-  public static INTERFACE: Interface = new Interface(IPeripheryPaymentsWithFeeExtended.abi)
+  public static INTERFACE: Interface = new Interface(IPeripheryPaymentsWithFeeExtended)
 
   public static encodeUnwrapWETH9(amountMinimum: JSBI, recipient?: string, feeOptions?: FeeOptions): string {
     // if there's a recipient, just pass it along

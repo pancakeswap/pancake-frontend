@@ -8,7 +8,6 @@ import {
   validateAndParseAddress,
   WNATIVE,
 } from '@pancakeswap/sdk'
-import ISwapRouter02 from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/ISwapRouter02.sol/ISwapRouter02.json'
 import {
   encodeRouteToPath,
   FeeOptions,
@@ -34,6 +33,7 @@ import { MixedRouteTrade } from './entities/mixedRoute/trade'
 import { encodeMixedRouteToPath } from './utils/encodeMixedRouteToPath'
 import { MixedRouteSDK } from './entities/mixedRoute/route'
 import { partitionMixedRouteByProtocol, getOutputOfPools } from './utils'
+import ISmartRouter from './abi/SmartRouter.json'
 
 const ZERO = JSBI.BigInt(0)
 const REFUND_ETH_PRICE_IMPACT_THRESHOLD = new Percent(JSBI.BigInt(50), JSBI.BigInt(100))
@@ -90,7 +90,7 @@ type AnyTradeType =
  * Represents the Uniswap V2 + V3 SwapRouter02, and has static methods for helping execute trades.
  */
 export abstract class SwapRouter {
-  public static INTERFACE: Interface = new Interface(ISwapRouter02.abi)
+  public static INTERFACE: Interface = new Interface(ISmartRouter)
 
   /**
    * @notice Generates the calldata for a Swap with a V2 Route.

@@ -7,6 +7,7 @@
     "url": "https://github.com/pancakeswap/pancake-frontend.git",
     "directory": "packages/smart-router"
   },
+  "sideEffects": false,
   "scripts": {
     "build": "yarn typechain && tsup",
     "dev": "tsup --watch",
@@ -21,10 +22,12 @@
     "@pancakeswap/v3-sdk": "*"
   },
   "dependencies": {
+    "@pancakeswap/tokens": "*",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/contracts": "^5.0.0",
     "@ethersproject/providers": "^5.0.0",
     "@ethersproject/solidity": "^5.0.0",
+    "@ethersproject/bignumber": "^5.0.0",
     "@pancakeswap/multicall": "^0.0.2",
     "async-retry": "^1.3.1",
     "graphql": "^16.6.0",

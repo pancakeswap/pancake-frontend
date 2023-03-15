@@ -11,6 +11,7 @@
   "files": [
     "dist"
   ],
+  "sideEffects": false,
   "scripts": {
     "test": "vitest --run",
     "build": "tsup",
@@ -23,7 +24,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@uniswap/swap-router-contracts": "1.1.0",
     "@pancakeswap/sdk": "*",
     "@pancakeswap/v3-sdk": "*",
     "tiny-invariant": "^1.1.0",

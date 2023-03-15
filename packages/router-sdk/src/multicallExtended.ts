@@ -1,7 +1,7 @@
 import { Interface } from '@ethersproject/abi'
 import { BigintIsh } from '@pancakeswap/sdk'
-import IMulticallExtended from '@uniswap/swap-router-contracts/artifacts/contracts/interfaces/IMulticallExtended.sol/IMulticallExtended.json'
 import { Multicall, toHex } from '@pancakeswap/v3-sdk'
+import IMulticallExtended from './abi/IMulticallExtended.json'
 
 // deadline or previousBlockhash
 export type Validation = BigintIsh | string
@@ -15,7 +15,7 @@ function validateAndParseBytes32(bytes32: string): string {
 }
 
 export abstract class MulticallExtended {
-  public static INTERFACE: Interface = new Interface(IMulticallExtended.abi)
+  public static INTERFACE: Interface = new Interface(IMulticallExtended)
 
   public static encodeMulticall(calldatasArg: string | string[], validation?: Validation): string {
     let calldatas = calldatasArg

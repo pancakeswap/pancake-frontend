@@ -11,7 +11,7 @@ import {
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { Interface } from '@ethersproject/abi'
-import INonfungiblePositionManager from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
+import INonfungiblePositionManager from './abi/NonfungiblePositionManager.json'
 import { Position } from './entities/position'
 import { ONE, ZERO } from './internalConstants'
 import { MethodParameters, toHex } from './utils/calldata'
@@ -174,7 +174,7 @@ export interface RemoveLiquidityOptions {
 }
 
 export abstract class NonfungiblePositionManager {
-  public static INTERFACE: Interface = new Interface(INonfungiblePositionManager.abi)
+  public static INTERFACE: Interface = new Interface(INonfungiblePositionManager)
 
   /**
    * Cannot be constructed.

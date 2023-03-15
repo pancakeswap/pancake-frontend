@@ -10,8 +10,8 @@ import {
   Zap,
   IPancakePair,
 } from 'config/abi/types'
-import QuoterJson from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
-import QuoterV2Json from '@uniswap/swap-router-contracts/artifacts/contracts/lens/QuoterV2.sol/QuoterV2.json'
+import QuoterAbi from 'config/abi/Quoter.json'
+import QuoterV2Abi from 'config/abi/QuoterV2.json'
 
 import zapAbi from 'config/abi/zap.json'
 import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
@@ -403,11 +403,8 @@ export const useStableSwapNativeHelperContract = () => {
   return useMemo(() => getStableSwapNativeHelperContract(signer, chainId), [signer, chainId])
 }
 
-const { abi: QuoterABI } = QuoterJson
-const { abi: QuoterV2ABI } = QuoterV2Json
-
 export const useQuoterContract = (useQuoterV2 = false) => {
-  return useContract(addresses.quoter, useQuoterV2 ? QuoterV2ABI : QuoterABI)
+  return useContract(addresses.quoter, useQuoterV2 ? QuoterV2Abi : QuoterAbi)
 }
 
 // Philip TODO: Add NonfungiblePositionManager | null type

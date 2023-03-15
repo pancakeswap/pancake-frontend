@@ -2,7 +2,7 @@ import { Interface } from '@ethersproject/abi'
 import { BigintIsh, Currency, CurrencyAmount, Percent, TradeType, validateAndParseAddress } from '@pancakeswap/sdk'
 
 import invariant from 'tiny-invariant'
-import ISwapRouter from '@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
+import ISwapRouter from './abi/SwapRouter.json'
 import { Trade } from './entities/trade'
 import { ADDRESS_ZERO } from './constants'
 import { PermitOptions, SelfPermit } from './selfPermit'
@@ -50,7 +50,7 @@ export interface SwapOptions {
  * Represents the Uniswap V3 SwapRouter, and has static methods for helping execute trades.
  */
 export abstract class SwapRouter {
-  public static INTERFACE: Interface = new Interface(ISwapRouter.abi)
+  public static INTERFACE: Interface = new Interface(ISwapRouter)
 
   /**
    * Cannot be constructed.
