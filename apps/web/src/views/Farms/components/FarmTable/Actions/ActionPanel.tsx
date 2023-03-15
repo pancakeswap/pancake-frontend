@@ -186,8 +186,8 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const { account } = useActiveWeb3React()
 
   const hasNoPosition = useMemo(
-    () => farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
-    [farm.stakedPositions.length, farm.unstakedPositions.length],
+    () => !userDataReady && farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
+    [farm.stakedPositions.length, farm.unstakedPositions.length, userDataReady],
   )
   const addLiquidityModal = useModalV2()
 

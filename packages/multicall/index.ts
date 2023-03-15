@@ -41,7 +41,7 @@ export interface MulticallOptions extends CallOverrides {
  * 2. The return includes a boolean whether the call was successful e.g. [wasSuccessful, callResult]
  */
 interface MulticallV2Params {
-  abi: any[]
+  abi: any[] | any
   calls: Call[]
   chainId?: ChainId
   options?: MulticallOptions

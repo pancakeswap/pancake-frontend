@@ -1,11 +1,11 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
+import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
 import { useState, ReactNode } from "react";
 import styled from "styled-components";
 
 import { ExpandableLabel, Box, Grid, Text, Flex } from "../../components";
 import { Footer, BulletList } from "../../components/RoiCalculatorModal/RoiCalculatorFooter";
-import { toSignificant } from "./utils";
 
 const StyledFooter = styled(Footer)`
   border-radius: 16px;
@@ -54,13 +54,13 @@ export function Details({
           {t("Yield")}
         </Text>
         <Text small bold textAlign="right">
-          ${toSignificant(totalYield)}
+          ${formatAmount(+totalYield)}
         </Text>
         <Text color="textSubtle" small style={{ textIndent: "1em" }}>
           {t("LP Fee Yield")}
         </Text>
         <Text small color="textSubtle" textAlign="right">
-          ${toSignificant(lpReward)}
+          ${formatAmount(+lpReward)}
         </Text>
         {isFarm && (
           <>
@@ -68,7 +68,7 @@ export function Details({
               {t("Farm Yield")}
             </Text>
             <Text small color="textSubtle" textAlign="right">
-              ${toSignificant(farmReward)}
+              ${formatAmount(+farmReward)}
             </Text>
           </>
         )}

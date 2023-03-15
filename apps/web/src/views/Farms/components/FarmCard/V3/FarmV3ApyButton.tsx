@@ -16,7 +16,9 @@ import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { LiquidityFormState } from 'hooks/v3/types'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
+import { useFarmsV3 } from 'state/farmsV3/hooks'
+import BigNumber from 'bignumber.js'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -45,12 +47,15 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
 
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
 
-  const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
+  // use state to prevent existing position from being updated from props after changes on roi modal
+  const [existingPosition] = useState(existingPosition_)
+
+  const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances, outOfRange } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
     feeAmount,
     baseCurrency ?? undefined,
-    existingPosition_,
+    existingPosition,
     formState,
   )
 
@@ -67,6 +72,46 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
   const volume24H = 10
 
+  const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
+  const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
+
+  const depositUsd = useMemo(
+    () =>
+      balanceA &&
+      balanceB &&
+      currencyAUsdPrice &&
+      currencyBUsdPrice &&
+      String(parseFloat(balanceA.toExact()) * currencyAUsdPrice + parseFloat(balanceB.toExact()) * currencyBUsdPrice),
+    [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice],
+  )
+
+  const { data: farmV3 } = useFarmsV3()
+
+  const positionCakeApr = useMemo(
+    () =>
+      existingPosition_
+        ? outOfRange
+          ? '0'
+          : new BigNumber(existingPosition_.liquidity.toString())
+              .div(farm.lmPoolLiquidity)
+              .times(farm.poolWeight)
+              .times(farmV3.cakePerSecond)
+              .times(365 * 60 * 60 * 24)
+              .div(depositUsd)
+              .toFixed(2)
+        : '0',
+    [depositUsd, existingPosition_, farm.lmPoolLiquidity, farm.poolWeight, farmV3.cakePerSecond, outOfRange],
+  )
+
+  const cakeAprFactor = useMemo(
+    () =>
+      new BigNumber(farm.poolWeight)
+        .times(farmV3.cakePerSecond)
+        .times(365 * 60 * 60 * 24)
+        .div(farm.lmPoolLiquidity),
+    [farm.lmPoolLiquidity, farm.poolWeight, farmV3.cakePerSecond],
+  )
+
   const { apr } = useRoi({
     tickLower,
     tickUpper,
@@ -81,19 +126,6 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
     volume24H,
   })
 
-  const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
-  const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
-
-  const depositUsd = useMemo(
-    () =>
-      balanceA &&
-      balanceB &&
-      currencyAUsdPrice &&
-      currencyBUsdPrice &&
-      String(parseFloat(balanceA.toExact()) * currencyAUsdPrice + parseFloat(balanceB.toExact()) * currencyBUsdPrice),
-    [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice],
-  )
-
   const displayApr = getDisplayApr(+farm.cakeApr, +apr.toSignificant(2))
 
   if (!displayApr) {
@@ -103,9 +135,12 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
   return (
     <>
       {variant === 'icon' ? (
-        <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm" onClick={roiModal.onOpen}>
-          <CalculateIcon width="18px" color="textSubtle" />
-        </IconButton>
+        <>
+          {positionCakeApr}%
+          <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm" onClick={roiModal.onOpen}>
+            <CalculateIcon width="18px" color="textSubtle" />
+          </IconButton>
+        </>
       ) : (
         <FarmUI.FarmApyButton
           variant="text-and-button"
@@ -139,8 +174,8 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
         priceUpper={priceUpper}
         priceLower={priceLower}
         isFarm
-        cakeApr={farm.cakeApr}
         cakePrice={cakePrice.toString()}
+        cakeAprFactor={cakeAprFactor}
       />
     </>
   )

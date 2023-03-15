@@ -75,7 +75,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
         chainId,
       })
 
-      const cakePerSeconds = new BigNumber(latestPeriodCakePerSecond.toString()).div(1e18).div(1e12).toString()
+      const cakePerSecond = new BigNumber(latestPeriodCakePerSecond.toString()).div(1e18).div(1e12).toString()
 
       const farmsWithPrice = await farmV3FetchFarms({
         farms,
@@ -83,7 +83,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
         multicallv2,
         masterChefAddress,
         totalAllocPoint,
-        cakePerSeconds,
+        cakePerSecond,
         tvlMap,
         commonPrice,
       })
@@ -91,7 +91,7 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
       return {
         poolLength: poolLength.toNumber(),
         farmsWithPrice,
-        cakePerSeconds,
+        cakePerSecond,
       }
     } catch (error) {
       console.error(error)

@@ -17,6 +17,7 @@ import {
   SyncAltIcon,
   Spinner,
   useMatchBreakpoints,
+  NotFound,
 } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -238,7 +239,7 @@ export default function PoolPage() {
   const masterchefV3 = useMasterchefV3()
   const { tokenIds: stakedTokenIds, loading: tokenIdsInMCv3Loading } = useV3TokenIdsByAccount(masterchefV3, account)
 
-  const isStakedInMCv3 = Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
+  const isStakedInMCv3 = tokenId && Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
@@ -393,9 +394,13 @@ export default function PoolPage() {
     'TransactionConfirmationModalColelctFees',
   )
 
-  const isLoading = loading || poolState === PoolState.LOADING || !feeAmount
+  const isLoading = loading || poolState === PoolState.LOADING || poolState === PoolState.INVALID || !feeAmount
 
   const { isMobile } = useMatchBreakpoints()
+
+  if (!isLoading && poolState === PoolState.NOT_EXISTS) {
+    return <NotFound />
+  }
 
   return (
     <Page>

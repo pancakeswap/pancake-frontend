@@ -37,10 +37,10 @@ const farmV3ApiFetch = (chainId: number) =>
       }
     })
 
-const fallback = {
+const fallback: Awaited<ReturnType<typeof farmFetcherV3.fetchFarms>> = {
   farmsWithPrice: [],
   poolLength: 0,
-  latestPeriodCakePerSecond: '0',
+  cakePerSecond: '0',
 }
 
 const API_FLAG = false
@@ -159,7 +159,7 @@ export const usePositionsByUser = (
       tokenIdResults?.reduce<IPendingCakeByTokenId>((acc, pendingCake, i) => {
         const position = stakedPositions[i]
 
-        return pendingCake ? { ...acc, [position.tokenId.toString()]: pendingCake } : acc
+        return pendingCake && position?.tokenId ? { ...acc, [position.tokenId.toString()]: pendingCake } : acc
       }, {} as IPendingCakeByTokenId) ?? {},
     [stakedPositions, tokenIdResults],
   )

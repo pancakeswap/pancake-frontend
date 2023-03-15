@@ -1,7 +1,9 @@
-import { Currency, CurrencyAmount, JSBI, Price, Token } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO } from "@pancakeswap/sdk";
 import { FeeAmount, FeeCalculator, Tick, TickMath } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, useState } from "react";
+import BigNumber from "bignumber.js";
+import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
 import { LiquidityChartRangeInput, Button } from "../../components";
@@ -49,7 +51,7 @@ type RoiCalculatorLPProps = {
 type RoiCalculatorFarmProps = {
   isFarm: true;
   cakePrice?: string;
-  cakeApr?: string;
+  cakeAprFactor?: BigNumber;
 };
 
 // Price is always price of token0
@@ -128,6 +130,41 @@ export function RoiCalculator({
     return String(Math.max(maxA, maxB));
   }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice, max]);
 
+  const derivedCakeApr = useMemo(() => {
+    if (
+      !currencyB ||
+      !priceRange?.tickUpper ||
+      !priceRange?.tickLower ||
+      !sqrtRatioX96 ||
+      !props.isFarm ||
+      !props.cakeAprFactor
+    )
+      return undefined;
+
+    const positionLiquidity = FeeCalculator.getLiquidityBySingleAmount({
+      amount: amountA,
+      currency: currencyB,
+      tickUpper: priceRange?.tickUpper,
+      tickLower: priceRange?.tickLower,
+      sqrtRatioX96,
+    });
+
+    const cakeApr = JSBI.greaterThan(positionLiquidity, ZERO)
+      ? new BigNumber(positionLiquidity.toString()).times(props.cakeAprFactor).div(usdValue)
+      : BIG_ZERO;
+
+    return cakeApr;
+  }, [
+    currencyB,
+    priceRange,
+    amountA,
+    sqrtRatioX96,
+    props.isFarm,
+    // @ts-ignore
+    props.cakeAprFactor,
+    usdValue,
+  ]);
+
   const { fee, rate, apr, apy, cakeApy } = useRoi({
     amountA,
     amountB,
@@ -142,15 +179,12 @@ export function RoiCalculator({
     compoundEvery: compoundingIndexToFrequency[compoundIndex],
     stakeFor: spanIndexToSpan[spanIndex],
     compoundOn,
-    cakeApr:
-      props.isFarm && props.cakeApr && Number.isFinite(+props.cakeApr) && +props.cakeApr > 0
-        ? +props.cakeApr
-        : undefined,
+    cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
   });
 
   const lpReward = parseFloat(fee.toSignificant(6));
-  const totalRoi =
-    lpReward + (props.isFarm && props.cakeApr && Number.isFinite(+props.cakeApr) ? +props.cakeApr * +usdValue : 0);
+  const farmReward = props.isFarm && cakeApy ? (cakeApy * +usdValue) / 100 : 0;
+  const totalRoi = lpReward + farmReward;
 
   return (
     <>
@@ -242,8 +276,8 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={props.isFarm ? props.cakeApr : undefined}
-        farmReward={props.isFarm && props.cakeApr ? +props.cakeApr * +usdValue : undefined}
+        farmApr={props.isFarm ? derivedCakeApr?.toFixed(2) : undefined}
+        farmReward={farmReward}
         isFarm={props.isFarm}
       />
     </>

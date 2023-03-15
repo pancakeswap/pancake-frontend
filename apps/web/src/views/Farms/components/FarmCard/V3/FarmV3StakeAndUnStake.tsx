@@ -35,6 +35,7 @@ interface FarmV3StakeAndUnStakeProps {
   quoteToken: Token
   positionType: PositionType
   isPending: boolean
+  noLiquidity?: boolean
   handleStake: () => void
   handleUnStake: () => void
 }
@@ -121,6 +122,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
   isPending,
   handleStake,
   handleUnStake,
+  noLiquidity,
 }) => {
   const { t } = useTranslation()
 
@@ -130,7 +132,12 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
       <RowBetween gap="16px">
         <FarmV3LPPosition farm={farm} token={token} quoteToken={quoteToken} position={position} />
         {positionType === 'unstaked' ? (
-          <Button width={['120px']} style={{ alignSelf: 'center' }} disabled={isPending} onClick={handleStake}>
+          <Button
+            width={['120px']}
+            style={{ alignSelf: 'center' }}
+            disabled={isPending || noLiquidity}
+            onClick={handleStake}
+          >
             {t('Stake')}
           </Button>
         ) : (

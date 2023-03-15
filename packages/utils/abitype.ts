@@ -319,7 +319,7 @@ export type GetConfig<
  * @example
  * type Result = GetResult<[…], 'tokenURI'>
  */
-type GetResult<
+export type GetResult<
   TAbi extends Abi | readonly unknown[] = Abi,
   TFunctionName extends string = string,
   TFunction extends AbiFunction & {

@@ -5,10 +5,80 @@ import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
 import { BigNumber, FixedNumber } from 'ethers'
 import chunk from 'lodash/chunk'
+import { GetResult } from '@pancakeswap/utils/abitype'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { FIXED_ZERO } from './const'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
 import { getTokenAmount } from './v2/fetchFarmsV2'
+
+export async function farmV3FetchFarms({
+  farms,
+  multicallv2,
+  masterChefAddress,
+  chainId,
+  totalAllocPoint,
+  cakePerSecond,
+  tvlMap,
+  commonPrice,
+}: {
+  farms: FarmConfigV3[]
+  multicallv2: MultiCallV2
+  masterChefAddress: string
+  chainId: number
+  totalAllocPoint: BigNumber
+  cakePerSecond: string
+  tvlMap: TvlMap
+  commonPrice: CommonPrice
+}) {
+  const [poolInfos, cakePrice, lpData, v3PoolData] = await Promise.all([
+    fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress),
+    (await fetch('https://farms-api.pancakeswap.com/price/cake')).json(),
+    (
+      await fetchPublicFarmsData(farms, chainId, multicallv2)
+    ).map(([tokenBalanceLP, quoteTokenBalanceLP]: any[]) => ({
+      tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
+      quoteTokenBalanceLP: FixedNumber.from(quoteTokenBalanceLP[0]),
+    })),
+    fetchV3Pools(farms, chainId, multicallv2),
+  ])
+
+  const lmPoolInfos = await fetchLmPools(
+    v3PoolData.map((v3Pool) => v3Pool[1][0]),
+    chainId,
+    multicallv2,
+  )
+
+  const farmsData = farms.map((farm, index) => {
+    const { token, quoteToken, ...f } = farm
+    const lmPoolAddress = v3PoolData[index][1][0]
+    return {
+      ...f,
+      token,
+      quoteToken,
+      lmPool: lmPoolAddress,
+      lmPoolLiquidity: lmPoolInfos[lmPoolAddress],
+      ...getClassicFarmsDynamicData({
+        ...lpData[index],
+        ...(v3PoolData[index][0] as any),
+        token0: farm.token,
+        token1: farm.quoteToken,
+      }),
+      ...getFarmAllocation({
+        allocPoint: poolInfos[index]?.allocPoint,
+        totalAllocPoint,
+      }),
+    }
+  })
+
+  const combinedCommonPrice = {
+    ...DEFAULT_COMMON_PRICE[chainId],
+    ...commonPrice,
+  }
+
+  const farmsWithPrice = getFarmsPrices(farmsData, tvlMap, cakePrice.price, cakePerSecond, combinedCommonPrice)
+
+  return farmsWithPrice
+}
 
 const masterchefV3Abi = [
   {
@@ -138,89 +208,21 @@ const fetchPoolInfos = async (
   }
 }
 
-export async function farmV3FetchFarms({
-  farms,
-  multicallv2,
-  masterChefAddress,
-  chainId,
-  totalAllocPoint,
-  cakePerSeconds,
-  tvlMap,
-  commonPrice,
-}: {
-  farms: FarmConfigV3[]
-  multicallv2: MultiCallV2
-  masterChefAddress: string
-  chainId: number
-  totalAllocPoint: BigNumber
-  cakePerSeconds: string
-  tvlMap: TvlMap
-  commonPrice: CommonPrice
-}) {
-  const [poolInfos, cakePrice, lpData, v3PoolData] = await Promise.all([
-    fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress),
-    (await fetch('https://farms-api.pancakeswap.com/price/cake')).json(),
-    (
-      await fetchPublicFarmsData(farms, chainId, multicallv2)
-    ).map(([tokenBalanceLP, quoteTokenBalanceLP]: any[]) => ({
-      tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
-      quoteTokenBalanceLP: FixedNumber.from(quoteTokenBalanceLP[0]),
-    })),
-    fetchV3Pools(farms, chainId, multicallv2),
-  ])
-
-  const farmsData = farms.map((farm, index) => {
-    const { token, quoteToken, ...f } = farm
-    return {
-      ...f,
-      token,
-      quoteToken,
-      lmPool: v3PoolData[index][1][0],
-      ...getClassicFarmsDynamicData({
-        ...lpData[index],
-        ...(v3PoolData[index][0] as any),
-        token0: farm.token,
-        token1: farm.quoteToken,
-      }),
-      ...getFarmAllocation({
-        allocPoint: poolInfos[index]?.allocPoint,
-        totalAllocPoint,
-      }),
-    }
-  })
-
-  const combinedCommonPrice = {
-    ...DEFAULT_COMMON_PRICE[chainId],
-    ...commonPrice,
-  }
-
-  const farmsWithPrice = getFarmsPrices(
-    farmsData,
-    chainId,
-    tvlMap,
-    cakePrice.price,
-    cakePerSeconds,
-    combinedCommonPrice,
-  )
-
-  return farmsWithPrice
-}
-
-const getCakeApr = (poolWeight: string, activeTvlUSD: FixedNumber, cakePriceUSD: string, cakePerSeconds: string) => {
+const getCakeApr = (poolWeight: string, activeTvlUSD: FixedNumber, cakePriceUSD: string, cakePerSecond: string) => {
   let cakeApr = '0'
 
   if (
     !cakePriceUSD ||
     !activeTvlUSD ||
     activeTvlUSD.isZero() ||
-    !cakePerSeconds ||
-    +cakePerSeconds === 0 ||
+    !cakePerSecond ||
+    +cakePerSecond === 0 ||
     !poolWeight
   ) {
     return cakeApr
   }
 
-  const cakeRewardPerYear = new BN(cakePerSeconds).times(365 * 60 * 60 * 24)
+  const cakeRewardPerYear = new BN(cakePerSecond).times(365 * 60 * 60 * 24)
 
   const cakeRewardPerYearForPool = new BN(poolWeight)
     .times(cakeRewardPerYear)
@@ -315,6 +317,22 @@ async function fetchPublicFarmsData(farms: FarmConfigV3[], chainId: number, mult
   }
 }
 
+const lmPoolAbi = [
+  {
+    inputs: [],
+    name: 'lmLiquidity',
+    outputs: [
+      {
+        internalType: 'uint128',
+        name: '',
+        type: 'uint128',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const
+
 const v3PoolAbi = [
   {
     inputs: [],
@@ -338,7 +356,33 @@ const v3PoolAbi = [
     stateMutability: 'view',
     type: 'function',
   },
-]
+] as const
+
+type Slot0 = GetResult<typeof v3PoolAbi, 'slot0'>
+type LmPool = GetResult<typeof v3PoolAbi, 'lmPool'>
+
+type LmLiquidity = GetResult<typeof lmPoolAbi, 'lmLiquidity'>
+
+async function fetchLmPools(lmPoolAddresses: string[], chainId: number, multicallv2: MultiCallV2) {
+  const lmPoolCalls = lmPoolAddresses.map((address) => ({
+    address,
+    name: 'lmLiquidity',
+  }))
+
+  const resp = (await multicallv2({
+    abi: lmPoolAbi,
+    calls: lmPoolCalls,
+    chainId,
+  })) as LmLiquidity[]
+
+  const lmPools: Record<string, string> = {}
+
+  for (const [index, liquidity] of resp.entries()) {
+    lmPools[lmPoolAddresses[index]] = liquidity.toString()
+  }
+
+  return lmPools
+}
 
 async function fetchV3Pools(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
   const v3PoolCalls = farms.flatMap((f) => [
@@ -359,7 +403,7 @@ async function fetchV3Pools(farms: FarmConfigV3[], chainId: number, multicallv2:
     chainId,
   })
 
-  return chunk(resp, chunkSize)
+  return chunk(resp, chunkSize) as [Slot0, LmPool][]
 }
 
 const fetchFarmCalls = (farm: FarmConfigV3) => {
@@ -412,10 +456,9 @@ export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promi
 
 function getFarmsPrices(
   farms: FarmV3Data[],
-  chainId: number,
   tvls: TvlMap,
   cakePriceUSD: string,
-  cakePerSeconds: string,
+  cakePerSecond: string,
   commonPrice: CommonPrice,
 ): FarmV3DataWithPrice[] {
   return farms.map((farm) => {
@@ -463,7 +506,7 @@ function getFarmsPrices(
 
     return {
       ...farm,
-      cakeApr: getCakeApr(farm.poolWeight, tvl, cakePriceUSD, cakePerSeconds),
+      cakeApr: getCakeApr(farm.poolWeight, tvl, cakePriceUSD, cakePerSecond),
       activeTvlUSD: tvl.toString(),
       activeTvlUSDUpdatedAt: tvlUpdatedAt,
       tokenPriceBusd: tokenPriceBusd.toString(),
