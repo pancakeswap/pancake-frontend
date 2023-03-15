@@ -4,7 +4,7 @@ import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } fro
 import { priceToClosestTick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
 import { CAKE } from "@pancakeswap/tokens";
 
-import { Section } from "./DynamicSection";
+import { Section } from "./Section";
 import { Toggle, Button, RowBetween, DoubleCurrencyLogo, PencilIcon, Flex } from "../../components";
 import {
   AssetCard,

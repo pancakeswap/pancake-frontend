@@ -6,8 +6,8 @@ import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
-import { LiquidityChartRangeInput, Button } from "../../components";
-import { DynamicSection, Section } from "./DynamicSection";
+import { LiquidityChartRangeInput, Button, DynamicSection } from "../../components";
+import { Section } from "./Section";
 import { DepositAmountInput } from "./DepositAmount";
 import { RangeSelector } from "./RangeSelector";
 import { StakeSpan } from "./StakeSpan";
