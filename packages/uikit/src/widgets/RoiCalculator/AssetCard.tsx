@@ -1,10 +1,11 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { SpaceProps } from "styled-system";
-import { ReactNode, useCallback, PropsWithChildren } from "react";
 import { Currency, Percent } from "@pancakeswap/sdk";
+import { PropsWithChildren, ReactNode, useCallback } from "react";
 import styled from "styled-components";
+import { SpaceProps } from "styled-system";
 
-import { Card, Table, Th, Box, Text, RowBetween, Td, CurrencyLogo, Row, Flex, Tag, TagProps } from "../../components";
+import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
+import { Box, Card, CurrencyLogo, Flex, Row, RowBetween, Table, Tag, TagProps, Td, Text, Th } from "../../components";
 import { StyledInput } from "./StyledInput";
 import { toSignificant } from "./utils";
 
@@ -167,11 +168,11 @@ export function AssetRow({
         </Td>
       )}
       <Td>
-        <Row>{amount && <Text>{toSignificant(amount)}</Text>}</Row>
+        <Row>{amount && <Text>{formatAmount(+amount)}</Text>}</Row>
       </Td>
       <Td>
         <Row>
-          <Text>${toSignificant(value)}</Text>
+          <Text>${formatAmount(+value)}</Text>
         </Row>
       </Td>
     </tr>

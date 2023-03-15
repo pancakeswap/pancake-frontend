@@ -76,24 +76,17 @@ export function ImpermanentLossCalculator({
 
   const exitAssets = useMemo<Asset[] | undefined>(
     () =>
-      assets &&
-      isFarm &&
-      currencyA &&
-      currencyA.chainId in CAKE &&
-      cakePrice &&
-      cakeApy &&
-      usdValue &&
-      Number.isFinite(cakeApy)
+      assets && isFarm && currencyA && currencyA.chainId in CAKE && cakePrice && cakeApy && usdValue
         ? [
             ...assets,
             {
               currency: CAKE[currencyA.chainId as keyof typeof CAKE],
-              amount: (+usdValue * cakeApy) / +cakePrice,
+              amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / +cakePrice : Infinity,
               price: cakePrice,
-              value: +usdValue * cakeApy,
+              value: Number.isFinite(cakeApy) ? +usdValue * cakeApy : Infinity,
             },
           ]
-        : undefined,
+        : assets,
     [assets, cakeApy, cakePrice, currencyA, isFarm, usdValue]
   );
 
