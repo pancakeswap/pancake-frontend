@@ -79,7 +79,7 @@ export function RoiCalculator({
   const [usdValue, setUsdValue] = useState(String(depositAmountInUsd));
   const [spanIndex, setSpanIndex] = useState(3);
   const [compoundOn, setCompoundOn] = useState(true);
-  const [compoundIndex, setCompoundIndex] = useState(0);
+  const [compoundIndex, setCompoundIndex] = useState(3);
   const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
   const activeTicks = useActiveTicks({ currencyA, currencyB, ticks: ticksRaw, liquidity, tickCurrent });
   const ticks = useMemo(
@@ -142,19 +142,24 @@ export function RoiCalculator({
     )
       return undefined;
 
-    const positionLiquidity = FeeCalculator.getLiquidityBySingleAmount({
-      amount: amountA,
-      currency: currencyB,
-      tickUpper: priceRange?.tickUpper,
-      tickLower: priceRange?.tickLower,
-      sqrtRatioX96,
-    });
+    try {
+      const positionLiquidity = FeeCalculator.getLiquidityBySingleAmount({
+        amount: amountA,
+        currency: currencyB,
+        tickUpper: priceRange?.tickUpper,
+        tickLower: priceRange?.tickLower,
+        sqrtRatioX96,
+      });
 
-    const cakeApr = JSBI.greaterThan(positionLiquidity, ZERO)
-      ? new BigNumber(positionLiquidity.toString()).times(props.cakeAprFactor).div(usdValue)
-      : BIG_ZERO;
+      const cakeApr = JSBI.greaterThan(positionLiquidity, ZERO)
+        ? new BigNumber(positionLiquidity.toString()).times(props.cakeAprFactor).div(usdValue)
+        : BIG_ZERO;
 
-    return cakeApr;
+      return cakeApr;
+    } catch (error) {
+      console.error(error, amountA, priceRange, sqrtRatioX96);
+      return undefined;
+    }
   }, [
     currencyB,
     priceRange,

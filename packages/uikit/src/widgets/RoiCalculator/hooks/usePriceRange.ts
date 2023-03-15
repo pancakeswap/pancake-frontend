@@ -1,5 +1,12 @@
-import { Currency, Price } from "@pancakeswap/sdk";
-import { FeeAmount, nearestUsableTick, TickMath, TICK_SPACINGS, tickToPrice } from "@pancakeswap/v3-sdk";
+import { Currency, ERC20Token, Price } from "@pancakeswap/sdk";
+import {
+  FeeAmount,
+  nearestUsableTick,
+  TickMath,
+  TICK_SPACINGS,
+  tickToPrice,
+  priceToClosestTick,
+} from "@pancakeswap/v3-sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Bound } from "../../../components/LiquidityChartRangeInput/types";
@@ -38,7 +45,7 @@ export function usePriceRange({
 
   const invertPrice = Boolean(baseCurrency && quoteCurrency && quoteCurrency.wrapped.sortsBefore(baseCurrency.wrapped));
 
-  // lower and upper limits in the tick space for `feeAmoun<Trans>
+  // lower and upper limits in the tick space for `feeAmount`
   const tickSpaceLimits: {
     [bound in Bound]: number | undefined;
   } = useMemo(
@@ -80,39 +87,47 @@ export function usePriceRange({
   // lower should always be a smaller tick
   const tickLower = useMemo(
     () =>
-      fullRange
+      priceLower && initialPriceLower?.equalTo(priceLower.asFraction) // price is the same as initial lower price, use initial price instead of parse from input
+        ? priceToClosestTick(priceLower as Price<ERC20Token, ERC20Token>)
+        : fullRange
         ? tickSpaceLimits[Bound.LOWER]
         : invertPrice
         ? tryParseTick(quoteCurrency?.wrapped, baseCurrency?.wrapped, feeAmount, rightRangeTypedValue)
         : tryParseTick(baseCurrency?.wrapped, quoteCurrency?.wrapped, feeAmount, leftRangeTypedValue),
     [
-      leftRangeTypedValue,
-      rightRangeTypedValue,
-      invertPrice,
-      baseCurrency,
-      quoteCurrency,
-      feeAmount,
-      tickSpaceLimits,
+      priceLower,
+      initialPriceLower,
       fullRange,
+      tickSpaceLimits,
+      invertPrice,
+      quoteCurrency?.wrapped,
+      baseCurrency?.wrapped,
+      feeAmount,
+      rightRangeTypedValue,
+      leftRangeTypedValue,
     ]
   );
 
   const tickUpper = useMemo(
     () =>
-      fullRange
+      priceUpper && initialPriceUpper?.equalTo(priceUpper.asFraction)
+        ? priceToClosestTick(priceUpper as Price<ERC20Token, ERC20Token>)
+        : fullRange
         ? tickSpaceLimits[Bound.UPPER]
         : invertPrice
         ? tryParseTick(quoteCurrency?.wrapped, baseCurrency?.wrapped, feeAmount, leftRangeTypedValue)
         : tryParseTick(baseCurrency?.wrapped, quoteCurrency?.wrapped, feeAmount, rightRangeTypedValue),
     [
-      leftRangeTypedValue,
-      rightRangeTypedValue,
-      invertPrice,
-      baseCurrency,
-      quoteCurrency,
-      feeAmount,
+      priceUpper,
+      initialPriceUpper,
       fullRange,
       tickSpaceLimits,
+      invertPrice,
+      quoteCurrency?.wrapped,
+      baseCurrency?.wrapped,
+      feeAmount,
+      leftRangeTypedValue,
+      rightRangeTypedValue,
     ]
   );
 

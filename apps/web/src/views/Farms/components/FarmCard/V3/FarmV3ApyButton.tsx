@@ -32,10 +32,10 @@ type FarmV3ApyButtonProps = {
   existingPosition?: Position
 }
 
-export function FarmV3ApyButton({ farm, existingPosition }: FarmV3ApyButtonProps) {
+export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
   return (
     <LiquidityFormProvider>
-      <FarmV3ApyButton_ farm={farm} existingPosition={existingPosition} />
+      <FarmV3ApyButton_ {...props} />
     </LiquidityFormProvider>
   )
 }
@@ -89,22 +89,6 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3A
 
   const { data: farmV3 } = useFarmsV3()
 
-  const positionCakeApr = useMemo(
-    () =>
-      existingPosition_
-        ? outOfRange
-          ? '0'
-          : new BigNumber(existingPosition_.liquidity.toString())
-              .div(farm.lmPoolLiquidity)
-              .times(farm.poolWeight)
-              .times(farmV3.cakePerSecond)
-              .times(365 * 60 * 60 * 24)
-              .div(depositUsd)
-              .toFixed(2)
-        : '0',
-    [depositUsd, existingPosition_, farm.lmPoolLiquidity, farm.poolWeight, farmV3.cakePerSecond, outOfRange],
-  )
-
   const cakeAprFactor = useMemo(
     () =>
       new BigNumber(farm.poolWeight)
@@ -112,6 +96,16 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3A
         .times(365 * 60 * 60 * 24)
         .div(farm.lmPoolLiquidity),
     [farm.lmPoolLiquidity, farm.poolWeight, farmV3.cakePerSecond],
+  )
+
+  const positionCakeApr = useMemo(
+    () =>
+      existingPosition_
+        ? outOfRange
+          ? '0'
+          : new BigNumber(existingPosition_.liquidity.toString()).times(cakeAprFactor).div(depositUsd).toFixed(2)
+        : '0',
+    [cakeAprFactor, depositUsd, existingPosition_, outOfRange],
   )
 
   const { apr } = useRoi({
