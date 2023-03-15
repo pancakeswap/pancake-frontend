@@ -27,7 +27,7 @@ const BalanceInput: React.FC<React.PropsWithChildren<BalanceInputProps>> = ({
   return (
     <StyledBalanceInput isWarning={isWarning} {...props}>
       <Flex justifyContent="flex-end">
-        <Box style={{ flex: "1" }}>
+        <Box>
           <Flex alignItems="center">
             <StyledInput
               pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
