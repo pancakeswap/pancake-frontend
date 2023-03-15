@@ -21,7 +21,7 @@ it("renders correctly", () => {
       background-color: var(--colors-input);
       box-shadow: var(--shadows-inset);
       overflow: hidden;
-      border-radius: 32px;
+      border-radius: var(--radii-32px);
       height: 16px;
     }
 
