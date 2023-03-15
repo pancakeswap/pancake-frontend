@@ -1,6 +1,6 @@
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { AutoColumn, Button, Dots, RowBetween, Text } from '@pancakeswap/uikit'
+import { AutoColumn, Button, Dots, RowBetween, Text, Box } from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
 import _isNaN from 'lodash/isNaN'
@@ -106,17 +106,19 @@ export default function V2FormView({
           Deposit Amount
         </Text>
 
-        <CurrencyInputPanel
-          disableCurrencySelect
-          value={formattedAmounts[Field.CURRENCY_A]}
-          onUserInput={onFieldAInput}
-          showQuickInputButton
-          showMaxButton
-          currency={currencies[Field.CURRENCY_A]}
-          id="add-liquidity-input-tokena"
-          showCommonBases
-          commonBasesType={CommonBasesType.LIQUIDITY}
-        />
+        <Box mb="8px">
+          <CurrencyInputPanel
+            disableCurrencySelect
+            value={formattedAmounts[Field.CURRENCY_A]}
+            onUserInput={onFieldAInput}
+            showQuickInputButton
+            showMaxButton
+            currency={currencies[Field.CURRENCY_A]}
+            id="add-liquidity-input-tokena"
+            showCommonBases
+            commonBasesType={CommonBasesType.LIQUIDITY}
+          />
+        </Box>
 
         <CurrencyInputPanel
           disableCurrencySelect

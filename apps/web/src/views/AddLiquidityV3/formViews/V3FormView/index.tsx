@@ -420,12 +420,15 @@ export default function V3FormView({
   return (
     <>
       <DynamicSection
+        style={{
+          gridAutoRows: 'max-content',
+        }}
         disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue) || (!priceLower && !priceUpper)}
       >
-        <AutoColumn>
-          <PreTitle mb="8px">Deposit Amount</PreTitle>
+        <PreTitle mb="8px">Deposit Amount</PreTitle>
 
-          <LockedDeposit locked={depositADisabled} mb="8px">
+        <LockedDeposit locked={depositADisabled} mb="8px">
+          <Box mb="8px">
             <CurrencyInputPanel
               disableCurrencySelect
               value={formattedAmounts[Field.CURRENCY_A]}
@@ -437,22 +440,22 @@ export default function V3FormView({
               showCommonBases
               commonBasesType={CommonBasesType.LIQUIDITY}
             />
-          </LockedDeposit>
+          </Box>
+        </LockedDeposit>
 
-          <LockedDeposit locked={depositBDisabled} mb="8px">
-            <CurrencyInputPanel
-              disableCurrencySelect
-              value={formattedAmounts[Field.CURRENCY_B]}
-              onUserInput={onFieldBInput}
-              showQuickInputButton
-              showMaxButton
-              currency={currencies[Field.CURRENCY_B]}
-              id="add-liquidity-input-tokenb"
-              showCommonBases
-              commonBasesType={CommonBasesType.LIQUIDITY}
-            />
-          </LockedDeposit>
-        </AutoColumn>
+        <LockedDeposit locked={depositBDisabled} mb="8px">
+          <CurrencyInputPanel
+            disableCurrencySelect
+            value={formattedAmounts[Field.CURRENCY_B]}
+            onUserInput={onFieldBInput}
+            showQuickInputButton
+            showMaxButton
+            currency={currencies[Field.CURRENCY_B]}
+            id="add-liquidity-input-tokenb"
+            showCommonBases
+            commonBasesType={CommonBasesType.LIQUIDITY}
+          />
+        </LockedDeposit>
       </DynamicSection>
       <HideMedium>{buttons}</HideMedium>
 

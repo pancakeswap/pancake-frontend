@@ -234,9 +234,9 @@ export default function UniversalAddLiquidity({
       />
       <CardBody>
         <ResponsiveTwoColumns>
-          <AutoColumn alignSelf="flex-start">
+          <AutoColumn alignSelf="stretch">
             <PreTitle mb="8px">Choose Token Pair</PreTitle>
-            <FlexGap gap="4px" width="100%" mb="24px">
+            <FlexGap gap="4px" width="100%" mb="8px" alignItems="center">
               <CurrencySelect
                 id="add-liquidity-select-tokena"
                 selectedCurrency={baseCurrency}
