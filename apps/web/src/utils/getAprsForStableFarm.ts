@@ -30,7 +30,7 @@ export const getAprsForStableFarm = async (stableSwapAddress?: string): Promise<
     const current = new BigNumber(virtualPrice)
     const prev = new BigNumber(preVirtualPrice)
 
-    const result = current.minus(prev).div(current).plus(1).pow(52).minus(1).times(100)
+    const result = current.minus(prev).abs().div(current).plus(1).pow(52).minus(1).times(100)
 
     if (result.isFinite() && result.isGreaterThan(0)) {
       return result
