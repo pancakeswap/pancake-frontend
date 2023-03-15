@@ -73,10 +73,6 @@ export function ImpermanentLossCalculator({
         : undefined,
     [valueA, currencyA, valueB, currencyB, currencyAUsdPrice, currencyBUsdPrice]
   );
-  const totalUsdDeposit = useMemo(
-    () => assets?.reduce((sum, { value }) => sum + parseFloat(String(value)), 0),
-    [assets]
-  );
 
   const exitAssets = useMemo<Asset[] | undefined>(
     () =>
@@ -172,7 +168,7 @@ export function ImpermanentLossCalculator({
       const priceUpper = tickToPrice(assetCurrencyA.wrapped, assetCurrencyB.wrapped, tickUpper);
       const [adjustedAmountA, adjustedAmountB] = getTokenAmountsFromDepositUsd({
         sqrtRatioX96: newSqrtRatioX96,
-        usdValue: totalUsdDeposit !== undefined ? String(totalUsdDeposit) : undefined,
+        usdValue: usdValue !== undefined ? String(usdValue) : undefined,
         price: token0Price.toFixed(6),
         priceLower: priceLower.toFixed(6),
         priceUpper: priceUpper.toFixed(6),
@@ -203,7 +199,7 @@ export function ImpermanentLossCalculator({
 
       return adjusted;
     },
-    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, totalUsdDeposit, cakePrice]
+    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue, cakePrice]
   );
 
   const updateEntry = useCallback(
