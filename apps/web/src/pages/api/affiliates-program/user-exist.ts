@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import qs from 'qs'
 
-const affiliateExist = async (req: NextApiRequest, res: NextApiResponse) => {
+const userExist = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!process.env.AFFILIATE_PROGRAM_API_URL || !req.query) {
     return res.status(400).json({ message: 'API URL Empty' })
   }
 
   const queryString = qs.stringify(req.query)
-  const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/affiliate/exist?${queryString}`
+  const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/user/exist?${queryString}`
   const response = await fetch(requestUrl)
 
   if (!response.ok) {
@@ -18,4 +18,4 @@ const affiliateExist = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json(result)
 }
 
-export default affiliateExist
+export default userExist
