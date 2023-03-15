@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Text } from '@pancakeswap/uikit'
+import { Card, ExpandableSectionButton, Farm as FarmUI, Flex, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { BASE_ADD_LIQUIDITY_URL } from 'config'
 import { CHAIN_QUERY_NAME } from 'config/chains'
@@ -76,6 +76,18 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     setShowExpandableSection((prev) => !prev)
   }, [])
 
+  const aprTooltip = useTooltip(
+    <>
+      <Text>
+        {t(
+          'Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.',
+        )}
+      </Text>
+      <br />
+      <Text>{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
+    </>,
+  )
+
   return (
     <StyledCard isActive={isPromotedFarm}>
       <FarmCardInnerContainer>
@@ -89,9 +101,10 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
-            <Text>{t('APR')}:</Text>
+            <TooltipText ref={aprTooltip.targetRef}>{t('APR')}:</TooltipText>
+            {aprTooltip.tooltipVisible && aprTooltip.tooltip}
             <Text style={{ display: 'flex', alignItems: 'center' }}>
-              <FarmV3ApyButton farm={farm} variant="text-and-button" />
+              <FarmV3ApyButton farm={farm} />
             </Text>
           </Flex>
         )}

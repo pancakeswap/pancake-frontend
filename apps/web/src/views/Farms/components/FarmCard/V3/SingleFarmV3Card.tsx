@@ -161,7 +161,6 @@ const SingleFarmV3Card: React.FunctionComponent<
             positionType={positionType}
             liquidityUrl={liquidityUrl}
             isPending={attemptingTxn}
-            noLiquidity={position?.liquidity.eq(0)}
             handleStake={handleStake}
             handleUnStake={unstakedModal.onOpen}
           />

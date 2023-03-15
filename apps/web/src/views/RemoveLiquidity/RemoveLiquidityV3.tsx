@@ -44,7 +44,7 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 
-import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
+import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
 import { formatRawAmount } from 'utils/formatCurrencyAmount'
 

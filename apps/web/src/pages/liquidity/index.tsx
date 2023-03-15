@@ -24,7 +24,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Pair, Percent } from '@pancakeswap/sdk'
-import RangeTag from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeTag'
+import { RangeTag } from 'components/RangeTag'
 import useV2PairsByAccount from 'hooks/useV2Pairs'
 import useStableConfig, {
   LPStablePair,
@@ -208,9 +208,9 @@ export default function PoolListPage() {
                 variant="subtle"
               >
                 <ButtonMenuItem>{t('All')}</ButtonMenuItem>
-                <ButtonMenuItem>{t('V3')}</ButtonMenuItem>
+                <ButtonMenuItem>V3</ButtonMenuItem>
                 <ButtonMenuItem>{t('StableSwap')}</ButtonMenuItem>
-                <ButtonMenuItem>{t('V2')}</ButtonMenuItem>
+                <ButtonMenuItem>V2</ButtonMenuItem>
               </ButtonMenu>
             </>
           }

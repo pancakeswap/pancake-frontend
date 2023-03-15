@@ -89,9 +89,9 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
           const isV2Pool = SmartRouter.isV2Pool(pool)
           const key = isV2Pool ? `v2_${pool.reserve0.currency.symbol}_${pool.reserve1.currency.symbol}` : pool.address
           const text = isV2Pool
-            ? t('V2')
+            ? 'V2'
             : isV3Pool
-            ? `${t('V3')} (${v3FeeToPercent(pool.fee).toSignificant(6)}%)`
+            ? `V3 (${v3FeeToPercent(pool.fee).toSignificant(6)}%)`
             : t('StableSwap')
           return (
             <RouterPoolBox key={key} className={isV3Pool && 'highlight'}>

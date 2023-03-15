@@ -186,9 +186,10 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
   const { account } = useActiveWeb3React()
 
   const hasNoPosition = useMemo(
-    () => !userDataReady && farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
+    () => userDataReady && farm.stakedPositions.length === 0 && farm.unstakedPositions.length === 0,
     [farm.stakedPositions.length, farm.unstakedPositions.length, userDataReady],
   )
+
   const addLiquidityModal = useModalV2()
 
   return (
@@ -200,7 +201,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
             <>
               <ValueWrapper>
                 <Text>{t('APR')}</Text>
-                <FarmV3ApyButton farm={farm} variant="text-and-button" />
+                <FarmV3ApyButton farm={farm} />
               </ValueWrapper>
               <ValueWrapper>
                 <Text>{t('Multiplier')}</Text>

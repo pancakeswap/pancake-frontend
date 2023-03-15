@@ -194,7 +194,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner onClick={(e) => e.stopPropagation()}>
                         <CellLayout label={t('APR')}>
-                          <FarmV3ApyButton farm={props.details} variant="text-and-button" />
+                          <FarmV3ApyButton farm={props.details} />
                         </CellLayout>
                       </CellInner>
                     </td>
@@ -297,7 +297,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
             <AprMobileCell>
               <CellLayout label={t('APR')}>
                 {props.type === 'v3' ? (
-                  <FarmV3ApyButton farm={props.details} variant="text-and-button" />
+                  <FarmV3ApyButton farm={props.details} />
                 ) : (
                   <>
                     <Apr

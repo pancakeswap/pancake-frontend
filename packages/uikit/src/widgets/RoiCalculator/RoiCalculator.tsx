@@ -137,7 +137,8 @@ export function RoiCalculator({
       !priceRange?.tickLower ||
       !sqrtRatioX96 ||
       !props.isFarm ||
-      !props.cakeAprFactor
+      !props.cakeAprFactor ||
+      !amountA
     )
       return undefined;
 

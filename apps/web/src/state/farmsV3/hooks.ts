@@ -123,7 +123,7 @@ export const usePositionsByUser = (
   const { positions } = useV3PositionsFromTokenIds(uniqueTokenIds)
 
   const [unstakedPositions, stakedPositions] = useMemo(() => {
-    return partition(positions, (p) => tokenIds.find((i) => i.eq(p.tokenId)))
+    return partition(positions?.filter((p) => p.liquidity.gt(0)) ?? [], (p) => tokenIds.find((i) => i.eq(p.tokenId)))
   }, [positions, tokenIds])
 
   const harvestCalls = useMemo(() => {

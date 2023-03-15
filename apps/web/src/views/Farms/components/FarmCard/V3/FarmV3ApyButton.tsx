@@ -1,11 +1,14 @@
 /* eslint-disable react/jsx-pascal-case */
 import { useTranslation } from '@pancakeswap/localization'
 import {
+  AutoRow,
   CalculateIcon,
   Farm as FarmUI,
   IconButton,
   RoiCalculatorModalV2,
   Skeleton,
+  Text,
+  TooltipText,
   useModalV2,
   useRoi,
 } from '@pancakeswap/uikit'
@@ -27,18 +30,17 @@ import { getDisplayApr } from '../../getDisplayApr'
 type FarmV3ApyButtonProps = {
   farm: V3Farm
   existingPosition?: Position
-  variant: 'text-and-button' | 'icon'
 }
 
-export function FarmV3ApyButton({ farm, existingPosition, variant }: FarmV3ApyButtonProps) {
+export function FarmV3ApyButton({ farm, existingPosition }: FarmV3ApyButtonProps) {
   return (
     <LiquidityFormProvider>
-      <FarmV3ApyButton_ farm={farm} existingPosition={existingPosition} variant={variant} />
+      <FarmV3ApyButton_ farm={farm} existingPosition={existingPosition} />
     </LiquidityFormProvider>
   )
 }
 
-function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }: FarmV3ApyButtonProps) {
+function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3ApyButtonProps) {
   const roiModal = useModalV2()
   const { t } = useTranslation()
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount } = farm
@@ -129,18 +131,24 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, variant }
   const displayApr = getDisplayApr(+farm.cakeApr, +apr.toSignificant(2))
 
   if (!displayApr) {
-    return <Skeleton height={24} width={variant === 'icon' ? 24 : 80} />
+    return <Skeleton height={24} width={80} />
   }
 
   return (
     <>
-      {variant === 'icon' ? (
-        <>
-          {positionCakeApr}%
+      {existingPosition_ ? (
+        <AutoRow width="auto" gap="2px">
+          {outOfRange ? (
+            <TooltipText decorationColor="failure" color="failure" fontSize="14px">
+              {positionCakeApr}%
+            </TooltipText>
+          ) : (
+            <Text fontSize="14px">{positionCakeApr}%</Text>
+          )}
           <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm" onClick={roiModal.onOpen}>
             <CalculateIcon width="18px" color="textSubtle" />
           </IconButton>
-        </>
+        </AutoRow>
       ) : (
         <FarmUI.FarmApyButton
           variant="text-and-button"
