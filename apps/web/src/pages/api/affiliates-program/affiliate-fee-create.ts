@@ -8,7 +8,7 @@ const affiliateLogin = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const cookie = getCookie(AFFILIATE_SID, { req, res })
-  const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/fee/create`
+  const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/affiliate/fee/create`
   const response = await fetch(requestUrl, {
     headers: {
       'Content-Type': 'application/json',
