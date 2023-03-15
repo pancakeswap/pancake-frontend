@@ -74,7 +74,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
               {helper && <QuestionHelper text={helper} ml="4px" placement="top-start" />}
             </Flex>
             {!noConfig && (
-              <Flex alignItems="center">
+              <Flex alignItems="flex-end">
                 {IconSlot}
                 <NotificationDot show={expertMode}>
                   <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />

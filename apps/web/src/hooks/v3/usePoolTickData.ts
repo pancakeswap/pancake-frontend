@@ -29,7 +29,7 @@ function useTicksFromSubgraph(
 }
 
 // Fetches all ticks for a given pool
-function useAllV3Ticks(
+export function useAllV3Ticks(
   currencyA: Currency | undefined,
   currencyB: Currency | undefined,
   feeAmount: FeeAmount | undefined,

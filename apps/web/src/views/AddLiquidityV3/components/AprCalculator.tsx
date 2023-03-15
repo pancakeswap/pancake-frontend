@@ -1,15 +1,16 @@
-import { Currency } from '@pancakeswap/sdk'
-import { useRoi, RoiCalculatorModalV2, TooltipText, Flex } from '@pancakeswap/uikit'
+import { Currency, ZERO_PERCENT } from '@pancakeswap/sdk'
+import { useRoi, RoiCalculatorModalV2, TooltipText, Flex, CalculateIcon, Text, IconButton } from '@pancakeswap/uikit'
 import { encodeSqrtRatioX96, Tick } from '@pancakeswap/v3-sdk'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from '@pancakeswap/localization'
 
 import { LiquidityFormState } from 'hooks/v3/types'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { Bound } from 'config/constants/types'
-import { usePoolActiveLiquidity } from 'hooks/v3/usePoolTickData'
+import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import { Field } from 'state/mint/actions'
 
 interface Props {
@@ -23,16 +24,17 @@ const AprButtonContainer = styled(Flex)`
 `
 
 export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props) {
+  const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
 
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
-  const { data } = usePoolActiveLiquidity(baseCurrency, quoteCurrency, feeAmount)
+  const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const poolTicks = useMemo(
     () =>
       data?.map(
-        ({ tick, liquidityNet }) =>
-          new Tick({ index: parseInt(String(tick)), liquidityNet, liquidityGross: liquidityNet }),
+        ({ tick, liquidityNet, liquidityGross }) =>
+          new Tick({ index: parseInt(String(tick)), liquidityNet, liquidityGross }),
       ),
     [data],
   )
@@ -78,11 +80,23 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
     volume24H,
   })
 
+  if (!apr.greaterThan(ZERO_PERCENT)) {
+    return null
+  }
+
   return (
     <>
-      <AprButtonContainer onClick={() => setOpen(true)}>
-        <TooltipText>{apr.toSignificant(2)}%</TooltipText>
-      </AprButtonContainer>
+      <Flex flexDirection="column">
+        <Text color="textSubtle" fontSize="12px">
+          {t('APR')}
+        </Text>
+        <AprButtonContainer onClick={() => setOpen(true)} alignItems="center">
+          <TooltipText>{apr.toSignificant(2)}%</TooltipText>
+          <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>
+            <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
+          </IconButton>
+        </AprButtonContainer>
+      </Flex>
       <RoiCalculatorModalV2
         isOpen={isOpen}
         onDismiss={() => setOpen(false)}

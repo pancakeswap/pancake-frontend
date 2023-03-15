@@ -3,7 +3,6 @@ import { FeeAmount, Tick, TickMath } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, useState } from "react";
 
-import { TickDataRaw } from "../../components/LiquidityChartRangeInput/types";
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
 import { LiquidityChartRangeInput, Button } from "../../components";
 import { DynamicSection, Section } from "./DynamicSection";
@@ -17,6 +16,8 @@ import { RoiRate } from "./RoiRate";
 import { Details } from "./Details";
 import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
+import { TickData } from "./types";
+import { useActiveTicks } from "./hooks/useActiveTicks";
 
 export interface RoiCalculatorProps {
   sqrtRatioX96?: JSBI;
@@ -27,7 +28,7 @@ export interface RoiCalculatorProps {
   balanceA?: CurrencyAmount<Currency>;
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;
-  ticks?: TickDataRaw[];
+  ticks?: TickData[];
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
   priceUpper?: Price<Token, Token>;
@@ -64,6 +65,8 @@ export function RoiCalculator({
   const [spanIndex, setSpanIndex] = useState(3);
   const [compoundOn, setCompoundOn] = useState(true);
   const [compoundIndex, setCompoundIndex] = useState(0);
+  const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
+  const activeTicks = useActiveTicks({ currencyA, currencyB, ticks: ticksRaw, liquidity, tickCurrent });
   const ticks = useMemo(
     () =>
       ticksRaw?.map(
@@ -73,7 +76,6 @@ export function RoiCalculator({
     [ticksRaw]
   );
 
-  const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
   const priceRange = usePriceRange({
     feeAmount,
     baseCurrency: currencyA,
@@ -148,7 +150,7 @@ export function RoiCalculator({
             tickCurrent={tickCurrent}
             liquidity={liquidity}
             feeAmount={feeAmount}
-            ticks={ticksRaw}
+            ticks={activeTicks}
             ticksAtLimit={priceRange?.ticksAtLimit}
             priceLower={priceRange?.priceLower}
             priceUpper={priceRange?.priceUpper}

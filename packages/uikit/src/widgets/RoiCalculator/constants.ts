@@ -14,3 +14,5 @@ export const spanIndexToSpan: { [key: number]: number } = {
   3: 365, // 1y
   4: 730, // 1y
 };
+
+export const PRICE_FIXED_DIGITS = 8;
