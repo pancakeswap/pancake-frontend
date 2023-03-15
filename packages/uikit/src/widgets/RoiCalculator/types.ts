@@ -1,7 +1,7 @@
 import { BigintIsh, JSBI } from "@pancakeswap/sdk";
 
 export interface TickData {
-  tick: number;
+  tick: string;
   liquidityNet: BigintIsh;
   liquidityGross: BigintIsh;
 }

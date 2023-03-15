@@ -13,7 +13,7 @@ import { encodeSqrtRatioX96, Position, Tick } from '@pancakeswap/v3-sdk'
 import { Bound } from 'config/constants/types'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { LiquidityFormState } from 'hooks/v3/types'
-import { usePoolActiveLiquidity } from 'hooks/v3/usePoolTickData'
+import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useMemo } from 'react'
 import { Field } from 'state/mint/actions'
@@ -40,7 +40,7 @@ function FarmV3ApyButton_({ farm, existingPosition, variant }: FarmV3ApyButtonPr
   const { t } = useTranslation()
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount } = farm
 
-  const { data } = usePoolActiveLiquidity(baseCurrency, quoteCurrency, feeAmount)
+  const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
 
   const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
 

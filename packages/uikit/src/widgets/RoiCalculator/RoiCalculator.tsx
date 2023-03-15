@@ -70,8 +70,7 @@ export function RoiCalculator({
   const ticks = useMemo(
     () =>
       ticksRaw?.map(
-        ({ tick, liquidityNet }) =>
-          new Tick({ index: parseInt(String(tick)), liquidityNet, liquidityGross: liquidityNet })
+        ({ tick, liquidityNet }) => new Tick({ index: parseInt(tick), liquidityNet, liquidityGross: liquidityNet })
       ),
     [ticksRaw]
   );
