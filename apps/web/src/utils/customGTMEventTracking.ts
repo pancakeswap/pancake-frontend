@@ -1,5 +1,6 @@
+export type dataLayerKeys = 'event' | 'category' | 'action' | 'label'
 type WindowWithDataLayer = Window & {
-  customDataLayer: Record<string, any>[] | undefined
+  customDataLayer: Record<dataLayerKeys, string>[] | undefined
 }
 
 declare const window: WindowWithDataLayer
