@@ -210,20 +210,20 @@ export type GetArgs<
          *
          * Use a [const assertion](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions) on {@link abi} for type inference.
          */
-        args?: readonly unknown[]
+        params?: readonly unknown[]
       }
     : // If there are no inputs, do not include `args` in the return type.
     TInputs['length'] extends 0
-    ? { args?: never }
+    ? { params?: never }
     : AbiParametersToPrimitiveTypes<TInputs> extends infer TArgs
     ? TOptions['isArgsOptional'] extends true
       ? {
           /** Arguments to pass contract method */
-          args?: TArgs
+          params?: TArgs
         }
       : {
           /** Arguments to pass contract method */
-          args: TArgs
+          params: TArgs
         }
     : never
   : never
