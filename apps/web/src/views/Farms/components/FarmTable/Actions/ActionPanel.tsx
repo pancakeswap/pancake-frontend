@@ -5,6 +5,7 @@ import {
   FarmTableMultiplierProps,
   Flex,
   LinkExternal,
+  Skeleton,
   Text,
   useMatchBreakpoints,
   useModalV2,
@@ -237,7 +238,9 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
         </>
       }
     >
-      {userDataReady && account && !hasNoPosition ? (
+      {!userDataReady ? (
+        <Skeleton height={200} width="100%" />
+      ) : account && !hasNoPosition ? (
         <FarmV3CardList farm={farm} direction="row" />
       ) : (
         <>

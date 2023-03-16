@@ -7,6 +7,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useCallback } from 'react'
+import { mutate } from 'swr'
 import { calculateGasMargin } from 'utils'
 
 interface FarmV3ActionContainerChildrenProps {
@@ -123,6 +124,7 @@ const useFarmV3Actions = ({
           {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
         </ToastDescriptionWithTx>,
       )
+      mutate((key) => Array.isArray(key) && key[0] === 'mcv3-harvest', undefined)
     }
   }, [account, fetchWithCatchTxError, masterChefV3Address, signer, t, toastSuccess, tokenId])
 

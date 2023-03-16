@@ -11,6 +11,7 @@ import { fetchCommonTokenUSDValue, TvlMap } from '@pancakeswap/farms/src/fetchFa
 import { ChainId } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { FAST_INTERVAL } from 'config/constants'
+import { FetchStatus } from 'config/constants/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
@@ -135,8 +136,8 @@ export const usePositionsByUser = (
     return callData
   }, [account, masterchefV3.interface, stakedPositions])
 
-  const { data: tokenIdResults = [], isLoading } = useSWR(
-    account && [harvestCalls],
+  const { data: tokenIdResults = [] } = useSWR(
+    account && ['mcv3-harvest', harvestCalls],
     () => {
       return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
         return res
@@ -165,7 +166,7 @@ export const usePositionsByUser = (
   )
 
   // assume that if any of the tokenIds have a valid result, the data is ready
-  const userDataLoaded = harvestCalls.length > 0 && !isLoading
+  const userDataLoaded = harvestCalls.length > 0 ? tokenIdResults.length > 0 : true
 
   const farmsWithPositions = useMemo(
     () =>
@@ -225,11 +226,11 @@ export function useFarmsV3WithPositions(): {
   poolLength: number
   isLoading: boolean
 } {
-  const { data, isLoading, error: _error } = useFarmsV3()
+  const { data, error: _error, status } = useFarmsV3()
 
   return {
     ...usePositionsByUser(data.farmsWithPrice),
     poolLength: data.poolLength,
-    isLoading,
+    isLoading: status !== FetchStatus.Fetched,
   }
 }
