@@ -4,8 +4,15 @@ import { ChainId } from '@pancakeswap/sdk'
 import BigNumber from 'bignumber.js'
 import { masterChefAddresses, masterChefV3Addresses } from './const'
 import { farmV2FetchFarms, FetchFarmsParams, fetchMasterChefV2Data } from './v2/fetchFarmsV2'
-import { farmV3FetchFarms, fetchMasterChefV3Data, TvlMap, fetchCommonTokenUSDValue, CommonPrice } from './fetchFarmsV3'
-import { FarmConfigV3 } from './types'
+import {
+  farmV3FetchFarms,
+  fetchMasterChefV3Data,
+  fetchCommonTokenUSDValue,
+  CommonPrice,
+  LPTvl,
+  getCakeApr,
+} from './fetchFarmsV3'
+import { FarmConfigV3, FarmV3DataWithPrice } from './types'
 
 const supportedChainId = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ETHEREUM]
 const supportedChainIdV3 = [ChainId.BSC_TESTNET, ChainId.GOERLI]
@@ -54,15 +61,12 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
   const fetchFarms = async ({
     farms,
     chainId,
-    tvlMap,
     commonPrice,
   }: {
     chainId: ChainId
     farms: FarmConfigV3[]
-    tvlMap: TvlMap
     commonPrice: CommonPrice
   }) => {
-    // @ts-ignore
     const masterChefAddress = masterChefV3Addresses[chainId]
     if (!masterChefAddress) {
       throw new Error('Unsupported chain')
@@ -83,8 +87,6 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
         multicallv2,
         masterChefAddress,
         totalAllocPoint,
-        cakePerSecond,
-        tvlMap,
         commonPrice,
       })
 
@@ -99,8 +101,23 @@ export function createFarmFetcherV3(multicallv2: MultiCallV2) {
     }
   }
 
+  const getCakeAprAndTVL = (farm: FarmV3DataWithPrice, lpTVL: LPTvl, cakePrice: string, cakePerSecond: string) => {
+    const tvl = new BigNumber(farm.tokenPriceBusd)
+      .times(lpTVL.token0)
+      .plus(new BigNumber(farm.quoteTokenPriceBusd).times(lpTVL.token1))
+
+    const cakeApr = getCakeApr(farm.poolWeight, tvl, cakePrice, cakePerSecond)
+
+    return {
+      activeTvlUSD: tvl.toString(),
+      activeTvlUSDUpdatedAt: lpTVL.updatedAt,
+      cakeApr,
+    }
+  }
+
   return {
     fetchFarms,
+    getCakeAprAndTVL,
     isChainSupported: (chainId: number) => supportedChainIdV3.includes(chainId),
     supportedChainId: supportedChainIdV3,
     isTestnet: (chainId: number) => ![ChainId.BSC, ChainId.ETHEREUM].includes(chainId),

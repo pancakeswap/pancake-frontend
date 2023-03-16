@@ -25,11 +25,14 @@ export type FarmsDynamicDataResultV2 = {
 }
 
 export type FarmPriceV3 = {
-  activeTvlUSD: string
-  activeTvlUSDUpdatedAt?: string
   tokenPriceBusd: string
   quoteTokenPriceBusd: string
-  cakeApr: string
+}
+
+export type FarmTVL = {
+  activeTvlUSD?: string
+  activeTvlUSDUpdatedAt?: string
+  cakeApr?: string
 }
 
 export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
@@ -37,6 +40,8 @@ export type FarmData = SerializedFarmConfig & FarmsDynamicDataResult
 export type FarmV3Data = FarmConfigV3 & FarmsDynamicDataResultV2
 
 export type FarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & FarmConfigV3
+
+export type FarmV3DataWithPriceTVL = FarmV3DataWithPrice & FarmTVL
 export type SerializedFarmV3DataWithPrice = FarmV3Data & FarmPriceV3 & SerializedFarmConfigV3
 
 export interface FarmConfigBaseProps {
@@ -225,7 +230,7 @@ export interface PositionDetails {
   tokensOwed1: EtherBigNumber
 }
 
-export interface FarmV3DataWithPriceAndUserInfo extends FarmV3DataWithPrice {
+export interface FarmV3DataWithPriceAndUserInfo extends FarmV3DataWithPriceTVL {
   unstakedPositions: PositionDetails[]
   stakedPositions: PositionDetails[]
   pendingCakeByTokenIds: IPendingCakeByTokenId

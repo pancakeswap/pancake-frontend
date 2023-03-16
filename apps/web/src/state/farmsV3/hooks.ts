@@ -10,6 +10,7 @@ import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { fetchCommonTokenUSDValue, TvlMap } from '@pancakeswap/farms/src/fetchFarmsV3'
 import { ChainId } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { FAST_INTERVAL } from 'config/constants'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -50,7 +51,7 @@ const farmFetcherV3 = createFarmFetcherV3(multicallv2)
 export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
-  return useSWR(
+  const farmV3 = useSWR(
     [chainId, 'farmV3ApiFetch'],
     async () => {
       if (API_FLAG) {
@@ -61,6 +62,40 @@ export const useFarmsV3 = () => {
       }
 
       // direct copy from api routes, the client side fetch is preventing cache due to migration phase we want fresh data
+      const farms = farmsV3ConfigChainMap[chainId as ChainId]
+
+      const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
+
+      try {
+        const data = await farmFetcherV3.fetchFarms({
+          chainId,
+          farms,
+          commonPrice,
+        })
+
+        return data
+      } catch (error) {
+        console.error(error)
+        // return fallback for now since not all chains supported
+        return fallback
+      }
+    },
+    {
+      refreshInterval: FAST_INTERVAL * 3,
+      keepPreviousData: true,
+      fallbackData: fallback,
+    },
+  )
+
+  const cakePrice = useCakePriceAsBN()
+
+  const { data } = useSWR(
+    [chainId, 'cake-apr-tvl', farmV3.data],
+    async () => {
+      if (!cakePrice.gt(0)) {
+        return farmV3.data
+      }
+
       const farms = farmsV3ConfigChainMap[chainId as ChainId]
 
       const HOST = process.env.NEXT_PUBLIC_VERCEL_URL ? `` : 'http://localhost:3000'
@@ -83,29 +118,43 @@ export const useFarmsV3 = () => {
         })
       }
 
-      const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
+      const farmWithPriceAndCakeAPR = farmV3.data.farmsWithPrice.map((f) => {
+        if (!tvls[f.lpAddress]) {
+          return f
+        }
+        const { activeTvlUSD, activeTvlUSDUpdatedAt, cakeApr } = farmFetcherV3.getCakeAprAndTVL(
+          f,
+          tvls[f.lpAddress],
+          cakePrice.toString(),
+          farmV3.data.cakePerSecond,
+        )
 
-      try {
-        const data = await farmFetcherV3.fetchFarms({
-          tvlMap: tvls,
-          chainId,
-          farms,
-          commonPrice,
-        })
+        return {
+          ...f,
+          cakeApr,
+          activeTvlUSD,
+          activeTvlUSDUpdatedAt,
+        }
+      })
 
-        return data
-      } catch (error) {
-        console.error(error)
-        // return fallback for now since not all chains supported
-        return fallback
+      return {
+        ...farmV3.data,
+        farmsWithPrice: farmWithPriceAndCakeAPR,
       }
     },
     {
       refreshInterval: FAST_INTERVAL * 3,
+      dedupingInterval: FAST_INTERVAL,
       keepPreviousData: true,
-      fallbackData: fallback,
+      fallback: farmV3.data,
     },
   )
+
+  return {
+    data: data || farmV3.data,
+    isLoading: farmV3.isLoading,
+    error: farmV3.error,
+  }
 }
 
 export const usePositionsByUser = (

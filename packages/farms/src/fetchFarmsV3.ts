@@ -17,8 +17,6 @@ export async function farmV3FetchFarms({
   masterChefAddress,
   chainId,
   totalAllocPoint,
-  cakePerSecond,
-  tvlMap,
   commonPrice,
 }: {
   farms: FarmConfigV3[]
@@ -26,8 +24,6 @@ export async function farmV3FetchFarms({
   masterChefAddress: string
   chainId: number
   totalAllocPoint: BigNumber
-  cakePerSecond: string
-  tvlMap: TvlMap
   commonPrice: CommonPrice
 }) {
   const [poolInfos, cakePrice, lpData, v3PoolData] = await Promise.all([
@@ -75,7 +71,7 @@ export async function farmV3FetchFarms({
     ...commonPrice,
   }
 
-  const farmsWithPrice = getFarmsPrices(farmsData, tvlMap, cakePrice.price, cakePerSecond, combinedCommonPrice)
+  const farmsWithPrice = getFarmsPrices(farmsData, cakePrice.price, combinedCommonPrice)
 
   return farmsWithPrice
 }
@@ -208,7 +204,7 @@ const fetchPoolInfos = async (
   }
 }
 
-const getCakeApr = (poolWeight: string, activeTvlUSD: FixedNumber, cakePriceUSD: string, cakePerSecond: string) => {
+export const getCakeApr = (poolWeight: string, activeTvlUSD: BN, cakePriceUSD: string, cakePerSecond: string) => {
   let cakeApr = '0'
 
   if (
@@ -425,12 +421,14 @@ const fetchFarmCalls = (farm: FarmConfigV3) => {
   ]
 }
 
+export type LPTvl = {
+  token0: string
+  token1: string
+  updatedAt: string
+}
+
 export type TvlMap = {
-  [key: string]: {
-    token0: string
-    token1: string
-    updatedAt: string
-  } | null
+  [key: string]: LPTvl | null
 }
 
 export type CommonPrice = {
@@ -454,19 +452,10 @@ export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promi
   return commonTokenUSDValue
 }
 
-function getFarmsPrices(
-  farms: FarmV3Data[],
-  tvls: TvlMap,
-  cakePriceUSD: string,
-  cakePerSecond: string,
-  commonPrice: CommonPrice,
-): FarmV3DataWithPrice[] {
+function getFarmsPrices(farms: FarmV3Data[], cakePriceUSD: string, commonPrice: CommonPrice): FarmV3DataWithPrice[] {
   return farms.map((farm) => {
     let tokenPriceBusd = FIXED_ZERO
     let quoteTokenPriceBusd = FIXED_ZERO
-
-    let tvl = FIXED_ZERO
-    let tvlUpdatedAt: string | undefined
 
     if (commonPrice[farm.quoteToken.address]) {
       quoteTokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
@@ -491,24 +480,8 @@ function getFarmsPrices(
       quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
     }
 
-    if (
-      !tokenPriceBusd.isZero() &&
-      !quoteTokenPriceBusd.isZero() &&
-      !!tvls[farm.lpAddress]?.token0 &&
-      !!tvls[farm.lpAddress]?.token1
-    ) {
-      tvl = tokenPriceBusd
-        .mulUnsafe(FixedNumber.from(tvls[farm.lpAddress]?.token0))
-        .addUnsafe(quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(tvls[farm.lpAddress].token1)))
-
-      tvlUpdatedAt = tvls[farm.lpAddress]?.updatedAt
-    }
-
     return {
       ...farm,
-      cakeApr: getCakeApr(farm.poolWeight, tvl, cakePriceUSD, cakePerSecond),
-      activeTvlUSD: tvl.toString(),
-      activeTvlUSDUpdatedAt: tvlUpdatedAt,
       tokenPriceBusd: tokenPriceBusd.toString(),
       quoteTokenPriceBusd: quoteTokenPriceBusd.toString(),
     }
