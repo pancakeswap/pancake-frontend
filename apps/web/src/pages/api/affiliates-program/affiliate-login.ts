@@ -1,15 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getCookie, setCookie, deleteCookie } from 'cookies-next'
+import { MAX_AGE, HOST } from './config'
 
 export const AFFILIATE_SID = 'AFFILIATE_SID'
 export const AFFILIATE_NONCE_SID = 'AFFILIATE_NONCE_SID'
 
 const affiliateLogin = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!process.env.AFFILIATE_PROGRAM_API_URL && req.method === 'POST') {
+  const cookie = getCookie(AFFILIATE_NONCE_SID, { req, res, domain: HOST })
+
+  if (!process.env.AFFILIATE_PROGRAM_API_URL && req.method === 'POST' && !cookie) {
     return res.status(400).json({ message: 'API URL Empty' })
   }
 
-  const cookie = getCookie(AFFILIATE_NONCE_SID, { req, res })
   const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/affiliate/login`
   const response = await fetch(requestUrl, {
     headers: {
@@ -25,8 +27,8 @@ const affiliateLogin = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { status } = await response.json()
-  deleteCookie(AFFILIATE_NONCE_SID, { req, res })
-  setCookie(AFFILIATE_SID, response.headers.get('set-cookie'), { req, res })
+  deleteCookie(AFFILIATE_NONCE_SID, { req, res, domain: HOST })
+  setCookie(AFFILIATE_SID, response.headers.get('set-cookie'), { req, res, maxAge: MAX_AGE, domain: HOST })
 
   return res.status(200).json({ status })
 }

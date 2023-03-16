@@ -1,13 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getCookie } from 'cookies-next'
 import { AFFILIATE_SID } from './affiliate-login'
+import { HOST } from './config'
 
 const affiliateLogin = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (!process.env.AFFILIATE_PROGRAM_API_URL && req.method === 'POST') {
+  const cookie = getCookie(AFFILIATE_SID, { req, res, domain: HOST })
+
+  if (!process.env.AFFILIATE_PROGRAM_API_URL && req.method === 'POST' && !cookie) {
     return res.status(400).json({ message: 'API URL Empty' })
   }
 
-  const cookie = getCookie(AFFILIATE_SID, { req, res })
   const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/user/register`
   const response = await fetch(requestUrl, {
     headers: {
