@@ -5,10 +5,11 @@ import { PositionMath } from '@pancakeswap/v3-sdk'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
 import { JSBI, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 import { z } from 'zod'
+import { BigNumber } from '@ethersproject/bignumber'
 import { request, gql } from 'graphql-request'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
-import { multicallv2Typed } from 'utils/multicall'
+import { multicallv3Typed } from 'utils/multicall'
 
 const zChainId = z.enum(['56', '1', '5', '97'])
 
@@ -57,6 +58,24 @@ const v3PoolAbi = [
   },
 ] as const
 
+const masterchefV3Abi = [
+  {
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'poolInfo',
+    outputs: [
+      { internalType: 'uint256', name: 'allocPoint', type: 'uint256' },
+      { internalType: 'contract IPancakeV3Pool', name: 'v3Pool', type: 'address' },
+      { internalType: 'address', name: 'token0', type: 'address' },
+      { internalType: 'address', name: 'token1', type: 'address' },
+      { internalType: 'uint24', name: 'fee', type: 'uint24' },
+      { internalType: 'uint256', name: 'totalLiquidity', type: 'uint256' },
+      { internalType: 'uint256', name: 'totalBoostLiquidity', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+] as const
+
 // getting active "in-range" liquidity for a pool
 // TODO: v3 farms update subgraph urls
 const handler: NextApiHandler = async (req, res) => {
@@ -78,15 +97,46 @@ const handler: NextApiHandler = async (req, res) => {
     return res.status(400).json({ error: 'Invalid LP address' })
   }
 
-  const slot = await multicallv2Typed({ abi: v3PoolAbi, calls: [{ address, name: 'slot0' }], chainId: +chainId })
+  const masterChefV3Address = masterChefV3Addresses[chainId]
 
-  if (!slot[0]) {
-    return res.status(400).json({ error: 'Invalid LP address' })
+  const [slot0, poolInfo] = await multicallv3Typed({
+    calls: [
+      { abi: v3PoolAbi, address, name: 'slot0' },
+      {
+        abi: masterchefV3Abi,
+        address: masterChefV3Address,
+        name: 'poolInfo',
+        args: [BigNumber.from(farm.pid)],
+      },
+    ],
+    chainId: +chainId,
+    allowFailure: false,
+  })
+
+  if (!slot0) {
+    return res.status(404).json({ error: 'Slot0 not found' })
   }
 
-  const slot0 = slot[0]
+  if (!poolInfo) {
+    return res.status(404).json({ error: 'PoolInfo not found' })
+  }
 
-  const masterChefV3Address = masterChefV3Addresses[chainId]
+  const updatedAt = new Date().toISOString()
+
+  // don't cache when pool is not active or has no liquidity
+  if (poolInfo.allocPoint.isZero() || poolInfo.totalLiquidity.isZero()) {
+    res.status(200).json({
+      tvl: {
+        token0: '0',
+        token1: '0',
+      },
+      formatted: {
+        token0: '0',
+        token1: '0',
+      },
+      updatedAt,
+    })
+  }
 
   let allActivePositions = []
 
@@ -173,8 +223,6 @@ const handler: NextApiHandler = async (req, res) => {
 
   const curr0 = CurrencyAmount.fromRawAmount(farm.token, totalToken0.toString()).toExact()
   const curr1 = CurrencyAmount.fromRawAmount(farm.quoteToken, totalToken1.toString()).toExact()
-
-  const updatedAt = new Date().toISOString()
 
   res.setHeader('Cache-Control', 's-maxage=600, max-age=600, stale-while-revalidate=1200')
 
