@@ -1,10 +1,11 @@
 import { PropsWithChildren, ReactNode } from "react";
+import { SpaceProps } from "styled-system";
 
 import { Box, Text } from "../../components";
 
-export function Section({ title, children }: { title?: ReactNode } & PropsWithChildren) {
+export function Section({ title, children, ...rest }: { title?: ReactNode } & PropsWithChildren & SpaceProps) {
   return (
-    <Box mb="24px">
+    <Box mb="24px" {...rest}>
       <Text color="secondary" bold fontSize="12px" textTransform="uppercase" mb="16px">
         {title}
       </Text>

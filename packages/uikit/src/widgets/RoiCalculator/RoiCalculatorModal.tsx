@@ -10,7 +10,7 @@ export const StyledModal = styled(Modal)`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 400px;
+    width: 860px;
   }
 `;
 

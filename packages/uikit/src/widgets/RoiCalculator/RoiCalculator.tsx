@@ -6,7 +6,7 @@ import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
-import { LiquidityChartRangeInput, Button, DynamicSection } from "../../components";
+import { LiquidityChartRangeInput, Button, DynamicSection, AutoColumn } from "../../components";
 import { Section } from "./Section";
 import { DepositAmountInput } from "./DepositAmount";
 import { RangeSelector } from "./RangeSelector";
@@ -20,6 +20,8 @@ import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 import { TickData } from "./types";
 import { useActiveTicks } from "./hooks/useActiveTicks";
+import { useMatchBreakpoints } from "../../contexts";
+import { TwoColumns } from "./TwoColumns";
 
 export type RoiCalculatorProps = {
   sqrtRatioX96?: JSBI;
@@ -75,6 +77,7 @@ export function RoiCalculator({
   max,
   ...props
 }: RoiCalculatorProps) {
+  const { isMobile } = useMatchBreakpoints();
   const { t } = useTranslation();
   const [usdValue, setUsdValue] = useState(String(depositAmountInUsd));
   const [spanIndex, setSpanIndex] = useState(3);
@@ -192,72 +195,100 @@ export function RoiCalculator({
   const farmReward = props.isFarm && cakeApy ? (cakeApy * +usdValue) / 100 : 0;
   const totalRoi = lpReward + farmReward;
 
+  const depositSection = (
+    <Section title={t("Deposit amount")}>
+      <DepositAmountInput
+        value={usdValue}
+        maxLabel={maxLabel}
+        onChange={setUsdValue}
+        currencyA={currencyA}
+        currencyB={currencyB}
+        amountA={amountA}
+        amountB={amountB}
+        max={maxUsdValue}
+      />
+    </Section>
+  );
+
+  const stakeAndCompound = (
+    <>
+      <Section title={t("Staked for")}>
+        <StakeSpan spanIndex={spanIndex} onSpanChange={setSpanIndex} />
+      </Section>
+      <Section title={t("Compounding every")}>
+        <CompoundFrequency
+          compoundIndex={compoundIndex}
+          onCompoundChange={setCompoundIndex}
+          on={compoundOn}
+          onToggleCompound={setCompoundOn}
+        />
+      </Section>
+    </>
+  );
+
+  const priceRangeSettings = (
+    <Section title={t("Set price range")}>
+      <LiquidityChartRangeInput
+        price={price}
+        currencyA={currencyA}
+        currencyB={currencyB}
+        tickCurrent={tickCurrent}
+        liquidity={liquidity}
+        feeAmount={feeAmount}
+        ticks={activeTicks}
+        ticksAtLimit={priceRange?.ticksAtLimit}
+        priceLower={priceRange?.priceLower}
+        priceUpper={priceRange?.priceUpper}
+        onLeftRangeInput={priceRange?.onLeftRangeInput}
+        onRightRangeInput={priceRange?.onRightRangeInput}
+      />
+      <DynamicSection>
+        <RangeSelector
+          priceLower={priceRange?.priceLower}
+          priceUpper={priceRange?.priceUpper}
+          getDecrementLower={getDecrementLower}
+          getIncrementLower={getIncrementLower}
+          getDecrementUpper={getDecrementUpper}
+          getIncrementUpper={getIncrementUpper}
+          onLeftRangeInput={priceRange?.onLeftRangeInput}
+          onRightRangeInput={priceRange?.onRightRangeInput}
+          currencyA={currencyA}
+          currencyB={currencyB}
+          feeAmount={feeAmount}
+          ticksAtLimit={priceRange?.ticksAtLimit || {}}
+        />
+        <Button
+          onClick={priceRange?.toggleFullRange}
+          variant={priceRange?.fullRange ? "primary" : "secondary"}
+          mb="16px"
+          scale="sm"
+        >
+          {t("Full Range")}
+        </Button>
+      </DynamicSection>
+    </Section>
+  );
+
+  const content = isMobile ? (
+    <>
+      {depositSection}
+      {priceRangeSettings}
+      {stakeAndCompound}
+    </>
+  ) : (
+    <TwoColumns>
+      <AutoColumn alignSelf="stretch">{depositSection}</AutoColumn>
+      <AutoColumn>
+        {stakeAndCompound}
+        {priceRangeSettings}
+      </AutoColumn>
+    </TwoColumns>
+  );
+
   return (
     <>
       <ScrollableContainer>
-        <Section title={t("Deposit amount")}>
-          <DepositAmountInput
-            value={usdValue}
-            maxLabel={maxLabel}
-            onChange={setUsdValue}
-            currencyA={currencyA}
-            currencyB={currencyB}
-            amountA={amountA}
-            amountB={amountB}
-            max={maxUsdValue}
-          />
-        </Section>
-        <Section title={t("Set price range")}>
-          <LiquidityChartRangeInput
-            price={price}
-            currencyA={currencyA}
-            currencyB={currencyB}
-            tickCurrent={tickCurrent}
-            liquidity={liquidity}
-            feeAmount={feeAmount}
-            ticks={activeTicks}
-            ticksAtLimit={priceRange?.ticksAtLimit}
-            priceLower={priceRange?.priceLower}
-            priceUpper={priceRange?.priceUpper}
-            onLeftRangeInput={priceRange?.onLeftRangeInput}
-            onRightRangeInput={priceRange?.onRightRangeInput}
-          />
-          <DynamicSection>
-            <RangeSelector
-              priceLower={priceRange?.priceLower}
-              priceUpper={priceRange?.priceUpper}
-              getDecrementLower={getDecrementLower}
-              getIncrementLower={getIncrementLower}
-              getDecrementUpper={getDecrementUpper}
-              getIncrementUpper={getIncrementUpper}
-              onLeftRangeInput={priceRange?.onLeftRangeInput}
-              onRightRangeInput={priceRange?.onRightRangeInput}
-              currencyA={currencyA}
-              currencyB={currencyB}
-              feeAmount={feeAmount}
-              ticksAtLimit={priceRange?.ticksAtLimit || {}}
-            />
-            <Button
-              onClick={priceRange?.toggleFullRange}
-              variant={priceRange?.fullRange ? "primary" : "secondary"}
-              mb="16px"
-              scale="sm"
-            >
-              {t("Full Range")}
-            </Button>
-          </DynamicSection>
-        </Section>
-        <Section title={t("Staked for")}>
-          <StakeSpan spanIndex={spanIndex} onSpanChange={setSpanIndex} />
-        </Section>
-        <Section title={t("Compounding every")}>
-          <CompoundFrequency
-            compoundIndex={compoundIndex}
-            onCompoundChange={setCompoundIndex}
-            on={compoundOn}
-            onToggleCompound={setCompoundOn}
-          />
-        </Section>
+        {content}
         <ImpermanentLossCalculator
           lpReward={lpReward}
           amountA={amountA}

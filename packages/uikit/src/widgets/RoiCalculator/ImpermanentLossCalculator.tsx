@@ -2,10 +2,21 @@ import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { priceToClosestTick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
+import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
 
 import { Section } from "./Section";
-import { Toggle, Button, RowBetween, DoubleCurrencyLogo, PencilIcon, Flex } from "../../components";
+import {
+  Box,
+  Row,
+  AutoColumn,
+  Toggle,
+  Button,
+  RowBetween,
+  DoubleCurrencyLogo,
+  PencilIcon,
+  Flex,
+} from "../../components";
 import {
   AssetCard,
   Asset,
@@ -17,6 +28,13 @@ import {
   CardTag,
 } from "./AssetCard";
 import { getTokenAmountsFromDepositUsd, toPercent, toToken0Price } from "./utils";
+import { TwoColumns } from "./TwoColumns";
+
+const Container = styled(Box)`
+  background: ${({ theme }) => theme.colors.background};
+  padding: 12px;
+  border-radius: 20px;
+`;
 
 interface Props {
   amountA?: CurrencyAmount<Currency>;
@@ -219,81 +237,96 @@ export function ImpermanentLossCalculator({
 
   const calculator = on ? (
     <>
-      <CardSection
-        mt={16}
-        header={
-          <>
-            <SectionTitle>{t("Entry price")}</SectionTitle>
-            <Flex>
-              <PencilIcon width="12px" color="primary" mr="0.5em" />
-              <Button variant="secondary" scale="xs" onClick={resetEntry} style={{ textTransform: "uppercase" }}>
-                {t("Current")}
-              </Button>
-            </Flex>
-          </>
-        }
-      >
-        <AssetCard assets={entry} onChange={updateEntry} />
-      </CardSection>
-      <CardSection
-        header={
-          <>
-            <SectionTitle>{t("Exit price")}</SectionTitle>
-            <Flex>
-              <PencilIcon width="12px" color="primary" mr="0.5em" />
-              <Button variant="secondary" scale="xs" onClick={resetExit} style={{ textTransform: "uppercase" }}>
-                {t("Current")}
-              </Button>
-            </Flex>
-          </>
-        }
-      >
-        <AssetCard assets={exit} onChange={updateExit} />
-      </CardSection>
+      <TwoColumns>
+        <AutoColumn alignSelf="stretch">
+          <CardSection
+            header={
+              <>
+                <SectionTitle>{t("Entry price")}</SectionTitle>
+                <Flex>
+                  <PencilIcon width="12px" color="primary" mr="0.5em" />
+                  <Button variant="secondary" scale="xs" onClick={resetEntry} style={{ textTransform: "uppercase" }}>
+                    {t("Current")}
+                  </Button>
+                </Flex>
+              </>
+            }
+          >
+            <AssetCard assets={entry} onChange={updateEntry} />
+          </CardSection>
+        </AutoColumn>
+        <AutoColumn>
+          <CardSection
+            header={
+              <>
+                <SectionTitle>{t("Exit price")}</SectionTitle>
+                <Flex>
+                  <PencilIcon width="12px" color="primary" mr="0.5em" />
+                  <Button variant="secondary" scale="xs" onClick={resetExit} style={{ textTransform: "uppercase" }}>
+                    {t("Current")}
+                  </Button>
+                </Flex>
+              </>
+            }
+          >
+            <AssetCard assets={exit} onChange={updateExit} />
+          </CardSection>
+        </AutoColumn>
+      </TwoColumns>
       <CardSection header={<SectionTitle>{t("Projected results")}</SectionTitle>}>
-        <AssetCard
-          isActive={!lpBetter}
-          mb={24}
-          showPrice={false}
-          assets={hodlAssets}
-          header={
-            <RowBetween>
-              <InterestDisplay amount={hodlValue} interest={hodlRate} />
-              <CardTag isActive={!lpBetter}>{t("HODL Tokens")}</CardTag>
-            </RowBetween>
-          }
-        />
-        <AssetCard
-          isActive={lpBetter}
-          showPrice={false}
-          assets={exit}
-          header={
-            <RowBetween>
-              <InterestDisplay amount={exitValue} interest={exitRate} />
-              <CardTag isActive={lpBetter}>{t("Provide Liquidity")}</CardTag>
-            </RowBetween>
-          }
-          extraRows={
-            <AssetRow
-              name={
-                <CurrencyLogoDisplay
-                  logo={<DoubleCurrencyLogo currency0={exit?.[0].currency} currency1={exit?.[1].currency} />}
-                  name={t("LP Rewards")}
+        <TwoColumns>
+          <AutoColumn>
+            <AssetCard
+              isActive={!lpBetter}
+              mb={24}
+              showPrice={false}
+              assets={hodlAssets}
+              header={
+                <RowBetween>
+                  <InterestDisplay amount={hodlValue} interest={hodlRate} />
+                  <CardTag isActive={!lpBetter}>{t("HODL Tokens")}</CardTag>
+                </RowBetween>
+              }
+            />
+          </AutoColumn>
+          <AutoColumn>
+            <AssetCard
+              isActive={lpBetter}
+              showPrice={false}
+              assets={exit}
+              header={
+                <RowBetween>
+                  <InterestDisplay amount={exitValue} interest={exitRate} />
+                  <CardTag isActive={lpBetter}>{t("Provide Liquidity")}</CardTag>
+                </RowBetween>
+              }
+              extraRows={
+                <AssetRow
+                  name={
+                    <CurrencyLogoDisplay
+                      logo={<DoubleCurrencyLogo currency0={exit?.[0].currency} currency1={exit?.[1].currency} />}
+                      name={t("LP Rewards")}
+                    />
+                  }
+                  showPrice={false}
+                  value={lpReward}
                 />
               }
-              showPrice={false}
-              value={lpReward}
             />
-          }
-        />
+          </AutoColumn>
+        </TwoColumns>
       </CardSection>
     </>
   ) : null;
 
   return (
-    <Section title={t("Calculate impermanent loss")}>
-      <Toggle checked={on} onChange={toggle} scale="md" />
-      {calculator}
-    </Section>
+    <Container>
+      <Section title={t("Calculate impermanent loss")} mb="0">
+        <Row mb={on ? "24px" : "0"}>
+          <Toggle checked={on} onChange={toggle} scale="md" />
+        </Row>
+        {calculator}
+      </Section>
+    </Container>
   );
 }

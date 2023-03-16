@@ -97,7 +97,13 @@ export function AssetCard({
     <Box {...rest}>
       {header && <RowBetween mb="8px">{header}</RowBetween>}
       <Card isActive={isActive} style={{ overflowX: "auto" }}>
-        <Table>
+        <Table style={{ tableLayout: "fixed" }}>
+          <colgroup>
+            <col />
+            {showPrice && <col width="30%" />}
+            <col />
+            <col />
+          </colgroup>
           <thead>
             <tr>
               <Th textAlign="left">{t("Asset")}</Th>
@@ -187,7 +193,7 @@ interface InterestDisplayProps {
 
 export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
   return (
-    <Flex>
+    <Flex alignItems="center">
       {amount && <Text bold>${toSignificant(amount)}</Text>}
       {interest && (
         <Text ml="4px" color={interest.lessThan(0) ? "failure" : "success"}>
