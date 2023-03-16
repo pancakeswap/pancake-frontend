@@ -138,8 +138,14 @@ export default function PoolListPage() {
                         {currencyBase?.symbol}
                       </Text>
                     </Flex>
-
-                    <RangeTag removed={removed} outOfRange={outOfRange} />
+                    <Flex>
+                      {p.isStaked && (
+                        <Tag ml="8px" outline variant="warning">
+                          Farming
+                        </Tag>
+                      )}
+                      <RangeTag removed={removed} outOfRange={outOfRange} />
+                    </Flex>
                   </Flex>
                 </NextLink>
               </Card>

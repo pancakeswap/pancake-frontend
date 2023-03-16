@@ -126,8 +126,11 @@ export function useV3Positions(account: string | null | undefined): UseV3Positio
   return useMemo(
     () => ({
       loading: tokenIdsLoading || positionsLoading,
-      positions,
+      positions: positions?.map((position) => ({
+        ...position,
+        isStaked: Boolean(stakedTokenIds?.find((p) => p.eq(position.tokenId))),
+      })),
     }),
-    [positions, positionsLoading, tokenIdsLoading],
+    [positions, positionsLoading, stakedTokenIds, tokenIdsLoading],
   )
 }

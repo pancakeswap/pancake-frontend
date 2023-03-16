@@ -228,6 +228,7 @@ export interface PositionDetails {
   feeGrowthInside1LastX128: EtherBigNumber
   tokensOwed0: EtherBigNumber
   tokensOwed1: EtherBigNumber
+  isStaked?: boolean
 }
 
 export interface FarmV3DataWithPriceAndUserInfo extends FarmV3DataWithPriceTVL {

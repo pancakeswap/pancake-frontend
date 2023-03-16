@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { BigintIsh, CurrencyAmount, ONE, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
+import { BigintIsh, CurrencyAmount, ONE, Percent, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ADDRESS_ZERO } from './constants'
@@ -215,6 +215,13 @@ export abstract class MasterChefV3 {
     if (options.liquidityPercentage.equalTo(ONE)) {
       if (options.burnToken) {
         calldatas.push(MasterChefV3.INTERFACE.encodeFunctionData('burn', [tokenId]))
+      } else if (rest?.recipient) {
+        calldatas.push(
+          MasterChefV3.INTERFACE.encodeFunctionData('withdraw', [
+            tokenId.toString(),
+            validateAndParseAddress(rest?.recipient),
+          ])
+        )
       }
     } else {
       invariant(options.burnToken !== true, 'CANNOT_BURN')

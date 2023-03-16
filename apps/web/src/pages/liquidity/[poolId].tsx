@@ -18,6 +18,7 @@ import {
   Spinner,
   useMatchBreakpoints,
   NotFound,
+  Tag,
 } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -420,6 +421,11 @@ export default function PoolPage() {
                     <Heading as="h2" ml="8px">
                       {currencyQuote?.symbol}-{currencyBase?.symbol}
                     </Heading>
+                    {isStakedInMCv3 && (
+                      <Tag ml="8px" outline variant="warning">
+                        Farming
+                      </Tag>
+                    )}
                     <RangeTag removed={removed} outOfRange={!inRange} />
                   </Flex>
                   <Text fontSize="14px" color="textSubtle">

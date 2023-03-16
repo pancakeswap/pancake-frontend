@@ -147,7 +147,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
   //   // )
 
-  const isStakedInMCv3 = Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
+  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id.eq(tokenId)))
 
   const manager = isStakedInMCv3 ? masterchefV3 : positionManager
   const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager

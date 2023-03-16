@@ -19,6 +19,8 @@ import {
   RowFixed,
   Toggle,
   Box,
+  Tag,
+  Message,
 } from '@pancakeswap/uikit'
 import { NonfungiblePositionManager, MasterChefV3 } from '@pancakeswap/v3-sdk'
 import { AppBody, AppHeader } from 'components/App'
@@ -33,7 +35,6 @@ import { useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useUserSlippage } from '@pancakeswap/utils/user'
 import { calculateGasMargin } from 'utils'
-import currencyId from 'utils/currencyId'
 import Page from 'views/Page'
 import { useSigner } from 'wagmi'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
@@ -122,6 +123,8 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const positionManager = useV3NFTPositionManagerContract()
 
+  const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id.eq(tokenId)))
+
   const onRemove = useCallback(async () => {
     if (
       tokenIdsInMCv3Loading ||
@@ -138,8 +141,6 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     ) {
       return
     }
-
-    const isStakedInMCv3 = Boolean(stakedTokenIds.find((id) => id.eq(tokenId)))
 
     const manager = isStakedInMCv3 ? masterchefV3 : positionManager
     const interfaceManager = isStakedInMCv3 ? MasterChefV3 : NonfungiblePositionManager
@@ -192,6 +193,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       })
   }, [
     tokenIdsInMCv3Loading,
+    masterchefV3,
     positionManager,
     liquidityValue0,
     liquidityValue1,
@@ -201,8 +203,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     positionSDK,
     liquidityPercentage,
     signer,
-    stakedTokenIds,
-    masterchefV3,
+    isStakedInMCv3,
     tokenId,
     allowedSlippage,
     feeValue0,
@@ -270,14 +271,20 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     )
   }
 
+  const router = useRouter()
+
   const handleDismissConfirmation = useCallback(() => {
     // if there was a tx hash, we want to clear the input
     if (txnHash) {
-      onPercentSelectForSlider(0)
+      if (percentForSlider === 100) {
+        router.push('/liquidity')
+      } else {
+        onPercentSelectForSlider(0)
+      }
     }
     setAttemptingTxn(false)
     setTxnHash('')
-  }, [onPercentSelectForSlider, txnHash])
+  }, [onPercentSelectForSlider, percentForSlider, router, txnHash])
 
   const [onPresentRemoveLiquidityModal] = useModal(
     <TransactionConfirmationModal
@@ -342,7 +349,14 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
               <Text color="textSubtle">#{tokenId?.toString()}</Text>
             </Box>
 
-            <RangeTag removed={removed} outOfRange={outOfRange} />
+            <Flex>
+              {isStakedInMCv3 && (
+                <Tag ml="8px" outline variant="warning">
+                  Farming
+                </Tag>
+              )}
+              <RangeTag removed={removed} outOfRange={outOfRange} />
+            </Flex>
           </AutoRow>
           <Text fontSize="12px" color="secondary" bold textTransform="uppercase" mb="4px">
             Amount of Liquidity to Remove
@@ -440,6 +454,13 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
               />
             </Flex>
           )}
+          {isStakedInMCv3 ? (
+            <Message variant="primary" mb="20px">
+              This liquidity position is currently staking in the Farm. Adding or removing liquidity will also harvest
+              any unclaimed CAKE to your wallet.
+            </Message>
+          ) : null}
+
           <Button
             disabled={attemptingTxn || removed || Boolean(error)}
             width="100%"
