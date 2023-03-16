@@ -13,11 +13,9 @@ import { RangeTag } from 'components/RangeTag'
 import { Bound } from 'config/constants/types'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
-import { usePool } from 'hooks/v3/usePools'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import styled from 'styled-components'
-import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
@@ -34,6 +32,7 @@ interface FarmV3StakeAndUnStakeProps {
   title: string
   liquidityUrl: string
   position: PositionDetails
+  outOfRange: boolean
   token: Token
   quoteToken: Token
   positionType: PositionType
@@ -139,11 +138,9 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
   isPending,
   handleStake,
   handleUnStake,
+  outOfRange,
 }) => {
   const { t } = useTranslation()
-  const [, pool] = usePool(farm.token, farm.quoteToken, farm.feeAmount)
-
-  const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
 
   return (
     <>

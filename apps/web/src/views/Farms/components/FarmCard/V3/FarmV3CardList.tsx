@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, Box, Flex, PreTitle } from '@pancakeswap/uikit'
+import { usePool } from 'hooks/v3/usePools'
 import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
 import { V3Farm } from 'views/Farms/FarmsV3'
 
@@ -16,6 +17,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
 }) => {
   const { t } = useTranslation()
   const { stakedPositions, unstakedPositions, lpSymbol, token, quoteToken, pendingCakeByTokenIds } = farm
+  const [, pool] = usePool(farm.token, farm.quoteToken, farm.feeAmount)
 
   return (
     <Box width="100%">
@@ -27,6 +29,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
           <Flex flexWrap="wrap" width="100%">
             {stakedPositions.map((position) => (
               <SingleFarmV3Card
+                pool={pool}
                 width="full"
                 direction={direction}
                 positionType="staked"
@@ -55,6 +58,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
                 style={{
                   minWidth: '49%',
                 }}
+                pool={pool}
                 flex={1}
                 direction={direction}
                 positionType="unstaked"

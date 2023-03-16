@@ -29,6 +29,8 @@ import styled from 'styled-components'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { useAccount, useSigner } from 'wagmi'
+import { Pool } from '@pancakeswap/v3-sdk'
+import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
@@ -54,6 +56,7 @@ type PositionType = 'staked' | 'unstaked'
 
 interface SingleFarmV3CardProps {
   farm: V3Farm
+  pool?: Pool
   lpSymbol: string
   position: PositionDetails
   positionType: PositionType
@@ -68,6 +71,7 @@ const SingleFarmV3Card: React.FunctionComponent<
   React.PropsWithChildren<SingleFarmV3CardProps & Omit<AtomBoxProps, 'position'>>
 > = ({
   farm,
+  pool,
   lpSymbol,
   position,
   token,
@@ -141,6 +145,8 @@ const SingleFarmV3Card: React.FunctionComponent<
     }
   }, [unstakedModal.isOpen, unstakingTooltip])
 
+  const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
+
   return (
     <AtomBox {...atomBoxProps}>
       <ActionContainer bg="background" flexDirection={direction}>
@@ -155,6 +161,7 @@ const SingleFarmV3Card: React.FunctionComponent<
           <FarmV3StakeAndUnStake
             title={title}
             farm={farm}
+            outOfRange={outOfRange}
             position={position}
             token={token}
             quoteToken={quoteToken}
@@ -191,8 +198,14 @@ const SingleFarmV3Card: React.FunctionComponent<
                 </AtomBox>
                 <LightCard>
                   <AutoColumn gap="8px">
-                    <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} />
-                    <FarmV3LPPosition farm={farm} token={token} quoteToken={quoteToken} position={position} />
+                    <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
+                    <FarmV3LPPosition
+                      farm={farm}
+                      token={token}
+                      quoteToken={quoteToken}
+                      position={position}
+                      positionType={positionType}
+                    />
                     <NextLink href={liquidityUrl} onClick={unstakedModal.onDismiss}>
                       <Button variant="tertiary" width="100%" as="a">
                         {t('Manage Position')}
