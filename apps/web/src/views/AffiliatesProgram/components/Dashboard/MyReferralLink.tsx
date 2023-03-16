@@ -16,7 +16,6 @@ import { ethers } from 'ethers'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import { InfoDetail } from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useDefaultLinkId from 'views/AffiliatesProgram/hooks/useDefaultLinkId'
 import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 

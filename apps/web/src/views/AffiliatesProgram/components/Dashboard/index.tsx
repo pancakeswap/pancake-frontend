@@ -9,6 +9,7 @@ import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliat
 import LoginButton from 'views/AffiliatesProgram/components/Dashboard/LoginButton'
 import CommissionInfo from 'views/AffiliatesProgram/components/Dashboard/CommissionInfo'
 import ClaimReward from 'views/AffiliatesProgram/components/Dashboard/ClaimReward'
+import AffiliateLinks from 'views/AffiliatesProgram/components/Dashboard/AffiliateLinks'
 
 const Dashboard = () => {
   const router = useRouter()
@@ -40,6 +41,7 @@ const Dashboard = () => {
           <CommissionInfo />
           <Flex flexDirection="column">
             <MyReferralLink />
+            <AffiliateLinks affiliate={affiliate} />
             <ClaimReward />
           </Flex>
         </Flex>
