@@ -1,6 +1,6 @@
-import { Currency, ZERO_PERCENT } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { useRoi, RoiCalculatorModalV2, TooltipText, Flex, CalculateIcon, Text, IconButton } from '@pancakeswap/uikit'
-import { encodeSqrtRatioX96 } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96, Pool } from '@pancakeswap/v3-sdk'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -12,6 +12,8 @@ import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { Bound } from 'config/constants/types'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import { Field } from 'state/mint/actions'
+import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
+import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 
 interface Props {
   baseCurrency: Currency
@@ -38,15 +40,19 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
     existingPosition,
     formState,
   )
+  const volume24H = usePoolAvgTradingVolume({
+    address: pool && Pool.getAddress(pool.token0, pool.token1, pool.fee),
+    chainId: pool?.token0.chainId,
+  })
   const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
   const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
 
-  // TODO get data from subgraph
-  const currencyAUsdPrice = 1
-  const currencyBUsdPrice = 1
-  const volume24H = 10
+  const baseUSDPrice = useStablecoinPrice(baseCurrency)
+  const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
+  const currencyAUsdPrice = parseFloat(baseUSDPrice?.toSignificant(6))
+  const currencyBUsdPrice = parseFloat(quoteUSDPrice?.toSignificant(6))
 
   const depositUsd = useMemo(
     () =>
@@ -55,7 +61,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
       currencyAUsdPrice &&
       currencyBUsdPrice &&
       String(parseFloat(amountA.toExact()) * currencyAUsdPrice + parseFloat(amountB.toExact()) * currencyBUsdPrice),
-    [amountA, amountB],
+    [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice],
   )
 
   const { apr } = useRoi({
@@ -71,10 +77,6 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
     currencyBUsdPrice,
     volume24H,
   })
-
-  if (!apr.greaterThan(ZERO_PERCENT)) {
-    return null
-  }
 
   return (
     <>

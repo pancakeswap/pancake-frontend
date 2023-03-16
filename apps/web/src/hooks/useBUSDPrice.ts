@@ -51,7 +51,7 @@ export function useStablecoinPrice(currency?: Currency): Price<Currency, Currenc
     }
 
     if (trade) {
-      const { inputAmount, outputAmount } = trade.routes[0]
+      const { inputAmount, outputAmount } = trade
 
       return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
     }
