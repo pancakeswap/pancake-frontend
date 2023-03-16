@@ -39,7 +39,7 @@ const Dashboard = () => {
         >
           {/* <CommissionInfo /> */}
           <Flex flexDirection="column">
-            <MyReferralLink affiliate={affiliate} />
+            <MyReferralLink />
             {/* <ClaimReward /> */}
           </Flex>
         </Flex>
