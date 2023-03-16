@@ -25,7 +25,6 @@ import CurrencySearch from './CurrencySearch'
 import ImportToken from './ImportToken'
 import Manage from './Manage'
 import { CurrencyModalView } from './types'
-import { BAD_SRCS } from '../Logo/constants'
 
 const Footer = styled.div`
   width: 100%;
@@ -176,7 +175,6 @@ export default function CurrencySearchModal({
           <ImportList
             onAddList={handleAddList}
             addError={addError}
-            badSrcs={BAD_SRCS}
             listURL={listURL}
             listLogoURI={importList?.logoURI}
             listName={importList?.name}

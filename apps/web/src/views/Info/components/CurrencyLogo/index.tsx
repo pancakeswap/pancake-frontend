@@ -1,11 +1,12 @@
 import { Token } from '@pancakeswap/sdk'
+import { TokenLogo } from '@pancakeswap/uikit'
 import { useMemo } from 'react'
 import { multiChainId } from 'state/info/constant'
 import styled from 'styled-components'
+import { isAddress } from 'utils'
 import getTokenLogoURL from '../../../../utils/getTokenLogoURL'
-import LogoLoader from './LogoLoader'
 
-const StyledLogo = styled(LogoLoader)<{ size: string }>`
+const StyledLogo = styled(TokenLogo)<{ size: string }>`
   width: ${({ size }) => size};
   height: ${({ size }) => size};
   border-radius: ${({ size }) => size};
@@ -17,6 +18,7 @@ const StyledLogo = styled(LogoLoader)<{ size: string }>`
 export const CurrencyLogo: React.FC<
   React.PropsWithChildren<{
     address?: string
+    token?: Token
     size?: string
     chainName?: 'ETH' | 'BSC'
   }>
@@ -25,7 +27,12 @@ export const CurrencyLogo: React.FC<
     return getTokenLogoURL(new Token(multiChainId[chainName], address, 18, ''))
   }, [address, chainName])
 
-  return <StyledLogo size={size} src={src} alt="token logo" {...rest} />
+  const imagePath = chainName === 'BSC' ? '' : `${chainName}/tokens/`
+  const srcFromPCS = `https://${chainName === 'BSC' ? 'tokens.' : ''}pancakeswap.finance/images/${imagePath}${isAddress(
+    address,
+  )}.png`
+
+  return <StyledLogo size={size} srcs={[src, srcFromPCS]} alt="token logo" {...rest} />
 }
 
 const DoubleCurrencyWrapper = styled.div`
