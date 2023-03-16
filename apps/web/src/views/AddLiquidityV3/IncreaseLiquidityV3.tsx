@@ -216,12 +216,6 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
             addTransaction(response, {
               type: 'increase-liquidity-v3',
               summary: `Increase ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
-              baseCurrencyId: currencyId(baseCurrency),
-              quoteCurrencyId: currencyId(quoteCurrency),
-              createPool: Boolean(noLiquidity),
-              expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-              expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-              feeAmount: position.pool.fee,
             })
             setTxHash(response.hash)
           })

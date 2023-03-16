@@ -299,12 +299,6 @@ export default function V3FormView({
             addTransaction(response, {
               type: 'add-liquidity-v3',
               summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
-              baseCurrencyId: currencyId(baseCurrency),
-              quoteCurrencyId: currencyId(quoteCurrency),
-              createPool: Boolean(noLiquidity),
-              expectedAmountBaseRaw: parsedAmounts[Field.CURRENCY_A]?.quotient?.toString() ?? '0',
-              expectedAmountQuoteRaw: parsedAmounts[Field.CURRENCY_B]?.quotient?.toString() ?? '0',
-              feeAmount: position.pool.fee,
             })
             setTxHash(response.hash)
           })

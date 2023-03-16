@@ -287,12 +287,12 @@ export default function PoolPage() {
           setCollectMigrationHash(response.hash)
           setCollecting(false)
 
+          const amount0 = CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0).toExact()
+          const amount1 = CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0).toExact()
+
           addTransaction(response, {
             type: 'collect-fee',
-            currencyId0: currencyId(currency0ForFeeCollectionPurposes),
-            currencyId1: currencyId(currency1ForFeeCollectionPurposes),
-            expectedCurrencyOwed0: CurrencyAmount.fromRawAmount(currency0ForFeeCollectionPurposes, 0).toExact(),
-            expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(currency1ForFeeCollectionPurposes, 0).toExact(),
+            summary: `Collect fee ${amount0} ${currency0ForFeeCollectionPurposes.symbol} and ${amount1} ${currency1ForFeeCollectionPurposes.symbol}`,
           })
         })
       })

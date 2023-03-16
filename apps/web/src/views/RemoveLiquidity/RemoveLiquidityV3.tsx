@@ -183,10 +183,6 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           addTransaction(response, {
             type: 'remove-liquidity-v3',
             summary: `Remove ${amount0} ${liquidityValue0.currency.symbol} and ${amount1} ${liquidityValue1.currency.symbol}`,
-            baseCurrencyId: currencyId(liquidityValue0.currency),
-            quoteCurrencyId: currencyId(liquidityValue1.currency),
-            expectedAmountBaseRaw: liquidityValue0.quotient.toString(),
-            expectedAmountQuoteRaw: liquidityValue1.quotient.toString(),
           })
         })
       })
