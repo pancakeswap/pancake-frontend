@@ -2,6 +2,10 @@ import { nanoid } from 'nanoid'
 import useSWR from 'swr'
 import qs from 'qs'
 
+interface AffiliateExistFeeResponse {
+  exist: boolean
+}
+
 const useDefaultLinkId = () => {
   let randomNanoId = nanoid(20)
 
@@ -11,7 +15,7 @@ const useDefaultLinkId = () => {
       try {
         const queryString = qs.stringify({ linkId: randomNanoId })
         const response = await fetch(`/api/affiliates-program/affiliate-fee-exist?${queryString}`)
-        const result = await response.json()
+        const result: AffiliateExistFeeResponse = await response.json()
 
         if (result.exist) {
           randomNanoId = nanoid(20)
