@@ -2,11 +2,11 @@ import { useState, useMemo } from 'react'
 import { SiweMessage } from 'siwe'
 import { useSWRConfig } from 'swr'
 import { useAccount, useSignMessage } from 'wagmi'
-import { getCookie, deleteCookie, setCookie } from 'cookies-next'
+import { getCookie } from 'cookies-next'
 import { Button } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { AFFILIATE_SID, AFFILIATE_NONCE_SID } from 'pages/api/affiliates-program/affiliate-login'
+import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
 
 const LoginButton = () => {
   const { t } = useTranslation()
@@ -23,11 +23,9 @@ const LoginButton = () => {
     try {
       setIsLoading(true)
       const nonceResponse = await fetch('/api/affiliates-program/affiliate-nonce')
-      const { nonce, [AFFILIATE_NONCE_SID]: affiliateNonceSid } = await nonceResponse.json()
+      const { nonce } = await nonceResponse.json()
 
-      if (affiliateNonceSid) {
-        setCookie(AFFILIATE_NONCE_SID, affiliateNonceSid)
-
+      if (nonce) {
         const initMessage = new SiweMessage({
           domain: 'Pancakeswap',
           address,
@@ -43,11 +41,9 @@ const LoginButton = () => {
           method: 'POST',
           body: JSON.stringify({ affiliate: { message, signature } }),
         })
-        const { status, [AFFILIATE_SID]: AdminSid } = await response.json()
+        const { status } = await response.json()
 
-        if (status === 'success' && AdminSid) {
-          deleteCookie(AFFILIATE_NONCE_SID)
-          setCookie(AFFILIATE_SID, AdminSid)
+        if (status === 'success') {
           await mutate(['/auth-affiliate', address, cookie])
         }
       }

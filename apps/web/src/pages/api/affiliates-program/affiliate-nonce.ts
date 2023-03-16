@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { setCookie } from 'cookies-next'
 import { AFFILIATE_NONCE_SID } from 'pages/api/affiliates-program/affiliate-login'
 
 const affiliateNonce = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -12,12 +13,10 @@ const affiliateNonce = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).json({ message: 'An error occurred please try again' })
   }
 
-  const result = await response.json()
+  const { nonce } = await response.json()
+  setCookie(AFFILIATE_NONCE_SID, response.headers.get('set-cookie'), { req, res })
 
-  return res.status(200).json({
-    nonce: result.nonce,
-    [AFFILIATE_NONCE_SID]: response.headers.get('set-cookie') ?? '',
-  })
+  return res.status(200).json({ nonce })
 }
 
 export default affiliateNonce

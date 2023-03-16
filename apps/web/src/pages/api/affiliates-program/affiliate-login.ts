@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { getCookie } from 'cookies-next'
+import { getCookie, setCookie, deleteCookie } from 'cookies-next'
 
 export const AFFILIATE_SID = 'AFFILIATE_SID'
 export const AFFILIATE_NONCE_SID = 'AFFILIATE_NONCE_SID'
@@ -25,11 +25,10 @@ const affiliateLogin = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const { status } = await response.json()
+  deleteCookie(AFFILIATE_NONCE_SID, { req, res })
+  setCookie(AFFILIATE_SID, response.headers.get('set-cookie'), { req, res })
 
-  return res.status(200).json({
-    status,
-    [AFFILIATE_SID]: response.headers.get('set-cookie') ?? '',
-  })
+  return res.status(200).json({ status })
 }
 
 export default affiliateLogin
