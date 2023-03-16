@@ -212,7 +212,7 @@ export default function StableFormView({
             <AutoRow justifyContent="space-between" mb="4px">
               <Text color="textSubtle">Fee rate: </Text>
 
-              <Text>{BIG_ONE_HUNDRED.times(stableLpFee).toNumber()}%</Text>
+              <Text>{stableLpFee ? BIG_ONE_HUNDRED.times(stableLpFee).toNumber() : '-'}%</Text>
             </AutoRow>
 
             <AutoRow justifyContent="space-between" mb="16px">

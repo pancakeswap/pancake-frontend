@@ -187,7 +187,8 @@ export function useStableLPDerivedMintInfo(
   const independentCurrency = currencies[independentField]
   const independentAmount: CurrencyAmount<Currency> | undefined =
     (independentCurrency && tryParseAmount(typedValue, independentCurrency)) ||
-    CurrencyAmount.fromRawAmount(independentCurrency, '0')
+    (independentCurrency && CurrencyAmount.fromRawAmount(independentCurrency, '0')) ||
+    undefined
 
   const dependentCurrency = currencies[dependentField]
   const dependentAmount: CurrencyAmount<Currency> | undefined =
