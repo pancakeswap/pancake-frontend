@@ -12,7 +12,7 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
   const router = useRouter()
 
   return (
-    <Flex flexDirection="column" padding="50px 24px">
+    <Flex flexDirection="column" padding={['24px', '24px', '24px', '24px', '50px 24px']}>
       <Box>
         <LogoRoundIcon width="48px" />
       </Box>

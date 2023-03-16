@@ -1,5 +1,6 @@
+import styled from 'styled-components'
 import { Trans } from '@pancakeswap/localization'
-import { Heading, Text, Flex, Box } from '@pancakeswap/uikit'
+import { Heading, Text, Flex, Box, useMatchBreakpoints, ChevronLeftIcon, ChevronRightIcon } from '@pancakeswap/uikit'
 import Image from 'next/image'
 import useTheme from 'hooks/useTheme'
 import { useState, useCallback } from 'react'
@@ -7,7 +8,13 @@ import { useState, useCallback } from 'react'
 import 'swiper/css/bundle'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Swiper as SwiperClass } from 'swiper/types'
-import { Autoplay } from 'swiper'
+import { Autoplay, Navigation } from 'swiper'
+
+const MobileNavigation = styled('div')`
+  position: absolute;
+  top: 50%;
+  width: 100%;
+`
 
 const IntroSteps = [
   {
@@ -57,7 +64,7 @@ const StepDot = ({
   }
 
   return (
-    <Flex width="100%" padding="4px" onClick={onClick} style={{ cursor: 'pointer' }}>
+    <Flex width="100%" style={{ cursor: 'pointer' }} padding="4px" onClick={onClick}>
       <Box
         width="56px"
         height="8px"
@@ -69,6 +76,7 @@ const StepDot = ({
 }
 
 const StepIntro = () => {
+  const { isDesktop } = useMatchBreakpoints()
   const [step, setStep] = useState(0)
   const [swiper, setSwiper] = useState<SwiperClass | undefined>(undefined)
 
@@ -87,10 +95,17 @@ const StepIntro = () => {
   )
 
   return (
-    <Flex flexDirection="column" justifyContent="center" alignItems="center" margin="auto">
+    <Flex
+      position="relative"
+      width="100%"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      margin="auto"
+    >
       <Swiper
         initialSlide={0}
-        modules={[Autoplay]}
+        modules={[Autoplay, Navigation]}
         slidesPerView="auto"
         onSwiper={setSwiper}
         autoplay={{
@@ -101,25 +116,45 @@ const StepIntro = () => {
         centeredSlides
         loop
         style={{ width: '300px', marginLeft: '0px', marginRight: '0px' }}
+        navigation={{
+          prevEl: '.prev',
+          nextEl: '.next',
+        }}
       >
         {IntroSteps.map((introStep) => (
           <SwiperSlide key={introStep.icon}>
-            <Box width="226px" m="auto">
-              <Image src={introStep.icon} width={226} height={210} alt="" />
+            {isDesktop && (
+              <Box width="226px" m="auto">
+                <Image src={introStep.icon} width={226} height={210} alt="" />
+              </Box>
+            )}
+            <Box
+              width={['300px', '300px', '300px', '300px', '237px']}
+              m={['41px auto 32px auto', '41px auto 32px auto', '41px auto 32px auto', '41px auto 32px auto', '0 auto']}
+            >
+              <Heading as="h2" textAlign="center" mb={['18px', '18px', '18px', '18px', '33px']}>
+                {introStep.title}
+              </Heading>
+              <Text textAlign="center" small color="textSubtle">
+                {introStep.description}
+              </Text>
             </Box>
-            <Heading textAlign="center" as="h2" color="secondary" mb="33px">
-              {introStep.title}
-            </Heading>
-            <Text maxWidth="237px" m="auto" small color="textSubtle">
-              {introStep.description}
-            </Text>
           </SwiperSlide>
         ))}
       </Swiper>
-      <Flex>
-        <StepDot place="left" active={step === 0} onClick={handleStepClick(0)} />
-        <StepDot place="center" active={step === 1} onClick={handleStepClick(1)} />
-        <StepDot place="right" active={step === 2} onClick={handleStepClick(2)} />
+      <Flex width={['100%', '100%', '100%', '100%', 'auto']}>
+        {isDesktop ? (
+          <>
+            <StepDot place="left" active={step === 0} onClick={handleStepClick(0)} />
+            <StepDot place="center" active={step === 1} onClick={handleStepClick(1)} />
+            <StepDot place="right" active={step === 2} onClick={handleStepClick(2)} />
+          </>
+        ) : (
+          <MobileNavigation>
+            <ChevronLeftIcon className="prev" cursor="pointer" style={{ position: 'absolute', left: '16px' }} />
+            <ChevronRightIcon className="next" cursor="pointer" style={{ position: 'absolute', right: '16px' }} />
+          </MobileNavigation>
+        )}
       </Flex>
     </Flex>
   )

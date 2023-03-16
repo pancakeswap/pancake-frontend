@@ -24,7 +24,7 @@ const OnBoardingModal = () => {
   const { signMessageAsync } = useSignMessage()
   const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
-  const { isMobile } = useMatchBreakpoints()
+  const { isDesktop } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentView, setCurrentView] = useState(Views.STEP1)
@@ -66,10 +66,10 @@ const OnBoardingModal = () => {
 
   return (
     <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={() => setIsOpen(false)}>
-      {isMobile ? (
-        <MobileView currentView={currentView} isLoading={isLoading} handleStartNow={handleStartNow} />
-      ) : (
+      {isDesktop ? (
         <DesktopView currentView={currentView} isLoading={isLoading} handleStartNow={handleStartNow} />
+      ) : (
+        <MobileView currentView={currentView} isLoading={isLoading} handleStartNow={handleStartNow} />
       )}
     </ModalV2>
   )

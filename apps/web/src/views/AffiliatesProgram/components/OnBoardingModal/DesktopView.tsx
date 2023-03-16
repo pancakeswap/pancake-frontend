@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import { Flex, Card } from '@pancakeswap/uikit'
 import { Views } from 'views/AffiliatesProgram/components/OnBoardingModal/index'
 import WelcomePage from './WelcomePage'
-import StepIntro from './StepIntro'
 import Congratulations from './Congratulations'
+import StepIntro from './StepIntro'
 
 const Container = styled(Flex)`
   width: 792px;
