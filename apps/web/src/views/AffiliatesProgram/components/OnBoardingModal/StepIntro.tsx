@@ -125,7 +125,13 @@ const StepIntro = () => {
           <SwiperSlide key={introStep.icon}>
             {isDesktop && (
               <Box width="226px" m="auto">
-                <Image src={introStep.icon} width={226} height={210} alt="" />
+                <Image
+                  alt={introStep.title.toString()}
+                  style={{ margin: 'auto', display: 'block' }}
+                  src={introStep.icon}
+                  width={130}
+                  height={130}
+                />
               </Box>
             )}
             <Box

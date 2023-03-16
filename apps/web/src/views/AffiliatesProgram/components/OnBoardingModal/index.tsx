@@ -30,7 +30,8 @@ const OnBoardingModal = () => {
   const [currentView, setCurrentView] = useState(Views.STEP1)
 
   useEffect(() => {
-    if (isUserExist === false && router.query.ref) {
+    const { ref, user, discount } = router.query
+    if (isUserExist === false && ref && user && discount) {
       setIsOpen(true)
     }
   }, [isUserExist, router])
