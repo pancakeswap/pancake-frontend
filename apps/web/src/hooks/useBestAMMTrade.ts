@@ -88,18 +88,23 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
         deferQuotient,
         candidatePools,
       )
-      const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
-        gasPriceWei: gasPrice
-          ? JSBI.BigInt(gasPrice)
-          : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
-        maxHops,
-        poolProvider,
-        // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
-        quoteProvider,
-        // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
-        blockNumber,
-        allowedPoolTypes: poolTypes,
-      })
+      const res = await SmartRouter.getBestTrade(
+        CurrencyAmount.fromRawAmount(amount.currency, deferQuotient),
+        currency,
+        tradeType,
+        {
+          gasPriceWei: gasPrice
+            ? JSBI.BigInt(gasPrice)
+            : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+          maxHops,
+          poolProvider,
+          // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+          quoteProvider,
+          // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
+          blockNumber,
+          allowedPoolTypes: poolTypes,
+        },
+      )
       console.timeLog(label, res)
       console.timeEnd(label)
       return res

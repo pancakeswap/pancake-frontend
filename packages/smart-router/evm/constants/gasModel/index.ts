@@ -17,3 +17,4 @@ export const nativeWrappedTokenByChain: { [chainId in ChainId]?: Token } = {
 
 export * from './v2'
 export * from './v3'
+export * from './stableSwap'

@@ -1,8 +1,10 @@
 import { BigintIsh, ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
 import sum from 'lodash/sum'
 import {
+  BASE_SWAP_COST_STABLE_SWAP,
   BASE_SWAP_COST_V2,
   BASE_SWAP_COST_V3,
+  COST_PER_EXTRA_HOP_STABLE_SWAP,
   COST_PER_EXTRA_HOP_V2,
   COST_PER_HOP_V3,
   COST_PER_INIT_TICK,
@@ -18,7 +20,7 @@ import {
   PoolType,
   RouteWithoutGasEstimate,
 } from './types'
-import { getNativeWrappedToken, getTokenPrice, getUsdGasToken, isV2Pool, isV3Pool } from './utils'
+import { getNativeWrappedToken, getTokenPrice, getUsdGasToken, isStablePool, isV2Pool, isV3Pool } from './utils'
 
 interface GasModelConfig {
   gasPriceWei: BigintIsh | (() => Promise<BigintIsh>)
@@ -81,6 +83,16 @@ export async function createGasModel({
           poolTypeSet.add(type)
         }
         baseGasUse = JSBI.add(baseGasUse, COST_PER_HOP_V3(chainId))
+        continue
+      }
+
+      if (isStablePool(pool)) {
+        if (!poolTypeSet.has(type)) {
+          baseGasUse = JSBI.add(baseGasUse, BASE_SWAP_COST_STABLE_SWAP)
+          poolTypeSet.add(type)
+          continue
+        }
+        baseGasUse = JSBI.add(baseGasUse, COST_PER_EXTRA_HOP_STABLE_SWAP)
         continue
       }
     }
