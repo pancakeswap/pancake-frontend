@@ -1,5 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import qs from 'qs'
+import { z } from 'zod'
+
+const zQuery = z.object({
+  address: z.string(),
+})
 
 const affiliateExist = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!process.env.AFFILIATE_PROGRAM_API_URL || !req.query) {
@@ -7,6 +12,12 @@ const affiliateExist = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const queryString = qs.stringify(req.query)
+  const queryParsed = qs.parse(queryString)
+  const parsed = zQuery.safeParse(queryParsed)
+  if (parsed.success === false) {
+    return res.status(400).json({ message: 'Invalid query', reason: parsed.error })
+  }
+
   const requestUrl = `${process.env.AFFILIATE_PROGRAM_API_URL}/affiliate/exist?${queryString}`
   const response = await fetch(requestUrl)
 
