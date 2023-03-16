@@ -36,3 +36,8 @@ export const LightTertiaryCard = styled(Card)`
   border: 1px solid ${({ theme }) => theme.colors.cardBorder};
   background-color: ${({ theme }) => theme.colors.tertiary};
 `
+
+export const DisableCard = styled(Card)`
+  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+  background-color: ${({ theme }) => theme.colors.disabled};
+`

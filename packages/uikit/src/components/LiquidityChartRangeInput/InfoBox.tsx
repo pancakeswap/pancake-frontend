@@ -8,7 +8,7 @@ export function InfoBox({ message, icon }: { message?: ReactNode; icon: ReactNod
     <ColumnCenter style={{ height: "100%", justifyContent: "center" }}>
       {icon}
       {message && (
-        <Text padding={10} marginTop="20px" textAlign="center">
+        <Text pt="4px" textAlign="center" fontSize="20px" bold>
           {message}
         </Text>
       )}

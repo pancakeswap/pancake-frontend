@@ -1,6 +1,15 @@
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { AutoColumn, Button, Dots, RowBetween, Text, Box } from '@pancakeswap/uikit'
+import {
+  AutoColumn,
+  Button,
+  Dots,
+  RowBetween,
+  Text,
+  Box,
+  BunnyKnownPlaceholder,
+  DynamicSection,
+} from '@pancakeswap/uikit'
 
 import { CommitButton } from 'components/CommitButton'
 import _isNaN from 'lodash/isNaN'
@@ -14,15 +23,12 @@ import { useIsExpertMode } from '@pancakeswap/utils/user'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useTranslation } from '@pancakeswap/localization'
-import { useTheme } from 'styled-components'
-import { Inbox } from 'react-feather'
 import { useCallback } from 'react'
 import { Bound } from 'config/constants/types'
 import { InfoBox } from 'components/InfoBox'
 import { LP2ChildrenProps } from 'views/AddLiquidity'
 
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
-import { DynamicSection } from './V3FormView/components/shared'
 import RangeSelector from './V3FormView/components/RangeSelector'
 
 export default function V2FormView({
@@ -44,8 +50,6 @@ export default function V2FormView({
   onFieldAInput,
   onFieldBInput,
 }: LP2ChildrenProps) {
-  const theme = useTheme()
-
   const mockFn = useCallback(() => '', [])
 
   const { account, isWrongNetwork } = useActiveWeb3React()
@@ -135,9 +139,9 @@ export default function V2FormView({
       <HideMedium>{buttons}</HideMedium>
 
       <RightContainer>
-        <AutoColumn>
-          <DynamicSection disabled>
-            <InfoBox message="Your position will appear here." icon={<Inbox size={56} stroke={theme.colors.text} />} />
+        <AutoColumn pt="12px" gap="24px">
+          <DynamicSection disabled gap="12px">
+            <InfoBox message="Your position will appear here." icon={<BunnyKnownPlaceholder />} />
             <RangeSelector
               getDecrementLower={mockFn}
               getIncrementLower={mockFn}

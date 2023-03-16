@@ -90,7 +90,6 @@
     "react-datepicker": "^4.8.0",
     "react-device-detect": "^2.1.2",
     "react-dom": "^18.2.0",
-    "react-feather": "^2.0.10",
     "react-redux": "^8.0.5",
     "react-transition-group": "^4.4.5",
     "react-window": "^1.8.7",

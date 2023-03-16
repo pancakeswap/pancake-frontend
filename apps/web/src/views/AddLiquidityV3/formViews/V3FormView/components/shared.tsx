@@ -1,5 +1,4 @@
 import { ChainId } from '@pancakeswap/sdk'
-import { AutoColumn } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import styled from 'styled-components'
 import type { ReactNode } from 'react'
@@ -30,13 +29,6 @@ export const FEE_AMOUNT_DETAIL: Record<
     supportedChains: CHAIN_IDS,
   },
 }
-
-export const DynamicSection = styled(AutoColumn)<{ disabled?: boolean }>`
-  opacity: ${({ disabled }) => (disabled ? '0.2' : '1')};
-  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'initial')};
-  width: 100%;
-`
-
 export const SelectContainer = styled.div`
   align-items: flex-start;
   display: grid;

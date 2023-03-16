@@ -68,7 +68,8 @@ export function Chart({
   }, [brushDomain, onBrushDomainChange, xScale])
 
   const [leftSeries, rightSeries] = useMemo(() => {
-    let [left, right] = partition(series, (d) => +xAccessor(d) < current)
+    const isHighToLow = series[0]?.price0 > series[series.length - 1]?.price0
+    let [left, right] = partition(series, (d) => (isHighToLow ? +xAccessor(d) < current : +xAccessor(d) > current))
 
     if (right.length && right[right.length - 1]) {
       if (right[right.length - 1].price0 !== current) {

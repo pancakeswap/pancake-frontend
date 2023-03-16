@@ -4,7 +4,6 @@ import { FeeAmount } from "@pancakeswap/v3-sdk";
 import { format } from "d3";
 import { saturate } from "polished";
 import { useCallback, useMemo } from "react";
-import { BarChart2, CloudOff, Inbox } from "react-feather";
 import { batch } from "react-redux";
 import styled, { useTheme } from "styled-components";
 
@@ -14,6 +13,8 @@ import { useDensityChartData } from "./hooks";
 import { ZoomLevels, Bound, TickDataRaw } from "./types";
 import { AutoColumn } from "../Column";
 import Loader from "./Loader";
+import { ChartDisableIcon, LineGraphIcon } from "../Svg";
+import { BunnyKnownPlaceholder } from "../BunnyKnownPlaceholder";
 
 const ZOOM_LEVELS: Record<FeeAmount, ZoomLevels> = {
   [FeeAmount.LOWEST]: {
@@ -160,13 +161,13 @@ export function LiquidityChartRangeInput({
   return (
     <AutoColumn gap="md" style={{ minHeight: "200px", width: "100%", marginBottom: "16px" }}>
       {isUninitialized ? (
-        <InfoBox message="Your position will appear here." icon={<Inbox size={56} stroke={theme.colors.text} />} />
+        <InfoBox message="Your position will appear here." icon={<BunnyKnownPlaceholder />} />
       ) : isLoading ? (
         <InfoBox icon={<Loader size="40px" stroke={theme.colors.text} />} />
       ) : error ? (
-        <InfoBox message="Liquidity data not available." icon={<CloudOff size={56} stroke={theme.colors.text} />} />
+        <InfoBox message="Liquidity data not available." icon={<ChartDisableIcon width="40px" />} />
       ) : !formattedData || formattedData.length === 0 || !price ? (
-        <InfoBox message="There is no liquidity data." icon={<BarChart2 size={56} stroke={theme.colors.text} />} />
+        <InfoBox message="There is no liquidity data." icon={<LineGraphIcon width="40px" />} />
       ) : (
         <ChartWrapper>
           <Chart

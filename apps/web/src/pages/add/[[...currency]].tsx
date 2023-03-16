@@ -22,6 +22,7 @@ export const config = {
 const AddLiquidityPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
   currencyIdA: currencyIdA_,
   currencyIdB: currencyIdB_,
+  feeAmount: feeAmount_,
 }) => {
   const router = useRouter()
   const { chainId } = useActiveChainId()
@@ -45,6 +46,7 @@ const AddLiquidityPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>>
   // Initial prefer farm type v2/stable if there is a farm for the pair
   const preferFarmType = useMemo(() => {
     const preferFarm =
+      !feeAmount_ &&
       isMounted &&
       farmsV2Public?.length &&
       tokenA &&
@@ -58,7 +60,7 @@ const AddLiquidityPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>>
       )
 
     return preferFarm ? (isStableFarm(preferFarm) ? SELECTOR_TYPE.STABLE : SELECTOR_TYPE.V2) : undefined
-  }, [farmsV2Public, isMounted, router.isReady, tokenA, tokenB])
+  }, [farmsV2Public, feeAmount_, isMounted, router.isReady, tokenA, tokenB])
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
@@ -95,6 +97,7 @@ export const getStaticProps = (async ({ params }) => {
     props: {
       currencyIdA: params?.currency?.[0] ?? '',
       currencyIdB: params?.currency?.[1] ?? '',
+      feeAmount: params?.currency?.[2] ?? '',
     },
   }
 }) satisfies GetStaticProps

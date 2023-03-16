@@ -2,7 +2,7 @@ import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
-import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle } from '@pancakeswap/uikit'
+import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle, DynamicSection } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect } from 'react'
@@ -26,7 +26,6 @@ import AddLiquidity from 'views/AddLiquidity'
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
 import V3FormView from './formViews/V3FormView'
-import { DynamicSection } from './formViews/V3FormView/components/shared'
 import { HandleFeePoolSelectFn, SELECTOR_TYPE } from './types'
 import { StableV3Selector } from './components/StableV3Selector'
 import StableFormView from './formViews/StableFormView'
@@ -196,12 +195,22 @@ export default function UniversalAddLiquidity({
       return
     }
 
+    // if fee selection from url, don't change the selector type to avoid keep selecting stable when url changes, eg. toggle rate
+    if (feeAmountFromUrl) return
     if (stableConfig.stableSwapConfig) {
       setSelectorType(SELECTOR_TYPE.STABLE)
     } else {
       setSelectorType(preferredSelectType || isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
     }
-  }, [currencyIdA, currencyIdB, isV2, preferredSelectType, setSelectorType, stableConfig.stableSwapConfig])
+  }, [
+    currencyIdA,
+    currencyIdB,
+    feeAmountFromUrl,
+    isV2,
+    preferredSelectType,
+    setSelectorType,
+    stableConfig.stableSwapConfig,
+  ])
 
   const handleFeePoolSelect = useCallback<HandleFeePoolSelectFn>(
     ({ type, feeAmount: newFeeAmount }) => {

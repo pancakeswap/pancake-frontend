@@ -13,6 +13,10 @@ import GlobalSettings from './GlobalSettings'
 import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { SettingsMode } from './GlobalSettings/types'
 
+const LinkComponent = (linkProps) => {
+  return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
+}
+
 const Menu = (props) => {
   const { isDark, setTheme } = useTheme()
   const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true })
@@ -36,9 +40,7 @@ const Menu = (props) => {
   return (
     <>
       <UikitMenu
-        linkComponent={(linkProps) => {
-          return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
-        }}
+        linkComponent={LinkComponent}
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />

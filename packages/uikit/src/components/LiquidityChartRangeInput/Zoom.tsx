@@ -1,8 +1,8 @@
-import { Button, Box } from "@pancakeswap/uikit";
+import { Box } from "@pancakeswap/uikit";
 import { ScaleLinear, select, zoom, ZoomBehavior, zoomIdentity, ZoomTransform } from "d3";
 import { useEffect, useMemo, useRef } from "react";
-import { RefreshCcw, ZoomIn, ZoomOut } from "react-feather";
 import styled from "styled-components";
+import { ZoomInIcon, ZoomOutIcon, AutoRenewIcon } from "../Svg";
 
 import { ZoomLevels } from "./types";
 
@@ -99,29 +99,37 @@ export default function Zoom({
   return (
     <Wrapper count={showResetButton ? 3 : 2}>
       {showResetButton && (
-        <Button
-          onClick={() => {
-            resetBrush();
-            zoomReset();
+        <Box
+          style={{
+            cursor: "pointer",
+            textAlign: "center",
+            paddingTop: "2px",
+            paddingLeft: "4px",
           }}
-          disabled={false}
         >
-          <RefreshCcw size={16} />
-        </Button>
+          <AutoRenewIcon
+            color="primary"
+            width={20}
+            onClick={() => {
+              resetBrush();
+              zoomReset();
+            }}
+          />
+        </Box>
       )}
       <Box
         style={{
           cursor: "pointer",
         }}
       >
-        <ZoomIn size={24} onClick={zoomIn} />
+        <ZoomInIcon width={24} onClick={zoomIn} color="primary" />
       </Box>
       <Box
         style={{
           cursor: "pointer",
         }}
       >
-        <ZoomOut size={24} onClick={zoomOut} />
+        <ZoomOutIcon width={24} onClick={zoomOut} color="primary" />
       </Box>
     </Wrapper>
   );

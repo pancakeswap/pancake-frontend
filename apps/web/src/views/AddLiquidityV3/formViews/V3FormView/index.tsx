@@ -15,6 +15,7 @@ import {
   Message,
   MessageText,
   PreTitle,
+  DynamicSection,
 } from '@pancakeswap/uikit'
 
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
@@ -54,7 +55,6 @@ import { formatRawAmount } from 'utils/formatCurrencyAmount'
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
 import RateToggle from './components/RateToggle'
-import { DynamicSection } from './components/shared'
 import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
@@ -481,66 +481,67 @@ export default function V3FormView({
               </AutoRow>
             </Box>
           )}
+          <DynamicSection disabled={!feeAmount || invalidPool}>
+            <RowBetween mb="8px">
+              <PreTitle>Set Price Range</PreTitle>
+              <RateToggle
+                currencyA={baseCurrency}
+                handleRateToggle={() => {
+                  if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
+                    onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
+                    onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
+                    onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
+                  }
 
-          <RowBetween mb="8px">
-            <PreTitle>Set Price Range</PreTitle>
-            <RateToggle
-              currencyA={baseCurrency}
-              handleRateToggle={() => {
-                if (!ticksAtLimit[Bound.LOWER] && !ticksAtLimit[Bound.UPPER]) {
-                  onLeftRangeInput((invertPrice ? priceLower : priceUpper?.invert())?.toSignificant(6) ?? '')
-                  onRightRangeInput((invertPrice ? priceUpper : priceLower?.invert())?.toSignificant(6) ?? '')
-                  onFieldAInput(formattedAmounts[Field.CURRENCY_B] ?? '')
-                }
-
-                router.replace(
-                  {
-                    pathname: router.pathname,
-                    query: {
-                      ...router.query,
-                      currency: [currencyIdB, currencyIdA, feeAmount ? feeAmount.toString() : ''],
+                  router.replace(
+                    {
+                      pathname: router.pathname,
+                      query: {
+                        ...router.query,
+                        currency: [currencyIdB, currencyIdA, feeAmount ? feeAmount.toString() : ''],
+                      },
                     },
-                  },
-                  undefined,
-                  {
-                    shallow: true,
-                  },
-                )
-              }}
-            />
-          </RowBetween>
-
-          {!noLiquidity && (
-            <>
-              {price && baseCurrency && quoteCurrency && !noLiquidity && (
-                <AutoRow gap="4px" justifyContent="center" style={{ marginTop: '0.5rem' }}>
-                  <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
-                    Current Price:
-                  </Text>
-                  <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
-                    {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
-                  </Text>
-                  <Text color="text2" fontSize={12}>
-                    {quoteCurrency?.symbol} per {baseCurrency.symbol}
-                  </Text>
-                </AutoRow>
-              )}
-
-              <LiquidityChartRangeInput
-                key={baseCurrency?.wrapped?.address}
-                currencyA={baseCurrency ?? undefined}
-                currencyB={quoteCurrency ?? undefined}
-                feeAmount={feeAmount}
-                ticksAtLimit={ticksAtLimit}
-                price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
-                priceLower={priceLower}
-                priceUpper={priceUpper}
-                onLeftRangeInput={onLeftRangeInput}
-                onRightRangeInput={onRightRangeInput}
-                interactive
+                    undefined,
+                    {
+                      shallow: true,
+                    },
+                  )
+                }}
               />
-            </>
-          )}
+            </RowBetween>
+
+            {!noLiquidity && (
+              <>
+                {price && baseCurrency && quoteCurrency && !noLiquidity && (
+                  <AutoRow gap="4px" justifyContent="center" style={{ marginTop: '0.5rem' }}>
+                    <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                      Current Price:
+                    </Text>
+                    <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
+                      {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}
+                    </Text>
+                    <Text color="text2" fontSize={12}>
+                      {quoteCurrency?.symbol} per {baseCurrency.symbol}
+                    </Text>
+                  </AutoRow>
+                )}
+                <LiquidityChartRangeInput
+                  key={baseCurrency?.wrapped?.address}
+                  currencyA={baseCurrency ?? undefined}
+                  currencyB={quoteCurrency ?? undefined}
+                  feeAmount={feeAmount}
+                  ticksAtLimit={ticksAtLimit}
+                  price={price ? parseFloat((invertPrice ? price.invert() : price).toSignificant(8)) : undefined}
+                  priceLower={priceLower}
+                  priceUpper={priceUpper}
+                  onLeftRangeInput={onLeftRangeInput}
+                  onRightRangeInput={onRightRangeInput}
+                  interactive
+                />
+              </>
+            )}
+          </DynamicSection>
+
           <DynamicSection disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue)} gap="16px">
             <RangeSelector
               priceLower={priceLower}

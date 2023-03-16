@@ -1,7 +1,6 @@
-import { Box } from '@pancakeswap/uikit'
+import { Box, ZoomInIcon, ZoomOutIcon, AutoRenewIcon } from '@pancakeswap/uikit'
 import { ScaleLinear, select, zoom, ZoomBehavior, zoomIdentity, ZoomTransform } from 'd3'
 import { useEffect, useMemo, useRef } from 'react'
-import { RefreshCcw, ZoomIn, ZoomOut } from 'react-feather'
 import styled from 'styled-components'
 
 import { ZoomLevels } from './types'
@@ -107,8 +106,9 @@ export default function Zoom({
             paddingLeft: '4px',
           }}
         >
-          <RefreshCcw
-            size={20}
+          <AutoRenewIcon
+            color="primary"
+            width={20}
             onClick={() => {
               resetBrush()
               zoomReset()
@@ -121,14 +121,14 @@ export default function Zoom({
           cursor: 'pointer',
         }}
       >
-        <ZoomIn size={24} onClick={zoomIn} />
+        <ZoomInIcon width={24} onClick={zoomIn} color="primary" />
       </Box>
       <Box
         style={{
           cursor: 'pointer',
         }}
       >
-        <ZoomOut size={24} onClick={zoomOut} />
+        <ZoomOutIcon width={24} onClick={zoomOut} color="primary" />
       </Box>
     </Wrapper>
   )
