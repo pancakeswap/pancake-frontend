@@ -2,15 +2,12 @@ import { useMemo, useState } from 'react'
 import {
   Flex,
   Text,
-  InputGroup,
   Input,
   Box,
   Card,
-  CopyIcon,
   Button,
   ArrowForwardIcon,
   useMatchBreakpoints,
-  copyText,
   useToast,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
@@ -60,7 +57,7 @@ const StyledCommission = styled(Flex)`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 124px;
+    width: 118px;
   }
 `
 
@@ -110,10 +107,6 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
   const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [])
 
   const linkId = useMemo(() => note || defaultLinkId, [note, defaultLinkId])
-  const shareLinkUrl = useMemo(() => {
-    const discount = new BigNumber(percentage).gt(0) ? new BigNumber(percentage).times(3).div(100).toFixed(2) : 0
-    return `https://pancakeswap.finance/affiliates-program?ref=${linkId}&user=${affiliate.name}&discount=${discount}`
-  }, [affiliate.name, linkId, percentage])
 
   const handleGenerateLink = async () => {
     try {
@@ -168,14 +161,14 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
             {t('create a new link')}
           </Text>
           <Flex mb="24px">
-            <InputGroup
-              endIcon={
-                <CopyIcon cursor="pointer" width="18px" color="textSubtle" onClick={() => copyText(shareLinkUrl)} />
-              }
+            <Input
               scale="lg"
-            >
-              <Input disabled value={shareLinkUrl} type="text" placeholder="http://" />
-            </InputGroup>
+              maxLength={20}
+              value={note}
+              type="text"
+              placeholder="Note (20 characters)"
+              onChange={(e) => setNote(e.target.value)}
+            />
           </Flex>
           <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mb="36px">
             <Flex alignSelf="center" width={['100%', '320px']} justifyContent={['space-between']}>
@@ -212,29 +205,19 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
               </CardInner>
             </Wrapper>
           </Flex>
-          <Flex flexDirection={['column', 'column', 'column', 'row']}>
-            <Flex mb={['8px', '8px', '8px', '0']}>
-              {receivePercentageList.map((list) => (
-                <Button
-                  scale={isMobile ? 'sm' : 'md'}
-                  width={`${100 / receivePercentageList.length}%`}
-                  key={list}
-                  mr="8px"
-                  variant={list === percentage ? 'primary' : 'tertiary'}
-                  onClick={() => setPercentage(list)}
-                >
-                  {`${list}%`}
-                </Button>
-              ))}
-            </Flex>
-            <Input
-              value={note}
-              scale="lg"
-              type="text"
-              maxLength={20}
-              placeholder="Note (20 characters)"
-              onChange={(e) => setNote(e.target.value)}
-            />
+          <Flex mb={['8px', '8px', '8px', '0']}>
+            {receivePercentageList.map((list) => (
+              <Button
+                scale={isMobile ? 'sm' : 'md'}
+                width={`${100 / receivePercentageList.length}%`}
+                key={list}
+                mr="8px"
+                variant={list === percentage ? 'primary' : 'tertiary'}
+                onClick={() => setPercentage(list)}
+              >
+                {`${list}%`}
+              </Button>
+            ))}
           </Flex>
           <Button mt="24px" width="100%" disabled={isLoading} onClick={handleGenerateLink}>
             {t('Generate a referral link')}
