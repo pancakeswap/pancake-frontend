@@ -85,13 +85,9 @@ const CardInner = styled(Flex)`
   }
 `
 
-interface MyReferralLinkProps {
-  affiliate: InfoDetail
-}
-
 const receivePercentageList: Array<string> = ['0', '25', '50', '75', '100']
 
-const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = ({ affiliate }) => {
+const MyReferralLink = () => {
   const { t } = useTranslation()
   const { address } = useAccount()
   const { toastSuccess, toastError } = useToast()
