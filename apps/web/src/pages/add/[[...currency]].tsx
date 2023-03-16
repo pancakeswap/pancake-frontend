@@ -16,7 +16,7 @@ import { isStableFarm } from '@pancakeswap/farms'
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
 }
 
 const AddLiquidityPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
