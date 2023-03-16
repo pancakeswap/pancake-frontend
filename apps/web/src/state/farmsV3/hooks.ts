@@ -11,7 +11,6 @@ import { fetchCommonTokenUSDValue, TvlMap } from '@pancakeswap/farms/src/fetchFa
 import { ChainId } from '@pancakeswap/sdk'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { FAST_INTERVAL } from 'config/constants'
-import { FetchStatus } from 'config/constants/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
@@ -86,14 +85,20 @@ export const useFarmsV3 = () => {
 
       const commonPrice = await fetchCommonTokenUSDValue(priceHelperTokens[chainId])
 
-      const data = await farmFetcherV3.fetchFarms({
-        tvlMap: tvls,
-        chainId,
-        farms,
-        commonPrice,
-      })
+      try {
+        const data = await farmFetcherV3.fetchFarms({
+          tvlMap: tvls,
+          chainId,
+          farms,
+          commonPrice,
+        })
 
-      return data
+        return data
+      } catch (error) {
+        console.error(error)
+        // return fallback for now since not all chains supported
+        return fallback
+      }
     },
     {
       refreshInterval: FAST_INTERVAL * 3,
@@ -226,11 +231,11 @@ export function useFarmsV3WithPositions(): {
   poolLength: number
   isLoading: boolean
 } {
-  const { data, error: _error, status } = useFarmsV3()
+  const { data, error: _error, isLoading } = useFarmsV3()
 
   return {
     ...usePositionsByUser(data.farmsWithPrice),
     poolLength: data.poolLength,
-    isLoading: status !== FetchStatus.Fetched,
+    isLoading,
   }
 }

@@ -12,8 +12,10 @@ import {
   useModalV2,
   useRoi,
 } from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
+import BigNumber from 'bignumber.js'
 import { Bound } from 'config/constants/types'
 import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { LiquidityFormState } from 'hooks/v3/types'
@@ -21,7 +23,6 @@ import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useMemo, useState } from 'react'
 import { useFarmsV3 } from 'state/farmsV3/hooks'
-import BigNumber from 'bignumber.js'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -30,6 +31,7 @@ import { getDisplayApr } from '../../getDisplayApr'
 type FarmV3ApyButtonProps = {
   farm: V3Farm
   existingPosition?: Position
+  isPositionStaked?: boolean
 }
 
 export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
@@ -40,7 +42,7 @@ export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
   )
 }
 
-function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3ApyButtonProps) {
+function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositionStaked }: FarmV3ApyButtonProps) {
   const roiModal = useModalV2()
   const { t } = useTranslation()
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount } = farm
@@ -77,13 +79,15 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3A
   const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
   const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
 
-  const depositUsd = useMemo(
+  const depositUsdAsBN = useMemo(
     () =>
       balanceA &&
       balanceB &&
       currencyAUsdPrice &&
       currencyBUsdPrice &&
-      String(parseFloat(balanceA.toExact()) * currencyAUsdPrice + parseFloat(balanceB.toExact()) * currencyBUsdPrice),
+      new BigNumber(balanceA.toExact())
+        .times(currencyAUsdPrice)
+        .plus(new BigNumber(balanceB.toExact()).times(currencyBUsdPrice)),
     [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice],
   )
 
@@ -94,18 +98,31 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3A
       new BigNumber(farm.poolWeight)
         .times(farmV3.cakePerSecond)
         .times(365 * 60 * 60 * 24)
-        .div(farm.lmPoolLiquidity),
-    [farm.lmPoolLiquidity, farm.poolWeight, farmV3.cakePerSecond],
+        .times(cakePrice)
+        .div(
+          new BigNumber(farm.lmPoolLiquidity).plus(
+            isPositionStaked ? BIG_ZERO : existingPosition_?.liquidity.toString() ?? BIG_ZERO,
+          ),
+        )
+        .times(100),
+    [
+      cakePrice,
+      existingPosition_?.liquidity,
+      farm.lmPoolLiquidity,
+      farm.poolWeight,
+      farmV3.cakePerSecond,
+      isPositionStaked,
+    ],
   )
 
   const positionCakeApr = useMemo(
     () =>
       existingPosition_
         ? outOfRange
-          ? '0'
-          : new BigNumber(existingPosition_.liquidity.toString()).times(cakeAprFactor).div(depositUsd).toFixed(2)
-        : '0',
-    [cakeAprFactor, depositUsd, existingPosition_, outOfRange],
+          ? 0
+          : new BigNumber(existingPosition_.liquidity.toString()).times(cakeAprFactor).div(depositUsdAsBN).toNumber()
+        : 0,
+    [cakeAprFactor, depositUsdAsBN, existingPosition_, outOfRange],
   )
 
   const { apr } = useRoi({
@@ -134,10 +151,10 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3A
         <AutoRow width="auto" gap="2px">
           {outOfRange ? (
             <TooltipText decorationColor="failure" color="failure" fontSize="14px">
-              {positionCakeApr}%
+              {positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%
             </TooltipText>
           ) : (
-            <Text fontSize="14px">{positionCakeApr}%</Text>
+            <Text fontSize="14px">{positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%</Text>
           )}
           <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm" onClick={roiModal.onOpen}>
             <CalculateIcon width="18px" color="textSubtle" />
@@ -159,8 +176,8 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_ }: FarmV3A
         {...roiModal}
         maxLabel={existingPosition_ ? t('My Position') : undefined}
         closeOnOverlayClick
-        depositAmountInUsd={depositUsd}
-        max={existingPosition_ && depositUsd}
+        depositAmountInUsd={depositUsdAsBN?.toString()}
+        max={existingPosition_ && depositUsdAsBN?.toString()}
         balanceA={balanceA}
         balanceB={balanceB}
         price={price}

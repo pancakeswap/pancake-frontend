@@ -346,7 +346,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
               <Text color="textSubtle">#{tokenId?.toString()}</Text>
             </Box>
 
-            <RangeTag outOfRange={outOfRange} />
+            <RangeTag removed={removed} outOfRange={outOfRange} />
           </AutoRow>
           <Text fontSize="12px" color="secondary" bold textTransform="uppercase" mb="4px">
             Amount of Liquidity to Remove

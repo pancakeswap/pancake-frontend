@@ -17,7 +17,7 @@ import { usePool } from 'hooks/v3/usePools'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import styled from 'styled-components'
-import { isPositionOutOfRange } from 'utils/isPositionOutOfRange'
+import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { FarmV3ApyButton } from './FarmV3ApyButton'
 
@@ -42,12 +42,20 @@ interface FarmV3StakeAndUnStakeProps {
   handleUnStake: () => void
 }
 
-export const FarmV3LPTitle = ({ liquidityUrl, title }: { liquidityUrl: string; title: string }) => (
+export const FarmV3LPTitle = ({
+  liquidityUrl,
+  title,
+  outOfRange,
+}: {
+  liquidityUrl: string
+  title: string
+  outOfRange: boolean
+}) => (
   <StyledLink external href={liquidityUrl}>
-    <Text bold color="secondary">
+    <Text bold color={outOfRange ? 'failure' : 'secondary'}>
       {title}
     </Text>
-    <ChevronRightIcon color="secondary" fontSize="12px" />
+    <ChevronRightIcon color={outOfRange ? 'failure' : 'secondary'} fontSize="12px" />
   </StyledLink>
 )
 
@@ -56,11 +64,13 @@ export const FarmV3LPPosition = ({
   token,
   quoteToken,
   farm,
+  positionType,
 }: {
   position: PositionDetails
   token: Token
   quoteToken: Token
   farm: V3Farm
+  positionType: PositionType
 }) => {
   const {
     t,
@@ -93,7 +103,7 @@ export const FarmV3LPPosition = ({
         {position && (
           <AutoRow gap="2px" py="8px">
             <Text fontSize="14px">{t('APR')}:</Text>
-            <FarmV3ApyButton farm={farm} existingPosition={position} />
+            <FarmV3ApyButton farm={farm} existingPosition={position} isPositionStaked={positionType === 'staked'} />
           </AutoRow>
         )}
         <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
@@ -133,7 +143,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
   const { t } = useTranslation()
   const [, pool] = usePool(farm.token, farm.quoteToken, farm.feeAmount)
 
-  const outOfRange = isPositionOutOfRange(pool, position)
+  const outOfRange = isPositionOutOfRange(pool?.tickCurrent, position)
 
   return (
     <>
@@ -148,9 +158,15 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
           />
         </RangeTag>
       )}
-      <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} />
+      <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
       <RowBetween gap="16px">
-        <FarmV3LPPosition farm={farm} token={token} quoteToken={quoteToken} position={position} />
+        <FarmV3LPPosition
+          farm={farm}
+          token={token}
+          quoteToken={quoteToken}
+          position={position}
+          positionType={positionType}
+        />
         {positionType === 'unstaked' ? (
           outOfRange ? (
             <Button external variant="subtle" as="a" href={liquidityUrl}>

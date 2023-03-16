@@ -133,7 +133,7 @@ const handler: NextApiHandler = async (req, res) => {
 
   // don't cache when pool is not active or has no liquidity
   if (poolInfo.allocPoint.isZero() || poolInfo.totalLiquidity.isZero()) {
-    res.status(200).json({
+    return res.status(200).json({
       tvl: {
         token0: '0',
         token1: '0',

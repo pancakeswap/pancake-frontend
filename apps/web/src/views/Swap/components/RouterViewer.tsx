@@ -135,7 +135,7 @@ export const RouterViewer: React.FC<RouterViewerProps> = ({
             >
               <CurrencyLogo size="32px" currency={index === 0 ? inputCurrency : path[index]} />
               <CurrencyLogo size="32px" currency={index === pairs.length - 1 ? outputCurrency : path[index + 1]} />
-              <RouterTypeText>{isStableSwap ? t('StableSwap') : t('V2')}</RouterTypeText>
+              <RouterTypeText>{isStableSwap ? t('StableSwap') : 'V2'}</RouterTypeText>
             </RouterPoolBox>
           )
         })}

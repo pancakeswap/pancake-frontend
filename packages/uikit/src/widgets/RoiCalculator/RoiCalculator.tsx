@@ -4,6 +4,7 @@ import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
+import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
 import { LiquidityChartRangeInput, Button, DynamicSection, AutoColumn } from "../../components";
@@ -77,6 +78,8 @@ export function RoiCalculator({
   max,
   ...props
 }: RoiCalculatorProps) {
+  const cakeAprFactor = props.isFarm && props.cakeAprFactor;
+
   const { isMobile } = useMatchBreakpoints();
   const { t } = useTranslation();
   const [usdValue, setUsdValue] = useState(String(depositAmountInUsd));
@@ -140,10 +143,15 @@ export function RoiCalculator({
       !priceRange?.tickLower ||
       !sqrtRatioX96 ||
       !props.isFarm ||
-      !props.cakeAprFactor ||
+      !cakeAprFactor ||
       !amountA
-    )
+    ) {
       return undefined;
+    }
+
+    if (isPositionOutOfRange(tickCurrent, { tickLower: priceRange.tickLower, tickUpper: priceRange.tickUpper })) {
+      return BIG_ZERO;
+    }
 
     try {
       const positionLiquidity = FeeCalculator.getLiquidityBySingleAmount({
@@ -155,7 +163,7 @@ export function RoiCalculator({
       });
 
       const cakeApr = JSBI.greaterThan(positionLiquidity, ZERO)
-        ? new BigNumber(positionLiquidity.toString()).times(props.cakeAprFactor).div(usdValue)
+        ? new BigNumber(positionLiquidity.toString()).times(cakeAprFactor).div(usdValue)
         : BIG_ZERO;
 
       return cakeApr;
@@ -163,16 +171,7 @@ export function RoiCalculator({
       console.error(error, amountA, priceRange, sqrtRatioX96);
       return undefined;
     }
-  }, [
-    currencyB,
-    priceRange,
-    amountA,
-    sqrtRatioX96,
-    props.isFarm,
-    // @ts-ignore
-    props.cakeAprFactor,
-    usdValue,
-  ]);
+  }, [currencyB, priceRange, sqrtRatioX96, props.isFarm, cakeAprFactor, amountA, tickCurrent, usdValue]);
 
   const { fee, rate, apr, apy, cakeApy } = useRoi({
     amountA,
