@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
 import { useTranslation } from '@pancakeswap/localization'
-import Image from 'next/legacy/image'
+import Image from 'next/image'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import bunnyImage from '../../../../../public/images/affiliates-program/banner.png'
 
@@ -132,9 +132,9 @@ const AffiliatesBanner = () => {
         hasCurvedDivider={false}
       >
         <Decorations>
-          <img src="/images/affiliates-program/bobbing-1.png" width="155px" height="170px" alt="" />
-          <img src="/images/affiliates-program/bobbing-2.png" width="240px" height="187px" alt="" />
-          <img src="/images/affiliates-program/bobbing-3.png" width="160px" height="124px" alt="" />
+          <img src="/images/affiliates-program/bobbing-1.png" width="155px" height="170px" alt="bobbing-1" />
+          <img src="/images/affiliates-program/bobbing-2.png" width="240px" height="187px" alt="bobbing-2" />
+          <img src="/images/affiliates-program/bobbing-3.png" width="160px" height="124px" alt="bobbing-3" />
         </Decorations>
         <BgWrapper>
           <InnerWrapper>
@@ -157,15 +157,15 @@ const AffiliatesBanner = () => {
             flexDirection="column"
           >
             <Text fontSize={['38px', '38px', '64px']} lineHeight="110%" bold color="secondary">
-              {t('Maximize Your Earnings with Pancakeswap&apos;s Affiliate Program')}
+              {t('Affiliate with us, Empower deFi')}
             </Text>
             <Text fontSize={['16px', '24px']} lineHeight="110%" bold m="32px 0">
-              {t('Join the Team and Earn Commission on Every Adventure')}
+              {t('Join a community-driven movement to make DeFi accessible and better for everyone')}
             </Text>
             <Flex>
-              <Button width="fit-content">{t('Join Our Affiliate Program')}</Button>
+              <Button width="fit-content">{t('Join our Affiliate Program')}</Button>
               <Button ml="12px" variant="secondary" width="fit-content">
-                {t('Discover Your Commission Potential')}
+                {t('Discover your Potential')}
               </Button>
             </Flex>
           </Flex>

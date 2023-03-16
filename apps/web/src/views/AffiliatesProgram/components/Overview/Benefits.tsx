@@ -31,8 +31,13 @@ const StyledContainer = styled(Flex)`
 
 const BenefitsList = [
   {
-    title: <Trans>Market-Leading Commission</Trans>,
-    desc: <Trans>Earn up to 20% commissions on every successful referral.</Trans>,
+    title: <Trans>Partner with the Leading Brand in the Industry</Trans>,
+    desc: (
+      <Trans>
+        Forge a partnership with the most reputable global brand in the industry to make DeFi accessible and better for
+        everyone.
+      </Trans>
+    ),
     imgUrl: '/images/affiliates-program/high-commission-rates.png',
   },
   {
@@ -42,7 +47,7 @@ const BenefitsList = [
   },
   {
     title: <Trans>Customize Profit-Sharing</Trans>,
-    desc: <Trans>Share a percentage of rewards with your community</Trans>,
+    desc: <Trans>Share the rewards with your community</Trans>,
     imgUrl: '/images/affiliates-program/profit-sharing.png',
   },
   {
@@ -52,7 +57,7 @@ const BenefitsList = [
   },
   {
     title: <Trans>Personalized Support</Trans>,
-    desc: <Trans>Personalized assistance from our account managers</Trans>,
+    desc: <Trans>Personalized assistance from our community managers</Trans>,
     imgUrl: '/images/affiliates-program/personalized-support.png',
   },
 ]

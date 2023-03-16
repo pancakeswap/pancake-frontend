@@ -22,12 +22,10 @@ const HowItWork = () => {
         {t('are meant to be shared')}
       </Heading>
       <Text textAlign="center" color="textSubtle">
-        {t(
-          'Turn your love and passion for PancakeSwap into rewards. Become a PancakeSwap affiliate and watch your wallet grow',
-        )}
+        {t('Together we can make the PancakeSwap community even stronger')}
       </Text>
       <Text textAlign="center" color="textSubtle" bold mb="32px">
-        {t('How Do You Become a PancakeSwap Affiliate?')}
+        {t('How do you Become a PancakeSwap Affiliate?')}
       </Text>
       <Flex width={['280px', '280px', '280px', '888px']} flexDirection={['column', 'column', 'column', 'row']}>
         <Flex width={['100%', '100%', '100%', '33.33%']} m={['0 0 16px 0', '0 0 16px 0', '0 0 16px 0', '0 16px 0 0']}>
@@ -45,7 +43,7 @@ const HowItWork = () => {
               <Text fontSize={['40px']} bold color="secondary" lineHeight="110%">
                 {t('Application')}
               </Text>
-              <Text fontSize={['14px']}>{t('It&apos;s fast, easy, and completely free!')}</Text>
+              <Text fontSize={['14px']}>{t("It's fast, easy, and completely free")}</Text>
             </Box>
           </Card>
         </Flex>

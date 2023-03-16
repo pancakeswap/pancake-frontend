@@ -80,12 +80,12 @@ const RewardCalculate = () => {
         <Flex width={['100%', '100%', '447px']} alignSelf={['center']} flexDirection="column">
           <Box m={['32px 0']}>
             <Text fontSize={['40px']} lineHeight="110%" color="body" bold>
-              {t('Unleash Your Earning Potential with PancakeSwap')}
+              {t("Join PancakeSwap's Community and Make a Difference")}
             </Text>
           </Box>
           <Text color="textSubtle" mb="32px">
             {t(
-              'Join our community of top-earning affiliates and make the most of every referral, with market-leading commission rates and endless earning opportunities.',
+              "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program",
             )}
           </Text>
           <Button width="fit-content">{t('Join Now!')}</Button>
