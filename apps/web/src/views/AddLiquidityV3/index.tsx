@@ -22,6 +22,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity'
 import AddLiquidity from 'views/AddLiquidity'
+import { usePreviousValue } from '@pancakeswap/hooks'
 
 import FeeSelector from './formViews/V3FormView/components/FeeSelector'
 
@@ -188,10 +189,12 @@ export default function UniversalAddLiquidity({
 
   const [selectorType, setSelectorType] = useAtom(selectTypeAtom)
 
+  const prevPreferredSelectType = usePreviousValue(preferredSelectType)
+
   useEffect(() => {
     if (!currencyIdA || !currencyIdB) return
 
-    if (preferredSelectType === SELECTOR_TYPE.V3) {
+    if (prevPreferredSelectType !== undefined || preferredSelectType === SELECTOR_TYPE.V3) {
       return
     }
 
@@ -208,6 +211,7 @@ export default function UniversalAddLiquidity({
     feeAmountFromUrl,
     isV2,
     preferredSelectType,
+    prevPreferredSelectType,
     setSelectorType,
     stableConfig.stableSwapConfig,
   ])
