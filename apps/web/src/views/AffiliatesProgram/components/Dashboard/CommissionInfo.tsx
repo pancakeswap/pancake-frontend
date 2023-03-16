@@ -1,45 +1,54 @@
-import { useMemo } from 'react'
-import styled from 'styled-components'
-import { Box, Card, Flex, Text, Balance } from '@pancakeswap/uikit'
-import PieChartContainer from './PieChartContainer'
+import { Box, Card, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import ComingSoon from 'views/AffiliatesProgram/components/Dashboard/ComingSoon'
+// import { useMemo } from 'react'
+// import styled from 'styled-components'
+// import { Box, Card, Flex, Text, Balance } from '@pancakeswap/uikit'
+// import PieChartContainer from './PieChartContainer'
 
-const StyledFlex = styled(Flex)`
-  flex: 1;
-  flex-direction: column;
-`
+// const StyledFlex = styled(Flex)`
+//   flex: 1;
+//   flex-direction: column;
+// `
 
-const CardInner = styled(Flex)`
-  width: 100%;
-  height: 100%;
-  justify-content: space-between;
+// const CardInner = styled(Flex)`
+//   width: 100%;
+//   height: 100%;
+//   justify-content: space-between;
 
-  ${StyledFlex} {
-    &:first-child {
-      height: 66px;
-      border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
-    }
-  }
-`
+//   ${StyledFlex} {
+//     &:first-child {
+//       height: 66px;
+//       border-right: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
+//     }
+//   }
+// `
 
-const StyledCircle = styled(Flex)`
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background-color: ${({ theme }) => `${theme.colors.primary}`};
-`
+// const StyledCircle = styled(Flex)`
+//   width: 24px;
+//   height: 24px;
+//   border-radius: 50%;
+//   background-color: ${({ theme }) => `${theme.colors.primary}`};
+// `
 
 const CommissionInfo = () => {
-  const arrow = useMemo(() => {
-    // eslint-disable-next-line no-constant-condition
-    const directionArrow = true ? '↑' : '↓'
-    return directionArrow
-  }, [])
+  const { t } = useTranslation()
+
+  // const arrow = useMemo(() => {
+  //   // eslint-disable-next-line no-constant-condition
+  //   const directionArrow = true ? '↑' : '↓'
+  //   return directionArrow
+  // }, [])
 
   return (
     <Box width={['100%', '100%', '100%', '100%', '100%', '387px']}>
       <Card>
         <Box padding={['24px']}>
-          <CardInner mb="28px">
+          <Text textTransform="uppercase" color="secondary" bold fontSize="12px">
+            {t('rewards breakdown')}
+          </Text>
+          <ComingSoon />
+          {/* <CardInner mb="28px">
             <StyledFlex>
               <Text color="secondary" bold fontSize={['12px']} textTransform="uppercase">
                 active friends
@@ -81,7 +90,7 @@ const CommissionInfo = () => {
                 </Text>
               </Box>
             </Flex>
-          </Flex>
+          </Flex> */}
         </Box>
       </Card>
     </Box>

@@ -7,8 +7,8 @@ import MyReferralLink from 'views/AffiliatesProgram/components/Dashboard/MyRefer
 import useAuthAffiliate from 'views/AffiliatesProgram/hooks/useAuthAffiliate'
 import useAuthAffiliateExist from 'views/AffiliatesProgram/hooks/useAuthAffiliateExist'
 import LoginButton from 'views/AffiliatesProgram/components/Dashboard/LoginButton'
-//  import CommissionInfo from 'views/AffiliatesProgram/components/Dashboard/CommissionInfo'
-// import ClaimReward from 'views/AffiliatesProgram/components/Dashboard/ClaimReward'
+import CommissionInfo from 'views/AffiliatesProgram/components/Dashboard/CommissionInfo'
+import ClaimReward from 'views/AffiliatesProgram/components/Dashboard/ClaimReward'
 
 const Dashboard = () => {
   const router = useRouter()
@@ -37,10 +37,10 @@ const Dashboard = () => {
           justifyContent={['center']}
           flexDirection={['column', 'column', 'column', 'column', 'column', 'row']}
         >
-          {/* <CommissionInfo /> */}
+          <CommissionInfo />
           <Flex flexDirection="column">
             <MyReferralLink />
-            {/* <ClaimReward /> */}
+            <ClaimReward />
           </Flex>
         </Flex>
       )}
