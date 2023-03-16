@@ -12,8 +12,17 @@ import AddLiquidityV3, { AddLiquidityV3Layout } from 'views/AddLiquidityV3'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useIsMounted } from '@pancakeswap/hooks'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
+import { isStableFarm } from '@pancakeswap/farms'
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 
-const AddLiquidityPage = () => {
+export const config = {
+  runtime: 'edge',
+}
+
+const AddLiquidityPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  currencyIdA: currencyIdA_,
+  currencyIdB: currencyIdB_,
+}) => {
   const router = useRouter()
   const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
@@ -24,8 +33,8 @@ const AddLiquidityPage = () => {
   const native = useNativeCurrency()
 
   const [currencyIdA, currencyIdB] = router.query.currency || [
-    native.symbol,
-    CAKE[chainId]?.address ?? USDC[chainId]?.address,
+    currencyIdA_ || native.symbol,
+    currencyIdB_ || CAKE[chainId]?.address || USDC[chainId]?.address,
   ]
 
   const tokenA = useCurrency(currencyIdA)
@@ -33,22 +42,23 @@ const AddLiquidityPage = () => {
 
   const isMounted = useIsMounted()
 
-  // Initial prefer v2 if there is a farm for the pair
-  const preferV2 = useMemo(
-    () =>
+  // Initial prefer farm type v2/stable if there is a farm for the pair
+  const preferFarmType = useMemo(() => {
+    const preferFarm =
       isMounted &&
       farmsV2Public?.length &&
       tokenA &&
       tokenB &&
       router.isReady &&
-      farmsV2Public.some(
+      farmsV2Public.find(
         (farm) =>
           farm.multiplier !== '0X' &&
           ((farm.token.address === tokenA.wrapped.address && farm.quoteToken.address === tokenB.wrapped.address) ||
             (farm.token.address === tokenB.wrapped.address && farm.quoteToken.address === tokenA.wrapped.address)),
-      ),
-    [farmsV2Public, isMounted, router.isReady, tokenA, tokenB],
-  )
+      )
+
+    return preferFarm ? (isStableFarm(preferFarm) ? SELECTOR_TYPE.STABLE : SELECTOR_TYPE.V2) : undefined
+  }, [farmsV2Public, isMounted, router.isReady, tokenA, tokenB])
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
@@ -62,14 +72,31 @@ const AddLiquidityPage = () => {
         <AddLiquidityV3
           currencyIdA={currencyIdA}
           currencyIdB={currencyIdB}
-          preferredSelectType={preferV2 ? SELECTOR_TYPE.V2 : undefined}
-          isV2={preferV2}
+          preferredSelectType={preferFarmType}
+          isV2={preferFarmType === SELECTOR_TYPE.V2}
         />
       </AddLiquidityV3Layout>
     </LiquidityFormProvider>
   )
 }
 
+// @ts-ignore
 AddLiquidityPage.chains = CHAIN_IDS
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: true,
+  }
+}
+
+export const getStaticProps = (async ({ params }) => {
+  return {
+    props: {
+      currencyIdA: params?.currency?.[0] ?? '',
+      currencyIdB: params?.currency?.[1] ?? '',
+    },
+  }
+}) satisfies GetStaticProps
 
 export default AddLiquidityPage

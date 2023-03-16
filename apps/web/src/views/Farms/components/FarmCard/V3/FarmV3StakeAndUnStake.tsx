@@ -154,7 +154,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
         {positionType === 'unstaked' ? (
           outOfRange ? (
             <Button external variant="subtle" as="a" href={liquidityUrl}>
-              View LP
+              {t('View LP')}
             </Button>
           ) : (
             <Button width={['120px']} style={{ alignSelf: 'center' }} disabled={isPending} onClick={handleStake}>

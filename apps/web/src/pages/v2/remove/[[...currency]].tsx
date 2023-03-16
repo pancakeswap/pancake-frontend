@@ -76,7 +76,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       return {
         redirect: {
           statusCode: 307,
-          destination: `/remove/${currency0}/${currency1}`,
+          destination: `/v2/remove/${currency0}/${currency1}`,
         },
       }
     }

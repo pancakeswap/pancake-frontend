@@ -34,37 +34,41 @@ interface UseStablePairResponse {
   pair: StablePair
 }
 
-export function useStablePair(currencyA: Token, currencyB: Token): UseStablePairResponse {
+export function useStablePair(currencyA?: Currency, currencyB?: Currency): UseStablePairResponse {
   const { stableSwapConfig, stableSwapContract } = useContext(StableConfigContext)
 
-  const currencyAAmountQuotient = tryParseAmount('1', currencyA)?.quotient
+  const [token0, token1] =
+    currencyA && currencyB && currencyA.wrapped.sortsBefore(currencyB.wrapped)
+      ? [currencyA?.wrapped, currencyB?.wrapped]
+      : [currencyB?.wrapped, currencyA?.wrapped]
+
+  const token0AmountQuotient = tryParseAmount('1', token0)?.quotient
 
   const { data: estimatedToken1Amount } = useEstimatedAmount({
-    estimatedCurrency: currencyB,
-    quotient: currencyAAmountQuotient?.toString(),
+    estimatedCurrency: token1,
+    quotient: token0AmountQuotient?.toString(),
     stableSwapContract,
     stableSwapConfig,
   })
 
   const pair = useMemo(() => {
-    if (!currencyA || !currencyB) {
+    if (!token0 || !token1) {
       return undefined
     }
-    const isPriceValid = currencyAAmountQuotient && estimatedToken1Amount
+    const isPriceValid = token0AmountQuotient && estimatedToken1Amount
 
     const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyB, '0')
 
     const token0Price = isPriceValid
-      ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount.quotient)
+      ? new Price(token0, token1, token0AmountQuotient, estimatedToken1Amount.quotient)
       : ZERO_AMOUNT
 
     return {
       liquidityToken: stableSwapConfig?.liquidityToken || null,
       tokenAmounts: [],
-      token0: currencyA,
-      token1: currencyB,
-      priceOf: (token) =>
-        isPriceValid ? (token?.address === currencyA?.address ? token0Price : token0Price.invert()) : ZERO_AMOUNT,
+      token0,
+      token1,
+      priceOf: (token) => (isPriceValid ? (token?.equals(token0) ? token0Price : token0Price.invert()) : ZERO_AMOUNT),
       token0Price: () => token0Price,
       token1Price: () => token0Price.invert(),
       // NOTE: Stable Tokens don't need this
@@ -72,7 +76,7 @@ export function useStablePair(currencyA: Token, currencyB: Token): UseStablePair
       reserve0: ZERO_AMOUNT,
       getLiquidityValue: () => ZERO_AMOUNT,
     }
-  }, [stableSwapConfig?.liquidityToken, currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount])
+  }, [currencyB, token0AmountQuotient, estimatedToken1Amount, token0, token1, stableSwapConfig?.liquidityToken])
 
   if (!stableSwapConfig) {
     return { pairState: PairState.NOT_EXISTS, pair: undefined }

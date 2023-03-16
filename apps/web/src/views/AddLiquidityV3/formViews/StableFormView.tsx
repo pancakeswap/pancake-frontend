@@ -118,6 +118,13 @@ export default function StableFormView({
     )
   }
 
+  const [currency0, currency1] =
+    currencies?.[Field.CURRENCY_A] &&
+    currencies?.[Field.CURRENCY_B] &&
+    currencies?.[Field.CURRENCY_A]?.wrapped?.sortsBefore(currencies?.[Field.CURRENCY_B]?.wrapped)
+      ? [currencies?.[Field.CURRENCY_A], currencies?.[Field.CURRENCY_B]]
+      : [currencies?.[Field.CURRENCY_B], currencies?.[Field.CURRENCY_A]]
+
   return (
     <>
       <AutoColumn>
@@ -169,9 +176,9 @@ export default function StableFormView({
             <LightGreyCard mr="4px" mb="8px">
               <AutoRow justifyContent="space-between" mb="8px">
                 <Flex>
-                  <CurrencyLogo currency={currencies[Field.CURRENCY_A]} />
+                  <CurrencyLogo currency={currency0} />
                   <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                    {currencies[Field.CURRENCY_A]?.symbol}
+                    {currency0?.symbol}
                   </Text>
                 </Flex>
                 <Flex justifyContent="center">
@@ -180,9 +187,9 @@ export default function StableFormView({
               </AutoRow>
               <AutoRow justifyContent="space-between">
                 <Flex>
-                  <CurrencyLogo currency={currencies[Field.CURRENCY_B]} />
+                  <CurrencyLogo currency={currency1} />
                   <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                    {currencies[Field.CURRENCY_B]?.symbol}
+                    {currency1?.symbol}
                   </Text>
                 </Flex>
                 <Flex justifyContent="center">
