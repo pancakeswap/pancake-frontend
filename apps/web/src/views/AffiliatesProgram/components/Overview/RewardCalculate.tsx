@@ -1,4 +1,4 @@
-import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Box, PageSection, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
@@ -88,7 +88,12 @@ const RewardCalculate = () => {
               "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program",
             )}
           </Text>
-          <Button width="fit-content">{t('Join Now!')}</Button>
+          <Link
+            external
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfP43IciQ5cH0JhTf1fDgUpwapBx-yD3ybv24pBdiVW7Th5jQ/viewform"
+          >
+            <Button width="fit-content">{t('Join Now!')}</Button>
+          </Link>
         </Flex>
         <Calculator />
       </Flex>

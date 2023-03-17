@@ -38,6 +38,7 @@ const Calculator = () => {
 
   return (
     <Box
+      id="calculate"
       width={['100%', '100%', '375px', 'auto']}
       m={['64px auto', '64px auto', '64px auto', '64px auto', '0 0 0 48px']}
     >
@@ -75,7 +76,7 @@ const Calculator = () => {
         </Flex>
         <Flex flexDirection="column" mt="28px">
           <Text mb="8px" color="secondary" textTransform="uppercase" fontSize="12px" bold>
-            {t('volume per month')}
+            {t('Volume per user per month')}
           </Text>
           <Input
             min="1"

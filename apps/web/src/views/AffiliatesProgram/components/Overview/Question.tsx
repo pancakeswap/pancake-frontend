@@ -54,7 +54,7 @@ const Question = () => {
         <Card>
           <CardHeader>
             <Heading color="secondary" scale="lg">
-              {t('Details')}
+              {t('FAQ')}
             </Heading>
           </CardHeader>
           <StyledCardBody>
@@ -71,12 +71,12 @@ const Question = () => {
                 {t('Strong understanding of PancakeSwap and our ecosystem')}
               </StyledListText>
             </FoldableText>
-            <FoldableText title={t('Pairs must meet the following eligibility criteria:')} mt="24px">
+            <FoldableText title={t('Eligible Trading Pairs')} mt="24px">
               <StyledListText color="textSubtle">
                 {t('Pairs must be in “PancakeSwap Extended” official token list')}
               </StyledListText>
               <StyledListText color="textSubtle">
-                {t('Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC)')}
+                {t('Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC) ')}
               </StyledListText>
             </FoldableText>
             <FoldableText title={t('How will I receive my commissions and how often will I be paid?')} mt="24px">

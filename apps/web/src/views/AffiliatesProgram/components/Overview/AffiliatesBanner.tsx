@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Box, PageSection, Link } from '@pancakeswap/uikit'
 import { SlideSvgDark, SlideSvgLight } from 'views/Home/components/SlideSvg'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -163,10 +163,17 @@ const AffiliatesBanner = () => {
               {t('Join a community-driven movement to make DeFi accessible and better for everyone')}
             </Text>
             <Flex>
-              <Button width="fit-content">{t('Join our Affiliate Program')}</Button>
-              <Button ml="12px" variant="secondary" width="fit-content">
-                {t('Discover your Potential')}
-              </Button>
+              <Link
+                external
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfP43IciQ5cH0JhTf1fDgUpwapBx-yD3ybv24pBdiVW7Th5jQ/viewform"
+              >
+                <Button width="fit-content">{t('Join our Affiliate Program')}</Button>
+              </Link>
+              <Link href="#calculate">
+                <Button ml="12px" variant="secondary" width="fit-content">
+                  {t('Discover your Potential')}
+                </Button>
+              </Link>
             </Flex>
           </Flex>
         </Flex>

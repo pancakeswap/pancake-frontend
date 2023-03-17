@@ -35,7 +35,7 @@ const BenefitsList = [
     desc: (
       <Trans>
         Forge a partnership with the most reputable global brand in the industry to make DeFi accessible and better for
-        everyone.
+        everyone
       </Trans>
     ),
     imgUrl: '/images/affiliates-program/high-commission-rates.png',
@@ -80,11 +80,6 @@ const Benefits = () => {
         <Heading maxWidth={['700px']} textAlign="center" scale="xl">
           {t('Unlock the Power of PancakeSwap Affiliate Benefits')}
         </Heading>
-        <Text color="textSubtle" margin={['48px 0']}>
-          {t(
-            'With a wide variety of cryptocurrency options and user-friendly platform, you&aposll be able to offer your audience a seamless investment experience.',
-          )}
-        </Text>
         <StyledContainer>
           {BenefitsList.map((benefit, index) => (
             // eslint-disable-next-line react/no-array-index-key
