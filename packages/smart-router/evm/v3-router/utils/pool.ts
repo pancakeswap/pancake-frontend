@@ -2,7 +2,7 @@ import { Currency, JSBI, Pair, Price } from '@pancakeswap/sdk'
 import { Pool as SDKV3Pool } from '@pancakeswap/v3-sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 
-import { StableSwap } from '../../stableSwap'
+import * as StableSwap from '../../stableSwap'
 import { Pool, PoolType, StablePool, V2Pool, V3Pool } from '../types'
 
 export function isV2Pool(pool: Pool): pool is V2Pool {

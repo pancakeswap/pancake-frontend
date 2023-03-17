@@ -9,7 +9,7 @@ import FarmTable from "./components/FarmTable";
 import FarmV3Table from "./components/FarmV3Table";
 import FarmV3Card from "./components/FarmV3Card";
 
-const Farm = {
+export {
   FarmTabButtons,
   FarmApyButton,
   Tags,
@@ -21,5 +21,3 @@ const Farm = {
   FarmV3Table,
   FarmV3Card,
 };
-
-export { Farm };

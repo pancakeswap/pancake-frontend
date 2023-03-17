@@ -1,4 +1,4 @@
-export * from "./FarmWidget";
+export * as Farm from "./FarmWidget";
 export * from "./constants";
 export { MobileColumnSchema, DesktopColumnSchema, V3DesktopColumnSchema } from "./types";
 export type {

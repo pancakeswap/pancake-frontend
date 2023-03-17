@@ -1,27 +1,11 @@
-import { getAllCommonPairs } from './getAllCommonPairs'
-import { getBestTradeExactIn, getBestTradeExactOut } from './getBestTrade'
-import { stableSwapPairsByChainId } from './getStableSwapPairs'
-import { isStableSwapPair } from './utils/pair'
-import { createStableSwapPair } from './stableSwap'
 import { RouteType } from './types'
 
-export const LegacyRouter = {
-  getAllCommonPairs,
-  getBestTradeExactOut,
-  getBestTradeExactIn,
-  isStableSwapPair,
-  createStableSwapPair,
-  stableSwapPairsByChainId,
-}
-
-export { Trade as LegacyTrade } from './trade'
-
+export * as LegacyRouter from './legacyRouter'
 export { Route as LegacyRoute } from './route'
-
+export { Trade as LegacyTrade } from './trade'
 export type {
-  TradeWithStableSwap as LegacyTradeWithStableSwap,
   Pair as LegacyPair,
   StableSwapPair as LegacyStableSwapPair,
+  TradeWithStableSwap as LegacyTradeWithStableSwap,
 } from './types'
-
 export { RouteType as LegacyRouteType }

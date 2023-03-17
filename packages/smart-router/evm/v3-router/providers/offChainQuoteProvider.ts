@@ -11,7 +11,7 @@ import {
   V2Pool,
   V3Pool as IV3Pool,
 } from '../types'
-import { StableSwap } from '../../stableSwap'
+import * as StableSwap from '../../stableSwap'
 import { getOutputCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 
 export function createOffChainQuoteProvider(): QuoteProvider {

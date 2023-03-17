@@ -3,7 +3,7 @@ import { getLPOutput } from './getLPOutput'
 import { getSwapOutput, getSwapOutputWithoutFee, getSwapInput, getSwapInputWithtouFee } from './getSwapOutput'
 import { getD } from './amm'
 
-export const StableSwap = {
+export {
   getSwapInput,
   getSwapInputWithtouFee,
   getSwapOutput,
