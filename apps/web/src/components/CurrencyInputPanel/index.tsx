@@ -16,7 +16,7 @@ import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 
-import { useBUSDCurrencyAmount } from 'hooks/useBUSDPrice'
+import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
@@ -152,7 +152,7 @@ export default function CurrencyInputPanel({
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
 
-  const amountInDollar = useBUSDCurrencyAmount(
+  const amountInDollar = useStablecoinPriceAmount(
     showUSDPrice ? currency : undefined,
     Number.isFinite(+value) ? +value : undefined,
   )

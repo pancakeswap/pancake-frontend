@@ -33,6 +33,7 @@ import StableFormView from './formViews/StableFormView'
 import { V2Selector } from './components/V2Selector'
 import V2FormView from './formViews/V2FormView'
 import { AprCalculator } from './components/AprCalculator'
+import { useCurrencyParams } from './hooks/useCurrencyParams'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -73,13 +74,11 @@ export default function UniversalAddLiquidity({
   preferredSelectType,
   preferredFeeAmount,
 }: UniversalAddLiquidityPropsType) {
-  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
 
   const router = useRouter()
   const baseCurrency = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
-  const [selectType] = useAtom(selectTypeAtom)
 
   const stableConfig = useStableConfig({
     tokenA: baseCurrency,
@@ -236,15 +235,8 @@ export default function UniversalAddLiquidity({
     [currencyIdA, currencyIdB, router, setSelectorType],
   )
 
-  const title = `Add ${SELECTOR_TYPE_T[selectType]} Liquidity` || t('Add Liquidity')
-
   return (
     <>
-      <AppHeader
-        title={title}
-        backTo="/liquidity"
-        IconSlot={<AprCalculator baseCurrency={baseCurrency} quoteCurrency={quoteCurrency} feeAmount={feeAmount} />}
-      />
       <CardBody>
         <ResponsiveTwoColumns>
           <AutoColumn alignSelf="stretch">
@@ -337,9 +329,26 @@ const SELECTOR_TYPE_T = {
 } as const satisfies Record<SELECTOR_TYPE, string>
 
 export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation()
+
+  const [selectType] = useAtom(selectTypeAtom)
+  const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
+
+  const baseCurrency = useCurrency(currencyIdA)
+  const quoteCurrency = useCurrency(currencyIdB)
+
+  const title = `Add ${SELECTOR_TYPE_T[selectType]} Liquidity` || t('Add Liquidity')
+
   return (
     <Page>
-      <BodyWrapper>{children}</BodyWrapper>
+      <BodyWrapper>
+        <AppHeader
+          title={title}
+          backTo="/liquidity"
+          IconSlot={<AprCalculator baseCurrency={baseCurrency} quoteCurrency={quoteCurrency} feeAmount={feeAmount} />}
+        />
+        {children}
+      </BodyWrapper>
     </Page>
   )
 }

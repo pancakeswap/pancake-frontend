@@ -1,66 +1,51 @@
-import { CAKE, USDC } from '@pancakeswap/tokens'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import useNativeCurrency from 'hooks/useNativeCurrency'
+import { isStableFarm } from '@pancakeswap/farms'
+import { useIsMounted } from '@pancakeswap/hooks'
+import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAppDispatch } from 'state'
 import { useFarmV2PublicAPI } from 'state/farms/hooks'
 import { resetMintState } from 'state/mint/actions'
-import { useCurrency } from 'hooks/Tokens'
 import { CHAIN_IDS } from 'utils/wagmi'
 import AddLiquidityV3, { AddLiquidityV3Layout } from 'views/AddLiquidityV3'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
-import { useIsMounted } from '@pancakeswap/hooks'
+import { useCurrencyParams } from 'views/AddLiquidityV3/hooks/useCurrencyParams'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
-import { isStableFarm } from '@pancakeswap/farms'
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next'
 
-export const config = {
-  runtime: 'experimental-edge',
-}
-
-const AddLiquidityPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  currencyIdA: currencyIdA_,
-  currencyIdB: currencyIdB_,
-  feeAmount: feeAmount_,
-}) => {
+const AddLiquidityPage = () => {
   const router = useRouter()
-  const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
 
   // fetching farm api instead of using redux store here to avoid huge amount of actions and hooks needed
   const { data: farmsV2Public } = useFarmV2PublicAPI()
 
-  const native = useNativeCurrency()
+  const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
 
-  const [currencyIdA, currencyIdB] = router.query.currency || [
-    currencyIdA_ || native.symbol,
-    currencyIdB_ || CAKE[chainId]?.address || USDC[chainId]?.address,
-  ]
-
-  const tokenA = useCurrency(currencyIdA)
-  const tokenB = useCurrency(currencyIdB)
+  const currencyA = useCurrency(currencyIdA)
+  const currencyB = useCurrency(currencyIdB)
 
   const isMounted = useIsMounted()
 
   // Initial prefer farm type v2/stable if there is a farm for the pair
   const preferFarmType = useMemo(() => {
     const preferFarm =
-      !feeAmount_ &&
+      !feeAmount &&
       isMounted &&
       farmsV2Public?.length &&
-      tokenA &&
-      tokenB &&
+      currencyA &&
+      currencyB &&
       router.isReady &&
       farmsV2Public.find(
         (farm) =>
           farm.multiplier !== '0X' &&
-          ((farm.token.address === tokenA.wrapped.address && farm.quoteToken.address === tokenB.wrapped.address) ||
-            (farm.token.address === tokenB.wrapped.address && farm.quoteToken.address === tokenA.wrapped.address)),
+          ((farm.token.address === currencyA.wrapped.address &&
+            farm.quoteToken.address === currencyB.wrapped.address) ||
+            (farm.token.address === currencyB.wrapped.address &&
+              farm.quoteToken.address === currencyA.wrapped.address)),
       )
 
     return preferFarm ? (isStableFarm(preferFarm) ? SELECTOR_TYPE.STABLE : SELECTOR_TYPE.V2) : undefined
-  }, [farmsV2Public, feeAmount_, isMounted, router.isReady, tokenA, tokenB])
+  }, [farmsV2Public, feeAmount, isMounted, router.isReady, currencyA, currencyB])
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
@@ -82,24 +67,6 @@ const AddLiquidityPage: React.FC<InferGetStaticPropsType<typeof getStaticProps>>
   )
 }
 
-// @ts-ignore
 AddLiquidityPage.chains = CHAIN_IDS
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [],
-    fallback: true,
-  }
-}
-
-export const getStaticProps = (async ({ params }) => {
-  return {
-    props: {
-      currencyIdA: params?.currency?.[0] ?? '',
-      currencyIdB: params?.currency?.[1] ?? '',
-      feeAmount: params?.currency?.[2] ?? '',
-    },
-  }
-}) satisfies GetStaticProps
 
 export default AddLiquidityPage

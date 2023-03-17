@@ -26,10 +26,17 @@ import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
 import { useBestAMMTrade } from './useBestAMMTrade'
 
+const STABLE_COIN = {
+  [ChainId.ETHEREUM]: USDC[ChainId.ETHEREUM],
+  [ChainId.GOERLI]: USDC[ChainId.GOERLI],
+  [ChainId.BSC]: BUSD[ChainId.BSC],
+  [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
+} satisfies Record<ChainId, ERC20Token>
+
 export function useStablecoinPrice(currency?: Currency): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
 
-  const stableCoin = BUSD[chainId] as ERC20Token
+  const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
 
   const amountIn = currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined
 
@@ -188,11 +195,8 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   return price
 }
 
-/**
- * @deprecated it's using v2 pair
- */
-export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const busdPrice = useBUSDPrice(currency?.chainId === ChainId.ETHEREUM ? undefined : currency)
+export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
+  const stablePrice = useStablecoinPrice(currency?.chainId === ChainId.ETHEREUM ? undefined : currency)
   // we don't have too many AMM pools on ethereum yet, try to get it from api
   const { data } = useSWRImmutable(
     amount && currency?.chainId === ChainId.ETHEREUM && ['fiat-price-ethereum', currency],
@@ -214,8 +218,8 @@ export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): num
     if (data) {
       return parseFloat(data) * amount
     }
-    if (busdPrice) {
-      return multiplyPriceByAmount(busdPrice, amount)
+    if (stablePrice) {
+      return multiplyPriceByAmount(stablePrice, amount)
     }
   }
   return undefined
