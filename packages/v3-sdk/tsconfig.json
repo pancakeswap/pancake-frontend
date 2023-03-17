@@ -1,6 +1,7 @@
 {
   "extends": "tsconfig/base",
   "include": ["src"],
+  "exclude": ["**/*.test.ts"],
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
