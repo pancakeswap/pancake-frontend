@@ -21,7 +21,7 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
           {t('Welcome to PancakeSwap!')}
         </Text>
         <Text color="secondary" bold mb="8px">
-          {router.query.user}
+          {router.query.user?.toString()?.replaceAll('_', ' ')}
         </Text>
         <Text color="textSubtle" fontSize="14px" mb="24px">
           {t('has referred you to start trading on a leading multchain DEX')}
