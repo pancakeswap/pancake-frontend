@@ -1,5 +1,5 @@
 import { Interface } from '@ethersproject/abi'
-import { BigintIsh, CurrencyAmount, ONE, Percent, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
+import { BigintIsh, CurrencyAmount, ONE, Token, validateAndParseAddress, ZERO } from '@pancakeswap/sdk'
 import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import { ADDRESS_ZERO } from './constants'
