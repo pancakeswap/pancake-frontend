@@ -6,13 +6,18 @@ import { Field } from 'state/swap/actions'
 import { useCurrency } from 'hooks/Tokens'
 import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import { useDeferredValue } from 'react'
+import {
+  useUserSplitRouteEnable,
+  useUserStableSwapEnable,
+  useUserV2SwapEnable,
+  useUserV3SwapEnable,
+} from 'state/user/smartRouter'
 
 interface Options {
   maxHops?: number
-  maxSplits?: number
 }
 
-export function useBestTrade({ maxHops, maxSplits }: Options = {}) {
+export function useBestTrade({ maxHops }: Options = {}) {
   const {
     independentField,
     typedValue,
@@ -27,13 +32,21 @@ export function useBestTrade({ maxHops, maxSplits }: Options = {}) {
   const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
   const amount = tryParseAmount(typedValue, independentCurrency ?? undefined)
 
+  const [split] = useUserSplitRouteEnable()
+  const [v2Swap] = useUserV2SwapEnable()
+  const [v3Swap] = useUserV3SwapEnable()
+  const [stableSwap] = useUserStableSwapEnable()
+
   const { isLoading, trade, refresh, syncing, isStale } = useBestAMMTrade({
     amount,
     currency: dependentCurrency,
     baseCurrency: independentCurrency,
     tradeType,
     maxHops,
-    maxSplits,
+    maxSplits: split ? undefined : 0,
+    v2Swap,
+    v3Swap,
+    stableSwap,
   })
 
   return {

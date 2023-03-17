@@ -1,5 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { AutoRow, Box, Flex, PreTitle } from '@pancakeswap/uikit'
+import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { usePool } from 'hooks/v3/usePools'
 import SingleFarmV3Card from 'views/Farms/components/FarmCard/V3/SingleFarmV3Card'
 import { V3Farm } from 'views/Farms/FarmsV3'
@@ -52,25 +53,27 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
             {t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: unstakedPositions.length })}
           </PreTitle>
           <AutoRow width="100%" gap="16px">
-            {unstakedPositions.map((position) => (
-              <SingleFarmV3Card
-                farm={farm}
-                style={{
-                  minWidth: '49%',
-                }}
-                pool={pool}
-                flex={1}
-                direction={direction}
-                positionType="unstaked"
-                key={position.tokenId.toString()}
-                lpSymbol={lpSymbol}
-                position={position}
-                token={token}
-                quoteToken={quoteToken}
-                pendingCakeByTokenIds={pendingCakeByTokenIds}
-                onDismiss={onDismiss}
-              />
-            ))}
+            {unstakedPositions
+              .sort((a, _b) => (isPositionOutOfRange(pool?.tickCurrent, a) ? 1 : 0))
+              .map((position) => (
+                <SingleFarmV3Card
+                  farm={farm}
+                  style={{
+                    minWidth: '49%',
+                  }}
+                  pool={pool}
+                  flex={1}
+                  direction={direction}
+                  positionType="unstaked"
+                  key={position.tokenId.toString()}
+                  lpSymbol={lpSymbol}
+                  position={position}
+                  token={token}
+                  quoteToken={quoteToken}
+                  pendingCakeByTokenIds={pendingCakeByTokenIds}
+                  onDismiss={onDismiss}
+                />
+              ))}
           </AutoRow>
         </Flex>
       )}

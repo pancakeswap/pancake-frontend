@@ -4,6 +4,7 @@ import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 const userUseStableSwapAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useStableSwap', true)
 const userUseV2SwapAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useV2Swap', true)
 const userUseV3SwapAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useV3Swap', true)
+const userUserSplitRouteAtom = atomWithStorageWithErrorCatch<boolean>('pcs:useSplitRouting', true)
 
 export function useUserStableSwapEnable() {
   return useAtom(userUseStableSwapAtom)
@@ -15,4 +16,8 @@ export function useUserV2SwapEnable() {
 
 export function useUserV3SwapEnable() {
   return useAtom(userUseV3SwapAtom)
+}
+
+export function useUserSplitRouteEnable() {
+  return useAtom(userUserSplitRouteAtom)
 }

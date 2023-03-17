@@ -38,7 +38,7 @@ export function RoutesBreakdown({ routes = [] }: Props) {
             placement="top-start"
           />
         </span>
-        <Box onClick={routeDisplayModal.onOpen}>
+        <Box onClick={routeDisplayModal.onOpen} role="button">
           <span style={{ display: 'flex', alignItems: 'center' }}>
             {count > 1 ? (
               <Text fontSize="14px">{t('%count% Separate Routes', { count })}</Text>

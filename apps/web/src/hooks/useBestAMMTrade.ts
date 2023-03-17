@@ -9,7 +9,6 @@ import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { useUserStableSwapEnable, useUserV2SwapEnable, useUserV3SwapEnable } from 'state/user/smartRouter'
 import { useCommonPools } from './useCommonPools'
 
 interface Options {
@@ -19,11 +18,24 @@ interface Options {
   tradeType?: TradeType
   maxHops?: number
   maxSplits?: number
+  v2Swap?: boolean
+  v3Swap?: boolean
+  stableSwap?: boolean
 }
 
 const quoteProvider = SmartRouter.createOffChainQuoteProvider()
 
-export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
+export function useBestAMMTrade({
+  amount,
+  baseCurrency,
+  currency,
+  tradeType,
+  maxHops,
+  maxSplits,
+  v2Swap = true,
+  v3Swap = true,
+  stableSwap = true,
+}: Options) {
   const { gasPrice } = useFeeDataWithGasPrice()
 
   const blockNumber = useCurrentBlock()
@@ -36,9 +48,6 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
   const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 300)
-  const [v2Swap] = useUserV2SwapEnable()
-  const [v3Swap] = useUserV3SwapEnable()
-  const [stableSwap] = useUserStableSwapEnable()
 
   const poolTypes = useMemo(() => {
     const types: PoolType[] = []
@@ -98,6 +107,7 @@ export function useBestAMMTrade({ amount, baseCurrency, currency, tradeType, max
             : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
           maxHops,
           poolProvider,
+          maxSplits,
           // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
           quoteProvider,
           // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),

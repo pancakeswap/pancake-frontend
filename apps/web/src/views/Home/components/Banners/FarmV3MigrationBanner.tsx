@@ -118,7 +118,7 @@ const FarmV3MigrationBanner = () => {
           </Flex>
           <StyledBox>{t('Migrate to continue farming CAKE rewards and earning trading fees.')}</StyledBox>
           <Flex style={{ gap: 8 }} flexWrap={isMobile ? 'wrap' : 'nowrap'}>
-            <NextLinkFromReactRouter to="/swap?chain=eth">
+            <NextLinkFromReactRouter to="/migration">
               <StyledButtonLeft scale={isMobile ? 'sm' : 'md'}>
                 <Text bold fontSize="16px" mr="4px">
                   {`${t('Proceed')} ${isMobile ? '👈' : ''}`}

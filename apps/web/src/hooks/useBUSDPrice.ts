@@ -45,6 +45,7 @@ export function useStablecoinPrice(currency?: Currency): Price<Currency, Currenc
     currency: stableCoin,
     baseCurrency: currency,
     tradeType: TradeType.EXACT_INPUT,
+    maxSplits: 0,
   })
 
   const price = useMemo(() => {

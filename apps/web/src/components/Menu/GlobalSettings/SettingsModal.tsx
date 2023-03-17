@@ -15,6 +15,7 @@ import {
   Button,
   ModalV2,
   PreTitle,
+  AutoColumn,
 } from '@pancakeswap/uikit'
 import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -29,7 +30,13 @@ import {
 } from '@pancakeswap/utils/user'
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility, useZapModeManager } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
-import { useUserStableSwapEnable, useUserV2SwapEnable, useUserV3SwapEnable } from 'state/user/smartRouter'
+import {
+  useUserSplitRouteEnable,
+  useUserStableSwapEnable,
+  useUserV2SwapEnable,
+  useUserV3SwapEnable,
+} from 'state/user/smartRouter'
+import { AtomBox } from '@pancakeswap/ui'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import styled from 'styled-components'
 import GasSettings from './GasSettings'
@@ -79,7 +86,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()
   const { chainId } = useActiveChainId()
-  const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [tokenRisk, setTokenRisk] = useUserTokenRisk()
 
   const { t } = useTranslation()
@@ -111,9 +117,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
         {mode === SettingsMode.GLOBAL && (
           <>
             <Flex pb="24px" flexDirection="column">
-              <Text bold textTransform="uppercase" fontSize="18px" color="secondary" mb="24px">
-                {t('Global')}
-              </Text>
+              <PreTitle mb="24px">{t('Global')}</PreTitle>
               <Flex justifyContent="space-between" mb="24px">
                 <Text>{t('Dark mode')}</Text>
                 <ThemeSwitcher isDark={isDark} toggleTheme={() => setTheme(isDark ? 'light' : 'dark')} />
@@ -198,9 +202,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
         {mode === SettingsMode.SWAP_LIQUIDITY && (
           <>
             <Flex pt="3px" flexDirection="column">
-              <Text bold textTransform="uppercase" fontSize="18px" color="secondary" mb="24px">
-                {t('Swaps & Liquidity')}
-              </Text>
+              <PreTitle>{t('Swaps & Liquidity')}</PreTitle>
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
                 {chainId === ChainId.BSC && <GasSettings />}
               </Flex>
@@ -265,22 +267,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
               </Flex>
               <PancakeToggle checked={audioPlay} onChange={() => setAudioMode((s) => !s)} scale="md" />
             </Flex>
-            <Flex justifyContent="space-between" alignItems="center" mb="24px">
-              <Flex alignItems="center">
-                <Text>{t('MM Linked Pool')}</Text>
-                <QuestionHelper
-                  text={t('Trade through the market makers if they provide better deal')}
-                  placement="top-start"
-                  ml="4px"
-                />
-              </Flex>
-              <Toggle
-                id="toggle-disable-mm-button"
-                checked={isMMLinkedPoolByDefault}
-                onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
-                scale="md"
-              />
-            </Flex>
             <RoutingSettingsButton />
           </>
         )}
@@ -293,10 +279,11 @@ export default SettingsModal
 
 export function RoutingSettingsButton() {
   const [show, setShow] = useState(false)
+  const { t } = useTranslation()
   return (
     <>
       <Button variant="text" width="100%" onClick={() => setShow(true)}>
-        Customize Routing
+        {t('Customize Routing')}
       </Button>
       <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>
         <RoutingSettings />
@@ -311,57 +298,101 @@ function RoutingSettings() {
   const [isStableSwapByDefault, setIsStableSwapByDefault] = useUserStableSwapEnable()
   const [v2Enable, setV2Enable] = useUserV2SwapEnable()
   const [v3Enable, setV3Enable] = useUserV3SwapEnable()
+  const [split, setSplit] = useUserSplitRouteEnable()
+  const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
 
   return (
-    <Modal title="Customize Routing">
-      <PreTitle mb="24px">liquidity source</PreTitle>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Flex alignItems="center">
-          <Text>PancakeSwap {t('StableSwap')}</Text>
-          <QuestionHelper
-            text={
-              <Flex>
-                <Text mr="5px">
-                  {t(
-                    'Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap',
-                  )}
-                </Text>
-              </Flex>
-            }
-            placement="top-start"
-            ml="4px"
-          />
-        </Flex>
-        <Toggle scale="md" checked={isStableSwapByDefault} onChange={() => setIsStableSwapByDefault((s) => !s)} />
-      </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Flex alignItems="center">
-          <Text>PancakeSwap V2</Text>
-        </Flex>
-        <Toggle scale="md" checked={v2Enable} onChange={() => setV2Enable((s) => !s)} />
-      </Flex>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Flex alignItems="center">
-          <Text>PancakeSwap V3</Text>
-        </Flex>
-        <Toggle scale="md" checked={v3Enable} onChange={() => setV3Enable((s) => !s)} />
-      </Flex>
-      <PreTitle mb="24px">Routing preference</PreTitle>
-      <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Flex alignItems="center">
-          <Text>{t('Disable Multihops')}</Text>
-          <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
-        </Flex>
-        <Toggle
-          id="toggle-disable-multihop-button"
-          checked={singleHopOnly}
-          scale="md"
-          onChange={() => {
-            setSingleHopOnly(!singleHopOnly)
-          }}
-        />
-      </Flex>
+    <Modal title={t('Customize Routing')}>
+      <AutoColumn
+        width={{
+          xs: '100%',
+          md: 'screenSm',
+        }}
+        gap="16px"
+      >
+        <AtomBox>
+          <PreTitle mb="24px">{t('Liquidity source')}</PreTitle>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>PancakeSwap {t('StableSwap')}</Text>
+              <QuestionHelper
+                text={
+                  <Flex>
+                    <Text mr="5px">
+                      {t(
+                        'Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap',
+                      )}
+                    </Text>
+                  </Flex>
+                }
+                placement="top-start"
+                ml="4px"
+              />
+            </Flex>
+            <Toggle scale="md" checked={isStableSwapByDefault} onChange={() => setIsStableSwapByDefault((s) => !s)} />
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>PancakeSwap V2</Text>
+            </Flex>
+            <Toggle scale="md" checked={v2Enable} onChange={() => setV2Enable((s) => !s)} />
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>PancakeSwap V3</Text>
+            </Flex>
+            <Toggle scale="md" checked={v3Enable} onChange={() => setV3Enable((s) => !s)} />
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>{`PancakeSwap ${t('MM Linked Pool')}`}</Text>
+              <QuestionHelper
+                text={t('Trade through the market makers if they provide better deal')}
+                placement="top-start"
+                ml="4px"
+              />
+            </Flex>
+            <Toggle
+              id="toggle-disable-mm-button"
+              checked={isMMLinkedPoolByDefault}
+              onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
+              scale="md"
+            />
+          </Flex>
+        </AtomBox>
+        <AtomBox>
+          <PreTitle mb="24px">{t('Routing preference')}</PreTitle>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>{t('Allow Multihops')}</Text>
+              <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
+            </Flex>
+            <Toggle
+              id="toggle-disable-multihop-button"
+              checked={!singleHopOnly}
+              scale="md"
+              onChange={() => {
+                setSingleHopOnly((s) => !s)
+              }}
+            />
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>{t('Allow Split Routing')}</Text>
+              {/* <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" /> */}
+            </Flex>
+            <Toggle
+              id="toggle-disable-multihop-button"
+              checked={split}
+              scale="md"
+              onChange={() => {
+                setSplit((s) => !s)
+              }}
+            />
+          </Flex>
+        </AtomBox>
+      </AutoColumn>
     </Modal>
   )
 }
