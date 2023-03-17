@@ -1,9 +1,7 @@
-import { useCallback, useDeferredValue, useState } from 'react'
-import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router/evm'
-import { usePreviousValue } from '@pancakeswap/hooks'
-import { QuestionHelper, SearchIcon, Text, ChevronDownIcon, IconButton } from '@pancakeswap/uikit'
+import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
+import styled from 'styled-components'
 
 import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
@@ -17,44 +15,15 @@ const RouteInfoContainer = styled(RowBetween)`
   padding: 4px 24px 0;
 `
 
-const RouteWrapper = styled(RowBetween)`
-  padding: 4px 24px 0 40px;
-`
-
-const DropdownIcon = styled(ChevronDownIcon)<{ expanded: boolean }>`
-  transform: rotate(${({ expanded }) => (expanded ? '0.5turn' : '0turn')});
-`
-
 export function RoutesBreakdown({ routes = [] }: Props) {
   const { t } = useTranslation()
-  const [expanded, setExpanded] = useState(false)
-  const [displayRouteIndex, setDisplayRouteIndex] = useState<number | null>(null)
-  const [showRouteDetail, setShowRouteDetail] = useState(false)
-  const toggleExpanded = useCallback(() => setExpanded(!expanded), [expanded])
-  const onShowRoute = useCallback((index: number) => {
-    setDisplayRouteIndex(index)
-    setShowRouteDetail(true)
-  }, [])
-  const onCloseRouteDisplay = useCallback(() => setShowRouteDetail(false), [])
-
-  const previousRoutes = usePreviousValue(routes)
-
-  const shouldShowRoutes = useDeferredValue(
-    showRouteDetail && previousRoutes && previousRoutes.length === routes.length,
-  )
+  const routeDisplayModal = useModalV2()
 
   if (!routes.length) {
     return null
   }
 
   const count = routes.length
-  const swapRoutes = expanded
-    ? // eslint-disable-next-line react/no-array-index-key
-      routes.map((route, i) => <RouteComp key={i} route={route} onClick={() => onShowRoute(i)} />)
-    : null
-  const routeDetail = routes[displayRouteIndex] && (
-    <RouteDisplayModal open={shouldShowRoutes} route={routes[displayRouteIndex]} onClose={onCloseRouteDisplay} />
-  )
 
   return (
     <>
@@ -69,36 +38,34 @@ export function RoutesBreakdown({ routes = [] }: Props) {
             placement="top-start"
           />
         </span>
-        <div onClick={toggleExpanded} onKeyDown={toggleExpanded} role="button" tabIndex={0}>
+        <Box onClick={routeDisplayModal.onOpen}>
           <span style={{ display: 'flex', alignItems: 'center' }}>
-            <Text fontSize="14px">{t('Split into %count% routes', { count })}</Text>
-            <DropdownIcon expanded={expanded} />
+            {count > 1 ? (
+              <Text fontSize="14px">{t('%count% Separate Routes', { count })}</Text>
+            ) : (
+              <RouteComp route={routes[0]} />
+            )}
+            <IconButton ml="8px" variant="text" color="textSubtle" scale="xs">
+              <SearchIcon width="16px" height="16px" color="textSubtle" />
+            </IconButton>
           </span>
-        </div>
+        </Box>
+        <RouteDisplayModal {...routeDisplayModal} routes={routes} />
       </RouteInfoContainer>
-      {routeDetail}
-      {swapRoutes}
     </>
   )
 }
 
 interface RouteProps {
   route: Route
-  onClick?: () => void
 }
 
-function RouteComp({ route, onClick }: RouteProps) {
-  const { path, percent } = route
+function RouteComp({ route }: RouteProps) {
+  const { path } = route
 
   return (
-    <RouteWrapper>
-      <Text fontSize="14px" color="textSubtle">
-        {percent}%
-      </Text>
+    <RowBetween>
       <SwapRoute path={path} />
-      <IconButton ml="8px" variant="text" color="textSubtle" onClick={onClick} scale="xs">
-        <SearchIcon width="16px" height="16px" style={{ cursor: 'pointer' }} color="textSubtle" />
-      </IconButton>
-    </RouteWrapper>
+    </RowBetween>
   )
 }

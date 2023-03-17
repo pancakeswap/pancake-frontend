@@ -2157,7 +2157,7 @@
   "Staking to V3 Farms": "Staking to V3 Farms",
   "Start earning CAKE by staking your liquidity positions to V3 Farms!": "Start earning CAKE by staking your liquidity positions to V3 Farms!",
   "Finish": "Finish",
-  "Split into %count% routes": "Split into %count% routes",
+  "%count% Separate Routes": "%count% Separate Routes",
   "Unable request a quote": "Unable request a quote",
   "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.": "This transaction will not succeed due to price movement. Try increasing your slippage tolerance. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.",
   "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.": "The output token cannot be transferred. There may be an issue with the output token. Note: fee on transfer and rebase tokens are incompatible with Pancakeswap V3.",

@@ -1,7 +1,8 @@
 import { Route, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { useTranslation } from '@pancakeswap/localization'
-import { Modal, ModalV2, QuestionHelper, Text, Flex, useTooltip, AutoColumn } from '@pancakeswap/uikit'
+import { Modal, ModalV2, QuestionHelper, Text, Flex, useTooltip, AutoColumn, UseModalV2Props } from '@pancakeswap/uikit'
 import { Currency } from '@pancakeswap/sdk'
+import { AtomBox } from '@pancakeswap/ui'
 
 import { CurrencyLogo } from 'components/Logo'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
@@ -11,22 +12,14 @@ import { v3FeeToPercent } from '../utils/exchange'
 
 type Pair = [Currency, Currency]
 
-interface Props {
-  open?: boolean
-  onClose?: () => void
-  route: Route
+interface Props extends UseModalV2Props {
+  routes: Route[]
 }
 
-export function RouteDisplayModal({
-  open = false,
-  onClose = () => {
-    // default
-  },
-  route,
-}: Props) {
+export function RouteDisplayModal({ isOpen, onDismiss, routes }: Props) {
   const { t } = useTranslation()
   return (
-    <ModalV2 closeOnOverlayClick isOpen={open} onDismiss={onClose} minHeight="0">
+    <ModalV2 closeOnOverlayClick isOpen={isOpen} onDismiss={onDismiss} minHeight="0">
       <Modal
         title={
           <Flex justifyContent="center">
@@ -38,11 +31,16 @@ export function RouteDisplayModal({
             />
           </Flex>
         }
-        onDismiss={onClose}
         style={{ minHeight: '0' }}
         bodyPadding="24px"
       >
-        <RouteDisplay route={route} />
+        <AutoColumn gap="48px">
+          {routes.map((route, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <RouteDisplay key={i} route={route} />
+          ))}
+          <RoutingSettingsButton />
+        </AutoColumn>
       </Modal>
     </ModalV2>
   )
@@ -60,6 +58,7 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(<Text>{inputCurrency.symbol}</Text>, {
     placement: 'right',
   })
+
   const {
     targetRef: outputTargetRef,
     tooltip: outputTooltip,
@@ -95,8 +94,22 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
             : t('StableSwap')
           return (
             <RouterPoolBox key={key} className={isV3Pool && 'highlight'}>
-              <CurrencyLogo size="32px" currency={input} />
-              <CurrencyLogo size="32px" currency={output} />
+              <AtomBox
+                size={{
+                  xs: '24px',
+                  md: '32px',
+                }}
+              >
+                <CurrencyLogo size="100%" currency={input} />
+              </AtomBox>
+              <AtomBox
+                size={{
+                  xs: '24px',
+                  md: '32px',
+                }}
+              >
+                <CurrencyLogo size="100%" currency={output} />
+              </AtomBox>
               <RouterTypeText>{text}</RouterTypeText>
             </RouterPoolBox>
           )
@@ -106,17 +119,29 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
   return (
     <AutoColumn gap="24px">
       <RouterBox justifyContent="space-between" alignItems="center">
-        <CurrencyLogoWrapper ref={targetRef}>
-          <CurrencyLogo size="44px" currency={inputCurrency} />
+        <CurrencyLogoWrapper
+          size={{
+            xs: '32px',
+            md: '48px',
+          }}
+          ref={targetRef}
+        >
+          <CurrencyLogo size="100%" currency={inputCurrency} />
+          <RouterTypeText>{route.percent}%</RouterTypeText>
         </CurrencyLogoWrapper>
         {tooltipVisible && tooltip}
         {pairNodes}
-        <CurrencyLogoWrapper ref={outputTargetRef}>
-          <CurrencyLogo size="44px" currency={outputCurrency} />
+        <CurrencyLogoWrapper
+          size={{
+            xs: '32px',
+            md: '48px',
+          }}
+          ref={outputTargetRef}
+        >
+          <CurrencyLogo size="100%" currency={outputCurrency} />
         </CurrencyLogoWrapper>
         {outputTooltipVisible && outputTooltip}
       </RouterBox>
-      <RoutingSettingsButton />
     </AutoColumn>
   )
 }
