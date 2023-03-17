@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { setCookie } from 'cookies-next'
 import { AFFILIATE_NONCE_SID } from 'pages/api/affiliates-program/affiliate-login'
-import { MAX_AGE, HOST } from './config'
+import { MAX_AGE, HOST } from 'config/constants/affiliatesProgram'
 
 const affiliateNonce = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!process.env.AFFILIATE_PROGRAM_API_URL || !req.query) {

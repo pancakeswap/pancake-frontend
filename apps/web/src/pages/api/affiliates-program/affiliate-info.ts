@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getCookie } from 'cookies-next'
 import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
-import { HOST } from './config'
+import { HOST } from 'config/constants/affiliatesProgram'
 
 const affiliateInfo = async (req: NextApiRequest, res: NextApiResponse) => {
   const cookie = getCookie(AFFILIATE_SID, { req, res, domain: HOST })

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getCookie, setCookie, deleteCookie } from 'cookies-next'
-import { MAX_AGE, HOST } from './config'
+import { MAX_AGE, HOST } from 'config/constants/affiliatesProgram'
 
 export const AFFILIATE_SID = 'AFFILIATE_SID'
 export const AFFILIATE_NONCE_SID = 'AFFILIATE_NONCE_SID'
