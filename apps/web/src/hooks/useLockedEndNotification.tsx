@@ -10,7 +10,6 @@ import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useUserCakeLockStatus } from './useUserCakeLockStatus'
 
 const storage = createJSONStorage(() => sessionStorage)
-storage.delayInit = true
 const lockedNotificationShowAtom = atomWithStorageWithErrorCatch('lockedNotificationShow', true, storage)
 function useLockedNotificationShow() {
   return useAtom(lockedNotificationShowAtom)
