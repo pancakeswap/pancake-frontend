@@ -41,8 +41,8 @@ const BenefitsList = [
     imgUrl: '/images/affiliates-program/high-commission-rates.png',
   },
   {
-    title: <Trans>User-Friendly Platform</Trans>,
-    desc: <Trans>Provide a seamless experience for your referrals with our user-friendly platform</Trans>,
+    title: <Trans>User Friendly Platform</Trans>,
+    desc: <Trans>Provide a seamless experience for your referrals with our user friendly platform</Trans>,
     imgUrl: '/images/affiliates-program/user-friendly-platform.png',
   },
   {
