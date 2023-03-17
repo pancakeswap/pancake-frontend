@@ -27,6 +27,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import useTransactionDeadline from 'hooks/useTransactionDeadline'
 
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
@@ -80,7 +81,8 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
 
   // the callback to execute the swap
-  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade })
+  const deadline = useTransactionDeadline()
+  const { callback: swapCallback, error: swapCallbackError } = useSwapCallback({ trade, deadline })
 
   const [{ tradeToConfirm, swapErrorMessage, attemptingTxn, txHash }, setSwapState] = useState<{
     tradeToConfirm: SmartRouterTrade<TradeType> | undefined

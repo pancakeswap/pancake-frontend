@@ -65,7 +65,7 @@ export function useSwapCallArguments(
       //     }
       //   : {}),
 
-      // deadlineOrPreviousBlockhash: deadline.toString(),
+      deadlineOrPreviousBlockhash: deadline?.toString(),
     })
 
     // if (argentWalletContract && trade.inputAmount.currency.isToken) {
@@ -98,7 +98,7 @@ export function useSwapCallArguments(
     allowedSlippage,
     // argentWalletContract,
     chainId,
-    // deadline,
+    deadline,
     feeOptions,
     provider,
     recipient,
