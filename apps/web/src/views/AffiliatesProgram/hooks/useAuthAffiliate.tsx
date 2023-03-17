@@ -32,6 +32,7 @@ export interface InfoDetail {
 interface AffiliateInfoType {
   isAffiliate: boolean
   affiliate: InfoDetail
+  refresh: () => void
 }
 
 interface AffiliateInfoResponse {
@@ -56,7 +57,7 @@ const useAuthAffiliate = (): AffiliateInfoType => {
   const { address } = useAccount()
   const cookie = getCookie(AFFILIATE_SID)
 
-  const { data } = useSWR(address && cookie !== '' && ['/auth-affiliate', address, cookie], async () => {
+  const { data, mutate } = useSWR(address && cookie !== '' && ['/auth-affiliate', address, cookie], async () => {
     try {
       const response = await fetch(`/api/affiliates-program/affiliate-info`)
       const result: AffiliateInfoResponse = await response.json()
@@ -80,6 +81,7 @@ const useAuthAffiliate = (): AffiliateInfoType => {
   return {
     isAffiliate: data?.isAffiliate ?? false,
     affiliate: data?.affiliate ?? initAffiliateData,
+    refresh: mutate,
   }
 }
 

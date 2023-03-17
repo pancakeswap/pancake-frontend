@@ -84,9 +84,13 @@ const CardInner = styled(Flex)`
   }
 `
 
+interface MyReferralLinkProps {
+  refreshAffiliateInfo: () => void
+}
+
 const receivePercentageList: Array<string> = ['0', '25', '50', '75', '100']
 
-const MyReferralLink = () => {
+const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = ({ refreshAffiliateInfo }) => {
   const { t } = useTranslation()
   const { address } = useAccount()
   const { toastSuccess, toastError } = useToast()
@@ -132,7 +136,7 @@ const MyReferralLink = () => {
       const result = await response.json()
 
       if (result.status === 'success') {
-        await refresh()
+        await Promise.all([refreshAffiliateInfo(), refresh()])
         setNote('')
         toastSuccess(t('Referral Link Created'))
       } else {

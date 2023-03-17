@@ -34,10 +34,7 @@ const Calculator = () => {
 
   const defaultAmount = (amount: BigNumber) => (amount.gt(0) ? amount.toFixed(0) : '1')
 
-  const totalPerMonth = useMemo(
-    () => new BigNumber(referral).times(0.25).times(volume).times(3).toNumber(),
-    [referral, volume],
-  )
+  const totalPerMonth = useMemo(() => new BigNumber(referral).times(volume).times(0.03).toNumber(), [referral, volume])
 
   return (
     <Box

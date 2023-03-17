@@ -13,7 +13,7 @@ import AffiliateLinks from 'views/AffiliatesProgram/components/Dashboard/Affilia
 
 const Dashboard = () => {
   const router = useRouter()
-  const { isAffiliate, affiliate } = useAuthAffiliate()
+  const { isAffiliate, affiliate, refresh } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Dashboard = () => {
         >
           <CommissionInfo />
           <Flex flexDirection="column">
-            <MyReferralLink />
+            <MyReferralLink refreshAffiliateInfo={refresh} />
             <AffiliateLinks affiliate={affiliate} />
             <ClaimReward />
           </Flex>

@@ -166,7 +166,7 @@ const config: (
           image: '/images/ifos/ifo-bunny.png',
         },
         {
-          label: t('Affiliates Program'),
+          label: t('Affiliate Program'),
           href: '/affiliates-program',
         },
         {

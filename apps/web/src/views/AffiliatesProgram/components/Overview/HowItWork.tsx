@@ -43,7 +43,9 @@ const HowItWork = () => {
               <Text fontSize={['40px']} bold color="secondary" lineHeight="110%">
                 {t('Application')}
               </Text>
-              <Text fontSize={['14px']}>{t("It's fast, easy, and completely free")}</Text>
+              <Text fontSize={['14px']} mt="24px">
+                {t("It's fast, easy, and completely free")}
+              </Text>
             </Box>
           </Card>
         </Flex>
@@ -62,7 +64,7 @@ const HowItWork = () => {
               <Text fontSize={['40px']} bold color="primary" lineHeight="110%">
                 {t('Love')}
               </Text>
-              <Text fontSize={['14px']}>
+              <Text fontSize={['14px']} mt="24px">
                 {t(
                   'Share your unique affiliate link with your friends, followers, and anyone who loves a good adventure',
                 )}
@@ -85,7 +87,9 @@ const HowItWork = () => {
               <Text fontSize={['40px']} bold color="failure" lineHeight="110%">
                 {t('CAKE')}
               </Text>
-              <Text fontSize={['14px']}>{t('Earn up to 20% referral commissions in CAKE')}</Text>
+              <Text fontSize={['14px']} mt="24px">
+                {t('Earn up to 20% referral commissions in CAKE')}
+              </Text>
             </Box>
           </Card>
         </Flex>
