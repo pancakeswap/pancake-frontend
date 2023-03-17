@@ -236,15 +236,15 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
           <SlippageSetting />
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
-              <Text>{t('Disable Multihops')}</Text>
+              <Text>{t('Allow Multihops')}</Text>
               <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
             </Flex>
             <Toggle
               id="toggle-disable-multihop-button"
-              checked={singleHopOnly}
+              checked={!singleHopOnly}
               scale="md"
               onChange={() => {
-                setSingleHopOnly(!singleHopOnly)
+                setSingleHopOnly((s) => !s)
               }}
             />
           </Flex>
