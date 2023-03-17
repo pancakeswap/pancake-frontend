@@ -40,4 +40,24 @@ export const pools: StableSwapPool[] = [
     stableLpFee: 0.0004,
     stableLpFeeRateOfTotalFee: 0.5,
   },
+  {
+    lpSymbol: 'BUSD-USDC LP',
+    lpAddress: '0x7CA885d338462790DD1B5416ebe6bec75ee045a1',
+    token: bscTestnetTokens.mockBusd, // coins[0]
+    quoteToken: bscTestnetTokens.usdc, // coins[1]
+    stableSwapAddress: '0xd5E56CD4c8111643a94Ee084df31F44055a1EC9F',
+    infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
+  {
+    lpSymbol: 'USDT-BUSD LP',
+    lpAddress: '0x9Fa2Ef2C3dF6F903F4b73047311e861C51a11B60',
+    token: bscTestnetTokens.usdt, // coins[0]
+    quoteToken: bscTestnetTokens.mockBusd, // coins[1]
+    stableSwapAddress: '0xc418d68751Cbe0407C8fdd90Cde73cE95b892f39',
+    infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
+  },
 ]

@@ -203,7 +203,7 @@ export default function PoolListPage() {
                   onChange={() => setHideClosedPositions((prev) => !prev)}
                 />
                 <Text ml="8px" color="textSubtle" fontSize="14px">
-                  Hide closed positions
+                  {t('Hide closed positions')}
                 </Text>
               </Flex>
 
