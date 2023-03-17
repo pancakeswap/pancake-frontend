@@ -151,7 +151,7 @@ export const useFarmsV3 = () => {
   )
 
   return {
-    data: data || farmV3.data,
+    data: data?.farmsWithPrice.length === farmV3.data.poolLength ? data : farmV3.data,
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }
