@@ -9,7 +9,6 @@ import { useTradeExactIn, useTradeExactOut } from 'hooks/Trades'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useUserSlippage } from '@pancakeswap/utils/user'
-// import { useClientSideV3Trade } from 'hooks/v3/useClientSideV3Trade'
 import { useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'querystring'
 import { useEffect, useMemo, useState } from 'react'
@@ -129,12 +128,6 @@ export function useDerivedSwapInfo(
 
   const bestTradeExactIn = useTradeExactIn(isExactIn ? parsedAmount : undefined, outputCurrency ?? undefined)
   const bestTradeExactOut = useTradeExactOut(inputCurrency ?? undefined, !isExactIn ? parsedAmount : undefined)
-
-  // const bestTradeV3 = useClientSideV3Trade(
-  //   isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT,
-  //   parsedAmount,
-  //   (isExactIn ? outputCurrency : inputCurrency) ?? undefined,
-  // )
 
   const v2Trade = isExactIn ? bestTradeExactIn : bestTradeExactOut
 
