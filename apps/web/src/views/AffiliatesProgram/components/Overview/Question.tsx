@@ -71,7 +71,7 @@ const Question = () => {
                 {t('Strong understanding of PancakeSwap and our ecosystem')}
               </StyledListText>
             </FoldableText>
-            <FoldableText title={t('Eligible Trading Pairs')} mt="24px">
+            <FoldableText title={t('Pairs must meet the following eligibility criteria:')} mt="24px">
               <StyledListText color="textSubtle">
                 {t('Pairs must be in “PancakeSwap Extended” official token list')}
               </StyledListText>

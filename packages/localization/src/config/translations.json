@@ -2143,7 +2143,6 @@
   "What is the criteria to become a PancakeSwap affiliate?": "What is the criteria to become a PancakeSwap affiliate?",
   "Proven track record of creating quality content related to crypto and especially DeFi": "Proven track record of creating quality content related to crypto and especially DeFi",
   "Strong understanding of PancakeSwap and our ecosystem": "Strong understanding of PancakeSwap and our ecosystem",
-  "Trading Eligible Trading Pairs": "Trading Eligible Trading Pairs",
   "Pairs must be in “PancakeSwap Extended” official token list": "Pairs must be in “PancakeSwap Extended” official token list",
   "Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC) ": "Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC) ",
   "How will I receive my commissions and how often will I be paid?": "How will I receive my commissions and how often will I be paid?",
@@ -2208,5 +2207,6 @@
   "rewards breakdown": "rewards breakdown",
   "affiliate links": "affiliate links",
   "link": "link",
-  "profit sharing %": "profit sharing %"
+  "profit sharing %": "profit sharing %",
+  "Pairs must meet the following eligibility criteria:": "Pairs must meet the following eligibility criteria:"
 }
