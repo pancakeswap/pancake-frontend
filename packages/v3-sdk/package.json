@@ -18,7 +18,7 @@
   "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsup -w",
+    "dev": "tsc -w",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
