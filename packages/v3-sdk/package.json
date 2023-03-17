@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "3.9.0",
+  "version": "0.0.0",
   "description": "⚒️ An SDK for building applications on top of Pancakeswap V3",
   "files": [
     "dist"
@@ -16,10 +16,9 @@
   "sideEffects": false,
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
-  "module": "dist/index.mjs",
   "scripts": {
-    "build": "tsup src/index.ts --format esm,cjs --dts",
-    "dev": "tsup src/index.ts --format esm,cjs --watch --dts",
+    "build": "tsc",
+    "dev": "tsup -w",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
@@ -44,8 +43,7 @@
     "@ethersproject/bignumber": "^5.0.0",
     "@ethersproject/abi": "^5.0.0",
     "@ethersproject/solidity": "^5.0.0",
-    "@types/jest": "^24.0.25",
-    "tsup": "^6.5.0"
+    "@types/jest": "^24.0.25"
   },
   "engines": {
     "node": ">=10"
@@ -59,8 +57,7 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "default": "./dist/index.js"
     }
   }
 }

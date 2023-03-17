@@ -97,6 +97,7 @@ describe('SwapRouter', () => {
       ],
       gasEstimate: JSBI.BigInt(0),
       gasEstimateInUSD: CurrencyAmount.fromRawAmount(tokenIn, 0),
+      blockNumber: 0,
     }
   }
 
@@ -138,6 +139,7 @@ describe('SwapRouter', () => {
       ],
       gasEstimate: JSBI.BigInt(0),
       gasEstimateInUSD: CurrencyAmount.fromRawAmount(tokenIn, 0),
+      blockNumber: 0,
     }
   }
 
@@ -190,6 +192,7 @@ describe('SwapRouter', () => {
       ],
       gasEstimate: JSBI.BigInt(0),
       gasEstimateInUSD: CurrencyAmount.fromRawAmount(tokenIn, 0),
+      blockNumber: 0,
     }
   }
 

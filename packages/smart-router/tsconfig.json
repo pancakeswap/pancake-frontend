@@ -1,9 +1,12 @@
 {
   "extends": "tsconfig/react-library",
+  "include": ["./evm"],
   "compilerOptions": {
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": "./",
+    "outDir": "./dist"
   }
 }

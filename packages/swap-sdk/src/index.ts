@@ -10,6 +10,6 @@ export * from './router'
 
 export * from './utils'
 
-export * from 'ether'
+export * from './ether'
 
 export * from '@pancakeswap/swap-sdk-core'

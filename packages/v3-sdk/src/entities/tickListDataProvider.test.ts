@@ -1,5 +1,6 @@
 // import JSBI from 'jsbi'
 // import { TickListDataProvider } from './tickListDataProvider'
+import { describe } from 'vitest'
 
 describe.skip('TickListDataProvider', () => {
   // describe('constructor', () => {

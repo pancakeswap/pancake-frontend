@@ -9,8 +9,8 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "yarn typechain && tsup",
-    "dev": "tsup --watch",
+    "build": "yarn typechain && tsc",
+    "dev": "tsc --w",
     "test": "vitest --run",
     "typechain": "typechain --out-dir evm/abis/types --target=ethers-v5 \"evm/abis/*.json\"",
     "postinstall": "yarn typechain",
@@ -47,15 +47,13 @@
     "@types/lodash": "^4.14.178",
     "@types/stats-lite": "^2.2.0",
     "tsconfig": "*",
-    "tsup": "^6.6.3",
     "typechain": "^6.1.0",
     "typescript": "^4.9.4"
   },
   "exports": {
     "./evm": {
-      "types": "./dist/evm.d.ts",
-      "import": "./dist/evm.mjs",
-      "require": "./dist/evm.js"
+      "types": "./dist/evm/index.d.ts",
+      "default": "./dist/evm/index.js"
     }
   }
 }

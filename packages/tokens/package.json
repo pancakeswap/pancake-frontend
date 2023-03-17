@@ -3,14 +3,13 @@
   "license": "MIT",
   "version": "0.0.1",
   "description": "Tokens for pancakeswap",
-  "main": "src/index.ts",
+  "main": "./dist/index.js",
   "private": true,
   "sideEffects": false,
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "tsc",
+    "dev": "tsc --w",
     "prepublishOnly": "yarn run build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
@@ -18,19 +17,10 @@
     "@pancakeswap/sdk": "*",
     "@pancakeswap/token-lists": "*"
   },
-  "devDependencies": {
-    "tsup": "^6.6.3"
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
-    },
-    "./react": {
-      "types": "./dist/react.d.ts",
-      "import": "./dist/react.mjs",
-      "require": "./dist/react.js"
+      "default": "./dist/index.js"
     }
   }
 }
