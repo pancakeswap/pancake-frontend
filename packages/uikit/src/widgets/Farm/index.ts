@@ -1,4 +1,3 @@
-export * as Farm from "./FarmWidget";
 export * from "./constants";
 export { MobileColumnSchema, DesktopColumnSchema, V3DesktopColumnSchema } from "./types";
 export type {
@@ -8,3 +7,5 @@ export type {
   FarmTableFarmTokenInfoProps,
   FarmTableAmountProps,
 } from "./types";
+
+export * as Farm from "./FarmWidget";
