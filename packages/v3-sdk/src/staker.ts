@@ -1,6 +1,6 @@
 import { BigintIsh, Token, validateAndParseAddress } from '@pancakeswap/sdk'
 import { defaultAbiCoder, Interface } from '@ethersproject/abi'
-import IUniswapV3Staker from '@uniswap/v3-staker/artifacts/contracts/UniswapV3Staker.sol/UniswapV3Staker.json'
+import IV3Staker from './abi/V3Staker.json'
 import { MethodParameters, toHex } from './utils/calldata'
 import { Pool } from './entities'
 import { Multicall } from './multicall'
@@ -67,7 +67,7 @@ export interface WithdrawOptions {
 }
 
 export abstract class Staker {
-  public static INTERFACE: Interface = new Interface(IUniswapV3Staker.abi)
+  public static INTERFACE: Interface = new Interface(IV3Staker)
 
   protected constructor() {}
 

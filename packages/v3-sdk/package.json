@@ -15,21 +15,23 @@
   ],
   "sideEffects": false,
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc -w",
+    "build": "tsup",
+    "dev": "tsup -w",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/swap-sdk-core": "*",
     "@uniswap/v3-staker": "1.0.0",
     "big.js": "^5.2.2",
     "decimal.js-light": "^2.5.0",
     "tiny-invariant": "^1.1.0",
     "tiny-warning": "^1.0.3",
-    "@pancakeswap/sdk": "*",
     "toformat": "^2.0.0",
     "jsbi": "^3.1.4"
   },
@@ -57,7 +59,8 @@
     "./package.json": "./package.json",
     ".": {
       "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
     }
   }
 }

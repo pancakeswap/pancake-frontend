@@ -1,4 +1,3 @@
 {
-  "main": "../dist/evm/index.js",
-  "types": "../dist/index.d.ts"
+  "module": "../dist/evm.mjs"
 }

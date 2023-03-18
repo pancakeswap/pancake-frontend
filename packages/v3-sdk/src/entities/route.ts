@@ -1,6 +1,6 @@
 import invariant from 'tiny-invariant'
 
-import { Currency, Price, Token } from '@pancakeswap/sdk'
+import { Currency, Price, Token } from '@pancakeswap/swap-sdk-core'
 import { Pool } from './pool'
 
 /**
@@ -51,6 +51,7 @@ export class Route<TInput extends Currency, TOutput extends Currency> {
     this.pools = pools
     this.tokenPath = tokenPath
     this.input = input
+    // @ts-ignore
     this.output = output ?? tokenPath[tokenPath.length - 1]
   }
 

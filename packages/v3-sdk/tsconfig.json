@@ -1,6 +1,5 @@
 {
   "extends": "tsconfig/base",
-  "include": ["src"],
   "exclude": ["**/*.test.ts"],
   "compilerOptions": {
     "target": "es2018",
@@ -21,7 +20,6 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "outDir": "./dist"
+    "resolveJsonModule": true
   }
 }
