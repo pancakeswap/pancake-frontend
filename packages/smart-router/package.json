@@ -10,7 +10,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "yarn typechain && tsup",
-    "dev": "tsup --w",
+    "dev": "tsup --watch",
     "test": "vitest --run",
     "typechain": "typechain --out-dir evm/abis/types --target=ethers-v5 \"evm/abis/*.json\"",
     "postinstall": "yarn typechain",

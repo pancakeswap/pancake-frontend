@@ -19,7 +19,7 @@
   "module": "dist/index.mjs",
   "scripts": {
     "build": "tsup",
-    "dev": "tsup -w",
+    "dev": "tsup --watch",
     "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
