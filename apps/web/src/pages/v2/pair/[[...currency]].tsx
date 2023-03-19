@@ -27,6 +27,9 @@ import { useV2Pair } from 'hooks/usePairs'
 import { useTokenBalance } from 'state/wallet/hooks'
 import useTotalSupply from 'hooks/useTotalSupply'
 import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'components/PositionCard'
+import currencyId from 'utils/currencyId'
+import { Native, WNATIVE } from '@pancakeswap/sdk'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 // import { CurrencyLogo } from 'components/Logo'
 
 export const BodyWrapper = styled(Card)`
@@ -39,6 +42,7 @@ export const BodyWrapper = styled(Card)`
 export default function PoolV2Page() {
   const router = useRouter()
   const { address: account } = useAccount()
+  const { chainId } = useActiveChainId()
 
   const [currencyIdA, currencyIdB] = router?.query?.currency ? router.query.currency : []
 
@@ -64,6 +68,15 @@ export default function PoolV2Page() {
 
   const { isMobile } = useMatchBreakpoints()
 
+  let addCurrencyA = currencyId(baseCurrency)
+  let addCurrencyB = currencyId(currencyB)
+
+  if (WNATIVE[chainId]?.address === baseCurrency?.wrapped?.address) {
+    addCurrencyA = currencyId(Native.onChain(chainId))
+  } else if (WNATIVE[chainId]?.address === currencyB?.wrapped?.address) {
+    addCurrencyB = currencyId(Native.onChain(chainId))
+  }
+
   return (
     <Page>
       <BodyWrapper>
@@ -81,9 +94,7 @@ export default function PoolV2Page() {
           buttons={
             !isMobile && (
               <>
-                <NextLinkFromReactRouter
-                  to={`/v2/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}
-                >
+                <NextLinkFromReactRouter to={`/v2/add/${addCurrencyA}/${addCurrencyB}`}>
                   <Button width="100%">Add</Button>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter
@@ -100,7 +111,7 @@ export default function PoolV2Page() {
         <CardBody>
           {isMobile && (
             <>
-              <NextLinkFromReactRouter to={`/v2/add/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}>
+              <NextLinkFromReactRouter to={`/v2/add/${addCurrencyA}/${addCurrencyB}`}>
                 <Button width="100%" mb="8px">
                   Add
                 </Button>
