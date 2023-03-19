@@ -82,7 +82,7 @@ export const useOrderBookQuote = (
     refetchInterval: 5000,
     enabled,
   })
-  return { data, isLoading: enabled && isLoading }
+  return { data: isMMLinkedPoolByDefault ? data : undefined, isLoading: enabled && isLoading }
 }
 
 export const useMMTrade = (
