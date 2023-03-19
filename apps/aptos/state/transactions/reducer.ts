@@ -76,7 +76,6 @@ const reducer = createReducer(initialState, (builder) =>
 )
 
 const storage = createJSONStorage<TransactionState>(() => localStorage)
-storage.delayInit = true
 
 const transactionsAtom = atomWithStorage('transactions', initialState, storage)
 
