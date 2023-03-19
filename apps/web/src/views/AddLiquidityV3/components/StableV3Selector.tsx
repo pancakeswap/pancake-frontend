@@ -97,7 +97,7 @@ export function StableV3Selector({
       }
       content={
         <AutoColumn gap="8px">
-          <EvenWidthAutoRow gap="2">
+          <EvenWidthAutoRow gap="8px">
             <SelectButton
               isActive={selectorType === SELECTOR_TYPE.STABLE}
               onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.STABLE })}

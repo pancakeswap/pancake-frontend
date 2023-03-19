@@ -322,7 +322,7 @@ export function ImpermanentLossCalculator({
   return (
     <Container>
       <Section title={t("Calculate impermanent loss")} mb="0">
-        <Row mb={on ? "24px" : "0"}>
+        <Row mb={on ? "24px" : "0px"}>
           <Toggle checked={on} onChange={toggle} scale="md" />
         </Row>
         {calculator}

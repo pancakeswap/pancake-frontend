@@ -457,7 +457,7 @@ const SwapPage = () => {
             showUSDPrice
           />
           {showBridgeWarning && (
-            <AtomBox width="full">
+            <AtomBox width="100%">
               <Flex justifyContent="flex-end">
                 <Text fontSize="12px" color="warning">
                   {t('Use')}
@@ -478,7 +478,7 @@ const SwapPage = () => {
               </Flex>
             </AtomBox>
           )}
-          <AtomBox width="full" textAlign="center">
+          <AtomBox width="100%" textAlign="center">
             <SwitchButton
               onClick={() => {
                 handleSwitch()

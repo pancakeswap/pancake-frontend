@@ -175,7 +175,7 @@ const SingleFarmV3Card: React.FunctionComponent<
             <Modal title={t('Unstaking')}>
               <AutoColumn
                 maxWidth={{
-                  xs: 'full',
+                  xs: '100%',
                   md: 'screenSm',
                 }}
                 gap="16px"
@@ -230,11 +230,11 @@ const SingleFarmV3Card: React.FunctionComponent<
             <AtomBox
               border="1"
               width={{
-                xs: 'full',
+                xs: '100%',
                 md: 'auto',
               }}
             />
-            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="full">
+            <RowBetween flexDirection="column" alignItems="flex-start" flex={1} width="100%">
               <FarmV3HarvestAction
                 earnings={totalEarnings}
                 earningsBusd={earningsBusd}

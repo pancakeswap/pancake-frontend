@@ -4,7 +4,7 @@ export const Row = ({
   width = "100%",
   alignItems = "center",
   justifyContent = "flex-start",
-  padding = "0",
+  padding = "0px",
   ...props
 }: AtomBoxProps) => (
   <AtomBox

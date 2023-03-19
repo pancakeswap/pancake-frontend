@@ -31,7 +31,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
             {stakedPositions.map((position) => (
               <SingleFarmV3Card
                 pool={pool}
-                width="full"
+                width="100%"
                 direction={direction}
                 positionType="staked"
                 farm={farm}

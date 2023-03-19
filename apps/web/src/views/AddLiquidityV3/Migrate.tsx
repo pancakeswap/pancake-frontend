@@ -68,7 +68,7 @@ export function Migrate({ v2PairAddress }: { v2PairAddress: string }) {
 
   if (!token0Address || !token1Address || !pair || !totalSupply)
     return (
-      <AtomBox width="full" justifyContent="center" alignItems="center" display="flex" minHeight="screenMd">
+      <AtomBox width="100%" justifyContent="center" alignItems="center" display="flex" minHeight="screenMd">
         <Spinner />
       </AtomBox>
     )

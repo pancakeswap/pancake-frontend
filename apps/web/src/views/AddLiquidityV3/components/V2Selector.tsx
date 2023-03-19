@@ -32,7 +32,7 @@ export function V2Selector({
         )
       }
       content={
-        <EvenWidthAutoRow gap="1">
+        <EvenWidthAutoRow gap="4px">
           {isStable ? (
             <>
               <SelectButton

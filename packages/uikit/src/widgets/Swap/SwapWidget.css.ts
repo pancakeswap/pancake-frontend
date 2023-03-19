@@ -144,7 +144,7 @@ export const pageVariants = recipe({
       height: "100%",
       background: "gradientBubblegum",
       padding: "16px",
-      paddingBottom: "0",
+      paddingBottom: "0px",
     }),
     style({
       backgroundSize: "auto",
@@ -152,11 +152,11 @@ export const pageVariants = recipe({
     responsiveStyle({
       sm: {
         padding: "24px",
-        paddingBottom: "0",
+        paddingBottom: "0px",
       },
       lg: {
         padding: "32px",
-        paddingBottom: "0",
+        paddingBottom: "0px",
       },
     }),
   ]),

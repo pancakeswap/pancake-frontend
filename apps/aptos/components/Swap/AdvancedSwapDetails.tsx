@@ -106,7 +106,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
           <TradeSummary trade={trade} allowedSlippage={allowedSlippage} />
           {showRoute && (
             <>
-              <RowBetween py="0" px="16px" flexWrap="nowrap">
+              <RowBetween py="0px" px="16px" flexWrap="nowrap">
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <Text fontSize="14px" color="textSubtle">
                     {t('Route')}

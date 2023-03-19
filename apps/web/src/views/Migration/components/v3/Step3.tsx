@@ -180,8 +180,8 @@ export function Step3() {
           <Heading scale="lg" color="secondary" pb="24px">
             Introducing Price Range
           </Heading>
-          <AutoRow gap="12px" width="full">
-            <AtomBox position="relative" width="full">
+          <AutoRow gap="12px" width="100%">
+            <AtomBox position="relative" width="100%">
               <Chart
                 showZoomButtons={false}
                 data={{ current: MOCK.price, series: MOCK.formattedData as any[] }}
