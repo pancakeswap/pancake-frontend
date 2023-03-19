@@ -1,11 +1,11 @@
 import { Flex, Skeleton, Text, FlexGap, FlexGapProps } from '@pancakeswap/uikit'
 import styled from 'styled-components'
-import { formatAmount, formatAmountNotation } from 'utils/formatInfoNumbers'
+import { formatAmount, formatAmountNotation, tokenPrecisionStyle } from 'utils/formatInfoNumbers'
 
 const formatOptions = {
   notation: 'standard' as formatAmountNotation,
   displayThreshold: 0.001,
-  tokenPrecision: true,
+  tokenPrecision: 'normal' as tokenPrecisionStyle,
 }
 
 interface TokenDisplayProps extends FlexGapProps {

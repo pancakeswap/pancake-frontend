@@ -123,6 +123,10 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
     [isStableSwap, feeDisplay],
   )
 
+  const hasSmallDifference = useMemo(() => {
+    return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
+  }, [poolData])
+
   return (
     <Page>
       <NextSeo title={poolData ? `${poolData?.token0.symbol} / ${poolData?.token1.symbol}` : null} />
@@ -175,7 +179,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                       {`1 ${poolData.token0.symbol} =  ${formatAmount(poolData.token1Price, {
                         notation: 'standard',
                         displayThreshold: 0.001,
-                        tokenPrecision: true,
+                        tokenPrecision: hasSmallDifference ? 'enhanced' : 'normal',
                       })} ${poolData.token1.symbol}`}
                     </Text>
                   </TokenButton>
@@ -187,7 +191,7 @@ const PoolPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ addr
                       {`1 ${poolData.token1.symbol} =  ${formatAmount(poolData.token0Price, {
                         notation: 'standard',
                         displayThreshold: 0.001,
-                        tokenPrecision: true,
+                        tokenPrecision: hasSmallDifference ? 'enhanced' : 'normal',
                       })} ${poolData.token0.symbol}`}
                     </Text>
                   </TokenButton>
