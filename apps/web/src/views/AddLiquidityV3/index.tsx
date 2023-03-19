@@ -193,7 +193,7 @@ export default function UniversalAddLiquidity({
   useEffect(() => {
     if (!currencyIdA || !currencyIdB) return
 
-    if (prevPreferredSelectType !== undefined || preferredSelectType === SELECTOR_TYPE.V3) {
+    if (preferredSelectType === SELECTOR_TYPE.V3) {
       return
     }
 
