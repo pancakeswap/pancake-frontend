@@ -4,16 +4,15 @@ import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 
 import { parseMMParameter } from '../utils/exchange'
-import { useIsMMQuotingPair } from './useIsMMQuotingPair'
 
 export const useMMParam = (
+  isMMQuotingPair: boolean,
   independentField: Field,
   typedValue: string,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
   isForRFQ?: boolean,
 ) => {
-  const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
   const { account, chainId } = useActiveWeb3React()
   return useMemo(
     () =>
