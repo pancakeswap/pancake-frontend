@@ -1,146 +1,36 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable @typescript-eslint/no-shadow */
-import { atom } from 'jotai/vanilla'
-import type { WritableAtom } from 'jotai/vanilla'
-import { RESET } from 'jotai/vanilla/utils'
+import { atomWithStorage } from 'jotai/utils'
+import { createJSONStorage } from 'jotai/vanilla/utils'
 import { logError } from './sentry'
 
-// Fork version with error catch for setItem
-// https://github.com/pmndrs/jotai/blob/main/src/utils/atomWithStorage.ts
-
-// eslint-disable-next-line symbol-description
-export const NO_STORAGE_VALUE = Symbol()
-
-type Unsubscribe = () => void
-
-type SetStateActionWithReset<Value> = Value | typeof RESET | ((prev: Value) => Value | typeof RESET)
-
-export interface AsyncStorage<Value> {
-  getItem: (key: string) => Promise<Value | typeof NO_STORAGE_VALUE>
-  setItem: (key: string, newValue: Value) => Promise<void>
-  removeItem: (key: string) => Promise<void>
-  subscribe?: (key: string, callback: (value: Value) => void) => Unsubscribe
-}
-
-export interface SyncStorage<Value> {
-  getItem: (key: string) => Value | typeof NO_STORAGE_VALUE
-  setItem: (key: string, newValue: Value) => void
-  removeItem: (key: string) => void
-  subscribe?: (key: string, callback: (value: Value) => void) => Unsubscribe
-}
-
-export interface AsyncStringStorage {
-  getItem: (key: string) => Promise<string | null>
-  setItem: (key: string, newValue: string) => Promise<void>
-  removeItem: (key: string) => Promise<void>
-}
-
-export interface SyncStringStorage {
-  getItem: (key: string) => string | null
-  setItem: (key: string, newValue: string) => void
-  removeItem: (key: string) => void
-}
-
-export function createJSONStorage<Value>(getStringStorage: () => AsyncStringStorage): AsyncStorage<Value>
-
-export function createJSONStorage<Value>(getStringStorage: () => SyncStringStorage): SyncStorage<Value>
-
-export function createJSONStorage<Value>(
-  getStringStorage: () => AsyncStringStorage | SyncStringStorage | undefined,
-): AsyncStorage<Value> | SyncStorage<Value> {
-  let lastStr: string | undefined
-  let lastValue: any
-  const storage: AsyncStorage<Value> | SyncStorage<Value> = {
-    getItem: (key) => {
-      const parse = (str: string | null) => {
-        // eslint-disable-next-line no-param-reassign
-        str = str || ''
-        if (lastStr !== str) {
-          try {
-            lastValue = JSON.parse(str)
-          } catch {
-            return NO_STORAGE_VALUE
-          }
-          lastStr = str
-        }
-        return lastValue
-      }
-      const str = getStringStorage()?.getItem(key) ?? null
-      if (str instanceof Promise) {
-        return str.then(parse)
-      }
-      return parse(str)
-    },
-    setItem: (key, newValue) => getStringStorage()?.setItem(key, JSON.stringify(newValue)),
-    removeItem: (key) => getStringStorage()?.removeItem(key),
-  }
-  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
-    storage.subscribe = (key, callback) => {
-      const storageEventCallback = (e: StorageEvent) => {
-        if (e.key === key && e.newValue) {
-          callback(JSON.parse(e.newValue))
-        }
-      }
-      window.addEventListener('storage', storageEventCallback)
-      return () => {
-        window.removeEventListener('storage', storageEventCallback)
-      }
-    }
-  }
-  return storage
-}
-
-const defaultStorage = createJSONStorage(() =>
-  typeof window !== 'undefined' ? window.localStorage : (undefined as unknown as Storage),
-)
-
-export default function atomWithStorage<Value>(
+export default function atomWithStorageWithErrorCatch<Value>(
   key: string,
   initialValue: Value,
-  storage: SyncStorage<Value> | AsyncStorage<Value> = defaultStorage as SyncStorage<Value>,
-): WritableAtom<Value, [SetStateActionWithReset<Value>], void> {
-  const baseAtom = atom(initialValue)
-
-  // @ts-ignore
-  if (import.meta.env?.MODE !== 'production') {
-    baseAtom.debugPrivate = true
-  }
-
-  baseAtom.onMount = (setAtom) => {
-    const value = storage.getItem(key)
-    if (value instanceof Promise) {
-      value.then((v) => setAtom(v === NO_STORAGE_VALUE ? initialValue : v))
-    } else {
-      setAtom(value === NO_STORAGE_VALUE ? initialValue : value)
-    }
-    let unsub: Unsubscribe | undefined
-    if (storage.subscribe) {
-      unsub = storage.subscribe(key, setAtom)
-    }
-    return unsub
-  }
-
-  const anAtom = atom(
-    (get) => get(baseAtom),
-    (get, set, update: SetStateActionWithReset<Value>) => {
-      const nextValue =
-        typeof update === 'function' ? (update as (prev: Value) => Value | typeof RESET)(get(baseAtom)) : update
-
-      try {
-        if (nextValue === RESET) {
-          set(baseAtom, initialValue)
-          return storage.removeItem(key)
+  getStringStorage?: () => Storage,
+) {
+  const tryCatchStorage = createJSONStorage<Value>(() => {
+    const getStorage =
+      getStringStorage ||
+      (() => (typeof window !== 'undefined' ? window.localStorage : (undefined as unknown as Storage)))
+    const stringStorage = getStorage?.()
+    return stringStorage
+      ? {
+          removeItem: (storageKey: string) => {
+            stringStorage.removeItem(storageKey)
+          },
+          getItem: (storageKey: string) => {
+            return stringStorage.getItem(storageKey)
+          },
+          setItem: (storageKey: string, newValue: string) => {
+            try {
+              stringStorage.setItem(storageKey, newValue)
+            } catch (error) {
+              // Add try-catch to avoid breaking the app when localStorage is full.
+              console.error(`localStorage error with key ${storageKey}`)
+              logError(error)
+            }
+          },
         }
-        set(baseAtom, nextValue)
-        return storage.setItem(key, nextValue)
-      } catch (error) {
-        // Add try-catch to avoid breaking the app when localStorage is full.
-        console.error(`localStorage error with key ${key}`)
-        logError(error)
-        return undefined
-      }
-    },
-  )
-
-  return anAtom
+      : stringStorage
+  })
+  return atomWithStorage(key, initialValue, tryCatchStorage)
 }
