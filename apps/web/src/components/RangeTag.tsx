@@ -8,15 +8,15 @@ export function RangeTag({
   ...props
 }: { removed?: boolean; outOfRange: boolean; children?: ReactNode } & TagProps) {
   return removed ? (
-    <Tag ml="8px" variant="textSubtle" {...props}>
+    <Tag variant="textSubtle" {...props}>
       {children || 'Closed'}
     </Tag>
   ) : outOfRange ? (
-    <Tag ml="8px" variant="failure" {...props}>
+    <Tag variant="failure" {...props}>
       {children || 'Inactive'}
     </Tag>
   ) : (
-    <Tag ml="8px" variant="success" {...props}>
+    <Tag variant="success" {...props}>
       {children || 'Active'}
     </Tag>
   )

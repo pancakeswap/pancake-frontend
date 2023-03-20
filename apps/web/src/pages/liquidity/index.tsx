@@ -5,7 +5,6 @@ import {
   CardFooter,
   Text,
   Dots,
-  Card,
   Flex,
   Tag,
   ButtonMenu,
@@ -24,9 +23,8 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import Page from 'views/Page'
 import { useTranslation } from '@pancakeswap/localization'
-import DoubleCurrencyLogo from 'components/Logo/DoubleLogo'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import { Pair, Percent } from '@pancakeswap/sdk'
+import { Pair } from '@pancakeswap/sdk'
 import { RangeTag } from 'components/RangeTag'
 import useV2PairsByAccount from 'hooks/useV2Pairs'
 import useStableConfig, {
@@ -40,6 +38,7 @@ import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
+import { LiquidityCardRow } from 'components/LiquidityCardRow'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -118,41 +117,33 @@ export default function PoolListPage() {
               feeAmount,
               positionSummaryLink,
             }) => (
-              <Card mb="8px">
-                <NextLink href={positionSummaryLink}>
-                  <Flex justifyContent="space-between" p="16px">
-                    <Flex flexDirection="column">
-                      <Flex alignItems="center" mb="4px">
-                        <DoubleCurrencyLogo currency0={currencyQuote} currency1={currencyBase} size={20} />
-                        <Text bold ml="8px">
-                          {!currencyQuote || !currencyBase ? (
-                            <Dots>{t('Loading')}</Dots>
-                          ) : (
-                            `${currencyQuote.symbol}-${currencyBase.symbol} LP`
-                          )}
-                        </Text>
-                        <Text ml="4px">{`(#${p.tokenId.toString()})`}</Text>
-                        <Tag ml="8px" variant="secondary" outline>
-                          {new Percent(feeAmount, 1_000_000).toSignificant()}%
-                        </Tag>
-                      </Flex>
-                      <Text fontSize="14px" color="textSubtle">
-                        Min {formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max:{' '}
-                        {formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)} {currencyQuote?.symbol} per{' '}
-                        {currencyBase?.symbol}
-                      </Text>
-                    </Flex>
-                    <Flex>
-                      {p.isStaked && (
-                        <Tag ml="8px" outline variant="warning">
-                          Farming
-                        </Tag>
-                      )}
-                      <RangeTag removed={removed} outOfRange={outOfRange} />
-                    </Flex>
-                  </Flex>
-                </NextLink>
-              </Card>
+              <LiquidityCardRow
+                feeAmount={feeAmount}
+                link={positionSummaryLink}
+                currency0={currencyQuote}
+                currency1={currencyBase}
+                tokenId={p.tokenId}
+                pairText={
+                  !currencyQuote || !currencyBase ? (
+                    <Dots>{t('Loading')}</Dots>
+                  ) : (
+                    `${currencyQuote.symbol}-${currencyBase.symbol} LP`
+                  )
+                }
+                tags={
+                  <>
+                    {p.isStaked && (
+                      <Tag outline variant="warning" mr="8px">
+                        Farming
+                      </Tag>
+                    )}
+                    <RangeTag removed={removed} outOfRange={outOfRange} />
+                  </>
+                }
+                subtitle={`Min ${formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max: 
+                ${formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)} ${currencyQuote?.symbol} per 
+                ${currencyBase?.symbol}`}
+              />
             )}
           </PositionListItem>
         )
