@@ -2031,7 +2031,7 @@
   "Crosschain farming on Ethereum does NOT support Blocto wallet, as you won’t be able to harvest CAKE rewards.": "Crosschain-Farming auf Ethereum unterstützt die Blocto-Wallet NICHT, da Sie dann keine CAKE-Belohnungen ernten können.",
   "Check out our wallet guide for the list of supported wallets.": "In unserem Leitfaden für Wallets finden Sie eine Liste der unterstützten Wallets.",
   "If you have previously deposited any LP tokens, please unstake.": "Wenn Sie bereits LP-Token eingezahlt haben, entfernen Sie diese bitte.",
-  "Discovered from registered coins": "Von registrierten Coins entdeckt",
+  "Discovered from registered coins": "Durch registrierte Coins entdeckt",
   "Register coin to receive transfers": "Coin registrieren, um Überweisungen zu empfangen",
   "Anyone can create a coin on Aptos with any name, including fake versions of existing coins or ones that claim to represent projects that do not have a coin.": "Jeder kann eine Coin auf Aptos mit einem beliebigen Namen erstellen, einschließlich der Erstellung von gefälschten Versionen bestehender Coins und Coins, die vorgeben, Projekte zu repräsentieren, für die es keine Coin gibt.",
   "If you purchase a fraudulent coin, you may be exposed to permanent loss of funds.": "Wenn Sie eine gefälschte Coin kaufen, kann es sein, dass Sie Ihr Geld dauerhaft verlieren.",
@@ -2160,5 +2160,6 @@
   "Join Now!": "Jetzt mitmachen!",
   "Join our community of top-earning affiliates and make the most of every referral, with market-leading commission rates and endless earning opportunities.": "Schließen Sie sich unserer Community von Topverdienern an und machen Sie mit marktführenden Provisionssätzen und endlosen Verdienstmöglichkeiten das Beste aus Ihren Empfehlungen.",
   "V2/V3 Swap & StableSwap": "V2/V3 Swap & StableSwap",
-  "comming soon!": "bald verfügbar!"
+  "comming soon!": "bald verfügbar!",
+  "MMs are temporarily unable to facilitate trades. Please try again later": "MMs are temporarily unable to facilitate trades. Please try again later"
 }
