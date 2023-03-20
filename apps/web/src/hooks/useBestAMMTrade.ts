@@ -9,7 +9,7 @@ import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
-import { useCommonPools } from './useCommonPools'
+import { useCommonPools, useCommonPoolsLite } from './useCommonPools'
 
 interface Options {
   amount?: CurrencyAmount<Currency>
@@ -108,9 +108,7 @@ export function useBestAMMTrade({
           maxHops,
           poolProvider,
           maxSplits,
-          // quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
           quoteProvider,
-          // blockNumber: () => provider({ chainId: amount.currency.chainId }).getBlockNumber(),
           blockNumber,
           allowedPoolTypes: poolTypes,
         },
@@ -135,15 +133,15 @@ export function useBestAMMTrade({
 }
 
 export function useBestAMMTradeFromQuoter({ amount, baseCurrency, currency, tradeType, maxHops, maxSplits }: Options) {
-  // const gasPrice = useGasPrice()
+  const { gasPrice } = useFeeDataWithGasPrice()
   const blockNumber = useCurrentBlock()
   const {
     refresh,
     pools: candidatePools,
     loading,
     syncing,
-  } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber })
-  // const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
+  } = useCommonPoolsLite(baseCurrency || amount?.currency, currency, { blockNumber })
+  const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
   const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
   const deferQuotient = useDebounce(deferQuotientRaw, 150)
   const {
@@ -159,11 +157,10 @@ export function useBestAMMTradeFromQuoter({ amount, baseCurrency, currency, trad
       if (!deferQuotient) {
         return null
       }
-      const label = '[METRIC] Get best AMM trade'
+      const label = '[AMM Quoter] Start'
       console.time(label)
       console.timeLog(
         label,
-        'Start',
         currency.chainId,
         amount.currency.symbol,
         currency.symbol,
@@ -172,9 +169,11 @@ export function useBestAMMTradeFromQuoter({ amount, baseCurrency, currency, trad
         candidatePools,
       )
       const res = await SmartRouter.getBestTrade(amount, currency, tradeType, {
-        gasPriceWei: async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+        gasPriceWei: gasPrice
+          ? JSBI.BigInt(gasPrice)
+          : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
         maxHops,
-        poolProvider: SmartRouter.createPoolProvider({ onChainProvider: provider }),
+        poolProvider,
         quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
         blockNumber,
         quoterOptimization: false,

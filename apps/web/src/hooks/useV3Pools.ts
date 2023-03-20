@@ -14,10 +14,17 @@ interface SubgraphPool extends V3Pool {
   tvlUSD: JSBI
 }
 
-interface Options {
+export interface V3PoolsHookParams {
   // Used for caching
   key?: string
 
+  blockNumber?: number
+}
+
+export interface V3PoolsResult {
+  pools: V3Pool[] | null
+  loading: boolean
+  syncing: boolean
   blockNumber?: number
 }
 
@@ -32,7 +39,43 @@ const POOL_SELECTION_CONFIG = {
 
 const sortByTvl = (a: SubgraphPool, b: SubgraphPool) => (JSBI.greaterThanOrEqual(a.tvlUSD, b.tvlUSD) ? -1 : 1)
 
-export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, options?: Options) {
+export function useV3CandidatePools(
+  currencyA?: Currency,
+  currencyB?: Currency,
+  options?: V3PoolsHookParams,
+): V3PoolsResult {
+  const {
+    pools: candidatePoolsWithoutTicks,
+    loading: isLoading,
+    syncing: isValidating,
+    key,
+    blockNumber,
+  } = useV3CandidatePoolsWithoutTicks(currencyA, currencyB, options)
+
+  const {
+    data,
+    isLoading: ticksLoading,
+    isValidating: ticksValidating,
+  } = useV3PoolsWithTicks(candidatePoolsWithoutTicks, {
+    key,
+    blockNumber,
+  })
+
+  const candidatePools = data?.pools ?? null
+
+  return {
+    pools: candidatePools,
+    loading: isLoading || ticksLoading,
+    syncing: isValidating || ticksValidating,
+    blockNumber: data?.blockNumber,
+  }
+}
+
+export function useV3CandidatePoolsWithoutTicks(
+  currencyA?: Currency,
+  currencyB?: Currency,
+  options?: V3PoolsHookParams,
+) {
   const key = useMemo(() => {
     if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
       return ''
@@ -49,7 +92,7 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
   }, [currencyA, currencyB])
   const { data: poolsFromSubgraphState, isLoading, isValidating } = useV3PoolsFromSubgraph(pairs, { ...options, key })
 
-  const candidatePoolsWithoutTicks = useMemo<V3Pool[] | null>(() => {
+  const candidatePools = useMemo<V3Pool[] | null>(() => {
     if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
       return null
     }
@@ -244,33 +287,23 @@ export function useV3CandidatePools(currencyA?: Currency, currencyB?: Currency, 
     return pools.map(({ tvlUSD, ...rest }) => rest).filter(({ liquidity }) => JSBI.greaterThan(liquidity, ZERO))
   }, [poolsFromSubgraphState, currencyA, currencyB])
 
-  const {
-    data,
-    isLoading: ticksLoading,
-    isValidating: ticksValidating,
-  } = useV3PoolsWithTicks(candidatePoolsWithoutTicks, {
-    key: poolsFromSubgraphState?.key,
-    blockNumber: poolsFromSubgraphState?.blockNumber,
-  })
-
-  const candidatePools = data?.pools ?? null
-
   return {
     pools: candidatePools,
-    loading: isLoading || ticksLoading,
-    syncing: isValidating || ticksValidating,
-    blockNumber: data?.blockNumber,
+    loading: isLoading,
+    syncing: isValidating,
+    blockNumber: poolsFromSubgraphState?.blockNumber,
+    key: poolsFromSubgraphState?.key,
   }
 }
 
-export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, blockNumber }: Options = {}) {
+export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, blockNumber }: V3PoolsHookParams = {}) {
   const poolsWithTicks = useSWR(
     key && pools ? ['v3_pool_ticks', key] : null,
     async () => {
       console.time('[METRIC] Get V3 pool ticks')
       console.timeLog('[METRIC] Get V3 pool ticks', key)
       const poolTicks = await Promise.all(
-        pools.map(({ token0, token1, fee }) => {
+        pools.map(async ({ token0, token1, fee }) => {
           return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
             return data.map(
               ({ tick, liquidityNet, liquidityGross }) =>
@@ -304,7 +337,7 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   return poolsWithTicks
 }
 
-export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: Options = {}) {
+export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: V3PoolsHookParams = {}) {
   const result = useSWR<{
     pools: SubgraphPool[]
     key?: string
