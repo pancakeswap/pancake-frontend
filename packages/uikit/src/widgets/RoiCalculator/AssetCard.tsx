@@ -188,7 +188,7 @@ export function AssetRow({
 
 interface InterestDisplayProps {
   amount?: number | string;
-  interest?: Percent;
+  interest?: Percent | typeof Infinity;
 }
 
 export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
@@ -196,8 +196,8 @@ export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
     <Flex alignItems="center">
       {amount && <Text bold>${toSignificant(amount)}</Text>}
       {interest && (
-        <Text ml="4px" color={interest.lessThan(0) ? "failure" : "success"}>
-          ({interest.toSignificant(2)}%)
+        <Text ml="4px" color={typeof interest === "number" ? "success" : interest.lessThan(0) ? "failure" : "success"}>
+          ({typeof interest === "number" ? formatAmount(interest) : interest.toSignificant(2)}%)
         </Text>
       )}
     </Flex>

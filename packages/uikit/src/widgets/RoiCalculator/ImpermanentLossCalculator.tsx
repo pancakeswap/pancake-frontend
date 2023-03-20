@@ -99,9 +99,9 @@ export function ImpermanentLossCalculator({
             ...assets,
             {
               currency: CAKE[currencyA.chainId as keyof typeof CAKE],
-              amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / +cakePrice : Infinity,
+              amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 / +cakePrice : Infinity,
               price: cakePrice,
-              value: Number.isFinite(cakeApy) ? +usdValue * cakeApy : Infinity,
+              value: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 : Infinity,
             },
           ]
         : assets,
@@ -136,17 +136,25 @@ export function ImpermanentLossCalculator({
   );
   const exitValue = useMemo(() => {
     return (
-      (exit
-        ?.slice(0, 2)
-        ?.reduce((sum, { price, amount }) => sum + parseFloat(String(amount || 0)) * parseFloat(price), 0) || 0) +
-      lpReward
+      (exit?.reduce((sum, { price, amount }) => {
+        if (
+          (typeof amount === "number" && !Number.isFinite(amount)) ||
+          (typeof price === "number" && !Number.isFinite(price))
+        ) {
+          return Infinity;
+        }
+        return sum + parseFloat(String(amount || 0)) * parseFloat(price);
+      }, 0) || 0) + lpReward
     );
   }, [exit, lpReward]);
-  const exitRate = useMemo(
-    () => (exitValue && principal ? toPercent(exitValue, principal).subtract(ONE_HUNDRED_PERCENT) : ZERO_PERCENT),
-    [exitValue, principal]
+  const exitRate = useMemo(() => {
+    if (exitValue === Infinity) return Infinity;
+    return exitValue && principal ? toPercent(exitValue, principal).subtract(ONE_HUNDRED_PERCENT) : ZERO_PERCENT;
+  }, [exitValue, principal]);
+  const lpBetter = useMemo(
+    () => (exitRate === Infinity ? true : !hodlRate.greaterThan(exitRate)),
+    [exitRate, hodlRate]
   );
-  const lpBetter = useMemo(() => !hodlRate.greaterThan(exitRate), [exitRate, hodlRate]);
 
   const getPriceAdjustedAssets = useCallback(
     (newAssets?: Asset[]) => {
