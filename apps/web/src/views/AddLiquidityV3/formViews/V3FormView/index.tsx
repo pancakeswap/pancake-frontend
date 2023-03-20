@@ -506,7 +506,12 @@ export default function V3FormView({
             {!noLiquidity && (
               <>
                 {price && baseCurrency && quoteCurrency && !noLiquidity && (
-                  <AutoRow gap="4px" justifyContent="center" style={{ marginTop: '0.5rem' }}>
+                  <AutoRow
+                    gap="4px"
+                    marginBottom={['24px', '0px']}
+                    justifyContent="center"
+                    style={{ marginTop: '0.5rem' }}
+                  >
                     <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
                       Current Price:
                     </Text>
