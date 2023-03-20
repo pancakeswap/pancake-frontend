@@ -1,7 +1,5 @@
 import { Farm as FarmUI, FarmTableFarmTokenInfoProps, Flex } from '@pancakeswap/uikit'
 import { TokenPairImage } from 'components/TokenImage'
-import { STGWarningTooltip } from 'components/STGWarningModal/STGWarningTooltip'
-import { ethereumTokens } from '@pancakeswap/tokens'
 
 const { FarmTokenInfo } = FarmUI.FarmTable
 
@@ -25,7 +23,6 @@ export const FarmCell: React.FunctionComponent<React.PropsWithChildren<FarmTable
       >
         <TokenPairImage width={40} height={40} variant="inverted" primaryToken={token} secondaryToken={quoteToken} />
       </FarmTokenInfo>
-      {token.address === ethereumTokens.stg.address && <STGWarningTooltip />}
     </Flex>
   )
 }

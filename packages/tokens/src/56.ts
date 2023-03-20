@@ -2498,4 +2498,12 @@ export const bscTokens = {
     'agEUR',
     'https://app.angle.money/#/',
   ),
+  caps: new ERC20Token(
+    ChainId.BSC,
+    '0xFfBa7529AC181c2Ee1844548e6D7061c9A597dF4',
+    18,
+    'CAPS',
+    'Capsule Coin',
+    'https://www.ternoa.network/en',
+  ),
 }

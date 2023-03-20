@@ -110,10 +110,10 @@ export const useMMTrade = (
   const { t } = useTranslation()
   const to: string | null = account ?? null
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ])
+  const relevantTokenBalances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [inputCurrency ?? undefined, outputCurrency ?? undefined], [inputCurrency, outputCurrency]),
+  )
   const isExactIn: boolean = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const parsedAmount = useMemo(() => {
@@ -152,10 +152,10 @@ export const useMMTrade = (
   }, [bestTradeWithMM])
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
-    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
-  ]
+  const [balanceIn, amountIn] = useMemo(
+    () => [currencyBalances[Field.INPUT], slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null],
+    [currencyBalances, slippageAdjustedAmounts],
+  )
 
   const inputError = useMemo(() => {
     let result: string | undefined

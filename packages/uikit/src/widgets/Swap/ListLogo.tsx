@@ -12,15 +12,13 @@ export function ListLogo({
   style,
   size = "24px",
   alt,
-  badSrcs,
 }: {
   logoURI: string;
   size?: string;
   style?: React.CSSProperties;
   alt?: string;
-  badSrcs: { [imageSrc: string]: true };
 }) {
   const srcs: string[] = useHttpLocations(logoURI);
 
-  return <StyledListLogo badSrcs={badSrcs} alt={alt} size={size} srcs={srcs} style={style} />;
+  return <StyledListLogo alt={alt} size={size} srcs={srcs} style={style} />;
 }

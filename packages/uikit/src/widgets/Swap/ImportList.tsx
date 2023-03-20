@@ -12,7 +12,6 @@ interface ImportProps {
   listTokenLength: number;
   onAddList: () => void;
   addError: string | null;
-  badSrcs: { [imageSrc: string]: true };
 }
 
 const Wrapper = styled.div`
@@ -40,15 +39,7 @@ const Card = styled(Box)<{
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
-export function ImportList({
-  listURL,
-  listLogoURI,
-  listName,
-  listTokenLength,
-  onAddList,
-  addError,
-  badSrcs,
-}: ImportProps) {
+export function ImportList({ listURL, listLogoURI, listName, listTokenLength, onAddList, addError }: ImportProps) {
   const { theme } = useTheme();
 
   const { t } = useTranslation();
@@ -63,7 +54,7 @@ export function ImportList({
           <Card width="370px" padding="12px 20px">
             <RowBetween>
               <RowFixed flexWrap="nowrap">
-                {listLogoURI && <ListLogo badSrcs={badSrcs} logoURI={listLogoURI} size="40px" />}
+                {listLogoURI && <ListLogo logoURI={listLogoURI} size="40px" />}
                 <AutoColumn gap="sm" style={{ marginLeft: "20px" }}>
                   <RowFixed>
                     <Text bold mr="6px">

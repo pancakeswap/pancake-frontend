@@ -1,8 +1,6 @@
 import { Token } from '@pancakeswap/sdk'
-import { ethereumTokens } from '@pancakeswap/tokens'
 import { AutoRow, Farm as FarmUI, Flex, Heading, Skeleton, Tag } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { STGWarningTooltip } from 'components/STGWarningModal/STGWarningTooltip'
 import { TokenPairImage } from 'components/TokenImage'
 import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -53,10 +51,7 @@ const CardHeading: React.FC<React.PropsWithChildren<ExpandableSectionProps>> = (
   return (
     <Wrapper justifyContent="space-between" alignItems="center" mb="12px">
       {isReady ? (
-        <Flex width="100%" alignItems="center">
-          <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
-          {token.address === ethereumTokens.stg.address && <STGWarningTooltip />}
-        </Flex>
+        <TokenPairImage variant="inverted" primaryToken={token} secondaryToken={quoteToken} width={64} height={64} />
       ) : (
         <Skeleton mr="8px" width={63} height={63} variant="circle" />
       )}
