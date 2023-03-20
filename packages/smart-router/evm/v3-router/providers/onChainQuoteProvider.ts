@@ -9,25 +9,22 @@ import flatMap from 'lodash/flatMap'
 import filter from 'lodash/filter'
 import retry, { Options as RetryOptions } from 'async-retry'
 
-import {
-  BaseRoute,
-  GasModel,
-  OnChainProvider,
-  QuoteProvider,
-  QuoterOptions,
-  RouteWithoutQuote,
-  RouteWithQuote,
-} from '../types'
+import { GasModel, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
-import { encodeMixedRouteToPath, getQuoteCurrency } from '../utils'
+import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
 
 const DEFAULT_BATCH_RETRIES = 2
 
+type V3Inputs = [string, string]
+type MixedInputs = [string, number[], string]
+type CallInputs = V3Inputs | MixedInputs
+
 interface FactoryConfig {
+  getCallInputs: (route: RouteWithoutQuote, isExactIn: boolean) => CallInputs
   getQuoterAddress: (chainId: ChainId) => string
   contractInterface: Interface
   getQuoteFunctionName: (isExactIn: boolean) => string
@@ -63,7 +60,7 @@ type QuoteBatchFailed = {
 type QuoteBatchPending = {
   status: 'pending'
   order: number
-  inputs: [string, string][]
+  inputs: CallInputs[]
 }
 
 type QuoteBatchState = QuoteBatchSuccess | QuoteBatchFailed | QuoteBatchPending
@@ -100,10 +97,14 @@ export class ProviderGasError extends Error {
 
 export type QuoteRetryOptions = RetryOptions
 
-function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, contractInterface }: FactoryConfig) {
+function onChainQuoteProviderFactory({
+  getQuoteFunctionName,
+  getQuoterAddress,
+  contractInterface,
+  getCallInputs,
+}: FactoryConfig) {
   return function createOnChainQuoteProvider({ onChainProvider }: ProviderConfig): QuoteProvider {
     const createGetRoutesWithQuotes = (isExactIn = true) => {
-      const encodeRouteToPath = (route: BaseRoute) => encodeMixedRouteToPath(route, !isExactIn)
       const functionName = getQuoteFunctionName(isExactIn)
       const adjustQuoteForGas = (quote: CurrencyAmount<Currency>, gasCostInToken: CurrencyAmount<Currency>) =>
         isExactIn ? quote.subtract(gasCostInToken) : quote.add(gasCostInToken)
@@ -142,10 +143,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
           gasLimitOverride,
         )
 
-        const inputs = routes.map<[string, string]>((route) => [
-          encodeRouteToPath(route),
-          `0x${route.amount.quotient.toString(16)}`,
-        ])
+        const inputs = routes.map<CallInputs>((route) => getCallInputs(route, isExactIn))
 
         const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
         const inputsChunked = chunk(inputs, normalizedChunk)
@@ -200,7 +198,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                   totalCallsMade += 1
 
                   const results = await multicall2Provider.callSameFunctionOnContractWithMultipleParams<
-                    [string, string],
+                    CallInputs,
                     [JSBI, JSBI[], number[], JSBI] // amountIn/amountOut, sqrtPriceX96AfterList, initializedTicksCrossedList, gasEstimate
                   >({
                     address: getQuoterAddress(chainId),
@@ -213,7 +211,7 @@ function onChainQuoteProviderFactory({ getQuoteFunctionName, getQuoterAddress, c
                     },
                   })
 
-                  const successRateError = validateSuccessRate(results.results, haveRetriedForSuccessRate, 0.2)
+                  const successRateError = validateSuccessRate(results.results, haveRetriedForSuccessRate, 0.1)
 
                   if (successRateError) {
                     return {
@@ -598,10 +596,37 @@ export const createMixedRouteOnChainQuoteProvider = onChainQuoteProviderFactory(
   getQuoterAddress: (chainId) => MIXED_ROUTE_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: () => 'quoteExactInput',
   contractInterface: new Interface(IMixedRouteQuoterV1ABI),
+  getCallInputs: (route, isExactIn) => [
+    encodeMixedRouteToPath(route, !isExactIn),
+    route.pools
+      .map((pool) => {
+        if (isV3Pool(pool)) {
+          return 0
+        }
+        if (isV2Pool(pool)) {
+          return 1
+        }
+        if (isStablePool(pool)) {
+          if (pool.balances.length === 2) {
+            return 2
+          }
+          if (pool.balances.length === 3) {
+            return 3
+          }
+        }
+        return -1
+      })
+      .filter((index) => index >= 0),
+    `0x${route.amount.quotient.toString(16)}`,
+  ],
 })
 
 export const createV3OnChainQuoteProvider = onChainQuoteProviderFactory({
   getQuoterAddress: (chainId) => V3_QUOTER_ADDRESSES[chainId],
   getQuoteFunctionName: (isExactIn) => (isExactIn ? 'quoteExactInput' : 'quoteExactOutput'),
   contractInterface: new Interface(IQuoterV2ABI),
+  getCallInputs: (route, isExactIn) => [
+    encodeMixedRouteToPath(route, !isExactIn),
+    `0x${route.amount.quotient.toString(16)}`,
+  ],
 })

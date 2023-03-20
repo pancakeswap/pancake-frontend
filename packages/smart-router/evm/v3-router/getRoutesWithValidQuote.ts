@@ -13,6 +13,7 @@ interface Params {
   quoteProvider: QuoteProvider
   tradeType: TradeType
   gasModel: GasModel
+  quoterOptimization?: boolean
 }
 
 export async function getRoutesWithValidQuote({
@@ -23,6 +24,7 @@ export async function getRoutesWithValidQuote({
   tradeType,
   blockNumber,
   gasModel,
+  quoterOptimization = true,
 }: Params): Promise<RouteWithQuote[]> {
   const [percents, amounts] = getAmountDistribution(amount, distributionPercent)
   const routesWithoutQuote = amounts.reduce<RouteWithoutQuote[]>(
@@ -40,6 +42,10 @@ export async function getRoutesWithValidQuote({
     tradeType === TradeType.EXACT_INPUT
       ? quoteProvider.getRouteWithQuotesExactIn
       : quoteProvider.getRouteWithQuotesExactOut
+
+  if (!quoterOptimization) {
+    return getRoutesWithQuote(routesWithoutQuote, { blockNumber, gasModel })
+  }
 
   const requestCallback = typeof window === 'undefined' ? setTimeout : window.requestIdleCallback || window.setTimeout
   console.time('[METRIC] Get quotes')

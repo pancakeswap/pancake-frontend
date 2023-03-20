@@ -15,6 +15,7 @@ interface TradeConfig {
   maxSplits?: number
   distributionPercent?: number
   allowedPoolTypes?: PoolType[]
+  quoterOptimization?: boolean
 }
 
 export async function getBestTrade(
@@ -70,6 +71,7 @@ async function getBestRoutes(
     blockNumber,
     gasPriceWei,
     allowedPoolTypes,
+    quoterOptimization,
   }: RouteConfig,
 ): Promise<BestRoutes | null> {
   const isExactIn = tradeType === TradeType.EXACT_INPUT
@@ -99,6 +101,7 @@ async function getBestRoutes(
     tradeType,
     blockNumber,
     gasModel,
+    quoterOptimization,
   })
   // routesWithValidQuote.forEach(({ percent, path, amount: a, quote }) => {
   //   const pathStr = path.map((t) => t.symbol).join('->')

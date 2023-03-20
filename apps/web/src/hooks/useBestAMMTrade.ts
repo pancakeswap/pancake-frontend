@@ -177,6 +177,7 @@ export function useBestAMMTradeFromQuoter({ amount, baseCurrency, currency, trad
         poolProvider: SmartRouter.createPoolProvider({ onChainProvider: provider }),
         quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
         blockNumber,
+        quoterOptimization: false,
       })
       console.timeLog(label, res)
       console.timeEnd(label)
@@ -196,6 +197,7 @@ export function useBestAMMTradeFromQuoter({ amount, baseCurrency, currency, trad
   return {
     refresh,
     trade,
+    isStale: trade?.blockNumber !== blockNumber,
     isLoading: isLoading || loading,
     syncing: syncing || isValidating,
   }
