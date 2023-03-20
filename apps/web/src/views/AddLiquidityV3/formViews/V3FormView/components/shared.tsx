@@ -33,5 +33,5 @@ export const SelectContainer = styled.div`
   align-items: flex-start;
   display: grid;
   grid-auto-flow: column;
-  grid-gap: 8px;
+  grid-gap: 4px;
 `

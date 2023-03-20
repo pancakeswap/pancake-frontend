@@ -3,7 +3,7 @@ import { Box, BoxProps } from '@pancakeswap/uikit'
 
 export interface LightCardProps extends BoxProps {
   width?: string
-  padding?: string
+  padding?: string | string[]
   border?: string
   borderRadius?: string
 }

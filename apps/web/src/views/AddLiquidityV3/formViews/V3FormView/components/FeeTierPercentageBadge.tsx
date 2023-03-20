@@ -22,6 +22,7 @@ export function FeeTierPercentageBadge({
         width: 'fit-content',
         justifyContent: 'center',
         whiteSpace: 'inherit',
+        alignSelf: 'flex-end',
       }}
     >
       {!distributions || poolState === PoolState.NOT_EXISTS || poolState === PoolState.INVALID

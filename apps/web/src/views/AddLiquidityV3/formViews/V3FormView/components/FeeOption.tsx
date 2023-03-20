@@ -10,6 +10,7 @@ import { FEE_AMOUNT_DETAIL } from './shared'
 
 const FeeOptionContainer = styled.div<{ active: boolean }>`
   cursor: pointer;
+  height: 100%;
   animation: ${promotedGradient} 4s ease infinite;
   background-size: 400% 400%;
   ${({ active }) =>
@@ -43,8 +44,8 @@ export function FeeOption({
 }: FeeOptionProps) {
   return (
     <FeeOptionContainer active={active} onClick={onClick}>
-      <LightTertiaryCard padding="8px">
-        <AutoColumn gap="sm" justify="flex-start">
+      <LightTertiaryCard padding={['4px', '4px', '8px']} height="100%">
+        <AutoColumn gap="sm" justify="flex-start" height="100%">
           <AutoColumn justify="flex-start">
             <Text>
               {FEE_AMOUNT_DETAIL[feeAmount].label}% {feeAmount === largestUsageFeeTier && '🔥'}
