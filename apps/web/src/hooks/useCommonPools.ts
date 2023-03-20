@@ -11,7 +11,7 @@ interface FactoryOptions {
   useV3Pools: (currencyA?: Currency, currencyB?: Currency, params?: V3PoolsHookParams) => V3PoolsResult
 }
 
-interface PoolsWithState {
+export interface PoolsWithState {
   refresh: () => void
   pools: Pool[] | null
   loading: boolean
@@ -19,7 +19,7 @@ interface PoolsWithState {
   blockNumber?: number
 }
 
-interface Options {
+export interface CommonPoolsParams {
   blockNumber?: number
 }
 
@@ -27,7 +27,7 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
   return function useCommonPools(
     currencyA?: Currency,
     currencyB?: Currency,
-    { blockNumber: latestBlockNumber }: Options = {},
+    { blockNumber: latestBlockNumber }: CommonPoolsParams = {},
   ): PoolsWithState {
     const { chainId } = useActiveChainId()
     const [blockNumber, setBlockNumber] = useState<number | null | undefined>(null)

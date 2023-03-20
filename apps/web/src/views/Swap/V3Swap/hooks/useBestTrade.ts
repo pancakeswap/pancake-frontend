@@ -4,7 +4,7 @@ import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
 import { useCurrency } from 'hooks/Tokens'
-import { useBestAMMTrade, useBestAMMTradeFromQuoter } from 'hooks/useBestAMMTrade'
+import { useBestAMMTrade } from 'hooks/useBestAMMTrade'
 import { useDeferredValue } from 'react'
 import {
   useUserSplitRouteEnable,
@@ -37,19 +37,7 @@ export function useBestTrade({ maxHops }: Options = {}) {
   const [v3Swap] = useUserV3SwapEnable()
   const [stableSwap] = useUserStableSwapEnable()
 
-  // const { isLoading, trade, refresh, syncing, isStale } = useBestAMMTrade({
-  //   amount,
-  //   currency: dependentCurrency,
-  //   baseCurrency: independentCurrency,
-  //   tradeType,
-  //   maxHops,
-  //   maxSplits: split ? undefined : 0,
-  //   v2Swap,
-  //   v3Swap,
-  //   stableSwap,
-  // })
-
-  const { isLoading, trade, refresh, syncing, isStale } = useBestAMMTradeFromQuoter({
+  const { isLoading, trade, refresh, syncing, isStale } = useBestAMMTrade({
     amount,
     currency: dependentCurrency,
     baseCurrency: independentCurrency,

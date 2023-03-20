@@ -17,7 +17,7 @@ import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
 
-const DEFAULT_BATCH_RETRIES = 2
+const DEFAULT_BATCH_RETRIES = 1
 
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
@@ -119,15 +119,15 @@ function onChainQuoteProviderFactory({
 
         const chainId: ChainId = routes[0].amount.currency.chainId
         const chainProvider = onChainProvider({ chainId })
-        let multicallChunk = 150
+        let multicallChunk = 60
         let gasLimitOverride = 1_000_000
         const gasErrorFailureOverride = {
           gasLimitOverride: 1_500_000,
-          multicallChunk: 100,
+          multicallChunk: 30,
         }
         const successRateFailureOverrides = {
           gasLimitOverride: 1_300_000,
-          multicallChunk: 110,
+          multicallChunk: 50,
         }
         const retryOptions = {
           retries: DEFAULT_BATCH_RETRIES,
