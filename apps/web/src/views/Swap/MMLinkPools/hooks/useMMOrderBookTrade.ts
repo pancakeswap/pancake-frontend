@@ -65,14 +65,12 @@ export const useOrderBookQuote = (
   rfqRequest: OrderBookRequest | null,
   rfqUserInputPath: MutableRefObject<string>,
   isRFQLive: MutableRefObject<boolean>,
-  isMMQuotingPair: boolean,
 ): { data: OrderBookResponse; isLoading: boolean } => {
   const [isMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const inputPath = `${request?.networkId}/${request?.makerSideToken}/${request?.takerSideToken}/${request?.makerSideTokenAmount}/${request?.takerSideTokenAmount}`
   const rfqInputPath = `${rfqRequest?.networkId}/${rfqRequest?.makerSideToken}/${rfqRequest?.takerSideToken}/${rfqRequest?.makerSideTokenAmount}/${rfqRequest?.takerSideTokenAmount}`
   const enabled = Boolean(
     isMMLinkedPoolByDefault &&
-      isMMQuotingPair &&
       request &&
       request.trader &&
       (request.makerSideTokenAmount || request.takerSideTokenAmount) &&
@@ -84,7 +82,7 @@ export const useOrderBookQuote = (
     refetchInterval: 5000,
     enabled,
   })
-  return { data, isLoading: enabled && isLoading }
+  return { data: isMMLinkedPoolByDefault ? data : undefined, isLoading: enabled && isLoading }
 }
 
 export const useMMTrade = (
@@ -93,40 +91,31 @@ export const useMMTrade = (
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
 ): MMOrderBookTrade | null => {
+  const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const rfqUserInputPath = useRef<string>('')
   const isRFQLive = useRef<boolean>(false)
   const isMMQuotingPair = useIsMMQuotingPair(inputCurrency, outputCurrency)
-  const mmParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency)
-  const mmRFQParam = useMMParam(independentField, typedValue, inputCurrency, outputCurrency, true)
+  const mmParam = useMMParam(isMMQuotingPair, independentField, typedValue, inputCurrency, outputCurrency)
+  const mmRFQParam = useMMParam(isMMQuotingPair, independentField, typedValue, inputCurrency, outputCurrency, true)
 
-  const { data: mmQuote, isLoading } = useOrderBookQuote(
-    mmParam,
-    mmRFQParam,
-    rfqUserInputPath,
-    isRFQLive,
-    isMMQuotingPair,
-  )
-  const { t } = useTranslation()
+  const { data: mmQuote, isLoading } = useOrderBookQuote(mmParam, mmRFQParam, rfqUserInputPath, isRFQLive)
   const to: string | null = account ?? null
 
-  const relevantTokenBalances = useCurrencyBalances(account ?? undefined, [
-    inputCurrency ?? undefined,
-    outputCurrency ?? undefined,
-  ])
-  const isExactIn: boolean = independentField === Field.INPUT
+  const relevantTokenBalances = useCurrencyBalances(
+    account ?? undefined,
+    useMemo(() => [inputCurrency ?? undefined, outputCurrency ?? undefined], [inputCurrency, outputCurrency]),
+  )
+  const isExactIn = independentField === Field.INPUT
   const independentCurrency = isExactIn ? inputCurrency : outputCurrency
   const parsedAmount = useMemo(() => {
     return tryParseAmount(typedValue, independentCurrency ?? undefined)
   }, [typedValue, independentCurrency])
   const bestTradeWithMM = useMemo(() => {
-    let result
-    if (!inputCurrency || !outputCurrency || !mmQuote || !mmQuote?.message?.takerSideTokenAmount) result = null
-    else {
-      const { takerSideTokenAmount, makerSideTokenAmount } = mmQuote?.message
-      result = parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)
-    }
-    return result
+    if (!inputCurrency || !outputCurrency || !mmQuote || !mmQuote?.message?.takerSideTokenAmount) return null
+
+    const { takerSideTokenAmount, makerSideTokenAmount } = mmQuote?.message
+    return parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)
   }, [inputCurrency, isExactIn, mmQuote, outputCurrency])
 
   const currencyBalances = useMemo(() => {
@@ -152,10 +141,10 @@ export const useMMTrade = (
   }, [bestTradeWithMM])
 
   // compare input balance to max input based on version
-  const [balanceIn, amountIn] = [
-    currencyBalances[Field.INPUT],
-    slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null,
-  ]
+  const [balanceIn, amountIn] = useMemo(
+    () => [currencyBalances[Field.INPUT], slippageAdjustedAmounts ? slippageAdjustedAmounts[Field.INPUT] : null],
+    [currencyBalances, slippageAdjustedAmounts],
+  )
 
   const inputError = useMemo(() => {
     let result: string | undefined

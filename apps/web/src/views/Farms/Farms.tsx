@@ -35,8 +35,6 @@ import { useUserFarmStakedOnly, useUserFarmsViewMode } from 'state/user/hooks'
 import { ViewMode } from 'state/user/actions'
 import { useRouter } from 'next/router'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { STGWarningModal } from 'components/STGWarningModal'
-
 import Table from './components/FarmTable/FarmTable'
 import { BCakeBoosterCard } from './components/BCakeBoosterCard'
 import { FarmTypesFilter } from './components/FarmTypesFilter'
@@ -190,10 +188,8 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [stableSwapOnly, setStableSwapOnly] = useState(false)
   const [farmTypesEnableCount, setFarmTypesEnableCount] = useState(0)
 
-  // NOTE: Temporarily inactive aBNBc-BNB LP on FE
   const activeFarms = farmsLP.filter(
     (farm) =>
-      farm.lpAddress !== '0x272c2CF847A49215A3A1D4bFf8760E503A06f880' &&
       farm.lpAddress !== '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' &&
       farm.pid !== 0 &&
       farm.multiplier !== '0X' &&
@@ -202,9 +198,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const inactiveFarms = farmsLP.filter(
     (farm) =>
-      farm.lpAddress === '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' ||
-      farm.lpAddress === '0x272c2CF847A49215A3A1D4bFf8760E503A06f880' ||
-      (farm.pid !== 0 && farm.multiplier === '0X'),
+      farm.lpAddress === '0xB6040A9F294477dDAdf5543a24E5463B8F2423Ae' || (farm.pid !== 0 && farm.multiplier === '0X'),
   )
   const archivedFarms = farmsLP
 
@@ -213,15 +207,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       farm.userData &&
       (new BigNumber(farm.userData.stakedBalance).isGreaterThan(0) ||
         new BigNumber(farm.userData.proxy?.stakedBalance).isGreaterThan(0)),
-  )
-
-  const hasSTGLP = Boolean(
-    farmsLP.find(
-      (farm) =>
-        farm.lpAddress === '0x6cCA86CC27EB8c7C2d10B0672FE392CFC88e62ff' &&
-        farm.userData &&
-        new BigNumber(farm.userData.stakedBalance).isGreaterThan(0),
-    ),
   )
 
   const stakedInactiveFarms = inactiveFarms.filter(
@@ -365,7 +350,6 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <FarmsContext.Provider value={providerValue}>
-      <STGWarningModal openWarning={hasSTGLP} />
       <PageHeader>
         <FarmFlexWrapper justifyContent="space-between">
           <Box>

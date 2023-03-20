@@ -10,12 +10,11 @@ import {
   Skeleton,
   SortArrowIcon,
   Text,
-  TokenLogo,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { isAddress } from 'utils'
-import { Currency, Token, ChainId } from '@pancakeswap/sdk'
-import { BAD_SRCS } from 'components/Logo/constants'
+import { Currency, Token } from '@pancakeswap/sdk'
+import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { CHAIN_QUERY_NAME } from 'config/chains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -26,9 +25,9 @@ import { TokenData } from 'state/info/types'
 import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
 import { formatAmount } from 'utils/formatInfoNumbers'
-import { getTokenLogoURLByAddress } from 'utils/getTokenLogoURL'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import Percent from 'views/Info/components/Percent'
+import { customGTMEvent, GTMEvent, GTMAction, GTMCategory } from 'utils/customGTMEventTracking'
 
 /**
  *  Columns on different layouts
@@ -79,7 +78,7 @@ const LinkWrapper = styled(NextLinkFromReactRouter)`
   }
 `
 
-const ResponsiveLogo = styled(TokenLogo)`
+const ResponsiveLogo = styled(CurrencyLogo)`
   border-radius: 50%;
   width: 24px;
   height: 24px;
@@ -163,8 +162,7 @@ const DataRow: React.FC<
   const { chainId } = useActiveChainId()
   const address = isAddress(tokenData.address)
   if (!address) return null
-  const tokenLogoURL = getTokenLogoURLByAddress(tokenData.address, chainId)
-  const imagePath = chainId === ChainId.BSC ? '' : `${chainId}/tokens/`
+
   return (
     <LinkWrapper
       to={`/info${multiChainPaths[chainId]}/tokens/${address}?chain=${
@@ -173,16 +171,7 @@ const DataRow: React.FC<
     >
       <ResponsiveGrid>
         <Flex alignItems="center">
-          <ResponsiveLogo
-            badSrcs={BAD_SRCS}
-            sizes="24px"
-            srcs={[
-              tokenLogoURL,
-              `https://${
-                chainId === ChainId.BSC ? 'tokens.' : ''
-              }pancakeswap.finance/images/${imagePath}${address}.png`,
-            ]}
-          />
+          <ResponsiveLogo size="24px" address={address} />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
@@ -211,6 +200,12 @@ const DataRow: React.FC<
               e.preventDefault()
               const currency = new Token(chainId, address, tokenData.decimals, tokenData.symbol)
               handleOutputSelect(currency)
+              customGTMEvent?.push({
+                event: GTMEvent.EventTracking,
+                category: GTMCategory.TokenHighlight,
+                action: GTMAction.ClickTradeButton,
+                label: tokenData.symbol,
+              })
             }}
             style={{ color: theme.colors.textSubtle }}
           >
