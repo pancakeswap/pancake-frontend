@@ -35,7 +35,12 @@ const InputRow = styled.div<{ selected: boolean }>`
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
 `
 const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ zapStyle?: ZapStyle }>`
-  padding: 0 0.5rem;
+  padding: 0;
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    padding: 0 0.5rem;
+  }
+
   ${({ zapStyle, theme }) =>
     zapStyle &&
     css`
@@ -184,7 +189,7 @@ export default function CurrencyInputPanel({
 
   return (
     <Box position="relative" id={id}>
-      <Flex alignItems="center" justifyContent="space-between">
+      <Flex alignItems="center" justifyContent="space-between" style={{ gap: '4px' }}>
         <Flex>
           {beforeButton}
           <CurrencySelectButton
@@ -246,6 +251,8 @@ export default function CurrencyInputPanel({
             onClick={!disabled && onMax}
             color="textSubtle"
             fontSize="14px"
+            ellipsis
+            title={!hideBalance && !!currency ? selectedCurrencyBalance?.toSignificant(6) : ' -'}
             style={{ display: 'inline', cursor: 'pointer' }}
           >
             {!hideBalance && !!currency

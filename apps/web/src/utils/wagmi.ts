@@ -50,6 +50,9 @@ export const { provider, chains } = configureChains<JsonRpcProvider>(CHAINS, [
       if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
         return { http: process.env.NEXT_PUBLIC_NODE_PRODUCTION }
       }
+      if (chain.id === bscTestnet.id) {
+        return { http: 'https://data-seed-prebsc-1-s2.binance.org:8545' }
+      }
       if (process.env.NODE_ENV === 'test' && chain.id === mainnet.id) {
         return { http: 'https://cloudflare-eth.com' }
       }
