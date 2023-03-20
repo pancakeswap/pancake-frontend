@@ -11,6 +11,9 @@ import {
   ButtonMenu,
   ButtonMenuItem,
   Checkbox,
+  IconButton,
+  HistoryIcon,
+  useModal,
 } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import styled from 'styled-components'
@@ -36,6 +39,7 @@ import { useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
+import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -179,6 +183,8 @@ export default function PoolListPage() {
     return resultSection
   }, [selectedTypeIndex, stablePairsSection, t, v2Loading, v2PairsSection, v3Loading, v3PairsSection])
 
+  const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
+
   return (
     <Page>
       <Flex m="24px 0" maxWidth="854px">
@@ -190,8 +196,13 @@ export default function PoolListPage() {
         }}
       >
         <AppHeader
-          title="Your Liquidity"
-          subtitle="List of your liquidity positions"
+          title={t('Your Liquidity')}
+          subtitle={t('List of your liquidity positions')}
+          IconSlot={
+            <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
+              <HistoryIcon color="textSubtle" width="24px" />
+            </IconButton>
+          }
           filter={
             <>
               <Flex alignItems="center">
