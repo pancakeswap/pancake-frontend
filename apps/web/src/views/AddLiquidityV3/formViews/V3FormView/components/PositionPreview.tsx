@@ -69,7 +69,7 @@ export const PositionPreview = ({
         <RowFixed>
           <DoubleCurrencyLogo currency0={currency0 ?? undefined} currency1={currency1 ?? undefined} size={24} />
           <Heading as="h2" ml="4px">
-            {currency0?.symbol} / {currency1?.symbol}
+            {currency0?.symbol}-{currency1?.symbol}
           </Heading>
         </RowFixed>
         <RangeTag removed={removed} outOfRange={!inRange} />

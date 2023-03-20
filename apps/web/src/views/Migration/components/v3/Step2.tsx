@@ -2,7 +2,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
-import { Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text } from '@pancakeswap/uikit'
+import { Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'
@@ -140,6 +140,7 @@ const LPCard_ = ({
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const { onUserInput } = useBurnActionHandlers()
+  const { isMobile } = useMatchBreakpoints()
 
   useEffect(() => {
     if (open) {
@@ -164,7 +165,7 @@ const LPCard_ = ({
 
   return (
     <Card mb="8px">
-      <Flex justifyContent="space-between" p="16px">
+      <Flex justifyContent="space-between" p="16px" flexWrap={['wrap', 'wrap', 'nowrap']}>
         <Flex flexDirection="column">
           <Flex alignItems="center" mb="4px">
             <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
@@ -186,7 +187,7 @@ const LPCard_ = ({
           <Tag variant="textSubtle" outline mr="16px">
             {type} LP
           </Tag>
-          <Button onClick={() => setOpen(true)}>Remove</Button>
+          {!isMobile && <Button onClick={() => setOpen(true)}>Remove</Button>}
         </Flex>
         <ModalV2 isOpen={open}>
           <Modal
@@ -199,6 +200,11 @@ const LPCard_ = ({
             {children}
           </Modal>
         </ModalV2>
+        {isMobile && (
+          <Button mt="8px" width="100%" onClick={() => setOpen(true)}>
+            Remove
+          </Button>
+        )}
       </Flex>
     </Card>
   )

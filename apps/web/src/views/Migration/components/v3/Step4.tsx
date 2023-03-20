@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ChainId, Percent, Token } from '@pancakeswap/sdk'
+import { ChainId, Token } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoRow, Button, Card, Dots, Flex, Modal, ModalV2, PreTitle, Tag, Text, useModalV2 } from '@pancakeswap/uikit'
+import { AutoRow, Button, Dots, Flex, Modal, ModalV2, PreTitle, Tag, Text, useModalV2 } from '@pancakeswap/uikit'
 import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
@@ -20,6 +20,7 @@ import { RangeTag } from 'components/RangeTag'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
+import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import { removedPairsAtom } from './Step2'
 
 export function Step4() {
@@ -72,35 +73,35 @@ export function Step4() {
                 priceUpper,
                 feeAmount,
               }) => (
-                <Card mb="8px" mx="24px">
-                  <Flex justifyContent="space-between" p="16px">
-                    <Flex flexDirection="column">
-                      <Flex alignItems="center" mb="4px">
-                        <DoubleCurrencyLogo currency0={currencyQuote} currency1={currencyBase} size={20} />
-                        <Text bold ml="8px">
-                          {!currencyQuote || !currencyBase ? (
-                            <Dots>{t('Loading')}</Dots>
-                          ) : (
-                            `${currencyQuote.symbol}/${currencyBase.symbol}`
-                          )}
-                        </Text>
-                        <Tag ml="8px" variant="secondary" outline>
-                          {new Percent(feeAmount, 1_000_000).toSignificant()}%
+                <LiquidityCardRow
+                  feeAmount={feeAmount}
+                  currency0={currencyQuote}
+                  currency1={currencyBase}
+                  tokenId={p.tokenId}
+                  pairText={
+                    !currencyQuote || !currencyBase ? (
+                      <Dots>{t('Loading')}</Dots>
+                    ) : (
+                      `${currencyQuote.symbol}-${currencyBase.symbol} LP`
+                    )
+                  }
+                  tags={
+                    <>
+                      {p.isStaked && (
+                        <Tag outline variant="warning" mr="8px">
+                          Farming
                         </Tag>
-                      </Flex>
-                      <Text fontSize="14px" color="textSubtle">
-                        {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
-                          minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
-                          maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
-                          token: currencyBase?.symbol,
-                          quoteToken: currencyQuote?.symbol,
-                        })}
-                      </Text>
-                    </Flex>
-
-                    <RangeTag removed={removed} outOfRange={outOfRange} />
-                  </Flex>
-                </Card>
+                      )}
+                      <RangeTag removed={removed} outOfRange={outOfRange} />
+                    </>
+                  }
+                  subtitle={t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
+                    minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
+                    maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
+                    token: currencyBase?.symbol,
+                    quoteToken: currencyQuote?.symbol,
+                  })}
+                />
               )}
             </PositionListItem>
           ))

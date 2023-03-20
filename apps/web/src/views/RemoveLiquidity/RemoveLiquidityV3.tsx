@@ -351,7 +351,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
             <Flex>
               {isStakedInMCv3 && (
-                <Tag ml="8px" outline variant="warning">
+                <Tag mr="8px" outline variant="warning">
                   Farming
                 </Tag>
               )}

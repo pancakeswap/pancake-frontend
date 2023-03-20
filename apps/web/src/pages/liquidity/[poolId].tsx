@@ -423,16 +423,30 @@ export default function PoolPage() {
                     <Heading as="h2" ml="8px">
                       {currencyQuote?.symbol}-{currencyBase?.symbol}
                     </Heading>
-                    {isStakedInMCv3 && (
-                      <Tag ml="8px" outline variant="warning">
-                        Farming
-                      </Tag>
+                    {!isMobile && (
+                      <>
+                        {isStakedInMCv3 && (
+                          <Tag mx="8px" outline variant="warning">
+                            Farming
+                          </Tag>
+                        )}
+                        <RangeTag removed={removed} outOfRange={!inRange} />
+                      </>
                     )}
-                    <RangeTag removed={removed} outOfRange={!inRange} />
                   </Flex>
                   <Text fontSize="14px" color="textSubtle">
                     V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
                   </Text>
+                  {isMobile && (
+                    <Flex>
+                      {isStakedInMCv3 && (
+                        <Tag mr="8px" outline variant="warning">
+                          Farming
+                        </Tag>
+                      )}
+                      <RangeTag removed={removed} outOfRange={!inRange} />
+                    </Flex>
+                  )}
                 </Box>
               }
               backTo="/liquidity"
