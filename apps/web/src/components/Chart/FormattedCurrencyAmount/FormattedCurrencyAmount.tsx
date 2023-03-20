@@ -3,20 +3,19 @@ import JSBI from 'jsbi'
 
 const CURRENCY_AMOUNT_MIN = new Fraction(JSBI.BigInt(1), JSBI.BigInt(1000000))
 
-export default function FormattedCurrencyAmount({
-  currencyAmount,
-  significantDigits = 4,
-}: {
+interface FormatterCurrencyAmountProps {
   currencyAmount?: CurrencyAmount<Currency>
   significantDigits?: number
-}) {
-  return (
-    <>
-      {!currencyAmount || currencyAmount.equalTo(JSBI.BigInt(0))
-        ? '0'
-        : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
-        ? currencyAmount.toFixed(significantDigits, { groupSeparator: ',' })
-        : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`}
-    </>
-  )
+}
+
+export function formattedCurrencyAmount({ currencyAmount, significantDigits = 4 }: FormatterCurrencyAmountProps) {
+  return !currencyAmount || currencyAmount.equalTo(JSBI.BigInt(0))
+    ? '0'
+    : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
+    ? currencyAmount.toFixed(significantDigits, { groupSeparator: ',' })
+    : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
+}
+
+export default function FormattedCurrencyAmount(props: FormatterCurrencyAmountProps) {
+  return <>{formattedCurrencyAmount(props)}</>
 }
