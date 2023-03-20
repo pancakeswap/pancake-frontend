@@ -315,6 +315,18 @@ function RoutingSettings() {
           <PreTitle mb="24px">{t('Liquidity source')}</PreTitle>
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
+              <Text>PancakeSwap V3</Text>
+            </Flex>
+            <Toggle scale="md" checked={v3Enable} onChange={() => setV3Enable((s) => !s)} />
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
+              <Text>PancakeSwap V2</Text>
+            </Flex>
+            <Toggle scale="md" checked={v2Enable} onChange={() => setV2Enable((s) => !s)} />
+          </Flex>
+          <Flex justifyContent="space-between" alignItems="center" mb="24px">
+            <Flex alignItems="center">
               <Text>PancakeSwap {t('StableSwap')}</Text>
               <QuestionHelper
                 text={
@@ -330,19 +342,14 @@ function RoutingSettings() {
                 ml="4px"
               />
             </Flex>
-            <Toggle scale="md" checked={isStableSwapByDefault} onChange={() => setIsStableSwapByDefault((s) => !s)} />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap V2</Text>
-            </Flex>
-            <Toggle scale="md" checked={v2Enable} onChange={() => setV2Enable((s) => !s)} />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
-              <Text>PancakeSwap V3</Text>
-            </Flex>
-            <Toggle scale="md" checked={v3Enable} onChange={() => setV3Enable((s) => !s)} />
+            <PancakeToggle
+              id="stable-swap-toggle"
+              scale="md"
+              checked={isStableSwapByDefault}
+              onChange={() => {
+                setIsStableSwapByDefault((s) => !s)
+              }}
+            />
           </Flex>
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">

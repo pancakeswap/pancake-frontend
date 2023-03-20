@@ -92,26 +92,11 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
             : isV3Pool
             ? `V3 (${v3FeeToPercent(pool.fee).toSignificant(6)}%)`
             : t('StableSwap')
+          const tooltipText = `${input.symbol}/${output.symbol}${
+            isV3Pool ? ` (${v3FeeToPercent(pool.fee).toSignificant(6)}%)` : ''
+          }`
           return (
-            <RouterPoolBox key={key} className={isV3Pool && 'highlight'}>
-              <AtomBox
-                size={{
-                  xs: '24px',
-                  md: '32px',
-                }}
-              >
-                <CurrencyLogo size="100%" currency={input} />
-              </AtomBox>
-              <AtomBox
-                size={{
-                  xs: '24px',
-                  md: '32px',
-                }}
-              >
-                <CurrencyLogo size="100%" currency={output} />
-              </AtomBox>
-              <RouterTypeText>{text}</RouterTypeText>
-            </RouterPoolBox>
+            <PairNode pair={p} key={key} text={text} className={isV3Pool && 'highlight'} tooltipText={tooltipText} />
           )
         })
       : null
@@ -143,5 +128,45 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
         {outputTooltipVisible && outputTooltip}
       </RouterBox>
     </AutoColumn>
+  )
+}
+
+function PairNode({
+  pair,
+  text,
+  className,
+  tooltipText,
+}: {
+  pair: Pair
+
+  text: string
+  className
+  tooltipText
+}) {
+  const [input, output] = pair
+
+  const tooltip = useTooltip(tooltipText)
+
+  return (
+    <RouterPoolBox className={className} ref={tooltip.targetRef}>
+      {tooltip.tooltipVisible && tooltip.tooltip}
+      <AtomBox
+        size={{
+          xs: '24px',
+          md: '32px',
+        }}
+      >
+        <CurrencyLogo size="100%" currency={input} />
+      </AtomBox>
+      <AtomBox
+        size={{
+          xs: '24px',
+          md: '32px',
+        }}
+      >
+        <CurrencyLogo size="100%" currency={output} />
+      </AtomBox>
+      <RouterTypeText>{text}</RouterTypeText>
+    </RouterPoolBox>
   )
 }
