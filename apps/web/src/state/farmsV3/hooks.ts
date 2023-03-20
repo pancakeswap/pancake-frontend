@@ -22,7 +22,7 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 import { multicallv2 } from 'utils/multicall'
 
-const farmV3ApiFetch = (chainId: number) =>
+export const farmV3ApiFetch = (chainId: number) =>
   fetch(`/api/v3/${chainId}/farms`)
     .then((res) => res.json())
     .then((data: FarmsV3Response) => {
