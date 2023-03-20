@@ -10,7 +10,7 @@ import _isNaN from 'lodash/isNaN'
 
 import currencyId from 'utils/currencyId'
 import { useRouter } from 'next/router'
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
@@ -323,10 +323,10 @@ export default function UniversalAddLiquidity({
 }
 
 const SELECTOR_TYPE_T = {
-  [SELECTOR_TYPE.STABLE]: 'Stable',
-  [SELECTOR_TYPE.V2]: 'V2',
-  [SELECTOR_TYPE.V3]: 'V3',
-} as const satisfies Record<SELECTOR_TYPE, string>
+  [SELECTOR_TYPE.STABLE]: <Trans>Add Stable Liquidity</Trans>,
+  [SELECTOR_TYPE.V2]: <Trans>Add V2 Liquidity</Trans>,
+  [SELECTOR_TYPE.V3]: <Trans>Add V3 Liquidity</Trans>,
+} as const satisfies Record<SELECTOR_TYPE, JSX.Element>
 
 export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation()
@@ -337,7 +337,7 @@ export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }
   const baseCurrency = useCurrency(currencyIdA)
   const quoteCurrency = useCurrency(currencyIdB)
 
-  const title = `Add ${SELECTOR_TYPE_T[selectType]} Liquidity` || t('Add Liquidity')
+  const title = SELECTOR_TYPE_T[selectType] || t('Add Liquidity')
 
   return (
     <Page>

@@ -73,8 +73,8 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   )
 
   const chosenFarmsMemoized = useMemo(() => {
-    return farmsList(stakedOrHasTokenBalance)
-  }, [stakedOrHasTokenBalance, farmsList])
+    return userDataReady ? farmsList(stakedOrHasTokenBalance) : []
+  }, [stakedOrHasTokenBalance, farmsList, userDataReady])
 
   return (
     <MigrationFarmTable

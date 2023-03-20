@@ -103,7 +103,7 @@ export function Step3() {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput } =
-    useV3MintActionHandlers(false)
+    useV3MintActionHandlers(false, false)
 
   const onBrushDomainChangeEnded = useCallback(
     (domain: [number, number], mode: string | undefined) => {

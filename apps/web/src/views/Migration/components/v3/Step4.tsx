@@ -10,7 +10,6 @@ import { DoubleCurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
 import { useToken } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { PairState, useV2Pair } from 'hooks/usePairs'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { useAtom } from 'jotai'
@@ -19,7 +18,7 @@ import { useState } from 'react'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import { RangeTag } from 'components/RangeTag'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
-import useStableConfig from 'views/Swap/StableSwap/hooks/useStableConfig'
+import { unwrappedToken } from 'utils/wrappedCurrency'
 import { useAccount } from 'wagmi'
 import { removedPairsAtom } from './Step2'
 
@@ -37,13 +36,13 @@ export function Step4() {
 
   const [removedPairs] = useAtom(removedPairsAtom)
 
-  const removedPairsCurrentChain = removedPairs[chainId as ChainId]
+  const removedPairsCurrentChainAndAccount = removedPairs[chainId as ChainId]?.[account]
 
-  const removedPairsCurrentChainAsArray = Object.entries(removedPairsCurrentChain || {})
+  const removedPairsCurrentChainAsArray = Object.keys(removedPairsCurrentChainAndAccount || {})
 
   return (
     <AppBody style={{ maxWidth: '700px' }} m="auto">
-      <AppHeader title="Your Liquidity" subtitle="List of your liquidity positions" />
+      <AppHeader title={t('Your Liquidity')} subtitle={t('List of your liquidity positions')} />
       <AtomBox bg="gradientCardHeader" style={{ minHeight: '400px' }} pt="16px" px="24px">
         {!account ? (
           <Text color="textSubtle" pt="24px" textAlign="center" bold fontSize="16px">
@@ -90,9 +89,12 @@ export function Step4() {
                         </Tag>
                       </Flex>
                       <Text fontSize="14px" color="textSubtle">
-                        Min {formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max:{' '}
-                        {formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)} {currencyQuote?.symbol} per{' '}
-                        {currencyBase?.symbol}
+                        {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
+                          minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
+                          maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
+                          token: currencyBase?.symbol,
+                          quoteToken: currencyQuote?.symbol,
+                        })}
                       </Text>
                     </Flex>
 
@@ -105,17 +107,13 @@ export function Step4() {
         )}
       </AtomBox>
       <ModalV2 isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
-        <Modal title="List of removed v2 liquidity" onDismiss={() => setOpen(false)}>
+        <Modal title={t('List of removed v2 liquidity')} onDismiss={() => setOpen(false)}>
           <PreTitle color="subtle" mb="12px">
-            Previous LP
+            {t('Previous LP')}
           </PreTitle>
-          {removedPairsCurrentChainAsArray.map(([tokenAddresses, isV2]) => (
+          {removedPairsCurrentChainAsArray.map((tokenAddresses) => (
             <Flex key={tokenAddresses} alignItems="center" justifyContent="space-between" mb="8px">
-              {isV2 ? (
-                <V2PairSelection tokenAddresses={tokenAddresses} />
-              ) : (
-                <StablePairSelection tokenAddresses={tokenAddresses} />
-              )}
+              <PairSelection tokenAddresses={tokenAddresses} />
             </Flex>
           ))}
         </Modal>
@@ -125,7 +123,7 @@ export function Step4() {
           <ConnectWalletButton width="100%" />
         ) : removedPairsCurrentChainAsArray.length === 0 ? (
           <Button width="100%" disabled>
-            No Previous Removed LP
+            {t('No Previous Removed LP')}
           </Button>
         ) : (
           <CommitButton onClick={() => setOpen(true)} width="100%">
@@ -137,31 +135,21 @@ export function Step4() {
   )
 }
 
-function V2PairSelection({ tokenAddresses }: { tokenAddresses: string }) {
+function PairSelection({ tokenAddresses }: { tokenAddresses: string }) {
   const [token0Address, token1Address] = tokenAddresses.split('-')
   const [token0, token1] = [useToken(token0Address), useToken(token1Address)]
-  const [pairState] = useV2Pair(token0, token1)
 
-  if (pairState === PairState.EXISTS) {
-    return <PairSelection token0={token0} token1={token1} />
+  if (token0 && token1) {
+    return <PairSelectionAddLiquidity token0={token0} token1={token1} />
   }
 
   return null
 }
 
-function StablePairSelection({ tokenAddresses }: { tokenAddresses: string }) {
-  const [token0Address, token1Address] = tokenAddresses.split('-')
-  const [token0, token1] = [useToken(token0Address), useToken(token1Address)]
-  const stablePair = useStableConfig({ tokenA: token0, tokenB: token1 })
-
-  if (stablePair) {
-    return <PairSelection token0={token0} token1={token1} />
-  }
-  return null
-}
-
-function PairSelection({ token0, token1 }: { token0: Token; token1: Token }) {
+function PairSelectionAddLiquidity({ token0, token1 }: { token0: Token; token1: Token }) {
   const addLiquidityModal = useModalV2()
+  const { t } = useTranslation()
+
   return (
     <LightGreyCard>
       <Flex alignItems="center" justifyContent="space-between">
@@ -171,9 +159,9 @@ function PairSelection({ token0, token1 }: { token0: Token; token1: Token }) {
             {token0?.symbol}/{token1?.symbol}
           </Text>
         </AutoRow>
-        <Button onClick={addLiquidityModal.onOpen}>Add</Button>
+        <Button onClick={addLiquidityModal.onOpen}>{t('Add')}</Button>
       </Flex>
-      <AddLiquidityV3Modal {...addLiquidityModal} token0={token0} token1={token1} />
+      <AddLiquidityV3Modal {...addLiquidityModal} token0={unwrappedToken(token0)} token1={unwrappedToken(token1)} />
     </LightGreyCard>
   )
 }

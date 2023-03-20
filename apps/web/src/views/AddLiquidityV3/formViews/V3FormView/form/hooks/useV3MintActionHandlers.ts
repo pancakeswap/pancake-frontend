@@ -9,7 +9,10 @@ export const replaceURLParam = (search: string, param: string, newValue: string)
   return searchParams.toString()
 }
 
-export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
+export function useV3MintActionHandlers(
+  noLiquidity: boolean | undefined,
+  routerReplace = true, // TODO: remove this when we have a better way to handle the router
+): {
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
   onLeftRangeInput: (typedValue: string) => void
@@ -37,35 +40,39 @@ export function useV3MintActionHandlers(noLiquidity: boolean | undefined): {
   const onLeftRangeInput = useCallback(
     (typedValue: string) => {
       dispatch(typeLeftRangeInput({ typedValue }))
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: { ...router.query, minPrice: typedValue },
-        },
-        undefined,
-        {
-          shallow: true,
-        },
-      )
+      if (routerReplace) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: { ...router.query, minPrice: typedValue },
+          },
+          undefined,
+          {
+            shallow: true,
+          },
+        )
+      }
     },
-    [dispatch, router],
+    [dispatch, router, routerReplace],
   )
 
   const onRightRangeInput = useCallback(
     (typedValue: string) => {
       dispatch(typeRightRangeInput({ typedValue }))
-      router.replace(
-        {
-          pathname: router.pathname,
-          query: { ...router.query, maxPrice: typedValue },
-        },
-        undefined,
-        {
-          shallow: true,
-        },
-      )
+      if (routerReplace) {
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: { ...router.query, maxPrice: typedValue },
+          },
+          undefined,
+          {
+            shallow: true,
+          },
+        )
+      }
     },
-    [dispatch, router],
+    [dispatch, router, routerReplace],
   )
 
   const onStartPriceInput = useCallback(

@@ -6,7 +6,7 @@ import { Button, Card, Dots, Flex, Modal, ModalV2, Tag, Text } from '@pancakeswa
 import { AppBody, AppHeader } from 'components/App'
 import { DoubleCurrencyLogo } from 'components/Logo'
 import { PositionCardProps, withLPValues, withStableLPValues } from 'components/PositionCard'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { PairState, useV2Pairs } from 'hooks/usePairs'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
@@ -25,13 +25,13 @@ import useStableConfig, {
 } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useAccount } from 'wagmi'
 
+// TODO: v3 migration add whitelist stable pairs
 const STABLE_LP_TO_MIGRATE = [
   '0x36842F8fb99D55477C0Da638aF5ceb6bBf86aA98', // USDT-BUSD
   '0x1A77C359D0019cD8F4d36b7CDf5a88043D801072', // USDT-BUSD
   '0xee1bcc9F1692E81A281b3a302a4b67890BA4be76', // USDT-USDC
 ]
 
-// TODO: v3 migration add whitelist stable pairs
 export function Step2() {
   const { address: account } = useAccount()
   const { t } = useTranslation()
@@ -113,8 +113,13 @@ export function Step2() {
 }
 
 export const removedPairsAtom = atomWithStorage(
-  'v3-migration-remove-pairs',
-  {} as Record<ChainId, { [tokenAddresses: string]: [isV2: boolean] }>,
+  'v3-migration-remove-pairs-2',
+  {} as Record<
+    ChainId,
+    {
+      [account: string]: { [tokenAddresses: string]: true }
+    }
+  >,
 )
 
 interface MigrationPositionCardProps extends PositionCardProps {
@@ -130,7 +135,7 @@ const LPCard_ = ({
   pair,
   type,
 }: MigrationPositionCardProps) => {
-  const { chainId } = useActiveChainId()
+  const { chainId, account } = useActiveWeb3React()
   const [, setRemovedPairs] = useAtom(removedPairsAtom)
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
@@ -143,16 +148,19 @@ const LPCard_ = ({
   }, [onUserInput, open])
 
   useEffect(() => {
-    if (open && pair) {
+    if (open && pair && account && chainId) {
       setRemovedPairs((s) => ({
         ...s,
         [chainId]: {
-          ...s[chainId],
-          [`${pair.token0.address}-${pair.token1.address}-${type}`]: type === 'V2',
+          ...s?.[chainId],
+          [account]: {
+            ...s?.[chainId]?.[account],
+            [`${pair.token0.address}-${pair.token1.address}`]: true,
+          },
         },
       }))
     }
-  }, [setRemovedPairs, open, pair, type, chainId])
+  }, [setRemovedPairs, open, pair, chainId, account])
 
   return (
     <Card mb="8px">

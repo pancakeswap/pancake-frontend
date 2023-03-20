@@ -1,4 +1,5 @@
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
+import { useTranslation } from '@pancakeswap/localization'
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
@@ -32,6 +33,7 @@ export default function FeeSelector({
    */
   handleSelectV2?: () => void
 }) {
+  const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
   const farmV3Config = farmsV3ConfigChainMap[currencyA?.chainId as ChainId]
 
@@ -190,7 +192,7 @@ export default function FeeSelector({
               */}
               <Button variant="text" onClick={handleSelectV2}>
                 <Text color="textSubtle" bold>
-                  Add V2 Liquidity
+                  {t('Add V2 Liquidity')}
                 </Text>
               </Button>
             </AtomBox>
