@@ -1,4 +1,4 @@
-import React from "react";
+import React, { MouseEvent } from "react";
 import styled from "styled-components";
 import Flex from "../../components/Box/Flex";
 import { MotionBox } from "../../components/Box";
@@ -40,7 +40,14 @@ export const ModalCloseButton: React.FC<React.PropsWithChildren<{ onDismiss: Mod
   onDismiss,
 }) => {
   return (
-    <IconButton variant="text" onClick={onDismiss} aria-label="Close the dialog">
+    <IconButton
+      variant="text"
+      onClick={(e: MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        onDismiss?.();
+      }}
+      aria-label="Close the dialog"
+    >
       <CloseIcon color="primary" />
     </IconButton>
   );

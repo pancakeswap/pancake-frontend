@@ -7,7 +7,7 @@ import { useCallback, useContext, useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
-import { usePriceCakeBusd, useFarmFromPid } from 'state/farms/hooks'
+import { usePriceCakeUSD, useFarmFromPid } from 'state/farms/hooks'
 import { useAppDispatch } from 'state'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { ChainId, WNATIVE, NATIVE } from '@pancakeswap/sdk'
@@ -72,7 +72,7 @@ const StakeAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({
   const { account, chainId } = useActiveWeb3React()
   const native = useNativeCurrency()
   const { tokenBalance, stakedBalance, allowance } = userData
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
   const router = useRouter()
   const { lpTokenStakedAmount } = useFarmFromPid(pid)
   const { toastSuccess } = useToast()

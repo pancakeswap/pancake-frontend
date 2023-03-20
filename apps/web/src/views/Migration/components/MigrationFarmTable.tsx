@@ -11,7 +11,8 @@ import TableStyle from './MigrationTable/StyledTable'
 import NewRow from './MigrationStep2/NewFarm/FarmRow'
 import OldRow from './MigrationStep1/OldFarm/FarmRow'
 import { getDisplayApr } from '../../Farms/components/getDisplayApr'
-import { ColumnsDefTypes, DesktopV2ColumnSchema, RowProps } from './types'
+import { ColumnsDefTypes, DesktopV2ColumnSchema, RowProps, V3Step1DesktopColumnSchema } from './types'
+import { V3OldFarmRow } from './v3/OldFarmRow'
 
 const Container = styled.div`
   overflow: hidden;
@@ -144,6 +145,9 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
           sortedRows.map((row) => {
             if (columnSchema === DesktopV2ColumnSchema) {
               return <NewRow {...row} key={`table-row-${row.farm.pid}`} />
+            }
+            if (columnSchema === V3Step1DesktopColumnSchema) {
+              return <V3OldFarmRow {...row} key={`table-row-${row.farm.pid}`} />
             }
             return <OldRow {...row} key={`table-row-${row.farm.pid}`} />
           })}

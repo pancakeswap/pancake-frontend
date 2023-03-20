@@ -15,6 +15,7 @@ export interface ExpandableSectionProps {
   isCommunity?: boolean;
   auctionHostingEndDate?: string;
   alignLinksToRight?: boolean;
+  totalValueLabel?: string;
 }
 
 const Wrapper = styled.div`
@@ -29,6 +30,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
   scanAddressLink,
   infoAddress,
   removed,
+  totalValueLabel,
   totalValueFormatted,
   lpLabel,
   addLiquidityUrl,
@@ -56,7 +58,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
         </Flex>
       )}
       <Flex justifyContent="space-between">
-        <Text>{t("Total Liquidity")}:</Text>
+        <Text>{totalValueLabel || t("Total Liquidity")}:</Text>
         {totalValueFormatted ? <Text>{totalValueFormatted}</Text> : <Skeleton width={75} height={25} />}
       </Flex>
       {!removed && (

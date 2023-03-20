@@ -6,7 +6,31 @@
   "main": "src/index.ts",
   "private": true,
   "sideEffects": false,
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "yarn run build",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
   "dependencies": {
-    "@pancakeswap/sdk": "*"
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/token-lists": "*"
+  },
+  "devDependencies": {
+    "tsup": "^6.6.3"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.mjs",
+      "require": "./dist/react.js"
+    }
   }
 }

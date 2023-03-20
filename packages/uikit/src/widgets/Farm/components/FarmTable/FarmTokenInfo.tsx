@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useTranslation } from "@pancakeswap/localization";
-import { getBalanceNumber } from "@pancakeswap/utils/formatBalance";
 import { Text } from "../../../../components/Text";
 import { Skeleton } from "../../../../components/Skeleton";
 import { Flex } from "../../../../components/Box";
@@ -28,14 +27,13 @@ const TokenWrapper = styled.div`
 const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenInfoProps>> = ({
   label,
   isReady,
-  stakedBalance,
+  isStaking,
   children,
 }) => {
   const { t } = useTranslation();
-  const rawStakedBalance = stakedBalance ? getBalanceNumber(stakedBalance) : 0;
 
   const handleRenderFarming = (): JSX.Element => {
-    if (rawStakedBalance) {
+    if (isStaking) {
       return (
         <Text color="secondary" fontSize="12px" bold textTransform="uppercase">
           {t("Farming")}

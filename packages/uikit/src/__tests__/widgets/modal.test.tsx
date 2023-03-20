@@ -86,7 +86,7 @@ it("renders correctly", () => {
     }
 
     .c7 {
-      padding: 0;
+      padding: 2px;
       width: 48px;
     }
 

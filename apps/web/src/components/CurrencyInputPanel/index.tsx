@@ -1,12 +1,22 @@
 import { useMemo, useState } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
-import { Button, ChevronDownIcon, Text, useModal, Flex, Box, NumericalInput, CopyButton } from '@pancakeswap/uikit'
+import {
+  Button,
+  ChevronDownIcon,
+  Text,
+  useModal,
+  Flex,
+  Box,
+  NumericalInput,
+  CopyButton,
+  Loading,
+} from '@pancakeswap/uikit'
 import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 
-import { useBUSDCurrencyAmount } from 'hooks/useBUSDPrice'
+import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
 import { StablePair } from 'views/AddLiquidity/AddStableLiquidity/hooks/useStableLPDerivedMintInfo'
 
@@ -52,10 +62,15 @@ const InputPanel = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
-const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean }>`
+const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean; loading?: boolean }>`
   border-radius: 16px;
   background-color: ${({ theme }) => theme.colors.input};
   box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
+  ${({ loading }) =>
+    loading &&
+    css`
+      opacity: 0.6;
+    `}
   ${({ zapStyle }) =>
     !!zapStyle &&
     css`
@@ -99,6 +114,7 @@ interface CurrencyInputPanelProps {
   error?: boolean
   showUSDPrice?: boolean
   tokensToShow?: Token[]
+  loading?: boolean
 }
 export default function CurrencyInputPanel({
   value,
@@ -127,6 +143,7 @@ export default function CurrencyInputPanel({
   error,
   showUSDPrice,
   tokensToShow,
+  loading,
 }: CurrencyInputPanelProps) {
   const { address: account } = useAccount()
   const selectedCurrencyBalance = useCurrencyBalance(account ?? undefined, currency ?? undefined)
@@ -135,7 +152,7 @@ export default function CurrencyInputPanel({
   const token = pair ? pair.liquidityToken : currency?.isToken ? currency : null
   const tokenAddress = token ? isAddress(token.address) : null
 
-  const amountInDollar = useBUSDCurrencyAmount(
+  const amountInDollar = useStablecoinPriceAmount(
     showUSDPrice ? currency : undefined,
     Number.isFinite(+value) ? +value : undefined,
   )
@@ -238,7 +255,7 @@ export default function CurrencyInputPanel({
         )}
       </Flex>
       <InputPanel>
-        <Container as="label" zapStyle={zapStyle} error={error}>
+        <Container as="label" zapStyle={zapStyle} error={error} loading={loading}>
           <LabelRow>
             <NumericalInput
               error={error}
@@ -252,10 +269,12 @@ export default function CurrencyInputPanel({
               }}
             />
           </LabelRow>
-          {!!currency && showUSDPrice && (
+          {!!currency && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
-                {Number.isFinite(amountInDollar) ? (
+                {loading ? (
+                  <Loading width="16px" height="16px" />
+                ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
                   <Text fontSize="12px" color="textSubtle">
                     ~{formatNumber(amountInDollar)} USD
                   </Text>

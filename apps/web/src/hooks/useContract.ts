@@ -8,8 +8,14 @@ import {
   Multicall,
   Weth,
   Zap,
+  IPancakePair,
 } from 'config/abi/types'
+import QuoterAbi from 'config/abi/Quoter.json'
+import QuoterV2Abi from 'config/abi/QuoterV2.json'
+
 import zapAbi from 'config/abi/zap.json'
+import NFTPositionManagerABI from 'config/abi/nftPositionManager.json'
+import addresses from 'config/constants/contracts'
 import { useProviderOrSigner } from 'hooks/useProviderOrSigner'
 import { useMemo } from 'react'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
@@ -60,6 +66,8 @@ import {
   getTradingCompetitionContractMobox,
   getTradingCompetitionContractMoD,
   getStableSwapNativeHelperContract,
+  getV3MigratorContract,
+  getMasterChefV3Contract,
 } from 'utils/contractHelpers'
 import { useSigner } from 'wagmi'
 
@@ -73,7 +81,6 @@ import multiCallAbi from 'config/abi/Multicall.json'
 import WETH_ABI from 'config/abi/weth.json'
 import { getContract } from 'utils'
 
-import { IPancakePair } from 'config/abi/types/IPancakePair'
 import { VaultKey } from 'state/types'
 import { useActiveChainId } from './useActiveChainId'
 
@@ -297,23 +304,27 @@ export const useErc721CollectionContract = (
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
-  address: string | undefined,
+  addressOrAddressMap: string | { [chainId: number]: string } | undefined,
   ABI: any,
   withSignerIfPossible = true,
 ): T | null {
+  const { chainId } = useActiveChainId()
+
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
 
-  const canReturnContract = useMemo(() => address && ABI && providerOrSigner, [address, ABI, providerOrSigner])
-
   return useMemo(() => {
-    if (!canReturnContract) return null
+    if (!addressOrAddressMap || !ABI || !providerOrSigner || !chainId) return null
+    let address: string | undefined
+    if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
+    else address = addressOrAddressMap[chainId]
+    if (!address) return null
     try {
       return getContract(address, ABI, providerOrSigner)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, providerOrSigner, canReturnContract]) as T
+  }, [addressOrAddressMap, ABI, providerOrSigner, chainId]) as T
 }
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
@@ -390,4 +401,25 @@ export const useStableSwapNativeHelperContract = () => {
   const { chainId } = useActiveChainId()
   const { data: signer } = useSigner()
   return useMemo(() => getStableSwapNativeHelperContract(signer, chainId), [signer, chainId])
+}
+
+export const useQuoterContract = (useQuoterV2 = false) => {
+  return useContract(addresses.quoter, useQuoterV2 ? QuoterV2Abi : QuoterAbi)
+}
+
+// Philip TODO: Add NonfungiblePositionManager | null type
+export function useV3NFTPositionManagerContract(withSignerIfPossible?: boolean) {
+  return useContract(addresses.nftPositionManager, NFTPositionManagerABI, withSignerIfPossible)
+}
+
+export function useMasterchefV3(withSignerIfPossible?: boolean) {
+  const { chainId } = useActiveChainId()
+  const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
+  return useMemo(() => getMasterChefV3Contract(providerOrSigner, chainId), [chainId, providerOrSigner])
+}
+
+export function useV3MigratorContract() {
+  const { chainId } = useActiveChainId()
+  const { data: signer } = useSigner()
+  return useMemo(() => getV3MigratorContract(signer, chainId), [chainId, signer])
 }

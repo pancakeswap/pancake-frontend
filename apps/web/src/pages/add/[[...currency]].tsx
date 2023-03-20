@@ -1,36 +1,51 @@
-import { CAKE, USDC } from '@pancakeswap/tokens'
+import { isStableFarm } from '@pancakeswap/farms'
+import { useIsMounted } from '@pancakeswap/hooks'
 import { useCurrency } from 'hooks/Tokens'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useAppDispatch } from 'state'
+import { useFarmV2PublicAPI } from 'state/farms/hooks'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
-import AddLiquidity from 'views/AddLiquidity'
-import AddStableLiquidity from 'views/AddLiquidity/AddStableLiquidity/index'
-import useStableConfig, { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import AddLiquidityV3, { AddLiquidityV3Layout } from 'views/AddLiquidityV3'
+import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
+import { useCurrencyParams } from 'views/AddLiquidityV3/hooks/useCurrencyParams'
+import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
 
 const AddLiquidityPage = () => {
   const router = useRouter()
-  const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
 
-  const native = useNativeCurrency()
+  // fetching farm api instead of using redux store here to avoid huge amount of actions and hooks needed
+  const { data: farmsV2Public } = useFarmV2PublicAPI()
 
-  const [currencyIdA, currencyIdB] = router.query.currency || [
-    native.symbol,
-    CAKE[chainId]?.address ?? USDC[chainId]?.address,
-  ]
+  const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
 
   const currencyA = useCurrency(currencyIdA)
   const currencyB = useCurrency(currencyIdB)
 
-  const stableConfig = useStableConfig({
-    tokenA: currencyA,
-    tokenB: currencyB,
-  })
+  const isMounted = useIsMounted()
+
+  // Initial prefer farm type v2/stable if there is a farm for the pair
+  const preferFarmType = useMemo(() => {
+    const preferFarm =
+      !feeAmount &&
+      isMounted &&
+      farmsV2Public?.length &&
+      currencyA &&
+      currencyB &&
+      router.isReady &&
+      farmsV2Public.find(
+        (farm) =>
+          farm.multiplier !== '0X' &&
+          ((farm.token.address === currencyA.wrapped.address &&
+            farm.quoteToken.address === currencyB.wrapped.address) ||
+            (farm.token.address === currencyB.wrapped.address &&
+              farm.quoteToken.address === currencyA.wrapped.address)),
+      )
+
+    return preferFarm ? (isStableFarm(preferFarm) ? SELECTOR_TYPE.STABLE : SELECTOR_TYPE.V2) : undefined
+  }, [farmsV2Public, feeAmount, isMounted, router.isReady, currencyA, currencyB])
 
   useEffect(() => {
     if (!currencyIdA && !currencyIdB) {
@@ -38,52 +53,20 @@ const AddLiquidityPage = () => {
     }
   }, [dispatch, currencyIdA, currencyIdB])
 
-  return stableConfig.stableSwapConfig ? (
-    <StableConfigContext.Provider value={stableConfig}>
-      <AddStableLiquidity currencyA={currencyA} currencyB={currencyB} />
-    </StableConfigContext.Provider>
-  ) : (
-    <AddLiquidity currencyA={currencyA} currencyB={currencyB} />
+  return (
+    <LiquidityFormProvider>
+      <AddLiquidityV3Layout>
+        <AddLiquidityV3
+          currencyIdA={currencyIdA}
+          currencyIdB={currencyIdB}
+          preferredSelectType={preferFarmType}
+          isV2={preferFarmType === SELECTOR_TYPE.V2}
+        />
+      </AddLiquidityV3Layout>
+    </LiquidityFormProvider>
   )
 }
 
 AddLiquidityPage.chains = CHAIN_IDS
 
 export default AddLiquidityPage
-
-const OLD_PATH_STRUCTURE = /^(0x[a-fA-F0-9]{40}|BNB)-(0x[a-fA-F0-9]{40}|BNB)$/
-
-export const getStaticPaths: GetStaticPaths = () => {
-  return {
-    paths: [{ params: { currency: [] } }],
-    fallback: true,
-  }
-}
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { currency = [] } = params
-  const [currencyIdA, currencyIdB] = currency
-  const match = currencyIdA?.match(OLD_PATH_STRUCTURE)
-
-  if (match?.length) {
-    return {
-      redirect: {
-        statusCode: 301,
-        destination: `/add/${match[1]}/${match[2]}`,
-      },
-    }
-  }
-
-  if (currencyIdA && currencyIdB && currencyIdA.toLowerCase() === currencyIdB.toLowerCase()) {
-    return {
-      redirect: {
-        statusCode: 303,
-        destination: `/add/${currencyIdA}`,
-      },
-    }
-  }
-
-  return {
-    props: {},
-  }
-}

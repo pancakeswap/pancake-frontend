@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, CloseIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePhishingBanner } from 'state/user'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { DOMAIN } from 'config'
 import { AtomBox } from '@pancakeswap/ui'
 
