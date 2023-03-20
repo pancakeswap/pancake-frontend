@@ -100,7 +100,7 @@ export function ImpermanentLossCalculator({
             {
               currency: CAKE[currencyA.chainId as keyof typeof CAKE],
               amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 / +cakePrice : Infinity,
-              price: cakePrice,
+              price: parseFloat(cakePrice).toFixed(2),
               value: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 : Infinity,
             },
           ]
@@ -210,15 +210,15 @@ export function ImpermanentLossCalculator({
           ...adjusted,
           {
             ...maybeAssetCake,
-            amount: String((+maybeAssetCake.amount * +cakePrice) / +maybeAssetCake.price),
-            value: +maybeAssetCake.value * (+cakePrice / +maybeAssetCake.price),
+            amount: String(maybeAssetCake.amount),
+            value: +maybeAssetCake.price * +maybeAssetCake.amount,
           },
         ];
       }
 
       return adjusted;
     },
-    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue, cakePrice]
+    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue]
   );
 
   const updateEntry = useCallback(
