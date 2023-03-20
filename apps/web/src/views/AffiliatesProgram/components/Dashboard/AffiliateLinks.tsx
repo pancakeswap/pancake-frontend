@@ -59,6 +59,7 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
     }
     if (affiliate.fee.length > 0) {
       getActivitySlice()
+      setIsExpanded(true)
     }
   }, [affiliate, currentPage])
 
