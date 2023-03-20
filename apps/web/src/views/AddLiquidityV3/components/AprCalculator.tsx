@@ -5,15 +5,14 @@ import { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
-import { LiquidityFormState } from 'hooks/v3/types'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { Bound } from 'config/constants/types'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import { Field } from 'state/mint/actions'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 
 interface Props {
   baseCurrency: Currency
@@ -30,7 +29,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
 
-  const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
+  const formState = useV3FormState()
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(

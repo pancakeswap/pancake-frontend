@@ -1,8 +1,8 @@
 import { Currency, Rounding } from '@pancakeswap/sdk'
 import { FeeAmount, Pool, tickToPrice, TICK_SPACINGS } from '@pancakeswap/v3-sdk'
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useCallback, useMemo } from 'react'
 import { setFullRange } from 'views/AddLiquidityV3/formViews/V3FormView/form/actions'
+import { useV3FormDispatch } from '../reducer'
 
 export function useRangeHopCallbacks(
   baseCurrency: Currency | undefined,
@@ -12,7 +12,7 @@ export function useRangeHopCallbacks(
   tickUpper: number | undefined,
   pool?: Pool | undefined | null,
 ) {
-  const dispatch = useLocalDispatch()
+  const dispatch = useV3FormDispatch()
 
   const baseToken = useMemo(() => baseCurrency?.wrapped, [baseCurrency])
   const quoteToken = useMemo(() => quoteCurrency?.wrapped, [quoteCurrency])

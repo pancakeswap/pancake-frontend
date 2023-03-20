@@ -17,14 +17,13 @@ import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { Bound } from 'config/constants/types'
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
-import { LiquidityFormState } from 'hooks/v3/types'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useMemo, useState } from 'react'
 import { useFarmsV3 } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
+import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import { getDisplayApr } from '../../getDisplayApr'
 
@@ -49,7 +48,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
 
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
 
-  const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
+  const formState = useV3FormState()
 
   // use state to prevent existing position from being updated from props after changes on roi modal
   const [existingPosition] = useState(existingPosition_)

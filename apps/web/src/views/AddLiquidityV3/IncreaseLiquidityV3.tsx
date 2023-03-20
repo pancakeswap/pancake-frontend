@@ -3,12 +3,10 @@ import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, Percent } from '@pancakeswap/sdk'
 import { AutoColumn, Box, Button, CardBody, ConfirmationModalContent, useModal } from '@pancakeswap/uikit'
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { FeeAmount, MasterChefV3, NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { LiquidityFormState } from 'hooks/v3/types'
 import { useCallback, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
@@ -40,6 +38,7 @@ import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
 import LockedDeposit from './formViews/V3FormView/components/LockedDeposit'
 import { V3SubmitButton } from './components/V3SubmitButton'
+import { useV3FormState } from './formViews/V3FormView/form/reducer'
 
 interface AddLiquidityV3PropsType {
   currencyA: Currency
@@ -80,7 +79,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   const quoteCurrency =
     baseCurrency && currencyB && baseCurrency.wrapped.equals(currencyB.wrapped) ? undefined : currencyB
   // mint state
-  const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
+  const formState = useV3FormState()
   const { independentField, typedValue } = formState
 
   const {

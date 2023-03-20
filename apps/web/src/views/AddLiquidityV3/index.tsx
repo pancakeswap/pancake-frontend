@@ -67,7 +67,7 @@ interface UniversalAddLiquidityPropsType {
   preferredFeeAmount?: FeeAmount
 }
 
-export default function UniversalAddLiquidity({
+export function UniversalAddLiquidity({
   isV2,
   currencyIdA,
   currencyIdB,
@@ -345,7 +345,11 @@ export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }
         <AppHeader
           title={title}
           backTo="/liquidity"
-          IconSlot={<AprCalculator baseCurrency={baseCurrency} quoteCurrency={quoteCurrency} feeAmount={feeAmount} />}
+          IconSlot={
+            selectType === SELECTOR_TYPE.V3 && (
+              <AprCalculator baseCurrency={baseCurrency} quoteCurrency={quoteCurrency} feeAmount={feeAmount} />
+            )
+          }
         />
         {children}
       </BodyWrapper>

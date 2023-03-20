@@ -7,7 +7,7 @@ import { useAppDispatch } from 'state'
 import { useFarmV2PublicAPI } from 'state/farms/hooks'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
-import AddLiquidityV3, { AddLiquidityV3Layout } from 'views/AddLiquidityV3'
+import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV3'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useCurrencyParams } from 'views/AddLiquidityV3/hooks/useCurrencyParams'
 import { SELECTOR_TYPE } from 'views/AddLiquidityV3/types'
@@ -56,7 +56,7 @@ const AddLiquidityPage = () => {
   return (
     <LiquidityFormProvider>
       <AddLiquidityV3Layout>
-        <AddLiquidityV3
+        <UniversalAddLiquidity
           currencyIdA={currencyIdA}
           currencyIdB={currencyIdB}
           preferredSelectType={preferFarmType}

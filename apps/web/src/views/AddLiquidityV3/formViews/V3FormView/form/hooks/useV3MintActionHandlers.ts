@@ -1,13 +1,7 @@
-import useLocalDispatch from 'contexts/LocalRedux/useLocalDispatch'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { Field, typeInput, typeLeftRangeInput, typeRightRangeInput, typeStartPriceInput } from '../actions'
-
-export const replaceURLParam = (search: string, param: string, newValue: string) => {
-  const searchParams = new URLSearchParams(search)
-  searchParams.set(param, newValue)
-  return searchParams.toString()
-}
+import { useV3FormDispatch } from '../reducer'
 
 export function useV3MintActionHandlers(
   noLiquidity: boolean | undefined,
@@ -21,7 +15,7 @@ export function useV3MintActionHandlers(
 } {
   const router = useRouter()
 
-  const dispatch = useLocalDispatch()
+  const dispatch = useV3FormDispatch()
 
   const onFieldAInput = useCallback(
     (typedValue: string) => {

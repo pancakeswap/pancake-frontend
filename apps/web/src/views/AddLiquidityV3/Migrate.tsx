@@ -15,13 +15,11 @@ import {
 import { GreyCard } from 'components/Card'
 import { CurrencyLogo } from 'components/Logo'
 import { Bound } from 'config/constants/types'
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useToken } from 'hooks/Tokens'
 import { usePairContract, useV3MigratorContract } from 'hooks/useContract'
 import { immutableMiddleware, useSWRContract } from 'hooks/useSWRContract'
 import useTokenBalance from 'hooks/useTokenBalance'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
-import { LiquidityFormState } from 'hooks/v3/types'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useRouter } from 'next/router'
@@ -53,6 +51,7 @@ import RateToggle from './formViews/V3FormView/components/RateToggle'
 import { useRangeHopCallbacks } from './formViews/V3FormView/form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { HandleFeePoolSelectFn } from './types'
+import { useV3FormState } from './formViews/V3FormView/form/reducer'
 
 export function Migrate({ v2PairAddress }: { v2PairAddress: string }) {
   const pairContract = usePairContract(v2PairAddress)
@@ -135,7 +134,7 @@ function V2PairMigrate({
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
 
   // mint state
-  const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
+  const formState = useV3FormState()
   const { rightRangeTypedValue, leftRangeTypedValue } = formState
 
   const [baseToken, setBaseToken] = useState(token0)

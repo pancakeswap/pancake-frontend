@@ -7,8 +7,8 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import currencyId from 'utils/currencyId'
-import AddLiquidityV3 from '.'
 import { AprCalculator } from './components/AprCalculator'
+import { UniversalAddLiquidity } from '.'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
 import { SELECTOR_TYPE } from './types'
 
@@ -71,7 +71,7 @@ export function AddLiquidityV3Modal({
       >
         <Box maxWidth="856px">
           <LiquidityFormProvider>
-            <AddLiquidityV3
+            <UniversalAddLiquidity
               currencyIdA={currencyIdA}
               currencyIdB={currencyIdB}
               preferredSelectType={SELECTOR_TYPE.V3}

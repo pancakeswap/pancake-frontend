@@ -18,11 +18,12 @@ import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { Bound } from 'config/constants/types'
+import { MintState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 
 import { tryParseTick } from './utils'
 import { usePool } from './usePools'
 import { getTickToPrice } from './utils/getTickToPrice'
-import { LiquidityFormState, PoolState } from './types'
+import { PoolState } from './types'
 
 export default function useV3DerivedInfo(
   currencyA?: Currency,
@@ -31,7 +32,7 @@ export default function useV3DerivedInfo(
   baseCurrency?: Currency,
   // override for existing position
   existingPosition?: Position,
-  formState?: LiquidityFormState,
+  formState?: MintState,
 ): {
   pool?: Pool | null
   poolState: PoolState

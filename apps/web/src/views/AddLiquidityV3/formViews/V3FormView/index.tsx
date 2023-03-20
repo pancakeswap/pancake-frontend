@@ -18,11 +18,9 @@ import {
   DynamicSection,
 } from '@pancakeswap/uikit'
 
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { NonfungiblePositionManager } from '@pancakeswap/v3-sdk'
-import { LiquidityFormState } from 'hooks/v3/types'
 import { useCallback, useEffect, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
@@ -57,6 +55,7 @@ import RateToggle from './components/RateToggle'
 import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
+import { useV3FormState } from './form/reducer'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -148,7 +147,7 @@ export default function V3FormView({
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
 
   // mint state
-  const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
+  const formState = useV3FormState()
   const { independentField, typedValue, startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue } = formState
 
   const {
@@ -415,10 +414,11 @@ export default function V3FormView({
       <DynamicSection
         style={{
           gridAutoRows: 'max-content',
+          gridAutoColumns: '100%',
         }}
         disabled={!feeAmount || invalidPool || (noLiquidity && !startPriceTypedValue) || (!priceLower && !priceUpper)}
       >
-        <PreTitle mb="8px">Deposit Amount</PreTitle>
+        <PreTitle mb="8px">{t('Deposit Amount')}</PreTitle>
 
         <LockedDeposit locked={depositADisabled} mb="8px">
           <Box mb="8px">

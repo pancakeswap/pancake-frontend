@@ -1,7 +1,6 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { AtomBox } from '@pancakeswap/ui'
 import { AutoRow, Heading, Text } from '@pancakeswap/uikit'
-import useLocalSelector from 'contexts/LocalRedux/useSelector'
 import { format } from 'd3'
 // import { saturate } from 'polished'
 import { ChainId } from '@pancakeswap/sdk'
@@ -11,9 +10,9 @@ import { LightCard } from 'components/Card'
 import { Chart } from 'components/LiquidityChartRangeInput/Chart'
 import { Bound } from 'config/constants/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { LiquidityFormState } from 'hooks/v3/types'
 import { tryParseTick } from 'hooks/v3/utils'
 import { getTickToPrice } from 'hooks/v3/utils/getTickToPrice'
+import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import Image from 'next/image'
 import { useCallback, useMemo } from 'react'
 import { batch } from 'react-redux'
@@ -52,7 +51,7 @@ export function Step3() {
 
   const [token0, token1] = MOCK_TOKENS[chainId] || MOCK_TOKENS[ChainId.BSC]
 
-  const formState = useLocalSelector<LiquidityFormState>((s) => s) as LiquidityFormState
+  const formState = useV3FormState()
 
   const brushLabelValue = useCallback((d: 'w' | 'e', x: number) => {
     const { price, ticksAtLimit } = MOCK
