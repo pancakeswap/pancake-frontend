@@ -47,7 +47,7 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
               <Checkbox id="checkbox" scale="sm" checked={isChecked} onChange={handleCheckbox} />
             </div>
             <Text fontSize="14px" ml="8px">
-              {t('I have read the')}
+              {t('*I have read the')}
               <Text display="inline-block" as="span" ml="4px">
                 <Link external href="https://docs.pancakeswap.finance/">
                   {t('terms and conditions')}
