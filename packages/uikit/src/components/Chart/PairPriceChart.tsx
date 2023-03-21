@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { format } from "date-fns";
-import { createChart, IChartApi, UTCTimestamp, DeepPartial, LineStyle, LineWidth } from "lightweight-charts";
+import { createChart, IChartApi, LineStyle, UTCTimestamp } from "lightweight-charts";
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
@@ -190,7 +190,17 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
       window.removeEventListener("resize", handleResize);
       chart.remove();
     };
-  }, [transformedData, isDark, colors, isChartExpanded, locale, timeWindow, setHoverDate, setHoverValue]);
+  }, [
+    transformedData,
+    isDark,
+    colors,
+    isChartExpanded,
+    locale,
+    timeWindow,
+    setHoverDate,
+    setHoverValue,
+    priceLineData,
+  ]);
 
   return (
     <>
