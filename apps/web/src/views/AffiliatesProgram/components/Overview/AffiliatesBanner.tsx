@@ -157,7 +157,7 @@ const AffiliatesBanner = () => {
             flexDirection="column"
           >
             <Text fontSize={['38px', '38px', '64px']} lineHeight="110%" bold color="secondary">
-              {t('Affiliate with us, Empower deFi')}
+              {t('Affiliate with us, Empower DeFi')}
             </Text>
             <Text fontSize={['16px', '24px']} lineHeight="110%" bold m="32px 0">
               {t('Join a community-driven movement to make DeFi accessible and better for everyone')}

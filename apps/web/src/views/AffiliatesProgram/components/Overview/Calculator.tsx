@@ -106,7 +106,7 @@ const Calculator = () => {
         <EarnWrapper>
           <EarnCardInner>
             <Text color="secondary" textTransform="uppercase" fontSize="12px" bold>
-              {t('affiliate fees per month')}
+              {t('affiliate commissions per month')}
             </Text>
             <Balance bold prefix="$ " fontSize="24px" decimals={0} value={totalPerMonth} />
           </EarnCardInner>
