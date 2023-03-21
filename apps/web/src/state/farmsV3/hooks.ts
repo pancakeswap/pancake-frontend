@@ -1,3 +1,4 @@
+import { BigNumber } from '@ethersproject/bignumber'
 import {
   createFarmFetcherV3,
   FarmsV3Response,
@@ -157,7 +158,42 @@ export const useFarmsV3 = () => {
   }
 }
 
-export const usePositionsByUser = (
+export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
+  const { account } = useActiveWeb3React()
+  const masterchefV3 = useMasterchefV3()
+
+  const harvestCalls = useMemo(() => {
+    if (!account) return []
+    const callData = []
+    for (const stakedTokenId of stakedTokenIds) {
+      callData.push(masterchefV3.interface.encodeFunctionData('harvest', [stakedTokenId.toString(), account]))
+    }
+    return callData
+  }, [account, masterchefV3.interface, stakedTokenIds])
+
+  const { data: tokenIdResults = [] } = useSWR(
+    account && ['mcv3-harvest', harvestCalls],
+    () => {
+      return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
+        return res
+          .map((r) => masterchefV3.interface.decodeFunctionResult('harvest', r))
+          .map((r) => {
+            if ('reward' in r) {
+              return r.reward as BigNumber
+            }
+            return null
+          })
+      })
+    },
+    {
+      keepPreviousData: true,
+    },
+  )
+
+  return tokenIdResults
+}
+
+const usePositionsByUserFarms = (
   farmsV3: FarmV3DataWithPrice[],
 ): {
   farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
@@ -177,37 +213,11 @@ export const usePositionsByUser = (
 
   const { positions } = useV3PositionsFromTokenIds(uniqueTokenIds)
 
+  const tokenIdResults = useStakedPositionsByUser(stakedIds)
+
   const [unstakedPositions, stakedPositions] = useMemo(() => {
     return partition(positions?.filter((p) => p.liquidity.gt(0)) ?? [], (p) => tokenIds.find((i) => i.eq(p.tokenId)))
   }, [positions, tokenIds])
-
-  const harvestCalls = useMemo(() => {
-    if (!account) return []
-    const callData = []
-    for (const stakedPosition of stakedPositions) {
-      callData.push(masterchefV3.interface.encodeFunctionData('harvest', [stakedPosition.tokenId.toString(), account]))
-    }
-    return callData
-  }, [account, masterchefV3.interface, stakedPositions])
-
-  const { data: tokenIdResults = [] } = useSWR(
-    account && ['mcv3-harvest', harvestCalls],
-    () => {
-      return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
-        return res
-          .map((r) => masterchefV3.interface.decodeFunctionResult('harvest', r))
-          .map((r) => {
-            if ('reward' in r) {
-              return r.reward
-            }
-            return null
-          })
-      })
-    },
-    {
-      keepPreviousData: true,
-    },
-  )
 
   const pendingCakeByTokenIds = useMemo(
     () =>
@@ -220,7 +230,7 @@ export const usePositionsByUser = (
   )
 
   // assume that if any of the tokenIds have a valid result, the data is ready
-  const userDataLoaded = harvestCalls.length > 0 ? tokenIdResults.length > 0 : true
+  const userDataLoaded = stakedIds.length > 0 ? tokenIdResults.length > 0 : true
 
   const farmsWithPositions = useMemo(
     () =>
@@ -283,7 +293,7 @@ export function useFarmsV3WithPositions(): {
   const { data, error: _error, isLoading } = useFarmsV3()
 
   return {
-    ...usePositionsByUser(data.farmsWithPrice),
+    ...usePositionsByUserFarms(data.farmsWithPrice),
     poolLength: data.poolLength,
     isLoading,
   }
