@@ -195,7 +195,7 @@ export function RoiCalculator({
   const totalRoi = lpReward + farmReward;
 
   const depositSection = (
-    <Section title={t("Deposit amount")}>
+    <Section title={t("Deposit Amount")}>
       <DepositAmountInput
         value={usdValue}
         maxLabel={maxLabel}
