@@ -17,9 +17,10 @@ import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
 import { Bound } from 'config/constants/types'
+import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { memo, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useFarmsV3 } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
@@ -70,10 +71,13 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
 
   const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
 
-  // TODO: v3 farm get data from subgraph
   const currencyAUsdPrice = +farm.tokenPriceBusd
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
-  const volume24H = 10
+
+  const volume24H = usePoolAvgTradingVolume({
+    address: farm.lpAddress,
+    chainId: farm.token.chainId,
+  })
 
   const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
   const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
@@ -171,7 +175,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           {displayApr}%
         </FarmUI.FarmApyButton>
       )}
-      <MemoRoiCalculatorModalV2
+      <RoiCalculatorModalV2
         {...roiModal}
         maxLabel={existingPosition_ ? t('My Position') : undefined}
         closeOnOverlayClick
@@ -198,5 +202,3 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     </>
   )
 }
-
-const MemoRoiCalculatorModalV2 = memo(RoiCalculatorModalV2)
