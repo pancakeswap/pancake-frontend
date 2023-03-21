@@ -1,8 +1,9 @@
 import { useTheme } from '@pancakeswap/hooks'
 import { AtomBox } from '@pancakeswap/ui'
-import { AutoRow, Heading, Text } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, Heading, LinkExternal, Text } from '@pancakeswap/uikit'
 import { format } from 'd3'
 // import { saturate } from 'polished'
+import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import { bscTokens, ethereumTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -10,15 +11,19 @@ import { LightCard } from 'components/Card'
 import { Chart } from 'components/LiquidityChartRangeInput/Chart'
 import { Bound } from 'config/constants/types'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { PoolState } from 'hooks/v3/types'
 import { tryParseTick } from 'hooks/v3/utils'
 import { getTickToPrice } from 'hooks/v3/utils/getTickToPrice'
-import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
-import Image from 'next/image'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { batch } from 'react-redux'
+import HideShowSelectorSection from 'views/AddLiquidityV3/components/HideShowSelectorSection'
+import { FeeOption } from 'views/AddLiquidityV3/formViews/V3FormView/components/FeeOption'
+import { FeeTierPercentageBadge } from 'views/AddLiquidityV3/formViews/V3FormView/components/FeeTierPercentageBadge'
 import RangeSelector from 'views/AddLiquidityV3/formViews/V3FormView/components/RangeSelector'
+import { FEE_AMOUNT_DETAIL, SelectContainer } from 'views/AddLiquidityV3/formViews/V3FormView/components/shared'
 import { useRangeHopCallbacks } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from 'views/AddLiquidityV3/formViews/V3FormView/form/hooks/useV3MintActionHandlers'
+import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
 import mockData from './mock.json'
 
 const MOCK = {
@@ -42,6 +47,20 @@ const feeAmount = FeeAmount.MEDIUM
 const MOCK_TOKENS = {
   [ChainId.BSC]: [bscTokens.cake, bscTokens.wbnb],
   [ChainId.ETHEREUM]: [ethereumTokens.wbtc, ethereumTokens.weth],
+}
+
+const distributions = {
+  [FeeAmount.LOWEST]: 10,
+  [FeeAmount.LOW]: 20,
+  [FeeAmount.MEDIUM]: 40,
+  [FeeAmount.HIGH]: 30,
+}
+
+const poolsByFeeTier = {
+  [FeeAmount.LOWEST]: PoolState.EXISTS,
+  [FeeAmount.LOW]: PoolState.EXISTS,
+  [FeeAmount.MEDIUM]: PoolState.EXISTS,
+  [FeeAmount.HIGH]: PoolState.EXISTS,
 }
 
 export function Step3() {
@@ -141,16 +160,20 @@ export function Step3() {
     tickLower,
     tickUpper,
   )
+  const { t } = useTranslation()
+
+  const [feeAmount_, setFeeAmount] = useState(FeeAmount.MEDIUM)
+  const [showOptions, setShowOptions] = useState(false)
 
   return (
     <AtomBox textAlign="center">
       <Heading scale="lg" pb="16px">
-        V3 Quick Start
+        {t('Quick Start')} - {t('PancakeSwap V3')}
       </Heading>
       <Text pb="48px">
-        (Overview of v3)Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-        aliquip ex ea commodo consequat.
+        {t(
+          'In PancakeSwap Exchange V3, liquidity providers are able to customize the trading fee tier and concentrate their liquidity to a specific price range to maximize their capital efficiency.',
+        )}
       </Text>
 
       <AutoRow
@@ -162,74 +185,131 @@ export function Step3() {
         alignItems="flex-start"
       >
         <LightCard minWidth={['100%', null, null, '50%']} p="32px">
-          <Heading scale="lg" color="secondary" mb="32px">
-            Introducing Fee tiers
-          </Heading>
-          <Image src="/images/decorations/farm-plant-coin.png" width={86} height={124} alt="farm and fee" />
-          <Text bold color="textSecondary" my="24px">
-            How it works?
-          </Text>
-          <Text mt="8px">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-          </Text>
-        </LightCard>
-        <LightCard minWidth={['100%', null, null, '50%']} p="32px">
-          <Heading scale="lg" color="secondary" pb="24px">
-            Introducing Price Range
-          </Heading>
-          <AutoRow gap="12px" width="100%">
-            <AtomBox position="relative" width="100%">
-              <Chart
-                showZoomButtons={false}
-                data={{ current: MOCK.price, series: MOCK.formattedData as any[] }}
-                dimensions={{ width: 400, height: 200 }}
-                margins={{ top: 10, right: 2, bottom: 20, left: 0 }}
-                styles={{
-                  area: {
-                    selection: theme.colors.text,
-                  },
-                  brush: {
-                    handle: {
-                      west: theme.colors.failure,
-                      east: theme.colors.secondary,
-                    },
-                  },
-                }}
-                interactive
-                brushLabels={brushLabelValue}
-                brushDomain={brushDomain}
-                onBrushDomainChange={onBrushDomainChangeEnded}
-                zoomLevels={ZOOM}
-                ticksAtLimit={MOCK.ticksAtLimit}
+          <AutoRow gap="24px" justifyContent="center">
+            <Heading scale="lg" color="secondary">
+              {t('Customize Trading Fee Tiers')}
+            </Heading>
+            <AtomBox px="24px" width="100%">
+              <HideShowSelectorSection
+                showOptions={showOptions}
+                noHideButton={!feeAmount_}
+                setShowOptions={setShowOptions}
+                heading={
+                  <AutoColumn gap="8px">
+                    <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Text>
+                    {distributions && (
+                      <FeeTierPercentageBadge
+                        distributions={distributions}
+                        feeAmount={feeAmount}
+                        poolState={poolsByFeeTier[feeAmount]}
+                      />
+                    )}
+                  </AutoColumn>
+                }
+                content={
+                  <>
+                    <SelectContainer>
+                      {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
+                        return (
+                          <FeeOption
+                            largestUsageFeeTier={feeAmount}
+                            feeAmount={_feeAmount}
+                            active={feeAmount_ === _feeAmount}
+                            onClick={() => setFeeAmount(_feeAmount)}
+                            distributions={distributions}
+                            poolState={poolsByFeeTier[_feeAmount]}
+                            key={_feeAmount}
+                          />
+                        )
+                      })}
+                    </SelectContainer>
+                  </>
+                }
               />
             </AtomBox>
-            <RangeSelector
-              priceLower={priceLower}
-              priceUpper={priceUpper}
-              getDecrementLower={getDecrementLower}
-              getIncrementLower={getIncrementLower}
-              getDecrementUpper={getDecrementUpper}
-              getIncrementUpper={getIncrementUpper}
-              onLeftRangeInput={onLeftRangeInput}
-              onRightRangeInput={onRightRangeInput}
-              currencyA={token0}
-              currencyB={token1}
-              feeAmount={feeAmount}
-              ticksAtLimit={ticksAtLimit}
-            />
+            <Heading scale="md" bold color="textSubtle">
+              {t('Choose the fee rate you want when providing liquidity')}
+            </Heading>
+            <Text color="textSubtle">
+              {t(
+                'You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will be benefited from the higher fee rate.',
+              )}
+            </Text>
+            <Text color="textSubtle">
+              {t(
+                'Please note that after selecting the trading pair, the UI will automatically choose your most popular trading fee tier.',
+              )}
+            </Text>
           </AutoRow>
-          <Text bold color="textSecondary">
-            How it works on the LP?
-          </Text>
-          <Text mt="8px">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore
-          </Text>
+        </LightCard>
+        <LightCard minWidth={['100%', null, null, '50%']} p="32px">
+          <AutoRow gap="24px" justifyContent="center">
+            <Heading scale="lg" color="secondary">
+              {t('Concentrate Your Liquidity')}
+            </Heading>
+            <AutoRow gap="12px" width="100%" paddingX="24px">
+              <AtomBox position="relative" width="100%">
+                <Chart
+                  showZoomButtons={false}
+                  data={{ current: MOCK.price, series: MOCK.formattedData as any[] }}
+                  dimensions={{ width: 400, height: 200 }}
+                  margins={{ top: 10, right: 2, bottom: 20, left: 0 }}
+                  styles={{
+                    area: {
+                      selection: theme.colors.text,
+                    },
+                    brush: {
+                      handle: {
+                        west: theme.colors.failure,
+                        east: theme.colors.secondary,
+                      },
+                    },
+                  }}
+                  interactive
+                  brushLabels={brushLabelValue}
+                  brushDomain={brushDomain}
+                  onBrushDomainChange={onBrushDomainChangeEnded}
+                  zoomLevels={ZOOM}
+                  ticksAtLimit={MOCK.ticksAtLimit}
+                />
+              </AtomBox>
+              <RangeSelector
+                priceLower={priceLower}
+                priceUpper={priceUpper}
+                getDecrementLower={getDecrementLower}
+                getIncrementLower={getIncrementLower}
+                getDecrementUpper={getDecrementUpper}
+                getIncrementUpper={getIncrementUpper}
+                onLeftRangeInput={onLeftRangeInput}
+                onRightRangeInput={onRightRangeInput}
+                currencyA={token0}
+                currencyB={token1}
+                feeAmount={feeAmount}
+                ticksAtLimit={ticksAtLimit}
+              />
+            </AutoRow>
+            <Heading scale="md" bold color="textSubtle">
+              {t('Provide liquidity to a specific price range')}
+            </Heading>
+            <Text color="textSubtle">
+              {t(
+                'You can concentrate your liquidity within a price range. This offers traders deeper liquidity and allows you to earn more from trading fees with less capital investment.',
+              )}
+            </Text>
+            <Text color="textSubtle">
+              {t('Your liquidity is only active and earning fees when the current price stays within the price range.')}
+            </Text>
+            <Text color="textSubtle">
+              {t(
+                'Please note that after selecting the trading pair and fee tier, the UI automatically selects the appropriate price range for you.',
+              )}
+            </Text>
+          </AutoRow>
         </LightCard>
       </AutoRow>
+      <AtomBox p="48px">
+        <LinkExternal m="auto">{t('Learn More')}</LinkExternal>
+      </AtomBox>
     </AtomBox>
   )
 }
