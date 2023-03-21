@@ -79,7 +79,7 @@ const useAuthAffiliate = (): AffiliateInfoType => {
   })
 
   return {
-    isAffiliate: data?.isAffiliate ?? false,
+    isAffiliate: (data?.isAffiliate && !!address) ?? false,
     affiliate: data?.affiliate ?? initAffiliateData,
     refresh: mutate,
   }
