@@ -55,31 +55,31 @@ export function AddLiquidityV3Modal({
       }}
       closeOnOverlayClick
     >
-      <Modal
-        title={t('Add Liquidity')}
-        headerRightSlot={
-          <AutoRow width="auto" gap="8px">
-            <AprCalculator
-              baseCurrency={baseCurrency}
-              quoteCurrency={quoteCurrency}
-              feeAmount={feeAmount}
-              showTitle={false}
-            />
-            <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
-          </AutoRow>
-        }
-      >
-        <Box maxWidth="856px">
-          <LiquidityFormProvider>
+      <LiquidityFormProvider>
+        <Modal
+          title={t('Add Liquidity')}
+          headerRightSlot={
+            <AutoRow width="auto" gap="8px">
+              <AprCalculator
+                baseCurrency={baseCurrency}
+                quoteCurrency={quoteCurrency}
+                feeAmount={feeAmount}
+                showTitle={false}
+              />
+              <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
+            </AutoRow>
+          }
+        >
+          <Box maxWidth="856px">
             <UniversalAddLiquidity
               currencyIdA={currencyIdA}
               currencyIdB={currencyIdB}
               preferredSelectType={SELECTOR_TYPE.V3}
               preferredFeeAmount={feeAmount}
             />
-          </LiquidityFormProvider>
-        </Box>
-      </Modal>
+          </Box>
+        </Modal>
+      </LiquidityFormProvider>
     </ModalV2>
   )
 }
