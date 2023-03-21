@@ -46,8 +46,8 @@ export default function Home() {
     setVolumeHover(undefined)
   }, [chainId])
 
-  const [hoverValue, setHoverValue] = useState<number | undefined>()
-  const [hoverDate, setHoverDate] = useState<string | undefined>()
+  const [, setHoverValue] = useState<number | undefined>()
+  const [, setHoverDate] = useState<string | undefined>()
 
   // if hover value undefined, reset to current day value
   // useEffect(() => {
@@ -135,6 +135,11 @@ export default function Home() {
               isChangePositive={false}
               isChartExpanded={false}
               timeWindow={PairDataTimeWindowEnum.DAY}
+              priceLineData={[
+                { title: 'max', price: 100, color: '#31D0AA' },
+                { title: 'min', price: 80, color: '#ED4B9E' },
+                { title: 'mid', price: 90, color: '#BDC2C4' },
+              ]}
             />
           </ChartWrapper>
           {/* <ChartWrapper>
