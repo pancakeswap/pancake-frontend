@@ -362,11 +362,18 @@ export default function V3FormView({
       content={() => (
         <ConfirmationModalContent
           topContent={() =>
-            position ? <PositionPreview position={position} inRange={!outOfRange} ticksAtLimit={ticksAtLimit} /> : null
+            position ? (
+              <PositionPreview
+                position={position}
+                inRange={!outOfRange}
+                ticksAtLimit={ticksAtLimit}
+                baseCurrencyDefault={baseCurrency}
+              />
+            ) : null
           }
           bottomContent={() => (
             <Button width="100%" mt="16px" onClick={onAdd}>
-              Add
+              {t('Add')}
             </Button>
           )}
         />

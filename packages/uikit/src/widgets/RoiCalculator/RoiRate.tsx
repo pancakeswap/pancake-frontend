@@ -1,4 +1,3 @@
-import { Percent } from "@pancakeswap/sdk";
 import { useTranslation } from "@pancakeswap/localization";
 
 import { Flex, Text } from "../../components";
@@ -13,10 +12,10 @@ import {
 
 interface Props {
   usdAmount?: number;
-  rate?: Percent;
+  roiPercent?: number;
 }
 
-export function RoiRate({ usdAmount = 0, rate }: Props) {
+export function RoiRate({ usdAmount = 0, roiPercent }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -48,10 +47,10 @@ export function RoiRate({ usdAmount = 0, rate }: Props) {
                 style={{ lineBreak: "anywhere" }}
               >
                 (
-                {Number.parseFloat(rate?.toSignificant(6) || "0").toLocaleString("en", {
+                {roiPercent?.toLocaleString("en", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
-                })}
+                }) ?? "-"}
                 %)
               </Text>
             </RoiDisplayContainer>

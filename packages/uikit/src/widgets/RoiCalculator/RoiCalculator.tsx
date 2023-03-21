@@ -190,6 +190,7 @@ export function RoiCalculator({
     cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
   });
 
+  const totalRate = parseFloat(rate.toSignificant(6)) + (cakeApy ?? 0) / 100;
   const lpReward = parseFloat(fee.toSignificant(6));
   const farmReward = props.isFarm && cakeApy ? (cakeApy * +usdValue) / 100 : 0;
   const totalRoi = lpReward + farmReward;
@@ -303,7 +304,7 @@ export function RoiCalculator({
           cakePrice={props.isFarm ? props.cakePrice : undefined}
         />
         <AnimatedArrow state={{}} />
-        <RoiRate usdAmount={totalRoi} rate={rate} />
+        <RoiRate usdAmount={totalRoi} roiPercent={totalRate} />
       </ScrollableContainer>
       <Details
         totalYield={totalRoi}

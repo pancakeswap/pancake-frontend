@@ -19,7 +19,7 @@ import BigNumber from 'bignumber.js'
 import { Bound } from 'config/constants/types'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useMemo, useState } from 'react'
+import { memo, useMemo, useState } from 'react'
 import { useFarmsV3 } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
@@ -171,7 +171,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           {displayApr}%
         </FarmUI.FarmApyButton>
       )}
-      <RoiCalculatorModalV2
+      <MemoRoiCalculatorModalV2
         {...roiModal}
         maxLabel={existingPosition_ ? t('My Position') : undefined}
         closeOnOverlayClick
@@ -198,3 +198,5 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     </>
   )
 }
+
+const MemoRoiCalculatorModalV2 = memo(RoiCalculatorModalV2)
