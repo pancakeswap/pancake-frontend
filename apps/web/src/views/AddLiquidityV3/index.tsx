@@ -2,7 +2,17 @@ import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
-import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle, DynamicSection } from '@pancakeswap/uikit'
+import {
+  FlexGap,
+  AutoColumn,
+  CardBody,
+  Card,
+  AddIcon,
+  PreTitle,
+  DynamicSection,
+  Heading,
+  QuestionHelper,
+} from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect } from 'react'
@@ -343,11 +353,30 @@ export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }
     <Page>
       <BodyWrapper>
         <AppHeader
-          title={title}
+          title={<Heading as="h2">{title}</Heading>}
           backTo="/liquidity"
           IconSlot={
             selectType === SELECTOR_TYPE.V3 && (
-              <AprCalculator baseCurrency={baseCurrency} quoteCurrency={quoteCurrency} feeAmount={feeAmount} />
+              <>
+                <AprCalculator baseCurrency={baseCurrency} quoteCurrency={quoteCurrency} feeAmount={feeAmount} />
+                <QuestionHelper
+                  position="relative"
+                  top="-3px"
+                  text={
+                    <>
+                      {t(
+                        'Calculated at the current rates with historical trading volume data, and subject to change based on various external variables.',
+                      )}
+                      <br />
+                      <br />
+                      {t(
+                        'This figure is provided for your convenience only, and by no means represents guaranteed returns.',
+                      )}
+                    </>
+                  }
+                  size="20px"
+                />
+              </>
             )
           }
         />

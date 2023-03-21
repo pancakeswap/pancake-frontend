@@ -146,7 +146,7 @@ export default function FeeSelector({
       heading={
         feeAmount ? (
           <AutoColumn gap="8px">
-            <Text>{FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Text>
+            <Text>V3 LP - {FEE_AMOUNT_DETAIL[feeAmount].label}% fee tier</Text>
             {distributions && (
               <FeeTierPercentageBadge
                 distributions={distributions}
@@ -157,8 +157,7 @@ export default function FeeSelector({
           </AutoColumn>
         ) : (
           <>
-            <Text>Fee tier</Text>
-            <Text>The % you will earn in fees.</Text>
+            <div />
             {isLoading && <CircleLoader />}
           </>
         )

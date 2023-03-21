@@ -32,8 +32,8 @@ export const GreyCard = styled(Card)`
   background-color: ${({ theme }) => theme.colors.dropdown};
 `
 
-export const LightTertiaryCard = styled(Card)`
-  border: 1px solid ${({ theme }) => theme.colors.cardBorder};
+export const LightTertiaryCard = styled(Card)<{ active: boolean }>`
+  border: 1px solid ${({ theme, active }) => (active ? 'none' : theme.colors.cardBorder)};
   background-color: ${({ theme }) => theme.colors.tertiary};
 `
 

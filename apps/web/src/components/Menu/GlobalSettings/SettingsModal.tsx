@@ -208,38 +208,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
               </Flex>
               <TransactionSettings />
             </Flex>
-            {SUPPORT_ZAP.includes(chainId) && (
-              <Flex justifyContent="space-between" alignItems="center" mb="24px">
-                <Flex alignItems="center">
-                  <Text>{t('Zap (Beta)')}</Text>
-                  <QuestionHelper
-                    text={
-                      <Box>
-                        <Text>
-                          {t(
-                            'Zap enables simple liquidity provision. Add liquidity with one token and one click, without manual swapping or token balancing.',
-                          )}
-                        </Text>
-                        <Text>
-                          {t(
-                            'If you experience any issue when adding or removing liquidity, please disable Zap and retry.',
-                          )}
-                        </Text>
-                      </Box>
-                    }
-                    placement="top-start"
-                    ml="4px"
-                  />
-                </Flex>
-                <Toggle
-                  checked={zapMode}
-                  scale="md"
-                  onChange={() => {
-                    toggleZapMode(!zapMode)
-                  }}
-                />
-              </Flex>
-            )}
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
                 <Text>{t('Expert Mode')}</Text>

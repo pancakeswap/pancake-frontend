@@ -67,7 +67,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
               <ArrowBackIcon width="32px" />
             </IconButton>
           ))}
-        <Flex flexDirection="column" width="100%">
+        <Flex flexDirection="column" width="100%" marginTop="4px">
           <Flex mb="8px" alignItems="center" flexWrap="wrap" justifyContent="space-between">
             <Flex>
               {_isString(title) ? <Heading as="h2">{title}</Heading> : title}

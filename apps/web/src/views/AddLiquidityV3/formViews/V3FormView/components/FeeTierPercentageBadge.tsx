@@ -23,13 +23,14 @@ export function FeeTierPercentageBadge({
         justifyContent: 'center',
         whiteSpace: 'inherit',
         alignSelf: 'flex-end',
+        textAlign: 'center',
       }}
     >
       {!distributions || poolState === PoolState.NOT_EXISTS || poolState === PoolState.INVALID
-        ? 'Not created'
+        ? 'Not Created'
         : distributions[feeAmount] !== undefined
-        ? `${distributions[feeAmount]?.toFixed(0)}% select`
-        : 'No data'}
+        ? `${distributions[feeAmount]?.toFixed(0)}% Pick`
+        : 'No Data'}
     </Tag>
   )
 }

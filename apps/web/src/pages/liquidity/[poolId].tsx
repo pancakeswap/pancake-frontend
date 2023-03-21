@@ -426,11 +426,11 @@ export default function PoolPage() {
                     {!isMobile && (
                       <>
                         {isStakedInMCv3 && (
-                          <Tag mx="8px" outline variant="warning">
+                          <Tag ml="8px" outline variant="warning">
                             Farming
                           </Tag>
                         )}
-                        <RangeTag removed={removed} outOfRange={!inRange} />
+                        <RangeTag ml="8px" removed={removed} outOfRange={!inRange} />
                       </>
                     )}
                   </Flex>
