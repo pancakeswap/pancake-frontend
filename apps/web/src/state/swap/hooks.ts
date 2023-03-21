@@ -466,6 +466,7 @@ export const useFetchPairPrices = ({
     normalizedDerivedPairDataWithCurrentSwapPrice && normalizedDerivedPairDataWithCurrentSwapPrice?.length === 0
 
   // undefined is used for loading
+
   let pairPrices = hasNoDirectData && hasNoDerivedData ? [] : undefined
   if (normalizedPairDataWithCurrentSwapPrice && normalizedPairDataWithCurrentSwapPrice?.length > 0) {
     pairPrices = normalizedPairDataWithCurrentSwapPrice

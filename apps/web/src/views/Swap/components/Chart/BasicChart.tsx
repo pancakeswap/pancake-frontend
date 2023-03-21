@@ -8,7 +8,7 @@ import NoChartAvailable from './NoChartAvailable'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import { getTimeWindowChange } from './utils'
 
-const SwapLineChart = dynamic(() => import('./SwapLineChart'), {
+const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
   ssr: false,
 })
 
@@ -107,6 +107,11 @@ const BasicChart = ({
           isChangePositive={isChangePositive}
           isChartExpanded={isChartExpanded}
           timeWindow={timeWindow}
+          priceLineData={[
+            { title: 'max', price: 88, color: '#31D0AA' },
+            { title: 'min', price: 87.5, color: '#ED4B9E' },
+            { title: 'mid', price: 87.75, color: '#BDC2C4' },
+          ]}
         />
       </Box>
     </>

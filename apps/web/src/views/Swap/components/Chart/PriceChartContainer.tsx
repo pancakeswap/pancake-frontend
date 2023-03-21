@@ -40,15 +40,15 @@ const PriceChartContainer: React.FC<React.PropsWithChildren<PriceChartContainerP
 
   const { isDark } = useTheme()
 
-  if (!isChartDisplayed) {
-    return null
-  }
+  // if (!isChartDisplayed) {
+  //   return null
+  // }
 
-  const isBnbWbnb = token0Address === BNB_ADDRESS && token1Address === BNB_ADDRESS
+  // const isBnbWbnb = token0Address === BNB_ADDRESS && token1Address === BNB_ADDRESS
 
-  if (isBnbWbnb) {
-    return <BnbWbnbNotice isDark={isDark} isChartExpanded={isChartExpanded} />
-  }
+  // if (isBnbWbnb) {
+  //   return <BnbWbnbNotice isDark={isDark} isChartExpanded={isChartExpanded} />
+  // }
 
   return (
     <PriceChart
