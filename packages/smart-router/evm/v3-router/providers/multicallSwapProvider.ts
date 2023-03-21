@@ -148,10 +148,10 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
 
       // Return data "0x" is sometimes returned for invalid pools.
       if (!success || returnData.length <= 2) {
-        console.log(
-          { result: aggregateResults[i] },
-          `Invalid result calling ${functionName} with params ${functionParams[i]}`,
-        )
+        // console.log(
+        //   { result: aggregateResults[i] },
+        //   `Invalid result calling ${functionName} with params ${functionParams[i]}`,
+        // )
         results.push({
           success: false,
           returnData,
@@ -219,10 +219,10 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
 
       // Return data "0x" is sometimes returned for invalid pools.
       if (!success || returnData.length <= 2) {
-        console.log(
-          { result: aggregateResults[i] },
-          `Invalid result calling ${functionNames[i]} with ${functionParams ? functionParams[i] : '0'} params`,
-        )
+        // console.log(
+        //   { result: aggregateResults[i] },
+        //   `Invalid result calling ${functionNames[i]} with ${functionParams ? functionParams[i] : '0'} params`,
+        // )
         results.push({
           success: false,
           returnData,

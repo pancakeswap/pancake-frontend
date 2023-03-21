@@ -8,6 +8,7 @@ import uniq from 'lodash/uniq'
 import flatMap from 'lodash/flatMap'
 import filter from 'lodash/filter'
 import retry, { Options as RetryOptions } from 'async-retry'
+import stats from 'stats-lite'
 
 import { GasModel, OnChainProvider, QuoteProvider, QuoterOptions, RouteWithoutQuote, RouteWithQuote } from '../types'
 import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
@@ -16,6 +17,8 @@ import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3P
 import { Result } from './multicallProvider'
 import { UniswapMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
+import { BatchMulticallConfigs } from '../../types'
+import { BATCH_MULTICALL_CONFIGS } from '../../constants/multicall'
 
 const DEFAULT_BATCH_RETRIES = 1
 
@@ -32,6 +35,7 @@ interface FactoryConfig {
 
 interface ProviderConfig {
   onChainProvider: OnChainProvider
+  multicallConfigs?: BatchMulticallConfigs
 }
 
 type QuoteBatchSuccess = {
@@ -41,7 +45,7 @@ type QuoteBatchSuccess = {
   results: {
     blockNumber: JSBI
     results: Result<[JSBI, JSBI[], number[], JSBI]>[]
-    // approxGasUsedPerSuccessCall: number
+    approxGasUsedPerSuccessCall: number
   }
 }
 
@@ -53,7 +57,7 @@ type QuoteBatchFailed = {
   results?: {
     blockNumber: JSBI
     results: Result<[JSBI, JSBI[], number[], JSBI]>[]
-    // approxGasUsedPerSuccessCall: number
+    approxGasUsedPerSuccessCall: number
   }
 }
 
@@ -103,7 +107,10 @@ function onChainQuoteProviderFactory({
   contractInterface,
   getCallInputs,
 }: FactoryConfig) {
-  return function createOnChainQuoteProvider({ onChainProvider }: ProviderConfig): QuoteProvider {
+  return function createOnChainQuoteProvider({
+    onChainProvider,
+    multicallConfigs: multicallConfigsOverride,
+  }: ProviderConfig): QuoteProvider {
     const createGetRoutesWithQuotes = (isExactIn = true) => {
       const functionName = getQuoteFunctionName(isExactIn)
       const adjustQuoteForGas = (quote: CurrencyAmount<Currency>, gasCostInToken: CurrencyAmount<Currency>) =>
@@ -118,17 +125,11 @@ function onChainQuoteProviderFactory({
         }
 
         const chainId: ChainId = routes[0].amount.currency.chainId
+        const multicallConfigs =
+          multicallConfigsOverride || BATCH_MULTICALL_CONFIGS[chainId] || BATCH_MULTICALL_CONFIGS[ChainId.ETHEREUM]
         const chainProvider = onChainProvider({ chainId })
-        let multicallChunk = 60
-        let gasLimitOverride = 1_000_000
-        const gasErrorFailureOverride = {
-          gasLimitOverride: 1_500_000,
-          multicallChunk: 30,
-        }
-        const successRateFailureOverrides = {
-          gasLimitOverride: 1_300_000,
-          multicallChunk: 50,
-        }
+        let { multicallChunk, gasLimitOverride } = multicallConfigs.defaultConfig
+        const { gasErrorFailureOverride, successRateFailureOverrides } = multicallConfigs
         const retryOptions = {
           retries: DEFAULT_BATCH_RETRIES,
           minTimeout: 25,
@@ -171,7 +172,7 @@ function onChainQuoteProviderFactory({
         const {
           results: quoteResults,
           blockNumber,
-          // approxGasUsedPerSuccessCall,
+          approxGasUsedPerSuccessCall,
         } = await retry(
           async (_bail, attemptNumber) => {
             haveIncrementedBlockHeaderFailureCounter = false
@@ -391,10 +392,10 @@ function onChainQuoteProviderFactory({
             return {
               results: flatMap(callResults, (result) => result.results),
               blockNumber: JSBI.BigInt(successfulQuoteStates[0]!.results.blockNumber),
-              // approxGasUsedPerSuccessCall: stats.percentile(
-              //   map(callResults, (result) => result.approxGasUsedPerSuccessCall),
-              //   100,
-              // ),
+              approxGasUsedPerSuccessCall: stats.percentile(
+                map(callResults, (result) => result.approxGasUsedPerSuccessCall),
+                100,
+              ),
             }
           },
           {

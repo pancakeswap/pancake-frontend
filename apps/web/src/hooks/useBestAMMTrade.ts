@@ -49,17 +49,17 @@ export function useBestAMMTrade(params: Options) {
       return bestTradeFromOffchain
     }
     if (!tradeFromOffchain || !tradeFromQuoter) {
-      console.log(
-        `[BEST Trade] Existing ${tradeFromOffchain ? 'Offchain' : 'Quoter'} trade is used`,
-        tradeFromOffchain || tradeFromQuoter,
-      )
+      // console.log(
+      //   `[BEST Trade] Existing ${tradeFromOffchain ? 'Offchain' : 'Quoter'} trade is used`,
+      //   tradeFromOffchain || tradeFromQuoter,
+      // )
       return bestTradeFromOffchain || bestTradeFromQuoter
     }
     if (JSBI.greaterThan(JSBI.BigInt(tradeFromQuoter.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
-      console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
+      // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
       return bestTradeFromQuoter
     }
-    console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
+    // console.log('[BEST Trade] Offchain trade is used', tradeFromOffchain)
     return bestTradeFromOffchain
   }, [bestTradeFromOffchain, bestTradeFromQuoter])
 }
@@ -199,7 +199,7 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
 
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
-  revalidateOnUpdate: true,
+  revalidateOnUpdate: false,
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
