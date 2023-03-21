@@ -27,10 +27,10 @@ export default function Home() {
   // const [protocolData] = useProtocolData()
   const { chainId } = useActiveChainId()
 
-  const [volumeHover, setVolumeHover] = useState<number | undefined>()
+  const [, setVolumeHover] = useState<number | undefined>()
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [leftLabel, setLeftLabel] = useState<string | undefined>()
-  const [rightLabel, setRightLabel] = useState<string | undefined>()
+  // const [rightLabel, setRightLabel] = useState<string | undefined>()
 
   // Hot fix to remove errors in TVL data while subgraph syncs.
   const chartData = useProtocolChartData()
@@ -64,17 +64,17 @@ export default function Home() {
     return []
   }, [chartData])
 
-  const formattedVolumeData = useMemo(() => {
-    if (chartData) {
-      return chartData.map((day) => {
-        return {
-          time: unixToDate(day.date),
-          value: day.volumeUSD,
-        }
-      })
-    }
-    return []
-  }, [chartData])
+  // const formattedVolumeData = useMemo(() => {
+  //   if (chartData) {
+  //     return chartData.map((day) => {
+  //       return {
+  //         time: unixToDate(day.date),
+  //         value: day.volumeUSD,
+  //       }
+  //     })
+  //   }
+  //   return []
+  // }, [chartData])
 
   // const weeklyVolumeData = useTransformedVolumeData(chartData, 'week')
   // const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
