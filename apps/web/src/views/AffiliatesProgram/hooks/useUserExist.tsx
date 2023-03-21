@@ -31,7 +31,7 @@ const useUserExist = () => {
   )
 
   return {
-    isUserExist,
+    isUserExist: isUserExist ?? false,
   }
 }
 

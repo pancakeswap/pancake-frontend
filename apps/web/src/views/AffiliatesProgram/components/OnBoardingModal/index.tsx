@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
+import { ethers } from 'ethers'
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
 
@@ -32,7 +33,7 @@ const OnBoardingModal = () => {
 
   useEffect(() => {
     const { ref, user, discount } = router.query
-    if (isUserExist === false && ref && user && discount) {
+    if (isUserExist === true && ref && user && discount) {
       setIsOpen(true)
     }
   }, [isUserExist, router])
@@ -40,7 +41,8 @@ const OnBoardingModal = () => {
   const handleStartNow = async () => {
     try {
       setIsLoading(true)
-      const signature = await signMessageAsync({ message: router.query.ref as string })
+      const message = ethers.utils.arrayify(ethers.utils.solidityKeccak256(['string'], [router.query.ref]))
+      const signature = await signMessageAsync({ message })
       const response = await fetch('/api/affiliates-program/user-register-fee', {
         method: 'POST',
         body: JSON.stringify({
