@@ -107,11 +107,6 @@ const BasicChart = ({
           isChangePositive={isChangePositive}
           isChartExpanded={isChartExpanded}
           timeWindow={timeWindow}
-          priceLineData={[
-            { title: 'max', price: 88, color: '#31D0AA' },
-            { title: 'min', price: 87.5, color: '#ED4B9E' },
-            { title: 'mid', price: 87.75, color: '#BDC2C4' },
-          ]}
         />
       </Box>
     </>
