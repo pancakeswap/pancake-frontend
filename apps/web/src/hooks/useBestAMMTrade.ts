@@ -53,7 +53,7 @@ export function useBestAMMTrade(params: Options) {
       //   `[BEST Trade] Existing ${tradeFromOffchain ? 'Offchain' : 'Quoter'} trade is used`,
       //   tradeFromOffchain || tradeFromQuoter,
       // )
-      return bestTradeFromOffchain || bestTradeFromQuoter
+      return tradeFromOffchain ? bestTradeFromOffchain : bestTradeFromQuoter
     }
     if (JSBI.greaterThan(JSBI.BigInt(tradeFromQuoter.blockNumber), JSBI.BigInt(tradeFromOffchain.blockNumber))) {
       // console.log('[BEST Trade] Quoter trade is used', tradeFromQuoter)
@@ -90,7 +90,7 @@ function bestTradeHookFactory({
       pools: candidatePools,
       loading,
       syncing,
-    } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber })
+    } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber, allowInconsistentBlock: true })
     const poolProvider = useMemo(() => SmartRouter.createStaticPoolProvider(candidatePools), [candidatePools])
     const deferQuotientRaw = useDeferredValue(amount?.quotient.toString())
     const deferQuotient = useDebounce(deferQuotientRaw, 300)
@@ -115,7 +115,7 @@ function bestTradeHookFactory({
       isValidating,
       mutate,
     } = useSWR(
-      amount && currency && candidatePools && !loading
+      amount && currency && candidatePools && !loading && deferQuotient
         ? [
             key,
             currency.chainId,
@@ -129,38 +129,35 @@ function bestTradeHookFactory({
           ]
         : null,
       async () => {
-        if (!deferQuotient) {
-          return null
-        }
-        const label = `[METRIC] Get best AMM trade (${key})`
+        const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
+        const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
+          amount.currency.symbol
+        } -> ${currency.symbol}, tradeType ${tradeType}`
         console.time(label)
-        console.timeLog(
-          label,
-          'Start',
-          currency.chainId,
-          amount.currency.symbol,
-          currency.symbol,
-          tradeType,
-          deferQuotient,
-          candidatePools,
-        )
-        const res = await SmartRouter.getBestTrade(
-          CurrencyAmount.fromRawAmount(amount.currency, deferQuotient),
-          currency,
-          tradeType,
-          {
-            gasPriceWei: gasPrice
-              ? JSBI.BigInt(gasPrice)
-              : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
-            maxHops,
-            poolProvider,
-            maxSplits,
-            quoteProvider,
-            blockNumber,
-            allowedPoolTypes: poolTypes,
-            quoterOptimization,
-          },
-        )
+        console.timeLog(label, candidatePools)
+        const res = await SmartRouter.getBestTrade(deferAmount, currency, tradeType, {
+          gasPriceWei: gasPrice
+            ? JSBI.BigInt(gasPrice)
+            : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+          maxHops,
+          poolProvider,
+          maxSplits,
+          quoteProvider,
+          blockNumber,
+          allowedPoolTypes: poolTypes,
+          quoterOptimization,
+        })
+        if (res) {
+          console.timeLog(
+            label,
+            res.inputAmount.toExact(),
+            res.inputAmount.currency.symbol,
+            '->',
+            res.outputAmount.toExact(),
+            res.outputAmount.currency.symbol,
+            res.routes,
+          )
+        }
         console.timeLog(label, res)
         console.timeEnd(label)
         return res

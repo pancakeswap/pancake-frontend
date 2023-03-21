@@ -2,12 +2,16 @@
 import { Currency } from '@pancakeswap/sdk'
 import { Pool } from '@pancakeswap/smart-router/evm'
 import { useEffect, useMemo, useState, useCallback } from 'react'
+import useSWR from 'swr'
 
 import { useV3CandidatePools, useV3CandidatePoolsWithoutTicks, V3PoolsHookParams, V3PoolsResult } from './useV3Pools'
 import { useV2CandidatePools, useStableCandidatePools } from './usePoolsOnChain'
 import { useActiveChainId } from './useActiveChainId'
 
 interface FactoryOptions {
+  // use to identify hook
+  key: string
+
   useV3Pools: (currencyA?: Currency, currencyB?: Currency, params?: V3PoolsHookParams) => V3PoolsResult
 }
 
@@ -21,17 +25,17 @@ export interface PoolsWithState {
 
 export interface CommonPoolsParams {
   blockNumber?: number
+  allowInconsistentBlock?: boolean
 }
 
-function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
+function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
   return function useCommonPools(
     currencyA?: Currency,
     currencyB?: Currency,
-    { blockNumber: latestBlockNumber }: CommonPoolsParams = {},
+    { blockNumber: latestBlockNumber, allowInconsistentBlock = false }: CommonPoolsParams = {},
   ): PoolsWithState {
     const { chainId } = useActiveChainId()
     const [blockNumber, setBlockNumber] = useState<number | null | undefined>(null)
-    const [pools, setPools] = useState<Pool[] | null | undefined>(null)
     const {
       pools: v3Pools,
       loading: v3Loading,
@@ -62,27 +66,43 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
           : null,
       [v2BlockNumber, v3BlockNumber, stableBlockNumber],
     )
+    const poolKey = useMemo(
+      () =>
+        currencyA &&
+        currencyB &&
+        v2BlockNumber &&
+        v3BlockNumber &&
+        stableBlockNumber &&
+        (allowInconsistentBlock || consistentBlockNumber) &&
+        [
+          currencyA.symbol,
+          currencyB.symbol,
+          consistentBlockNumber?.toString(),
+          v2BlockNumber,
+          v3BlockNumber,
+          stableBlockNumber,
+        ].join('_'),
+      [
+        currencyA,
+        currencyB,
+        consistentBlockNumber,
+        v2BlockNumber,
+        v3BlockNumber,
+        stableBlockNumber,
+        allowInconsistentBlock,
+      ],
+    )
+    const { data: pools } = useSWR(v2Pools && v3Pools && stablePools && poolKey ? [key, poolKey] : null, () => [
+      ...v2Pools,
+      ...stablePools,
+      ...v3Pools,
+    ])
 
     const refresh = useCallback(() => latestBlockNumber && setBlockNumber(latestBlockNumber), [latestBlockNumber])
 
     useEffect(() => {
       setBlockNumber(null)
     }, [chainId])
-
-    useEffect(() => {
-      if (consistentBlockNumber && v2Pools && v3Pools && stablePools) {
-        console.log(
-          '[METRIC] Pools updated',
-          [...v2Pools, ...stablePools, ...v3Pools],
-          'block number',
-          consistentBlockNumber.toString(),
-        )
-        setPools([...v2Pools, ...stablePools, ...v3Pools])
-      }
-      if (!v2Pools || !v3Pools || !stablePools) {
-        setPools(null)
-      }
-    }, [consistentBlockNumber, v2Pools, v3Pools, stablePools])
 
     useEffect(() => {
       if (latestBlockNumber && latestBlockNumber > 0 && !blockNumber) {
@@ -97,16 +117,20 @@ function commonPoolsHookCreator({ useV3Pools }: FactoryOptions) {
     }, [consistentBlockNumber, latestBlockNumber, refresh])
 
     const loading = v2Loading || v3Loading || stableLoading
+    const syncing = v2Syncing || v3Syncing || stableSyncing
     return {
       refresh,
       pools,
       loading,
-      syncing: v2Syncing || v3Syncing || stableSyncing,
+      syncing,
     }
   }
 }
 
-export const useCommonPools = commonPoolsHookCreator({ useV3Pools: useV3CandidatePools })
+export const useCommonPools = commonPoolsHookCreator({ key: 'useCommonPools', useV3Pools: useV3CandidatePools })
 
 // In lite version, we don't query ticks data from subgraph
-export const useCommonPoolsLite = commonPoolsHookCreator({ useV3Pools: useV3CandidatePoolsWithoutTicks })
+export const useCommonPoolsLite = commonPoolsHookCreator({
+  key: 'useCommonPoolsLite',
+  useV3Pools: useV3CandidatePoolsWithoutTicks,
+})

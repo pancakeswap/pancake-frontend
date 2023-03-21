@@ -82,9 +82,6 @@ async function getBestRoutes(
     blockNumber,
     protocols: allowedPoolTypes,
   })
-  if (!candidatePools.length) {
-    return null
-  }
 
   let baseRoutes = computeAllRoutes(inputCurrency, outputCurrency, candidatePools, maxHops)
   // Do not support mix route on exact output

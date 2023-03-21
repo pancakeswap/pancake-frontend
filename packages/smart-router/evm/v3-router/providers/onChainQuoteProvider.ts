@@ -180,11 +180,11 @@ function onChainQuoteProviderFactory({
 
             const [success, failed, pending] = partitionQuotes(quoteStates)
 
-            console.log(
-              `Starting attempt: ${attemptNumber}.
-          Currently ${success.length} success, ${failed.length} failed, ${pending.length} pending.
-          Gas limit override: ${gasLimitOverride} Block number override: ${providerConfig.blockNumber}.`,
-            )
+            // console.log(
+            //   `Starting attempt: ${attemptNumber}.
+            // rrently ${success.length} success, ${failed.length} failed, ${pending.length} pending.
+            // s limit override: ${gasLimitOverride} Block number override: ${providerConfig.blockNumber}.`,
+            // )
 
             quoteStates = await Promise.all(
               map(quoteStates, async (quoteState: QuoteBatchState, idx: number) => {
@@ -295,14 +295,14 @@ function onChainQuoteProviderFactory({
             )
 
             if (failedQuoteStates.length > 0) {
-              console.log(
-                `On attempt ${attemptNumber}: ${failedQuoteStates.length}/${quoteStates.length} quotes failed. Reasons: ${reasonForFailureStr}`,
-              )
+              // console.log(
+              //   `On attempt ${attemptNumber}: ${failedQuoteStates.length}/${quoteStates.length} quotes failed. Reasons: ${reasonForFailureStr}`,
+              // )
 
               for (const failedQuoteState of failedQuoteStates) {
                 const { reason: error } = failedQuoteState
 
-                console.log({ error }, `[QuoteFetchError] Attempt ${attemptNumber}. ${error.message}`)
+                // console.log({ error }, `[QuoteFetchError] Attempt ${attemptNumber}. ${error.message}`)
 
                 if (error instanceof BlockConflictError) {
                   if (!haveRetriedForBlockConflictError) {
@@ -326,11 +326,10 @@ function onChainQuoteProviderFactory({
                     const { rollbackBlockOffset, attemptsBeforeRollback } = rollback
 
                     if (blockHeaderRetryAttemptNumber >= attemptsBeforeRollback && !blockHeaderRolledBack) {
-                      console.log(
-                        `Attempt ${attemptNumber}. Have failed due to block header ${
-                          blockHeaderRetryAttemptNumber - 1
-                        } times. Rolling back block number by ${rollbackBlockOffset} for next retry`,
-                      )
+                      // console.log(
+                      //   `Attempt ${attemptNumber}. Have failed due to block header ${blockHeaderRetryAttemptNumber - 1
+                      //   } times. Rolling back block number by ${rollbackBlockOffset} for next retry`,
+                      // )
                       providerConfig.blockNumber = providerConfig.blockNumber
                         ? JSBI.add(JSBI.BigInt(await providerConfig.blockNumber), JSBI.BigInt(rollbackBlockOffset))
                         : JSBI.add(JSBI.BigInt(await chainProvider.getBlockNumber()), JSBI.BigInt(rollbackBlockOffset))
@@ -368,7 +367,7 @@ function onChainQuoteProviderFactory({
             }
 
             if (retryAll) {
-              console.log(`Attempt ${attemptNumber}. Resetting all requests to pending for next attempt.`)
+              // console.log(`Attempt ${attemptNumber}. Resetting all requests to pending for next attempt.`)
 
               const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
 
@@ -471,9 +470,9 @@ function validateSuccessRate(
 
   if (successRate < quoteMinSuccessRate) {
     if (haveRetriedForSuccessRate) {
-      console.log(
-        `Quote success rate still below threshold despite retry. Continuing. ${quoteMinSuccessRate}: ${successRate}`,
-      )
+      // console.log(
+      //   `Quote success rate still below threshold despite retry. Continuing. ${quoteMinSuccessRate}: ${successRate}`,
+      // )
       return
     }
 

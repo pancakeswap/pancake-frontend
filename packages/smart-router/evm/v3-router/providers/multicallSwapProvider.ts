@@ -70,7 +70,7 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
       }
     })
 
-    console.log({ calls }, `About to multicall for ${functionName} across ${addresses.length} addresses`)
+    // console.log({ calls }, `About to multicall for ${functionName} across ${addresses.length} addresses`)
 
     const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
       blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
@@ -83,10 +83,10 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
 
       // Return data "0x" is sometimes returned for invalid calls.
       if (!success || returnData.length <= 2) {
-        console.log(
-          { result: aggregateResults[i] },
-          `Invalid result calling ${functionName} on address ${addresses[i]}`,
-        )
+        // console.log(
+        //   { result: aggregateResults[i] },
+        //   `Invalid result calling ${functionName} on address ${addresses[i]}`,
+        // )
         results.push({
           success: false,
           returnData,
@@ -100,10 +100,10 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
       })
     }
 
-    console.log(
-      { results },
-      `Results for multicall on ${functionName} across ${addresses.length} addresses as of block ${blockNumber}`,
-    )
+    // console.log(
+    //   { results },
+    //   `Results for multicall on ${functionName} across ${addresses.length} addresses as of block ${blockNumber}`,
+    // )
 
     return { blockNumber: JSBI.BigInt(blockNumber), results }
   }
@@ -131,10 +131,10 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
       }
     })
 
-    console.log(
-      { calls },
-      `About to multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params`,
-    )
+    // console.log(
+    //   { calls },
+    //   `About to multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params`,
+    // )
 
     const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
       blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
@@ -167,10 +167,10 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
       })
     }
 
-    console.log(
-      { results, functionName, address },
-      `Results for multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params. Results as of block ${blockNumber}`,
-    )
+    // console.log(
+    //   { results, functionName, address },
+    //   `Results for multicall for ${functionName} at address ${address} with ${functionParams.length} different sets of params. Results as of block ${blockNumber}`,
+    // )
     return {
       blockNumber: JSBI.BigInt(blockNumber),
       results,
@@ -201,10 +201,10 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
       }
     })
 
-    console.log(
-      { calls },
-      `About to multicall for ${functionNames.length} functions at address ${address} with ${functionParams?.length} different sets of params`,
-    )
+    // console.log(
+    //   { calls },
+    //   `About to multicall for ${functionNames.length} functions at address ${address} with ${functionParams?.length} different sets of params`,
+    // )
 
     const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
       blockTag: blockNumberOverride && JSBI.toNumber(JSBI.BigInt(blockNumberOverride)),
@@ -238,12 +238,11 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
       })
     }
 
-    console.log(
-      { results, functionNames, address },
-      `Results for multicall for ${functionNames.length} functions at address ${address} with ${
-        functionParams ? functionParams.length : ' 0'
-      } different sets of params. Results as of block ${blockNumber}`,
-    )
+    // console.log(
+    //   { results, functionNames, address },
+    //   `Results for multicall for ${functionNames.length} functions at address ${address} with ${functionParams ? functionParams.length : ' 0'
+    //   } different sets of params. Results as of block ${blockNumber}`,
+    // )
     return {
       blockNumber: JSBI.BigInt(blockNumber),
       results,

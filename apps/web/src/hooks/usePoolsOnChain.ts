@@ -48,11 +48,10 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     const poolState = useSWR(
       blockNumber && key && pairs ? [poolType, 'pools', key] : null,
       async () => {
-        const metricLabel = `[METRIC] Get ${poolType} pools`
+        const metricLabel = `[POOLS_ONCHAIN](${poolType}) ${key}`
         console.time(metricLabel)
-        console.timeLog(metricLabel, key)
         const pools = await getPoolsOnChain(pairs, provider, blockNumber)
-        console.timeLog(metricLabel, key, pools)
+        console.timeLog(metricLabel, pools)
         console.timeEnd(metricLabel)
 
         return {
