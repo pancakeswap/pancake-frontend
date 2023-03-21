@@ -143,7 +143,6 @@ const LineChart = ({
   }, [color, chartCreated, currentValue, data, height, setValue, textColor, theme])
 
   useEffect(() => {
-    console.log(color, '?????')
     if (chartCreated && data) {
       const series = chartCreated.addAreaSeries({
         lineColor: color,
@@ -165,7 +164,7 @@ const LineChart = ({
       })
 
       // update the title when hovering on the chart
-      chartCreated.subscribeCrosshairMove(function (param) {
+      chartCreated.subscribeCrosshairMove((param) => {
         if (
           chartRef?.current &&
           (param === undefined ||
