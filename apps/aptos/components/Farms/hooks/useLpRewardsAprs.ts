@@ -17,7 +17,7 @@ const useLpRewardsAprs = () => {
     return {}
   })
 
-  return lpRewardsAprs
+  return lpRewardsAprs ?? {}
 }
 
 export default useLpRewardsAprs
