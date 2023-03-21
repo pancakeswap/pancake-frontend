@@ -111,14 +111,14 @@ export const FarmV3LPPosition = ({
             fontSize="12px"
             color="textSubtle"
             decimals={2}
-            value={position ? +position.amount0.toSignificant(4) : 0}
+            value={position ? +position.amount0.toSignificant(6) : 0}
             unit={` ${token.symbol}`}
           />
           <Balance
             fontSize="12px"
             color="textSubtle"
             decimals={2}
-            value={position ? +position.amount1.toSignificant(4) : 0}
+            value={position ? +position.amount1.toSignificant(6) : 0}
             unit={` ${quoteToken.symbol}`}
           />
         </Flex>
