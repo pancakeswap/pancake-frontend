@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "
 import { useTheme } from "styled-components";
 import LineChartLoader from "./LineChartLoaderSVG";
 
-enum PairDataTimeWindowEnum {
+export enum PairDataTimeWindowEnum {
   DAY,
   WEEK,
   MONTH,
@@ -13,7 +13,7 @@ enum PairDataTimeWindowEnum {
 }
 
 export type SwapLineChartNewProps = {
-  data: any[] | { time: string; value: number }[];
+  data: any[] | { time: Date; value: number }[];
   setHoverValue?: Dispatch<SetStateAction<number | undefined>>; // used for value on hover
   setHoverDate?: Dispatch<SetStateAction<string | undefined>>; // used for value label on hover
   isChangePositive: boolean;
@@ -179,7 +179,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   return (
     <>
       {!chartCreated && <LineChartLoader />}
-      <div ref={chartRef} id="swap-line-chart" {...rest} />
+      <div ref={chartRef} style={{ minHeight: 200 }} id="swap-line-chart" {...rest} />
     </>
   );
 };

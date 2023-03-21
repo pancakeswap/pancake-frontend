@@ -1,5 +1,6 @@
-import { AutoColumn, Text } from '@pancakeswap/uikit'
+import { AutoColumn, PairDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import dynamic from 'next/dynamic'
 // import { useTransformedVolumeData } from 'hooks/chart'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -8,10 +9,15 @@ import { useProtocolChartData } from './hooks'
 
 import { MonoSpace, PageWrapper, ThemedBackgroundGlobal } from './components/shared'
 // import BarChart from './components/BarChart/alt'
+
 import LineChart from './components/LineChart/alt'
 import { ResponsiveRow } from './components/Row'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
+
+const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
+  ssr: false,
+})
 
 const ChartWrapper = styled.div`
   width: 49%;
@@ -39,6 +45,9 @@ export default function Home() {
     setLiquidityHover(undefined)
     setVolumeHover(undefined)
   }, [chainId])
+
+  const [hoverValue, setHoverValue] = useState<number | undefined>()
+  const [hoverDate, setHoverDate] = useState<string | undefined>()
 
   // if hover value undefined, reset to current day value
   // useEffect(() => {
@@ -111,6 +120,21 @@ export default function Home() {
                   </Text>
                 </AutoColumn>
               }
+            />
+          </ChartWrapper>
+          <ChartWrapper>
+            <SwapLineChart
+              data={[
+                { time: new Date('2021-01-11 19:00'), value: 100 },
+                { time: new Date('2021-01-11 19:05'), value: 80 },
+                { time: new Date('2021-01-11 19:10'), value: 70 },
+                { time: new Date('2021-01-11 19:20'), value: 110 },
+              ]}
+              setHoverValue={setHoverValue}
+              setHoverDate={setHoverDate}
+              isChangePositive={false}
+              isChartExpanded={false}
+              timeWindow={PairDataTimeWindowEnum.DAY}
             />
           </ChartWrapper>
           {/* <ChartWrapper>
