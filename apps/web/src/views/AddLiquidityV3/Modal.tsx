@@ -9,20 +9,20 @@ import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProv
 import { SELECTOR_TYPE } from './types'
 
 export function AddLiquidityV3Modal({
-  token0,
-  token1,
+  currency0,
+  currency1,
   isOpen,
   onDismiss,
   feeAmount,
 }: {
-  token0: Currency
-  token1: Currency
+  currency0: Currency
+  currency1: Currency
   feeAmount?: FeeAmount
 } & UseModalV2Props) {
   const { t } = useTranslation()
   const router = useRouter()
 
-  const [currencyIdA, currencyIdB] = router.query.currency || [currencyId(token0), currencyId(token1)]
+  const [currencyIdA, currencyIdB] = router.query.currency || [currencyId(currency0), currencyId(currency1)]
 
   return (
     <ModalV2

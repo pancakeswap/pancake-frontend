@@ -33,8 +33,8 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ 
     <Action>
       <AddLiquidityV3Modal
         {...addLiquidityModal}
-        token0={farm.token}
-        token1={farm.quoteToken}
+        currency0={farm.token}
+        currency1={farm.quoteToken}
         feeAmount={farm.feeAmount}
       />
       {account && !hasNoPosition ? (

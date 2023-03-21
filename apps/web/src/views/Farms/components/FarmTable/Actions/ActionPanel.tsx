@@ -19,6 +19,7 @@ import { multiChainPaths } from 'state/info/constant'
 import styled, { css, keyframes } from 'styled-components'
 import { getBlockExploreLink } from 'utils'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
+import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 
 import { V2Farm, V3Farm } from 'views/Farms/FarmsV3'
@@ -253,8 +254,8 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           />
           <AddLiquidityV3Modal
             {...addLiquidityModal}
-            token0={farm.token}
-            token1={farm.quoteToken}
+            currency0={unwrappedToken(farm.token)}
+            currency1={unwrappedToken(farm.quoteToken)}
             feeAmount={farm.feeAmount}
           />
         </>
