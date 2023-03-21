@@ -30,7 +30,7 @@ const commissionList: CommissionType[] = [
     },
   },
   {
-    title: <Trans>comming soon!</Trans>,
+    title: <Trans>coming soon!</Trans>,
     percentage: '?',
     image: {
       width: 110,
