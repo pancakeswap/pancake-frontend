@@ -1,18 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { SECONDS_IN_YEAR } from 'config'
-import { ChainId } from '@pancakeswap/aptos-swap-sdk'
-import mainnetLpAprs from 'config/constants/lpAprs/1.json'
 import { BIG_TEN } from '@pancakeswap/utils/bigNumber'
 import { FARM_DEFAULT_DECIMALS } from 'components/Farms/constants'
-
-const getLpApr = (chainId: number) => {
-  switch (chainId) {
-    case ChainId.MAINNET:
-      return mainnetLpAprs
-    default:
-      return {}
-  }
-}
 
 /**
  * Get farm APR value in %
@@ -23,13 +12,11 @@ const getLpApr = (chainId: number) => {
  * @returns Farm Apr
  */
 export const getFarmApr = (
-  chainId: number,
   poolWeight: BigNumber,
   cakePriceUsd: BigNumber,
   poolLiquidityUsd: BigNumber,
-  farmAddress: string,
   regularCakePerSeconds: number,
-): { cakeRewardsApr: number; lpRewardsApr: number } => {
+): { cakeRewardsApr: number } => {
   const yearlyCakeRewardAllocation = poolWeight
     ? poolWeight.times(SECONDS_IN_YEAR * regularCakePerSeconds)
     : new BigNumber(NaN)
@@ -38,8 +25,7 @@ export const getFarmApr = (
   if (!cakeRewardsApr.isNaN() && cakeRewardsApr.isFinite()) {
     cakeRewardsAprAsNumber = cakeRewardsApr.div(BIG_TEN.pow(FARM_DEFAULT_DECIMALS)).toNumber()
   }
-  const lpRewardsApr = getLpApr(chainId)[farmAddress?.toLowerCase()] ?? 0
-  return { cakeRewardsApr: cakeRewardsAprAsNumber as number, lpRewardsApr }
+  return { cakeRewardsApr: cakeRewardsAprAsNumber as number }
 }
 
 export default null
