@@ -197,43 +197,41 @@ export default function CurrencyInputPanel({
       <Flex alignItems="center" justifyContent="space-between" style={{ gap: '4px' }}>
         <Flex alignItems="center">
           {beforeButton}
-          {currencyLoading ? (
-            <Skeleton variant="round" width="100px" height="24px" m="4px" />
-          ) : (
-            <CurrencySelectButton
-              zapStyle={zapStyle}
-              className="open-currency-select-button"
-              selected={!!currency}
-              onClick={() => {
-                if (!disableCurrencySelect) {
-                  onPresentCurrencyModal()
-                }
-              }}
-            >
-              <Flex alignItems="center" justifyContent="space-between">
-                {pair ? (
-                  <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
-                ) : currency ? (
-                  <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
-                ) : null}
-                {pair ? (
-                  <Text id="pair" bold>
-                    {pair?.token0.symbol}:{pair?.token1.symbol}
-                  </Text>
-                ) : (
-                  <Text id="pair" bold>
-                    {(currency && currency.symbol && currency.symbol.length > 10
-                      ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                          currency.symbol.length - 5,
-                          currency.symbol.length,
-                        )}`
-                      : currency?.symbol) || t('Select a currency')}
-                  </Text>
-                )}
-                {!disableCurrencySelect && <ChevronDownIcon />}
-              </Flex>
-            </CurrencySelectButton>
-          )}
+          <CurrencySelectButton
+            zapStyle={zapStyle}
+            className="open-currency-select-button"
+            selected={!!currency}
+            onClick={() => {
+              if (!disableCurrencySelect) {
+                onPresentCurrencyModal()
+              }
+            }}
+          >
+            <Flex alignItems="center" justifyContent="space-between">
+              {pair ? (
+                <DoubleCurrencyLogo currency0={pair.token0} currency1={pair.token1} size={16} margin />
+              ) : currency ? (
+                <CurrencyLogo currency={currency} size="24px" style={{ marginRight: '8px' }} />
+              ) : currencyLoading ? (
+                <Skeleton width="24px" height="24px" variant="circle" />
+              ) : null}
+              {currencyLoading ? null : pair ? (
+                <Text id="pair" bold>
+                  {pair?.token0.symbol}:{pair?.token1.symbol}
+                </Text>
+              ) : (
+                <Text id="pair" bold>
+                  {(currency && currency.symbol && currency.symbol.length > 10
+                    ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
+                        currency.symbol.length - 5,
+                        currency.symbol.length,
+                      )}`
+                    : currency?.symbol) || t('Select a currency')}
+                </Text>
+              )}
+              {!currencyLoading && !disableCurrencySelect && <ChevronDownIcon />}
+            </Flex>
+          </CurrencySelectButton>
           {token && tokenAddress ? (
             <Flex style={{ gap: '4px' }} ml="4px" alignItems="center">
               <CopyButton
@@ -265,7 +263,7 @@ export default function CurrencyInputPanel({
             style={{ display: 'inline', cursor: 'pointer' }}
           >
             {!hideBalance && !!currency
-              ? balance.replace('.', '')?.length > 7
+              ? balance?.replace('.', '')?.length > 7
                 ? balance
                 : t('Balance: %balance%', { balance: balance ?? t('Loading') })
               : ' -'}
