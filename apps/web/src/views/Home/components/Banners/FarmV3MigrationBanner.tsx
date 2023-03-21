@@ -126,7 +126,7 @@ const FarmV3MigrationBanner = () => {
                 {!isMobile && <ArrowForwardIcon color="white" />}
               </StyledButtonLeft>
             </NextLinkFromReactRouter>
-            <NextLinkFromReactRouter target="_blank" to="/" rel='"noopener noreferrer'>
+            <NextLinkFromReactRouter target="_blank" to="https://docs.pancakeswap.finance/" rel='"noopener noreferrer'>
               <StyledButtonRight scale={isMobile ? 'sm' : 'md'}>
                 <Text bold fontSize="16px" mr="4px">
                   {t('Guide')}
