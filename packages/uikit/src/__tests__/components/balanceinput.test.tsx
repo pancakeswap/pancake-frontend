@@ -344,6 +344,7 @@ it("renders correctly with unit prop and switchEditingUnits", () => {
       -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-textSubtle);
+      color: var(--colors-textSubtle);
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;

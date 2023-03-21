@@ -30,7 +30,7 @@ it("renders correctly", () => {
     }
 
     .c3 {
-      padding: 24px;
+      padding: 16px;
     }
 
     .c2 {
@@ -42,6 +42,16 @@ it("renders correctly", () => {
     .c4 {
       border-top: 1px solid var(--colors-cardBorder);
       padding: 24px;
+    }
+
+    @media screen and (min-width:370px) {
+
+    }
+
+    @media screen and (min-width:576px) {
+      .c3 {
+        padding: 24px;
+      }
     }
 
     <div
