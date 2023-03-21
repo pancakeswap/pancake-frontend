@@ -158,7 +158,7 @@ function PairSelectionAddLiquidity({ token0, token1 }: { token0: Token; token1: 
         <AutoRow>
           <DoubleCurrencyLogo currency0={currency0} currency1={currency1} size={20} />
           <Text ml="8px" bold>
-            {token0?.symbol}/{token1?.symbol}
+            {currency0?.symbol}/{currency1?.symbol}
           </Text>
         </AutoRow>
         <Button onClick={addLiquidityModal.onOpen}>{t('Add')}</Button>
