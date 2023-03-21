@@ -28,7 +28,7 @@ const IntroSteps = [
     description: (
       <Trans>
         Experience true decentralization with our exchange, offering you complete control over your trades in a secure
-        and easy-to-use environment.
+        and easy-to-use environment
       </Trans>
     ),
   },

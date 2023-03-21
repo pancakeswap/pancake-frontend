@@ -2165,14 +2165,14 @@
   "Enjoy Low Fees": "Enjoy Low Fees",
   "We offer the lowest fees in the industry, giving you more value for your trades": "We offer the lowest fees in the industry, giving you more value for your trades",
   "Simplified Decentralized Trading": "Simplified Decentralized Trading",
-  "Experience true decentralization with our exchange, offering you complete control over your trades in a secure and easy-to-use environment.": "Experience true decentralization with our exchange, offering you complete control over your trades in a secure and easy-to-use environment.",
+  "Experience true decentralization with our exchange, offering you complete control over your trades in a secure and easy-to-use environment": "Experience true decentralization with our exchange, offering you complete control over your trades in a secure and easy-to-use environment",
   "Earn while you Trade": "Earn while you Trade",
   "Earn CAKE tokens on most trades made on PancakeSwap. Stake for more rewards or use them in our Lottery and Pottery": "Earn CAKE tokens on most trades made on PancakeSwap. Stake for more rewards or use them in our Lottery and Pottery",
   "Welcome to PancakeSwap!": "Welcome to PancakeSwap!",
-  "has referred you to start trading on a leading multchain DEX": "has referred you to start trading on a leading multchain DEX",
+  "has referred you to start trading on PancakeSwap": "has referred you to start trading on PancakeSwap",
   "Start trading today and get a": "Start trading today and get a",
-  "discount on most trading pairs on BNB Smart Chain and Ethereum Swap, as well as a": "discount on most trading pairs on BNB Smart Chain and Ethereum Swap, as well as a",
-  "discount on most Perpetual trades": "discount on most Perpetual trades",
+  "discount on most Swap and StableSwap trading fees, as well as a": "discount on most Swap and StableSwap trading fees, as well as a",
+  "discount on most Perpetual trading fees for a limited period of time*": "discount on most Perpetual trading fees for a limited period of time*",
   "Start Now": "Start Now",
   "Affiliate with us, Empower DeFi": "Affiliate with us, Empower DeFi",
   "Join a community-driven movement to make DeFi accessible and better for everyone": "Join a community-driven movement to make DeFi accessible and better for everyone",
@@ -2205,5 +2205,7 @@
   "profit sharing %": "profit sharing %",
   "Pairs must meet the following eligibility criteria:": "Pairs must meet the following eligibility criteria:",
   "coming soon!": "coming soon!",
-  "MMs are temporarily unable to facilitate trades. Please try again later": "MMs are temporarily unable to facilitate trades. Please try again later"
+  "MMs are temporarily unable to facilitate trades. Please try again later": "MMs are temporarily unable to facilitate trades. Please try again later",
+  "I have read the": "I have read the",
+  "terms and conditions": "terms and conditions"
 }
