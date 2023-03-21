@@ -247,13 +247,13 @@ export function useDefaultsFromURLSearch():
   const { chainId } = useActiveChainId()
   const dispatch = useAppDispatch()
   const native = useNativeCurrency()
-  const { query } = useRouter()
+  const { query, isReady } = useRouter()
   const [result, setResult] = useState<
     { inputCurrencyId: string | undefined; outputCurrencyId: string | undefined } | undefined
   >()
 
   useEffect(() => {
-    if (!chainId || !native) return
+    if (!chainId || !native || !isReady) return
     const parsed = queryParametersToSwapState(query, native.symbol, CAKE[chainId]?.address ?? USDC[chainId]?.address)
 
     dispatch(
@@ -265,9 +265,8 @@ export function useDefaultsFromURLSearch():
         recipient: null,
       }),
     )
-
     setResult({ inputCurrencyId: parsed[Field.INPUT].currencyId, outputCurrencyId: parsed[Field.OUTPUT].currencyId })
-  }, [dispatch, chainId, query, native])
+  }, [dispatch, chainId, query, native, isReady])
 
   return result
 }

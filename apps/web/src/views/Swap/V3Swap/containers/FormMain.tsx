@@ -7,7 +7,7 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
-import { useSwapState } from 'state/swap/hooks'
+import { useDefaultsFromURLSearch, useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
 import { useCurrency } from 'hooks/Tokens'
 import { CommonBasesType } from 'components/SearchModal/types'
@@ -46,6 +46,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
   const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
   const maxAmountInput = maxAmountSpend(inputBalance)
+  const loadedUrlParams = useDefaultsFromURLSearch()
 
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])
   const handleTypeOutput = useCallback((value: string) => onUserInput(Field.OUTPUT, value), [onUserInput])
@@ -104,7 +105,8 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         showUSDPrice
         showMaxButton
         showCommonBases
-        loading={!isWrapping && inputLoading}
+        inputLoading={!isWrapping && inputLoading}
+        currencyLoading={!loadedUrlParams}
         label={!isTypingInput && !isWrapping ? t('From (estimated)') : t('From')}
         value={isWrapping ? typedValue : inputValue}
         maxAmount={maxAmountInput}
@@ -124,7 +126,8 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
         showUSDPrice
         showCommonBases
         showMaxButton={false}
-        loading={!isWrapping && outputLoading}
+        inputLoading={!isWrapping && outputLoading}
+        currencyLoading={!loadedUrlParams}
         label={isTypingInput && !isWrapping ? t('To (estimated)') : t('To')}
         value={isWrapping ? typedValue : outputValue}
         currency={outputCurrency}
