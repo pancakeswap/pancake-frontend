@@ -1,10 +1,14 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { Box, Modal, ModalV2, UseModalV2Props } from '@pancakeswap/uikit'
+import { AutoRow, Box, Modal, ModalV2, UseModalV2Props } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import GlobalSettings from 'components/Menu/GlobalSettings'
+import { SettingsMode } from 'components/Menu/GlobalSettings/types'
+import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import currencyId from 'utils/currencyId'
 import AddLiquidityV3 from '.'
+import { AprCalculator } from './components/AprCalculator'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
 import { SELECTOR_TYPE } from './types'
 
@@ -24,6 +28,9 @@ export function AddLiquidityV3Modal({
 
   const [currencyIdA, currencyIdB] = router.query.currency || [currencyId(currency0), currencyId(currency1)]
 
+  const baseCurrency = useCurrency(currencyIdA)
+  const quoteCurrency = useCurrency(currencyIdB)
+
   return (
     <ModalV2
       isOpen={isOpen}
@@ -33,7 +40,10 @@ export function AddLiquidityV3Modal({
             pathname: router.pathname,
             query: {
               ...router.query,
+              // it seems like using `[]` will remove the query param, but null does not
               currency: [],
+              maxPrice: [],
+              minPrice: [],
             },
           },
           undefined,
@@ -45,7 +55,20 @@ export function AddLiquidityV3Modal({
       }}
       closeOnOverlayClick
     >
-      <Modal title={t('Add Liquidity')}>
+      <Modal
+        title={t('Add Liquidity')}
+        headerRightSlot={
+          <AutoRow width="auto" gap="8px">
+            <AprCalculator
+              baseCurrency={baseCurrency}
+              quoteCurrency={quoteCurrency}
+              feeAmount={feeAmount}
+              showTitle={false}
+            />
+            <GlobalSettings mode={SettingsMode.SWAP_LIQUIDITY} />
+          </AutoRow>
+        }
+      >
         <Box maxWidth="856px">
           <LiquidityFormProvider>
             <AddLiquidityV3

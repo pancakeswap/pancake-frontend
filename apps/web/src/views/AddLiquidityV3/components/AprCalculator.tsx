@@ -19,13 +19,14 @@ interface Props {
   baseCurrency: Currency
   quoteCurrency: Currency
   feeAmount: number
+  showTitle?: boolean
 }
 
 const AprButtonContainer = styled(Flex)`
   cursor: pointer;
 `
 
-export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props) {
+export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitle = true }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
 
@@ -81,9 +82,11 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount }: Props)
   return (
     <>
       <Flex flexDirection="column">
-        <Text color="textSubtle" fontSize="12px">
-          {t('APR')}
-        </Text>
+        {showTitle && (
+          <Text color="textSubtle" fontSize="12px">
+            {t('APR')}
+          </Text>
+        )}
         <AprButtonContainer onClick={() => setOpen(true)} alignItems="center">
           <TooltipText>{apr.toSignificant(2)}%</TooltipText>
           <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>

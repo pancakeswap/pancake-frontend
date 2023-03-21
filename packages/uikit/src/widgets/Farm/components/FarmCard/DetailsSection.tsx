@@ -63,7 +63,7 @@ export const DetailsSection: React.FC<React.PropsWithChildren<ExpandableSectionP
       </Flex>
       {!removed && (
         <Flex mb="2px" justifyContent={alignLinksToRight ? "flex-end" : "flex-start"}>
-          <StyledLinkExternal href={addLiquidityUrl}>{t("Get %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
+          <StyledLinkExternal href={addLiquidityUrl}>{t("Add %symbol%", { symbol: lpLabel })}</StyledLinkExternal>
         </Flex>
       )}
       {infoAddress && (

@@ -223,7 +223,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
               <StakeContainer>
                 <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
-                  {t('Get %symbol%', { symbol: lpLabel })}
+                  {t('Add %symbol%', { symbol: lpLabel })}
                 </StyledLinkExternal>
               </StakeContainer>
             </Flex>
@@ -344,7 +344,7 @@ export const ActionPanelV2: React.FunctionComponent<React.PropsWithChildren<Acti
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
               <StakeContainer>
                 <StyledLinkExternal href={`/v2/add/${liquidityUrlPathParts}`}>
-                  {t('Get %symbol%', { symbol: lpLabel })}
+                  {t('Add %symbol%', { symbol: lpLabel })}
                 </StyledLinkExternal>
               </StakeContainer>
             </Flex>

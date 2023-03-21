@@ -1,4 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
+import partition_ from 'lodash/partition'
 import { AutoRow, Box, Flex, PreTitle } from '@pancakeswap/uikit'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
 import { usePool } from 'hooks/v3/usePools'
@@ -52,9 +53,9 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
           <PreTitle fontSize="12px" color="textSubtle" m="0 0 8px 0">
             {t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: unstakedPositions.length })}
           </PreTitle>
-          <AutoRow width="100%" gap="16px">
-            {unstakedPositions
-              .sort((a, _b) => (isPositionOutOfRange(pool?.tickCurrent, a) ? 1 : 0))
+          <AutoRow width="100%" gap="16px" alignItems="stretch">
+            {partition_(unstakedPositions, (position) => !isPositionOutOfRange(pool?.tickCurrent, position))
+              .flat()
               .map((position) => (
                 <SingleFarmV3Card
                   farm={farm}

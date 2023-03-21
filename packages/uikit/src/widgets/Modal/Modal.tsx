@@ -50,6 +50,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
   bodyPadding = "24px",
   headerBackground = "transparent",
   minWidth = "320px",
+  headerRightSlot,
   ...props
 }) => {
   const context = useContext(ModalV2Context);
@@ -62,6 +63,7 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
           {onBack && <ModalBackButton onBack={onBack} />}
           <Heading>{title}</Heading>
         </ModalTitle>
+        {headerRightSlot}
         {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
       </ModalHeader>
       <ModalBody p={bodyPadding}>{children}</ModalBody>
