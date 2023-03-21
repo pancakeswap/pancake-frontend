@@ -1,4 +1,3 @@
-import React from "react";
 import { renderWithProvider } from "../../testHelpers";
 import { Svg } from "../../components/Svg";
 
