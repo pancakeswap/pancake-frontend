@@ -133,32 +133,6 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
           title: d.title,
         });
       });
-    //     newSeries.createPriceLine({
-    //       price: 88,
-    //       color: "#31D0AA",
-    //       lineWidth: 2,
-    //       lineStyle: LineStyle.Dashed,
-    //       axisLabelVisible: true,
-    //       title: "max price",
-    //     });
-
-    // newSeries.createPriceLine({
-    //   price: 87.5,
-    //   color: "#ED4B9E",
-    //   lineWidth: 2,
-    //   lineStyle: LineStyle.Dashed,
-    //   axisLabelVisible: true,
-    //   title: "min price",
-    // });
-
-    // newSeries.createPriceLine({
-    //   price: 87.75,
-    //   color: "#BDC2C4",
-    //   lineWidth: 2,
-    //   lineStyle: LineStyle.Dashed,
-    //   axisLabelVisible: true,
-    //   title: "mid price",
-    // });
 
     chart.timeScale().fitContent();
 
