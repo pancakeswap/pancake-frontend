@@ -13,8 +13,9 @@ import {
   useTooltip,
   promotedGradient,
 } from '@pancakeswap/uikit'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
+import { useAllLists } from 'state/lists/hooks'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
 import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
@@ -71,9 +72,30 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
 }
 
 export function useTokenRisk(token?: Token) {
-  return useSWRImmutable(token && ['risk', token.chainId, token.address], () => {
-    return fetchRiskToken(token.address, token.chainId)
-  })
+  const lists = useAllLists()
+  const tokenInLists = useMemo(() => {
+    if (!token?.address) return false
+    const tokenLists = Object.values(lists)
+      .map((list) => list?.current?.tokens)
+      .filter(Boolean)
+    if (!tokenLists.length) return null
+    return tokenLists.some((tokenInfoList) => {
+      return tokenInfoList.some((tokenInfo) => tokenInfo.address === token.address)
+    })
+  }, [lists, token?.address])
+  return useSWRImmutable(
+    token && token.address && tokenInLists !== null && ['risk', token.chainId, token.address],
+    () => {
+      return tokenInLists
+        ? fetchRiskToken(token.address, token.chainId)
+        : {
+            address: token?.address,
+            chainId: token?.chainId,
+            riskLevel: TOKEN_RISK.UNKNOWN,
+            scannedTs: 0,
+          }
+    },
+  )
 }
 
 const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {
@@ -88,6 +110,7 @@ const TOKEN_RISK_T = {
   [TOKEN_RISK.MEDIUM]: <Trans>Medium Risk</Trans>,
   [TOKEN_RISK.HIGH]: <Trans>High Risk</Trans>,
   [TOKEN_RISK.VERY_HIGH]: <Trans>Very High Risk</Trans>,
+  [TOKEN_RISK.UNKNOWN]: <Trans>Unknown Risk</Trans>,
 } as const
 
 const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
@@ -122,11 +145,19 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     return (
       <Flex justifyContent="flex-end">
         <div ref={targetRef} style={{ userSelect: 'none' }}>
-          <Tag variant={data.riskLevel > TOKEN_RISK.MEDIUM ? 'failure' : 'primary'}>
+          <Tag
+            variant={
+              data.riskLevel === TOKEN_RISK.UNKNOWN
+                ? 'textDisabled'
+                : data.riskLevel > TOKEN_RISK.MEDIUM
+                ? 'failure'
+                : 'primary'
+            }
+          >
             <Text bold small color="invertedContrast">
               {hasRiskValue}
             </Text>
-            {tooltipVisible && tooltip}
+            {data.riskLevel !== TOKEN_RISK.UNKNOWN && tooltipVisible && tooltip}
             <Flex>
               <HelpIcon ml="4px" width="16px" height="16px" color="invertedContrast" />
             </Flex>
