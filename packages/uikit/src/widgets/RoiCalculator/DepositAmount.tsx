@@ -59,22 +59,22 @@ export function DepositUsdAmountInput({
 
   return (
     <>
-      <Box mb="0.5em">
+      <Box mb="0.5em" width="100%">
         <StyledBalanceInput value={value} onUserInput={onChange} unit={<Text color="textSubtle">{t("USD")}</Text>} />
       </Box>
       <Flex>
         <Flex flex="3" mr="0.25em">
-          <StyledButton variant="tertiary" scale="xs" onClick={() => onChange("100")}>
+          <StyledButton variant={value === "100" ? "primary" : "tertiary"} scale="xs" onClick={() => onChange("100")}>
             $100
           </StyledButton>
         </Flex>
         <Flex flex="3" mr="0.25em">
-          <StyledButton variant="tertiary" scale="xs" onClick={() => onChange("1000")}>
+          <StyledButton variant={value === "1000" ? "primary" : "tertiary"} scale="xs" onClick={() => onChange("1000")}>
             $1,000
           </StyledButton>
         </Flex>
         <Flex flex="4">
-          <StyledButton variant="tertiary" scale="xs" mr="0.25em" onClick={onMax}>
+          <StyledButton variant={value === max ? "primary" : "tertiary"} scale="xs" mr="0.25em" onClick={onMax}>
             {maxLabel || t("Max")}
           </StyledButton>
           <QuestionHelper text="Tips" />

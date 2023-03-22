@@ -269,11 +269,11 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const farmsList = useCallback(
     (farmsToDisplay: V2AndV3Farms): V2StakeValueAndV3Farm[] => {
       const farmsToDisplayWithAPR: any = farmsToDisplay.map((farm) => {
-        if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
+        if (farm.version === 3) {
           return farm
         }
 
-        if (farm.version === 3) {
+        if (!farm.quoteTokenAmountTotal || !farm.quoteTokenPriceBusd) {
           return farm
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)

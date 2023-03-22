@@ -17,8 +17,6 @@ export type FarmsDynamicDataResult = {
 export type FarmsDynamicDataResultV2 = {
   lmPool: string
   lmPoolLiquidity: string
-  tokenAmountTotal: string
-  quoteTokenAmountTotal: string
   tokenPriceVsQuote: string
   poolWeight: string
   multiplier: string
