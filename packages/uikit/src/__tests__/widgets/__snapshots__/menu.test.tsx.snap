@@ -109,10 +109,6 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c31:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
-}
-
 .c31:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
@@ -167,10 +163,6 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
   width: sm;
   height: sm;
-}
-
-.c35:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
 }
 
 .c35:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -833,6 +825,26 @@ exports[`renders correctly 1`] = `
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+
+}
+
+@media (hover:hover) {
+  .c31:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+  .c35:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
 
 }
 
@@ -1927,10 +1939,6 @@ exports[`renders correctly 1`] = `
   height: sm;
 }
 
-.c49:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
-}
-
 .c49:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
@@ -1985,10 +1993,6 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c45:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
-}
-
 .c45:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
@@ -2040,10 +2044,6 @@ exports[`renders correctly 1`] = `
   padding: 0 16px;
   background-color: var(--colors-primary);
   color: var(--colors-invertedContrast);
-}
-
-.c56:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
 }
 
 .c56:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -2556,6 +2556,28 @@ exports[`renders correctly 1`] = `
   .c44 {
     -webkit-filter: none !important;
     filter: none !important;
+  }
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
+  .c49:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+  .c45:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+  .c56:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
   }
 }
 
@@ -4189,6 +4211,22 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
 
 }
 

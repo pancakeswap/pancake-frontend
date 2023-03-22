@@ -65,10 +65,6 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c6:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
-    }
-
     .c6:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
@@ -161,6 +157,12 @@ it("renders correctly", () => {
       .c8 {
         -webkit-filter: none !important;
         filter: none !important;
+      }
+    }
+
+    @media (hover:hover) {
+      .c6:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+        opacity: 0.65;
       }
     }
 
