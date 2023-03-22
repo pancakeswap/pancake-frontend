@@ -3,9 +3,12 @@ import { Currency, JSBI, ChainId, Token, WNATIVE, ZERO } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool, PoolType, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import { FeeAmount, computePoolAddress, Tick, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { gql } from 'graphql-request'
-import { v3Clients } from 'utils/graphql'
 import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
+
+import { v3Clients } from 'utils/graphql'
+import { metric } from 'utils/metric'
+
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
 type Pair = [Currency, Currency]
@@ -301,8 +304,7 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   const poolsWithTicks = useSWR(
     key && pools ? ['v3_pool_ticks', key] : null,
     async () => {
-      const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
-      console.time(label)
+      const label = metric.time(`[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`)
       const poolTicks = await Promise.all(
         pools.map(async ({ token0, token1, fee }) => {
           return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
@@ -313,8 +315,8 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
           })
         }),
       )
-      console.timeLog(label, poolTicks)
-      console.timeEnd(label)
+      metric.timeLog(label, poolTicks)
+      metric.timeEnd(label)
       return {
         pools: pools.map((pool, i) => ({
           ...pool,
@@ -369,9 +371,8 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
           blockNumber,
         }
       }
-      const label = `[V3_POOLS_SUBGRAPH] ${key}`
-      console.time(label)
-      console.timeLog(label, pairs)
+      const label = metric.time(`[V3_POOLS_SUBGRAPH] ${key}`)
+      metric.timeLog(label, pairs)
       const metaMap = new Map<string, V3PoolMeta>()
       for (const pair of pairs) {
         const v3Metas = getV3PoolMetas(pair)
@@ -401,8 +402,8 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
           tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
         }
       })
-      console.timeLog(label, pools)
-      console.timeEnd(label)
+      metric.timeLog(label, pools)
+      metric.timeEnd(label)
       return {
         pools,
         key,

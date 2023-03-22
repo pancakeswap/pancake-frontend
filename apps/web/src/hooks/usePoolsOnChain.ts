@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
 
 import { provider } from 'utils/wagmi'
+import { metric } from 'utils/metric'
 
 interface Options {
   blockNumber?: number
@@ -53,11 +54,10 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     const poolState = useSWR(
       enabled && blockNumber && key && pairs ? [poolType, 'pools', key] : null,
       async () => {
-        const metricLabel = `[POOLS_ONCHAIN](${poolType}) ${key}`
-        console.time(metricLabel)
+        const label = metric.time(`[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber.toString()}`)
         const pools = await getPoolsOnChain(pairs, provider, blockNumber)
-        console.timeLog(metricLabel, pools)
-        console.timeEnd(metricLabel)
+        metric.timeLog(label, pools)
+        metric.timeEnd(label)
 
         return {
           pools,

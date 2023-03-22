@@ -6,9 +6,10 @@ import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
 
 import { provider } from 'utils/wagmi'
+import { metric } from 'utils/metric'
 import { useCurrentBlock } from 'state/block/hooks'
-
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
+
 import {
   useCommonPools as useCommonPoolsWithTicks,
   useCommonPoolsLite,
@@ -144,11 +145,12 @@ function bestTradeHookFactory({
         : null,
       async () => {
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
-        const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
-          amount.currency.symbol
-        } -> ${currency.symbol}, tradeType ${tradeType}`
-        console.time(label)
-        console.timeLog(label, candidatePools)
+        const label = metric.time(
+          `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${amount.currency.symbol} -> ${
+            currency.symbol
+          }, tradeType ${tradeType}`,
+        )
+        metric.timeLog(label, candidatePools)
         const res = await SmartRouter.getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
             ? JSBI.BigInt(gasPrice)
@@ -162,7 +164,7 @@ function bestTradeHookFactory({
           quoterOptimization,
         })
         if (res) {
-          console.timeLog(
+          metric.timeLog(
             label,
             res.inputAmount.toExact(),
             res.inputAmount.currency.symbol,
@@ -172,8 +174,8 @@ function bestTradeHookFactory({
             res.routes,
           )
         }
-        console.timeLog(label, res)
-        console.timeEnd(label)
+        metric.timeLog(label, res)
+        metric.timeEnd(label)
         return res
       },
       {
