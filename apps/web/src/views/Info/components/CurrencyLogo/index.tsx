@@ -32,7 +32,7 @@ export const CurrencyLogo: React.FC<
     address,
   )}.png`
 
-  return <StyledLogo size={size} srcs={[src, srcFromPCS]} alt="token logo" {...rest} />
+  return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" {...rest} />
 }
 
 const DoubleCurrencyWrapper = styled.div`
