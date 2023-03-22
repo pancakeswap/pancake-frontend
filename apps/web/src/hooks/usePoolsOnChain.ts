@@ -9,6 +9,7 @@ import { provider } from 'utils/wagmi'
 
 interface Options {
   blockNumber?: number
+  enabled?: boolean
 }
 
 type OnChainProvider = ({ chainId }: { chainId?: ChainId }) => IProvider
@@ -30,7 +31,11 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     blockNumber: BigintIsh,
   ) => Promise<TPool[]>,
 ) {
-  return function useCandidatePools(currencyA?: Currency, currencyB?: Currency, { blockNumber }: Options = {}) {
+  return function useCandidatePools(
+    currencyA?: Currency,
+    currencyB?: Currency,
+    { blockNumber, enabled = true }: Options = {},
+  ) {
     const key = useMemo(() => {
       if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
         return ''
@@ -46,7 +51,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     }, [currencyA, currencyB])
 
     const poolState = useSWR(
-      blockNumber && key && pairs ? [poolType, 'pools', key] : null,
+      enabled && blockNumber && key && pairs ? [poolType, 'pools', key] : null,
       async () => {
         const metricLabel = `[POOLS_ONCHAIN](${poolType}) ${key}`
         console.time(metricLabel)

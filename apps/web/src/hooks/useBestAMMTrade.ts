@@ -37,11 +37,24 @@ interface Options {
   v2Swap?: boolean
   v3Swap?: boolean
   stableSwap?: boolean
+  enabled?: boolean
 }
 
-export function useBestAMMTrade(params: Options) {
-  const bestTradeFromOffchain = useBestAMMTradeFromOffchain(params)
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoter(params)
+interface useBestAMMTradeOptions extends Options {
+  type?: 'offchain' | 'quoter' | 'all'
+}
+
+export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
+  const isOffCHainEnabled = useMemo(
+    () =>
+      (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function' && type === 'offchain') ||
+      type === 'all',
+    [type],
+  )
+  const isQuoterEnabled = useMemo(() => type === 'quoter' || type === 'all', [type])
+
+  const bestTradeFromOffchain = useBestAMMTradeFromOffchain({ ...params, enabled: isOffCHainEnabled })
+  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({ ...params, enabled: isQuoterEnabled })
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
     const { trade: tradeFromQuoter } = bestTradeFromQuoter
@@ -81,6 +94,7 @@ function bestTradeHookFactory({
     v2Swap = true,
     v3Swap = true,
     stableSwap = true,
+    enabled = true,
   }: Options) {
     const { gasPrice } = useFeeDataWithGasPrice()
 
@@ -115,7 +129,7 @@ function bestTradeHookFactory({
       isValidating,
       mutate,
     } = useSWR(
-      amount && currency && candidatePools && !loading && deferQuotient
+      amount && currency && candidatePools && !loading && deferQuotient && enabled
         ? [
             key,
             currency.chainId,

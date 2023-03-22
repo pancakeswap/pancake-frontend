@@ -19,6 +19,7 @@ export interface V3PoolsHookParams {
   key?: string
 
   blockNumber?: number
+  enabled?: boolean
 }
 
 export interface V3PoolsResult {
@@ -337,13 +338,13 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   return poolsWithTicks
 }
 
-export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber }: V3PoolsHookParams = {}) {
+export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabled = true }: V3PoolsHookParams = {}) {
   const result = useSWR<{
     pools: SubgraphPool[]
     key?: string
     blockNumber?: number
   }>(
-    key && pairs?.length && [key],
+    enabled && key && pairs?.length && [key],
     async () => {
       const { chainId } = pairs[0][0]
       const client = v3Clients[chainId]

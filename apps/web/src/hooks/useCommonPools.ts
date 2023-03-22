@@ -26,13 +26,14 @@ export interface PoolsWithState {
 export interface CommonPoolsParams {
   blockNumber?: number
   allowInconsistentBlock?: boolean
+  enabled?: boolean
 }
 
 function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
   return function useCommonPools(
     currencyA?: Currency,
     currencyB?: Currency,
-    { blockNumber: latestBlockNumber, allowInconsistentBlock = false }: CommonPoolsParams = {},
+    { blockNumber: latestBlockNumber, allowInconsistentBlock = false, enabled = true }: CommonPoolsParams = {},
   ): PoolsWithState {
     const { chainId } = useActiveChainId()
     const [blockNumber, setBlockNumber] = useState<number | null | undefined>(null)
@@ -41,19 +42,19 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
       loading: v3Loading,
       syncing: v3Syncing,
       blockNumber: v3BlockNumber,
-    } = useV3Pools(currencyA, currencyB, { blockNumber })
+    } = useV3Pools(currencyA, currencyB, { blockNumber, enabled })
     const {
       pools: v2Pools,
       loading: v2Loading,
       syncing: v2Syncing,
       blockNumber: v2BlockNumber,
-    } = useV2CandidatePools(currencyA, currencyB, { blockNumber })
+    } = useV2CandidatePools(currencyA, currencyB, { blockNumber, enabled })
     const {
       pools: stablePools,
       loading: stableLoading,
       syncing: stableSyncing,
       blockNumber: stableBlockNumber,
-    } = useStableCandidatePools(currencyA, currencyB, { blockNumber })
+    } = useStableCandidatePools(currencyA, currencyB, { blockNumber, enabled })
 
     const consistentBlockNumber = useMemo(
       () =>
