@@ -2506,4 +2506,12 @@ export const bscTokens = {
     'Capsule Coin',
     'https://www.ternoa.network/en',
   ),
+  lvl: new ERC20Token(
+    ChainId.BSC,
+    '0xB64E280e9D1B5DbEc4AcceDb2257A87b400DB149',
+    18,
+    'LVL',
+    'Level Token',
+    'https://level.finance/',
+  ),
 }

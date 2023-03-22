@@ -155,9 +155,14 @@ export const parseMMTrade = (
   return bestTradeWithMM
 }
 
-export const shouldShowMMError = (message?: string) => {
+export const shouldShowMMSpecificError = (message?: string) => {
   if (message?.includes('Amount is below')) return true
   if (message?.includes('Amount is above')) return true
+  return false
+}
+
+export const shouldShowMMLiquidityError = (message?: string) => {
+  if (message?.includes('not found')) return true
   return false
 }
 
