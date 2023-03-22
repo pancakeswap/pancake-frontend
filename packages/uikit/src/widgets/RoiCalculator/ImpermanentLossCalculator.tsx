@@ -49,7 +49,24 @@ interface Props {
   cakePrice?: string;
   cakeApy?: number;
   usdValue?: string;
+  setEditCakePrice: (cakePrice: number) => void;
 }
+
+const getCakeAssetsByApy = (
+  chainId: number,
+  cakeApy: number,
+  cakePrice_: string,
+  usdValue: string,
+  modifiedCakePrice?: string
+) => {
+  const cakePrice = modifiedCakePrice || cakePrice_;
+  return {
+    currency: CAKE[chainId as keyof typeof CAKE],
+    amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 / +cakePrice_ : Infinity,
+    price: cakePrice,
+    value: Number.isFinite(cakeApy) ? ((+usdValue * cakeApy) / 100) * (+cakePrice / +cakePrice_) : Infinity,
+  };
+};
 
 export function ImpermanentLossCalculator({
   tickLower,
@@ -64,6 +81,7 @@ export function ImpermanentLossCalculator({
   cakePrice = "0",
   cakeApy,
   usdValue,
+  setEditCakePrice,
 }: Props) {
   const { t } = useTranslation();
   const [on, setOn] = useState(false);
@@ -95,15 +113,7 @@ export function ImpermanentLossCalculator({
   const exitAssets = useMemo<Asset[] | undefined>(
     () =>
       assets && isFarm && currencyA && currencyA.chainId in CAKE && cakePrice && cakeApy && usdValue
-        ? [
-            ...assets,
-            {
-              currency: CAKE[currencyA.chainId as keyof typeof CAKE],
-              amount: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 / +cakePrice : Infinity,
-              price: parseFloat(cakePrice).toFixed(2),
-              value: Number.isFinite(cakeApy) ? (+usdValue * cakeApy) / 100 : Infinity,
-            },
-          ]
+        ? [...assets, getCakeAssetsByApy(currencyA.chainId, cakeApy, cakePrice, usdValue)]
         : assets,
     [assets, cakeApy, cakePrice, currencyA, isFarm, usdValue]
   );
@@ -201,24 +211,22 @@ export function ImpermanentLossCalculator({
       }
       const amountAStr = adjustedAmountA.toExact();
       const amountBStr = adjustedAmountB.toExact();
-      let adjusted = [
+      let adjusted: Asset[] = [
         { ...assetA, amount: amountAStr, value: parseFloat(amountAStr) * parseFloat(priceA) },
         { ...assetB, amount: amountBStr, value: parseFloat(amountBStr) * parseFloat(priceB) },
       ];
-      if (maybeAssetCake) {
+      if (maybeAssetCake && cakeApy && usdValue) {
         adjusted = [
           ...adjusted,
-          {
-            ...maybeAssetCake,
-            amount: String(maybeAssetCake.amount),
-            value: +maybeAssetCake.price * +maybeAssetCake.amount,
-          },
+          getCakeAssetsByApy(assetCurrencyA.chainId, cakeApy, cakePrice, usdValue, String(maybeAssetCake.price)),
         ];
+
+        setEditCakePrice(+maybeAssetCake.price);
       }
 
       return adjusted;
     },
-    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue]
+    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue, cakeApy, cakePrice, setEditCakePrice]
   );
 
   const updateEntry = useCallback(
@@ -232,12 +240,16 @@ export function ImpermanentLossCalculator({
   );
 
   useEffect(() => {
-    setEntry(assets);
-  }, [assets]);
+    if (assets) {
+      setEntry((s) => (s ? getPriceAdjustedAssets(s) : assets));
+    }
+  }, [assets, getPriceAdjustedAssets]);
 
   useEffect(() => {
-    setExit(exitAssets);
-  }, [exitAssets]);
+    if (exitAssets) {
+      setExit((s) => (s ? getPriceAdjustedAssets(s) : exitAssets));
+    }
+  }, [exitAssets, getPriceAdjustedAssets]);
 
   if (!assets?.length) {
     return null;

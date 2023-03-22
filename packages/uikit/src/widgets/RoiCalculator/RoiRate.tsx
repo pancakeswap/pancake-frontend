@@ -31,7 +31,7 @@ export function RoiRate({ usdAmount = 0, roiPercent }: Props) {
               <Text fontSize="24px" bold>
                 $
               </Text>
-              <RoiDollarAmount fontSize="24px" bold fadeOut={usdAmount > TRILLION}>
+              <RoiDollarAmount fontSize="24px" bold fadeOut={usdAmount > TRILLION} ellipsis>
                 {usdAmount.toLocaleString("en", {
                   minimumFractionDigits: usdAmount > MILLION ? 0 : 2,
                   maximumFractionDigits: usdAmount > MILLION ? 0 : 2,
@@ -45,6 +45,7 @@ export function RoiRate({ usdAmount = 0, roiPercent }: Props) {
                 display="inline-block"
                 maxWidth="100%"
                 style={{ lineBreak: "anywhere" }}
+                ellipsis
               >
                 (
                 {roiPercent?.toLocaleString("en", {

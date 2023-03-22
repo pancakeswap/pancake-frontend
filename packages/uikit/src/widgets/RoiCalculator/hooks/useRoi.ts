@@ -14,6 +14,7 @@ interface Params extends Omit<FeeParams, "amount" | "currency"> {
   amountA?: CurrencyAmount<Currency>;
   amountB?: CurrencyAmount<Currency>;
   cakeApr?: number;
+  editCakeApr?: number;
   cakePrice?: number;
 }
 
@@ -32,6 +33,7 @@ export function useRoi({
   stakeFor = 365,
   compoundOn,
   cakeApr,
+  editCakeApr,
   ...rest
 }: Params) {
   const fee24h = useFee24h({
@@ -59,6 +61,7 @@ export function useRoi({
   const fee = useMemo(() => decimalToFraction(reward), [reward]);
 
   const cakeApy = cakeApr && getApy(cakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
+  const editCakeApy = editCakeApr && getApy(editCakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
 
   return {
     fee,
@@ -66,6 +69,7 @@ export function useRoi({
     apr,
     apy,
     cakeApy,
+    editCakeApy,
   };
 }
 

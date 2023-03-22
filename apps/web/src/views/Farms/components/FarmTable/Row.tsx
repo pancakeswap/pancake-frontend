@@ -13,7 +13,6 @@ import {
   useMatchBreakpoints,
   V3DesktopColumnSchema,
 } from '@pancakeswap/uikit'
-import { ErrorBoundary } from 'components/ErrorBoundary'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { v3PromotionFarms, V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
@@ -335,7 +334,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
   }
 
   return (
-    <ErrorBoundary fallback={<>{/* let's wrap an boundary just in case something went wrong in mainnet */}</>}>
+    <>
       {handleRenderRow()}
       {shouldRenderChild && (
         <tr>
@@ -348,7 +347,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
           </td>
         </tr>
       )}
-    </ErrorBoundary>
+    </>
   )
 }
 

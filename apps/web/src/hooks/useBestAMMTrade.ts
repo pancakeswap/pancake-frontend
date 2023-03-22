@@ -48,8 +48,9 @@ interface useBestAMMTradeOptions extends Options {
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const isOffCHainEnabled = useMemo(
     () =>
-      (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function' && type === 'offchain') ||
-      type === 'all',
+      typeof window !== 'undefined' &&
+      typeof window.requestIdleCallback === 'function' &&
+      (type === 'offchain' || type === 'all'),
     [type],
   )
   const isQuoterEnabled = useMemo(() => type === 'quoter' || type === 'all', [type])

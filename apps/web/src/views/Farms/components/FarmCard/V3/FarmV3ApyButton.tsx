@@ -175,30 +175,32 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           {displayApr}%
         </FarmUI.FarmApyButton>
       )}
-      <RoiCalculatorModalV2
-        {...roiModal}
-        maxLabel={existingPosition_ ? t('My Position') : undefined}
-        closeOnOverlayClick
-        depositAmountInUsd={depositUsdAsBN?.toString()}
-        max={existingPosition_ && depositUsdAsBN?.toString()}
-        balanceA={balanceA}
-        balanceB={balanceB}
-        price={price}
-        currencyA={baseCurrency}
-        currencyB={quoteCurrency}
-        currencyAUsdPrice={currencyAUsdPrice}
-        currencyBUsdPrice={currencyBUsdPrice}
-        sqrtRatioX96={sqrtRatioX96}
-        liquidity={pool?.liquidity}
-        feeAmount={feeAmount}
-        ticks={data}
-        volume24H={volume24H}
-        priceUpper={priceUpper}
-        priceLower={priceLower}
-        isFarm
-        cakePrice={cakePrice.toString()}
-        cakeAprFactor={cakeAprFactor}
-      />
+      {cakePrice && cakeAprFactor && (
+        <RoiCalculatorModalV2
+          {...roiModal}
+          maxLabel={existingPosition_ ? t('My Position') : undefined}
+          closeOnOverlayClick
+          depositAmountInUsd={depositUsdAsBN?.toString()}
+          max={existingPosition_ && depositUsdAsBN?.toString()}
+          balanceA={balanceA}
+          balanceB={balanceB}
+          price={price}
+          currencyA={baseCurrency}
+          currencyB={quoteCurrency}
+          currencyAUsdPrice={currencyAUsdPrice}
+          currencyBUsdPrice={currencyBUsdPrice}
+          sqrtRatioX96={sqrtRatioX96}
+          liquidity={pool?.liquidity}
+          feeAmount={feeAmount}
+          ticks={data}
+          volume24H={volume24H}
+          priceUpper={priceUpper}
+          priceLower={priceLower}
+          isFarm
+          cakePrice={cakePrice.toString()}
+          cakeAprFactor={cakeAprFactor}
+        />
+      )}
     </>
   )
 }

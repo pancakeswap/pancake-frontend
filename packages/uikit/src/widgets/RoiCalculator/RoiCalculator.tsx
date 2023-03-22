@@ -136,6 +136,10 @@ export function RoiCalculator({
     return String(Math.max(maxA, maxB));
   }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice, max]);
 
+  const [editCakePrice, setEditCakePrice] = useState<number | null>(null);
+
+  const cakePriceDiffPercent = props.isFarm && props.cakePrice && editCakePrice && editCakePrice / +props.cakePrice;
+
   const derivedCakeApr = useMemo(() => {
     if (
       !currencyB ||
@@ -173,7 +177,12 @@ export function RoiCalculator({
     }
   }, [currencyB, priceRange, sqrtRatioX96, props.isFarm, cakeAprFactor, amountA, tickCurrent, usdValue]);
 
-  const { fee, rate, apr, apy, cakeApy } = useRoi({
+  const editedCakeApr =
+    derivedCakeApr && typeof cakePriceDiffPercent === "number"
+      ? derivedCakeApr.times(cakePriceDiffPercent)
+      : derivedCakeApr;
+
+  const { fee, rate, apr, apy, cakeApy, editCakeApy } = useRoi({
     amountA,
     amountB,
     currencyAUsdPrice,
@@ -188,11 +197,12 @@ export function RoiCalculator({
     stakeFor: spanIndexToSpan[spanIndex],
     compoundOn,
     cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
+    editCakeApr: props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined,
   });
 
-  const totalRate = parseFloat(rate.toSignificant(6)) + (cakeApy ?? 0) / 100;
+  const totalRate = parseFloat(rate.toSignificant(6)) + (editCakeApy ?? 0) / 100;
   const lpReward = parseFloat(fee.toSignificant(6));
-  const farmReward = props.isFarm && cakeApy ? (cakeApy * +usdValue) / 100 : 0;
+  const farmReward = props.isFarm && editCakeApy ? (editCakeApy * +usdValue) / 100 : 0;
   const totalRoi = lpReward + farmReward;
 
   const depositSection = (
@@ -302,6 +312,7 @@ export function RoiCalculator({
           usdValue={usdValue}
           cakeApy={cakeApy}
           cakePrice={props.isFarm ? props.cakePrice : undefined}
+          setEditCakePrice={setEditCakePrice}
         />
         <AnimatedArrow state={{}} />
         <RoiRate usdAmount={totalRoi} roiPercent={totalRate} />
@@ -313,7 +324,7 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={props.isFarm ? derivedCakeApr?.toFixed(2) : undefined}
+        farmApr={props.isFarm ? (editedCakeApr ? editedCakeApr.toFixed(2) : derivedCakeApr?.toFixed(2)) : undefined}
         farmReward={farmReward}
         isFarm={props.isFarm}
       />
