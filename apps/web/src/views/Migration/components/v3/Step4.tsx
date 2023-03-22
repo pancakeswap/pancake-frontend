@@ -163,7 +163,9 @@ function PairSelectionAddLiquidity({ token0, token1 }: { token0: Token; token1: 
         </AutoRow>
         <Button onClick={addLiquidityModal.onOpen}>{t('Add')}</Button>
       </Flex>
-      <AddLiquidityV3Modal {...addLiquidityModal} currency0={currency0} currency1={currency1} />
+      {addLiquidityModal.isOpen && (
+        <AddLiquidityV3Modal {...addLiquidityModal} currency0={currency0} currency1={currency1} />
+      )}
     </LightGreyCard>
   )
 }

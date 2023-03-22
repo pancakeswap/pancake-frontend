@@ -7,7 +7,8 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import currencyId from 'utils/currencyId'
-import { useEffect } from 'react'
+import { useProvider } from 'wagmi'
+import { useCallback, useEffect } from 'react'
 import { AprCalculator } from './components/AprCalculator'
 import { UniversalAddLiquidity } from '.'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
@@ -46,27 +47,37 @@ export function AddLiquidityV3Modal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen])
 
+  const dismiss = useCallback(() => {
+    onDismiss?.()
+    setTimeout(() => {
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {},
+        },
+        undefined,
+        {
+          shallow: true,
+        },
+      )
+    })
+  }, [onDismiss, router])
+
+  const provider = useProvider()
+
   return (
-    <ModalV2
-      isOpen={isOpen}
-      onDismiss={() => {
-        onDismiss?.()
-        setTimeout(() => {
-          router.replace(
-            {
-              pathname: router.pathname,
-              query: {},
-            },
-            undefined,
-            {
-              shallow: true,
-            },
-          )
-        })
-      }}
-      closeOnOverlayClick
-    >
-      <LiquidityFormProvider>
+    <ModalV2 isOpen={isOpen} onDismiss={dismiss} closeOnOverlayClick>
+      <LiquidityFormProvider
+        onAddLiquidityCallback={(hash) => {
+          if (hash) {
+            provider.waitForTransaction(hash).then(() => {
+              dismiss()
+            })
+          } else {
+            dismiss()
+          }
+        }}
+      >
         <Modal
           title={t('Add Liquidity')}
           headerRightSlot={

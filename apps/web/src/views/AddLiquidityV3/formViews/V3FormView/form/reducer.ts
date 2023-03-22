@@ -89,7 +89,15 @@ export const createFormAtom = () => atomWithReducer(initialState, reducer)
 
 const LiquidityAtomContext = createContext({
   formAtom: createFormAtom(),
+  onAddLiquidityCallback: (_hash: string) => {
+    //
+  },
 })
+
+export function useV3FormAddLiquidityCallback() {
+  const ctx = useContext(LiquidityAtomContext)
+  return ctx.onAddLiquidityCallback
+}
 
 export const LiquidityAtomProvider = LiquidityAtomContext.Provider
 

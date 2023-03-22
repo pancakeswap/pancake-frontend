@@ -55,7 +55,7 @@ import RateToggle from './components/RateToggle'
 import LockedDeposit from './components/LockedDeposit'
 import { useRangeHopCallbacks } from './form/hooks/useRangeHopCallbacks'
 import { useV3MintActionHandlers } from './form/hooks/useV3MintActionHandlers'
-import { useV3FormState } from './form/reducer'
+import { useV3FormAddLiquidityCallback, useV3FormState } from './form/reducer'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -198,6 +198,8 @@ export default function V3FormView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feeAmount])
 
+  const onAddLiquidityCallback = useV3FormAddLiquidityCallback()
+
   useEffect(() => {
     if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !leftRangeTypedValue) {
       onLeftRangeInput(minPrice)
@@ -296,6 +298,7 @@ export default function V3FormView({
               summary: `Add ${baseAmount} ${baseCurrency?.symbol} and ${quoteAmount} ${quoteCurrency?.symbol}`,
             })
             setTxHash(response.hash)
+            onAddLiquidityCallback(response.hash)
           })
         })
         .catch((error) => {
@@ -316,6 +319,7 @@ export default function V3FormView({
     deadline,
     nftPositionManagerAddress,
     noLiquidity,
+    onAddLiquidityCallback,
     parsedAmounts,
     position,
     positionManager,
