@@ -22,6 +22,7 @@ import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { AddStableChildrenProps } from 'views/AddLiquidity/AddStableLiquidity'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import { FormattedSlippage } from 'views/AddLiquidity/AddStableLiquidity/components/FormattedSlippage'
+import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 
 import { RowFixed } from '../../../components/Layout/Row'
 
@@ -182,7 +183,9 @@ export default function StableFormView({
                   </Text>
                 </Flex>
                 <Flex justifyContent="center">
-                  <Text mr="4px">{reservedToken0?.toSignificant(4)}</Text>
+                  <Text mr="4px">
+                    <FormattedCurrencyAmount currencyAmount={reservedToken0} />
+                  </Text>
                 </Flex>
               </AutoRow>
               <AutoRow justifyContent="space-between">
@@ -193,7 +196,9 @@ export default function StableFormView({
                   </Text>
                 </Flex>
                 <Flex justifyContent="center">
-                  <Text mr="4px">{reservedToken1?.toSignificant(4)}</Text>
+                  <Text mr="4px">
+                    <FormattedCurrencyAmount currencyAmount={reservedToken1} />
+                  </Text>
                 </Flex>
               </AutoRow>
             </LightGreyCard>
