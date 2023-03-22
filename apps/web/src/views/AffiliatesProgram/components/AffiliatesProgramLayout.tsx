@@ -17,7 +17,7 @@ const AffiliatesProgramLayout = ({ children }) => {
       },
       {
         label: t('Application'),
-        href: 'https://docs.pancakeswap.finance/ambassador-program',
+        href: 'https://docs.google.com/forms/d/e/1FAIpQLSfP43IciQ5cH0JhTf1fDgUpwapBx-yD3ybv24pBdiVW7Th5jQ/viewform',
         type: DropdownMenuItemType.EXTERNAL_LINK,
       },
     ]

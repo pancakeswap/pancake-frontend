@@ -2139,8 +2139,8 @@
   "What is the criteria to become a PancakeSwap affiliate?": "What is the criteria to become a PancakeSwap affiliate?",
   "Proven track record of creating quality content related to crypto and especially DeFi": "Proven track record of creating quality content related to crypto and especially DeFi",
   "Strong understanding of PancakeSwap and our ecosystem": "Strong understanding of PancakeSwap and our ecosystem",
-  "Pairs must be in “PancakeSwap Extended” official token list": "Pairs must be in “PancakeSwap Extended” official token list",
-  "Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC) ": "Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC) ",
+  "You earn commissions from most trading fees paid by your invitees for a limited period of time": "You earn commissions from most trading fees paid by your invitees for a limited period of time",
+  "Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC)": "Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC)",
   "How will I receive my commissions and how often will I be paid?": "How will I receive my commissions and how often will I be paid?",
   "How do I track my referrals and commissions?": "How do I track my referrals and commissions?",
   "Affiliates can login to the affiliate dashboard and view your referral and commission information": "Affiliates can login to the affiliate dashboard and view your referral and commission information",
@@ -2203,9 +2203,11 @@
   "affiliate links": "affiliate links",
   "link": "link",
   "profit sharing %": "profit sharing %",
-  "Pairs must meet the following eligibility criteria:": "Pairs must meet the following eligibility criteria:",
+  "How do I earn commissions as an affiliate?": "How do I earn commissions as an affiliate?",
   "coming soon!": "coming soon!",
   "MMs are temporarily unable to facilitate trades. Please try again later": "MMs are temporarily unable to facilitate trades. Please try again later",
   "*I have read the": "*I have read the",
-  "terms and conditions": "terms and conditions"
+  "terms and conditions": "terms and conditions",
+  "Trading pairs must meet the following eligibility criteria:": "Trading pairs must meet the following eligibility criteria:",
+  "Pairs must be in “PancakeSwap Extended” official": "Pairs must be in “PancakeSwap Extended” official"
 }
