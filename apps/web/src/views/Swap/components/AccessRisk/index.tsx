@@ -132,7 +132,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
       ) : (
         <>
           <Text ml="4px" as="span">
-            {t('is reporting a risk level of')} {(data?.riskLevel && TOKEN_RISK_T[data.riskLevel]) || 'Unknown'}
+            {t('is reporting a risk level of')} <b>{(data?.riskLevel && TOKEN_RISK_T[data.riskLevel]) || 'Unknown'}</b>
           </Text>
           <Text mt="4px">
             {t(
