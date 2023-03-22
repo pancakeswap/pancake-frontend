@@ -46,7 +46,7 @@ export async function farmV3FetchFarms({
       quoteToken,
       lmPool: lmPoolAddress,
       lmPoolLiquidity: lmPoolInfos[lmPoolAddress],
-      ...getClassicFarmsDynamicData({
+      ...getV3FarmsDynamicData({
         ...(v3PoolData[index][0] as any),
         token0: farm.token,
         token1: farm.quoteToken,
@@ -225,27 +225,10 @@ export const getCakeApr = (poolWeight: string, activeTvlUSD: BN, cakePriceUSD: s
   return cakeApr
 }
 
-const getClassicFarmsDynamicData = ({
-  // quoteTokenBalanceLP,
-  // tokenBalanceLP,
-  token0,
-  token1,
-  tick,
-}: {
-  // quoteTokenBalanceLP: FixedNumber
-  // tokenBalanceLP: FixedNumber
-  token0: ERC20Token
-  token1: ERC20Token
-  tick: number
-}) => {
-  // Raw amount of token in the LP, including those not staked
-  // const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0.decimals)
-  // const quoteTokenAmountTotal = getTokenAmount(quoteTokenBalanceLP, token1.decimals)
+const getV3FarmsDynamicData = ({ token0, token1, tick }: { token0: ERC20Token; token1: ERC20Token; tick: number }) => {
   const tokenPriceVsQuote = tickToPrice(token0, token1, tick)
 
   return {
-    // tokenAmountTotal: tokenAmountTotal.toString(),
-    // quoteTokenAmountTotal: quoteTokenAmountTotal.toString(),
     tokenPriceVsQuote: tokenPriceVsQuote.toSignificant(6),
   }
 }
@@ -268,42 +251,6 @@ const getFarmAllocation = ({
     multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(10)).toString()}X` : `0X`,
   }
 }
-
-// async function fetchPublicFarmsData(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
-//   try {
-//     const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm))
-//     const chunkSize = farmCalls.length / farms.length
-//     const farmMultiCallResult = await multicallv2({
-//       abi: [
-//         {
-//           constant: true,
-//           inputs: [
-//             {
-//               name: '_owner',
-//               type: 'address',
-//             },
-//           ],
-//           name: 'balanceOf',
-//           outputs: [
-//             {
-//               name: 'balance',
-//               type: 'uint256',
-//             },
-//           ],
-//           payable: false,
-//           stateMutability: 'view',
-//           type: 'function',
-//         },
-//       ],
-//       calls: farmCalls,
-//       chainId,
-//     })
-//     return chunk(farmMultiCallResult, chunkSize)
-//   } catch (error) {
-//     console.error('MasterChef Public Data error ', error)
-//     throw error
-//   }
-// }
 
 const lmPoolAbi = [
   {
@@ -393,25 +340,6 @@ async function fetchV3Pools(farms: FarmConfigV3[], chainId: number, multicallv2:
 
   return chunk(resp, chunkSize) as [Slot0, LmPool][]
 }
-
-// const fetchFarmCalls = (farm: FarmConfigV3) => {
-//   const { lpAddress, token, quoteToken } = farm
-
-//   return [
-//     // Balance of token in the LP contract
-//     {
-//       address: token.address,
-//       name: 'balanceOf',
-//       params: [lpAddress],
-//     },
-//     // Balance of quote token on LP contract
-//     {
-//       address: quoteToken.address,
-//       name: 'balanceOf',
-//       params: [lpAddress],
-//     },
-//   ]
-// }
 
 export type LPTvl = {
   token0: string
