@@ -11,7 +11,7 @@ import {
 } from '@pancakeswap/uikit'
 import Image from 'next/legacy/image'
 import styled, { css } from 'styled-components'
-// import { farmV3MigrationBunny, farmV3MigrationMobileBunny } from './images'
+import { TradingRewardButter, TradingRewardLoveButter, TradingRewardBunny, TradingRewardBg } from './images'
 import * as S from './Styled'
 
 const RightWrapper = styled.div`
@@ -21,10 +21,46 @@ const RightWrapper = styled.div`
   right: 0;
   top: 0;
   overflow: visible;
-  > span:first-child {
+
+  > span:nth-child(1) {
+    // TradingRewardBunny
     position: absolute !important;
     right: 0px;
     bottom: 0px;
+    ${({ theme }) => theme.mediaQueries.lg} {
+      right: 55px;
+    }
+  }
+
+  > span:nth-child(2) {
+    // TradingRewardButter
+    position: absolute !important;
+    top: -8%;
+    right: 20%;
+
+    ${({ theme }) => theme.mediaQueries.sm} {
+      top: -12%;
+      right: 14%;
+    }
+
+    ${({ theme }) => theme.mediaQueries.lg} {
+      top: 1%;
+      right: -2%;
+    }
+  }
+
+  > span:nth-child(3) {
+    // TradingRewardBg
+    position: absolute !important;
+    right: 0px;
+    bottom: 0px;
+  }
+
+  > span:nth-child(4) {
+    // TradingRewardLoveButter
+    position: absolute !important;
+    top: -30%;
+    left: 55%;
   }
 `
 
@@ -87,7 +123,7 @@ const StyledButtonRight = styled(Button)`
 
 const TradingRewardBanner = () => {
   const { t } = useTranslation()
-  const { isMobile, isTablet } = useMatchBreakpoints()
+  const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
 
   return (
     <S.Wrapper
@@ -122,18 +158,28 @@ const TradingRewardBanner = () => {
           </Flex>
         </S.LeftWrapper>
         <RightWrapper>
-          {!isMobile && <Image src={trustwalletBg} alt="trustwalletBg" width={1112} height={192} placeholder="blur" />}
-          {/* {isMobile || isTablet ? (
+          {isMobile || isTablet ? (
+            <Image src={TradingRewardBunny} alt="TradingRewardBunny" width={145} height={167} placeholder="blur" />
+          ) : (
+            <Image src={TradingRewardBunny} alt="TradingRewardBunny" width={220} height={249} placeholder="blur" />
+          )}
+          {isMobile ? (
+            <Image src={TradingRewardButter} alt="TradingRewardButter" width={40} height={34} placeholder="blur" />
+          ) : (
+            <Image src={TradingRewardButter} alt="TradingRewardButter" width={72} height={60} placeholder="blur" />
+          )}
+          {!isMobile && (
+            <Image src={TradingRewardBg} alt="TradingRewardBg" width={1112} height={192} placeholder="blur" />
+          )}
+          {isDesktop && (
             <Image
-              src={farmV3MigrationMobileBunny}
-              alt="farmV3MigrationMobileBunny"
-              width={200}
-              height={200}
+              src={TradingRewardLoveButter}
+              alt="TradingRewardLoveButter"
+              width={147}
+              height={147}
               placeholder="blur"
             />
-          ) : (
-            <Image src={farmV3MigrationBunny} alt="farmV3MigrationBunny" width={300} height={230} placeholder="blur" />
-          )} */}
+          )}
         </RightWrapper>
       </S.Inner>
     </S.Wrapper>

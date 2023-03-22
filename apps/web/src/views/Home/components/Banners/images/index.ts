@@ -19,6 +19,10 @@ import v3BgCoinUp from './v3BgCoinUp.png'
 import v3BgCoinDown from './v3BgCoinDown.png'
 import v3BgBlingNormal from './v3BgBlingNormal.png'
 import v3BgBlingBlur from './v3BgBlingBlur.png'
+import TradingRewardButter from './butter.png'
+import TradingRewardLoveButter from './love-butter.png'
+import TradingRewardBunny from './trading-reward-bunny.png'
+import TradingRewardBg from './trading-reward-bg.png'
 
 export {
   lotteryImage,
@@ -42,4 +46,8 @@ export {
   v3BgCoinDown,
   v3BgBlingNormal,
   v3BgBlingBlur,
+  TradingRewardButter,
+  TradingRewardLoveButter,
+  TradingRewardBunny,
+  TradingRewardBg,
 }
