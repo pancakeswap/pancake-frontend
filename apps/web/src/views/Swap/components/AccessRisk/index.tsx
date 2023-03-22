@@ -72,30 +72,9 @@ function RetryRisk({ onClick }: { onClick: () => void }) {
 }
 
 export function useTokenRisk(token?: Token) {
-  const lists = useAllLists()
-  const tokenInLists = useMemo(() => {
-    if (!token?.address) return false
-    const tokenLists = Object.values(lists)
-      .map((list) => list?.current?.tokens)
-      .filter(Boolean)
-    if (!tokenLists.length) return null
-    return tokenLists.some((tokenInfoList) => {
-      return tokenInfoList.some((tokenInfo) => tokenInfo.address === token.address)
-    })
-  }, [lists, token?.address])
-  return useSWRImmutable(
-    token && token.address && tokenInLists !== null && ['risk', token.chainId, token.address],
-    () => {
-      return tokenInLists
-        ? fetchRiskToken(token.address, token.chainId)
-        : {
-            address: token?.address,
-            chainId: token?.chainId,
-            riskLevel: TOKEN_RISK.UNKNOWN,
-            scannedTs: 0,
-          }
-    },
-  )
+  return useSWRImmutable(token && token.address && ['risk', token.chainId, token.address], () => {
+    return fetchRiskToken(token.address, token.chainId)
+  })
 }
 
 const AccessRisk: React.FC<AccessRiskProps> = ({ token }) => {
@@ -118,46 +97,78 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
 
   const { data, mutate, error } = useTokenRisk(token)
 
+  const lists = useAllLists()
+  const tokenInLists = useMemo(() => {
+    if (!token?.address) return false
+    const tokenLists = Object.values(lists)
+      .map((list) => list?.current?.tokens)
+      .filter(Boolean)
+    if (!tokenLists.length) return null
+    return tokenLists.some((tokenInfoList) => {
+      return tokenInfoList.some((tokenInfo) => tokenInfo.address === token.address)
+    })
+  }, [lists, token?.address])
+
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
       <Text as="span">{t('Risk scan results are provided by a third party')}</Text>
       <Link style={{ display: 'inline' }} ml="4px" external href="https://www.avengerdao.org">
         AvengerDAO
       </Link>
-      <Text my="8px">
-        {t(
-          'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
-        )}
-      </Text>
-      <Flex mt="4px">
-        <Text>{t('Learn more about risk rating')}</Text>
-        <Link ml="4px" external href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
-          {t('here.')}
-        </Link>
-      </Flex>
+      {tokenInLists || data?.riskLevel > TOKEN_RISK.MEDIUM ? (
+        <>
+          <Text my="8px">
+            {t(
+              'It is a tool for indicative purposes only to allow users to check the reference risk level of a BNB Chain Smart Contract. Please do your own research - interactions with any BNB Chain Smart Contract is at your own risk.',
+            )}
+          </Text>
+          <Flex mt="4px">
+            <Text>{t('Learn more about risk rating')}</Text>
+            <Link ml="4px" external href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
+              {t('here.')}
+            </Link>
+          </Flex>
+        </>
+      ) : (
+        <>
+          <Text ml="4px" as="span">
+            {t('is reporting a risk level of')} {(data?.riskLevel && TOKEN_RISK_T[data.riskLevel]) || 'Unknown'}
+          </Text>
+          <Text mt="4px">
+            {t(
+              'However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.',
+            )}
+          </Text>
+          <Flex mt="4px">
+            <Text bold>{t('Please proceed with caution and always do your own research.')}</Text>
+          </Flex>
+        </>
+      )}
     </>,
     { placement: 'bottom' },
   )
 
+  const riskLevel = useMemo(() => {
+    if (data?.riskLevel) {
+      if (tokenInLists || data.riskLevel > TOKEN_RISK.MEDIUM) {
+        return data.riskLevel
+      }
+      return TOKEN_RISK.UNKNOWN
+    }
+    return undefined
+  }, [data, tokenInLists])
+
   if (data) {
-    const hasRiskValue = TOKEN_RISK_T[data.riskLevel]
+    const hasRiskValue = TOKEN_RISK_T[riskLevel]
     if (!hasRiskValue) return null
     return (
       <Flex justifyContent="flex-end">
         <div ref={targetRef} style={{ userSelect: 'none' }}>
-          <Tag
-            variant={
-              data.riskLevel === TOKEN_RISK.UNKNOWN
-                ? 'textDisabled'
-                : data.riskLevel > TOKEN_RISK.MEDIUM
-                ? 'failure'
-                : 'primary'
-            }
-          >
+          <Tag variant={data.riskLevel > TOKEN_RISK.MEDIUM ? 'failure' : !tokenInLists ? 'textDisabled' : 'primary'}>
             <Text bold small color="invertedContrast">
               {hasRiskValue}
             </Text>
-            {data.riskLevel !== TOKEN_RISK.UNKNOWN && tooltipVisible && tooltip}
+            {tooltipVisible && tooltip}
             <Flex>
               <HelpIcon ml="4px" width="16px" height="16px" color="invertedContrast" />
             </Flex>
