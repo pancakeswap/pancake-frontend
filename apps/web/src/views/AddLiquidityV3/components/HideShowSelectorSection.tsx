@@ -26,7 +26,16 @@ export default function HideShowSelectorSection({
             scale="sm"
             onClick={() => setShowOptions((prev) => !prev)}
             variant="text"
-            endIcon={!showOptions && <ChevronDownIcon color="primary" />}
+            endIcon={
+              !showOptions && (
+                <ChevronDownIcon
+                  style={{
+                    marginLeft: '0px',
+                  }}
+                  color="primary"
+                />
+              )
+            }
           >
             {showOptions ? 'Hide' : 'More'}
           </Button>

@@ -214,10 +214,7 @@ export default function V3FormView({
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
-  // const usdcValues = {
-  //   [Field.CURRENCY_A]: useBUSDPrice(parsedAmounts[Field.CURRENCY_A]?.currency),
-  //   [Field.CURRENCY_B]: useBUSDPrice(parsedAmounts[Field.CURRENCY_B]?.currency),
-  // }
+
   //   // get the max amounts user can add
   const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
     (accumulator, field) => {
@@ -228,15 +225,15 @@ export default function V3FormView({
     },
     {},
   )
-  const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-    (accumulator, field) => {
-      return {
-        ...accumulator,
-        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-      }
-    },
-    {},
-  )
+  // const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+  //   (accumulator, field) => {
+  //     return {
+  //       ...accumulator,
+  //       [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
+  //     }
+  //   },
+  //   {},
+  // )
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   //   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
@@ -430,6 +427,7 @@ export default function V3FormView({
         <LockedDeposit locked={depositADisabled} mb="8px">
           <Box mb="8px">
             <CurrencyInputPanel
+              showUSDPrice
               maxAmount={maxAmounts[Field.CURRENCY_A]}
               onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
               onPercentInput={(percent) =>
@@ -450,6 +448,7 @@ export default function V3FormView({
 
         <LockedDeposit locked={depositBDisabled} mb="8px">
           <CurrencyInputPanel
+            showUSDPrice
             maxAmount={maxAmounts[Field.CURRENCY_B]}
             onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
             onPercentInput={(percent) =>
