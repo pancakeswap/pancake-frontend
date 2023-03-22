@@ -14,6 +14,8 @@ import {
   HistoryIcon,
   useModal,
 } from '@pancakeswap/uikit'
+import { PositionDetails } from '@pancakeswap/farms'
+
 import NextLink from 'next/link'
 import styled from 'styled-components'
 import { useWeb3React } from '@pancakeswap/wagmi'
@@ -101,53 +103,61 @@ export default function PoolListPage() {
   let v3PairsSection = null
 
   if (positions?.length) {
-    v3PairsSection = positions
-      .filter((p) => (hideClosedPositions ? p.liquidity?.gt(0) : true))
-      .map((p) => {
-        return (
-          <PositionListItem key={p.tokenId.toString()} positionDetails={p}>
-            {({
-              currencyBase,
-              currencyQuote,
-              removed,
-              outOfRange,
-              priceLower,
-              tickAtLimit,
-              priceUpper,
-              feeAmount,
-              positionSummaryLink,
-            }) => (
-              <LiquidityCardRow
-                feeAmount={feeAmount}
-                link={positionSummaryLink}
-                currency0={currencyQuote}
-                currency1={currencyBase}
-                tokenId={p.tokenId}
-                pairText={
-                  !currencyQuote || !currencyBase ? (
-                    <Dots>{t('Loading')}</Dots>
-                  ) : (
-                    `${currencyQuote.symbol}-${currencyBase.symbol} LP`
-                  )
-                }
-                tags={
-                  <>
-                    {p.isStaked && (
-                      <Tag outline variant="warning" mr="8px">
-                        Farming
-                      </Tag>
-                    )}
-                    <RangeTag removed={removed} outOfRange={outOfRange} />
-                  </>
-                }
-                subtitle={`Min ${formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max: 
+    const [openPositions, closedPositions] = positions?.reduce<[PositionDetails[], PositionDetails[]]>(
+      (acc, p) => {
+        acc[p.liquidity?.isZero() ? 1 : 0].push(p)
+        return acc
+      },
+      [[], []],
+    ) ?? [[], []]
+
+    const filteredPositions = [...openPositions, ...(hideClosedPositions ? [] : closedPositions)]
+
+    v3PairsSection = filteredPositions.map((p) => {
+      return (
+        <PositionListItem key={p.tokenId.toString()} positionDetails={p}>
+          {({
+            currencyBase,
+            currencyQuote,
+            removed,
+            outOfRange,
+            priceLower,
+            tickAtLimit,
+            priceUpper,
+            feeAmount,
+            positionSummaryLink,
+          }) => (
+            <LiquidityCardRow
+              feeAmount={feeAmount}
+              link={positionSummaryLink}
+              currency0={currencyQuote}
+              currency1={currencyBase}
+              tokenId={p.tokenId}
+              pairText={
+                !currencyQuote || !currencyBase ? (
+                  <Dots>{t('Loading')}</Dots>
+                ) : (
+                  `${currencyQuote.symbol}-${currencyBase.symbol} LP`
+                )
+              }
+              tags={
+                <>
+                  {p.isStaked && (
+                    <Tag outline variant="warning" mr="8px">
+                      Farming
+                    </Tag>
+                  )}
+                  <RangeTag removed={removed} outOfRange={outOfRange} />
+                </>
+              }
+              subtitle={`Min ${formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max: 
                 ${formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)} ${currencyQuote?.symbol} per 
                 ${currencyBase?.symbol}`}
-              />
-            )}
-          </PositionListItem>
-        )
-      })
+            />
+          )}
+        </PositionListItem>
+      )
+    })
   }
 
   const mainSection = useMemo(() => {
