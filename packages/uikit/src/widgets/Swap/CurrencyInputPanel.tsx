@@ -74,7 +74,7 @@ export function CurrencyInputPanel({
           {bottom}
         </AtomBox>
         {disabled && (
-          <AtomBox role="presentation" position="absolute" inset="0" backgroundColor="backgroundAlt" opacity="0.6" />
+          <AtomBox role="presentation" position="absolute" inset="0px" backgroundColor="backgroundAlt" opacity="0.6" />
         )}
       </AtomBox>
     </AtomBox>

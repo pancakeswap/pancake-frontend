@@ -16,12 +16,13 @@ import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import styled from 'styled-components'
 import { harvestFarm } from 'utils/calls'
 import { getMasterChefAddress } from 'utils/addressHelpers'
 import { BOOSTED_FARM_GAS_LIMIT } from 'config'
+import { useSigner } from 'wagmi'
 import useFarmsWithBalance from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
 
@@ -37,12 +38,13 @@ const HarvestCard = () => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
+  const { data: signer } = useSigner()
 
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = usePriceCakeUSD()
   const gasPrice = useGasPrice()
   const earningsBusd = new BigNumber(farmEarningsSum).multipliedBy(cakePriceBusd)
   const numTotalToCollect = farmsWithStakedBalance.length
-  const numFarmsToCollect = farmsWithStakedBalance.filter((value) => value.pid !== 0).length
+  const numFarmsToCollect = farmsWithStakedBalance.filter((value) => 'pid' in value && value.pid !== 0).length
   const hasCakePoolToCollect = numTotalToCollect - numFarmsToCollect > 0
 
   const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
@@ -53,12 +55,15 @@ const HarvestCard = () => {
       const farmWithBalance = farmsWithStakedBalance[i]
       // eslint-disable-next-line no-await-in-loop
       const receipt = await fetchWithCatchTxError(() => {
-        return harvestFarm(
-          farmWithBalance.contract,
-          farmWithBalance.pid,
-          gasPrice,
-          farmWithBalance.contract.address !== masterChefAddress ? BOOSTED_FARM_GAS_LIMIT : undefined,
-        )
+        if ('pid' in farmWithBalance) {
+          return harvestFarm(
+            farmWithBalance.contract,
+            farmWithBalance.pid,
+            gasPrice,
+            farmWithBalance.contract.address !== masterChefAddress ? BOOSTED_FARM_GAS_LIMIT : undefined,
+          )
+        }
+        return signer.sendTransaction(farmWithBalance.sendTx)
       })
       if (receipt?.status) {
         toastSuccess(
@@ -69,7 +74,7 @@ const HarvestCard = () => {
         )
       }
     }
-  }, [farmsWithStakedBalance, toastSuccess, t, fetchWithCatchTxError, gasPrice])
+  }, [farmsWithStakedBalance, fetchWithCatchTxError, signer, gasPrice, toastSuccess, t])
 
   return (
     <StyledCard>

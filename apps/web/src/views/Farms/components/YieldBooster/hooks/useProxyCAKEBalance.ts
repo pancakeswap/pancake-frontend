@@ -10,7 +10,7 @@ const useProxyCAKEBalance = () => {
   const { proxyAddress } = useBCakeProxyContractAddress(account, chainId)
   const cakeContract = getCakeContract()
 
-  const { data, mutate } = useSWRContract([cakeContract, 'balanceOf', [proxyAddress]])
+  const { data, mutate } = useSWRContract(proxyAddress && [cakeContract, 'balanceOf', [proxyAddress]])
 
   return {
     refreshProxyCakeBalance: mutate,

@@ -42,10 +42,6 @@ it("renders correctly", () => {
       color: var(--colors-invertedContrast);
     }
 
-    .c0:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
-    }
-
     .c0:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
@@ -61,6 +57,12 @@ it("renders correctly", () => {
       box-shadow: none;
       color: var(--colors-textDisabled);
       cursor: not-allowed;
+    }
+
+    @media (hover:hover) {
+      .c0:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+        opacity: 0.65;
+      }
     }
 
     <button

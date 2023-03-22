@@ -14,16 +14,18 @@ import {
   useModal,
   useTooltip,
 } from '@pancakeswap/uikit'
-
+import RefreshIcon from 'components/Svg/RefreshIcon'
+import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
-import RefreshIcon from 'components/Svg/RefreshIcon'
-import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
-import { useExpertModeManager } from 'state/user/hooks'
 import styled from 'styled-components'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
@@ -49,11 +51,12 @@ const mobileShowOnceTokenHighlightAtom = atomWithStorageWithErrorCatch('pcs::mob
 
 const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   subtitle,
+  title,
   hasAmount,
   onRefreshPrice,
-  title,
 }) => {
   const { t } = useTranslation()
+  const { chainId } = useActiveChainId()
   const [mobileTooltipShowOnce, setMobileTooltipShowOnce] = useAtom(mobileShowOnceTokenHighlightAtom)
   const [mobileTooltipShow, setMobileTooltipShow] = useState(false)
 
@@ -64,12 +67,12 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   })
 
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
-  const [expertMode] = useExpertModeManager()
+  const [expertMode] = useExpertMode()
+  const [isRoutingSettingChange] = useRoutingSettingChanged()
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
-  const handleOnClick = useCallback(() => onRefreshPrice?.(), [onRefreshPrice])
   const [isSwapHotTokenDisplay, setIsSwapHotTokenDisplay] = useSwapHotTokenDisplay()
 
   const mobileTooltipClickOutside = useCallback(() => {
@@ -140,14 +143,19 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
             </>
           )}
         </ColoredIconButton>
-        <NotificationDot show={expertMode}>
+        <NotificationDot show={expertMode || isRoutingSettingChange}>
           <GlobalSettings color="textSubtle" mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
         </NotificationDot>
         <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
           <HistoryIcon color="textSubtle" width="24px" />
         </IconButton>
-        <IconButton variant="text" scale="sm" onClick={handleOnClick}>
-          <RefreshIcon disabled={!hasAmount} color="textSubtle" width="27px" />
+        <IconButton variant="text" scale="sm" onClick={onRefreshPrice}>
+          <RefreshIcon
+            disabled={!hasAmount}
+            color="textSubtle"
+            width="27px"
+            duration={CHAIN_REFRESH_TIME[chainId] ? CHAIN_REFRESH_TIME[chainId] / 1000 : undefined}
+          />
         </IconButton>
       </Flex>
     </Flex>

@@ -1,5 +1,41 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+
+export const farmsV3 = [
+  {
+    pid: 1,
+    lpSymbol: 'USDT-MSIX LP',
+    lpAddress: '0x51A9337DC14EFbfA2903946E0BDE26D60B14800D',
+    token: bscTestnetTokens.usdt,
+    quoteToken: bscTestnetTokens.msix,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 2,
+    lpSymbol: 'USDT-BUSD LP',
+    lpAddress: '0x87Ad85098e1e3e11D3C514a84f6Fdd6e90Dc11Fe',
+    token: bscTestnetTokens.usdt,
+    quoteToken: bscTestnetTokens.busd,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 3,
+    lpSymbol: 'MockB-MockA LP',
+    lpAddress: '0x058058F5847598618f911A59BC2010999eACDFa3',
+    token: bscTestnetTokens.mockB,
+    quoteToken: bscTestnetTokens.mockA,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 4,
+    lpSymbol: 'MockB-MockA LP',
+    lpAddress: '0x7038Abe91B2Edf9769D846f5a42708c3aB9e9A39',
+    token: bscTestnetTokens.mockB,
+    quoteToken: bscTestnetTokens.mockA,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
   /**
@@ -41,6 +77,8 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTestnetTokens.usdc, // coins[1]
     stableSwapAddress: '0xd5E56CD4c8111643a94Ee084df31F44055a1EC9F',
     infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
   },
   {
     pid: 11,
@@ -50,6 +88,8 @@ const farms: SerializedFarmConfig[] = [
     quoteToken: bscTestnetTokens.mockBusd, // coins[1]
     stableSwapAddress: '0xc418d68751Cbe0407C8fdd90Cde73cE95b892f39',
     infoStableSwapAddress: '0xaE6C14AAA753B3FCaB96149e1E10Bc4EDF39F546',
+    stableLpFee: 0.0002,
+    stableLpFeeRateOfTotalFee: 0.5,
   },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 

@@ -11,7 +11,7 @@ import { APTOS_COIN, isStructTag } from '@pancakeswap/awgmi'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import { FixedSizeList } from 'react-window'
 import { useAllLists, useInactiveListUrls } from 'state/lists/hooks'
-import { useAudioPlay } from 'state/user'
+import { useAudioPlay } from '@pancakeswap/utils/user/audioPlay'
 
 import { useAllTokens, useIsUserAddedToken, useToken } from '../../hooks/Tokens'
 import CommonBases from './CommonBases'

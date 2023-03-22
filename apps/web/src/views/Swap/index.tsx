@@ -11,12 +11,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
-import { useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
+import { useDefaultsFromURLSearch, useSingleTokenSwapInfo, useSwapState } from '../../state/swap/hooks'
 import Page from '../Page'
 import PriceChartContainer from './components/Chart/PriceChartContainer'
 import HotTokenList from './components/HotTokenList'
 import useWarningImport from './hooks/useWarningImport'
-import { SmartSwapForm } from './SmartSwap'
+import { V3SwapForm } from './V3Swap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
 
@@ -44,6 +44,7 @@ export default function Swap() {
 
   const singleTokenPrice = useSingleTokenSwapInfo(inputCurrencyId, inputCurrency, outputCurrencyId, outputCurrency)
   const warningSwapHandler = useWarningImport()
+  useDefaultsFromURLSearch()
   const { onCurrencySelection } = useSwapActionHandlers()
 
   const handleOutputSelect = useCallback(
@@ -117,7 +118,7 @@ export default function Swap() {
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
                 <QueryClientProvider client={queryClient}>
-                  <SmartSwapForm handleOutputSelect={handleOutputSelect} />
+                  <V3SwapForm />
                 </QueryClientProvider>
               </AppBody>
             </StyledInputCurrencyWrapper>

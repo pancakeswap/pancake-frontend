@@ -8,7 +8,7 @@ import NoChartAvailable from './NoChartAvailable'
 import PairPriceDisplay from '../../../../components/PairPriceDisplay'
 import { getTimeWindowChange } from './utils'
 
-const SwapLineChart = dynamic(() => import('./SwapLineChart'), {
+const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
   ssr: false,
 })
 

@@ -14,7 +14,7 @@ import { DEFAULT_TOKEN_DECIMAL } from 'config'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import ApproveConfirmButtons, { ButtonArrangement } from 'components/ApproveConfirmButtons'
 import { ConnectedBidder, FetchStatus } from 'config/constants/types'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useCallWithGasPrice } from 'hooks/useCallWithGasPrice'
 import { ToastDescriptionWithTx } from 'components/Toast'
 import { bscTokens } from '@pancakeswap/tokens'
@@ -68,7 +68,7 @@ const PlaceBidModal: React.FC<React.PropsWithChildren<PlaceBidModalProps>> = ({
   const { balance: userCake, fetchStatus } = useTokenBalance(bscTokens.cake.address)
   const userCakeBalance = getBalanceAmount(userCake)
 
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = usePriceCakeUSD()
   const farmAuctionContract = useFarmAuctionContract()
   const { reader: cakeContractReader, signer: cakeContractApprover } = useCake()
 

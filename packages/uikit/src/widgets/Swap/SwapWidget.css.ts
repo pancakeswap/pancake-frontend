@@ -72,6 +72,9 @@ export const inputVariants = recipe({
       left: {
         textAlign: "left",
       },
+      center: {
+        textAlign: "center",
+      },
       right: {
         textAlign: "right",
       },
@@ -141,7 +144,7 @@ export const pageVariants = recipe({
       height: "100%",
       background: "gradientBubblegum",
       padding: "16px",
-      paddingBottom: "0",
+      paddingBottom: "0px",
     }),
     style({
       backgroundSize: "auto",
@@ -149,11 +152,11 @@ export const pageVariants = recipe({
     responsiveStyle({
       sm: {
         padding: "24px",
-        paddingBottom: "0",
+        paddingBottom: "0px",
       },
       lg: {
         padding: "32px",
-        paddingBottom: "0",
+        paddingBottom: "0px",
       },
     }),
   ]),
@@ -173,9 +176,8 @@ export const pageVariants = recipe({
   },
 });
 
-export const balanceMaxMiniClass = style([
+export const iconButtonClass = style([
   atoms({
-    backgroundColor: "background",
     borderRadius: "circle",
     cursor: "pointer",
     color: "text",
@@ -192,14 +194,5 @@ export const balanceMaxMiniClass = style([
     fontWeight: 400,
     marginLeft: "0.4rem",
     float: "right",
-    selectors: {
-      "&:hover": {
-        backgroundColor: vars.colors.dropdown,
-      },
-      "&:focus": {
-        backgroundColor: vars.colors.dropdown,
-        outline: "none",
-      },
-    },
   }),
 ]);
