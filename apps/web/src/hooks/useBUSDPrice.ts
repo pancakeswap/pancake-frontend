@@ -38,7 +38,10 @@ export function useStablecoinPrice(currency?: Currency): Price<Currency, Currenc
 
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
 
-  const amountIn = currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined
+  const amountIn = useMemo(
+    () => (currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined),
+    [currency],
+  )
 
   const { trade } = useBestAMMTrade({
     amount: amountIn,

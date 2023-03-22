@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { Currency } from '@pancakeswap/sdk'
+import { usePreviousValue } from '@pancakeswap/hooks'
 import { Pool } from '@pancakeswap/smart-router/evm'
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import useSWR from 'swr'
@@ -35,6 +36,8 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
     currencyB?: Currency,
     { blockNumber: latestBlockNumber, allowInconsistentBlock = false, enabled = true }: CommonPoolsParams = {},
   ): PoolsWithState {
+    const prevCurrencyA = usePreviousValue(currencyA)
+    const prevCurrencyB = usePreviousValue(currencyB)
     const { chainId } = useActiveChainId()
     const [blockNumber, setBlockNumber] = useState<number | null | undefined>(null)
     const {
@@ -93,11 +96,11 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
         allowInconsistentBlock,
       ],
     )
-    const { data: pools } = useSWR(v2Pools && v3Pools && stablePools && poolKey ? [key, poolKey] : null, () => [
-      ...v2Pools,
-      ...stablePools,
-      ...v3Pools,
-    ])
+    const { data: pools } = useSWR(
+      v2Pools && v3Pools && stablePools && poolKey ? [key, poolKey] : null,
+      () => [...v2Pools, ...stablePools, ...v3Pools],
+      { keepPreviousData: prevCurrencyA === currencyA && prevCurrencyB === currencyB },
+    )
 
     const refresh = useCallback(() => latestBlockNumber && setBlockNumber(latestBlockNumber), [latestBlockNumber])
 
@@ -122,6 +125,7 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
     return {
       refresh,
       pools,
+      blockNumber: consistentBlockNumber,
       loading,
       syncing,
     }

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import useSWR from 'swr'
-import { useDeferredValue, useEffect, useMemo } from 'react'
+import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
 import { SmartRouter, PoolType, QuoteProvider } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce } from '@pancakeswap/hooks'
@@ -98,11 +98,13 @@ function bestTradeHookFactory({
     enabled = true,
   }: Options) {
     const { gasPrice } = useFeeDataWithGasPrice()
+    const lastBlock = useRef<number>(null)
 
     const blockNumber = useCurrentBlock()
     const {
       refresh,
       pools: candidatePools,
+      blockNumber: poolsBlockNumber,
       loading,
       syncing,
     } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber, allowInconsistentBlock: true })
@@ -176,6 +178,7 @@ function bestTradeHookFactory({
         }
         metric.timeLog(label, res)
         metric.timeEnd(label)
+        lastBlock.current = res?.blockNumber
         return res
       },
       {
@@ -185,12 +188,17 @@ function bestTradeHookFactory({
     )
 
     useEffect(() => {
+      if (!lastBlock.current) {
+        mutate()
+        return
+      }
+
       // Revalidate if pools updated
-      if (revalidateOnUpdate) {
+      if (revalidateOnUpdate && poolsBlockNumber && lastBlock.current && poolsBlockNumber - lastBlock.current > 5) {
         mutate()
       }
       // eslint-disable-next-line
-    }, [candidatePools])
+    }, [poolsBlockNumber])
 
     return {
       refresh,
@@ -205,7 +213,7 @@ function bestTradeHookFactory({
 
 export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
   key: 'useBestAMMTradeFromOffchain',
-  revalidateOnUpdate: false,
+  revalidateOnUpdate: true,
   useCommonPools: useCommonPoolsWithTicks,
   quoteProvider: SmartRouter.createOffChainQuoteProvider(),
 })
