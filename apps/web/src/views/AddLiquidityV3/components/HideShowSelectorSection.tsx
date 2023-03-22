@@ -20,7 +20,7 @@ export default function HideShowSelectorSection({
   return (
     <LightGreyCard padding="8px" style={{ height: 'fit-content' }}>
       <AutoRow justifyContent="space-between" marginBottom={showOptions ? '8px' : '0px'}>
-        {heading}
+        {heading ?? <div />}
         {noHideButton || (
           <Button
             scale="sm"

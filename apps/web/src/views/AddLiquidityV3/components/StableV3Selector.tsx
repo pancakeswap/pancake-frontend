@@ -18,12 +18,12 @@ import HideShowSelectorSection from './HideShowSelectorSection'
 export function StableV3Selector({
   handleFeePoolSelect,
   selectorType,
-  feeAmount = FeeAmount.LOWEST,
+  feeAmount,
   currencyA,
   currencyB,
 }: {
   selectorType: SELECTOR_TYPE
-  feeAmount: FeeAmount
+  feeAmount?: FeeAmount
   currencyA: Currency
   currencyB: Currency
   handleFeePoolSelect: HandleFeePoolSelectFn
@@ -88,9 +88,11 @@ export function StableV3Selector({
             <Text>StableSwap LP</Text>
           </AutoColumn>
         ) : (
-          FEE_AMOUNT_DETAIL[feeAmount]?.supportedChains.includes(chainId) && (
+          FEE_AMOUNT_DETAIL[FeeAmount.LOWEST]?.supportedChains.includes(chainId) && (
             <AutoColumn>
-              <Text>V3 LP - {FEE_AMOUNT_DETAIL[feeAmount]?.label}% fee tier</Text>
+              <Text>
+                V3 LP {FEE_AMOUNT_DETAIL[feeAmount]?.label ? `- ${FEE_AMOUNT_DETAIL[feeAmount]?.label}% fee tier` : ''}
+              </Text>
             </AutoColumn>
           )
         )
@@ -104,7 +106,7 @@ export function StableV3Selector({
             >
               StableSwap LP
             </SelectButton>
-            {FEE_AMOUNT_DETAIL[feeAmount]?.supportedChains.includes(chainId) && (
+            {FEE_AMOUNT_DETAIL[FeeAmount.LOWEST]?.supportedChains.includes(chainId) && (
               <SelectButton
                 isActive={selectorType === SELECTOR_TYPE.V3}
                 onClick={() => handleFeePoolSelect({ type: SELECTOR_TYPE.V3 })}
