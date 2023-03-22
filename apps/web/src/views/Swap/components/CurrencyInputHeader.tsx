@@ -22,6 +22,7 @@ import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import { useAtom } from 'jotai'
 import { ReactElement, useCallback, useContext, useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
@@ -67,6 +68,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
 
   const { isChartSupported, isChartDisplayed, setIsChartDisplayed } = useContext(SwapFeaturesContext)
   const [expertMode] = useExpertMode()
+  const [isRoutingSettingChange] = useRoutingSettingChanged()
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
@@ -141,7 +143,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
             </>
           )}
         </ColoredIconButton>
-        <NotificationDot show={expertMode}>
+        <NotificationDot show={expertMode || isRoutingSettingChange}>
           <GlobalSettings color="textSubtle" mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
         </NotificationDot>
         <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">

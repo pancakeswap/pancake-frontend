@@ -17,10 +17,12 @@ import {
   AutoColumn,
   Message,
   MessageText,
+  NotificationDot,
+  ButtonProps,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { useCallback, useState } from 'react'
+import { ReactNode, useCallback, useState } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import {
   useAudioPlay,
@@ -31,12 +33,13 @@ import {
 import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import {
+  useOnlyOneAMMSourceEnabled,
   useUserSplitRouteEnable,
   useUserStableSwapEnable,
   useUserV2SwapEnable,
   useUserV3SwapEnable,
+  useRoutingSettingChanged,
 } from 'state/user/smartRouter'
-import { useIsMMSupportChain } from 'views/Swap/MMLinkPools/hooks/useIsMMSupportChain'
 import { AtomBox } from '@pancakeswap/ui'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import styled from 'styled-components'
@@ -245,14 +248,27 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
 
 export default SettingsModal
 
-export function RoutingSettingsButton() {
+export function RoutingSettingsButton({
+  children,
+  showRedDot = true,
+  buttonProps,
+}: {
+  children?: ReactNode
+  showRedDot?: boolean
+  buttonProps?: ButtonProps
+}) {
   const [show, setShow] = useState(false)
   const { t } = useTranslation()
+  const [isRoutingSettingChange] = useRoutingSettingChanged()
   return (
     <>
-      <Button variant="text" width="100%" onClick={() => setShow(true)}>
-        {t('Customize Routing')}
-      </Button>
+      <AtomBox textAlign="center">
+        <NotificationDot show={isRoutingSettingChange && showRedDot}>
+          <Button variant="text" onClick={() => setShow(true)} scale="sm" {...buttonProps}>
+            {children || t('Customize Routing')}
+          </Button>
+        </NotificationDot>
+      </AtomBox>
       <ModalV2 isOpen={show} onDismiss={() => setShow(false)} closeOnOverlayClick>
         <RoutingSettings />
       </ModalV2>
@@ -267,14 +283,22 @@ function RoutingSettings() {
   const [v2Enable, setV2Enable] = useUserV2SwapEnable()
   const [v3Enable, setV3Enable] = useUserV3SwapEnable()
   const [split, setSplit] = useUserSplitRouteEnable()
-  const isMMSupported = useIsMMSupportChain()
   const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
-  const onlyOneSwapFlagEnabled =
-    [v2Enable, v3Enable, isStableSwapByDefault, isMMSupported && isMMLinkedPoolByDefault].filter((v) => v).length === 1
+  const onlyOneAMMSourceEnabled = useOnlyOneAMMSourceEnabled()
+  const [isRoutingSettingChange, reset] = useRoutingSettingChanged()
 
   return (
-    <Modal title={t('Customize Routing')}>
+    <Modal
+      title={t('Customize Routing')}
+      headerRightSlot={
+        isRoutingSettingChange && (
+          <Button variant="text" scale="sm" onClick={reset}>
+            {t('Reset')}
+          </Button>
+        )
+      }
+    >
       <AutoColumn
         width={{
           xs: '100%',
@@ -289,7 +313,7 @@ function RoutingSettings() {
               <Text>PancakeSwap V3</Text>
             </Flex>
             <Toggle
-              disabled={v3Enable && onlyOneSwapFlagEnabled}
+              disabled={v3Enable && onlyOneAMMSourceEnabled}
               scale="md"
               checked={v3Enable}
               onChange={() => setV3Enable((s) => !s)}
@@ -300,7 +324,7 @@ function RoutingSettings() {
               <Text>PancakeSwap V2</Text>
             </Flex>
             <Toggle
-              disabled={v2Enable && onlyOneSwapFlagEnabled}
+              disabled={v2Enable && onlyOneAMMSourceEnabled}
               scale="md"
               checked={v2Enable}
               onChange={() => setV2Enable((s) => !s)}
@@ -324,7 +348,7 @@ function RoutingSettings() {
               />
             </Flex>
             <PancakeToggle
-              disabled={isStableSwapByDefault && onlyOneSwapFlagEnabled}
+              disabled={isStableSwapByDefault && onlyOneAMMSourceEnabled}
               id="stable-swap-toggle"
               scale="md"
               checked={isStableSwapByDefault}
@@ -343,19 +367,16 @@ function RoutingSettings() {
               />
             </Flex>
             <Toggle
-              disabled={isMMLinkedPoolByDefault && onlyOneSwapFlagEnabled}
               id="toggle-disable-mm-button"
               checked={isMMLinkedPoolByDefault}
               onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
               scale="md"
             />
           </Flex>
-          {onlyOneSwapFlagEnabled && (
+          {onlyOneAMMSourceEnabled && (
             <Message variant="warning">
               <MessageText>
-                {t(
-                  'You have to enable at least one liquidity source. If you disable all, you will not be able to trade.',
-                )}
+                {t('At least one AMM liquidity source has to be enabled to support normal trading.')}
               </MessageText>
             </Message>
           )}

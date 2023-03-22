@@ -1,6 +1,16 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { TradeType } from '@pancakeswap/sdk'
-import { Button, Text, useModal, confirmPriceImpactWithoutFee, Column, Box } from '@pancakeswap/uikit'
+import {
+  Button,
+  Text,
+  useModal,
+  confirmPriceImpactWithoutFee,
+  Column,
+  Box,
+  Message,
+  MessageText,
+  AutoColumn,
+} from '@pancakeswap/uikit'
 import { useCallback, useEffect, useState, useMemo } from 'react'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
@@ -10,7 +20,7 @@ import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
 import CircleLoader from 'components/Loader/CircleLoader'
-import SettingsModal, { withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
+import SettingsModal, { RoutingSettingsButton, withCustomOnDismiss } from 'components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import {
   BIG_INT_ZERO,
@@ -19,7 +29,7 @@ import {
 } from 'config/constants/exchange'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { Field } from 'state/swap/actions'
-import { useExpertMode, useUserSingleHopOnly } from '@pancakeswap/utils/user'
+import { useExpertMode } from '@pancakeswap/utils/user'
 import { warningSeverity } from 'utils/exchange'
 import { useSwapState } from 'state/swap/hooks'
 import { useCurrency } from 'hooks/Tokens'
@@ -28,6 +38,7 @@ import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
+import { useRoutingSettingChanged } from 'state/user/smartRouter'
 
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
@@ -45,7 +56,6 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isExpertMode] = useExpertMode()
-  const [singleHopOnly] = useUserSingleHopOnly()
   const {
     typedValue,
     independentField,
@@ -62,6 +72,7 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
     inputError: wrapInputError,
   } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
   const showWrap = wrapType !== WrapType.NOT_APPLICABLE
+  const [isRoutingSettingChange, resetRoutingSetting] = useRoutingSettingChanged()
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
   const routerAddress = SWAP_ROUTER_ADDRESSES[trade?.inputAmount?.currency.chainId]
   const amountToApprove = slippageAdjustedAmounts[Field.INPUT]
@@ -242,10 +253,33 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
 
   if (noRoute && userHasSpecifiedInputOutput) {
     return (
-      <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
-        <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
-        {singleHopOnly && <Text color="textSubtle">{t('Try enabling multi-hop trades.')}</Text>}
-      </GreyCard>
+      <AutoColumn gap="12px">
+        <GreyCard style={{ textAlign: 'center', padding: '0.75rem' }}>
+          <Text color="textSubtle">{t('Insufficient liquidity for this trade.')}</Text>
+        </GreyCard>
+        {isRoutingSettingChange && (
+          <Message variant="warning" icon={<></>}>
+            <AutoColumn gap="8px">
+              <MessageText>{t('Unable to establish trading route due to customized routing.')}</MessageText>
+              <AutoRow gap="4px">
+                <RoutingSettingsButton
+                  buttonProps={{
+                    scale: 'xs',
+                    p: 0,
+                  }}
+                  showRedDot={false}
+                >
+                  {t('Check your settings')}
+                </RoutingSettingsButton>
+                <MessageText>{t('or')}</MessageText>
+                <Button variant="text" scale="xs" p="0" onClick={resetRoutingSetting}>
+                  {t('Reset to default')}
+                </Button>
+              </AutoRow>
+            </AutoColumn>
+          </Message>
+        )}
+      </AutoColumn>
     )
   }
 
