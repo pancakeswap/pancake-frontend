@@ -2097,7 +2097,7 @@
   "Risk scanning failed.": "Échec de l'analyse du risque.",
   "Press the button to retry.": "Appuyez sur le bouton pour réessayer.",
   "Learn more about risk rating": "En savoir plus sur la cote de risque",
-  "Unknown": "Inconnu(e)",
+  "Unknown": "Inconnu",
   "I acknowledge the risk": "Je confirme le risque",
   "I have read the scanning result, understood the risk and want to proceed with token importing.": "J'ai lu le résultat de l'analyse, j'ai compris le risque et je veux procéder à l'importation du jeton.",
   "Proceed": "Continuer",
