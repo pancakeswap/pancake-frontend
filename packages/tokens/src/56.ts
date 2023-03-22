@@ -2513,4 +2513,12 @@ export const bscTokens = {
     'Level Token',
     'https://level.finance/',
   ),
+  unw: new ERC20Token(
+    ChainId.BSC,
+    '0x5b65cd9feb54F1Df3D0C60576003344079f8Dc06',
+    18,
+    'UNW',
+    'Uniwhale Token',
+    'https://www.uniwhale.co/',
+  ),
 }
