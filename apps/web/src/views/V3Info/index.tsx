@@ -56,8 +56,6 @@ export default function Home() {
     'week',
   )
 
-  console.log(pairTokensPrice, '????')
-
   // if hover value undefined, reset to current day value
   // useEffect(() => {
   //   if (volumeHover === undefined && protocolData) {

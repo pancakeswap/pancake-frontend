@@ -73,12 +73,11 @@ export async function fetchTokenPriceData(
   error: boolean
 }> {
   // start and end bounds
-  console.log(address, interval, startTimestamp, dataClient, chainName, '????')
   try {
     const endTimestamp = dayjs.utc().unix()
 
     if (!startTimestamp) {
-      console.log('Error constructing price start timestamp')
+      console.error('Error constructing price start timestamp')
       return {
         data: [],
         error: false,
@@ -92,7 +91,6 @@ export async function fetchTokenPriceData(
       timestamps.push(time)
       time += interval
     }
-    console.log(time, '???')
 
     // backout if invalid timestamp format
     if (timestamps.length === 0) {
@@ -104,9 +102,8 @@ export async function fetchTokenPriceData(
 
     // fetch blocks based on timestamp
     const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)
-    console.log(blocks, 'blocks', chainName)
     if (!blocks || blocks.length === 0) {
-      console.log('Error fetching blocks')
+      console.error('Error fetching blocks')
       return {
         data: [],
         error: false,
@@ -157,7 +154,7 @@ export async function fetchTokenPriceData(
       error: false,
     }
   } catch (e) {
-    console.log(e)
+    console.error(e)
     return {
       data: [],
       error: true,
