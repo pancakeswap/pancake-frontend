@@ -1,6 +1,6 @@
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
   AutoColumn,
   Button,
@@ -27,7 +27,7 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 
-// import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
@@ -157,7 +157,7 @@ export default function V3FormView({
     price,
     pricesAtTicks,
     parsedAmounts,
-    // currencyBalances,
+    currencyBalances,
     position,
     noLiquidity,
     currencies,
@@ -219,24 +219,24 @@ export default function V3FormView({
   //   [Field.CURRENCY_B]: useBUSDPrice(parsedAmounts[Field.CURRENCY_B]?.currency),
   // }
   //   // get the max amounts user can add
-  // const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-  //   (accumulator, field) => {
-  //     return {
-  //       ...accumulator,
-  //       [field]: maxAmountSpend(currencyBalances[field]),
-  //     }
-  //   },
-  //   {},
-  // )
-  // const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-  //   (accumulator, field) => {
-  //     return {
-  //       ...accumulator,
-  //       [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-  //     }
-  //   },
-  //   {},
-  // )
+  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmountSpend(currencyBalances[field]),
+      }
+    },
+    {},
+  )
+  const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
+      }
+    },
+    {},
+  )
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   //   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
@@ -430,6 +430,11 @@ export default function V3FormView({
         <LockedDeposit locked={depositADisabled} mb="8px">
           <Box mb="8px">
             <CurrencyInputPanel
+              maxAmount={maxAmounts[Field.CURRENCY_A]}
+              onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
+              onPercentInput={(percent) =>
+                onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+              }
               disableCurrencySelect
               value={formattedAmounts[Field.CURRENCY_A]}
               onUserInput={onFieldAInput}
@@ -445,6 +450,11 @@ export default function V3FormView({
 
         <LockedDeposit locked={depositBDisabled} mb="8px">
           <CurrencyInputPanel
+            maxAmount={maxAmounts[Field.CURRENCY_B]}
+            onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
+            onPercentInput={(percent) =>
+              onFieldAInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+            }
             disableCurrencySelect
             value={formattedAmounts[Field.CURRENCY_B]}
             onUserInput={onFieldBInput}
