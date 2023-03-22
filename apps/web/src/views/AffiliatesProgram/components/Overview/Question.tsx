@@ -79,14 +79,14 @@ const Question = () => {
                 {t('Trading pairs must meet the following eligibility criteria:')}
               </StyledListText>
               <StyledListText ml="16px" color="textSubtle">
-                {t('Pairs must be in “PancakeSwap Extended” official')}
+                {t('Pairs must be in “PancakeSwap Extended” Official')}
                 <Link
                   style={{ display: 'inline-block' }}
                   external
                   href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json"
                 >
                   <Text color="primary" ml="4px" as="span">
-                    {t('Tokens')}
+                    {t('token list')}
                   </Text>
                 </Link>
               </StyledListText>
