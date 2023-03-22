@@ -11,7 +11,7 @@ const StyledLogo = styled(TokenLogo)<{ size: string }>`
   height: ${({ size }) => size};
   border-radius: ${({ size }) => size};
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.075);
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: #faf9fa;
   color: ${({ theme }) => theme.colors.text};
 `
 
@@ -32,7 +32,7 @@ export const CurrencyLogo: React.FC<
     address,
   )}.png`
 
-  return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" {...rest} />
+  return <StyledLogo size={size} srcs={[srcFromPCS, src]} alt="token logo" useFilledIcon {...rest} />
 }
 
 const DoubleCurrencyWrapper = styled.div`
