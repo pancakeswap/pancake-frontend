@@ -15,6 +15,8 @@ import {
   ModalV2,
   PreTitle,
   AutoColumn,
+  Message,
+  MessageText,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -34,6 +36,7 @@ import {
   useUserV2SwapEnable,
   useUserV3SwapEnable,
 } from 'state/user/smartRouter'
+import { useIsMMSupportChain } from 'views/Swap/MMLinkPools/hooks/useIsMMSupportChain'
 import { AtomBox } from '@pancakeswap/ui'
 import { useMMLinkedPoolByDefault } from 'state/user/mmLinkedPool'
 import styled from 'styled-components'
@@ -264,8 +267,11 @@ function RoutingSettings() {
   const [v2Enable, setV2Enable] = useUserV2SwapEnable()
   const [v3Enable, setV3Enable] = useUserV3SwapEnable()
   const [split, setSplit] = useUserSplitRouteEnable()
+  const isMMSupported = useIsMMSupportChain()
   const [isMMLinkedPoolByDefault, setIsMMLinkedPoolByDefault] = useMMLinkedPoolByDefault()
   const [singleHopOnly, setSingleHopOnly] = useUserSingleHopOnly()
+  const onlyOneSwapFlagEnabled =
+    [v2Enable, v3Enable, isStableSwapByDefault, isMMSupported && isMMLinkedPoolByDefault].filter((v) => v).length === 1
 
   return (
     <Modal title={t('Customize Routing')}>
@@ -282,13 +288,23 @@ function RoutingSettings() {
             <Flex alignItems="center">
               <Text>PancakeSwap V3</Text>
             </Flex>
-            <Toggle scale="md" checked={v3Enable} onChange={() => setV3Enable((s) => !s)} />
+            <Toggle
+              disabled={v3Enable && onlyOneSwapFlagEnabled}
+              scale="md"
+              checked={v3Enable}
+              onChange={() => setV3Enable((s) => !s)}
+            />
           </Flex>
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>PancakeSwap V2</Text>
             </Flex>
-            <Toggle scale="md" checked={v2Enable} onChange={() => setV2Enable((s) => !s)} />
+            <Toggle
+              disabled={v2Enable && onlyOneSwapFlagEnabled}
+              scale="md"
+              checked={v2Enable}
+              onChange={() => setV2Enable((s) => !s)}
+            />
           </Flex>
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
@@ -308,6 +324,7 @@ function RoutingSettings() {
               />
             </Flex>
             <PancakeToggle
+              disabled={isStableSwapByDefault && onlyOneSwapFlagEnabled}
               id="stable-swap-toggle"
               scale="md"
               checked={isStableSwapByDefault}
@@ -326,12 +343,22 @@ function RoutingSettings() {
               />
             </Flex>
             <Toggle
+              disabled={isMMLinkedPoolByDefault && onlyOneSwapFlagEnabled}
               id="toggle-disable-mm-button"
               checked={isMMLinkedPoolByDefault}
               onChange={(e) => setIsMMLinkedPoolByDefault(e.target.checked)}
               scale="md"
             />
           </Flex>
+          {onlyOneSwapFlagEnabled && (
+            <Message variant="warning">
+              <MessageText>
+                {t(
+                  'You have to enable at least one liquidity source. If you disable all, you will not be able to trade.',
+                )}
+              </MessageText>
+            </Message>
+          )}
         </AtomBox>
         <AtomBox>
           <PreTitle mb="24px">{t('Routing preference')}</PreTitle>

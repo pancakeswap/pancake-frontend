@@ -1,5 +1,5 @@
 import { AnimatePresence, domMax, LazyMotion } from "framer-motion";
-import React, { createContext, ReactEventHandler, useCallback, useRef, useState } from "react";
+import React, { createContext, useCallback, useRef, useState } from "react";
 import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { createPortal } from "react-dom";
 import { BoxProps } from "../../components/Box";
@@ -37,7 +37,7 @@ export function useModalV2() {
 export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...props }: ModalV2Props & BoxProps) {
   const animationRef = useRef<HTMLDivElement>(null);
 
-  const handleOverlayDismiss: ReactEventHandler = (e) => {
+  const handleOverlayDismiss = (e: any) => {
     e.stopPropagation();
     e.preventDefault();
     if (closeOnOverlayClick) {
@@ -52,7 +52,7 @@ export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...p
         <LazyMotion features={domMax}>
           <AnimatePresence>
             {isOpen && (
-              <DismissableLayer role="dialog" disableOutsidePointerEvents>
+              <DismissableLayer role="dialog" disableOutsidePointerEvents onEscapeKeyDown={handleOverlayDismiss}>
                 <StyledModalWrapper
                   ref={animationRef}
                   // @ts-ignore

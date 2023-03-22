@@ -163,7 +163,7 @@ export function Step3() {
   const { t } = useTranslation()
 
   const [feeAmount_, setFeeAmount] = useState(FeeAmount.MEDIUM)
-  const [showOptions, setShowOptions] = useState(false)
+  const [showOptions, setShowOptions] = useState(true)
 
   return (
     <AtomBox textAlign="center">

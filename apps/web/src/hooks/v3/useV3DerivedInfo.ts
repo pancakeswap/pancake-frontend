@@ -81,7 +81,11 @@ export default function useV3DerivedInfo(
 
   const [token0, token1] = useMemo(
     () =>
-      tokenA && tokenB ? (tokenA.sortsBefore(tokenB) ? [tokenA, tokenB] : [tokenB, tokenA]) : [undefined, undefined],
+      tokenA && tokenB && !tokenA.equals(tokenB)
+        ? tokenA.sortsBefore(tokenB)
+          ? [tokenA, tokenB]
+          : [tokenB, tokenA]
+        : [undefined, undefined],
     [tokenA, tokenB],
   )
 

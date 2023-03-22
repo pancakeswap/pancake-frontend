@@ -9,7 +9,6 @@ import { GetResult } from '@pancakeswap/utils/abitype'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
 import { FIXED_ZERO } from './const'
 import { FarmConfigV3, FarmV3Data, FarmV3DataWithPrice } from './types'
-import { getTokenAmount } from './v2/fetchFarmsV2'
 
 export async function farmV3FetchFarms({
   farms,
@@ -26,15 +25,9 @@ export async function farmV3FetchFarms({
   totalAllocPoint: BigNumber
   commonPrice: CommonPrice
 }) {
-  const [poolInfos, cakePrice, lpData, v3PoolData] = await Promise.all([
+  const [poolInfos, cakePrice, v3PoolData] = await Promise.all([
     fetchPoolInfos(farms, chainId, multicallv2, masterChefAddress),
     (await fetch('https://farms-api.pancakeswap.com/price/cake')).json(),
-    (
-      await fetchPublicFarmsData(farms, chainId, multicallv2)
-    ).map(([tokenBalanceLP, quoteTokenBalanceLP]: any[]) => ({
-      tokenBalanceLP: FixedNumber.from(tokenBalanceLP[0]),
-      quoteTokenBalanceLP: FixedNumber.from(quoteTokenBalanceLP[0]),
-    })),
     fetchV3Pools(farms, chainId, multicallv2),
   ])
 
@@ -53,8 +46,7 @@ export async function farmV3FetchFarms({
       quoteToken,
       lmPool: lmPoolAddress,
       lmPoolLiquidity: lmPoolInfos[lmPoolAddress],
-      ...getClassicFarmsDynamicData({
-        ...lpData[index],
+      ...getV3FarmsDynamicData({
         ...(v3PoolData[index][0] as any),
         token0: farm.token,
         token1: farm.quoteToken,
@@ -233,27 +225,10 @@ export const getCakeApr = (poolWeight: string, activeTvlUSD: BN, cakePriceUSD: s
   return cakeApr
 }
 
-const getClassicFarmsDynamicData = ({
-  quoteTokenBalanceLP,
-  tokenBalanceLP,
-  token0,
-  token1,
-  tick,
-}: {
-  quoteTokenBalanceLP: FixedNumber
-  tokenBalanceLP: FixedNumber
-  token0: ERC20Token
-  token1: ERC20Token
-  tick: number
-}) => {
-  // Raw amount of token in the LP, including those not staked
-  const tokenAmountTotal = getTokenAmount(tokenBalanceLP, token0.decimals)
-  const quoteTokenAmountTotal = getTokenAmount(quoteTokenBalanceLP, token1.decimals)
+const getV3FarmsDynamicData = ({ token0, token1, tick }: { token0: ERC20Token; token1: ERC20Token; tick: number }) => {
   const tokenPriceVsQuote = tickToPrice(token0, token1, tick)
 
   return {
-    tokenAmountTotal: tokenAmountTotal.toString(),
-    quoteTokenAmountTotal: quoteTokenAmountTotal.toString(),
     tokenPriceVsQuote: tokenPriceVsQuote.toSignificant(6),
   }
 }
@@ -274,42 +249,6 @@ const getFarmAllocation = ({
   return {
     poolWeight: poolWeight.toString(),
     multiplier: !_allocPoint.isZero() ? `${+_allocPoint.divUnsafe(FixedNumber.from(10)).toString()}X` : `0X`,
-  }
-}
-
-async function fetchPublicFarmsData(farms: FarmConfigV3[], chainId: number, multicallv2: MultiCallV2) {
-  try {
-    const farmCalls = farms.flatMap((farm) => fetchFarmCalls(farm))
-    const chunkSize = farmCalls.length / farms.length
-    const farmMultiCallResult = await multicallv2({
-      abi: [
-        {
-          constant: true,
-          inputs: [
-            {
-              name: '_owner',
-              type: 'address',
-            },
-          ],
-          name: 'balanceOf',
-          outputs: [
-            {
-              name: 'balance',
-              type: 'uint256',
-            },
-          ],
-          payable: false,
-          stateMutability: 'view',
-          type: 'function',
-        },
-      ],
-      calls: farmCalls,
-      chainId,
-    })
-    return chunk(farmMultiCallResult, chunkSize)
-  } catch (error) {
-    console.error('MasterChef Public Data error ', error)
-    throw error
   }
 }
 
@@ -402,25 +341,6 @@ async function fetchV3Pools(farms: FarmConfigV3[], chainId: number, multicallv2:
   return chunk(resp, chunkSize) as [Slot0, LmPool][]
 }
 
-const fetchFarmCalls = (farm: FarmConfigV3) => {
-  const { lpAddress, token, quoteToken } = farm
-
-  return [
-    // Balance of token in the LP contract
-    {
-      address: token.address,
-      name: 'balanceOf',
-      params: [lpAddress],
-    },
-    // Balance of quote token on LP contract
-    {
-      address: quoteToken.address,
-      name: 'balanceOf',
-      params: [lpAddress],
-    },
-  ]
-}
-
 export type LPTvl = {
   token0: string
   token1: string
@@ -452,27 +372,32 @@ export const fetchCommonTokenUSDValue = async (priceHelper?: PriceHelper): Promi
   return commonTokenUSDValue
 }
 
-function getFarmsPrices(farms: FarmV3Data[], cakePriceUSD: string, commonPrice: CommonPrice): FarmV3DataWithPrice[] {
-  return farms.map((farm) => {
+export function getFarmsPrices(
+  farms: FarmV3Data[],
+  cakePriceUSD: string,
+  commonPrice: CommonPrice,
+): FarmV3DataWithPrice[] {
+  const commonPriceFarms = farms.map((farm) => {
     let tokenPriceBusd = FIXED_ZERO
     let quoteTokenPriceBusd = FIXED_ZERO
 
+    // try to get price via common price
     if (commonPrice[farm.quoteToken.address]) {
       quoteTokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
     }
-
     if (commonPrice[farm.token.address]) {
-      tokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
+      tokenPriceBusd = FixedNumber.from(commonPrice[farm.token.address])
     }
 
+    // try price via CAKE
     if (tokenPriceBusd.isZero() && farm.token.equals(CAKE[farm.token.chainId])) {
       tokenPriceBusd = FixedNumber.from(cakePriceUSD)
     }
-
     if (quoteTokenPriceBusd.isZero() && farm.quoteToken.equals(CAKE[farm.quoteToken.chainId])) {
       quoteTokenPriceBusd = FixedNumber.from(cakePriceUSD)
     }
 
+    // try to get price via token price vs quote
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       tokenPriceBusd = quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
     }
@@ -480,6 +405,55 @@ function getFarmsPrices(farms: FarmV3Data[], cakePriceUSD: string, commonPrice: 
       quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
     }
 
+    return {
+      ...farm,
+      tokenPriceBusd,
+      quoteTokenPriceBusd,
+    }
+  })
+
+  return commonPriceFarms.map((farm) => {
+    let { tokenPriceBusd, quoteTokenPriceBusd } = farm
+    // if token price is zero, try to get price from existing farms
+    if (tokenPriceBusd.isZero()) {
+      const ifTokenPriceFound = commonPriceFarms.find(
+        (f) =>
+          (farm.token.equals(f.token) && !f.tokenPriceBusd.isZero()) ||
+          (farm.token.equals(f.quoteToken) && !f.quoteTokenPriceBusd.isZero()),
+      )
+      if (ifTokenPriceFound) {
+        tokenPriceBusd = farm.token.equals(ifTokenPriceFound.token)
+          ? ifTokenPriceFound.tokenPriceBusd
+          : ifTokenPriceFound.quoteTokenPriceBusd
+      }
+      if (quoteTokenPriceBusd.isZero()) {
+        const ifQuoteTokenPriceFound = commonPriceFarms.find(
+          (f) =>
+            (farm.quoteToken.equals(f.token) && !f.tokenPriceBusd.isZero()) ||
+            (farm.quoteToken.equals(f.quoteToken) && !f.quoteTokenPriceBusd.isZero()),
+        )
+        if (ifQuoteTokenPriceFound) {
+          quoteTokenPriceBusd = farm.quoteToken.equals(ifQuoteTokenPriceFound.token)
+            ? ifQuoteTokenPriceFound.tokenPriceBusd
+            : ifQuoteTokenPriceFound.quoteTokenPriceBusd
+        }
+
+        // try to get price via token price vs quote
+        if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
+          tokenPriceBusd = quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
+        }
+        if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
+          quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
+        }
+
+        if (tokenPriceBusd.isZero()) {
+          throw new Error(`Can't get price for ${farm.token.address}`)
+        }
+        if (quoteTokenPriceBusd.isZero()) {
+          throw new Error(`Can't get price for ${farm.quoteToken.address}`)
+        }
+      }
+    }
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),

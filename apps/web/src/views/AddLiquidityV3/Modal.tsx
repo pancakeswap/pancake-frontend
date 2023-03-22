@@ -7,6 +7,7 @@ import { SettingsMode } from 'components/Menu/GlobalSettings/types'
 import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import currencyId from 'utils/currencyId'
+import { useEffect } from 'react'
 import { AprCalculator } from './components/AprCalculator'
 import { UniversalAddLiquidity } from '.'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
@@ -31,27 +32,37 @@ export function AddLiquidityV3Modal({
   const baseCurrency = useCurrency(currencyIdA)
   const quoteCurrency = useCurrency(currencyIdB)
 
+  useEffect(() => {
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: {},
+      },
+      undefined,
+      {
+        shallow: true,
+      },
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen])
+
   return (
     <ModalV2
       isOpen={isOpen}
       onDismiss={() => {
-        router.replace(
-          {
-            pathname: router.pathname,
-            query: {
-              ...router.query,
-              // it seems like using `[]` will remove the query param, but null does not
-              currency: [],
-              maxPrice: [],
-              minPrice: [],
-            },
-          },
-          undefined,
-          {
-            shallow: true,
-          },
-        )
         onDismiss?.()
+        setTimeout(() => {
+          router.replace(
+            {
+              pathname: router.pathname,
+              query: {},
+            },
+            undefined,
+            {
+              shallow: true,
+            },
+          )
+        })
       }}
       closeOnOverlayClick
     >

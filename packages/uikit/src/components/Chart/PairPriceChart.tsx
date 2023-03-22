@@ -42,7 +42,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   isChangePositive,
   isChartExpanded,
   timeWindow,
-  priceLineData = [],
+  priceLineData,
   ...rest
 }) => {
   const { isDark } = useTheme();
@@ -122,8 +122,8 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     });
     setChart(chart);
     newSeries.setData(transformedData);
-    if (priceLineData.length > 0)
-      priceLineData.forEach((d) => {
+    if (priceLineData && priceLineData.length > 0)
+      priceLineData?.forEach((d) => {
         newSeries.createPriceLine({
           price: d.price,
           color: d.color,

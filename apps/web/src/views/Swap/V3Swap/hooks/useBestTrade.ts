@@ -1,5 +1,6 @@
 import { TradeType } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { useUserSingleHopOnly } from '@pancakeswap/utils/user'
 
 import { useSwapState } from 'state/swap/hooks'
 import { Field } from 'state/swap/actions'
@@ -32,6 +33,7 @@ export function useBestTrade({ maxHops }: Options = {}) {
   const tradeType = isExactIn ? TradeType.EXACT_INPUT : TradeType.EXACT_OUTPUT
   const amount = tryParseAmount(typedValue, independentCurrency ?? undefined)
 
+  const [singleHopOnly] = useUserSingleHopOnly()
   const [split] = useUserSplitRouteEnable()
   const [v2Swap] = useUserV2SwapEnable()
   const [v3Swap] = useUserV3SwapEnable()
@@ -42,7 +44,7 @@ export function useBestTrade({ maxHops }: Options = {}) {
     currency: dependentCurrency,
     baseCurrency: independentCurrency,
     tradeType,
-    maxHops,
+    maxHops: singleHopOnly ? 1 : maxHops,
     maxSplits: split ? undefined : 0,
     v2Swap,
     v3Swap,
