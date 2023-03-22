@@ -32,8 +32,8 @@ export const useMultipleBannerConfig = () => {
 
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
-      { shouldRender: true, banner: <V3Banner /> },
       { shouldRender: true, banner: <FarmV3MigrationBanner /> },
+      { shouldRender: true, banner: <V3Banner /> },
       { shouldRender: true, banner: <AptosBanner /> },
       {
         shouldRender: isRenderIFOBanner,
