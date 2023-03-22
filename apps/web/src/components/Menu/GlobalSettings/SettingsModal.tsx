@@ -1,7 +1,6 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ChainId } from '@pancakeswap/sdk'
 import {
-  Box,
   Flex,
   InjectedModalProps,
   Link,
@@ -17,7 +16,6 @@ import {
   PreTitle,
   AutoColumn,
 } from '@pancakeswap/uikit'
-import { SUPPORT_ZAP } from 'config/constants/supportChains'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { useCallback, useState } from 'react'
@@ -28,7 +26,7 @@ import {
   useUserSingleHopOnly,
   useUserExpertModeAcknowledgement,
 } from '@pancakeswap/utils/user'
-import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility, useZapModeManager } from 'state/user/hooks'
+import { useSubgraphHealthIndicatorManager, useUserUsernameVisibility } from 'state/user/hooks'
 import { useUserTokenRisk } from 'state/user/hooks/useUserTokenRisk'
 import {
   useUserSplitRouteEnable,
@@ -81,7 +79,6 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
   const [showExpertModeAcknowledgement, setShowExpertModeAcknowledgement] = useUserExpertModeAcknowledgement()
   const [expertMode, setExpertMode] = useExpertMode()
   const [audioPlay, setAudioMode] = useAudioPlay()
-  const [zapMode, toggleZapMode] = useZapModeManager()
   const [subgraphHealth, setSubgraphHealth] = useSubgraphHealthIndicatorManager()
   const [userUsernameVisibility, setUserUsernameVisibility] = useUserUsernameVisibility()
   const { onChangeRecipient } = useSwapActionHandlers()

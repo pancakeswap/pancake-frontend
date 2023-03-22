@@ -463,7 +463,7 @@ export default function PoolPage() {
                     </NextLinkFromReactRouter>
                     {!removed && (
                       <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                        <Button ml="16px" variant="secondary" width="100%">
+                        <Button ml="4px" variant="secondary" width="100%">
                           Remove
                         </Button>
                       </NextLinkFromReactRouter>
@@ -499,18 +499,23 @@ export default function PoolPage() {
                   mb="8px"
                   flexWrap={['wrap', 'wrap', 'nowrap']}
                 >
-                  <Box width="100%" mr="4px" mb={['8px', '8px', 0]}>
-                    <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
+                  <Box width="100%" mr="16px" mb={['8px', '8px', 0]}>
+                    <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                       Liquidity
                     </Text>
 
-                    <Text fontSize="24px" fontWeight={500} mb="8px">
+                    <Text fontSize="24px" fontWeight={600} mb="8px">
                       $
                       {fiatValueOfLiquidity?.greaterThan(new Fraction(1, 100))
                         ? fiatValueOfLiquidity.toFixed(2, { groupSeparator: ',' })
                         : '-'}
                     </Text>
-                    <LightGreyCard mr="4px">
+                    <LightGreyCard
+                      mr="4px"
+                      style={{
+                        padding: '16px 8px',
+                      }}
+                    >
                       <AutoRow justifyContent="space-between" mb="8px">
                         <Flex>
                           <CurrencyLogo currency={currencyQuote} />
@@ -539,29 +544,40 @@ export default function PoolPage() {
                       </AutoRow>
                     </LightGreyCard>
                   </Box>
-                  <Box width="100%" ml="4px">
-                    <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
+                  <Box width="100%" ml="16px">
+                    <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                       Unclaim Fees
                     </Text>
                     <AutoRow justifyContent="space-between" mb="8px">
-                      <Text fontSize="24px" fontWeight={500}>
+                      <Text fontSize="24px" fontWeight={600}>
                         $
                         {fiatValueOfFees?.greaterThan(new Fraction(1, 100))
                           ? fiatValueOfFees.toFixed(2, { groupSeparator: ',' })
                           : '-'}
                       </Text>
 
-                      {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash ? (
-                        <Button scale="sm" disabled={collecting || isCollectPending} onClick={onClaimFee}>
-                          {!!collectMigrationHash && !isCollectPending
-                            ? 'Collected'
-                            : isCollectPending || collecting
-                            ? 'Collecting...'
-                            : 'Collect'}
-                        </Button>
-                      ) : null}
+                      <Button
+                        scale="sm"
+                        disabled={
+                          collecting ||
+                          isCollectPending ||
+                          !(feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash)
+                        }
+                        onClick={onClaimFee}
+                      >
+                        {!!collectMigrationHash && !isCollectPending
+                          ? 'Collected'
+                          : isCollectPending || collecting
+                          ? 'Collecting...'
+                          : 'Collect'}
+                      </Button>
                     </AutoRow>
-                    <LightGreyCard mr="4px">
+                    <LightGreyCard
+                      mr="4px"
+                      style={{
+                        padding: '16px 8px',
+                      }}
+                    >
                       <AutoRow justifyContent="space-between" mb="8px">
                         <Flex>
                           <CurrencyLogo currency={feeValueUpper?.currency} />
@@ -597,8 +613,8 @@ export default function PoolPage() {
                   </Flex>
                 </Flex>
               )}
-              <AutoRow justifyContent="space-between" mb="8px" mt="24px">
-                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
+              <AutoRow justifyContent="space-between" mb="16px" mt="24px">
+                <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                   Price Range
                 </Text>
                 {currencyBase && currencyQuote && (
@@ -611,16 +627,16 @@ export default function PoolPage() {
               <AutoRow mb="8px">
                 <Flex alignItems="center" justifyContent="space-between" width="100%">
                   <RangePriceSection
-                    mr="4px"
+                    mr="16px"
                     title="MIN PRICE"
                     price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
                     currency0={currencyQuote}
                     currency1={currencyBase}
                   />
 
-                  <SyncAltIcon width="24px" mx="8px" />
+                  <SyncAltIcon width="24px" mx="16px" />
                   <RangePriceSection
-                    ml="4px"
+                    ml="16px"
                     title="MAX PRICE"
                     price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
                     currency0={currencyQuote}

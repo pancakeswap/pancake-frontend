@@ -1,6 +1,13 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
 import { Button, Flex, SyncAltIcon, Text } from '@pancakeswap/uikit'
+import styled from 'styled-components'
+
+const RateToggleButton = styled(Button)`
+  border-radius: 8px;
+  padding-left: 4px;
+  padding-right: 4px;
+`
 
 export default function RateToggle({
   currencyA,
@@ -13,12 +20,17 @@ export default function RateToggle({
 
   return currencyA ? (
     <Flex justifyContent="center" alignItems="center">
-      <Text mr="8px" color="textSubtle">
+      <Text mr="4px" color="textSubtle">
         {t('View prices in')}
       </Text>
-      <Button variant="secondary" scale="sm" onClick={handleRateToggle} startIcon={<SyncAltIcon color="primary" />}>
+      <RateToggleButton
+        variant="secondary"
+        scale="sm"
+        onClick={handleRateToggle}
+        startIcon={<SyncAltIcon color="primary" />}
+      >
         {currencyA?.symbol}
-      </Button>
+      </RateToggleButton>
     </Flex>
   ) : null
 }

@@ -14,6 +14,8 @@ export const RangePriceSection = ({ title, currency0, currency1, price, ...props
     <LightGreyCard
       {...props}
       style={{
+        paddingTop: '8px',
+        paddingBottom: '8px',
         textAlign: 'center',
       }}
     >
