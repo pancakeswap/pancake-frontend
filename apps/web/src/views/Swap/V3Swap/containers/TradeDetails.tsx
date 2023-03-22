@@ -9,7 +9,7 @@ import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetails
 
 import { MMTradeInfo } from 'views/Swap/MMLinkPools/hooks'
 import { RoutesBreakdown } from '../components'
-import { useSlippageAdjustedAmounts } from '../hooks'
+import { useSlippageAdjustedAmounts, useIsWrapping } from '../hooks'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 
 interface Props {
@@ -42,13 +42,14 @@ export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: 
 
 export function TradeDetails({ loaded, trade }: Props) {
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
+  const isWrapping = useIsWrapping()
   const { priceImpactWithoutFee, lpFeeAmount } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
   const hasStablePool = useMemo(
     () => trade?.routes.some((route) => route.pools.some(SmartRouter.isStablePool)),
     [trade],
   )
 
-  if (!loaded || !trade) {
+  if (isWrapping || !loaded || !trade) {
     return null
   }
 
