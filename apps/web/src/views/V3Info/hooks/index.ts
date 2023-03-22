@@ -1,8 +1,14 @@
+import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { multiChainName } from 'state/info/constant'
 import useSWRImmutable from 'swr/immutable'
 import { v3Clients } from 'utils/graphql'
 import { fetchChartData } from '../data/protocol/chart'
-import { ChartDayData } from '../types'
+import { fetchTopTransactions } from '../data/protocol/transactions'
+import { fetchTokenPriceData } from '../data/token/priceData'
+import { ChartDayData, PriceChartEntry, Transaction } from '../types'
+
+const ONE_HOUR_SECONDS = 3600
 
 const SWR_SETTINGS_WITHOUT_REFETCH = {
   errorRetryCount: 3,
@@ -12,9 +18,38 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
 export const useProtocolChartData = (): ChartDayData[] | undefined => {
   const { chainId } = useActiveChainId()
   const { data: chartData } = useSWRImmutable(
-    chainId && [`v3/info/protocol/updateProtocolChartData`, chainId],
+    chainId && [`v3/info/protocol/ProtocolChartData`, chainId],
     () => fetchChartData(v3Clients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return chartData?.data ?? []
+}
+
+export const useProtocolTransactionData = (): Transaction[] | undefined => {
+  const { chainId } = useActiveChainId()
+  const { data } = useSWRImmutable(
+    chainId && [`v3/info/protocol/ProtocolTransactionData`, chainId],
+    () => fetchTopTransactions(v3Clients[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data ?? []
+}
+
+export const useTokenPriceChartData = (
+  address: string,
+  duration?: 'day' | 'week' | 'month' | 'year',
+): PriceChartEntry[] | undefined => {
+  const { chainId } = useActiveChainId()
+  const utcCurrentTime = dayjs()
+  const startTimestamp = utcCurrentTime
+    .subtract(1, duration ?? 'day')
+    .startOf('hour')
+    .unix()
+
+  const { data } = useSWRImmutable(
+    chainId && [`v3/info/token/priceData/${address}/${duration}`, chainId],
+    () => fetchTokenPriceData(address, ONE_HOUR_SECONDS, startTimestamp, v3Clients[chainId], multiChainName[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data ?? []
 }
