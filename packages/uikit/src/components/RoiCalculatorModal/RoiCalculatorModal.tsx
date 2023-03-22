@@ -34,6 +34,7 @@ const StyledModal = styled(Modal)`
 export const ScrollableContainer = styled.div`
   padding: 24px;
   max-height: 500px;
+  overflow-x: hidden;
   overflow-y: auto;
   ${({ theme }) => theme.mediaQueries.sm} {
     max-height: none;

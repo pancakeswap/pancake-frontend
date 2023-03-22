@@ -194,9 +194,17 @@ interface InterestDisplayProps {
 export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
   return (
     <Flex alignItems="center">
-      {amount && <Text bold>${toSignificant(amount)}</Text>}
+      {amount && (
+        <Text bold ellipsis>
+          ${toSignificant(amount)}
+        </Text>
+      )}
       {interest && (
-        <Text ml="4px" color={typeof interest === "number" ? "success" : interest.lessThan(0) ? "failure" : "success"}>
+        <Text
+          ml="4px"
+          color={typeof interest === "number" ? "success" : interest.lessThan(0) ? "failure" : "success"}
+          ellipsis
+        >
           ({typeof interest === "number" ? formatAmount(interest) : interest.toSignificant(2)}%)
         </Text>
       )}

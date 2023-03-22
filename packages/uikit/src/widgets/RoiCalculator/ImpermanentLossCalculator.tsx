@@ -54,9 +54,9 @@ interface Props {
 
 const getCakeAssetsByApy = (
   chainId: number,
-  cakeApy: number,
   cakePrice_: string,
-  usdValue: string,
+  cakeApy = 0,
+  usdValue = "0",
   modifiedCakePrice?: string
 ) => {
   const cakePrice = modifiedCakePrice || cakePrice_;
@@ -112,8 +112,8 @@ export function ImpermanentLossCalculator({
 
   const exitAssets = useMemo<Asset[] | undefined>(
     () =>
-      assets && isFarm && currencyA && currencyA.chainId in CAKE && cakePrice && cakeApy && usdValue
-        ? [...assets, getCakeAssetsByApy(currencyA.chainId, cakeApy, cakePrice, usdValue)]
+      assets && isFarm && currencyA && currencyA.chainId in CAKE && cakePrice
+        ? [...assets, getCakeAssetsByApy(currencyA.chainId, cakePrice, cakeApy, usdValue)]
         : assets,
     [assets, cakeApy, cakePrice, currencyA, isFarm, usdValue]
   );
@@ -215,10 +215,10 @@ export function ImpermanentLossCalculator({
         { ...assetA, amount: amountAStr, value: parseFloat(amountAStr) * parseFloat(priceA) },
         { ...assetB, amount: amountBStr, value: parseFloat(amountBStr) * parseFloat(priceB) },
       ];
-      if (maybeAssetCake && cakeApy && usdValue) {
+      if (maybeAssetCake) {
         adjusted = [
           ...adjusted,
-          getCakeAssetsByApy(assetCurrencyA.chainId, cakeApy, cakePrice, usdValue, String(maybeAssetCake.price)),
+          getCakeAssetsByApy(assetCurrencyA.chainId, cakePrice, cakeApy, usdValue, String(maybeAssetCake.price)),
         ];
 
         setEditCakePrice(+maybeAssetCake.price);
