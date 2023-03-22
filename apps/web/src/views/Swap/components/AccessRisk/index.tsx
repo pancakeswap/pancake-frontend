@@ -139,6 +139,31 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
     { placement: 'bottom' },
   )
 
+  const {
+    targetRef: unknownTargetRef,
+    tooltip: unknownTooltip,
+    tooltipVisible: unknownTooltipVisible,
+  } = useTooltip(
+    <>
+      <Text as="span">{t('Third-party risk scanning service')}</Text>
+      <Link style={{ display: 'inline-block' }} ml="4px" external href="https://www.avengerdao.org">
+        AvengerDAO
+      </Link>
+      <Text ml="4px" as="span">
+        {t('is reporting a risk level of Unknown')}
+      </Text>
+      <Text mt="4px">
+        {t(
+          'However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.',
+        )}
+      </Text>
+      <Flex mt="4px">
+        <Text bold>{t('Please proceed with caution and always do your own research.')}</Text>
+      </Flex>
+    </>,
+    { placement: 'bottom' },
+  )
+
   if (data) {
     const hasRiskValue = TOKEN_RISK_T[data.riskLevel]
     if (!hasRiskValue) return null
@@ -170,12 +195,12 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   if (error) {
     return (
       <Flex justifyContent="flex-end" alignItems="center">
-        <div ref={targetRef} style={{ userSelect: 'none' }}>
+        <div ref={unknownTargetRef} style={{ userSelect: 'none' }}>
           <Tag variant="textDisabled">
             <Text bold small color="invertedContrast">
               {t('Unknown')}
             </Text>
-            {tooltipVisible && tooltip}
+            {unknownTooltipVisible && unknownTooltip}
             <Flex>
               <HelpIcon ml="4px" width="16px" height="16px" color="invertedContrast" />
             </Flex>
