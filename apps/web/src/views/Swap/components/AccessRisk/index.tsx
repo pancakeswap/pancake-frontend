@@ -1,5 +1,6 @@
 import { Trans, useTranslation } from '@pancakeswap/localization'
 import { ERC20Token, Token } from '@pancakeswap/sdk'
+import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import {
   Button,
   Dots,
@@ -132,7 +133,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
       ) : (
         <>
           <Text ml="4px" as="span">
-            {t('is reporting a risk level of')} <b>{(data?.riskLevel && TOKEN_RISK_T[data.riskLevel]) || 'Unknown'}</b>
+            {t('is reporting a risk level of')} <b>{TOKEN_RISK_T[data?.riskLevel] || 'Unknown'}</b>
           </Text>
           <Text mt="4px">
             {t(
@@ -149,7 +150,7 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
   )
 
   const riskLevel = useMemo(() => {
-    if (data?.riskLevel) {
+    if (!isUndefinedOrNull(data?.riskLevel)) {
       if (tokenInLists || data.riskLevel > TOKEN_RISK.MEDIUM) {
         return data.riskLevel
       }
