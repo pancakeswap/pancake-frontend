@@ -15,6 +15,9 @@ it("renders correctly", () => {
       display: -webkit-inline-flex;
       display: -ms-inline-flexbox;
       display: inline-flex;
+      width: -webkit-fit-content;
+      width: -moz-fit-content;
+      width: fit-content;
       position: relative;
     }
 
