@@ -212,16 +212,27 @@ export abstract class MasterChefV3 {
       })
     )
 
-    if (options.liquidityPercentage.equalTo(ONE)) {
-      if (options.burnToken) {
-        calldatas.push(MasterChefV3.INTERFACE.encodeFunctionData('burn', [tokenId]))
-      } else if (rest?.recipient) {
+    if (rest?.recipient) {
+      if (options.liquidityPercentage.equalTo(ONE)) {
         calldatas.push(
           MasterChefV3.INTERFACE.encodeFunctionData('withdraw', [
             tokenId.toString(),
             validateAndParseAddress(rest?.recipient),
           ])
         )
+      } else {
+        calldatas.push(
+          MasterChefV3.INTERFACE.encodeFunctionData('harvest', [
+            tokenId.toString(),
+            validateAndParseAddress(rest?.recipient),
+          ])
+        )
+      }
+    }
+
+    if (options.liquidityPercentage.equalTo(ONE)) {
+      if (options.burnToken) {
+        calldatas.push(MasterChefV3.INTERFACE.encodeFunctionData('burn', [tokenId]))
       }
     } else {
       invariant(options.burnToken !== true, 'CANNOT_BURN')
