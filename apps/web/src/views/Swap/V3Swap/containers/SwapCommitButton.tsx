@@ -86,7 +86,7 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
   }
   // check whether the user has approved the router on the input token
   const [approval, approveCallback] = useApproveCallback(amountToApprove, routerAddress)
-  const { priceImpactWithoutFee } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
+  const { priceImpactWithoutFee } = useMemo(() => !showWrap && computeTradePriceBreakdown(trade), [showWrap, trade])
   const swapInputError = useSwapInputError(trade, currencyBalances)
   const parsedAmounts = useParsedAmounts(trade, currencyBalances, showWrap)
   const parsedIndepentFieldAmount = parsedAmounts[independentField]
