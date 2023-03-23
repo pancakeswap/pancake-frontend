@@ -5,6 +5,7 @@ import { Contract } from '@ethersproject/contracts'
 import map from 'lodash/map'
 import stats from 'stats-lite'
 
+// eslint-disable-next-line import/named
 import { InterfaceMulticall } from '../../abis/types'
 import IMulticallABI from '../../abis/InterfaceMulticall.json'
 import {
@@ -15,11 +16,12 @@ import {
   Result,
 } from './multicallProvider'
 
-const UNISWAP_MULTICALL_ADDRESSES = {
+// TODO: v3 contract addresses PancakeInterfaceMulticall
+const PANCAKE_MULTICALL_ADDRESSES = {
   [ChainId.ETHEREUM]: '0x1F98415757620B543A52E61c46B32eB19261F984',
   [ChainId.GOERLI]: '0x1F98415757620B543A52E61c46B32eB19261F984',
   [ChainId.BSC]: '0x1F98415757620B543A52E61c46B32eB19261F984',
-  [ChainId.BSC_TESTNET]: '0xe9A3bf08D1595c4372698740142D177d505B53aa',
+  [ChainId.BSC_TESTNET]: '0x8893970e9fFbbE6686992d23ce19E1459AEe7b5A',
 }
 
 export type UniswapMulticallConfig = {
@@ -40,7 +42,7 @@ export class UniswapMulticallProvider extends IMulticallProvider<UniswapMultical
 
   constructor(protected chainId: ChainId, protected provider: BaseProvider, protected gasLimitPerCall = 1_000_000) {
     super()
-    const multicallAddress = UNISWAP_MULTICALL_ADDRESSES[this.chainId]
+    const multicallAddress = PANCAKE_MULTICALL_ADDRESSES[this.chainId]
 
     if (!multicallAddress) {
       throw new Error(`No address for Uniswap Multicall Contract on chain id: ${chainId}`)

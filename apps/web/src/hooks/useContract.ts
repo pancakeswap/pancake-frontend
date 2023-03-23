@@ -10,7 +10,6 @@ import {
   Zap,
   IPancakePair,
 } from 'config/abi/types'
-import QuoterAbi from 'config/abi/Quoter.json'
 import QuoterV2Abi from 'config/abi/QuoterV2.json'
 
 import zapAbi from 'config/abi/zap.json'
@@ -403,8 +402,8 @@ export const useStableSwapNativeHelperContract = () => {
   return useMemo(() => getStableSwapNativeHelperContract(signer, chainId), [signer, chainId])
 }
 
-export const useQuoterContract = (useQuoterV2 = false) => {
-  return useContract(addresses.quoter, useQuoterV2 ? QuoterV2Abi : QuoterAbi)
+export const useQuoterV2Contract = () => {
+  return useContract(addresses.quoter, QuoterV2Abi)
 }
 
 // Philip TODO: Add NonfungiblePositionManager | null type

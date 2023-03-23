@@ -51,7 +51,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct UniswapInterfaceMulticall.Call[]",
+        "internalType": "struct PancakeInterfaceMulticall.Call[]",
         "name": "calls",
         "type": "tuple[]"
       }
@@ -81,7 +81,7 @@
             "type": "bytes"
           }
         ],
-        "internalType": "struct UniswapInterfaceMulticall.Result[]",
+        "internalType": "struct PancakeInterfaceMulticall.Result[]",
         "name": "returnData",
         "type": "tuple[]"
       }
