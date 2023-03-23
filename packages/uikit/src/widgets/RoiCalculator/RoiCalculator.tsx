@@ -20,7 +20,6 @@ import { Details } from "./Details";
 import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 import { TickData } from "./types";
-import { useActiveTicks } from "./hooks/useActiveTicks";
 import { useMatchBreakpoints } from "../../contexts";
 import { TwoColumns } from "./TwoColumns";
 
@@ -87,7 +86,6 @@ export function RoiCalculator({
   const [compoundOn, setCompoundOn] = useState(true);
   const [compoundIndex, setCompoundIndex] = useState(3);
   const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
-  const activeTicks = useActiveTicks({ currencyA, currencyB, ticks: ticksRaw, liquidity, tickCurrent });
   const ticks = useMemo(
     () =>
       ticksRaw?.map(
@@ -245,7 +243,7 @@ export function RoiCalculator({
         tickCurrent={tickCurrent}
         liquidity={liquidity}
         feeAmount={feeAmount}
-        ticks={activeTicks}
+        ticks={ticksRaw}
         ticksAtLimit={priceRange?.ticksAtLimit}
         priceLower={priceRange?.priceLower}
         priceUpper={priceRange?.priceUpper}

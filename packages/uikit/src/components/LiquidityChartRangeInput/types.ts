@@ -68,7 +68,7 @@ export enum Bound {
 
 export interface TickDataRaw {
   tick: string | number;
-  liquidityActive: BigintIsh;
+  liquidityGross: BigintIsh;
   liquidityNet: BigintIsh;
 }
 
