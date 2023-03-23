@@ -1,39 +1,64 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+import { ERC20Token, ChainId } from '@pancakeswap/sdk'
 
 export const farmsV3 = [
   {
     pid: 1,
-    lpSymbol: 'USDT-MSIX LP',
-    lpAddress: '0x51A9337DC14EFbfA2903946E0BDE26D60B14800D',
+    lpSymbol: 'USDT-BNB LP',
+    lpAddress: '0x137957f79CA4d8C5eb11916Da8E0f33E29470b48',
     token: bscTestnetTokens.usdt,
-    quoteToken: bscTestnetTokens.msix,
-    feeAmount: FeeAmount.HIGH,
+    quoteToken: bscTestnetTokens.wbnb,
+    feeAmount: FeeAmount.MEDIUM,
   },
   {
     pid: 2,
-    lpSymbol: 'USDT-BUSD LP',
-    lpAddress: '0x87Ad85098e1e3e11D3C514a84f6Fdd6e90Dc11Fe',
+    lpSymbol: 'USDT-MSIX LP',
+    lpAddress: '0x590E303f602DDAd3E37C9984fDde9f4dB64Ec5F7',
     token: bscTestnetTokens.usdt,
-    quoteToken: bscTestnetTokens.busd,
+    quoteToken: bscTestnetTokens.msix,
     feeAmount: FeeAmount.LOWEST,
   },
   {
     pid: 3,
-    lpSymbol: 'MockB-MockA LP',
-    lpAddress: '0x058058F5847598618f911A59BC2010999eACDFa3',
+    lpSymbol: 'MockB-MockA LP (0.05%)',
+    lpAddress: '0x72C82FE7aa756dAAD72bC371E14BEfEE43060454',
     token: bscTestnetTokens.mockB,
     quoteToken: bscTestnetTokens.mockA,
     feeAmount: FeeAmount.LOW,
   },
   {
     pid: 4,
-    lpSymbol: 'MockB-MockA LP',
-    lpAddress: '0x7038Abe91B2Edf9769D846f5a42708c3aB9e9A39',
+    lpSymbol: 'BUSD-CAKE LP',
+    lpAddress: '0xA37267D2AE419a48333924796d11bFdd04a466D5',
+    token: bscTestnetTokens.busd,
+    quoteToken: bscTestnetTokens.cake,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 5,
+    lpSymbol: 'MockB-MockA LP (0.01%)',
+    lpAddress: '0xa776e0C72b9F3890Bfd19cc60C3cD41e31E84696',
     token: bscTestnetTokens.mockB,
     quoteToken: bscTestnetTokens.mockA,
-    feeAmount: FeeAmount.MEDIUM,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 6,
+    lpSymbol: 'MockB-MockA LP (1%)',
+    lpAddress: '0xE70a66945E99fB3Ac701A155CFfB2Ce3C95a9016',
+    token: bscTestnetTokens.mockB,
+    quoteToken: bscTestnetTokens.mockA,
+    feeAmount: FeeAmount.HIGH,
+  },
+  {
+    pid: 7,
+    lpSymbol: 'MBNB-USDC LP',
+    lpAddress: '0xe7345A3c74E0496722Fb536732E2C978B0658AaB',
+    token: new ERC20Token(ChainId.BSC_TESTNET, '0x6db1c08e3cBA84Fd1676CFb2837aefEfB61f9E67', 18, 'MBNB', 'MBNB'),
+    quoteToken: bscTestnetTokens.usdc,
+    feeAmount: FeeAmount.LOW,
   },
 ] satisfies FarmConfigV3[]
 

@@ -447,13 +447,14 @@ export function getFarmsPrices(
         }
 
         if (tokenPriceBusd.isZero()) {
-          throw new Error(`Can't get price for ${farm.token.address}`)
+          console.error(`Can't get price for ${farm.token.address}`)
         }
         if (quoteTokenPriceBusd.isZero()) {
-          throw new Error(`Can't get price for ${farm.quoteToken.address}`)
+          console.error(`Can't get price for ${farm.quoteToken.address}`)
         }
       }
     }
+
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),
