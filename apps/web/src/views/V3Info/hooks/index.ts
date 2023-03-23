@@ -47,7 +47,7 @@ export const useTokenPriceChartData = (
     .unix()
 
   const { data } = useSWRImmutable(
-    chainId && [`v3/info/token/priceData/${address}/${duration}`, chainId],
+    chainId && address && [`v3/info/token/priceData/${address}/${duration}`, chainId],
     () => fetchTokenPriceData(address, ONE_HOUR_SECONDS, startTimestamp, v3Clients[chainId], multiChainName[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
