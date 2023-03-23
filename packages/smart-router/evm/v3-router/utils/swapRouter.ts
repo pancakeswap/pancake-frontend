@@ -360,7 +360,7 @@ export abstract class SwapRouter {
           const inAmount = i === 0 ? amountIn : 0
           const outAmount = !lastSectionInRoute ? 0 : amountOut
           if (mixedRouteIsAllV3(newRoute)) {
-            const pathStr = encodeMixedRouteToPath(newRoute, false)
+            const pathStr = encodeMixedRouteToPath(newRoute, !isExactIn)
             if (isExactIn) {
               const exactInputParams = {
                 path: pathStr,
