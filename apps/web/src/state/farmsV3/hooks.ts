@@ -237,8 +237,6 @@ const usePositionsByUserFarms = (
       farmsV3.map((farm) => {
         const { token, quoteToken, feeAmount } = farm
 
-        const stakedIdsInFarm = stakedIds.filter((userPosition) => userPosition.toString() === farm.pid.toString())
-
         const unstaked = unstakedPositions.filter(
           (p) =>
             toLower(p.token0) === toLower(token.address) &&
@@ -246,10 +244,6 @@ const usePositionsByUserFarms = (
             feeAmount === p.fee,
         )
         const staked = stakedPositions.filter((p) => {
-          const foundPosition = stakedIdsInFarm.find((tokenId) => p.tokenId.eq(tokenId))
-
-          if (foundPosition) return true
-
           return (
             toLower(p.token0) === toLower(token.address) &&
             toLower(p.token1) === toLower(quoteToken.address) &&
@@ -275,7 +269,7 @@ const usePositionsByUserFarms = (
           ),
         }
       }),
-    [farmsV3, pendingCakeByTokenIds, stakedIds, stakedPositions, unstakedPositions],
+    [farmsV3, pendingCakeByTokenIds, stakedPositions, unstakedPositions],
   )
 
   return {

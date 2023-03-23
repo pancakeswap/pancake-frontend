@@ -226,7 +226,9 @@ export function ImpermanentLossCalculator({
 
       return adjusted;
     },
-    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue, cakeApy, cakePrice, setEditCakePrice]
+    // setEditCakePrice is not a dependency because it's setState
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [amountA, amountB, tickLower, tickUpper, sqrtRatioX96, usdValue, cakeApy, cakePrice]
   );
 
   const updateEntry = useCallback(
