@@ -19,7 +19,7 @@ const negativeSpace = {
 const extendedSpace = {
   '100%': '100%',
   auto: 'auto',
-  fit: 'fit-content',
+  'fit-content': 'fit-content',
   screenSm: breakpoints.sm,
   screenMd: breakpoints.md,
   screenLg: breakpoints.lg,

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
-import { Box, Card, CurrencyLogo, Flex, Row, RowBetween, Table, Td, Text, Th } from "../../components";
+import { Box, Card, CurrencyLogo, Row, RowBetween, RowFixed, Table, Td, Text, Th } from "../../components";
 import { Tag, TagProps } from "../../components/Tag";
 import { StyledInput } from "./StyledInput";
 import { toSignificant } from "./utils";
@@ -193,7 +193,12 @@ interface InterestDisplayProps {
 
 export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
   return (
-    <Flex alignItems="center">
+    <RowFixed
+      display="grid"
+      style={{
+        gridTemplateColumns: "auto auto",
+      }}
+    >
       {amount && (
         <Text bold ellipsis>
           ${toSignificant(amount)}
@@ -208,7 +213,7 @@ export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
           ({typeof interest === "number" ? formatAmount(interest) : interest.toSignificant(2)}%)
         </Text>
       )}
-    </Flex>
+    </RowFixed>
   );
 }
 
