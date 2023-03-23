@@ -253,8 +253,6 @@ export abstract class SwapRouter {
   ): string[] {
     let calldatas: string[] = []
 
-    // WARN: Not sure why this restriction. Remove for now to allow exact output on mixed route trading
-    // invariant(trade.tradeType === TradeType.EXACT_INPUT, 'TRADE_TYPE')
     const isExactIn = trade.tradeType === TradeType.EXACT_INPUT
 
     for (const route of trade.routes) {
