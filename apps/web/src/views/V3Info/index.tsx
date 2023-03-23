@@ -1,7 +1,7 @@
 import { AutoColumn, PairDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
 import dynamic from 'next/dynamic'
 import styled from 'styled-components'
-import { bscTokens } from '@pancakeswap/tokens'
+import { ethereumTokens } from '@pancakeswap/tokens'
 // import { useTransformedVolumeData } from 'hooks/chart'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -50,7 +50,7 @@ export default function Home() {
 
   const [, setHoverValue] = useState<number | undefined>()
   const [, setHoverDate] = useState<string | undefined>()
-  const pairTokensPrice = usePairTokensPrice(bscTokens.wbnb, bscTokens.usdc, 'day')
+  const pairTokensPrice = usePairTokensPrice(ethereumTokens.weth, ethereumTokens.usdc, 'day', 1)
 
   // if hover value undefined, reset to current day value
   // useEffect(() => {
