@@ -157,7 +157,7 @@ export default function FeeSelector({
           </AutoColumn>
         ) : (
           <>
-            <div />
+            <Text>V3 LP</Text>
             {isLoading && <CircleLoader />}
           </>
         )
