@@ -2,6 +2,7 @@ import { AnimatePresence, domMax, LazyMotion, m } from "framer-motion";
 import React, { createContext, useRef, useState, useMemo, useCallback } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
+import { DismissableLayer } from "@radix-ui/react-dismissable-layer";
 import { mountAnimation, unmountAnimation } from "../../components/BottomDrawer/styles";
 import { Overlay } from "../../components/Overlay";
 import { useIsomorphicEffect } from "../../hooks";
@@ -117,20 +118,22 @@ const ModalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
           <LazyMotion features={domMax}>
             <AnimatePresence>
               {isOpen && (
-                <StyledModalWrapper
-                  ref={animationRef}
-                  onAnimationStart={() => animationHandler(animationRef.current)}
-                  {...animationMap}
-                  variants={animationVariants}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Overlay onClick={handleOverlayDismiss} />
-                  {React.isValidElement(modalNode) &&
-                    React.cloneElement(modalNode, {
-                      // @ts-ignore
-                      onDismiss: handleDismiss,
-                    })}
-                </StyledModalWrapper>
+                <DismissableLayer role="dialog" disableOutsidePointerEvents onEscapeKeyDown={handleOverlayDismiss}>
+                  <StyledModalWrapper
+                    ref={animationRef}
+                    onAnimationStart={() => animationHandler(animationRef.current)}
+                    {...animationMap}
+                    variants={animationVariants}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Overlay onClick={handleOverlayDismiss} />
+                    {React.isValidElement(modalNode) &&
+                      React.cloneElement(modalNode, {
+                        // @ts-ignore
+                        onDismiss: handleDismiss,
+                      })}
+                  </StyledModalWrapper>
+                </DismissableLayer>
               )}
             </AnimatePresence>
           </LazyMotion>,

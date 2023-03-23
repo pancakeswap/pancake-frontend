@@ -41,6 +41,8 @@ import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
 import FarmV3MigrationBanner from 'views/Home/components/Banners/FarmV3MigrationBanner'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { LiquidityCardRow } from 'components/LiquidityCardRow'
+import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
+import { useAtom } from 'jotai'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -68,6 +70,12 @@ enum FILTER {
   V2 = 3,
 }
 
+const hideClosePositionAtom = atomWithStorageWithErrorCatch('pcs:hide-close-position', false)
+
+function useHideClosePosition() {
+  return useAtom(hideClosePositionAtom)
+}
+
 export default function PoolListPage() {
   const { account } = useWeb3React()
   const {
@@ -76,7 +84,7 @@ export default function PoolListPage() {
   } = useTranslation()
 
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(FILTER.ALL)
-  const [hideClosedPositions, setHideClosedPositions] = useState(false)
+  const [hideClosedPositions, setHideClosedPositions] = useHideClosePosition()
 
   const { positions, loading: v3Loading } = useV3Positions(account)
 
@@ -150,8 +158,8 @@ export default function PoolListPage() {
                   <RangeTag removed={removed} outOfRange={outOfRange} />
                 </>
               }
-              subtitle={`Min ${formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max: 
-                ${formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)} ${currencyQuote?.symbol} per 
+              subtitle={`Min ${formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max:
+                ${formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)} ${currencyQuote?.symbol} per
                 ${currencyBase?.symbol}`}
             />
           )}
@@ -206,8 +214,9 @@ export default function PoolListPage() {
           }
           filter={
             <>
-              <Flex alignItems="center">
+              <Flex as="label" htmlFor="hide-close-positions" alignItems="center">
                 <Checkbox
+                  id="hide-close-positions"
                   scale="sm"
                   name="confirmed"
                   type="checkbox"
