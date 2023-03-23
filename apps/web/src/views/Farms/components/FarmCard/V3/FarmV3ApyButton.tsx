@@ -181,7 +181,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           maxLabel={existingPosition_ ? t('My Position') : undefined}
           closeOnOverlayClick
           depositAmountInUsd={depositUsdAsBN?.toString()}
-          max={existingPosition_ && depositUsdAsBN?.toString()}
+          max={depositUsdAsBN?.toString()}
           balanceA={balanceA}
           balanceB={balanceB}
           price={price}

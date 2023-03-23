@@ -28,6 +28,8 @@ export const DEFAULT_COMMON_PRICE = {
   [ChainId.BSC]: {},
   [ChainId.BSC_TESTNET]: {
     [bscTestnetTokens.mockA.address]: '10',
+    [bscTestnetTokens.usdt.address]: '1',
     [bscTestnetTokens.busd.address]: '1',
+    [bscTestnetTokens.usdc.address]: '1',
   },
 }
