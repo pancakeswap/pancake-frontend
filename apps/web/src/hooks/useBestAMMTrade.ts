@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
 import { SmartRouter, PoolType, QuoteProvider } from '@pancakeswap/smart-router/evm'
 import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
-import { useDebounce } from '@pancakeswap/hooks'
+import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
 import { provider } from 'utils/wagmi'
 import { metric } from 'utils/metric'
@@ -100,6 +100,7 @@ function bestTradeHookFactory({
   }: Options) {
     const { gasPrice } = useFeeDataWithGasPrice()
     const lastBlock = useRef<number>(null)
+    const currenciesUpdated = usePropsChanged(baseCurrency, currency)
 
     const blockNumber = useCurrentBlock()
     const {
@@ -183,7 +184,7 @@ function bestTradeHookFactory({
         return res
       },
       {
-        keepPreviousData: true,
+        keepPreviousData: !currenciesUpdated,
         revalidateOnFocus: false,
       },
     )
