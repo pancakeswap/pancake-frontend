@@ -1,3 +1,4 @@
+import { ChainId } from '@pancakeswap/sdk'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { multiChainName } from 'state/info/constant'
@@ -38,6 +39,7 @@ export const useProtocolTransactionData = (): Transaction[] | undefined => {
 export const useTokenPriceChartData = (
   address: string,
   duration?: 'day' | 'week' | 'month' | 'year',
+  targetChianId?: ChainId,
 ): PriceChartEntry[] | undefined => {
   const { chainId } = useActiveChainId()
   const utcCurrentTime = dayjs()
@@ -48,7 +50,14 @@ export const useTokenPriceChartData = (
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/token/priceData/${address}/${duration}`, chainId],
-    () => fetchTokenPriceData(address, ONE_HOUR_SECONDS, startTimestamp, v3Clients[chainId], multiChainName[chainId]),
+    () =>
+      fetchTokenPriceData(
+        address,
+        ONE_HOUR_SECONDS,
+        startTimestamp,
+        v3Clients[targetChianId ?? chainId],
+        multiChainName[targetChianId ?? chainId],
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ?? []

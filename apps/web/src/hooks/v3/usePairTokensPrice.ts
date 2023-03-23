@@ -1,11 +1,12 @@
 import { useTokenPriceChartData } from 'views/V3Info/hooks'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, ChainId } from '@pancakeswap/sdk'
 import { useMemo } from 'react'
 
 export const usePairTokensPrice = (
   token0: Currency | string,
   token1: Currency | string,
   duration?: 'day' | 'week' | 'month' | 'year',
+  chianId?: ChainId,
 ) => {
   const token0Address = useMemo(
     () =>

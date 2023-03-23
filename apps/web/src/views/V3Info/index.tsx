@@ -1,7 +1,7 @@
 import { AutoColumn, PairDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
 import dynamic from 'next/dynamic'
 import styled from 'styled-components'
-import { ethereumTokens, bscTokens } from '@pancakeswap/tokens'
+import { bscTokens } from '@pancakeswap/tokens'
 // import { useTransformedVolumeData } from 'hooks/chart'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
