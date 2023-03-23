@@ -2065,7 +2065,7 @@
   "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "StableSwapでは、トレードの手数料を節約できます。StableSwapを含むルートのアウトプットは編集できません",
   "Volume (24H)": "ボリューム（24時間）",
   "Token Name": "トークン名",
-  "Change": "変更",
+  "Change": "変動",
   "Top Token": "上位トークン",
   "Farm Types": "ファームタイプ",
   "Lock End": "ロック終了",
