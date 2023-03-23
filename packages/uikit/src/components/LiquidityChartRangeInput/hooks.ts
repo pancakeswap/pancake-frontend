@@ -48,7 +48,9 @@ export function useDensityChartData(poolInfo: {
 }
 
 const getActiveTick = (tickCurrent: number | undefined, feeAmount: FeeAmount | undefined) =>
-  tickCurrent && feeAmount ? Math.floor(tickCurrent / TICK_SPACINGS[feeAmount]) * TICK_SPACINGS[feeAmount] : undefined;
+  typeof tickCurrent !== "undefined" && feeAmount
+    ? Math.floor(tickCurrent / TICK_SPACINGS[feeAmount]) * TICK_SPACINGS[feeAmount]
+    : undefined;
 
 export function usePoolActiveLiquidity({
   liquidity,
