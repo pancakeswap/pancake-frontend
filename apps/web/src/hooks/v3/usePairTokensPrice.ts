@@ -23,8 +23,8 @@ export const usePairTokensPrice = (
     [token1],
   )
 
-  const token0Price = useTokenPriceChartData(token0Address, duration)
-  const token1Price = useTokenPriceChartData(token1Address, duration)
+  const token0Price = useTokenPriceChartData(token0Address, duration, chianId)
+  const token1Price = useTokenPriceChartData(token1Address, duration, chianId)
   const pairPriceData: { time: Date; value: number }[] = useMemo(() => {
     const pairPrices = []
     const token0PriceObject: Record<number, number> = {}

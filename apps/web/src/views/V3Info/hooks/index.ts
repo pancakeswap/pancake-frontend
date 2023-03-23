@@ -49,7 +49,7 @@ export const useTokenPriceChartData = (
     .unix()
 
   const { data } = useSWRImmutable(
-    chainId && address && [`v3/info/token/priceData/${address}/${duration}`, chainId],
+    chainId && address && [`v3/info/token/priceData/${address}/${duration}`, targetChianId ?? chainId],
     () =>
       fetchTokenPriceData(
         address,
