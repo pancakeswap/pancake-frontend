@@ -109,7 +109,7 @@ const DataRow: React.FC<React.PropsWithChildren<{ tokenData: TokenData; index: n
           <Text>{index + 1}</Text>
         </Flex>
         <Flex alignItems="center">
-          <ResponsiveLogo size="24px" address={tokenData.address} chainName={chainName}/>
+          <ResponsiveLogo size="24px" address={tokenData.address} chainName={chainName} />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
@@ -148,7 +148,7 @@ const TokenTable: React.FC<
 > = ({ tokenDatas, maxItems = MAX_ITEMS }) => {
   const [sortField, setSortField] = useState(SORT_FIELD.volumeUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
-  const { t } = useTranslation() 
+  const { t } = useTranslation()
 
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
