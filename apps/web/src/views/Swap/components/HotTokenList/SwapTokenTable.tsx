@@ -20,7 +20,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import orderBy from 'lodash/orderBy'
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { useStableSwapPath } from 'state/info/hooks'
+import { useStableSwapPath, useGetChainName } from 'state/info/hooks'
 import { TokenData } from 'state/info/types'
 import { multiChainPaths } from 'state/info/constant'
 import styled from 'styled-components'
@@ -160,6 +160,7 @@ const DataRow: React.FC<
   const { isXs, isSm, isMobile } = useMatchBreakpoints()
   const stableSwapPath = useStableSwapPath()
   const { chainId } = useActiveChainId()
+  const chainName = useGetChainName()
   const address = isAddress(tokenData.address)
   if (!address) return null
 
@@ -171,7 +172,7 @@ const DataRow: React.FC<
     >
       <ResponsiveGrid>
         <Flex alignItems="center">
-          <ResponsiveLogo size="24px" address={address} />
+          <ResponsiveLogo size="24px" address={address} chainName={chainName} />
           {(isXs || isSm) && <Text ml="8px">{tokenData.symbol}</Text>}
           {!isXs && !isSm && (
             <Flex marginLeft="10px">
