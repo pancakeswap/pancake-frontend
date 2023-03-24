@@ -2121,7 +2121,7 @@
   "PancakeSwap does not charge any fees for trades. However, the market makers charge an implied fee of 0.05% (non-stablecoin) / 0.01% (stablecoin) factored into the quotes provided by them.": "PancakeSwapはトレードに対する手数料を一切請求しません。ただし、マーケットメーカーが提示する見積もりには、0.05%（非ステーブルコイン）/0.01%（ステーブルコイン）の暗黙の手数料が織り込まれています。",
   "Trading Fee": "取引手数料",
   "MM Linked Pool": "MMリンクプール",
-  "Trade through the market makers if they provide better deal": "マーケットメーカーがより良い取引を提供する場合はMM経由でトレードする",
+  "Trade through the market makers if they provide better deal": "マーケットメーカーがより良い取引を提供する場合はMM経由でトレードします",
   "Checking RFQ with MM": "MMにRFQを確認中",
   "PancakeSwap V3": "PancakeSwap V3",
   "Claim $135K CAKE Airdrop & Exclusive NFT": "$135K CAKEエアドロップと限定NFTをゲット",
