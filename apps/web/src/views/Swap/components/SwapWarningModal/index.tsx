@@ -15,6 +15,7 @@ import FREEWarning from './FREEWarning'
 import GalaWarning from './GalaWarning'
 import ABNBWarning from './ABNBWarning'
 import EURWarning from './EURWarning'
+import XCADWarning from './XCADWarning'
 
 const StyledModalContainer = styled(ModalContainer)`
   max-width: 440px;
@@ -74,6 +75,10 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
     [SwapWarningTokensConfig.ageur.address]: {
       symbol: SwapWarningTokensConfig.ageur.symbol,
       component: <EURWarning />,
+    },
+    [SwapWarningTokensConfig.xcad.address]: {
+      symbol: SwapWarningTokensConfig.xcad.symbol,
+      component: <XCADWarning />,
     },
   }
 

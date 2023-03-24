@@ -20,6 +20,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useProfile } from 'state/profile/hooks'
 import { usePendingTransactions } from 'state/transactions/hooks'
 import { useAccount } from 'wagmi'
+import { useSidNameForAddress } from 'hooks/useSid'
 import ProfileUserMenuItem from './ProfileUserMenuItem'
 import WalletModal, { WalletView } from './WalletModal'
 import WalletUserMenuItem from './WalletUserMenuItem'
@@ -76,6 +77,7 @@ const UserMenuItems = () => {
 const UserMenu = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
+  const { sidName } = useSidNameForAddress(account)
   const { isWrongNetwork } = useActiveChainId()
   const { hasPendingTransactions, pendingNumber } = usePendingTransactions()
   const { profile } = useProfile()
@@ -95,7 +97,7 @@ const UserMenu = () => {
 
   if (account) {
     return (
-      <UIKitUserMenu account={account} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
+      <UIKitUserMenu account={sidName || account} avatarSrc={avatarSrc} text={userMenuText} variant={userMenuVariable}>
         {({ isOpen }) => (isOpen ? <UserMenuItems /> : null)}
       </UIKitUserMenu>
     )

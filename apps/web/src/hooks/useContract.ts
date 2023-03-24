@@ -65,6 +65,7 @@ import {
   getTradingCompetitionContractMobox,
   getTradingCompetitionContractMoD,
   getStableSwapNativeHelperContract,
+  getSidContract,
   getV3MigratorContract,
   getMasterChefV3Contract,
 } from 'utils/contractHelpers'
@@ -385,6 +386,10 @@ export const useNonBscVault = (withSignerIfPossible = true) => {
   const { chainId } = useActiveChainId()
   const providerOrSigner = useProviderOrSigner(withSignerIfPossible)
   return useMemo(() => getNonBscVaultContract(providerOrSigner, chainId), [providerOrSigner, chainId])
+}
+
+export const useSIDContract = (address) => {
+  return useMemo(() => getSidContract(address), [address])
 }
 
 export const useCrossFarmingProxy = (proxyContractAddress: string, withSignerIfPossible = true) => {

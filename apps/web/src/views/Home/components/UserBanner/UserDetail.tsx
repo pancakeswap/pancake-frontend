@@ -16,6 +16,7 @@ import ProfileAvatarWithTeam from 'components/ProfileAvatarWithTeam'
 import { useTranslation } from '@pancakeswap/localization'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
+import { useSidNameForAddress } from 'hooks/useSid'
 
 const Desktop = styled(Flex)`
   align-items: center;
@@ -46,12 +47,14 @@ const StyledNoProfileAvatarIcon = styled(NoProfileAvatarIcon)`
 `
 
 const UserDetail = () => {
-  const { profile, isLoading } = useProfile()
+  const { profile, isLoading: isProfileLoading } = useProfile()
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { isMobile, isTablet, isDesktop } = useMatchBreakpoints()
-  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
-    useGetUsernameWithVisibility(profile)
+  const { sidName, isLoading: isSidNameLoading } = useSidNameForAddress(account)
+  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
+    profile?.username,
+  )
 
   const toggleUsernameVisibility = () => {
     setUserUsernameVisibility(!userUsernameVisibility)
@@ -74,14 +77,16 @@ const UserDetail = () => {
                 })}
                 <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
               </Heading>
-            ) : isLoading ? (
+            ) : isProfileLoading ? (
               <Skeleton width={200} height={40} my="4px" />
             ) : null}
-            {isLoading || !account ? (
+            {isSidNameLoading || isProfileLoading || !account ? (
               <Skeleton width={160} height={16} my="4px" />
-            ) : (
-              <Text fontSize="16px"> {t('Connected with %address%', { address: truncateHash(account) })}</Text>
-            )}
+            ) : (profile && userUsernameVisibility) || (!profile && account) ? (
+              <Text fontSize="16px">
+                {t('Connected with %address%', { address: sidName || truncateHash(account) })}
+              </Text>
+            ) : null}
           </Flex>
         </Desktop>
       )}
@@ -94,7 +99,7 @@ const UserDetail = () => {
               })}
               <Icon ml="4px" onClick={toggleUsernameVisibility} cursor="pointer" />
             </Heading>
-          ) : isLoading ? (
+          ) : isProfileLoading ? (
             <Skeleton width={120} height={20} mt="2px" mb="18px" />
           ) : null}
         </Mobile>

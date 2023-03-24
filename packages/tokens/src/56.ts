@@ -2283,7 +2283,7 @@ export const bscTokens = {
   ),
   xcad: new ERC20Token(
     ChainId.BSC,
-    '0x431e0cD023a32532BF3969CddFc002c00E98429d',
+    '0xa026Ad2ceDa16Ca5FC28fd3C72f99e2C332c8a26',
     18,
     'XCAD',
     'Chainport.io-Peg XCAD Token',
@@ -2513,5 +2513,13 @@ export const bscTokens = {
     'LVL',
     'Level Token',
     'https://level.finance/',
+  ),
+  unw: new ERC20Token(
+    ChainId.BSC,
+    '0x5b65cd9feb54F1Df3D0C60576003344079f8Dc06',
+    18,
+    'UNW',
+    'Uniwhale Token',
+    'https://www.uniwhale.co/',
   ),
 }
