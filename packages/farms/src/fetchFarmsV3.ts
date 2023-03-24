@@ -314,7 +314,7 @@ async function fetchLmPools(lmPoolAddresses: string[], chainId: number, multical
   const lmPools: Record<string, string> = {}
 
   for (const [index, liquidity] of resp.entries()) {
-    lmPools[lmPoolAddresses[index]] = liquidity.toString()
+    lmPools[lmPoolAddresses[index]] = liquidity?.toString() ?? '0'
   }
 
   return lmPools

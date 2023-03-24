@@ -1,7 +1,6 @@
 import { bscTestnetTokens } from '@pancakeswap/tokens'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
-import { ERC20Token, ChainId } from '@pancakeswap/sdk'
 
 export const farmsV3 = [
   {
@@ -51,14 +50,6 @@ export const farmsV3 = [
     token: bscTestnetTokens.mockB,
     quoteToken: bscTestnetTokens.mockA,
     feeAmount: FeeAmount.HIGH,
-  },
-  {
-    pid: 7,
-    lpSymbol: 'MBNB-USDC LP',
-    lpAddress: '0xe7345A3c74E0496722Fb536732E2C978B0658AaB',
-    token: new ERC20Token(ChainId.BSC_TESTNET, '0x6db1c08e3cBA84Fd1676CFb2837aefEfB61f9E67', 18, 'MBNB', 'MBNB'),
-    quoteToken: bscTestnetTokens.usdc,
-    feeAmount: FeeAmount.LOW,
   },
 ] satisfies FarmConfigV3[]
 

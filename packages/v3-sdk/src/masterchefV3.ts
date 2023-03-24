@@ -87,10 +87,10 @@ export abstract class MasterChefV3 {
 
       const wrappedValue = position.pool.token0.equals(wrapped) ? amount0Desired : amount1Desired
 
-      // we only need to refund if we're actually sending ETH
-      if (JSBI.greaterThan(wrappedValue, ZERO)) {
-        calldatas.push(Payments.encodeRefundETH())
-      }
+      // // we only need to refund if we're actually sending ETH
+      // if (JSBI.greaterThan(wrappedValue, ZERO)) {
+      //   calldatas.push(Payments.encodeRefundETH())
+      // }
 
       value = toHex(wrappedValue)
     }
