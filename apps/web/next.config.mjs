@@ -38,27 +38,28 @@ const config = {
   },
   experimental: {
     scrollRestoration: true,
-    transpilePackages: [
-      '@pancakeswap/ui',
-      '@pancakeswap/uikit',
-      '@pancakeswap/swap-sdk-core',
-      '@pancakeswap/farms',
-      '@pancakeswap/localization',
-      '@pancakeswap/hooks',
-      '@pancakeswap/multicall',
-      '@pancakeswap/token-lists',
-      '@pancakeswap/utils',
-      '@pancakeswap/tokens',
-      '@pancakeswap/smart-router',
-      '@wagmi',
-      'wagmi',
-      '@ledgerhq',
-      '@gnosis.pm/safe-apps-wagmi',
-    ],
   },
+  transpilePackages: [
+    '@pancakeswap/ui',
+    '@pancakeswap/uikit',
+    '@pancakeswap/swap-sdk-core',
+    '@pancakeswap/farms',
+    '@pancakeswap/localization',
+    '@pancakeswap/hooks',
+    '@pancakeswap/multicall',
+    '@pancakeswap/token-lists',
+    '@pancakeswap/utils',
+    '@pancakeswap/tokens',
+    '@pancakeswap/smart-router',
+    '@wagmi',
+    'wagmi',
+    '@ledgerhq',
+    '@gnosis.pm/safe-apps-wagmi',
+  ],
   reactStrictMode: true,
   swcMinify: true,
   images: {
+    contentDispositionType: 'attachment',
     remotePatterns: [
       {
         protocol: 'https',
@@ -165,8 +166,8 @@ const config = {
       ...blocksPage.map((p) => ({
         source: p,
         destination: '/404',
-        permanent: false
-      }))
+        permanent: false,
+      })),
     ]
   },
   webpack: (webpackConfig, { webpack }) => {
