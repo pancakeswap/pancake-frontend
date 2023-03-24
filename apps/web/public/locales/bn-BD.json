@@ -2065,7 +2065,7 @@
   "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "স্টেবলসোয়াপ ব্যবহারকারীদের ট্রেডে ফি সংরক্ষণ করতে সক্ষম করবে। স্টেবলসোয়াপ অন্তর্ভুক্ত রয়েছে এমন রুটগুলোর জন্য আউটপুট এডিট করা যাবে না",
   "Volume (24H)": "ভলিউম (24 ঘণ্টা)",
   "Token Name": "টোকেনের নাম",
-  "Change": "পরিবর্তন করুন",
+  "Change": "পরিবর্তন",
   "Top Token": "শীর্ষ টোকেন",
   "Farm Types": "খামারের ধরন",
   "Lock End": "প্রান্ত লক করুন",
