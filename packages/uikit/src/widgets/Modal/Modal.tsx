@@ -6,13 +6,13 @@ import { ModalBody, ModalHeader, ModalTitle, ModalContainer, ModalCloseButton, M
 import { ModalProps, ModalWrapperProps } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { ModalV2Context } from "./ModalV2";
+import { Box } from "../../components/Box";
 
 export const MODAL_SWIPE_TO_CLOSE_VELOCITY = 300;
 
 export const ModalWrapper = ({
   children,
   onDismiss,
-  minWidth,
   hideCloseButton,
   ...props
 }: PropsWithChildren<ModalWrapperProps>) => {
@@ -29,14 +29,13 @@ export const ModalWrapper = ({
       onDragStart={() => {
         if (wrapperRef.current) wrapperRef.current.style.animation = "none";
       }}
+      // @ts-ignore
       onDragEnd={(e, info) => {
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss();
       }}
       ref={wrapperRef}
-      $minWidth={minWidth}
-      {...props}
     >
-      {children}
+      <Box {...props}>{children}</Box>
     </ModalContainer>
   );
 };
