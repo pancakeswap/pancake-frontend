@@ -7,11 +7,16 @@ export type TransactionType =
   | 'swap'
   | 'wrap'
   | 'add-liquidity'
+  | 'increase-liquidity-v3'
+  | 'add-liquidity-v3'
+  | 'remove-liquidity-v3'
+  | 'collect-fee'
   | 'remove-liquidity'
   | 'limit-order-submission'
   | 'limit-order-cancellation'
   | 'limit-order-approval'
   | 'non-bsc-farm'
+  | 'migrate-v3'
 
 export interface SerializableTransactionReceipt {
   to: string

@@ -29,7 +29,7 @@ import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
 
 import { Field } from 'state/swap/actions'
 import { useDerivedSwapInfo, useSwapState } from 'state/swap/hooks'
-import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage, useExpertMode } from '@pancakeswap/utils/user'
 
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
@@ -53,18 +53,18 @@ import SwapCommitButton from './SwapCommitButton'
 export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
-  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const stablePairs = useStableSwapPairs()
+  const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const warningSwapHandler = useWarningImport()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
   const { account, chainId } = useActiveWeb3React()
 
   // for expert mode
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
 
   // get custom setting values for user
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
 
   // swap state & price data
   const {
@@ -209,6 +209,8 @@ export default function SwapForm() {
 
   const swapIsUnsupported = useIsTransactionUnsupported(currencies?.INPUT, currencies?.OUTPUT)
 
+  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
+
   const hasAmount = Boolean(parsedAmount)
 
   const onRefreshPrice = useCallback(() => {
@@ -216,8 +218,6 @@ export default function SwapForm() {
       refreshBlockNumber()
     }
   }, [hasAmount, refreshBlockNumber])
-
-  const [onPresentSettingsModal] = useModal(<SettingsModal mode={SettingsMode.SWAP_LIQUIDITY} />)
 
   return (
     <>

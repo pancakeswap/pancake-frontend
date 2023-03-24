@@ -50,10 +50,6 @@ it("renders correctly", () => {
       color: var(--colors-invertedContrast);
     }
 
-    .c1:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
-    }
-
     .c1:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
@@ -106,6 +102,12 @@ it("renders correctly", () => {
 
     .c2:hover:not(:disabled):not(:active) {
       background-color: transparent;
+    }
+
+    @media (hover:hover) {
+      .c1:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+        opacity: 0.65;
+      }
     }
 
     <div

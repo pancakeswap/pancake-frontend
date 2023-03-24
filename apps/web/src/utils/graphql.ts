@@ -1,4 +1,11 @@
-import { BIT_QUERY, INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT, INFO_CLIENT_ETH } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/sdk'
+import {
+  BIT_QUERY,
+  INFO_CLIENT,
+  STABLESWAP_SUBGRAPH_CLIENT,
+  INFO_CLIENT_ETH,
+  V3_SUBGRAPH_URLS,
+} from 'config/constants/endpoints'
 import { GraphQLClient } from 'graphql-request'
 import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
 
@@ -23,6 +30,14 @@ export const infoClient = new GraphQLClient(INFO_CLIENT)
 
 export const infoClientWithChain = (chainId: number) => {
   return new GraphQLClient(INFO_CLIENT_WITH_CHAIN[chainId], { headers: getGQLHeaders(INFO_CLIENT_WITH_CHAIN[chainId]) })
+}
+
+export const v3Clients = {
+  [ChainId.ETHEREUM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ETHEREUM]),
+  [ChainId.GOERLI]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.GOERLI]),
+  // TODO: v3 swap update to our own
+  [ChainId.BSC]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC]),
+  [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET]),
 }
 
 export const infoClientETH = new GraphQLClient(INFO_CLIENT_ETH)

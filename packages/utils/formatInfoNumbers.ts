@@ -36,6 +36,7 @@ export const formatAmount = (
     return '0.00'
   }
   if (!amount) return '-'
+  if (!Number.isFinite(amount)) return '∞'
   if (displayThreshold && amount < displayThreshold) {
     return `<${displayThreshold}`
   }

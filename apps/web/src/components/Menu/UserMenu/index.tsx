@@ -53,7 +53,7 @@ const UserMenuItems = () => {
         {hasPendingTransactions && <RefreshIcon spin />}
       </UserMenuItem>
       <UserMenuDivider />
-      <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
+      <NextLink href={`/profile/${account?.toLowerCase()}`} passHref legacyBehavior>
         <UserMenuItem as="a" disabled={isWrongNetwork || chainId !== ChainId.BSC}>
           {t('Your NFTs')}
         </UserMenuItem>

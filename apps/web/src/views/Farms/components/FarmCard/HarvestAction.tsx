@@ -16,7 +16,7 @@ import { ToastDescriptionWithTx } from 'components/Toast'
 import useCatchTxError from 'hooks/useCatchTxError'
 
 import { TransactionResponse } from '@ethersproject/providers'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import { Token } from '@pancakeswap/sdk'
@@ -49,7 +49,7 @@ const HarvestAction: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = (
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { t } = useTranslation()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
   const rawEarningsBalance = account ? getBalanceAmount(earnings) : BIG_ZERO
   const displayBalance = rawEarningsBalance.toFixed(5, BigNumber.ROUND_DOWN)
   const earningsBusd = rawEarningsBalance ? rawEarningsBalance.multipliedBy(cakePrice).toNumber() : 0

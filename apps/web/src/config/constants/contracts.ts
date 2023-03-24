@@ -1,10 +1,12 @@
 import { multicallAddresses } from '@pancakeswap/multicall'
+import { masterChefV3Addresses } from '@pancakeswap/farms'
 
 export default {
   masterChef: {
     97: '0xB4A466911556e39210a6bB2FaECBB59E4eB7E43d',
     56: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
   },
+  masterChefV3: masterChefV3Addresses,
   masterChefV1: {
     97: '0x1d32c2945C8FDCBc7156c553B7cEa4325a17f4f9',
     56: '0x73feaa1eE314F8c655E354234017bE2193C9E24E',
@@ -136,7 +138,7 @@ export default {
   },
   stableSwapNativeHelper: {
     56: '0x52E5D1e24A4308ef1A221C949cb2F7cbbAFEE090',
-    97: '0x494B692Fe0CF54f633dCDFbba0D0a8629Edb344F',
+    97: '0x6e4B1D7C65E86f1723720a5fE8993f0908108b64',
   },
   iCake: {
     56: '0x3C458828D1622F5f4d526eb0d24Da8C4Eb8F07b1',
@@ -168,5 +170,41 @@ export default {
     1: '0x9Ca2A439810524250E543BA8fB6E88578aF242BC',
     5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92',
     56: '0xfEACb05b373f1A08E68235bA7FC92636b92ced01',
+  },
+  // TODO: v3 contract addresses NonfungiblePositionManager
+  nftPositionManager: {
+    56: '0x59c864bf8bB8ABe4dC16516b2C70104706df113A',
+    97: '0xEE02DC74894C7E973e058A676D513F25F4e1BEc7',
+    5: '0x09C65bC891bf39DAF771e85F2203B898402fF3CF',
+    1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+  },
+  // keep the test fail as we know the contract is missing
+  // TODO: v3 contract addresses PancakeV3PoolDeployer
+  v3PoolDeployer: {
+    97: '0xdb19f2052D2B1aD46Ed98C66336A5dAADEB13005',
+    56: '',
+    5: '',
+    1: '',
+  },
+  // TODO: v3 contract addresses V3Migrator
+  v3Migrator: {
+    97: '0xA2427aFE4933BBE52c0a251299F1094959858d37',
+    56: '',
+    5: '',
+    1: '',
+  },
+  // TODO: v3 contract addresses PancakeV3Factory
+  v3Factory: {
+    56: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
+    97: '0xD84787a01B0cad89fBCa231E6960cC0f3f18df34',
+    5: '0x6e906fC1d75c9559E4E8b0F1Fa002C4a9724988f',
+    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
+  // TODO: v3 contract addresses QuoterV2
+  quoter: {
+    56: '0x93a775Ab5B2500F23717ffB69B42bfAbb0c8e91E',
+    97: '0x7E6f4BF88E791C917Ee8470bAdC1f05b8DAb916F',
+    5: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    1: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
   },
 }

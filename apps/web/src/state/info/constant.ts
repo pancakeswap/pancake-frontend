@@ -13,6 +13,11 @@ import {
 
 export type MultiChainName = 'BSC' | 'ETH'
 
+export const multiChainName = {
+  [ChainId.BSC]: 'BSC',
+  [ChainId.ETHEREUM]: 'ETH',
+}
+
 export const multiChainQueryMainToken = {
   BSC: 'BNB',
   ETH: 'ETH',
