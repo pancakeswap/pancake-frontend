@@ -109,28 +109,15 @@ export function TradeSummary({
                       {t('AMM')}
                     </Text>
                     :{' '}
-                    {hasStablePair
-                      ? t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })
-                      : t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}
+                    {t(
+                      'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
+                    )}
                   </Text>
-                  <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
-                  <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
-                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
-                  {hasStablePair && (
-                    <>
-                      <Text mt="12px">
-                        {t('For each stableswap trade, refer to the fee table')}
-                        <Link
-                          style={{ display: 'inline' }}
-                          ml="4px"
-                          external
-                          href="https://docs.pancakeswap.finance/products/stableswap#stableswap-fees"
-                        >
-                          {t('here.')}
-                        </Link>
-                      </Text>
-                    </>
-                  )}
+                  <Text mt="12px">
+                    <Link style={{ display: 'inline' }} ml="4px" external href="https://docs.pancakeswap.finance/">
+                      {t('Fee Breakdown and Tokenomics')}
+                    </Link>
+                  </Text>
                   <Text mt="10px">
                     <Text bold display="inline-block">
                       {t('MM')}
@@ -219,7 +206,9 @@ export function AdvancedSwapDetails({
                       <Flex justifyContent="center">
                         {t('Route')}{' '}
                         <QuestionHelper
-                          text={t('Routing through these tokens resulted in the best price for your trade.')}
+                          text={t(
+                            'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
+                          )}
                           ml="4px"
                           placement="top-start"
                         />

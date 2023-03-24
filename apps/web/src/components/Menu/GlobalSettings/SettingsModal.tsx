@@ -311,6 +311,19 @@ function RoutingSettings() {
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>PancakeSwap V3</Text>
+              <QuestionHelper
+                text={
+                  <Flex>
+                    <Text mr="5px">
+                      {t(
+                        'V3 offers concentrated liquidity to provide deeper liquidity for traders with the same amount of capital, offering lower slippage and more flexible trading fee tiers.',
+                      )}
+                    </Text>
+                  </Flex>
+                }
+                placement="top-start"
+                ml="4px"
+              />
             </Flex>
             <Toggle
               disabled={v3Enable && onlyOneAMMSourceEnabled}
@@ -322,6 +335,20 @@ function RoutingSettings() {
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>PancakeSwap V2</Text>
+              <QuestionHelper
+                text={
+                  <Flex flexDirection="column">
+                    <Text mr="5px">
+                      {t('The previous V2 exchange is where a number of iconic, popular assets are traded.')}
+                    </Text>
+                    <Text mr="5px" mt="1em">
+                      {t('Recommend leaving this on to ensure backward compatibility.')}
+                    </Text>
+                  </Flex>
+                }
+                placement="top-start"
+                ml="4px"
+              />
             </Flex>
             <Toggle
               disabled={v2Enable && onlyOneAMMSourceEnabled}
@@ -335,10 +362,10 @@ function RoutingSettings() {
               <Text>PancakeSwap {t('StableSwap')}</Text>
               <QuestionHelper
                 text={
-                  <Flex>
+                  <Flex flexDirection="column">
                     <Text mr="5px">
                       {t(
-                        'Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap',
+                        'StableSwap provides higher efficiency for stable or pegged assets and lower fees for trades.',
                       )}
                     </Text>
                   </Flex>
@@ -361,7 +388,16 @@ function RoutingSettings() {
             <Flex alignItems="center">
               <Text>{`PancakeSwap ${t('MM Linked Pool')}`}</Text>
               <QuestionHelper
-                text={t('Trade through the market makers if they provide better deal')}
+                text={
+                  <Flex flexDirection="column">
+                    <Text mr="5px">{t('Trade through the market makers if they provide better deal')}</Text>
+                    <Text mr="5px" mt="1em">
+                      {t(
+                        'If a trade is going through market makers, it will no longer route through any traditional AMM DEX pools.',
+                      )}
+                    </Text>
+                  </Flex>
+                }
                 placement="top-start"
                 ml="4px"
               />
@@ -386,7 +422,24 @@ function RoutingSettings() {
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>{t('Allow Multihops')}</Text>
-              <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
+              <QuestionHelper
+                text={
+                  <Flex flexDirection="column">
+                    <Text mr="5px">
+                      {t(
+                        'Multihops enables token swaps through multiple hops between serval pools to achieve the best deal.',
+                      )}
+                    </Text>
+                    <Text mr="5px" mt="1em">
+                      {t(
+                        'Turning this off will only allow direct swap, which may cause higher slippage or even fund loss.',
+                      )}
+                    </Text>
+                  </Flex>
+                }
+                placement="top-start"
+                ml="4px"
+              />
             </Flex>
             <Toggle
               id="toggle-disable-multihop-button"
@@ -400,7 +453,24 @@ function RoutingSettings() {
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
               <Text>{t('Allow Split Routing')}</Text>
-              {/* <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" /> */}
+              <QuestionHelper
+                text={
+                  <Flex flexDirection="column">
+                    <Text mr="5px">
+                      {t(
+                        'Split routing enables token swaps to be broken into multiple routes to achieve the best deal.',
+                      )}
+                    </Text>
+                    <Text mr="5px" mt="1em">
+                      {t(
+                        'Turning this off will only allow a single route, which may result in low efficiency or higher slippage.',
+                      )}
+                    </Text>
+                  </Flex>
+                }
+                placement="top-start"
+                ml="4px"
+              />
             </Flex>
             <Toggle
               id="toggle-disable-multihop-button"
