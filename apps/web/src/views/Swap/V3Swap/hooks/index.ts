@@ -1,6 +1,6 @@
 export * from './useIsWrapping'
 export * from './useAllowRecipient'
-export * from './useBestTrade'
+export * from './useSwapBestTrade'
 export * from './useSlippageAdjustedAmounts'
 export * from './useRouterAddress'
 export * from './useSwapInputError'

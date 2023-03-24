@@ -18,7 +18,7 @@ interface Options {
   maxHops?: number
 }
 
-export function useBestTrade({ maxHops }: Options = {}) {
+export function useSwapBestTrade({ maxHops }: Options = {}) {
   const {
     independentField,
     typedValue,

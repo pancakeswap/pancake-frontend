@@ -5,6 +5,7 @@ import { SmartRouter, PoolType, QuoteProvider } from '@pancakeswap/smart-router/
 import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
+import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
 import { metric } from 'utils/metric'
 import { useCurrentBlock } from 'state/block/hooks'
@@ -46,14 +47,17 @@ interface useBestAMMTradeOptions extends Options {
 }
 
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
+  const { amount, baseCurrency, currency } = params
+  const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
   const isOffCHainEnabled = useMemo(
     () =>
+      !isWrapping &&
       typeof window !== 'undefined' &&
       typeof window.requestIdleCallback === 'function' &&
       (type === 'offchain' || type === 'all'),
-    [type],
+    [type, isWrapping],
   )
-  const isQuoterEnabled = useMemo(() => type === 'quoter' || type === 'all', [type])
+  const isQuoterEnabled = useMemo(() => !isWrapping && (type === 'quoter' || type === 'all'), [type, isWrapping])
 
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({ ...params, enabled: isOffCHainEnabled })
   const bestTradeFromQuoter = useBestAMMTradeFromQuoter({ ...params, enabled: isQuoterEnabled })

@@ -3,10 +3,10 @@ import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapIn
 
 import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
 import { MMCommitButton } from './containers/MMCommitButton'
-import { useBestTrade } from './hooks'
+import { useSwapBestTrade } from './hooks'
 
 export function V3SwapForm() {
-  const { isLoading, trade, refresh, syncing, isStale } = useBestTrade()
+  const { isLoading, trade, refresh, syncing, isStale } = useSwapBestTrade()
 
   const mm = useDerivedBestTradeWithMM(trade)
 

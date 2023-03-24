@@ -1,4 +1,4 @@
-import useWrapCallback, { WrapType } from 'hooks/useWrapCallback'
+import { useIsWrapping as useIsWrappingHook } from 'hooks/useWrapCallback'
 import { useSwapState } from 'state/swap/hooks'
 import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
@@ -12,7 +12,5 @@ export function useIsWrapping() {
   const { typedValue } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
-  const { wrapType } = useWrapCallback(inputCurrency, outputCurrency, typedValue)
-
-  return wrapType !== WrapType.NOT_APPLICABLE
+  return useIsWrappingHook(inputCurrency, outputCurrency, typedValue)
 }
