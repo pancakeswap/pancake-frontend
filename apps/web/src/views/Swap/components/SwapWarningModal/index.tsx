@@ -80,7 +80,7 @@ const SwapWarningModal: React.FC<React.PropsWithChildren<SwapWarningModalProps>>
   const SWAP_WARNING = TOKEN_WARNINGS[swapCurrency.address]
 
   return (
-    <StyledModalContainer $minWidth="280px">
+    <StyledModalContainer minWidth="280px">
       <ModalHeader background={theme.colors.gradientCardHeader}>
         <Heading p="12px 24px">{t('Notice for trading %symbol%', { symbol: SWAP_WARNING.symbol })}</Heading>
       </ModalHeader>
