@@ -4,6 +4,7 @@ import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
 import { BigNumber, FixedNumber } from 'ethers'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import chunk from 'lodash/chunk'
 import { GetResult } from '@pancakeswap/utils/abitype'
 import { DEFAULT_COMMON_PRICE, PriceHelper } from '../constants/common'
@@ -378,31 +379,31 @@ export function getFarmsPrices(
   commonPrice: CommonPrice,
 ): FarmV3DataWithPrice[] {
   const commonPriceFarms = farms.map((farm) => {
-    let tokenPriceBusd = FIXED_ZERO
-    let quoteTokenPriceBusd = FIXED_ZERO
+    let tokenPriceBusd = BIG_ZERO
+    let quoteTokenPriceBusd = BIG_ZERO
 
     // try to get price via common price
     if (commonPrice[farm.quoteToken.address]) {
-      quoteTokenPriceBusd = FixedNumber.from(commonPrice[farm.quoteToken.address])
+      quoteTokenPriceBusd = new BN(commonPrice[farm.quoteToken.address])
     }
     if (commonPrice[farm.token.address]) {
-      tokenPriceBusd = FixedNumber.from(commonPrice[farm.token.address])
+      tokenPriceBusd = new BN(commonPrice[farm.token.address])
     }
 
     // try price via CAKE
     if (tokenPriceBusd.isZero() && farm.token.equals(CAKE[farm.token.chainId])) {
-      tokenPriceBusd = FixedNumber.from(cakePriceUSD)
+      tokenPriceBusd = new BN(cakePriceUSD)
     }
     if (quoteTokenPriceBusd.isZero() && farm.quoteToken.equals(CAKE[farm.quoteToken.chainId])) {
-      quoteTokenPriceBusd = FixedNumber.from(cakePriceUSD)
+      quoteTokenPriceBusd = new BN(cakePriceUSD)
     }
 
     // try to get price via token price vs quote
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
-      tokenPriceBusd = quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
+      tokenPriceBusd = quoteTokenPriceBusd.div(farm.tokenPriceVsQuote)
     }
     if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
-      quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
+      quoteTokenPriceBusd = tokenPriceBusd.div(farm.tokenPriceVsQuote)
     }
 
     return {
@@ -440,10 +441,10 @@ export function getFarmsPrices(
 
         // try to get price via token price vs quote
         if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
-          tokenPriceBusd = quoteTokenPriceBusd.mulUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
+          tokenPriceBusd = quoteTokenPriceBusd.div(farm.tokenPriceVsQuote)
         }
         if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
-          quoteTokenPriceBusd = tokenPriceBusd.divUnsafe(FixedNumber.from(farm.tokenPriceVsQuote))
+          quoteTokenPriceBusd = tokenPriceBusd.div(farm.tokenPriceVsQuote)
         }
 
         if (tokenPriceBusd.isZero()) {
