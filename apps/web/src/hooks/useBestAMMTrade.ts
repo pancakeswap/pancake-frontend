@@ -180,7 +180,9 @@ function bestTradeHookFactory({
         }
         metric.timeLog(label, res)
         metric.timeEnd(label)
-        lastBlock.current = res?.blockNumber
+        if (res?.blockNumber) {
+          lastBlock.current = res?.blockNumber
+        }
         return res
       },
       {
@@ -190,11 +192,6 @@ function bestTradeHookFactory({
     )
 
     useEffect(() => {
-      if (!lastBlock.current) {
-        mutate()
-        return
-      }
-
       // Revalidate if pools updated
       if (revalidateOnUpdate && poolsBlockNumber && lastBlock.current && poolsBlockNumber - lastBlock.current > 5) {
         mutate()
