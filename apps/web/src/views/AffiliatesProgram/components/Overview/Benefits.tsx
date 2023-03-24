@@ -38,7 +38,7 @@ const BenefitsList = [
         everyone
       </Trans>
     ),
-    imgUrl: '/images/affiliates-program/high-commission-rates.png',
+    imgUrl: '/images/affiliates-program/partner.png',
   },
   {
     title: <Trans>User Friendly Platform</Trans>,
