@@ -7,7 +7,7 @@ import bunnyImage from '../../../../public/images/trading-reward/trading-reward-
 
 const Container = styled(Box)`
   padding: 47px 16px 38px 16px;
-  background: linear-gradient(0deg, rgba(193, 237, 240, 1) 0%, rgba(234, 251, 247, 1) 20%, rgba(236, 228, 251, 1) 100%);
+  background: linear-gradient(340.33deg, #c1edf0 -11.09%, #eafbf7 32.51%, #ece4fb 96.59%);
 `
 
 const Decorations = styled(Box)`
