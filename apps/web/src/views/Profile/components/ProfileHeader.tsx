@@ -19,6 +19,7 @@ import { Achievement, Profile } from 'state/types'
 import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
+import { useSidNameForAddress } from 'hooks/useSid'
 import EditProfileAvatar from './EditProfileAvatar'
 import BannerHeader from '../../Nft/market/components/BannerHeader'
 import StatBox, { StatBoxItem } from '../../Nft/market/components/StatBox'
@@ -49,8 +50,10 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
-    useGetUsernameWithVisibility(profile)
+  const { sidName } = useSidNameForAddress(accountPath)
+  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
+    profile?.username,
+  )
   const [onEditProfileModal] = useModal(
     <EditProfileModal
       onSuccess={() => {
@@ -147,11 +150,11 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     }
 
     if (accountPath) {
-      return truncateHash(accountPath, 5, 3)
+      return sidName || truncateHash(accountPath, 5, 3)
     }
 
     return null
-  }, [profileUsername, accountPath])
+  }, [sidName, profileUsername, accountPath])
 
   const description = useMemo(() => {
     const getActivateButton = () => {
@@ -173,13 +176,13 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
         {accountPath && profile?.username && (
           <LinkExternal isBscScan href={getBlockExploreLink(accountPath, 'address')} external bold color="primary">
-            {truncateHash(accountPath)}
+            {sidName || truncateHash(accountPath)}
           </LinkExternal>
         )}
         {accountPath && isConnectedAccount && (!profile || !profile?.nft) && getActivateButton()}
       </Flex>
     )
-  }, [accountPath, isConnectedAccount, onEditProfileModal, profile, t])
+  }, [sidName, accountPath, isConnectedAccount, onEditProfileModal, profile, t])
 
   return (
     <>

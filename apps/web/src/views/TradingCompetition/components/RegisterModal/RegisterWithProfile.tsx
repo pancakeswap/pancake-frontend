@@ -28,7 +28,7 @@ const RegisterWithProfile: React.FC<React.PropsWithChildren<CompetitionProps>> =
   const { fetchWithCatchTxError, loading: isConfirming } = useCatchTxError()
   const { t } = useTranslation()
   const { callWithGasPrice } = useCallWithGasPrice()
-  const { usernameWithVisibility } = useGetUsernameWithVisibility(profile)
+  const { usernameWithVisibility } = useGetUsernameWithVisibility(profile?.username)
 
   const handleConfirmClick = async () => {
     const receipt = await fetchWithCatchTxError(() => {
