@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { Currency, JSBI, ChainId, Token, WNATIVE, ZERO } from '@pancakeswap/sdk'
+import { Currency, JSBI, ChainId, Token, WNATIVE } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool, PoolType, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import { FeeAmount, computePoolAddress, Tick, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
 import { gql } from 'graphql-request'
@@ -288,7 +288,7 @@ export function useV3CandidatePoolsWithoutTicks(
       ...topByTVLUsingTokenOutSecondHops,
     ]
     // eslint-disable-next-line
-    return pools.map(({ tvlUSD, ...rest }) => rest).filter(({ liquidity }) => JSBI.greaterThan(liquidity, ZERO))
+    return pools.map(({ tvlUSD, ...rest }) => rest)
   }, [poolsFromSubgraphState, currencyA, currencyB])
 
   return {
