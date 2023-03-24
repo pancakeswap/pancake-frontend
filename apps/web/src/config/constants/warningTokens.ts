@@ -26,6 +26,14 @@ export const bscWarningTokens = {
     'pTokens GALA',
     'https://games.gala.com/',
   ),
+  xcad: new ERC20Token(
+    ChainId.BSC,
+    '0x431e0cD023a32532BF3969CddFc002c00E98429d',
+    18,
+    'XCAD',
+    'Chainport.io-Peg XCAD Token',
+    'https://xcadnetwork.com/',
+  ),
 }
 
 export const bscTestnetWarningTokens = {}

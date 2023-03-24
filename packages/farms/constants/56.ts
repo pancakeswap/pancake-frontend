@@ -51,6 +51,27 @@ const farms: SerializedFarmConfig[] = [
   },
   //    * V3 by order of release (some may be out of PID order due to multiplier boost)
   {
+    pid: 157,
+    lpSymbol: 'UNW-BNB LP',
+    lpAddress: '0x5CF69395345614e349b2117dBC5F6cf5A500a43d',
+    token: bscTokens.unw,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
+    pid: 156,
+    lpSymbol: 'LVL-BNB LP',
+    lpAddress: '0x70f16782010fa7dDf032A6aaCdeed05ac6B0BC85',
+    token: bscTokens.lvl,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
+    pid: 155,
+    lpSymbol: 'CAPS-BNB LP',
+    lpAddress: '0x9Bafeea2A8bC72b1910AB102ca5F8eCa6a67D929',
+    token: bscTokens.caps,
+    quoteToken: bscTokens.wbnb,
+  },
+  {
     pid: 153,
     lpSymbol: 'agEUR-USDT LP',
     lpAddress: '0x1DEC73074cE9cAbEd47D7748410277109B23Cda2',

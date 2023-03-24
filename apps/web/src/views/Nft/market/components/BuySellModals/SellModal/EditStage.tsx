@@ -1,4 +1,4 @@
-import { Flex, Grid, Text, Button, Link, LinkExternal, BinanceIcon } from '@pancakeswap/uikit'
+import { Flex, Grid, Text, Button, LinkExternal, BinanceIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { nftsBaseUrl, pancakeBunniesAddress } from 'views/Nft/market/constants'
 import { NftToken } from 'state/nftMarket/types'
@@ -63,16 +63,13 @@ const EditStage: React.FC<React.PropsWithChildren<EditStageProps>> = ({
           </Text>
         </Flex>
         <Flex justifyContent="space-between" flex="3">
-          <Button
-            as={Link}
+          <LinkExternal
             p="0px"
             height="16px"
-            external
-            variant="text"
             href={`${nftsBaseUrl}/collections/${nftToSell.collectionAddress}/${itemPageUrlId}`}
           >
             {t('View Item')}
-          </Button>
+          </LinkExternal>
           <HorizontalDivider />
           <LinkExternal
             isBscScan

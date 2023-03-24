@@ -13,6 +13,12 @@ import Aptos from './Aptos.png'
 import AptosXPancakeSwap from './AptosXPancakeSwap.png'
 import trustwalletBg from './trustwalletBg.png'
 import trustwalletBunny from './trustwalletBunny.png'
+import v3AirdropBunny from './v3AirdropBunny.png'
+import v3Board from './v3Board.png'
+import v3BgCoinUp from './v3BgCoinUp.png'
+import v3BgCoinDown from './v3BgCoinDown.png'
+import v3BgBlingNormal from './v3BgBlingNormal.png'
+import v3BgBlingBlur from './v3BgBlingBlur.png'
 
 export {
   lotteryImage,
@@ -30,4 +36,10 @@ export {
   AptosXPancakeSwap,
   trustwalletBg,
   trustwalletBunny,
+  v3AirdropBunny,
+  v3Board,
+  v3BgCoinUp,
+  v3BgCoinDown,
+  v3BgBlingNormal,
+  v3BgBlingBlur,
 }

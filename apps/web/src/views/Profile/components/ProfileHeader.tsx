@@ -1,8 +1,7 @@
 import {
-  BscScanIcon,
   Flex,
   IconButton,
-  Link,
+  LinkExternal,
   Button,
   useModal,
   Grid,
@@ -114,9 +113,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
               href={getBlockExploreLink(accountPath, 'address') || ''}
               // @ts-ignore
               alt={t('View BscScan for user address')}
-            >
-              <BscScanIcon width="20px" color="primary" />
-            </IconButton>
+            />
           )}
         </Flex>
       )
@@ -178,7 +175,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     return (
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
         {accountPath && profile?.username && (
-          <Link href={getBlockExploreLink(accountPath, 'address')} external bold color="primary">
+          <Link isBscScan href={getBlockExploreLink(accountPath, 'address')} external bold color="primary">
             {sidName || truncateHash(accountPath)}
           </Link>
         )}

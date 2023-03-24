@@ -1,5 +1,11 @@
 # @pancakeswap/awgmi
 
+## 0.1.0
+
+### Minor Changes
+
+- e589ebd1c: Add Rise wallet connector
+
 ## 0.0.11
 
 ### Patch Changes

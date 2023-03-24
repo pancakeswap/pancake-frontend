@@ -48,7 +48,8 @@ import useWarningImport from '../hooks/useWarningImport'
 import { MMAndAMMDealDisplay } from '../MMLinkPools/components/MMAndAMMDealDisplay'
 import MMCommitButton from '../MMLinkPools/components/MMCommitButton'
 import { MMSlippageTolerance } from '../MMLinkPools/components/MMSlippageTolerance'
-import { parseMMError, shouldShowMMError } from '../MMLinkPools/utils/exchange'
+import { MMLiquidityWarning } from '../MMLinkPools/components/MMLiquidityWarning'
+import { parseMMError, shouldShowMMSpecificError, shouldShowMMLiquidityError } from '../MMLinkPools/utils/exchange'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import SmartSwapCommitButton from './components/SmartSwapCommitButton'
 import { useDerivedSwapInfoWithStableSwap, useIsSmartRouterBetter, useTradeInfo } from './hooks'
@@ -407,7 +408,7 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
           {!tradeWithStableSwap &&
           !v2Trade &&
           mmOrderBookTrade?.inputError &&
-          shouldShowMMError(mmOrderBookTrade?.inputError) ? (
+          shouldShowMMSpecificError(mmOrderBookTrade?.inputError) ? (
             <Button width="100%" disabled style={{ textAlign: 'left' }}>
               {parseMMError(mmOrderBookTrade?.inputError)}
             </Button>
@@ -429,7 +430,6 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
               currencyBalances={mmOrderBookTrade.currencyBalances}
               recipient={recipient}
               onUserInput={onUserInput}
-              mmQuoteExpiryRemainingSec={mmQuoteExpiryRemainingSec}
             />
           ) : tradeInfo?.fallbackV2 ? (
             <SwapCommitButton
@@ -508,6 +508,14 @@ export const SmartSwapForm: React.FC<{ handleOutputSelect: (newCurrencyOutput: C
       ) : (
         <UnsupportedCurrencyFooter currencies={[currencies.INPUT, currencies.OUTPUT]} />
       )}
+
+      {(shouldShowMMLiquidityError(mmOrderBookTrade?.inputError) || mmRFQTrade?.error) &&
+        !v2Trade &&
+        !tradeWithStableSwap && (
+          <Box mt="5px">
+            <MMLiquidityWarning />
+          </Box>
+        )}
     </>
   )
 }

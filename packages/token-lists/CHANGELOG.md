@@ -1,5 +1,11 @@
 # @pancakeswap/token-lists
 
+## 0.0.6
+
+### Patch Changes
+
+- d5bf9101d: chore: Bump up jotai
+
 ## 0.0.5
 
 ### Patch Changes

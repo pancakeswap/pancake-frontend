@@ -71,7 +71,7 @@ export function useDerivedSwapInfoWithMM(
     mmSwapInputError: mmOrderBookTrade?.inputError,
   })
 
-  const { remainingSec: mmQuoteExpiryRemainingSec } = useMMQuoteCountDown(
+  const mmQuoteExpiryRemainingSec = useMMQuoteCountDown(
     mmRFQTrade?.trade ? mmRFQTrade?.quoteExpiry : null,
     isMMBetter ? mmRFQTrade?.refreshRFQ : undefined,
   )

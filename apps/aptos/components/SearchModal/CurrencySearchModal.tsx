@@ -23,7 +23,6 @@ import CurrencySearch from './CurrencySearch'
 import ImportToken from './ImportToken'
 import Manage from './Manage'
 import { CurrencyModalView } from './types'
-import { BAD_SRCS } from '../Logo/constants'
 import { useListState } from '../../state/lists'
 import { useAllLists } from '../../state/lists/hooks'
 
@@ -172,7 +171,6 @@ export default function CurrencySearchModal({
           <ImportList
             onAddList={handleAddList}
             addError={addError}
-            badSrcs={BAD_SRCS}
             listURL={listURL}
             listLogoURI={importList?.logoURI}
             listName={importList?.name}

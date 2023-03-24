@@ -133,7 +133,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
 
   const farm = details
 
-  const { isDesktop } = useMatchBreakpoints()
+  const { isDesktop, isMobile } = useMatchBreakpoints()
 
   const {
     t,
@@ -220,7 +220,7 @@ const ActionPanel: React.FunctionComponent<React.PropsWithChildren<ActionPanelPr
           </HarvestActionContainer>
         )}
         {farm?.boosted && (
-          <ActionContainerSection style={{ minHeight: 124.5 }}>
+          <ActionContainerSection style={{ minHeight: isMobile ? 'auto' : 124.5 }}>
             <BoostedAction
               title={(status) => (
                 <ActionTitles>
