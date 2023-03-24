@@ -7,7 +7,7 @@ import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
-import { LiquidityChartRangeInput, Button, DynamicSection, AutoColumn } from "../../components";
+import { LiquidityChartRangeInput, Button, DynamicSection, Flex } from "../../components";
 import { Section } from "./Section";
 import { DepositAmountInput } from "./DepositAmount";
 import { RangeSelector } from "./RangeSelector";
@@ -19,9 +19,10 @@ import { RoiRate } from "./RoiRate";
 import { Details } from "./Details";
 import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
-import { TickData } from "./types";
+import { PriceData, TickData } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
 import { TwoColumns } from "./TwoColumns";
+import { PriceChart } from "./PriceChart";
 
 export type RoiCalculatorProps = {
   sqrtRatioX96?: JSBI;
@@ -32,6 +33,7 @@ export type RoiCalculatorProps = {
   balanceA?: CurrencyAmount<Currency>;
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;
+  prices?: PriceData[];
   ticks?: TickData[];
   price?: Price<Token, Token>;
   priceLower?: Price<Token, Token>;
@@ -39,6 +41,8 @@ export type RoiCalculatorProps = {
   currencyAUsdPrice?: number;
   currencyBUsdPrice?: number;
   depositAmountInUsd?: number | string;
+  priceSpan?: number;
+  onPriceSpanChange?: (spanIndex: number) => void;
 
   // Average 24h historical trading volume in USD
   volume24H?: number;
@@ -68,6 +72,7 @@ export function RoiCalculator({
   currencyAUsdPrice,
   currencyBUsdPrice,
   feeAmount,
+  prices,
   ticks: ticksRaw,
   price,
   priceLower,
@@ -75,6 +80,8 @@ export function RoiCalculator({
   volume24H,
   maxLabel,
   max,
+  priceSpan,
+  onPriceSpanChange,
   ...props
 }: RoiCalculatorProps) {
   const cakeAprFactor = props.isFarm && props.cakeAprFactor;
@@ -277,19 +284,35 @@ export function RoiCalculator({
     </Section>
   );
 
+  const priceChart = (
+    <Section title={t("History price")}>
+      <PriceChart
+        prices={prices}
+        onSpanChange={onPriceSpanChange}
+        span={priceSpan}
+        priceUpper={priceRange?.priceUpper?.toSignificant(6)}
+        priceLower={priceRange?.priceLower?.toSignificant(6)}
+      />
+    </Section>
+  );
+
   const content = isMobile ? (
     <>
       {depositSection}
+      {priceChart}
       {priceRangeSettings}
       {stakeAndCompound}
     </>
   ) : (
     <TwoColumns>
-      <AutoColumn alignSelf="stretch">{depositSection}</AutoColumn>
-      <AutoColumn>
+      <Flex flexDirection="column" alignItems="flex-start">
+        {depositSection}
+        {priceChart}
+      </Flex>
+      <Flex flexDirection="column" alignItems="flex-start">
         {stakeAndCompound}
         {priceRangeSettings}
-      </AutoColumn>
+      </Flex>
     </TwoColumns>
   );
 

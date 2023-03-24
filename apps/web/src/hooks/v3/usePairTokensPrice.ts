@@ -12,14 +12,14 @@ export const usePairTokensPrice = (
     () =>
       typeof token0 === 'string'
         ? token0.toLowerCase()
-        : (token0?.isToken ? token0?.address : token0?.wrapped?.address).toLowerCase(),
+        : (token0?.isToken ? token0?.address : token0?.wrapped?.address)?.toLowerCase(),
     [token0],
   )
   const token1Address = useMemo(
     () =>
       typeof token1 === 'string'
         ? token1.toLowerCase()
-        : (token1?.isToken ? token1?.address : token1?.wrapped?.address).toLowerCase(),
+        : (token1?.isToken ? token1?.address : token1?.wrapped?.address)?.toLowerCase(),
     [token1],
   )
 

@@ -1,5 +1,14 @@
 import { Currency } from '@pancakeswap/sdk'
-import { useRoi, RoiCalculatorModalV2, TooltipText, Flex, CalculateIcon, Text, IconButton } from '@pancakeswap/uikit'
+import {
+  useRoi,
+  RoiCalculatorModalV2,
+  TooltipText,
+  Flex,
+  CalculateIcon,
+  Text,
+  IconButton,
+  PairDataTimeWindowEnum,
+} from '@pancakeswap/uikit'
 import { encodeSqrtRatioX96, Pool } from '@pancakeswap/v3-sdk'
 import { useMemo, useState } from 'react'
 import styled from 'styled-components'
@@ -12,6 +21,8 @@ import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import { Field } from 'state/mint/actions'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
+import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
+
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 
 interface Props {
@@ -28,9 +39,25 @@ const AprButtonContainer = styled(Flex)`
 export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitle = true }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
+  const [priceSpan, setPriceSpan] = useState(1)
 
   const formState = useV3FormState()
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
+  const priceTimeWindow = useMemo(() => {
+    switch (priceSpan) {
+      case PairDataTimeWindowEnum.DAY:
+        return 'day'
+      case PairDataTimeWindowEnum.WEEK:
+        return 'week'
+      case PairDataTimeWindowEnum.MONTH:
+        return 'month'
+      case PairDataTimeWindowEnum.YEAR:
+        return 'year'
+      default:
+        return 'week'
+    }
+  }, [priceSpan])
+  const prices = usePairTokensPrice(baseCurrency, quoteCurrency, priceTimeWindow, baseCurrency?.chainId)
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
     baseCurrency ?? undefined,
@@ -97,6 +124,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
         isOpen={isOpen}
         onDismiss={() => setOpen(false)}
         depositAmountInUsd={depositUsd}
+        prices={prices}
         price={price}
         currencyA={baseCurrency}
         currencyB={quoteCurrency}
@@ -111,6 +139,8 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
         volume24H={volume24H}
         priceUpper={priceUpper}
         priceLower={priceLower}
+        priceSpan={priceSpan}
+        onPriceSpanChange={setPriceSpan}
       />
     </>
   )

@@ -13,7 +13,7 @@ export enum PairDataTimeWindowEnum {
 }
 
 export type SwapLineChartNewProps = {
-  data: any[] | { time: Date; value: number }[];
+  data?: any[] | { time: Date; value: number }[];
   setHoverValue?: Dispatch<SetStateAction<number | undefined>>; // used for value on hover
   setHoverDate?: Dispatch<SetStateAction<string | undefined>>; // used for value label on hover
   isChangePositive: boolean;
