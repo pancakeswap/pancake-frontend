@@ -32,7 +32,7 @@ export function TradePrice({ price, loading }: TradePriceProps) {
               <Loading width="12px" height="12px" />
             </AtomBox>
           ) : (
-            <AtomBox className={iconButtonClass} onClick={() => setShowInverted(!showInverted)}>
+            <AtomBox role="button" className={iconButtonClass} onClick={() => setShowInverted(!showInverted)}>
               <AutoRenewIcon width="14px" />
             </AtomBox>
           )}

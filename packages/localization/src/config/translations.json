@@ -2241,6 +2241,7 @@
   "Check your settings": "Check your settings",
   "Reset to default": "Reset to default",
   "Reset": "Reset",
+  "The market price is outside your specified price range. Single-asset deposit only.": "The market price is outside your specified price range. Single-asset deposit only.",
   "%totalStakedFarm% Staked Farming": "%totalStakedFarm% Staked Farming",
   "%totalAvailableFarm% LP Available for Farming": "%totalAvailableFarm% LP Available for Farming",
   "no position found": "no position found",

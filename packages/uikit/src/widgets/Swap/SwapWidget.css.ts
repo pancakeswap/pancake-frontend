@@ -2,10 +2,9 @@ import { atoms } from "@pancakeswap/ui/css/atoms";
 import { vars } from "@pancakeswap/ui/css/vars.css";
 import { responsiveStyle } from "@pancakeswap/ui/css/responsiveStyle";
 import { style } from "@vanilla-extract/css";
-import { recipe } from "@vanilla-extract/recipes";
+import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
 
 export const switchButtonClass = style([
-  atoms({}),
   style({
     backgroundColor: "primary",
     boxShadow: "inset 0px -2px 0px rgba(0, 0, 0, 0.1)",
@@ -68,6 +67,11 @@ export const inputVariants = recipe({
         color: vars.colors.failure,
       },
     },
+    loading: {
+      true: {
+        color: vars.colors.textDisabled,
+      },
+    },
     align: {
       left: {
         textAlign: "left",
@@ -86,30 +90,20 @@ export const inputVariants = recipe({
   },
 });
 
-export const inputRowVariants = recipe({
-  base: {
-    display: "flex",
-    flexFlow: "row nowrap",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  variants: {
-    selected: {
-      true: {
-        padding: "0.75rem 0.5rem 0.75rem 1rem",
-      },
-      false: {
-        padding: "0.75rem 0.75rem 0.75rem 1rem",
-      },
-    },
-  },
-});
+export type InputVariants = RecipeVariants<typeof inputVariants>;
 
 export const inputContainerVariants = recipe({
   base: style([
     atoms({
       borderRadius: "default",
       backgroundColor: "input",
+    }),
+    style({
+      selectors: {
+        "&:focus-within": {
+          boxShadow: vars.shadows.focus,
+        },
+      },
     }),
   ]),
   variants: {
@@ -175,6 +169,8 @@ export const pageVariants = recipe({
     },
   },
 });
+
+export type PageVariants = RecipeVariants<typeof pageVariants>;
 
 export const iconButtonClass = style([
   atoms({
