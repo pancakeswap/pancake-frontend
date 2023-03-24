@@ -105,7 +105,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://pancakeswap.finance/",
             "symbol": "CAKE",
           },
-          "quoteTokenPriceBusd": "40.0",
+          "quoteTokenPriceBusd": "40",
           "token": ERC20Token {
             "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
             "chainId": 56,
@@ -116,7 +116,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://www.binance.org",
             "symbol": "WBNB",
           },
-          "tokenPriceBusd": "80.0",
+          "tokenPriceBusd": "80",
           "tokenPriceVsQuote": "2",
         },
         {
@@ -138,7 +138,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://pancakeswap.finance/",
             "symbol": "CAKE",
           },
-          "quoteTokenPriceBusd": "40.0",
+          "quoteTokenPriceBusd": "40",
           "token": ERC20Token {
             "address": "0x947950BcC74888a40Ffa2593C5798F11Fc9124C4",
             "chainId": 56,
@@ -149,7 +149,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://sushi.com/",
             "symbol": "SUSHI",
           },
-          "tokenPriceBusd": "4.0",
+          "tokenPriceBusd": "4",
           "tokenPriceVsQuote": "0.1",
         },
         {
@@ -171,7 +171,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://www.paxos.com/busd/",
             "symbol": "BUSD",
           },
-          "quoteTokenPriceBusd": "1.0",
+          "quoteTokenPriceBusd": "1",
           "token": ERC20Token {
             "address": "0x55d398326f99059fF775485246999027B3197955",
             "chainId": 56,
@@ -182,7 +182,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://tether.to/",
             "symbol": "USDT",
           },
-          "tokenPriceBusd": "1.0",
+          "tokenPriceBusd": "1",
           "tokenPriceVsQuote": "1",
         },
         {
@@ -215,7 +215,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://www.paxos.com/busd/",
             "symbol": "BUSD",
           },
-          "tokenPriceBusd": "1.0",
+          "tokenPriceBusd": "1",
           "tokenPriceVsQuote": "0.0003333333",
         },
         {
@@ -237,7 +237,7 @@ describe('fetchFarmsV3', () => {
             "projectLink": "https://www.paxos.com/busd/",
             "symbol": "BUSD",
           },
-          "quoteTokenPriceBusd": "1.0",
+          "quoteTokenPriceBusd": "1",
           "token": ERC20Token {
             "address": "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3",
             "chainId": 56,

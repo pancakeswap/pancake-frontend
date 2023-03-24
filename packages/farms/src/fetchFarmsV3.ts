@@ -400,7 +400,7 @@ export function getFarmsPrices(
 
     // try to get price via token price vs quote
     if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
-      tokenPriceBusd = quoteTokenPriceBusd.div(farm.tokenPriceVsQuote)
+      tokenPriceBusd = quoteTokenPriceBusd.times(farm.tokenPriceVsQuote)
     }
     if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
       quoteTokenPriceBusd = tokenPriceBusd.div(farm.tokenPriceVsQuote)
@@ -441,7 +441,7 @@ export function getFarmsPrices(
 
         // try to get price via token price vs quote
         if (tokenPriceBusd.isZero() && !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
-          tokenPriceBusd = quoteTokenPriceBusd.div(farm.tokenPriceVsQuote)
+          tokenPriceBusd = quoteTokenPriceBusd.times(farm.tokenPriceVsQuote)
         }
         if (quoteTokenPriceBusd.isZero() && !tokenPriceBusd.isZero() && farm.tokenPriceVsQuote) {
           quoteTokenPriceBusd = tokenPriceBusd.div(farm.tokenPriceVsQuote)
