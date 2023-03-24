@@ -1838,7 +1838,7 @@
   "Discord": "Discord",
   "For more info, click": "Aby uzyskać więcej informacji, kliknij",
   "XCAD is now using a new bridge provider and has migrated to a new XCAD token on BSC.": "XCAD korzysta teraz z nowego dostawcy pomostu i migrował do nowego tokena XCAD w sieci BSC.",
-  "You can obtain the new token either by swapping your old tokens on PancakeSwap or bridging them to ETH and back to BSC using the new bridge provider.": "You can obtain the new token either by swapping your old tokens on PancakeSwap or bridging them to ETH and back to BSC using the new bridge provider.",
+  "You can obtain the new token either by swapping your old tokens on PancakeSwap or bridging them to ETH and back to BSC using the new bridge provider.": "Nowy token możesz otrzymać poprzez wymianę starych tokenów w serwisie PancakeSwap lub ich przeniesienie do ETH i z powrotem do BSC za pomocą nowego dostawcy pomostu.",
   "Please exercise due caution when trading / providing liquidity for the agEUR token. The protocol was recently affected by the": "Prosimy o zachowanie należytej ostrożności podczas handlu/dostarczania płynności dla tokena agEUR. Protokół ten został ostatnio dotknięty przez",
   "For more information, please refer to Angle Protocol’s": "Więcej informacji można znaleźć w protokole Angle",
   "Euler hack": "Euler hack",
@@ -2167,7 +2167,7 @@
   "V2/V3 Swap & StableSwap": "V2/V3 Swap i StableSwap",
   "comming soon!": "wkrótce!",
   "MMs are temporarily unable to facilitate trades. Please try again later": "MM tymczasowo nie mogą umożliwiać transakcji. Spróbuj ponownie później",
-  "is reporting a risk level of": "is reporting a risk level of",
-  "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.",
-  "Please proceed with caution and always do your own research.": "Please proceed with caution and always do your own research."
+  "is reporting a risk level of": "zgłasza poziom ryzyka",
+  "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "Token ten został jednak oznaczony jako Nieznane ryzyko, ponieważ nie znajduje się na żadnej z wbudowanych list tokenów.",
+  "Please proceed with caution and always do your own research.": "Zachowaj ostrożność i zawsze przeprowadzaj własne badania."
 }
