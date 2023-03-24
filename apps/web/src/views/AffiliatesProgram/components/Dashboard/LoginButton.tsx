@@ -28,9 +28,9 @@ const LoginButton = () => {
 
       if (nonce) {
         const initMessage = new SiweMessage({
-          domain: 'Pancakeswap',
+          domain: window.location.host,
           address,
-          uri: 'https://pancakeswap.finance',
+          uri: window.location.origin,
           version: '1',
           chainId,
           nonce,

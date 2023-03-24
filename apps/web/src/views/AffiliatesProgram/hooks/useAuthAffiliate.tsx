@@ -1,6 +1,7 @@
 import useSWR from 'swr'
 import { useAccount } from 'wagmi'
 import { getCookie, deleteCookie } from 'cookies-next'
+import { HOST } from 'config/constants/affiliatesProgram'
 import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
 
 export interface FeeType {
@@ -62,7 +63,7 @@ const useAuthAffiliate = (): AffiliateInfoType => {
       const response = await fetch(`/api/affiliates-program/affiliate-info`)
       const result: AffiliateInfoResponse = await response.json()
       if (result.status === 'error') {
-        deleteCookie(AFFILIATE_SID)
+        deleteCookie(AFFILIATE_SID, { domain: HOST })
       }
 
       return {

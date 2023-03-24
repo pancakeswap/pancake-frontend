@@ -17,7 +17,7 @@ const Dashboard = () => {
   const { isAffiliateExist } = useAuthAffiliateExist()
 
   useEffect(() => {
-    if (isAffiliateExist === false) {
+    if (isAffiliateExist === false && isAffiliateExist !== null) {
       router.push('/affiliates-program')
     }
   }, [isAffiliateExist, isAffiliate, router])

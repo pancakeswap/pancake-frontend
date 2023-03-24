@@ -31,7 +31,7 @@ const useAuthAffiliateExist = () => {
   )
 
   return {
-    isAffiliateExist: (isAffiliateExist && !!address) ?? false,
+    isAffiliateExist: (isAffiliateExist && !!address) ?? null,
   }
 }
 
