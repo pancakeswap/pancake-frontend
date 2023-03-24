@@ -45,7 +45,6 @@ export function withCurrencyLogo<T extends BaseCurrency>(
     dim,
     onCurrencySelect,
     list,
-    badSrcs,
     isActive,
     children,
   }: {
@@ -54,7 +53,6 @@ export function withCurrencyLogo<T extends BaseCurrency>(
     dim?: boolean;
     onCurrencySelect?: (currency: T) => void;
     list: any;
-    badSrcs: { [imageSrc: string]: true };
     isActive: boolean;
     children: ReactElement;
   }) => {
@@ -87,7 +85,7 @@ export function withCurrencyLogo<T extends BaseCurrency>(
               <Text fontSize={isMobile ? "10px" : "14px"} mr="4px" color="textSubtle">
                 {t("via")} {list.name}
               </Text>
-              <ListLogo badSrcs={badSrcs} logoURI={list.logoURI} size="12px" />
+              <ListLogo logoURI={list.logoURI} size="12px" />
             </RowFixed>
           )}
         </AutoColumn>

@@ -2,7 +2,6 @@ import { CSSProperties } from 'react'
 import { TokenRowButton } from '@pancakeswap/uikit'
 import { Token, Currency } from '@pancakeswap/aptos-swap-sdk'
 import TokenRowWithCurrencyLogo from './TokenRowWithCurrencyLogo'
-import { BAD_SRCS } from '../Logo/constants'
 
 interface ImportTokenRowProps {
   token: Token
@@ -33,7 +32,6 @@ const ImportTokenRow: React.FC<React.PropsWithChildren<ImportTokenRowProps>> = (
       token={token}
       dim={dim}
       list={list}
-      badSrcs={BAD_SRCS}
       onCurrencySelect={onCurrencySelect}
       isActive={isActive}
     >
