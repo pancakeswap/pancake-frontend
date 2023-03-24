@@ -1,13 +1,14 @@
 import { Box, Flex, Text, Button } from '@pancakeswap/uikit'
+import { useTheme } from '@pancakeswap/hooks'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 import Image from 'next/image'
 import bunnyImage from '../../../../public/images/trading-reward/trading-reward-banner-bunny.png'
 
-const Container = styled(Box)`
+const Container = styled(Box)<{ backgroundColor: string }>`
   padding: 47px 16px 38px 16px;
-  background: linear-gradient(340.33deg, #c1edf0 -11.09%, #eafbf7 32.51%, #ece4fb 96.59%);
+  background: ${({ backgroundColor }) => backgroundColor};
 `
 
 const Decorations = styled(Box)`
@@ -46,9 +47,17 @@ const Decorations = styled(Box)`
 
 const TradingRewardBanner = () => {
   const { t } = useTranslation()
+  const { isDark } = useTheme()
 
   return (
-    <Container position="relative">
+    <Container
+      position="relative"
+      backgroundColor={
+        isDark
+          ? 'radial-gradient(103.12% 50% at 50% 50%, #21193a 0%, #191326 100%)'
+          : 'linear-gradient(340.33deg, #c1edf0 -11.09%, #eafbf7 32.51%, #ece4fb 96.59%)'
+      }
+    >
       <Decorations>
         <img src="/images/trading-reward/star1.png" width="43px" height="43px" alt="star1" />
         <img src="/images/trading-reward/star2.png" width="71px" height="71px" alt="star2" />
