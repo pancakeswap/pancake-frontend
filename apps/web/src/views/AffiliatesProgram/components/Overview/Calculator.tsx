@@ -24,8 +24,8 @@ const EarnCardInner = styled(Box)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 `
 
-const referralList: Array<string> = ['15', '25', '35', '50', '100']
-const amountList: Array<string> = ['1000', '3000', '5000', '10000', '20000']
+const referralList: Array<string> = ['100', '500', '1000', '2000', '5000']
+const amountList: Array<string> = ['1000', '5000', '10000', '20000', '50000']
 
 const Calculator = () => {
   const { t } = useTranslation()
