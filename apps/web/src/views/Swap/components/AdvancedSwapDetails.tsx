@@ -4,7 +4,6 @@ import { LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColumn } from '@pancakeswap/uikit'
 
 import { RowBetween, RowFixed } from 'components/Layout/Row'
-import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useState } from 'react'
 import { Field } from 'state/swap/actions'
 import FormattedPriceImpact from './FormattedPriceImpact'
@@ -18,7 +17,6 @@ export function TradeSummary({
   slippageAdjustedAmounts,
   priceImpactWithoutFee,
   realizedLPFee,
-  hasStablePair = false,
   isMM = false,
 }: {
   hasStablePair?: boolean
@@ -35,10 +33,6 @@ export function TradeSummary({
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
-  const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
-  const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
-  const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
-  const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   return (
     <AutoColumn style={{ padding: '0 24px' }}>
