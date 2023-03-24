@@ -2521,4 +2521,12 @@ export const bscTokens = {
     'Uniwhale Token',
     'https://www.uniwhale.co/',
   ),
+  id: new ERC20Token(
+    ChainId.BSC,
+    '0x2dfF88A56767223A5529eA5960Da7A3F5f766406',
+    18,
+    'ID',
+    'SPACE ID',
+    'https://space.id/',
+  ),
 }
