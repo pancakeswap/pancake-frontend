@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency, Percent } from '@pancakeswap/sdk'
+import { Currency } from '@pancakeswap/sdk'
 import { AutoColumn, Box, Button, CardBody, ConfirmationModalContent, useModal } from '@pancakeswap/uikit'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
@@ -33,6 +33,7 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 import { formatRawAmount } from 'utils/formatCurrencyAmount'
+import { basisPointsToPercent } from 'utils/exchange'
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 import { PositionPreview } from './formViews/V3FormView/components/PositionPreview'
@@ -170,12 +171,12 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
         hasExistingPosition && tokenId
           ? interfaceManager.addCallParameters(position, {
               tokenId,
-              slippageTolerance: new Percent(allowedSlippage, 100),
+              slippageTolerance: basisPointsToPercent(allowedSlippage),
               deadline: deadline.toString(),
               useNative,
             })
           : interfaceManager.addCallParameters(position, {
-              slippageTolerance: new Percent(allowedSlippage, 100),
+              slippageTolerance: basisPointsToPercent(allowedSlippage),
               recipient: account,
               deadline: deadline.toString(),
               useNative,
@@ -268,9 +269,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
   const [onPresentIncreaseLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      style={{
-        width: '420px',
-      }}
+      minWidth={['100%', , '420px']}
       title="Increase Liquidity"
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}

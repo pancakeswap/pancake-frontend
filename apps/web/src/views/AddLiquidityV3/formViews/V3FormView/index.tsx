@@ -28,6 +28,7 @@ import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
 
 import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { basisPointsToPercent } from 'utils/exchange'
 import { Field } from 'state/mint/actions'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
@@ -257,7 +258,7 @@ export default function V3FormView({
       const useNative = baseCurrency.isNative ? baseCurrency : quoteCurrency.isNative ? quoteCurrency : undefined
 
       const { calldata, value } = NonfungiblePositionManager.addCallParameters(position, {
-        slippageTolerance: new Percent(allowedSlippage, 100),
+        slippageTolerance: basisPointsToPercent(allowedSlippage),
         recipient: account,
         deadline: deadline.toString(),
         useNative,
@@ -353,9 +354,7 @@ export default function V3FormView({
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      style={{
-        width: '420px',
-      }}
+      minWidth={['100%', , '420px']}
       title="Add Liquidity"
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}

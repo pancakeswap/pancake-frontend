@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useTranslation } from '@pancakeswap/localization'
-import { CurrencyAmount, Percent, WNATIVE } from '@pancakeswap/sdk'
+import { CurrencyAmount, WNATIVE } from '@pancakeswap/sdk'
 import {
   AutoRow,
   CardBody,
@@ -48,6 +48,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
 import { formatRawAmount } from 'utils/formatCurrencyAmount'
+import { basisPointsToPercent } from 'utils/exchange'
 
 import { useBurnV3ActionHandlers } from './form/hooks'
 
@@ -152,7 +153,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
     const { calldata, value } = interfaceManager.removeCallParameters(positionSDK, {
       tokenId: tokenId.toString(),
       liquidityPercentage,
-      slippageTolerance: new Percent(allowedSlippage, 100),
+      slippageTolerance: basisPointsToPercent(allowedSlippage),
       deadline: deadline.toString(),
       collectOptions: {
         expectedCurrencyOwed0: feeValue0 ?? CurrencyAmount.fromRawAmount(liquidityValue0.currency, 0),
