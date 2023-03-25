@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
+import { batch } from 'react-redux'
 import { Field, typeInput, typeLeftRangeInput, typeRightRangeInput, typeStartPriceInput } from '../actions'
 import { useV3FormDispatch } from '../reducer'
 
@@ -12,6 +13,7 @@ export function useV3MintActionHandlers(
   onLeftRangeInput: (typedValue: string) => void
   onRightRangeInput: (typedValue: string) => void
   onStartPriceInput: (typedValue: string) => void
+  onBothRangeInput: ({ leftTypedValue, rightTypedValue }: { leftTypedValue: string; rightTypedValue: string }) => void
 } {
   const router = useRouter()
 
@@ -29,6 +31,37 @@ export function useV3MintActionHandlers(
       dispatch(typeInput({ field: Field.CURRENCY_B, typedValue, noLiquidity: noLiquidity === true }))
     },
     [dispatch, noLiquidity],
+  )
+
+  const onBothRangeInput = useCallback(
+    ({ leftTypedValue, rightTypedValue }: { leftTypedValue: string; rightTypedValue: string }) => {
+      batch(() => {
+        dispatch(typeLeftRangeInput({ typedValue: leftTypedValue }))
+        dispatch(typeRightRangeInput({ typedValue: rightTypedValue }))
+      })
+
+      if (routerReplace) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { minPrice, maxPrice, ...rest } = router.query
+
+        // remove minPrice or maxPrice if its' empty
+        router.replace(
+          {
+            pathname: router.pathname,
+            query: {
+              ...rest,
+              ...(leftTypedValue && { minPrice: leftTypedValue }),
+              ...(rightTypedValue && { maxPrice: rightTypedValue }),
+            },
+          },
+          undefined,
+          {
+            shallow: true,
+          },
+        )
+      }
+    },
+    [dispatch, router, routerReplace],
   )
 
   const onLeftRangeInput = useCallback(
@@ -77,6 +110,7 @@ export function useV3MintActionHandlers(
   )
 
   return {
+    onBothRangeInput,
     onFieldAInput,
     onFieldBInput,
     onLeftRangeInput,

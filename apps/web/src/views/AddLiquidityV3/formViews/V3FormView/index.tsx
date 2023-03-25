@@ -136,8 +136,6 @@ export default function V3FormView({
   const { data: signer } = useSigner()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
-  const { minPrice, maxPrice } = router.query
-
   const { t } = useTranslation()
   const expertMode = useIsExpertMode()
 
@@ -149,7 +147,7 @@ export default function V3FormView({
 
   // mint state
   const formState = useV3FormState()
-  const { independentField, typedValue, startPriceTypedValue, rightRangeTypedValue, leftRangeTypedValue } = formState
+  const { independentField, typedValue, startPriceTypedValue } = formState
 
   const {
     pool,
@@ -178,7 +176,7 @@ export default function V3FormView({
     existingPosition,
     formState,
   )
-  const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput } =
+  const { onFieldAInput, onFieldBInput, onLeftRangeInput, onRightRangeInput, onStartPriceInput, onBothRangeInput } =
     useV3MintActionHandlers(noLiquidity)
 
   const isValid = !errorMessage && !invalidRange
@@ -192,8 +190,10 @@ export default function V3FormView({
 
   useEffect(() => {
     if (feeAmount) {
-      onLeftRangeInput('')
-      onRightRangeInput('')
+      onBothRangeInput({
+        leftTypedValue: '',
+        rightTypedValue: '',
+      })
     }
     // NOTE: ignore exhaustive-deps to avoid infinite re-render
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -201,14 +201,6 @@ export default function V3FormView({
 
   const onAddLiquidityCallback = useV3FormAddLiquidityCallback()
 
-  useEffect(() => {
-    if (minPrice && typeof minPrice === 'string' && minPrice !== leftRangeTypedValue && !leftRangeTypedValue) {
-      onLeftRangeInput(minPrice)
-    }
-    if (maxPrice && typeof maxPrice === 'string' && maxPrice !== rightRangeTypedValue && !rightRangeTypedValue) {
-      onRightRangeInput(maxPrice)
-    }
-  }, [minPrice, maxPrice, onRightRangeInput, onLeftRangeInput, leftRangeTypedValue, rightRangeTypedValue])
   // txn values
   const deadline = useTransactionDeadline() // custom from users settings
   const [txHash, setTxHash] = useState<string>('')
@@ -543,6 +535,7 @@ export default function V3FormView({
                   </AutoRow>
                 )}
                 <LiquidityChartRangeInput
+                  onBothRangeInput={onBothRangeInput}
                   key={baseCurrency?.wrapped?.address}
                   currencyA={baseCurrency ?? undefined}
                   currencyB={quoteCurrency ?? undefined}

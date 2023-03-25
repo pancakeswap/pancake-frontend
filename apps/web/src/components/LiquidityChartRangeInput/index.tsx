@@ -5,7 +5,6 @@ import { AutoColumn, BunnyKnownPlaceholder, ChartDisableIcon, LineGraphIcon } fr
 import { format } from 'd3'
 import { saturate } from 'polished'
 import { useCallback, useMemo } from 'react'
-import { batch } from 'react-redux'
 import styled, { useTheme } from 'styled-components'
 import { Bound } from 'config/constants/types'
 import { InfoBox } from 'components/InfoBox'
@@ -60,6 +59,7 @@ export default function LiquidityChartRangeInput({
   onLeftRangeInput,
   onRightRangeInput,
   interactive,
+  onBothRangeInput,
 }: {
   currencyA: Currency | undefined
   currencyB: Currency | undefined
@@ -70,6 +70,7 @@ export default function LiquidityChartRangeInput({
   priceUpper?: Price<Token, Token>
   onLeftRangeInput: (typedValue: string) => void
   onRightRangeInput: (typedValue: string) => void
+  onBothRangeInput: ({ leftTypedValue, rightTypedValue }: { leftTypedValue: string; rightTypedValue: string }) => void
   interactive: boolean
 }) {
   const theme = useTheme()
@@ -95,25 +96,27 @@ export default function LiquidityChartRangeInput({
         leftRangeValue = 1 / 10 ** 6
       }
 
-      batch(() => {
-        // simulate user input for auto-formatting and other validations
-        if (
-          (!ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] || mode === 'handle' || mode === 'reset') &&
-          leftRangeValue > 0
-        ) {
-          onLeftRangeInput(leftRangeValue.toFixed(6))
-        }
+      const updateLeft =
+        (!ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] || mode === 'handle' || mode === 'reset') &&
+        leftRangeValue > 0
 
-        if ((!ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] || mode === 'reset') && rightRangeValue > 0) {
-          // todo: remove this check. Upper bound for large numbers
-          // sometimes fails to parse to tick.
-          if (rightRangeValue < 1e35) {
-            onRightRangeInput(rightRangeValue.toFixed(6))
-          }
-        }
-      })
+      const updateRight =
+        (!ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] || mode === 'reset') &&
+        rightRangeValue > 0 &&
+        rightRangeValue < 1e35
+
+      if (updateLeft && updateRight) {
+        onBothRangeInput({
+          leftTypedValue: leftRangeValue.toFixed(6),
+          rightTypedValue: rightRangeValue.toFixed(6),
+        })
+      } else if (updateLeft) {
+        onLeftRangeInput(leftRangeValue.toFixed(6))
+      } else if (updateRight) {
+        onRightRangeInput(rightRangeValue.toFixed(6))
+      }
     },
-    [isSorted, onLeftRangeInput, onRightRangeInput, ticksAtLimit],
+    [isSorted, onBothRangeInput, onLeftRangeInput, onRightRangeInput, ticksAtLimit],
   )
 
   const brushDomain: [number, number] | undefined = useMemo(() => {
