@@ -1,5 +1,5 @@
 import { gql, GraphQLClient } from 'graphql-request'
-import { Transaction, TransactionType } from '../../../types'
+import { Transaction, TransactionType } from '../../types'
 
 const POOL_TRANSACTIONS = gql`
   query transactions($address: Bytes!) {

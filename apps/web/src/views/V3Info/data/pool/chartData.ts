@@ -3,7 +3,7 @@ import utc from 'dayjs/plugin/utc'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 
 import { gql, GraphQLClient } from 'graphql-request'
-import { PoolChartEntry } from '../../../types'
+import { PoolChartEntry } from '../../types'
 
 // format dayjs with the libraries that we need
 dayjs.extend(utc)

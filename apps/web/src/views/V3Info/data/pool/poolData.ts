@@ -1,7 +1,7 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { Block } from 'state/info/types'
-import { PoolData } from '../../../types'
-import { get2DayChange } from '../../../utils/data'
+import { PoolData } from '../../types'
+import { get2DayChange } from '../../utils/data'
 
 export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
   let poolString = `[`
@@ -94,7 +94,7 @@ interface PoolDataResponse {
 /**
  * Fetch top addresses by volume
  */
-export async function getPoolDatas(
+export async function fetchPoolDatas(
   dataClient: GraphQLClient,
   poolAddresses: string[],
   blocks: Block[],

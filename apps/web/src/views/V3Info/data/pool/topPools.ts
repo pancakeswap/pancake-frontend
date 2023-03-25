@@ -1,8 +1,8 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { gql, GraphQLClient } from 'graphql-request'
 
-import { POOL_HIDE } from '../../../constants'
-import { notEmpty } from '../../../utils'
+import { POOL_HIDE } from '../../constants'
+import { notEmpty } from '../../utils'
 
 export const TOP_POOLS = gql`
   query topPools {

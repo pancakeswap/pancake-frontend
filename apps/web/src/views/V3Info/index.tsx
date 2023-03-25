@@ -50,7 +50,7 @@ export default function Home() {
 
   const [, setHoverValue] = useState<number | undefined>()
   const [, setHoverDate] = useState<string | undefined>()
-  const pairTokensPrice = usePairTokensPrice(ethereumTokens.weth, ethereumTokens.usdc, 'day', 1)
+  const pairTokensPrice = usePairTokensPrice(ethereumTokens.weth, ethereumTokens.usdc, 'month', 1)
 
   // if hover value undefined, reset to current day value
   // useEffect(() => {
@@ -132,7 +132,7 @@ export default function Home() {
               setHoverDate={setHoverDate}
               isChangePositive={false}
               isChartExpanded={false}
-              timeWindow={PairDataTimeWindowEnum.DAY}
+              timeWindow={PairDataTimeWindowEnum.MONTH}
               // priceLineData={[
               //   { title: 'max', price: 100, color: '#31D0AA' },
               //   { title: 'min', price: 80, color: '#ED4B9E' },

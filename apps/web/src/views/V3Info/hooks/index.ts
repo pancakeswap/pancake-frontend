@@ -10,6 +10,16 @@ import { fetchTokenPriceData } from '../data/token/priceData'
 import { ChartDayData, PriceChartEntry, Transaction } from '../types'
 
 const ONE_HOUR_SECONDS = 3600
+const SIX_HOUR_SECONDS = 21600
+const ONE_DAY_SECONDS = 86400
+const ONE_WEEK_SECONDS = 604800
+
+const DURATION_INTERVAL = {
+  day: ONE_HOUR_SECONDS,
+  week: SIX_HOUR_SECONDS,
+  month: ONE_DAY_SECONDS,
+  year: ONE_WEEK_SECONDS,
+}
 
 const SWR_SETTINGS_WITHOUT_REFETCH = {
   errorRetryCount: 3,
@@ -41,6 +51,7 @@ export const useTokenPriceChartData = (
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
 ): PriceChartEntry[] | undefined => {
+  console.log(address, 'address')
   const { chainId } = useActiveChainId()
   const utcCurrentTime = dayjs()
   const startTimestamp = utcCurrentTime
@@ -53,7 +64,7 @@ export const useTokenPriceChartData = (
     () =>
       fetchTokenPriceData(
         address,
-        ONE_HOUR_SECONDS,
+        DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
         v3Clients[targetChianId ?? chainId],
         multiChainName[targetChianId ?? chainId],
