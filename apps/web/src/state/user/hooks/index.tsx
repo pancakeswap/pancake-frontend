@@ -35,11 +35,8 @@ import {
   updateUserPredictionAcceptedRisk,
   updateUserUsernameVisibility,
   setIsExchangeChartDisplayed,
-  ChartViewMode,
-  setChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
   updateUserLimitOrderAcceptedWarning,
-  setZapDisabled,
 } from '../actions'
 import { GAS_PRICE_GWEI } from '../../types'
 
@@ -60,37 +57,6 @@ export function useExchangeChartManager(isMobile: boolean): [boolean, (isDisplay
 
   return [isMobile ? false : isChartDisplayed, setUserChartPreference]
 }
-
-export function useExchangeChartViewManager() {
-  const dispatch = useAppDispatch()
-  const chartViewMode = useSelector<AppState, AppState['user']['userChartViewMode']>(
-    (state) => state.user.userChartViewMode,
-  )
-
-  const setUserChartViewPreference = useCallback(
-    (view: ChartViewMode) => {
-      dispatch(setChartViewMode(view))
-    },
-    [dispatch],
-  )
-
-  return [chartViewMode, setUserChartViewPreference] as const
-}
-
-export function useZapModeManager() {
-  const dispatch = useAppDispatch()
-  const zapEnabled = useSelector<AppState, AppState['user']['userZapDisabled']>((state) => !state.user.userZapDisabled)
-
-  const setZapEnable = useCallback(
-    (enable: boolean) => {
-      dispatch(setZapDisabled(!enable))
-    },
-    [dispatch],
-  )
-
-  return [zapEnabled, setZapEnable] as const
-}
-
 export function useSubgraphHealthIndicatorManager() {
   const dispatch = useAppDispatch()
   const isSubgraphHealthIndicatorDisplayed = useSelector<

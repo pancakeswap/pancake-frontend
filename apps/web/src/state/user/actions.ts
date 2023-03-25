@@ -17,11 +17,6 @@ export enum ViewMode {
   CARD = 'CARD',
 }
 
-export enum ChartViewMode {
-  BASIC = 'BASIC',
-  TRADING_VIEW = 'TRADING_VIEW',
-}
-
 export const updateUserDeadline = createAction<{ userDeadline: number }>('user/updateUserDeadline')
 export const addSerializedToken = createAction<{ serializedToken: SerializedWrappedToken }>('user/addSerializedToken')
 export const removeSerializedToken = createAction<{ chainId: number; address: string }>('user/removeSerializedToken')
@@ -59,6 +54,4 @@ export const addWatchlistToken = createAction<{ address: string }>('user/addWatc
 export const addWatchlistPool = createAction<{ address: string }>('user/addWatchlistPool')
 
 export const setIsExchangeChartDisplayed = createAction<boolean>('user/toggleIsExchangeChartDisplayed')
-export const setChartViewMode = createAction<ChartViewMode>('user/setChartViewMode')
-export const setZapDisabled = createAction<boolean>('user/setZapDisabled')
 export const setSubgraphHealthIndicatorDisplayed = createAction<boolean>('user/setSubgraphHealthIndicatorDisplayed')

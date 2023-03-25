@@ -67,7 +67,9 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
       chart.applyOptions({ width: chartRef?.current?.clientWidth, height: chartRef?.current?.clientHeight });
     };
 
-    const chart = createChart(chartRef?.current ?? "", {
+    if (!chartRef?.current) return;
+
+    const chart = createChart(chartRef?.current, {
       layout: {
         background: { color: "transparent" },
         textColor: isDark ? "F4EEFF" : "F4EEFF",
@@ -160,6 +162,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
 
     window.addEventListener("resize", handleResize);
 
+    // eslint-disable-next-line consistent-return
     return () => {
       window.removeEventListener("resize", handleResize);
       chart.remove();

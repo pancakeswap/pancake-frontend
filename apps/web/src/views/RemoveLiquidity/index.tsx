@@ -5,7 +5,7 @@ import { splitSignature } from '@ethersproject/bytes'
 import { Contract } from '@ethersproject/contracts'
 import { TransactionResponse } from '@ethersproject/providers'
 import { useRouter } from 'next/router'
-import { Currency, Percent, WNATIVE, ChainId } from '@pancakeswap/sdk'
+import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
   Button,
   Text,
@@ -65,7 +65,7 @@ import Dots from '../../components/Loader/Dots'
 import { useBurnActionHandlers, useDerivedBurnInfo, useBurnState } from '../../state/burn/hooks'
 
 import { Field } from '../../state/burn/actions'
-import { useGasPrice, useZapModeManager } from '../../state/user/hooks'
+import { useGasPrice } from '../../state/user/hooks'
 import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
 import { logError } from '../../utils/sentry'
@@ -80,15 +80,13 @@ const BorderCard = styled.div`
   padding: 16px;
 `
 
-const zapSupportedChainId = [ChainId.BSC, ChainId.BSC_TESTNET]
+const zapModeStatus = false
 
 export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, currencyIdB }) {
   const router = useRouter()
   const native = useNativeCurrency()
   const { isMobile } = useMatchBreakpoints()
 
-  const [zapMode] = useZapModeManager()
-  const [temporarilyZapMode, setTemporarilyZapMode] = useState(true)
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
   const library = useWeb3LibraryContext()
   const { toastError } = useToast()
@@ -96,12 +94,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
 
   const { t } = useTranslation()
   const gasPrice = useGasPrice()
-
-  const canZapOut = useMemo(() => zapSupportedChainId.includes(chainId) && zapMode, [chainId, zapMode])
-  const zapModeStatus = useMemo(
-    () => canZapOut && !!zapMode && temporarilyZapMode,
-    [canZapOut, zapMode, temporarilyZapMode],
-  )
 
   // burn state
   const { independentField, typedValue } = useBurnState()
@@ -555,7 +547,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       hash={txHash || ''}
       allowedSlippage={allowedSlippage}
       onRemove={isZap ? onZapOut : onRemove}
-      isZap={isZap}
       pendingText={pendingText}
       approval={approval}
       signatureData={signatureData}
@@ -565,7 +556,6 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       parsedAmounts={parsedAmounts}
       currencyA={currencyA}
       currencyB={currencyB}
-      toggleZapMode={setTemporarilyZapMode}
     />,
     true,
     true,

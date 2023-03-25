@@ -24,11 +24,8 @@ import {
   updateUserPredictionChainlinkChartDisclaimerShow,
   updateUserUsernameVisibility,
   setIsExchangeChartDisplayed,
-  setChartViewMode,
-  ChartViewMode,
   setSubgraphHealthIndicatorDisplayed,
   updateUserLimitOrderAcceptedWarning,
-  setZapDisabled,
 } from './actions'
 import { GAS_PRICE_GWEI } from '../types'
 
@@ -53,10 +50,8 @@ export interface UserState {
       [key: string]: SerializedPair
     }
   }
-
   isExchangeChartDisplayed: boolean
   isSubgraphHealthIndicatorDisplayed: boolean
-  userChartViewMode: ChartViewMode
   userFarmStakedOnly: FarmStakedOnly
   userPoolStakedOnly: boolean
   userPoolsViewMode: ViewMode
@@ -66,7 +61,6 @@ export interface UserState {
   userPredictionChartDisclaimerShow: boolean
   userPredictionChainlinkChartDisclaimerShow: boolean
   userUsernameVisibility: boolean
-  userZapDisabled: boolean
   gasPrice: string
   watchlistTokens: string[]
   watchlistPools: string[]
@@ -83,7 +77,6 @@ export const initialState: UserState = {
   pairs: {},
   isExchangeChartDisplayed: true,
   isSubgraphHealthIndicatorDisplayed: false,
-  userChartViewMode: ChartViewMode.BASIC,
   userFarmStakedOnly: FarmStakedOnly.ON_FINISHED,
   userPoolStakedOnly: false,
   userPoolsViewMode: ViewMode.TABLE,
@@ -93,7 +86,6 @@ export const initialState: UserState = {
   userPredictionChartDisclaimerShow: true,
   userPredictionChainlinkChartDisclaimerShow: true,
   userUsernameVisibility: false,
-  userZapDisabled: false,
   gasPrice: GAS_PRICE_GWEI.rpcDefault,
   watchlistTokens: [],
   watchlistPools: [],
@@ -206,12 +198,6 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setIsExchangeChartDisplayed, (state, { payload }) => {
       state.isExchangeChartDisplayed = payload
-    })
-    .addCase(setChartViewMode, (state, { payload }) => {
-      state.userChartViewMode = payload
-    })
-    .addCase(setZapDisabled, (state, { payload }) => {
-      state.userZapDisabled = payload
     })
     .addCase(setSubgraphHealthIndicatorDisplayed, (state, { payload }) => {
       state.isSubgraphHealthIndicatorDisplayed = payload
