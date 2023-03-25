@@ -125,9 +125,9 @@ const AccessRiskComponent: React.FC<AccessRiskProps> = ({ token }) => {
           </Text>
           <Flex mt="4px">
             <Text>{t('Learn more about risk rating')}</Text>
-            <Link ml="4px" external href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
+            <LinkExternal ml="4px" href="https://www.avengerdao.org/docs/meter/consumer-api/RiskBand">
               {t('here.')}
-            </Link>
+            </LinkExternal>
           </Flex>
         </>
       ) : (
