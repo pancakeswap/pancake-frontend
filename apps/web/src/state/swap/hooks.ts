@@ -20,10 +20,12 @@ import { multicallv2 } from 'utils/multicall'
 import { getTokenAddress } from 'views/Swap/components/Chart/utils'
 import { useBestTrade } from 'views/Swap/SmartSwap/hooks/useBestTrade'
 import { useAccount } from 'wagmi'
+import useSWRImmutable from 'swr/immutable'
+import { SLOW_INTERVAL } from 'config/constants'
 import { AppState, useAppDispatch } from '../index'
 import { useCurrencyBalances } from '../wallet/hooks'
 import { Field, replaceSwapState, updateDerivedPairData, updatePairData } from './actions'
-import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
+import fetchDerivedPriceData, { getTokenBestTvlProtocol } from './fetch/fetchDerivedPriceData'
 import fetchPairPriceData from './fetch/fetchPairPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
 import {
@@ -280,12 +282,72 @@ type useFetchPairPricesParams = {
   }
 }
 
+export const useFetchPairPricesV3 = ({
+  token0Address,
+  token1Address,
+  timeWindow,
+  currentSwapPrice,
+}: useFetchPairPricesParams) => {
+  const { chainId } = useActiveChainId()
+  const { data: protocol0 } = useSWRImmutable(
+    token0Address && chainId && ['protocol', token0Address, chainId],
+    async () => {
+      return getTokenBestTvlProtocol(token0Address, chainId)
+    },
+  )
+  const { data: protocol1 } = useSWRImmutable(
+    token1Address && chainId && ['protocol', token1Address, chainId],
+    async () => {
+      return getTokenBestTvlProtocol(token0Address, chainId)
+    },
+  )
+
+  const {
+    data: normalizedDerivedPairData,
+    error,
+    isLoading,
+  } = useSWRImmutable(
+    protocol0 &&
+      protocol1 &&
+      token0Address &&
+      chainId &&
+      token1Address && ['derivedPrice', { token0Address, token1Address, chainId, protocol0, protocol1 }],
+    async () => {
+      const data = await fetchDerivedPriceData(token0Address, token1Address, timeWindow, protocol0, protocol1, chainId)
+      return normalizeDerivedPairDataByActiveToken({
+        activeToken: token0Address,
+        pairData: normalizeDerivedChartData(data),
+      })
+    },
+    {
+      dedupingInterval: SLOW_INTERVAL,
+      refreshInterval: SLOW_INTERVAL,
+    },
+  )
+
+  const hasSwapPrice = currentSwapPrice && currentSwapPrice[token0Address] > 0
+  const normalizedDerivedPairDataWithCurrentSwapPrice = useMemo(
+    () =>
+      normalizedDerivedPairData?.length > 0 && hasSwapPrice
+        ? [...normalizedDerivedPairData, { time: new Date(), value: currentSwapPrice[token0Address] }]
+        : normalizedDerivedPairData,
+    [currentSwapPrice, hasSwapPrice, normalizedDerivedPairData, token0Address],
+  )
+
+  return {
+    data: normalizedDerivedPairDataWithCurrentSwapPrice,
+    error,
+    isLoading,
+  }
+}
+
 export const useFetchPairPrices = ({
   token0Address,
   token1Address,
   timeWindow,
   currentSwapPrice,
 }: useFetchPairPricesParams) => {
+  const { chainId } = useActiveChainId()
   const [pairId, setPairId] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const pairData = useSelector(pairByDataIdSelector({ pairId, timeWindow }))
@@ -325,12 +387,17 @@ export const useFetchPairPrices = ({
             (p) =>
               equalsIgnoreCase(p.token0.wrapped.address, token0Address) ||
               equalsIgnoreCase(p.token1.wrapped.address, token0Address),
-          ),
+          )
+            ? 'stable'
+            : 'v2',
           stableSwapPairs.some(
             (p) =>
               equalsIgnoreCase(p.token0.wrapped.address, token1Address) ||
               equalsIgnoreCase(p.token1.wrapped.address, token1Address),
-          ),
+          )
+            ? 'stable'
+            : 'v2',
+          chainId,
         )
         if (derivedData) {
           const normalizedDerivedData = normalizeDerivedChartData(derivedData)
@@ -419,6 +486,7 @@ export const useFetchPairPrices = ({
     isStableSwap,
     stableSwapPair,
     stableSwapPairs,
+    chainId,
   ])
 
   useEffect(() => {

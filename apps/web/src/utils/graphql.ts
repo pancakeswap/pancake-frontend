@@ -13,14 +13,9 @@ import { INFO_CLIENT_WITH_CHAIN } from '../config/constants/endpoints'
 // Mostly for dev environment
 // No production env check since production preview might also need them
 export const getGQLHeaders = (endpoint: string) => {
-  if (endpoint === INFO_CLIENT) {
+  if (endpoint === INFO_CLIENT && process.env.NEXT_PUBLIC_NODE_REAL_HEADER) {
     return {
-      origin:
-        process.env.NEXT_PUBLIC_NODE_REAL_HEADER ||
-        // hack for inject CI secret on window
-        (typeof window !== 'undefined' &&
-          // @ts-ignore
-          window.nrHeader),
+      origin: process.env.NEXT_PUBLIC_NODE_REAL_HEADER,
     }
   }
   return undefined
