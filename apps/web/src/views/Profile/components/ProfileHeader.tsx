@@ -1,8 +1,7 @@
 import {
-  BscScanIcon,
   Flex,
   IconButton,
-  Link,
+  LinkExternal,
   Button,
   useModal,
   Grid,
@@ -20,6 +19,7 @@ import { Achievement, Profile } from 'state/types'
 import { useAccount } from 'wagmi'
 import { useMemo } from 'react'
 import useGetUsernameWithVisibility from 'hooks/useUsernameWithVisibility'
+import { useSidNameForAddress } from 'hooks/useSid'
 import EditProfileAvatar from './EditProfileAvatar'
 import BannerHeader from '../../Nft/market/components/BannerHeader'
 import StatBox, { StatBoxItem } from '../../Nft/market/components/StatBox'
@@ -50,8 +50,10 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
-  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } =
-    useGetUsernameWithVisibility(profile)
+  const { sidName } = useSidNameForAddress(accountPath)
+  const { usernameWithVisibility, userUsernameVisibility, setUserUsernameVisibility } = useGetUsernameWithVisibility(
+    profile?.username,
+  )
   const [onEditProfileModal] = useModal(
     <EditProfileModal
       onSuccess={() => {
@@ -111,9 +113,7 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
               href={getBlockExploreLink(accountPath, 'address') || ''}
               // @ts-ignore
               alt={t('View BscScan for user address')}
-            >
-              <BscScanIcon width="20px" color="primary" />
-            </IconButton>
+            />
           )}
         </Flex>
       )
@@ -150,11 +150,11 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     }
 
     if (accountPath) {
-      return truncateHash(accountPath, 5, 3)
+      return sidName || truncateHash(accountPath, 5, 3)
     }
 
     return null
-  }, [profileUsername, accountPath])
+  }, [sidName, profileUsername, accountPath])
 
   const description = useMemo(() => {
     const getActivateButton = () => {
@@ -175,14 +175,14 @@ const ProfileHeader: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     return (
       <Flex flexDirection="column" mb={[16, null, 0]} mr={[0, null, 16]}>
         {accountPath && profile?.username && (
-          <Link href={getBlockExploreLink(accountPath, 'address')} external bold color="primary">
-            {truncateHash(accountPath)}
-          </Link>
+          <LinkExternal isBscScan href={getBlockExploreLink(accountPath, 'address')} external bold color="primary">
+            {sidName || truncateHash(accountPath)}
+          </LinkExternal>
         )}
         {accountPath && isConnectedAccount && (!profile || !profile?.nft) && getActivateButton()}
       </Flex>
     )
-  }, [accountPath, isConnectedAccount, onEditProfileModal, profile, t])
+  }, [sidName, accountPath, isConnectedAccount, onEditProfileModal, profile, t])
 
   return (
     <>

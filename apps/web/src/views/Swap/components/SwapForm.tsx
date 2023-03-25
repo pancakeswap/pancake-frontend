@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, NATIVE, Percent } from '@pancakeswap/sdk'
 import {
   ArrowDownIcon,
+  AutoColumn,
   Box,
   Button,
   Message,
@@ -9,7 +10,6 @@ import {
   Skeleton,
   Swap as SwapUI,
   useModal,
-  AutoColumn,
 } from '@pancakeswap/uikit'
 import UnsupportedCurrencyFooter from 'components/UnsupportedCurrencyFooter'
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -35,26 +35,26 @@ import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
 
 import { useAtomValue } from 'jotai'
+import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
+import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
+import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 import { combinedTokenMapFromOfficialsUrlsAtom } from '../../../state/lists/hooks'
 import { isAddress } from '../../../utils'
 import useRefreshBlockNumberID from '../hooks/useRefreshBlockNumber'
 import useWarningImport from '../hooks/useWarningImport'
-import { useStableFarms } from '../StableSwap/hooks/useStableConfig'
 import { SwapFeaturesContext } from '../SwapFeaturesContext'
 import AddressInputPanel from './AddressInputPanel'
 import AdvancedSwapDetailsDropdown from './AdvancedSwapDetailsDropdown'
 import CurrencyInputHeader from './CurrencyInputHeader'
 import { ArrowWrapper, Wrapper } from './styleds'
 import SwapCommitButton from './SwapCommitButton'
-import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
-import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 
 export default function SwapForm() {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
-  const stableFarms = useStableFarms()
+  const stablePairs = useStableSwapPairs()
   const warningSwapHandler = useWarningImport()
   const tokenMap = useAtomValue(combinedTokenMapFromOfficialsUrlsAtom)
 
@@ -77,15 +77,15 @@ export default function SwapForm() {
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
   const hasStableSwapAlternative = useMemo(() => {
-    return stableFarms.some((stableFarm) => {
-      const checkSummedToken0 = isAddress(stableFarm?.token0.address)
-      const checkSummedToken1 = isAddress(stableFarm?.token1.address)
+    return stablePairs.some((stablePair) => {
+      const checkSummedToken0 = isAddress(stablePair?.token0.wrapped.address)
+      const checkSummedToken1 = isAddress(stablePair?.token1.wrapped.address)
       return (
         (checkSummedToken0 === inputCurrencyId || checkSummedToken0 === outputCurrencyId) &&
         (checkSummedToken1 === inputCurrencyId || checkSummedToken1 === outputCurrencyId)
       )
     })
-  }, [stableFarms, inputCurrencyId, outputCurrencyId])
+  }, [stablePairs, inputCurrencyId, outputCurrencyId])
 
   const currencies: { [field in Field]?: Currency } = useMemo(
     () => ({

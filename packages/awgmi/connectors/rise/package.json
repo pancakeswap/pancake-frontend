@@ -1,0 +1,4 @@
+{
+  "main": "../../dist/connectors/rise.js",
+  "module": "../../dist/connectors/rise.mjs"
+}

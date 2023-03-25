@@ -6,7 +6,7 @@ import { AutoColumn, RowBetween, Text, TextProps, IconButton, PencilIcon } from 
 type SwapInfoType = {
   price: ReactNode;
   allowedSlippage: number;
-  onSlippageClick: () => void;
+  onSlippageClick?: () => void;
   allowedSlippageSlot?: React.ReactNode;
 };
 
@@ -24,9 +24,11 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
       <RowBetween alignItems="center">
         <SwapInfoLabel>
           {t("Slippage Tolerance")}
-          <IconButton scale="sm" variant="text" onClick={onSlippageClick}>
-            <PencilIcon color="primary" width="10px" />
-          </IconButton>
+          {onSlippageClick ? (
+            <IconButton scale="sm" variant="text" onClick={onSlippageClick}>
+              <PencilIcon color="primary" width="10px" />
+            </IconButton>
+          ) : null}
         </SwapInfoLabel>
         {isMounted &&
           (allowedSlippageSlot ?? (

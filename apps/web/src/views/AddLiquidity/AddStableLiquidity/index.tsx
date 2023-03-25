@@ -1,4 +1,5 @@
 import { useCallback, useContext, useMemo, useState } from 'react'
+import { BigNumber } from '@ethersproject/bignumber'
 import { CurrencyAmount, Token, WNATIVE, Percent } from '@pancakeswap/sdk'
 import {
   Button,
@@ -25,6 +26,7 @@ import { LightCard } from 'components/Card'
 import { ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { useStableSwapAPR } from 'hooks/useStableSwapAPR'
+import { useStableSwapNativeHelperContract } from 'hooks/useContract'
 
 import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
 import ConnectWalletButton from '../../../components/ConnectWalletButton'
@@ -81,6 +83,8 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
   } = useStableLPDerivedMintInfo(currencyA ?? undefined, currencyB ?? undefined)
 
   const { onFieldAInput, onFieldBInput } = useMintActionHandlers(true)
+
+  const nativeHelperContract = useStableSwapNativeHelperContract()
 
   // modal and loading
   const [{ attemptingTxn, liquidityErrorMessage, txHash }, setLiquidityState] = useState<{
@@ -144,14 +148,24 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
     },
   )
 
+  const needWrapped = currencyA?.isNative || currencyB?.isNative
+
   // check whether the user has approved tokens for addling LPs
-  const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], stableSwapContract?.address)
-  const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], stableSwapContract?.address)
+  const [approvalA, approveACallback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_A],
+    needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
+  )
+  const [approvalB, approveBCallback] = useApproveCallback(
+    parsedAmounts[Field.CURRENCY_B],
+    needWrapped ? nativeHelperContract?.address : stableSwapContract?.address,
+  )
 
   const addTransaction = useTransactionAdder()
 
   async function onAdd() {
-    if (!chainId || !account || !stableSwapContract) return
+    const contract = needWrapped ? nativeHelperContract : stableSwapContract
+
+    if (!chainId || !account || !contract) return
 
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = parsedAmounts
 
@@ -164,8 +178,8 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
 
     const lpMintedSlippage = calculateSlippageAmount(liquidityMinted, noLiquidity ? 0 : allowedSlippage)[0]
 
-    const estimate = stableSwapContract.estimateGas.add_liquidity
-    const method = stableSwapContract.add_liquidity
+    const estimate = contract.estimateGas.add_liquidity
+    const method = contract.add_liquidity
 
     const quotientA = parsedAmountA?.quotient?.toString() || '0'
     const quotientB = parsedAmountB?.quotient?.toString() || '0'
@@ -176,9 +190,13 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
         ? [quotientA, quotientB]
         : [quotientB, quotientA]
 
-    const args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
+    let args = [tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
 
-    const value = null
+    let value: BigNumber | null = null
+    if (needWrapped) {
+      args = [stableSwapContract.address, tokenAmounts, minLPOutput?.toString() || lpMintedSlippage?.toString()]
+      value = BigNumber.from((currencyB?.isNative ? parsedAmountB : parsedAmountA).quotient.toString())
+    }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     await estimate(...args, value ? { value } : {})

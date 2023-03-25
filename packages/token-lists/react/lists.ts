@@ -42,7 +42,6 @@ export const createListsAtom = (storeName: string, reducer: any, initialState: a
           return db.setItem(k, v)
         },
         removeItem: db.removeItem,
-        delayInit: true,
       }
     }
     return noopStorage
@@ -55,7 +54,7 @@ export const createListsAtom = (storeName: string, reducer: any, initialState: a
     IndexedDBStorage('lists'),
   )
 
-  const defaultStateAtom = atom<ListsState, any>(
+  const defaultStateAtom = atom<ListsState, any, void>(
     (get) => {
       const got = get(listsStorageAtom)
       if (got === EMPTY) {

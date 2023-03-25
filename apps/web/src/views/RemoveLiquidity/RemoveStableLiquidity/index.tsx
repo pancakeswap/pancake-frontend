@@ -1,61 +1,62 @@
-import { useCallback, useMemo, useState, useContext } from 'react'
-import styled from 'styled-components'
+import { BigNumber } from '@ethersproject/bignumber'
 import { TransactionResponse } from '@ethersproject/providers'
-import { useRouter } from 'next/router'
+import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
+import { useTranslation } from '@pancakeswap/localization'
 import { Currency, Percent, WNATIVE } from '@pancakeswap/sdk'
 import {
-  useToast,
-  Button,
-  Text,
   AddIcon,
   ArrowDownIcon,
-  CardBody,
-  Slider,
+  AutoColumn,
   Box,
+  Button,
+  CardBody,
+  ColumnCenter,
   Flex,
-  useModal,
-  useMatchBreakpoints,
   IconButton,
   PencilIcon,
-  AutoColumn,
-  ColumnCenter,
+  Slider,
+  Text,
+  useMatchBreakpoints,
+  useModal,
+  useToast,
 } from '@pancakeswap/uikit'
-import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
-import { BigNumber } from '@ethersproject/bignumber'
-import useNativeCurrency from 'hooks/useNativeCurrency'
 import { CommitButton } from 'components/CommitButton'
-import { useTranslation } from '@pancakeswap/localization'
+import { useStableSwapNativeHelperContract } from 'hooks/useContract'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { useRouter } from 'next/router'
+import { useCallback, useContext, useMemo, useState } from 'react'
+import styled from 'styled-components'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { StableConfigContext } from 'views/Swap/StableSwap/hooks/useStableConfig'
 
-import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
-import { MinimalPositionCard } from '../../../components/PositionCard'
-import { AppHeader, AppBody } from '../../../components/App'
-import { RowBetween } from '../../../components/Layout/Row'
-import ConnectWalletButton from '../../../components/ConnectWalletButton'
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
+import { AppBody, AppHeader } from '../../../components/App'
 import { LightGreyCard } from '../../../components/Card'
-
+import ConnectWalletButton from '../../../components/ConnectWalletButton'
+import CurrencyInputPanel from '../../../components/CurrencyInputPanel'
+import { RowBetween } from '../../../components/Layout/Row'
 import { CurrencyLogo } from '../../../components/Logo'
+import { MinimalPositionCard } from '../../../components/PositionCard'
 import useActiveWeb3React from '../../../hooks/useActiveWeb3React'
 
-import { useTransactionAdder } from '../../../state/transactions/hooks'
 import StyledInternalLink from '../../../components/Links'
-import { calculateGasMargin } from '../../../utils'
-import { calculateSlippageAmount } from '../../../utils/exchange'
-import { currencyId } from '../../../utils/currencyId'
-import { useApproveCallback, ApprovalState } from '../../../hooks/useApproveCallback'
 import Dots from '../../../components/Loader/Dots'
+import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { useBurnActionHandlers, useBurnState } from '../../../state/burn/hooks'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { calculateGasMargin } from '../../../utils'
+import { currencyId } from '../../../utils/currencyId'
+import { calculateSlippageAmount } from '../../../utils/exchange'
 
-import { Field } from '../../../state/burn/actions'
-import { useGasPrice, useUserSlippageTolerance } from '../../../state/user/hooks'
-import Page from '../../Page'
-import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityModal'
-import { logError } from '../../../utils/sentry'
-import { CommonBasesType } from '../../../components/SearchModal/types'
-import { useStableDerivedBurnInfo } from './hooks/useStableDerivedBurnInfo'
 import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
+import { CommonBasesType } from '../../../components/SearchModal/types'
+import { Field } from '../../../state/burn/actions'
+import { useGasPrice, useUserSlippageTolerance } from '../../../state/user/hooks'
+import { logError } from '../../../utils/sentry'
+import Page from '../../Page'
+import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityModal'
+import { useStableDerivedBurnInfo } from './hooks/useStableDerivedBurnInfo'
 
 const BorderCard = styled.div`
   border: solid 1px ${({ theme }) => theme.colors.cardBorder};
@@ -77,6 +78,10 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   // burn state
   const { independentField, typedValue } = useBurnState()
+
+  const nativeHelperContract = useStableSwapNativeHelperContract()
+
+  const needUnwrapped = currencyA?.isNative || currencyB?.isNative
 
   const { pair, parsedAmounts, error } = useStableDerivedBurnInfo(currencyA ?? undefined, currencyB ?? undefined)
 
@@ -117,7 +122,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
 
   const [approval, approveCallback] = useApproveCallback(
     parsedAmounts[Field.LIQUIDITY],
-    stableSwapConfig?.stableSwapAddress,
+    needUnwrapped ? nativeHelperContract?.address : stableSwapConfig?.stableSwapAddress,
   )
 
   // wrapped onUserInput to clear signatures
@@ -136,7 +141,9 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
   const addTransaction = useTransactionAdder()
 
   async function onRemove() {
-    if (!chainId || !account) throw new Error('missing dependencies')
+    const contract = needUnwrapped ? nativeHelperContract : stableSwapContract
+
+    if (!chainId || !account || !contract) throw new Error('missing dependencies')
     const { [Field.CURRENCY_A]: currencyAmountA, [Field.CURRENCY_B]: currencyAmountB } = parsedAmounts
     if (!currencyAmountA || !currencyAmountB) {
       toastError(t('Error'), t('Missing currency amounts'))
@@ -168,10 +175,18 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
     // we have approval, use normal remove liquidity
     if (approval === ApprovalState.APPROVED) {
       methodNames = ['remove_liquidity']
-      args = [
-        liquidityAmount.quotient.toString(),
-        [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
-      ]
+      if (needUnwrapped) {
+        args = [
+          stableSwapContract.address,
+          liquidityAmount.quotient.toString(),
+          [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
+        ]
+      } else {
+        args = [
+          liquidityAmount.quotient.toString(),
+          [amountsMin[Field.CURRENCY_A].toString(), amountsMin[Field.CURRENCY_B].toString()],
+        ]
+      }
     }
     // we have a signature, use permit versions of remove liquidity
     else {
@@ -184,7 +199,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       let safeGasEstimate
       try {
         // eslint-disable-next-line no-await-in-loop
-        safeGasEstimate = calculateGasMargin(await stableSwapContract.estimateGas[methodNames[i]](...args))
+        safeGasEstimate = calculateGasMargin(await contract.estimateGas[methodNames[i]](...args))
       } catch (e) {
         console.error(`estimateGas failed`, methodNames[i], args, e)
       }
@@ -202,7 +217,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
       const { methodName, safeGasEstimate } = methodSafeGasEstimate
 
       setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
-      await stableSwapContract[methodName](...args, {
+      await contract[methodName](...args, {
         gasLimit: safeGasEstimate,
         gasPrice,
       })
@@ -332,6 +347,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
             assetB: currencyB?.symbol ?? '',
           })}
           noConfig
+          IconSlot={<V3SwapPromotionIcon wrapperStyle={{ marginRight: '10px' }} />}
         />
 
         <CardBody>
@@ -420,7 +436,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                         <StyledInternalLink
                           href={`/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
                             currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
-                          }`}
+                          }?stable=1`}
                         >
                           {t('Receive %currency%', { currency: WNATIVE[chainId]?.symbol })}
                         </StyledInternalLink>
@@ -428,7 +444,7 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
                         <StyledInternalLink
                           href={`/remove/${
                             currencyA && currencyA.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdA
-                          }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}`}
+                          }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}?stable=1`}
                         >
                           {t('Receive %currency%', { currency: native?.symbol })}
                         </StyledInternalLink>

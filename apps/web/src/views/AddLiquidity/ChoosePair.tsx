@@ -1,14 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency } from '@pancakeswap/sdk'
-import { AddIcon, Box, CardBody, CardFooter, Text, TooltipText, useTooltip, FlexGap } from '@pancakeswap/uikit'
+import { AddIcon, Box, CardBody, CardFooter, FlexGap, Text, TooltipText, useTooltip } from '@pancakeswap/uikit'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { CurrencySelect } from 'components/CurrencySelect'
 import { RowBetween } from 'components/Layout/Row'
+import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { usePair } from 'hooks/usePairs'
-import { formatAmount } from 'utils/formatInfoNumbers'
 import { useLPApr } from 'state/swap/useLPApr'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { AppHeader } from '../../components/App'
 import { CommonBasesType } from '../../components/SearchModal/types'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
@@ -46,6 +47,7 @@ export function ChoosePair({
           'Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pair.',
         )}
         backTo="/liquidity"
+        IconSlot={<V3SwapPromotionIcon wrapperStyle={{ marginRight: '10px' }} />}
       />
       <CardBody>
         <Box>

@@ -69,7 +69,7 @@ const AllArticle = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedCategories, setSelectCategoriesSelected] = useState(0)
   const [sortBy, setSortBy] = useState('createAt:desc')
-  const [languageOption, setLanguageOption] = useState('all')
+  const [languageOption, setLanguageOption] = useState('en')
   const languageItems = useLanguage()
   const sortByItems = [
     { label: t('Newest First'), value: 'createAt:desc' },

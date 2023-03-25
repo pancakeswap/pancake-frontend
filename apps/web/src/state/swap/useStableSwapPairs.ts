@@ -5,5 +5,5 @@ import { useMemo } from 'react'
 export function useStableSwapPairs() {
   const { chainId } = useActiveChainId()
 
-  return useMemo(() => stableSwapPairsByChainId[chainId], [chainId])
+  return useMemo(() => stableSwapPairsByChainId[chainId] || [], [chainId])
 }

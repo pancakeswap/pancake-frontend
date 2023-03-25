@@ -41,11 +41,7 @@ const Hero = () => {
               <StyledHeading as="h1" mb={['12px', '12px', '16px']}>
                 {t('IFO: Initial Farm Offerings')}
               </StyledHeading>
-              <StyledSubTitle bold>
-                {/* {t('Buy new tokens launching on BNB Smart Chain')} */}
-                {/* TODO: Aptos */}
-                Buy new tokens launching on Aptos
-              </StyledSubTitle>
+              <StyledSubTitle bold>{t('Buy new tokens launching on Aptos')}</StyledSubTitle>
             </Box>
           </Flex>
         </Container>

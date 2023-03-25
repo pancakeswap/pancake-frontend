@@ -2,7 +2,7 @@ import { Flex, LinkExternal, Pool, Text, TimerIcon, useTooltip } from '@pancakes
 import { memo, useMemo } from 'react'
 import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
-import { Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { useTranslation } from '@pancakeswap/localization'
 import { getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 import getTimePeriods from '@pancakeswap/utils/getTimePeriods'
@@ -110,7 +110,7 @@ const PoolStatsInfo: React.FC<React.PropsWithChildren<ExpandedFooterProps>> = ({
               stakingToken.symbol
             }`}</Text>
           </Flex>
-          {endBlock !== stakeLimitEndBlock && (
+          {poolTimeRemaining !== stakeLimitTimeRemaining && (
             <Flex justifyContent="space-between" alignItems="center">
               <Text small>{t('Max. stake limit ends in')}:</Text>
               <Flex alignItems="center">

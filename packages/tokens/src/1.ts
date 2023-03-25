@@ -30,4 +30,12 @@ export const ethereumTokens = {
     'Fuse Token',
     'https://fuse.io/',
   ),
+  caps: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x03Be5C903c727Ee2C8C4e9bc0AcC860Cca4715e2',
+    18,
+    'CAPS',
+    'Capsule Coin',
+    'https://www.ternoa.network/en',
+  ),
 }

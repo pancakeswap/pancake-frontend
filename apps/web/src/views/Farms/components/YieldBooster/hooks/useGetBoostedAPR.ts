@@ -6,22 +6,29 @@ import { getBCakeMultiplier } from 'views/Farms/components/YieldBooster/componen
 import { useUserLockedCakeStatus } from 'views/Farms/hooks/useUserLockedCakeStatus'
 import useAvgLockDuration from 'views/Pools/components/LockedPool/hooks/useAvgLockDuration'
 import { secondsToDays } from 'views/Pools/components/utils/formatSecondsToWeeks'
+import useFarmBoosterConstants from './useFarmBoosterConstants'
 
 export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTokenStakedAmount: BigNumber) => {
   useCakeVaultPublicData()
   useCakeVaultUserData()
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
   const { isLoading, lockedAmount, totalLockedAmount, lockedStart, lockedEnd } = useUserLockedCakeStatus()
+  const { constants, isLoading: isFarmConstantsLoading } = useFarmBoosterConstants()
   const bCakeMultiplier = useMemo(() => {
-    const result = getBCakeMultiplier(
-      userBalanceInFarm, // userBalanceInFarm,
-      lockedAmount, // userLockAmount
-      secondsToDays(_toNumber(lockedEnd) - _toNumber(lockedStart)), // userLockDuration
-      totalLockedAmount, // totalLockAmount
-      lpTokenStakedAmount, // lpBalanceOfFarm
-      avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration
-    )
-    return result.toString() === 'NaN' || isLoading ? '1.000' : result.toFixed(3)
+    const result =
+      !isLoading && !isFarmConstantsLoading
+        ? getBCakeMultiplier(
+            userBalanceInFarm, // userBalanceInFarm,
+            lockedAmount, // userLockAmount
+            secondsToDays(_toNumber(lockedEnd) - _toNumber(lockedStart)), // userLockDuration
+            totalLockedAmount, // totalLockAmount
+            lpTokenStakedAmount, // lpBalanceOfFarm
+            avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration
+            constants.cA,
+            constants.cB,
+          )
+        : null
+    return !result || result.toString() === 'NaN' ? '1.000' : result.toFixed(3)
   }, [
     userBalanceInFarm,
     lpTokenStakedAmount,
@@ -31,6 +38,8 @@ export const useGetBoostedMultiplier = (userBalanceInFarm: BigNumber, lpTokenSta
     lockedEnd,
     lockedStart,
     isLoading,
+    isFarmConstantsLoading,
+    constants,
   ])
   return _toNumber(bCakeMultiplier)
 }
@@ -45,16 +54,22 @@ export const useGetCalculatorMultiplier = (
   useCakeVaultUserData()
   const { avgLockDurationsInSeconds } = useAvgLockDuration()
   const { isLoading, totalLockedAmount } = useUserLockedCakeStatus()
+  const { constants, isLoading: isFarmConstantsLoading } = useFarmBoosterConstants()
   const bCakeMultiplier = useMemo(() => {
-    const result = getBCakeMultiplier(
-      userBalanceInFarm, // userBalanceInFarm,
-      lockedAmount, // userLockAmount
-      secondsToDays(userLockDuration), // userLockDuration
-      totalLockedAmount, // totalLockAmount
-      lpTokenStakedAmount, // lpBalanceOfFarm
-      avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration
-    )
-    return result.toString() === 'NaN' || isLoading ? '1.000' : result.toFixed(3)
+    const result =
+      !isLoading && !isFarmConstantsLoading
+        ? getBCakeMultiplier(
+            userBalanceInFarm, // userBalanceInFarm,
+            lockedAmount, // userLockAmount
+            secondsToDays(userLockDuration), // userLockDuration
+            totalLockedAmount, // totalLockAmount
+            lpTokenStakedAmount, // lpBalanceOfFarm
+            avgLockDurationsInSeconds ? secondsToDays(avgLockDurationsInSeconds) : 280, // AverageLockDuration,
+            constants.cA,
+            constants.cB,
+          )
+        : null
+    return !result || result.toString() === 'NaN' ? '1.000' : result.toFixed(3)
   }, [
     userBalanceInFarm,
     lpTokenStakedAmount,
@@ -62,7 +77,9 @@ export const useGetCalculatorMultiplier = (
     avgLockDurationsInSeconds,
     lockedAmount,
     isLoading,
+    isFarmConstantsLoading,
     userLockDuration,
+    constants,
   ])
   return _toNumber(bCakeMultiplier)
 }

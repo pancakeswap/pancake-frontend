@@ -44,6 +44,7 @@ import {
   getCrossFarmingSenderAddress,
   getCrossFarmingReceiverAddress,
   getMMLinkedPoolAddress,
+  getStableSwapNativeHelperAddress,
 } from 'utils/addressHelpers'
 
 // ABI
@@ -99,6 +100,9 @@ import crossFarmingSenderAbi from 'config/abi/crossFarmingSender.json'
 import crossFarmingReceiverAbi from 'config/abi/crossFarmingReceiver.json'
 import crossFarmingProxyAbi from 'config/abi/crossFarmingProxy.json'
 import mmLinkedPoolAbi from 'config/abi/mmLinkedPool.json'
+import stableSwapNativeHelperAbi from 'config/abi/stableSwapNativeHelper.json'
+import sid from 'config/abi/SID.json'
+import sidResolver from 'config/abi/SIDResolver.json'
 
 // Types
 import type {
@@ -150,6 +154,9 @@ import type {
   CrossFarmingReceiver,
   CrossFarmingProxy,
   MmLinkedPool,
+  StableSwapNativeHelper,
+  SID,
+  SIDResolver,
 } from 'config/abi/types'
 import { ChainId } from '@pancakeswap/sdk'
 
@@ -377,6 +384,14 @@ export const getNonBscVaultContract = (signer?: Signer | Provider, chainId?: num
   return getContract({ abi: nonBscVault, address: getNonBscVaultAddress(chainId), chainId, signer }) as NonBscVault
 }
 
+export const getSidContract = (address: string, signer?: Signer | Provider) => {
+  return getContract({ abi: sid, address, signer }) as SID
+}
+
+export const getSidResolverContract = (address: string, signer?: Signer | Provider) => {
+  return getContract({ abi: sidResolver, address, signer }) as SIDResolver
+}
+
 export const getCrossFarmingSenderContract = (signer?: Signer | Provider, chainId?: number) => {
   return getContract({
     abi: crossFarmingSenderAbi,
@@ -401,4 +416,13 @@ export const getCrossFarmingProxyContract = (
   chainId?: number,
 ) => {
   return getContract({ abi: crossFarmingProxyAbi, address: proxyContractAddress, chainId, signer }) as CrossFarmingProxy
+}
+
+export const getStableSwapNativeHelperContract = (signer?: Signer | Provider, chainId?: number) => {
+  return getContract({
+    abi: stableSwapNativeHelperAbi,
+    address: getStableSwapNativeHelperAddress(chainId),
+    chainId,
+    signer,
+  }) as StableSwapNativeHelper
 }
