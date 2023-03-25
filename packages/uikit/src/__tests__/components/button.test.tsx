@@ -42,6 +42,11 @@ it("renders correctly", () => {
       color: var(--colors-invertedContrast);
     }
 
+    .c0:focus-visible {
+      outline: none;
+      box-shadow: var(--shadows-focus);
+    }
+
     .c0:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);

@@ -109,6 +109,11 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
+.c31:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
+}
+
 .c31:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
@@ -163,6 +168,11 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
   width: sm;
   height: sm;
+}
+
+.c35:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
 }
 
 .c35:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -1939,6 +1949,11 @@ exports[`renders correctly 1`] = `
   height: sm;
 }
 
+.c49:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
+}
+
 .c49:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
@@ -1993,6 +2008,11 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
+.c45:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
+}
+
 .c45:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
   opacity: 0.85;
   -webkit-transform: translateY(1px);
@@ -2044,6 +2064,11 @@ exports[`renders correctly 1`] = `
   padding: 0 16px;
   background-color: var(--colors-primary);
   color: var(--colors-invertedContrast);
+}
+
+.c56:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
 }
 
 .c56:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {

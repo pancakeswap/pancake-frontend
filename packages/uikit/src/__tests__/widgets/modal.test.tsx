@@ -65,6 +65,11 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
+    .c7:focus-visible {
+      outline: none;
+      box-shadow: var(--shadows-focus);
+    }
+
     .c7:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
