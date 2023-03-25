@@ -18,7 +18,6 @@ import styled from 'styled-components'
 import { useIsUserAddedToken, useIsTokenActive } from 'hooks/Tokens'
 import { useTranslation } from '@pancakeswap/localization'
 import { APTOS_COIN } from '@pancakeswap/awgmi'
-import { BAD_SRCS } from '../Logo/constants'
 
 const TokenSection = styled.div<{ dim?: boolean }>`
   padding: 4px 20px;
@@ -106,7 +105,7 @@ export default function ImportRow({
             <Text fontSize={isMobile ? '10px' : '14px'} mr="4px" color="textSubtle">
               {t('via')} {list.name}
             </Text>
-            <ListLogo badSrcs={BAD_SRCS} logoURI={list.logoURI} size="12px" />
+            <ListLogo logoURI={list.logoURI} size="12px" />
           </RowFixed>
         )}
       </AutoColumn>

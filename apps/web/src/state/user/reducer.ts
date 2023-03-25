@@ -39,7 +39,7 @@ import {
 } from './actions'
 import { GAS_PRICE_GWEI } from '../types'
 
-const currentTimestamp = () => new Date().getTime()
+const currentTimestamp = () => Date.now()
 
 export interface UserState {
   // the timestamp of the last updateVersion action

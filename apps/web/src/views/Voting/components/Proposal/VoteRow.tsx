@@ -1,11 +1,12 @@
-import { Flex, LinkExternal, Text, Tag, CheckmarkCircleIcon } from '@pancakeswap/uikit'
+import { Flex, LinkExternal, Text, Farm as FarmUI } from '@pancakeswap/uikit'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { getBlockExploreLink } from 'utils'
-import { useTranslation } from '@pancakeswap/localization'
 import { Vote } from 'state/types'
 import { IPFS_GATEWAY } from '../../config'
 import TextEllipsis from '../TextEllipsis'
 import Row, { AddressColumn, ChoiceColumn, VotingPowerColumn } from './Row'
+
+const { VotedTag } = FarmUI.Tags
 
 interface VoteRowProps {
   vote: Vote
@@ -13,7 +14,6 @@ interface VoteRowProps {
 }
 
 const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, isVoter }) => {
-  const { t } = useTranslation()
   const hasVotingPower = !!vote.metadata?.votingPower
 
   const votingPower = hasVotingPower
@@ -30,11 +30,7 @@ const VoteRow: React.FC<React.PropsWithChildren<VoteRowProps>> = ({ vote, isVote
           <LinkExternal isBscScan href={getBlockExploreLink(vote.voter, 'address')}>
             {truncateHash(vote.voter)}
           </LinkExternal>
-          {isVoter && (
-            <Tag variant="success" outline ml="8px">
-              <CheckmarkCircleIcon mr="4px" /> {t('Voted')}
-            </Tag>
-          )}
+          {isVoter && <VotedTag mr="4px" />}
         </Flex>
       </AddressColumn>
       <ChoiceColumn>

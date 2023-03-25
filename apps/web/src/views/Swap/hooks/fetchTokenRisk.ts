@@ -11,6 +11,7 @@ export const zRiskTokenData = z.object({
 })
 
 export const TOKEN_RISK = {
+  UNKNOWN: -1,
   VERY_LOW: 0,
   LOW: 1,
   MEDIUM: 2,

@@ -12,6 +12,7 @@ import {
   SubMenu,
   SubMenuItem,
   useModal,
+  BscScanIcon,
 } from '@pancakeswap/uikit'
 import { PredictionUser } from 'state/types'
 import { useProfileForAddress } from 'state/profile/hooks'
@@ -21,6 +22,7 @@ import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useTranslation } from '@pancakeswap/localization'
 import { useStatModalProps } from 'state/predictions/hooks'
 import { useConfig } from 'views/Predictions/context/ConfigProvider'
+import { useSidNameForAddress } from 'hooks/useSid'
 import WalletStatsModal from '../WalletStatsModal'
 import { NetWinningsRow, Row } from './styles'
 
@@ -52,7 +54,8 @@ const getRankingColor = (rank: number) => {
 const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank, user }) => {
   const { t } = useTranslation()
   const rankColor = getRankingColor(rank)
-  const { profile } = useProfileForAddress(user.id)
+  const { profile, isLoading: isProfileLoading } = useProfileForAddress(user.id)
+  const { sidName } = useSidNameForAddress(user.id, !profile && !isProfileLoading)
   const { result, address, leaderboardLoadingState } = useStatModalProps(user.id)
   const { token, api } = useConfig()
 
@@ -84,7 +87,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
                   <RotatedLaurelRightIcon color={rankColor} width="32px" />
                 </Flex>
                 <Text color="primary" fontWeight="bold" textAlign="center">
-                  {profile?.username || truncateHash(user.id)}
+                  {profile?.username || sidName || truncateHash(user.id)}
                 </Text>
               </>
             }
@@ -93,6 +96,7 @@ const RankingCard: React.FC<React.PropsWithChildren<RankingCardProps>> = ({ rank
             <SubMenuItem onClick={onPresentWalletStatsModal}>{t('View Stats')}</SubMenuItem>
             <SubMenuItem as={Link} href={getBlockExploreLink(user.id, 'address')} bold={false} color="text" external>
               {t('View on BscScan')}
+              <BscScanIcon ml="4px" width="20px" color="textSubtle" />
             </SubMenuItem>
           </SubMenu>
         </Flex>

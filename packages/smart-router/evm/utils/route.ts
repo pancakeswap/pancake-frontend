@@ -10,12 +10,12 @@ export function getMidPrice<TIn extends Currency, TOut extends Currency>(
   const prices: Price<Currency, Currency>[] = []
   for (const [i, pair] of route.pairs.entries()) {
     if (isStableSwapPair(pair)) {
-      prices.push(route.path[i].equals(pair.price.baseCurrency) ? pair.price : pair.price.invert())
+      prices.push(route.path[i].wrapped.equals(pair.price.baseCurrency.wrapped) ? pair.price : pair.price.invert())
       // eslint-disable-next-line no-continue
       continue
     }
     prices.push(
-      route.path[i].equals(pair.token0)
+      route.path[i].wrapped.equals(pair.token0.wrapped)
         ? new Price(pair.reserve0.currency, pair.reserve1.currency, pair.reserve0.quotient, pair.reserve1.quotient)
         : new Price(pair.reserve1.currency, pair.reserve0.currency, pair.reserve1.quotient, pair.reserve0.quotient),
     )

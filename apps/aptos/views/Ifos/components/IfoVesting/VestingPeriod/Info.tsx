@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import { useGetPublicIfoData } from 'views/Ifos/hooks/v3/useGetPublicIfoData'
 import type { VestingData } from 'views/Ifos/hooks/vesting/useFetchUserWalletIfoData'
 import { format } from 'date-fns'
+import useLedgerTimestamp from 'hooks/useLedgerTimestamp'
 import Claim from './Claim'
 
 const WhiteCard = styled.div`
@@ -31,6 +32,7 @@ interface InfoProps {
 
 const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetchUserVestingData }) => {
   const { t } = useTranslation()
+  const getNow = useLedgerTimestamp()
   const { token } = data.ifo
   const { vestingStartTime } = data.userVestingData
   const {
@@ -46,8 +48,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
 
   const publicIfoData = useGetPublicIfoData(data.ifo)
   const { cliff } = publicIfoData[poolId]?.vestingInformation
-  const currentTimeStamp = new Date().getTime()
-  const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
+  const timeCliff = vestingStartTime === 0 ? getNow() : (vestingStartTime + cliff) * 1000
   const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
 
   const vestingPercentage = useMemo(

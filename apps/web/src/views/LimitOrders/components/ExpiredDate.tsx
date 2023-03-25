@@ -10,7 +10,7 @@ const ExpiredDate = () => {
     { placement: 'bottom' },
   )
 
-  const expiryDate = new Date(new Date().getTime() + constants.MAX_LIFETIME_IN_SECONDS * 1000).toLocaleString([], {
+  const expiryDate = new Date(Date.now() + constants.MAX_LIFETIME_IN_SECONDS * 1000).toLocaleString([], {
     year: 'numeric',
     month: '2-digit',
     day: 'numeric',

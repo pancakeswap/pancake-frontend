@@ -136,3 +136,7 @@ export const getCrossFarmingReceiverAddress = (chainId?: number) => {
 export const getMMLinkedPoolAddress = (chainId?: number) => {
   return getAddress(addresses.mmLinkedPool, chainId)
 }
+
+export const getStableSwapNativeHelperAddress = (chainId?: number) => {
+  return getAddress(addresses.stableSwapNativeHelper, chainId)
+}

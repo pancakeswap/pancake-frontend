@@ -1,26 +1,26 @@
-import { useCallback, useEffect, useState, useContext, useMemo } from 'react'
-import styled from 'styled-components'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import {
-  Text,
   ArrowDownIcon,
-  Box,
-  IconButton,
   ArrowUpDownIcon,
-  Skeleton,
+  AutoColumn,
+  Box,
   Flex,
+  IconButton,
   Message,
   MessageText,
-  Swap as SwapUI,
   PencilIcon,
+  Skeleton,
+  Swap as SwapUI,
+  Text,
   useModal,
-  AutoColumn,
 } from '@pancakeswap/uikit'
 import InfoTooltip from '@pancakeswap/uikit/src/components/Timeline/InfoTooltip'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import styled from 'styled-components'
 
 import { useTranslation } from '@pancakeswap/localization'
-import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import { AutoRow, RowBetween } from 'components/Layout/Row'
@@ -35,16 +35,17 @@ import { useExpertModeManager, useUserSlippageTolerance } from 'state/user/hooks
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { currencyId } from 'utils/currencyId'
 
+import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
 import { useAccount } from 'wagmi'
-import CurrencyInputHeader from '../../components/CurrencyInputHeader'
-import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
-import { Wrapper } from '../../components/styleds'
-import StableSwapCommitButton from './StableSwapCommitButton'
-import { useDerivedStableSwapInfo } from '../hooks/useDerivedStableSwapInfo'
-import useApproveCallbackFromStableTrade from '../hooks/useApproveCallbackFromStableTrade'
-import { StableConfigContext, useStableFarms } from '../hooks/useStableConfig'
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from '../../../../components/Menu/GlobalSettings/types'
+import CurrencyInputHeader from '../../components/CurrencyInputHeader'
+import { Wrapper } from '../../components/styleds'
+import useRefreshBlockNumberID from '../../hooks/useRefreshBlockNumber'
+import useApproveCallbackFromStableTrade from '../hooks/useApproveCallbackFromStableTrade'
+import { useDerivedStableSwapInfo } from '../hooks/useDerivedStableSwapInfo'
+import { StableConfigContext } from '../hooks/useStableConfig'
+import StableSwapCommitButton from './StableSwapCommitButton'
 
 const Label = styled(Text)`
   font-size: 12px;
@@ -74,18 +75,18 @@ export default function StableSwapForm() {
   const { t } = useTranslation()
   const { refreshBlockNumber, isLoading } = useRefreshBlockNumberID()
   const { address: account } = useAccount()
-  const stableFarms = useStableFarms()
+  const stablePairs = useStableSwapPairs()
   const stableTokens = useMemo(() => {
-    return stableFarms.reduce((tokens, farm) => {
-      if (!tokens.find((token) => farm.token0.address === token.address)) {
+    return stablePairs.reduce((tokens, farm) => {
+      if (!tokens.find((token) => farm.token0.wrapped.address === token.address)) {
         tokens.push(farm.token0)
       }
-      if (!tokens.find((token) => farm.token1.address === token.address)) {
+      if (!tokens.find((token) => farm.token1.wrapped.address === token.address)) {
         tokens.push(farm.token1)
       }
       return tokens
     }, [])
-  }, [stableFarms])
+  }, [stablePairs])
 
   // for expert mode
   const [isExpertMode] = useExpertModeManager()
