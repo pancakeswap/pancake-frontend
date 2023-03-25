@@ -51,7 +51,6 @@ export const useTokenPriceChartData = (
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
 ): PriceChartEntry[] | undefined => {
-  console.log(address, 'address')
   const { chainId } = useActiveChainId()
   const utcCurrentTime = dayjs()
   const startTimestamp = utcCurrentTime

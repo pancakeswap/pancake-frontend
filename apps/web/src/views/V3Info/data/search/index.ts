@@ -157,7 +157,7 @@ export async function fetchSearchResults(
     ]
 
     const tokensData = await fetchedTokenDatas(client, tokenAddress, [])
-    const poolsData = await fetchPoolDatas(client, tokenAddress, [])
+    const poolsData = await fetchPoolDatas(client, poolAddress, [])
 
     const filteredSortedTokens = Object.values(tokensData.data)
       .filter(notEmpty)
