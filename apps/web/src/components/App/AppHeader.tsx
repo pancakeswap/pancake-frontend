@@ -71,7 +71,7 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
           <Flex mb="8px" alignItems="center" flexWrap="wrap" justifyContent="space-between">
             <Flex>
               {_isString(title) ? <Heading as="h2">{title}</Heading> : title}
-              {helper && <QuestionHelper text={helper} ml="4px" placement="top-start" />}
+              {helper && <QuestionHelper text={helper} ml="4px" placement="top" />}
             </Flex>
             {!noConfig && (
               <Flex alignItems="flex-end">
