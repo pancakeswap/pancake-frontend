@@ -205,7 +205,7 @@ export function RoiCalculator({
     editCakeApr: props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined,
   });
 
-  const totalRate = parseFloat(rate.toSignificant(6)) + (editCakeApy ?? 0) / 100;
+  const totalRate = parseFloat(rate.toSignificant(6)) + (editCakeApy ?? 0);
   const lpReward = parseFloat(fee.toSignificant(6));
   const farmReward = props.isFarm && editCakeApy ? (editCakeApy * +usdValue) / 100 : 0;
   const totalRoi = lpReward + farmReward;
@@ -345,7 +345,7 @@ export function RoiCalculator({
         lpApy={apy}
         compoundIndex={compoundIndex}
         compoundOn={compoundOn}
-        farmApr={props.isFarm ? (editedCakeApr ? editedCakeApr.toFixed(2) : derivedCakeApr?.toFixed(2)) : undefined}
+        farmApr={props.isFarm ? (editCakeApy ? editCakeApy.toFixed(2) : cakeApy?.toFixed(2)) : undefined}
         farmReward={farmReward}
         isFarm={props.isFarm}
       />

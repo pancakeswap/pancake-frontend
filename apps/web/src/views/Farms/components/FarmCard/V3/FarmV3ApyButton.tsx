@@ -101,7 +101,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
       new BigNumber(farm.poolWeight)
         .times(farmV3.cakePerSecond)
         .times(365 * 60 * 60 * 24)
-        .times(cakePrice)
+        .times(cakePrice.toFixed(3))
         .div(
           new BigNumber(farm.lmPoolLiquidity).plus(
             isPositionStaked ? BIG_ZERO : existingPosition_?.liquidity.toString() ?? BIG_ZERO,
@@ -197,7 +197,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           priceUpper={priceUpper}
           priceLower={priceLower}
           isFarm
-          cakePrice={cakePrice.toString()}
+          cakePrice={cakePrice.toFixed(3)}
           cakeAprFactor={cakeAprFactor}
         />
       )}
