@@ -7,7 +7,6 @@ import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
 
 import { v3Clients } from 'utils/graphql'
-import { metric } from 'utils/metric'
 
 import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
@@ -91,7 +90,7 @@ export function useV3CandidatePoolsWithoutTicks(
   }, [currencyA, currencyB])
 
   const pairs = useMemo(() => {
-    console.log('[METRIC] Getting pairs from', currencyA?.symbol, currencyB?.symbol)
+    SmartRouter.metric('Getting pairs from', currencyA?.symbol, currencyB?.symbol)
     return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
   }, [currencyA, currencyB])
   const { data: poolsFromSubgraphState, isLoading, isValidating } = useV3PoolsFromSubgraph(pairs, { ...options, key })
@@ -304,7 +303,8 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
   const poolsWithTicks = useSWR(
     key && pools ? ['v3_pool_ticks', key] : null,
     async () => {
-      const label = metric.time(`[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`)
+      const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
+      SmartRouter.metric(label)
       const poolTicks = await Promise.all(
         pools.map(async ({ token0, token1, fee }) => {
           return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
@@ -315,8 +315,7 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
           })
         }),
       )
-      metric.timeLog(label, poolTicks)
-      metric.timeEnd(label)
+      SmartRouter.metric(label, poolTicks)
       return {
         pools: pools.map((pool, i) => ({
           ...pool,
@@ -364,15 +363,15 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
         }
       `
       if (!client) {
-        console.log('[METRIC] Cannot get v3 on chain', pairs[0][0].chainId, 'for now')
+        SmartRouter.metric('Cannot get v3 on chain', pairs[0][0].chainId, 'for now')
         return {
           pools: [],
           key,
           blockNumber,
         }
       }
-      const label = metric.time(`[V3_POOLS_SUBGRAPH] ${key}`)
-      metric.timeLog(label, pairs)
+      const label = `[V3_POOLS_SUBGRAPH] ${key}`
+      SmartRouter.metric(label, pairs)
       const metaMap = new Map<string, V3PoolMeta>()
       for (const pair of pairs) {
         const v3Metas = getV3PoolMetas(pair)
@@ -402,8 +401,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
           tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
         }
       })
-      metric.timeLog(label, pools)
-      metric.timeEnd(label)
+      SmartRouter.metric(label, pools)
       return {
         pools,
         key,

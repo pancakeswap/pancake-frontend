@@ -17,5 +17,6 @@ export {
   isStablePool,
   getMidPrice,
   involvesCurrency,
+  metric,
 } from './utils'
 export { getPairCombinations } from './functions'

@@ -148,7 +148,7 @@ function V2PairMigrate({
       existingPosition,
       formState,
     )
-  const { onLeftRangeInput, onRightRangeInput } = useV3MintActionHandlers(noLiquidity)
+  const { onLeftRangeInput, onRightRangeInput, onBothRangeInput } = useV3MintActionHandlers(noLiquidity)
 
   // get spot prices + price difference
   const v2SpotPrice = useMemo(
@@ -602,6 +602,7 @@ function V2PairMigrate({
             priceUpper={priceUpper}
             onLeftRangeInput={onLeftRangeInput}
             onRightRangeInput={onRightRangeInput}
+            onBothRangeInput={onBothRangeInput}
             interactive
           />
           <RangeSelector

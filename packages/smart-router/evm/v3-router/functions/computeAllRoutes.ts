@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
 import { Currency } from '@pancakeswap/sdk'
+import { metric } from '../utils/metric'
 
 import { BaseRoute, Pool } from '../types'
 import { buildBaseRoute, getOutputCurrency, involvesCurrency } from '../utils'
 
 export function computeAllRoutes(input: Currency, output: Currency, candidatePools: Pool[], maxHops = 3): BaseRoute[] {
-  const start = Date.now()
-  console.log('[METRIC] Computing routes from', candidatePools.length, 'pools')
+  metric('Computing routes from', candidatePools.length, 'pools')
   const poolsUsed = Array<boolean>(candidatePools.length).fill(false)
   const routes: BaseRoute[] = []
 
@@ -51,6 +51,6 @@ export function computeAllRoutes(input: Currency, output: Currency, candidatePoo
 
   computeRoutes(input, output, [])
 
-  console.log('[METRIC] Route computing takes', Date.now() - start, 'got', routes.length, 'routes')
+  metric('Computed routes from', candidatePools.length, 'pools', routes.length, 'routes')
   return routes
 }

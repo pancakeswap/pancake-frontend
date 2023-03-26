@@ -10,7 +10,7 @@ const isHotTokensDisplayMobile = atom(false)
 
 export const useSwapHotTokenDisplay = () => {
   const { isMobile } = useMatchBreakpoints()
-  const isChartSupported = useContext(SwapFeaturesContext)
+  const { isChartSupported } = useContext(SwapFeaturesContext)
   return useAtom(
     isMobile ? isHotTokensDisplayMobile : isChartSupported ? isSwapHotTokenDisplay : isSwapHotTokenDisplayETH,
   )

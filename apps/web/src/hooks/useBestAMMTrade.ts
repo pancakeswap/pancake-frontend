@@ -7,7 +7,6 @@ import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
-import { metric } from 'utils/metric'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 
@@ -153,12 +152,11 @@ function bestTradeHookFactory({
         : null,
       async () => {
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
-        const label = metric.time(
-          `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${amount.currency.symbol} -> ${
-            currency.symbol
-          }, tradeType ${tradeType}`,
-        )
-        metric.timeLog(label, candidatePools)
+        const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
+          amount.currency.symbol
+        } -> ${currency.symbol}, tradeType ${tradeType}`
+        SmartRouter.metric(label)
+        SmartRouter.metric(label, candidatePools)
         const res = await SmartRouter.getBestTrade(deferAmount, currency, tradeType, {
           gasPriceWei: gasPrice
             ? JSBI.BigInt(gasPrice)
@@ -172,7 +170,7 @@ function bestTradeHookFactory({
           quoterOptimization,
         })
         if (res) {
-          metric.timeLog(
+          SmartRouter.metric(
             label,
             res.inputAmount.toExact(),
             res.inputAmount.currency.symbol,
@@ -182,8 +180,7 @@ function bestTradeHookFactory({
             res.routes,
           )
         }
-        metric.timeLog(label, res)
-        metric.timeEnd(label)
+        SmartRouter.metric(label, res)
         if (res?.blockNumber) {
           lastBlock.current = res?.blockNumber
         }

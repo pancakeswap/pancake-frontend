@@ -144,6 +144,9 @@ const fetchDerivedPriceData = async (
   const startTimestamp = getUnixTime(startOfHour(sub(endTimestamp * 1000, { days: getSkipDaysToStart(timeWindow) })))
   const timestamps = []
   let time = startTimestamp
+  if (!SWAP_INFO_BY_CHAIN[chainId][protocol0] || !SWAP_INFO_BY_CHAIN[chainId][protocol1]) {
+    return null
+  }
   while (time <= endTimestamp) {
     timestamps.push(time)
     time += interval
@@ -157,8 +160,8 @@ const fetchDerivedPriceData = async (
     }
     blocks.pop() // the bsc graph is 32 block behind so pop the last
     const [token0DerivedUSD, token1DerivedUSD] = await Promise.all([
-      getTokenDerivedUSDCPrices(token0Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol0] || INFO_CLIENT),
-      getTokenDerivedUSDCPrices(token1Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol1] || INFO_CLIENT),
+      getTokenDerivedUSDCPrices(token0Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol0]),
+      getTokenDerivedUSDCPrices(token1Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol1]),
     ])
     return { token0DerivedUSD, token1DerivedUSD }
   } catch (error) {
