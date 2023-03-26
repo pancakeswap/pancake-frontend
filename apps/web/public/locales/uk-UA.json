@@ -2169,5 +2169,6 @@
   "MMs are temporarily unable to facilitate trades. Please try again later": "Маркетмейкери тимчасово не можуть сприяти угодам. Повторіть спробу пізніше.",
   "is reporting a risk level of": "повідомляє про рівень ризику",
   "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "Однак цьому токену було призначено мітку «Невідомий ризик», тому що його немає в жодному вбудованому списку токенів.",
-  "Please proceed with caution and always do your own research.": "Дійте обережно та користуйтеся довідкою."
+  "Please proceed with caution and always do your own research.": "Дійте обережно та користуйтеся довідкою.",
+  "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap": "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap"
 }
