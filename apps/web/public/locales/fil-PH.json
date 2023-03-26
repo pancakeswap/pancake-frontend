@@ -2169,5 +2169,6 @@
   "MMs are temporarily unable to facilitate trades. Please try again later": "Pansamantalang hindi makapagsagawa ng mga pag-trade ang mga MM. Pakisubukan ulit sa ibang pagkakataon",
   "is reporting a risk level of": "ay nag-uulat ng antas ng panganib ng",
   "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "Gayunpaman, ang token na ito ay nabigyan ng label na Hindi Alam ang Panganib dahil hindi ito nakalista sa alinman sa mga listahan ng built in na token.",
-  "Please proceed with caution and always do your own research.": "Magpatuloy nang may pag-iingat at palaging gumawa ng sarili mong pananaliksik."
+  "Please proceed with caution and always do your own research.": "Magpatuloy nang may pag-iingat at palaging gumawa ng sarili mong pananaliksik.",
+  "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap": "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap"
 }
