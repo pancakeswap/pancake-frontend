@@ -1,6 +1,5 @@
 import namehase from '@ensdomains/eth-ens-namehash'
 import { keccak_256 as sha3 } from 'js-sha3'
-import { Buffer } from 'buffer'
 
 export function namehash(inputName) {
   let node = ''
