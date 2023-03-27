@@ -2,6 +2,7 @@ import { Farm as FarmUI, useModalV2 } from '@pancakeswap/uikit'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { useMemo } from 'react'
 import styled from 'styled-components'
+import { unwrappedToken } from 'utils/wrappedCurrency'
 import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { V3Farm } from 'views/Farms/FarmsV3'
 import FarmInfo from './FarmInfo'
@@ -33,8 +34,8 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ 
     <Action>
       <AddLiquidityV3Modal
         {...addLiquidityModal}
-        currency0={farm.token}
-        currency1={farm.quoteToken}
+        currency0={unwrappedToken(farm.token)}
+        currency1={unwrappedToken(farm.quoteToken)}
         feeAmount={farm.feeAmount}
       />
       {account && !hasNoPosition ? (

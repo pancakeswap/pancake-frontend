@@ -220,7 +220,7 @@ export const getCakeApr = (poolWeight: string, activeTvlUSD: BN, cakePriceUSD: s
     .times(100)
 
   if (!cakeRewardPerYearForPool.isZero()) {
-    cakeApr = cakeRewardPerYearForPool.toFixed(2)
+    cakeApr = cakeRewardPerYearForPool.toFixed(6)
   }
 
   return cakeApr
