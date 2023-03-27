@@ -6,6 +6,7 @@ import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConn
 import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
+import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
@@ -57,8 +58,7 @@ const YourTradingReward = () => {
   return (
     <StyledBackground showBackgroundColor={showBackgroundColor}>
       <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
-      <Container showBackgroundColor={showBackgroundColor}>
-        {/* no connect, show eligible pairs, no profile, no cake locked, no enough cake locked, no enough locked time */}
+      {/* <Container showBackgroundColor={showBackgroundColor}>
         <Flex
           width="100%"
           borderRadius={32}
@@ -67,12 +67,14 @@ const YourTradingReward = () => {
           alignItems={['center']}
           style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
         >
-          {/* <NoConnected /> */}
-          {/* <ViewEligiblePairs /> */}
-          {/* <NoProfile /> */}
-          {/* <NoCakeLockedOrExtendLock /> */}
+          <NoConnected />
+          <ViewEligiblePairs />
+          <NoProfile />
+          <NoCakeLockedOrExtendLock />
         </Flex>
-      </Container>
+      </Container> */}
+
+      <ExpiringUnclaim />
     </StyledBackground>
   )
 }
