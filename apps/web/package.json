@@ -59,8 +59,6 @@
     "@pancakeswap/wagmi": "*",
     "@reduxjs/toolkit": "^1.9.1",
     "@sentry/nextjs": "^7.9.0",
-    "@ensdomains/eth-ens-namehash": "^2.0.15",
-    "js-sha3": "^0.8.0",
     "@snapshot-labs/snapshot.js": "^0.4.40",
     "@vanilla-extract/next-plugin": "^2.1.1",
     "ajv": "^6.12.3",
