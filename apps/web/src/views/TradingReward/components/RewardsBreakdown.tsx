@@ -9,7 +9,7 @@ const RewardsBreakdown = () => {
   const [maxPage, setMaxPages] = useState(1)
 
   return (
-    <Flex flexDirection="column" width={['1140px']} padding="0 16px" margin="56px auto">
+    <Flex flexDirection="column" width={['1140px']} padding="0 16px" margin="108px auto 56px auto">
       <Text textAlign="center" color="secondary" mb="16px" bold fontSize={['40px']}>
         {t('Rewards Breakdown')}
       </Text>

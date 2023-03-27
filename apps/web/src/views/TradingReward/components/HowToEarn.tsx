@@ -50,7 +50,9 @@ const HowToEarn = () => {
               {stepList.map((step, index) => (
                 <Flex key={step.imgUrl} width={['25%']} flexDirection="column" padding={['0 22px']}>
                   <Text fontSize="12px" mb="32px" bold textAlign="right">{`Step${index + 1}`}</Text>
-                  <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
+                  <Box margin="auto">
+                    <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
+                  </Box>
                   <Text bold fontSize={['24px']} color="primary" mb={['16px']}>
                     {step.title}
                   </Text>
