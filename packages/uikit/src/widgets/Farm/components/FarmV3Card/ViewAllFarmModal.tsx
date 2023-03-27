@@ -11,7 +11,7 @@ import { Button } from "../../../../components/Button";
 import Flex from "../../../../components/Box/Flex";
 import Tags from "../Tags";
 import { Tag } from "../../../../components/Tag";
-import { AutoRow, RowBetween } from "../../../../components";
+import { AutoColumn, AutoRow, RowBetween } from "../../../../components";
 
 const { BoostedTag, FarmAuctionTag, V3FeeTag } = Tags;
 
@@ -31,6 +31,8 @@ interface ViewAllFarmModalProps extends ModalProps {
   isCommunityFarm?: boolean;
   multiplier: string;
   children: ReactNode;
+  onHarvestAll?: () => void;
+  harvesting?: boolean;
 }
 
 const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllFarmModalProps>> = ({
@@ -44,6 +46,8 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
   multiplier,
   children,
   onDismiss,
+  onHarvestAll,
+  harvesting,
 }) => {
   const { t } = useTranslation();
 
@@ -72,13 +76,20 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
         <ModalBody mt="16px">
           <ScrollableContainer px="24px">{children}</ScrollableContainer>
         </ModalBody>
-        <AtomBox px="24px">
+        <AutoColumn px="24px" gap="16px">
           <ModalActions>
             <Button width="100%" variant="secondary" onClick={onAddLiquidity}>
               {t("Add Liquidity")}
             </Button>
           </ModalActions>
-        </AtomBox>
+          {onHarvestAll && (
+            <ModalActions>
+              <Button width="100%" variant="primary" disabled={harvesting} onClick={onHarvestAll}>
+                {t("Harvest All")}
+              </Button>
+            </ModalActions>
+          )}
+        </AutoColumn>
       </AtomBox>
     </ModalContainer>
   );

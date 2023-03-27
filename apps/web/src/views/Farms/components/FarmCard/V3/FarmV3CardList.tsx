@@ -8,6 +8,7 @@ import { V3Farm } from 'views/Farms/FarmsV3'
 
 interface FarmV3CardListProps {
   farm: V3Farm
+  harvesting?: boolean
   direction?: 'row' | 'column'
   onDismiss?: () => void
 }
@@ -16,6 +17,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
   farm,
   onDismiss,
   direction,
+  harvesting,
 }) => {
   const { t } = useTranslation()
   const { stakedPositions, unstakedPositions, lpSymbol, token, quoteToken, pendingCakeByTokenIds } = farm
@@ -31,6 +33,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
           <Flex flexWrap="wrap" width="100%">
             {stakedPositions.map((position) => (
               <SingleFarmV3Card
+                harvesting={harvesting}
                 pool={pool}
                 width="100%"
                 direction={direction}

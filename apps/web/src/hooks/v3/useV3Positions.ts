@@ -36,6 +36,7 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
     watch: true,
     allowFailure: true,
     enabled: !!inputs.length,
+    keepPreviousData: true,
   })
 
   return {

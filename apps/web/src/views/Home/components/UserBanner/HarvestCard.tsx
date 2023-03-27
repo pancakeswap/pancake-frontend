@@ -2,29 +2,27 @@ import { useTranslation } from '@pancakeswap/localization'
 import {
   ArrowForwardIcon,
   AutoRenewIcon,
+  Balance,
   Button,
   Card,
   CardBody,
   Flex,
+  NextLinkFromReactRouter,
   Skeleton,
   Text,
   useToast,
-  Balance,
-  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
 import { ToastDescriptionWithTx } from 'components/Toast'
+import { BOOSTED_FARM_GAS_LIMIT } from 'config'
 import useCatchTxError from 'hooks/useCatchTxError'
 import { useCallback } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import { useGasPrice } from 'state/user/hooks'
 import styled from 'styled-components'
-import { harvestFarm } from 'utils/calls'
 import { getMasterChefAddress } from 'utils/addressHelpers'
-import { BOOSTED_FARM_GAS_LIMIT } from 'config'
-import { MasterChefV3 } from '@pancakeswap/v3-sdk'
-import { useMasterchefV3 } from 'hooks/useContract'
-import { useSigner } from 'wagmi'
+import { harvestFarm } from 'utils/calls'
+import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 import useFarmsWithBalance, { FarmWithBalance } from 'views/Home/hooks/useFarmsWithBalance'
 import { getEarningsText } from './EarningsText'
 
@@ -40,8 +38,6 @@ const HarvestCard = () => {
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { farmsWithStakedBalance, earningsSum: farmEarningsSum } = useFarmsWithBalance()
-  const masterchefV3 = useMasterchefV3()
-  const { data: signer } = useSigner()
 
   const cakePriceBusd = usePriceCakeUSD()
   const gasPrice = useGasPrice()
@@ -52,6 +48,7 @@ const HarvestCard = () => {
 
   const earningsText = getEarningsText(numFarmsToCollect, hasCakePoolToCollect, earningsBusd, t)
   const [preText, toCollectText] = earningsText.split(earningsBusd.toString())
+  const { onHarvestAll } = useFarmsV3BatchHarvest()
 
   const harvestAllFarms = useCallback(async () => {
     const v2Farms = farmsWithStakedBalance.filter((value) => 'pid' in value) as FarmWithBalance[]
@@ -82,23 +79,8 @@ const HarvestCard = () => {
       }
     }
 
-    const receipt = await fetchWithCatchTxError(() => {
-      const { calldata, value } = MasterChefV3.batchHarvestCallParameters(v3Farms.map((farm) => farm.sendTx))
-      return signer.sendTransaction({
-        to: masterchefV3.address,
-        data: calldata,
-        value,
-      })
-    })
-    if (receipt?.status) {
-      toastSuccess(
-        `${t('Harvested')}!`,
-        <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-          {t('Your %symbol% earnings have been sent to your wallet!', { symbol: 'CAKE' })}
-        </ToastDescriptionWithTx>,
-      )
-    }
-  }, [farmsWithStakedBalance, fetchWithCatchTxError, gasPrice, toastSuccess, t, signer, masterchefV3.address])
+    onHarvestAll(v3Farms.map((farm) => farm.sendTx.tokenId))
+  }, [farmsWithStakedBalance, onHarvestAll, fetchWithCatchTxError, gasPrice, toastSuccess, t])
 
   return (
     <StyledCard>

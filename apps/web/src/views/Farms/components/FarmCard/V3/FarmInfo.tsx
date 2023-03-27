@@ -7,6 +7,7 @@ import { useMemo, useState } from 'react'
 import { usePriceCakeUSD } from 'state/farms/hooks'
 import FarmV3CardList from 'views/Farms/components/FarmCard/V3/FarmV3CardList'
 import { V3Farm } from 'views/Farms/FarmsV3'
+import { useFarmsV3BatchHarvest } from 'views/Farms/hooks/v3/useFarmV3Actions'
 
 const { AvailableFarming, TotalStakedBalance, ViewAllFarmModal } = FarmUI.FarmV3Card
 
@@ -31,6 +32,14 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
     [stakedPositions, unstakedPositions],
   )
 
+  const hasEarningTokenIds = useMemo(
+    () =>
+      Object.entries(pendingCakeByTokenIds)
+        .filter(([, value]) => value.gt(0))
+        .map(([key]) => key),
+    [pendingCakeByTokenIds],
+  )
+
   const totalEarnings = useMemo(
     () =>
       +formatBigNumber(
@@ -39,6 +48,8 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
       ),
     [pendingCakeByTokenIds],
   )
+
+  const { harvesting, onHarvestAll } = useFarmsV3BatchHarvest()
 
   const earningsBusd = useMemo(
     () => new BigNumber(totalEarnings).times(cakePrice).toNumber(),
@@ -96,10 +107,12 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
               height={32}
             />
           }
+          onHarvestAll={hasEarningTokenIds.length > 1 ? () => onHarvestAll(hasEarningTokenIds) : undefined}
+          harvesting={harvesting}
           onDismiss={() => setShow(false)}
         >
           <Flex flexDirection="column">
-            <FarmV3CardList farm={farm} onDismiss={() => setShow(false)} />
+            <FarmV3CardList farm={farm} onDismiss={() => setShow(false)} harvesting={harvesting} />
           </Flex>
         </ViewAllFarmModal>
         ,
