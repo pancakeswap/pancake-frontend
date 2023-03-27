@@ -1,3 +1,20 @@
+export interface ProtocolData {
+  // volume
+  volumeUSD: number
+  volumeUSDChange: number
+
+  // in range liquidity
+  tvlUSD: number
+  tvlUSDChange: number
+
+  // fees
+  feesUSD: number
+  feeChange: number
+
+  // transactions
+  txCount: number
+  txCountChange: number
+}
 export interface ChartDayData {
   date: number
   volumeUSD: number

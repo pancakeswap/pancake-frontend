@@ -8,3 +8,16 @@ export const get2DayChange = (valueNow: string, value24HoursAgo: string, value48
   }
   return [currentChange, adjustedPercentChange]
 }
+
+/**
+ * get standard percent change between two values
+ * @param {*} valueNow
+ * @param {*} value24HoursAgo
+ */
+export const getPercentChange = (valueNow: string | undefined, value24HoursAgo: string | undefined): number => {
+  if (valueNow && value24HoursAgo) {
+    const change = ((parseFloat(valueNow) - parseFloat(value24HoursAgo)) / parseFloat(value24HoursAgo)) * 100
+    if (Number.isFinite(change)) return change
+  }
+  return 0
+}
