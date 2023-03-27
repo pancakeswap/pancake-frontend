@@ -18,7 +18,7 @@ export function V3SwapForm() {
     <>
       <FormHeader onRefresh={refresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
       <FormMain
-        tradeLoading={isLoading}
+        tradeLoading={!tradeLoaded}
         pricingAndSlippage={
           <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
         }

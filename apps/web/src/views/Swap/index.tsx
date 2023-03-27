@@ -7,7 +7,6 @@ import { useCallback, useContext } from 'react'
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { currencyId } from 'utils/currencyId'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useSwapHotTokenDisplay } from 'hooks/useSwapHotTokenDisplay'
 import { useCurrency } from '../../hooks/Tokens'
 import { Field } from '../../state/swap/actions'
@@ -19,8 +18,6 @@ import useWarningImport from './hooks/useWarningImport'
 import { V3SwapForm } from './V3Swap'
 import { StyledInputCurrencyWrapper, StyledSwapContainer } from './styles'
 import { SwapFeaturesContext } from './SwapFeaturesContext'
-
-const queryClient = new QueryClient()
 
 export default function Swap() {
   const { isDesktop } = useMatchBreakpoints()
@@ -117,9 +114,7 @@ export default function Swap() {
           <StyledSwapContainer $isChartExpanded={isChartExpanded}>
             <StyledInputCurrencyWrapper mt={isChartExpanded ? '24px' : '0'}>
               <AppBody>
-                <QueryClientProvider client={queryClient}>
-                  <V3SwapForm />
-                </QueryClientProvider>
+                <V3SwapForm />
               </AppBody>
             </StyledInputCurrencyWrapper>
           </StyledSwapContainer>
