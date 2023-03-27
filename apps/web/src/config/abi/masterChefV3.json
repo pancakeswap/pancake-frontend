@@ -6,7 +6,8 @@
         "internalType": "contract INonfungiblePositionManager",
         "name": "_nonfungiblePositionManager",
         "type": "address"
-      }
+      },
+      { "internalType": "address", "name": "_WETH", "type": "address" }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
@@ -16,6 +17,8 @@
     "name": "DuplicatedPool",
     "type": "error"
   },
+  { "inputs": [], "name": "InconsistentAmount", "type": "error" },
+  { "inputs": [], "name": "InsufficientAmount", "type": "error" },
   { "inputs": [], "name": "InvalidNFT", "type": "error" },
   { "inputs": [], "name": "InvalidPeriodDuration", "type": "error" },
   { "inputs": [], "name": "InvalidPid", "type": "error" },
@@ -230,6 +233,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "WETH",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       { "internalType": "uint256", "name": "_allocPoint", "type": "uint256" },
       { "internalType": "contract IPancakeV3Pool", "name": "_v3Pool", "type": "address" },
@@ -255,6 +265,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "cakeAmountBelongToMC",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "components": [
@@ -269,6 +286,29 @@
       }
     ],
     "name": "collect",
+    "outputs": [
+      { "internalType": "uint256", "name": "amount0", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount1", "type": "uint256" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+          { "internalType": "address", "name": "recipient", "type": "address" },
+          { "internalType": "uint128", "name": "amount0Max", "type": "uint128" },
+          { "internalType": "uint128", "name": "amount1Max", "type": "uint128" }
+        ],
+        "internalType": "struct INonfungiblePositionManagerStruct.CollectParams",
+        "name": "params",
+        "type": "tuple"
+      },
+      { "internalType": "address", "name": "to", "type": "address" }
+    ],
+    "name": "collectTo",
     "outputs": [
       { "internalType": "uint256", "name": "amount0", "type": "uint256" },
       { "internalType": "uint256", "name": "amount1", "type": "uint256" }
@@ -358,7 +398,7 @@
       { "internalType": "uint256", "name": "amount0", "type": "uint256" },
       { "internalType": "uint256", "name": "amount1", "type": "uint256" }
     ],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -514,6 +554,17 @@
   },
   {
     "inputs": [
+      { "internalType": "address", "name": "token", "type": "address" },
+      { "internalType": "uint256", "name": "amountMinimum", "type": "uint256" },
+      { "internalType": "address", "name": "recipient", "type": "address" }
+    ],
+    "name": "sweepToken",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
       { "internalType": "address", "name": "owner", "type": "address" },
       { "internalType": "uint256", "name": "index", "type": "uint256" }
     ],
@@ -532,6 +583,16 @@
   {
     "inputs": [{ "internalType": "address", "name": "newOwner", "type": "address" }],
     "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "amountMinimum", "type": "uint256" },
+      { "internalType": "address", "name": "recipient", "type": "address" }
+    ],
+    "name": "unwrapWETH9",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -570,6 +631,7 @@
   {
     "inputs": [
       { "internalType": "uint256", "name": "_amount", "type": "uint256" },
+      { "internalType": "uint256", "name": "_duration", "type": "uint256" },
       { "internalType": "bool", "name": "_withUpdate", "type": "bool" }
     ],
     "name": "upkeep",
@@ -610,5 +672,6 @@
     "outputs": [{ "internalType": "uint256", "name": "reward", "type": "uint256" }],
     "stateMutability": "nonpayable",
     "type": "function"
-  }
+  },
+  { "stateMutability": "payable", "type": "receive" }
 ]
