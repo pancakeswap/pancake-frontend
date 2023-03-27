@@ -1,8 +1,10 @@
+import { ChainId } from '@pancakeswap/sdk'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import { gql, GraphQLClient } from 'graphql-request'
 import { ChartDayData } from '../../types'
+import { fetchDerivedProtocolTVLHistory } from './derived'
 
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
@@ -103,3 +105,32 @@ export async function fetchChartData(client: GraphQLClient) {
 /**
  * Fetch historic chart data
  */
+
+export async function fetchGlobalChartData(
+  dataClient: GraphQLClient,
+  chainId: ChainId,
+): Promise<{
+  error: boolean
+  data: ChartDayData[] | undefined
+}> {
+  try {
+    const derivedData = await fetchDerivedProtocolTVLHistory(dataClient, chainId)
+    const { data } = await fetchChartData(dataClient)
+
+    const shouldUserDerivedData = chainId === ChainId.ETHEREUM
+
+    // @TODO: remove this once we have fix for mainnet TVL issue
+    const formattedData = shouldUserDerivedData ? derivedData : data
+
+    return {
+      error: false,
+      data: formattedData,
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      error: true,
+      data: undefined,
+    }
+  }
+}
