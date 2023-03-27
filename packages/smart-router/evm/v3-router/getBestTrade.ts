@@ -24,33 +24,28 @@ export async function getBestTrade(
   tradeType: TradeType,
   config: TradeConfig,
 ): Promise<SmartRouterTrade<TradeType> | null> {
-  try {
-    const { blockNumber: blockNumberFromConfig } = config
-    const blockNumber: BigintIsh =
-      typeof blockNumberFromConfig === 'function' ? await blockNumberFromConfig() : blockNumberFromConfig
-    const bestRoutes = await getBestRoutes(amount, currency, tradeType, {
-      ...config,
-      blockNumber,
-    })
-    if (!bestRoutes) {
-      return null
-    }
+  const { blockNumber: blockNumberFromConfig } = config
+  const blockNumber: BigintIsh =
+    typeof blockNumberFromConfig === 'function' ? await blockNumberFromConfig() : blockNumberFromConfig
+  const bestRoutes = await getBestRoutes(amount, currency, tradeType, {
+    ...config,
+    blockNumber,
+  })
+  if (!bestRoutes) {
+    throw new Error('Cannot find a valid swap route')
+  }
 
-    const { routes, gasEstimateInUSD, gasEstimate, inputAmount, outputAmount } = bestRoutes
-    // TODO restrict trade type to exact input if routes include one of the old
-    // stable swap pools, which only allow to swap with exact input
-    return {
-      tradeType,
-      routes,
-      gasEstimate,
-      gasEstimateInUSD,
-      inputAmount,
-      outputAmount,
-      blockNumber,
-    }
-  } catch (e) {
-    console.error(e)
-    return null
+  const { routes, gasEstimateInUSD, gasEstimate, inputAmount, outputAmount } = bestRoutes
+  // TODO restrict trade type to exact input if routes include one of the old
+  // stable swap pools, which only allow to swap with exact input
+  return {
+    tradeType,
+    routes,
+    gasEstimate,
+    gasEstimateInUSD,
+    inputAmount,
+    outputAmount,
+    blockNumber,
   }
 }
 
