@@ -57,7 +57,7 @@ export function useSwapBestTrade({ maxHops }: Options = {}) {
     syncing,
     isStale,
     error,
-    isLoading: useDeferredValue(isLoading || (typedValue && !trade)),
+    isLoading: useDeferredValue(isLoading || (typedValue && !trade && !error)),
     trade: typedValue ? trade : null,
   }
 }

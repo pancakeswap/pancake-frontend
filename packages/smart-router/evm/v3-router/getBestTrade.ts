@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { BigintIsh, Currency, CurrencyAmount, TradeType } from '@pancakeswap/sdk'
+import { BigintIsh, Currency, CurrencyAmount, TradeType, ZERO } from '@pancakeswap/sdk'
 
 import { computeAllRoutes, getBestRouteCombinationByQuotes } from './functions'
 import { createGasModel } from './gasModel'
@@ -31,7 +31,7 @@ export async function getBestTrade(
     ...config,
     blockNumber,
   })
-  if (!bestRoutes) {
+  if (!bestRoutes || bestRoutes.outputAmount.equalTo(ZERO)) {
     throw new Error('Cannot find a valid swap route')
   }
 
