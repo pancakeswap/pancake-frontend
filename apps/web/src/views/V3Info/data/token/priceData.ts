@@ -34,6 +34,31 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   `
 }
 
+const PRICE_FOR_PAIR_PRICE_CHART = (timestamps: number[]) => {
+  let queryString = 'query tokenHourDatas($address: Bytes!) {'
+  timestamps.forEach((d) => {
+    queryString += `
+      t${d}:tokenHourDatas(
+        first: 1
+        skip: 0
+        where: { token: $address, periodStartUnix: ${d} }
+        orderBy: periodStartUnix
+        orderDirection: asc
+      ) {
+        periodStartUnix
+        high
+        low
+        open
+        close
+      }
+    `
+  })
+  queryString += '}'
+  return gql`
+    ${queryString}
+  `
+}
+
 const PRICE_CHART = gql`
   query tokenHourDatas($startTime: Int!, $skip: Int!, $address: Bytes!) {
     tokenHourDatas(
@@ -52,15 +77,19 @@ const PRICE_CHART = gql`
   }
 `
 
-interface PriceResults {
-  tokenHourDatas: {
-    periodStartUnix: number
-    high: string
-    low: string
-    open: string
-    close: string
-  }[]
+interface TokenHourDatas {
+  periodStartUnix: number
+  high: string
+  low: string
+  open: string
+  close: string
 }
+
+interface PriceResults {
+  tokenHourDatas: TokenHourDatas[]
+}
+
+type PriceResultsForPairPriceChartResult = Record<string, TokenHourDatas[]>
 
 export async function fetchTokenPriceData(
   address: string,
@@ -136,6 +165,101 @@ export async function fetchTokenPriceData(
         if (priceData) {
           data = data.concat(priceData.tokenHourDatas)
         }
+      }
+    }
+
+    const formattedHistory = data.map((d) => {
+      return {
+        time: d.periodStartUnix,
+        open: parseFloat(d.open),
+        close: parseFloat(d.close),
+        high: parseFloat(d.high),
+        low: parseFloat(d.low),
+      }
+    })
+
+    return {
+      data: formattedHistory,
+      error: false,
+    }
+  } catch (e) {
+    console.error(e)
+    return {
+      data: [],
+      error: true,
+    }
+  }
+}
+
+export async function fetchPairPriceChartTokenData(
+  address: string,
+  interval: number,
+  startTimestamp: number,
+  dataClient: GraphQLClient,
+  chainName: MultiChainName,
+): Promise<{
+  data: PriceChartEntry[]
+  error: boolean
+}> {
+  // start and end bounds
+  try {
+    const endTimestamp = dayjs.utc().unix()
+
+    if (!startTimestamp) {
+      console.error('Error constructing price start timestamp')
+      return {
+        data: [],
+        error: false,
+      }
+    }
+
+    // create an array of hour start times until we reach current hour
+    const timestamps = []
+    let time = startTimestamp
+    while (time <= endTimestamp) {
+      timestamps.push(time)
+      time += interval
+    }
+
+    // backout if invalid timestamp format
+    if (timestamps.length === 0) {
+      return {
+        data: [],
+        error: false,
+      }
+    }
+
+    // fetch blocks based on timestamp
+    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500, chainName)
+    if (!blocks || blocks.length === 0) {
+      console.error('Error fetching blocks')
+      return {
+        data: [],
+        error: false,
+      }
+    }
+
+    let data: {
+      periodStartUnix: number
+      high: string
+      low: string
+      open: string
+      close: string
+    }[] = []
+
+    // eslint-disable-next-line no-await-in-loop
+    const priceData = await dataClient.request<PriceResultsForPairPriceChartResult>(
+      PRICE_FOR_PAIR_PRICE_CHART(timestamps),
+      {
+        address,
+      },
+    )
+
+    if (Object.keys(priceData)?.length > 0) {
+      if (priceData) {
+        Object.values(priceData).forEach((d) => {
+          data = data.concat(d)
+        })
       }
     }
 

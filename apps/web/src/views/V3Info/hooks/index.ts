@@ -6,7 +6,7 @@ import useSWRImmutable from 'swr/immutable'
 import { v3Clients } from 'utils/graphql'
 import { fetchChartData } from '../data/protocol/chart'
 import { fetchTopTransactions } from '../data/protocol/transactions'
-import { fetchTokenPriceData } from '../data/token/priceData'
+import { fetchTokenPriceData, fetchPairPriceChartTokenData } from '../data/token/priceData'
 import { ChartDayData, PriceChartEntry, Transaction } from '../types'
 
 const ONE_HOUR_SECONDS = 3600
@@ -62,6 +62,34 @@ export const useTokenPriceChartData = (
     chainId && address && [`v3/info/token/priceData/${address}/${duration}`, targetChianId ?? chainId],
     () =>
       fetchTokenPriceData(
+        address,
+        DURATION_INTERVAL[duration ?? 'day'],
+        startTimestamp,
+        v3Clients[targetChianId ?? chainId],
+        multiChainName[targetChianId ?? chainId],
+      ),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data ?? []
+}
+
+// this is for the swap page and ROI calculator
+export const usePairPriceChartTokenData = (
+  address: string,
+  duration?: 'day' | 'week' | 'month' | 'year',
+  targetChianId?: ChainId,
+): PriceChartEntry[] | undefined => {
+  const { chainId } = useActiveChainId()
+  const utcCurrentTime = dayjs()
+  const startTimestamp = utcCurrentTime
+    .subtract(1, duration ?? 'day')
+    .startOf('hour')
+    .unix()
+
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/token/pairPriceChartToken/${address}/${duration}`, targetChianId ?? chainId],
+    () =>
+      fetchPairPriceChartTokenData(
         address,
         DURATION_INTERVAL[duration ?? 'day'],
         startTimestamp,
