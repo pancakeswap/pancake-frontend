@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
-import { SmartRouter, PoolType, QuoteProvider } from '@pancakeswap/smart-router/evm'
+import { SmartRouter, PoolType, QuoteProvider, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
@@ -140,24 +140,24 @@ function bestTradeHookFactory({
 
     const {
       data: trade,
-      isLoading,
-      isValidating,
-      mutate,
-    } = useSWR(
-      amount && currency && candidatePools && !loading && deferQuotient && enabled
-        ? [
-            key,
-            currency.chainId,
-            amount.currency.symbol,
-            currency.symbol,
-            tradeType,
-            deferQuotient,
-            maxHops,
-            maxSplits,
-            poolTypes,
-          ]
-        : null,
-      async () => {
+      status,
+      fetchStatus,
+      refetch,
+      isPreviousData,
+      error,
+    } = useQuery<SmartRouterTrade<TradeType>, Error>({
+      queryKey: [
+        key,
+        currency?.chainId,
+        amount?.currency.symbol,
+        currency?.symbol,
+        tradeType,
+        deferQuotient,
+        maxHops,
+        maxSplits,
+        poolTypes,
+      ],
+      queryFn: async () => {
         const deferAmount = CurrencyAmount.fromRawAmount(amount.currency, deferQuotient)
         const label = `[BEST_AMM](${key}) chain ${currency.chainId}, ${deferAmount.toExact()} ${
           amount.currency.symbol
@@ -193,11 +193,18 @@ function bestTradeHookFactory({
         }
         return res
       },
-      {
-        keepPreviousData: !currenciesUpdated,
-        revalidateOnFocus: false,
-      },
-    )
+      enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
+      refetchOnWindowFocus: false,
+      keepPreviousData: !currenciesUpdated,
+      retry: false,
+    })
+
+    if (currenciesUpdated) {
+      lastBlock.current = null
+    }
+
+    const isValidating = fetchStatus === 'fetching'
+    const isLoading = status === 'loading' || isPreviousData
 
     useEffect(() => {
       // Revalidate if pools updated
@@ -209,7 +216,7 @@ function bestTradeHookFactory({
         lastBlock.current &&
         poolsBlockNumber - lastBlock.current > REVALIDATE_AFTER_BLOCKS[amount?.currency.chainId]
       ) {
-        mutate()
+        refetch()
       }
       // eslint-disable-next-line
     }, [poolsBlockNumber, isLoading, isValidating, amount?.currency.chainId])
@@ -219,6 +226,7 @@ function bestTradeHookFactory({
       trade,
       isLoading: isLoading || loading,
       isStale: trade?.blockNumber !== blockNumber,
+      error,
       syncing:
         syncing || isValidating || (amount?.quotient.toString() !== deferQuotient && deferQuotient !== undefined),
     }

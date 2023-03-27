@@ -6,7 +6,7 @@ import { MMCommitButton } from './containers/MMCommitButton'
 import { useSwapBestTrade } from './hooks'
 
 export function V3SwapForm() {
-  const { isLoading, trade, refresh, syncing, isStale } = useSwapBestTrade()
+  const { isLoading, trade, refresh, syncing, isStale, error } = useSwapBestTrade()
 
   const mm = useDerivedBestTradeWithMM(trade)
 
@@ -24,7 +24,13 @@ export function V3SwapForm() {
         }
         inputAmount={finalTrade?.inputAmount}
         outputAmount={finalTrade?.outputAmount}
-        swapCommitButton={mm?.isMMBetter ? <MMCommitButton {...mm} /> : <SwapCommitButton trade={trade} />}
+        swapCommitButton={
+          mm?.isMMBetter ? (
+            <MMCommitButton {...mm} />
+          ) : (
+            <SwapCommitButton trade={trade} tradeError={error} tradeLoading={!tradeLoaded} />
+          )
+        }
       />
 
       {mm.isMMBetter ? (

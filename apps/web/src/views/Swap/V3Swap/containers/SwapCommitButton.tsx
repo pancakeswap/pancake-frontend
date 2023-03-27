@@ -50,9 +50,11 @@ const SettingsModalWithCustomDismiss = withCustomOnDismiss(SettingsModal)
 
 interface SwapCommitButtonPropsType {
   trade?: SmartRouterTrade<TradeType>
+  tradeError?: Error
+  tradeLoading?: boolean
 }
 
-export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
+export function SwapCommitButton({ trade, tradeError, tradeLoading }: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isExpertMode] = useExpertMode()
@@ -245,7 +247,7 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
     )
   }
 
-  const noRoute = !(trade?.routes.length > 0)
+  const noRoute = !(trade?.routes.length > 0) || tradeError
 
   const userHasSpecifiedInputOutput = Boolean(
     inputCurrency && outputCurrency && parsedIndepentFieldAmount?.greaterThan(BIG_INT_ZERO),
@@ -292,7 +294,7 @@ export function SwapCommitButton({ trade }: SwapCommitButtonPropsType) {
       (approvalSubmitted && approval === ApprovalState.APPROVED)) &&
     !(priceImpactSeverity > 3 && !isExpertMode)
 
-  const isValid = !swapInputError
+  const isValid = !swapInputError && !tradeLoading
   const approved = approval === ApprovalState.APPROVED
   const content = showApproveFlow ? (
     <>
