@@ -33,6 +33,9 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
   )
   const { isLoading, data: positions = [] } = useContractReads<any, any, any>({
     contracts: inputs,
+    watch: true,
+    allowFailure: true,
+    enabled: !!inputs.length,
   })
 
   return {
@@ -69,6 +72,8 @@ export function useV3TokenIdsByAccount(
     address: contract.address as `0x${string}`,
     args: [account ?? undefined],
     functionName: 'balanceOf',
+    enabled: !!account,
+    watch: true,
   })
 
   // we don't expect any account balance to ever exceed the bounds of max safe int
@@ -92,10 +97,13 @@ export function useV3TokenIdsByAccount(
 
   const { isLoading: someTokenIdsLoading, data: tokenIds = [] } = useContractReads({
     contracts: tokenIdsArgs,
+    watch: true,
+    allowFailure: true,
+    enabled: !!tokenIdsArgs.length,
   })
 
   return {
-    tokenIds: tokenIds as BigNumber[],
+    tokenIds: useMemo(() => tokenIds.filter(Boolean) as BigNumber[], [tokenIds]),
     loading: someTokenIdsLoading || balanceLoading,
   }
 }

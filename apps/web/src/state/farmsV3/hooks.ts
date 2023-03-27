@@ -188,7 +188,11 @@ export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
     {
       compare(a, b) {
         if (!a && !b) return true
-        return a?.every((v, i) => v?.eq(b[i]))
+        if (a && !b) return false
+        if (!a && b) return false
+        return a?.every((v, i) => {
+          return BigNumber.isBigNumber(v) && b?.[i] && BigNumber.isBigNumber(b?.[i]) && v?.eq(b?.[i])
+        })
       },
       keepPreviousData: true,
     },
