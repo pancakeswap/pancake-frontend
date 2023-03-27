@@ -1,17 +1,19 @@
 import styled from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import useTheme from 'hooks/useTheme'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
+import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
+import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
 
-export const BACKGROUND_COLOR =
-  'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
+const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
-const StyledBackground = styled(Flex)<{ showBackgroundColor?: boolean }>`
+const StyledBackground = styled(Flex)<{ showBackgroundColor: boolean }>`
   position: relative;
   flex-direction: column;
   padding-top: 88px;
-  // background: ${({ showBackgroundColor }) => (showBackgroundColor ? BACKGROUND_COLOR : '')};
+  background: ${({ showBackgroundColor }) => (showBackgroundColor ? BACKGROUND_COLOR : '')};
   z-index: 0;
 `
 
@@ -40,22 +42,36 @@ const StyledHeading = styled(Text)`
   }
 `
 
-const Container = styled(Box)`
+const Container = styled(Box)<{ showBackgroundColor: boolean }>`
   position: relative;
-  width: 1140px;
-  margin: 48px auto;
   z-index: 1;
+  margin: 48px auto;
+  width: ${({ showBackgroundColor }) => (showBackgroundColor ? '760px' : '1140px')};
 `
 
 const YourTradingReward = () => {
   const { t } = useTranslation()
+  const { theme } = useTheme()
+  const showBackgroundColor = true
 
   return (
-    <StyledBackground showBackgroundColor>
+    <StyledBackground showBackgroundColor={showBackgroundColor}>
       <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
-      <Container>
-        {/* <NoConnected /> */}
-        <ViewEligiblePairs />
+      <Container showBackgroundColor={showBackgroundColor}>
+        {/* no connect, show eligible pairs, no profile, no cake locked, no enough cake locked, no enough locked time */}
+        <Flex
+          width="100%"
+          borderRadius={32}
+          padding={['48px 0']}
+          flexDirection="column"
+          alignItems={['center']}
+          style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
+        >
+          {/* <NoConnected /> */}
+          {/* <ViewEligiblePairs /> */}
+          {/* <NoProfile /> */}
+          {/* <NoCakeLockedOrExtendLock /> */}
+        </Flex>
       </Container>
     </StyledBackground>
   )
