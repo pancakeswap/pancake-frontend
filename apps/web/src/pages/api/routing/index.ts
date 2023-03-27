@@ -7,6 +7,10 @@ import { PoolType, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { parsePool, parseCurrencyAmount, parseCurrency, serializeTrade } from 'utils/routingApi'
 import { provider } from 'utils/wagmi'
 
+export const config = {
+  runtime: 'experimental-edge',
+}
+
 const zChainId = z.nativeEnum(ChainId)
 const zFee = z.nativeEnum(FeeAmount)
 const zTradeType = z.nativeEnum(TradeType)
