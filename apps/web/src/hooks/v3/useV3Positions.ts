@@ -1,9 +1,10 @@
+import { FormatTypes } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
+import { PositionDetails } from '@pancakeswap/farms'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useMemo } from 'react'
-import { CallStateResult, useSingleCallResult, useSingleContractMultipleData } from 'state/multicall/hooks'
-import { PositionDetails } from '@pancakeswap/farms'
+import { useContractRead, useContractReads } from 'wagmi'
 
 interface UseV3PositionsResults {
   loading: boolean
@@ -18,44 +19,33 @@ interface UseV3PositionResults {
 export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
 
-  const inputs = useMemo(() => (tokenIds ? tokenIds.map((tokenId) => [BigNumber.from(tokenId)]) : []), [tokenIds])
-  const results = useSingleContractMultipleData(positionManager, 'positions', inputs)
-
-  const load = useMemo(() => results.some(({ loading }) => loading), [results])
-  const err = useMemo(() => results.some(({ error }) => error), [results])
-
-  const positions = useMemo(() => {
-    if (!load && !err && tokenIds) {
-      return results.map((call, i) => {
-        const tokenId = tokenIds[i]
-        const result = call.result as CallStateResult
-        return {
-          tokenId,
-          fee: result.fee,
-          feeGrowthInside0LastX128: result.feeGrowthInside0LastX128,
-          feeGrowthInside1LastX128: result.feeGrowthInside1LastX128,
-          liquidity: result.liquidity,
-          nonce: result.nonce,
-          operator: result.operator,
-          tickLower: result.tickLower,
-          tickUpper: result.tickUpper,
-          token0: result.token0,
-          token1: result.token1,
-          tokensOwed0: result.tokensOwed0,
-          tokensOwed1: result.tokensOwed1,
-        }
-      })
-    }
-    return undefined
-  }, [load, err, results, tokenIds])
-
-  return useMemo(
-    () => ({
-      loading: load,
-      positions: positions?.map((position, i) => ({ ...position, tokenId: inputs[i][0] })),
-    }),
-    [inputs, load, positions],
+  const inputs = useMemo(
+    () =>
+      tokenIds
+        ? tokenIds.map((tokenId) => ({
+            abi: positionManager.interface.format(FormatTypes.json) as any,
+            address: positionManager.address as `0x${string}`,
+            functionName: 'positions',
+            args: [tokenId],
+          }))
+        : [],
+    [positionManager.address, positionManager.interface, tokenIds],
   )
+  const { isLoading, data: positions = [] } = useContractReads<any, any, any>({
+    contracts: inputs,
+  })
+
+  return {
+    loading: isLoading,
+    positions: useMemo(
+      () =>
+        (positions as Omit<PositionDetails, 'tokenId'>[])?.map((position, i) => ({
+          ...position,
+          tokenId: inputs[i].args[0],
+        })),
+      [inputs, positions],
+    ),
+  }
 }
 
 export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3PositionResults {
@@ -70,45 +60,44 @@ export function useV3PositionFromTokenId(tokenId: BigNumber | undefined): UseV3P
   )
 }
 
-export function useV3TokenIdsByAccount(contract: Contract, account: string | null | undefined) {
-  const { loading: balanceLoading, result: balanceResult } = useSingleCallResult(contract, 'balanceOf', [
-    account ?? undefined,
-  ])
+export function useV3TokenIdsByAccount(
+  contract: Contract,
+  account: string | null | undefined,
+): { tokenIds: BigNumber[]; loading: boolean } {
+  const { isLoading: balanceLoading, data: accountBalance_ } = useContractRead<any, any, BigNumber>({
+    abi: contract.interface.format(FormatTypes.json) as any,
+    address: contract.address as `0x${string}`,
+    args: [account ?? undefined],
+    functionName: 'balanceOf',
+  })
 
   // we don't expect any account balance to ever exceed the bounds of max safe int
-  const accountBalance: number | undefined = balanceResult?.[0]?.toNumber()
+  const accountBalance: number | undefined = accountBalance_?.toNumber()
 
   const tokenIdsArgs = useMemo(() => {
     if (accountBalance && account) {
       const tokenRequests = []
       for (let i = 0; i < accountBalance; i++) {
-        tokenRequests.push([account, i])
+        tokenRequests.push({
+          abi: contract.interface.format(FormatTypes.json) as any,
+          address: contract.address as `0x${string}`,
+          functionName: 'tokenOfOwnerByIndex',
+          args: [account, i],
+        })
       }
       return tokenRequests
     }
     return []
-  }, [account, accountBalance])
+  }, [account, accountBalance, contract.address, contract.interface])
 
-  const tokenIdResults = useSingleContractMultipleData(contract, 'tokenOfOwnerByIndex', tokenIdsArgs)
-  const someTokenIdsLoading = useMemo(() => tokenIdResults.some(({ loading }) => loading), [tokenIdResults])
+  const { isLoading: someTokenIdsLoading, data: tokenIds = [] } = useContractReads({
+    contracts: tokenIdsArgs,
+  })
 
-  const tokenIds = useMemo(() => {
-    if (account) {
-      return tokenIdResults
-        .map(({ result }) => result)
-        .filter((result): result is CallStateResult => !!result)
-        .map((result) => BigNumber.from(result[0]))
-    }
-    return []
-  }, [account, tokenIdResults])
-
-  return useMemo(
-    () => ({
-      tokenIds,
-      loading: someTokenIdsLoading || balanceLoading,
-    }),
-    [balanceLoading, someTokenIdsLoading, tokenIds],
-  )
+  return {
+    tokenIds: tokenIds as BigNumber[],
+    loading: someTokenIdsLoading || balanceLoading,
+  }
 }
 
 export function useV3Positions(account: string | null | undefined): UseV3PositionsResults {

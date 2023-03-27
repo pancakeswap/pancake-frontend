@@ -76,7 +76,6 @@ export const FarmsPageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ ch
 export const FarmsV3PageLayout: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
   return (
     <>
-      <BloctoWarning />
       <FarmsV3>{children}</FarmsV3>
     </>
   )

@@ -186,6 +186,10 @@ export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
       })
     },
     {
+      compare(a, b) {
+        if (!a && !b) return true
+        return a?.every((v, i) => v?.eq(b[i]))
+      },
       keepPreviousData: true,
     },
   )
