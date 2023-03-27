@@ -17,7 +17,7 @@ import {
   CommonPoolsParams,
 } from './useCommonPools'
 
-const REVALIDATE_PER_BLOCKS = {
+const REVALIDATE_AFTER_BLOCKS = {
   [ChainId.BSC_TESTNET]: 8,
   [ChainId.BSC]: 8,
   [ChainId.ETHEREUM]: 2,
@@ -207,7 +207,7 @@ function bestTradeHookFactory({
         !isValidating &&
         poolsBlockNumber &&
         lastBlock.current &&
-        poolsBlockNumber - lastBlock.current > REVALIDATE_PER_BLOCKS[amount?.currency.chainId]
+        poolsBlockNumber - lastBlock.current > REVALIDATE_AFTER_BLOCKS[amount?.currency.chainId]
       ) {
         mutate()
       }
