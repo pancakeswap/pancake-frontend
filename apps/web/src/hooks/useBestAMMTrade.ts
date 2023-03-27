@@ -2,7 +2,7 @@
 import useSWR from 'swr'
 import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
 import { SmartRouter, PoolType, QuoteProvider } from '@pancakeswap/smart-router/evm'
-import { CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
 
 import { useIsWrapping } from 'hooks/useWrapCallback'
@@ -16,6 +16,13 @@ import {
   PoolsWithState,
   CommonPoolsParams,
 } from './useCommonPools'
+
+const REVALIDATE_PER_BLOCKS = {
+  [ChainId.BSC_TESTNET]: 8,
+  [ChainId.BSC]: 8,
+  [ChainId.ETHEREUM]: 2,
+  [ChainId.GOERLI]: 3,
+}
 
 interface FactoryOptions {
   // use to identify hook
@@ -194,11 +201,18 @@ function bestTradeHookFactory({
 
     useEffect(() => {
       // Revalidate if pools updated
-      if (revalidateOnUpdate && poolsBlockNumber && lastBlock.current && poolsBlockNumber - lastBlock.current > 5) {
+      if (
+        revalidateOnUpdate &&
+        !isLoading &&
+        !isValidating &&
+        poolsBlockNumber &&
+        lastBlock.current &&
+        poolsBlockNumber - lastBlock.current > REVALIDATE_PER_BLOCKS[amount?.currency.chainId]
+      ) {
         mutate()
       }
       // eslint-disable-next-line
-    }, [poolsBlockNumber])
+    }, [poolsBlockNumber, isLoading, isValidating, amount?.currency.chainId])
 
     return {
       refresh,

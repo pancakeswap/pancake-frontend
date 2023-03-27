@@ -20,7 +20,14 @@ import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constan
 import { BatchMulticallConfigs } from '../../types'
 import { BATCH_MULTICALL_CONFIGS } from '../../constants/multicall'
 
-const DEFAULT_BATCH_RETRIES = 1
+const DEFAULT_BATCH_RETRIES = 2
+
+const SUCCESS_RATE_CONFIG = {
+  [ChainId.BSC_TESTNET]: 0.1,
+  [ChainId.BSC]: 0.1,
+  [ChainId.ETHEREUM]: 0.1,
+  [ChainId.GOERLI]: 0.1,
+}
 
 type V3Inputs = [string, string]
 type MixedInputs = [string, number[], string]
@@ -212,18 +219,6 @@ function onChainQuoteProviderFactory({
                     },
                   })
 
-                  const successRateError = validateSuccessRate(results.results, haveRetriedForSuccessRate, 0.1)
-
-                  if (successRateError) {
-                    return {
-                      order,
-                      status: 'failed',
-                      inputs,
-                      reason: successRateError,
-                      results,
-                    } as QuoteBatchFailed
-                  }
-
                   return {
                     order,
                     status: 'success',
@@ -349,19 +344,33 @@ function onChainQuoteProviderFactory({
                   gasLimitOverride = gasErrorFailureOverride.gasLimitOverride
                   multicallChunk = gasErrorFailureOverride.multicallChunk
                   retryAll = true
-                } else if (error instanceof SuccessRateError) {
-                  if (!haveRetriedForSuccessRate) {
-                    haveRetriedForSuccessRate = true
-
-                    // Low success rate can indicate too little gas given to each call.
-                    gasLimitOverride = successRateFailureOverrides.gasLimitOverride
-                    multicallChunk = successRateFailureOverrides.multicallChunk
-                    retryAll = true
-                  }
                 } else {
                   if (!haveRetriedForUnknownReason) {
                     haveRetriedForUnknownReason = true
                   }
+                }
+              }
+            }
+
+            let successRateError: Error | void
+            if (failedQuoteStates.length === 0) {
+              successRateError = validateSuccessRate(
+                quoteStates.reduce<Result<[JSBI, JSBI[], number[], JSBI]>[]>(
+                  (acc, cur) => (cur.status === 'success' ? [...acc, ...(cur.results?.results || [])] : acc),
+                  [],
+                ),
+                haveRetriedForSuccessRate,
+                SUCCESS_RATE_CONFIG[chainId],
+              )
+
+              if (successRateError) {
+                if (!haveRetriedForSuccessRate) {
+                  haveRetriedForSuccessRate = true
+
+                  // Low success rate can indicate too little gas given to each call.
+                  gasLimitOverride = successRateFailureOverrides.gasLimitOverride
+                  multicallChunk = successRateFailureOverrides.multicallChunk
+                  retryAll = true
                 }
               }
             }
@@ -383,6 +392,10 @@ function onChainQuoteProviderFactory({
 
             if (failedQuoteStates.length > 0) {
               throw new Error(`Failed to get ${failedQuoteStates.length} quotes. Reasons: ${reasonForFailureStr}`)
+            }
+
+            if (successRateError) {
+              throw successRateError
             }
 
             const orderedSuccessfulQuoteStates = successfulQuoteStates.sort((a, b) => (a.order < b.order ? -1 : 1))
