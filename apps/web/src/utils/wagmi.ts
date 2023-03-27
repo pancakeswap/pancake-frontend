@@ -46,6 +46,9 @@ const getNodeRealUrl = (networkName: string) => {
 export const { provider, chains } = configureChains(CHAINS, [
   jsonRpcProvider({
     rpc: (chain) => {
+      if (!!process.env.NEXT_PUBLIC_NODE_TESTNET && chain.id === bscTestnet.id) {
+        return { http: process.env.NEXT_PUBLIC_NODE_TESTNET }
+      }
       if (!!process.env.NEXT_PUBLIC_NODE_PRODUCTION && chain.id === bsc.id) {
         return { http: process.env.NEXT_PUBLIC_NODE_PRODUCTION }
       }

@@ -9,6 +9,7 @@ import { useIsWrapping } from 'hooks/useWrapCallback'
 import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
+import { serializeCurrency, serializePool, parseTrade } from 'utils/routingApi'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -162,18 +163,45 @@ function bestTradeHookFactory({
         } -> ${currency.symbol}, tradeType ${tradeType}`
         SmartRouter.metric(label)
         SmartRouter.metric(label, candidatePools)
-        const res = await SmartRouter.getBestTrade(deferAmount, currency, tradeType, {
-          gasPriceWei: gasPrice
-            ? JSBI.BigInt(gasPrice)
-            : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
-          maxHops,
-          poolProvider,
-          maxSplits,
-          quoteProvider,
-          blockNumber,
-          allowedPoolTypes: poolTypes,
-          quoterOptimization,
-        })
+        let res: SmartRouterTrade<TradeType> | null = null
+        if (key === 'useBestAMMTradeFromQuoter') {
+          const serverRes = await fetch('/api/routing', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              chainId: currency.chainId,
+              currency: serializeCurrency(currency),
+              tradeType,
+              amount: {
+                currency: serializeCurrency(amount.currency),
+                value: amount.quotient.toString(),
+              },
+              gasPriceWei: gasPrice?.toString(),
+              maxHops,
+              maxSplits,
+              blockNumber: blockNumber.toString(),
+              poolTypes,
+              candidatePools: candidatePools.map(serializePool),
+            }),
+          })
+          const serializedRes = await serverRes.json()
+          res = parseTrade(currency.chainId, serializedRes)
+        } else {
+          res = await SmartRouter.getBestTrade(deferAmount, currency, tradeType, {
+            gasPriceWei: gasPrice
+              ? JSBI.BigInt(gasPrice)
+              : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+            maxHops,
+            poolProvider,
+            maxSplits,
+            quoteProvider,
+            blockNumber,
+            allowedPoolTypes: poolTypes,
+            quoterOptimization,
+          })
+        }
         if (res) {
           SmartRouter.metric(
             label,
