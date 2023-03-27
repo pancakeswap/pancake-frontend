@@ -2218,5 +2218,6 @@
   "MMs are temporarily unable to facilitate trades. Please try again later": "MMs are temporarily unable to facilitate trades. Please try again later",
   "is reporting a risk level of": "is reporting a risk level of",
   "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.",
-  "Please proceed with caution and always do your own research.": "Please proceed with caution and always do your own research."
+  "Please proceed with caution and always do your own research.": "Please proceed with caution and always do your own research.",
+  "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap": "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap"
 }

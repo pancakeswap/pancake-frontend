@@ -22,7 +22,7 @@ const GasSettings = () => {
               <Text mt="8px">{t('Choose “Default” to use the settings from your current blockchain RPC node.')}</Text>
             </Flex>
           }
-          placement="top-start"
+          placement="top"
           ml="4px"
         />
       </Flex>
