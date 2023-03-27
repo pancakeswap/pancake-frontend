@@ -59,6 +59,14 @@ export const farmsV3 = [
     quoteToken: bscTestnetTokens.cake,
     feeAmount: FeeAmount.LOW,
   },
+  {
+    pid: 8,
+    lpSymbol: 'WBNB-CAKE2 LP',
+    lpAddress: '0xa31AD03f273FeD1283D271A0b9382159Fa72d860',
+    token: bscTestnetTokens.wbnb,
+    quoteToken: bscTestnetTokens.cake2,
+    feeAmount: FeeAmount.MEDIUM,
+  },
 ] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [

@@ -34,4 +34,12 @@ export const bscTestnetTokens = {
   mockB: new ERC20Token(ChainId.BSC_TESTNET, '0x828E3FC56dD48E072e3B6F3C4FD4DDB4733c2C5e', 18, 'MOCK B', 'MOCK B'),
   mockA: new ERC20Token(ChainId.BSC_TESTNET, '0xc1eD9955C11585F47d0d6BfBC29034349A746a81', 18, 'MOCK A', 'MOCK A'),
   msix: new ERC20Token(ChainId.BSC_TESTNET, '0xE4a9f36B61a84Dc2495dAf46417bd258a56bDfdD', 6, 'MSIX', 'MSIX'),
+  cake2: new ERC20Token(
+    ChainId.BSC_TESTNET,
+    '0x8d008B313C1d6C7fE2982F62d32Da7507cF43551',
+    18,
+    'CAKE2',
+    'PancakeSwap Token',
+    'https://pancakeswap.finance/',
+  ),
 }
