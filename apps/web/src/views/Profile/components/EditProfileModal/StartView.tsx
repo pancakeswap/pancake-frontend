@@ -33,6 +33,12 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
   }
 `
 
+const RemoveProfilePicWrapper = styled(Flex)`
+  border-top: 1px;
+  border-style: solid;
+  border-color: ${({ theme }) => theme.colors.cardBorder};
+`
+
 const AvatarWrapper = styled.div`
   height: 64px;
   width: 64px;
@@ -125,9 +131,11 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
               {t('Change Profile Pic')}
             </Button>
           )}
-          <DangerOutline width="100%" mt="24px" onClick={goToRemove}>
-            {t('Remove Profile Pic')}
-          </DangerOutline>
+          <RemoveProfilePicWrapper>
+            <DangerOutline width="100%" mt="16px" onClick={goToRemove}>
+              {t('Remove Profile Pic')}
+            </DangerOutline>
+          </RemoveProfilePicWrapper>
         </>
       ) : showCakeRequireFlow ? (
         <Flex mb="8px">
