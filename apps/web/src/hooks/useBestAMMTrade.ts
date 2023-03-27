@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { useQuery } from '@tanstack/react-query'
-import { useDeferredValue, useEffect, useMemo, useRef } from 'react'
+import { useDeferredValue, useMemo } from 'react'
 import { SmartRouter, PoolType, QuoteProvider, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, TradeType, Currency, JSBI } from '@pancakeswap/sdk'
 import { useDebounce, usePropsChanged } from '@pancakeswap/hooks'
@@ -17,11 +17,12 @@ import {
   CommonPoolsParams,
 } from './useCommonPools'
 
-const REVALIDATE_AFTER_BLOCKS = {
-  [ChainId.BSC_TESTNET]: 8,
-  [ChainId.BSC]: 8,
-  [ChainId.ETHEREUM]: 2,
-  [ChainId.GOERLI]: 3,
+// Revalidate interval in milliseconds
+const REVALIDATE_AFTER = {
+  [ChainId.BSC_TESTNET]: 15_000,
+  [ChainId.BSC]: 15_000,
+  [ChainId.ETHEREUM]: 20_000,
+  [ChainId.GOERLI]: 20_000,
 }
 
 interface FactoryOptions {
@@ -109,14 +110,12 @@ function bestTradeHookFactory({
     enabled = true,
   }: Options) {
     const { gasPrice } = useFeeDataWithGasPrice()
-    const lastBlock = useRef<number>(null)
     const currenciesUpdated = usePropsChanged(baseCurrency, currency)
 
     const blockNumber = useCurrentBlock()
     const {
       refresh,
       pools: candidatePools,
-      blockNumber: poolsBlockNumber,
       loading,
       syncing,
     } = useCommonPools(baseCurrency || amount?.currency, currency, { blockNumber, allowInconsistentBlock: true })
@@ -142,7 +141,6 @@ function bestTradeHookFactory({
       data: trade,
       status,
       fetchStatus,
-      refetch,
       isPreviousData,
       error,
     } = useQuery<SmartRouterTrade<TradeType>, Error>({
@@ -188,38 +186,18 @@ function bestTradeHookFactory({
           )
         }
         SmartRouter.metric(label, res)
-        if (res?.blockNumber) {
-          lastBlock.current = res?.blockNumber
-        }
         return res
       },
       enabled: !!(amount && currency && candidatePools && !loading && deferQuotient && enabled),
       refetchOnWindowFocus: false,
       keepPreviousData: !currenciesUpdated,
       retry: false,
+      staleTime: revalidateOnUpdate ? REVALIDATE_AFTER[amount?.currency.chainId] : 0,
+      refetchInterval: revalidateOnUpdate && REVALIDATE_AFTER[amount?.currency.chainId],
     })
-
-    if (currenciesUpdated) {
-      lastBlock.current = null
-    }
 
     const isValidating = fetchStatus === 'fetching'
     const isLoading = status === 'loading' || isPreviousData
-
-    useEffect(() => {
-      // Revalidate if pools updated
-      if (
-        revalidateOnUpdate &&
-        !isLoading &&
-        !isValidating &&
-        poolsBlockNumber &&
-        lastBlock.current &&
-        poolsBlockNumber - lastBlock.current > REVALIDATE_AFTER_BLOCKS[amount?.currency.chainId]
-      ) {
-        refetch()
-      }
-      // eslint-disable-next-line
-    }, [poolsBlockNumber, isLoading, isValidating, amount?.currency.chainId])
 
     return {
       refresh,
