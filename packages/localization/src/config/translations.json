@@ -2263,5 +2263,6 @@
   "Turning this off will only allow a single route, which may result in low efficiency or higher slippage.": "Turning this off will only allow a single route, which may result in low efficiency or higher slippage.",
   "Route is automatically calculated based on your routing preference to achieve the best price for your trade.": "Route is automatically calculated based on your routing preference to achieve the best price for your trade.",
   "Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.": "Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.",
-  "Fee Breakdown and Tokenomics": "Fee Breakdown and Tokenomics"
+  "Fee Breakdown and Tokenomics": "Fee Breakdown and Tokenomics",
+  "Harvest All": "Harvest All"
 }
