@@ -9,6 +9,7 @@ import {
   Route,
 } from '@pancakeswap/smart-router/evm'
 import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, JSBI, TradeType } from '@pancakeswap/sdk'
+import { AddressZero } from '@ethersproject/constants'
 
 interface SerializedCurrency {
   address: string
@@ -61,7 +62,7 @@ interface SerializedTrade
 
 export function serializeCurrency(currency: Currency): SerializedCurrency {
   return {
-    address: currency.isNative ? '' : currency.wrapped.address,
+    address: currency.isNative ? AddressZero : currency.wrapped.address,
     decimals: currency.decimals,
     symbol: currency.symbol,
   }
@@ -123,7 +124,7 @@ export function serializeTrade(trade: SmartRouterTrade<TradeType>): SerializedTr
 }
 
 export function parseCurrency(chainId: ChainId, currency: SerializedCurrency): Currency {
-  if (currency.address === '') {
+  if (currency.address === AddressZero) {
     return Native.onChain(chainId)
   }
   const { address, decimals, symbol } = currency
