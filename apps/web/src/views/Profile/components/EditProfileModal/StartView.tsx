@@ -125,7 +125,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
               {t('Change Profile Pic')}
             </Button>
           )}
-          <DangerOutline width="100%" onClick={goToRemove}>
+          <DangerOutline width="100%" mt="24px" onClick={goToRemove}>
             {t('Remove Profile Pic')}
           </DangerOutline>
         </>
