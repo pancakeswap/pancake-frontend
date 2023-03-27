@@ -32,13 +32,11 @@ const DangerOutline = styled(Button).attrs({ variant: 'secondary' })`
     opacity: 0.8;
   }
 `
-
-const RemoveProfilePicWrapper = styled(Flex)`
-  border-top: 1px;
+const ChangeProfilePicWrapper = styled(Flex)`
+  border-bottom: 1px;
   border-style: solid;
   border-color: ${({ theme }) => theme.colors.cardBorder};
 `
-
 const AvatarWrapper = styled.div`
   height: 64px;
   width: 64px;
@@ -110,7 +108,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
             </MessageText>
           </Message>
           {showCakeRequireFlow ? (
-            <Flex mb="8px">
+            <ChangeProfilePicWrapper mb="16px" pb="16px">
               <ApproveConfirmButtons
                 isApproveDisabled={isProfileCostsLoading || hasMinimumCakeRequired}
                 isApproving={pendingEnableTx}
@@ -120,7 +118,7 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
                 onConfirm={needsApproval === true ? goToApprove : goToChange}
                 confirmLabel={t('Change Profile Pic')}
               />
-            </Flex>
+            </ChangeProfilePicWrapper>
           ) : (
             <Button
               width="100%"
@@ -131,11 +129,9 @@ const StartPage: React.FC<React.PropsWithChildren<StartPageProps>> = ({ goToAppr
               {t('Change Profile Pic')}
             </Button>
           )}
-          <RemoveProfilePicWrapper>
-            <DangerOutline width="100%" mt="16px" onClick={goToRemove}>
-              {t('Remove Profile Pic')}
-            </DangerOutline>
-          </RemoveProfilePicWrapper>
+          <DangerOutline width="100%" onClick={goToRemove}>
+            {t('Remove Profile Pic')}
+          </DangerOutline>
         </>
       ) : showCakeRequireFlow ? (
         <Flex mb="8px">
