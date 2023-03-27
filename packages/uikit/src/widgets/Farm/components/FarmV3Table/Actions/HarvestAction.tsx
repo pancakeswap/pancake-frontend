@@ -11,6 +11,7 @@ interface HarvestActionProps {
   pendingTx: boolean;
   userDataReady: boolean;
   handleHarvest: () => void;
+  disabled?: boolean;
 }
 
 const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActionProps>> = ({
@@ -19,6 +20,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
   pendingTx,
   userDataReady,
   handleHarvest,
+  disabled,
 }) => {
   const { t } = useTranslation();
 
@@ -39,7 +41,7 @@ const HarvestAction: React.FunctionComponent<React.PropsWithChildren<HarvestActi
             <Balance fontSize="12px" color="textSubtle" decimals={2} value={earningsBusd} unit=" USD" prefix="~" />
           )}
         </div>
-        <Button ml="4px" disabled={pendingTx || !userDataReady} onClick={handleHarvest}>
+        <Button ml="4px" disabled={pendingTx || !userDataReady || disabled} onClick={handleHarvest}>
           {pendingTx ? t("Harvesting") : t("Harvest")}
         </Button>
       </ActionContent>

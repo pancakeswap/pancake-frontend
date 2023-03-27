@@ -247,6 +247,24 @@ export abstract class MasterChefV3 {
   // public static updateCallParameters() {}
 
   public static harvestCallParameters(options: HarvestOptions) {
+    const calldatas: string[] = this.encodeHarvest(options)
+
+    return {
+      calldata: Multicall.encodeMulticall(calldatas),
+      value: toHex(0),
+    }
+  }
+
+  public static batchHarvestCallParameters(options: HarvestOptions[]) {
+    const calldatas: string[] = options.map((option) => this.encodeHarvest(option)).flat()
+
+    return {
+      calldata: Multicall.encodeMulticall(calldatas),
+      value: toHex(0),
+    }
+  }
+
+  private static encodeHarvest(options: HarvestOptions) {
     const { tokenId, to } = options
 
     const calldatas: string[] = []
@@ -256,10 +274,7 @@ export abstract class MasterChefV3 {
       MasterChefV3.INTERFACE.encodeFunctionData('harvest', [tokenId.toString(), validateAndParseAddress(to)])
     )
 
-    return {
-      calldata: Multicall.encodeMulticall(calldatas),
-      value: toHex(0),
-    }
+    return calldatas
   }
 
   public static withdrawCallParameters(options: WidthDrawOptions) {

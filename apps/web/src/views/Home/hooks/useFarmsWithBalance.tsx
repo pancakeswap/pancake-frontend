@@ -16,7 +16,6 @@ import { useMemo } from 'react'
 import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
 import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { Masterchef, BCakeProxy } from 'config/abi/types'
-import { MasterChefV3 } from '@pancakeswap/v3-sdk'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { useBCakeProxyContractAddress } from '../../Farms/hooks/useBCakeProxyContractAddress'
 import splitProxyFarms from '../../Farms/components/YieldBooster/helpers/splitProxyFarms'
@@ -36,7 +35,7 @@ const useFarmsWithBalance = () => {
   const masterchefV3 = useMasterchefV3()
   const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3, account)
 
-  const v3PendingCakes = useStakedPositionsByUser(stakedTokenIds)
+  const { tokenIdResults: v3PendingCakes } = useStakedPositionsByUser(stakedTokenIds)
 
   const getFarmsWithBalances = async (
     farms: SerializedFarmConfig[],
@@ -115,12 +114,10 @@ const useFarmsWithBalance = () => {
   const v3FarmsWithBalance = stakedTokenIds
     .map((tokenId, i) => {
       if (v3PendingCakes?.[i]?.gt(0)) {
-        const { calldata, value } = MasterChefV3.harvestCallParameters({ tokenId: tokenId.toString(), to: account })
         return {
           sendTx: {
-            to: masterchefV3.address,
-            data: calldata,
-            value,
+            tokenId: tokenId.toString(),
+            to: account,
           },
         }
       }

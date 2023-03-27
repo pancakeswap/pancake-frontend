@@ -2,6 +2,7 @@
   "extends": "tsconfig/base",
   "exclude": ["**/*.test.ts"],
   "compilerOptions": {
+    "lib": ["ESNext"],
     "target": "es2018",
     "module": "esnext",
     "importHelpers": true,

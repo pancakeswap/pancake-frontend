@@ -171,7 +171,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
     return callData
   }, [account, masterchefV3.interface, stakedTokenIds])
 
-  const { data: tokenIdResults = [] } = useSWR(
+  const { data } = useSWR(
     account && ['mcv3-harvest', harvestCalls],
     () => {
       return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
@@ -198,7 +198,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
     },
   )
 
-  return tokenIdResults
+  return { tokenIdResults: data || [], isLoading: harvestCalls.length > 0 && !data }
 }
 
 const usePositionsByUserFarms = (
@@ -221,7 +221,7 @@ const usePositionsByUserFarms = (
 
   const { positions } = useV3PositionsFromTokenIds(uniqueTokenIds)
 
-  const tokenIdResults = useStakedPositionsByUser(stakedIds)
+  const { tokenIdResults, isLoading: isStakedPositionLoading } = useStakedPositionsByUser(stakedIds)
 
   const [unstakedPositions, stakedPositions] = useMemo(() => {
     return partition(positions?.filter((p) => p.liquidity.gt(0)) ?? [], (p) => tokenIds.find((i) => i.eq(p.tokenId)))
@@ -238,7 +238,7 @@ const usePositionsByUserFarms = (
   )
 
   // assume that if any of the tokenIds have a valid result, the data is ready
-  const userDataLoaded = stakedIds.length > 0 ? tokenIdResults.length > 0 : true
+  const userDataLoaded = !isStakedPositionLoading
 
   const farmsWithPositions = useMemo(
     () =>
