@@ -77,7 +77,7 @@ const RewardCalculate = () => {
         <img src="/images/affiliates-program/m-5.png" width="72px" height="63px" alt="" />
       </Decorations>
       <Flex
-        mt={['20px', '40px', '60px', '150px']}
+        mt={['20px', '40px', '60px', '70px']}
         flexDirection={['column', 'column', 'column', 'column', 'row']}
         justifyContent="center"
       >
