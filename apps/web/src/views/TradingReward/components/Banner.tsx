@@ -17,6 +17,7 @@ const Decorations = styled(Box)`
   left: 0;
   width: 100%;
   height: 100%;
+  display: none;
   pointer-events: none;
   overflow: hidden;
   > img {
@@ -26,22 +27,20 @@ const Decorations = styled(Box)`
     top: 10%;
     left: 55%;
     animation: ${floatingStarsRight} 2.5s ease-in-out infinite;
-    ${({ theme }) => theme.mediaQueries.xl} {
-    }
   }
   & :nth-child(2) {
     top: 50%;
     right: 22%;
     animation: ${floatingStarsLeft} 3s ease-in-out infinite;
-    // ${({ theme }) => theme.mediaQueries.xl} {
-    // }
   }
   & :nth-child(3) {
     left: 48%;
     bottom: 15%;
     animation: ${floatingStarsRight} 3.5s ease-in-out infinite;
-    // ${({ theme }) => theme.mediaQueries.xl} {
-    // }
+  }
+
+  ${({ theme }) => theme.mediaQueries.xl} {
+    display: block;
   }
 }`
 
@@ -66,21 +65,29 @@ const TradingRewardBanner = () => {
       <Flex
         position="relative"
         zIndex="1"
-        width={['100%', '100%', '100%', '1140px']}
         margin="auto"
         justifyContent="space-between"
+        width={['100%', '100%', '100%', '100%', '100%', '100%', '1140px']}
+        flexDirection={[
+          'column-reverse',
+          'column-reverse',
+          'column-reverse',
+          'column-reverse',
+          'column-reverse',
+          'row',
+        ]}
       >
         <Flex flexDirection="column" alignSelf="center">
-          <Text bold fontSize="60px" color="secondary">
+          <Text bold fontSize={['40px', '40px', '40px', '60px']} color="secondary" lineHeight="110%">
             {t('Trading Reward')}
           </Text>
-          <Text bold fontSize="40px" color="secondary" mb="16px">
+          <Text bold fontSize="40px" color="secondary" mb="16px" lineHeight="110%">
             $42,000
-            <Text bold fontSize="40px" color="secondary" as="span" ml="4px">
+            <Text bold fontSize="40px" color="secondary" as="span" ml="4px" lineHeight="110%">
               {t('in total to be earn!')}
             </Text>
           </Text>
-          <Text maxWidth="404px" bold fontSize="24px" mb="32px" lineHeight="26.4px">
+          <Text bold mb="32px" maxWidth="404px" lineHeight="26.4px" fontSize={['16px', '16px', '16px', '24px']}>
             {t('Earn CAKE while trading your favorite tokens on PancakeSwap.')}
           </Text>
           <Flex>
@@ -90,7 +97,11 @@ const TradingRewardBanner = () => {
             </Button>
           </Flex>
         </Flex>
-        <Box width={['554px']} height={['573px']}>
+        <Box
+          width={['320px', '320px', '320px', '420px', '420px', '554px']}
+          height={['339px', '339px', '339px', '439px', '439px', '573px']}
+          m={['auto']}
+        >
           <Image src={bunnyImage} alt="banner-image" />
         </Box>
       </Flex>

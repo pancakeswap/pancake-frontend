@@ -1,3 +1,4 @@
+import styled from 'styled-components'
 import { Box, Flex, Text, Card, TwitterIcon } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/image'
@@ -35,25 +36,45 @@ const stepList = [
   },
 ]
 
+const StyledCard = styled(Card)`
+  width: 100%;
+  background: transparent;
+  > div {
+    background: transparent;
+  }
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    background: ${({ theme }) => theme.colors.cardBorder};
+    > div {
+      background: ${({ theme }) => theme.colors.backgroundAlt};
+    }
+  }
+`
+
 const HowToEarn = () => {
   const { t } = useTranslation()
 
   return (
-    <Box mt={['143px']}>
-      <Box width={['1140px']} margin={['auto']}>
-        <Card style={{ width: '100%' }}>
-          <Flex padding={['50px 0']} flexDirection="column">
+    <Box padding="0 16px" mt={['72px', '72px', '72px', '143px']}>
+      <Box margin={['auto']} width={['100%', '100%', '100%', '100%', '100%', '100%', '1140px']}>
+        <StyledCard>
+          <Flex flexDirection="column" padding={['50px 0 0 0', '50px 0 0 0', '50px 0 0 0', '50px 0']}>
             <Text bold mb={['24px']} color="secondary" textAlign="center" fontSize={['40px']}>
               {t('How to Earn')}
             </Text>
-            <Flex>
+            <Flex flexWrap="wrap" flexDirection={['column', 'column', 'column', 'row']}>
               {stepList.map((step, index) => (
-                <Flex key={step.imgUrl} width={['25%']} flexDirection="column" padding={['0 22px']}>
+                <Flex
+                  key={step.imgUrl}
+                  width={['100%', '100%', '100%', '50%', '25%']}
+                  flexDirection="column"
+                  padding={['42px 22px', '42px 22px', '42px 22px', '0 22px']}
+                >
                   <Text fontSize="12px" mb="32px" bold textAlign="right">{`Step${index + 1}`}</Text>
                   <Box margin="auto">
                     <Image src={step.imgUrl} width={180} height={180} alt={`step${index + 1}`} />
                   </Box>
-                  <Text bold fontSize={['24px']} color="primary" mb={['16px']}>
+                  <Text bold fontSize={['24px']} color="secondary" mb={['16px']}>
                     {step.title}
                   </Text>
                   <Text color="textSubtle">{step.subTitle}</Text>
@@ -61,11 +82,15 @@ const HowToEarn = () => {
               ))}
             </Flex>
           </Flex>
-        </Card>
+        </StyledCard>
       </Box>
-      <Flex justifyContent="center" mt="42px">
+      <Flex
+        justifyContent="center"
+        width={['226px', '226px', '226px', '100%']}
+        margin={['auto', 'auto', 'auto', '42px 0 0 0 ']}
+      >
         <TwitterIcon width={24} height={24} color="primary" />
-        <Text bold color="primary" ml="4px">
+        <Text textAlign={['center', 'center', 'center', 'left']} bold color="primary" ml="4px">
           {t('+Follow For New Pairs and Reward Pool Updates')}
         </Text>
       </Flex>
