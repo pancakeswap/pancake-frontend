@@ -1,4 +1,4 @@
-import { Box, Flex, Card, Text, Balance, InfoIcon, Message, MessageText, TooltipText } from '@pancakeswap/uikit'
+import { Box, Flex, Card, Text, Balance, InfoIcon, Message, MessageText, TooltipText, Button } from '@pancakeswap/uikit'
 import { GreyCard } from 'components/Card'
 import { useTranslation } from '@pancakeswap/localization'
 import { useTooltip } from '@pancakeswap/uikit/src/hooks'
@@ -52,11 +52,16 @@ const ExpiringUnclaim = () => {
               {t('Total')}
             </Text>
             <GreyCard>
-              <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
-                {t('Your unclaimed trading rewards')}
-              </Text>
-              <Balance bold fontSize={['40px']} prefix="$ " decimals={2} value={300} />
-              <Balance fontSize="14px" color="textSubtle" prefix="~ " unit=" CAKE" decimals={2} value={300} />
+              <Flex>
+                <Box>
+                  <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
+                    {t('Your unclaimed trading rewards')}
+                  </Text>
+                  <Balance bold fontSize={['40px']} prefix="$ " decimals={2} value={300} />
+                  <Balance fontSize="14px" color="textSubtle" prefix="~ " unit=" CAKE" decimals={2} value={300} />
+                </Box>
+                <Button m="auto 0 auto auto">{t('Claim')}</Button>
+              </Flex>
               <Message variant="danger" mt="16px">
                 <MessageText>
                   <TooltipText bold as="span">
