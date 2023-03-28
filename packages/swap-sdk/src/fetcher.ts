@@ -1,8 +1,7 @@
 import { Contract } from '@ethersproject/contracts'
 import { getNetwork } from '@ethersproject/networks'
 import { getDefaultProvider } from '@ethersproject/providers'
-import { Token } from '@pancakeswap/swap-sdk-core'
-import { TokenAmount } from 'entities/tokenAmount'
+import { CurrencyAmount, Token } from '@pancakeswap/swap-sdk-core'
 import invariant from 'tiny-invariant'
 import { Pair } from './entities/pair'
 import { ChainId } from './constants'
@@ -69,6 +68,9 @@ export abstract class Fetcher {
     const address = Pair.getAddress(tokenA, tokenB)
     const [reserves0, reserves1] = await new Contract(address, IPancakePair, provider).getReserves()
     const balances = tokenA.sortsBefore(tokenB) ? [reserves0, reserves1] : [reserves1, reserves0]
-    return new Pair(new TokenAmount(tokenA, balances[0]), new TokenAmount(tokenB, balances[1]))
+    return new Pair(
+      CurrencyAmount.fromRawAmount(tokenA, balances[0]),
+      CurrencyAmount.fromRawAmount(tokenB, balances[1])
+    )
   }
 }
