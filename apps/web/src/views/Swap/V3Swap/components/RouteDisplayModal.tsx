@@ -138,10 +138,9 @@ function PairNode({
   tooltipText,
 }: {
   pair: Pair
-
   text: string
-  className
-  tooltipText
+  className: string
+  tooltipText: string
 }) {
   const [input, output] = pair
 
