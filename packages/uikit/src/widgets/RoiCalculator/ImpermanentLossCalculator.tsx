@@ -17,7 +17,7 @@ import {
   CurrencyLogoDisplay,
   CardTag,
 } from "./AssetCard";
-import { getTokenAmountsFromDepositUsd, toPercent, toToken0Price } from "./utils";
+import { getTokenAmountsFromDepositUsd, floatToPercent, toToken0Price } from "./utils";
 import { TwoColumns } from "./TwoColumns";
 
 const Container = styled(Box)`
@@ -131,7 +131,10 @@ export function ImpermanentLossCalculator({
     }));
   }, [entry, exit]);
   const hodlRate = useMemo(
-    () => (hodlValue && principal ? toPercent(hodlValue, principal).subtract(ONE_HUNDRED_PERCENT) : ZERO_PERCENT),
+    () =>
+      hodlValue && principal
+        ? floatToPercent(hodlValue / principal)?.subtract(ONE_HUNDRED_PERCENT) || ZERO_PERCENT
+        : ZERO_PERCENT,
     [hodlValue, principal]
   );
   const exitValue = useMemo(() => {
@@ -149,7 +152,9 @@ export function ImpermanentLossCalculator({
   }, [exit, lpReward]);
   const exitRate = useMemo(() => {
     if (exitValue === Infinity) return Infinity;
-    return exitValue && principal ? toPercent(exitValue, principal).subtract(ONE_HUNDRED_PERCENT) : ZERO_PERCENT;
+    return exitValue && principal
+      ? floatToPercent(exitValue / principal)?.subtract(ONE_HUNDRED_PERCENT) || ZERO_PERCENT
+      : ZERO_PERCENT;
   }, [exitValue, principal]);
   const lpBetter = useMemo(
     () => (exitRate === Infinity ? true : !hodlRate.greaterThan(exitRate)),

@@ -1,4 +1,5 @@
 import { Price, Token, JSBI, Currency, Percent, Fraction } from "@pancakeswap/sdk";
+import { parseUnits } from "@ethersproject/units";
 import {
   encodeSqrtRatioX96,
   FeeAmount,
@@ -67,6 +68,27 @@ export function tryParseTick(
   return nearestUsableTick(tick, TICK_SPACINGS[feeAmount]);
 }
 
+export function floatToFraction(num: number, decimals = 18) {
+  try {
+    const numFixed = num.toFixed(decimals);
+    const numToParse =
+      parseFloat(numFixed) > 10 ** decimals ? JSBI.BigInt(Math.floor(parseFloat(numFixed))).toString() : numFixed;
+    const typedValueParsed = parseUnits(numToParse, decimals).toString();
+    return new Fraction(typedValueParsed, JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimals)));
+  } catch (e) {
+    console.debug(`Failed to parse ${num} to fraction`, e);
+  }
+  return undefined;
+}
+
+export function floatToPercent(num: number, decimals = 18) {
+  const fraction = floatToFraction(num, decimals);
+  if (!fraction) {
+    return undefined;
+  }
+  return new Percent(fraction.numerator, fraction.denominator);
+}
+
 export function toSignificant(decimal: number | string, significant = 6) {
   return parseFloat(parseFloat(String(decimal)).toPrecision(significant));
 }
@@ -77,13 +99,12 @@ export function toToken0Price(
   currencyAUsdPrice?: number,
   currencyBUsdPrice?: number
 ): Price<Token, Token> | undefined {
-  const scaler = 1_000_000_000;
   if (!currencyA || !currencyB || typeof currencyAUsdPrice !== "number" || typeof currencyBUsdPrice !== "number") {
     return undefined;
   }
   const isToken0 = currencyA.wrapped.sortsBefore(currencyB.wrapped);
-  const amountA = tryParseAmount(String(scaler / currencyAUsdPrice), currencyA);
-  const amountB = tryParseAmount(String(scaler / currencyBUsdPrice), currencyB);
+  const amountA = tryParseAmount((1 / currencyAUsdPrice).toFixed(currencyA.decimals), currencyA);
+  const amountB = tryParseAmount((1 / currencyBUsdPrice).toFixed(currencyB.decimals), currencyB);
   const [baseAmount, quoteAmount] = isToken0
     ? [amountA?.wrapped, amountB?.wrapped]
     : [amountB?.wrapped, amountA?.wrapped];
@@ -91,14 +112,4 @@ export function toToken0Price(
     return undefined;
   }
   return new Price({ baseAmount, quoteAmount });
-}
-
-export function toPercent(numerator: number, denominator: number) {
-  const scaler = 1_000_000_000_000;
-  return new Percent(JSBI.BigInt(Math.floor((numerator / denominator) * scaler)), JSBI.BigInt(scaler));
-}
-
-export function toFraction(numerator: number, denominator: number) {
-  const scaler = 1_000_000_000_000;
-  return new Fraction(JSBI.BigInt(Math.floor((numerator / denominator) * scaler)), JSBI.BigInt(scaler));
 }
