@@ -520,7 +520,7 @@ export default function PoolPage() {
                         <Flex>
                           <CurrencyLogo currency={currencyQuote} />
                           <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                            {positionValueUpper?.currency?.symbol}
+                            {unwrappedToken(positionValueUpper?.currency)?.symbol}
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
@@ -533,7 +533,7 @@ export default function PoolPage() {
                         <Flex>
                           <CurrencyLogo currency={currencyBase} />
                           <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                            {positionValueLower?.currency?.symbol}
+                            {unwrappedToken(positionValueLower?.currency)?.symbol}
                           </Text>
                         </Flex>
                         <Flex justifyContent="center">
