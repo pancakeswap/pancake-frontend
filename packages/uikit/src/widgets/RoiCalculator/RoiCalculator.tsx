@@ -97,13 +97,14 @@ export function RoiCalculator({
     () => currencyA && currencyB && currencyB.wrapped.sortsBefore(currencyA.wrapped),
     [currencyA, currencyB]
   );
-  const priceCurrent = useMemo(
-    () =>
-      tickCurrent && currencyA && currencyB && invertPrice
-        ? tickToPrice(currencyB, currencyA, tickCurrent)
-        : tickToPrice(currencyA, currencyB, tickCurrent),
-    [invertPrice, tickCurrent, currencyA, currencyB]
-  );
+  const priceCurrent = useMemo<Price<Token, Token> | undefined>(() => {
+    if (typeof tickCurrent !== "number" || !currencyA || !currencyB) {
+      return undefined;
+    }
+    return invertPrice
+      ? tickToPrice(currencyB.wrapped, currencyA.wrapped, tickCurrent)
+      : tickToPrice(currencyA.wrapped, currencyB.wrapped, tickCurrent);
+  }, [invertPrice, tickCurrent, currencyA, currencyB]);
   const ticks = useMemo(
     () =>
       ticksRaw?.map(
