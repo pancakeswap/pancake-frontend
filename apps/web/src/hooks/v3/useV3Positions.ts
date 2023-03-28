@@ -43,10 +43,16 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
     loading: isLoading,
     positions: useMemo(
       () =>
-        (positions as Omit<PositionDetails, 'tokenId'>[])?.map((position, i) => ({
-          ...position,
-          tokenId: inputs?.[i]?.args[0],
-        })),
+        (positions as Omit<PositionDetails, 'tokenId'>[])
+          ?.map((position, i) =>
+            position
+              ? {
+                  ...position,
+                  tokenId: inputs?.[i]?.args[0],
+                }
+              : null,
+          )
+          .filter(Boolean),
       [inputs, positions],
     ),
   }
@@ -126,7 +132,7 @@ export function useV3Positions(account: string | null | undefined): UseV3Positio
       loading: tokenIdsLoading || positionsLoading,
       positions: positions?.map((position) => ({
         ...position,
-        isStaked: Boolean(stakedTokenIds?.find((p) => p.eq(position.tokenId))),
+        isStaked: Boolean(stakedTokenIds?.find((s) => s.eq(position.tokenId))),
       })),
     }),
     [positions, positionsLoading, stakedTokenIds, tokenIdsLoading],
