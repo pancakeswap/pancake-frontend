@@ -28,6 +28,7 @@ const StyledHeading = styled(Text)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin: auto;
+  text-align: center;
 
   &::after {
     content: attr(data-text);

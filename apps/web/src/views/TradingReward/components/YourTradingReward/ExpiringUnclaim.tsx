@@ -12,8 +12,14 @@ const ExpiringUnclaim = () => {
   })
 
   return (
-    <Flex width={['100%', '900px']} margin={['32px auto 61px auto']} justifyContent="space-between">
-      <Box width={['48.5%']}>
+    <Flex
+      padding="0 16px"
+      width={['100%', '100%', '100%', '900px']}
+      margin={['32px auto 61px auto']}
+      justifyContent="space-between"
+      flexDirection={['column', 'column', 'column', 'row']}
+    >
+      <Box width={['100%', '100%', '100%', '48.5%']} mb={['24px', '24px', '24px', '0']}>
         <Card style={{ width: '100%' }}>
           <Box padding={['24px']}>
             <Box mb="24px">
@@ -45,14 +51,14 @@ const ExpiringUnclaim = () => {
           </Box>
         </Card>
       </Box>
-      <Box width={['48.5%']}>
+      <Box width={['100%', '100%', '100%', '48.5%']}>
         <Card style={{ width: '100%' }}>
           <Box padding={['24px']}>
             <Text bold textAlign="right" mb="24px">
               {t('Total')}
             </Text>
             <GreyCard>
-              <Flex>
+              <Flex flexDirection={['column', 'column', 'column', 'row']}>
                 <Box>
                   <Text textTransform="uppercase" fontSize="12px" color="secondary" bold mb="4px">
                     {t('Your unclaimed trading rewards')}
@@ -60,7 +66,12 @@ const ExpiringUnclaim = () => {
                   <Balance bold fontSize={['40px']} prefix="$ " decimals={2} value={300} />
                   <Balance fontSize="14px" color="textSubtle" prefix="~ " unit=" CAKE" decimals={2} value={300} />
                 </Box>
-                <Button m="auto 0 auto auto">{t('Claim')}</Button>
+                <Button
+                  width={['100%', '100%', '100%', 'fit-content']}
+                  m={['10px 0 0 0', '10px 0 0 0', '10px 0 0 0', 'auto 0 auto auto']}
+                >
+                  {t('Claim')}
+                </Button>
               </Flex>
               <Message variant="danger" mt="16px">
                 <MessageText>
