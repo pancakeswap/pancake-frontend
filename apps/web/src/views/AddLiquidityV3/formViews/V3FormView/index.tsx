@@ -34,13 +34,11 @@ import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useV3NFTPositionManagerContract } from 'hooks/useContract'
-// import { TransactionResponse } from '@ethersproject/providers'
 import { calculateGasMargin } from 'utils'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-// import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useSigner } from 'wagmi'
 import styled from 'styled-components'
 import { TransactionResponse } from '@ethersproject/providers'
@@ -221,15 +219,7 @@ export default function V3FormView({
     },
     {},
   )
-  // const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-  //   (accumulator, field) => {
-  //     return {
-  //       ...accumulator,
-  //       [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-  //     }
-  //   },
-  //   {},
-  // )
+
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
   //   // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)

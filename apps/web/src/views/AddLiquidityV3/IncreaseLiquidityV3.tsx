@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, Percent } from '@pancakeswap/sdk'
 import { AutoColumn, Box, Button, CardBody, ConfirmationModalContent, useModal } from '@pancakeswap/uikit'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
@@ -11,18 +11,16 @@ import { useCallback, useState } from 'react'
 import _isNaN from 'lodash/isNaN'
 import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
-// import { maxAmountSpend } from 'utils/maxAmountSpend'
+import { maxAmountSpend } from 'utils/maxAmountSpend'
 import { Field } from 'state/mint/actions'
 
 import { useTransactionAdder } from 'state/transactions/hooks'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-// import { TransactionResponse } from '@ethersproject/providers'
 import { calculateGasMargin } from 'utils'
 import { useRouter } from 'next/router'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization'
-// import useBUSDPrice from 'hooks/useBUSDPrice'
 import { useSigner } from 'wagmi'
 import Page from 'views/Page'
 import { AppHeader } from 'components/App'
@@ -95,6 +93,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     depositADisabled,
     depositBDisabled,
     ticksAtLimit,
+    currencyBalances,
   } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
@@ -113,30 +112,17 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     [independentField]: typedValue,
     [dependentField]: parsedAmounts[dependentField]?.toSignificant(6) ?? '',
   }
-  // const usdcValues = {
-  //   [Field.CURRENCY_A]: useBUSDPrice(parsedAmounts[Field.CURRENCY_A]?.currency),
-  //   [Field.CURRENCY_B]: useBUSDPrice(parsedAmounts[Field.CURRENCY_B]?.currency),
-  // }
-  //   // get the max amounts user can add
-  // const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-  //   (accumulator, field) => {
-  //     return {
-  //       ...accumulator,
-  //       [field]: maxAmountSpend(currencyBalances[field]),
-  //     }
-  //   },
-  //   {},
-  // )
 
-  // const atMaxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
-  //   (accumulator, field) => {
-  //     return {
-  //       ...accumulator,
-  //       [field]: maxAmounts[field]?.equalTo(parsedAmounts[field] ?? '0'),
-  //     }
-  //   },
-  //   {},
-  // )
+  // get the max amounts user can add
+  const maxAmounts: { [field in Field]?: CurrencyAmount<Currency> } = [Field.CURRENCY_A, Field.CURRENCY_B].reduce(
+    (accumulator, field) => {
+      return {
+        ...accumulator,
+        [field]: maxAmountSpend(currencyBalances[field]),
+      }
+    },
+    {},
+  )
 
   const positionManager = useV3NFTPositionManagerContract()
   //   // check whether the user has approved the router on the tokens
@@ -347,7 +333,12 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
               <LockedDeposit locked={depositADisabled} mb="8px">
                 <CurrencyInputPanel
                   disableCurrencySelect
-                  // showBUSD
+                  showUSDPrice
+                  maxAmount={maxAmounts[Field.CURRENCY_A]}
+                  onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
+                  onPercentInput={(percent) =>
+                    onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                  }
                   value={formattedAmounts[Field.CURRENCY_A]}
                   onUserInput={onFieldAInput}
                   showQuickInputButton
@@ -361,7 +352,12 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
               <LockedDeposit locked={depositBDisabled} mt="8px">
                 <CurrencyInputPanel
                   disableCurrencySelect
-                  // showBUSD
+                  showUSDPrice
+                  maxAmount={maxAmounts[Field.CURRENCY_B]}
+                  onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
+                  onPercentInput={(percent) =>
+                    onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+                  }
                   value={formattedAmounts[Field.CURRENCY_B]}
                   onUserInput={onFieldBInput}
                   showQuickInputButton
