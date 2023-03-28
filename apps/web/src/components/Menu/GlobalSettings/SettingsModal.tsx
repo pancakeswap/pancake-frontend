@@ -19,6 +19,9 @@ import {
   MessageText,
   NotificationDot,
   ButtonProps,
+  Checkbox,
+  AutoRow,
+  RowFixed,
 } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -419,8 +422,16 @@ function RoutingSettings() {
         </AtomBox>
         <AtomBox>
           <PreTitle mb="24px">{t('Routing preference')}</PreTitle>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
+          <AutoRow alignItems="center" as="label" mb="24px" gap="16px">
+            <Checkbox
+              id="toggle-disable-multihop-button"
+              checked={!singleHopOnly}
+              scale="sm"
+              onChange={() => {
+                setSingleHopOnly((s) => !s)
+              }}
+            />
+            <RowFixed>
               <Text>{t('Allow Multihops')}</Text>
               <QuestionHelper
                 text={
@@ -440,18 +451,18 @@ function RoutingSettings() {
                 placement="top-start"
                 ml="4px"
               />
-            </Flex>
-            <Toggle
+            </RowFixed>
+          </AutoRow>
+          <AutoRow alignItems="center" mb="24px" as="label" gap="16px">
+            <Checkbox
               id="toggle-disable-multihop-button"
-              checked={!singleHopOnly}
-              scale="md"
+              checked={split}
+              scale="sm"
               onChange={() => {
-                setSingleHopOnly((s) => !s)
+                setSplit((s) => !s)
               }}
             />
-          </Flex>
-          <Flex justifyContent="space-between" alignItems="center" mb="24px">
-            <Flex alignItems="center">
+            <RowFixed alignItems="center">
               <Text>{t('Allow Split Routing')}</Text>
               <QuestionHelper
                 text={
@@ -471,16 +482,8 @@ function RoutingSettings() {
                 placement="top-start"
                 ml="4px"
               />
-            </Flex>
-            <Toggle
-              id="toggle-disable-multihop-button"
-              checked={split}
-              scale="md"
-              onChange={() => {
-                setSplit((s) => !s)
-              }}
-            />
-          </Flex>
+            </RowFixed>
+          </AutoRow>
         </AtomBox>
       </AutoColumn>
     </Modal>
