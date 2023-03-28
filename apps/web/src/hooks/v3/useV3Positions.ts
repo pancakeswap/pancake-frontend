@@ -81,6 +81,7 @@ export function useV3TokenIdsByAccount(
     functionName: 'balanceOf',
     enabled: !!account,
     watch: true,
+    keepPreviousData: true,
   })
 
   // we don't expect any account balance to ever exceed the bounds of max safe int
@@ -107,6 +108,7 @@ export function useV3TokenIdsByAccount(
     watch: true,
     allowFailure: true,
     enabled: !!tokenIdsArgs.length,
+    keepPreviousData: true,
   })
 
   return {
