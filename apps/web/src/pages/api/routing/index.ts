@@ -5,7 +5,7 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { PoolType, SmartRouter } from '@pancakeswap/smart-router/evm'
 
 import { parsePool, parseCurrencyAmount, parseCurrency, serializeTrade } from 'utils/routingApi'
-import { provider } from 'utils/wagmi'
+import { provider } from 'utils/providers'
 
 export const config = {
   runtime: 'experimental-edge',
