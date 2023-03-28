@@ -106,10 +106,14 @@ export default function LiquidityChartRangeInput({
         rightRangeValue < 1e35
 
       if (updateLeft && updateRight) {
-        onBothRangeInput({
-          leftTypedValue: leftRangeValue.toFixed(6),
-          rightTypedValue: rightRangeValue.toFixed(6),
-        })
+        const parsedLeftRangeValue = parseFloat(leftRangeValue.toFixed(6))
+        const parsedRightRangeValue = parseFloat(rightRangeValue.toFixed(6))
+        if (parsedLeftRangeValue > 0 && parsedRightRangeValue > 0 && parsedLeftRangeValue < parsedRightRangeValue) {
+          onBothRangeInput({
+            leftTypedValue: leftRangeValue.toFixed(6),
+            rightTypedValue: rightRangeValue.toFixed(6),
+          })
+        }
       } else if (updateLeft) {
         onLeftRangeInput(leftRangeValue.toFixed(6))
       } else if (updateRight) {

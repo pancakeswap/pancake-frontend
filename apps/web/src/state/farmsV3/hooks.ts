@@ -159,7 +159,7 @@ export const useFarmsV3 = () => {
 
 export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
   const { account } = useActiveWeb3React()
-  const masterchefV3 = useMasterchefV3()
+  const masterchefV3 = useMasterchefV3(false)
 
   const harvestCalls = useMemo(() => {
     if (!account) return []
