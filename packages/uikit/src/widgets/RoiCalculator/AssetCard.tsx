@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
-import { Box, Card, CurrencyLogo, Row, RowBetween, RowFixed, Table, Td, Text, Th } from "../../components";
+import { Box, Card, CurrencyLogo, Row, RowBetween, RowFixed, Table, Td, Text, Th, PencilIcon } from "../../components";
 import { Tag, TagProps } from "../../components/Tag";
 import { StyledInput } from "./StyledInput";
 import { toSignificant } from "./utils";
@@ -46,6 +46,8 @@ export interface Asset {
   value: number | string;
 
   amount: number | string;
+
+  priceChanged?: boolean;
 }
 
 export function CurrencyLogoDisplay({ logo, name }: { logo?: ReactNode; name?: string }) {
@@ -75,7 +77,7 @@ export function AssetCard({
 }: Props) {
   const { t } = useTranslation();
 
-  const assetNodes = assets.map(({ price, value, amount, currency }, index) => (
+  const assetNodes = assets.map(({ price, value, amount, currency, priceChanged }, index) => (
     <AssetRow
       key={currency.symbol}
       price={price}
@@ -83,10 +85,11 @@ export function AssetCard({
       amount={amount}
       showPrice={showPrice}
       priceEditable={priceEditable}
+      priceChanged={priceChanged}
       name={<CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />}
       onPriceChange={(newPrice) =>
         onChange(
-          assets.map<Asset>((a, i) => (i === index ? { ...a, price: newPrice } : a)),
+          assets.map<Asset>((a, i) => (i === index ? { ...a, price: newPrice, priceChanged: true } : a)),
           { index }
         )
       }
@@ -126,6 +129,7 @@ interface AssetRowProps {
   name: ReactNode;
   amount?: string | number;
   price?: string;
+  priceChanged?: boolean;
   priceEditable?: boolean;
   decimals?: number;
   value?: string | number;
@@ -140,6 +144,7 @@ export function AssetRow({
   decimals = 6,
   name,
   showPrice = true,
+  priceChanged = false,
   priceEditable = true,
   onPriceChange = () => {
     // default
@@ -154,6 +159,8 @@ export function AssetRow({
     [onPriceChange]
   );
 
+  const textColor = priceChanged ? "primary" : "textSubtle";
+
   return (
     <tr>
       <Td>
@@ -162,15 +169,17 @@ export function AssetRow({
       {showPrice && (
         <Td style={{ minWidth: "98px" }}>
           <Row>
-            <Text>$</Text>
+            <Text color={textColor}>$</Text>
             <StyledInput
               pattern={`^[0-9]*[.,]?[0-9]{0,${decimals}}$`}
               inputMode="decimal"
               min="0"
+              color={textColor}
               value={price}
               onChange={onPriceUpdate}
               disabled={!priceEditable}
             />
+            {priceChanged && <PencilIcon width="10px" color="primary" ml="0.25em" />}
           </Row>
         </Td>
       )}

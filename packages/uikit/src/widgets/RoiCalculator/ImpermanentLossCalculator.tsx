@@ -6,17 +6,7 @@ import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
 
 import { Section } from "./Section";
-import {
-  Box,
-  Row,
-  AutoColumn,
-  Toggle,
-  Button,
-  RowBetween,
-  DoubleCurrencyLogo,
-  PencilIcon,
-  Flex,
-} from "../../components";
+import { Box, Row, AutoColumn, Toggle, Button, RowBetween, DoubleCurrencyLogo, Flex } from "../../components";
 import {
   AssetCard,
   Asset,
@@ -266,7 +256,6 @@ export function ImpermanentLossCalculator({
               <>
                 <SectionTitle>{t("Entry price")}</SectionTitle>
                 <Flex>
-                  <PencilIcon width="12px" color="primary" mr="0.5em" />
                   <Button variant="secondary" scale="xs" onClick={resetEntry} style={{ textTransform: "uppercase" }}>
                     {t("Current")}
                   </Button>
@@ -283,7 +272,6 @@ export function ImpermanentLossCalculator({
               <>
                 <SectionTitle>{t("Exit price")}</SectionTitle>
                 <Flex>
-                  <PencilIcon width="12px" color="primary" mr="0.5em" />
                   <Button variant="secondary" scale="xs" onClick={resetExit} style={{ textTransform: "uppercase" }}>
                     {t("Current")}
                   </Button>
