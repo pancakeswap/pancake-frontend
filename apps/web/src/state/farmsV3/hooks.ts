@@ -17,7 +17,6 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useV3PositionsFromTokenIds, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
-import partition from 'lodash/partition'
 import toLower from 'lodash/toLower'
 import { useMemo } from 'react'
 import useSWR from 'swr'
@@ -224,8 +223,13 @@ const usePositionsByUserFarms = (
   const { tokenIdResults, isLoading: isStakedPositionLoading } = useStakedPositionsByUser(stakedIds)
 
   const [unstakedPositions, stakedPositions] = useMemo(() => {
-    return partition(positions?.filter((p) => p.liquidity.gt(0)) ?? [], (p) => tokenIds.find((i) => i.eq(p.tokenId)))
-  }, [positions, tokenIds])
+    if (!positions) return [[], []]
+    const unstakedIds = tokenIds.filter((id) => !stakedIds.find((s) => s.eq(id)))
+    return [
+      unstakedIds.map((id) => positions.find((p) => p.tokenId.eq(id))).filter((p) => p?.liquidity.gt(0)),
+      stakedIds.map((id) => positions.find((p) => p.tokenId.eq(id))).filter((p) => p?.liquidity.gt(0)),
+    ]
+  }, [positions, stakedIds, tokenIds])
 
   const pendingCakeByTokenIds = useMemo(
     () =>
