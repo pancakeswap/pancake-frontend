@@ -76,14 +76,24 @@ const RewardCalculate = () => {
         <img src="/images/affiliates-program/m-4.png" width="210px" height="210px" alt="" />
         <img src="/images/affiliates-program/m-5.png" width="72px" height="63px" alt="" />
       </Decorations>
-      <Flex mt={['20px', '40px', '60px', '150px']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
-        <Flex width={['100%', '100%', '447px']} alignSelf={['center']} flexDirection="column">
+      <Flex
+        mt={['20px', '40px', '60px', '150px']}
+        flexDirection={['column', 'column', 'column', 'column', 'row']}
+        justifyContent="center"
+      >
+        <Flex width={['100%', '100%', '447px']} alignSelf={['center']} flexDirection="column" alignItems="center">
           <Box m={['32px 0']}>
-            <Text fontSize={['40px']} lineHeight="110%" color="body" bold>
+            <Text
+              textAlign={['left', 'left', 'left', 'center']}
+              fontSize={['40px']}
+              lineHeight="110%"
+              color="body"
+              bold
+            >
               {t("Join PancakeSwap's Community and Make a Difference")}
             </Text>
           </Box>
-          <Text color="textSubtle" mb="32px">
+          <Text textAlign={['left', 'left', 'left', 'center']} color="textSubtle" mb="32px">
             {t(
               "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program",
             )}
@@ -95,7 +105,7 @@ const RewardCalculate = () => {
             <Button width="fit-content">{t('Join Now!')}</Button>
           </Link>
         </Flex>
-        <Calculator />
+        {/* <Calculator /> */}
       </Flex>
       <CommissionStructure />
     </PageSection>
