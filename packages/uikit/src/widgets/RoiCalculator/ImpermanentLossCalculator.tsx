@@ -188,9 +188,9 @@ export function ImpermanentLossCalculator({
       const [adjustedAmountA, adjustedAmountB] = getTokenAmountsFromDepositUsd({
         sqrtRatioX96: newSqrtRatioX96,
         usdValue: usdValue !== undefined ? String(usdValue) : undefined,
-        price: token0Price.toFixed(6),
-        priceLower: priceLower.toFixed(6),
-        priceUpper: priceUpper.toFixed(6),
+        price: token0Price.toSignificant(6),
+        priceLower: priceLower.toSignificant(6),
+        priceUpper: priceUpper.toSignificant(6),
         currencyA: assetCurrencyA,
         currencyB: assetCurrencyB,
         currencyAUsdPrice: parseFloat(priceA),

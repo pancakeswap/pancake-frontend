@@ -31,7 +31,7 @@ export function PriceChart({ prices, onSpanChange, span = 0, priceUpper, priceLo
           ? { title: "upper", color: "#31D0AA", price: parseFloat(String(priceUpper)) }
           : undefined,
         priceCurrent !== undefined
-          ? { title: "current", color: "grey", price: parseFloat(String(priceCurrent)) }
+          ? { title: "current", color: "#BDC2C4", price: parseFloat(String(priceCurrent)) }
           : undefined,
         priceLower !== undefined
           ? { title: "lower", color: "#ED4B9E", price: parseFloat(String(priceLower)) }

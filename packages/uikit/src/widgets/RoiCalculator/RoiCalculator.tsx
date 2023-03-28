@@ -1,5 +1,5 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO } from "@pancakeswap/sdk";
-import { FeeAmount, FeeCalculator, Tick, TickMath } from "@pancakeswap/v3-sdk";
+import { FeeAmount, FeeCalculator, Tick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
@@ -93,6 +93,17 @@ export function RoiCalculator({
   const [compoundOn, setCompoundOn] = useState(true);
   const [compoundIndex, setCompoundIndex] = useState(3);
   const tickCurrent = useMemo(() => sqrtRatioX96 && TickMath.getTickAtSqrtRatio(sqrtRatioX96), [sqrtRatioX96]);
+  const invertPrice = useMemo(
+    () => currencyA && currencyB && currencyB.wrapped.sortsBefore(currencyA.wrapped),
+    [currencyA, currencyB]
+  );
+  const priceCurrent = useMemo(
+    () =>
+      tickCurrent && currencyA && currencyB && invertPrice
+        ? tickToPrice(currencyB, currencyA, tickCurrent)
+        : tickToPrice(currencyA, currencyB, tickCurrent),
+    [invertPrice, tickCurrent, currencyA, currencyB]
+  );
   const ticks = useMemo(
     () =>
       ticksRaw?.map(
@@ -290,8 +301,13 @@ export function RoiCalculator({
         prices={prices}
         onSpanChange={onPriceSpanChange}
         span={priceSpan}
-        priceUpper={priceRange?.priceUpper?.toSignificant(6)}
-        priceLower={priceRange?.priceLower?.toSignificant(6)}
+        priceUpper={
+          invertPrice ? priceRange?.priceLower?.invert().toSignificant(6) : priceRange?.priceUpper?.toSignificant(6)
+        }
+        priceLower={
+          invertPrice ? priceRange?.priceUpper?.invert().toSignificant(6) : priceRange?.priceLower?.toSignificant(6)
+        }
+        priceCurrent={invertPrice ? priceCurrent?.invert().toSignificant(6) : priceCurrent?.toSignificant(6)}
       />
     </Section>
   );

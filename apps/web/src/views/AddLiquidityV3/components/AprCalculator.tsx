@@ -39,7 +39,7 @@ const AprButtonContainer = styled(Flex)`
 export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitle = true }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
-  const [priceSpan, setPriceSpan] = useState(1)
+  const [priceSpan, setPriceSpan] = useState(0)
 
   const formState = useV3FormState()
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
