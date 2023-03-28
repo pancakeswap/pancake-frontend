@@ -180,6 +180,7 @@ export default function V3FormView({
     useV3MintActionHandlers(noLiquidity)
 
   const isValid = !errorMessage && !invalidRange
+
   // modal and loading
   // capital efficiency warning
   const [showCapitalEfficiencyWarning, setShowCapitalEfficiencyWarning] = useState<boolean>(false)

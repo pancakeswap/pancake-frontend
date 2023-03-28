@@ -384,11 +384,17 @@ export default function useV3DerivedInfo(
 
   const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
 
-  if (currencyAAmount && currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount)) {
+  if (
+    currencyAAmount &&
+    (currencyAAmount?.equalTo(0) || currencyBalances?.[Field.CURRENCY_A]?.lessThan(currencyAAmount))
+  ) {
     errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_A]?.symbol })
   }
 
-  if (currencyBAmount && currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount)) {
+  if (
+    currencyBAmount &&
+    (currencyBAmount?.equalTo(0) || currencyBalances?.[Field.CURRENCY_B]?.lessThan(currencyBAmount))
+  ) {
     errorMessage = t('Insufficient %symbol% balance', { symbol: currencies[Field.CURRENCY_B]?.symbol })
   }
 
