@@ -2,6 +2,7 @@ import { Currency } from '@pancakeswap/sdk'
 import {
   useRoi,
   RoiCalculatorModalV2,
+  RoiCalculatorPositionInfo,
   TooltipText,
   Flex,
   CalculateIcon,
@@ -10,7 +11,7 @@ import {
   PairDataTimeWindowEnum,
 } from '@pancakeswap/uikit'
 import { encodeSqrtRatioX96, Pool } from '@pancakeswap/v3-sdk'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -105,6 +106,16 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
     volume24H,
   })
 
+  const closeModal = useCallback(() => setOpen(false), [])
+  const onApply = useCallback(
+    (position: RoiCalculatorPositionInfo) => {
+      // TODO: v3 apply position to add liquidity page
+      console.log(position)
+      closeModal()
+    },
+    [closeModal],
+  )
+
   return (
     <>
       <Flex flexDirection="column">
@@ -121,8 +132,9 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
         </AprButtonContainer>
       </Flex>
       <RoiCalculatorModalV2
+        allowApply
         isOpen={isOpen}
-        onDismiss={() => setOpen(false)}
+        onDismiss={closeModal}
         depositAmountInUsd={depositUsd}
         prices={prices}
         price={price}
@@ -141,6 +153,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
         priceLower={priceLower}
         priceSpan={priceSpan}
         onPriceSpanChange={setPriceSpan}
+        onApply={onApply}
       />
     </>
   )

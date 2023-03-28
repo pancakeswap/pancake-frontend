@@ -1,7 +1,7 @@
 import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO } from "@pancakeswap/sdk";
 import { FeeAmount, FeeCalculator, Tick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
@@ -24,6 +24,16 @@ import { useMatchBreakpoints } from "../../contexts";
 import { TwoColumns } from "./TwoColumns";
 import { PriceChart } from "./PriceChart";
 
+export interface RoiCalculatorPositionInfo {
+  priceLower?: Price<Currency, Currency>;
+  priceUpper?: Price<Currency, Currency>;
+  depositAmountInUsd?: number | string;
+  currencyAUsdPrice?: number;
+  currencyBUsdPrice?: number;
+  amountA?: CurrencyAmount<Currency>;
+  amountB?: CurrencyAmount<Currency>;
+}
+
 export type RoiCalculatorProps = {
   sqrtRatioX96?: JSBI;
   liquidity?: JSBI;
@@ -43,6 +53,8 @@ export type RoiCalculatorProps = {
   depositAmountInUsd?: number | string;
   priceSpan?: number;
   onPriceSpanChange?: (spanIndex: number) => void;
+  allowApply?: boolean;
+  onApply?: (position: RoiCalculatorPositionInfo) => void;
 
   // Average 24h historical trading volume in USD
   volume24H?: number;
@@ -82,6 +94,8 @@ export function RoiCalculator({
   max,
   priceSpan,
   onPriceSpanChange,
+  allowApply = false,
+  onApply,
   ...props
 }: RoiCalculatorProps) {
   const cakeAprFactor = props.isFarm && props.cakeAprFactor;
@@ -216,6 +230,20 @@ export function RoiCalculator({
     cakeApr: props.isFarm && derivedCakeApr ? derivedCakeApr.toNumber() : undefined,
     editCakeApr: props.isFarm && editedCakeApr ? editedCakeApr.toNumber() : undefined,
   });
+
+  const handleApply = useCallback(
+    () =>
+      onApply?.({
+        amountA,
+        amountB,
+        depositAmountInUsd: usdValue,
+        priceLower: priceRange?.priceLower,
+        priceUpper: priceRange?.priceUpper,
+        currencyAUsdPrice,
+        currencyBUsdPrice,
+      }),
+    [onApply, priceRange, amountA, amountB, usdValue, currencyAUsdPrice, currencyBUsdPrice]
+  );
 
   const totalRate = parseFloat(rate.toSignificant(6)) + (editCakeApy ?? 0);
   const lpReward = parseFloat(fee.toSignificant(6));
@@ -354,6 +382,11 @@ export function RoiCalculator({
         />
         <AnimatedArrow state={{}} />
         <RoiRate usdAmount={totalRoi} roiPercent={totalRate} />
+        {allowApply && (
+          <Button width="100%" mt="0.75em" onClick={handleApply}>
+            {t("Apply Settings")}
+          </Button>
+        )}
       </ScrollableContainer>
       <Details
         totalYield={totalRoi}
