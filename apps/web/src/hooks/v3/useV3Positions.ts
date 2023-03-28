@@ -45,7 +45,7 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
       () =>
         (positions as Omit<PositionDetails, 'tokenId'>[])
           ?.map((position, i) =>
-            position
+            position && inputs?.[i]?.args[0]
               ? {
                   ...position,
                   tokenId: inputs?.[i]?.args[0],
