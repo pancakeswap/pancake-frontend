@@ -2265,5 +2265,6 @@
   "Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.": "Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.",
   "Fee Breakdown and Tokenomics": "Fee Breakdown and Tokenomics",
   "Harvest All": "Harvest All",
-  "Avg": "Avg"
+  "Avg": "Avg",
+  "Apply Settings": "Apply Settings"
 }

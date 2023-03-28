@@ -110,6 +110,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
   const onApply = useCallback(
     (position: RoiCalculatorPositionInfo) => {
       // TODO: v3 apply position to add liquidity page
+      // eslint-disable-next-line
       console.log(position)
       closeModal()
     },
