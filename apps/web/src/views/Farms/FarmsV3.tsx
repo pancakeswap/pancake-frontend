@@ -333,7 +333,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     const sortFarms = (farms: V2StakeValueAndV3Farm[]): V2StakeValueAndV3Farm[] => {
       switch (sortOption) {
         case 'apr':
-          return orderBy(farms, (farm) => (farm.version === 3 ? farm.cakeApr : farm.apr), 'desc')
+          return orderBy(farms, (farm) => (farm.version === 3 ? +farm.cakeApr : farm.apr ?? 0), 'desc')
         case 'multiplier':
           return orderBy(farms, (farm) => (farm.multiplier ? Number(farm.multiplier.slice(0, -1)) : 0), 'desc')
         case 'earned':
