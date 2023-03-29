@@ -1,7 +1,7 @@
-import useSWR from 'swr'
-import { TRADING_REWARD_API } from 'config/constants/endpoints'
+// import useSWR from 'swr'
+// import { TRADING_REWARD_API } from 'config/constants/endpoints'
 
-const useCampaignIdInfo = (campaignId: string) => {
+const useCampaignIdInfo = () => {
   // const { data: allPairs } = useSWR(campaignId && ['/all-campaign-id-info', campaignId], async () => {
   //   const response = await fetch(`${TRADING_REWARD_API}/campaign/campaignId/${campaignId}`)
   //   const result = await response.json()
