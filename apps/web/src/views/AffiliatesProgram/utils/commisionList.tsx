@@ -12,7 +12,7 @@ interface CommissionType {
 
 const commissionList: CommissionType[] = [
   {
-    title: <Trans>V2/V3 Swap & StableSwap</Trans>,
+    title: <Trans>Swap & StableSwap</Trans>,
     percentage: '3%',
     image: {
       width: 128,
@@ -30,7 +30,7 @@ const commissionList: CommissionType[] = [
     },
   },
   {
-    title: <Trans>comming soon!</Trans>,
+    title: <Trans>coming soon!</Trans>,
     percentage: '?',
     image: {
       width: 110,

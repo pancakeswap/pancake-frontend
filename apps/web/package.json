@@ -53,8 +53,8 @@
     "@pancakeswap/smart-router": "*",
     "@pancakeswap/token-lists": "*",
     "@pancakeswap/tokens": "*",
-    "@pancakeswap/uikit": "*",
     "@pancakeswap/ui-wallets": "*",
+    "@pancakeswap/uikit": "*",
     "@pancakeswap/utils": "*",
     "@pancakeswap/wagmi": "*",
     "@reduxjs/toolkit": "^1.9.1",
@@ -66,6 +66,7 @@
     "canvas-confetti": "^1.5.1",
     "cids": "^1.0.0",
     "clsx": "^1.2.1",
+    "cookies-next": "^2.1.1",
     "crypto-js": "^4.1.1",
     "date-fns": "^2.29.3",
     "easymde": "^2.16.1",
@@ -93,13 +94,14 @@
     "recharts": "2.1.15",
     "redux-persist": "^6.0.0",
     "remark-gfm": "^1.0.0",
+    "siwe": "^1.1.6",
     "split-grid": "^1.0.11",
     "styled-components": "^5.3.3",
     "swiper": "^8.4.2",
     "swr": "^2.0.3",
     "typescript": "^4.9.4",
     "wagmi": "^0.10.10",
-    "zod": "^3.20.2"
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "13.2.4",
