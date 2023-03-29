@@ -173,7 +173,7 @@ export const useStakedPositionsByUser = (stakedTokenIds: BigNumber[]) => {
   const { data } = useSWR(
     account && ['mcv3-harvest', harvestCalls],
     () => {
-      return masterchefV3.callStatic.multicall(harvestCalls).then((res) => {
+      return masterchefV3.callStatic.multicall(harvestCalls, { from: account }).then((res) => {
         return res
           .map((r) => masterchefV3.interface.decodeFunctionResult('harvest', r))
           .map((r) => {
