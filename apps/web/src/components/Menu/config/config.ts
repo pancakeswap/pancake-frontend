@@ -70,6 +70,7 @@ const config: (
             languageCode,
             isDark,
           }),
+          confirmModalId: 'usCitizenConfirmModal',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {

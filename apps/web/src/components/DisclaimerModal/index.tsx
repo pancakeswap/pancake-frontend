@@ -27,6 +27,7 @@ interface RiskDisclaimerProps extends InjectedModalProps {
   header: ReactNode
   modalHeader?: string
   id: string
+  footer?: ReactNode
   subtitle?: ReactNode
   hideConfirm?: boolean
 }
@@ -49,6 +50,7 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
   subtitle,
   hideConfirm,
   modalHeader,
+  footer,
 }) => {
   const [checkState, setCheckState] = useState(checks || [])
   const { t } = useTranslation()
@@ -110,6 +112,11 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
             </label>
           ))}
         </Box>
+        {footer && (
+          <Heading as="h3" mb="24px">
+            {footer}
+          </Heading>
+        )}
         {!hideConfirm && (
           <Button
             id={`${id}-continue`}
