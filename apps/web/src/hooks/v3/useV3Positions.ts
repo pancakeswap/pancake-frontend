@@ -3,7 +3,7 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { PositionDetails } from '@pancakeswap/farms'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useContractRead, useContractReads } from 'wagmi'
 
 interface UseV3PositionsResults {
@@ -74,7 +74,11 @@ export function useV3TokenIdsByAccount(
   contract: Contract,
   account: string | null | undefined,
 ): { tokenIds: BigNumber[]; loading: boolean } {
-  const { isLoading: balanceLoading, data: accountBalance_ } = useContractRead<any, any, BigNumber>({
+  const {
+    isLoading: balanceLoading,
+    data: accountBalance_,
+    refetch: refetchBalance,
+  } = useContractRead<any, any, BigNumber>({
     abi: contract.interface.format(FormatTypes.json) as any,
     address: contract.address as `0x${string}`,
     args: [account ?? undefined],
@@ -103,13 +107,24 @@ export function useV3TokenIdsByAccount(
     return []
   }, [account, accountBalance, contract.address, contract.interface])
 
-  const { isLoading: someTokenIdsLoading, data: tokenIds = [] } = useContractReads({
+  const {
+    isLoading: someTokenIdsLoading,
+    data: tokenIds = [],
+    refetch: refretchTokenIds,
+  } = useContractReads({
     contracts: tokenIdsArgs,
     watch: true,
     allowFailure: true,
     enabled: !!tokenIdsArgs.length,
     keepPreviousData: true,
   })
+
+  // refetch when account changes, It seems like the useContractReads doesn't refetch when the account changes on production
+  // check if we can remove this effect when we upgrade to the latest version of wagmi
+  useEffect(() => {
+    refetchBalance()
+    refretchTokenIds()
+  }, [account, refetchBalance, refretchTokenIds])
 
   return {
     tokenIds: useMemo(() => tokenIds.filter(Boolean) as BigNumber[], [tokenIds]),
