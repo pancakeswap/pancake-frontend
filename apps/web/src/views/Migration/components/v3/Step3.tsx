@@ -184,12 +184,12 @@ export function Step3() {
         }}
         alignItems="flex-start"
       >
-        <LightCard minWidth={['100%', null, null, '50%']} p="32px">
-          <AutoRow gap="24px" justifyContent="center">
+        <LightCard minWidth={['100%', null, null, '50%']}>
+          <AutoRow gap="24px" justifyContent="center" py="12px">
             <Heading scale="lg" color="secondary">
               {t('Customize Trading Fee Tiers')}
             </Heading>
-            <AtomBox px="24px" width="100%">
+            <AtomBox px="24px" width="100%" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
               <HideShowSelectorSection
                 showOptions={showOptions}
                 noHideButton={!feeAmount_}
@@ -243,7 +243,7 @@ export function Step3() {
           </AutoRow>
         </LightCard>
         <LightCard minWidth={['100%', null, null, '50%']} p="32px">
-          <AutoRow gap="24px" justifyContent="center">
+          <AutoRow gap="24px" justifyContent="center" py="12px">
             <Heading scale="lg" color="secondary">
               {t('Concentrate Your Liquidity')}
             </Heading>

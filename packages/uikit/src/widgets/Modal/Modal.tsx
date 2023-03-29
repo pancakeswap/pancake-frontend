@@ -19,8 +19,6 @@ export const ModalWrapper = ({
   const { isMobile } = useMatchBreakpoints();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  console.log(props, "?");
-
   return (
     // @ts-ignore
     <ModalContainer

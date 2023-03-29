@@ -130,6 +130,7 @@ const StepText = styled(Text)`
 export interface Step {
   stepId: number
   text: ReactNode
+  subText?: ReactNode
   canHover?: boolean
 }
 

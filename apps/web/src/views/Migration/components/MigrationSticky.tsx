@@ -64,7 +64,7 @@ interface MigrationStickyProps {
   version: 'v2' | 'v3'
 }
 
-const TEXT = {
+export const TEXT = {
   v2: {
     title: <Trans>MasterChef v2 Migration</Trans>,
     steps: [
