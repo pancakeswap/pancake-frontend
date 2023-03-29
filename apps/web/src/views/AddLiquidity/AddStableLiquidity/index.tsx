@@ -408,7 +408,7 @@ export default function AddStableLiquidity({ currencyA, currencyB }) {
                     )}
                     size="14px"
                     ml="4px"
-                    placement="top-start"
+                    placement="top"
                   />
                 </RowFixed>
 

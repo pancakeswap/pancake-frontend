@@ -1,5 +1,11 @@
 # @pancakeswap/sdk
 
+## 3.1.5
+
+### Patch Changes
+
+- 7fb419ece: chore: Add fetcher and tokenAmount
+
 ## 3.1.4
 
 ### Patch Changes

@@ -291,8 +291,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Page title={t('Farms')}>
         <ControlContainer>
           <ViewControls>
-            <NoSSR>
-              <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+            <Flex mt="20px">
+              <NoSSR>
+                <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+              </NoSSR>
+            </Flex>
+            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
+            <Flex mt="20px">
               <ToggleWrapper>
                 <Toggle
                   id="staked-only-farms"
@@ -302,8 +307,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 />
                 <Text>{t('Staked only')}</Text>
               </ToggleWrapper>
-            </NoSSR>
-            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
+            </Flex>
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>

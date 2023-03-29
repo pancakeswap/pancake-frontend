@@ -126,7 +126,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                     text={t(
                       'Turn on subgraph health indicator all the time. Default is to show the indicator only when the network is delayed',
                     )}
-                    placement="top-start"
+                    placement="top"
                     ml="4px"
                   />
                 </Flex>
@@ -142,11 +142,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
               <Flex justifyContent="space-between" alignItems="center" mb="24px">
                 <Flex alignItems="center">
                   <Text>{t('Show username')}</Text>
-                  <QuestionHelper
-                    text={t('Shows username of wallet instead of bunnies')}
-                    placement="top-start"
-                    ml="4px"
-                  />
+                  <QuestionHelper text={t('Shows username of wallet instead of bunnies')} placement="top" ml="4px" />
                 </Flex>
                 <Toggle
                   id="toggle-username-visibility"
@@ -177,7 +173,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                             </Text>
                           </>
                         }
-                        placement="top-start"
+                        placement="top"
                         ml="4px"
                       />
                     </Flex>
@@ -226,7 +222,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                         </Text>
                       </Box>
                     }
-                    placement="top-start"
+                    placement="top"
                     ml="4px"
                   />
                 </Flex>
@@ -244,7 +240,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 <Text>{t('Expert Mode')}</Text>
                 <QuestionHelper
                   text={t('Bypasses confirmation modals and allows high slippage trades. Use at your own risk.')}
-                  placement="top-start"
+                  placement="top"
                   ml="4px"
                 />
               </Flex>
@@ -258,7 +254,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
             <Flex justifyContent="space-between" alignItems="center" mb="24px">
               <Flex alignItems="center">
                 <Text>{t('Disable Multihops')}</Text>
-                <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top-start" ml="4px" />
+                <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top" ml="4px" />
               </Flex>
               <Toggle
                 id="toggle-disable-multihop-button"
@@ -274,7 +270,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 <Text>{t('Flippy sounds')}</Text>
                 <QuestionHelper
                   text={t('Fun sounds to make a truly immersive pancake-flipping trading experience')}
-                  placement="top-start"
+                  placement="top"
                   ml="4px"
                 />
               </Flex>
@@ -285,7 +281,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                 <Text>{t('MM Linked Pool')}</Text>
                 <QuestionHelper
                   text={t('Trade through the market makers if they provide better deal')}
-                  placement="top-start"
+                  placement="top"
                   ml="4px"
                 />
               </Flex>
@@ -309,7 +305,7 @@ const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>> = ({ 
                       </Text>
                     </Flex>
                   }
-                  placement="top-start"
+                  placement="top"
                   ml="4px"
                 />
               </Flex>

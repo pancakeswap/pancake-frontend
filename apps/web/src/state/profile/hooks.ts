@@ -17,6 +17,7 @@ export const useProfileForAddress = (
   },
 ): {
   profile?: Profile
+  isLoading: boolean
   isFetching: boolean
   isValidating: boolean
   refresh: KeyedMutator<GetProfileResponse>
@@ -31,6 +32,7 @@ export const useProfileForAddress = (
 
   return {
     profile,
+    isLoading: status !== FetchStatus.Fetched,
     isFetching: status === FetchStatus.Fetching,
     isValidating,
     refresh: mutate,
