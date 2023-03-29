@@ -213,7 +213,7 @@ export function RoiCalculator({
       ? derivedCakeApr.times(cakePriceDiffPercent)
       : derivedCakeApr;
 
-  const { fee, rate, apr, apy, cakeApy, editCakeApy } = useRoi({
+  const { fee, rate, apr, apy, cakeApy, editCakeApy, cakeRate, cakeReward } = useRoi({
     amountA,
     amountB,
     currencyAUsdPrice,
@@ -245,9 +245,9 @@ export function RoiCalculator({
     [onApply, priceRange, amountA, amountB, usdValue, currencyAUsdPrice, currencyBUsdPrice]
   );
 
-  const totalRate = parseFloat(rate.toSignificant(6)) + (editCakeApy ?? 0);
+  const totalRate = parseFloat(rate?.toSignificant(6) ?? "0") + parseFloat(cakeRate?.toSignificant(6) ?? "0");
   const lpReward = parseFloat(fee.toSignificant(6));
-  const farmReward = props.isFarm && editCakeApy ? (editCakeApy * +usdValue) / 100 : 0;
+  const farmReward = cakeReward;
   const totalRoi = lpReward + farmReward;
 
   const depositSection = (

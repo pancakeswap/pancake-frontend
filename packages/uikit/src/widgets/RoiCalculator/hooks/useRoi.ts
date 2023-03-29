@@ -57,9 +57,15 @@ export function useRoi({
     compoundOn,
     stakeFor,
   });
-
   const fee = useMemo(() => decimalToFraction(reward), [reward]);
 
+  const { rate: cakeRate, reward: cakeReward } = useRate({
+    interest: (cakeApr && principal && ((cakeApr / 100) * principal) / 365) ?? 0,
+    principal,
+    compoundEvery,
+    compoundOn,
+    stakeFor,
+  });
   const cakeApy = cakeApr && getApy(cakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
   const editCakeApy = editCakeApr && getApy(editCakeApr, compoundOn ? compoundEvery : 0, stakeFor) * 100;
 
@@ -70,6 +76,8 @@ export function useRoi({
     apy,
     cakeApy,
     editCakeApy,
+    cakeRate,
+    cakeReward,
   };
 }
 

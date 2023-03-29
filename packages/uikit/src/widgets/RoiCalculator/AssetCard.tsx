@@ -5,7 +5,20 @@ import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
-import { Box, Card, CurrencyLogo, Row, RowBetween, RowFixed, Table, Td, Text, Th, PencilIcon } from "../../components";
+import {
+  Flex,
+  Box,
+  Card,
+  CurrencyLogo,
+  Row,
+  RowBetween,
+  RowFixed,
+  Table,
+  Td,
+  Text,
+  Th,
+  PencilIcon,
+} from "../../components";
 import { Tag, TagProps } from "../../components/Tag";
 import { StyledInput } from "./StyledInput";
 import { toSignificant } from "./utils";
@@ -52,10 +65,10 @@ export interface Asset {
 
 export function CurrencyLogoDisplay({ logo, name }: { logo?: ReactNode; name?: string }) {
   return (
-    <>
+    <Flex style={{ whiteSpace: "nowrap" }}>
       {logo}
       <Text ml="4px">{name}</Text>
-    </>
+    </Flex>
   );
 }
 
@@ -219,7 +232,14 @@ export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
           color={typeof interest === "number" ? "success" : interest.lessThan(0) ? "failure" : "success"}
           ellipsis
         >
-          ({typeof interest === "number" ? formatAmount(interest) : interest.toSignificant(2)}%)
+          (
+          {typeof interest === "number"
+            ? formatAmount(interest)
+            : parseFloat(interest.toSignificant(18)).toLocaleString("en", {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+              })}
+          %)
         </Text>
       )}
     </RowFixed>

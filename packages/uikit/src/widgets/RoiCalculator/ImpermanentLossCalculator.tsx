@@ -299,7 +299,7 @@ export function ImpermanentLossCalculator({
               header={
                 <RowBetween>
                   <InterestDisplay amount={hodlValue} interest={hodlRate} />
-                  <CardTag isActive={!lpBetter}>{t("HODL Tokens")}</CardTag>
+                  <CardTag isActive={!lpBetter}>{t("HOLD Tokens")}</CardTag>
                 </RowBetween>
               }
             />
