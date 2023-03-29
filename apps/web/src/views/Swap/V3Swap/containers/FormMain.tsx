@@ -21,6 +21,7 @@ import { RiskCheck } from './RiskCheck'
 import { useIsWrapping } from '../hooks'
 import { FlipButton } from './FlipButton'
 import { Recipient } from './Recipient'
+import { formatTokenAmount } from '../utils/exchange'
 
 interface Props {
   inputAmount?: CurrencyAmount<Currency>
@@ -93,8 +94,8 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   )
 
   const isTypingInput = independentField === Field.INPUT
-  const inputValue = typedValue && (isTypingInput ? typedValue : inputAmount?.toSignificant(6))
-  const outputValue = typedValue && (isTypingInput ? outputAmount?.toSignificant(6) : typedValue)
+  const inputValue = typedValue && (isTypingInput ? typedValue : formatTokenAmount(inputAmount))
+  const outputValue = typedValue && (isTypingInput ? formatTokenAmount(outputAmount) : typedValue)
   const inputLoading = typedValue ? !isTypingInput && tradeLoading : false
   const outputLoading = typedValue ? isTypingInput && tradeLoading : false
 

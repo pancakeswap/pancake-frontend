@@ -16,6 +16,7 @@ import { calculateGasMargin, isAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
 
 import { isZero } from '../utils/isZero'
+import { formatTokenAmount } from '../utils/exchange'
 
 interface SwapCall {
   address: string
@@ -153,12 +154,12 @@ export default function useSendSwapTransaction(
             const pct = basisPointsToPercent(allowedSlippage)
             const inputAmount =
               trade.tradeType === TradeType.EXACT_INPUT
-                ? trade.inputAmount.toSignificant(3)
-                : SmartRouter.maximumAmountIn(trade, pct).toSignificant(3)
+                ? formatTokenAmount(trade.inputAmount, 3)
+                : formatTokenAmount(SmartRouter.maximumAmountIn(trade, pct), 3)
             const outputAmount =
               trade.tradeType === TradeType.EXACT_OUTPUT
-                ? trade.outputAmount.toSignificant(3)
-                : SmartRouter.minimumAmountOut(trade, pct).toSignificant(3)
+                ? formatTokenAmount(trade.outputAmount, 3)
+                : formatTokenAmount(SmartRouter.minimumAmountOut(trade, pct), 3)
 
             const base = `Swap ${
               trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''
