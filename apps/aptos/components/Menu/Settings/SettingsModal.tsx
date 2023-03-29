@@ -236,7 +236,7 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
           <SlippageSetting />
           <Flex justifyContent="space-between" alignItems="center" mb="24px">
             <Flex alignItems="center">
-              <Text>{t('Allow Multihops')}</Text>
+              <Text>{t('Disable Multihops')}</Text>
               <QuestionHelper text={t('Restricts swaps to direct pairs only.')} placement="top" ml="4px" />
             </Flex>
             <Toggle
