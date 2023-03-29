@@ -39,6 +39,8 @@ const USCitizenConfirmModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss
       footer={t('By proceeding, you agree to comply with all relevant laws and regulations.')}
       onSuccess={handleSuccess}
       onDismiss={onDismiss}
+      headerStyle={{ fontWeight: 400, fontSize: 18 }}
+      footerStyle={{ fontWeight: 600, fontSize: 18 }}
     />
   )
 }

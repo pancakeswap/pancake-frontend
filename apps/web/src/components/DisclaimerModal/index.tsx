@@ -30,6 +30,8 @@ interface RiskDisclaimerProps extends InjectedModalProps {
   footer?: ReactNode
   subtitle?: ReactNode
   hideConfirm?: boolean
+  headerStyle?: React.CSSProperties
+  footerStyle?: React.CSSProperties
 }
 
 const GradientModalHeader = styled(ModalHeader)`
@@ -51,6 +53,8 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
   hideConfirm,
   modalHeader,
   footer,
+  headerStyle,
+  footerStyle,
 }) => {
   const [checkState, setCheckState] = useState(checks || [])
   const { t } = useTranslation()
@@ -84,7 +88,7 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
       </GradientModalHeader>
       <ModalBody p="24px" maxWidth={['100%', '100%', '100%', '400px']}>
         <Box maxHeight="300px" overflowY="auto">
-          <Heading as="h3" mb="24px">
+          <Heading as="h3" mb="24px" style={headerStyle}>
             {header}
           </Heading>
           {subtitle && (
@@ -113,7 +117,7 @@ const DisclaimerModal: React.FC<React.PropsWithChildren<RiskDisclaimerProps>> = 
           ))}
         </Box>
         {footer && (
-          <Heading as="h3" mb="24px">
+          <Heading as="h3" mb="24px" style={footerStyle}>
             {footer}
           </Heading>
         )}
