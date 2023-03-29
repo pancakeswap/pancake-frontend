@@ -11,6 +11,7 @@ export type SubMenuItemsType = {
   disabled?: boolean;
   isMobileOnly?: boolean;
   type?: DropdownMenuItemType;
+  onClick?: React.MouseEvent<HTMLElement>;
 };
 
 export interface SubMenuItemsProps extends FlexProps {
