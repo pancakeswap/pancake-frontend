@@ -139,7 +139,7 @@ const TradingRewardBanner = () => {
             <Title>{t('$40,000 worth of CAKE in Total!')}</Title>
           </Flex>
           <Flex style={{ gap: 8 }} flexWrap={isMobile ? 'wrap' : 'nowrap'} flexDirection={['column', 'row']}>
-            <NextLinkFromReactRouter to="/swap">
+            <NextLinkFromReactRouter to="/trading-reward">
               <StyledButtonLeft scale={['xs', 'sm', 'md']}>
                 <Text bold fontSize={['12px', '16px']} mr="4px">
                   {t('Trade Now')}
