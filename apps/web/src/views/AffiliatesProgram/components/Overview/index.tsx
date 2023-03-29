@@ -5,16 +5,16 @@ import ComingSoon from 'views/AffiliatesProgram/components/Dashboard/ComingSoon'
 // import Benefits from 'views/AffiliatesProgram/components/Overview/Benefits'
 // import RewardCalculate from 'views/AffiliatesProgram/components/Overview/RewardCalculate'
 // import Question from 'views/AffiliatesProgram/components/Overview/Question'
-// import OnBoardingModal from 'views/AffiliatesProgram/components/OnBoardingModal'
+import OnBoardingModal from 'views/AffiliatesProgram/components/OnBoardingModal'
 
 const AffiliatesProgram = () => {
   return (
     <AffiliatesProgramLayout>
+      <OnBoardingModal />
       <div style={{ margin: '50px 0', height: '550px' }}>
         <ComingSoon />
       </div>
-      {/* <OnBoardingModal />
-      <AffiliatesBanner />
+      {/* <AffiliatesBanner />
       <HowItWork />
       <RewardCalculate />
       <Benefits />
