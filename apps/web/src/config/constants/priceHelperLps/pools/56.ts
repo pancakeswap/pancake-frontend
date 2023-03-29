@@ -16,14 +16,6 @@ const priceHelperLps: SerializedFarmConfig[] = [
     lpSymbol: 'WBNB-SD LP',
     lpAddress: '0xfD05C106E336bc5696686F422A35EE7a136E1C89',
   },
-  // TODO REMOVE when RDNT-BNB LP farm added.
-  {
-    pid: null,
-    token: bscTokens.rdnt,
-    quoteToken: bscTokens.wbnb,
-    lpSymbol: 'RDNT-BNB LP',
-    lpAddress: '0x346575fC7f07E6994D76199E41D13dC1575322E1',
-  },
 ].map((p) => ({ ...p, token: p.token.serialize, quoteToken: p.quoteToken.serialize }))
 
 export default priceHelperLps
