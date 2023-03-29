@@ -362,7 +362,8 @@ export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }
                 <AprCalculator baseCurrency={baseCurrency} quoteCurrency={quoteCurrency} feeAmount={feeAmount} />
                 <QuestionHelper
                   position="relative"
-                  top="-3px"
+                  top="-6px"
+                  left="2px"
                   text={
                     <>
                       {t(
