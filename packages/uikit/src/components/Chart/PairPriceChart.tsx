@@ -141,6 +141,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     chart.subscribeCrosshairMove((param) => {
       if (newSeries && param) {
         const timestamp = param.time as number;
+        if (!timestamp) return;
         const now = new Date(timestamp * 1000);
         const time = `${now.toLocaleString(locale, {
           year: "numeric",
