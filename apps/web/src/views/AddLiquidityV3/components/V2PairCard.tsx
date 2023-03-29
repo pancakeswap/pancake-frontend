@@ -22,8 +22,8 @@ export function V2PairCard({ pair, account }: { pair: Pair; account: string }) {
       currency0={unwrappedToken0}
       currency1={unwrappedToken1}
       pairText={`${unwrappedToken0.symbol}-${unwrappedToken1.symbol} V2 LP`}
-      subtitle={`${token0Deposited?.toSignificant(6)} ${pair.token0.symbol} / ${token1Deposited?.toSignificant(6)} 
-        ${pair.token1.symbol}`}
+      subtitle={`${token0Deposited?.toSignificant(6)} ${unwrappedToken0.symbol} / ${token1Deposited?.toSignificant(6)} 
+        ${unwrappedToken1.symbol}`}
       tags={<Tag variant="secondary">V2 LP</Tag>}
     />
   )

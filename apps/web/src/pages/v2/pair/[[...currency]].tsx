@@ -15,10 +15,8 @@ import { AppHeader } from 'components/App'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
 import styled from 'styled-components'
-// import { useStableFarms } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 
-// import { CurrencyAmount } from '@pancakeswap/sdk'
 import { LightGreyCard } from 'components/Card'
 import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
@@ -30,7 +28,6 @@ import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'co
 import currencyId from 'utils/currencyId'
 import { Native, WNATIVE } from '@pancakeswap/sdk'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-// import { CurrencyLogo } from 'components/Logo'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -85,7 +82,7 @@ export default function PoolV2Page() {
             <Flex justifyContent="center" alignItems="center">
               <DoubleCurrencyLogo size={24} currency0={baseCurrency} currency1={currencyB} />
               <Heading as="h2" ml="8px">
-                {baseCurrency?.symbol}-{currencyB?.symbol} LP
+                {baseCurrency?.wrapped?.symbol}-{currencyB?.wrapped?.symbol} LP
               </Heading>
             </Flex>
           }
@@ -145,7 +142,7 @@ export default function PoolV2Page() {
                     <Flex>
                       <CurrencyLogo currency={baseCurrency} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {baseCurrency?.symbol}
+                        {baseCurrency?.wrapped?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
@@ -156,7 +153,7 @@ export default function PoolV2Page() {
                     <Flex>
                       <CurrencyLogo currency={currencyB} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {currencyB?.symbol}
+                        {currencyB?.wrapped?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
