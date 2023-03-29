@@ -5,6 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 const RewardsBreakdown = () => {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [maxPage, setMaxPages] = useState(1)
   const { isDesktop } = useMatchBreakpoints()
 
