@@ -2,18 +2,21 @@ import { useMemo, useState } from 'react'
 import {
   Flex,
   Text,
-  InputGroup,
   Input,
   Box,
   Card,
-  CopyIcon,
-  ShareIcon,
   Button,
   ArrowForwardIcon,
   useMatchBreakpoints,
+  useToast,
 } from '@pancakeswap/uikit'
-// import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
+import BigNumber from 'bignumber.js'
+import { ethers } from 'ethers'
+import { useAccount } from 'wagmi'
+import { useSignMessage } from '@pancakeswap/wagmi'
+import { useTranslation } from '@pancakeswap/localization'
+import useDefaultLinkId from 'views/AffiliatesProgram/hooks/useDefaultLinkId'
 import commissionList from 'views/AffiliatesProgram/utils/commisionList'
 
 const Wrapper = styled(Flex)`
@@ -53,7 +56,7 @@ const StyledCommission = styled(Flex)`
   }
 
   ${({ theme }) => theme.mediaQueries.md} {
-    width: 124px;
+    width: 118px;
   }
 `
 
@@ -81,14 +84,70 @@ const CardInner = styled(Flex)`
   }
 `
 
-const receivePercentageList: Array<string> = ['0', '10', '25', '50']
+interface MyReferralLinkProps {
+  refreshAffiliateInfo: () => void
+}
 
-const MyReferralLink = () => {
-  // const { t } = useTranslation()
+const receivePercentageList: Array<string> = ['0', '25', '50', '75', '100']
+
+const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = ({ refreshAffiliateInfo }) => {
+  const { t } = useTranslation()
+  const { address } = useAccount()
+  const { toastSuccess, toastError } = useToast()
+  const { signMessageAsync } = useSignMessage()
+  const { defaultLinkId, refresh } = useDefaultLinkId()
+  const [note, setNote] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { isMobile } = useMatchBreakpoints()
   const [percentage, setPercentage] = useState('0')
 
+  const youWillReceive = useMemo(() => new BigNumber(100).minus(percentage).toString(), [percentage])
+
   const dataList = useMemo(() => commissionList.filter((i) => i.percentage !== '?'), [])
+
+  const linkId = useMemo(() => note || defaultLinkId, [note, defaultLinkId])
+
+  const handleGenerateLink = async () => {
+    try {
+      setIsLoading(true)
+
+      const message = ethers.utils.arrayify(
+        ethers.utils.solidityKeccak256(
+          ['string', 'uint256', 'uint256', 'uint256'],
+          [linkId, Number(percentage), Number(percentage), Number(percentage)],
+        ),
+      )
+      const signature = await signMessageAsync({ message })
+      const data = {
+        fee: {
+          linkId,
+          signature,
+          address,
+          v2SwapFee: Number(percentage),
+          v3SwapFee: Number(percentage),
+          stableSwapFee: Number(percentage),
+        },
+      }
+
+      const response = await fetch('/api/affiliates-program/affiliate-fee-create', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
+      const result = await response.json()
+
+      if (result.status === 'success') {
+        await Promise.all([refreshAffiliateInfo(), refresh()])
+        setNote('')
+        toastSuccess(t('Referral Link Created'))
+      } else {
+        toastError(result.error)
+      }
+    } catch (error) {
+      console.error(`Submit Create Fee Error: ${error}`)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <Box
@@ -98,31 +157,35 @@ const MyReferralLink = () => {
       <Card>
         <Box padding={['24px']}>
           <Text bold mb={['17px']} color="secondary" fontSize="12px" textTransform="uppercase">
-            create a new link
+            {t('create a new link')}
           </Text>
           <Flex mb="24px">
-            <InputGroup endIcon={<CopyIcon width="18px" color="textSubtle" />} scale="lg">
-              <Input type="text" placeholder="http://" />
-            </InputGroup>
-            <ShareIcon width={24} height={24} ml="16px" color="primary" />
+            <Input
+              scale="lg"
+              maxLength={20}
+              value={note}
+              type="text"
+              placeholder="Note (20 characters)"
+              onChange={(e) => setNote(e.target.value)}
+            />
           </Flex>
           <Flex flexDirection={['column', 'column', 'column', 'column', 'column', 'row']} mb="36px">
             <Flex alignSelf="center" width={['100%', '320px']} justifyContent={['space-between']}>
               <Box>
                 <Text fontSize="14px" color="textSubtle">
-                  You will receive
+                  {t('You will receive')}
                 </Text>
                 <Text color="secondary" bold fontSize={['32px']} textAlign="center">
-                  100%
+                  {`${youWillReceive}%`}
                 </Text>
               </Box>
               <ArrowForwardIcon color="textSubtle" style={{ alignSelf: 'center' }} />
               <Box>
                 <Text fontSize="14px" color="textSubtle">
-                  Friends will receive
+                  {t('Friends will receive')}
                 </Text>
                 <Text color="primary" bold fontSize={['32px']} textAlign="center">
-                  0%
+                  {`${percentage}%`}
                 </Text>
               </Box>
             </Flex>
@@ -141,25 +204,22 @@ const MyReferralLink = () => {
               </CardInner>
             </Wrapper>
           </Flex>
-          <Flex flexDirection={['column', 'column', 'column', 'row']}>
-            <Flex mb={['8px', '8px', '8px', '0']}>
-              {receivePercentageList.map((list) => (
-                <Button
-                  scale={isMobile ? 'sm' : 'md'}
-                  width={`${100 / receivePercentageList.length}%`}
-                  key={list}
-                  mr="8px"
-                  variant={list === percentage ? 'primary' : 'tertiary'}
-                  onClick={() => setPercentage(list)}
-                >
-                  {`${list}%`}
-                </Button>
-              ))}
-            </Flex>
-            <Input scale="lg" type="text" maxLength={100} placeholder="Note (100 characters)" />
+          <Flex mb={['8px', '8px', '8px', '0']}>
+            {receivePercentageList.map((list) => (
+              <Button
+                scale={isMobile ? 'sm' : 'md'}
+                width={`${100 / receivePercentageList.length}%`}
+                key={list}
+                mr="8px"
+                variant={list === percentage ? 'primary' : 'tertiary'}
+                onClick={() => setPercentage(list)}
+              >
+                {`${list}%`}
+              </Button>
+            ))}
           </Flex>
-          <Button mt="24px" width="100%">
-            Generate a referral link
+          <Button mt="24px" width="100%" disabled={isLoading} onClick={handleGenerateLink}>
+            {t('Generate a referral link')}
           </Button>
         </Box>
       </Card>

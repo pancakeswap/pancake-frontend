@@ -2,6 +2,9 @@ import { configureScope } from '@sentry/nextjs'
 import { Dispatch } from '@reduxjs/toolkit'
 import { resetUserState, toggleFarmTransactionModal } from 'state/global/actions'
 import { PREDICTION_TOOLTIP_DISMISS_KEY } from 'config/constants'
+import { deleteCookie } from 'cookies-next'
+import { HOST } from 'config/constants/affiliatesProgram'
+import { AFFILIATE_SID } from 'pages/api/affiliates-program/affiliate-login'
 import { LS_ORDERS } from './localStorageOrders'
 import getLocalStorageItemKeys from './getLocalStorageItemKeys'
 
@@ -21,4 +24,5 @@ export const clearUserStates = (
   const lsOrderKeys = getLocalStorageItemKeys(LS_ORDERS)
   lsOrderKeys.forEach((lsOrderKey) => window?.localStorage?.removeItem(lsOrderKey))
   window?.localStorage?.removeItem(PREDICTION_TOOLTIP_DISMISS_KEY)
+  deleteCookie(AFFILIATE_SID, { domain: HOST })
 }
