@@ -132,6 +132,7 @@ const SingleFarmV3Card: React.FunctionComponent<
       placement: 'left-end',
       manualVisible: true,
       strategy: 'absolute',
+      tooltipOffset: [0, -8],
     },
   )
 
@@ -168,14 +169,8 @@ const SingleFarmV3Card: React.FunctionComponent<
             handleUnStake={unstakedModal.onOpen}
           />
           <ModalV2 {...unstakedModal} closeOnOverlayClick>
-            <Modal title={t('Unstaking')}>
-              <AutoColumn
-                maxWidth={{
-                  xs: '100%',
-                  md: 'screenSm',
-                }}
-                gap="16px"
-              >
+            <Modal title={t('Unstaking')} maxWidth={['100%', , '420px']}>
+              <AutoColumn gap="16px">
                 <AtomBox position="relative">
                   <Image
                     ref={unstakingTooltip.targetRef}

@@ -51,9 +51,7 @@ export const FarmV3LPTitle = ({
   outOfRange: boolean
 }) => (
   <StyledLink external href={liquidityUrl}>
-    <Text bold color={outOfRange ? 'failure' : 'secondary'}>
-      {title}
-    </Text>
+    <Text bold>{title}</Text>
     <ChevronRightIcon color={outOfRange ? 'failure' : 'secondary'} fontSize="12px" />
   </StyledLink>
 )
@@ -156,7 +154,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
         </RangeTag>
       )}
       <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
-      <RowBetween gap="16px">
+      <RowBetween gap="16px" flexWrap="nowrap">
         <FarmV3LPPosition
           farm={farm}
           token={token}

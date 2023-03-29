@@ -44,7 +44,7 @@ const AvailableFarming: React.FunctionComponent<React.PropsWithChildren<Availabl
               ))}
             </Box>
           </Flex>
-          <Button style={{ alignSelf: "center" }} onClick={onClickViewAllButton}>
+          <Button style={{ alignSelf: "center", whiteSpace: "nowrap" }} onClick={onClickViewAllButton}>
             {t("View All")}
           </Button>
         </Flex>

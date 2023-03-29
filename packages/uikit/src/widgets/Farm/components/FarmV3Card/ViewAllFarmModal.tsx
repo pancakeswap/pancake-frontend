@@ -53,7 +53,7 @@ const ViewAllFarmModal: React.FunctionComponent<React.PropsWithChildren<ViewAllF
 
   return (
     <ModalContainer minWidth="300px" maxHeight="90vh">
-      <AtomBox bg="gradientBubblegum" py="24px" maxWidth="screenMd">
+      <AtomBox bg="gradientBubblegum" py="24px" maxWidth="420px">
         <RowBetween flexWrap="nowrap" px="24px">
           <Flex alignItems="center" width="100%">
             {tokenPairImage}

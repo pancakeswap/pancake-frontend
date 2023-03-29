@@ -222,7 +222,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
           {isActive && (
             <Flex mb="2px" justifyContent={alignLinksToRight ? 'flex-end' : 'flex-start'}>
               <StakeContainer>
-                <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`}>
+                <StyledLinkExternal href={`/add/${liquidityUrlPathParts}`} style={{ whiteSpace: 'nowrap' }}>
                   {t('Add %symbol%', { symbol: lpLabel })}
                 </StyledLinkExternal>
               </StakeContainer>
