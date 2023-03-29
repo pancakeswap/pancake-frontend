@@ -22,9 +22,11 @@ const sentryWebpackPluginOptions =
         //   urlPrefix, include, ignore
         silent: false, // Logging when deploying to check if there is any problem
         validate: true,
+        hideSourceMaps: false,
         // https://github.com/getsentry/sentry-webpack-plugin#options.
       }
     : {
+        hideSourceMaps: false,
         silent: true, // Suppresses all logs
         dryRun: !process.env.SENTRY_AUTH_TOKEN,
       }
