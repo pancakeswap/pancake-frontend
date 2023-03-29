@@ -23,8 +23,10 @@ import { Field } from 'state/mint/actions'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
+import { batch } from 'react-redux'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
+import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
 
 interface Props {
   baseCurrency: Currency
@@ -106,15 +108,24 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
     volume24H,
   })
 
+  // NOTE: Assume no liquidity when openning modal
+  const { onFieldAInput, onFieldBInput, onBothRangeInput } = useV3MintActionHandlers(false)
+
   const closeModal = useCallback(() => setOpen(false), [])
   const onApply = useCallback(
     (position: RoiCalculatorPositionInfo) => {
-      // TODO: v3 apply position to add liquidity page
-      // eslint-disable-next-line
-      console.log(position)
+      batch(() => {
+        onFieldAInput(position.amountA.toExact())
+        onFieldBInput(position.amountB.toExact())
+
+        onBothRangeInput({
+          leftTypedValue: position.priceLower.toFixed(),
+          rightTypedValue: position.priceUpper.toFixed(),
+        })
+      })
       closeModal()
     },
-    [closeModal],
+    [closeModal, onBothRangeInput, onFieldAInput, onFieldBInput],
   )
 
   return (
