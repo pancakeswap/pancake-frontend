@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Flex } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
+import { useAccount } from 'wagmi'
 import AffiliatesProgramLayout from 'views/AffiliatesProgram/components/AffiliatesProgramLayout'
 import Banner from 'views/AffiliatesProgram/components/Dashboard/Banner'
 import MyReferralLink from 'views/AffiliatesProgram/components/Dashboard/MyReferralLink'
@@ -13,16 +14,22 @@ import AffiliateLinks from 'views/AffiliatesProgram/components/Dashboard/Affilia
 
 const Dashboard = () => {
   const router = useRouter()
+  const { address: account } = useAccount()
   const { isAffiliate, affiliate, refresh } = useAuthAffiliate()
   const { isAffiliateExist } = useAuthAffiliateExist()
+  const [isFirstTime, setIsFirstTime] = useState(true)
 
   useEffect(() => {
-    if (isAffiliateExist === false && isAffiliateExist !== null) {
+    const timer = setTimeout(() => setIsFirstTime(false), 1000)
+
+    if ((isAffiliateExist === false && isAffiliateExist !== null) || (!isFirstTime && !account)) {
       router.push('/affiliates-program')
     }
-  }, [isAffiliateExist, isAffiliate, router])
 
-  if (!isAffiliateExist) {
+    return () => clearTimeout(timer)
+  }, [isAffiliateExist, isAffiliate, router, isFirstTime, account, setIsFirstTime])
+
+  if (!isAffiliateExist || (!isFirstTime && !account)) {
     return null
   }
 
