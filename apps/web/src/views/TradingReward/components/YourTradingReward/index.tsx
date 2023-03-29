@@ -7,7 +7,7 @@ import useTheme from 'hooks/useTheme'
 import { useProfile } from 'state/profile/hooks'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
-import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
+// import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
 import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 // import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
 // import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
@@ -157,7 +157,7 @@ const YourTradingReward = () => {
           >
             {!account && <NoConnected />}
             {account && !profile?.isActive && <NoProfile />}
-            <ViewEligiblePairs />
+            {/* <ViewEligiblePairs /> */}
             {/* <NoCakeLockedOrExtendLock /> */}
             {/* <NotQualified /> */}
           </Flex>
