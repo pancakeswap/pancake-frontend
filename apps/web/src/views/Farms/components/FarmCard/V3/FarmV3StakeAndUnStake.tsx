@@ -90,7 +90,7 @@ export const FarmV3LPPosition = ({
 
   return (
     <Box>
-      <Text bold fontSize="12px">
+      <Text bold fontSize="12px" style={{ wordBreak: 'break-word' }}>
         {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
           minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
           maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
