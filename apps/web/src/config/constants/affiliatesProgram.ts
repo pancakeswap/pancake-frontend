@@ -1,6 +1,6 @@
 const host = () => {
   if (process.env.VERCEL_ENV === 'production') {
-    return 'pancakeswap.finance'
+    return '.pancakeswap.finance'
   }
 
   const key = '.pancake.'
