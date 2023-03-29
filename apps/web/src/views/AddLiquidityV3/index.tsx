@@ -203,7 +203,7 @@ export function UniversalAddLiquidity({
   useEffect(() => {
     if (!currencyIdA || !currencyIdB) return
 
-    if (preferredSelectType === SELECTOR_TYPE.V3) {
+    if (selectorType === SELECTOR_TYPE.V3 && preferredSelectType === SELECTOR_TYPE.V3) {
       return
     }
 
@@ -221,6 +221,7 @@ export function UniversalAddLiquidity({
     isV2,
     preferredSelectType,
     prevPreferredSelectType,
+    selectorType,
     setSelectorType,
     stableConfig.stableSwapConfig,
   ])
