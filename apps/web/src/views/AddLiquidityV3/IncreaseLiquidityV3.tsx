@@ -1,7 +1,7 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { CommonBasesType } from 'components/SearchModal/types'
 
-import { Currency, Percent } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { AutoColumn, Box, Button, CardBody, ConfirmationModalContent, useModal } from '@pancakeswap/uikit'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
