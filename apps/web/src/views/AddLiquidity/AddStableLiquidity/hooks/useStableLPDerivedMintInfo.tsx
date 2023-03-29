@@ -2,6 +2,7 @@ import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, Price, Token } from '@pancakeswap/sdk'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
+import { BigNumber } from '@ethersproject/bignumber'
 
 import { PairState } from 'hooks/usePairs'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -33,37 +34,41 @@ interface UseStablePairResponse {
   pair: StablePair
 }
 
-export function useStablePair(currencyA: Token, currencyB: Token): UseStablePairResponse {
+export function useStablePair(currencyA?: Currency, currencyB?: Currency): UseStablePairResponse {
   const { stableSwapConfig, stableSwapContract } = useContext(StableConfigContext)
 
-  const currencyAAmountQuotient = tryParseAmount('1', currencyA)?.quotient
+  const [token0, token1] =
+    currencyA && currencyB && currencyA.wrapped.sortsBefore(currencyB.wrapped)
+      ? [currencyA?.wrapped, currencyB?.wrapped]
+      : [currencyB?.wrapped, currencyA?.wrapped]
+
+  const token0AmountQuotient = tryParseAmount('1', token0)?.quotient
 
   const { data: estimatedToken1Amount } = useEstimatedAmount({
-    estimatedCurrency: currencyB,
-    quotient: currencyAAmountQuotient?.toString(),
+    estimatedCurrency: token1,
+    quotient: token0AmountQuotient?.toString(),
     stableSwapContract,
     stableSwapConfig,
   })
 
   const pair = useMemo(() => {
-    if (!currencyA || !currencyB) {
+    if (!token0 || !token1) {
       return undefined
     }
-    const isPriceValid = currencyAAmountQuotient && estimatedToken1Amount
+    const isPriceValid = token0AmountQuotient && estimatedToken1Amount
 
     const ZERO_AMOUNT = CurrencyAmount.fromRawAmount(currencyB, '0')
 
     const token0Price = isPriceValid
-      ? new Price(currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount.quotient)
+      ? new Price(token0, token1, token0AmountQuotient, estimatedToken1Amount.quotient)
       : ZERO_AMOUNT
 
     return {
       liquidityToken: stableSwapConfig?.liquidityToken || null,
       tokenAmounts: [],
-      token0: currencyA,
-      token1: currencyB,
-      priceOf: (token) =>
-        isPriceValid ? (token?.address === currencyA?.address ? token0Price : token0Price.invert()) : ZERO_AMOUNT,
+      token0,
+      token1,
+      priceOf: (token) => (isPriceValid ? (token?.equals(token0) ? token0Price : token0Price.invert()) : ZERO_AMOUNT),
       token0Price: () => token0Price,
       token1Price: () => token0Price.invert(),
       // NOTE: Stable Tokens don't need this
@@ -71,7 +76,7 @@ export function useStablePair(currencyA: Token, currencyB: Token): UseStablePair
       reserve0: ZERO_AMOUNT,
       getLiquidityValue: () => ZERO_AMOUNT,
     }
-  }, [stableSwapConfig?.liquidityToken, currencyA, currencyB, currencyAAmountQuotient, estimatedToken1Amount])
+  }, [currencyB, token0AmountQuotient, estimatedToken1Amount, token0, token1, stableSwapConfig?.liquidityToken])
 
   if (!stableSwapConfig) {
     return { pairState: PairState.NOT_EXISTS, pair: undefined }
@@ -98,7 +103,8 @@ function useMintedStableLP({
   const quotient0Str = currencyInputAmount?.toString() || '0'
   const quotient1Str = currencyOutputAmount?.toString() || '0'
 
-  const isToken0 = currencyInput.wrapped.equals(stableSwapConfig?.token0)
+  const isToken0 =
+    currencyInput && stableSwapConfig?.token0 ? currencyInput?.wrapped?.equals(stableSwapConfig?.token0) : false
   const amounts = useMemo(() => {
     return isToken0 ? [quotient0Str, quotient1Str] : [quotient1Str, quotient0Str]
   }, [isToken0, quotient0Str, quotient1Str])
@@ -113,13 +119,17 @@ function useMintedStableLP({
     inputs,
   )
 
+  // TODO: Combine get_add_liquidity_mint_amount + balances in one call
+  const balanceResult = useSingleCallResult(stableSwapInfoContract, 'balances', [stableSwapAddress])
+
   return useMemo(
     () => ({
+      reserves: balanceResult?.result?.[0] || [BigNumber.from(0), BigNumber.from(0)],
       data: result?.[0],
       loading: loading || syncing,
       error,
     }),
-    [result, loading, syncing, error],
+    [balanceResult?.result, result, loading, syncing, error],
   )
 }
 
@@ -140,6 +150,7 @@ export function useStableLPDerivedMintInfo(
   poolTokenPercentage?: Percent
   error?: string
   addError?: string
+  reserves: [BigNumber, BigNumber]
 } {
   const { address: account } = useAccount()
 
@@ -180,11 +191,13 @@ export function useStableLPDerivedMintInfo(
   const independentCurrency = currencies[independentField]
   const independentAmount: CurrencyAmount<Currency> | undefined =
     (independentCurrency && tryParseAmount(typedValue, independentCurrency)) ||
-    CurrencyAmount.fromRawAmount(independentCurrency, '0')
+    (independentCurrency && CurrencyAmount.fromRawAmount(independentCurrency, '0')) ||
+    undefined
 
   const dependentCurrency = currencies[dependentField]
   const dependentAmount: CurrencyAmount<Currency> | undefined =
-    tryParseAmount(otherTypedValue, dependentCurrency) || CurrencyAmount.fromRawAmount(dependentCurrency, '0')
+    tryParseAmount(otherTypedValue, dependentCurrency) ||
+    (dependentCurrency ? CurrencyAmount.fromRawAmount(dependentCurrency, '0') : undefined)
 
   const parsedAmounts: { [field in Field]: CurrencyAmount<Currency> | undefined } = useMemo(
     () => ({
@@ -214,6 +227,8 @@ export function useStableLPDerivedMintInfo(
     const isEstimatedOutputAmountZero = estimatedOutputAmount?.equalTo(0)
 
     if (
+      currencyA &&
+      currencyB &&
       (currencyAAmountQuotient || currencyBAmountQuotient) &&
       targetAmount &&
       estimatedOutputAmount &&
@@ -227,6 +242,7 @@ export function useStableLPDerivedMintInfo(
   }, [targetAmount, estimatedOutputAmount, currencyA, currencyB, currencyBAmountQuotient, currencyAAmountQuotient])
 
   const {
+    reserves,
     data: lpMinted,
     error: estimateLPError,
     loading,
@@ -313,5 +329,6 @@ export function useStableLPDerivedMintInfo(
     poolTokenPercentage,
     error,
     addError,
+    reserves,
   }
 }

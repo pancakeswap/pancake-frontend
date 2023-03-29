@@ -227,7 +227,7 @@ type UnknownAsyncThunkFulfilledOrPendingAction =
   | UnknownAsyncThunkPendingAction
   | UnknownAsyncThunkRejectedAction
 
-const serializeLoadingKey = (
+export const serializeLoadingKey = (
   action: UnknownAsyncThunkFulfilledOrPendingAction,
   suffix: UnknownAsyncThunkFulfilledOrPendingAction['meta']['requestStatus'],
 ) => {

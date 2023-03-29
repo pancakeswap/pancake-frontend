@@ -7,6 +7,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-text);
+  color: var(--colors-text);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -17,6 +18,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
+  color: var(--colors-textSubtle);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -27,6 +29,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-text);
+  color: var(--colors-text);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -38,6 +41,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
+  color: var(--colors-textSubtle);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -105,8 +109,9 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c31:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
+.c31:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
 }
 
 .c31:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -165,8 +170,9 @@ exports[`renders correctly 1`] = `
   height: sm;
 }
 
-.c35:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
+.c35:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
 }
 
 .c35:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -832,6 +838,26 @@ exports[`renders correctly 1`] = `
 
 }
 
+@media (hover:hover) {
+  .c31:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+  .c35:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
+
+}
+
 @media screen and (min-width:370px) {
 
 }
@@ -997,7 +1023,7 @@ exports[`renders correctly 1`] = `
 }
 
 <div
-    class="c0 reset_base__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc1yo sprinkles_minHeight_100vh_md__pkzlfc1zq"
+    class="c0 reset_base__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc150 sprinkles_minHeight_100vh_md__pkzlfc162"
   >
     <div
       class="c1"
@@ -1378,7 +1404,7 @@ exports[`renders correctly 1`] = `
           height="100%"
         >
           <div
-            class="reset_base__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfc12i sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
+            class="reset_base__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfcli sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
           >
             <a
               class="c26"
@@ -1753,6 +1779,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-text);
+  color: var(--colors-text);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1763,6 +1790,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
+  color: var(--colors-textSubtle);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1773,6 +1801,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-text);
+  color: var(--colors-text);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1784,6 +1813,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
+  color: var(--colors-textSubtle);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1795,6 +1825,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
+  color: var(--colors-textSubtle);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1806,6 +1837,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-backgroundAlt);
+  color: var(--colors-backgroundAlt);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1817,6 +1849,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-warning);
+  color: var(--colors-warning);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1827,6 +1860,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-backgroundAlt);
+  color: var(--colors-backgroundAlt);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -1915,8 +1949,9 @@ exports[`renders correctly 1`] = `
   height: sm;
 }
 
-.c49:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
+.c49:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
 }
 
 .c49:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -1973,8 +2008,9 @@ exports[`renders correctly 1`] = `
   box-shadow: none;
 }
 
-.c45:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
+.c45:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
 }
 
 .c45:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -2030,8 +2066,9 @@ exports[`renders correctly 1`] = `
   color: var(--colors-invertedContrast);
 }
 
-.c56:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-  opacity: 0.65;
+.c56:focus-visible {
+  outline: none;
+  box-shadow: var(--shadows-focus);
 }
 
 .c56:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
@@ -2544,6 +2581,28 @@ exports[`renders correctly 1`] = `
   .c44 {
     -webkit-filter: none !important;
     filter: none !important;
+  }
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
+  .c49:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+  .c45:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
+  }
+}
+
+@media (hover:hover) {
+  .c56:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+    opacity: 0.65;
   }
 }
 
@@ -3809,6 +3868,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-textSubtle);
+  color: var(--colors-textSubtle);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -3819,6 +3879,7 @@ exports[`renders correctly 1`] = `
   -ms-flex-item-align: center;
   align-self: center;
   fill: var(--colors-secondary);
+  color: var(--colors-secondary);
   -webkit-flex-shrink: 0;
   -ms-flex-negative: 0;
   flex-shrink: 0;
@@ -4088,6 +4149,9 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   position: relative;
 }
 
@@ -4175,6 +4239,22 @@ html[data-useragent*="TokenPocket_iOS"] .c0 {
 }
 
 @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
+
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
+
+}
+
+@media (hover:hover) {
 
 }
 

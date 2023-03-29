@@ -1,10 +1,11 @@
-import { HelpIcon, useTooltip, Box, BoxProps, Placement } from "@pancakeswap/uikit";
+import { BoxProps, Flex, HelpIcon, Placement, useTooltip } from "@pancakeswap/uikit";
 import styled from "styled-components";
 
 interface Props extends BoxProps {
   text: string | React.ReactNode;
   placement?: Placement;
   size?: string;
+  color?: string;
 }
 
 const QuestionWrapper = styled.div`
@@ -18,16 +19,17 @@ export const QuestionHelper: React.FC<React.PropsWithChildren<Props>> = ({
   text,
   placement = "right-end",
   size = "16px",
+  color,
   ...props
 }) => {
   const { targetRef, tooltip, tooltipVisible } = useTooltip(text, { placement });
 
   return (
-    <Box {...props}>
+    <Flex alignItems="center" {...props} ref={targetRef}>
       {tooltipVisible && tooltip}
-      <QuestionWrapper ref={targetRef}>
-        <HelpIcon color="textSubtle" width={size} />
+      <QuestionWrapper as={Flex} alignItems="center">
+        <HelpIcon color={color || "textSubtle"} width={size} />
       </QuestionWrapper>
-    </Box>
+    </Flex>
   );
 };

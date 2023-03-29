@@ -1,24 +1,22 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
-import { Pair } from '@pancakeswap/smart-router/evm'
+import { LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColumn } from '@pancakeswap/uikit'
 
 import { RowBetween, RowFixed } from 'components/Layout/Row'
-import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useState } from 'react'
 import { Field } from 'state/swap/actions'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
 
-function TradeSummary({
+export function TradeSummary({
   inputAmount,
   outputAmount,
   tradeType,
   slippageAdjustedAmounts,
   priceImpactWithoutFee,
   realizedLPFee,
-  hasStablePair = false,
   isMM = false,
 }: {
   hasStablePair?: boolean
@@ -35,13 +33,9 @@ function TradeSummary({
 }) {
   const { t } = useTranslation()
   const isExactIn = tradeType === TradeType.EXACT_INPUT
-  const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
-  const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
-  const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
-  const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   return (
-    <AutoColumn style={{ padding: '0 16px' }}>
+    <AutoColumn style={{ padding: '0 24px' }}>
       <RowBetween>
         <RowFixed>
           <Text fontSize="14px" color="textSubtle">
@@ -64,7 +58,7 @@ function TradeSummary({
         </RowFixed>
       </RowBetween>
       {priceImpactWithoutFee && (
-        <RowBetween>
+        <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
             <Text fontSize="14px" color="textSubtle">
               {t('Price Impact')}
@@ -96,7 +90,7 @@ function TradeSummary({
       )}
 
       {realizedLPFee && (
-        <RowBetween>
+        <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
             <Text fontSize="14px" color="textSubtle">
               {t('Liquidity Provider Fee')}
@@ -109,28 +103,15 @@ function TradeSummary({
                       {t('AMM')}
                     </Text>
                     :{' '}
-                    {hasStablePair
-                      ? t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })
-                      : t('For each trade a %amount% fee is paid', { amount: totalFeePercent })}
+                    {t(
+                      'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
+                    )}
                   </Text>
-                  <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
-                  <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
-                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
-                  {hasStablePair && (
-                    <>
-                      <Text mt="12px">
-                        {t('For each stableswap trade, refer to the fee table')}
-                        <Link
-                          style={{ display: 'inline' }}
-                          ml="4px"
-                          external
-                          href="https://docs.pancakeswap.finance/products/stableswap#stableswap-fees"
-                        >
-                          {t('here.')}
-                        </Link>
-                      </Text>
-                    </>
-                  )}
+                  <Text mt="12px">
+                    <Link style={{ display: 'inline' }} ml="4px" external href="https://docs.pancakeswap.finance/">
+                      {t('Fee Breakdown and Tokenomics')}
+                    </Link>
+                  </Text>
                   <Text mt="10px">
                     <Text bold display="inline-block">
                       {t('MM')}
@@ -200,7 +181,7 @@ export function AdvancedSwapDetails({
           />
           {showRoute && (
             <>
-              <RowBetween style={{ padding: '0 16px' }}>
+              <RowBetween style={{ padding: '0 24px' }}>
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <Text fontSize="14px" color="textSubtle">
                     {t('Route')}
@@ -219,7 +200,9 @@ export function AdvancedSwapDetails({
                       <Flex justifyContent="center">
                         {t('Route')}{' '}
                         <QuestionHelper
-                          text={t('Routing through these tokens resulted in the best price for your trade.')}
+                          text={t(
+                            'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
+                          )}
                           ml="4px"
                           placement="top"
                         />

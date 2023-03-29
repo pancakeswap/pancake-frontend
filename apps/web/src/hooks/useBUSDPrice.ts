@@ -10,6 +10,7 @@ import {
   WBNB,
   ERC20Token,
   WETH9,
+  TradeType,
 } from '@pancakeswap/sdk'
 import { FAST_INTERVAL } from 'config/constants'
 import { BUSD, CAKE, USDC } from '@pancakeswap/tokens'
@@ -21,12 +22,61 @@ import { multiplyPriceByAmount } from 'utils/prices'
 import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
-import { PairState, usePairs } from './usePairs'
+import { PairState, useV2Pairs } from './usePairs'
 import { useActiveChainId } from './useActiveChainId'
+import { useBestAMMTrade } from './useBestAMMTrade'
+
+const STABLE_COIN = {
+  [ChainId.ETHEREUM]: USDC[ChainId.ETHEREUM],
+  [ChainId.GOERLI]: USDC[ChainId.GOERLI],
+  [ChainId.BSC]: BUSD[ChainId.BSC],
+  [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
+} satisfies Record<ChainId, ERC20Token>
+
+export function useStablecoinPrice(currency?: Currency): Price<Currency, Currency> | undefined {
+  const { chainId } = useActiveChainId()
+
+  const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
+
+  const amountIn = useMemo(
+    () => (currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined),
+    [currency],
+  )
+
+  const { trade } = useBestAMMTrade({
+    amount: amountIn,
+    currency: stableCoin,
+    baseCurrency: currency,
+    tradeType: TradeType.EXACT_INPUT,
+    maxSplits: 0,
+  })
+
+  const price = useMemo(() => {
+    if (!currency || !stableCoin) {
+      return undefined
+    }
+
+    // handle busd
+    if (currency?.wrapped.equals(stableCoin)) {
+      return new Price(stableCoin, stableCoin, '1', '1')
+    }
+
+    if (trade) {
+      const { inputAmount, outputAmount } = trade
+
+      return new Price(currency, stableCoin, inputAmount.quotient, outputAmount.quotient)
+    }
+
+    return undefined
+  }, [currency, stableCoin, trade])
+
+  return price
+}
 
 /**
  * Returns the price in BUSD of the input currency
  * @param currency currency to compute the BUSD price of
+ * @deprecated it's using v2 pair
  */
 export default function useBUSDPrice(currency?: Currency): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
@@ -42,7 +92,7 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
     ],
     [wnative, stable, chainId, currency, wrapped],
   )
-  const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = usePairs(tokenPairs)
+  const [[bnbPairState, bnbPair], [busdPairState, busdPair], [busdBnbPairState, busdBnbPair]] = useV2Pairs(tokenPairs)
 
   return useMemo(() => {
     if (!currency || !wrapped || !chainId || !wnative) {
@@ -117,6 +167,9 @@ export default function useBUSDPrice(currency?: Currency): Price<Currency, Curre
   ])
 }
 
+/**
+ * @deprecated it's using v2 pair
+ */
 export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   const [tokenA, tokenB] = [currencyA?.wrapped, currencyB?.wrapped]
   const pairAddress = getLpAddress(tokenA, tokenB)
@@ -146,8 +199,8 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
   return price
 }
 
-export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const busdPrice = useBUSDPrice(currency?.chainId === ChainId.ETHEREUM ? undefined : currency)
+export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
+  const stablePrice = useStablecoinPrice(currency?.chainId === ChainId.ETHEREUM ? undefined : currency)
   // we don't have too many AMM pools on ethereum yet, try to get it from api
   const { data } = useSWRImmutable(
     amount && currency?.chainId === ChainId.ETHEREUM && ['fiat-price-ethereum', currency],
@@ -169,13 +222,16 @@ export const useBUSDCurrencyAmount = (currency?: Currency, amount?: number): num
     if (data) {
       return parseFloat(data) * amount
     }
-    if (busdPrice) {
-      return multiplyPriceByAmount(busdPrice, amount)
+    if (stablePrice) {
+      return multiplyPriceByAmount(stablePrice, amount)
     }
   }
   return undefined
 }
 
+/**
+ * @deprecated it's using v2 pair
+ */
 export const useBUSDCakeAmount = (amount: number): number | undefined => {
   const cakeBusdPrice = useCakeBusdPrice()
   if (cakeBusdPrice) {
@@ -184,7 +240,10 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
   return undefined
 }
 
-// @Note: only fetch from one pair
+/**
+ * @deprecated it's using v2 pair
+ * @Note: only fetch from one pair
+ */
 export const useCakeBusdPrice = (
   { forceMainnet } = { forceMainnet: false },
 ): Price<ERC20Token, ERC20Token> | undefined => {
@@ -194,6 +253,11 @@ export const useCakeBusdPrice = (
   const cake: Token = isTestnet ? CAKE[ChainId.BSC_TESTNET] : CAKE[ChainId.BSC]
   return usePriceByPairs(BUSD[cake.chainId], cake)
 }
+
+/**
+ * @deprecated it's using v2 pair
+ * @Note: only fetch from one pair
+ */
 
 // @Note: only fetch from one pair
 export const useBNBBusdPrice = (

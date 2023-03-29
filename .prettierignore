@@ -5,3 +5,4 @@ apps/web/src/config/abi/types
 cli/aptos-codegen
 dist
 packages/farms/lists
+packages/smart-router/evm/abis/types

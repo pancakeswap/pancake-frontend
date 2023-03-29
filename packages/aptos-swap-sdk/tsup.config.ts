@@ -5,4 +5,6 @@ export default defineConfig({
   format: ['esm', 'cjs'],
   dts: true,
   external: ['jsbi', 'tiny-invariant'],
+  treeshake: true,
+  splitting: true,
 })

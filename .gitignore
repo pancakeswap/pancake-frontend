@@ -10,6 +10,7 @@ node_modules
 cypress/videos
 cypress/screenshots
 cypress/fixtures/example.json
+**/packages/**/coverage
 
 # next.js
 .next/
@@ -38,6 +39,7 @@ yarn-error.log*
 debug.log*
 
 **/apps/web/config/abi/types
+**/packages/smart-router/evm/abis/types
 
 # Sentry
 .sentryclirc
@@ -45,3 +47,6 @@ debug.log*
 # turbo
 .turbo
 .vercel
+
+# store for local dev scripts
+scripts/dev/**

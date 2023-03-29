@@ -1,23 +1,39 @@
 import { useDebounce } from '@pancakeswap/hooks'
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
+import { SmartRouterTrade, LegacyTradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { useExpertMode, useUserSlippage } from '@pancakeswap/utils/user'
+import { useCurrency } from 'hooks/Tokens'
 import { Field } from 'state/swap/actions'
-import { useMMTrade } from './useMMOrderBookTrade'
-import { useIsTradeWithMMBetter } from './useIsMMTradeBetter'
-import { useExpertModeManager, useUserSlippageTolerance } from '../../../../state/user/hooks'
-import { useGetRFQId, useGetRFQTrade } from './useGetRFQTrade'
-import { useMMDevMode } from '../components/MMAndAMMDealDisplay'
-import { MMTradeInfo, useMMTradeInfo } from './useMMTradeInfo'
-import { useMMQuoteCountDown } from './useMMQuoteCountDown'
+import { useSwapState } from 'state/swap/hooks'
 import useActiveWeb3React from '../../../../hooks/useActiveWeb3React'
+import { useMMDevMode } from '../components/MMAndAMMDealDisplay'
 import { MMOrderBookTrade, MMRfqTrade } from '../types'
+import { useGetRFQId, useGetRFQTrade } from './useGetRFQTrade'
+import { useIsTradeWithMMBetter } from './useIsMMTradeBetter'
+import { useMMTrade } from './useMMOrderBookTrade'
+import { useMMQuoteCountDown } from './useMMQuoteCountDown'
+import { MMTradeInfo, useMMTradeInfo } from './useMMTradeInfo'
+
+export function useDerivedBestTradeWithMM<T extends TradeType>(bestTrade?: SmartRouterTrade<T>) {
+  const {
+    independentField,
+    typedValue,
+    [Field.INPUT]: { currencyId: inputCurrencyId },
+    [Field.OUTPUT]: { currencyId: outputCurrencyId },
+  } = useSwapState()
+  const inputCurrency = useCurrency(inputCurrencyId)
+  const outputCurrency = useCurrency(outputCurrencyId)
+
+  return useDerivedSwapInfoWithMM(independentField, typedValue, inputCurrency, outputCurrency, null, bestTrade)
+}
 
 export function useDerivedSwapInfoWithMM(
   independentField: Field,
   typedValue: string,
   inputCurrency: Currency | undefined,
   outputCurrency: Currency | undefined,
-  v2Trade,
-  tradeWithStableSwap,
+  v2Trade?: Trade<Currency, Currency, TradeType>,
+  tradeWithStableSwap?: LegacyTradeWithStableSwap<Currency, Currency, TradeType> | SmartRouterTrade<TradeType>,
 ): {
   mmTradeInfo: MMTradeInfo
   isMMBetter: boolean
@@ -25,12 +41,13 @@ export function useDerivedSwapInfoWithMM(
   mmOrderBookTrade: MMOrderBookTrade
   mmRFQTrade: MMRfqTrade
 } {
-  const [isExpertMode] = useExpertModeManager()
+  const [isExpertMode] = useExpertMode()
   const isMMDev = useMMDevMode()
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
   const { account, chainId } = useActiveWeb3React()
   const deBounceTypedValue = useDebounce(typedValue, 300)
   const mmOrderBookTrade = useMMTrade(independentField, deBounceTypedValue, inputCurrency, outputCurrency)
+
   const isMMOrderBookTradeBetter = useIsTradeWithMMBetter({
     independentField,
     trade: tradeWithStableSwap,

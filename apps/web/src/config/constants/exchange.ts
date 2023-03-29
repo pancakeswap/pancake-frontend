@@ -3,9 +3,16 @@ import { BigNumber } from '@ethersproject/bignumber'
 import { bscTokens, bscTestnetTokens, USDC, USDT, BUSD, WBTC_ETH } from '@pancakeswap/tokens'
 import { ChainMap, ChainTokenList } from './types'
 
+export const CHAIN_REFRESH_TIME = {
+  [ChainId.ETHEREUM]: 12_000,
+  [ChainId.GOERLI]: 12_000,
+  [ChainId.BSC]: 6_000,
+  [ChainId.BSC_TESTNET]: 6_000,
+} as const satisfies Record<ChainId, number>
+
 export const ROUTER_ADDRESS: ChainMap<string> = {
-  [ChainId.ETHEREUM]: '0xEfF92A263d31888d860bD50809A8D171709b7b1c',
-  [ChainId.GOERLI]: '0xEfF92A263d31888d860bD50809A8D171709b7b1c',
+  [ChainId.ETHEREUM]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
+  [ChainId.GOERLI]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
   [ChainId.BSC]: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
   [ChainId.BSC_TESTNET]: '0xD99D1c33F9fC3444f8101754aBC46c52416550D1',
 }

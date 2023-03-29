@@ -18,7 +18,9 @@ const spinStyle = css`
 
 const Svg = styled.svg<SvgProps>`
   align-self: center; // Safari fix
-  fill: ${({ theme, color }) => getThemeValue(theme, `colors.${color}`, color)};
+  fill: ${({ theme, color }) =>
+    getThemeValue(theme, `colors.${color}`, color)}; // should use color and currentColor in svg path
+  color: ${({ theme, color }) => getThemeValue(theme, `colors.${color}`, color)};
   flex-shrink: 0;
   ${({ spin }) => spin && spinStyle};
   ${space};

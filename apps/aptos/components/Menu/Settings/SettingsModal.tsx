@@ -16,9 +16,13 @@ import {
 import { escapeRegExp } from '@pancakeswap/utils/escapeRegExp'
 import { useTheme } from 'next-themes'
 import { useCallback, useState } from 'react'
-import { useAudioPlay, useUserSlippage } from 'state/user'
-import { useExpertMode, useUserExpertModeAcknowledgement } from 'state/user/expertMode'
-import { useUserSingleHopOnly } from 'state/user/singleHop'
+import {
+  useUserSlippage,
+  useExpertMode,
+  useUserExpertModeAcknowledgement,
+  useAudioPlay,
+  useUserSingleHopOnly,
+} from '@pancakeswap/utils/user'
 import styled from 'styled-components'
 
 export const withCustomOnDismiss =
@@ -237,10 +241,10 @@ export const SettingsModal: React.FC<React.PropsWithChildren<InjectedModalProps>
             </Flex>
             <Toggle
               id="toggle-disable-multihop-button"
-              checked={singleHopOnly}
+              checked={!singleHopOnly}
               scale="md"
               onChange={() => {
-                setSingleHopOnly(!singleHopOnly)
+                setSingleHopOnly((s) => !s)
               }}
             />
           </Flex>
