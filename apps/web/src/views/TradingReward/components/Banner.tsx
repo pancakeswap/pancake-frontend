@@ -93,7 +93,7 @@ const TradingRewardBanner = () => {
           <Flex>
             <Button>{t('Start Trading')}</Button>
             <Button ml="12px" variant="secondary">
-              {t('How to Earn?')}
+              {`${t('How to Earn')}?`}
             </Button>
           </Flex>
         </Flex>
