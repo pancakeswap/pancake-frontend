@@ -1,14 +1,17 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { useAccount } from 'wagmi'
 import { useTranslation } from '@pancakeswap/localization'
 import useTheme from 'hooks/useTheme'
+import { useProfile } from 'state/profile/hooks'
 import NoConnected from 'views/TradingReward/components/YourTradingReward/NoConnected'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
-// import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
-// import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
+import ViewEligiblePairs from 'views/TradingReward/components/YourTradingReward/ViewEligiblePairs'
+import NoProfile from 'views/TradingReward/components/YourTradingReward/NoProfile'
 // import NoCakeLockedOrExtendLock from 'views/TradingReward/components/YourTradingReward/NoCakeLockedOrExtendLock'
 // import NotQualified from 'views/TradingReward/components/YourTradingReward/NotQualified'
-// import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
+import ExpiringUnclaim from 'views/TradingReward/components/YourTradingReward/ExpiringUnclaim'
 
 const BACKGROUND_COLOR = 'radial-gradient(55.22% 134.13% at 57.59% 0%, #F5DF8E 0%, #FCC631 33.21%, #FF9D00 79.02%)'
 
@@ -130,29 +133,36 @@ const Decorations = styled(Box)<{ showBackgroundColor: boolean }>`
 
 const YourTradingReward = () => {
   const { t } = useTranslation()
+  const { address: account } = useAccount()
+  const { profile } = useProfile()
   const { theme } = useTheme()
-  const showBackgroundColor = true
+
+  const showBackgroundColor = useMemo(() => !account, [account])
+  const isClaimable = useMemo(() => account && profile?.isActive && false, [account, profile])
 
   return (
     <StyledBackground showBackgroundColor={showBackgroundColor}>
       <StyledHeading data-text={t('Your Trading Reward')}>{t('Your Trading Reward')}</StyledHeading>
-      <Container showBackgroundColor={showBackgroundColor}>
-        <Flex
-          width="100%"
-          borderRadius={32}
-          padding={['24px', '24px', '24px', '48px 0']}
-          flexDirection="column"
-          alignItems={['center']}
-          style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
-        >
-          <NoConnected />
-          {/* <ViewEligiblePairs />
-          <NoProfile />
-          <NoCakeLockedOrExtendLock />
-          <NotQualified /> */}
-        </Flex>
-      </Container>
-      {/* <ExpiringUnclaim /> */}
+      {isClaimable ? (
+        <ExpiringUnclaim />
+      ) : (
+        <Container showBackgroundColor={showBackgroundColor}>
+          <Flex
+            width="100%"
+            borderRadius={32}
+            padding={['24px', '24px', '24px', '48px 0']}
+            flexDirection="column"
+            alignItems={['center']}
+            style={{ background: showBackgroundColor ? theme.card.background : BACKGROUND_COLOR }}
+          >
+            {!account && <NoConnected />}
+            {account && !profile?.isActive && <NoProfile />}
+            <ViewEligiblePairs />
+            {/* <NoCakeLockedOrExtendLock /> */}
+            {/* <NotQualified /> */}
+          </Flex>
+        </Container>
+      )}
       <Decorations showBackgroundColor={showBackgroundColor}>
         <img src="/images/trading-reward/left-bunny.png" width="93px" height="242px" alt="left-bunny" />
         <img src="/images/trading-reward/right-bunny.png" width="161px" height="161px" alt="right-bunny" />

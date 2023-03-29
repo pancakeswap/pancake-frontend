@@ -10,6 +10,7 @@ const RewardsBreakdown = () => {
 
   return (
     <Flex
+      id="rewards-breakdown"
       flexDirection="column"
       padding="0 16px"
       margin={['72px auto', '72px auto', '72px auto', '108px auto 56px auto']}
