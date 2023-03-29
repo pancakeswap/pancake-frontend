@@ -144,6 +144,10 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
 
   const displayApr = getDisplayApr(+farm.cakeApr, +apr.toSignificant(2))
 
+  if (farm.multiplier === '0X') {
+    return <Text fontSize="14px">0%</Text>
+  }
+
   if (!displayApr) {
     return <Skeleton height={24} width={80} />
   }

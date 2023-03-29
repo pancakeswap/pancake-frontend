@@ -219,6 +219,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
           multiplier: farm.multiplier,
         },
         stakedLiquidity: {
+          inactive: farm.multiplier === '0X',
           liquidity: new BigNumber(farm.activeTvlUSD),
           updatedAt: farm.activeTvlUSDUpdatedAt ? new Date(farm.activeTvlUSDUpdatedAt).getTime() : undefined,
         },
@@ -234,7 +235,7 @@ const FarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({ farms, cake
         },
         availableLp: {
           pid: farm.pid,
-          amount: farm.unstakedPositions.length,
+          amount: farm.multiplier === '0X' ? 0 : farm.unstakedPositions.length,
         },
         stakedLp: {
           pid: farm.pid,

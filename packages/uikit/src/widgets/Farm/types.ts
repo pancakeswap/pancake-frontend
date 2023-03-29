@@ -14,6 +14,7 @@ export interface FarmTableAmountProps {
 export interface FarmTableLiquidityProps {
   liquidity: BigNumber;
   updatedAt?: number;
+  inactive?: boolean;
 }
 
 export interface FarmTableMultiplierProps {

@@ -20,7 +20,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
   harvesting,
 }) => {
   const { t } = useTranslation()
-  const { stakedPositions, unstakedPositions, lpSymbol, token, quoteToken, pendingCakeByTokenIds } = farm
+  const { stakedPositions, unstakedPositions, lpSymbol, token, quoteToken, pendingCakeByTokenIds, multiplier } = farm
   const [, pool] = usePool(farm.token, farm.quoteToken, farm.feeAmount)
 
   return (
@@ -51,7 +51,7 @@ const FarmV3CardList: React.FunctionComponent<React.PropsWithChildren<FarmV3Card
           </Flex>
         </Flex>
       )}
-      {unstakedPositions.length > 0 && (
+      {multiplier !== '0X' && unstakedPositions.length > 0 && (
         <Flex flexDirection="column" width="100%" mb="24px" id={`${farm.pid}-farm-v3-available`}>
           <PreTitle fontSize="12px" color="textSubtle" m="0 0 8px 0">
             {t('%totalAvailableFarm% LP Available for Farming', { totalAvailableFarm: unstakedPositions.length })}

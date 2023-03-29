@@ -37,6 +37,7 @@ const Container = styled.div`
 export const StakedLiquidity: React.FunctionComponent<React.PropsWithChildren<FarmTableLiquidityProps>> = ({
   liquidity,
   updatedAt,
+  inactive,
 }) => {
   const { t } = useTranslation();
   const tooltip = useTooltip(
@@ -49,6 +50,10 @@ export const StakedLiquidity: React.FunctionComponent<React.PropsWithChildren<Fa
       tooltipOffset: [20, 10],
     }
   );
+
+  if (inactive) {
+    return <Text>-</Text>;
+  }
 
   return <LiquidityComp liquidity={liquidity} {...tooltip} />;
 };
