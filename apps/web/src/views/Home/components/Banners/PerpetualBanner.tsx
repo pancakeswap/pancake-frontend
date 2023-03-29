@@ -1,10 +1,20 @@
-import { ArrowForwardIcon, Button, Text, Link, useMatchBreakpoints, useIsomorphicEffect } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import {
+  ArrowForwardIcon,
+  Button,
+  Link,
+  Text,
+  useIsomorphicEffect,
+  useMatchBreakpoints,
+  useModal,
+} from '@pancakeswap/uikit'
+import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useUserNotUsCitizenAcknowledgement } from 'hooks/useUserIsUsCitizenAcknowledgement'
 import Image from 'next/legacy/image'
 import { memo, useMemo, useRef } from 'react'
 import styled, { useTheme } from 'styled-components'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
-import { useActiveChainId } from 'hooks/useActiveChainId'
 import { perpetualImage, perpetualMobileImage } from './images'
 import * as S from './Styled'
 
@@ -45,6 +55,8 @@ const PerpetualBanner = () => {
 
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
   const headerRef = useRef<HTMLDivElement>(null)
+  const [onUSCitizenModalPresent] = useModal(<USCitizenConfirmModal />, true, false, 'usCitizenConfirmModal')
+  const [userNotUsCitizenAcknowledgement] = useUserNotUsCitizenAcknowledgement()
 
   useIsomorphicEffect(() => {
     const target = headerRef.current
@@ -63,7 +75,17 @@ const PerpetualBanner = () => {
         <S.LeftWrapper>
           <S.StyledSubheading ref={headerRef}>{t('Perpetual Futures')}</S.StyledSubheading>
           <Header width={['160px', '160px', 'auto']}>{t('Up to 100× Leverage')}</Header>
-          <Link href={perpetualUrl} external>
+          <Link
+            href={perpetualUrl}
+            external
+            onClick={(e) => {
+              if (!userNotUsCitizenAcknowledgement) {
+                e.stopPropagation()
+                e.preventDefault()
+                onUSCitizenModalPresent()
+              }
+            }}
+          >
             <Button>
               <Text color="invertedContrast" bold fontSize="16px" mr="4px">
                 {t('Trade Now')}

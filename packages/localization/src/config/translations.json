@@ -2219,5 +2219,9 @@
   "is reporting a risk level of": "is reporting a risk level of",
   "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.": "However, this token has been labelled Unknown Risk due to not being listed on any of the built-in token lists.",
   "Please proceed with caution and always do your own research.": "Please proceed with caution and always do your own research.",
-  "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap": "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap"
+  "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap": "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap",
+  "To proceed to PancakeSwap Perpetuals Trading, please check the checkbox below to confirm that you are not a US citizen:": "To proceed to PancakeSwap Perpetuals Trading, please check the checkbox below to confirm that you are not a US citizen:",
+  "I confirm that I am not a US citizen and I am eligible to trade derivatives on this platform.": "I confirm that I am not a US citizen and I am eligible to trade derivatives on this platform.",
+  "By proceeding, you agree to comply with all relevant laws and regulations.": "By proceeding, you agree to comply with all relevant laws and regulations.",
+  "PancakeSwap Perpetuals": "PancakeSwap Perpetuals"
 }
