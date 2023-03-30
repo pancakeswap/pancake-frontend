@@ -3,15 +3,21 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { useState, useMemo } from 'react'
 import BigNumber from 'bignumber.js'
+import { useAccount } from 'wagmi'
+import ConnectWalletButton from 'components/ConnectWalletButton'
+import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
 
 interface WelcomePageProps {
   isLoading: boolean
+  onDismiss: () => void
   handleStartNow: () => void
 }
 
-const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLoading, handleStartNow }) => {
+const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLoading, onDismiss, handleStartNow }) => {
   const { t } = useTranslation()
   const router = useRouter()
+  const { address } = useAccount()
+  const { isUserExist } = useUserExist()
   const { user, discount } = router.query
   const [isChecked, setIsChecked] = useState(false)
 
@@ -64,9 +70,21 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
             </Text>
           </Flex>
         </label>
-        <Button width="100%" disabled={!isReady} onClick={handleStartNow}>
-          {t('Start Now')}
-        </Button>
+        {address ? (
+          <>
+            {!isUserExist ? (
+              <Button width="100%" disabled={!isReady} onClick={handleStartNow}>
+                {t('Start Now')}
+              </Button>
+            ) : (
+              <Button width="100%" onClick={onDismiss}>
+                {t('Close')}
+              </Button>
+            )}
+          </>
+        ) : (
+          <ConnectWalletButton width="100%" />
+        )}
       </Box>
     </Flex>
   )
