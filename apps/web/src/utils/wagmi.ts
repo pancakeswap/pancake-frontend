@@ -7,7 +7,7 @@ import memoize from 'lodash/memoize'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { WalletConnectLegacyConnector } from 'wagmi/connectors/walletConnectLegacy'
 import { LedgerConnector } from 'wagmi/connectors/ledger'
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc'
 import { SafeConnector } from './safeConnector'
@@ -62,7 +62,6 @@ export const injectedConnector = new InjectedConnector({
   chains,
   options: {
     shimDisconnect: false,
-    shimChainChangedDisconnect: true,
   },
 })
 
@@ -74,14 +73,14 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
   },
 })
 
-export const walletConnectConnector = new WalletConnectConnector({
+export const walletConnectConnector = new WalletConnectLegacyConnector({
   chains,
   options: {
     qrcode: true,
   },
 })
 
-export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
+export const walletConnectNoQrCodeConnector = new WalletConnectLegacyConnector({
   chains,
   options: {
     qrcode: false,
@@ -92,7 +91,6 @@ export const metaMaskConnector = new MetaMaskConnector({
   chains,
   options: {
     shimDisconnect: false,
-    shimChainChangedDisconnect: true,
   },
 })
 
@@ -136,5 +134,5 @@ export const client = createClient({
 
 export const CHAIN_IDS = chains.map((c) => c.id)
 
-export const isChainSupported = memoize((chainId: number) => CHAIN_IDS.includes(chainId))
-export const isChainTestnet = memoize((chainId: number) => chains.find((c) => c.id === chainId)?.testnet)
+export const isChainSupported = memoize((chainId: number) => (CHAIN_IDS as number[]).includes(chainId))
+export const isChainTestnet = memoize((chainId: number) => 'testnet' in chains.find((c) => c.id === chainId))
