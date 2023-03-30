@@ -48,3 +48,5 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
 }
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
+
+export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancake.run/api/v1'
