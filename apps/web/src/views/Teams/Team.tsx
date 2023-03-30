@@ -16,7 +16,7 @@ const Team = () => {
       <TeamHeader />
       <Flex mb="24px">
         <Link href="/teams" passHref>
-          <Flex alignItems="center" as="a">
+          <Flex alignItems="center">
             <ChevronLeftIcon color="primary" />
             <Text color="primary">{t('Teams Overview')}</Text>
           </Flex>

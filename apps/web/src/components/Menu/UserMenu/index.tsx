@@ -54,9 +54,7 @@ const UserMenuItems = () => {
       </UserMenuItem>
       <UserMenuDivider />
       <NextLink href={`/profile/${account?.toLowerCase()}`} passHref>
-        <UserMenuItem as="a" disabled={isWrongNetwork || chainId !== ChainId.BSC}>
-          {t('Your NFTs')}
-        </UserMenuItem>
+        <UserMenuItem disabled={isWrongNetwork || chainId !== ChainId.BSC}>{t('Your NFTs')}</UserMenuItem>
       </NextLink>
       <ProfileUserMenuItem
         isLoading={isLoading}
