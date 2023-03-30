@@ -200,7 +200,7 @@ export default function useSendSwapTransaction(
               outputAmount,
               input: trade.inputAmount.currency,
               output: trade.outputAmount.currency,
-              type: 'SmartSwap',
+              type: 'V3SmartSwap',
             })
             logTx({ account, chainId, hash: response.hash })
             return response

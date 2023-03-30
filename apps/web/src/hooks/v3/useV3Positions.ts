@@ -122,8 +122,10 @@ export function useV3TokenIdsByAccount(
   // refetch when account changes, It seems like the useContractReads doesn't refetch when the account changes on production
   // check if we can remove this effect when we upgrade to the latest version of wagmi
   useEffect(() => {
-    refetchBalance()
-    refretchTokenIds()
+    if (account) {
+      refetchBalance()
+      refretchTokenIds()
+    }
   }, [account, refetchBalance, refretchTokenIds])
 
   return {

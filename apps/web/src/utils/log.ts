@@ -18,7 +18,7 @@ export const logSwap = ({
   inputAmount: string
   outputAmount: string
   chainId: number
-  type: 'V2Swap' | 'SmartSwap' | 'StableSwap' | 'MarketMakerSwap'
+  type: 'V2Swap' | 'SmartSwap' | 'StableSwap' | 'MarketMakerSwap' | 'V3SmartSwap'
 }) => {
   try {
     log.info(type, {
