@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO, Percent } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO, Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { FeeAmount, FeeCalculator, Tick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
@@ -249,10 +249,10 @@ export function RoiCalculator({
     [onApply, priceRange, amountA, amountB, usdValue, currencyAUsdPrice, currencyBUsdPrice]
   );
 
-  const totalRate = parseFloat(formatPercent(rate, 6) ?? "0") + parseFloat(formatPercent(cakeRate, 6) ?? "0");
-  const lpReward = parseFloat(formatFraction(fee, 6) ?? "0");
+  const totalRate = parseFloat(formatPercent(rate?.add(cakeRate || ZERO_PERCENT), 12) ?? "0");
+  const lpReward = parseFloat(formatFraction(fee, 12) ?? "0");
   const farmReward = cakeReward;
-  const totalRoi = lpReward + farmReward;
+  const totalReward = lpReward + farmReward;
 
   const depositSection = (
     <Section title={t("Deposit Amount")}>
@@ -385,7 +385,7 @@ export function RoiCalculator({
           setEditCakePrice={setEditCakePrice}
         />
         <AnimatedArrow state={{}} />
-        <RoiRate usdAmount={totalRoi} roiPercent={totalRate} />
+        <RoiRate usdAmount={totalReward} roiPercent={totalRate} />
         {allowApply && (
           <Button width="100%" mt="0.75em" onClick={handleApply}>
             {t("Apply Settings")}
@@ -393,7 +393,7 @@ export function RoiCalculator({
         )}
       </ScrollableContainer>
       <Details
-        totalYield={totalRoi}
+        totalYield={totalReward}
         lpReward={lpReward}
         lpApr={apr}
         lpApy={apy}

@@ -1,7 +1,7 @@
 import { Percent, JSBI, Fraction, Price, Currency, CurrencyAmount } from '@pancakeswap/swap-sdk-core'
 
 export function formatPercent(percent?: Percent, precision?: number) {
-  return formatFraction(percent, precision)
+  return formatFraction(percent.asFraction.multiply(100), precision)
 }
 
 export function formatFraction(fraction?: Fraction, precision = 6) {
