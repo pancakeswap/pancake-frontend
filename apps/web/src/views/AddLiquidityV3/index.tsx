@@ -214,6 +214,7 @@ export function UniversalAddLiquidity({
     } else {
       setSelectorType(preferredSelectType || isV2 ? SELECTOR_TYPE.V2 : SELECTOR_TYPE.V3)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     currencyIdA,
     currencyIdB,
@@ -221,7 +222,6 @@ export function UniversalAddLiquidity({
     isV2,
     preferredSelectType,
     prevPreferredSelectType,
-    selectorType,
     setSelectorType,
     stableConfig.stableSwapConfig,
   ])
