@@ -52,7 +52,7 @@ const TotalStakedBalance: React.FunctionComponent<React.PropsWithChildren<TotalS
               </Flex>
             </Box>
           </Flex>
-          <Button style={{ alignSelf: "center" }} onClick={onClickViewAllButton}>
+          <Button style={{ alignSelf: "center", whiteSpace: "nowrap" }} onClick={onClickViewAllButton}>
             {t("View All")}
           </Button>
         </Flex>

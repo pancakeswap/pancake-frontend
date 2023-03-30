@@ -1,7 +1,7 @@
 import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { AutoColumn, AutoRow, QuestionHelper, RowBetween } from '@pancakeswap/uikit'
+import { AutoRow, QuestionHelper, RowBetween } from '@pancakeswap/uikit'
 import { Balance } from '@pancakeswap/uikit/src/components/Balance'
 import { Box } from '@pancakeswap/uikit/src/components/Box'
 import { Button } from '@pancakeswap/uikit/src/components/Button'
@@ -118,25 +118,23 @@ function FarmV3LPPositionDetail({
           <FarmV3ApyButton farm={farm} existingPosition={position} isPositionStaked={positionType === 'staked'} />
         </AutoRow>
       )}
-      <AutoColumn gap="4px">
-        <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
-        <AutoRow gap="4px">
-          <Balance
-            fontSize="12px"
-            color="textSubtle"
-            decimals={2}
-            value={position ? +position.amount0.toSignificant(6) : 0}
-            unit={` ${token.symbol}`}
-          />
-          <Balance
-            fontSize="12px"
-            color="textSubtle"
-            decimals={2}
-            value={position ? +position.amount1.toSignificant(6) : 0}
-            unit={` ${quoteToken.symbol}`}
-          />
-        </AutoRow>
-      </AutoColumn>
+      <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
+      <AutoRow columnGap="4px">
+        <Balance
+          fontSize="12px"
+          color="textSubtle"
+          decimals={2}
+          value={position ? +position.amount0.toSignificant(6) : 0}
+          unit={` ${token.symbol}`}
+        />
+        <Balance
+          fontSize="12px"
+          color="textSubtle"
+          decimals={2}
+          value={position ? +position.amount1.toSignificant(6) : 0}
+          unit={` ${quoteToken.symbol}`}
+        />
+      </AutoRow>
     </Box>
   )
 }

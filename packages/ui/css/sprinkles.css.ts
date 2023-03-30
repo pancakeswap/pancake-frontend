@@ -127,6 +127,12 @@ const responsiveProperties = defineProperties({
       md: vars.space['12px'],
       lg: vars.space['24px'],
     },
+    columnGap: {
+      ...vars.space,
+      sm: vars.space['8px'],
+      md: vars.space['12px'],
+      lg: vars.space['24px'],
+    },
     gridAutoRows: ['auto'],
     opacity: {
       '0.5': 0.5,
