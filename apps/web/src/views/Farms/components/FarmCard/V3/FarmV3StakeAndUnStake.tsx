@@ -1,7 +1,7 @@
 import { PositionDetails } from '@pancakeswap/farms'
 import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
-import { AutoRow, QuestionHelper, RowBetween } from '@pancakeswap/uikit'
+import { AutoColumn, AutoRow, QuestionHelper, RowBetween } from '@pancakeswap/uikit'
 import { Balance } from '@pancakeswap/uikit/src/components/Balance'
 import { Box } from '@pancakeswap/uikit/src/components/Box'
 import { Button } from '@pancakeswap/uikit/src/components/Button'
@@ -44,7 +44,6 @@ interface FarmV3StakeAndUnStakeProps {
 export const FarmV3LPTitle = ({
   liquidityUrl,
   title,
-  outOfRange,
 }: {
   liquidityUrl: string
   title: string
@@ -52,7 +51,7 @@ export const FarmV3LPTitle = ({
 }) => (
   <StyledLink external href={liquidityUrl}>
     <Text bold>{title}</Text>
-    <ChevronRightIcon color={outOfRange ? 'failure' : 'secondary'} fontSize="12px" />
+    <ChevronRightIcon fontSize="12px" />
   </StyledLink>
 )
 
@@ -60,14 +59,10 @@ export const FarmV3LPPosition = ({
   position: position_,
   token,
   quoteToken,
-  farm,
-  positionType,
 }: {
   position: PositionDetails
   token: Token
   quoteToken: Token
-  farm: V3Farm
-  positionType: PositionType
 }) => {
   const {
     t,
@@ -79,6 +74,35 @@ export const FarmV3LPPosition = ({
   const { priceLower, priceUpper } = getPriceOrderingFromPositionForUI(position)
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
+  return (
+    <Box>
+      <Text bold fontSize="12px">
+        {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
+          minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
+          maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
+          token: token.symbol,
+          quoteToken: quoteToken.symbol,
+        })}
+      </Text>
+    </Box>
+  )
+}
+
+function FarmV3LPPositionDetail({
+  position: position_,
+  token,
+  quoteToken,
+  farm,
+  positionType,
+}: {
+  position: PositionDetails
+  token: Token
+  quoteToken: Token
+  farm: V3Farm
+  positionType: PositionType
+}) {
+  const { t } = useTranslation()
+  const { position } = useDerivedPositionInfo(position_)
   const estimatedUSD =
     position &&
     new BigNumber(position.amount0.toExact())
@@ -88,21 +112,13 @@ export const FarmV3LPPosition = ({
 
   return (
     <Box>
-      <Text bold fontSize="12px" style={{ wordBreak: 'break-word' }}>
-        {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
-          minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
-          maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
-          token: token.symbol,
-          quoteToken: quoteToken.symbol,
-        })}
-      </Text>
-      <Box>
-        {position && (
-          <AutoRow gap="2px" py="8px">
-            <Text fontSize="14px">{t('APR')}:</Text>
-            <FarmV3ApyButton farm={farm} existingPosition={position} isPositionStaked={positionType === 'staked'} />
-          </AutoRow>
-        )}
+      {position && (
+        <AutoRow gap="2px" py="8px">
+          <Text fontSize="14px">{t('APR')}:</Text>
+          <FarmV3ApyButton farm={farm} existingPosition={position} isPositionStaked={positionType === 'staked'} />
+        </AutoRow>
+      )}
+      <AutoColumn gap="4px">
         <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
         <AutoRow gap="4px">
           <Balance
@@ -120,7 +136,7 @@ export const FarmV3LPPosition = ({
             unit={` ${quoteToken.symbol}`}
           />
         </AutoRow>
-      </Box>
+      </AutoColumn>
     </Box>
   )
 }
@@ -154,8 +170,9 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
         </RangeTag>
       )}
       <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
+      <FarmV3LPPosition token={token} quoteToken={quoteToken} position={position} />
       <RowBetween gap="16px" flexWrap="nowrap">
-        <FarmV3LPPosition
+        <FarmV3LPPositionDetail
           farm={farm}
           token={token}
           quoteToken={quoteToken}
@@ -164,7 +181,7 @@ const FarmV3StakeAndUnStake: React.FunctionComponent<React.PropsWithChildren<Far
         />
         {positionType === 'unstaked' ? (
           outOfRange ? (
-            <Button external variant="subtle" as="a" href={liquidityUrl}>
+            <Button external variant="subtle" as="a" href={liquidityUrl} style={{ whiteSpace: 'nowrap' }}>
               {t('View LP')}
             </Button>
           ) : (
