@@ -31,7 +31,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
           <Text color="textSubtle" bold textTransform="uppercase" fontSize="12px" mb="8px">
             {t("no position found")}
           </Text>
-          {inactive && (
+          {!inactive && (
             <Button width="100%" onClick={onAddLiquidityClick}>
               {t("Add Liquidity")}
             </Button>

@@ -55,7 +55,7 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
               {t("no position found")}
             </Text>
           </ActionTitles>
-          {inactive && (
+          {!inactive && (
             <ActionContent>
               <Button width="100%" onClick={onAddLiquidity}>
                 {t("Add Liquidity")}
