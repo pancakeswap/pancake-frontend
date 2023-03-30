@@ -223,6 +223,8 @@ export function getLiquidityFromTick(ticks: Tick[], tick: number): JSBI {
   // calculate a cumulative of liquidityNet from all ticks that poolTicks[i] <= tick
   let liquidity = ZERO
 
+  if (!ticks?.length) return liquidity
+
   if (tick < ticks[0].index || tick > ticks[ticks.length - 1].index) {
     return liquidity
   }

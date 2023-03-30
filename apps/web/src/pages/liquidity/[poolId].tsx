@@ -57,6 +57,7 @@ import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Bound } from 'config/constants/types'
 import { PoolState } from 'hooks/v3/types'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -499,7 +500,15 @@ export default function PoolPage() {
                   mb="8px"
                   flexWrap={['wrap', 'wrap', 'nowrap']}
                 >
-                  <Box width="100%" mr="16px" mb={['8px', '8px', 0]}>
+                  <Box width="100%" mr="16px" mb={['8px', '8px', 0]} position="relative">
+                    <Flex position="absolute" right={0}>
+                      <AprCalculator
+                        showQuestion
+                        baseCurrency={currencyBase}
+                        quoteCurrency={currencyQuote}
+                        feeAmount={feeAmount}
+                      />
+                    </Flex>
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                       Liquidity
                     </Text>

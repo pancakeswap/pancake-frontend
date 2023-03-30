@@ -8,6 +8,7 @@ import {
   CalculateIcon,
   Text,
   IconButton,
+  QuestionHelper,
 } from '@pancakeswap/uikit'
 import { encodeSqrtRatioX96, parseProtocolFees, Pool } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
@@ -32,13 +33,20 @@ interface Props {
   quoteCurrency: Currency
   feeAmount: number
   showTitle?: boolean
+  showQuestion?: boolean
 }
 
 const AprButtonContainer = styled(Flex)`
   cursor: pointer;
 `
 
-export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitle = true }: Props) {
+export function AprCalculator({
+  baseCurrency,
+  quoteCurrency,
+  feeAmount,
+  showTitle = true,
+  showQuestion = false,
+}: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
   const [priceSpan, setPriceSpan] = useState(0)
@@ -118,9 +126,9 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
     [closeModal, onBothRangeInput, onFieldAInput],
   )
 
-  if (!data || !data.length) {
-    return null
-  }
+  // if (!data || !data.length) {
+  //   return null
+  // }
 
   return (
     <>
@@ -135,6 +143,23 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
           <IconButton variant="text" scale="sm" onClick={() => setOpen(true)}>
             <CalculateIcon color="textSubtle" ml="0.25em" width="24px" />
           </IconButton>
+          {showQuestion ? (
+            <QuestionHelper
+              text={
+                <>
+                  {t(
+                    'Calculated at the current rates with historical trading volume data, and subject to change based on various external variables.',
+                  )}
+                  <br />
+                  <br />
+                  {t(
+                    'This figure is provided for your convenience only, and by no means represents guaranteed returns.',
+                  )}
+                </>
+              }
+              size="20px"
+            />
+          ) : null}
         </AprButtonContainer>
       </Flex>
       <RoiCalculatorModalV2
