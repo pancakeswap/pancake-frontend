@@ -1,5 +1,5 @@
 import { ChainId, Token, WBNB, WNATIVE } from '@pancakeswap/sdk'
-import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT } from '@pancakeswap/tokens'
+import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT, WBTC_ETH } from '@pancakeswap/tokens'
 
 import { ChainMap, ChainTokenList } from '../types'
 
@@ -27,13 +27,7 @@ export const STABLE_SWAP_INFO_ADDRESS: ChainMap<string> = {
 
 // used to construct intermediary pairs for trading
 export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
-  [ChainId.ETHEREUM]: [
-    WNATIVE[ChainId.ETHEREUM],
-    USDC[ChainId.ETHEREUM],
-    USDT[ChainId.ETHEREUM],
-    // BUSD[ChainId.ETHEREUM],
-    WBNB[ChainId.ETHEREUM],
-  ],
+  [ChainId.ETHEREUM]: [WNATIVE[ChainId.ETHEREUM], USDC[ChainId.ETHEREUM], USDT[ChainId.ETHEREUM], WBTC_ETH],
   [ChainId.GOERLI]: [WNATIVE[ChainId.GOERLI], USDC[ChainId.GOERLI], BUSD[ChainId.GOERLI]],
   [ChainId.BSC]: [
     bscTokens.wbnb,

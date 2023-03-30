@@ -243,7 +243,7 @@ export default function CurrencyInputPanel({
       }
       bottom={
         <>
-          {!!currency && (
+          {!!showUSDPrice && (
             <Flex justifyContent="flex-end" mr="1rem">
               <Flex maxWidth="200px">
                 {inputLoading ? (
