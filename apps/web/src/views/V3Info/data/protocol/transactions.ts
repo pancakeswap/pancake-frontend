@@ -166,7 +166,7 @@ export async function fetchTopTransactions(client: GraphQLClient): Promise<Trans
           timestamp: t.timestamp,
           sender: m.origin,
           token0Symbol: m.pool.token0.symbol,
-          token1Symbol: m.pool.token1.id,
+          token1Symbol: m.pool.token1.symbol,
           token0Address: m.pool.token0.id,
           token1Address: m.pool.token1.id,
           amountUSD: parseFloat(m.amountUSD),
