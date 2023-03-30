@@ -1,13 +1,16 @@
 import { ChainId } from '@pancakeswap/sdk'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { multiChainName } from 'state/info/constant'
 import useSWRImmutable from 'swr/immutable'
 import { v3Clients } from 'utils/graphql'
+import { fetchProtocolData } from '../data/protocol/overview'
 import { fetchChartData } from '../data/protocol/chart'
 import { fetchTopTransactions } from '../data/protocol/transactions'
 import { fetchTokenPriceData, fetchPairPriceChartTokenData } from '../data/token/priceData'
-import { ChartDayData, PriceChartEntry, Transaction } from '../types'
+import { ChartDayData, PriceChartEntry, Transaction, ProtocolData } from '../types'
 
 const ONE_HOUR_SECONDS = 3600
 const SIX_HOUR_SECONDS = 21600
@@ -34,6 +37,18 @@ export const useProtocolChartData = (): ChartDayData[] | undefined => {
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return chartData?.data ?? []
+}
+
+export const useProtocolData = (): ProtocolData | undefined => {
+  const { chainId } = useActiveChainId()
+  const [t24, t48] = getDeltaTimestamps()
+  const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48])
+  const { data } = useSWRImmutable(
+    chainId && blocks && blocks.length > 0 && [`v3/info/protocol/ProtocolData`, chainId],
+    () => fetchProtocolData(v3Clients[chainId], chainId, blocks),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data ?? undefined
 }
 
 export const useProtocolTransactionData = (): Transaction[] | undefined => {
