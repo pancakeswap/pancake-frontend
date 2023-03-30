@@ -139,3 +139,8 @@ export interface PoolData {
   tvlToken0: number
   tvlToken1: number
 }
+
+export interface GenericChartEntry {
+  time: string
+  value: number
+}
