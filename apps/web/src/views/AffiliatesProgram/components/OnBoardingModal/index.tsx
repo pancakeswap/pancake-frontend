@@ -22,7 +22,7 @@ interface UserRegisterFeeResponse {
 const OnBoardingModal = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { address } = useAccount()
+  const { address, connector } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
@@ -30,7 +30,6 @@ const OnBoardingModal = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentView, setCurrentView] = useState(Views.STEP1)
-  const connectedWallet = localStorage.getItem('wagmi.wallet')
 
   useEffect(() => {
     const { ref, user, discount } = router.query
@@ -43,9 +42,10 @@ const OnBoardingModal = () => {
     try {
       setIsLoading(true)
       // BSC wallet sign message only accept string
-      const message = connectedWallet.includes('bsc')
-        ? ethers.utils.solidityKeccak256(['string'], [router.query.ref])
-        : ethers.utils.arrayify(ethers.utils.solidityKeccak256(['string'], [router.query.ref]))
+      const message =
+        connector?.id === 'bsc'
+          ? ethers.utils.solidityKeccak256(['string'], [router.query.ref])
+          : ethers.utils.arrayify(ethers.utils.solidityKeccak256(['string'], [router.query.ref]))
       const signature = await signMessageAsync({ message })
       const response = await fetch('/api/affiliates-program/user-register-fee', {
         method: 'POST',

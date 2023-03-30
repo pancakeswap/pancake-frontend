@@ -92,7 +92,7 @@ const receivePercentageList: Array<string> = ['0', '25', '50', '75', '100']
 
 const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = ({ refreshAffiliateInfo }) => {
   const { t } = useTranslation()
-  const { address } = useAccount()
+  const { address, connector } = useAccount()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
   const { defaultLinkId, refresh } = useDefaultLinkId()
@@ -100,7 +100,6 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
   const [isLoading, setIsLoading] = useState(false)
   const { isMobile } = useMatchBreakpoints()
   const [percentage, setPercentage] = useState('0')
-  const connectedWallet = localStorage.getItem('wagmi.wallet')
 
   const youWillReceive = useMemo(() => new BigNumber(100).minus(percentage).toString(), [percentage])
 
@@ -112,17 +111,18 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
     try {
       setIsLoading(true)
       // BSC wallet sign message only accept string
-      const message = connectedWallet.includes('bsc')
-        ? ethers.utils.solidityKeccak256(
-            ['string', 'uint256', 'uint256', 'uint256'],
-            [linkId, Number(percentage), Number(percentage), Number(percentage)],
-          )
-        : ethers.utils.arrayify(
-            ethers.utils.solidityKeccak256(
+      const message =
+        connector?.id === 'bsc'
+          ? ethers.utils.solidityKeccak256(
               ['string', 'uint256', 'uint256', 'uint256'],
               [linkId, Number(percentage), Number(percentage), Number(percentage)],
-            ),
-          )
+            )
+          : ethers.utils.arrayify(
+              ethers.utils.solidityKeccak256(
+                ['string', 'uint256', 'uint256', 'uint256'],
+                [linkId, Number(percentage), Number(percentage), Number(percentage)],
+              ),
+            )
 
       const signature = await signMessageAsync({ message })
       const data = {
