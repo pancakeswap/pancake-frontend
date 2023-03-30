@@ -77,18 +77,18 @@ const TxnLink = styled(Link)`
 `
 
 const MenuConfig = [
-  { title: 'Bridge', href: '/' },
+  { title: 'EVMs', href: '/' },
   {
-    title: 'Aptos',
-    href: '/aptos',
+    title: 'Bridge',
+    href: '/cake',
     items: [
       {
-        label: 'Aptos Bridging',
-        href: '/aptos',
+        label: 'CAKE',
+        href: '/cake',
       },
       {
-        label: 'CAKE Bridging',
-        href: '/aptos?currency=CAKE',
+        label: 'Aptos',
+        href: '/aptos',
       },
       {
         label: 'LayerZero',
