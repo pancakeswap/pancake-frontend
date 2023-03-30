@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { Currency, JSBI, ChainId, Token, WNATIVE } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool, PoolType, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
-import { FeeAmount, computePoolAddress, Tick, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
+import { FeeAmount, computePoolAddress, Tick, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
 import { gql } from 'graphql-request'
 import useSWR from 'swr'
 import { useMemo, useEffect } from 'react'
@@ -358,6 +358,7 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
             sqrtPrice
             feeTier
             liquidity
+            feeProtocol
             totalValueLockedUSD
           }
         }
@@ -384,11 +385,12 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
         pageSize: 1000,
         poolAddrs: addresses,
       })
-      const pools = poolsFromSubgraph.map(({ id, liquidity, sqrtPrice, tick, totalValueLockedUSD }) => {
+      const pools = poolsFromSubgraph.map(({ id, liquidity, sqrtPrice, tick, totalValueLockedUSD, feeProtocol }) => {
         const { fee, currencyA, currencyB, address } = metaMap.get(id)
         const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
           ? [currencyA, currencyB]
           : [currencyB, currencyA]
+        const [token0ProtocolFee, token1ProtocolFee] = parseProtocolFees(feeProtocol)
         return {
           type: PoolType.V3,
           fee,
@@ -399,6 +401,8 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
           tick: Number(tick),
           address,
           tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
+          token0ProtocolFee,
+          token1ProtocolFee,
         }
       })
       SmartRouter.metric(label, pools)

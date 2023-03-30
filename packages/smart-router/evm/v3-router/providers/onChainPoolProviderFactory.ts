@@ -1,7 +1,7 @@
 import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent, BigintIsh } from '@pancakeswap/sdk'
 import { Call, createMulticall } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
-import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
+import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
 
 import { OnChainProvider, Pool, PoolType, V2Pool, StablePool, V3Pool } from '../types'
 import IPancakePairABI from '../../abis/IPancakePair.json'
@@ -149,10 +149,11 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
     if (!liquidity || !slot0) {
       return null
     }
-    const { sqrtPriceX96, tick } = slot0
+    const { sqrtPriceX96, tick, feeProtocol } = slot0
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
+    const [token0ProtocolFee, token1ProtocolFee] = parseProtocolFees(feeProtocol)
     return {
       type: PoolType.V3,
       token0,
@@ -162,6 +163,8 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       sqrtRatioX96: JSBI.BigInt(sqrtPriceX96),
       tick: Number(tick),
       address,
+      token0ProtocolFee,
+      token1ProtocolFee,
     }
   },
 })

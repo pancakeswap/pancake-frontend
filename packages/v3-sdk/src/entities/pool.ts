@@ -44,6 +44,8 @@ export class Pool {
 
   public readonly tickDataProvider: TickDataProvider
 
+  public feeProtocol?: number
+
   private _token0Price?: Price<Token, Token>
 
   private _token1Price?: Price<Token, Token>

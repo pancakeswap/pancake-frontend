@@ -37,6 +37,8 @@ export interface V3Pool extends BasePool {
   sqrtRatioX96: JSBI
   tick: number
   address: string
+  token0ProtocolFee: Percent
+  token1ProtocolFee: Percent
 
   // Allow pool with no ticks data provided
   ticks?: Tick[]

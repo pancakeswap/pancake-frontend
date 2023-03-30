@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO } from "@pancakeswap/sdk";
+import { Currency, CurrencyAmount, JSBI, Price, Token, ZERO, Percent } from "@pancakeswap/sdk";
 import { FeeAmount, FeeCalculator, Tick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
 import { useTranslation } from "@pancakeswap/localization";
 import { useCallback, useMemo, useState } from "react";
@@ -44,6 +44,7 @@ export type RoiCalculatorProps = {
   balanceA?: CurrencyAmount<Currency>;
   balanceB?: CurrencyAmount<Currency>;
   feeAmount?: FeeAmount;
+  protocolFee?: Percent;
   prices?: PriceData[];
   ticks?: TickData[];
   price?: Price<Token, Token>;
@@ -85,6 +86,7 @@ export function RoiCalculator({
   currencyAUsdPrice,
   currencyBUsdPrice,
   feeAmount,
+  protocolFee,
   prices,
   ticks: ticksRaw,
   price,
@@ -225,6 +227,7 @@ export function RoiCalculator({
     sqrtRatioX96,
     mostActiveLiquidity,
     fee: feeAmount,
+    protocolFee,
     compoundEvery: compoundingIndexToFrequency[compoundIndex],
     stakeFor: spanIndexToSpan[spanIndex],
     compoundOn,

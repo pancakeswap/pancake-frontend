@@ -55,6 +55,7 @@ class PoolCache {
     sqrtPriceX96: BigintIsh,
     liquidity: BigintIsh,
     tick: number,
+    feeProtocol?: number,
   ): Pool {
     if (this.pools.length > this.MAX_ENTRIES) {
       this.pools = this.pools.slice(0, this.MAX_ENTRIES / 2)
@@ -72,6 +73,7 @@ class PoolCache {
     if (found) return found
 
     const pool = new Pool(tokenA, tokenB, fee, sqrtPriceX96, liquidity, tick)
+    pool.feeProtocol = feeProtocol
     this.pools.unshift(pool)
     return pool
   }
@@ -125,7 +127,15 @@ export function usePools(
       if (!slot0.sqrtPriceX96 || slot0.sqrtPriceX96.eq(0)) return [PoolState.NOT_EXISTS, null]
 
       try {
-        const pool = PoolCache.getPool(token0, token1, fee, slot0.sqrtPriceX96, liquidity[0], slot0.tick)
+        const pool = PoolCache.getPool(
+          token0,
+          token1,
+          fee,
+          slot0.sqrtPriceX96,
+          liquidity[0],
+          slot0.tick,
+          slot0.feeProtocol,
+        )
         return [PoolState.EXISTS, pool]
       } catch (error) {
         console.error('Error when constructing the pool', error)

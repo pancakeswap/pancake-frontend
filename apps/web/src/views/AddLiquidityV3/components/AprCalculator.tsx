@@ -9,7 +9,7 @@ import {
   Text,
   IconButton,
 } from '@pancakeswap/uikit'
-import { encodeSqrtRatioX96, Pool } from '@pancakeswap/v3-sdk'
+import { encodeSqrtRatioX96, parseProtocolFees, Pool } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
@@ -79,6 +79,11 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
     [amountA, amountB, currencyAUsdPrice, currencyBUsdPrice],
   )
 
+  // For now the protocol fee is the same on both tokens so here we just use the fee on token0
+  const [protocolFee] = useMemo(
+    () => (pool?.feeProtocol && parseProtocolFees(pool.feeProtocol)) || [],
+    [pool?.feeProtocol],
+  )
   const { apr } = useRoi({
     tickLower,
     tickUpper,
@@ -91,6 +96,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
     currencyAUsdPrice,
     currencyBUsdPrice,
     volume24H,
+    protocolFee,
   })
 
   // NOTE: Assume no liquidity when openning modal
@@ -144,6 +150,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
         sqrtRatioX96={sqrtRatioX96}
         liquidity={pool?.liquidity}
         feeAmount={feeAmount}
+        protocolFee={protocolFee}
         ticks={data}
         volume24H={volume24H}
         priceUpper={priceUpper}
