@@ -1023,7 +1023,7 @@ exports[`renders correctly 1`] = `
 }
 
 <div
-    class="c0 reset_base__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc150 sprinkles_minHeight_100vh_md__pkzlfc162"
+    class="c0 reset_base__1c7dnup0 sprinkles_minHeight_auto_xs__pkzlfc15c sprinkles_minHeight_100vh_md__pkzlfc16k"
   >
     <div
       class="c1"
@@ -1404,7 +1404,7 @@ exports[`renders correctly 1`] = `
           height="100%"
         >
           <div
-            class="reset_base__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfcli sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
+            class="reset_base__1c7dnup0 sprinkles_marginRight_12px_xs__pkzlfclo sprinkles_display_none_xs__pkzlfc10 sprinkles_display_block_lg__pkzlfc3"
           >
             <a
               class="c26"

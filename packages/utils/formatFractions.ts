@@ -6,7 +6,7 @@ export function formatPercent(percent?: Percent, precision?: number) {
 
 export function formatFraction(fraction?: Fraction, precision = 6) {
   if (!fraction) {
-    return fraction
+    return undefined
   }
   if (fraction.greaterThan(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(precision)))) {
     return fraction.toFixed(0)

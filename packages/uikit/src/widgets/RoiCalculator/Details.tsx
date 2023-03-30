@@ -85,7 +85,7 @@ export function Details({
           {t("LP Fee APR")}
         </Text>
         <Text small color="textSubtle" textAlign="right">
-          {formatPercent(lpApr, 5) || "0"}%
+          {`${formatPercent(lpApr, 5) || "0"}%`}
         </Text>
         {isFarm && farmApr && (
           <>
@@ -104,7 +104,7 @@ export function Details({
             {t("APY")} {compoundText && `(${compoundText})`}
           </Text>
           <Text small bold textAlign="right">
-            ${formatPercent(lpApy, 5) || "0"}%
+            {`$${formatPercent(lpApy, 5) || "0"}%`}
           </Text>
         </Grid>
       )}
