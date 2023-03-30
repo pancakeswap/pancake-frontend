@@ -88,10 +88,10 @@ export function usePriceRange({
   // lower should always be a smaller tick
   const tickLower = useMemo(
     () =>
-      priceLower && initialPriceLower?.equalTo(priceLower.asFraction) // price is the same as initial lower price, use initial price instead of parse from input
-        ? priceToClosestTick(priceLower as Price<ERC20Token, ERC20Token>)
-        : fullRange
+      fullRange
         ? tickSpaceLimits[Bound.LOWER]
+        : priceLower && initialPriceLower?.equalTo(priceLower.asFraction) // price is the same as initial lower price, use initial price instead of parse from input
+        ? priceToClosestTick(priceLower as Price<ERC20Token, ERC20Token>)
         : invertPrice
         ? tryParseTick(quoteCurrency?.wrapped, baseCurrency?.wrapped, feeAmount, rightRangeTypedValue)
         : tryParseTick(baseCurrency?.wrapped, quoteCurrency?.wrapped, feeAmount, leftRangeTypedValue),
@@ -111,10 +111,10 @@ export function usePriceRange({
 
   const tickUpper = useMemo(
     () =>
-      priceUpper && initialPriceUpper?.equalTo(priceUpper.asFraction)
-        ? priceToClosestTick(priceUpper as Price<ERC20Token, ERC20Token>)
-        : fullRange
+      fullRange
         ? tickSpaceLimits[Bound.UPPER]
+        : priceUpper && initialPriceUpper?.equalTo(priceUpper.asFraction)
+        ? priceToClosestTick(priceUpper as Price<ERC20Token, ERC20Token>)
         : invertPrice
         ? tryParseTick(quoteCurrency?.wrapped, baseCurrency?.wrapped, feeAmount, leftRangeTypedValue)
         : tryParseTick(baseCurrency?.wrapped, quoteCurrency?.wrapped, feeAmount, rightRangeTypedValue),

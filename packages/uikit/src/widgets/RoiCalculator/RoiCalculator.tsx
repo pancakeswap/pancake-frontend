@@ -335,10 +335,18 @@ export function RoiCalculator({
         onSpanChange={onPriceSpanChange}
         span={priceSpan}
         priceUpper={
-          invertPrice ? formatPrice(priceRange?.priceLower?.invert(), 6) : formatPrice(priceRange?.priceUpper, 6)
+          priceRange?.fullRange
+            ? undefined
+            : invertPrice
+            ? formatPrice(priceRange?.priceLower?.invert(), 6)
+            : formatPrice(priceRange?.priceUpper, 6)
         }
         priceLower={
-          invertPrice ? formatPrice(priceRange?.priceUpper?.invert(), 6) : formatPrice(priceRange?.priceLower, 6)
+          priceRange?.fullRange
+            ? undefined
+            : invertPrice
+            ? formatPrice(priceRange?.priceUpper?.invert(), 6)
+            : formatPrice(priceRange?.priceLower, 6)
         }
         priceCurrent={invertPrice ? formatPrice(priceCurrent?.invert(), 6) : formatPrice(priceCurrent, 6)}
       />
