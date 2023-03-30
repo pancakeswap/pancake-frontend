@@ -76,14 +76,31 @@ export const FarmV3LPPosition = ({
 
   return (
     <Box>
-      <Text bold fontSize="12px">
-        {t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
-          minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
-          maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
-          token: token.symbol,
-          quoteToken: quoteToken.symbol,
-        })}
-      </Text>
+      <AutoRow gap="4px">
+        <Box>
+          <Text bold fontSize="12px" ellipsis>
+            {t('Min %minAmount%', {
+              minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
+            })}
+            /&nbsp;
+          </Text>
+        </Box>
+        <Box maxWidth="250px">
+          <Text bold fontSize="12px" ellipsis>
+            {t('Max %maxAmount%', {
+              maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
+            })}
+          </Text>
+        </Box>
+        <Box>
+          <Text bold fontSize="12px">
+            {t('%assetA% per %assetB%', {
+              assetA: token.symbol,
+              assetB: quoteToken.symbol,
+            })}
+          </Text>
+        </Box>
+      </AutoRow>
     </Box>
   )
 }

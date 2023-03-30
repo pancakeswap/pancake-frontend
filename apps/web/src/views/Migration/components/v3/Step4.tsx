@@ -95,12 +95,14 @@ export function Step4() {
                       <RangeTag removed={removed} outOfRange={outOfRange} />
                     </>
                   }
-                  subtitle={t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
+                  subtitle={`${t('Min %minAmount%', {
                     minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
+                  })}/ ${t('Max %maxAmount%', {
                     maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
-                    token: currencyBase?.symbol,
-                    quoteToken: currencyQuote?.symbol,
-                  })}
+                  })} ${t('%assetA% per %assetB%', {
+                    assetA: currencyBase?.symbol,
+                    assetB: currencyQuote?.symbol,
+                  })}`}
                 />
               )}
             </PositionListItem>
