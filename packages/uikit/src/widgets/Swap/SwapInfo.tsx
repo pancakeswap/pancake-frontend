@@ -19,7 +19,7 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
   const isMounted = useIsMounted();
 
   return (
-    <AutoColumn gap="sm" py="0" px="16px">
+    <AutoColumn gap="sm" py="0px" px="16px">
       <RowBetween alignItems="center">{price}</RowBetween>
       <RowBetween alignItems="center">
         <SwapInfoLabel>

@@ -10,7 +10,7 @@ import {
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { useTranslation } from '@pancakeswap/localization'
 import { Field } from 'state/swap/actions'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import ConfirmSwapModalContainer from '../../components/ConfirmSwapModalContainer'
 import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSwapContent'
@@ -18,7 +18,7 @@ import TransactionConfirmSwapContentWithSmartRouter from './TransactionConfirmSw
 const PancakeRouterSlippageErrorMsg =
   'This transaction will not succeed either due to price movement or fee on transfer. Try increasing your slippage tolerance.'
 
-const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) => {
+export const SwapTransactionErrorContent = ({ onDismiss, message, openSettingModal }) => {
   const isSlippagedErrorMsg = message?.includes(PancakeRouterSlippageErrorMsg)
 
   const handleErrorDismiss = useCallback(() => {

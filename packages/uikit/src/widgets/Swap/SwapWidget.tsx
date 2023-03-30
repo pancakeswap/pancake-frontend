@@ -3,29 +3,27 @@ import { ArrowDownIcon, ArrowUpDownIcon } from "../../components/Svg";
 import { switchButtonClass, iconDownClass, iconUpDownClass } from "./SwapWidget.css";
 import { CurrencyInputPanel } from "./CurrencyInputPanel";
 import { CurrencyInputHeader, CurrencyInputHeaderSubTitle, CurrencyInputHeaderTitle } from "./CurrencyInputHeader";
-import { SwapPage } from "./Page";
-import { SwapFooter } from "./Footer";
-import { SwapInfo, SwapInfoLabel } from "./SwapInfo";
+import { SwapPage as Page } from "./Page";
+import { SwapFooter as Footer } from "./Footer";
+import { SwapInfo as Info, SwapInfoLabel as InfoLabel } from "./SwapInfo";
 import { TradePrice } from "./TradePrice";
 
-const SwapSwitchButton = (props: ButtonProps) => (
+const SwitchButton = (props: ButtonProps) => (
   <IconButton className={switchButtonClass} variant="light" scale="sm" {...props}>
     <ArrowDownIcon className={iconDownClass} color="primary" />
     <ArrowUpDownIcon className={iconUpDownClass} color="primary" />
   </IconButton>
 );
 
-const Swap = {
-  SwitchButton: SwapSwitchButton,
+export {
+  SwitchButton,
   CurrencyInputHeaderTitle,
   CurrencyInputHeaderSubTitle,
   CurrencyInputHeader,
   CurrencyInputPanel,
-  Page: SwapPage,
-  Footer: SwapFooter,
-  Info: SwapInfo,
-  InfoLabel: SwapInfoLabel,
+  Page,
+  Footer,
+  Info,
+  InfoLabel,
   TradePrice,
 };
-
-export { Swap };

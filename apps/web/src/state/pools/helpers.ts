@@ -6,7 +6,6 @@ import {
   SerializedLockedCakeVault,
   VaultKey,
 } from 'state/types'
-import { SerializedFarm } from '@pancakeswap/farms'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { isAddress } from 'utils'
@@ -156,7 +155,14 @@ export const transformVault = (vaultKey: VaultKey, vault: SerializedCakeVault): 
   }
 }
 
-export const getTokenPricesFromFarm = (farms: SerializedFarm[]) => {
+export const getTokenPricesFromFarm = (
+  farms: {
+    quoteToken: { address: string }
+    token: { address: string }
+    quoteTokenPriceBusd: string
+    tokenPriceBusd: string
+  }[],
+) => {
   return farms.reduce((prices, farm) => {
     const quoteTokenAddress = isAddress(farm.quoteToken.address)
     const tokenAddress = isAddress(farm.token.address)

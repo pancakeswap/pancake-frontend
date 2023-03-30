@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import { Text } from '@pancakeswap/uikit'
+import { Box, BoxProps, Text } from '@pancakeswap/uikit'
 
 const Circle = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 21px;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 16px;
   color: #ffffff;
   border-radius: 50%;
   background: linear-gradient(180deg, #8051d6 0%, #492286 100%);
@@ -25,19 +25,24 @@ const Circle = styled.div`
   }
 `
 
-const Step = styled.div<{ confirmed?: boolean; disabled?: boolean; canHover?: boolean }>`
+const StyledStep = styled.div<{
+  confirmed?: boolean
+  disabled?: boolean
+  canHover?: boolean
+  stepHairStyles: { left: string; width: string }
+}>`
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 28px;
+  margin-top: 12px;
   &:before {
     content: '';
     position: absolute;
     width: 1px;
-    height: calc(100% - 16px);
+    height: calc(100% - 10px);
     top: calc(-100% + 10px);
-    left: 16px;
+    left: 11px;
     z-index: 0;
     pointer-events: none;
     background-color: ${({ theme, confirmed }) => (confirmed ? theme.colors.secondary : theme.colors.textDisabled)};
@@ -82,28 +87,26 @@ const Step = styled.div<{ confirmed?: boolean; disabled?: boolean; canHover?: bo
     margin-top: 0;
 
     &:before {
-      width: 100%;
+      width: ${({ stepHairStyles }) => stepHairStyles.width};
       height: 1px;
-      left: calc(-100% + 48px);
+      left: ${({ stepHairStyles }) => stepHairStyles.left};
       top: 24px;
     }
   }
 `
 
-const ProgressWrap = styled.div`
-  width: 100%;
+const ProgressWrap = styled(Box)`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   margin: 0 auto 24px auto;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    width: 653px;
     flex-direction: row;
     justify-content: space-between;
   }
 
-  ${Step} {
+  ${StyledStep} {
     &:first-child {
       margin-top: 0;
       &:before {
@@ -124,43 +127,52 @@ const StepText = styled(Text)`
   }
 `
 
-export enum ProgressStepsType {
-  'STEP1' = 1,
-  'STEP2' = 2,
-}
-
 export interface Step {
-  stepId: ProgressStepsType
-  text: string
+  stepId: number
+  text: ReactNode
+  subText?: ReactNode
   canHover?: boolean
 }
 
-interface ProgressArrayProps {
-  pickedStep: ProgressStepsType
+interface ProgressArrayProps extends Omit<BoxProps, 'onClick'> {
+  pickedStep: number
   steps: Step[]
-  onClick?: (id: ProgressStepsType) => void
+  onClick?: (id: number) => void
+  stepHairStyles: {
+    width: string
+    left: string
+  }
 }
 
-const ProgressSteps: React.FC<React.PropsWithChildren<ProgressArrayProps>> = ({ pickedStep, steps, onClick }) => {
+export const MigrationProgressSteps: React.FC<React.PropsWithChildren<ProgressArrayProps>> = ({
+  pickedStep,
+  steps,
+  onClick,
+  stepHairStyles,
+  ...boxProps
+}) => {
   return (
-    <ProgressWrap>
+    <ProgressWrap {...boxProps}>
       {steps.map((step: Step, index: number) => {
         return (
-          <Step
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
-            canHover={step.canHover}
-            confirmed={step.stepId === pickedStep}
-            disabled={step.stepId !== pickedStep && index + 1 > pickedStep}
-            onClick={() => onClick(step.stepId)}
-          >
-            <Circle>{index + 1}</Circle>
-            <StepText bold>{step.text}</StepText>
-          </Step>
+          <>
+            <StyledStep
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              stepHairStyles={stepHairStyles}
+              canHover={step.canHover}
+              confirmed={step.stepId === pickedStep}
+              disabled={step.stepId !== pickedStep && index + 1 > pickedStep}
+              onClick={() => onClick(step.stepId)}
+            >
+              <Circle>{index + 1}</Circle>
+              <StepText bold maxWidth={['none', null, null, 200]}>
+                {step.text}
+              </StepText>
+            </StyledStep>
+          </>
         )
       })}
     </ProgressWrap>
   )
 }
-
-export default ProgressSteps

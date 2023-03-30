@@ -8,7 +8,7 @@ const CardBody = styled.div<CardBodyProps>`
 `;
 
 CardBody.defaultProps = {
-  p: "24px",
+  p: ["16px", null, "24px"],
 };
 
 export default CardBody;

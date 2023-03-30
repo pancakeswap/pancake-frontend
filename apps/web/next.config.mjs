@@ -50,6 +50,7 @@ const config = {
     '@pancakeswap/token-lists',
     '@pancakeswap/utils',
     '@pancakeswap/tokens',
+    '@pancakeswap/v3-sdk',
     '@pancakeswap/smart-router',
     '@wagmi',
     'wagmi',

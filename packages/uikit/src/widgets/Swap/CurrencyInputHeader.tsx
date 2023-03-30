@@ -10,8 +10,8 @@ interface Props {
 
 export const CurrencyInputHeader = ({ title, subtitle }: Props) => {
   return (
-    <AtomBox width="full" alignItems="center" flexDirection="column" padding="24px" borderBottom="1">
-      <AtomBox display="flex" width="full" alignItems="center" justifyContent="space-between">
+    <AtomBox width="100%" alignItems="center" flexDirection="column" padding="24px" borderBottom="1">
+      <AtomBox display="flex" width="100%" alignItems="center" justifyContent="space-between">
         {title}
       </AtomBox>
       {subtitle}
