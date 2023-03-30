@@ -3,8 +3,8 @@ import { Currency, Percent } from "@pancakeswap/sdk";
 import { PropsWithChildren, ReactNode, useCallback } from "react";
 import styled from "styled-components";
 import { SpaceProps } from "styled-system";
-
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
+
 import {
   Flex,
   Box,
@@ -65,9 +65,13 @@ export interface Asset {
 
 export function CurrencyLogoDisplay({ logo, name }: { logo?: ReactNode; name?: string }) {
   return (
-    <Flex style={{ whiteSpace: "nowrap" }}>
-      {logo}
-      <Text ml="4px">{name}</Text>
+    <Flex>
+      <Flex flexShrink="0" alignItems="center">
+        {logo}
+      </Flex>
+      <Text ml="4px" style={{ whiteSpace: "nowrap" }}>
+        {name}
+      </Text>
     </Flex>
   );
 }
@@ -75,7 +79,6 @@ export function CurrencyLogoDisplay({ logo, name }: { logo?: ReactNode; name?: s
 export function AssetCardHeader({ children }: PropsWithChildren) {
   return <RowBetween>{children}</RowBetween>;
 }
-
 export function AssetCard({
   header,
   showPrice = true,
