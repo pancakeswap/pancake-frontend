@@ -100,23 +100,22 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
   })
 
   // NOTE: Assume no liquidity when openning modal
-  const { onFieldAInput, onFieldBInput, onBothRangeInput } = useV3MintActionHandlers(false)
+  const { onFieldAInput, onBothRangeInput } = useV3MintActionHandlers(false)
 
   const closeModal = useCallback(() => setOpen(false), [])
   const onApply = useCallback(
     (position: RoiCalculatorPositionInfo) => {
       batch(() => {
-        onFieldAInput(position.amountA.toExact())
-        onFieldBInput(position.amountB.toExact())
-
         onBothRangeInput({
           leftTypedValue: position.priceLower.toFixed(),
           rightTypedValue: position.priceUpper.toFixed(),
         })
+
+        onFieldAInput(position.amountA.toExact())
       })
       closeModal()
     },
-    [closeModal, onBothRangeInput, onFieldAInput, onFieldBInput],
+    [closeModal, onBothRangeInput, onFieldAInput],
   )
 
   if (!data || !data.length) {
