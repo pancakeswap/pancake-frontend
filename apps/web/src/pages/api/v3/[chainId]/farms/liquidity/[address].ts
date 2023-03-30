@@ -84,6 +84,11 @@ const masterchefV3Abi = [
   },
 ] as const
 
+const CACHE_TIME = {
+  short: 's-maxage=30, max-age=20, stale-while-revalidate=120',
+  long: 's-maxage=60, max-age=60, stale-while-revalidate=1200',
+}
+
 // getting active "in-range" liquidity for a pool
 // TODO: v3 farms update subgraph urls
 const handler: NextApiHandler = async (req, res) => {
@@ -200,6 +205,20 @@ const handler: NextApiHandler = async (req, res) => {
     allActivePositions: allActivePositions.length,
   })
 
+  if (allActivePositions.length === 0) {
+    return res.status(200).json({
+      tvl: {
+        token0: '0',
+        token1: '0',
+      },
+      formatted: {
+        token0: '0',
+        token1: '0',
+      },
+      updatedAt,
+    })
+  }
+
   const currentTick = slot0.tick
   const sqrtRatio = JSBI.BigInt(slot0.sqrtPriceX96.toString())
 
@@ -232,7 +251,7 @@ const handler: NextApiHandler = async (req, res) => {
   const curr0 = CurrencyAmount.fromRawAmount(farm.token, totalToken0.toString()).toExact()
   const curr1 = CurrencyAmount.fromRawAmount(farm.quoteToken, totalToken1.toString()).toExact()
 
-  res.setHeader('Cache-Control', 's-maxage=600, max-age=600, stale-while-revalidate=1200')
+  res.setHeader('Cache-Control', allActivePositions.length > 50 ? CACHE_TIME.short : CACHE_TIME.long)
 
   return res.status(200).json({
     tvl: {
