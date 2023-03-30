@@ -174,21 +174,21 @@ export default {
   // TODO: v3 contract addresses NonfungiblePositionManager
   nftPositionManager: {
     56: '0x59c864bf8bB8ABe4dC16516b2C70104706df113A',
-    97: '0xEE02DC74894C7E973e058A676D513F25F4e1BEc7',
+    97: '0x427bF5b37357632377eCbEC9de3626C71A5396c1',
     5: '0x09C65bC891bf39DAF771e85F2203B898402fF3CF',
     1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
   },
   // keep the test fail as we know the contract is missing
   // TODO: v3 contract addresses PancakeV3PoolDeployer
   v3PoolDeployer: {
-    97: '0xdb19f2052D2B1aD46Ed98C66336A5dAADEB13005',
+    97: '0x41ff9AA7e16B8B1a8a8dc4f0eFacd93D02d071c9',
     56: '',
     5: '',
     1: '',
   },
   // TODO: v3 contract addresses V3Migrator
   v3Migrator: {
-    97: '0xA2427aFE4933BBE52c0a251299F1094959858d37',
+    97: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
     56: '',
     5: '',
     1: '',
@@ -196,14 +196,14 @@ export default {
   // TODO: v3 contract addresses PancakeV3Factory
   v3Factory: {
     56: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
-    97: '0xD84787a01B0cad89fBCa231E6960cC0f3f18df34',
+    97: '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865',
     5: '0x6e906fC1d75c9559E4E8b0F1Fa002C4a9724988f',
     1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
   },
   // TODO: v3 contract addresses QuoterV2
   quoter: {
     56: '0x93a775Ab5B2500F23717ffB69B42bfAbb0c8e91E',
-    97: '0x7E6f4BF88E791C917Ee8470bAdC1f05b8DAb916F',
+    97: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
     5: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     1: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
   },

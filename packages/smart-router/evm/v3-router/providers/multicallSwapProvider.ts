@@ -21,7 +21,7 @@ const PANCAKE_MULTICALL_ADDRESSES = {
   [ChainId.ETHEREUM]: '0x1F98415757620B543A52E61c46B32eB19261F984',
   [ChainId.GOERLI]: '0x1F98415757620B543A52E61c46B32eB19261F984',
   [ChainId.BSC]: '0x1F98415757620B543A52E61c46B32eB19261F984',
-  [ChainId.BSC_TESTNET]: '0x8893970e9fFbbE6686992d23ce19E1459AEe7b5A',
+  [ChainId.BSC_TESTNET]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
 }
 
 export type UniswapMulticallConfig = {
@@ -35,9 +35,9 @@ export type UniswapMulticallConfig = {
  * with an out of gas error.
  *
  * @export
- * @class UniswapMulticallProvider
+ * @class PancakeswapMulticallProvider
  */
-export class UniswapMulticallProvider extends IMulticallProvider<UniswapMulticallConfig> {
+export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMulticallConfig> {
   private multicallContract: InterfaceMulticall
 
   constructor(protected chainId: ChainId, protected provider: BaseProvider, protected gasLimitPerCall = 1_000_000) {

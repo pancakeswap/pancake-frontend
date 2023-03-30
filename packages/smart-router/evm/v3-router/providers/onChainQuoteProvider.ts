@@ -15,7 +15,7 @@ import IMixedRouteQuoterV1ABI from '../../abis/IMixedRouteQuoterV1.json'
 import IQuoterV2ABI from '../../abis/IQuoterV2.json'
 import { encodeMixedRouteToPath, getQuoteCurrency, isStablePool, isV2Pool, isV3Pool } from '../utils'
 import { Result } from './multicallProvider'
-import { UniswapMulticallProvider } from './multicallSwapProvider'
+import { PancakeswapMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
 import { BatchMulticallConfigs } from '../../types'
 import { BATCH_MULTICALL_CONFIGS } from '../../constants/multicall'
@@ -145,7 +145,7 @@ function onChainQuoteProviderFactory({
         const providerConfig = { blockNumber: blockNumberFromConfig }
         // const baseBlockOffset = 0
         const rollback = { enabled: false, rollbackBlockOffset: 0, attemptsBeforeRollback: 2 }
-        const multicall2Provider = new UniswapMulticallProvider(
+        const multicall2Provider = new PancakeswapMulticallProvider(
           chainId,
           chainProvider as BaseProvider,
           gasLimitOverride,
