@@ -22,6 +22,10 @@ import v3BgBlingBlur from './v3BgBlingBlur.png'
 import farmV3MigrationBunny from './farmV3MigrationBunny.png'
 import farmV3MigrationMobileBunny from './farmV3MigrationMobileBunny.png'
 import farmV3MigrationBunnyFull from './farmV3MigrationBunnyFull.png'
+import TradingRewardButter from './butter.png'
+import TradingRewardLoveButter from './love-butter.png'
+import TradingRewardBunny from './trading-reward-bunny.png'
+import TradingRewardBg from './trading-reward-bg.png'
 
 export {
   lotteryImage,
@@ -48,4 +52,8 @@ export {
   farmV3MigrationBunny,
   farmV3MigrationMobileBunny,
   farmV3MigrationBunnyFull,
+  TradingRewardButter,
+  TradingRewardLoveButter,
+  TradingRewardBunny,
+  TradingRewardBg,
 }

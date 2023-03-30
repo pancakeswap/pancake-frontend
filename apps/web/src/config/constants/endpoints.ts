@@ -54,3 +54,5 @@ export const V3_SUBGRAPH_URLS = {
   [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-bsc',
   [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-chapel',
 } satisfies Record<ChainId, string>
+
+export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancake.run/api/v1'
