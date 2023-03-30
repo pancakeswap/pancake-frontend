@@ -88,7 +88,7 @@ export const FarmV3LPPosition = ({
   )
 }
 
-function FarmV3LPPositionDetail({
+export function FarmV3LPPositionDetail({
   position: position_,
   token,
   quoteToken,

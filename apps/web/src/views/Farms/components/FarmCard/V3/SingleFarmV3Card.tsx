@@ -29,7 +29,7 @@ import { V3Farm } from 'views/Farms/FarmsV3'
 import useFarmV3Actions from 'views/Farms/hooks/v3/useFarmV3Actions'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { isPositionOutOfRange } from '@pancakeswap/utils/isPositionOutOfRange'
-import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
+import FarmV3StakeAndUnStake, { FarmV3LPPosition, FarmV3LPPositionDetail, FarmV3LPTitle } from './FarmV3StakeAndUnStake'
 
 const { FarmV3HarvestAction } = FarmUI.FarmV3Table
 
@@ -190,11 +190,12 @@ const SingleFarmV3Card: React.FunctionComponent<
                 <LightCard>
                   <AutoColumn gap="8px">
                     <FarmV3LPTitle title={title} liquidityUrl={liquidityUrl} outOfRange={outOfRange} />
-                    <FarmV3LPPosition
-                      farm={farm}
+                    <FarmV3LPPosition token={token} quoteToken={quoteToken} position={position} />
+                    <FarmV3LPPositionDetail
                       token={token}
                       quoteToken={quoteToken}
                       position={position}
+                      farm={farm}
                       positionType={positionType}
                     />
                     <NextLink href={liquidityUrl} onClick={unstakedModal.onDismiss}>
