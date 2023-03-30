@@ -33,7 +33,7 @@ const OnBoardingModal = () => {
 
   useEffect(() => {
     const { ref, user, discount } = router.query
-    if (isUserExist === true && ref && user && discount) {
+    if (isUserExist === false && ref && user && discount) {
       setIsOpen(true)
     }
   }, [isUserExist, router])

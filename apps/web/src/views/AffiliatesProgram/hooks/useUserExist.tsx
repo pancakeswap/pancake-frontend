@@ -19,7 +19,7 @@ const useUserExist = () => {
         return result.exist
       } catch (error) {
         console.error(`Fetch User Exist Error: ${error}`)
-        return false
+        return true
       }
     },
     {
@@ -31,7 +31,7 @@ const useUserExist = () => {
   )
 
   return {
-    isUserExist: isUserExist ?? false,
+    isUserExist: isUserExist ?? true,
   }
 }
 
