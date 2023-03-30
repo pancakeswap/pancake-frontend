@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Token } from '@pancakeswap/swap-sdk-core'
 import { AutoRow, QuestionHelper, RowBetween } from '@pancakeswap/uikit'
 import { Balance } from '@pancakeswap/uikit/src/components/Balance'
-import { Box, Flex } from '@pancakeswap/uikit/src/components/Box'
+import { Box } from '@pancakeswap/uikit/src/components/Box'
 import { Button } from '@pancakeswap/uikit/src/components/Button'
 import { Link } from '@pancakeswap/uikit/src/components/Link'
 import { ChevronRightIcon } from '@pancakeswap/uikit/src/components/Svg'
@@ -104,7 +104,7 @@ export const FarmV3LPPosition = ({
           </AutoRow>
         )}
         <Balance fontSize="12px" color="textSubtle" decimals={2} value={estimatedUSD} unit=" USD" prefix="~" />
-        <Flex style={{ gap: '4px' }}>
+        <AutoRow gap="4px">
           <Balance
             fontSize="12px"
             color="textSubtle"
@@ -119,7 +119,7 @@ export const FarmV3LPPosition = ({
             value={position ? +position.amount1.toSignificant(6) : 0}
             unit={` ${quoteToken.symbol}`}
           />
-        </Flex>
+        </AutoRow>
       </Box>
     </Box>
   )

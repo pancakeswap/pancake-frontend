@@ -27,6 +27,7 @@ const ActionContainer = styled.div`
 `;
 
 interface WalletNotConnectedProps {
+  inactive: boolean;
   account: string;
   boostedAction: ReactNode;
   connectWalletButton: ReactNode;
@@ -35,6 +36,7 @@ interface WalletNotConnectedProps {
 }
 
 const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConnectedProps>> = ({
+  inactive,
   account,
   hasNoPosition,
   boostedAction,
@@ -53,11 +55,13 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<WalletNotConne
               {t("no position found")}
             </Text>
           </ActionTitles>
-          <ActionContent>
-            <Button width="100%" onClick={onAddLiquidity}>
-              {t("Add Liquidity")}
-            </Button>
-          </ActionContent>
+          {inactive && (
+            <ActionContent>
+              <Button width="100%" onClick={onAddLiquidity}>
+                {t("Add Liquidity")}
+              </Button>
+            </ActionContent>
+          )}
         </ActionContainer>
       ) : (
         <ActionContainer>

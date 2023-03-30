@@ -5,6 +5,7 @@ import { Button } from "../../../../components/Button";
 import Flex from "../../../../components/Box/Flex";
 
 interface NoPositionProps {
+  inactive: boolean;
   account: string;
   hasNoPosition: boolean;
   boostedAction?: ReactNode;
@@ -13,6 +14,7 @@ interface NoPositionProps {
 }
 
 const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProps>> = ({
+  inactive,
   account,
   hasNoPosition,
   boostedAction,
@@ -29,9 +31,11 @@ const NoPosition: React.FunctionComponent<React.PropsWithChildren<NoPositionProp
           <Text color="textSubtle" bold textTransform="uppercase" fontSize="12px" mb="8px">
             {t("no position found")}
           </Text>
-          <Button width="100%" onClick={onAddLiquidityClick}>
-            {t("Add Liquidity")}
-          </Button>
+          {inactive && (
+            <Button width="100%" onClick={onAddLiquidityClick}>
+              {t("Add Liquidity")}
+            </Button>
+          )}
         </Flex>
       ) : (
         <>{connectWalletButton}</>

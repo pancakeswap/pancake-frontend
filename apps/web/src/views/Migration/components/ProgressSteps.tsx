@@ -6,11 +6,11 @@ const Circle = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 32px;
-  min-width: 32px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 21px;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  line-height: 24px;
+  font-size: 16px;
   color: #ffffff;
   border-radius: 50%;
   background: linear-gradient(180deg, #8051d6 0%, #492286 100%);
@@ -35,14 +35,14 @@ const StyledStep = styled.div<{
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 28px;
+  margin-top: 12px;
   &:before {
     content: '';
     position: absolute;
     width: 1px;
-    height: calc(100% - 16px);
+    height: calc(100% - 10px);
     top: calc(-100% + 10px);
-    left: 16px;
+    left: 11px;
     z-index: 0;
     pointer-events: none;
     background-color: ${({ theme, confirmed }) => (confirmed ? theme.colors.secondary : theme.colors.textDisabled)};

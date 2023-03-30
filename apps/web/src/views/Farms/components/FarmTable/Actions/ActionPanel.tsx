@@ -246,18 +246,21 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
       ) : (
         <>
           <NoPosition
+            inactive={!isActive}
             boostedAction={null}
             account={account}
             hasNoPosition={hasNoPosition}
             onAddLiquidity={addLiquidityModal.onOpen}
             connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
           />
-          <AddLiquidityV3Modal
-            {...addLiquidityModal}
-            currency0={unwrappedToken(farm.token)}
-            currency1={unwrappedToken(farm.quoteToken)}
-            feeAmount={farm.feeAmount}
-          />
+          {!isActive && (
+            <AddLiquidityV3Modal
+              {...addLiquidityModal}
+              currency0={unwrappedToken(farm.token)}
+              currency1={unwrappedToken(farm.quoteToken)}
+              feeAmount={farm.feeAmount}
+            />
+          )}
         </>
       )}
     </ActionPanelContainer>

@@ -22,6 +22,7 @@ interface FarmCardActionsProps {
 const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ farm, account }) => {
   const { multiplier, stakedPositions, unstakedPositions } = farm
   const isReady = multiplier !== undefined
+  const inactive = isReady && multiplier === '0X'
 
   const hasNoPosition = useMemo(
     () => stakedPositions.length === 0 && unstakedPositions.length === 0,
@@ -42,6 +43,7 @@ const CardActions: React.FC<React.PropsWithChildren<FarmCardActionsProps>> = ({ 
         <FarmInfo farm={farm} isReady={isReady} onAddLiquidity={addLiquidityModal.onOpen} />
       ) : (
         <NoPosition
+          inactive={inactive}
           account={account}
           hasNoPosition={hasNoPosition}
           onAddLiquidityClick={addLiquidityModal.onOpen}

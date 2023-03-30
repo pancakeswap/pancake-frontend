@@ -25,6 +25,8 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
   const cakePrice = usePriceCakeUSD()
   const [show, setShow] = useState(false)
 
+  const inactive = farm.multiplier === '0X'
+
   const { lpSymbol, token, quoteToken, multiplier, stakedPositions, unstakedPositions, pendingCakeByTokenIds } = farm
 
   const onlyOnePosition = useMemo(
@@ -62,7 +64,7 @@ const FarmInfo: React.FunctionComponent<React.PropsWithChildren<FarmInfoProps>> 
         <FarmV3CardList farm={farm} />
       ) : (
         <>
-          {unstakedPositions.length > 0 && (
+          {!inactive && unstakedPositions.length > 0 && (
             <AvailableFarming
               lpSymbol={lpSymbol}
               unstakedPositions={unstakedPositions}

@@ -1460,7 +1460,7 @@
   "Please connect wallet to check your pool status.": "Please connect wallet to check your pool status.",
   "Please connect wallet to check your farms status.": "Please connect wallet to check your farms status.",
   "You are not currently staking in any v1 pools.": "You are not currently staking in any v1 pools.",
-  "You are not currently staking in any v1 farms.": "You are not currently staking in any v1 farms.",
+  "You are not currently staking in any farms that require migrations.": "You are not currently staking in any farms that require migrations.",
   "Unstake All": "Unstake All",
   "Old Pools": "Old Pools",
   "Old Farms": "Old Farms",
@@ -2207,10 +2207,10 @@
   "View prices in": "View prices in",
   "Customize Trading Fee Tiers": "Customize Trading Fee Tiers",
   "Choose the fee rate you want when providing liquidity": "Choose the fee rate you want when providing liquidity",
-  "You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will be benefited from the higher fee rate.": "You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will be benefited from the higher fee rate.",
+  "You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.": "You can choose a trading fee rate from 0.1%, 0.25%, 0.05%, and 0.01% when providing liquidity. Usually, lower fee rates are more popular among stable assets, while more volatile assets will benefit from a higher fee rate.",
   "Concentrate Your Liquidity": "Concentrate Your Liquidity",
   "Provide liquidity to a specific price range": "Provide liquidity to a specific price range",
-  "Please note that after selecting the trading pair, the UI will automatically choose your most popular trading fee tier.": "Please note that after selecting the trading pair, the UI will automatically choose your most popular trading fee tier.",
+  "Please note that the UI automatically chooses the most popular trading fee tier after selecting the trading pair.": "Please note that the UI automatically chooses the most popular trading fee tier after selecting the trading pair.",
   "You can concentrate your liquidity within a price range. This offers traders deeper liquidity and allows you to earn more from trading fees with less capital investment.": "You can concentrate your liquidity within a price range. This offers traders deeper liquidity and allows you to earn more from trading fees with less capital investment.",
   "Your liquidity is only active and earning fees when the current price stays within the price range.": "Your liquidity is only active and earning fees when the current price stays within the price range.",
   "Add V2 Liquidity": "Add V2 Liquidity",
@@ -2268,5 +2268,5 @@
   "Avg": "Avg",
   "Apply Settings": "Apply Settings",
   "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap": "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap",
-  "Migrate your farms and pools staking to the new staking contract.": "Migrate your farms and pools staking to the new staking contract."
+  "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards."
 }
