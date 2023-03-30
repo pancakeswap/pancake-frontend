@@ -2063,7 +2063,7 @@
   "for the latest update.": "了解最新更新。",
   "Use StableSwap by default": "默认使用 StableSwap",
   "Stableswap will enable users to save fees on trades. Output cannot be edited for routes that include StableSwap": "Stableswap 使用户能够节省交易费用。无法为包含 StableSwap 的路由编辑输出",
-  "Volume (24H)": "交易量（24 小时）",
+  "Volume (24H)": "成交量（24 小时）",
   "Token Name": "代币名称",
   "Change": "涨跌幅",
   "Top Token": "排名前列的代币",
