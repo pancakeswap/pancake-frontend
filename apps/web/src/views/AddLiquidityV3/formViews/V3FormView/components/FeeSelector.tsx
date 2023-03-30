@@ -136,11 +136,12 @@ export default function FeeSelector({
     if (!v2PairHasBetterTokenAmounts) {
       setShowOptions(isError)
     }
-  }, [isError, v2PairHasBetterTokenAmounts])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError])
 
   return (
     <HideShowSelectorSection
-      showOptions={showOptions || !feeAmount}
+      showOptions={showOptions}
       noHideButton={!feeAmount}
       setShowOptions={setShowOptions}
       heading={
