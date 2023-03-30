@@ -1,4 +1,5 @@
 import { Currency, Price } from "@pancakeswap/sdk";
+import { formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { FlexGap } from "../../components";
 import { Bound } from "../../components/LiquidityChartRangeInput/types";
@@ -46,7 +47,7 @@ export function RangeSelector({
   return (
     <FlexGap gap="16px" width="100%" mb="16px">
       <StepCounter
-        value={ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] ? "0" : leftPrice?.toSignificant(5) ?? ""}
+        value={ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] ? "0" : formatPrice(leftPrice, 5) ?? ""}
         onUserInput={onLeftRangeInput}
         width="48%"
         decrement={isSorted ? getDecrementLower : getIncrementUpper}
@@ -60,7 +61,7 @@ export function RangeSelector({
         tokenB={currencyB?.symbol}
       />
       <StepCounter
-        value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? "∞" : rightPrice?.toSignificant(5) ?? ""}
+        value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? "∞" : formatPrice(rightPrice, 5) ?? ""}
         onUserInput={onRightRangeInput}
         width="48%"
         decrement={isSorted ? getDecrementUpper : getIncrementLower}

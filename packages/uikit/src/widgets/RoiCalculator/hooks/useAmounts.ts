@@ -2,6 +2,8 @@ import { Currency, CurrencyAmount, JSBI, Price } from "@pancakeswap/sdk";
 import tryParseAmount from "@pancakeswap/utils/tryParseAmount";
 import { FeeCalculator, TickMath } from "@pancakeswap/v3-sdk";
 import { useCallback, useMemo, useState, useEffect } from "react";
+import { formatPrice, formatAmount } from "@pancakeswap/utils/formatFractions";
+
 import { getTokenAmountsFromDepositUsd } from "../utils";
 
 interface Params {
@@ -22,7 +24,7 @@ export function useAmounts({
   sqrtRatioX96,
 }: Params) {
   const [independentField, setIndependentField] = useState({
-    value: initialIndependentAmount?.toSignificant(6) || "0",
+    value: formatAmount(initialIndependentAmount, 6) || "0",
     currency: initialIndependentAmount?.currency,
   });
 
@@ -52,7 +54,7 @@ export function useAmounts({
   useEffect(() => {
     if (initialIndependentAmount) {
       setIndependentField({
-        value: initialIndependentAmount.toSignificant(6),
+        value: formatAmount(initialIndependentAmount, 6) || "0",
         currency: initialIndependentAmount.currency,
       });
     }
@@ -63,8 +65,8 @@ export function useAmounts({
   return {
     amountA,
     amountB,
-    valueA: currencyA && currency?.equals(currencyA) ? value : amountA?.toSignificant(6) || "0",
-    valueB: currencyB && currency?.equals(currencyB) ? value : amountB?.toSignificant(6) || "0",
+    valueA: currencyA && currency?.equals(currencyA) ? value : formatAmount(amountA, 6) || "0",
+    valueB: currencyB && currency?.equals(currencyB) ? value : formatAmount(amountB, 6) || "0",
     independentAmount: currencyA && currencyB && currency?.equals(currencyA) ? amountA : amountB,
     dependentCurrency: currencyA && currencyB && currency?.equals(currencyA) ? currencyB : currencyA,
     onChange,
@@ -99,9 +101,9 @@ export function useAmountsByUsdValue({
       usdValue,
       currencyA,
       currencyB,
-      price: price?.toSignificant(6),
-      priceLower: priceLower?.toSignificant(6),
-      priceUpper: priceUpper?.toSignificant(6),
+      price: formatPrice(price, 6),
+      priceLower: formatPrice(priceLower, 6),
+      priceUpper: formatPrice(priceUpper, 6),
       sqrtRatioX96,
       currencyAUsdPrice,
       currencyBUsdPrice,
@@ -122,8 +124,8 @@ export function useAmountsByUsdValue({
   return {
     amountA,
     amountB,
-    valueA: amountA ? amountA?.toSignificant(6) : "0",
-    valueB: amountB ? amountB?.toSignificant(6) : "0",
+    valueA: amountA ? formatAmount(amountA, 6) : "0",
+    valueB: amountB ? formatAmount(amountB, 6) : "0",
   };
 }
 

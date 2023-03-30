@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 import BigNumber from "bignumber.js";
 import { BIG_ZERO } from "@pancakeswap/utils/bigNumber";
 import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
+import { formatPercent, formatFraction, formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
 import { LiquidityChartRangeInput, Button, DynamicSection, Flex } from "../../components";
@@ -245,8 +246,8 @@ export function RoiCalculator({
     [onApply, priceRange, amountA, amountB, usdValue, currencyAUsdPrice, currencyBUsdPrice]
   );
 
-  const totalRate = parseFloat(rate?.toSignificant(6) ?? "0") + parseFloat(cakeRate?.toSignificant(6) ?? "0");
-  const lpReward = parseFloat(fee.toSignificant(6));
+  const totalRate = parseFloat(formatPercent(rate, 6) ?? "0") + parseFloat(formatPercent(cakeRate, 6) ?? "0");
+  const lpReward = parseFloat(formatFraction(fee, 6) ?? "0");
   const farmReward = cakeReward;
   const totalRoi = lpReward + farmReward;
 
@@ -331,12 +332,12 @@ export function RoiCalculator({
         onSpanChange={onPriceSpanChange}
         span={priceSpan}
         priceUpper={
-          invertPrice ? priceRange?.priceLower?.invert().toSignificant(6) : priceRange?.priceUpper?.toSignificant(6)
+          invertPrice ? formatPrice(priceRange?.priceLower?.invert(), 6) : formatPrice(priceRange?.priceUpper, 6)
         }
         priceLower={
-          invertPrice ? priceRange?.priceUpper?.invert().toSignificant(6) : priceRange?.priceLower?.toSignificant(6)
+          invertPrice ? formatPrice(priceRange?.priceUpper?.invert(), 6) : formatPrice(priceRange?.priceLower, 6)
         }
-        priceCurrent={invertPrice ? priceCurrent?.invert().toSignificant(6) : priceCurrent?.toSignificant(6)}
+        priceCurrent={invertPrice ? formatPrice(priceCurrent?.invert(), 6) : formatPrice(priceCurrent, 6)}
       />
     </Section>
   );
@@ -390,7 +391,7 @@ export function RoiCalculator({
       </ScrollableContainer>
       <Details
         totalYield={totalRoi}
-        lpReward={fee.toSignificant(6)}
+        lpReward={lpReward}
         lpApr={apr}
         lpApy={apy}
         compoundIndex={compoundIndex}

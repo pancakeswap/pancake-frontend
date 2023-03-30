@@ -3,6 +3,7 @@ import { Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
 import { useState, ReactNode } from "react";
 import styled from "styled-components";
+import { formatPercent } from "@pancakeswap/utils/formatFractions";
 
 import { ExpandableLabel, Box, Grid, Text, Flex } from "../../components";
 import { Footer, BulletList } from "../../components/RoiCalculatorModal/RoiCalculatorFooter";
@@ -78,13 +79,13 @@ export function Details({
           {t("APR")}
         </Text>
         <Text small bold textAlign="right">
-          ${+lpApr.toSignificant(5) + +(farmApr || "0")}%
+          ${+(formatPercent(lpApr, 5) || "0") + +(farmApr || "0")}%
         </Text>
         <Text color="textSubtle" small style={{ textIndent: "1em" }}>
           {t("LP Fee APR")}
         </Text>
         <Text small color="textSubtle" textAlign="right">
-          {lpApr.toSignificant(5)}%
+          {formatPercent(lpApr, 5) || "0"}%
         </Text>
         {isFarm && farmApr && (
           <>
@@ -103,7 +104,7 @@ export function Details({
             {t("APY")} {compoundText && `(${compoundText})`}
           </Text>
           <Text small bold textAlign="right">
-            ${lpApy.toSignificant(5)}%
+            ${formatPercent(lpApy, 5) || "0"}%
           </Text>
         </Grid>
       )}

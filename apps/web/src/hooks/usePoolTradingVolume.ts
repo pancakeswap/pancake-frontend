@@ -37,6 +37,10 @@ export function usePoolAvgTradingVolume({ address, numberOfDays = 7, chainId }: 
         address: address.toLocaleLowerCase(),
       })
       const volumes = poolDayDatas.map((d: { volumeUSD: string }) => Number(d.volumeUSD))
+      // Remove the highest and lowest volume to be more accurate
+      if (volumes.length > 3) {
+        return averageArray(volumes.sort((a: number, b: number) => a - b).slice(1, volumes.length - 1))
+      }
       return averageArray(volumes)
     },
     {

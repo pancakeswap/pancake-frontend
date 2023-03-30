@@ -8,6 +8,7 @@ import {
   priceToClosestTick,
 } from "@pancakeswap/v3-sdk";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { Bound } from "../../../components/LiquidityChartRangeInput/types";
 import { tryParsePrice, tryParseTick } from "../utils";
@@ -74,12 +75,12 @@ export function usePriceRange({
   }, [tickSpaceLimits, invertPrice, quoteCurrency, baseCurrency]);
 
   const rightRangeTypedValue = useMemo(
-    () => (invertPrice ? priceLower?.toSignificant(6) : priceUpper?.toSignificant(6)),
+    () => (invertPrice ? formatPrice(priceLower, 6) : formatPrice(priceUpper, 6)),
     [priceLower, priceUpper, invertPrice]
   );
 
   const leftRangeTypedValue = useMemo(
-    () => (invertPrice ? priceUpper?.toSignificant(6) : priceLower?.toSignificant(6)),
+    () => (invertPrice ? formatPrice(priceUpper, 6) : formatPrice(priceLower, 6)),
     [priceLower, priceUpper, invertPrice]
   );
 

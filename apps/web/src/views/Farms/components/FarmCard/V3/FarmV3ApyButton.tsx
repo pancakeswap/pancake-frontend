@@ -64,7 +64,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   // use state to prevent existing position from being updated from props after changes on roi modal
   const [existingPosition] = useState(existingPosition_)
 
-  const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances, outOfRange } = useV3DerivedInfo(
+  const { pool, ticks, price, pricesAtTicks, currencyBalances, outOfRange } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
     feeAmount,
@@ -78,8 +78,6 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
   const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
   const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
-
-  const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
 
   const currencyAUsdPrice = +farm.tokenPriceBusd
   const currencyBUsdPrice = +farm.quoteTokenPriceBusd
@@ -144,15 +142,16 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     sqrtRatioX96,
     fee: feeAmount,
     mostActiveLiquidity: pool?.liquidity,
-    amountA,
-    amountB,
+    amountA: existingPosition?.amount0,
+    amountB: existingPosition?.amount1,
     compoundOn: false,
     currencyAUsdPrice,
     currencyBUsdPrice,
     volume24H,
   })
 
-  const displayApr = getDisplayApr(+farm.cakeApr, +apr.toSignificant(2))
+  const positionDisplayApr = getDisplayApr(+positionCakeApr, +apr.toFixed(2))
+  const displayApr = getDisplayApr(+farm.cakeApr, +apr.toFixed(2))
 
   if (farm.multiplier === '0X') {
     return <Text fontSize="14px">0%</Text>
@@ -171,7 +170,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
               {positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%
             </TooltipText>
           ) : (
-            <Text fontSize="14px">{positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%</Text>
+            <Text fontSize="14px">{positionDisplayApr}%</Text>
           )}
           <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm" onClick={roiModal.onOpen}>
             <CalculateIcon width="18px" color="textSubtle" />

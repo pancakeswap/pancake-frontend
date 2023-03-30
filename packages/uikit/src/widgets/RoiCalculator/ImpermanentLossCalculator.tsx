@@ -4,6 +4,7 @@ import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } fro
 import { priceToClosestTick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
 import styled from "styled-components";
 import { CAKE } from "@pancakeswap/tokens";
+import { formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { Section } from "./Section";
 import { Box, Row, AutoColumn, Toggle, Button, RowBetween, DoubleCurrencyLogo, Flex } from "../../components";
@@ -193,9 +194,9 @@ export function ImpermanentLossCalculator({
       const [adjustedAmountA, adjustedAmountB] = getTokenAmountsFromDepositUsd({
         sqrtRatioX96: newSqrtRatioX96,
         usdValue: usdValue !== undefined ? String(usdValue) : undefined,
-        price: token0Price.toSignificant(6),
-        priceLower: priceLower.toSignificant(6),
-        priceUpper: priceUpper.toSignificant(6),
+        price: formatPrice(token0Price, 6),
+        priceLower: formatPrice(priceLower, 6),
+        priceUpper: formatPrice(priceUpper, 6),
         currencyA: assetCurrencyA,
         currencyB: assetCurrencyB,
         currencyAUsdPrice: parseFloat(priceA),
