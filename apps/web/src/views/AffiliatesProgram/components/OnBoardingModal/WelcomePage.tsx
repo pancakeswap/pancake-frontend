@@ -2,6 +2,7 @@ import { Flex, Box, Text, Button, LogoRoundIcon, Checkbox, Link } from '@pancake
 import { useTranslation } from '@pancakeswap/localization'
 import { useRouter } from 'next/router'
 import { useState, useMemo } from 'react'
+import BigNumber from 'bignumber.js'
 
 interface WelcomePageProps {
   isLoading: boolean
@@ -11,9 +12,12 @@ interface WelcomePageProps {
 const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLoading, handleStartNow }) => {
   const { t } = useTranslation()
   const router = useRouter()
+  const { user, discount } = router.query
   const [isChecked, setIsChecked] = useState(false)
 
   const handleCheckbox = () => setIsChecked(!isChecked)
+
+  const isDiscountZero = useMemo(() => new BigNumber((discount as string) ?? '0').eq(0), [discount])
 
   const isReady = useMemo(() => !isLoading && isChecked, [isLoading, isChecked])
 
@@ -27,15 +31,19 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
           {t('Welcome to PancakeSwap!')}
         </Text>
         <Text textTransform="uppercase" color="secondary" bold mb="8px">
-          {router.query.user?.toString()?.replaceAll('_', ' ')}
+          {user?.toString()?.replaceAll('_', ' ')}
         </Text>
         <Text color="textSubtle" fontSize="14px" mb="24px">
           {t('has referred you to start trading on PancakeSwap')}
         </Text>
         <Text color="textSubtle" mb="24px">
           {t('Start trading today and get a')}
-          <Text color="secondary" bold as="span" m="0 4px">{`${router.query.discount}%`}</Text>
-          {t('discount on most Swap and StableSwap trading fees, as well as a')}
+          {!isDiscountZero && (
+            <>
+              <Text color="secondary" bold as="span" m="0 4px">{`${discount}%`}</Text>
+              {t('discount on most Swap and StableSwap trading fees, as well as a')}
+            </>
+          )}
           <Text color="secondary" bold as="span" m="0 4px">
             20%
           </Text>
