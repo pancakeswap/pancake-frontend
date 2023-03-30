@@ -2298,7 +2298,7 @@
   "%totalStakedFarm% Staked Farming": "%totalStakedFarm% Staked Farming",
   "%totalAvailableFarm% LP Available for Farming": "%totalAvailableFarm% LP Available for Farming",
   "no position found": "no position found",
-  "Min %minAmount": "Min %minAmount%",
+  "Min %minAmount%": "Min %minAmount%",
   "Max %maxAmount%": "Max %maxAmount%",
   "Staked Liquidity": "Staked Liquidity",
   "Total active (in-range) liquidity staked in the farm.": "Total active (in-range) liquidity staked in the farm.",
