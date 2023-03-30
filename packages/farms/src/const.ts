@@ -16,11 +16,11 @@ export const masterChefAddresses = {
 
 // TODO: v3 contract addresses MasterChefV3
 export const masterChefV3Addresses = {
-  [ChainId.GOERLI]: '0x085e5E3a68e4E912E0bb3f5A242B808AB97EF5Cd',
+  [ChainId.GOERLI]: '0x864ED564875BdDD6F421e226494a0E7c071C06f8',
   [ChainId.BSC_TESTNET]: '0x4c650FB471fe4e0f476fD3437C3411B1122c4e3B',
   [ChainId.BSC]: '0x1a35E2f35e0fE437aa394A2EC8394978Cbdc1405',
   [ChainId.ETHEREUM]: '',
-} as const
+} as const satisfies Record<ChainId, string>
 
 export const nonBSCVaultAddresses = {
   [ChainId.ETHEREUM]: '0x2e71B2688019ebdFDdE5A45e6921aaebb15b25fb',

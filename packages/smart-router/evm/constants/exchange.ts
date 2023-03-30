@@ -4,12 +4,12 @@ import { bscTokens, bscTestnetTokens, BUSD, USDC, USDT, WBTC_ETH } from '@pancak
 import { ChainMap, ChainTokenList } from '../types'
 
 // TODO: v3 contract addresses SmartRouter
-export const SWAP_ROUTER_ADDRESSES: ChainMap<string> = {
+export const SWAP_ROUTER_ADDRESSES = {
   [ChainId.ETHEREUM]: '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
-  [ChainId.GOERLI]: '0xb8541F86CB4E9fAf4975883A932b7d70Adc24a2f',
+  [ChainId.GOERLI]: '0x9a489505a00cE272eAa5e07Dba6491314CaE3796',
   [ChainId.BSC]: '',
   [ChainId.BSC_TESTNET]: '0x9a489505a00cE272eAa5e07Dba6491314CaE3796',
-}
+} as const satisfies Record<ChainId, string>
 
 export const ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.ETHEREUM]: '0x3BC722f252C7bAE2f55647e49aDcB9d33Ff6eBcC',
