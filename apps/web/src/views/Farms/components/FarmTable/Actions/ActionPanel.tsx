@@ -253,7 +253,7 @@ export const ActionPanelV3: FC<ActionPanelV3Props> = ({
             onAddLiquidity={addLiquidityModal.onOpen}
             connectWalletButton={<ConnectWalletButton mt="8px" width="100%" />}
           />
-          {!isActive && (
+          {isActive && (
             <AddLiquidityV3Modal
               {...addLiquidityModal}
               currency0={unwrappedToken(farm.token)}
