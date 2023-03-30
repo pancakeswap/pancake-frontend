@@ -50,7 +50,7 @@ export default function Home() {
 
   const [, setHoverValue] = useState<number | undefined>()
   const [, setHoverDate] = useState<string | undefined>()
-  const pairTokensPrice = usePairTokensPrice(ethereumTokens.weth, ethereumTokens.usdc, 'year', 1)
+  const pairTokensPrice = usePairTokensPrice(ethereumTokens.weth, ethereumTokens.usdc, PairDataTimeWindowEnum.YEAR, 1)
 
   // if hover value undefined, reset to current day value
   // useEffect(() => {

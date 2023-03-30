@@ -75,7 +75,7 @@ export const useTokenPriceChartData = (
 
 // this is for the swap page and ROI calculator
 export const usePairPriceChartTokenData = (
-  address: string,
+  address?: string,
   duration?: 'day' | 'week' | 'month' | 'year',
   targetChianId?: ChainId,
 ): PriceChartEntry[] | undefined => {

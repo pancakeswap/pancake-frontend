@@ -8,7 +8,6 @@ import {
   CalculateIcon,
   Text,
   IconButton,
-  PairDataTimeWindowEnum,
 } from '@pancakeswap/uikit'
 import { encodeSqrtRatioX96, Pool } from '@pancakeswap/v3-sdk'
 import { useCallback, useMemo, useState } from 'react'
@@ -46,21 +45,7 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
 
   const formState = useV3FormState()
   const { position: existingPosition } = useDerivedPositionInfo(undefined)
-  const priceTimeWindow = useMemo(() => {
-    switch (priceSpan) {
-      case PairDataTimeWindowEnum.DAY:
-        return 'day'
-      case PairDataTimeWindowEnum.WEEK:
-        return 'week'
-      case PairDataTimeWindowEnum.MONTH:
-        return 'month'
-      case PairDataTimeWindowEnum.YEAR:
-        return 'year'
-      default:
-        return 'week'
-    }
-  }, [priceSpan])
-  const prices = usePairTokensPrice(baseCurrency, quoteCurrency, priceTimeWindow, baseCurrency?.chainId)
+  const prices = usePairTokensPrice(baseCurrency, quoteCurrency, priceSpan, baseCurrency?.chainId)
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
     baseCurrency ?? undefined,

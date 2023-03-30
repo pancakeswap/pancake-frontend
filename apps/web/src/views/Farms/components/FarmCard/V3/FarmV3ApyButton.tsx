@@ -16,11 +16,13 @@ import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
 import BigNumber from 'bignumber.js'
+import { useMemo, useState } from 'react'
+
 import { Bound } from 'config/constants/types'
 import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
-import { useMemo, useState } from 'react'
+import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { useFarmsV3 } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
@@ -43,9 +45,17 @@ export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
 }
 
 function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositionStaked }: FarmV3ApyButtonProps) {
-  const roiModal = useModalV2()
-  const { t } = useTranslation()
   const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount } = farm
+  const { t } = useTranslation()
+  const roiModal = useModalV2()
+
+  const [priceTimeWindow, setPriceTimeWindow] = useState(0)
+  const prices = usePairTokensPrice(
+    roiModal.isOpen ? baseCurrency : undefined,
+    roiModal.isOpen ? quoteCurrency : undefined,
+    priceTimeWindow,
+    baseCurrency?.chainId,
+  )
 
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
 
@@ -182,6 +192,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
       {cakePrice && cakeAprFactor && (
         <RoiCalculatorModalV2
           {...roiModal}
+          isFarm
           maxLabel={existingPosition_ ? t('My Position') : undefined}
           closeOnOverlayClick
           depositAmountInUsd={depositUsdAsBN?.toString()}
@@ -200,9 +211,11 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
           volume24H={volume24H}
           priceUpper={priceUpper}
           priceLower={priceLower}
-          isFarm
           cakePrice={cakePrice.toFixed(3)}
           cakeAprFactor={cakeAprFactor}
+          prices={prices}
+          priceSpan={priceTimeWindow}
+          onPriceSpanChange={setPriceTimeWindow}
         />
       )}
     </>
