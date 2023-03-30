@@ -22,7 +22,7 @@ interface UserRegisterFeeResponse {
 const OnBoardingModal = () => {
   const { t } = useTranslation()
   const router = useRouter()
-  const { address } = useAccount()
+  const { address, connector } = useAccount()
   const { signMessageAsync } = useSignMessage()
   const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
@@ -41,7 +41,11 @@ const OnBoardingModal = () => {
   const handleStartNow = async () => {
     try {
       setIsLoading(true)
-      const message = ethers.utils.arrayify(ethers.utils.solidityKeccak256(['string'], [router.query.ref]))
+      // BSC wallet sign message only accept string
+      const message =
+        connector?.id === 'bsc'
+          ? ethers.utils.solidityKeccak256(['string'], [router.query.ref])
+          : ethers.utils.arrayify(ethers.utils.solidityKeccak256(['string'], [router.query.ref]))
       const signature = await signMessageAsync({ message })
       const response = await fetch('/api/affiliates-program/user-register-fee', {
         method: 'POST',

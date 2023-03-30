@@ -92,7 +92,7 @@ const receivePercentageList: Array<string> = ['0', '25', '50', '75', '100']
 
 const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = ({ refreshAffiliateInfo }) => {
   const { t } = useTranslation()
-  const { address } = useAccount()
+  const { address, connector } = useAccount()
   const { toastSuccess, toastError } = useToast()
   const { signMessageAsync } = useSignMessage()
   const { defaultLinkId, refresh } = useDefaultLinkId()
@@ -110,13 +110,20 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
   const handleGenerateLink = async () => {
     try {
       setIsLoading(true)
+      // BSC wallet sign message only accept string
+      const message =
+        connector?.id === 'bsc'
+          ? ethers.utils.solidityKeccak256(
+              ['string', 'uint256', 'uint256', 'uint256'],
+              [linkId, Number(percentage), Number(percentage), Number(percentage)],
+            )
+          : ethers.utils.arrayify(
+              ethers.utils.solidityKeccak256(
+                ['string', 'uint256', 'uint256', 'uint256'],
+                [linkId, Number(percentage), Number(percentage), Number(percentage)],
+              ),
+            )
 
-      const message = ethers.utils.arrayify(
-        ethers.utils.solidityKeccak256(
-          ['string', 'uint256', 'uint256', 'uint256'],
-          [linkId, Number(percentage), Number(percentage), Number(percentage)],
-        ),
-      )
       const signature = await signMessageAsync({ message })
       const data = {
         fee: {
