@@ -1,12 +1,15 @@
 import { Position } from '@pancakeswap/v3-sdk'
 import { useToken } from 'hooks/Tokens'
-import { useMemo } from 'react'
+import { useMemo, useState, SetStateAction, Dispatch } from 'react'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { unwrappedToken } from 'utils/wrappedCurrency'
 import { usePool } from 'hooks/v3/usePools'
 import { PositionDetails } from '@pancakeswap/farms'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { Currency, Price, Token } from '@pancakeswap/sdk'
+import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
+import { Bound } from 'config/constants/types'
+import { useTranslation } from '@pancakeswap/localization'
 
 interface PositionListItemDisplayProps {
   positionSummaryLink: string
@@ -21,6 +24,8 @@ interface PositionListItemDisplayProps {
   }
   priceLower: Price<Token, Token>
   feeAmount: number
+  subtitle: string
+  setInverted: Dispatch<SetStateAction<boolean>>
 }
 
 interface PositionListItemProps {
@@ -38,11 +43,18 @@ export default function PositionListItem({ positionDetails, children }: Position
     tickUpper,
   } = positionDetails
 
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+
   const token0 = useToken(token0Address)
   const token1 = useToken(token1Address)
 
   const currency0 = token0 ? unwrappedToken(token0) : undefined
   const currency1 = token1 ? unwrappedToken(token1) : undefined
+
+  const [inverted, setInverted] = useState(false)
 
   // construct Position from details returned
   const [, pool] = usePool(currency0 ?? undefined, currency1 ?? undefined, feeAmount)
@@ -69,6 +81,13 @@ export default function PositionListItem({ positionDetails, children }: Position
 
   const removed = liquidity?.eq(0)
 
+  const subtitle = t('Min %minAmount%/ Max %maxAmount% %token% per %quoteToken%', {
+    minAmount: formatTickPrice(inverted ? priceUpper.invert() : priceLower, tickAtLimit, Bound.LOWER, locale),
+    maxAmount: formatTickPrice(inverted ? priceLower.invert() : priceUpper, tickAtLimit, Bound.UPPER, locale),
+    token: inverted ? currencyQuote?.symbol : currencyBase?.symbol,
+    quoteToken: inverted ? currencyBase?.symbol : currencyQuote?.symbol,
+  })
+
   return children({
     positionSummaryLink,
     currencyBase,
@@ -79,5 +98,7 @@ export default function PositionListItem({ positionDetails, children }: Position
     tickAtLimit,
     priceLower,
     feeAmount,
+    subtitle,
+    setInverted,
   })
 }

@@ -63,16 +63,7 @@ export function Step4() {
         ) : (
           positions.map((p) => (
             <PositionListItem key={p.tokenId.toString()} positionDetails={p}>
-              {({
-                currencyBase,
-                currencyQuote,
-                removed,
-                outOfRange,
-                priceLower,
-                tickAtLimit,
-                priceUpper,
-                feeAmount,
-              }) => (
+              {({ currencyBase, currencyQuote, removed, outOfRange, feeAmount, setInverted, subtitle }) => (
                 <LiquidityCardRow
                   feeAmount={feeAmount}
                   currency0={currencyQuote}
@@ -95,14 +86,8 @@ export function Step4() {
                       <RangeTag removed={removed} outOfRange={outOfRange} />
                     </>
                   }
-                  subtitle={`${t('Min %minAmount%', {
-                    minAmount: formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale),
-                  })}/ ${t('Max %maxAmount%', {
-                    maxAmount: formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale),
-                  })} ${t('%assetA% per %assetB%', {
-                    assetA: currencyBase?.symbol,
-                    assetB: currencyQuote?.symbol,
-                  })}`}
+                  subtitle={subtitle}
+                  onSwitch={() => setInverted((prev) => !prev)}
                 />
               )}
             </PositionListItem>

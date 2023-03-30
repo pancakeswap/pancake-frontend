@@ -1,4 +1,4 @@
-import { Text, Card, Flex, Tag } from '@pancakeswap/uikit'
+import { Text, Card, Flex, Tag, SyncAltIcon } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import styled from 'styled-components'
 
@@ -23,6 +23,7 @@ interface LiquidityCardRowProps {
   tokenId?: BigNumber
   tags: React.ReactElement
   subtitle: string
+  onSwitch: () => void
 }
 
 export const LiquidityCardRow = ({
@@ -34,6 +35,7 @@ export const LiquidityCardRow = ({
   tags,
   subtitle,
   tokenId,
+  onSwitch,
 }: LiquidityCardRowProps) => {
   const content = (
     <Flex justifyContent="space-between" p="16px">
@@ -53,9 +55,19 @@ export const LiquidityCardRow = ({
           )}
           <TagCell>{tags}</TagCell>
         </Flex>
-        <Text fontSize="14px" color="textSubtle">
-          {subtitle}
-        </Text>
+        <Flex>
+          <Text fontSize="14px" color="textSubtle">
+            {subtitle}
+          </Text>
+          <SyncAltIcon
+            onClick={(e) => {
+              e.preventDefault()
+              onSwitch()
+            }}
+            ml="4px"
+            color="primary"
+          />
+        </Flex>
       </Flex>
     </Flex>
   )

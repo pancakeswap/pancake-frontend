@@ -129,11 +129,10 @@ export default function PoolListPage() {
             currencyQuote,
             removed,
             outOfRange,
-            priceLower,
-            tickAtLimit,
-            priceUpper,
             feeAmount,
             positionSummaryLink,
+            subtitle,
+            setInverted,
           }) => (
             <LiquidityCardRow
               feeAmount={feeAmount}
@@ -158,9 +157,8 @@ export default function PoolListPage() {
                   <RangeTag removed={removed} outOfRange={outOfRange} />
                 </>
               }
-              subtitle={`Min ${formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)} / Max:
-                ${formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)} ${currencyQuote?.symbol} per
-                ${currencyBase?.symbol}`}
+              subtitle={subtitle}
+              onSwitch={() => setInverted((prev) => !prev)}
             />
           )}
         </PositionListItem>

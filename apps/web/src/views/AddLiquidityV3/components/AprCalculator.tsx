@@ -126,9 +126,9 @@ export function AprCalculator({
     [closeModal, onBothRangeInput, onFieldAInput],
   )
 
-  // if (!data || !data.length) {
-  //   return null
-  // }
+  if (!data || !data.length) {
+    return null
+  }
 
   return (
     <>
