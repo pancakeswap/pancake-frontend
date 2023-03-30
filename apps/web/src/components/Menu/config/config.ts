@@ -64,6 +64,7 @@ const config: (
             languageCode,
             isDark,
           }),
+          confirmModalId: 'usCitizenConfirmModal',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
@@ -164,6 +165,10 @@ const config: (
           href: '/ifo',
           supportChainIds: SUPPORT_ONLY_BSC,
           image: '/images/ifos/ifo-bunny.png',
+        },
+        {
+          label: t('Affiliate Program'),
+          href: '/affiliates-program',
         },
         {
           label: t('Voting'),

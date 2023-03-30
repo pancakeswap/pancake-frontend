@@ -1,8 +1,8 @@
-import { Flex, Text, Button, Box, PageSection } from '@pancakeswap/uikit'
+import { Flex, Text, Button, Box, PageSection, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import useTheme from 'hooks/useTheme'
-import Calculator from 'views/AffiliatesProgram/components/Overview/Calculator'
+// import Calculator from 'views/AffiliatesProgram/components/Overview/Calculator'
 import CommissionStructure from 'views/AffiliatesProgram/components/Overview/CommissionStructure'
 import { floatingStarsLeft, floatingStarsRight } from 'views/Lottery/components/Hero'
 
@@ -76,21 +76,36 @@ const RewardCalculate = () => {
         <img src="/images/affiliates-program/m-4.png" width="210px" height="210px" alt="" />
         <img src="/images/affiliates-program/m-5.png" width="72px" height="63px" alt="" />
       </Decorations>
-      <Flex mt={['20px', '40px', '60px', '150px']} flexDirection={['column', 'column', 'column', 'column', 'row']}>
-        <Flex width={['100%', '100%', '447px']} alignSelf={['center']} flexDirection="column">
+      <Flex
+        mt={['20px', '40px', '60px', '70px']}
+        flexDirection={['column', 'column', 'column', 'column', 'row']}
+        justifyContent="center"
+      >
+        <Flex width={['100%', '100%', '447px']} alignSelf={['center']} flexDirection="column" alignItems="center">
           <Box m={['32px 0']}>
-            <Text fontSize={['40px']} lineHeight="110%" color="body" bold>
-              {t('Unleash Your Earning Potential with PancakeSwap')}
+            <Text
+              textAlign={['left', 'left', 'left', 'center']}
+              fontSize={['40px']}
+              lineHeight="110%"
+              color="body"
+              bold
+            >
+              {t("Join PancakeSwap's Community and Make a Difference")}
             </Text>
           </Box>
-          <Text color="textSubtle" mb="32px">
+          <Text textAlign={['left', 'left', 'left', 'center']} color="textSubtle" mb="32px">
             {t(
-              'Join our community of top-earning affiliates and make the most of every referral, with market-leading commission rates and endless earning opportunities.',
+              "As an affiliate, you'll be part of a network of like-minded individuals who are committed to build a stronger DeFi community. Be part of something bigger with PancakeSwap's Affiliate program",
             )}
           </Text>
-          <Button width="fit-content">{t('Join Now!')}</Button>
+          <Link
+            external
+            href="https://docs.google.com/forms/d/e/1FAIpQLSfP43IciQ5cH0JhTf1fDgUpwapBx-yD3ybv24pBdiVW7Th5jQ/viewform"
+          >
+            <Button width="fit-content">{t('Join Now!')}</Button>
+          </Link>
         </Flex>
-        <Calculator />
+        {/* <Calculator /> */}
       </Flex>
       <CommissionStructure />
     </PageSection>

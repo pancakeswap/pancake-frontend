@@ -22,11 +22,10 @@ const HowItWork = () => {
         {t('are meant to be shared')}
       </Heading>
       <Text textAlign="center" color="textSubtle">
-        Turn your love and passion for PancakeSwap into rewards. Become a PancakeSwap affiliate and watch your wallet
-        grow
+        {t('Together we can make the PancakeSwap community even stronger')}
       </Text>
       <Text textAlign="center" color="textSubtle" bold mb="32px">
-        {t('How Do You Become a PancakeSwap Affiliate?')}
+        {t('How do you Become a PancakeSwap Affiliate?')}
       </Text>
       <Flex width={['280px', '280px', '280px', '888px']} flexDirection={['column', 'column', 'column', 'row']}>
         <Flex width={['100%', '100%', '100%', '33.33%']} m={['0 0 16px 0', '0 0 16px 0', '0 0 16px 0', '0 16px 0 0']}>
@@ -36,15 +35,17 @@ const HowItWork = () => {
                 1
               </Text>
               <Text fontSize={['40px']} bold lineHeight="110%">
-                Submit
+                {t('Submit')}
               </Text>
               <Text fontSize={['40px']} bold color="secondary" lineHeight="110%">
-                Your
+                {t('Your')}
               </Text>
               <Text fontSize={['40px']} bold color="secondary" lineHeight="110%">
-                Application
+                {t('Application')}
               </Text>
-              <Text fontSize={['14px']}>It&apos;s fast, easy, and completely free!</Text>
+              <Text fontSize={['14px']} mt="24px">
+                {t("It's fast, easy, and completely free")}
+              </Text>
             </Box>
           </Card>
         </Flex>
@@ -55,16 +56,18 @@ const HowItWork = () => {
                 2
               </Text>
               <Text fontSize={['40px']} bold lineHeight="110%">
-                Share
+                {t('Share')}
               </Text>
               <Text fontSize={['40px']} bold color="primary" lineHeight="110%">
-                Your
+                {t('Your')}
               </Text>
               <Text fontSize={['40px']} bold color="primary" lineHeight="110%">
-                Love
+                {t('Love')}
               </Text>
-              <Text fontSize={['14px']}>
-                Share your unique affiliate link with your friends, followers, and anyone who loves a good adventure
+              <Text fontSize={['14px']} mt="24px">
+                {t(
+                  'Share your unique affiliate link with your friends, followers, and anyone who loves a good adventure',
+                )}
               </Text>
             </Box>
           </Card>
@@ -76,15 +79,17 @@ const HowItWork = () => {
                 3
               </Text>
               <Text fontSize={['40px']} bold lineHeight="110%">
-                Start
+                {t('Start')}
               </Text>
               <Text fontSize={['40px']} bold lineHeight="110%">
-                Earning
+                {t('Earning')}
               </Text>
               <Text fontSize={['40px']} bold color="failure" lineHeight="110%">
-                CAKE
+                {t('CAKE')}
               </Text>
-              <Text fontSize={['14px']}>Earn up to 20% referral commissions in CAKE</Text>
+              <Text fontSize={['14px']} mt="24px">
+                {t('Earn up to 20% referral commissions in CAKE')}
+              </Text>
             </Box>
           </Card>
         </Flex>

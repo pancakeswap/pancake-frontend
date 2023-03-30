@@ -3,7 +3,7 @@ import { BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Bar } from 'recha
 import useTheme from 'hooks/useTheme'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { BarChartLoader } from 'components/ChartLoaders'
-import { useTranslation } from '@pancakeswap/localization'
+import { useChartCallbacks } from '../../../hooks/useChartCallbacks'
 
 export type LineChartProps = {
   data: any[]
@@ -34,10 +34,8 @@ const CustomBar = ({
 }
 
 const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
-  const {
-    currentLanguage: { locale },
-  } = useTranslation()
   const { theme } = useTheme()
+  const { onMouseLeave, onMouseMove } = useChartCallbacks(setHoverValue, setHoverDate)
   if (!data || data.length === 0) {
     return <BarChartLoader />
   }
@@ -51,10 +49,8 @@ const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           left: 0,
           bottom: 5,
         }}
-        onMouseLeave={() => {
-          setHoverDate(undefined)
-          setHoverValue(undefined)
-        }}
+        onMouseLeave={onMouseLeave}
+        onMouseMove={onMouseMove}
       >
         <XAxis
           dataKey="time"
@@ -75,21 +71,7 @@ const Chart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           orientation="right"
           tick={{ dx: 10, fill: theme.colors.textSubtle }}
         />
-        <Tooltip
-          cursor={{ fill: theme.colors.backgroundDisabled }}
-          contentStyle={{ display: 'none' }}
-          formatter={(tooltipValue, name, props) => {
-            setHoverValue(props.payload.value)
-            setHoverDate(
-              props.payload.time.toLocaleString(locale, {
-                year: 'numeric',
-                day: 'numeric',
-                month: 'short',
-              }),
-            )
-            return null
-          }}
-        />
+        <Tooltip cursor={{ fill: theme.colors.backgroundDisabled }} contentStyle={{ display: 'none' }} />
         <Bar
           dataKey="value"
           fill={theme.colors.primary}
