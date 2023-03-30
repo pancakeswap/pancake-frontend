@@ -119,6 +119,10 @@ export function AprCalculator({ baseCurrency, quoteCurrency, feeAmount, showTitl
     [closeModal, onBothRangeInput, onFieldAInput, onFieldBInput],
   )
 
+  if (!data || !data.length) {
+    return null
+  }
+
   return (
     <>
       <Flex flexDirection="column">
