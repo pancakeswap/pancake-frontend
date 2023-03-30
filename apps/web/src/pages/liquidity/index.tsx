@@ -25,7 +25,6 @@ import { CHAIN_IDS } from 'utils/wagmi'
 import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
 import Page from 'views/Page'
 import { useTranslation } from '@pancakeswap/localization'
-import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { Pair } from '@pancakeswap/sdk'
 import { RangeTag } from 'components/RangeTag'
 import useV2PairsByAccount from 'hooks/useV2Pairs'
@@ -34,7 +33,6 @@ import useStableConfig, {
   StableConfigContext,
   useLPTokensWithBalanceByAccount,
 } from 'views/Swap/StableSwap/hooks/useStableConfig'
-import { Bound } from 'config/constants/types'
 import { useMemo, useState } from 'react'
 import { V2PairCard } from 'views/AddLiquidityV3/components/V2PairCard'
 import { StablePairCard } from 'views/AddLiquidityV3/components/StablePairCard'
@@ -78,10 +76,7 @@ function useHideClosePosition() {
 
 export default function PoolListPage() {
   const { account } = useWeb3React()
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
 
   const [selectedTypeIndex, setSelectedTypeIndex] = useState(FILTER.ALL)
   const [hideClosedPositions, setHideClosedPositions] = useHideClosePosition()

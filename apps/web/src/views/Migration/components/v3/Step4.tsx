@@ -7,11 +7,9 @@ import { LightGreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
 import { DoubleCurrencyLogo } from 'components/Logo'
-import { Bound } from 'config/constants/types'
 import { useToken } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
-import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -25,10 +23,7 @@ import { removedPairsAtom } from './Step2'
 
 export function Step4() {
   const { address: account } = useAccount()
-  const {
-    t,
-    currentLanguage: { locale },
-  } = useTranslation()
+  const { t } = useTranslation()
 
   const { chainId } = useActiveChainId()
 
