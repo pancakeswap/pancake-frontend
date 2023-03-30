@@ -246,6 +246,12 @@ export function UniversalAddLiquidity({
     [currencyIdA, currencyIdB, router, setSelectorType],
   )
 
+  useEffect(() => {
+    if (preferredFeeAmount && !feeAmountFromUrl && selectorType === SELECTOR_TYPE.V3) {
+      handleFeePoolSelect({ type: selectorType, feeAmount: preferredFeeAmount })
+    }
+  }, [preferredFeeAmount, feeAmountFromUrl, handleFeePoolSelect, selectorType])
+
   return (
     <>
       <CardBody>
