@@ -1,4 +1,9 @@
 const host = () => {
+  console.log({
+    VERCEL_ENV: process.env.VERCEL_ENV,
+    NODE_ENV: process.env.NODE_ENV,
+    NEXT_PUBLIC_VERCEL_URL: process.env.NEXT_PUBLIC_VERCEL_URL,
+  })
   if (process.env.VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production') {
     return '.pancakeswap.finance'
   }
