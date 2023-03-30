@@ -83,8 +83,12 @@ const MenuConfig = [
     href: '/aptos',
     items: [
       {
-        label: 'CAKE Bridging',
+        label: 'Aptos Bridging',
         href: '/aptos',
+      },
+      {
+        label: 'CAKE Bridging',
+        href: '/aptos?currency=CAKE',
       },
       {
         label: 'LayerZero',

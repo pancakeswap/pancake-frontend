@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import styled, { useTheme } from 'styled-components'
 import { Flex, Box } from '@pancakeswap/uikit'
+import { useRouter } from 'next/router'
 import { LAYER_ZERO_JS } from 'components/layerZero/config'
 import { LayerZeroWidget } from 'components/layerZero/LayerZeroWidget'
 import AptosBridgeMessage from 'components/layerZero/AptosBridgeMessage'
@@ -20,16 +21,19 @@ const Page = styled(Box)`
 
 const AptosBridge = () => {
   const theme = useTheme()
+  const router = useRouter()
   const [show, setShow] = useState(false)
 
   useEffect(() => {
+    const bridgeToken = router.query.currency === 'CAKE' ? ['CAKE'] : ['CAKE', 'ETH', 'WETH', 'USDC', 'USDT']
+
     customElements.whenDefined('aptos-bridge').then(() => {
       window.aptosBridge.bridge.setDstNativeAmount('0.05')
-      window.aptosBridge.config.setTokens(['CAKE', 'ETH', 'WETH', 'USDC', 'USDT'])
+      window.aptosBridge.config.setTokens(bridgeToken)
       window.aptosBridge.config.setWallets(['MetaMask', 'CoinBase', 'Petra', 'Martian', 'Pontem', 'Fewcha'])
       setShow(true)
     })
-  }, [])
+  }, [router.query.currency])
 
   return (
     <Page>
