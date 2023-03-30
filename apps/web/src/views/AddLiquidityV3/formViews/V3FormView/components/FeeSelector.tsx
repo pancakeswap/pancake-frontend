@@ -171,6 +171,7 @@ export default function FeeSelector({
               if (supportedChains.includes(chainId)) {
                 return (
                   <FeeOption
+                    isLoading={isLoading}
                     largestUsageFeeTier={largestUsageFeeTier}
                     feeAmount={_feeAmount}
                     active={feeAmount === _feeAmount}

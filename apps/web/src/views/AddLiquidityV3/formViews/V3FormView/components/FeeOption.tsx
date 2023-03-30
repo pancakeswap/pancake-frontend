@@ -1,4 +1,4 @@
-import { AutoColumn, promotedGradient, Text } from '@pancakeswap/uikit'
+import { AutoColumn, promotedGradient, Text, Skeleton } from '@pancakeswap/uikit'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { LightTertiaryCard } from 'components/Card'
 import { PoolState } from 'hooks/v3/types'
@@ -31,6 +31,7 @@ interface FeeOptionProps {
   distributions: ReturnType<typeof useFeeTierDistribution>['distributions']
   poolState: PoolState
   onClick: () => void
+  isLoading?: boolean
 }
 
 export function FeeOption({
@@ -40,6 +41,7 @@ export function FeeOption({
   distributions,
   onClick,
   largestUsageFeeTier,
+  isLoading,
 }: FeeOptionProps) {
   return (
     <FeeOptionContainer active={active} onClick={onClick}>
@@ -48,10 +50,11 @@ export function FeeOption({
           <Text textAlign="center">
             {FEE_AMOUNT_DETAIL[feeAmount].label}% {feeAmount === largestUsageFeeTier && '🔥'}
           </Text>
-
-          {distributions && (
+          {isLoading ? (
+            <Skeleton width="100%" height={16} />
+          ) : distributions ? (
             <FeeTierPercentageBadge distributions={distributions} feeAmount={feeAmount} poolState={poolState} />
-          )}
+          ) : null}
         </AutoColumn>
       </LightTertiaryCard>
     </FeeOptionContainer>
