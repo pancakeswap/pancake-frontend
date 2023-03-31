@@ -223,7 +223,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
                           {list.percentage}
                         </Text>
                       </Box>
-                      {list.id === 'perpetual' && !affiliate.ablePerps && (
+                      {list.id === 'perpetual' && affiliate.ablePerps && (
                         <Flex ref={targetRef} ml="4px" alignSelf="flex-start">
                           <InfoIcon width={16} height={16} />
                         </Flex>

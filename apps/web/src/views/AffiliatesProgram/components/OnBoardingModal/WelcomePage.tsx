@@ -18,12 +18,14 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
   const router = useRouter()
   const { address } = useAccount()
   const { isUserExist } = useUserExist()
-  const { user, discount } = router.query
+  const { user, discount, noperps } = router.query
   const [isChecked, setIsChecked] = useState(false)
 
   const handleCheckbox = () => setIsChecked(!isChecked)
 
   const isDiscountZero = useMemo(() => new BigNumber((discount as string) ?? '0').eq(0), [discount])
+
+  const noPerps = useMemo(() => (noperps as string) === 'true', [noperps])
 
   const isReady = useMemo(() => !isLoading && isChecked, [isLoading, isChecked])
 
@@ -42,19 +44,34 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
         <Text color="textSubtle" fontSize="14px" mb="24px">
           {t('has referred you to start trading on PancakeSwap')}
         </Text>
-        <Text color="textSubtle" mb="24px">
-          {t('Start trading today and get a')}
-          {!isDiscountZero && (
-            <>
-              <Text color="secondary" bold as="span" m="0 4px">{`${discount}%`}</Text>
-              {t('discount on most Swap and StableSwap trading fees, as well as a')}
-            </>
-          )}
-          <Text color="secondary" bold as="span" m="0 4px">
-            20%
+        {isDiscountZero && noPerps ? null : (
+          <Text color="textSubtle" mb="24px">
+            {t('Start trading today and get a')}
+            {!isDiscountZero && (
+              <>
+                <Text color="secondary" bold as="span" m="0 4px">{`${discount}%`}</Text>
+                {t('discount on most Swap and StableSwap trading fees,')}
+              </>
+            )}
+            {!isDiscountZero ||
+              (!noPerps && (
+                <Text color="textSubtle" as="span" m="0 4px">
+                  {t('as well as a')}
+                </Text>
+              ))}
+            {!noPerps && (
+              <>
+                <Text color="secondary" bold as="span" m="0 4px">
+                  20%
+                </Text>
+                <Text color="textSubtle" as="span" m="0 4px">
+                  {t('discount on most Perpetual trading fees')}
+                </Text>
+              </>
+            )}
+            {t('for a limited period of time*')}
           </Text>
-          {t('discount on most Perpetual trading fees for a limited period of time*')}
-        </Text>
+        )}
         <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
           <Flex alignItems="center">
             <div style={{ flex: 'none' }}>
