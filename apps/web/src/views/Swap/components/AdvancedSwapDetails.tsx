@@ -93,7 +93,7 @@ export function TradeSummary({
         <RowBetween style={{ padding: '4px 0 0 0' }}>
           <RowFixed>
             <Text fontSize="14px" color="textSubtle">
-              {t('Liquidity Provider Fee')}
+              {t('Trading Fee')}
             </Text>
             <QuestionHelper
               text={

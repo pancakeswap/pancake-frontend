@@ -33,7 +33,9 @@ export function RoutesBreakdown({ routes = [] }: Props) {
             {t('Route')}
           </Text>
           <QuestionHelper
-            text={t('Routing through these tokens resulted in the best price for your trade.')}
+            text={t(
+              'Route is automatically calculated based on your routing preference to achieve the best price for your trade.',
+            )}
             ml="4px"
             placement="top-start"
           />
