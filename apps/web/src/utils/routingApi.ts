@@ -8,8 +8,10 @@ import {
   SmartRouterTrade,
   Route,
 } from '@pancakeswap/smart-router/evm'
-import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, JSBI, TradeType } from '@pancakeswap/sdk'
+import { ChainId, CurrencyAmount, Currency, ERC20Token, Native, JSBI, TradeType, Percent } from '@pancakeswap/sdk'
 import { AddressZero } from '@ethersproject/constants'
+
+const ONE_HUNDRED = JSBI.BigInt(100)
 
 interface SerializedCurrency {
   address: string
@@ -27,16 +29,20 @@ interface SerializedV2Pool extends Omit<V2Pool, 'reserve0' | 'reserve1'> {
   reserve1: SerializedCurrencyAmount
 }
 
-interface SerializedV3Pool extends Omit<V3Pool, 'token0' | 'token1' | 'liquidity' | 'sqrtRatioX96'> {
+interface SerializedV3Pool
+  extends Omit<V3Pool, 'token0' | 'token1' | 'liquidity' | 'sqrtRatioX96' | 'token0ProtocolFee' | 'token1ProtocolFee'> {
   token0: SerializedCurrency
   token1: SerializedCurrency
   liquidity: string
   sqrtRatioX96: string
+  token0ProtocolFee: string
+  token1ProtocolFee: string
 }
 
-interface SerializedStablePool extends Omit<StablePool, 'balances' | 'amplifier'> {
+interface SerializedStablePool extends Omit<StablePool, 'balances' | 'amplifier' | 'fee'> {
   balances: SerializedCurrencyAmount[]
   amplifier: string
+  fee: string
 }
 
 type SerializedPool = SerializedV2Pool | SerializedV3Pool | SerializedStablePool
@@ -90,6 +96,8 @@ export function serializePool(pool: Pool): SerializedPool {
       token1: serializeCurrency(pool.token1),
       liquidity: pool.liquidity.toString(),
       sqrtRatioX96: pool.sqrtRatioX96.toString(),
+      token0ProtocolFee: pool.token0ProtocolFee.toFixed(),
+      token1ProtocolFee: pool.token1ProtocolFee.toFixed(),
     }
   }
   if (SmartRouter.isStablePool(pool)) {
@@ -97,6 +105,7 @@ export function serializePool(pool: Pool): SerializedPool {
       ...pool,
       balances: pool.balances.map(serializeCurrencyAmount),
       amplifier: pool.amplifier.toString(),
+      fee: pool.fee.toFixed(),
     }
   }
   throw new Error('Cannot serialize unsupoorted pool')
@@ -150,6 +159,8 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
       token1: parseCurrency(chainId, pool.token1),
       liquidity: JSBI.BigInt(pool.liquidity),
       sqrtRatioX96: JSBI.BigInt(pool.sqrtRatioX96),
+      token0ProtocolFee: new Percent(pool.token0ProtocolFee, ONE_HUNDRED),
+      token1ProtocolFee: new Percent(pool.token1ProtocolFee, ONE_HUNDRED),
     }
   }
   if (pool.type === PoolType.STABLE) {
@@ -157,6 +168,7 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
       ...pool,
       balances: pool.balances.map((b) => parseCurrencyAmount(chainId, b)),
       amplifier: JSBI.BigInt(pool.amplifier),
+      fee: new Percent(pool.fee, ONE_HUNDRED),
     }
   }
 
