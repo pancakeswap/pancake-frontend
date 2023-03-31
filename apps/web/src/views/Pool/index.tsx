@@ -121,7 +121,7 @@ export default function Pool() {
                 {t("Don't see a pair you joined?")}
               </Text>
               <Link href="/find" passHref>
-                <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
+                <Button id="import-pool-link" variant="secondary" scale="sm">
                   {t('Find other LP tokens')}
                 </Button>
               </Link>

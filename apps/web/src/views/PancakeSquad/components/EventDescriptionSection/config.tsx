@@ -26,7 +26,7 @@ const eventDescriptionConfigBuilder = ({ t }: EventDescriptionType) => ({
         <>
           {t('and the remaining NFTs can be minted by anyone with a ')}
           <Link href="/profile" passHref>
-            <Text as="a" display="inline-block" color="primary" bold>
+            <Text display="inline-block" color="primary" bold>
               {t('Pancake Profile!')}
             </Text>
           </Link>
