@@ -31,7 +31,7 @@ const sentryWebpackPluginOptions =
       dryRun: !process.env.SENTRY_AUTH_TOKEN,
     }
 
-const blocksPage = ['/trading-reward']
+const blocksPage = ['/trading-reward', '/api/routing']
 
 /** @type {import('next').NextConfig} */
 const config = {

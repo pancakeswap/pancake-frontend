@@ -69,7 +69,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const isQuoterEnabled = useMemo(() => !isWrapping && (type === 'quoter' || type === 'all'), [type, isWrapping])
 
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({ ...params, enabled: isOffCHainEnabled })
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoterApi({ ...params, enabled: isQuoterEnabled })
+  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({ ...params, enabled: isQuoterEnabled })
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
     const { trade: tradeFromQuoter } = bestTradeFromQuoter
