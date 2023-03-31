@@ -680,7 +680,7 @@ PoolPage.chains = CHAIN_IDS
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
-    paths: [{ params: { poolId: '' } }],
+    paths: [],
     fallback: true,
   }
 }
