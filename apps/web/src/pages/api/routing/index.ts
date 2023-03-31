@@ -58,7 +58,7 @@ const zStablePool = z
     type: zPoolType,
     balances: z.array(zCurrencyAmount),
     amplifier: zBigNumber,
-    fee: z.number(),
+    fee: z.string(),
   })
   .required()
 const zPools = z.array(z.union([zV2Pool, zV3Pool, zStablePool]))
@@ -119,7 +119,7 @@ const edgeFunction = async (req: NextRequest) => {
 
     return NextResponse.json(trade && serializeTrade(trade))
   } catch (e) {
-    return new Response(null, { status: 500, statusText: 'Cannot trade failed' })
+    return new Response(null, { status: 500, statusText: 'No valid trade' })
   }
 }
 
