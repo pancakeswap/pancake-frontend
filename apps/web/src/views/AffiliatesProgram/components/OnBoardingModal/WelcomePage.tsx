@@ -68,7 +68,9 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
                 </Text>
               </>
             )}
-            {t('for a limited period of time*')}
+            <Text color="textSubtle" as="span" m="0 4px">
+              {t('for a limited period of time*')}
+            </Text>
           </Text>
         )}
         <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
