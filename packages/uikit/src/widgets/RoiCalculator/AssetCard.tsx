@@ -200,11 +200,11 @@ export function AssetRow({
         </Td>
       )}
       <Td>
-        <Row>{amount && <Text>{formatAmount(+amount)}</Text>}</Row>
+        <Row>{amount && <Text ellipsis>{formatAmount(+amount)}</Text>}</Row>
       </Td>
       <Td>
         <Row>
-          <Text>${formatAmount(+value)}</Text>
+          <Text ellipsis>${formatAmount(+value)}</Text>
         </Row>
       </Td>
     </tr>
