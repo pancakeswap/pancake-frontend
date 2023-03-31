@@ -346,7 +346,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
               const totalEarned = Object.values(farm.pendingCakeByTokenIds)
                 .reduce((a, b) => a.add(b), EthersBigNumber.from('0'))
                 .toString()
-              return account && farm.stakedPositions.length > 0 ? totalEarned : 0
+              return account ? totalEarned : 0
             },
             'desc',
           )
