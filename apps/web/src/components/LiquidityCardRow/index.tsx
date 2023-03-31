@@ -23,7 +23,7 @@ interface LiquidityCardRowProps {
   tokenId?: BigNumber
   tags: React.ReactElement
   subtitle: string
-  onSwitch: () => void
+  onSwitch?: () => void
 }
 
 export const LiquidityCardRow = ({
@@ -59,14 +59,16 @@ export const LiquidityCardRow = ({
           <Text fontSize="14px" color="textSubtle">
             {subtitle}
           </Text>
-          <SyncAltIcon
-            onClick={(e) => {
-              e.preventDefault()
-              onSwitch()
-            }}
-            ml="4px"
-            color="primary"
-          />
+          {onSwitch ? (
+            <SyncAltIcon
+              onClick={(e) => {
+                e.preventDefault()
+                onSwitch()
+              }}
+              ml="4px"
+              color="primary"
+            />
+          ) : null}
         </Flex>
       </Flex>
     </Flex>
