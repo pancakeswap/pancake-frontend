@@ -51,6 +51,7 @@ const walletsConfig = ({
   chainId: number
   connect: (connectorID: ConnectorNames) => void
 }): WalletConfigV2<ConnectorNames>[] => {
+  const qrCode = createQrCode(chainId, connect)
   return [
     {
       id: 'metamask',
@@ -62,6 +63,7 @@ const walletsConfig = ({
       },
       connectorId: ConnectorNames.MetaMask,
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
+      qrCode,
       downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
     },
     {
@@ -101,13 +103,14 @@ const walletsConfig = ({
         desktop: 'https://trustwallet.com/browser-extension',
         mobile: 'https://trustwallet.com/',
       },
+      qrCode,
     },
-    {
-      id: 'walletconnect',
-      title: 'WalletConnect',
-      icon: '/images/wallets/walletconnect.png',
-      connectorId: ConnectorNames.WalletConnect,
-    },
+    // {
+    //   id: 'walletconnect',
+    //   title: 'WalletConnect',
+    //   icon: '/images/wallets/walletconnect.png',
+    //   connectorId: ConnectorNames.WalletConnect,
+    // },
     {
       id: 'opera',
       title: 'Opera Wallet',
@@ -136,6 +139,7 @@ const walletsConfig = ({
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet)
       },
+      qrCode,
     },
     {
       id: 'tokenpocket',
@@ -145,6 +149,7 @@ const walletsConfig = ({
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket)
       },
+      qrCode,
     },
     {
       id: 'safepal',
@@ -156,6 +161,7 @@ const walletsConfig = ({
       },
       downloadLink:
         'https://chrome.google.com/webstore/detail/safepal-extension-wallet/lgmpcpglpngdoalbgeoldeajfclnhafa',
+      qrCode,
     },
     {
       id: 'coin98',
@@ -168,6 +174,7 @@ const walletsConfig = ({
           (Boolean((window.ethereum as ExtendEthereum)?.isCoin98) || Boolean(window.coin98))
         )
       },
+      qrCode,
     },
     {
       id: 'blocto',
