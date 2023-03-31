@@ -71,10 +71,6 @@ export async function fetchedTokenDatas(
       }
     | undefined
 }> {
-  // get blocks from historic timestamps
-  // const [t24, t48, tWeek] = useDeltaTimestamps()
-
-  // const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48, tWeek])
   const [block24, block48, blockWeek] = blocks ?? []
   try {
     const { data: ethPrices } = await fetchEthPrices(blocks, dataClient)
@@ -86,7 +82,6 @@ export async function fetchedTokenDatas(
     const data48 = await dataClient.request<TokenDataResponse>(TOKENS_BULK(block48?.number, tokenAddresses))
 
     const dataWeek = await dataClient.request<TokenDataResponse>(TOKENS_BULK(blockWeek?.number, tokenAddresses))
-
     if (!ethPrices) {
       return {
         error: false,
