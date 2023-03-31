@@ -185,7 +185,7 @@ export default function V3FormView({
 
   useEffect(() => {
     setShowCapitalEfficiencyWarning(false)
-  }, [baseCurrency, quoteCurrency, feeAmount, onLeftRangeInput, onRightRangeInput])
+  }, [baseCurrency, quoteCurrency, feeAmount])
 
   useEffect(() => {
     if (feeAmount) {
@@ -561,8 +561,10 @@ export default function V3FormView({
             {showCapitalEfficiencyWarning ? (
               <Message variant="warning">
                 <Box>
-                  <Text fontSize="16px">Efficiency Comparison</Text>
-                  <Text color="textSubtle">Full range positions may earn less fees than concentrated positions.</Text>
+                  <Text fontSize="16px">{t('Efficiency Comparison')}</Text>
+                  <Text color="textSubtle">
+                    {t('Full range positions may earn less fees than concentrated positions.')}
+                  </Text>
                   <Button
                     mt="16px"
                     onClick={() => {
@@ -572,7 +574,7 @@ export default function V3FormView({
                     scale="md"
                     variant="danger"
                   >
-                    I understand
+                    {t('I understand')}
                   </Button>
                 </Box>
               </Message>
@@ -584,7 +586,7 @@ export default function V3FormView({
                 variant="secondary"
                 scale="sm"
               >
-                Full Range
+                {t('Full Range')}
               </Button>
             )}
 
@@ -592,14 +594,18 @@ export default function V3FormView({
               <Message variant="warning">
                 <RowBetween>
                   <Text ml="12px" fontSize="12px">
-                    Your position will not earn fees or be used in trades until the market price moves into your range.
+                    {t(
+                      'Your position will not earn fees or be used in trades until the market price moves into your range.',
+                    )}
                   </Text>
                 </RowBetween>
               </Message>
             ) : null}
             {invalidRange ? (
               <Message variant="warning">
-                <MessageText>Invalid range selected. The min price must be lower than the max price.</MessageText>
+                <MessageText>
+                  {t('Invalid range selected. The min price must be lower than the max price.')}
+                </MessageText>
               </Message>
             ) : null}
           </DynamicSection>
