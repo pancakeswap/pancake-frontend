@@ -1,4 +1,5 @@
-import { NextApiHandler } from 'next'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 import { z } from 'zod'
 import { ChainId, TradeType, JSBI } from '@pancakeswap/sdk'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
@@ -48,6 +49,8 @@ const zV3Pool = z
     sqrtRatioX96: zBigNumber,
     tick: z.number(),
     address: zAddress,
+    token0ProtocolFee: z.string(),
+    token1ProtocolFee: z.string(),
   })
   .required()
 const zStablePool = z
@@ -83,11 +86,14 @@ const zParams = z
 
 const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: provider })
 
-const handler: NextApiHandler = async (req, res) => {
-  const parsed = zParams.safeParse(req.body)
+const edgeFunction = async (req: NextRequest) => {
+  if (req.method !== 'POST') return new Response(null, { status: 404, statusText: 'Not Found' })
+
+  const body = await req.json()
+  const parsed = zParams.safeParse(body)
 
   if (parsed.success === false) {
-    return res.status(400).json(parsed.error)
+    return new Response(null, { status: 400, statusText: 'Invalid params' })
   }
 
   const { data } = parsed
@@ -111,10 +117,10 @@ const handler: NextApiHandler = async (req, res) => {
       quoterOptimization: false,
     })
 
-    return res.status(200).json(trade && serializeTrade(trade))
+    return NextResponse.json(trade && serializeTrade(trade))
   } catch (e) {
-    return res.status(500)
+    return new Response(null, { status: 500, statusText: 'Cannot trade failed' })
   }
 }
 
-export default handler
+export default edgeFunction

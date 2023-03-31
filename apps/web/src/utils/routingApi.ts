@@ -96,8 +96,8 @@ export function serializePool(pool: Pool): SerializedPool {
       token1: serializeCurrency(pool.token1),
       liquidity: pool.liquidity.toString(),
       sqrtRatioX96: pool.sqrtRatioX96.toString(),
-      token0ProtocolFee: pool.token0ProtocolFee.toFixed(),
-      token1ProtocolFee: pool.token1ProtocolFee.toFixed(),
+      token0ProtocolFee: pool.token0ProtocolFee.toFixed(0),
+      token1ProtocolFee: pool.token1ProtocolFee.toFixed(0),
     }
   }
   if (SmartRouter.isStablePool(pool)) {
@@ -105,7 +105,7 @@ export function serializePool(pool: Pool): SerializedPool {
       ...pool,
       balances: pool.balances.map(serializeCurrencyAmount),
       amplifier: pool.amplifier.toString(),
-      fee: pool.fee.toFixed(),
+      fee: pool.fee.toSignificant(6),
     }
   }
   throw new Error('Cannot serialize unsupoorted pool')
@@ -168,7 +168,7 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
       ...pool,
       balances: pool.balances.map((b) => parseCurrencyAmount(chainId, b)),
       amplifier: JSBI.BigInt(pool.amplifier),
-      fee: new Percent(pool.fee, ONE_HUNDRED),
+      fee: new Percent(parseFloat(pool.fee) * 1000000, JSBI.multiply(ONE_HUNDRED, JSBI.BigInt(100000))),
     }
   }
 

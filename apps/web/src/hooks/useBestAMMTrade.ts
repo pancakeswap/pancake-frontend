@@ -31,6 +31,7 @@ interface FactoryOptions {
   key: string
   revalidateOnUpdate?: boolean
   useCommonPools: (currencyA?: Currency, currencyB?: Currency, params?: CommonPoolsParams) => PoolsWithState
+  getBestTrade?: typeof SmartRouter.getBestTrade
   quoteProvider: QuoteProvider
 
   // Decrease the size of batch getting quotes for better performance
@@ -97,6 +98,7 @@ function bestTradeHookFactory({
   useCommonPools,
   quoteProvider,
   quoterOptimization = true,
+  getBestTrade = SmartRouter.getBestTrade,
 }: FactoryOptions) {
   return function useBestTrade({
     amount,
@@ -163,45 +165,18 @@ function bestTradeHookFactory({
         } -> ${currency.symbol}, tradeType ${tradeType}`
         SmartRouter.metric(label)
         SmartRouter.metric(label, candidatePools)
-        let res: SmartRouterTrade<TradeType> | null = null
-        if (key === 'useBestAMMTradeFromQuoter') {
-          const serverRes = await fetch('/api/routing', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              chainId: currency.chainId,
-              currency: serializeCurrency(currency),
-              tradeType,
-              amount: {
-                currency: serializeCurrency(amount.currency),
-                value: amount.quotient.toString(),
-              },
-              gasPriceWei: gasPrice?.toString(),
-              maxHops,
-              maxSplits,
-              blockNumber: blockNumber.toString(),
-              poolTypes,
-              candidatePools: candidatePools.map(serializePool),
-            }),
-          })
-          const serializedRes = await serverRes.json()
-          res = parseTrade(currency.chainId, serializedRes)
-        } else {
-          res = await SmartRouter.getBestTrade(deferAmount, currency, tradeType, {
-            gasPriceWei: gasPrice
-              ? JSBI.BigInt(gasPrice)
-              : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
-            maxHops,
-            poolProvider,
-            maxSplits,
-            quoteProvider,
-            blockNumber,
-            allowedPoolTypes: poolTypes,
-            quoterOptimization,
-          })
-        }
+        const res = await getBestTrade(deferAmount, currency, tradeType, {
+          gasPriceWei: gasPrice
+            ? JSBI.BigInt(gasPrice)
+            : async () => JSBI.BigInt(await provider({ chainId: amount.currency.chainId }).getGasPrice()),
+          maxHops,
+          poolProvider,
+          maxSplits,
+          quoteProvider,
+          blockNumber,
+          allowedPoolTypes: poolTypes,
+          quoterOptimization,
+        })
         if (res) {
           SmartRouter.metric(
             label,
@@ -251,6 +226,41 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   revalidateOnUpdate: false,
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+  getBestTrade: async (
+    amount,
+    currency,
+    tradeType,
+    { maxHops, maxSplits, gasPriceWei, blockNumber, allowedPoolTypes, poolProvider },
+  ) => {
+    const blockNum = typeof blockNumber === 'number' ? blockNumber : await blockNumber()
+    const candidatePools = await poolProvider.getCandidatePools(amount.currency, currency, {
+      blockNumber: blockNum,
+      protocols: allowedPoolTypes,
+    })
+    const serverRes = await fetch('/api/routing', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chainId: currency.chainId,
+        currency: serializeCurrency(currency),
+        tradeType,
+        amount: {
+          currency: serializeCurrency(amount.currency),
+          value: amount.quotient.toString(),
+        },
+        gasPriceWei: gasPriceWei?.toString(),
+        maxHops,
+        maxSplits,
+        blockNumber: blockNum.toString(),
+        poolTypes: allowedPoolTypes,
+        candidatePools: candidatePools.map(serializePool),
+      }),
+    })
+    const serializedRes = await serverRes.json()
+    return parseTrade(currency.chainId, serializedRes)
+  },
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
