@@ -3,6 +3,7 @@ import { Currency, TradeType, CurrencyAmount } from '@pancakeswap/sdk'
 import { InjectedModalProps, ConfirmationPendingContent } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { SmartRouterTrade } from '@pancakeswap/smart-router/evm'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { TransactionSubmittedContent } from 'components/TransactionConfirmationModal'
 import { Field } from 'state/swap/actions'
@@ -76,9 +77,9 @@ export const ConfirmSwapModal = memo<InjectedModalProps & ConfirmSwapModalProps>
   // text to show while loading
   const pendingText = useMemo(() => {
     return t('Swapping %amountA% %symbolA% for %amountB% %symbolB%', {
-      amountA: trade?.inputAmount?.toSignificant(6) ?? '',
+      amountA: formatAmount(trade?.inputAmount, 6) ?? '',
       symbolA: trade?.inputAmount?.currency?.symbol ?? '',
-      amountB: trade?.outputAmount?.toSignificant(6) ?? '',
+      amountB: formatAmount(trade?.outputAmount, 6) ?? '',
       symbolB: trade?.outputAmount?.currency?.symbol ?? '',
     })
   }, [t, trade])

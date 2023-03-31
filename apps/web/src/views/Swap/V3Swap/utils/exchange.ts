@@ -11,6 +11,7 @@ import {
 } from '@pancakeswap/sdk'
 import { SmartRouterTrade, SmartRouter } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
+import { formatPrice } from '@pancakeswap/utils/formatFractions'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
@@ -103,8 +104,8 @@ export function formatExecutionPrice(
     return ''
   }
   return inverted
-    ? `${executionPrice.invert().toSignificant(6)} ${inputAmount.currency.symbol} / ${outputAmount.currency.symbol}`
-    : `${executionPrice.toSignificant(6)} ${outputAmount.currency.symbol} / ${inputAmount.currency.symbol}`
+    ? `${formatPrice(executionPrice.invert(), 6)} ${inputAmount.currency.symbol} / ${outputAmount.currency.symbol}`
+    : `${formatPrice(executionPrice, 6)} ${outputAmount.currency.symbol} / ${inputAmount.currency.symbol}`
 }
 
 export function v3FeeToPercent(fee: FeeAmount): Percent {
