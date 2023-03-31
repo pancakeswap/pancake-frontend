@@ -19,14 +19,9 @@ export const Container = styled(Flex)`
 const ScrollableFlexContainer = styled(Flex)`
   align-items: center;
   flex: 1;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  overflow-x: revert;
   -webkit-overflow-scrolling: touch;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-wrap: wrap;
-    overflow-x: revert;
-  }
 `
 
 interface FiltersProps {
