@@ -58,6 +58,7 @@ import { Bound } from 'config/constants/types'
 import { PoolState } from 'hooks/v3/types'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
+import { GetStaticProps, GetStaticPaths } from 'next'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -676,3 +677,29 @@ export default function PoolPage() {
 }
 
 PoolPage.chains = CHAIN_IDS
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [{ params: { poolId: '' } }],
+    fallback: true,
+  }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { poolId } = params
+
+  const isNumberReg = /^\d+$/
+
+  if (!(poolId as string)?.match(isNumberReg)) {
+    return {
+      redirect: {
+        statusCode: 303,
+        destination: `/add`,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
+}
