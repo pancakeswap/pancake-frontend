@@ -1,16 +1,20 @@
 import { ChainId } from '@pancakeswap/sdk'
 import dayjs from 'dayjs'
+import { GraphQLClient } from 'graphql-request'
 import { useActiveChainId } from 'hooks/useActiveChainId'
-import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
-import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { multiChainName } from 'state/info/constant'
+import { Block } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
+import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3Clients } from 'utils/graphql'
-import { fetchProtocolData } from '../data/protocol/overview'
+import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { fetchChartData } from '../data/protocol/chart'
+import { fetchProtocolData } from '../data/protocol/overview'
 import { fetchTopTransactions } from '../data/protocol/transactions'
-import { fetchTokenPriceData, fetchPairPriceChartTokenData } from '../data/token/priceData'
-import { ChartDayData, PriceChartEntry, Transaction, ProtocolData } from '../types'
+import { fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
+import { fetchedTokenDatas } from '../data/token/tokenData'
+import { fetchTopTokenAddresses } from '../data/token/topTokens'
+import { ChartDayData, PriceChartEntry, ProtocolData, TokenData, Transaction } from '../types'
 
 const ONE_HOUR_SECONDS = 3600
 const SIX_HOUR_SECONDS = 21600
@@ -114,4 +118,35 @@ export const usePairPriceChartTokenData = (
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ?? []
+}
+
+export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[]) {
+  try {
+    const topTokenDatas = await fetchTopTokenAddresses(dataClient)
+    const data = await fetchedTokenDatas(dataClient, topTokenDatas.addresses, blocks)
+    return data
+  } catch (e) {
+    console.error(e)
+    return {
+      data: {},
+      error: true,
+    }
+  }
+}
+
+export const useTopTokensData = ():
+  | {
+      [address: string]: TokenData
+    }
+  | undefined => {
+  const { chainId } = useActiveChainId()
+  const [t24, t48, t7d] = getDeltaTimestamps()
+  const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48, t7d])
+
+  const { data } = useSWRImmutable(
+    chainId && blocks && blocks.length > 0 && [`v3/info/token/TopTokensData/${chainId}`, chainId],
+    () => fetchTopTokens(v3Clients[chainId], blocks),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data
 }
