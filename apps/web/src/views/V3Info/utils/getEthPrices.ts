@@ -47,9 +47,9 @@ export async function fetchEthPrices(
   try {
     const [block24, block48, blockWeek] = blocks ?? []
     const data = await dataClient.request<PricesResponse>(ETH_PRICES, {
-      block24: block24 ?? 1,
-      block48: block48 ?? 1,
-      blockWeek: blockWeek ?? 1,
+      block24: block24?.number ?? 1,
+      block48: block48?.number ?? 1,
+      blockWeek: blockWeek?.number ?? 1,
     })
 
     if (data) {
