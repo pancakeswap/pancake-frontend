@@ -1,5 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 
+export const v3InfoPath = `v3Info`
+
 export const POOL_HIDE: { [key: string]: string[] } = {
   // TODO: update to our own
   [ChainId.ETHEREUM]: [
