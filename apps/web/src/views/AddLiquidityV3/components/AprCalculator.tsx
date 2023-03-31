@@ -24,6 +24,7 @@ import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import { batch } from 'react-redux'
+import { PositionDetails } from '@pancakeswap/farms'
 
 import { useV3FormState } from '../formViews/V3FormView/form/reducer'
 import { useV3MintActionHandlers } from '../formViews/V3FormView/form/hooks/useV3MintActionHandlers'
@@ -35,6 +36,7 @@ interface Props {
   showTitle?: boolean
   showQuestion?: boolean
   allowApply?: boolean
+  positionDetails?: PositionDetails
 }
 
 const AprButtonContainer = styled(Flex)`
@@ -48,13 +50,15 @@ export function AprCalculator({
   showTitle = true,
   showQuestion = false,
   allowApply = true,
+  positionDetails,
 }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
   const [priceSpan, setPriceSpan] = useState(0)
 
   const formState = useV3FormState()
-  const { position: existingPosition } = useDerivedPositionInfo(undefined)
+
+  const { position: existingPosition } = useDerivedPositionInfo(positionDetails)
   const prices = usePairTokensPrice(baseCurrency, quoteCurrency, priceSpan, baseCurrency?.chainId)
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
@@ -94,6 +98,7 @@ export function AprCalculator({
     () => (pool?.feeProtocol && parseProtocolFees(pool.feeProtocol)) || [],
     [pool?.feeProtocol],
   )
+
   const { apr } = useRoi({
     tickLower,
     tickUpper,

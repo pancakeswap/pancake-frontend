@@ -513,6 +513,7 @@ export default function PoolPage() {
                         baseCurrency={currencyBase}
                         quoteCurrency={currencyQuote}
                         feeAmount={feeAmount}
+                        positionDetails={positionDetails}
                       />
                     </Flex>
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
