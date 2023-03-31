@@ -85,7 +85,6 @@ export function useV3TokenIdsByAccount(
     functionName: 'balanceOf',
     enabled: !!account,
     watch: true,
-    keepPreviousData: true,
   })
 
   // we don't expect any account balance to ever exceed the bounds of max safe int
@@ -110,7 +109,7 @@ export function useV3TokenIdsByAccount(
   const {
     isLoading: someTokenIdsLoading,
     data: tokenIds = [],
-    refetch: refretchTokenIds,
+    refetch: refetchTokenIds,
   } = useContractReads({
     contracts: tokenIdsArgs,
     watch: true,
@@ -124,9 +123,9 @@ export function useV3TokenIdsByAccount(
   useEffect(() => {
     if (account) {
       refetchBalance()
-      refretchTokenIds()
+      refetchTokenIds()
     }
-  }, [account, refetchBalance, refretchTokenIds])
+  }, [account, refetchBalance, refetchTokenIds])
 
   return {
     tokenIds: useMemo(() => tokenIds.filter(Boolean) as BigNumber[], [tokenIds]),
