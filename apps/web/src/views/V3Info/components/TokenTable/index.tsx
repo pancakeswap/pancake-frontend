@@ -1,8 +1,7 @@
-import { AutoColumn, Box, Text, Flex } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Flex, NextLinkFromReactRouter, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { TOKEN_HIDE } from '../../constants'
@@ -51,7 +50,7 @@ const ResponsiveGrid = styled.div`
   }
 `
 
-const LinkWrapper = styled(Link)`
+const LinkWrapper = styled(NextLinkFromReactRouter)`
   text-decoration: none;
   :hover {
     cursor: pointer;
@@ -69,33 +68,33 @@ const ResponsiveLogo = styled(CurrencyLogo)`
 const DataRow = ({ tokenData, index }: { tokenData: TokenData; index: number }) => {
   const { theme } = useTheme()
   return (
-    // <LinkWrapper to={`tokens/${tokenData.address}`}>
-    <ResponsiveGrid>
-      <Text>{index + 1}</Text>
-      <Flex>
-        <RowFixed>
-          <ResponsiveLogo address={tokenData.address} />
-        </RowFixed>
-        <Text style={{ marginLeft: '6px' }}>
-          <Text ml="8px">{tokenData.symbol}</Text>
-        </Text>
-        <Text style={{ marginLeft: '10px' }}>
+    <LinkWrapper to={`tokens/${tokenData.address}`}>
+      <ResponsiveGrid>
+        <Text>{index + 1}</Text>
+        <Flex>
           <RowFixed>
-            <HoverInlineText text={tokenData.name} />
-            <Text ml="8px" color={theme.colors.text99}>
-              ({tokenData.symbol})
-            </Text>
+            <ResponsiveLogo address={tokenData.address} />
           </RowFixed>
+          <Text style={{ marginLeft: '6px' }}>
+            <Text ml="8px">{tokenData.symbol}</Text>
+          </Text>
+          <Text style={{ marginLeft: '10px' }}>
+            <RowFixed>
+              <HoverInlineText text={tokenData.name} />
+              <Text ml="8px" color={theme.colors.text99}>
+                ({tokenData.symbol})
+              </Text>
+            </RowFixed>
+          </Text>
+        </Flex>
+        <Text fontWeight={400}>{formatDollarAmount(tokenData.priceUSD)}</Text>
+        <Text fontWeight={400}>
+          <Percent value={tokenData.priceUSDChange} fontWeight={400} />
         </Text>
-      </Flex>
-      <Text fontWeight={400}>{formatDollarAmount(tokenData.priceUSD)}</Text>
-      <Text fontWeight={400}>
-        <Percent value={tokenData.priceUSDChange} fontWeight={400} />
-      </Text>
-      <Text fontWeight={400}>{formatDollarAmount(tokenData.volumeUSD)}</Text>
-      <Text fontWeight={400}>{formatDollarAmount(tokenData.tvlUSD)}</Text>
-    </ResponsiveGrid>
-    // </LinkWrapper>
+        <Text fontWeight={400}>{formatDollarAmount(tokenData.volumeUSD)}</Text>
+        <Text fontWeight={400}>{formatDollarAmount(tokenData.tvlUSD)}</Text>
+      </ResponsiveGrid>{' '}
+    </LinkWrapper>
   )
 }
 

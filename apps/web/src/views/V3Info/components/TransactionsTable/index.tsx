@@ -1,4 +1,4 @@
-import { AutoColumn, LinkExternal, Text, Tag, Box } from '@pancakeswap/uikit'
+import { AutoColumn, LinkExternal, Text, Box } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -248,7 +248,7 @@ export default function TransactionTable({
         </ResponsiveGrid>
         <Break />
 
-        {sortedTransactions.map((t, i) => {
+        {sortedTransactions.map((t) => {
           if (t) {
             return (
               <React.Fragment key={`${t.hash}transactionRecord`}>
