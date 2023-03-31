@@ -201,8 +201,10 @@ export const fetchFarmUserDataAsync = createAsyncThunk<
       const { normalFarms, farmsWithProxy } = splitProxyFarms(farmsCanFetch)
 
       const [proxyAllowances, normalAllowances] = await Promise.all([
-        getBoostedFarmsStakeValue(farmsWithProxy, account, chainId, proxyAddress),
-        getNormalFarmsStakeValue(normalFarms, account, chainId),
+        farmsWithProxy
+          ? getBoostedFarmsStakeValue(farmsWithProxy, account, chainId, proxyAddress)
+          : Promise.resolve([]),
+        normalFarms ? getNormalFarmsStakeValue(normalFarms, account, chainId) : Promise.resolve([]),
       ])
 
       return [...proxyAllowances, ...normalAllowances]
