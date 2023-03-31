@@ -255,7 +255,7 @@ export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
       blockNumber: blockNum,
       protocols: allowedPoolTypes,
     })
-    const serverRes = await fetch('/api/routing', {
+    const serverRes = await fetch('https://routing-dev.pancake-swap.workers.dev/v0/quote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
