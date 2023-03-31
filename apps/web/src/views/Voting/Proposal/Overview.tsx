@@ -50,7 +50,7 @@ const Overview = () => {
     <Container py="40px">
       <Box mb="40px">
         <Link href="/voting" passHref>
-          <Button as="a" variant="text" startIcon={<ArrowBackIcon color="primary" width="24px" />} px="0">
+          <Button variant="text" startIcon={<ArrowBackIcon color="primary" width="24px" />} px="0">
             {t('Back to Vote Overview')}
           </Button>
         </Link>

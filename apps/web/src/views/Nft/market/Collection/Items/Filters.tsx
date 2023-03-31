@@ -75,14 +75,9 @@ const ScrollableFlexContainer = styled(Flex)`
   grid-area: attributeFilters;
   align-items: center;
   flex: 1;
-  flex-wrap: nowrap;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  overflow-x: revert;
   -webkit-overflow-scrolling: touch;
-
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-wrap: wrap;
-    overflow-x: revert;
-  }
 `
 
 const Filters: React.FC<React.PropsWithChildren<FiltersProps>> = ({ address, attributes }) => {

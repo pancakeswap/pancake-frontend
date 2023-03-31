@@ -394,7 +394,7 @@ export function useZapIn({
     [parsedAmounts],
   )
 
-  const zapContract = useZapContract()
+  const zapContract = useZapContract(false)
 
   const rebalancing =
     !!zapTokenCheckedA && !!zapTokenCheckedB && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]
