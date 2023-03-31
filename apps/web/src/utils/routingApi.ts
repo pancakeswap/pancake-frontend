@@ -164,11 +164,12 @@ export function parsePool(chainId: ChainId, pool: SerializedPool): Pool {
     }
   }
   if (pool.type === PoolType.STABLE) {
+    const scaler = 1000000
     return {
       ...pool,
       balances: pool.balances.map((b) => parseCurrencyAmount(chainId, b)),
       amplifier: JSBI.BigInt(pool.amplifier),
-      fee: new Percent(parseFloat(pool.fee) * 1000000, JSBI.multiply(ONE_HUNDRED, JSBI.BigInt(100000))),
+      fee: new Percent(parseFloat(pool.fee) * scaler, JSBI.multiply(ONE_HUNDRED, JSBI.BigInt(scaler))),
     }
   }
 
