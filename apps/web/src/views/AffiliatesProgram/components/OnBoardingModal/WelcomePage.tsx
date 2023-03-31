@@ -53,11 +53,11 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
                 {t('discount on most Swap and StableSwap trading fees')}
               </>
             )}
-            {(!isDiscountZero || noPerps) && (
+            {!isDiscountZero && !noPerps ? (
               <Text color="textSubtle" as="span" m="0 4px">
                 {t('as well as a')}
               </Text>
-            )}
+            ) : null}
             {!noPerps && (
               <>
                 <Text color="secondary" bold as="span" m="0 4px">
