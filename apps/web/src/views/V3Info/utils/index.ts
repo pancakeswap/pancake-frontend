@@ -48,3 +48,6 @@ export function shortenAddress(address: string, chars = 4): string {
   }
   return `${parsed.substring(0, chars + 2)}...${parsed.substring(42 - chars)}`
 }
+export function feeTierPercent(fee: number): string {
+  return `${(fee / 10000).toPrecision(1)}%`
+}

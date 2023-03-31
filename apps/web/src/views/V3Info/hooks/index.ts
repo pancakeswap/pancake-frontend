@@ -14,7 +14,9 @@ import { fetchTopTransactions } from '../data/protocol/transactions'
 import { fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
 import { fetchedTokenDatas } from '../data/token/tokenData'
 import { fetchTopTokenAddresses } from '../data/token/topTokens'
-import { ChartDayData, PriceChartEntry, ProtocolData, TokenData, Transaction } from '../types'
+import { fetchPoolDatas } from '../data/pool/poolData'
+import { fetchTopPoolAddresses } from '../data/pool/topPools'
+import { ChartDayData, PriceChartEntry, ProtocolData, TokenData, Transaction, PoolData } from '../types'
 
 const ONE_HOUR_SECONDS = 3600
 const SIX_HOUR_SECONDS = 21600
@@ -122,8 +124,8 @@ export const usePairPriceChartTokenData = (
 
 export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[]) {
   try {
-    const topTokenDatas = await fetchTopTokenAddresses(dataClient)
-    const data = await fetchedTokenDatas(dataClient, topTokenDatas.addresses, blocks)
+    const topTokenAddress = await fetchTopTokenAddresses(dataClient)
+    const data = await fetchedTokenDatas(dataClient, topTokenAddress.addresses, blocks)
     return data
   } catch (e) {
     console.error(e)
@@ -146,6 +148,37 @@ export const useTopTokensData = ():
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/token/TopTokensData/${chainId}`, chainId],
     () => fetchTopTokens(v3Clients[chainId], blocks),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data
+}
+
+export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks: Block[]) {
+  try {
+    const topPoolAddress = await fetchTopPoolAddresses(dataClient, chainId)
+    const data = await fetchPoolDatas(dataClient, topPoolAddress.addresses, blocks)
+    return data
+  } catch (e) {
+    console.error(e)
+    return {
+      data: {},
+      error: true,
+    }
+  }
+}
+
+export const useTopPoolsData = ():
+  | {
+      [address: string]: PoolData
+    }
+  | undefined => {
+  const { chainId } = useActiveChainId()
+  const [t24, t48, t7d] = getDeltaTimestamps()
+  const { blocks, error: blockError } = useBlocksFromTimestamps([t24, t48, t7d])
+
+  const { data } = useSWRImmutable(
+    chainId && blocks && blocks.length > 0 && [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
+    () => fetchTopPools(v3Clients[chainId], chainId, blocks),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
