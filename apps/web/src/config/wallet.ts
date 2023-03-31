@@ -52,6 +52,8 @@ const walletsConfig = ({
   connect: (connectorID: ConnectorNames) => void
 }): WalletConfigV2<ConnectorNames>[] => {
   const qrCode = createQrCode(chainId, connect)
+  // TODO Temporarily disabling QR code until the issue with WalletConnect V2 is resolved.
+
   return [
     {
       id: 'metamask',
@@ -63,7 +65,7 @@ const walletsConfig = ({
       },
       connectorId: ConnectorNames.MetaMask,
       deepLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
-      qrCode,
+      qrCode: null,
       downloadLink: 'https://metamask.app.link/dapp/pancakeswap.finance/',
     },
     {
@@ -103,7 +105,7 @@ const walletsConfig = ({
         desktop: 'https://trustwallet.com/browser-extension',
         mobile: 'https://trustwallet.com/',
       },
-      qrCode,
+      qrCode: null,
     },
     {
       id: 'walletconnect',
@@ -139,7 +141,7 @@ const walletsConfig = ({
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isMathWallet)
       },
-      qrCode,
+      qrCode: null,
     },
     {
       id: 'tokenpocket',
@@ -149,7 +151,7 @@ const walletsConfig = ({
       get installed() {
         return typeof window !== 'undefined' && Boolean(window.ethereum?.isTokenPocket)
       },
-      qrCode,
+      qrCode: null,
     },
     {
       id: 'safepal',
@@ -161,7 +163,7 @@ const walletsConfig = ({
       },
       downloadLink:
         'https://chrome.google.com/webstore/detail/safepal-extension-wallet/lgmpcpglpngdoalbgeoldeajfclnhafa',
-      qrCode,
+      qrCode: null,
     },
     {
       id: 'coin98',
@@ -174,7 +176,7 @@ const walletsConfig = ({
           (Boolean((window.ethereum as ExtendEthereum)?.isCoin98) || Boolean(window.coin98))
         )
       },
-      qrCode,
+      qrCode: null,
     },
     {
       id: 'blocto',
