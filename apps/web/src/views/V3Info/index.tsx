@@ -13,8 +13,15 @@ import Percent from './components/Percent'
 import { RowBetween, RowFixed } from './components/Row'
 import { MonoSpace, PageWrapper, ThemedBackgroundGlobal } from './components/shared'
 import TokenTable from './components/TokenTable'
+import PoolTable from './components/PoolTable'
 import TransactionsTable from './components/TransactionsTable'
-import { useProtocolChartData, useProtocolData, useProtocolTransactionData, useTopTokensData } from './hooks'
+import {
+  useProtocolChartData,
+  useProtocolData,
+  useProtocolTransactionData,
+  useTopTokensData,
+  useTopPoolsData,
+} from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
 import { VolumeWindow } from './types'
 import { notEmpty } from './utils'
@@ -39,6 +46,7 @@ export default function Home() {
   const protocolData = useProtocolData()
   const transactionData = useProtocolTransactionData()
   const topTokensData = useTopTokensData()
+  const topPoolsData = useTopPoolsData()
   const chartData = useProtocolChartData()
   const { chainId } = useActiveChainId()
 
@@ -104,6 +112,14 @@ export default function Home() {
         .filter(notEmpty)
     return []
   }, [topTokensData])
+
+  const poolDatas = useMemo(() => {
+    if (topPoolsData)
+      return Object.values(topPoolsData)
+        .map((p) => p)
+        .filter(notEmpty)
+    return []
+  }, [topPoolsData])
 
   const tvlValue = useMemo(() => {
     return formatDollarAmount(liquidityHover ?? 0, 2, true)
@@ -206,6 +222,9 @@ export default function Home() {
       </Box>
       <Text>Top Tokens</Text>
       <TokenTable tokenDatas={formattedTokens} />
+
+      <Text>Top Pools</Text>
+      <PoolTable poolDatas={poolDatas} />
       <Text>Transactions</Text>
 
       {transactionData ? <TransactionsTable transactions={transactionData} color={theme.colors.primary} /> : null}
