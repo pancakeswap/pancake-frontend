@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColumn } from '@pancakeswap/uikit'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { useState } from 'react'
@@ -52,8 +53,8 @@ export function TradeSummary({
         <RowFixed>
           <Text fontSize="14px">
             {isExactIn
-              ? `${slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4)} ${outputAmount.currency.symbol}` ?? '-'
-              : `${slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4)} ${inputAmount.currency.symbol}` ?? '-'}
+              ? `${formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4)} ${outputAmount.currency.symbol}` ?? '-'
+              : `${formatAmount(slippageAdjustedAmounts[Field.INPUT], 4)} ${inputAmount.currency.symbol}` ?? '-'}
           </Text>
         </RowFixed>
       </RowBetween>
@@ -127,7 +128,7 @@ export function TradeSummary({
               placement="top"
             />
           </RowFixed>
-          <Text fontSize="14px">{`${realizedLPFee.toSignificant(4)} ${inputAmount.currency.symbol}`}</Text>
+          <Text fontSize="14px">{`${formatAmount(realizedLPFee, 4)} ${inputAmount.currency.symbol}`}</Text>
         </RowBetween>
       )}
     </AutoColumn>
