@@ -18,6 +18,7 @@ import {
   UserMenuItem,
   DropdownMenuItemType,
   DropdownMenu,
+  useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
 import { useTheme as useNextTheme } from 'next-themes'
@@ -390,6 +391,7 @@ type TransferInput = {
 }
 
 function User() {
+  const { isMobile } = useMatchBreakpoints()
   const wallet = useStargateReaction(() => window.stargate.wallet.ethereum)
   const [pending, setPending] = useState([])
   const transactions = useStargateReaction(() => window.stargate.transaction.transactions)
@@ -409,6 +411,10 @@ function User() {
 
   const isWrongNetwork = chainId && !chain
   const hasPendingTransactions = pending.length > 0
+
+  if (isMobile && !account) {
+    return null
+  }
 
   if (isWrongNetwork) {
     return (
