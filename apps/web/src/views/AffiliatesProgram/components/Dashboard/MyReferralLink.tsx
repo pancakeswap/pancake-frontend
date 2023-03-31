@@ -206,7 +206,7 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
               <CardInner>
                 {dataList.map((list) => (
                   <>
-                    {list.id !== 'perpetual' && affiliate.ablePerps && (
+                    {list.id === 'perpetual' && affiliate.ablePerps ? null : (
                       <StyledCommission key={list.id}>
                         <Flex>
                           <Box>
