@@ -17,7 +17,7 @@ interface TopTokensResponse {
 /**
  * Fetch top addresses by volume
  */
-export async function getTopTokenAddresses(dataClient: GraphQLClient): Promise<{
+export async function fetchTopTokenAddresses(dataClient: GraphQLClient): Promise<{
   error: boolean
   addresses: string[] | undefined
 }> {
