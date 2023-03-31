@@ -402,6 +402,8 @@ export default function PoolPage() {
 
   const { isMobile } = useMatchBreakpoints()
 
+  const isOwnNFT = isStakedInMCv3 || ownsNFT
+
   if (!isLoading && poolState === PoolState.NOT_EXISTS) {
     return <NotFound />
   }
@@ -460,11 +462,13 @@ export default function PoolPage() {
                     <NextLinkFromReactRouter
                       to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                     >
-                      <Button width="100%">Add</Button>
+                      <Button disabled={!isOwnNFT} width="100%">
+                        Add
+                      </Button>
                     </NextLinkFromReactRouter>
                     {!removed && (
                       <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                        <Button ml="4px" variant="secondary" width="100%">
+                        <Button disabled={!isOwnNFT} ml="4px" variant="secondary" width="100%">
                           Remove
                         </Button>
                       </NextLinkFromReactRouter>
@@ -479,13 +483,13 @@ export default function PoolPage() {
                   <NextLinkFromReactRouter
                     to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                   >
-                    <Button width="100%" mb="8px">
+                    <Button disabled={!isOwnNFT} width="100%" mb="8px">
                       Add
                     </Button>
                   </NextLinkFromReactRouter>
                   {!removed && (
                     <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
-                      <Button variant="secondary" width="100%" mb="8px">
+                      <Button disabled={!isOwnNFT} variant="secondary" width="100%" mb="8px">
                         Remove
                       </Button>
                     </NextLinkFromReactRouter>
@@ -568,6 +572,7 @@ export default function PoolPage() {
                       <Button
                         scale="sm"
                         disabled={
+                          !isOwnNFT ||
                           collecting ||
                           isCollectPending ||
                           !(feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) || !!collectMigrationHash)
