@@ -4,12 +4,10 @@ import { responsiveStyle } from "@pancakeswap/ui/css/responsiveStyle";
 import { style } from "@vanilla-extract/css";
 import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
 
-export const switchButtonClass = style([
-  style({
-    backgroundColor: "primary",
-    boxShadow: "inset 0px -2px 0px rgba(0, 0, 0, 0.1)",
-  }),
-]);
+export const switchButtonClass = style({
+  backgroundColor: "primary",
+  boxShadow: "inset 0px -2px 0px rgba(0, 0, 0, 0.1)",
+});
 
 export const iconDownClass = style({
   selectors: {

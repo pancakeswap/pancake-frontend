@@ -30,7 +30,7 @@ export function FlipButton() {
 
   return (
     <AutoColumn justify="space-between">
-      <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
+      <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem', marginTop: '1em' }}>
         <SwapUI.SwitchButton onClick={onFlip} />
         {allowRecipient && recipient === null ? (
           <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
