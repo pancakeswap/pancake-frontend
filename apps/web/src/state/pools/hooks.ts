@@ -38,7 +38,14 @@ import {
   makeVaultPoolWithKeySelector,
 } from './selectors'
 
-const lPoolAddresses = livePools.filter(({ sousId }) => sousId !== 0).map(({ earningToken }) => earningToken.address)
+const lPoolAddresses = livePools
+  .filter(({ sousId }) => sousId !== 0)
+  .map(({ earningToken, stakingToken }) => {
+    if (earningToken.symbol === 'CAKE') {
+      return stakingToken.address
+    }
+    return earningToken.address
+  })
 
 // Only fetch farms for live pools
 const getActiveFarms = async (chainId: number) => {

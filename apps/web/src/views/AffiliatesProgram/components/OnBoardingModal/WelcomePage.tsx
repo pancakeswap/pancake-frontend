@@ -53,11 +53,11 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
                 {t('discount on most Swap and StableSwap trading fees')}
               </>
             )}
-            {(!isDiscountZero || noPerps) && (
+            {!isDiscountZero && !noPerps ? (
               <Text color="textSubtle" as="span" m="0 4px">
                 {t('as well as a')}
               </Text>
-            )}
+            ) : null}
             {!noPerps && (
               <>
                 <Text color="secondary" bold as="span" m="0 4px">
@@ -68,7 +68,9 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
                 </Text>
               </>
             )}
-            {t('for a limited period of time*')}
+            <Text color="textSubtle" as="span" m="0 4px">
+              {t('for a limited period of time*')}
+            </Text>
           </Text>
         )}
         <label htmlFor="checkbox" style={{ display: 'block', cursor: 'pointer', marginBottom: '24px' }}>
@@ -79,7 +81,7 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
             <Text fontSize="14px" ml="8px">
               {t('*I have read the')}
               <Text display="inline-block" as="span" ml="4px">
-                <Link external href="https://docs.pancakeswap.finance/">
+                <Link external href="https://docs.pancakeswap.finance/affiliate-program/terms-and-conditions">
                   {t('terms and conditions')}
                 </Link>
               </Text>
