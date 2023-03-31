@@ -112,7 +112,7 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
           ref={targetRef}
         >
           <CurrencyLogo size="100%" currency={inputCurrency} />
-          <RouterTypeText>{route.percent}%</RouterTypeText>
+          <RouterTypeText fontWeight="bold">{route.percent}%</RouterTypeText>
         </CurrencyLogoWrapper>
         {tooltipVisible && tooltip}
         {pairNodes}

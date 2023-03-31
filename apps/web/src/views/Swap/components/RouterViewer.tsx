@@ -54,7 +54,7 @@ export const RouterPoolBox = styled(Box)`
     padding: 4px 8px;
   }
 `
-export const RouterTypeText = styled.div`
+export const RouterTypeText = styled.div<{ fontWeight?: string }>`
   font-size: 14px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.text};
@@ -64,6 +64,8 @@ export const RouterTypeText = styled.div`
   left: 50%;
   transform: translateX(-50%);
   top: calc(100% + 3px);
+  font-weight: ${(props) => props.fontWeight || 'normal'};
+
   ${({ theme }) => theme.mediaQueries.md} {
     font-size: 16px;
     line-height: 20px;
