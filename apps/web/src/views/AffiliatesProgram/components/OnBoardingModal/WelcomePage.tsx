@@ -50,15 +50,14 @@ const WelcomePage: React.FC<React.PropsWithChildren<WelcomePageProps>> = ({ isLo
             {!isDiscountZero && (
               <>
                 <Text color="secondary" bold as="span" m="0 4px">{`${discount}%`}</Text>
-                {t('discount on most Swap and StableSwap trading fees,')}
+                {t('discount on most Swap and StableSwap trading fees')}
               </>
             )}
-            {!isDiscountZero ||
-              (!noPerps && (
-                <Text color="textSubtle" as="span" m="0 4px">
-                  {t('as well as a')}
-                </Text>
-              ))}
+            {(!isDiscountZero || noPerps) && (
+              <Text color="textSubtle" as="span" m="0 4px">
+                {t('as well as a')}
+              </Text>
+            )}
             {!noPerps && (
               <>
                 <Text color="secondary" bold as="span" m="0 4px">
