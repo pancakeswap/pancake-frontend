@@ -16,12 +16,14 @@ const Container = styled(Flex)`
 interface DesktopViewProps {
   currentView: Views
   isLoading: boolean
+  onDismiss: () => void
   handleStartNow: () => void
 }
 
 const DesktopView: React.FC<React.PropsWithChildren<DesktopViewProps>> = ({
   currentView,
   isLoading,
+  onDismiss,
   handleStartNow,
 }) => {
   return (
@@ -30,7 +32,7 @@ const DesktopView: React.FC<React.PropsWithChildren<DesktopViewProps>> = ({
         <Flex width="50%" pr="12px">
           <Card style={{ width: '100%' }}>
             {currentView === Views.STEP1 ? (
-              <WelcomePage isLoading={isLoading} handleStartNow={handleStartNow} />
+              <WelcomePage isLoading={isLoading} handleStartNow={handleStartNow} onDismiss={onDismiss} />
             ) : (
               <Congratulations />
             )}

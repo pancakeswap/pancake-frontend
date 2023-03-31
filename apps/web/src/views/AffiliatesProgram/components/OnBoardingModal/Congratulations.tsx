@@ -16,7 +16,7 @@ const Congratulations = () => {
   const perpetualUrl = useMemo(() => getPerpetualUrl({ chainId, languageCode: code, isDark }), [chainId, code, isDark])
 
   return (
-    <Flex flexDirection="column" padding={['24px', '24px', '24px', '24px', '80px 24px 0 24px']}>
+    <Flex flexDirection="column" padding={['24px', '24px', '24px', '24px', '80px 24px']}>
       <Text lineHeight="110%" maxWidth="190px" fontSize={['24px']} bold m="12px 0">
         {t('Congratulations! You’re all set!')}
       </Text>
