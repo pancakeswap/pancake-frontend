@@ -27,6 +27,7 @@ import { useCallback } from 'react'
 import { Bound } from 'config/constants/types'
 import { InfoBox } from 'components/InfoBox'
 import { LP2ChildrenProps } from 'views/AddLiquidity'
+import { Percent } from '@pancakeswap/sdk'
 
 import { HideMedium, MediumOnly, RightContainer } from './V3FormView'
 import RangeSelector from './V3FormView/components/RangeSelector'
@@ -49,6 +50,7 @@ export default function V2FormView({
   errorText,
   onFieldAInput,
   onFieldBInput,
+  maxAmounts,
 }: LP2ChildrenProps) {
   const mockFn = useCallback(() => '', [])
 
@@ -112,6 +114,16 @@ export default function V2FormView({
 
         <Box mb="8px">
           <CurrencyInputPanel
+            maxAmount={maxAmounts[Field.CURRENCY_A]}
+            showUSDPrice
+            onMax={() => {
+              onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+            }}
+            onPercentInput={(percent) => {
+              if (maxAmounts[Field.CURRENCY_A]) {
+                onFieldBInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+              }
+            }}
             disableCurrencySelect
             value={formattedAmounts[Field.CURRENCY_A]}
             onUserInput={onFieldAInput}
@@ -125,6 +137,16 @@ export default function V2FormView({
         </Box>
 
         <CurrencyInputPanel
+          showUSDPrice
+          onPercentInput={(percent) => {
+            if (maxAmounts[Field.CURRENCY_B]) {
+              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+            }
+          }}
+          onMax={() => {
+            onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+          }}
+          maxAmount={maxAmounts[Field.CURRENCY_B]}
           disableCurrencySelect
           value={formattedAmounts[Field.CURRENCY_B]}
           onUserInput={onFieldBInput}

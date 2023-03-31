@@ -17,7 +17,7 @@ import { LightGreyCard } from 'components/Card'
 
 import { CurrencyLogo } from 'components/Logo'
 import { useTotalUSDValue } from 'components/PositionCard'
-import { CurrencyAmount } from '@pancakeswap/sdk'
+import { CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import { BIG_ONE_HUNDRED } from '@pancakeswap/utils/bigNumber'
 import { AddStableChildrenProps } from 'views/AddLiquidity/AddStableLiquidity'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
@@ -52,6 +52,7 @@ export default function StableFormView({
   loading,
   infoLoading,
   price,
+  maxAmounts,
 }: AddStableChildrenProps & {
   stableLpFee: number
 }) {
@@ -134,6 +135,14 @@ export default function StableFormView({
         </Text>
 
         <CurrencyInputPanel
+          showUSDPrice
+          maxAmount={maxAmounts[Field.CURRENCY_A]}
+          onMax={() => onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')}
+          onPercentInput={(percent) => {
+            if (maxAmounts[Field.CURRENCY_A]) {
+              onFieldAInput(maxAmounts[Field.CURRENCY_A]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+            }
+          }}
           disableCurrencySelect
           value={formattedAmounts[Field.CURRENCY_A]}
           onUserInput={onFieldAInput}
@@ -146,7 +155,15 @@ export default function StableFormView({
         />
 
         <CurrencyInputPanel
+          showUSDPrice
           disableCurrencySelect
+          maxAmount={maxAmounts[Field.CURRENCY_B]}
+          onPercentInput={(percent) => {
+            if (maxAmounts[Field.CURRENCY_B]) {
+              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+            }
+          }}
+          onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
           value={formattedAmounts[Field.CURRENCY_B]}
           onUserInput={onFieldBInput}
           showQuickInputButton
