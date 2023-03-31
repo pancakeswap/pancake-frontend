@@ -9,8 +9,6 @@ import {
   ArrowForwardIcon,
   useMatchBreakpoints,
   useToast,
-  InfoIcon,
-  useTooltip,
 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
 import BigNumber from 'bignumber.js'
@@ -51,7 +49,7 @@ const StyledCommission = styled(Flex)`
     content: '';
     position: absolute;
     top: 50%;
-    right: 0;
+    left: 0;
     height: 60px;
     width: 1px;
     transform: translateY(-50%);
@@ -73,9 +71,10 @@ const CardInner = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientBubblegum};
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
 
   ${StyledCommission} {
-    &:nth-child(even) {
+    &:first-child {
       &:before {
         display: none;
       }
@@ -163,13 +162,6 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
     }
   }
 
-  const { targetRef, tooltip, tooltipVisible } = useTooltip(
-    `${t(`Commissions for Perpetual product are not applicable for affiliates from prohibited jurisdictions`)}`,
-    {
-      placement: 'bottom',
-    },
-  )
-
   return (
     <Box
       width={['100%', '100%', '100%', '100%', '100%', '700px']}
@@ -213,24 +205,22 @@ const MyReferralLink: React.FC<React.PropsWithChildren<MyReferralLinkProps>> = (
             <Wrapper>
               <CardInner>
                 {dataList.map((list) => (
-                  <StyledCommission key={list.id}>
-                    <Flex>
-                      <Box>
-                        <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
-                          {list.title}
-                        </Text>
-                        <Text textAlign="center" fontSize={['32px']} bold>
-                          {list.percentage}
-                        </Text>
-                      </Box>
-                      {list.id === 'perpetual' && affiliate.ablePerps && (
-                        <Flex ref={targetRef} ml="4px" alignSelf="flex-start">
-                          <InfoIcon width={16} height={16} />
+                  <>
+                    {list.id === 'perpetual' && affiliate.ablePerps ? null : (
+                      <StyledCommission key={list.id}>
+                        <Flex>
+                          <Box>
+                            <Text fontSize="12px" textAlign="center" bold color="secondary" textTransform="uppercase">
+                              {list.title}
+                            </Text>
+                            <Text textAlign="center" fontSize={['32px']} bold>
+                              {list.percentage}
+                            </Text>
+                          </Box>
                         </Flex>
-                      )}
-                      {tooltipVisible && tooltip}
-                    </Flex>
-                  </StyledCommission>
+                      </StyledCommission>
+                    )}
+                  </>
                 ))}
               </CardInner>
             </Wrapper>
