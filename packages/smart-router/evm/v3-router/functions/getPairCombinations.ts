@@ -1,8 +1,8 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
-import flatMap from 'lodash/flatMap'
 
 import { ADDITIONAL_BASES, BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES } from '../../constants'
 import { wrappedCurrency } from '../../utils/currency'
+import { flatMap } from '../../utils/flatMap'
 import { isCurrenciesSameChain } from '../utils'
 
 export const getPairCombinations = (currencyA?: Currency, currencyB?: Currency): [Currency, Currency][] => {

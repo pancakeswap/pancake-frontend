@@ -2,7 +2,6 @@
 import { JSBI, ChainId } from '@pancakeswap/sdk'
 import { BaseProvider } from '@ethersproject/providers'
 import { Contract } from '@ethersproject/contracts'
-import map from 'lodash/map'
 import stats from 'stats-lite'
 
 // eslint-disable-next-line import/named
@@ -64,7 +63,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMult
     const fragment = contractInterface.getFunction(functionName)
     const callData = contractInterface.encodeFunctionData(fragment, functionParams)
 
-    const calls = map(addresses, (address) => {
+    const calls = addresses.map((address) => {
       return {
         target: address,
         callData,
@@ -123,7 +122,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMult
     const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
     const blockNumberOverride = providerConfig?.blockNumber ?? undefined
 
-    const calls = map(functionParams, (functionParam) => {
+    const calls = functionParams.map((functionParam) => {
       const callData = contractInterface.encodeFunctionData(fragment, functionParam)
 
       return {
@@ -192,7 +191,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMult
     const gasLimitPerCall = additionalConfig?.gasLimitPerCallOverride ?? this.gasLimitPerCall
     const blockNumberOverride = providerConfig?.blockNumber ?? undefined
 
-    const calls = map(functionNames, (functionName, i) => {
+    const calls = functionNames.map((functionName, i) => {
       const fragment = contractInterface.getFunction(functionName)
       const param = functionParams ? functionParams[i] : []
       const callData = contractInterface.encodeFunctionData(fragment, param)

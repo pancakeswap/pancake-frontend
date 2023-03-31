@@ -2,11 +2,6 @@
 import { ChainId, Currency, CurrencyAmount, JSBI } from '@pancakeswap/sdk'
 import { BaseProvider } from '@ethersproject/providers'
 import { Interface } from '@ethersproject/abi'
-import chunk from 'lodash/chunk'
-import map from 'lodash/map'
-import uniq from 'lodash/uniq'
-import flatMap from 'lodash/flatMap'
-import filter from 'lodash/filter'
 import retry, { Options as RetryOptions } from 'async-retry'
 import stats from 'stats-lite'
 
@@ -19,6 +14,9 @@ import { PancakeswapMulticallProvider } from './multicallSwapProvider'
 import { MIXED_ROUTE_QUOTER_ADDRESSES, V3_QUOTER_ADDRESSES } from '../../constants'
 import { BatchMulticallConfigs } from '../../types'
 import { BATCH_MULTICALL_CONFIGS } from '../../constants/multicall'
+import { flatMap } from '../../utils/flatMap'
+import { uniq } from '../../utils/uniq'
+import { chunk } from '../../utils/chunk'
 
 const DEFAULT_BATCH_RETRIES = 2
 
@@ -155,7 +153,7 @@ function onChainQuoteProviderFactory({
 
         const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
         const inputsChunked = chunk(inputs, normalizedChunk)
-        let quoteStates: QuoteBatchState[] = map(inputsChunked, (inputChunk, index) => {
+        let quoteStates: QuoteBatchState[] = inputsChunked.map((inputChunk, index) => {
           return {
             order: index,
             status: 'pending',
@@ -194,7 +192,7 @@ function onChainQuoteProviderFactory({
             // )
 
             quoteStates = await Promise.all(
-              map(quoteStates, async (quoteState: QuoteBatchState, idx: number) => {
+              quoteStates.map(async (quoteState: QuoteBatchState, idx: number) => {
                 if (quoteState.status === 'success') {
                   return quoteState
                 }
@@ -285,9 +283,9 @@ function onChainQuoteProviderFactory({
               retryAll = true
             }
 
-            const reasonForFailureStr = map(failedQuoteStates, (failedQuoteState) => failedQuoteState.reason.name).join(
-              ', ',
-            )
+            const reasonForFailureStr = failedQuoteStates
+              .map((failedQuoteState) => failedQuoteState.reason.name)
+              .join(', ')
 
             if (failedQuoteStates.length > 0) {
               // console.log(
@@ -381,7 +379,7 @@ function onChainQuoteProviderFactory({
               const normalizedChunk = Math.ceil(inputs.length / Math.ceil(inputs.length / multicallChunk))
 
               const inputsChunked = chunk(inputs, normalizedChunk)
-              quoteStates = map(inputsChunked, (inputChunk, index) => {
+              quoteStates = inputsChunked.map((inputChunk, index) => {
                 return {
                   order: index,
                   status: 'pending',
@@ -399,13 +397,13 @@ function onChainQuoteProviderFactory({
             }
 
             const orderedSuccessfulQuoteStates = successfulQuoteStates.sort((a, b) => (a.order < b.order ? -1 : 1))
-            const callResults = map(orderedSuccessfulQuoteStates, (quoteState) => quoteState.results)
+            const callResults = orderedSuccessfulQuoteStates.map((quoteState) => quoteState.results)
 
             return {
               results: flatMap(callResults, (result) => result.results),
               blockNumber: JSBI.BigInt(successfulQuoteStates[0]!.results.blockNumber),
               approxGasUsedPerSuccessCall: stats.percentile(
-                map(callResults, (result) => result.approxGasUsedPerSuccessCall),
+                callResults.map((result) => result.approxGasUsedPerSuccessCall),
                 100,
               ),
             }
@@ -453,18 +451,15 @@ function onChainQuoteProviderFactory({
 function partitionQuotes(
   quoteStates: QuoteBatchState[],
 ): [QuoteBatchSuccess[], QuoteBatchFailed[], QuoteBatchPending[]] {
-  const successfulQuoteStates: QuoteBatchSuccess[] = filter<QuoteBatchState, QuoteBatchSuccess>(
-    quoteStates,
+  const successfulQuoteStates: QuoteBatchSuccess[] = quoteStates.filter<QuoteBatchSuccess>(
     (quoteState): quoteState is QuoteBatchSuccess => quoteState.status === 'success',
   )
 
-  const failedQuoteStates: QuoteBatchFailed[] = filter<QuoteBatchState, QuoteBatchFailed>(
-    quoteStates,
+  const failedQuoteStates: QuoteBatchFailed[] = quoteStates.filter<QuoteBatchFailed>(
     (quoteState): quoteState is QuoteBatchFailed => quoteState.status === 'failed',
   )
 
-  const pendingQuoteStates: QuoteBatchPending[] = filter<QuoteBatchState, QuoteBatchPending>(
-    quoteStates,
+  const pendingQuoteStates: QuoteBatchPending[] = quoteStates.filter<QuoteBatchPending>(
     (quoteState): quoteState is QuoteBatchPending => quoteState.status === 'pending',
   )
 
@@ -502,11 +497,11 @@ function validateBlockNumbers(
     return null
   }
 
-  const results = map(successfulQuoteStates, (quoteState) => quoteState.results)
+  const results = successfulQuoteStates.map((quoteState) => quoteState.results)
 
-  const blockNumbers = map(results, (result) => result.blockNumber)
+  const blockNumbers = results.map((result) => result.blockNumber)
 
-  const blockStrs = map(blockNumbers, (blockNumber) => blockNumber.toString())
+  const blockStrs = blockNumbers.map((blockNumber) => blockNumber.toString())
   const uniqBlocks = uniq(blockStrs)
 
   if (uniqBlocks.length === 1) {

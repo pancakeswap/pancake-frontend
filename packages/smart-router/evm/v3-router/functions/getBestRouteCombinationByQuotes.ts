@@ -1,14 +1,13 @@
 /* eslint-disable no-console, @typescript-eslint/no-non-null-assertion */
 import { ChainId, Currency, CurrencyAmount, JSBI, TradeType } from '@pancakeswap/sdk'
 import FixedReverseHeap from 'mnemonist/fixed-reverse-heap'
-import mapValues from 'lodash/mapValues'
-import flatMap from 'lodash/flatMap'
-import map from 'lodash/map'
 import Queue from 'mnemonist/queue'
 
 import { BestRoutes, L1ToL2GasCosts, RouteWithQuote } from '../types'
 import { getPoolAddress, isV2Pool, isV3Pool } from '../utils'
 import { usdGasTokensByChain } from '../../constants'
+import { flatMap } from '../../utils/flatMap'
+import { mapValues } from '../../utils/mapValues'
 
 interface Config {
   minSplits?: number
@@ -244,24 +243,24 @@ export function getBestSwapRouteBy(
 
     console.log(
       {
-        top5: map(
-          Array.from(bestSwapsPerSplit.consume()),
+        top5: Array.from(bestSwapsPerSplit.consume()).map(
           (q) =>
-            `${q.quote.toExact()} (${map(
-              q.routes,
-              (r) =>
-                `${r.percent}% ${r.amount.toExact()} ${r.pools
-                  .map((p) => {
-                    if (isV2Pool(p)) {
-                      return `V2 ${p.reserve0.currency.symbol}-${p.reserve1.currency.symbol}`
-                    }
-                    if (isV3Pool(p)) {
-                      return `V3 fee ${p.fee} ${p.token0.symbol}-${p.token1.symbol}`
-                    }
-                    return `Stable ${p}`
-                  })
-                  .join(', ')} ${r.quote.toExact()}`,
-            ).join(', ')})`,
+            `${q.quote.toExact()} (${q.routes
+              .map(
+                (r) =>
+                  `${r.percent}% ${r.amount.toExact()} ${r.pools
+                    .map((p) => {
+                      if (isV2Pool(p)) {
+                        return `V2 ${p.reserve0.currency.symbol}-${p.reserve1.currency.symbol}`
+                      }
+                      if (isV3Pool(p)) {
+                        return `V3 fee ${p.fee} ${p.token0.symbol}-${p.token1.symbol}`
+                      }
+                      return `Stable ${p}`
+                    })
+                    .join(', ')} ${r.quote.toExact()}`,
+              )
+              .join(', ')})`,
         ),
         onQueue: queue.size,
       },
@@ -322,7 +321,7 @@ export function getBestSwapRouteBy(
 
         // If we've found a route combination that uses all 100%, and it has at least minSplits, update our best route.
         if (remainingPercentNew === 0 && splits >= minSplits) {
-          const quotesNew = map(curRoutesNew, (r) => by(r))
+          const quotesNew = curRoutesNew.map((r) => by(r))
           const quoteNew = sumFn(quotesNew)
 
           const gasCostL1QuoteToken = CurrencyAmount.fromRawAmount(quoteNew.currency, 0)
@@ -380,15 +379,14 @@ export function getBestSwapRouteBy(
 
   // const postSplitNow = Date.now()
 
-  let quoteGasAdjusted = sumFn(map(bestSwap, (routeWithValidQuote) => routeWithValidQuote.quoteAdjustedForGas))
+  let quoteGasAdjusted = sumFn(bestSwap.map((routeWithValidQuote) => routeWithValidQuote.quoteAdjustedForGas))
 
   // this calculates the base gas used
   // if on L1, its the estimated gas used based on hops and ticks across all the routes
   // if on L2, its the gas used on the L2 based on hops and ticks across all the routes
-  const estimatedGasUsed = map(bestSwap, (routeWithValidQuote) => routeWithValidQuote.gasEstimate).reduce(
-    (sum, routeWithValidQuote) => JSBI.add(sum, routeWithValidQuote),
-    JSBI.BigInt(0),
-  )
+  const estimatedGasUsed = bestSwap
+    .map((routeWithValidQuote) => routeWithValidQuote.gasEstimate)
+    .reduce((sum, routeWithValidQuote) => JSBI.add(sum, routeWithValidQuote), JSBI.BigInt(0))
 
   if (!usdGasTokensByChain[chainId] || !usdGasTokensByChain[chainId]![0]) {
     // Each route can use a different stablecoin to account its gas costs.
@@ -423,7 +421,7 @@ export function getBestSwapRouteBy(
   const { gasCostL1USD, gasCostL1QuoteToken } = gasCostsL1ToL2
 
   // For each gas estimate, normalize decimals to that of the chosen usd token.
-  const estimatedGasUsedUSDs = map(bestSwap, (routeWithValidQuote) => {
+  const estimatedGasUsedUSDs = bestSwap.map((routeWithValidQuote) => {
     // TODO: will error if gasToken has decimals greater than usdToken
     const decimalsDiff = usdTokenDecimals - routeWithValidQuote.gasCostInUSD.currency.decimals
 
@@ -469,10 +467,10 @@ export function getBestSwapRouteBy(
   // )
 
   const estimatedGasUsedQuoteToken = sumFn(
-    map(bestSwap, (routeWithValidQuote) => routeWithValidQuote.gasCostInToken),
+    bestSwap.map((routeWithValidQuote) => routeWithValidQuote.gasCostInToken),
   ).add(gasCostL1QuoteToken)
 
-  const quote = sumFn(map(bestSwap, (routeWithValidQuote) => routeWithValidQuote.quote))
+  const quote = sumFn(bestSwap.map((routeWithValidQuote) => routeWithValidQuote.quote))
 
   // Adjust the quoteGasAdjusted for the l1 fee
   if (tradeType === TradeType.EXACT_INPUT) {
