@@ -132,16 +132,9 @@ export default function FeeSelector({
     }
   }, [feeAmount, isLoading, isError, largestUsageFeeTier, handleFeePoolSelect, v2PairHasBetterTokenAmounts, farmV3])
 
-  useEffect(() => {
-    if (!v2PairHasBetterTokenAmounts) {
-      setShowOptions(isError)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isError])
-
   return (
     <HideShowSelectorSection
-      showOptions={showOptions}
+      showOptions={showOptions || (!v2PairHasBetterTokenAmounts && isError)}
       noHideButton={!feeAmount}
       setShowOptions={setShowOptions}
       heading={

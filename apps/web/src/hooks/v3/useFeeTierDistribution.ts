@@ -36,7 +36,7 @@ export function useFeeTierDistribution(
     if (isLoading || error || !distributions) {
       return {
         isLoading,
-        isError: !!error,
+        isError: Boolean(error),
         distributions,
       }
     }
@@ -67,7 +67,7 @@ export function useFeeTierDistribution(
 
     return {
       isLoading,
-      isError: !!error,
+      isError: Boolean(error),
       distributions: percentages,
       largestUsageFeeTier: largestUsageFeeTier === -1 ? undefined : largestUsageFeeTier,
       largestUsageFeeTierTvl: tvlByFeeTier[largestUsageFeeTier],
