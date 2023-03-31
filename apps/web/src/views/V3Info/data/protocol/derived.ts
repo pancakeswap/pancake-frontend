@@ -4,7 +4,7 @@ import { POOL_HIDE } from '../../constants'
 import { ChartDayData, PoolChartEntry, PoolData } from '../../types'
 import { fetchPoolChartData } from '../pool/chartData'
 import { fetchPoolDatas } from '../pool/poolData'
-import { getTopPoolAddresses } from '../pool/topPools'
+import { fetchTopPoolAddresses } from '../pool/topPools'
 
 /**
  * Calculates offset amount to avoid inaccurate USD data for global TVL.
@@ -12,7 +12,7 @@ import { getTopPoolAddresses } from '../pool/topPools'
  */
 export async function fetchTVLOffset(dataClient: GraphQLClient, chainId: ChainId) {
   try {
-    const { addresses } = await getTopPoolAddresses(dataClient, chainId)
+    const { addresses } = await fetchTopPoolAddresses(dataClient, chainId)
     const { data } = await fetchPoolDatas(dataClient, addresses, [])
 
     return Object.keys(data).reduce((accum: number, poolAddress) => {
@@ -76,7 +76,7 @@ const POOL_COUNT_FOR_AGGREGATE = 20
  */
 export async function fetchDerivedProtocolTVLHistory(dataClient: GraphQLClient, chainId: ChainId) {
   try {
-    const { addresses } = await getTopPoolAddresses(dataClient, chainId)
+    const { addresses } = await fetchTopPoolAddresses(dataClient, chainId)
     if (!addresses) {
       return []
     }
