@@ -13,6 +13,8 @@ import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { Field } from 'state/burn/actions'
 import { useBurnActionHandlers } from 'state/burn/hooks'
+import { useFarms } from 'state/farms/hooks'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { toV2LiquidityToken, useTrackedTokenPairs } from 'state/user/hooks'
 import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import atomWithStorage from 'utils/atomWithStorageWithErrorCatch'
@@ -35,6 +37,10 @@ const STABLE_LP_TO_MIGRATE = [
 export function Step2() {
   const { address: account } = useAccount()
   const { t } = useTranslation()
+  const {
+    data: { farmsWithPrice },
+  } = useFarmsV3Public()
+  const { data: farmsLP } = useFarms()
 
   // fetch the user's balances of all tracked V2 LP tokens
   const trackedTokenPairs = useTrackedTokenPairs()
@@ -65,6 +71,9 @@ export function Step2() {
     [tokenPairsWithLiquidityTokens, v2PairsBalances],
   )
 
+  const activeV2Farms = farmsLP.filter((farm) => farm.pid !== 0).filter((f) => f.multiplier !== '0X')
+  const activeV3Farms = farmsWithPrice.filter((farm) => farm.multiplier !== '0X')
+
   const v2Pairs = useV2Pairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
   const v2IsLoading =
     fetchingV2PairBalances ||
@@ -72,6 +81,14 @@ export function Step2() {
     (v2Pairs?.length && v2Pairs.every(([pairState]) => pairState === PairState.LOADING))
   const allV2PairsWithLiquidity = v2Pairs
     ?.filter(([pairState, pair]) => pairState === PairState.EXISTS && Boolean(pair))
+    .filter(
+      ([, pair]) =>
+        !activeV3Farms.find((farm) => farm.lpAddress.toLowerCase() === pair?.liquidityToken.address.toLowerCase()),
+    )
+    .filter(
+      ([, pair]) =>
+        !activeV2Farms.find((farm) => farm.lpAddress.toLowerCase() === pair?.liquidityToken.address.toLowerCase()),
+    )
     .map(([, pair]) => pair)
 
   const noLiquidity = !allV2PairsWithLiquidity?.length && !stablePairs?.length

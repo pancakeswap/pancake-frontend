@@ -6,19 +6,20 @@ import { AppBody, AppHeader } from 'components/App'
 import { LightGreyCard } from 'components/Card'
 import { CommitButton } from 'components/CommitButton'
 import ConnectWalletButton from 'components/ConnectWalletButton'
+import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import { DoubleCurrencyLogo } from 'components/Logo'
+import { RangeTag } from 'components/RangeTag'
 import { useToken } from 'hooks/Tokens'
 import { useActiveChainId } from 'hooks/useActiveChainId'
+import useNativeCurrency from 'hooks/useNativeCurrency'
 import { useV3Positions } from 'hooks/v3/useV3Positions'
 import { useAtom } from 'jotai'
 import Image from 'next/image'
 import { useState } from 'react'
-import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
-import { RangeTag } from 'components/RangeTag'
-import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { unwrappedToken } from 'utils/wrappedCurrency'
+import PositionListItem from 'views/AddLiquidityV3/formViews/V3FormView/components/PoolListItem'
+import { AddLiquidityV3Modal } from 'views/AddLiquidityV3/Modal'
 import { useAccount } from 'wagmi'
-import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import { removedPairsAtom } from './Step2'
 
 export function Step4() {
@@ -35,6 +36,10 @@ export function Step4() {
   const removedPairsCurrentChainAndAccount = removedPairs[chainId as ChainId]?.[account]
 
   const removedPairsCurrentChainAsArray = Object.keys(removedPairsCurrentChainAndAccount || {})
+
+  const addLiquidityModal = useModalV2()
+
+  const native = useNativeCurrency()
 
   return (
     <AppBody style={{ maxWidth: '700px' }} m="auto">
@@ -91,29 +96,33 @@ export function Step4() {
       </AtomBox>
       <ModalV2 isOpen={open} closeOnOverlayClick onDismiss={() => setOpen(false)}>
         <Modal title={t('List of removed v2 liquidity')} onDismiss={() => setOpen(false)}>
-          <PreTitle color="subtle" mb="12px">
-            {t('Previous LP')}
-          </PreTitle>
+          <PreTitle mb="12px">{t('Previous LP')}</PreTitle>
           {removedPairsCurrentChainAsArray.map((tokenAddresses) => (
             <Flex key={tokenAddresses} alignItems="center" justifyContent="space-between" mb="8px">
               <PairSelection tokenAddresses={tokenAddresses} />
             </Flex>
           ))}
+          <Button width="100%" onClick={addLiquidityModal.onOpen} mt="24px">
+            {t('Add Other Pairs')}
+          </Button>
         </Modal>
       </ModalV2>
       <AtomBox p="24px">
         {!account ? (
           <ConnectWalletButton width="100%" />
         ) : removedPairsCurrentChainAsArray.length === 0 ? (
-          <Button width="100%" disabled>
-            {t('No Previous Removed LP')}
-          </Button>
+          <>
+            <Button width="100%" onClick={addLiquidityModal.onOpen}>
+              {t('Add Liquidity')}
+            </Button>
+          </>
         ) : (
           <CommitButton onClick={() => setOpen(true)} width="100%">
             {t('Add Liquidity')}
           </CommitButton>
         )}
       </AtomBox>
+      <AddLiquidityV3Modal {...addLiquidityModal} currency0={native} />
     </AppBody>
   )
 }
@@ -145,9 +154,7 @@ function PairSelectionAddLiquidity({ token0, token1 }: { token0: Token; token1: 
         </AutoRow>
         <Button onClick={addLiquidityModal.onOpen}>{t('Add')}</Button>
       </Flex>
-      {addLiquidityModal.isOpen && (
-        <AddLiquidityV3Modal {...addLiquidityModal} currency0={currency0} currency1={currency1} />
-      )}
+      <AddLiquidityV3Modal {...addLiquidityModal} currency0={currency0} currency1={currency1} />
     </LightGreyCard>
   )
 }

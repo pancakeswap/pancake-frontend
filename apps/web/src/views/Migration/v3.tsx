@@ -1,7 +1,7 @@
 import { useTranslation } from '@pancakeswap/localization'
 import { ArrowForwardIcon, Box, Button, Heading, Link, PageHeader, RowBetween, Text } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { AtomBox } from '@pancakeswap/ui'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
@@ -52,9 +52,18 @@ const steps: Step[] = [
 const MigrationPage: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const router = useRouter()
+  const stepFromQuery = router.query.step
   // const { address: account } = useAccount()
   const tableWrapperEl = useRef<HTMLDivElement>(null)
   const [step, setStep] = useState<number>(0)
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (+stepFromQuery >= 1 && +stepFromQuery <= 5) {
+        setStep(+stepFromQuery - 1)
+      }
+    }
+  }, [router.isReady, stepFromQuery])
 
   usePollFarmsWithUserData()
 
@@ -67,6 +76,17 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
 
   const handleMigrationStickyClick = () => {
     if (steps[step + 1]) {
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: {
+            ...router.query,
+            step: step + 2,
+          },
+        },
+        undefined,
+        { shallow: true },
+      )
       setStep((s) => s + 1)
       scrollToTop()
     } else {
@@ -146,7 +166,20 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
           }}
           pickedStep={step}
           steps={steps}
-          onClick={setStep}
+          onClick={(s) => {
+            setStep(s)
+            router.replace(
+              {
+                pathname: router.pathname,
+                query: {
+                  ...router.query,
+                  step: s + 1,
+                },
+              },
+              undefined,
+              { shallow: true },
+            )
+          }}
         />
         {step === 0 && <OldFarm />}
         {step === 1 && <Step2 />}

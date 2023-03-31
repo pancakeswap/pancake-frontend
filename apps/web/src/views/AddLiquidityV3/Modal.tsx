@@ -8,7 +8,7 @@ import { useCurrency } from 'hooks/Tokens'
 import { useRouter } from 'next/router'
 import currencyId from 'utils/currencyId'
 import { useProvider } from 'wagmi'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { AprCalculator } from './components/AprCalculator'
 import { UniversalAddLiquidity } from '.'
 import LiquidityFormProvider from './formViews/V3FormView/form/LiquidityFormProvider'
@@ -21,31 +21,20 @@ export function AddLiquidityV3Modal({
   onDismiss,
   feeAmount,
 }: {
-  currency0: Currency
-  currency1: Currency
+  currency0?: Currency
+  currency1?: Currency
   feeAmount?: FeeAmount
 } & UseModalV2Props) {
   const { t } = useTranslation()
   const router = useRouter()
 
-  const [currencyIdA, currencyIdB] = router.query.currency || [currencyId(currency0), currencyId(currency1)]
+  const [currencyIdA, currencyIdB] =
+    typeof router.query.currency === 'string'
+      ? [router.query.currency]
+      : router.query.currency || [currency0 && currencyId(currency0), currency1 && currencyId(currency1)]
 
   const baseCurrency = useCurrency(currencyIdA)
   const quoteCurrency = useCurrency(currencyIdB)
-
-  useEffect(() => {
-    router.replace(
-      {
-        pathname: router.pathname,
-        query: {},
-      },
-      undefined,
-      {
-        shallow: true,
-      },
-    )
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen])
 
   const dismiss = useCallback(() => {
     onDismiss?.()
@@ -53,14 +42,19 @@ export function AddLiquidityV3Modal({
       router.replace(
         {
           pathname: router.pathname,
-          query: {},
+          query: {
+            ...router.query,
+            currency: [],
+            minPrice: [],
+            maxPrice: [],
+          },
         },
         undefined,
         {
           shallow: true,
         },
       )
-    })
+    }, 600)
   }, [onDismiss, router])
 
   const provider = useProvider()

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useMemo } from 'react'
 import { useAppDispatch } from 'state'
 import { useFarmV2PublicAPI } from 'state/farms/hooks'
-import { useFarmsV3 } from 'state/farmsV3/hooks'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { resetMintState } from 'state/mint/actions'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { AddLiquidityV3Layout, UniversalAddLiquidity } from 'views/AddLiquidityV3'
@@ -18,7 +18,7 @@ const AddLiquidityPage = () => {
 
   // fetching farm api instead of using redux store here to avoid huge amount of actions and hooks needed
   const { data: farmsV2Public } = useFarmV2PublicAPI()
-  const { data: farmV3Public } = useFarmsV3()
+  const { data: farmV3Public } = useFarmsV3Public()
 
   const { currencyIdA, currencyIdB, feeAmount } = useCurrencyParams()
 

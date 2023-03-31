@@ -23,7 +23,7 @@ import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
 import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
-import { useFarmsV3 } from 'state/farmsV3/hooks'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { Field } from 'state/mint/actions'
 import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
 import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
@@ -102,7 +102,7 @@ function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositio
     [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice],
   )
 
-  const { data: farmV3 } = useFarmsV3()
+  const { data: farmV3 } = useFarmsV3Public()
 
   const cakeAprFactor = useMemo(
     () =>

@@ -48,10 +48,10 @@ const API_FLAG = false
 
 const farmFetcherV3 = createFarmFetcherV3(multicallv2)
 
-export const useFarmsV3 = () => {
+export const useFarmsV3Public = () => {
   const { chainId } = useActiveChainId()
 
-  const farmV3 = useSWR(
+  return useSWR(
     [chainId, 'farmV3ApiFetch'],
     async () => {
       if (API_FLAG) {
@@ -86,6 +86,12 @@ export const useFarmsV3 = () => {
       fallbackData: fallback,
     },
   )
+}
+
+export const useFarmsV3 = () => {
+  const { chainId } = useActiveChainId()
+
+  const farmV3 = useFarmsV3Public()
 
   const cakePrice = useCakePriceAsBN()
 

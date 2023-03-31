@@ -6,13 +6,13 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import React, { useCallback, useMemo } from 'react'
 import { useFarms } from 'state/farms/hooks'
 import { usePriceCakeBusd } from 'state/farmsV1/hooks'
-import { useFarmsV3 } from 'state/farmsV3/hooks'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { getFarmApr } from 'utils/apr'
 import { useAccount } from 'wagmi'
 import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
 
-const showV3FarmsOnly = false
+const showV3FarmsOnly = true
 
 const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -20,22 +20,24 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { data: farmsLP, userDataLoaded } = useFarms()
   const {
     data: { farmsWithPrice },
-  } = useFarmsV3()
+  } = useFarmsV3Public()
   const cakePrice = usePriceCakeBusd()
   const { chainId } = useActiveChainId()
 
   const userDataReady = !account || (!!account && userDataLoaded)
 
-  // TODO: v3 farms only show farms with multiples === '0x'
   const farms = farmsLP
     .filter((farm) => farm.pid !== 0)
+    .filter((farm) => farm.multiplier !== '0X')
     .filter((farm) => {
       if (showV3FarmsOnly) {
-        return farmsWithPrice.find(
-          (farmV3) =>
-            (farmV3.quoteToken.address === farm.quoteToken.address && farmV3.token.address === farm.token.address) ||
-            (farmV3.quoteToken.address === farm.token.address && farmV3.token.address === farm.quoteToken.address),
-        )
+        return farmsWithPrice
+          .filter((f) => f.multiplier !== '0X')
+          .find(
+            (farmV3) =>
+              (farmV3.quoteToken.address === farm.quoteToken.address && farmV3.token.address === farm.token.address) ||
+              (farmV3.quoteToken.address === farm.token.address && farmV3.token.address === farm.quoteToken.address),
+          )
       }
       return true
     })
