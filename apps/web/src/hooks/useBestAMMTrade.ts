@@ -69,7 +69,7 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   const isQuoterEnabled = useMemo(() => !isWrapping && (type === 'quoter' || type === 'all'), [type, isWrapping])
 
   const bestTradeFromOffchain = useBestAMMTradeFromOffchain({ ...params, enabled: isOffCHainEnabled })
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({ ...params, enabled: isQuoterEnabled })
+  const bestTradeFromQuoter = useBestAMMTradeFromQuoterApi({ ...params, enabled: isQuoterEnabled })
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
     const { trade: tradeFromQuoter } = bestTradeFromQuoter
@@ -223,6 +223,15 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
 
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
+  revalidateOnUpdate: false,
+  useCommonPools: useCommonPoolsLite,
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+  // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
+  quoterOptimization: false,
+})
+
+export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
+  key: 'useBestAMMTradeFromQuoterApi',
   revalidateOnUpdate: false,
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
