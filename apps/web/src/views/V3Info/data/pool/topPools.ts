@@ -21,7 +21,7 @@ interface TopPoolsResponse {
 /**
  * Fetch top addresses by volume
  */
-export async function getTopPoolAddresses(
+export async function fetchTopPoolAddresses(
   dataClient: GraphQLClient,
   chainId: ChainId,
 ): Promise<{
