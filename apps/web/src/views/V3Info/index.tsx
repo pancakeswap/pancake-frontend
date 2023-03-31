@@ -1,5 +1,5 @@
 import { ethereumTokens } from '@pancakeswap/tokens'
-import { AutoColumn, PairDataTimeWindowEnum, Text, Button, Box, Flex } from '@pancakeswap/uikit'
+import { AutoColumn, Box, Button, Flex, PairDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
@@ -7,17 +7,19 @@ import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import BarChart from './components/BarChart/alt'
+import { DarkGreyCard } from './components/Card'
 import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
-import { ResponsiveRow, RowFixed, RowBetween } from './components/Row'
-import TransactionsTable from './components/TransactionsTable'
+import { RowBetween, RowFixed } from './components/Row'
 import { MonoSpace, PageWrapper, ThemedBackgroundGlobal } from './components/shared'
-import { useProtocolChartData, useProtocolData, useProtocolTransactionData } from './hooks'
+import TokenTable from './components/TokenTable'
+import TransactionsTable from './components/TransactionsTable'
+import { useProtocolChartData, useProtocolData, useProtocolTransactionData, useTopTokensData } from './hooks'
 import { useTransformedVolumeData } from './hooks/chart'
+import { VolumeWindow } from './types'
+import { notEmpty } from './utils'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
-import { VolumeWindow } from './types'
-import { DarkGreyCard } from './components/Card'
 
 const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
   ssr: false,
@@ -36,15 +38,14 @@ export default function Home() {
 
   const protocolData = useProtocolData()
   const transactionData = useProtocolTransactionData()
+  const topTokensData = useTopTokensData()
+  const chartData = useProtocolChartData()
   const { chainId } = useActiveChainId()
 
   const [volumeHover, setVolumeHover] = useState<number | undefined>()
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
   const [leftLabel, setLeftLabel] = useState<string | undefined>()
   const [rightLabel, setRightLabel] = useState<string | undefined>()
-
-  // Hot fix to remove errors in TVL data while subgraph syncs.
-  const chartData = useProtocolChartData()
 
   useEffect(() => {
     setLiquidityHover(undefined)
@@ -95,6 +96,14 @@ export default function Home() {
   const monthlyVolumeData = useTransformedVolumeData(chartData, 'month')
 
   const [volumeWindow, setVolumeWindow] = useState(VolumeWindow.weekly)
+
+  const formattedTokens = useMemo(() => {
+    if (topTokensData)
+      return Object.values(topTokensData)
+        .map((t) => t)
+        .filter(notEmpty)
+    return []
+  }, [topTokensData])
 
   const tvlValue = useMemo(() => {
     return formatDollarAmount(liquidityHover ?? 0, 2, true)
@@ -195,7 +204,8 @@ export default function Home() {
           </RowBetween>
         </DarkGreyCard>
       </Box>
-
+      <Text>Top Tokens</Text>
+      <TokenTable tokenDatas={formattedTokens} />
       <Text>Transactions</Text>
 
       {transactionData ? <TransactionsTable transactions={transactionData} color={theme.colors.primary} /> : null}
