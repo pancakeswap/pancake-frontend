@@ -42,7 +42,7 @@ const EventStepsSection: React.FC<React.PropsWithChildren<EventStepsProps>> = ({
               </Text>
               <Box>
                 <Link href="/nfts" passHref>
-                  <Button as="a">{t('View market')}</Button>
+                  <Button>{t('View market')}</Button>
                 </Link>
               </Box>
             </Flex>

@@ -127,7 +127,7 @@ const TeamCard: React.FC<React.PropsWithChildren<TeamCardProps>> = ({ rank, team
             </Flex>
           </Info>
           <Link href={`/teams/${team?.id}`} passHref>
-            <Button as="a" variant="secondary" scale="sm">
+            <Button variant="secondary" scale="sm">
               {t('See More')}
             </Button>
           </Link>
