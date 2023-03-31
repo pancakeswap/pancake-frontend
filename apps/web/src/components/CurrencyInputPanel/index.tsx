@@ -16,6 +16,7 @@ import styled, { css } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from '@pancakeswap/utils/formatBalance'
@@ -148,7 +149,7 @@ export default function CurrencyInputPanel({
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
 
-  const balance = !hideBalance && !!currency && selectedCurrencyBalance?.toSignificant(6)
+  const balance = !hideBalance && !!currency && formatAmount(selectedCurrencyBalance, 6)
 
   return (
     <SwapUI.CurrencyInputPanel

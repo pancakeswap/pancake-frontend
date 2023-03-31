@@ -107,18 +107,6 @@ export function formatExecutionPrice(
     : `${executionPrice.toSignificant(6)} ${outputAmount.currency.symbol} / ${inputAmount.currency.symbol}`
 }
 
-export function formatTokenAmount(amount?: CurrencyAmount<Currency>, significantLimit = 6): string | undefined {
-  if (!amount) {
-    return undefined
-  }
-  if (
-    amount.greaterThan(JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(significantLimit + amount.currency.decimals)))
-  ) {
-    return amount.toFixed(0)
-  }
-  return amount.toSignificant(6)
-}
-
 export function v3FeeToPercent(fee: FeeAmount): Percent {
   return new Percent(fee, JSBI.multiply(BIPS_BASE, JSBI.BigInt(100)))
 }

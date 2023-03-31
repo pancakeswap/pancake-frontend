@@ -7,6 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useMemo } from 'react'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import { useUserSlippage } from '@pancakeswap/utils/user'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { useSwapState } from 'state/swap/hooks'
 import { basisPointsToPercent } from 'utils/exchange'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -16,7 +17,6 @@ import { calculateGasMargin, isAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
 
 import { isZero } from '../utils/isZero'
-import { formatTokenAmount } from '../utils/exchange'
 
 interface SwapCall {
   address: string
@@ -154,12 +154,12 @@ export default function useSendSwapTransaction(
             const pct = basisPointsToPercent(allowedSlippage)
             const inputAmount =
               trade.tradeType === TradeType.EXACT_INPUT
-                ? formatTokenAmount(trade.inputAmount, 3)
-                : formatTokenAmount(SmartRouter.maximumAmountIn(trade, pct), 3)
+                ? formatAmount(trade.inputAmount, 3)
+                : formatAmount(SmartRouter.maximumAmountIn(trade, pct), 3)
             const outputAmount =
               trade.tradeType === TradeType.EXACT_OUTPUT
-                ? formatTokenAmount(trade.outputAmount, 3)
-                : formatTokenAmount(SmartRouter.minimumAmountOut(trade, pct), 3)
+                ? formatAmount(trade.outputAmount, 3)
+                : formatAmount(SmartRouter.minimumAmountOut(trade, pct), 3)
 
             const base = `Swap ${
               trade.tradeType === TradeType.EXACT_OUTPUT ? 'max.' : ''

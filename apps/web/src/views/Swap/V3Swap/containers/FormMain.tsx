@@ -4,6 +4,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
@@ -21,7 +22,6 @@ import { RiskCheck } from './RiskCheck'
 import { useIsWrapping } from '../hooks'
 import { FlipButton } from './FlipButton'
 import { Recipient } from './Recipient'
-import { formatTokenAmount } from '../utils/exchange'
 
 interface Props {
   inputAmount?: CurrencyAmount<Currency>
@@ -94,8 +94,8 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   )
 
   const isTypingInput = independentField === Field.INPUT
-  const inputValue = typedValue && (isTypingInput ? typedValue : formatTokenAmount(inputAmount))
-  const outputValue = typedValue && (isTypingInput ? formatTokenAmount(outputAmount) : typedValue)
+  const inputValue = typedValue && (isTypingInput ? typedValue : formatAmount(inputAmount))
+  const outputValue = typedValue && (isTypingInput ? formatAmount(outputAmount) : typedValue)
   const inputLoading = typedValue ? !isTypingInput && tradeLoading : false
   const outputLoading = typedValue ? isTypingInput && tradeLoading : false
 
