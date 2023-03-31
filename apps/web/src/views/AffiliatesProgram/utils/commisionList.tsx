@@ -1,6 +1,7 @@
 import { Trans } from '@pancakeswap/localization'
 
 interface CommissionType {
+  id: string
   title: JSX.Element
   percentage: string
   image: {
@@ -12,6 +13,7 @@ interface CommissionType {
 
 const commissionList: CommissionType[] = [
   {
+    id: 'swap',
     title: <Trans>Swap & StableSwap</Trans>,
     percentage: '3%',
     image: {
@@ -21,6 +23,7 @@ const commissionList: CommissionType[] = [
     },
   },
   {
+    id: 'perpetual',
     title: <Trans>Perpetual</Trans>,
     percentage: '20%',
     image: {
@@ -30,6 +33,7 @@ const commissionList: CommissionType[] = [
     },
   },
   {
+    id: 'comingSoon',
     title: <Trans>coming soon!</Trans>,
     percentage: '?',
     image: {

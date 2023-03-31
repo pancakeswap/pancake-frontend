@@ -27,6 +27,8 @@ export interface InfoDetail {
     user: number
   }
   fee: FeeType[]
+  nickName: string
+  ablePerps: boolean
 }
 
 interface AffiliateInfoType {
@@ -51,6 +53,8 @@ const initAffiliateData: InfoDetail = {
     user: 0,
   },
   fee: [],
+  nickName: '',
+  ablePerps: false,
 }
 
 const useAuthAffiliate = (): AffiliateInfoType => {

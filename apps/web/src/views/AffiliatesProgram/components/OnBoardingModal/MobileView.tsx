@@ -8,6 +8,7 @@ import StepIntro from './StepIntro'
 interface MobileViewProps {
   currentView: Views
   isLoading: boolean
+  onDismiss: () => void
   handleStartNow: () => void
 }
 
@@ -27,12 +28,17 @@ const WhiteBackground = styled('div')`
   border-bottom: ${({ theme }) => `solid 1px ${theme.colors.inputSecondary}`};
 `
 
-const MobileView: React.FC<React.PropsWithChildren<MobileViewProps>> = ({ currentView, isLoading, handleStartNow }) => {
+const MobileView: React.FC<React.PropsWithChildren<MobileViewProps>> = ({
+  currentView,
+  isLoading,
+  onDismiss,
+  handleStartNow,
+}) => {
   return (
     <Container>
       <WhiteBackground>
         {currentView === Views.STEP1 ? (
-          <WelcomePage isLoading={isLoading} handleStartNow={handleStartNow} />
+          <WelcomePage isLoading={isLoading} handleStartNow={handleStartNow} onDismiss={onDismiss} />
         ) : (
           <Congratulations />
         )}

@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 import { useAccount } from 'wagmi'
 import { useSignMessage } from '@pancakeswap/wagmi'
 import { useTranslation } from '@pancakeswap/localization'
-import useUserExist from 'views/AffiliatesProgram/hooks/useUserExist'
 import { ethers } from 'ethers'
 import DesktopView from './DesktopView'
 import MobileView from './MobileView'
@@ -24,7 +23,6 @@ const OnBoardingModal = () => {
   const router = useRouter()
   const { address, connector } = useAccount()
   const { signMessageAsync } = useSignMessage()
-  const { isUserExist } = useUserExist()
   const { toastSuccess, toastError } = useToast()
   const { isDesktop } = useMatchBreakpoints()
   const [isOpen, setIsOpen] = useState(false)
@@ -32,11 +30,11 @@ const OnBoardingModal = () => {
   const [currentView, setCurrentView] = useState(Views.STEP1)
 
   useEffect(() => {
-    const { ref, user, discount } = router.query
-    if (!isUserExist && ref && user && discount) {
+    const { ref, user, discount, noperps } = router.query
+    if (ref && user && discount && noperps) {
       setIsOpen(true)
     }
-  }, [isUserExist, router])
+  }, [router])
 
   const handleStartNow = async () => {
     try {
@@ -72,12 +70,26 @@ const OnBoardingModal = () => {
     }
   }
 
+  const onDismiss = () => {
+    setIsOpen(false)
+  }
+
   return (
-    <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={() => setIsOpen(false)}>
+    <ModalV2 isOpen={isOpen} closeOnOverlayClick onDismiss={onDismiss}>
       {isDesktop ? (
-        <DesktopView currentView={currentView} isLoading={isLoading} handleStartNow={handleStartNow} />
+        <DesktopView
+          currentView={currentView}
+          isLoading={isLoading}
+          handleStartNow={handleStartNow}
+          onDismiss={onDismiss}
+        />
       ) : (
-        <MobileView currentView={currentView} isLoading={isLoading} handleStartNow={handleStartNow} />
+        <MobileView
+          currentView={currentView}
+          isLoading={isLoading}
+          handleStartNow={handleStartNow}
+          onDismiss={onDismiss}
+        />
       )}
     </ModalV2>
   )

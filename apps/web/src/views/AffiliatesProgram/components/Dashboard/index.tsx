@@ -47,7 +47,7 @@ const Dashboard = () => {
         >
           <CommissionInfo />
           <Flex flexDirection="column">
-            <MyReferralLink refreshAffiliateInfo={refresh} />
+            <MyReferralLink affiliate={affiliate} refreshAffiliateInfo={refresh} />
             <AffiliateLinks affiliate={affiliate} />
             <ClaimReward />
           </Flex>
