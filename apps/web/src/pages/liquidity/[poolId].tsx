@@ -507,6 +507,7 @@ export default function PoolPage() {
                   <Box width="100%" mr="16px" mb={['8px', '8px', 0]} position="relative">
                     <Flex position="absolute" right={0}>
                       <AprCalculator
+                        allowApply={false}
                         showQuestion
                         baseCurrency={currencyBase}
                         quoteCurrency={currencyQuote}

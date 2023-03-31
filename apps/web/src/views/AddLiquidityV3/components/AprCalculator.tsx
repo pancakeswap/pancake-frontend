@@ -34,6 +34,7 @@ interface Props {
   feeAmount: number
   showTitle?: boolean
   showQuestion?: boolean
+  allowApply?: boolean
 }
 
 const AprButtonContainer = styled(Flex)`
@@ -46,6 +47,7 @@ export function AprCalculator({
   feeAmount,
   showTitle = true,
   showQuestion = false,
+  allowApply = true,
 }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
@@ -163,7 +165,7 @@ export function AprCalculator({
         </AprButtonContainer>
       </Flex>
       <RoiCalculatorModalV2
-        allowApply
+        allowApply={allowApply}
         isOpen={isOpen}
         onDismiss={closeModal}
         depositAmountInUsd={depositUsd}
