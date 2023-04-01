@@ -65,7 +65,13 @@ const Modal: React.FC<React.PropsWithChildren<ModalProps>> = ({
         {headerRightSlot}
         {!hideCloseButton && <ModalCloseButton onDismiss={onDismiss} />}
       </ModalHeader>
-      <ModalBody p={bodyPadding}>{children}</ModalBody>
+      <ModalBody
+        // prevent drag event from propagating to parent on scroll
+        onPointerDownCapture={(e) => e.stopPropagation()}
+        p={bodyPadding}
+      >
+        {children}
+      </ModalBody>
     </ModalWrapper>
   );
 };
