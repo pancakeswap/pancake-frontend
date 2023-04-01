@@ -438,7 +438,7 @@ export default function V3FormView({
             maxAmount={maxAmounts[Field.CURRENCY_B]}
             onMax={() => onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')}
             onPercentInput={(percent) =>
-              onFieldAInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
+              onFieldBInput(maxAmounts[Field.CURRENCY_B]?.multiply(new Percent(percent, 100)).toExact() ?? '')
             }
             disableCurrencySelect
             value={formattedAmounts[Field.CURRENCY_B]}
