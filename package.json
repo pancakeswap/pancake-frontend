@@ -36,6 +36,9 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "resolutions": {
+    "ethers": "5.6.4"
+  },
   "devDependencies": {
     "@changesets/cli": "^2.25.0",
     "@stylelint/postcss-css-in-js": "^0.37.2",

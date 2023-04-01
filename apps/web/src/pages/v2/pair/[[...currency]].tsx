@@ -1,33 +1,30 @@
 import {
   AutoRow,
+  Box,
   Button,
   Card,
   CardBody,
   Flex,
+  Heading,
   NextLinkFromReactRouter,
   Text,
-  Box,
-  Heading,
   useMatchBreakpoints,
 } from '@pancakeswap/uikit'
 import { AppHeader } from 'components/App'
 
+import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import styled from 'styled-components'
 import { CHAIN_IDS } from 'utils/wagmi'
 import Page from 'views/Page'
-import styled from 'styled-components'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
 
 import { LightGreyCard } from 'components/Card'
-import { useRouter } from 'next/router'
-import { useAccount } from 'wagmi'
+import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'components/PositionCard'
 import { useCurrency } from 'hooks/Tokens'
 import { useV2Pair } from 'hooks/usePairs'
-import { useTokenBalance } from 'state/wallet/hooks'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { usePoolTokenPercentage, useTokensDeposited, useTotalUSDValue } from 'components/PositionCard'
-import currencyId from 'utils/currencyId'
-import { Native, WNATIVE } from '@pancakeswap/sdk'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { useRouter } from 'next/router'
+import { useTokenBalance } from 'state/wallet/hooks'
+import { useAccount } from 'wagmi'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -39,7 +36,6 @@ export const BodyWrapper = styled(Card)`
 export default function PoolV2Page() {
   const router = useRouter()
   const { address: account } = useAccount()
-  const { chainId } = useActiveChainId()
 
   const [currencyIdA, currencyIdB] = router?.query?.currency ? router.query.currency : []
 
@@ -65,15 +61,6 @@ export default function PoolV2Page() {
 
   const { isMobile } = useMatchBreakpoints()
 
-  let addCurrencyA = currencyId(baseCurrency)
-  let addCurrencyB = currencyId(currencyB)
-
-  if (WNATIVE[chainId]?.address === baseCurrency?.wrapped?.address) {
-    addCurrencyA = currencyId(Native.onChain(chainId))
-  } else if (WNATIVE[chainId]?.address === currencyB?.wrapped?.address) {
-    addCurrencyB = currencyId(Native.onChain(chainId))
-  }
-
   return (
     <Page>
       <BodyWrapper>
@@ -82,7 +69,7 @@ export default function PoolV2Page() {
             <Flex justifyContent="center" alignItems="center">
               <DoubleCurrencyLogo size={24} currency0={baseCurrency} currency1={currencyB} />
               <Heading as="h2" ml="8px">
-                {baseCurrency?.wrapped?.symbol}-{currencyB?.wrapped?.symbol} LP
+                {baseCurrency?.symbol}-{currencyB?.symbol} LP
               </Heading>
             </Flex>
           }
@@ -91,12 +78,10 @@ export default function PoolV2Page() {
           buttons={
             !isMobile && (
               <>
-                <NextLinkFromReactRouter to={`/v2/add/${addCurrencyA}/${addCurrencyB}`}>
+                <NextLinkFromReactRouter to={`/v2/add/${currencyIdA}/${currencyIdB}`}>
                   <Button width="100%">Add</Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter
-                  to={`/v2/remove/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}
-                >
+                <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`}>
                   <Button ml="16px" variant="secondary" width="100%">
                     Remove
                   </Button>
@@ -108,14 +93,12 @@ export default function PoolV2Page() {
         <CardBody>
           {isMobile && (
             <>
-              <NextLinkFromReactRouter to={`/v2/add/${addCurrencyA}/${addCurrencyB}`}>
+              <NextLinkFromReactRouter to={`/v2/add/${currencyIdA}/${currencyIdB}`}>
                 <Button width="100%" mb="8px">
                   Add
                 </Button>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter
-                to={`/v2/remove/${baseCurrency?.wrapped?.address}/${currencyB?.wrapped?.address}`}
-              >
+              <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`}>
                 <Button variant="secondary" width="100%" mb="8px">
                   Remove
                 </Button>
@@ -142,7 +125,7 @@ export default function PoolV2Page() {
                     <Flex>
                       <CurrencyLogo currency={baseCurrency} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {baseCurrency?.wrapped?.symbol}
+                        {baseCurrency?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
@@ -153,7 +136,7 @@ export default function PoolV2Page() {
                     <Flex>
                       <CurrencyLogo currency={currencyB} />
                       <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                        {currencyB?.wrapped?.symbol}
+                        {currencyB?.symbol}
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">

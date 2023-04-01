@@ -29,6 +29,7 @@ import { useAccount } from 'wagmi'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import useTotalSupply from 'hooks/useTotalSupply'
+import currencyId from 'utils/currencyId'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -97,6 +98,9 @@ export default function StablePoolPage() {
 
   if (!selectedLp) return null
 
+  const currencyIdA = currencyId(selectedLp.token0)
+  const currencyIdB = currencyId(selectedLp.token1)
+
   return (
     <Page>
       <BodyWrapper>
@@ -107,14 +111,10 @@ export default function StablePoolPage() {
           buttons={
             !isMobile && (
               <>
-                <NextLinkFromReactRouter
-                  to={`/add/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
-                >
+                <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1`}>
                   <Button width="100%">Add</Button>
                 </NextLinkFromReactRouter>
-                <NextLinkFromReactRouter
-                  to={`/v2/remove/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
-                >
+                <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}?stable=1`}>
                   <Button ml="16px" variant="secondary" width="100%">
                     Remove
                   </Button>
@@ -126,16 +126,12 @@ export default function StablePoolPage() {
         <CardBody>
           {isMobile && (
             <>
-              <NextLinkFromReactRouter
-                to={`/add/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
-              >
+              <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1`}>
                 <Button mb="8px" width="100%">
                   Add
                 </Button>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter
-                to={`/v2/remove/${stableLp?.token0?.wrapped.address}/${stableLp?.token1?.wrapped.address}?stable=1`}
-              >
+              <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}?stable=1`}>
                 <Button mb="8px" variant="secondary" width="100%">
                   Remove
                 </Button>
