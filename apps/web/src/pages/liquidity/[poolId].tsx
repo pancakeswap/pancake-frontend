@@ -1,6 +1,6 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import { NextSeo } from 'next-seo'
-import { Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
+import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import {
   Button,
   Card,
@@ -8,6 +8,7 @@ import {
   useModal,
   Text,
   AutoRow,
+  RowFixed,
   Flex,
   Box,
   NextLinkFromReactRouter,
@@ -19,6 +20,9 @@ import {
   useMatchBreakpoints,
   NotFound,
   Tag,
+  ExpandableLabel,
+  PreTitle,
+  AutoColumn,
 } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -33,7 +37,7 @@ import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo, useState } from 'react'
+import { Fragment, memo, ReactNode, useCallback, useMemo, useState } from 'react'
 import { useTransactionAdder, useIsTransactionPending } from 'state/transactions/hooks'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
@@ -42,7 +46,7 @@ import { unwrappedToken } from 'utils/wrappedCurrency'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import Page from 'views/Page'
 import { useSigner } from 'wagmi'
-import { useTranslation } from '@pancakeswap/localization'
+import { Trans, useTranslation } from '@pancakeswap/localization'
 import styled from 'styled-components'
 import { LightGreyCard } from 'components/Card'
 import { RangePriceSection } from 'components/RangePriceSection'
@@ -59,6 +63,11 @@ import { PoolState } from 'hooks/v3/types'
 import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
 import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import { GetStaticProps, GetStaticPaths } from 'next'
+import { AtomBox } from '@pancakeswap/ui'
+import { v3Clients } from 'utils/graphql'
+import useSWRImmutable from 'swr/immutable'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import { gql } from 'graphql-request'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -669,6 +678,13 @@ export default function PoolPage() {
                   price={formatPrice(inverted ? pool.token1Price : pool.token0Price, 6, locale)}
                 />
               ) : null}
+              {positionDetails && currency0 && currency1 && (
+                <PositionHistory
+                  tokenId={positionDetails.tokenId.toString()}
+                  currency0={currency0}
+                  currency1={currency1}
+                />
+              )}
             </CardBody>
           </>
         )}
@@ -678,6 +694,212 @@ export default function PoolPage() {
 }
 
 PoolPage.chains = CHAIN_IDS
+
+type PositionTX = {
+  id: string
+  amount0: string
+  amount1: string
+  timestamp: string
+}
+
+type PositionHistoryResult = {
+  positionSnapshots: {
+    id: string
+    transaction: {
+      mints: PositionTX[]
+      burns: PositionTX[]
+      collects: PositionTX[]
+    }
+  }[]
+}
+
+const PositionHistory = memo(PositionHistory_)
+
+function PositionHistory_({
+  tokenId,
+  currency0,
+  currency1,
+}: {
+  tokenId: string
+  currency0: Currency
+  currency1: Currency
+}) {
+  const { t } = useTranslation()
+  const { query } = useRouter()
+  const isEnable = !!query.dev
+  const [isExpanded, setIsExpanded] = useState(false)
+  const { chainId } = useActiveChainId()
+  const client = v3Clients[chainId as ChainId]
+  const { data, isLoading } = useSWRImmutable(
+    client && tokenId && ['positionHistory', chainId],
+    async () => {
+      const result = await client.request<PositionHistoryResult>(
+        gql`
+          query positionHistory($tokenId: String!) {
+            positionSnapshots(where: { position: $tokenId }, orderBy: timestamp, orderDirection: desc, first: 30) {
+              id
+              transaction {
+                mints(where: { or: [{ amount0_gt: "0" }, { amount1_gt: "0" }] }) {
+                  id
+                  timestamp
+                  amount1
+                  amount0
+                }
+                burns(where: { or: [{ amount0_gt: "0" }, { amount1_gt: "0" }] }) {
+                  id
+                  timestamp
+                  amount1
+                  amount0
+                }
+                collects(where: { or: [{ amount0_gt: "0" }, { amount1_gt: "0" }] }) {
+                  id
+                  timestamp
+                  amount0
+                  amount1
+                }
+              }
+            }
+          }
+        `,
+        {
+          tokenId,
+        },
+      )
+
+      return result.positionSnapshots.filter((snapshot) => {
+        const { transaction } = snapshot
+        if (transaction.mints.length > 0 || transaction.burns.length > 0 || transaction.collects.length > 0) {
+          return true
+        }
+        return false
+      })
+    },
+    {
+      revalidateOnMount: true,
+    },
+  )
+
+  if (!isEnable) {
+    return null
+  }
+
+  if (isLoading || data?.length === 0) {
+    return null
+  }
+
+  return (
+    <AtomBox textAlign="center" pt="16px">
+      <ExpandableLabel
+        expanded={isExpanded}
+        onClick={() => {
+          setIsExpanded(!isExpanded)
+        }}
+      >
+        {isExpanded ? t('Hide') : t('History')}
+      </ExpandableLabel>
+      {isExpanded && (
+        <AtomBox display="grid" gap="16px">
+          <AtomBox display="grid" style={{ gridTemplateColumns: '1fr 1fr 1fr' }} alignItems="center">
+            <PreTitle>{t('Timestamp')}</PreTitle>
+            <PreTitle>{t('Action')}</PreTitle>
+            <PreTitle>{t('Token Transferred')}</PreTitle>
+          </AtomBox>
+
+          {data.map((d) => {
+            return (
+              <AutoColumn key={d.id} gap="16px">
+                {d.transaction.mints.map((positionTx) => (
+                  <PositionHistoryColumn
+                    positionTx={positionTx}
+                    key={positionTx.id}
+                    type="mint"
+                    currency0={currency0}
+                    currency1={currency1}
+                  />
+                ))}
+                {d.transaction.collects.map((positionTx) => (
+                  <PositionHistoryColumn
+                    positionTx={positionTx}
+                    key={positionTx.id}
+                    type="collect"
+                    currency0={currency0}
+                    currency1={currency1}
+                  />
+                ))}
+                {d.transaction.burns.map((positionTx) => (
+                  <PositionHistoryColumn
+                    positionTx={positionTx}
+                    key={positionTx.id}
+                    type="burn"
+                    currency0={currency0}
+                    currency1={currency1}
+                  />
+                ))}
+              </AutoColumn>
+            )
+          })}
+        </AtomBox>
+      )}
+    </AtomBox>
+  )
+}
+
+type PositionHistoryType = 'mint' | 'burn' | 'collect'
+const positionHistoryTypeText = {
+  mint: <Trans>Add Liquidity</Trans>,
+  burn: <Trans>Remove Liquidity</Trans>,
+  collect: <Trans>Collect fee</Trans>,
+} satisfies Record<PositionHistoryType, ReactNode>
+
+function PositionHistoryColumn({
+  positionTx,
+  type,
+  currency0,
+  currency1,
+}: {
+  positionTx: PositionTX
+  type: PositionHistoryType
+  currency0: Currency
+  currency1: Currency
+}) {
+  const date = new Date(+positionTx.timestamp * 1_000)
+
+  const isPlus = type !== 'burn'
+
+  return (
+    <AtomBox
+      display="grid"
+      style={{ gridTemplateColumns: '1fr 1fr 1fr' }}
+      gap="16px"
+      alignItems="center"
+      borderTop="1"
+      p="16px"
+    >
+      <Text ellipsis>{date.toLocaleString()}</Text>
+      <Text>{positionHistoryTypeText[type]}</Text>
+      <AutoColumn gap="4px">
+        <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
+          <Text bold ellipsis>
+            {isPlus ? '+' : '-'} {positionTx.amount0}
+          </Text>
+          <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+            <CurrencyLogo currency={currency0} />
+            <Text>{currency0.symbol}</Text>
+          </AutoRow>
+        </AutoRow>
+        <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
+          <Text bold ellipsis>
+            {isPlus ? '+' : '-'} {positionTx.amount1}
+          </Text>
+          <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+            <CurrencyLogo currency={currency1} />
+            <Text>{currency1.symbol}</Text>
+          </AutoRow>
+        </AutoRow>
+      </AutoColumn>
+    </AtomBox>
+  )
+}
 
 export const getStaticPaths: GetStaticPaths = () => {
   return {
