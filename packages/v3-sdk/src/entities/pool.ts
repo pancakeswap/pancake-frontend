@@ -203,11 +203,15 @@ export class Pool {
     const zeroForOne = outputAmount.currency.equals(this.token1)
 
     const {
+      amountSpecifiedRemaining,
       amountCalculated: inputAmount,
       sqrtRatioX96,
       liquidity,
       tickCurrent,
     } = await this.swap(zeroForOne, JSBI.multiply(outputAmount.quotient, NEGATIVE_ONE), sqrtPriceLimitX96)
+
+    invariant(JSBI.equal(amountSpecifiedRemaining, ZERO), 'INSUFICIENT_LIQUIDITY')
+
     const inputToken = zeroForOne ? this.token0 : this.token1
     return [
       CurrencyAmount.fromRawAmount(inputToken, inputAmount),
@@ -229,7 +233,13 @@ export class Pool {
     zeroForOne: boolean,
     amountSpecified: JSBI,
     sqrtPriceLimitX96?: JSBI
-  ): Promise<{ amountCalculated: JSBI; sqrtRatioX96: JSBI; liquidity: JSBI; tickCurrent: number }> {
+  ): Promise<{
+    amountCalculated: JSBI
+    sqrtRatioX96: JSBI
+    liquidity: JSBI
+    tickCurrent: number
+    amountSpecifiedRemaining: JSBI
+  }> {
     if (!sqrtPriceLimitX96)
       sqrtPriceLimitX96 = zeroForOne
         ? JSBI.add(TickMath.MIN_SQRT_RATIO, ONE)
@@ -321,9 +331,8 @@ export class Pool {
       }
     }
 
-    invariant(JSBI.equal(state.amountSpecifiedRemaining, ZERO), 'INSUFICIENT_LIQUIDITY')
-
     return {
+      amountSpecifiedRemaining: state.amountSpecifiedRemaining,
       amountCalculated: state.amountCalculated,
       sqrtRatioX96: state.sqrtPriceX96,
       liquidity: state.liquidity,
