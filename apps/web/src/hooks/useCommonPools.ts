@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
 import { Currency } from '@pancakeswap/sdk'
-import { usePropsChanged } from '@pancakeswap/hooks'
+import { usePropsChanged, usePreviousValue } from '@pancakeswap/hooks'
 import { Pool } from '@pancakeswap/smart-router/evm'
 import { useEffect, useMemo, useState, useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
@@ -70,36 +70,33 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
           : null,
       [v2BlockNumber, v3BlockNumber, stableBlockNumber],
     )
+    const pairKey = useMemo(
+      () => currencyA && currencyB && [currencyA.symbol, currencyB.symbol],
+      [currencyA, currencyB],
+    )
+    const previousPairKey = usePreviousValue(pairKey)
     const poolKey = useMemo(
       () =>
-        currencyA &&
-        currencyB &&
+        pairKey &&
         v2BlockNumber &&
         v3BlockNumber &&
         stableBlockNumber &&
-        (allowInconsistentBlock || consistentBlockNumber) &&
-        [
-          currencyA.symbol,
-          currencyB.symbol,
+        (allowInconsistentBlock || consistentBlockNumber) && [
+          ...pairKey,
           consistentBlockNumber?.toString(),
           v2BlockNumber,
           v3BlockNumber,
           stableBlockNumber,
-        ].join('_'),
-      [
-        currencyA,
-        currencyB,
-        consistentBlockNumber,
-        v2BlockNumber,
-        v3BlockNumber,
-        stableBlockNumber,
-        allowInconsistentBlock,
-      ],
+        ],
+      [pairKey, consistentBlockNumber, v2BlockNumber, v3BlockNumber, stableBlockNumber, allowInconsistentBlock],
     )
-    const { data: pools } = useQuery<Pool[] | null>([key, poolKey], () => [...v2Pools, ...stablePools, ...v3Pools], {
-      enabled: !!(v2Pools && v3Pools && stablePools && poolKey),
-      keepPreviousData: !currenciesUpdated,
-    })
+    const { data: pools, refetch } = useQuery<Pool[] | null>(
+      [key, ...(pairKey || [])],
+      () => [...v2Pools, ...stablePools, ...v3Pools],
+      {
+        enabled: !!(v2Pools && v3Pools && stablePools && poolKey),
+      },
+    )
 
     const refresh = useCallback(() => latestBlockNumber && setBlockNumber(latestBlockNumber), [latestBlockNumber])
 
@@ -120,10 +117,16 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
     }, [consistentBlockNumber, latestBlockNumber, refresh])
 
     useEffect(() => {
-      if (currenciesUpdated) {
-        client.removeQueries()
+      if (latestBlockNumber) {
+        refetch()
       }
-    }, [currenciesUpdated, client])
+    }, [latestBlockNumber, refetch])
+
+    useEffect(() => {
+      if (currenciesUpdated && previousPairKey) {
+        client.removeQueries({ queryKey: [key, ...previousPairKey] })
+      }
+    }, [currenciesUpdated, client, previousPairKey])
 
     const loading = v2Loading || v3Loading || stableLoading
     const syncing = v2Syncing || v3Syncing || stableSyncing

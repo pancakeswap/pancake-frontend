@@ -2,7 +2,7 @@
 import { BigintIsh, Currency, ChainId } from '@pancakeswap/sdk'
 import { SmartRouter, Pool } from '@pancakeswap/smart-router/evm'
 import { Provider as IProvider } from '@ethersproject/providers'
-import useSWR from 'swr'
+import { useQuery } from '@tanstack/react-query'
 import { useMemo, useEffect } from 'react'
 
 import { provider } from 'utils/wagmi'
@@ -50,8 +50,8 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
     }, [currencyA, currencyB])
 
-    const poolState = useSWR(
-      enabled && blockNumber && key && pairs ? [poolType, 'pools', key] : null,
+    const poolState = useQuery(
+      [poolType, 'pools', key],
       async () => {
         const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber.toString()}`
         SmartRouter.metric(label)
@@ -65,14 +65,15 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
         }
       },
       {
-        revalidateOnFocus: false,
+        enabled: !!(enabled && blockNumber && key && pairs),
+        refetchOnWindowFocus: false,
       },
     )
 
-    const { mutate, data, isLoading, isValidating } = poolState
+    const { refetch, data, isLoading, isFetching: isValidating } = poolState
     useEffect(() => {
       // Revalidate pools if block number increases
-      mutate()
+      refetch()
       // eslint-disable-next-line
     }, [blockNumber])
 
