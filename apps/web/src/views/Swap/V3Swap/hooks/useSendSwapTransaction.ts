@@ -40,6 +40,8 @@ interface FailedCall extends SwapCallEstimate {
 
 class InvalidSwapError extends Error {}
 
+export class TransactionRejectedError extends Error {}
+
 // returns a function that will execute a swap, if the parameters are all valid
 export default function useSendSwapTransaction(
   account: string | null | undefined,
@@ -207,8 +209,8 @@ export default function useSendSwapTransaction(
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
-            if (error?.code === 4001) {
-              throw new Error(t('Transaction rejected'))
+            if (error?.code === 4001 || error?.code === 'ACTION_REJECTED') {
+              throw new TransactionRejectedError(t('Transaction rejected'))
             } else {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Swap failed`, error, address, calldata, value)

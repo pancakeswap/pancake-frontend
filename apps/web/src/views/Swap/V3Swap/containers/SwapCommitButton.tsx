@@ -43,6 +43,7 @@ import { useRoutingSettingChanged } from 'state/user/smartRouter'
 import ProgressSteps from '../../components/ProgressSteps'
 import { SwapCallbackError } from '../../components/styleds'
 import { useSlippageAdjustedAmounts, useSwapInputError, useParsedAmounts, useSwapCallback } from '../hooks'
+import { TransactionRejectedError } from '../hooks/useSendSwapTransaction'
 import { computeTradePriceBreakdown } from '../utils/exchange'
 import { ConfirmSwapModal } from './ConfirmSwapModal'
 
@@ -113,6 +114,14 @@ export function SwapCommitButton({ trade, tradeError, tradeLoading }: SwapCommit
   const [approvalSubmitted, setApprovalSubmitted] = useState<boolean>(false)
 
   // Handlers
+  const handleConfirmDismiss = useCallback(() => {
+    setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
+    // if there was a tx hash, we want to clear the input
+    if (txHash) {
+      onUserInput(Field.INPUT, '')
+    }
+  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
+
   const handleSwap = useCallback(() => {
     if (
       priceImpactWithoutFee &&
@@ -134,6 +143,10 @@ export function SwapCommitButton({ trade, tradeError, tradeLoading }: SwapCommit
         setSwapState({ attemptingTxn: false, tradeToConfirm, swapErrorMessage: undefined, txHash: res.hash })
       })
       .catch((error) => {
+        if (error instanceof TransactionRejectedError) {
+          handleConfirmDismiss()
+          return
+        }
         setSwapState({
           attemptingTxn: false,
           tradeToConfirm,
@@ -141,20 +154,11 @@ export function SwapCommitButton({ trade, tradeError, tradeLoading }: SwapCommit
           txHash: undefined,
         })
       })
-  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState])
+  }, [priceImpactWithoutFee, swapCallback, tradeToConfirm, t, setSwapState, handleConfirmDismiss])
 
   const handleAcceptChanges = useCallback(() => {
     setSwapState({ tradeToConfirm: trade, swapErrorMessage, txHash, attemptingTxn })
   }, [attemptingTxn, swapErrorMessage, trade, txHash, setSwapState])
-
-  const handleConfirmDismiss = useCallback(() => {
-    setSwapState({ tradeToConfirm, attemptingTxn, swapErrorMessage, txHash })
-    // if there was a tx hash, we want to clear the input
-    if (txHash) {
-      onUserInput(Field.INPUT, '')
-    }
-  }, [attemptingTxn, onUserInput, swapErrorMessage, tradeToConfirm, txHash, setSwapState])
-
   // End Handlers
 
   // Modals
