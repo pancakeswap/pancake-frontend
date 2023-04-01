@@ -90,13 +90,13 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
         ],
       [pairKey, consistentBlockNumber, v2BlockNumber, v3BlockNumber, stableBlockNumber, allowInconsistentBlock],
     )
-    const { data: pools, refetch } = useQuery<Pool[] | null>(
-      [key, ...(pairKey || [])],
-      () => [...v2Pools, ...stablePools, ...v3Pools],
-      {
-        enabled: !!(v2Pools && v3Pools && stablePools && poolKey),
-      },
-    )
+    const {
+      data: pools,
+      refetch,
+      isFetched,
+    } = useQuery<Pool[] | null>([key, ...(pairKey || [])], () => [...v2Pools, ...stablePools, ...v3Pools], {
+      enabled: !!(v2Pools && v3Pools && stablePools && poolKey),
+    })
 
     const refresh = useCallback(() => latestBlockNumber && setBlockNumber(latestBlockNumber), [latestBlockNumber])
 
@@ -117,9 +117,10 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
     }, [consistentBlockNumber, latestBlockNumber, refresh])
 
     useEffect(() => {
-      if (latestBlockNumber) {
+      if (latestBlockNumber && isFetched) {
         refetch()
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [latestBlockNumber, refetch])
 
     useEffect(() => {

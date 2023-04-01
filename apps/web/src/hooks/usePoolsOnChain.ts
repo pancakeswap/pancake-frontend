@@ -70,10 +70,12 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       },
     )
 
-    const { refetch, data, isLoading, isFetching: isValidating } = poolState
+    const { refetch, data, isLoading, isFetching: isValidating, isFetched } = poolState
     useEffect(() => {
       // Revalidate pools if block number increases
-      refetch()
+      if (isFetched) {
+        refetch()
+      }
       // eslint-disable-next-line
     }, [blockNumber])
 
