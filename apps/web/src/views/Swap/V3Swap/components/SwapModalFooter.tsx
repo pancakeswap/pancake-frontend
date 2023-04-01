@@ -3,7 +3,6 @@ import { Currency, CurrencyAmount, Price, Percent, TradeType } from '@pancakeswa
 import { AutoRenewIcon, Button, QuestionHelper, Text, Link, AutoColumn } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { useState } from 'react'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
@@ -49,11 +48,6 @@ export function SwapModalFooter({
   const { t } = useTranslation()
   const [showInverted, setShowInverted] = useState<boolean>(false)
   const severity = warningSeverity(priceImpactWithoutFee)
-
-  const totalFeePercent = `${(TOTAL_FEE * 100).toFixed(2)}%`
-  const lpHoldersFeePercent = `${(LP_HOLDERS_FEE * 100).toFixed(2)}%`
-  const treasuryFeePercent = `${(TREASURY_FEE * 100).toFixed(4)}%`
-  const buyBackFeePercent = `${(BUYBACK_FEE * 100).toFixed(4)}%`
 
   return (
     <>
@@ -114,25 +108,18 @@ export function SwapModalFooter({
         </RowBetween>
         <RowBetween>
           <RowFixed>
-            <Text fontSize="14px">{t('Liquidity Provider Fee')}</Text>
+            <Text fontSize="14px">{t('Trading Fee')}</Text>
             <QuestionHelper
               text={
                 <>
-                  <Text mb="12px">
-                    {t('For each non-stableswap trade, a %amount% fee is paid', { amount: totalFeePercent })}
+                  <Text>
+                    {t(
+                      'Fee ranging from 0.1% to 0.01% depending on the pool fee tier. You can check the fee tier by clicking the magnifier icon under the “Route” section.',
+                    )}
                   </Text>
-                  <Text>- {t('%amount% to LP token holders', { amount: lpHoldersFeePercent })}</Text>
-                  <Text>- {t('%amount% to the Treasury', { amount: treasuryFeePercent })}</Text>
-                  <Text>- {t('%amount% towards CAKE buyback and burn', { amount: buyBackFeePercent })}</Text>
                   <Text mt="12px">
-                    {t('For each stableswap trade, refer to the fee table')}
-                    <Link
-                      style={{ display: 'inline' }}
-                      ml="4px"
-                      external
-                      href="https://docs.pancakeswap.finance/products/stableswap#stableswap-fees"
-                    >
-                      {t('here.')}
+                    <Link style={{ display: 'inline' }} ml="4px" external href="https://docs.pancakeswap.finance/">
+                      {t('Fee Breakdown and Tokenomics')}
                     </Link>
                   </Text>
                 </>
