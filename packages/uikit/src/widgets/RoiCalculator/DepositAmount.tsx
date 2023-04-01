@@ -77,7 +77,9 @@ export function DepositUsdAmountInput({
           <StyledButton variant={value === max ? "primary" : "tertiary"} scale="xs" mr="0.25em" onClick={onMax}>
             {maxLabel || t("Max")}
           </StyledButton>
-          <QuestionHelper text="Tips" />
+          <QuestionHelper
+            text={t("Automatically fill in the maximum token amount according to your balance and position settings.")}
+          />
         </Flex>
       </Flex>
     </>

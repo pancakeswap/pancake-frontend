@@ -2382,5 +2382,6 @@
   "Avg": "Avg",
   "Apply Settings": "Apply Settings",
   "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap": "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap",
-  "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards."
+  "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.": "Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.",
+  "Automatically fill in the maximum token amount according to your balance and position settings.": "Automatically fill in the maximum token amount according to your balance and position settings."
 }
