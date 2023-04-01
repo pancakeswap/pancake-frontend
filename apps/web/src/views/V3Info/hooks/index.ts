@@ -1,5 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
-import dayjs from 'dayjs'
+import dayjs, { OpUnitType } from 'dayjs'
 import { GraphQLClient } from 'graphql-request'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { multiChainName } from 'state/info/constant'
@@ -13,10 +13,21 @@ import { fetchProtocolData } from '../data/protocol/overview'
 import { fetchTopTransactions } from '../data/protocol/transactions'
 import { fetchPairPriceChartTokenData, fetchTokenPriceData } from '../data/token/priceData'
 import { fetchedTokenDatas } from '../data/token/tokenData'
+import { fetchTokenTransactions } from '../data/token/transactions'
+import { fetchPoolsForToken } from '../data/token/poolsForToken'
+import { fetchTokenChartData } from '../data/token/chartData'
 import { fetchTopTokenAddresses } from '../data/token/topTokens'
 import { fetchPoolDatas } from '../data/pool/poolData'
 import { fetchTopPoolAddresses } from '../data/pool/topPools'
-import { ChartDayData, PriceChartEntry, ProtocolData, TokenData, Transaction, PoolData } from '../types'
+import {
+  ChartDayData,
+  PriceChartEntry,
+  ProtocolData,
+  TokenData,
+  Transaction,
+  PoolData,
+  TokenChartEntry,
+} from '../types'
 
 const ONE_HOUR_SECONDS = 3600
 const SIX_HOUR_SECONDS = 21600
@@ -153,6 +164,70 @@ export const useTopTokensData = ():
   return data?.data
 }
 
+export const useTokenData = (address: string): TokenData | undefined => {
+  const { chainId } = useActiveChainId()
+  const [t24, t48, t7d] = getDeltaTimestamps()
+  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+
+  const { data } = useSWRImmutable(
+    chainId && blocks && address && blocks.length > 0 && [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
+    () => fetchedTokenDatas(v3Clients[chainId], [address], blocks),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data?.[address]
+}
+
+export const usePoolsForToken = (address: string): string[] | undefined => {
+  const { chainId } = useActiveChainId()
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/token/poolsForTOken/${chainId}/${address}`, chainId],
+    () => fetchPoolsForToken(address, v3Clients[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.addresses
+}
+
+export const useTokenChartData = (address: string): TokenChartEntry[] | undefined => {
+  const { chainId } = useActiveChainId()
+
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/token/tokenChartData/${chainId}/${address}`, chainId],
+    () => fetchTokenChartData(address, v3Clients[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data
+}
+
+export const useTokenPriceData = (
+  address: string,
+  interval: number,
+  timeWindow: OpUnitType,
+): PriceChartEntry[] | undefined => {
+  const { chainId } = useActiveChainId()
+  const utcCurrentTime = dayjs()
+  const startTimestamp = utcCurrentTime
+    .subtract(1, timeWindow ?? 'day')
+    .startOf('hour')
+    .unix()
+
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/token/tokenPriceData/${chainId}/${address}/${interval}/${timeWindow}`, chainId],
+    () => fetchTokenPriceData(address, interval, startTimestamp, v3Clients[chainId], multiChainName[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data
+}
+
+export const useTokenTransactions = (address: string): Transaction[] | undefined => {
+  const { chainId } = useActiveChainId()
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/token/tokenTransaction/${chainId}/${address}`, chainId],
+    () => fetchTokenTransactions(address, v3Clients[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data
+}
+
 export async function fetchTopPools(dataClient: GraphQLClient, chainId: ChainId, blocks: Block[]) {
   try {
     const topPoolAddress = await fetchTopPoolAddresses(dataClient, chainId)
@@ -182,4 +257,21 @@ export const useTopPoolsData = ():
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
+}
+
+export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
+  const { chainId } = useActiveChainId()
+  const [t24, t48, t7d] = getDeltaTimestamps()
+  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+
+  const { data } = useSWRImmutable(
+    chainId &&
+      blocks &&
+      blocks.length > 0 &&
+      addresses &&
+      addresses.length > 0 && [`v3/info/pool/poolsData/${chainId}/${addresses.join()}`, chainId],
+    () => fetchPoolDatas(v3Clients[chainId], addresses, blocks),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data ? Object.values(data.data) : undefined
 }

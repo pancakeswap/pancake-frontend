@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { OpUnitType } from 'dayjs'
 
 export const v3InfoPath = `v3Info`
 
@@ -25,3 +26,13 @@ export const TOKEN_HIDE: { [key: string]: string[] } = {
   ],
   [ChainId.BSC]: [],
 }
+
+export const TimeWindow: {
+  [key: string]: OpUnitType
+} = {
+  DAY: 'day',
+  WEEK: 'week',
+  MONTH: 'month',
+}
+
+export const ONE_HOUR_SECONDS = 3600
