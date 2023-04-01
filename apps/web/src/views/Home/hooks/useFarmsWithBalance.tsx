@@ -10,8 +10,11 @@ import useSWR from 'swr'
 import { useFarmsLength } from 'state/farms/hooks'
 import { getFarmConfig } from '@pancakeswap/farms/constants'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
-import { useBCakeProxyContract, useMasterchef } from 'hooks/useContract'
+import { useBCakeProxyContract, useMasterchef, useMasterchefV3 } from 'hooks/useContract'
 import { CAKE } from '@pancakeswap/tokens'
+import { useMemo } from 'react'
+import { useStakedPositionsByUser } from 'state/farmsV3/hooks'
+import { useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
 import { Masterchef, BCakeProxy } from 'config/abi/types'
 import { verifyBscNetwork } from 'utils/verifyBscNetwork'
 import { useBCakeProxyContractAddress } from '../../Farms/hooks/useBCakeProxyContractAddress'
@@ -28,6 +31,11 @@ const useFarmsWithBalance = () => {
   const { proxyAddress, isLoading: isProxyContractAddressLoading } = useBCakeProxyContractAddress(account, chainId)
   const bCakeProxy = useBCakeProxyContract(proxyAddress)
   const masterChefContract = useMasterchef()
+
+  const masterchefV3 = useMasterchefV3()
+  const { tokenIds: stakedTokenIds } = useV3TokenIdsByAccount(masterchefV3, account)
+
+  const { tokenIdResults: v3PendingCakes } = useStakedPositionsByUser(stakedTokenIds)
 
   const getFarmsWithBalances = async (
     farms: SerializedFarmConfig[],
@@ -103,7 +111,34 @@ const useFarmsWithBalance = () => {
     { refreshInterval: FAST_INTERVAL },
   )
 
-  return { farmsWithStakedBalance, earningsSum }
+  const v3FarmsWithBalance = stakedTokenIds
+    .map((tokenId, i) => {
+      if (v3PendingCakes?.[i]?.gt(0)) {
+        return {
+          sendTx: {
+            tokenId: tokenId.toString(),
+            to: account,
+          },
+        }
+      }
+      return null
+    })
+    .filter(Boolean)
+
+  return useMemo(() => {
+    return {
+      farmsWithStakedBalance: [...farmsWithStakedBalance, ...v3FarmsWithBalance],
+      earningsSum:
+        earningsSum +
+          v3PendingCakes?.reduce((accum, earning) => {
+            const earningNumber = new BigNumber(earning.toString())
+            if (earningNumber.eq(0)) {
+              return accum
+            }
+            return accum + earningNumber.div(DEFAULT_TOKEN_DECIMAL).toNumber()
+          }, 0) ?? 0,
+    }
+  }, [earningsSum, farmsWithStakedBalance, v3FarmsWithBalance, v3PendingCakes])
 }
 
 export default useFarmsWithBalance

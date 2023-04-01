@@ -10,24 +10,25 @@ it("renders correctly", () => {
   );
   expect(asFragment()).toMatchInlineSnapshot(`
     <DocumentFragment>
-      .c8 {
+      .c9 {
       -webkit-align-self: center;
       -ms-flex-item-align: center;
       align-self: center;
       fill: var(--colors-primary);
+      color: var(--colors-primary);
       -webkit-flex-shrink: 0;
       -ms-flex-negative: 0;
       flex-shrink: 0;
     }
 
-    .c4 {
+    .c5 {
       color: var(--colors-text);
       font-weight: 600;
       line-height: 1.5;
       font-size: 16px;
     }
 
-    .c6 {
+    .c7 {
       position: relative;
       -webkit-align-items: center;
       -webkit-box-align: center;
@@ -64,11 +65,12 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c6:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
-      opacity: 0.65;
+    .c7:focus-visible {
+      outline: none;
+      box-shadow: var(--shadows-focus);
     }
 
-    .c6:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
+    .c7:active:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled) {
       opacity: 0.85;
       -webkit-transform: translateY(1px);
       -ms-transform: translateY(1px);
@@ -76,8 +78,8 @@ it("renders correctly", () => {
       box-shadow: none;
     }
 
-    .c6:disabled,
-    .c6.pancake-button--disabled {
+    .c7:disabled,
+    .c7.pancake-button--disabled {
       background-color: var(--colors-backgroundDisabled);
       border-color: var(--colors-backgroundDisabled);
       box-shadow: none;
@@ -85,29 +87,33 @@ it("renders correctly", () => {
       cursor: not-allowed;
     }
 
-    .c7 {
-      padding: 0;
+    .c8 {
+      padding: 2px;
       width: 48px;
     }
 
-    .c9 {
+    .c1 {
+      min-width: 320px;
+    }
+
+    .c10 {
       padding: 24px;
     }
 
-    .c2 {
+    .c3 {
       display: -webkit-box;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
     }
 
-    .c5 {
+    .c6 {
       font-size: 20px;
       font-weight: 600;
       line-height: 1.1;
     }
 
-    .c1 {
+    .c2 {
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
@@ -121,7 +127,7 @@ it("renders correctly", () => {
       padding: 12px 24px;
     }
 
-    .c3 {
+    .c4 {
       -webkit-align-items: center;
       -webkit-box-align: center;
       -ms-flex-align: center;
@@ -131,7 +137,7 @@ it("renders correctly", () => {
       flex: 1;
     }
 
-    .c10 {
+    .c11 {
       -webkit-flex-direction: column;
       -ms-flex-direction: column;
       flex-direction: column;
@@ -150,33 +156,38 @@ it("renders correctly", () => {
       max-height: calc(var(--vh,1vh) * 100);
       z-index: 100;
       position: absolute;
-      min-width: 320px;
       bottom: 0;
       max-width: none !important;
       min-height: 300px;
     }
 
     @supports (-webkit-text-size-adjust:none) and (not (-ms-accelerator:true)) and (not (-moz-appearance:none)) {
-      .c8 {
+      .c9 {
         -webkit-filter: none !important;
         filter: none !important;
       }
     }
 
+    @media (hover:hover) {
+      .c7:hover:not(:disabled):not(.pancake-button--disabled):not(.pancake-button--disabled):not(:active) {
+        opacity: 0.65;
+      }
+    }
+
     @media screen and (min-width:968px) {
-      .c5 {
+      .c6 {
         font-size: 20px;
       }
     }
 
     @media screen and (min-width:852px) {
-      .c1 {
+      .c2 {
         background: transparent;
       }
     }
 
     @media screen and (min-width:852px) {
-      .c10 {
+      .c11 {
         display: -webkit-box;
         display: -webkit-flex;
         display: -ms-flexbox;
@@ -202,39 +213,43 @@ it("renders correctly", () => {
           class="c1"
         >
           <div
-            class="c2 c3"
+            class="c2"
           >
-            <h2
-              class="c4 c5"
-              color="text"
-              font-size="16px"
+            <div
+              class="c3 c4"
             >
-              Title
-            </h2>
+              <h2
+                class="c5 c6"
+                color="text"
+                font-size="16px"
+              >
+                Title
+              </h2>
+            </div>
+            <button
+              aria-label="Close the dialog"
+              class="c7 c8"
+              scale="md"
+            >
+              <svg
+                class="c9"
+                color="primary"
+                viewBox="0 0 24 24"
+                width="20px"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
           </div>
-          <button
-            aria-label="Close the dialog"
-            class="c6 c7"
-            scale="md"
+          <div
+            class="c10 c3 c11"
           >
-            <svg
-              class="c8"
-              color="primary"
-              viewBox="0 0 24 24"
-              width="20px"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M18.3 5.70997C17.91 5.31997 17.28 5.31997 16.89 5.70997L12 10.59L7.10997 5.69997C6.71997 5.30997 6.08997 5.30997 5.69997 5.69997C5.30997 6.08997 5.30997 6.71997 5.69997 7.10997L10.59 12L5.69997 16.89C5.30997 17.28 5.30997 17.91 5.69997 18.3C6.08997 18.69 6.71997 18.69 7.10997 18.3L12 13.41L16.89 18.3C17.28 18.69 17.91 18.69 18.3 18.3C18.69 17.91 18.69 17.28 18.3 16.89L13.41 12L18.3 7.10997C18.68 6.72997 18.68 6.08997 18.3 5.70997Z"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-        </div>
-        <div
-          class="c9 c2 c10"
-        >
-          body
+            body
+          </div>
         </div>
       </div>
     </DocumentFragment>

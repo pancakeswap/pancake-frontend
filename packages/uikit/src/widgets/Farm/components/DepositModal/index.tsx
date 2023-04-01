@@ -149,7 +149,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
       <ModalV2 isOpen={showRoiCalculator}>
         <RoiCalculatorModal
           account={account}
-          linkLabel={t("Get %symbol%", { symbol: lpLabel })}
+          linkLabel={t("Add %symbol%", { symbol: lpLabel })}
           stakingTokenBalance={stakedBalance.plus(max)}
           stakingTokenDecimals={decimals}
           stakingTokenSymbol={tokenName}
@@ -252,7 +252,7 @@ const DepositModal: React.FC<React.PropsWithChildren<DepositModalProps>> = ({
           )}
         </ModalActions>
         <LinkExternal href={addLiquidityUrl} style={{ alignSelf: "center" }}>
-          {t("Get %symbol%", { symbol: tokenName })}
+          {t("Add %symbol%", { symbol: tokenName })}
         </LinkExternal>
       </ModalBody>
     </Modal>

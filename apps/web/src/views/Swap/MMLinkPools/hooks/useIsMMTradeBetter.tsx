@@ -1,12 +1,12 @@
 import { Currency, Trade, TradeType, ZERO } from '@pancakeswap/sdk'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { useMemo } from 'react'
 import { Field } from 'state/swap/actions'
 import { TradeWithMM } from '../types'
 
 interface Options {
   independentField: Field
-  trade?: TradeWithStableSwap<Currency, Currency, TradeType> | null
+  trade?: TradeWithStableSwap<Currency, Currency, TradeType> | SmartRouterTrade<TradeType> | null
   v2Trade?: Trade<Currency, Currency, TradeType> | null
   tradeWithMM?: TradeWithMM<Currency, Currency, TradeType> | null
   isMMQuotingPair?: boolean
