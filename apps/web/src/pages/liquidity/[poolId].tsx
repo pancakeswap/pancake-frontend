@@ -14,6 +14,7 @@ import {
   NextLinkFromReactRouter,
   NotFound,
   PreTitle,
+  RowBetween,
   Spinner,
   SyncAltIcon,
   Tag,
@@ -429,8 +430,8 @@ export default function PoolPage() {
           <>
             <AppHeader
               title={
-                <Box mb={['8px', '8px', 0]}>
-                  <Flex justifyContent="center" alignItems="center">
+                <Box mb={['8px', '8px', 0]} width="100%" style={{ flex: 1 }} minWidth={['auto', , 'max-content']}>
+                  <Flex alignItems="center">
                     <DoubleCurrencyLogo size={24} currency0={currencyQuote} currency1={currencyBase} />
                     <Heading as="h2" ml="8px">
                       {currencyQuote?.symbol}-{currencyBase?.symbol}
@@ -446,19 +447,21 @@ export default function PoolPage() {
                       </>
                     )}
                   </Flex>
-                  <Text fontSize="14px" color="textSubtle">
-                    V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
-                  </Text>
-                  {isMobile && (
-                    <Flex>
-                      {isStakedInMCv3 && (
-                        <Tag mr="8px" outline variant="warning">
-                          Farming
-                        </Tag>
-                      )}
-                      <RangeTag removed={removed} outOfRange={!inRange} />
-                    </Flex>
-                  )}
+                  <RowBetween gap="16px" flexWrap="nowrap">
+                    <Text fontSize="14px" color="textSubtle" style={{ wordBreak: 'break-word' }}>
+                      V3 LP #{tokenIdFromUrl} / {new Percent(feeAmount || 0, 1_000_000).toSignificant()}% fee tier
+                    </Text>
+                    {isMobile && (
+                      <Flex>
+                        {isStakedInMCv3 && (
+                          <Tag mr="8px" outline variant="warning">
+                            Farming
+                          </Tag>
+                        )}
+                        <RangeTag removed={removed} outOfRange={!inRange} />
+                      </Flex>
+                    )}
+                  </RowBetween>
                 </Box>
               }
               backTo="/liquidity"

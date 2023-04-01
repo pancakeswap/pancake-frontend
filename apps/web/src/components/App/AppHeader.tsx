@@ -68,9 +68,9 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
             </IconButton>
           ))}
         <Flex flexDirection="column" width="100%" marginTop="4px">
-          <Flex mb="8px" alignItems="center" flexWrap="wrap" justifyContent="space-between">
-            <Flex>
-              <Heading as="h2">{title}</Heading>
+          <Flex mb="8px" alignItems="center" flexWrap="wrap" justifyContent="space-between" style={{ gap: '16px' }}>
+            <Flex flex={1}>
+              {typeof title === 'string' ? <Heading as="h2">{title}</Heading> : title}
               {helper && <QuestionHelper text={helper} ml="4px" placement="top" />}
             </Flex>
             {!noConfig && (
