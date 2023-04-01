@@ -1,4 +1,4 @@
-import { Percent, Token, CurrencyAmount, WETH9, Ether } from '@pancakeswap/sdk'
+import { Percent, Token, CurrencyAmount, WETH9, Native } from '@pancakeswap/sdk'
 import { FeeAmount, TICK_SPACINGS } from './constants'
 import { Pool } from './entities/pool'
 import { Position } from './entities/position'
@@ -55,7 +55,7 @@ describe('NonfungiblePositionManager', () => {
             tickUpper: TICK_SPACINGS[FeeAmount.MEDIUM],
             liquidity: 1,
           }),
-          { recipient, slippageTolerance, deadline, useNative: Ether.onChain(1) }
+          { recipient, slippageTolerance, deadline, useNative: Native.onChain(1) }
         )
       ).toThrow('NO_WETH')
     })
@@ -119,7 +119,7 @@ describe('NonfungiblePositionManager', () => {
           tickUpper: TICK_SPACINGS[FeeAmount.MEDIUM],
           liquidity: 1,
         }),
-        { recipient, slippageTolerance, deadline, useNative: Ether.onChain(1) }
+        { recipient, slippageTolerance, deadline, useNative: Native.onChain(1) }
       )
 
       expect(calldata).toEqual(
@@ -148,7 +148,7 @@ describe('NonfungiblePositionManager', () => {
       const { calldata, value } = NonfungiblePositionManager.collectCallParameters({
         tokenId,
         expectedCurrencyOwed0: CurrencyAmount.fromRawAmount(token1, 0),
-        expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(Ether.onChain(1), 0),
+        expectedCurrencyOwed1: CurrencyAmount.fromRawAmount(Native.onChain(1), 0),
         recipient,
       })
 
@@ -288,7 +288,7 @@ describe('NonfungiblePositionManager', () => {
     })
 
     it('works with eth', () => {
-      const ethAmount = CurrencyAmount.fromRawAmount(Ether.onChain(1), 0)
+      const ethAmount = CurrencyAmount.fromRawAmount(Native.onChain(1), 0)
       const tokenAmount = CurrencyAmount.fromRawAmount(token1, 0)
 
       const { calldata, value } = NonfungiblePositionManager.removeCallParameters(
@@ -318,7 +318,7 @@ describe('NonfungiblePositionManager', () => {
     })
 
     it('works for partial with eth', () => {
-      const ethAmount = CurrencyAmount.fromRawAmount(Ether.onChain(1), 0)
+      const ethAmount = CurrencyAmount.fromRawAmount(Native.onChain(1), 0)
       const tokenAmount = CurrencyAmount.fromRawAmount(token1, 0)
 
       const { calldata, value } = NonfungiblePositionManager.removeCallParameters(

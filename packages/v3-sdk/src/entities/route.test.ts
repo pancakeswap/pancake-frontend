@@ -1,4 +1,4 @@
-import { Ether, Token, WETH9 } from '@pancakeswap/sdk'
+import { Native, Token, WETH9 } from '@pancakeswap/sdk'
 import { FeeAmount } from '../constants'
 import { encodeSqrtRatioX96 } from '../utils/encodeSqrtRatioX96'
 import { TickMath } from '../utils/tickMath'
@@ -6,7 +6,7 @@ import { Pool } from './pool'
 import { Route } from './route'
 
 describe('Route', () => {
-  const ETHER = Ether.onChain(1)
+  const ETHER = Native.onChain(1)
   const token0 = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0')
   const token1 = new Token(1, '0x0000000000000000000000000000000000000002', 18, 't1')
   const token2 = new Token(1, '0x0000000000000000000000000000000000000003', 18, 't2')
