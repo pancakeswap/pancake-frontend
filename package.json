@@ -14,6 +14,7 @@
     "storybook": "turbo run start --filter=uikit...",
     "build:storybook": "turbo run build:storybook --filter=uikit...",
     "build": "turbo run build --filter=web...",
+    "build-packages": "cd packages/swap-sdk-core && yarn && yarn build && cd ../swap-sdk && yarn && yarn build && cd ../aptos-swap-sdk && yarn && yarn build && cd ../wagmi && yarn && yarn build && cd ../token-lists && yarn && yarn build && cd ../smart-router && yarn && yarn build && cd ../multicall && yarn && yarn build && cd ../uikit && yarn && cd ../awgmi && yarn && cd ../../",
     "start": "turbo run start --filter=web",
     "test:config": "yarn turbo run test:config --filter=[HEAD^1]",
     "test:ci": "yarn turbo run test --filter=[HEAD^1]",
