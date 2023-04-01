@@ -76,14 +76,16 @@ export const coinbaseConnector = new CoinbaseWalletConnector({
 export const walletConnectConnector = new WalletConnectConnector({
   chains,
   options: {
-    qrcode: true,
+    projectId: 'pancakeswap',
+    showQrModal: true,
   },
 })
 
 export const walletConnectNoQrCodeConnector = new WalletConnectConnector({
   chains,
   options: {
-    qrcode: false,
+    projectId: 'pancakeswap',
+    showQrModal: false,
   },
 })
 
