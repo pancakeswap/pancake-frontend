@@ -78,7 +78,7 @@ export abstract class IMulticallProvider<TMulticallConfig = any> {
   /**
    * Calls a function on a single contract with different parameters.
    *
-   * For example, if you wanted to call the Uniswap V3 Quoter with 10 different
+   * For example, if you wanted to call the Pancakeswap V3 Quoter with 10 different
    * swap amounts this can be used to make the calls in a single multicall.
    *
    * @abstract

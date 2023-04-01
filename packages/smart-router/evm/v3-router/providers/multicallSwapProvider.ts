@@ -23,12 +23,12 @@ const PANCAKE_MULTICALL_ADDRESSES = {
   [ChainId.BSC_TESTNET]: '0x3D00CdB4785F0ef20C903A13596e0b9B2c652227',
 }
 
-export type UniswapMulticallConfig = {
+export type PancakeswapMulticallConfig = {
   gasLimitPerCallOverride?: number
 }
 
 /**
- * The UniswapMulticall contract has added functionality for limiting the amount of gas
+ * The PancakeswapMulticall contract has added functionality for limiting the amount of gas
  * that each call within the multicall can consume. This is useful for operations where
  * a call could consume such a large amount of gas that it causes the node to error out
  * with an out of gas error.
@@ -36,7 +36,7 @@ export type UniswapMulticallConfig = {
  * @export
  * @class PancakeswapMulticallProvider
  */
-export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMulticallConfig> {
+export class PancakeswapMulticallProvider extends IMulticallProvider<PancakeswapMulticallConfig> {
   private multicallContract: InterfaceMulticall
 
   constructor(protected chainId: ChainId, protected provider: BaseProvider, protected gasLimitPerCall = 1_000_000) {
@@ -44,7 +44,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMult
     const multicallAddress = PANCAKE_MULTICALL_ADDRESSES[this.chainId]
 
     if (!multicallAddress) {
-      throw new Error(`No address for Uniswap Multicall Contract on chain id: ${chainId}`)
+      throw new Error(`No address for Pancakeswap Multicall Contract on chain id: ${chainId}`)
     }
 
     this.multicallContract = new Contract(multicallAddress, IMulticallABI, this.provider) as InterfaceMulticall
@@ -110,7 +110,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMult
   }
 
   public async callSameFunctionOnContractWithMultipleParams<TFunctionParams extends any[] | undefined, TReturn>(
-    params: CallSameFunctionOnContractWithMultipleParams<TFunctionParams, UniswapMulticallConfig>,
+    params: CallSameFunctionOnContractWithMultipleParams<TFunctionParams, PancakeswapMulticallConfig>,
   ): Promise<{
     blockNumber: JSBI
     results: Result<TReturn>[]
@@ -180,7 +180,7 @@ export class PancakeswapMulticallProvider extends IMulticallProvider<UniswapMult
   }
 
   public async callMultipleFunctionsOnSameContract<TFunctionParams extends any[] | undefined, TReturn>(
-    params: CallMultipleFunctionsOnSameContractParams<TFunctionParams, UniswapMulticallConfig>,
+    params: CallMultipleFunctionsOnSameContractParams<TFunctionParams, PancakeswapMulticallConfig>,
   ): Promise<{
     blockNumber: JSBI
     results: Result<TReturn>[]
