@@ -33,8 +33,6 @@ const sentryWebpackPluginOptions =
 
 const blocksPage = ['/trading-reward', '/api/routing']
 
-const blocksPage = ['/trading-reward']
-
 /** @type {import('next').NextConfig} */
 const config = {
   compiler: {
@@ -85,8 +83,8 @@ const config = {
       },
       {
         source: '/nodeRealApi/:path*',
-        destination: 'https://pancake.nodereal.cc/graphql'
-      }
+        destination: 'https://pancake.nodereal.cc/graphql',
+      },
     ]
   },
   async headers() {
