@@ -25,14 +25,14 @@ export const getV2PoolsOnChain = createOnChainPoolFactory<V2Pool>({
     if (!reserves) {
       return null
     }
-    const { reserve0, reserve1 } = reserves
+    const [reserve0, reserve1] = reserves
     const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
       ? [currencyA, currencyB]
       : [currencyB, currencyA]
     return {
       type: PoolType.V2,
-      reserve0: CurrencyAmount.fromRawAmount(token0, reserve0),
-      reserve1: CurrencyAmount.fromRawAmount(token1, reserve1),
+      reserve0: CurrencyAmount.fromRawAmount(token0, reserve0.toString()),
+      reserve1: CurrencyAmount.fromRawAmount(token1, reserve1.toString()),
     }
   },
 })
@@ -97,9 +97,12 @@ export const getStablePoolsOnChain = createOnChainPoolFactory<StablePool, Stable
     return {
       address,
       type: PoolType.STABLE,
-      balances: [CurrencyAmount.fromRawAmount(token0, balance0), CurrencyAmount.fromRawAmount(token1, balance1)],
-      amplifier: JSBI.BigInt(a),
-      fee: new Percent(JSBI.BigInt(fee), JSBI.BigInt(feeDenominator)),
+      balances: [
+        CurrencyAmount.fromRawAmount(token0, balance0.toString()),
+        CurrencyAmount.fromRawAmount(token1, balance1.toString()),
+      ],
+      amplifier: JSBI.BigInt(a.toString()),
+      fee: new Percent(JSBI.BigInt(fee.toString()), JSBI.BigInt(feeDenominator.toString())),
     }
   },
 })
@@ -159,8 +162,8 @@ export const getV3PoolsWithoutTicksOnChain = createOnChainPoolFactory<V3Pool, V3
       token0,
       token1,
       fee,
-      liquidity: JSBI.BigInt(liquidity),
-      sqrtRatioX96: JSBI.BigInt(sqrtPriceX96),
+      liquidity: JSBI.BigInt(liquidity.toString()),
+      sqrtRatioX96: JSBI.BigInt(sqrtPriceX96.toString()),
       tick: Number(tick),
       address,
       token0ProtocolFee,
@@ -237,7 +240,10 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
     const pools: TPool[] = []
     for (let i = 0; i < poolMetas.length; i += 1) {
       const poolResults = results.slice(i * poolCallSize, (i + 1) * poolCallSize)
-      const pool = buildPool(poolMetas[i], poolResults)
+      const pool = buildPool(
+        poolMetas[i],
+        poolResults.map((result) => result.result),
+      )
       if (pool) {
         pools.push(pool)
       }

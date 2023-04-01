@@ -14,7 +14,7 @@ import { SafeConnector } from './safeConnector'
 
 const CHAINS = [bsc, mainnet, bscTestnet, goerli]
 
-const getNodeRealUrl = (networkName: string) => {
+export const getNodeRealUrl = (networkName: string) => {
   let host = null
 
   switch (networkName) {

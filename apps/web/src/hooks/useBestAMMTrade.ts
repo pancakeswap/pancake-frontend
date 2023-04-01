@@ -10,6 +10,7 @@ import { provider } from 'utils/wagmi'
 import { useCurrentBlock } from 'state/block/hooks'
 import { useFeeDataWithGasPrice } from 'state/user/hooks'
 import { serializeCurrency, serializePool, parseTrade } from 'utils/routingApi'
+import { viemProviders } from 'utils/viem'
 
 import {
   useCommonPools as useCommonPoolsWithTicks,
@@ -234,7 +235,7 @@ export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemProviders }),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
   quoterOptimization: false,
 })
@@ -242,7 +243,7 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterApi',
   useCommonPools: useCommonPoolsLite,
-  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
+  quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: viemProviders }),
   getBestTrade: async (
     amount,
     currency,

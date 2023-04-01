@@ -551,7 +551,7 @@ function processQuoteResults(
     }
 
     const quoteCurrency = getQuoteCurrency(route, route.amount.currency)
-    const quote = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, quoteResult.result[0])
+    const quote = CurrencyAmount.fromRawAmount(quoteCurrency.wrapped, quoteResult.result[0].toString())
     const { gasEstimate, gasCostInToken, gasCostInUSD } = gasModel.estimateGasCost(
       {
         ...route,
