@@ -90,7 +90,7 @@ describe('fetchFarmsV3', () => {
           "feeAmount": 2500,
           "lmPool": "",
           "lmPoolLiquidity": "",
-          "lpAddress": "0xe726deFC4f8733a033b8Ed35f6b315bfD422C932",
+          "lpAddress": "0x133B3D95bAD5405d14d53473671200e9342896BF",
           "lpSymbol": "WBNB-CAKE LP",
           "multiplier": "",
           "pid": 1,

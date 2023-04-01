@@ -48,11 +48,10 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
 
 export const V3_SUBGRAPH_URLS = {
-  // TODO: v3 swap update
-  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
-  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-goerli',
-  [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-bsc',
-  [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/chef-jojo/e-chapel',
+  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
+  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli',
+  [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-bsc',
+  [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
 } satisfies Record<ChainId, string>
 
 export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancake.run/api/v1'

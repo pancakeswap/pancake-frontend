@@ -90,7 +90,6 @@ const CACHE_TIME = {
 }
 
 // getting active "in-range" liquidity for a pool
-// TODO: v3 farms update subgraph urls
 const handler: NextApiHandler = async (req, res) => {
   const parsed = zParams.safeParse(req.query)
 

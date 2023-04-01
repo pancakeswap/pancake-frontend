@@ -1,6 +1,7 @@
 import { multicallAddresses } from '@pancakeswap/multicall'
 import { masterChefV3Addresses } from '@pancakeswap/farms'
 import { DEPLOYER_ADDRESSES } from '@pancakeswap/v3-sdk'
+import { V3_QUOTER_ADDRESSES } from '@pancakeswap/smart-router/evm'
 
 export default {
   masterChef: {
@@ -174,32 +175,19 @@ export default {
   },
   // TODO: v3 contract addresses NonfungiblePositionManager
   nftPositionManager: {
-    56: '0x59c864bf8bB8ABe4dC16516b2C70104706df113A',
-    97: '0x427bF5b37357632377eCbEC9de3626C71A5396c1',
+    1: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
     5: '0x427bF5b37357632377eCbEC9de3626C71A5396c1',
-    1: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
+    56: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
+    97: '0x427bF5b37357632377eCbEC9de3626C71A5396c1',
   },
   v3PoolDeployer: DEPLOYER_ADDRESSES,
   // keep the test fail as we know the contract is missing
   // TODO: v3 contract addresses V3Migrator
   v3Migrator: {
-    97: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
-    56: '',
+    1: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
     5: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
-    1: '',
+    56: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
+    97: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
   },
-  // TODO: v3 contract addresses PancakeV3Factory
-  v3Factory: {
-    56: '0x64014BA9bFb1f77991C11e19A4caf8628Ba7e1e4',
-    97: '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865',
-    5: '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865',
-    1: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-  },
-  // TODO: v3 contract addresses QuoterV2
-  quoter: {
-    56: '0x93a775Ab5B2500F23717ffB69B42bfAbb0c8e91E',
-    97: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
-    5: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
-    1: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
-  },
+  quoter: V3_QUOTER_ADDRESSES,
 }

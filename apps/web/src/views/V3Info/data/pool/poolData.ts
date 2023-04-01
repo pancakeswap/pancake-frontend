@@ -21,14 +21,14 @@ export const POOLS_BULK = (block: number | undefined, pools: string[]) => {
         tick
         token0 {
             id
-            symbol 
+            symbol
             name
             decimals
             derivedETH
         }
         token1 {
             id
-            symbol 
+            symbol
             name
             decimals
             derivedETH
@@ -176,6 +176,7 @@ export async function fetchPoolDatas(
        * Note: see issue desribed here https://github.com/Uniswap/v3-subgraph/issues/74
        * During subgraph deploy switch this month we lost logic to fix this accounting.
        * Grafted sync pending fix now.
+       * @chef-jojo: should be fixed on our version, but leaving this in for now
        */
       const feePercent = current ? parseFloat(current.feeTier) / 10000 / 100 : 0
       const tvlAdjust0 = current?.volumeToken0 ? (parseFloat(current.volumeToken0) * feePercent) / 2 : 0
