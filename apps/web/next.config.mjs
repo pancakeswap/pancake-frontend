@@ -56,7 +56,6 @@ const config = {
     '@wagmi',
     'wagmi',
     '@ledgerhq',
-    '@gnosis.pm/safe-apps-wagmi',
   ],
   reactStrictMode: true,
   swcMinify: true,

@@ -1,8 +1,8 @@
 /* eslint-disable lines-between-class-members */
 
-// Forked from @gnosis.pm/safe-apps-wagmi for esm
+// Forked from @wagmi/connectors/safe for esm
 import { Web3Provider } from '@ethersproject/providers'
-import { SafeAppProvider } from '@gnosis.pm/safe-apps-provider'
+import { SafeAppProvider } from '@safe-global/safe-apps-provider'
 import SafeAppsSDK, { Opts as SafeOpts, SafeInfo } from '@gnosis.pm/safe-apps-sdk'
 import { getAddress } from 'ethers/lib/utils'
 import { Connector, Chain, ConnectorNotFoundError } from '@wagmi/core'
