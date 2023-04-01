@@ -71,7 +71,7 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
       [v2BlockNumber, v3BlockNumber, stableBlockNumber],
     )
     const pairKey = useMemo(
-      () => currencyA && currencyB && [currencyA.symbol, currencyB.symbol],
+      () => currencyA && currencyB && [currencyA.symbol, currencyB.symbol, currencyA.chainId],
       [currencyA, currencyB],
     )
     const previousPairKey = usePreviousValue(pairKey)

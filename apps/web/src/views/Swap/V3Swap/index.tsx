@@ -10,9 +10,9 @@ export function V3SwapForm() {
 
   const mm = useDerivedBestTradeWithMM(trade)
 
-  const tradeLoaded = !isLoading && !!trade
-
   const finalTrade = mm.isMMBetter ? mm?.mmTradeInfo?.trade : trade
+
+  const tradeLoaded = !isLoading
 
   return (
     <>
