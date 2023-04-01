@@ -47,7 +47,7 @@ export function RangeSelector({
   return (
     <FlexGap gap="16px" width="100%" mb="16px">
       <StepCounter
-        value={ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] ? "0" : formatPrice(leftPrice, 5) ?? ""}
+        value={ticksAtLimit[isSorted ? Bound.LOWER : Bound.UPPER] ? "0" : formatPrice(leftPrice, 6) ?? ""}
         onUserInput={onLeftRangeInput}
         width="48%"
         decrement={isSorted ? getDecrementLower : getIncrementUpper}
@@ -61,7 +61,7 @@ export function RangeSelector({
         tokenB={currencyB?.symbol}
       />
       <StepCounter
-        value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? "∞" : formatPrice(rightPrice, 5) ?? ""}
+        value={ticksAtLimit[isSorted ? Bound.UPPER : Bound.LOWER] ? "∞" : formatPrice(rightPrice, 6) ?? ""}
         onUserInput={onRightRangeInput}
         width="48%"
         decrement={isSorted ? getDecrementUpper : getIncrementLower}

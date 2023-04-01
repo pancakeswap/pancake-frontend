@@ -139,7 +139,7 @@ export const PositionPreview = ({
           title="Current price"
           currency0={quoteCurrency}
           currency1={baseCurrency}
-          price={formatPrice(price, 5, locale)}
+          price={formatPrice(price, 6, locale)}
         />
       </AutoColumn>
     </AutoColumn>

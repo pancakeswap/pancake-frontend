@@ -47,7 +47,7 @@ import styled from 'styled-components'
 import { LightGreyCard } from 'components/Card'
 import { RangePriceSection } from 'components/RangePriceSection'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+import { formatCurrencyAmount, formatPrice } from 'utils/formatCurrencyAmount'
 import { TransactionResponse } from '@ethersproject/providers'
 import { RangeTag } from 'components/RangeTag'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
@@ -666,7 +666,7 @@ export default function PoolPage() {
                   title="CURRENT PRICE"
                   currency0={currencyQuote}
                   currency1={currencyBase}
-                  price={(inverted ? pool.token1Price : pool.token0Price).toSignificant(6)}
+                  price={formatPrice(inverted ? pool.token1Price : pool.token0Price, 6, locale)}
                 />
               ) : null}
             </CardBody>

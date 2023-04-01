@@ -21,5 +21,5 @@ export function formatTickPrice(
     return '∞'
   }
 
-  return formatPrice(price, 5, locale)
+  return formatPrice(price, 6, locale)
 }
