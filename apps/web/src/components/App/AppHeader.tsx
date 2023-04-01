@@ -95,7 +95,11 @@ const AppHeader: React.FC<React.PropsWithChildren<Props>> = ({
               </Text>
             </Flex>
           )}
-          {filter && <FilterSection justifyContent="space-between">{filter}</FilterSection>}
+          {filter && (
+            <FilterSection justifyContent="space-between" gap="8px">
+              {filter}
+            </FilterSection>
+          )}
         </Flex>
       </Flex>
     </AppHeaderContainer>

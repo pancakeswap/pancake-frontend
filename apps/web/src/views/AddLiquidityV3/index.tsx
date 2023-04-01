@@ -2,7 +2,7 @@ import { CurrencySelect } from 'components/CurrencySelect'
 import { CommonBasesType } from 'components/SearchModal/types'
 
 import { Currency, NATIVE, WNATIVE } from '@pancakeswap/sdk'
-import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle, DynamicSection, Heading } from '@pancakeswap/uikit'
+import { FlexGap, AutoColumn, CardBody, Card, AddIcon, PreTitle, DynamicSection } from '@pancakeswap/uikit'
 
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { useCallback, useEffect } from 'react'
@@ -350,7 +350,7 @@ export function AddLiquidityV3Layout({ children }: { children: React.ReactNode }
     <Page>
       <BodyWrapper>
         <AppHeader
-          title={<Heading as="h2">{title}</Heading>}
+          title={title}
           backTo="/liquidity"
           IconSlot={
             selectType === SELECTOR_TYPE.V3 && (

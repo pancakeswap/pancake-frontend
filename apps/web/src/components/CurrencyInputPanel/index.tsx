@@ -250,8 +250,8 @@ export default function CurrencyInputPanel({
                 {inputLoading ? (
                   <Loading width="14px" height="14px" />
                 ) : showUSDPrice && Number.isFinite(amountInDollar) ? (
-                  <Text fontSize="12px" color="textSubtle">
-                    ~{formatNumber(amountInDollar)} USD
+                  <Text fontSize="12px" color="textSubtle" ellipsis>
+                    {`~${formatNumber(amountInDollar)} USD`}
                   </Text>
                 ) : (
                   <Box height="18px" />
