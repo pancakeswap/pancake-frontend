@@ -724,8 +724,6 @@ function PositionHistory_({
   currency1: Currency
 }) {
   const { t } = useTranslation()
-  const { query } = useRouter()
-  const isEnable = !!query.dev
   const [isExpanded, setIsExpanded] = useState(false)
   const { chainId } = useActiveChainId()
   const client = v3Clients[chainId as ChainId]
@@ -777,10 +775,6 @@ function PositionHistory_({
       revalidateOnMount: true,
     },
   )
-
-  if (!isEnable) {
-    return null
-  }
 
   if (isLoading || data?.length === 0) {
     return null

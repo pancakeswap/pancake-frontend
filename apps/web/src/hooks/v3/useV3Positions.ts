@@ -2,6 +2,7 @@ import { FormatTypes } from '@ethersproject/abi'
 import { BigNumber } from '@ethersproject/bignumber'
 import { Contract } from '@ethersproject/contracts'
 import { PositionDetails } from '@pancakeswap/farms'
+import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import { useEffect, useMemo } from 'react'
 import { useContractRead, useContractReads } from 'wagmi'
@@ -18,6 +19,7 @@ interface UseV3PositionResults {
 
 export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): UseV3PositionsResults {
   const positionManager = useV3NFTPositionManagerContract()
+  const { chainId } = useActiveChainId()
 
   const inputs = useMemo(
     () =>
@@ -27,9 +29,10 @@ export function useV3PositionsFromTokenIds(tokenIds: BigNumber[] | undefined): U
             address: positionManager.address as `0x${string}`,
             functionName: 'positions',
             args: [tokenId],
+            chainId,
           }))
         : [],
-    [positionManager.address, positionManager.interface, tokenIds],
+    [chainId, positionManager.address, positionManager.interface, tokenIds],
   )
   const { isLoading, data: positions = [] } = useContractReads<any, any, any>({
     contracts: inputs,
@@ -74,6 +77,7 @@ export function useV3TokenIdsByAccount(
   contract: Contract,
   account: string | null | undefined,
 ): { tokenIds: BigNumber[]; loading: boolean } {
+  const { chainId } = useActiveChainId()
   const {
     isLoading: balanceLoading,
     data: accountBalance_,
@@ -85,6 +89,7 @@ export function useV3TokenIdsByAccount(
     functionName: 'balanceOf',
     enabled: !!account,
     watch: true,
+    chainId,
   })
 
   // we don't expect any account balance to ever exceed the bounds of max safe int
@@ -99,12 +104,13 @@ export function useV3TokenIdsByAccount(
           address: contract.address as `0x${string}`,
           functionName: 'tokenOfOwnerByIndex',
           args: [account, i],
+          chainId,
         })
       }
       return tokenRequests
     }
     return []
-  }, [account, accountBalance, contract.address, contract.interface])
+  }, [account, accountBalance, chainId, contract.address, contract.interface])
 
   const {
     isLoading: someTokenIdsLoading,
