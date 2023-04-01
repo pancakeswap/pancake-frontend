@@ -1,5 +1,5 @@
 import { ChainId, Currency, CurrencyAmount, Pair, JSBI, Percent, BigintIsh } from '@pancakeswap/sdk'
-import { Call, createMulticall } from '@pancakeswap/multicall'
+import { Call } from '@pancakeswap/multicall'
 import { deserializeToken } from '@pancakeswap/token-lists'
 import { computePoolAddress, FeeAmount, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
 
@@ -192,7 +192,7 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
       return []
     }
 
-    const { multicallv2 } = createMulticall(provider)
+    const client = provider({ chainId })
     const poolAddressSet = new Set<string>()
 
     const poolMetas: TPoolMeta[] = []
@@ -223,14 +223,15 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
       return []
     }
 
-    const results = await multicallv2({
-      abi,
-      calls,
-      chainId,
-      options: {
-        requireSuccess: false,
-        blockTag: JSBI.toNumber(JSBI.BigInt(blockNumber)),
-      },
+    const results = await client.multicall({
+      contracts: calls.map((call) => ({
+        abi,
+        address: call.address as `0x${string}`,
+        functionName: call.name,
+        args: call.params,
+      })),
+      allowFailure: true,
+      blockNumber: BigInt(JSBI.toNumber(JSBI.BigInt(blockNumber))),
     })
 
     const pools: TPool[] = []
