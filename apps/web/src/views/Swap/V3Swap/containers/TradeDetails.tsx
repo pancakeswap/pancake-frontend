@@ -27,11 +27,12 @@ export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: 
           <AdvancedSwapDetails
             pairs={lastTrade?.route.pairs}
             path={lastTrade?.route.path}
-            slippageAdjustedAmounts={mmTrade.slippageAdjustedAmounts}
-            inputAmount={mmTrade.inputAmount}
-            outputAmount={mmTrade.outputAmount}
-            tradeType={mmTrade.tradeType}
-            priceImpactWithoutFee={mmTrade.priceImpactWithoutFee}
+            slippageAdjustedAmounts={mmTrade?.slippageAdjustedAmounts}
+            realizedLPFee={mmTrade?.realizedLPFee}
+            inputAmount={mmTrade?.inputAmount}
+            outputAmount={mmTrade?.outputAmount}
+            tradeType={mmTrade?.tradeType}
+            priceImpactWithoutFee={mmTrade?.priceImpactWithoutFee}
             isMM
           />
         )}
