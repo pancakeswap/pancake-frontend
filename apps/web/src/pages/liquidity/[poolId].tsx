@@ -511,6 +511,7 @@ export default function PoolPage() {
                   justifyContent="space-between"
                   width="100%"
                   mb="8px"
+                  style={{ gap: '16px' }}
                   flexWrap={['wrap', 'wrap', 'nowrap']}
                 >
                   <Box width="100%" mr="16px" mb={['8px', '8px', 0]} position="relative">
@@ -568,7 +569,7 @@ export default function PoolPage() {
                       </AutoRow>
                     </LightGreyCard>
                   </Box>
-                  <Box width="100%" ml="16px">
+                  <Box width="100%">
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
                       Unclaim Fees
                     </Text>
@@ -876,8 +877,10 @@ function PositionHistoryColumn({
             {isPlus ? '+' : '-'} {positionTx.amount0}
           </Text>
           <AutoRow width="auto" flexWrap="nowrap" gap="4px">
-            <CurrencyLogo currency={currency0} />
-            <Text>{currency0.symbol}</Text>
+            <AtomBox minWidth="24px">
+              <CurrencyLogo currency={currency0} />
+            </AtomBox>
+            <Text display={['none', , 'block']}>{currency0.symbol}</Text>
           </AutoRow>
         </AutoRow>
         <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
@@ -885,8 +888,10 @@ function PositionHistoryColumn({
             {isPlus ? '+' : '-'} {positionTx.amount1}
           </Text>
           <AutoRow width="auto" flexWrap="nowrap" gap="4px">
-            <CurrencyLogo currency={currency1} />
-            <Text>{currency1.symbol}</Text>
+            <AtomBox minWidth="24px">
+              <CurrencyLogo currency={currency1} />
+            </AtomBox>
+            <Text display={['none', , 'block']}>{currency1.symbol}</Text>
           </AutoRow>
         </AutoRow>
       </AutoColumn>
