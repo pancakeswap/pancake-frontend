@@ -1,28 +1,26 @@
 import { BigNumber } from '@ethersproject/bignumber'
-import { NextSeo } from 'next-seo'
 import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } from '@pancakeswap/sdk'
 import {
+  AutoColumn,
+  AutoRow,
+  Box,
   Button,
   Card,
   CardBody,
-  useModal,
-  Text,
-  AutoRow,
-  RowFixed,
-  Flex,
-  Box,
-  NextLinkFromReactRouter,
   ConfirmationModalContent,
-  Toggle,
-  Heading,
-  SyncAltIcon,
-  Spinner,
-  useMatchBreakpoints,
-  NotFound,
-  Tag,
   ExpandableLabel,
+  Flex,
+  Heading,
+  NextLinkFromReactRouter,
+  NotFound,
   PreTitle,
-  AutoColumn,
+  Spinner,
+  SyncAltIcon,
+  Tag,
+  Text,
+  Toggle,
+  useMatchBreakpoints,
+  useModal,
 } from '@pancakeswap/uikit'
 import { MasterChefV3, NonfungiblePositionManager, Position } from '@pancakeswap/v3-sdk'
 import { AppHeader } from 'components/App'
@@ -32,42 +30,43 @@ import { useStablecoinPrice } from 'hooks/useBUSDPrice'
 import { useMasterchefV3, useV3NFTPositionManagerContract } from 'hooks/useContract'
 import useIsTickAtLimit from 'hooks/v3/useIsTickAtLimit'
 import { usePool } from 'hooks/v3/usePools'
+import { NextSeo } from 'next-seo'
 // import { usePositionTokenURI } from 'hooks/v3/usePositionTokenURI'
+import { TransactionResponse } from '@ethersproject/providers'
+import { Trans, useTranslation } from '@pancakeswap/localization'
+import { AtomBox } from '@pancakeswap/ui'
+import { LightGreyCard } from 'components/Card'
+import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
+import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
+import { RangePriceSection } from 'components/RangePriceSection'
+import { RangeTag } from 'components/RangeTag'
+import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
+import { Bound } from 'config/constants/types'
+import { gql } from 'graphql-request'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useNativeCurrency from 'hooks/useNativeCurrency'
+import { PoolState } from 'hooks/v3/types'
 import { useV3PositionFees } from 'hooks/v3/useV3PositionFees'
 import { useV3PositionFromTokenId, useV3TokenIdsByAccount } from 'hooks/v3/useV3Positions'
+import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
 import getPriceOrderingFromPositionForUI from 'hooks/v3/utils/getPriceOrderingFromPositionForUI'
+import { GetStaticPaths, GetStaticProps } from 'next'
 import { useRouter } from 'next/router'
-import { Fragment, memo, ReactNode, useCallback, useMemo, useState } from 'react'
-import { useTransactionAdder, useIsTransactionPending } from 'state/transactions/hooks'
+import { memo, ReactNode, useCallback, useMemo, useState } from 'react'
+import { useSingleCallResult } from 'state/multicall/hooks'
+import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
+import styled from 'styled-components'
+import useSWRImmutable from 'swr/immutable'
 import { calculateGasMargin } from 'utils'
 import currencyId from 'utils/currencyId'
+import { formatCurrencyAmount, formatPrice } from 'utils/formatCurrencyAmount'
+import { v3Clients } from 'utils/graphql'
 import { CHAIN_IDS } from 'utils/wagmi'
 import { unwrappedToken } from 'utils/wrappedCurrency'
-import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
+import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
+import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
 import { useSigner } from 'wagmi'
-import { Trans, useTranslation } from '@pancakeswap/localization'
-import styled from 'styled-components'
-import { LightGreyCard } from 'components/Card'
-import { RangePriceSection } from 'components/RangePriceSection'
-import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { formatCurrencyAmount, formatPrice } from 'utils/formatCurrencyAmount'
-import { TransactionResponse } from '@ethersproject/providers'
-import { RangeTag } from 'components/RangeTag'
-import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
-import { useSingleCallResult } from 'state/multicall/hooks'
-import useNativeCurrency from 'hooks/useNativeCurrency'
-import { formatTickPrice } from 'hooks/v3/utils/formatTickPrice'
-import { Bound } from 'config/constants/types'
-import { PoolState } from 'hooks/v3/types'
-import FormattedCurrencyAmount from 'components/Chart/FormattedCurrencyAmount/FormattedCurrencyAmount'
-import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
-import { GetStaticProps, GetStaticPaths } from 'next'
-import { AtomBox } from '@pancakeswap/ui'
-import { v3Clients } from 'utils/graphql'
-import useSWRImmutable from 'swr/immutable'
-import { useActiveChainId } from 'hooks/useActiveChainId'
-import { gql } from 'graphql-request'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
