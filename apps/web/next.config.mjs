@@ -83,8 +83,8 @@ const config = {
       },
       {
         source: '/nodeRealApi/:path*',
-        destination: 'https://pancake.nodereal.cc/graphql'
-      }
+        destination: 'https://pancake.nodereal.cc/graphql',
+      },
     ]
   },
   async headers() {
