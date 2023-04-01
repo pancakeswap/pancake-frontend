@@ -3,7 +3,7 @@ import { Currency } from '@pancakeswap/sdk'
 import { usePropsChanged } from '@pancakeswap/hooks'
 import { Pool } from '@pancakeswap/smart-router/evm'
 import { useEffect, useMemo, useState, useCallback } from 'react'
-import useSWR from 'swr'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { useV3CandidatePools, useV3CandidatePoolsWithoutTicks, V3PoolsHookParams, V3PoolsResult } from './useV3Pools'
 import { useV2CandidatePools, useStableCandidatePools } from './usePoolsOnChain'
@@ -36,6 +36,7 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
     currencyB?: Currency,
     { blockNumber: latestBlockNumber, allowInconsistentBlock = false, enabled = true }: CommonPoolsParams = {},
   ): PoolsWithState {
+    const client = useQueryClient()
     const currenciesUpdated = usePropsChanged(currencyA, currencyB)
     const { chainId } = useActiveChainId()
     const [blockNumber, setBlockNumber] = useState<number | null | undefined>(null)
@@ -95,11 +96,10 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
         allowInconsistentBlock,
       ],
     )
-    const { data: pools } = useSWR(
-      v2Pools && v3Pools && stablePools && poolKey ? [key, poolKey] : null,
-      () => [...v2Pools, ...stablePools, ...v3Pools],
-      { keepPreviousData: !currenciesUpdated },
-    )
+    const { data: pools } = useQuery<Pool[] | null>([key, poolKey], () => [...v2Pools, ...stablePools, ...v3Pools], {
+      enabled: !!(v2Pools && v3Pools && stablePools && poolKey),
+      keepPreviousData: !currenciesUpdated,
+    })
 
     const refresh = useCallback(() => latestBlockNumber && setBlockNumber(latestBlockNumber), [latestBlockNumber])
 
@@ -118,6 +118,12 @@ function commonPoolsHookCreator({ key, useV3Pools }: FactoryOptions) {
         refresh()
       }
     }, [consistentBlockNumber, latestBlockNumber, refresh])
+
+    useEffect(() => {
+      if (currenciesUpdated) {
+        client.removeQueries()
+      }
+    }, [currenciesUpdated, client])
 
     const loading = v2Loading || v3Loading || stableLoading
     const syncing = v2Syncing || v3Syncing || stableSyncing
