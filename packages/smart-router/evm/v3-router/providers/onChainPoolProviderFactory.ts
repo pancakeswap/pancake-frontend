@@ -110,7 +110,7 @@ interface PoolMeta {
   address: string
 }
 
-interface V3PoolMeta extends PoolMeta {
+export interface V3PoolMeta extends PoolMeta {
   fee: FeeAmount
 }
 

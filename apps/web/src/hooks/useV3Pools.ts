@@ -1,10 +1,8 @@
-/* eslint-disable @typescript-eslint/no-shadow, no-await-in-loop, no-constant-condition, no-console */
-import { Currency, JSBI, ChainId, Token, WNATIVE } from '@pancakeswap/sdk'
-import { SmartRouter, V3Pool, PoolType, BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
-import { FeeAmount, computePoolAddress, Tick, DEPLOYER_ADDRESSES, parseProtocolFees } from '@pancakeswap/v3-sdk'
-import { gql } from 'graphql-request'
+import { ChainId, Currency } from '@pancakeswap/sdk'
+import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
+import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount, Tick } from '@pancakeswap/v3-sdk'
+import { useEffect, useMemo } from 'react'
 import useSWR from 'swr'
-import { useMemo, useEffect } from 'react'
 
 import { v3Clients } from 'utils/graphql'
 
@@ -12,14 +10,9 @@ import { getPoolTicks } from './v3/useAllV3TicksQuery'
 
 type Pair = [Currency, Currency]
 
-interface SubgraphPool extends V3Pool {
-  tvlUSD: JSBI
-}
-
 export interface V3PoolsHookParams {
   // Used for caching
   key?: string
-
   blockNumber?: number
   enabled?: boolean
 }
@@ -30,17 +23,6 @@ export interface V3PoolsResult {
   syncing: boolean
   blockNumber?: number
 }
-
-const POOL_SELECTION_CONFIG = {
-  topN: 2,
-  topNDirectSwaps: 2,
-  topNTokenInOut: 2,
-  topNSecondHop: 1,
-  topNWithEachBaseToken: 3,
-  topNWithBaseToken: 3,
-}
-
-const sortByTvl = (a: SubgraphPool, b: SubgraphPool) => (JSBI.greaterThanOrEqual(a.tvlUSD, b.tvlUSD) ? -1 : 1)
 
 export function useV3CandidatePools(
   currencyA?: Currency,
@@ -99,195 +81,7 @@ export function useV3CandidatePoolsWithoutTicks(
     if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
       return null
     }
-    const { pools: poolsFromSubgraph } = poolsFromSubgraphState
-    if (!poolsFromSubgraph.length) {
-      return []
-    }
-    const {
-      token0: { chainId },
-    } = poolsFromSubgraph[0]
-    const baseTokens: Token[] = BASES_TO_CHECK_TRADES_AGAINST[chainId] ?? []
-
-    const poolSet = new Set<string>()
-    const addToPoolSet = (pools: SubgraphPool[]) => {
-      for (const pool of pools) {
-        poolSet.add(pool.address)
-      }
-    }
-
-    const topByBaseWithTokenIn = baseTokens
-      .map((token) => {
-        return poolsFromSubgraph
-          .filter((subgraphPool) => {
-            return (
-              (subgraphPool.token0.wrapped.equals(token) && subgraphPool.token1.wrapped.equals(currencyA.wrapped)) ||
-              (subgraphPool.token1.wrapped.equals(token) && subgraphPool.token0.wrapped.equals(currencyA.wrapped))
-            )
-          })
-          .sort(sortByTvl)
-          .slice(0, POOL_SELECTION_CONFIG.topNWithEachBaseToken)
-      })
-      .reduce<SubgraphPool[]>((acc, cur) => [...acc, ...cur], [])
-      .sort(sortByTvl)
-      .slice(0, POOL_SELECTION_CONFIG.topNWithBaseToken)
-
-    addToPoolSet(topByBaseWithTokenIn)
-
-    const topByBaseWithTokenOut = baseTokens
-      .map((token) => {
-        return poolsFromSubgraph
-          .filter((subgraphPool) => {
-            if (poolSet.has(subgraphPool.address)) {
-              return false
-            }
-            return (
-              (subgraphPool.token0.wrapped.equals(token) && subgraphPool.token1.wrapped.equals(currencyB.wrapped)) ||
-              (subgraphPool.token1.wrapped.equals(token) && subgraphPool.token0.wrapped.equals(currencyB.wrapped))
-            )
-          })
-          .sort(sortByTvl)
-          .slice(0, POOL_SELECTION_CONFIG.topNWithEachBaseToken)
-      })
-      .reduce<SubgraphPool[]>((acc, cur) => [...acc, ...cur], [])
-      .sort(sortByTvl)
-      .slice(0, POOL_SELECTION_CONFIG.topNWithBaseToken)
-
-    addToPoolSet(topByBaseWithTokenOut)
-
-    const top2DirectPools = poolsFromSubgraph
-      .filter((subgraphPool) => {
-        if (poolSet.has(subgraphPool.address)) {
-          return false
-        }
-        return (
-          (subgraphPool.token0.wrapped.equals(currencyA.wrapped) &&
-            subgraphPool.token1.wrapped.equals(currencyB.wrapped)) ||
-          (subgraphPool.token1.wrapped.equals(currencyA.wrapped) &&
-            subgraphPool.token0.wrapped.equals(currencyB.wrapped))
-        )
-      })
-      .slice(0, POOL_SELECTION_CONFIG.topNDirectSwaps)
-
-    addToPoolSet(top2DirectPools)
-
-    const nativeToken = WNATIVE[chainId]
-    const top2EthBaseTokenPool = nativeToken
-      ? poolsFromSubgraph
-          .filter((subgraphPool) => {
-            if (poolSet.has(subgraphPool.address)) {
-              return false
-            }
-            return (
-              (subgraphPool.token0.wrapped.equals(nativeToken) &&
-                subgraphPool.token1.wrapped.equals(currencyA.wrapped)) ||
-              (subgraphPool.token1.wrapped.equals(nativeToken) && subgraphPool.token0.wrapped.equals(currencyA.wrapped))
-            )
-          })
-          .slice(0, 1)
-      : []
-    addToPoolSet(top2EthBaseTokenPool)
-
-    const top2EthQuoteTokenPool = nativeToken
-      ? poolsFromSubgraph
-          .filter((subgraphPool) => {
-            if (poolSet.has(subgraphPool.address)) {
-              return false
-            }
-            return (
-              (subgraphPool.token0.wrapped.equals(nativeToken) &&
-                subgraphPool.token1.wrapped.equals(currencyB.wrapped)) ||
-              (subgraphPool.token1.wrapped.equals(nativeToken) && subgraphPool.token0.wrapped.equals(currencyB.wrapped))
-            )
-          })
-          .slice(0, 1)
-      : []
-    addToPoolSet(top2EthQuoteTokenPool)
-
-    const topByTVL = poolsFromSubgraph.slice(0, POOL_SELECTION_CONFIG.topN).filter((pool) => !poolSet.has(pool.address))
-    addToPoolSet(topByTVL)
-
-    const topByTVLUsingTokenBase = poolsFromSubgraph
-      .filter((subgraphPool) => {
-        if (poolSet.has(subgraphPool.address)) {
-          return false
-        }
-        return (
-          subgraphPool.token0.wrapped.equals(currencyA.wrapped) || subgraphPool.token1.wrapped.equals(currencyA.wrapped)
-        )
-      })
-      .slice(0, POOL_SELECTION_CONFIG.topNTokenInOut)
-    addToPoolSet(topByTVLUsingTokenBase)
-
-    const topByTVLUsingTokenQuote = poolsFromSubgraph
-      .filter((subgraphPool) => {
-        if (poolSet.has(subgraphPool.address)) {
-          return false
-        }
-        return (
-          subgraphPool.token0.wrapped.equals(currencyB.wrapped) || subgraphPool.token1.wrapped.equals(currencyB.wrapped)
-        )
-      })
-      .slice(0, POOL_SELECTION_CONFIG.topNTokenInOut)
-    addToPoolSet(topByTVLUsingTokenQuote)
-
-    const topByTVLUsingTokenInSecondHops = topByTVLUsingTokenBase
-      .map((subgraphPool) => {
-        return subgraphPool.token0.wrapped.equals(currencyA.wrapped) ? subgraphPool.token1 : subgraphPool.token0
-      })
-      .map((secondHopToken: Currency) => {
-        return poolsFromSubgraph
-          .filter((subgraphPool) => {
-            if (poolSet.has(subgraphPool.address)) {
-              return false
-            }
-            return (
-              subgraphPool.token0.wrapped.equals(secondHopToken.wrapped) ||
-              subgraphPool.token1.wrapped.equals(secondHopToken.wrapped)
-            )
-          })
-          .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
-      })
-      .reduce<SubgraphPool[]>((acc, cur) => [...acc, ...cur], [])
-      .sort(sortByTvl)
-      .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
-    addToPoolSet(topByTVLUsingTokenInSecondHops)
-
-    const topByTVLUsingTokenOutSecondHops = topByTVLUsingTokenQuote
-      .map((subgraphPool) => {
-        return subgraphPool.token0.wrapped.equals(currencyB.wrapped) ? subgraphPool.token1 : subgraphPool.token0
-      })
-      .map((secondHopToken: Currency) => {
-        return poolsFromSubgraph
-          .filter((subgraphPool) => {
-            if (poolSet.has(subgraphPool.address)) {
-              return false
-            }
-            return (
-              subgraphPool.token0.wrapped.equals(secondHopToken.wrapped) ||
-              subgraphPool.token1.wrapped.equals(secondHopToken.wrapped)
-            )
-          })
-          .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
-      })
-      .reduce<SubgraphPool[]>((acc, cur) => [...acc, ...cur], [])
-      .sort(sortByTvl)
-      .slice(0, POOL_SELECTION_CONFIG.topNSecondHop)
-    addToPoolSet(topByTVLUsingTokenOutSecondHops)
-
-    const pools = [
-      ...topByBaseWithTokenIn,
-      ...topByBaseWithTokenOut,
-      ...top2DirectPools,
-      ...top2EthBaseTokenPool,
-      ...top2EthQuoteTokenPool,
-      ...topByTVL,
-      ...topByTVLUsingTokenBase,
-      ...topByTVLUsingTokenQuote,
-      ...topByTVLUsingTokenInSecondHops,
-      ...topByTVLUsingTokenOutSecondHops,
-    ]
-    // eslint-disable-next-line
-    return pools.map(({ tvlUSD, ...rest }) => rest)
+    return SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, poolsFromSubgraphState.pools)
   }, [poolsFromSubgraphState, currencyA, currencyB])
 
   return {
@@ -341,71 +135,16 @@ export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, b
 
 export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabled = true }: V3PoolsHookParams = {}) {
   const result = useSWR<{
-    pools: SubgraphPool[]
+    pools: SmartRouter.SubgraphV3Pool[]
     key?: string
     blockNumber?: number
   }>(
     enabled && key && pairs?.length && [key],
     async () => {
-      const { chainId } = pairs[0][0]
-      const client = v3Clients[chainId]
-      // NOTE: remove block number for now for better performance
-      const query = gql`
-        query getPools($pageSize: Int!, $poolAddrs: [String]) {
-          pools(first: $pageSize, where: { id_in: $poolAddrs }) {
-            id
-            tick
-            sqrtPrice
-            feeTier
-            liquidity
-            feeProtocol
-            totalValueLockedUSD
-          }
-        }
-      `
-      if (!client) {
-        SmartRouter.metric('Cannot get v3 on chain', pairs[0][0].chainId, 'for now')
-        return {
-          pools: [],
-          key,
-          blockNumber,
-        }
-      }
-      const label = `[V3_POOLS_SUBGRAPH] ${key}`
-      SmartRouter.metric(label, pairs)
-      const metaMap = new Map<string, V3PoolMeta>()
-      for (const pair of pairs) {
-        const v3Metas = getV3PoolMetas(pair)
-        for (const meta of v3Metas) {
-          metaMap.set(meta.address.toLocaleLowerCase(), meta)
-        }
-      }
-      const addresses = Array.from(metaMap.keys())
-      const { pools: poolsFromSubgraph } = await client.request(query, {
-        pageSize: 1000,
-        poolAddrs: addresses,
+      const pools = await SmartRouter.getV3PoolSubgraph({
+        provider: ({ chainId }) => v3Clients[chainId],
+        pairs,
       })
-      const pools = poolsFromSubgraph.map(({ id, liquidity, sqrtPrice, tick, totalValueLockedUSD, feeProtocol }) => {
-        const { fee, currencyA, currencyB, address } = metaMap.get(id)
-        const [token0, token1] = currencyA.wrapped.sortsBefore(currencyB.wrapped)
-          ? [currencyA, currencyB]
-          : [currencyB, currencyA]
-        const [token0ProtocolFee, token1ProtocolFee] = parseProtocolFees(feeProtocol)
-        return {
-          type: PoolType.V3,
-          fee,
-          token0,
-          token1,
-          liquidity: JSBI.BigInt(liquidity),
-          sqrtRatioX96: JSBI.BigInt(sqrtPrice),
-          tick: Number(tick),
-          address,
-          tvlUSD: JSBI.BigInt(Number.parseInt(totalValueLockedUSD)),
-          token0ProtocolFee,
-          token1ProtocolFee,
-        }
-      })
-      SmartRouter.metric(label, pools)
       return {
         pools,
         key,
@@ -423,29 +162,6 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
     mutate()
   }, [blockNumber, mutate])
   return result
-}
-
-interface PoolMeta {
-  currencyA: Currency
-  currencyB: Currency
-  address: string
-}
-
-interface V3PoolMeta extends PoolMeta {
-  fee: FeeAmount
-}
-
-function getV3PoolMetas([currencyA, currencyB]: [Currency, Currency]) {
-  const deployerAddress = DEPLOYER_ADDRESSES[currencyA.chainId as ChainId]
-  if (!deployerAddress) {
-    return []
-  }
-  return [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((fee) => ({
-    address: getV3PoolAddress(currencyA, currencyB, fee),
-    currencyA,
-    currencyB,
-    fee,
-  }))
 }
 
 function getV3PoolAddress(currencyA: Currency, currencyB: Currency, fee: FeeAmount) {
