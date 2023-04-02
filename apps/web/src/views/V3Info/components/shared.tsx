@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Flex } from '@pancakeswap/uikit'
 
 export const PageButtons = styled.div`
   width: 100%;
@@ -59,4 +60,20 @@ export const ThemedBackgroundGlobal = styled.div<{ backgroundColor: string }>`
   background: ${({ backgroundColor }) =>
     `radial-gradient(50% 50% at 50% 50%, ${backgroundColor} 0%, rgba(255, 255, 255, 0) 100%)`};
   transform: translateY(-150vh);
+`
+
+export const ChartCardsContainer = styled(Flex)`
+  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  gap: 1em;
+
+  & > * {
+    width: 100%;
+  }
+
+  ${({ theme }) => theme.mediaQueries.md} {
+    flex-direction: row;
+  }
 `
