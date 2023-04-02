@@ -19,16 +19,16 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
   },
   [ChainId.BSC]: {
     defaultConfig: {
-      multicallChunk: 150,
+      multicallChunk: 50,
       gasLimitOverride: 1_000_000,
     },
     gasErrorFailureOverride: {
       gasLimitOverride: 1_000_000,
-      multicallChunk: 50,
+      multicallChunk: 40,
     },
     successRateFailureOverrides: {
       gasLimitOverride: 1_000_000,
-      multicallChunk: 70,
+      multicallChunk: 45,
     },
   },
   [ChainId.ETHEREUM]: {
