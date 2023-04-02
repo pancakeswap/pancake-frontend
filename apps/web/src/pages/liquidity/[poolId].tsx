@@ -822,8 +822,8 @@ function PositionHistory_({
                   .map((collectTx) => {
                     const foundSameTxBurn = d.transaction.burns.find(
                       (burnTx) =>
-                        collectTx.amount0 > burnTx.amount0 &&
-                        collectTx.amount1 > burnTx.amount1 &&
+                        +collectTx.amount0 > +burnTx.amount0 &&
+                        +collectTx.amount1 > +burnTx.amount1 &&
                         burnTx.timestamp === collectTx.timestamp,
                     )
                     if (foundSameTxBurn) {
