@@ -30,6 +30,8 @@ import { useTokenBalance } from 'state/wallet/hooks'
 import { useGetRemovedTokenAmountsNoContext } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
 import useTotalSupply from 'hooks/useTotalSupply'
 import currencyId from 'utils/currencyId'
+import { useTranslation } from '@pancakeswap/localization'
+import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -39,6 +41,11 @@ export const BodyWrapper = styled(Card)`
 `
 
 export default function StablePoolPage() {
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
+
   const router = useRouter()
   const { address: account } = useAccount()
 
@@ -112,11 +119,11 @@ export default function StablePoolPage() {
             !isMobile && (
               <>
                 <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1`}>
-                  <Button width="100%">Add</Button>
+                  <Button width="100%">{t('Add')}</Button>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}?stable=1`}>
                   <Button ml="16px" variant="secondary" width="100%">
-                    Remove
+                    {t('Remove')}
                   </Button>
                 </NextLinkFromReactRouter>
               </>
@@ -128,12 +135,12 @@ export default function StablePoolPage() {
             <>
               <NextLinkFromReactRouter to={`/add/${currencyIdA}/${currencyIdB}?stable=1`}>
                 <Button mb="8px" width="100%">
-                  Add
+                  {t('Add')}
                 </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}?stable=1`}>
                 <Button mb="8px" variant="secondary" width="100%">
-                  Remove
+                  {t('Remove')}
                 </Button>
               </NextLinkFromReactRouter>
             </>
@@ -142,9 +149,9 @@ export default function StablePoolPage() {
             <Flex alignItems="center" justifyContent="space-between" width="100%" flexWrap={['wrap', 'wrap', 'nowrap']}>
               <Box width="100%" mr="4px" mb="16px">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                  Liquidity
+                  {t('Liquidity')}
                 </Text>
-                <Text fontSize="24px" fontWeight={500}>
+                <Text fontSize="24px" fontWeight={600}>
                   $
                   {totalUSDValue
                     ? totalUSDValue.toLocaleString(undefined, {
@@ -162,7 +169,7 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text mr="4px">{token0Deposited?.toSignificant(6)}</Text>
+                      <Text mr="4px">{formatCurrencyAmount(token0Deposited, 4, locale)}</Text>
                     </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -173,16 +180,16 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text mr="4px">{token1Deposited?.toSignificant(6)}</Text>
+                      <Text mr="4px">{formatCurrencyAmount(token1Deposited, 4, locale)}</Text>
                     </Flex>
                   </AutoRow>
                 </LightGreyCard>
               </Box>
               <Box width="100%" mr="4px" mb="16px">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                  Pool reserves
+                  {t('Pool reserves')}
                 </Text>
-                <Text fontSize="24px" fontWeight={500}>
+                <Text fontSize="24px" fontWeight={600}>
                   $
                   {totalLiquidityUSD
                     ? totalLiquidityUSD.toLocaleString(undefined, {
@@ -200,7 +207,7 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text mr="4px">{stableLp?.reserve0?.toSignificant(6)}</Text>
+                      <Text mr="4px">{formatCurrencyAmount(stableLp?.reserve0, 4, locale)}</Text>
                     </Flex>
                   </AutoRow>
                   <AutoRow justifyContent="space-between" mb="8px">
@@ -211,7 +218,7 @@ export default function StablePoolPage() {
                       </Text>
                     </Flex>
                     <Flex justifyContent="center">
-                      <Text mr="4px">{stableLp?.reserve1?.toSignificant(6)}</Text>
+                      <Text mr="4px">{formatCurrencyAmount(stableLp?.reserve1, 4, locale)}</Text>
                     </Flex>
                   </AutoRow>
                 </LightGreyCard>
@@ -219,7 +226,7 @@ export default function StablePoolPage() {
             </Flex>
           </AutoRow>
           <Text color="textSubtle">
-            Your share in pool: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
+            {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
           </Text>
         </CardBody>
       </BodyWrapper>

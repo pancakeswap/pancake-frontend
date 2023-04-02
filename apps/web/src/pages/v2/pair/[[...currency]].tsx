@@ -25,6 +25,7 @@ import useTotalSupply from 'hooks/useTotalSupply'
 import { useRouter } from 'next/router'
 import { useTokenBalance } from 'state/wallet/hooks'
 import { useAccount } from 'wagmi'
+import { useTranslation } from '@pancakeswap/localization'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -34,6 +35,8 @@ export const BodyWrapper = styled(Card)`
 `
 
 export default function PoolV2Page() {
+  const { t } = useTranslation()
+
   const router = useRouter()
   const { address: account } = useAccount()
 
@@ -79,11 +82,11 @@ export default function PoolV2Page() {
             !isMobile && (
               <>
                 <NextLinkFromReactRouter to={`/v2/add/${currencyIdA}/${currencyIdB}`}>
-                  <Button width="100%">Add</Button>
+                  <Button width="100%">{t('Add')}</Button>
                 </NextLinkFromReactRouter>
                 <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`}>
                   <Button ml="16px" variant="secondary" width="100%">
-                    Remove
+                    {t('Remove')}
                   </Button>
                 </NextLinkFromReactRouter>
               </>
@@ -95,12 +98,12 @@ export default function PoolV2Page() {
             <>
               <NextLinkFromReactRouter to={`/v2/add/${currencyIdA}/${currencyIdB}`}>
                 <Button width="100%" mb="8px">
-                  Add
+                  {t('Add')}
                 </Button>
               </NextLinkFromReactRouter>
               <NextLinkFromReactRouter to={`/v2/remove/${currencyIdA}/${currencyIdB}`}>
                 <Button variant="secondary" width="100%" mb="8px">
-                  Remove
+                  {t('Remove')}
                 </Button>
               </NextLinkFromReactRouter>
             </>
@@ -108,10 +111,10 @@ export default function PoolV2Page() {
           <AutoRow>
             <Flex alignItems="center" justifyContent="space-between" width="100%" mb="8px">
               <Box width="100%" mr="4px">
-                <Text fontSize="16px" color="secondary" bold textTransform="uppercase">
-                  Liquidity
+                <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
+                  {t('Liquidity')}
                 </Text>
-                <Text fontSize="24px" fontWeight={500}>
+                <Text fontSize="24px" fontWeight={600}>
                   $
                   {totalUSDValue
                     ? totalUSDValue.toLocaleString(undefined, {
@@ -147,7 +150,9 @@ export default function PoolV2Page() {
               </Box>
             </Flex>
           </AutoRow>
-          <Text>Your share in pool: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}</Text>
+          <Text>
+            {t('Your share in pool')}: {poolTokenPercentage ? `${poolTokenPercentage.toFixed(8)}%` : '-'}
+          </Text>
         </CardBody>
       </BodyWrapper>
     </Page>

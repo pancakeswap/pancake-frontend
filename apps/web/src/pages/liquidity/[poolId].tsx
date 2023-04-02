@@ -135,6 +135,7 @@ const useInverter = ({
 
 export default function PoolPage() {
   const {
+    t,
     currentLanguage: { locale },
   } = useTranslation()
 
@@ -382,14 +383,14 @@ export default function PoolPage() {
         </AutoRow>
       </LightGreyCard>
       <Text mb="16px" px="16px">
-        Collecting fees will withdraw currently available fees for you
+        {t('Collecting fees will withdraw currently available fees for you')}
       </Text>
     </>
   )
 
   const [onClaimFee] = useModal(
     <TransactionConfirmationModal
-      title="Claim fees"
+      title={t('Claim fees')}
       attemptingTxn={collecting}
       hash={collectMigrationHash ?? ''}
       content={() => (
@@ -397,12 +398,12 @@ export default function PoolPage() {
           topContent={modalHeader}
           bottomContent={() => (
             <Button width="100%" onClick={collect}>
-              Collect
+              {t('Collect')}
             </Button>
           )}
         />
       )}
-      pendingText="Collecting fees"
+      pendingText={t('Collecting fees')}
     />,
     true,
     true,
@@ -441,7 +442,7 @@ export default function PoolPage() {
                       <>
                         {isStakedInMCv3 && (
                           <Tag ml="8px" outline variant="warning">
-                            Farming
+                            {t('Farming')}
                           </Tag>
                         )}
                         <RangeTag ml="8px" removed={removed} outOfRange={!inRange} />
@@ -456,7 +457,7 @@ export default function PoolPage() {
                       <Flex>
                         {isStakedInMCv3 && (
                           <Tag mr="8px" outline variant="warning">
-                            Farming
+                            {t('Farming')}
                           </Tag>
                         )}
                         <RangeTag removed={removed} outOfRange={!inRange} />
@@ -476,13 +477,13 @@ export default function PoolPage() {
                       to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                     >
                       <Button disabled={!isOwnNFT} width="100%">
-                        Add
+                        {t('Add')}
                       </Button>
                     </NextLinkFromReactRouter>
                     {!removed && (
                       <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
                         <Button disabled={!isOwnNFT} ml="4px" variant="secondary" width="100%">
-                          Remove
+                          {t('Remove')}
                         </Button>
                       </NextLinkFromReactRouter>
                     )}
@@ -497,13 +498,13 @@ export default function PoolPage() {
                     to={`/increase/${currencyId(currency0)}/${currencyId(currency1)}/${feeAmount}/${tokenId}`}
                   >
                     <Button disabled={!isOwnNFT} width="100%" mb="8px">
-                      Add
+                      {t('Add')}
                     </Button>
                   </NextLinkFromReactRouter>
                   {!removed && (
                     <NextLinkFromReactRouter to={`/remove/${tokenId}`}>
                       <Button disabled={!isOwnNFT} variant="secondary" width="100%" mb="8px">
-                        Remove
+                        {t('Remove')}
                       </Button>
                     </NextLinkFromReactRouter>
                   )}
@@ -528,10 +529,12 @@ export default function PoolPage() {
                         feeAmount={feeAmount}
                         positionDetails={positionDetails}
                         defaultDepositUsd={fiatValueOfLiquidity?.toFixed(2)}
+                        tokenAmount0={position?.amount0}
+                        tokenAmount1={position?.amount1}
                       />
                     </Flex>
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                      Liquidity
+                      {t('Liquidity')}
                     </Text>
 
                     <Text fontSize="24px" fontWeight={600} mb="8px">
@@ -576,7 +579,7 @@ export default function PoolPage() {
                   </Box>
                   <Box width="100%">
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                      Unclaim Fees
+                      {t('Unclaim Fees')}
                     </Text>
                     <AutoRow justifyContent="space-between" mb="8px">
                       <Text fontSize="24px" fontWeight={600}>
@@ -597,10 +600,10 @@ export default function PoolPage() {
                         onClick={onClaimFee}
                       >
                         {!!collectMigrationHash && !isCollectPending
-                          ? 'Collected'
+                          ? t('Collected')
                           : isCollectPending || collecting
-                          ? 'Collecting...'
-                          : 'Collect'}
+                          ? t('Collecting...')
+                          : t('Collect')}
                       </Button>
                     </AutoRow>
                     <LightGreyCard
@@ -634,7 +637,9 @@ export default function PoolPage() {
               {showCollectAsWeth && (
                 <Flex mb="8px">
                   <Flex ml="auto" alignItems="center">
-                    <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
+                    <Text mr="8px">
+                      {t('Collect as')} {nativeWrappedSymbol}
+                    </Text>
                     <Toggle
                       id="receive-as-weth"
                       scale="sm"
@@ -646,7 +651,7 @@ export default function PoolPage() {
               )}
               <AutoRow justifyContent="space-between" mb="16px" mt="24px">
                 <Text fontSize="12px" color="secondary" bold textTransform="uppercase">
-                  Price Range
+                  {t('Price Range')}
                 </Text>
                 {currencyBase && currencyQuote && (
                   <RateToggle
@@ -656,19 +661,24 @@ export default function PoolPage() {
                 )}
               </AutoRow>
               <AutoRow mb="8px">
-                <Flex alignItems="center" justifyContent="space-between" width="100%">
+                <Flex
+                  alignItems="center"
+                  justifyContent="space-between"
+                  width="100%"
+                  flexWrap={['wrap', 'wrap', 'nowrap']}
+                >
                   <RangePriceSection
-                    mr="16px"
-                    title="MIN PRICE"
+                    mr={['0', '0', '16px']}
+                    mb={['8px', '8px', '0']}
+                    title={t('Min Price')}
                     price={formatTickPrice(priceLower, tickAtLimit, Bound.LOWER, locale)}
                     currency0={currencyQuote}
                     currency1={currencyBase}
                   />
-
-                  <SyncAltIcon width="24px" mx="16px" />
+                  {isMobile ? null : <SyncAltIcon width="24px" mx="16px" />}
                   <RangePriceSection
-                    ml="16px"
-                    title="MAX PRICE"
+                    ml={['0', '0', '16px']}
+                    title={t('Max Price')}
                     price={formatTickPrice(priceUpper, tickAtLimit, Bound.UPPER, locale)}
                     currency0={currencyQuote}
                     currency1={currencyBase}
@@ -677,7 +687,7 @@ export default function PoolPage() {
               </AutoRow>
               {pool && currencyQuote && currencyBase ? (
                 <RangePriceSection
-                  title="CURRENT PRICE"
+                  title={t('Current Price')}
                   currency0={currencyQuote}
                   currency1={currencyBase}
                   price={formatPrice(inverted ? pool.token1Price : pool.token0Price, 6, locale)}

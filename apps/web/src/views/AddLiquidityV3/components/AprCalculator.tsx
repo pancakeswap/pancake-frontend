@@ -1,4 +1,4 @@
-import { Currency } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
 import {
   useRoi,
   RoiCalculatorModalV2,
@@ -38,6 +38,8 @@ interface Props {
   allowApply?: boolean
   positionDetails?: PositionDetails
   defaultDepositUsd?: string
+  tokenAmount0?: CurrencyAmount<Token>
+  tokenAmount1?: CurrencyAmount<Token>
 }
 
 const AprButtonContainer = styled(Flex)`
@@ -53,6 +55,8 @@ export function AprCalculator({
   allowApply = true,
   positionDetails,
   defaultDepositUsd,
+  tokenAmount0,
+  tokenAmount1,
 }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
@@ -109,8 +113,8 @@ export function AprCalculator({
     sqrtRatioX96,
     fee: feeAmount,
     mostActiveLiquidity: pool?.liquidity,
-    amountA,
-    amountB,
+    amountA: tokenAmount1,
+    amountB: tokenAmount0,
     compoundOn: false,
     currencyAUsdPrice,
     currencyBUsdPrice,
