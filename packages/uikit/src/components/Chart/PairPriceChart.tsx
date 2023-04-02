@@ -74,13 +74,14 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
         background: { color: "transparent" },
         textColor: isDark ? "#F4EEFF" : "#280D5F",
       },
+      autoSize: true,
       handleScale: false,
       handleScroll: false,
-      width: (chartRef?.current?.parentElement?.clientWidth ?? 0) - 32,
-      height: (chartRef?.current?.parentElement?.clientHeight ?? 0) - 32,
+      // width: (chartRef?.current?.parentElement?.clientWidth ?? 0) - 32,
+      // height: (chartRef?.current?.parentElement?.clientHeight ?? 0),
       rightPriceScale: {
         scaleMargins: {
-          top: 0.1,
+          top: 0.3,
           bottom: 0.1,
         },
         borderVisible: false,
@@ -183,7 +184,9 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   return (
     <>
       {!chartCreated && <LineChartLoader />}
-      <div ref={chartRef} style={{ minHeight: 200 }} id="swap-line-chart" {...rest} />
+      <div style={{ display: "flex", flex: 1, height: "100%" }}>
+        <div style={{ flex: 1 }} ref={chartRef} id="swap-line-chart" {...rest} />
+      </div>
     </>
   );
 };

@@ -331,7 +331,10 @@ export function RoiCalculator({
   const priceChart = (
     <Section title={t("History price")}>
       <PriceChart
-        prices={prices}
+        prices={useMemo(
+          () => prices?.map((p) => ({ ...p, value: invertPrice ? p.value : p.value > 0 ? 1 / p.value : 0 })),
+          [invertPrice, prices]
+        )}
         onSpanChange={onPriceSpanChange}
         span={priceSpan}
         priceUpper={
