@@ -41,5 +41,5 @@ export const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
 
 export const SUBGRAPH_START_BLOCK = {
   [ChainId.BSC]: 26931960,
-  [ChainId.ETHEREUM]: 26931960,
+  [ChainId.ETHEREUM]: 16963633,
 }
