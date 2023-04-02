@@ -6,7 +6,7 @@ import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { PoolType, SmartRouter } from '@pancakeswap/smart-router/evm'
 
 import { parsePool, parseCurrencyAmount, parseCurrency, serializeTrade } from 'utils/routingApi'
-import { provider } from 'utils/providers'
+import { viemProviders } from 'utils/viem'
 
 export const config = {
   runtime: 'experimental-edge',
@@ -84,7 +84,7 @@ const zParams = z
     candidatePools: true,
   })
 
-const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: provider })
+const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: viemProviders })
 
 const edgeFunction = async (req: NextRequest) => {
   if (req.method !== 'POST') return new Response(null, { status: 404, statusText: 'Not Found' })
@@ -103,7 +103,7 @@ const edgeFunction = async (req: NextRequest) => {
   const pools = data.candidatePools.map((pool) => parsePool(chainId, pool as any))
   const gasPrice = gasPriceWei
     ? JSBI.BigInt(gasPriceWei)
-    : async () => JSBI.BigInt(await provider({ chainId }).getGasPrice())
+    : async () => JSBI.BigInt(await (await viemProviders({ chainId }).getGasPrice()).toString())
 
   try {
     const trade = await SmartRouter.getBestTrade(amount, currency, tradeType, {

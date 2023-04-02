@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { OnChainProvider } from '@pancakeswap/smart-router/evm'
 import { createPublicClient, http } from 'viem'
 import { bsc, bscTestnet, goerli, mainnet } from 'wagmi/chains'
 import { getNodeRealUrl } from './wagmi'
@@ -23,7 +24,8 @@ const goerliClient = createPublicClient({
   transport: http(getNodeRealUrl(goerli.network)?.http || goerli.rpcUrls.default.http[0]),
 })
 
-export const viemProviders = ({ chainId }: { chainId?: ChainId }) => {
+// @ts-ignore
+export const viemProviders: OnChainProvider = ({ chainId }: { chainId?: ChainId }) => {
   switch (chainId) {
     case ChainId.ETHEREUM:
       return mainnetClient

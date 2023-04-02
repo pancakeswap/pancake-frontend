@@ -23,6 +23,14 @@ export type PancakeMulticallConfig = {
   gasLimitPerCallOverride?: number
 }
 
+function isPromise<T>(p: any): p is Promise<T> {
+  if (typeof p === 'object' && typeof p.then === 'function') {
+    return true
+  }
+
+  return false
+}
+
 /**
  * The PancakeswapMulticall contract has added functionality for limiting the amount of gas
  * that each call within the multicall can consume. This is useful for operations where
@@ -79,7 +87,12 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
-      blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
+      // @ts-ignore
+      blockNumber: blockNumberOverride
+        ? isPromise(blockNumberOverride)
+          ? BigInt(JSBI.toNumber(JSBI.BigInt(await blockNumberOverride)))
+          : BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride)))
+        : (undefined as never),
     })
 
     // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
@@ -160,6 +173,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
+      // @ts-ignore
       blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
 
@@ -243,6 +257,7 @@ export class PancakeMulticallProvider extends IMulticallProvider<PancakeMultical
       address: PANCAKE_MULTICALL_ADDRESSES[this.chainId],
       functionName: 'multicall',
       args: [calls],
+      // @ts-ignore
       blockNumber: blockNumberOverride ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumberOverride))) : undefined,
     })
     // const { blockNumber, returnData: aggregateResults } = await this.multicallContract.callStatic.multicall(calls, {
