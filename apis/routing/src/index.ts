@@ -11,15 +11,16 @@
  */
 
 import { StaticJsonRpcProvider } from '@ethersproject/providers'
-import { handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
+import { CORS_ALLOW, handleCors, wrapCorsHeader } from '@pancakeswap/worker-utils'
 import { Router } from 'itty-router'
-import { missing, error, json } from 'itty-router-extras'
+import { error, json, missing } from 'itty-router-extras'
 import { z } from 'zod'
 
-import { ChainId, JSBI, TradeType } from '@pancakeswap/sdk'
+import { ChainId, Currency, JSBI, TradeType } from '@pancakeswap/sdk'
+import { PoolType, SmartRouter, StablePool, V2Pool, V3Pool } from '@pancakeswap/smart-router/evm'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
-import { PoolType, SmartRouter } from '@pancakeswap/smart-router/evm'
-import { parseCurrency, parseCurrencyAmount, parsePool, serializeTrade } from './utils'
+import { GraphQLClient } from 'graphql-request'
+import { parseCurrency, parseCurrencyAmount, serializeTrade } from './utils'
 
 const zChainId = z.nativeEnum(ChainId)
 const zFee = z.nativeEnum(FeeAmount)
@@ -79,7 +80,6 @@ const zParams = z
     tradeType: zTradeType,
     amount: zCurrencyAmount,
     currency: zCurrency,
-    candidatePools: zPools,
     gasPriceWei: zBigNumber.optional(),
     maxHops: z.number().optional(),
     maxSplits: z.number().optional(),
@@ -95,75 +95,140 @@ const zParams = z
   })
 
 const router = Router()
+const bscProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://nodes.pancakeswap.info',
+    skipFetchSetup: true,
+  },
+  56,
+)
 
-router.post('/v0/quote', async (req) => {
-  const bscProvider = new StaticJsonRpcProvider(
-    {
-      url: 'https://nodes.pancakeswap.info',
-      skipFetchSetup: true,
-    },
-    56,
-  )
+const bscTestnetProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
+    skipFetchSetup: true,
+  },
+  97,
+)
 
-  const bscTestnetProvider = new StaticJsonRpcProvider(
-    {
-      url: 'https://bsc-testnet.nodereal.io/v1/e9a36765eb8a40b9bd12e680a1fd2bc5',
-      skipFetchSetup: true,
-    },
-    97,
-  )
+const goerliProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
+    skipFetchSetup: true,
+  },
+  5,
+)
 
-  const goerliProvider = new StaticJsonRpcProvider(
-    {
-      url: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
-      skipFetchSetup: true,
-    },
-    5,
-  )
+const ethProvider = new StaticJsonRpcProvider(
+  {
+    url: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
+    skipFetchSetup: true,
+  },
+  1,
+)
 
-  const ethProvider = new StaticJsonRpcProvider(
-    {
-      url: 'https://eth-goerli.nodereal.io/v1/8a4432e42df94dcca2814fde8aea2a2e',
-      skipFetchSetup: true,
-    },
-    1,
-  )
+const V3_SUBGRAPH_URLS = {
+  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
+  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli',
+  [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-bsc',
+  [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
+}
 
-  const provider = ({ chainId }: { chainId?: ChainId }) => {
-    if (chainId === ChainId.BSC_TESTNET) {
-      return bscTestnetProvider
-    }
-    if (chainId === ChainId.BSC) {
-      return bscProvider
-    }
-    if (chainId === ChainId.ETHEREUM) {
-      return ethProvider
-    }
-    if (chainId === ChainId.GOERLI) {
-      return goerliProvider
-    }
+const provider = ({ chainId }: { chainId?: ChainId }) => {
+  if (chainId === ChainId.BSC_TESTNET) {
+    return bscTestnetProvider
+  }
+  if (chainId === ChainId.BSC) {
     return bscProvider
   }
-  const body = (await req.json?.()) as any
-  const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: provider })
-  const parsed = zParams.safeParse(body)
+  if (chainId === ChainId.ETHEREUM) {
+    return ethProvider
+  }
+  if (chainId === ChainId.GOERLI) {
+    return goerliProvider
+  }
+  return bscProvider
+}
+
+const onChainQuoteProvider = SmartRouter.createQuoteProvider({ onChainProvider: provider })
+
+const v3Clients = {
+  [ChainId.ETHEREUM]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.ETHEREUM], { fetch }),
+  [ChainId.GOERLI]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.GOERLI], { fetch }),
+  // TODO: v3 swap update to our own
+  [ChainId.BSC]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC], { fetch }),
+  [ChainId.BSC_TESTNET]: new GraphQLClient(V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET], { fetch }),
+}
+
+const subgraphProvider = ({ chainId }: { chainId?: ChainId }) => {
+  return v3Clients[chainId as ChainId]
+}
+
+const PoolCache = {
+  getKey: (currencyA: Currency, currencyB: Currency, chainId: ChainId) => {
+    return `${currencyA.symbol}-${currencyB.symbol}-${chainId}:pool-v1`
+  },
+  get: (cacheKey: string) => {
+    return POOLS.get<{
+      v3Pools: V3Pool[]
+      v2Pools: V2Pool[]
+      stablePools: StablePool[]
+    }>(cacheKey, { type: 'json' })
+  },
+  set: (key: string, value: any) => {
+    return POOLS.put(key, value, {
+      expirationTtl: 900,
+    })
+  },
+}
+
+router.get('/v0/quote', async (req, event: FetchEvent) => {
+  const parsed = zParams.safeParse(req.query)
   if (parsed.success === false) {
-    return new Response(null, { status: 400, statusText: 'Invalid params' })
+    return error(400, 'Invalid params')
   }
 
-  const { data } = parsed
-  const { chainId, tradeType, gasPriceWei, maxHops, maxSplits, blockNumber, poolTypes } = data
-  const amount = parseCurrencyAmount(chainId, data.amount as any)
-  const currency = parseCurrency(chainId, data.currency as any)
-  const pools = data.candidatePools.map((pool) => parsePool(chainId, pool as any))
+  const { amount, chainId, currency, tradeType, blockNumber, gasPriceWei, maxHops, maxSplits, poolTypes } = parsed.data
+  console.log(amount, currency, '????')
+
   const gasPrice = gasPriceWei
     ? JSBI.BigInt(gasPriceWei)
     : async () => JSBI.BigInt(await provider({ chainId }).getGasPrice())
 
+  const currencyAAmount = parseCurrencyAmount(chainId, amount)
+  const currencyA = currencyAAmount.currency
+  const currencyB = parseCurrency(chainId, currency)
+
+  const cacheKey = PoolCache.getKey(currencyA, currencyB, chainId)
+
+  let pools = await PoolCache.get(cacheKey)
+
+  if (!pools) {
+    const pairs = SmartRouter.getPairCombinations(currencyA, currencyB)
+
+    const [v3Pools, v2Pools, stablePools] = await Promise.all([
+      SmartRouter.getV3PoolSubgraph({ provider: subgraphProvider, pairs }).then((res) =>
+        SmartRouter.v3PoolSubgraphSelection(currencyA, currencyB, res),
+      ),
+      SmartRouter.getV2PoolSubgraph({ provider: subgraphProvider, pairs }).then((res) =>
+        SmartRouter.v2PoolSubgraphSelection(currencyA, currencyB, res),
+      ),
+      SmartRouter.getStablePoolsOnChain(pairs, provider, blockNumber),
+    ])
+
+    pools = {
+      v3Pools,
+      v2Pools,
+      stablePools,
+    }
+
+    event.waitUntil(PoolCache.set(cacheKey, pools))
+  }
+
   try {
-    const trade = await SmartRouter.getBestTrade(amount, currency, tradeType, {
+    const trade = await SmartRouter.getBestTrade(currencyAAmount, currencyB, tradeType, {
       gasPriceWei: gasPrice,
-      poolProvider: SmartRouter.createStaticPoolProvider(pools),
+      poolProvider: SmartRouter.createStaticPoolProvider([...pools.v3Pools, ...pools.v2Pools, ...pools.stablePools]),
       quoteProvider: onChainQuoteProvider,
       maxHops,
       maxSplits,
@@ -171,19 +236,20 @@ router.post('/v0/quote', async (req) => {
       allowedPoolTypes: poolTypes,
       quoterOptimization: false,
     })
-
     return json(trade ? serializeTrade(trade) : {})
   } catch (e) {
     return error(500, e instanceof Error ? e.message : 'No valid trade')
   }
 })
 
-router.options('*', handleCors('*', `POST, OPTIONS`, `*`))
+router.options('*', handleCors(CORS_ALLOW, `GET, POST, OPTIONS`, `*`))
 
 router.all('*', () => missing('Not found'))
 
 addEventListener('fetch', (event) =>
   event.respondWith(
-    router.handle(event.request, event).then((res) => wrapCorsHeader(event.request, res, { allowedOrigin: '*' })),
+    router
+      .handle(event.request, event)
+      .then((res) => wrapCorsHeader(event.request, res, { allowedOrigin: CORS_ALLOW })),
   ),
 )

@@ -188,7 +188,7 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
   return async function poolFactory(
     pairs: [Currency, Currency][],
     provider: OnChainProvider,
-    blockNumber: BigintIsh,
+    blockNumber?: BigintIsh,
   ): Promise<TPool[]> {
     const chainId: ChainId = pairs[0]?.[0]?.chainId
     if (!chainId) {
@@ -234,7 +234,7 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
         args: call.params,
       })),
       allowFailure: true,
-      blockNumber: BigInt(JSBI.toNumber(JSBI.BigInt(blockNumber))),
+      blockNumber: blockNumber ? BigInt(JSBI.toNumber(JSBI.BigInt(blockNumber))) : undefined,
     })
 
     const pools: TPool[] = []
