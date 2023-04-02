@@ -90,7 +90,12 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     }
 
     if (isCake && cakePrice) {
-      return new Price(stableCoin, currency, 1 * 10 ** stableCoin.decimals, cakePrice.times(1e18).toString())
+      return new Price(
+        currency,
+        stableCoin,
+        1 * 10 ** currency.decimals,
+        getFullDecimalMultiplier(stableCoin.decimals).times(cakePrice.toFixed(stableCoin.decimals)).toString(),
+      )
     }
 
     // handle stable coin
@@ -100,10 +105,12 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
 
     if (priceFromLlama && enableLlama) {
       return new Price(
-        stableCoin,
         currency,
-        1 * 10 ** stableCoin.decimals,
-        getFullDecimalMultiplier(currency.decimals).times(priceFromLlama).toString(),
+        stableCoin,
+        1 * 10 ** currency.decimals,
+        getFullDecimalMultiplier(stableCoin.decimals)
+          .times(parseFloat(priceFromLlama).toFixed(stableCoin.decimals))
+          .toString(),
       )
     }
 

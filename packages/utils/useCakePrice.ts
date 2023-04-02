@@ -24,6 +24,11 @@ export const useCakePriceAsBN = () => {
       return new BigNumber(cake.price)
     },
     {
+      compare: (a, b) => {
+        if (!a && !b) return true
+        if (!a || !b) return false
+        return a.eq(b)
+      },
       refreshInterval: 1_000 * 10,
     },
   )
