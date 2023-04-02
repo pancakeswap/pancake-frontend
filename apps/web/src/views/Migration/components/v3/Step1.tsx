@@ -13,8 +13,6 @@ import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
 import { STABLE_LP_TO_MIGRATE } from './Step2'
 
-const showV3FarmsOnly = true
-
 const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
