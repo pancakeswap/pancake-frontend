@@ -56,7 +56,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     baseCurrency: currency,
     tradeType: TradeType.EXACT_INPUT,
     maxSplits: 0,
-    maxHops: baseTradeAgainst ? 1 : undefined,
+    maxHops: baseTradeAgainst ? 2 : undefined,
     enabled: enabled && !isCake && !isStableCoin,
   })
 
