@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 
@@ -30,7 +30,14 @@ interface Props {
   onSpanChange?: (spanIndex: number) => void;
 }
 
-export function PriceChart({ prices, onSpanChange, span = 0, priceUpper, priceLower, priceCurrent }: Props) {
+export const PriceChart = memo(function PriceChart({
+  prices,
+  onSpanChange,
+  span = 0,
+  priceUpper,
+  priceLower,
+  priceCurrent,
+}: Props) {
   const { t } = useTranslation();
   const priceLimits = useMemo(
     () =>
@@ -112,7 +119,7 @@ export function PriceChart({ prices, onSpanChange, span = 0, priceUpper, priceLo
       {priceKeyValueDisplay}
     </Flex>
   );
-}
+});
 
 function PriceDisplay({ title, value, ...rest }: { title?: string; value?: string | number } & SpaceProps) {
   return (

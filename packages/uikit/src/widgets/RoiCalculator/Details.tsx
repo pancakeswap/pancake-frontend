@@ -1,7 +1,7 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Percent, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, memo } from "react";
 import styled from "styled-components";
 import { formatPercent } from "@pancakeswap/utils/formatFractions";
 
@@ -25,7 +25,7 @@ interface Props {
   isFarm?: boolean;
 }
 
-export function Details({
+export const Details = memo(function Details({
   totalYield = 0,
   externalLink,
   lpReward = 0,
@@ -154,4 +154,4 @@ export function Details({
       {details}
     </StyledFooter>
   );
-}
+});

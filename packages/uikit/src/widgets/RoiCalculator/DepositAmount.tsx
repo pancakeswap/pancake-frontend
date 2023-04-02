@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, CurrencyAmount } from "@pancakeswap/sdk";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import styled from "styled-components";
 
 import {
@@ -18,7 +18,16 @@ import {
 
 type Props = UsdAmountInputProps & TokenAmountsDisplayProps;
 
-export function DepositAmountInput({ value, max, onChange, amountA, amountB, currencyA, currencyB, maxLabel }: Props) {
+export const DepositAmountInput = memo(function DepositAmountInput({
+  value,
+  max,
+  onChange,
+  amountA,
+  amountB,
+  currencyA,
+  currencyB,
+  maxLabel,
+}: Props) {
   return (
     <>
       <Box mb="1em">
@@ -27,7 +36,7 @@ export function DepositAmountInput({ value, max, onChange, amountA, amountB, cur
       <TokenAmountsDisplay amountA={amountA} amountB={amountB} currencyA={currencyA} currencyB={currencyB} />
     </>
   );
-}
+});
 
 const StyledBalanceInput = styled(BalanceInput)`
   padding: 0 16px;
@@ -45,7 +54,7 @@ interface UsdAmountInputProps {
   maxLabel?: string;
 }
 
-export function DepositUsdAmountInput({
+export const DepositUsdAmountInput = memo(function DepositUsdAmountInput({
   value = "",
   max = "",
   onChange = () => {
@@ -84,7 +93,7 @@ export function DepositUsdAmountInput({
       </Flex>
     </>
   );
-}
+});
 
 interface TokenAmountsDisplayProps {
   currencyA?: Currency;
@@ -93,7 +102,13 @@ interface TokenAmountsDisplayProps {
   amountB?: CurrencyAmount<Currency>;
 }
 
-function TokenDisplayRow({ amount, currency }: { amount?: CurrencyAmount<Currency>; currency?: Currency }) {
+const TokenDisplayRow = memo(function TokenDisplayRow({
+  amount,
+  currency,
+}: {
+  amount?: CurrencyAmount<Currency>;
+  currency?: Currency;
+}) {
   if (!currency) {
     return null;
   }
@@ -109,9 +124,14 @@ function TokenDisplayRow({ amount, currency }: { amount?: CurrencyAmount<Currenc
       <Text>{amount?.toExact() || "0"}</Text>
     </RowBetween>
   );
-}
+});
 
-export function TokenAmountsDisplay({ amountA, amountB, currencyA, currencyB }: TokenAmountsDisplayProps) {
+export const TokenAmountsDisplay = memo(function TokenAmountsDisplay({
+  amountA,
+  amountB,
+  currencyA,
+  currencyB,
+}: TokenAmountsDisplayProps) {
   if (!currencyA && !currencyB) {
     return null;
   }
@@ -126,4 +146,4 @@ export function TokenAmountsDisplay({ amountA, amountB, currencyA, currencyB }: 
       </CardBody>
     </Card>
   );
-}
+});

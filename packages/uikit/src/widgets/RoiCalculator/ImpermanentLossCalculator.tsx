@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState, useMemo, memo } from "react";
 import { Currency, CurrencyAmount, JSBI, ONE_HUNDRED_PERCENT, ZERO_PERCENT } from "@pancakeswap/sdk";
 import { priceToClosestTick, TickMath, tickToPrice } from "@pancakeswap/v3-sdk";
 import styled from "styled-components";
@@ -59,7 +59,7 @@ const getCakeAssetsByApy = (
   };
 };
 
-export function ImpermanentLossCalculator({
+export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator({
   tickLower,
   tickUpper,
   sqrtRatioX96,
@@ -346,4 +346,4 @@ export function ImpermanentLossCalculator({
       </Section>
     </Container>
   );
-}
+});

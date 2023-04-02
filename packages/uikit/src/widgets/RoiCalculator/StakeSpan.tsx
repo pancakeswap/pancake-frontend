@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useMemo } from "react";
+import { useMemo, memo } from "react";
 
 import { ButtonMenuItem } from "../../components";
 import { FullWidthButtonMenu } from "./FullWidthButtonMenu";
@@ -11,7 +11,7 @@ interface Props {
   onSpanChange?: (spanIndex: number) => void;
 }
 
-export function StakeSpan({
+export const StakeSpan = memo(function StakeSpan({
   spanIndex = 3,
   onSpanChange = () => {
     // default
@@ -53,4 +53,4 @@ export function StakeSpan({
       ))}
     </FullWidthButtonMenu>
   );
-}
+});

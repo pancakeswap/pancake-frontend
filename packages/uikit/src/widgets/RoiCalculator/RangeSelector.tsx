@@ -1,12 +1,13 @@
 import { Currency, Price } from "@pancakeswap/sdk";
 import { formatPrice } from "@pancakeswap/utils/formatFractions";
+import { memo } from "react";
 
 import { FlexGap } from "../../components";
 import { Bound } from "../../components/LiquidityChartRangeInput/types";
 import { StepCounter } from "./StepCounter";
 
 // currencyA is the base token
-export function RangeSelector({
+export const RangeSelector = memo(function RangeSelector({
   priceLower,
   priceUpper,
   onLeftRangeInput = () => {
@@ -76,4 +77,4 @@ export function RangeSelector({
       />
     </FlexGap>
   );
-}
+});

@@ -1,5 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 
 import { ButtonMenuItem, Flex, Checkbox } from "../../components";
 import { FullWidthButtonMenu } from "./FullWidthButtonMenu";
@@ -13,7 +13,7 @@ interface Props {
   onCompoundChange?: (compoundIndex: number) => void;
 }
 
-export function CompoundFrequency({
+export const CompoundFrequency = memo(function CompoundFrequency({
   on = true,
   compoundIndex = 0,
   onToggleCompound = () => {
@@ -64,4 +64,4 @@ export function CompoundFrequency({
       </Flex>
     </Flex>
   );
-}
+});

@@ -1,4 +1,5 @@
 import { useTranslation } from "@pancakeswap/localization";
+import { memo } from "react";
 
 import { Flex, Text } from "../../components";
 import {
@@ -15,7 +16,7 @@ interface Props {
   roiPercent?: number;
 }
 
-export function RoiRate({ usdAmount = 0, roiPercent }: Props) {
+export const RoiRate = memo(function RoiRate({ usdAmount = 0, roiPercent }: Props) {
   const { t } = useTranslation();
 
   return (
@@ -60,4 +61,4 @@ export function RoiRate({ usdAmount = 0, roiPercent }: Props) {
       </RoiCardInner>
     </RoiCardWrapper>
   );
-}
+});

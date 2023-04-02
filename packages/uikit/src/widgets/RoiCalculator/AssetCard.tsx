@@ -1,6 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
 import { Currency, Percent } from "@pancakeswap/sdk";
-import { PropsWithChildren, ReactNode, useCallback } from "react";
+import { memo, PropsWithChildren, ReactNode, useCallback } from "react";
 import styled from "styled-components";
 import { SpaceProps } from "styled-system";
 import { formatAmount } from "@pancakeswap/utils/formatInfoNumbers";
@@ -63,7 +63,13 @@ export interface Asset {
   priceChanged?: boolean;
 }
 
-export function CurrencyLogoDisplay({ logo, name }: { logo?: ReactNode; name?: string }) {
+export const CurrencyLogoDisplay = memo(function CurrencyLogoDisplay({
+  logo,
+  name,
+}: {
+  logo?: ReactNode;
+  name?: string;
+}) {
   return (
     <Flex>
       <Flex flexShrink="0" alignItems="center">
@@ -74,12 +80,13 @@ export function CurrencyLogoDisplay({ logo, name }: { logo?: ReactNode; name?: s
       </Text>
     </Flex>
   );
-}
+});
 
 export function AssetCardHeader({ children }: PropsWithChildren) {
   return <RowBetween>{children}</RowBetween>;
 }
-export function AssetCard({
+
+export const AssetCard = memo(function AssetCard({
   header,
   showPrice = true,
   priceEditable = true,
@@ -139,7 +146,7 @@ export function AssetCard({
       </Card>
     </Box>
   );
-}
+});
 
 interface AssetRowProps {
   name: ReactNode;
@@ -153,7 +160,7 @@ interface AssetRowProps {
   onPriceChange?: (price: string) => void;
 }
 
-export function AssetRow({
+export const AssetRow = memo(function AssetRow({
   price = "0",
   value = 0,
   amount,
@@ -209,14 +216,14 @@ export function AssetRow({
       </Td>
     </tr>
   );
-}
+});
 
 interface InterestDisplayProps {
   amount?: number | string;
   interest?: Percent | typeof Infinity;
 }
 
-export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
+export const InterestDisplay = memo(function InterestDisplay({ amount, interest }: InterestDisplayProps) {
   return (
     <RowFixed
       display="grid"
@@ -247,7 +254,7 @@ export function InterestDisplay({ amount, interest }: InterestDisplayProps) {
       )}
     </RowFixed>
   );
-}
+});
 
 interface CardTagProps extends TagProps {
   isActive?: boolean;
@@ -257,9 +264,9 @@ const ActiveTag = styled(Tag)`
   background: ${({ theme }) => theme.colors.gradientBold};
 `;
 
-export function CardTag({ isActive, ...rest }: PropsWithChildren<CardTagProps>) {
+export const CardTag = memo(function CardTag({ isActive, ...rest }: PropsWithChildren<CardTagProps>) {
   if (isActive) {
     return <ActiveTag {...rest} />;
   }
   return <Tag variant="textSubtle" outline {...rest} />;
-}
+});
