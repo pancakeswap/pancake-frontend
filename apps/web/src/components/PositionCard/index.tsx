@@ -19,8 +19,7 @@ import {
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import useTotalSupply from 'hooks/useTotalSupply'
-import { useStablecoinPrice } from 'hooks/useBUSDPrice'
-import { multiplyPriceByAmount } from 'utils/prices'
+import { useStablecoinPriceAmount } from 'hooks/useBUSDPrice'
 import { useAccount } from 'wagmi'
 import { BIG_INT_ZERO } from 'config/constants/exchange'
 import { useGetRemovedTokenAmounts } from 'views/RemoveLiquidity/RemoveStableLiquidity/hooks/useStableDerivedBurnInfo'
@@ -71,17 +70,9 @@ export const useTokensDeposited = ({ pair, totalPoolTokens, userPoolBalance }) =
 }
 
 export const useTotalUSDValue = ({ currency0, currency1, token0Deposited, token1Deposited }) => {
-  const token0Price = useStablecoinPrice(currency0)
-  const token1Price = useStablecoinPrice(currency1)
+  const token0USDValue = useStablecoinPriceAmount(currency0, token0Deposited)
+  const token1USDValue = useStablecoinPriceAmount(currency1, token1Deposited)
 
-  const token0USDValue =
-    token0Deposited && token0Price
-      ? multiplyPriceByAmount(token0Price, parseFloat(token0Deposited.toSignificant(6)))
-      : null
-  const token1USDValue =
-    token1Deposited && token1Price
-      ? multiplyPriceByAmount(token1Price, parseFloat(token1Deposited.toSignificant(6)))
-      : null
   return token0USDValue && token1USDValue ? token0USDValue + token1USDValue : null
 }
 

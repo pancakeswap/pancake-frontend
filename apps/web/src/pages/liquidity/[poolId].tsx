@@ -220,8 +220,8 @@ export default function PoolPage() {
   const isCollectPending = useIsTransactionPending(collectMigrationHash ?? undefined)
 
   // usdc prices always in terms of tokens
-  const price0 = useStablecoinPrice(token0 ?? undefined)
-  const price1 = useStablecoinPrice(token1 ?? undefined)
+  const price0 = useStablecoinPrice(token0 ?? undefined, !!feeValue0)
+  const price1 = useStablecoinPrice(token1 ?? undefined, !!feeValue1)
 
   const fiatValueOfFees: CurrencyAmount<Currency> | null = useMemo(() => {
     if (!price0 || !price1 || !feeValue0 || !feeValue1) return null

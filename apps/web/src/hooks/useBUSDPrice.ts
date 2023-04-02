@@ -33,7 +33,7 @@ const STABLE_COIN = {
   [ChainId.BSC_TESTNET]: BUSD[ChainId.BSC_TESTNET],
 } satisfies Record<ChainId, ERC20Token>
 
-export function useStablecoinPrice(currency?: Currency): Price<Currency, Currency> | undefined {
+export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
 
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
@@ -49,6 +49,7 @@ export function useStablecoinPrice(currency?: Currency): Price<Currency, Currenc
     baseCurrency: currency,
     tradeType: TradeType.EXACT_INPUT,
     maxSplits: 0,
+    enabled,
   })
 
   const price = useMemo(() => {
@@ -200,7 +201,7 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
 }
 
 export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const stablePrice = useStablecoinPrice(currency)
+  const stablePrice = useStablecoinPrice(currency, !!amount)
   // we don't have too many AMM pools on ethereum yet, try to get it from api
   const { data } = useSWRImmutable(
     amount && currency?.chainId === ChainId.ETHEREUM && ['fiat-price-ethereum', currency],
