@@ -9,7 +9,7 @@ import { Block } from 'state/info/types'
 import useSWRImmutable from 'swr/immutable'
 import { getDeltaTimestamps } from 'utils/getDeltaTimestamps'
 import { v3Clients } from 'utils/graphql'
-import { useBlocksFromTimestamps } from 'views/Info/hooks/useBlocksFromTimestamps'
+import { useBlockFromTimeStampSWR } from 'views/Info/hooks/useBlocksFromTimestamps'
 import { SUBGRAPH_START_BLOCK } from '../constants'
 import { fetchPoolChartData } from '../data/pool/chartData'
 import { fetchPoolDatas } from '../data/pool/poolData'
@@ -57,7 +57,7 @@ const SWR_SETTINGS_WITHOUT_REFETCH = {
 export const useProtocolChartData = (): ChartDayData[] | undefined => {
   const { chainId } = useActiveChainId()
   const { data: chartData } = useSWRImmutable(
-    chainId && [`v3/info/protocol/ProtocolChartData`, chainId],
+    chainId && [`v3/info/protocol/ProtocolChartData/${chainId}`, chainId],
     () => fetchChartData(v3Clients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
@@ -67,9 +67,9 @@ export const useProtocolChartData = (): ChartDayData[] | undefined => {
 export const useProtocolData = (): ProtocolData | undefined => {
   const { chainId } = useActiveChainId()
   const [t24, t48] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48])
   const { data } = useSWRImmutable(
-    chainId && blocks && blocks.length > 0 && [`v3/info/protocol/ProtocolData`, chainId],
+    chainId && blocks && blocks.length > 0 && [`v3/info/protocol/ProtocolData/${chainId}`, chainId],
     () => fetchProtocolData(v3Clients[chainId], chainId, blocks),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
@@ -79,7 +79,7 @@ export const useProtocolData = (): ProtocolData | undefined => {
 export const useProtocolTransactionData = (): Transaction[] | undefined => {
   const { chainId } = useActiveChainId()
   const { data } = useSWRImmutable(
-    chainId && [`v3/info/protocol/ProtocolTransactionData`, chainId],
+    chainId && [`v3/info/protocol/ProtocolTransactionData/${chainId}`, chainId],
     () => fetchTopTransactions(v3Clients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
@@ -162,7 +162,7 @@ export const useTopTokensData = ():
   | undefined => {
   const { chainId } = useActiveChainId()
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/token/TopTokensData/${chainId}`, chainId],
@@ -179,7 +179,7 @@ export const useTopTokensData = ():
 export const useTokensData = (addresses: string[]): TokenData[] | undefined => {
   const { chainId } = useActiveChainId()
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
     chainId &&
@@ -200,7 +200,7 @@ export const useTokensData = (addresses: string[]): TokenData[] | undefined => {
 export const useTokenData = (address: string): TokenData | undefined => {
   const { chainId } = useActiveChainId()
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
     chainId && blocks && address && blocks.length > 0 && [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
@@ -287,7 +287,7 @@ export const useTopPoolsData = ():
   | undefined => {
   const { chainId } = useActiveChainId()
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
@@ -305,7 +305,7 @@ export const useTopPoolsData = ():
 export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
   const { chainId } = useActiveChainId()
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
     chainId &&
@@ -327,7 +327,7 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
 export const usePoolData = (address: string): PoolData | undefined => {
   const { chainId } = useActiveChainId()
   const [t24, t48, t7d] = getDeltaTimestamps()
-  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+  const { blocks } = useBlockFromTimeStampSWR([t24, t48, t7d])
 
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && address && [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
