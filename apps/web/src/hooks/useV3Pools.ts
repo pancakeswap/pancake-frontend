@@ -93,9 +93,12 @@ export function useV3CandidatePoolsWithoutTicks(
   }
 }
 
-export function useV3PoolsWithTicks(pools: V3Pool[] | null | undefined, { key, blockNumber }: V3PoolsHookParams = {}) {
+export function useV3PoolsWithTicks(
+  pools: V3Pool[] | null | undefined,
+  { key, blockNumber, enabled }: V3PoolsHookParams = {},
+) {
   const poolsWithTicks = useSWR(
-    key && pools ? ['v3_pool_ticks', key] : null,
+    key && pools && enabled ? ['v3_pool_ticks', key] : null,
     async () => {
       const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
       SmartRouter.metric(label)
