@@ -224,14 +224,12 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const activeFarms = farmsLP.filter(
     (farm) =>
-      (farm.version === 2 ? farm.pid !== 0 : true) &&
+      farm.pid !== 0 &&
       farm.multiplier !== '0X' &&
       (farm.version === 3 ? !v3PoolLength || v3PoolLength >= farm.pid : !v2PoolLength || v2PoolLength > farm.pid),
   )
 
-  const inactiveFarms = farmsLP.filter((farm) =>
-    farm.version === 2 ? farm.pid !== 0 : true && farm.multiplier === '0X',
-  )
+  const inactiveFarms = farmsLP.filter((farm) => farm.pid !== 0 && farm.multiplier === '0X')
 
   const archivedFarms = farmsLP
 

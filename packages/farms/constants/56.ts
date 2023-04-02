@@ -30,7 +30,7 @@ export const farmsV3 = [
   },
   {
     pid: 4,
-    lpSymbol: 'BUSD-BNB LP',
+    lpSymbol: 'BNB-BUSD LP',
     token: bscTokens.wbnb,
     quoteToken: bscTokens.busd,
     lpAddress: '0x85FAac652b707FDf6907EF726751087F9E0b6687',
@@ -54,7 +54,7 @@ export const farmsV3 = [
   },
   {
     pid: 7,
-    lpSymbol: 'BTCB-USDT LP',
+    lpSymbol: 'USDT-BTCB LP',
     token: bscTokens.usdt,
     quoteToken: bscTokens.btcb,
     lpAddress: '0x46Cf1cF8c69595804ba91dFdd8d6b960c9B0a7C4',
@@ -62,7 +62,7 @@ export const farmsV3 = [
   },
   {
     pid: 8,
-    lpSymbol: 'BTCB-ETH LP',
+    lpSymbol: 'ETH-BTCB LP',
     token: bscTokens.eth,
     quoteToken: bscTokens.btcb,
     lpAddress: '0xD4dCA84E1808da3354924cD243c66828cf775470',
@@ -94,7 +94,7 @@ export const farmsV3 = [
   },
   {
     pid: 12,
-    lpSymbol: 'USDC-USDT LP',
+    lpSymbol: 'USDT-USDC LP',
     token: bscTokens.usdt,
     quoteToken: bscTokens.usdc,
     lpAddress: '0x92b7807bF19b7DDdf89b706143896d05228f3121',
@@ -102,7 +102,7 @@ export const farmsV3 = [
   },
   {
     pid: 13,
-    lpSymbol: 'BUSD-USDC LP',
+    lpSymbol: 'USDC-BUSD LP',
     token: bscTokens.usdc,
     quoteToken: bscTokens.busd,
     lpAddress: '0x22536030B9cE783B6Ddfb9a39ac7F439f568E5e6',
@@ -110,7 +110,7 @@ export const farmsV3 = [
   },
   {
     pid: 14,
-    lpSymbol: 'BUSD-USDT LP',
+    lpSymbol: 'USDT-BUSD LP',
     token: bscTokens.usdt,
     quoteToken: bscTokens.busd,
     lpAddress: '0x4f3126d5DE26413AbDCF6948943FB9D0847d9818',
