@@ -11,6 +11,7 @@ import {
   ExpandableLabel,
   Flex,
   Heading,
+  LinkExternal,
   NextLinkFromReactRouter,
   NotFound,
   PreTitle,
@@ -58,7 +59,7 @@ import { useSingleCallResult } from 'state/multicall/hooks'
 import { useIsTransactionPending, useTransactionAdder } from 'state/transactions/hooks'
 import styled from 'styled-components'
 import useSWRImmutable from 'swr/immutable'
-import { calculateGasMargin } from 'utils'
+import { calculateGasMargin, getBlockExploreLink } from 'utils'
 import currencyId from 'utils/currencyId'
 import { formatCurrencyAmount, formatPrice } from 'utils/formatCurrencyAmount'
 import { v3Clients } from 'utils/graphql'
@@ -733,7 +734,7 @@ function PositionHistory_({
   const { chainId } = useActiveChainId()
   const client = v3Clients[chainId as ChainId]
   const { data, isLoading } = useSWRImmutable(
-    client && tokenId && ['positionHistory', chainId],
+    client && tokenId && ['positionHistory', chainId, tokenId],
     async () => {
       const result = await client.request<PositionHistoryResult>(
         gql`
@@ -778,10 +779,11 @@ function PositionHistory_({
     },
     {
       revalidateOnMount: true,
+      refreshInterval: 30_000,
     },
   )
 
-  if (isLoading || data?.length === 0) {
+  if (isLoading || !data?.length) {
     return null
   }
 
@@ -807,7 +809,8 @@ function PositionHistory_({
             return (
               <AutoColumn key={d.id} gap="16px">
                 {d.transaction.mints.map((positionTx) => (
-                  <PositionHistoryColumn
+                  <PositionHistoryRow
+                    chainId={chainId}
                     positionTx={positionTx}
                     key={positionTx.id}
                     type="mint"
@@ -816,14 +819,25 @@ function PositionHistory_({
                   />
                 ))}
                 {d.transaction.collects
-                  .filter(
-                    (collectTx) =>
-                      !d.transaction.burns.find(
-                        (burnTx) => burnTx.amount0 === collectTx.amount0 && burnTx.amount1 === collectTx.amount1,
-                      ),
-                  )
+                  .map((collectTx) => {
+                    const foundSameTxBurn = d.transaction.burns.find(
+                      (burnTx) =>
+                        collectTx.amount0 > burnTx.amount0 &&
+                        collectTx.amount1 > burnTx.amount1 &&
+                        burnTx.timestamp === collectTx.timestamp,
+                    )
+                    if (foundSameTxBurn) {
+                      return {
+                        ...collectTx,
+                        amount0: String(+collectTx.amount0 - +foundSameTxBurn.amount0),
+                        amount1: String(+collectTx.amount1 - +foundSameTxBurn.amount1),
+                      }
+                    }
+                    return collectTx
+                  })
                   .map((positionTx) => (
-                    <PositionHistoryColumn
+                    <PositionHistoryRow
+                      chainId={chainId}
                       positionTx={positionTx}
                       key={positionTx.id}
                       type="collect"
@@ -832,7 +846,8 @@ function PositionHistory_({
                     />
                   ))}
                 {d.transaction.burns.map((positionTx) => (
-                  <PositionHistoryColumn
+                  <PositionHistoryRow
+                    chainId={chainId}
                     positionTx={positionTx}
                     key={positionTx.id}
                     type="burn"
@@ -856,12 +871,14 @@ const positionHistoryTypeText = {
   collect: <Trans>Collect fee</Trans>,
 } satisfies Record<PositionHistoryType, ReactNode>
 
-function PositionHistoryColumn({
+function PositionHistoryRow({
+  chainId,
   positionTx,
   type,
   currency0,
   currency1,
 }: {
+  chainId: ChainId
   positionTx: PositionTX
   type: PositionHistoryType
   currency0: Currency
@@ -880,31 +897,46 @@ function PositionHistoryColumn({
       borderTop="1"
       p="16px"
     >
-      <Text ellipsis>{date.toLocaleString()}</Text>
+      <AutoRow justifyContent="center" gap="8px">
+        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
+        <Text ellipsis>{date.toLocaleString()}</Text>
+      </AutoRow>
       <Text>{positionHistoryTypeText[type]}</Text>
       <AutoColumn gap="4px">
-        <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
-          <Text bold ellipsis>
-            {isPlus ? '+' : '-'} {positionTx.amount0}
-          </Text>
-          <AutoRow width="auto" flexWrap="nowrap" gap="4px">
-            <AtomBox minWidth="24px">
-              <CurrencyLogo currency={currency0} />
-            </AtomBox>
-            <Text display={['none', , 'block']}>{currency0.symbol}</Text>
+        {+positionTx.amount0 > 0 && (
+          <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
+            <Text bold ellipsis title={positionTx.amount0}>
+              {isPlus ? '+' : '-'}{' '}
+              {(+positionTx.amount0).toLocaleString(undefined, {
+                maximumFractionDigits: 6,
+                maximumSignificantDigits: 6,
+              })}
+            </Text>
+            <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+              <AtomBox minWidth="24px">
+                <CurrencyLogo currency={currency0} />
+              </AtomBox>
+              <Text display={['none', , 'block']}>{currency0.symbol}</Text>
+            </AutoRow>
           </AutoRow>
-        </AutoRow>
-        <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
-          <Text bold ellipsis>
-            {isPlus ? '+' : '-'} {positionTx.amount1}
-          </Text>
-          <AutoRow width="auto" flexWrap="nowrap" gap="4px">
-            <AtomBox minWidth="24px">
-              <CurrencyLogo currency={currency1} />
-            </AtomBox>
-            <Text display={['none', , 'block']}>{currency1.symbol}</Text>
+        )}
+        {+positionTx.amount1 > 0 && (
+          <AutoRow flexWrap="nowrap" justifyContent="flex-end" gap="12px">
+            <Text bold ellipsis title={positionTx.amount1}>
+              {isPlus ? '+' : '-'}{' '}
+              {(+positionTx.amount1).toLocaleString(undefined, {
+                maximumFractionDigits: 6,
+                maximumSignificantDigits: 6,
+              })}
+            </Text>
+            <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+              <AtomBox minWidth="24px">
+                <CurrencyLogo currency={currency1} />
+              </AtomBox>
+              <Text display={['none', , 'block']}>{currency1.symbol}</Text>
+            </AutoRow>
           </AutoRow>
-        </AutoRow>
+        )}
       </AutoColumn>
     </AtomBox>
   )

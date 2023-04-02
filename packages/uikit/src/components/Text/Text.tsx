@@ -12,7 +12,12 @@ const getColor = ({ color, theme }: ThemedProps) => {
 };
 
 const Text = styled.div.attrs<TextProps>((props) => {
-  const title = props.title || (props.ellipsis && typeof props.children === "string") ? props.children : undefined;
+  const title =
+    typeof props.title !== "undefined"
+      ? props.title
+      : props.ellipsis && typeof props.children === "string"
+      ? props.children
+      : undefined;
   return {
     ...props,
     title,

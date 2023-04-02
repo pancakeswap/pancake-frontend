@@ -52,7 +52,7 @@ export const getV2PoolSubgraph = async ({
   const client = provider({ chainId })
 
   if (!client) {
-    console.error('No subgraph client found for chainId', chainId)
+    // console.error('No subgraph client found for chainId', chainId)
     return []
   }
 
