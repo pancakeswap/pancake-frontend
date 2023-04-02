@@ -18,6 +18,9 @@ import { fetchPoolsForToken } from '../data/token/poolsForToken'
 import { fetchTokenChartData } from '../data/token/chartData'
 import { fetchTopTokenAddresses } from '../data/token/topTokens'
 import { fetchPoolDatas } from '../data/pool/poolData'
+import { fetchPoolChartData } from '../data/pool/chartData'
+import { fetchPoolTransactions } from '../data/pool/transactions'
+import { fetchTicksSurroundingPrice, PoolTickData } from '../data/pool/tickData'
 import { fetchTopPoolAddresses } from '../data/pool/topPools'
 import {
   ChartDayData,
@@ -27,6 +30,7 @@ import {
   Transaction,
   PoolData,
   TokenChartEntry,
+  PoolChartEntry,
 } from '../types'
 
 const ONE_HOUR_SECONDS = 3600
@@ -274,4 +278,49 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ? Object.values(data.data) : undefined
+}
+
+export const usePoolData = (address: string): PoolData | undefined => {
+  const { chainId } = useActiveChainId()
+  const [t24, t48, t7d] = getDeltaTimestamps()
+  const { blocks } = useBlocksFromTimestamps([t24, t48, t7d])
+
+  const { data } = useSWRImmutable(
+    chainId && blocks && blocks.length > 0 && address && [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
+    () => fetchPoolDatas(v3Clients[chainId], [address], blocks),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data[address] ?? undefined
+}
+export const usePoolTransactions = (address: string): Transaction[] | undefined => {
+  const { chainId } = useActiveChainId()
+
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/pool/poolTransaction/${chainId}/${address}`, chainId],
+    () => fetchPoolTransactions(address, v3Clients[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data ?? undefined
+}
+
+export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {
+  const { chainId } = useActiveChainId()
+
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
+    () => fetchPoolChartData(address, v3Clients[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data ?? undefined
+}
+
+export const usePoolTickData = (address: string): PoolTickData | undefined => {
+  const { chainId } = useActiveChainId()
+
+  const { data } = useSWRImmutable(
+    chainId && address && [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
+    () => fetchTicksSurroundingPrice(address, v3Clients[chainId]),
+    SWR_SETTINGS_WITHOUT_REFETCH,
+  )
+  return data?.data ?? undefined
 }
