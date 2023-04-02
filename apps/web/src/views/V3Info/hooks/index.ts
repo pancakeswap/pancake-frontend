@@ -32,6 +32,7 @@ import {
   TokenChartEntry,
   PoolChartEntry,
 } from '../types'
+import { SUBGRAPH_START_BLOCK } from '../constants'
 
 const ONE_HOUR_SECONDS = 3600
 const SIX_HOUR_SECONDS = 21600
@@ -141,6 +142,7 @@ export async function fetchTopTokens(dataClient: GraphQLClient, blocks: Block[])
   try {
     const topTokenAddress = await fetchTopTokenAddresses(dataClient)
     const data = await fetchedTokenDatas(dataClient, topTokenAddress.addresses, blocks)
+    console.log(data, 'topToken?????')
     return data
   } catch (e) {
     console.error(e)
@@ -162,7 +164,11 @@ export const useTopTokensData = ():
 
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/token/TopTokensData/${chainId}`, chainId],
-    () => fetchTopTokens(v3Clients[chainId], blocks),
+    () =>
+      fetchTopTokens(
+        v3Clients[chainId],
+        blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
@@ -175,7 +181,12 @@ export const useTokenData = (address: string): TokenData | undefined => {
 
   const { data } = useSWRImmutable(
     chainId && blocks && address && blocks.length > 0 && [`v3/info/token/tokenData/${chainId}/${address}`, chainId],
-    () => fetchedTokenDatas(v3Clients[chainId], [address], blocks),
+    () =>
+      fetchedTokenDatas(
+        v3Clients[chainId],
+        [address],
+        blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data?.[address]
@@ -257,7 +268,12 @@ export const useTopPoolsData = ():
 
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && [`v3/info/pool/TopPoolsData/${chainId}`, chainId],
-    () => fetchTopPools(v3Clients[chainId], chainId, blocks),
+    () =>
+      fetchTopPools(
+        v3Clients[chainId],
+        chainId,
+        blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data
@@ -274,7 +290,12 @@ export const usePoolsData = (addresses: string[]): PoolData[] | undefined => {
       blocks.length > 0 &&
       addresses &&
       addresses.length > 0 && [`v3/info/pool/poolsData/${chainId}/${addresses.join()}`, chainId],
-    () => fetchPoolDatas(v3Clients[chainId], addresses, blocks),
+    () =>
+      fetchPoolDatas(
+        v3Clients[chainId],
+        addresses,
+        blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ? Object.values(data.data) : undefined
@@ -287,7 +308,12 @@ export const usePoolData = (address: string): PoolData | undefined => {
 
   const { data } = useSWRImmutable(
     chainId && blocks && blocks.length > 0 && address && [`v3/info/pool/poolData/${chainId}/${address}`, chainId],
-    () => fetchPoolDatas(v3Clients[chainId], [address], blocks),
+    () =>
+      fetchPoolDatas(
+        v3Clients[chainId],
+        [address],
+        blocks.filter((d) => d.number >= SUBGRAPH_START_BLOCK[chainId]),
+      ),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data[address] ?? undefined
