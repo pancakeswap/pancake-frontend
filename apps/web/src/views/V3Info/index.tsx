@@ -51,15 +51,6 @@ export default function Home() {
     setVolumeHover(undefined)
   }, [chainId])
 
-  // const [, setHoverValue] = useState<number | undefined>()
-  // const [, setHoverDate] = useState<string | undefined>()
-  // const pairTokensPrice = usePairTokensPrice(
-  //   Pool.getAddress(ethereumTokens.weth, ethereumTokens.usdc, FeeAmount.LOW),
-  //   PairDataTimeWindowEnum.YEAR,
-  //   1,
-  // )
-
-  // if hover value undefined, reset to current day value
   useEffect(() => {
     if (volumeHover === undefined && protocolData) {
       setVolumeHover(protocolData.volumeUSD)
