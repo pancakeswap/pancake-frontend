@@ -17,8 +17,10 @@ import { BUSD, CAKE, USDC, USDT } from '@pancakeswap/tokens'
 import { useMemo } from 'react'
 import useSWR from 'swr'
 import useSWRImmutable from 'swr/immutable'
+import { BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
 import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
@@ -36,7 +38,12 @@ const STABLE_COIN = {
 export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
   const { chainId } = useActiveChainId()
 
+  const baseTradeAgainst = useMemo(() => BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId], [chainId])
+
+  const cakePrice = useCakePriceAsBN()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
+  const isCake = currency?.wrapped.equals(CAKE[chainId])
+  const isStableCoin = currency?.wrapped.equals(stableCoin)
 
   const amountIn = useMemo(
     () => (currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined),
@@ -49,7 +56,8 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     baseCurrency: currency,
     tradeType: TradeType.EXACT_INPUT,
     maxSplits: 0,
-    enabled,
+    maxHops: baseTradeAgainst ? 1 : undefined,
+    enabled: enabled && !isCake && !isStableCoin,
   })
 
   const price = useMemo(() => {
@@ -57,8 +65,12 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
       return undefined
     }
 
-    // handle busd
-    if (currency?.wrapped.equals(stableCoin)) {
+    if (isCake) {
+      return new Price(currency, stableCoin, cakePrice.toString(), '1')
+    }
+
+    // handle stable coin
+    if (isStableCoin) {
       return new Price(stableCoin, stableCoin, '1', '1')
     }
 
@@ -69,7 +81,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     }
 
     return undefined
-  }, [currency, stableCoin, trade])
+  }, [cakePrice, currency, isCake, isStableCoin, stableCoin, trade])
 
   return price
 }
