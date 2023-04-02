@@ -16,7 +16,6 @@ import {
 } from '@pancakeswap/uikit'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { CHAIN_REFRESH_TIME } from 'config/constants/exchange'
-import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useExpertMode } from '@pancakeswap/utils/user'
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import GlobalSettings from 'components/Menu/GlobalSettings'
@@ -98,7 +97,6 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = memo(
           <Swap.CurrencyInputHeaderSubTitle>{subtitle}</Swap.CurrencyInputHeaderSubTitle>
         </Flex>
         <Flex width="100%" justifyContent="end">
-          <V3SwapPromotionIcon />
           {isChartSupported && setIsChartDisplayed && (
             <ColoredIconButton
               onClick={() => {

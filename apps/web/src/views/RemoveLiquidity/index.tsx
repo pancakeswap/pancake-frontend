@@ -26,7 +26,6 @@ import {
   AutoColumn,
   ColumnCenter,
 } from '@pancakeswap/uikit'
-import { V3SwapPromotionIcon } from 'components/V3SwapPromotionIcon'
 import { useDebouncedChangeHandler } from '@pancakeswap/hooks'
 import { useWeb3LibraryContext } from '@pancakeswap/wagmi'
 import { BigNumber } from '@ethersproject/bignumber'
@@ -910,7 +909,6 @@ export const RemoveLiquidityLayout = ({ currencyA, currencyB, children, pair }) 
             assetB: currencyB?.symbol ?? '',
           })}
           noConfig
-          IconSlot={<V3SwapPromotionIcon wrapperStyle={{ marginRight: '10px' }} />}
         />
         {children}
       </AppBody>
