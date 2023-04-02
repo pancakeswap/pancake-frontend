@@ -376,7 +376,7 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 
 export const useSearchData = (
   searchValue: string,
-): { tokens: TokenData[]; pools: PoolData[]; loading: boolean; error: any } | undefined => {
+): { tokens: TokenData[]; pools: PoolData[]; loading: boolean; error: any } => {
   const { chainId } = useActiveChainId()
 
   const { data, status, error } = useSWRImmutable(
@@ -391,7 +391,12 @@ export const useSearchData = (
         loading: status !== FetchStatus.Fetched,
         error,
       }
-    return undefined
+    return {
+      tokens: [],
+      pools: [],
+      loading: status !== FetchStatus.Fetched,
+      error,
+    }
   }, [data, status, error])
   return searchResult
 }

@@ -1,28 +1,28 @@
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import {
   Box,
   ButtonMenu,
   ButtonMenuItem,
   Flex,
+  NextLinkFromReactRouter,
+  Text,
   UserMenu,
   UserMenuDivider,
   UserMenuItem,
-  Text,
-  NextLinkFromReactRouter,
 } from '@pancakeswap/uikit'
-import { useCallback } from 'react'
-import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
-import { ChainId } from '@pancakeswap/sdk'
-import { useTranslation } from '@pancakeswap/localization'
-import { useRouter } from 'next/router'
-import styled from 'styled-components'
-import Search from 'views/Info/components/InfoSearch'
-import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
-import { multiChainId, multiChainPaths } from 'state/info/constant'
-import { chains } from 'utils/wagmi'
 import { ChainLogo } from 'components/Logo/ChainLogo'
+import { useSwitchNetwork } from 'hooks/useSwitchNetwork'
+import { useRouter } from 'next/router'
+import { useCallback } from 'react'
+import { multiChainId, multiChainPaths } from 'state/info/constant'
+import { useGetChainName, useMultiChainPath } from 'state/info/hooks'
+import styled from 'styled-components'
+import { chains } from 'utils/wagmi'
 import { useAccount } from 'wagmi'
 import { bsc, mainnet } from 'wagmi/chains'
 import { v3InfoPath } from '../../constants'
+import Search from '../Search'
 
 const NavWrapper = styled(Flex)`
   background: ${({ theme }) => theme.colors.gradientCardHeader};
