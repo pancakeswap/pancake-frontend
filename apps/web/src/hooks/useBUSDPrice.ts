@@ -40,7 +40,11 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
   const { chainId: currentChainId } = useActiveChainId()
   const chainId = currency?.chainId
 
-  const baseTradeAgainst = useMemo(() => BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId], [chainId])
+  const baseTradeAgainst = useMemo(
+    () =>
+      currency && BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId]?.find((c) => c.wrapped.equals(currency.wrapped)),
+    [chainId, currency],
+  )
 
   const cakePrice = useCakePriceAsBN()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
@@ -80,7 +84,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     baseCurrency: currency,
     tradeType: TradeType.EXACT_INPUT,
     maxSplits: 0,
-    maxHops: baseTradeAgainst ? 2 : undefined,
+    maxHops: baseTradeAgainst ? 2 : 3,
     enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
   })
 
