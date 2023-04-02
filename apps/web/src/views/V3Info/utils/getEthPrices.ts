@@ -8,22 +8,37 @@ export interface EthPrices {
   week: number
 }
 
-export const ETH_PRICES = gql`
-  query prices($block24: Int!, $block48: Int!, $blockWeek: Int!) {
+export const ETH_PRICES = (block24?: number, block48?: number, blockWeek?: number) => {
+  const dayQueryString = block24
+    ? `oneDay: bundles(first: 1, block: { number: ${block24} }, subgraphError: allow) {
+      ethPriceUSD
+    }`
+    : ''
+
+  const twoDayQueryString = block48
+    ? `twoDay: bundles(first: 1, block: { number: ${block48} }, subgraphError: allow) {
+      ethPriceUSD
+    }`
+    : ''
+  const weekQueryString = blockWeek
+    ? `oneWeek: bundles(first: 1, block: { number: ${blockWeek} }, subgraphError: allow) {
+      ethPriceUSD
+    }`
+    : ''
+  const queryString = `
+  query prices {
     current: bundles(first: 1, subgraphError: allow) {
       ethPriceUSD
     }
-    oneDay: bundles(first: 1, block: { number: $block24 }, subgraphError: allow) {
-      ethPriceUSD
-    }
-    twoDay: bundles(first: 1, block: { number: $block48 }, subgraphError: allow) {
-      ethPriceUSD
-    }
-    oneWeek: bundles(first: 1, block: { number: $blockWeek }, subgraphError: allow) {
-      ethPriceUSD
-    }
+    ${dayQueryString}
+    ${twoDayQueryString}
+    ${weekQueryString}
   }
 `
+  return gql`
+    ${queryString}
+  `
+}
 
 interface PricesResponse {
   current: {
@@ -46,19 +61,17 @@ export async function fetchEthPrices(
 ): Promise<{ data: EthPrices | undefined; error: boolean }> {
   try {
     const [block24, block48, blockWeek] = blocks ?? []
-    const data = await dataClient.request<PricesResponse>(ETH_PRICES, {
-      block24: block24?.number ?? 1,
-      block48: block48?.number ?? 1,
-      blockWeek: blockWeek?.number ?? 1,
-    })
+    const data = await dataClient.request<PricesResponse>(
+      ETH_PRICES(block24?.number, block48?.number, blockWeek?.number),
+    )
 
     if (data) {
       return {
         data: {
           current: parseFloat(data.current[0].ethPriceUSD ?? '0'),
-          oneDay: parseFloat(data.oneDay[0]?.ethPriceUSD ?? '0'),
-          twoDay: parseFloat(data.twoDay[0]?.ethPriceUSD ?? '0'),
-          week: parseFloat(data.oneWeek[0]?.ethPriceUSD ?? '0'),
+          oneDay: parseFloat(data?.oneDay?.[0]?.ethPriceUSD ?? '0'),
+          twoDay: parseFloat(data?.twoDay?.[0]?.ethPriceUSD ?? '0'),
+          week: parseFloat(data?.oneWeek?.[0]?.ethPriceUSD ?? '0'),
         },
         error: false,
       }

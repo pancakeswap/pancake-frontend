@@ -1,11 +1,11 @@
 import { AutoColumn, Box, Text } from '@pancakeswap/uikit'
-import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
-import { POOL_HIDE } from '../../constants'
+import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import { POOL_HIDE, v3InfoPath } from '../../constants'
 import { PoolData } from '../../types'
 import { feeTierPercent } from '../../utils'
 import { formatDollarAmount } from '../../utils/numbers'
@@ -64,7 +64,7 @@ const SORT_FIELD = {
 
 const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
   return (
-    <LinkWrapper href={`pools/${poolData.address}`}>
+    <LinkWrapper href={`${v3InfoPath}/pools/${poolData.address}`}>
       <ResponsiveGrid>
         <Text fontWeight={400}>{index + 1}</Text>
         <Text fontWeight={400}>
