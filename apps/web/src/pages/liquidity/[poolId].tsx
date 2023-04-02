@@ -786,6 +786,7 @@ function PositionHistory_({
   if (isLoading || !data?.length) {
     return null
   }
+  console.log(data, 'data')
 
   return (
     <AtomBox textAlign="center" pt="16px">
@@ -822,11 +823,17 @@ function PositionHistory_({
                   .map((collectTx) => {
                     const foundSameTxBurn = d.transaction.burns.find(
                       (burnTx) =>
-                        +collectTx.amount0 > +burnTx.amount0 &&
-                        +collectTx.amount1 > +burnTx.amount1 &&
-                        burnTx.timestamp === collectTx.timestamp,
+                        +collectTx.amount0 >= +burnTx.amount0 &&
+                        +collectTx.amount1 >= +burnTx.amount1 &&
+                        burnTx.id < collectTx.id,
                     )
                     if (foundSameTxBurn) {
+                      if (
+                        foundSameTxBurn.amount0 === collectTx.amount0 &&
+                        foundSameTxBurn.amount1 === collectTx.amount1
+                      ) {
+                        return null
+                      }
                       return {
                         ...collectTx,
                         amount0: String(+collectTx.amount0 - +foundSameTxBurn.amount0),
@@ -835,6 +842,7 @@ function PositionHistory_({
                     }
                     return collectTx
                   })
+                  .filter(Boolean)
                   .map((positionTx) => (
                     <PositionHistoryRow
                       chainId={chainId}
