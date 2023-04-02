@@ -526,6 +526,7 @@ export default function PoolPage() {
                         quoteCurrency={currencyQuote}
                         feeAmount={feeAmount}
                         positionDetails={positionDetails}
+                        defaultDepositUsd={fiatValueOfLiquidity?.toFixed(2)}
                       />
                     </Flex>
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">

@@ -37,6 +37,7 @@ interface Props {
   showQuestion?: boolean
   allowApply?: boolean
   positionDetails?: PositionDetails
+  defaultDepositUsd?: string
 }
 
 const AprButtonContainer = styled(Flex)`
@@ -51,6 +52,7 @@ export function AprCalculator({
   showQuestion = false,
   allowApply = true,
   positionDetails,
+  defaultDepositUsd,
 }: Props) {
   const { t } = useTranslation()
   const [isOpen, setOpen] = useState(false)
@@ -173,7 +175,7 @@ export function AprCalculator({
         allowApply={allowApply}
         isOpen={isOpen}
         onDismiss={closeModal}
-        depositAmountInUsd={depositUsd}
+        depositAmountInUsd={defaultDepositUsd || depositUsd}
         prices={prices}
         price={price}
         currencyA={baseCurrency}
