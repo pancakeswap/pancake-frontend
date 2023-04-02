@@ -20,7 +20,11 @@ export function V3SwapForm() {
       <FormMain
         tradeLoading={!tradeLoaded}
         pricingAndSlippage={
-          <PricingAndSlippage priceLoading={isLoading} price={trade && SmartRouter.getExecutionPrice(trade)} />
+          <PricingAndSlippage
+            priceLoading={isLoading}
+            price={trade && SmartRouter.getExecutionPrice(trade)}
+            showSlippage={!mm.isMMBetter}
+          />
         }
         inputAmount={finalTrade?.inputAmount}
         outputAmount={finalTrade?.outputAmount}

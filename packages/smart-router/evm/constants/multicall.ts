@@ -23,11 +23,11 @@ export const BATCH_MULTICALL_CONFIGS: ChainMap<BatchMulticallConfigs> = {
       gasLimitOverride: 1_000_000,
     },
     gasErrorFailureOverride: {
-      gasLimitOverride: 1_400_000,
+      gasLimitOverride: 1_000_000,
       multicallChunk: 50,
     },
     successRateFailureOverrides: {
-      gasLimitOverride: 1_200_000,
+      gasLimitOverride: 1_000_000,
       multicallChunk: 70,
     },
   },

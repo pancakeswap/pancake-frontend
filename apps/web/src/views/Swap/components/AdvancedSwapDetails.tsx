@@ -5,6 +5,7 @@ import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColum
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 
 import { RowBetween, RowFixed } from 'components/Layout/Row'
+import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { useState } from 'react'
 import { Field } from 'state/swap/actions'
 import FormattedPriceImpact from './FormattedPriceImpact'
@@ -218,6 +219,9 @@ export function AdvancedSwapDetails({
                       path={path}
                       outputCurrency={outputAmount.currency}
                     />
+                    <Flex mt="3em" width="100%" justifyContent="center">
+                      <RoutingSettingsButton />
+                    </Flex>
                   </Modal>
                 </ModalV2>
               </RowBetween>

@@ -8,11 +8,12 @@ import { SettingsMode } from '../../../../components/Menu/GlobalSettings/types'
 import { useIsWrapping } from '../hooks'
 
 interface Props {
+  showSlippage?: boolean
   priceLoading?: boolean
   price?: Price<Currency, Currency>
 }
 
-export function PricingAndSlippage({ priceLoading, price }: Props) {
+export function PricingAndSlippage({ priceLoading, price, showSlippage = true }: Props) {
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippage()
   const isWrapping = useIsWrapping()
@@ -29,5 +30,11 @@ export function PricingAndSlippage({ priceLoading, price }: Props) {
     </>
   ) : null
 
-  return <SwapUI.Info price={priceNode} allowedSlippage={allowedSlippage} onSlippageClick={onPresentSettingsModal} />
+  return (
+    <SwapUI.Info
+      price={priceNode}
+      allowedSlippage={showSlippage ? allowedSlippage : undefined}
+      onSlippageClick={onPresentSettingsModal}
+    />
+  )
 }
