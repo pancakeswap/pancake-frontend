@@ -144,3 +144,13 @@ export interface GenericChartEntry {
   time: string
   value: number
 }
+
+export interface DensityChartEntry {
+  index: number
+  isCurrent: boolean
+  activeLiquidity: number
+  price0: number
+  price1: number
+  tvlToken0: number
+  tvlToken1: number
+}
