@@ -12,7 +12,7 @@ import { useAccount } from 'wagmi'
 import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
 
-const showV3FarmsOnly = false
+const showV3FarmsOnly = true
 
 const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -30,7 +30,6 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
 
   const farms = farmsLP
     .filter((farm) => farm.pid !== 0)
-    .filter((farm) => farm.multiplier === '0X')
     .filter((farm) => {
       if (showV3FarmsOnly) {
         return farmsWithPrice
