@@ -15,7 +15,7 @@ export function formatFraction(fraction?: Fraction, precision = 6) {
 }
 
 export function formatPrice(price?: Price<Currency, Currency>, precision?: number) {
-  return formatFraction(price.asFraction.multiply(price.scalar), precision)
+  return formatFraction(price?.asFraction.multiply(price?.scalar), precision)
 }
 
 export function formatAmount(amount?: CurrencyAmount<Currency>, precision?: number) {
