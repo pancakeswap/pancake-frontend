@@ -200,7 +200,7 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
 }
 
 export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
-  const stablePrice = useStablecoinPrice(currency?.chainId === ChainId.ETHEREUM ? undefined : currency)
+  const stablePrice = useStablecoinPrice(currency)
   // we don't have too many AMM pools on ethereum yet, try to get it from api
   const { data } = useSWRImmutable(
     amount && currency?.chainId === ChainId.ETHEREUM && ['fiat-price-ethereum', currency],

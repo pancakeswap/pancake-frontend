@@ -191,12 +191,13 @@ export function ImpermanentLossCalculator({
       const newSqrtRatioX96 = TickMath.getSqrtRatioAtTick(currentTick);
       const priceLower = tickToPrice(assetCurrencyA.wrapped, assetCurrencyB.wrapped, tickLower);
       const priceUpper = tickToPrice(assetCurrencyA.wrapped, assetCurrencyB.wrapped, tickUpper);
+      const isToken0Price = assetCurrencyA.wrapped.sortsBefore(assetCurrencyB.wrapped);
       const [adjustedAmountA, adjustedAmountB] = getTokenAmountsFromDepositUsd({
         sqrtRatioX96: newSqrtRatioX96,
         usdValue: usdValue !== undefined ? String(usdValue) : undefined,
         price: formatPrice(token0Price, 6),
-        priceLower: formatPrice(priceLower, 6),
-        priceUpper: formatPrice(priceUpper, 6),
+        priceLower: formatPrice(isToken0Price ? priceLower : priceLower.invert(), 6),
+        priceUpper: formatPrice(isToken0Price ? priceUpper : priceUpper.invert(), 6),
         currencyA: assetCurrencyA,
         currencyB: assetCurrencyB,
         currencyAUsdPrice: parseFloat(priceA),
