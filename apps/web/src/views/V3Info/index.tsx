@@ -1,18 +1,20 @@
 import { ethereumTokens } from '@pancakeswap/tokens'
-import { AutoColumn, Box, Button, Flex, PairDataTimeWindowEnum, Text } from '@pancakeswap/uikit'
+import Page from 'components/Layout/Page'
+import { AutoColumn, Box, Button, Card, PairDataTimeWindowEnum, Text, Heading } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
-import dynamic from 'next/dynamic'
+import { useTranslation } from '@pancakeswap/localization'
+// import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
+// import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
 import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
-import styled from 'styled-components'
+// import styled from 'styled-components'
 import BarChart from './components/BarChart/alt'
 import { DarkGreyCard } from './components/Card'
 import LineChart from './components/LineChart/alt'
 import Percent from './components/Percent'
 import { RowBetween, RowFixed } from './components/Row'
-import { MonoSpace, PageWrapper, ThemedBackgroundGlobal } from './components/shared'
+import { MonoSpace, ChartCardsContainer } from './components/shared'
 import TokenTable from './components/TokenTable'
 import PoolTable from './components/PoolTable'
 import TransactionsTable from './components/TransactionsTable'
@@ -29,13 +31,13 @@ import { notEmpty } from './utils'
 import { unixToDate } from './utils/date'
 import { formatDollarAmount } from './utils/numbers'
 
-const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
-  ssr: false,
-})
+// const SwapLineChart = dynamic(() => import('@pancakeswap/uikit/src/components/Chart/PairPriceChart'), {
+//   ssr: false,
+// })
 
-const ChartWrapper = styled.div`
-  width: 49%;
-`
+// const ChartWrapper = styled.div`
+//   width: 49%;
+// `
 
 export default function Home() {
   useEffect(() => {
@@ -50,6 +52,7 @@ export default function Home() {
   const topPoolsData = useTopPoolsData()
   const chartData = useProtocolChartData()
   const { chainId } = useActiveChainId()
+  const { t } = useTranslation()
 
   const [volumeHover, setVolumeHover] = useState<number | undefined>()
   const [liquidityHover, setLiquidityHover] = useState<number | undefined>()
@@ -61,13 +64,13 @@ export default function Home() {
     setVolumeHover(undefined)
   }, [chainId])
 
-  const [, setHoverValue] = useState<number | undefined>()
-  const [, setHoverDate] = useState<string | undefined>()
-  const pairTokensPrice = usePairTokensPrice(
-    Pool.getAddress(ethereumTokens.weth, ethereumTokens.usdc, FeeAmount.LOW),
-    PairDataTimeWindowEnum.YEAR,
-    1,
-  )
+  // const [, setHoverValue] = useState<number | undefined>()
+  // const [, setHoverDate] = useState<string | undefined>()
+  // const pairTokensPrice = usePairTokensPrice(
+  //   Pool.getAddress(ethereumTokens.weth, ethereumTokens.usdc, FeeAmount.LOW),
+  //   PairDataTimeWindowEnum.YEAR,
+  //   1,
+  // )
 
   // if hover value undefined, reset to current day value
   useEffect(() => {
@@ -113,7 +116,7 @@ export default function Home() {
   const formattedTokens = useMemo(() => {
     if (topTokensData)
       return Object.values(topTokensData)
-        .map((t) => t)
+        .map((d) => d)
         .filter(notEmpty)
     return []
   }, [topTokensData])
@@ -130,12 +133,12 @@ export default function Home() {
     return formatDollarAmount(liquidityHover ?? 0, 2, true)
   }, [liquidityHover])
   return (
-    <PageWrapper>
-      <ThemedBackgroundGlobal backgroundColor={theme.colors.background} />
-
-      <Text>PancakeSwap Overview</Text>
-      <Flex>
-        <ChartWrapper>
+    <Page>
+      <Heading scale="lg" mb="16px">
+        {t('PancakeSwap Info & Analytics')}
+      </Heading>
+      <ChartCardsContainer>
+        <Card>
           <LineChart
             data={formattedTvlData}
             height={220}
@@ -157,8 +160,8 @@ export default function Home() {
               </AutoColumn>
             }
           />
-        </ChartWrapper>
-        <ChartWrapper>
+        </Card>
+        <Card>
           <BarChart
             height={220}
             minHeight={332}
@@ -177,11 +180,13 @@ export default function Home() {
             activeWindow={volumeWindow}
             topRight={
               <RowFixed style={{ marginLeft: '-40px', marginTop: '8px' }}>
-                <Button onClick={() => setVolumeWindow(VolumeWindow.daily)}>D</Button>
-                <Button style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.weekly)}>
+                <Button scale="sm" onClick={() => setVolumeWindow(VolumeWindow.daily)}>
+                  D
+                </Button>
+                <Button scale="sm" style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.weekly)}>
                   W
                 </Button>
-                <Button style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.monthly)}>
+                <Button scale="sm" style={{ marginLeft: '8px' }} onClick={() => setVolumeWindow(VolumeWindow.monthly)}>
                   M
                 </Button>
               </RowFixed>
@@ -198,8 +203,8 @@ export default function Home() {
               </AutoColumn>
             }
           />
-        </ChartWrapper>
-      </Flex>
+        </Card>
+      </ChartCardsContainer>
       <Box>
         <DarkGreyCard>
           <RowBetween>
@@ -225,16 +230,22 @@ export default function Home() {
           </RowBetween>
         </DarkGreyCard>
       </Box>
-      <Text>Top Tokens</Text>
+      <Heading scale="lg" mt="40px" mb="16px">
+        {t('Top Tokens')}
+      </Heading>
       <TokenTable tokenDatas={formattedTokens} />
 
-      <Text>Top Pools</Text>
+      <Heading scale="lg" mt="40px" mb="16px">
+        {t('Top Pairs')}
+      </Heading>
       <PoolTable poolDatas={poolDatas} />
-      <Text>Transactions</Text>
+      <Heading scale="lg" mt="40px" mb="16px">
+        {t('Transactions')}
+      </Heading>
 
       {transactionData ? <TransactionsTable transactions={transactionData} color={theme.colors.primary} /> : null}
 
-      <ChartWrapper>
+      {/* <ChartWrapper>
         <SwapLineChart
           data={pairTokensPrice}
           setHoverValue={setHoverValue}
@@ -248,7 +259,7 @@ export default function Home() {
           //   { title: 'mid', price: 90, color: '#BDC2C4' },
           // ]}
         />
-      </ChartWrapper>
-    </PageWrapper>
+      </ChartWrapper> */}
+    </Page>
   )
 }
