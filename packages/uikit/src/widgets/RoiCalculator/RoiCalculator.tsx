@@ -33,6 +33,7 @@ export interface RoiCalculatorPositionInfo {
   currencyBUsdPrice?: number;
   amountA?: CurrencyAmount<Currency>;
   amountB?: CurrencyAmount<Currency>;
+  fullRange?: boolean;
 }
 
 export type RoiCalculatorProps = {
@@ -245,6 +246,7 @@ export function RoiCalculator({
         priceUpper: priceRange?.priceUpper,
         currencyAUsdPrice,
         currencyBUsdPrice,
+        fullRange: priceRange?.fullRange,
       }),
     [onApply, priceRange, amountA, amountB, usdValue, currencyAUsdPrice, currencyBUsdPrice]
   );

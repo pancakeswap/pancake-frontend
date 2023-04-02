@@ -1,13 +1,21 @@
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import { batch } from 'react-redux'
-import { Field, typeInput, typeLeftRangeInput, typeRightRangeInput, typeStartPriceInput } from '../actions'
+import {
+  Field,
+  typeInput,
+  typeLeftRangeInput,
+  typeRightRangeInput,
+  typeStartPriceInput,
+  setFullRange,
+} from '../actions'
 import { useV3FormDispatch } from '../reducer'
 
 export function useV3MintActionHandlers(
   noLiquidity: boolean | undefined,
   routerReplace = true, // TODO: remove this when we have a better way to handle the router
 ): {
+  onSetFullRange: () => void
   onFieldAInput: (typedValue: string) => void
   onFieldBInput: (typedValue: string) => void
   onLeftRangeInput: (typedValue: string) => void
@@ -109,6 +117,10 @@ export function useV3MintActionHandlers(
     [dispatch],
   )
 
+  const onSetFullRange = useCallback(() => {
+    dispatch(setFullRange())
+  }, [dispatch])
+
   return {
     onBothRangeInput,
     onFieldAInput,
@@ -116,5 +128,6 @@ export function useV3MintActionHandlers(
     onLeftRangeInput,
     onRightRangeInput,
     onStartPriceInput,
+    onSetFullRange,
   }
 }
