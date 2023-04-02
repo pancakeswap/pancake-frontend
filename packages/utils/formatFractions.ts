@@ -24,3 +24,8 @@ export function formatAmount(amount?: CurrencyAmount<Currency>, precision?: numb
     precision,
   )
 }
+
+export function parseNumberToFraction(num: number, precision = 6) {
+  const scalar = 10 ** precision
+  return new Fraction(JSBI.BigInt(Math.floor(num * scalar)), JSBI.BigInt(scalar))
+}

@@ -1,5 +1,6 @@
 import { Currency, CurrencyAmount, JSBI, MaxUint256, Percent, Fraction, ZERO } from '@pancakeswap/sdk'
 import invariant from 'tiny-invariant'
+import { parseNumberToFraction } from '@pancakeswap/utils/formatFractions'
 
 import { maxLiquidityForAmounts } from './maxLiquidityForAmounts'
 import { TickMath } from './tickMath'
@@ -85,7 +86,7 @@ function tryGetEstimatedLPFee({
   const liquidity = FeeCalculator.getLiquidityBySingleAmount({ amount, currency, tickUpper, tickLower, sqrtRatioX96 })
 
   return insidePercentage
-    .multiply(JSBI.multiply(JSBI.multiply(JSBI.BigInt(Math.floor(volume24H)), JSBI.BigInt(fee)), liquidity))
+    .multiply(parseNumberToFraction(volume24H).multiply(JSBI.BigInt(fee)).multiply(liquidity))
     .divide(JSBI.multiply(MAX_FEE, JSBI.add(liquidity, mostActiveLiquidity))).asFraction
 }
 
