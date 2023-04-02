@@ -1,4 +1,5 @@
 import { ChainId } from '@pancakeswap/sdk'
+import { BigNumber } from '@ethersproject/bignumber'
 import { OpUnitType } from 'dayjs'
 
 export const v3InfoPath = `v3Info`
@@ -36,3 +37,4 @@ export const TimeWindow: {
 }
 
 export const ONE_HOUR_SECONDS = 3600
+export const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
