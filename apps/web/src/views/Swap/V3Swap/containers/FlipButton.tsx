@@ -1,5 +1,5 @@
 import { AutoColumn, Swap as SwapUI, Button } from '@pancakeswap/uikit'
-import { useCallback } from 'react'
+import { useCallback, memo } from 'react'
 import replaceBrowserHistory from '@pancakeswap/utils/replaceBrowserHistory'
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -11,7 +11,7 @@ import { AutoRow } from 'components/Layout/Row'
 
 import { useAllowRecipient } from '../hooks'
 
-export function FlipButton() {
+export const FlipButton = memo(function FlipButton() {
   const { t } = useTranslation()
   const [isExpertMode] = useExpertMode()
   const { onSwitchTokens, onChangeRecipient } = useSwapActionHandlers()
@@ -40,4 +40,4 @@ export function FlipButton() {
       </AutoRow>
     </AutoColumn>
   )
-}
+})

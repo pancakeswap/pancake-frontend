@@ -1,5 +1,5 @@
 import { Currency } from '@pancakeswap/sdk'
-import { useContext } from 'react'
+import { useContext, memo } from 'react'
 import { Box } from '@pancakeswap/uikit'
 
 import AccessRisk from 'views/Swap/components/AccessRisk'
@@ -10,7 +10,7 @@ interface Props {
   currency?: Currency
 }
 
-export function RiskCheck({ currency }: Props) {
+export const RiskCheck = memo(function RiskCheck({ currency }: Props) {
   const { isAccessTokenSupported } = useContext(SwapFeaturesContext)
 
   if (!isAccessTokenSupported || !currency?.isToken) {
@@ -22,4 +22,4 @@ export function RiskCheck({ currency }: Props) {
       <AccessRisk token={currency} />
     </Box>
   )
-}
+})

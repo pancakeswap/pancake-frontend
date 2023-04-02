@@ -13,33 +13,24 @@ export function useSwapActionHandlers(): {
 
   const onSwitchTokens = useCallback(() => {
     dispatch(switchCurrencies())
-  }, [dispatch])
+  }, [])
 
-  const onCurrencySelection = useCallback(
-    (field: Field, currency: Currency) => {
-      dispatch(
-        selectCurrency({
-          field,
-          currencyId: currency?.isToken ? currency.address : currency?.isNative ? currency.symbol : '',
-        }),
-      )
-    },
-    [dispatch],
-  )
+  const onCurrencySelection = useCallback((field: Field, currency: Currency) => {
+    dispatch(
+      selectCurrency({
+        field,
+        currencyId: currency?.isToken ? currency.address : currency?.isNative ? currency.symbol : '',
+      }),
+    )
+  }, [])
 
-  const onUserInput = useCallback(
-    (field: Field, typedValue: string) => {
-      dispatch(typeInput({ field, typedValue }))
-    },
-    [dispatch],
-  )
+  const onUserInput = useCallback((field: Field, typedValue: string) => {
+    dispatch(typeInput({ field, typedValue }))
+  }, [])
 
-  const onChangeRecipient = useCallback(
-    (recipient: string | null) => {
-      dispatch(setRecipient({ recipient }))
-    },
-    [dispatch],
-  )
+  const onChangeRecipient = useCallback((recipient: string | null) => {
+    dispatch(setRecipient({ recipient }))
+  }, [])
 
   return {
     onSwitchTokens,

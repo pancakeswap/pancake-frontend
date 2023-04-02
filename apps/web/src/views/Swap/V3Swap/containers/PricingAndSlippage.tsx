@@ -2,6 +2,7 @@ import { Swap as SwapUI, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import { Price, Currency } from '@pancakeswap/sdk'
 import { useUserSlippage } from '@pancakeswap/utils/user'
+import { memo } from 'react'
 
 import SettingsModal from '../../../../components/Menu/GlobalSettings/SettingsModal'
 import { SettingsMode } from '../../../../components/Menu/GlobalSettings/types'
@@ -13,7 +14,11 @@ interface Props {
   price?: Price<Currency, Currency>
 }
 
-export function PricingAndSlippage({ priceLoading, price, showSlippage = true }: Props) {
+export const PricingAndSlippage = memo(function PricingAndSlippage({
+  priceLoading,
+  price,
+  showSlippage = true,
+}: Props) {
   const { t } = useTranslation()
   const [allowedSlippage] = useUserSlippage()
   const isWrapping = useIsWrapping()
@@ -37,4 +42,4 @@ export function PricingAndSlippage({ priceLoading, price, showSlippage = true }:
       onSlippageClick={onPresentSettingsModal}
     />
   )
-}
+})

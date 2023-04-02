@@ -1,5 +1,6 @@
 import { ArrowDownIcon, Button } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { memo } from 'react'
 
 import { useSwapActionHandlers } from 'state/swap/useSwapActionHandlers'
 import { useSwapState } from 'state/swap/hooks'
@@ -9,7 +10,7 @@ import AddressInputPanel from '../../components/AddressInputPanel'
 import { ArrowWrapper } from '../../components/styleds'
 import { useAllowRecipient } from '../hooks'
 
-export function Recipient() {
+export const Recipient = memo(function Recipient() {
   const { t } = useTranslation()
   const { recipient } = useSwapState()
   const { onChangeRecipient } = useSwapActionHandlers()
@@ -32,4 +33,4 @@ export function Recipient() {
       <AddressInputPanel id="recipient" value={recipient} onChange={onChangeRecipient} />
     </>
   )
-}
+})

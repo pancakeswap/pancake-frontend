@@ -1,4 +1,5 @@
 import { SmartRouter } from '@pancakeswap/smart-router/evm'
+import { useMemo } from 'react'
 import { useDerivedBestTradeWithMM } from '../MMLinkPools/hooks/useDerivedSwapInfoWithMM'
 
 import { FormHeader, FormMain, MMTradeDetail, PricingAndSlippage, SwapCommitButton, TradeDetails } from './containers'
@@ -13,19 +14,14 @@ export function V3SwapForm() {
   const finalTrade = mm.isMMBetter ? mm?.mmTradeInfo?.trade : trade
 
   const tradeLoaded = !isLoading
+  const price = useMemo(() => trade && SmartRouter.getExecutionPrice(trade), [trade])
 
   return (
     <>
       <FormHeader onRefresh={refresh} refreshDisabled={!tradeLoaded || syncing || !isStale} />
       <FormMain
         tradeLoading={!tradeLoaded}
-        pricingAndSlippage={
-          <PricingAndSlippage
-            priceLoading={isLoading}
-            price={trade && SmartRouter.getExecutionPrice(trade)}
-            showSlippage={!mm.isMMBetter}
-          />
-        }
+        pricingAndSlippage={<PricingAndSlippage priceLoading={isLoading} price={price} showSlippage={!mm.isMMBetter} />}
         inputAmount={finalTrade?.inputAmount}
         outputAmount={finalTrade?.outputAmount}
         swapCommitButton={

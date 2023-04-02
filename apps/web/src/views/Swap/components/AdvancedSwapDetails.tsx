@@ -3,16 +3,16 @@ import { Currency, CurrencyAmount, Percent, TradeType } from '@pancakeswap/sdk'
 import { LegacyPair as Pair } from '@pancakeswap/smart-router/evm'
 import { Modal, ModalV2, QuestionHelper, SearchIcon, Text, Flex, Link, AutoColumn } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
+import { useState, memo } from 'react'
 
 import { RowBetween, RowFixed } from 'components/Layout/Row'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
-import { useState } from 'react'
 import { Field } from 'state/swap/actions'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import { RouterViewer } from './RouterViewer'
 import SwapRoute from './SwapRoute'
 
-export function TradeSummary({
+export const TradeSummary = memo(function TradeSummary({
   inputAmount,
   outputAmount,
   tradeType,
@@ -134,7 +134,7 @@ export function TradeSummary({
       )}
     </AutoColumn>
   )
-}
+})
 
 export interface AdvancedSwapDetailsProps {
   hasStablePair?: boolean
@@ -152,7 +152,7 @@ export interface AdvancedSwapDetailsProps {
   isMM?: boolean
 }
 
-export function AdvancedSwapDetails({
+export const AdvancedSwapDetails = memo(function AdvancedSwapDetails({
   pairs,
   path,
   priceImpactWithoutFee,
@@ -231,4 +231,4 @@ export function AdvancedSwapDetails({
       )}
     </AutoColumn>
   )
-}
+})

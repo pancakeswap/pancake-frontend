@@ -11,7 +11,7 @@ import {
   MessageText,
   AutoColumn,
 } from '@pancakeswap/uikit'
-import { useCallback, useEffect, useState, useMemo } from 'react'
+import { useCallback, useEffect, useState, useMemo, memo } from 'react'
 import { SWAP_ROUTER_ADDRESSES, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 
 import { useIsTransactionUnsupported } from 'hooks/Trades'
@@ -55,7 +55,11 @@ interface SwapCommitButtonPropsType {
   tradeLoading?: boolean
 }
 
-export function SwapCommitButton({ trade, tradeError, tradeLoading }: SwapCommitButtonPropsType) {
+export const SwapCommitButton = memo(function SwapCommitButton({
+  trade,
+  tradeError,
+  tradeLoading,
+}: SwapCommitButtonPropsType) {
   const { t } = useTranslation()
   const { account } = useActiveWeb3React()
   const [isExpertMode] = useExpertMode()
@@ -364,4 +368,4 @@ export function SwapCommitButton({ trade, tradeError, tradeLoading }: SwapCommit
   )
 
   return <Box mt="0.25rem">{content}</Box>
-}
+})

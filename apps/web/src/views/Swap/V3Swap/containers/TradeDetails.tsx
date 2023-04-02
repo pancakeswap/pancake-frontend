@@ -2,7 +2,7 @@ import { TradeType } from '@pancakeswap/sdk'
 import { SmartRouter, SmartRouterTrade } from '@pancakeswap/smart-router/evm'
 import { AutoColumn } from '@pancakeswap/uikit'
 import useLastTruthy from 'hooks/useLast'
-import { useMemo } from 'react'
+import { useMemo, memo } from 'react'
 
 import { AdvancedSwapDetails, TradeSummary } from 'views/Swap/components/AdvancedSwapDetails'
 import { AdvancedDetailsFooter } from 'views/Swap/components/AdvancedSwapDetailsDropdown'
@@ -41,7 +41,7 @@ export function MMTradeDetail({ loaded, mmTrade }: { loaded: boolean; mmTrade?: 
   )
 }
 
-export function TradeDetails({ loaded, trade }: Props) {
+export const TradeDetails = memo(function TradeDetails({ loaded, trade }: Props) {
   const slippageAdjustedAmounts = useSlippageAdjustedAmounts(trade)
   const isWrapping = useIsWrapping()
   const { priceImpactWithoutFee, lpFeeAmount } = useMemo(() => computeTradePriceBreakdown(trade), [trade])
@@ -72,4 +72,4 @@ export function TradeDetails({ loaded, trade }: Props) {
       </AutoColumn>
     </AdvancedDetailsFooter>
   )
-}
+})
