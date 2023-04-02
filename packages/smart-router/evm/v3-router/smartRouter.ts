@@ -8,8 +8,11 @@ export {
   getStablePoolsOnChain,
   getV3PoolsWithoutTicksOnChain,
   getV3PoolSubgraph,
+  getV2PoolSubgraph,
   v3PoolSubgraphSelection,
+  v2PoolSubgraphSelection,
   type SubgraphV3Pool,
+  type SubgraphV2Pool,
 } from './providers'
 export {
   getExecutionPrice,

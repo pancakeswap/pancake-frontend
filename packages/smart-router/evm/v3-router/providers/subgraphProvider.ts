@@ -31,9 +31,11 @@ type V3PoolSubgraphResult = {
   totalValueLockedUSD: string
 }
 
-export interface SubgraphV3Pool extends V3Pool {
+interface PoolWithTvl {
   tvlUSD: JSBI
 }
+
+export type SubgraphV3Pool = V3Pool & PoolWithTvl
 
 export const getV3PoolSubgraph = async ({
   provider,
