@@ -21,6 +21,7 @@ import { BASES_TO_CHECK_TRADES_AGAINST } from '@pancakeswap/smart-router/evm'
 import getLpAddress from 'utils/getLpAddress'
 import { multiplyPriceByAmount } from 'utils/prices'
 import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { getFullDecimalMultiplier } from '@pancakeswap/utils/getFullDecimalMultiplier'
 import { isChainTestnet } from 'utils/wagmi'
 import { useProvider } from 'wagmi'
 import { usePairContract } from './useContract'
@@ -36,6 +37,7 @@ const STABLE_COIN = {
 } satisfies Record<ChainId, ERC20Token>
 
 export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
+  const { chainId: currentChainId } = useActiveChainId()
   const chainId = currency?.chainId
 
   const baseTradeAgainst = useMemo(() => BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId], [chainId])
@@ -43,14 +45,15 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
   const cakePrice = useCakePriceAsBN()
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
   const isCake = currency?.wrapped.equals(CAKE[chainId])
+
   const isStableCoin = currency?.wrapped.equals(stableCoin)
 
-  const shouldEnabled = currency && stableCoin && enabled && currency?.chainId === chainId && !isCake && !isStableCoin
+  const shouldEnabled = currency && stableCoin && enabled && currentChainId === chainId && !isCake && !isStableCoin
 
   const enableLlama = currency?.chainId === ChainId.ETHEREUM && shouldEnabled
 
   // we don't have too many AMM pools on ethereum yet, try to get it from api
-  const { data: priceFromLlama, isLoading } = useSWRImmutable(
+  const { data: priceFromLlama, isLoading } = useSWRImmutable<string>(
     enableLlama && ['fiat-price-ethereum', currency],
     async () => {
       const address = currency.isToken ? currency.address : WETH9[ChainId.ETHEREUM].address
@@ -82,12 +85,12 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
   })
 
   const price = useMemo(() => {
-    if (!currency || !stableCoin) {
+    if (!currency || !stableCoin || !enabled) {
       return undefined
     }
 
-    if (isCake) {
-      return new Price(currency, stableCoin, cakePrice.toString(), '1')
+    if (isCake && cakePrice) {
+      return new Price(stableCoin, currency, 1 * 10 ** stableCoin.decimals, cakePrice.times(1e18).toString())
     }
 
     // handle stable coin
@@ -95,8 +98,13 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
       return new Price(stableCoin, stableCoin, '1', '1')
     }
 
-    if (priceFromLlama) {
-      return new Price(currency, stableCoin, '1', priceFromLlama.toString())
+    if (priceFromLlama && enableLlama) {
+      return new Price(
+        stableCoin,
+        currency,
+        1 * 10 ** stableCoin.decimals,
+        getFullDecimalMultiplier(currency.decimals).times(priceFromLlama).toString(),
+      )
     }
 
     if (trade) {
@@ -106,7 +114,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     }
 
     return undefined
-  }, [cakePrice, currency, isCake, isStableCoin, priceFromLlama, stableCoin, trade])
+  }, [cakePrice, currency, enableLlama, isCake, isStableCoin, priceFromLlama, enabled, stableCoin, trade])
 
   return price
 }
