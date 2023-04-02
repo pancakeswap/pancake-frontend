@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js'
 import { CAKE_PER_YEAR } from 'config'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import React, { useCallback, useMemo } from 'react'
-import { useFarms } from 'state/farms/hooks'
+import { useFarms, usePollFarmsWithUserData } from 'state/farms/hooks'
 import { usePriceCakeBusd } from 'state/farmsV1/hooks'
 import { useFarmsV3Public } from 'state/farmsV3/hooks'
 import { getFarmApr } from 'utils/apr'
@@ -12,7 +12,7 @@ import { useAccount } from 'wagmi'
 import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
 
-const showV3FarmsOnly = true
+const showV3FarmsOnly = false
 
 const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
@@ -24,11 +24,13 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const cakePrice = usePriceCakeBusd()
   const { chainId } = useActiveChainId()
 
+  usePollFarmsWithUserData()
+
   const userDataReady = !account || (!!account && userDataLoaded)
 
   const farms = farmsLP
     .filter((farm) => farm.pid !== 0)
-    .filter((farm) => farm.multiplier !== '0X')
+    .filter((farm) => farm.multiplier === '0X')
     .filter((farm) => {
       if (showV3FarmsOnly) {
         return farmsWithPrice

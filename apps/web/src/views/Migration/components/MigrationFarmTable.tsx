@@ -81,10 +81,12 @@ const MigrationFarmTable: React.FC<React.PropsWithChildren<ITableProps>> = ({
       staked: {
         label: lpLabel,
         pid: farm.pid,
-        stakedBalance: farm.userData.stakedBalance,
+        stakedBalance: farm.boosted ? farm.userData.stakedBalance : farm.userData.stakedBalance,
       },
       earned: {
-        earnings: getBalanceNumber(new BigNumber(farm.userData.earnings)),
+        earnings: farm.boosted
+          ? getBalanceNumber(farm.userData.proxy.earnings)
+          : getBalanceNumber(new BigNumber(farm.userData.earnings)),
         pid: farm.pid,
       },
       liquidity: {
