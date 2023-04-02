@@ -36,7 +36,7 @@ const STABLE_COIN = {
 } satisfies Record<ChainId, ERC20Token>
 
 export function useStablecoinPrice(currency?: Currency, enabled = true): Price<Currency, Currency> | undefined {
-  const { chainId } = useActiveChainId()
+  const chainId = currency?.chainId
 
   const baseTradeAgainst = useMemo(() => BASES_TO_CHECK_TRADES_AGAINST[chainId as ChainId], [chainId])
 
@@ -44,6 +44,27 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
   const stableCoin = chainId in ChainId ? STABLE_COIN[chainId as ChainId] : undefined
   const isCake = currency?.wrapped.equals(CAKE[chainId])
   const isStableCoin = currency?.wrapped.equals(stableCoin)
+
+  const shouldEnabled = currency && stableCoin && enabled && currency?.chainId === chainId && !isCake && !isStableCoin
+
+  const enableLlama = currency?.chainId === ChainId.ETHEREUM && shouldEnabled
+
+  // we don't have too many AMM pools on ethereum yet, try to get it from api
+  const { data: priceFromLlama, isLoading } = useSWRImmutable(
+    enableLlama && ['fiat-price-ethereum', currency],
+    async () => {
+      const address = currency.isToken ? currency.address : WETH9[ChainId.ETHEREUM].address
+      return fetch(`https://coins.llama.fi/prices/current/ethereum:${address}`) // <3 llama
+        .then((res) => res.json())
+        .then(
+          (res) => res?.coins?.[`ethereum:${address}`]?.confidence > 0.9 && res?.coins?.[`ethereum:${address}`]?.price,
+        )
+    },
+    {
+      dedupingInterval: 30_000,
+      refreshInterval: 30_000,
+    },
+  )
 
   const amountIn = useMemo(
     () => (currency ? CurrencyAmount.fromRawAmount(currency, 1 * 10 ** currency.decimals) : undefined),
@@ -57,7 +78,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     tradeType: TradeType.EXACT_INPUT,
     maxSplits: 0,
     maxHops: baseTradeAgainst ? 2 : undefined,
-    enabled: enabled && !isCake && !isStableCoin,
+    enabled: enableLlama ? !isLoading && !priceFromLlama : shouldEnabled,
   })
 
   const price = useMemo(() => {
@@ -74,6 +95,10 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
       return new Price(stableCoin, stableCoin, '1', '1')
     }
 
+    if (priceFromLlama) {
+      return new Price(currency, stableCoin, '1', priceFromLlama.toString())
+    }
+
     if (trade) {
       const { inputAmount, outputAmount } = trade
 
@@ -81,7 +106,7 @@ export function useStablecoinPrice(currency?: Currency, enabled = true): Price<C
     }
 
     return undefined
-  }, [cakePrice, currency, isCake, isStableCoin, stableCoin, trade])
+  }, [cakePrice, currency, isCake, isStableCoin, priceFromLlama, stableCoin, trade])
 
   return price
 }
@@ -214,27 +239,8 @@ export const usePriceByPairs = (currencyA?: Currency, currencyB?: Currency) => {
 
 export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): number | undefined => {
   const stablePrice = useStablecoinPrice(currency, !!amount)
-  // we don't have too many AMM pools on ethereum yet, try to get it from api
-  const { data } = useSWRImmutable(
-    amount && currency?.chainId === ChainId.ETHEREUM && ['fiat-price-ethereum', currency],
-    async () => {
-      const address = currency.isToken ? currency.address : WETH9[ChainId.ETHEREUM].address
-      return fetch(`https://coins.llama.fi/prices/current/ethereum:${address}`) // <3 llama
-        .then((res) => res.json())
-        .then(
-          (res) => res?.coins?.[`ethereum:${address}`]?.confidence > 0.9 && res?.coins?.[`ethereum:${address}`]?.price,
-        )
-    },
-    {
-      dedupingInterval: 30_000,
-      refreshInterval: 30_000,
-    },
-  )
 
   if (amount) {
-    if (data) {
-      return parseFloat(data) * amount
-    }
     if (stablePrice) {
       return multiplyPriceByAmount(stablePrice, amount)
     }
@@ -243,7 +249,7 @@ export const useStablecoinPriceAmount = (currency?: Currency, amount?: number): 
 }
 
 /**
- * @deprecated it's using v2 pair
+ * @deprecated it's using v2 pair, use `useStablecoinPriceAsBN` instead
  */
 export const useBUSDCakeAmount = (amount: number): number | undefined => {
   const cakeBusdPrice = useCakeBusdPrice()
@@ -254,7 +260,7 @@ export const useBUSDCakeAmount = (amount: number): number | undefined => {
 }
 
 /**
- * @deprecated it's using v2 pair
+ * @deprecated it's using v2 pair, use `useCakePriceAsBN` instead
  * @Note: only fetch from one pair
  */
 export const useCakeBusdPrice = (
