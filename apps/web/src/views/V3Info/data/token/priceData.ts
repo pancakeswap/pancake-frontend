@@ -14,7 +14,7 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   let queryString = 'query blocks {'
   queryString += blocks.map(
     (block: any) => `
-      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }, subgraphError: allow) { 
+      t${block.timestamp}:token(id:"${tokenAddress}", block: { number: ${block.number} }, subgraphError: allow) {
         derivedETH
       }
     `,
@@ -22,7 +22,7 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
   queryString += ','
   queryString += blocks.map(
     (block: any) => `
-      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }, subgraphError: allow) { 
+      b${block.timestamp}: bundle(id:"1", block: { number: ${block.number} }, subgraphError: allow) {
         ethPriceUSD
       }
     `,
@@ -35,13 +35,13 @@ export const PRICES_BY_BLOCK = (tokenAddress: string, blocks: any) => {
 }
 
 const PRICE_FOR_PAIR_PRICE_CHART = (timestamps: number[]) => {
-  let queryString = 'query tokenHourDatas($address: Bytes!) {'
+  let queryString = 'query poolHourDatas($address: Bytes!) {'
   timestamps.forEach((d) => {
     queryString += `
-      t${d}:tokenHourDatas(
+      t${d}:poolHourDatas(
         first: 1
         skip: 0
-        where: { token: $address, periodStartUnix: ${d} }
+        where: { pool: $address, periodStartUnix: ${d} }
         orderBy: periodStartUnix
         orderDirection: asc
       ) {

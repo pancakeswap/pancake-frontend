@@ -45,17 +45,12 @@ export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
 }
 
 function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositionStaked }: FarmV3ApyButtonProps) {
-  const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount } = farm
+  const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount, lpAddress } = farm
   const { t } = useTranslation()
   const roiModal = useModalV2()
 
   const [priceTimeWindow, setPriceTimeWindow] = useState(0)
-  const prices = usePairTokensPrice(
-    roiModal.isOpen ? baseCurrency : undefined,
-    roiModal.isOpen ? quoteCurrency : undefined,
-    priceTimeWindow,
-    baseCurrency?.chainId,
-  )
+  const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId)
 
   const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
 

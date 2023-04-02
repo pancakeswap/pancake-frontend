@@ -61,8 +61,6 @@ export function AprCalculator({
   const formState = useV3FormState()
 
   const { position: existingPosition } = useDerivedPositionInfo(positionDetails)
-  const prices = usePairTokensPrice(baseCurrency, quoteCurrency, priceSpan, baseCurrency?.chainId)
-  const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const { pool, ticks, price, pricesAtTicks, parsedAmounts, currencyBalances } = useV3DerivedInfo(
     baseCurrency ?? undefined,
     quoteCurrency ?? undefined,
@@ -71,8 +69,12 @@ export function AprCalculator({
     existingPosition,
     formState,
   )
+  const poolAddress = useMemo(() => pool && Pool.getAddress(pool.token0, pool.token1, pool.fee), [pool])
+
+  const prices = usePairTokensPrice(poolAddress, priceSpan, baseCurrency?.chainId)
+  const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
   const volume24H = usePoolAvgTradingVolume({
-    address: pool && Pool.getAddress(pool.token0, pool.token1, pool.fee),
+    address: poolAddress,
     chainId: pool?.token0.chainId,
   })
   const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)

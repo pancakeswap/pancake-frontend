@@ -5,6 +5,7 @@ import useTheme from 'hooks/useTheme'
 import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
 import dynamic from 'next/dynamic'
 import { useEffect, useMemo, useState } from 'react'
+import { FeeAmount, Pool } from '@pancakeswap/v3-sdk'
 import styled from 'styled-components'
 import BarChart from './components/BarChart/alt'
 import { DarkGreyCard } from './components/Card'
@@ -62,7 +63,11 @@ export default function Home() {
 
   const [, setHoverValue] = useState<number | undefined>()
   const [, setHoverDate] = useState<string | undefined>()
-  const pairTokensPrice = usePairTokensPrice(ethereumTokens.weth, ethereumTokens.usdc, PairDataTimeWindowEnum.YEAR, 1)
+  const pairTokensPrice = usePairTokensPrice(
+    Pool.getAddress(ethereumTokens.weth, ethereumTokens.usdc, FeeAmount.LOW),
+    PairDataTimeWindowEnum.YEAR,
+    1,
+  )
 
   // if hover value undefined, reset to current day value
   useEffect(() => {
