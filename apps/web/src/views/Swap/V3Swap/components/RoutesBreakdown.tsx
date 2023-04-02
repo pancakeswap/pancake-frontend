@@ -2,6 +2,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Route } from '@pancakeswap/smart-router/evm'
 import { Box, IconButton, QuestionHelper, SearchIcon, Text, useModalV2 } from '@pancakeswap/uikit'
 import styled from 'styled-components'
+import { memo } from 'react'
 
 import { RowBetween } from 'components/Layout/Row'
 import SwapRoute from 'views/Swap/components/SwapRoute'
@@ -15,7 +16,7 @@ const RouteInfoContainer = styled(RowBetween)`
   padding: 4px 24px 0;
 `
 
-export function RoutesBreakdown({ routes = [] }: Props) {
+export const RoutesBreakdown = memo(function RoutesBreakdown({ routes = [] }: Props) {
   const { t } = useTranslation()
   const routeDisplayModal = useModalV2()
 
@@ -56,7 +57,7 @@ export function RoutesBreakdown({ routes = [] }: Props) {
       </RouteInfoContainer>
     </>
   )
-}
+})
 
 interface RouteProps {
   route: Route

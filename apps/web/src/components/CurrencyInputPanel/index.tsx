@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, memo, useCallback } from 'react'
 import { Currency, Pair, Token, Percent, CurrencyAmount } from '@pancakeswap/sdk'
 import {
   Button,
@@ -82,7 +82,7 @@ interface CurrencyInputPanelProps {
   currencyLoading?: boolean
   inputLoading?: boolean
 }
-export default function CurrencyInputPanel({
+const CurrencyInputPanel = memo(function CurrencyInputPanel({
   value,
   onUserInput,
   onInputBlur,
@@ -145,6 +145,20 @@ export default function CurrencyInputPanel({
     [maxAmount],
   )
 
+  const handleUserInput = useCallback(
+    (val: string) => {
+      onUserInput(val)
+      setCurrentClickedPercent('')
+    },
+    [onUserInput],
+  )
+
+  const onCurrencySelectClick = useCallback(() => {
+    if (!disableCurrencySelect) {
+      onPresentCurrencyModal()
+    }
+  }, [onPresentCurrencyModal, disableCurrencySelect])
+
   const [currentClickedPercent, setCurrentClickedPercent] = useState('')
 
   const isAtPercentMax = (maxAmount && value === maxAmount.toExact()) || (lpPercent && lpPercent === '100')
@@ -159,10 +173,7 @@ export default function CurrencyInputPanel({
       zapStyle={zapStyle}
       value={value}
       onInputBlur={onInputBlur}
-      onUserInput={(val) => {
-        onUserInput(val)
-        setCurrentClickedPercent('')
-      }}
+      onUserInput={handleUserInput}
       loading={inputLoading}
       top={
         <>
@@ -172,11 +183,7 @@ export default function CurrencyInputPanel({
               zapStyle={zapStyle}
               className="open-currency-select-button"
               selected={!!currency}
-              onClick={() => {
-                if (!disableCurrencySelect) {
-                  onPresentCurrencyModal()
-                }
-              }}
+              onClick={onCurrencySelectClick}
             >
               <Flex alignItems="center" justifyContent="space-between">
                 {pair ? (
@@ -309,4 +316,6 @@ export default function CurrencyInputPanel({
       }
     />
   )
-}
+})
+
+export default CurrencyInputPanel

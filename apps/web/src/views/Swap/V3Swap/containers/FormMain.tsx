@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useCallback, ReactNode } from 'react'
+import { useCallback, useMemo, ReactNode } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import { useWeb3React } from '@pancakeswap/wagmi'
 import { Currency, CurrencyAmount, Percent } from '@pancakeswap/sdk'
@@ -46,7 +46,7 @@ export function FormMain({ pricingAndSlippage, inputAmount, outputAmount, tradeL
   const outputCurrency = useCurrency(outputCurrencyId)
   const { onCurrencySelection, onUserInput } = useSwapActionHandlers()
   const [inputBalance] = useCurrencyBalances(account, [inputCurrency, outputCurrency])
-  const maxAmountInput = maxAmountSpend(inputBalance)
+  const maxAmountInput = useMemo(() => maxAmountSpend(inputBalance), [inputBalance])
   const loadedUrlParams = useDefaultsFromURLSearch()
 
   const handleTypeInput = useCallback((value: string) => onUserInput(Field.INPUT, value), [onUserInput])

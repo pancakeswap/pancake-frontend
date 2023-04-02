@@ -3,11 +3,11 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Modal, ModalV2, QuestionHelper, Text, Flex, useTooltip, AutoColumn, UseModalV2Props } from '@pancakeswap/uikit'
 import { Currency } from '@pancakeswap/sdk'
 import { AtomBox } from '@pancakeswap/ui'
+import { useMemo, memo } from 'react'
 
 import { CurrencyLogo } from 'components/Logo'
 import { RoutingSettingsButton } from 'components/Menu/GlobalSettings/SettingsModal'
 import { RouterBox, RouterPoolBox, RouterTypeText, CurrencyLogoWrapper } from 'views/Swap/components/RouterViewer'
-import { useMemo } from 'react'
 import { v3FeeToPercent } from '../utils/exchange'
 
 type Pair = [Currency, Currency]
@@ -16,7 +16,7 @@ interface Props extends UseModalV2Props {
   routes: Route[]
 }
 
-export function RouteDisplayModal({ isOpen, onDismiss, routes }: Props) {
+export const RouteDisplayModal = memo(function RouteDisplayModal({ isOpen, onDismiss, routes }: Props) {
   const { t } = useTranslation()
   return (
     <ModalV2 closeOnOverlayClick isOpen={isOpen} onDismiss={onDismiss} minHeight="0">
@@ -44,13 +44,13 @@ export function RouteDisplayModal({ isOpen, onDismiss, routes }: Props) {
       </Modal>
     </ModalV2>
   )
-}
+})
 
 interface RouteDisplayProps {
   route: Route
 }
 
-export function RouteDisplay({ route }: RouteDisplayProps) {
+export const RouteDisplay = memo(function RouteDisplay({ route }: RouteDisplayProps) {
   const { t } = useTranslation()
   const { path, pools, inputAmount, outputAmount } = route
   const { currency: inputCurrency } = inputAmount
@@ -129,7 +129,7 @@ export function RouteDisplay({ route }: RouteDisplayProps) {
       </RouterBox>
     </AutoColumn>
   )
-}
+})
 
 function PairNode({
   pair,

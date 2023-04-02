@@ -3,7 +3,7 @@ import { Currency, CurrencyAmount, Price, Percent, TradeType } from '@pancakeswa
 import { AutoRenewIcon, Button, QuestionHelper, Text, Link, AutoColumn } from '@pancakeswap/uikit'
 import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { Field } from 'state/swap/actions'
 import styled from 'styled-components'
 import { warningSeverity } from 'utils/exchange'
@@ -20,7 +20,7 @@ const SwapModalFooterContainer = styled(AutoColumn)`
   background-color: ${({ theme }) => theme.colors.background};
 `
 
-export function SwapModalFooter({
+export const SwapModalFooter = memo(function SwapModalFooter({
   priceImpact: priceImpactWithoutFee,
   lpFee: realizedLPFee,
   inputAmount,
@@ -152,4 +152,4 @@ export function SwapModalFooter({
       </AutoRow>
     </>
   )
-}
+})

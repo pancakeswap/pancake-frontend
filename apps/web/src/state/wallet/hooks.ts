@@ -106,13 +106,15 @@ export function useCurrencyBalances(
 ): (CurrencyAmount<Currency> | undefined)[] {
   const tokens = useMemo(
     () => currencies?.filter((currency): currency is Token => currency?.isToken) ?? [],
-    [currencies],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [...currencies],
   )
 
   const tokenBalances = useTokenBalances(account, tokens)
   const containsNative: boolean = useMemo(
     () => currencies?.some((currency) => currency?.isNative) ?? false,
-    [currencies],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [...currencies],
   )
   const uncheckedAddresses = useMemo(() => (containsNative ? [account] : []), [containsNative, account])
   const nativeBalance = useNativeBalances(uncheckedAddresses)
@@ -125,7 +127,8 @@ export function useCurrencyBalances(
         if (currency?.isNative) return nativeBalance[account]
         return undefined
       }) ?? [],
-    [account, currencies, nativeBalance, tokenBalances],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [account, ...currencies, nativeBalance, tokenBalances],
   )
 }
 
