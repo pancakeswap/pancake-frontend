@@ -814,15 +814,22 @@ function PositionHistory_({
                     currency1={currency1}
                   />
                 ))}
-                {d.transaction.collects.map((positionTx) => (
-                  <PositionHistoryColumn
-                    positionTx={positionTx}
-                    key={positionTx.id}
-                    type="collect"
-                    currency0={currency0}
-                    currency1={currency1}
-                  />
-                ))}
+                {d.transaction.collects
+                  .filter(
+                    (collectTx) =>
+                      !d.transaction.burns.find(
+                        (burnTx) => burnTx.amount0 === collectTx.amount0 && burnTx.amount1 === collectTx.amount1,
+                      ),
+                  )
+                  .map((positionTx) => (
+                    <PositionHistoryColumn
+                      positionTx={positionTx}
+                      key={positionTx.id}
+                      type="collect"
+                      currency0={currency0}
+                      currency1={currency1}
+                    />
+                  ))}
                 {d.transaction.burns.map((positionTx) => (
                   <PositionHistoryColumn
                     positionTx={positionTx}
