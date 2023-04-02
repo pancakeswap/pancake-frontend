@@ -44,6 +44,7 @@ export function useV3CandidatePools(
   } = useV3PoolsWithTicks(candidatePoolsWithoutTicks, {
     key,
     blockNumber,
+    enabled: options?.enabled,
   })
 
   const candidatePools = data?.pools ?? null
@@ -95,7 +96,7 @@ export function useV3CandidatePoolsWithoutTicks(
 
 export function useV3PoolsWithTicks(
   pools: V3Pool[] | null | undefined,
-  { key, blockNumber, enabled }: V3PoolsHookParams = {},
+  { key, blockNumber, enabled = true }: V3PoolsHookParams = {},
 ) {
   const poolsWithTicks = useSWR(
     key && pools && enabled ? ['v3_pool_ticks', key] : null,
