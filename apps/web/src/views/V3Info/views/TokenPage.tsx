@@ -1,5 +1,5 @@
 import { AutoColumn, Button, Text, LinkExternal, Box } from '@pancakeswap/uikit'
-
+import Page from 'components/Layout/Page'
 import dayjs from 'dayjs'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
@@ -10,14 +10,13 @@ import dynamic from 'next/dynamic'
 // import { useSavedTokens } from 'state/user/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
-
 import BarChart from '../components/BarChart/alt'
 import { DarkGreyCard, LightGreyCard } from '../components/Card'
 import Loader, { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
 import PoolTable from '../components/PoolTable'
 import { AutoRow, RowBetween, RowFixed, RowFlat } from '../components/Row'
-import { MonoSpace, PageWrapper, ThemedBackground } from '../components/shared'
+import { MonoSpace } from '../components/shared'
 import TransactionTable from '../components/TransactionsTable'
 import { currentTimestamp, getEtherscanLink, shortenAddress } from '../utils'
 import { unixToDate } from '../utils/date'
@@ -69,13 +68,6 @@ const ResponsiveRow = styled(RowBetween)`
   }
 `
 
-// const StyledCMCLogo = styled.img`
-//   height: 16px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-// `
-
 enum ChartView {
   TVL,
   VOL,
@@ -89,7 +81,6 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
 
   // eslint-disable-next-line no-param-reassign
   address = address.toLowerCase()
-  // theming
 
   const { theme, isDark } = useTheme()
   const backgroundColor = theme.colors.background
@@ -105,10 +96,6 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   const transactions = useTokenTransactions(address)
   const chartData = useTokenChartData(address)
 
-  // check for link to CMC
-  // const cmcLink = useCMCLink(address)
-
-  // format for chart component
   const formattedTvlData = useMemo(() => {
     if (chartData) {
       return chartData.map((day) => {
@@ -160,8 +147,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   // const [savedTokens, addSavedToken] = useSavedTokens()
 
   return (
-    <PageWrapper>
-      <ThemedBackground backgroundColor={theme.colors.background} />
+    <Page>
       {tokenData ? (
         !tokenData.exists ? (
           <LightGreyCard style={{ textAlign: 'center' }}>
@@ -389,7 +375,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
       ) : (
         <Loader />
       )}
-    </PageWrapper>
+    </Page>
   )
 }
 
