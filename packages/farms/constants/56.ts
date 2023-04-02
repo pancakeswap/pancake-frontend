@@ -1,8 +1,122 @@
 import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
 import { bscTokens } from '@pancakeswap/tokens'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
 import { CAKE_BNB_LP_MAINNET } from './common'
 
-export const farmsV3 = [] satisfies FarmConfigV3[]
+export const farmsV3 = [
+  {
+    pid: 1,
+    lpSymbol: 'CAKE-BNB LP',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0x133B3D95bAD5405d14d53473671200e9342896BF',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 2,
+    lpSymbol: 'CAKE-BUSD LP',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.busd,
+    lpAddress: '0x9f6EB6903C1277c8f02d71F8814dc9998199af1D',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 3,
+    lpSymbol: 'CAKE-USDT LP',
+    token: bscTokens.cake,
+    quoteToken: bscTokens.usdt,
+    lpAddress: '0x7f51c8AaA6B0599aBd16674e2b17FEc7a9f674A1',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 4,
+    lpSymbol: 'BUSD-BNB LP',
+    token: bscTokens.wbnb,
+    quoteToken: bscTokens.busd,
+    lpAddress: '0x85FAac652b707FDf6907EF726751087F9E0b6687',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 5,
+    lpSymbol: 'USDT-BNB LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0x36696169C63e42cd08ce11f5deeBbCeBae652050',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 6,
+    lpSymbol: 'BTCB-BUSD LP',
+    token: bscTokens.btcb,
+    quoteToken: bscTokens.busd,
+    lpAddress: '0x369482C78baD380a036cAB827fE677C1903d1523',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 7,
+    lpSymbol: 'BTCB-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.btcb,
+    lpAddress: '0x46Cf1cF8c69595804ba91dFdd8d6b960c9B0a7C4',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 8,
+    lpSymbol: 'BTCB-ETH LP',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.btcb,
+    lpAddress: '0xD4dCA84E1808da3354924cD243c66828cf775470',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 9,
+    lpSymbol: 'BTCB-BNB LP',
+    token: bscTokens.btcb,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0xFC75f4E78bf71eD5066dB9ca771D4CcB7C1264E0',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 10,
+    lpSymbol: 'ETH-BNB LP',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.wbnb,
+    lpAddress: '0x7d05c84581f0C41AD80ddf677A510360bae09a5A',
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 11,
+    lpSymbol: 'ETH-USDC LP',
+    token: bscTokens.eth,
+    quoteToken: bscTokens.usdc,
+    lpAddress: '0x539e0EBfffd39e54A0f7E5F8FEc40ade7933A664',
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 12,
+    lpSymbol: 'USDC-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.usdc,
+    lpAddress: '0x92b7807bF19b7DDdf89b706143896d05228f3121',
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 13,
+    lpSymbol: 'BUSD-USDC LP',
+    token: bscTokens.usdc,
+    quoteToken: bscTokens.busd,
+    lpAddress: '0x22536030B9cE783B6Ddfb9a39ac7F439f568E5e6',
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 14,
+    lpSymbol: 'BUSD-USDT LP',
+    token: bscTokens.usdt,
+    quoteToken: bscTokens.busd,
+    lpAddress: '0x4f3126d5DE26413AbDCF6948943FB9D0847d9818',
+    feeAmount: FeeAmount.LOWEST,
+  },
+] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
   /**

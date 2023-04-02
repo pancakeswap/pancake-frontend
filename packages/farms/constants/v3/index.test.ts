@@ -1,6 +1,7 @@
 import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { Pool } from '@pancakeswap/v3-sdk'
+import { describe, it, expect } from 'vitest'
 import { farmsV3ConfigChainMap } from '.'
 import { priceHelperTokens } from '../common'
 
@@ -17,7 +18,7 @@ describe('Config farms V3', () => {
   })
 
   it.each(mainnetFarms.flat())('All tokens should be sorted', (farm) => {
-    expect(farm.token.sortsBefore(farm.quoteToken)).toBeTruthy()
+    expect(farm.token.sortsBefore(farm.quoteToken), `${farm.pid}: ${farm.lpAddress}`).toBeTruthy()
   })
 
   it.each(mainnetFarms.flat())('All tokens same chainId', (farm) => {
@@ -41,7 +42,10 @@ describe('Config farms V3', () => {
         isOneOfCake = true
       }
 
-      expect(isOneOfPriceHelper || isOneOfCake).toBeTruthy()
+      expect(
+        isOneOfPriceHelper || isOneOfCake,
+        `farm is missing price helper. chainId: ${farm.token.chainId} pid: ${farm.pid}`,
+      ).toBeTruthy()
     }
   })
 })
