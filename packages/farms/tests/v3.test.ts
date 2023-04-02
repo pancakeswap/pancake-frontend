@@ -2,8 +2,8 @@ import { ChainId } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { Pool } from '@pancakeswap/v3-sdk'
 import { describe, it, expect } from 'vitest'
-import { farmsV3ConfigChainMap } from '.'
-import { priceHelperTokens } from '../common'
+import { farmsV3ConfigChainMap } from '../constants/v3'
+import { priceHelperTokens } from '../constants/common'
 
 const mainnetFarms = [farmsV3ConfigChainMap[ChainId.BSC], farmsV3ConfigChainMap[ChainId.ETHEREUM]]
 

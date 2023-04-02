@@ -204,9 +204,15 @@ export interface FarmWithStakedValue extends DeserializedFarm {
 }
 
 // V3
-export interface FarmsV3Response {
+export interface SerializedFarmsV3Response {
   poolLength: number
   farmsWithPrice: SerializedFarmV3DataWithPrice[]
+  cakePerSecond: string
+}
+
+export interface FarmsV3Response<T extends FarmV3DataWithPrice = FarmV3DataWithPrice> {
+  poolLength: number
+  farmsWithPrice: T[]
   cakePerSecond: string
 }
 

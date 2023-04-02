@@ -1,10 +1,12 @@
 import { BigNumber } from '@ethersproject/bignumber'
 import {
   createFarmFetcherV3,
-  FarmsV3Response,
+  SerializedFarmsV3Response,
   FarmV3DataWithPrice,
   FarmV3DataWithPriceAndUserInfo,
+  FarmV3DataWithPriceTVL,
   IPendingCakeByTokenId,
+  FarmsV3Response,
 } from '@pancakeswap/farms'
 import { priceHelperTokens } from '@pancakeswap/farms/constants/common'
 import { farmsV3ConfigChainMap } from '@pancakeswap/farms/constants/v3'
@@ -22,10 +24,10 @@ import { useMemo } from 'react'
 import useSWR from 'swr'
 import { multicallv2 } from 'utils/multicall'
 
-export const farmV3ApiFetch = (chainId: number) =>
+export const farmV3ApiFetch = (chainId: number): Promise<FarmsV3Response> =>
   fetch(`/api/v3/${chainId}/farms`)
     .then((res) => res.json())
-    .then((data: FarmsV3Response) => {
+    .then((data: SerializedFarmsV3Response) => {
       const farmsWithPrice = data.farmsWithPrice.map((f) => ({
         ...f,
         token: deserializeToken(f.token),
@@ -95,7 +97,7 @@ export const useFarmsV3 = () => {
 
   const cakePrice = useCakePriceAsBN()
 
-  const { data } = useSWR(
+  const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
       if (!cakePrice.gt(0)) {
@@ -157,7 +159,9 @@ export const useFarmsV3 = () => {
   )
 
   return {
-    data: data?.farmsWithPrice.length === farmV3.data.poolLength ? data : farmV3.data,
+    data: (data?.farmsWithPrice.length === farmV3.data.poolLength
+      ? data
+      : farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }
