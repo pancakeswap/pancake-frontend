@@ -1,4 +1,5 @@
 import { AutoColumn, Box, Button, Flex, LinkExternal, Text } from '@pancakeswap/uikit'
+import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
@@ -11,8 +12,8 @@ import DensityChart from '../components/DensityChart'
 import Loader, { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
 import { AutoRow, RowBetween, RowFixed } from '../components/Row'
-import { MonoSpace, PageWrapper, ThemedBackground } from '../components/shared'
 import TransactionTable from '../components/TransactionsTable'
+import { MonoSpace } from '../components/shared'
 import { v3InfoPath } from '../constants'
 import { usePoolChartData, usePoolData, usePoolTransactions } from '../hooks'
 import { feeTierPercent, getEtherscanLink } from '../utils'
@@ -116,8 +117,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   // const [savedPools, addSavedPool] = useSavedPools()
 
   return (
-    <PageWrapper>
-      <ThemedBackground backgroundColor={backgroundColor} />
+    <Page>
       {poolData ? (
         <AutoColumn gap="32px">
           <RowBetween>
@@ -313,7 +313,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
       ) : (
         <Loader />
       )}
-    </PageWrapper>
+    </Page>
   )
 }
 
