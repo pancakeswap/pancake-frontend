@@ -55,7 +55,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
   const isLargerScreen = isXl || isXxl
   const [expanded, setExpanded] = useState(false)
 
-  const { stakedBalance } = useFarmUser(farm.pid)
+  const { stakedBalance, proxy } = useFarmUser(farm.pid)
 
   const toggleExpanded = () => {
     if (!isLargerScreen) {
@@ -70,7 +70,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
           <Farm {...farm} />
           {isLargerScreen || !expanded ? (
             <>
-              <Staked {...staked} stakedBalance={stakedBalance} />
+              <Staked {...staked} stakedBalance={farm.boosted ? proxy?.stakedBalance : stakedBalance} />
               <Earned {...earned} />
               <Multiplier {...multiplier} />
             </>
