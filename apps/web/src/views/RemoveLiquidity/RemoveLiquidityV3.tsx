@@ -47,7 +47,7 @@ import useNativeCurrency from 'hooks/useNativeCurrency'
 
 import { RangeTag } from 'components/RangeTag'
 import Divider from 'components/Divider'
-import { formatRawAmount } from 'utils/formatCurrencyAmount'
+import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
 
 import { useBurnV3ActionHandlers } from './form/hooks'
@@ -76,7 +76,10 @@ export default function RemoveLiquidityV3() {
 }
 
 function Remove({ tokenId }: { tokenId: BigNumber }) {
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
 
   // flag for receiving WETH
   const [receiveWETH, setReceiveWETH] = useState(false)
@@ -219,7 +222,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
       <>
         <RowBetween alignItems="flex-end">
           <Text fontSize={16} fontWeight={500}>
-            Pooled {liquidityValue0?.currency?.symbol}:
+            {t('Pooled')} {liquidityValue0?.currency?.symbol}:
           </Text>
           <RowFixed>
             <Text fontSize={16} fontWeight={500} marginLeft="6px">
@@ -230,7 +233,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         </RowBetween>
         <RowBetween alignItems="flex-end">
           <Text fontSize={16} fontWeight={500}>
-            Pooled {liquidityValue1?.currency?.symbol}:
+            {t('Pooled')} {liquidityValue1?.currency?.symbol}:
           </Text>
           <RowFixed>
             <Text fontSize={16} fontWeight={500} marginLeft="6px">
@@ -242,7 +245,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
         {feeValue0?.greaterThan(0) || feeValue1?.greaterThan(0) ? (
           <>
             <Text fontSize={12} textAlign="left" padding="8px 0 0 0">
-              You will also collect fees earned from this position.
+              {t('You will also collect fees earned from this position.')}
             </Text>
             <RowBetween>
               <Text fontSize={16} fontWeight={500}>
@@ -289,7 +292,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
 
   const [onPresentRemoveLiquidityModal] = useModal(
     <TransactionConfirmationModal
-      title="Remove Liquidity"
+      title={t('Remove Liquidity')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txnHash ?? ''}
@@ -301,7 +304,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           topContent={modalHeader}
           bottomContent={() => (
             <Button width="100%" mt="16px" onClick={onRemove}>
-              Remove
+              {t('Remove')}
             </Button>
           )}
         />
@@ -353,14 +356,14 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             <Flex>
               {isStakedInMCv3 && (
                 <Tag mr="8px" outline variant="warning">
-                  Farming
+                  {t('Farming')}
                 </Tag>
               )}
               <RangeTag removed={removed} outOfRange={outOfRange} />
             </Flex>
           </AutoRow>
           <Text fontSize="12px" color="secondary" bold textTransform="uppercase" mb="4px">
-            Amount of Liquidity to Remove
+            {t('Amount of Liquidity to Remove')}
           </Text>
           <BorderCard style={{ padding: '16px' }}>
             <Text fontSize="40px" bold mb="16px" style={{ lineHeight: 1 }}>
@@ -394,29 +397,29 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           </ColumnCenter>
           <AutoColumn gap="8px" mb="16px">
             <Text bold color="secondary" fontSize="12px" textTransform="uppercase">
-              You will receive
+              {t('You will receive')}
             </Text>
             <LightGreyCard>
               <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={liquidityValue0?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
-                    Pooled {liquidityValue0?.currency?.symbol}
+                    {t('Pooled')} {liquidityValue0?.currency?.symbol}
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{liquidityValue0?.toFixed(4, { groupSeparator: ',' }) || '0'}</Text>
+                  <Text small>{formatCurrencyAmount(liquidityValue0, 4, locale)}</Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="space-between" as="label" alignItems="center" mb="8px">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={liquidityValue1?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokenb-symbol" ml="4px">
-                    Pooled {liquidityValue1?.currency?.symbol}
+                    {t('Pooled')} {liquidityValue1?.currency?.symbol}
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{liquidityValue1?.toFixed(4, { groupSeparator: ',' }) || '0'}</Text>
+                  <Text small>{formatCurrencyAmount(liquidityValue1, 4, locale)}</Text>
                 </Flex>
               </Flex>
               <Divider />
@@ -424,29 +427,31 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
                 <Flex alignItems="center">
                   <CurrencyLogo currency={feeValue0?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
-                    {feeValue0?.currency?.symbol} Fee Earned
+                    {feeValue0?.currency?.symbol} {t('Fee Earned')}
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{feeValue0?.toSignificant(6) || '0'}</Text>
+                  <Text small>{formatCurrencyAmount(feeValue0, 4, locale)}</Text>
                 </Flex>
               </Flex>
               <Flex justifyContent="space-between" mb="8px" as="label" alignItems="center">
                 <Flex alignItems="center">
                   <CurrencyLogo currency={feeValue1?.currency} />
                   <Text small color="textSubtle" id="remove-liquidity-tokena-symbol" ml="4px">
-                    {feeValue1?.currency?.symbol} Fee Earned
+                    {feeValue1?.currency?.symbol} {t('Fee Earned')}
                   </Text>
                 </Flex>
                 <Flex>
-                  <Text small>{feeValue1?.toSignificant(6) || '0'}</Text>
+                  <Text small>{formatCurrencyAmount(feeValue1, 4, locale)}</Text>
                 </Flex>
               </Flex>
             </LightGreyCard>
           </AutoColumn>
           {showCollectAsWeth && (
             <Flex justifyContent="space-between" alignItems="center" mb="16px">
-              <Text mr="8px">Collect as {nativeWrappedSymbol}</Text>
+              <Text mr="8px">
+                {t('Collect as')} {nativeWrappedSymbol}
+              </Text>
               <Toggle
                 id="receive-as-weth"
                 scale="sm"
@@ -457,8 +462,9 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
           )}
           {isStakedInMCv3 ? (
             <Message variant="primary" mb="20px">
-              This liquidity position is currently staking in the Farm. Adding or removing liquidity will also harvest
-              any unclaimed CAKE to your wallet.
+              {t(
+                'This liquidity position is currently staking in the Farm. Adding or removing liquidity will also harvest any unclaimed CAKE to your wallet.',
+              )}
             </Message>
           ) : null}
 
@@ -467,7 +473,7 @@ function Remove({ tokenId }: { tokenId: BigNumber }) {
             width="100%"
             onClick={onPresentRemoveLiquidityModal}
           >
-            {removed ? 'Closed' : error ?? 'Remove'}
+            {removed ? t('Closed') : error ?? t('Remove')}
           </Button>
         </CardBody>
       </AppBody>

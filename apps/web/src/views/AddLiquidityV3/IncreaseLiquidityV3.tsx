@@ -30,7 +30,7 @@ import { BodyWrapper } from 'components/App/AppBody'
 import CurrencyInputPanel from 'components/CurrencyInputPanel'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { ApprovalState, useApproveCallback } from 'hooks/useApproveCallback'
-import { formatRawAmount } from 'utils/formatCurrencyAmount'
+import { formatRawAmount, formatCurrencyAmount } from 'utils/formatCurrencyAmount'
 import { basisPointsToPercent } from 'utils/exchange'
 
 import { useV3MintActionHandlers } from './formViews/V3FormView/form/hooks/useV3MintActionHandlers'
@@ -51,7 +51,10 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
 
   const [, , feeAmountFromUrl, tokenId] = router.query.currency || []
 
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const expertMode = useIsExpertMode()
 
   const { account, chainId, isWrongNetwork } = useActiveWeb3React()
@@ -247,11 +250,11 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
     }
   }, [onFieldAInput, router, txHash])
 
-  const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
-    !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
-  } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
-    !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
-  }`
+  const pendingText = `Supplying ${
+    !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''
+  } ${!depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''} ${!outOfRange ? 'and' : ''} ${
+    !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
+  } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`
 
   const [onPresentIncreaseLiquidityModal] = useModal(
     <TransactionConfirmationModal

@@ -46,7 +46,7 @@ import LiquidityChartRangeInput from 'components/LiquidityChartRangeInput'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
-import { formatRawAmount } from 'utils/formatCurrencyAmount'
+import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
 
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
@@ -134,7 +134,10 @@ export default function V3FormView({
   const { data: signer } = useSigner()
   const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const expertMode = useIsExpertMode()
 
   const positionManager = useV3NFTPositionManagerContract()
@@ -329,11 +332,11 @@ export default function V3FormView({
   const showApprovalA = approvalA !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_A]
   const showApprovalB = approvalB !== ApprovalState.APPROVED && !!parsedAmounts[Field.CURRENCY_B]
 
-  const pendingText = `Supplying ${!depositADisabled ? parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) : ''} ${
-    !depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''
-  } ${!outOfRange ? 'and' : ''} ${!depositBDisabled ? parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) : ''} ${
-    !depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''
-  }`
+  const pendingText = `Supplying ${
+    !depositADisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale) : ''
+  } ${!depositADisabled ? currencies[Field.CURRENCY_A]?.symbol : ''} ${!outOfRange ? 'and' : ''} ${
+    !depositBDisabled ? formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale) : ''
+  } ${!depositBDisabled ? currencies[Field.CURRENCY_B]?.symbol : ''}`
 
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal

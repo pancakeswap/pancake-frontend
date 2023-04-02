@@ -13,6 +13,8 @@ import { PairState } from 'hooks/usePairs'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { BigNumber } from '@ethersproject/bignumber'
 import { useUserSlippage, useIsExpertMode } from '@pancakeswap/utils/user'
+import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
+
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback'
 import { Field } from '../../../state/mint/actions'
 import { useMintActionHandlers, useMintState } from '../../../state/mint/hooks'
@@ -84,7 +86,10 @@ export default function AddStableLiquidity({
 
   const expertMode = useIsExpertMode()
 
-  const { t } = useTranslation()
+  const {
+    t,
+    currentLanguage: { locale },
+  } = useTranslation()
   const gasPrice = useGasPrice()
 
   // mint state
@@ -254,9 +259,9 @@ export default function AddStableLiquidity({
   }
 
   const pendingText = t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', {
-    amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '',
+    amountA: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_A], 4, locale),
     symbolA: currencies[Field.CURRENCY_A]?.symbol ?? '',
-    amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
+    amountB: formatCurrencyAmount(parsedAmounts[Field.CURRENCY_B], 4, locale),
     symbolB: currencies[Field.CURRENCY_B]?.symbol ?? '',
   })
 
