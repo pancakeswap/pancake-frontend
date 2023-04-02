@@ -786,7 +786,6 @@ function PositionHistory_({
   if (isLoading || !data?.length) {
     return null
   }
-  console.log(data, 'data')
 
   return (
     <AtomBox textAlign="center" pt="16px">
