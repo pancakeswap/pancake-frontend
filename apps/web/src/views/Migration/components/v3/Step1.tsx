@@ -11,6 +11,7 @@ import { getFarmApr } from 'utils/apr'
 import { useAccount } from 'wagmi'
 import MigrationFarmTable from '../MigrationFarmTable'
 import { V3Step1DesktopColumnSchema } from '../types'
+import { STABLE_LP_TO_MIGRATE } from './Step2'
 
 const showV3FarmsOnly = true
 
@@ -31,16 +32,14 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   const farms = farmsLP
     .filter((farm) => farm.pid !== 0)
     .filter((farm) => {
-      if (showV3FarmsOnly) {
-        return farmsWithPrice
-          .filter((f) => f.multiplier !== '0X')
-          .find(
-            (farmV3) =>
-              (farmV3.quoteToken.address === farm.quoteToken.address && farmV3.token.address === farm.token.address) ||
-              (farmV3.quoteToken.address === farm.token.address && farmV3.token.address === farm.quoteToken.address),
-          )
-      }
-      return true
+      if (STABLE_LP_TO_MIGRATE.includes(farm.lpAddress)) return true
+      return farmsWithPrice
+        .filter((f) => f.multiplier !== '0X')
+        .find(
+          (farmV3) =>
+            (farmV3.quoteToken.address === farm.quoteToken.address && farmV3.token.address === farm.token.address) ||
+            (farmV3.quoteToken.address === farm.token.address && farmV3.token.address === farm.quoteToken.address),
+        )
     })
 
   const stakedOrHasTokenBalance = farms.filter((farm) => {

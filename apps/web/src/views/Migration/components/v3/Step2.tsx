@@ -26,8 +26,7 @@ import useStableConfig, {
 } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import { useAccount } from 'wagmi'
 
-// TODO: v3 migration add whitelist stable pairs
-const STABLE_LP_TO_MIGRATE = [
+export const STABLE_LP_TO_MIGRATE = [
   '0x36842F8fb99D55477C0Da638aF5ceb6bBf86aA98', // USDT-BUSD
   '0x1A77C359D0019cD8F4d36b7CDf5a88043D801072', // USDC-BUSD
   '0xee1bcc9F1692E81A281b3a302a4b67890BA4be76', // USDT-USDC
