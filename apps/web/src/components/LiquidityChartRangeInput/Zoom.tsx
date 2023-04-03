@@ -102,7 +102,6 @@ export default function Zoom({
           style={{
             cursor: 'pointer',
             textAlign: 'center',
-            paddingTop: '2px',
             paddingLeft: '4px',
           }}
         >
