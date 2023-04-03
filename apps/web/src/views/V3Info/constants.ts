@@ -14,6 +14,9 @@ export const POOL_HIDE: { [key: string]: string[] } = {
     '0x277667eb3e34f134adf870be9550e9f323d0dc24',
     '0x8c0411f2ad5470a66cb2e9c64536cfb8dcd54d51',
     '0x055284a4ca6532ecc219ac06b577d540c686669d',
+    '0xb078bf211e330b5f95b7114ae845188cc36b795d',
+    '0x7778797342652bd27b365962ffc7f6ece356eb57',
+    '0xe9825d867e3bef05223bda609fa8ab89aef93797',
   ],
   [ChainId.BSC]: [
     '0x87196a3bcec98116307bdc8b887c3074e8b5bc96',
@@ -34,6 +37,8 @@ export const TOKEN_HIDE: { [key: string]: string[] } = {
     '0x7dfb72a2aad08c937706f21421b15bfc34cba9ca',
     '0x12b32f10a499bf40db334efe04226cca00bf2d9b',
     '0x160de4468586b6b2f8a92feb0c260fc6cfc743b1',
+    '0xd84787a01b0cad89fbca231e6960cc0f3f18df34',
+    '0xdb19f2052d2b1ad46ed98c66336a5daadeb13005',
   ],
   [ChainId.BSC]: ['0xdb19f2052d2b1ad46ed98c66336a5daadeb13005', '0x57a63c32cc2ad6ce4fbe5423d548d12d0eeddfc1'],
 }
