@@ -354,13 +354,12 @@ export const usePoolTransactions = (address: string): Transaction[] | undefined 
 
 export const usePoolChartData = (address: string): PoolChartEntry[] | undefined => {
   const { chainId } = useActiveChainId()
-
   const { data } = useSWRImmutable(
-    chainId && address && [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
+    chainId && address && address !== 'undefined' && [`v3/info/pool/poolChartData/${chainId}/${address}`, chainId],
     () => fetchPoolChartData(address, v3Clients[chainId]),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
-  return data?.data ?? undefined
+  return data?.data
 }
 
 export const usePoolTickData = (address: string): PoolTickData | undefined => {
@@ -368,7 +367,7 @@ export const usePoolTickData = (address: string): PoolTickData | undefined => {
 
   const { data } = useSWRImmutable(
     chainId && address && [`v3/info/pool/poolTickData/${chainId}/${address}`, chainId],
-    () => fetchTicksSurroundingPrice(address, v3Clients[chainId]),
+    () => fetchTicksSurroundingPrice(address, v3Clients[chainId], chainId),
     SWR_SETTINGS_WITHOUT_REFETCH,
   )
   return data?.data ?? undefined

@@ -88,13 +88,13 @@ export default function Pool() {
     if (stablePairs?.length > 0) {
       positionCards = [
         ...positionCards,
-        ...stablePairs?.map((stablePair, index) => (
+        ...(stablePairs?.map((stablePair, index) => (
           <StableFullPositionCard
             key={`stable-${stablePair.liquidityToken.address}`}
             pair={stablePair}
             mb={index < stablePairs.length - 1 ? '16px' : 0}
           />
-        )),
+        )) || []),
       ]
     }
 

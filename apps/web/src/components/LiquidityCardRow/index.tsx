@@ -48,7 +48,7 @@ export const LiquidityCardRow = ({
             </Text>
           </Flex>
           {tokenId && <Text mr="8px">{`(#${tokenId.toString()})`}</Text>}
-          {feeAmount && (
+          {!!feeAmount && (
             <Tag variant="secondary" mr="8px" outline>
               {new Percent(feeAmount, 1_000_000).toSignificant()}%
             </Tag>

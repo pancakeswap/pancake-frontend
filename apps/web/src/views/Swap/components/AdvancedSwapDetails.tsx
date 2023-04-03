@@ -110,7 +110,12 @@ export const TradeSummary = memo(function TradeSummary({
                     )}
                   </Text>
                   <Text mt="12px">
-                    <Link style={{ display: 'inline' }} ml="4px" external href="https://docs.pancakeswap.finance/">
+                    <Link
+                      style={{ display: 'inline' }}
+                      ml="4px"
+                      external
+                      href="https://docs.pancakeswap.finance/products/pancakeswap-exchange/faq#what-will-be-the-trading-fee-breakdown-for-v3-exchange"
+                    >
                       {t('Fee Breakdown and Tokenomics')}
                     </Link>
                   </Text>

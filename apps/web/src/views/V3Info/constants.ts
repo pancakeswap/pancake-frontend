@@ -55,6 +55,6 @@ export const ONE_HOUR_SECONDS = 3600
 export const MAX_UINT128 = BigNumber.from(2).pow(128).sub(1)
 
 export const SUBGRAPH_START_BLOCK = {
-  [ChainId.BSC]: 26931960,
-  [ChainId.ETHEREUM]: 16963633,
+  [ChainId.BSC]: 26956207,
+  [ChainId.ETHEREUM]: 16950686,
 }

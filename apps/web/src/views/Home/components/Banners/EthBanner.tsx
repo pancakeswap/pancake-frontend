@@ -59,7 +59,9 @@ const EthBanner = () => {
           <Title>{t('gm eth teams')}</Title>
           <Button
             minHeight="48px"
-            onClick={() => window?.open('https://pancakeswap.finance?chain=eth', '_blank', 'noopener noreferrer')}
+            onClick={() =>
+              window?.open('https://docs.pancakeswap.finance/ethereum-expansion', '_blank', 'noopener noreferrer')
+            }
           >
             <Text color="invertedContrast" bold fontSize="16px" mr="4px">
               👋 {t('Get in Touch')}

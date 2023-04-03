@@ -47,7 +47,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
   const labelText = t('Unlimited Sale')
 
   const publicIfoData = useGetPublicIfoData(data.ifo)
-  const { cliff } = publicIfoData[poolId]?.vestingInformation
+  const { cliff } = publicIfoData[poolId]?.vestingInformation || {}
   const timeCliff = vestingStartTime === 0 ? getNow() : (vestingStartTime + cliff) * 1000
   const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000
 

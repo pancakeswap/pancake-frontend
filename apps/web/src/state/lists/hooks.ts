@@ -106,7 +106,7 @@ export const tokenListFromOfficialsUrlsAtom = atom((get) => {
 
   const mergedTokenLists: TokenInfo[] = OFFICIAL_LISTS.reduce((acc, url) => {
     if (lists?.[url]?.current?.tokens) {
-      acc.push(...lists?.[url]?.current.tokens)
+      acc.push(...(lists?.[url]?.current.tokens || []))
     }
     return acc
   }, [])
