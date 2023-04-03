@@ -23,11 +23,16 @@ export const getStaticPaths: GetStaticPaths = () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const tokenId = (params.tokenId as string[]) || []
+  const { tokenId } = params
 
-  if (tokenId.length === 0) {
+  const isNumberReg = /^\d+$/
+
+  if (!(tokenId as string)?.match(isNumberReg)) {
     return {
-      notFound: true,
+      redirect: {
+        statusCode: 303,
+        destination: `/add`,
+      },
     }
   }
 

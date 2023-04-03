@@ -54,8 +54,10 @@ export const getStaticPaths: GetStaticPaths = () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { currency = [] } = params
-  const [currencyIdA, currencyIdB] = currency
+  const [currencyIdA, currencyIdB, feeAmountFromUrl, tokenId] = currency
   const match = currencyIdA?.match(OLD_PATH_STRUCTURE)
+
+  const isNumberReg = /^\d+$/
 
   if (match?.length) {
     return {
@@ -72,6 +74,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         statusCode: 303,
         destination: `/add/${currencyIdA}`,
       },
+    }
+  }
+
+  if (!(feeAmountFromUrl as string)?.match(isNumberReg) || !(tokenId as string)?.match(isNumberReg)) {
+    return {
+      notFound: true,
     }
   }
 

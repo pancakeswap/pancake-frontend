@@ -149,7 +149,7 @@ export default function PoolPage() {
   const { account, chainId, provider } = useActiveWeb3React()
 
   const router = useRouter()
-  const { poolId: tokenIdFromUrl } = router.query
+  const { tokenId: tokenIdFromUrl } = router.query
 
   const parsedTokenId = tokenIdFromUrl ? BigNumber.from(tokenIdFromUrl) : undefined
 
@@ -1022,11 +1022,11 @@ export const getStaticPaths: GetStaticPaths = () => {
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { poolId } = params
+  const { tokenId } = params
 
   const isNumberReg = /^\d+$/
 
-  if (!(poolId as string)?.match(isNumberReg)) {
+  if (!(tokenId as string)?.match(isNumberReg)) {
     return {
       redirect: {
         statusCode: 303,

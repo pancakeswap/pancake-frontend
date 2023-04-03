@@ -62,7 +62,7 @@ const BorderCard = styled.div`
 export default function RemoveLiquidityV3() {
   const router = useRouter()
 
-  const [tokenId] = router.query.tokenId || []
+  const { tokenId } = router.query
 
   const parsedTokenId = useMemo(() => {
     try {
