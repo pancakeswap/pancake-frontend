@@ -11,7 +11,7 @@ const FEE_TIER_TO_TICK_SPACING = (feeTier: string): number => {
     case '10000':
       return 200
     case '2500':
-      return 50
+      return 60
     case '500':
       return 10
     case '100':
@@ -108,10 +108,9 @@ const fetchInitializedTicks = async (
 
       // console.log({ data, error, loading }, 'Result. Skip: ' + skip)
 
-      if (data.ticks.length > 0) {
+      if (!data) {
         continue
       }
-
       surroundingTicks = data.ticks
       surroundingTicksResult = surroundingTicksResult.concat(surroundingTicks)
       skip += 1000
@@ -120,7 +119,6 @@ const fetchInitializedTicks = async (
       return { error: true, ticks: surroundingTicksResult }
     }
   } while (surroundingTicks.length > 0)
-
   return { ticks: surroundingTicksResult, loading: false, error: false }
 }
 
@@ -165,7 +163,6 @@ export const fetchTicksSurroundingPrice = async (
     const poolResult = await client.request<PoolResult>(poolQuery, {
       poolAddress,
     })
-
     const {
       pool: {
         tick: poolCurrentTick,
@@ -177,7 +174,6 @@ export const fetchTicksSurroundingPrice = async (
     } = poolResult
     const poolCurrentTickIdx = parseInt(poolCurrentTick)
     const tickSpacing = FEE_TIER_TO_TICK_SPACING(feeTier)
-
     // The pools current tick isn't necessarily a tick that can actually be initialized.
     // Find the nearest valid tick given the tick spacing.
     const activeTickIdx = Math.floor(poolCurrentTickIdx / tickSpacing) * tickSpacing
@@ -262,6 +258,7 @@ export const fetchTicksSurroundingPrice = async (
           direction === Direction.ASC
             ? previousTickProcessed.tickIdx + tickSpacingParam
             : previousTickProcessed.tickIdx - tickSpacingParam
+        // console.log(currentTickIdx, 'currentTickIdx??????')
 
         if (currentTickIdx < TickMath.MIN_TICK || currentTickIdx > TickMath.MAX_TICK) {
           break
@@ -327,7 +324,6 @@ export const fetchTicksSurroundingPrice = async (
     )
 
     const ticksProcessed = previousTicks.concat(activeTickProcessed).concat(subsequentTicks)
-
     return {
       data: {
         ticksProcessed,
