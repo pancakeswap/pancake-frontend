@@ -1,6 +1,6 @@
 import shuffle from 'lodash/shuffle'
 import { ReactElement, useMemo } from 'react'
-import AptosBanner from '../AptosBanner'
+import EthBanner from '../EthBanner'
 import CompetitionBanner from '../CompetitionBanner'
 import IFOBanner from '../IFOBanner'
 import PerpetualBanner from '../PerpetualBanner'
@@ -36,7 +36,7 @@ export const useMultipleBannerConfig = () => {
       { shouldRender: true, banner: <FarmV3MigrationBanner /> },
       // { shouldRender: true, banner: <TradingRewardBanner /> },
       { shouldRender: true, banner: <V3Banner /> },
-      { shouldRender: true, banner: <AptosBanner /> },
+      { shouldRender: true, banner: <EthBanner /> },
       {
         shouldRender: isRenderIFOBanner,
         banner: <IFOBanner />,
