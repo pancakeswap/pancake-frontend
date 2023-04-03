@@ -1,24 +1,42 @@
-import { AutoColumn, Box, Button, Flex, LinkExternal, Text } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
+import {
+  AutoColumn,
+  Box,
+  Breadcrumbs,
+  Card,
+  Flex,
+  Heading,
+  LinkExternal,
+  NextLinkFromReactRouter,
+  Spinner,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+import { TabToggle, TabToggleGroup } from 'components/TabToggle'
+// import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import NextLink from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
+import { multiChainId, multiChainScan } from 'state/info/constant'
+import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
+import { getBlockExploreLink } from 'utils'
+import { formatAmount } from 'utils/formatInfoNumbers'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import BarChart from '../components/BarChart/alt'
-import { DarkGreyCard, GreyBadge, GreyCard } from '../components/Card'
+import { GreyBadge } from '../components/Card'
 import DensityChart from '../components/DensityChart'
-import Loader, { LocalLoader } from '../components/Loader'
+import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
-import { AutoRow, RowBetween, RowFixed } from '../components/Row'
+import { RowBetween, RowFixed } from '../components/Row'
 import TransactionTable from '../components/TransactionsTable'
 import { MonoSpace } from '../components/shared'
 import { v3InfoPath } from '../constants'
 import { usePoolChartData, usePoolData, usePoolTransactions } from '../hooks'
-import { feeTierPercent, getEtherscanLink } from '../utils'
+import { feeTierPercent } from '../utils'
 import { unixToDate } from '../utils/date'
-import { formatAmount, formatDollarAmount } from '../utils/numbers'
+import { formatDollarAmount } from '../utils/numbers'
 
 const ContentLayout = styled.div`
   display: grid;
@@ -31,21 +49,12 @@ const ContentLayout = styled.div`
   }
 `
 
-const TokenButton = styled(GreyCard)`
-  padding: 8px 12px;
-  border-radius: 10px;
+const TokenButton = styled(Flex)`
+  padding: 8px 0px;
+  margin-right: 16px;
   :hover {
     cursor: pointer;
     opacity: 0.6;
-  }
-`
-
-const ResponsiveRow = styled(RowBetween)`
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 24px;
-    width: 100%;
   }
 `
 
@@ -57,7 +66,8 @@ enum ChartView {
 }
 
 const PoolPage: React.FC<{ address: string }> = ({ address }) => {
-  const { chainId } = useActiveChainId()
+  // const { chainId } = useActiveChainId()
+  const { isXs, isSm } = useMatchBreakpoints()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -76,6 +86,10 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
   const [view, setView] = useState(ChartView.VOL)
   const [latestValue, setLatestValue] = useState<number | undefined>()
   const [valueLabel, setValueLabel] = useState<string | undefined>()
+
+  const hasSmallDifference = useMemo(() => {
+    return poolData ? Math.abs(poolData.token1Price - poolData.token0Price) < 1 : false
+  }, [poolData])
 
   const formattedTvlData = useMemo(() => {
     if (chartData) {
@@ -113,94 +127,111 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
     return []
   }, [chartData])
 
-  // //watchlist
-  // const [savedPools, addSavedPool] = useSavedPools()
-
+  const chainName = useGetChainName()
+  const chainPath = useMultiChainPath()
+  const infoTypeParam = useStableSwapPath()
+  const { t } = useTranslation()
   return (
     <Page>
       {poolData ? (
         <AutoColumn gap="32px">
-          <RowBetween>
-            <AutoRow gap="4px">
-              <NextLink href={v3InfoPath}>
-                <Text>{`Home > `}</Text>
-              </NextLink>
-              <NextLink href={`${v3InfoPath}/pools`}>
-                <Text>{` Pools `}</Text>
-              </NextLink>
-              <Text>{` > `}</Text>
-              <Text>{` ${poolData.token0.symbol} / ${poolData.token1.symbol} ${feeTierPercent(
-                poolData.feeTier,
-              )} `}</Text>
-            </AutoRow>
-            <RowFixed gap="10px" align="center">
-              {/* <SavedIcon fill={savedPools.includes(address)} onClick={() => addSavedPool(address)} /> */}
-              <LinkExternal isBscScan href={getEtherscanLink(chainId, address, 'address')} />
-            </RowFixed>
-          </RowBetween>
-          <ResponsiveRow align="flex-end">
-            <AutoColumn gap="lg">
-              <RowFixed>
-                <DoubleCurrencyLogo address0={poolData.token0.address} address1={poolData.token1.address} size={24} />
-                <Text
-                  ml="8px"
-                  mr="8px"
-                  fontSize="24px"
-                >{` ${poolData.token0.symbol} / ${poolData.token1.symbol} `}</Text>
-                <GreyBadge>{feeTierPercent(poolData.feeTier)}</GreyBadge>
-                {/* {activeNetwork === EthereumNetworkInfo ? null : (
-                  <GenericImageWrapper src={activeNetwork.imageURL} style={{ marginLeft: '8px' }} size={'26px'} />
-                )} */}
-              </RowFixed>
-              <ResponsiveRow>
-                <NextLink href={`${v3InfoPath}/tokens/${poolData.token0.address}`}>
-                  <TokenButton>
-                    <RowFixed>
-                      <CurrencyLogo address={poolData.token0.address} size="20px" />
-                      <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
-                        {`1 ${poolData.token0.symbol} =  ${formatAmount(poolData.token1Price, 4)} ${
-                          poolData.token1.symbol
-                        }`}
-                      </Text>
-                    </RowFixed>
-                  </TokenButton>
-                </NextLink>
-                <NextLink href={`${v3InfoPath}/tokens/${poolData.token0.address}`}>
-                  <TokenButton ml="10px">
-                    <RowFixed>
-                      <CurrencyLogo address={poolData.token1.address} size="20px" />
-                      <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
-                        {`1 ${poolData.token1.symbol} =  ${formatAmount(poolData.token0Price, 4)} ${
-                          poolData.token0.symbol
-                        }`}
-                      </Text>
-                    </RowFixed>
-                  </TokenButton>
-                </NextLink>
-              </ResponsiveRow>
-            </AutoColumn>
-            <RowFixed>
-              <NextLink href={`/add/${poolData.token0.address}/${poolData.token1.address}/${poolData.feeTier}`}>
-                <Button width="170px" mr="12px" style={{ height: '44px' }}>
-                  <RowBetween>
-                    <Text style={{ display: 'flex', alignItems: 'center' }}>Add Liquidity</Text>
-                  </RowBetween>
-                </Button>
-              </NextLink>
-              <NextLink
-                href={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}`}
+          <Flex justifyContent="space-between" mb="16px" flexDirection={['column', 'column', 'row']}>
+            <Breadcrumbs mb="32px">
+              <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}${infoTypeParam}`}>
+                <Text color="primary">{t('Info')}</Text>
+              </NextLinkFromReactRouter>
+              <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/pairs${infoTypeParam}`}>
+                <Text color="primary">{t('Pairs')}</Text>
+              </NextLinkFromReactRouter>
+              <Flex>
+                <Text mr="8px">
+                  {`${poolData.token0.symbol} / ${poolData.token1.symbol} 
+                `}
+                  <GreyBadge ml="4px" style={{ display: 'inline-block' }}>
+                    {feeTierPercent(poolData.feeTier)}
+                  </GreyBadge>
+                </Text>
+              </Flex>
+            </Breadcrumbs>
+
+            <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
+              <LinkExternal
+                isBscScan={multiChainId[chainName] === ChainId.BSC}
+                mr="8px"
+                href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
               >
-                <Button width="100px" style={{ height: '44px' }}>
-                  Trade
-                </Button>
-              </NextLink>
-            </RowFixed>
-          </ResponsiveRow>
+                {t('View on %site%', { site: multiChainScan[chainName] })}
+              </LinkExternal>
+              {/* <SaveIcon fill={watchlistPools.includes(address)} onClick={() => addPoolToWatchlist(address)} /> */}
+            </Flex>
+          </Flex>
+          <Flex flexDirection="column">
+            <Flex alignItems="center" mb={['8px', null]}>
+              <DoubleCurrencyLogo
+                address0={poolData.token0.address}
+                address1={poolData.token1.address}
+                size={32}
+                chainName={chainName}
+              />
+              <Text ml="38px" bold fontSize={isXs || isSm ? '24px' : '40px'} id="info-pool-pair-title">
+                {`${poolData.token0.symbol} / ${poolData.token1.symbol}`}{' '}
+                <GreyBadge ml="4px" style={{ display: 'inline-block' }}>
+                  {feeTierPercent(poolData.feeTier)}
+                </GreyBadge>
+              </Text>
+            </Flex>
+            <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
+              <Flex flexDirection={['column', 'column', 'row']} mb={['8px', '8px', null]}>
+                <NextLinkFromReactRouter
+                  to={`/${v3InfoPath}${chainPath}/tokens/${poolData.token0.address}${infoTypeParam}`}
+                >
+                  <TokenButton>
+                    <CurrencyLogo address={poolData.token0.address} size="24px" chainName={chainName} />
+                    <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
+                      {`1 ${poolData.token0.symbol} =  ${formatAmount(poolData.token1Price, {
+                        notation: 'standard',
+                        displayThreshold: 0.001,
+                        tokenPrecision: hasSmallDifference ? 'enhanced' : 'normal',
+                      })} ${poolData.token1.symbol}`}
+                    </Text>
+                  </TokenButton>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter
+                  to={`/${v3InfoPath}${chainPath}/tokens/${poolData.token1.address}${infoTypeParam}`}
+                >
+                  <TokenButton ml={[null, null, '10px']}>
+                    <CurrencyLogo address={poolData.token1.address} size="24px" chainName={chainName} />
+                    <Text fontSize="16px" ml="4px" style={{ whiteSpace: 'nowrap' }} width="fit-content">
+                      {`1 ${poolData.token1.symbol} =  ${formatAmount(poolData.token0Price, {
+                        notation: 'standard',
+                        displayThreshold: 0.001,
+                        tokenPrecision: hasSmallDifference ? 'enhanced' : 'normal',
+                      })} ${poolData.token0.symbol}`}
+                    </Text>
+                  </TokenButton>
+                </NextLinkFromReactRouter>
+              </Flex>
+              {/* <Flex>
+                <NextLinkFromReactRouter
+                  to={`/add/${poolData.token0.address}/${poolData.token1.address}?chain=${CHAIN_QUERY_NAME[chainId]}`}
+                >
+                  <Button mr="8px" variant="secondary">
+                    {t('Add Liquidity')}
+                  </Button>
+                </NextLinkFromReactRouter>
+                <NextLinkFromReactRouter
+                  to={`/swap?inputCurrency=${poolData.token0.address}&outputCurrency=${poolData.token1.address}&chainId=${multiChainId[chainName]}`}
+                >
+                  <Button>{t('Trade')}</Button>
+                </NextLinkFromReactRouter>
+              </Flex> */}
+            </Flex>
+          </Flex>
           <ContentLayout>
-            <DarkGreyCard>
-              <AutoColumn gap="lg">
-                <GreyCard padding="16px">
-                  <AutoColumn gap="md">
+            <Card>
+              <Box p="24px">
+                <Card mb="24px">
+                  <AutoColumn padding="16px" gap="md">
                     <Text>Total Tokens Locked</Text>
                     <RowBetween>
                       <RowFixed>
@@ -221,7 +252,7 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                       <Text fontSize="14px">{formatAmount(poolData.tvlToken1)}</Text>
                     </RowBetween>
                   </AutoColumn>
-                </GreyCard>
+                </Card>
                 <AutoColumn gap="4px">
                   <Text fontWeight={400}>TVL</Text>
                   <Text fontSize="24px">{formatDollarAmount(poolData.tvlUSD)}</Text>
@@ -236,82 +267,66 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   <Text fontWeight={400}>24h Fees</Text>
                   <Text fontSize="24px">{formatDollarAmount(poolData.volumeUSD * (poolData.feeTier / 1000000))}</Text>
                 </AutoColumn>
-              </AutoColumn>
-            </DarkGreyCard>
-            <DarkGreyCard>
-              <Box>
-                <AutoColumn>
-                  <Text fontSize="24px" height="30px">
-                    <MonoSpace>
-                      {latestValue
-                        ? formatDollarAmount(latestValue)
-                        : view === ChartView.VOL
-                        ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-                        : view === ChartView.DENSITY
-                        ? ''
-                        : formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)}{' '}
-                    </MonoSpace>
-                  </Text>
-                  <Text height="20px" fontSize="12px">
-                    {valueLabel ? <MonoSpace>{valueLabel} (UTC)</MonoSpace> : ''}
-                  </Text>
-                </AutoColumn>
-                <Flex width="240px" alignItems="center">
-                  <Button
-                    // isActive={view === ChartView.VOL}
-
-                    onClick={() => (view === ChartView.VOL ? setView(ChartView.DENSITY) : setView(ChartView.VOL))}
-                  >
-                    Volume
-                  </Button>
-                  <Button
-                    // isActive={view === ChartView.DENSITY}
-
-                    onClick={() => (view === ChartView.DENSITY ? setView(ChartView.VOL) : setView(ChartView.DENSITY))}
-                  >
-                    Liquidity
-                  </Button>
-                  <Button
-                    // isActive={view === ChartView.FEES}
-
-                    onClick={() => (view === ChartView.FEES ? setView(ChartView.VOL) : setView(ChartView.FEES))}
-                  >
-                    Fees
-                  </Button>
-                </Flex>
               </Box>
-              {view === ChartView.VOL ? (
-                <BarChart
-                  data={formattedVolumeData}
-                  color={backgroundColor}
-                  minHeight={340}
-                  setValue={setLatestValue}
-                  setLabel={setValueLabel}
-                  value={latestValue}
-                  label={valueLabel}
-                />
-              ) : view === ChartView.FEES ? (
-                <BarChart
-                  data={formattedFeesUSD}
-                  color={backgroundColor}
-                  minHeight={340}
-                  setValue={setLatestValue}
-                  setLabel={setValueLabel}
-                  value={latestValue}
-                  label={valueLabel}
-                />
-              ) : (
-                <DensityChart address={address} />
-              )}
-            </DarkGreyCard>
+            </Card>
+            <Card>
+              <TabToggleGroup>
+                <TabToggle isActive={view === ChartView.VOL} onClick={() => setView(ChartView.VOL)}>
+                  <Text>{t('Volume')}</Text>
+                </TabToggle>
+                <TabToggle isActive={view === ChartView.DENSITY} onClick={() => setView(ChartView.DENSITY)}>
+                  <Text>{t('Liquidity')}</Text>
+                </TabToggle>
+                <TabToggle isActive={view === ChartView.FEES} onClick={() => setView(ChartView.FEES)}>
+                  <Text>{t('Fees')}</Text>
+                </TabToggle>
+              </TabToggleGroup>
+              <Flex flexDirection="column" px="24px" pt="24px">
+                {latestValue
+                  ? formatDollarAmount(latestValue)
+                  : view === ChartView.VOL
+                  ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
+                  : view === ChartView.DENSITY
+                  ? ''
+                  : formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)}
+                <Text small color="secondary">
+                  {valueLabel ? <MonoSpace>{valueLabel} (UTC)</MonoSpace> : ''}
+                </Text>
+              </Flex>
+              <Box px="24px" height="335px">
+                {view === ChartView.VOL ? (
+                  <BarChart
+                    data={formattedVolumeData}
+                    color={backgroundColor}
+                    minHeight={340}
+                    setValue={setLatestValue}
+                    setLabel={setValueLabel}
+                    value={latestValue}
+                    label={valueLabel}
+                  />
+                ) : view === ChartView.FEES ? (
+                  <BarChart
+                    data={formattedFeesUSD}
+                    color={backgroundColor}
+                    minHeight={340}
+                    setValue={setLatestValue}
+                    setLabel={setValueLabel}
+                    value={latestValue}
+                    label={valueLabel}
+                  />
+                ) : (
+                  <DensityChart address={address} />
+                )}
+              </Box>
+            </Card>
           </ContentLayout>
-          <Text fontSize="24px">Transactions</Text>
-          <DarkGreyCard>
-            {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
-          </DarkGreyCard>
+          <Heading>Transactions</Heading>
+          {transactions ? <TransactionTable transactions={transactions} /> : <LocalLoader fill={false} />}
         </AutoColumn>
       ) : (
-        <Loader />
+        <Flex mt="80px" justifyContent="center">
+          <Spinner />
+        </Flex>
       )}
     </Page>
   )
