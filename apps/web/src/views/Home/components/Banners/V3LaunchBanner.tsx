@@ -179,7 +179,7 @@ const V3LaunchBanner = () => {
             <StyledSubheading data-text={t(`Ev3ryone's Favourite D3X`)}>
               {t(`Ev3ryone's Favourite D3X`)}
             </StyledSubheading>
-            <TitleWrapper alignItems="center" justifyContent="center" style={{ gap: 5 }}>
+            <TitleWrapper alignItems="center" style={{ gap: 5 }}>
               <LogoIcon /> <Title>{t('PancakeSwap v3 is live!')}</Title>
             </TitleWrapper>
           </TextBox>
