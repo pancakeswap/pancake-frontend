@@ -81,14 +81,18 @@ export default function PositionListItem({ positionDetails, children }: Position
 
   const removed = liquidity?.eq(0)
 
-  const subtitle = `${t('Min %minAmount%', {
-    minAmount: formatTickPrice(inverted ? priceUpper.invert() : priceLower, tickAtLimit, Bound.LOWER, locale),
-  })}/ ${t('Max %maxAmount%', {
-    maxAmount: formatTickPrice(inverted ? priceLower.invert() : priceUpper, tickAtLimit, Bound.UPPER, locale),
-  })} ${t('%assetA% per %assetB%', {
-    assetA: inverted ? currencyQuote?.symbol : currencyBase?.symbol,
-    assetB: inverted ? currencyBase?.symbol : currencyQuote?.symbol,
-  })}`
+  let subtitle = ''
+
+  if (priceUpper && priceLower && currencyBase && currencyQuote) {
+    subtitle = `${t('Min %minAmount%', {
+      minAmount: formatTickPrice(inverted ? priceUpper.invert() : priceLower, tickAtLimit, Bound.LOWER, locale),
+    })}/ ${t('Max %maxAmount%', {
+      maxAmount: formatTickPrice(inverted ? priceLower.invert() : priceUpper, tickAtLimit, Bound.UPPER, locale),
+    })} ${t('%assetA% per %assetB%', {
+      assetA: inverted ? currencyBase?.symbol : currencyQuote?.symbol,
+      assetB: inverted ? currencyQuote?.symbol : currencyBase?.symbol,
+    })}`
+  }
 
   return children({
     positionSummaryLink,
