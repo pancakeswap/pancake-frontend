@@ -97,7 +97,7 @@ export const useFarmsV3 = () => {
 
   const cakePrice = useCakePriceAsBN()
 
-  const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
+  const { data, isLoading } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
       if (!cakePrice.gt(0)) {
@@ -159,9 +159,7 @@ export const useFarmsV3 = () => {
   )
 
   return {
-    data: (data?.farmsWithPrice.length === farmV3.data.poolLength
-      ? data
-      : farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
+    data: (isLoading ? farmV3.data : data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }
