@@ -18,7 +18,7 @@ import { CompoundFrequency } from "./CompoundFrequency";
 import { AnimatedArrow } from "./AnimationArrow";
 import { RoiRate } from "./RoiRate";
 import { Details } from "./Details";
-import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
+// import { ImpermanentLossCalculator } from "./ImpermanentLossCalculator";
 import { compoundingIndexToFrequency, spanIndexToSpan } from "./constants";
 import { PriceData, TickData } from "./types";
 import { useMatchBreakpoints } from "../../contexts";
@@ -171,6 +171,7 @@ export function RoiCalculator({
     return String(Math.max(maxA, maxB));
   }, [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice, max]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [editCakePrice, setEditCakePrice] = useState<number | null>(null);
 
   const cakePriceDiffPercent = props.isFarm && props.cakePrice && editCakePrice && editCakePrice / +props.cakePrice;
@@ -393,7 +394,7 @@ export function RoiCalculator({
       <ScrollableContainer>
         {warningMessage}
         {content}
-        <ImpermanentLossCalculator
+        {/* <ImpermanentLossCalculator
           lpReward={lpReward}
           amountA={amountA}
           amountB={amountB}
@@ -407,7 +408,7 @@ export function RoiCalculator({
           cakeApy={cakeApy}
           cakePrice={props.isFarm ? props.cakePrice : undefined}
           setEditCakePrice={setEditCakePrice}
-        />
+        /> */}
         <AnimatedArrow state={{}} />
         <RoiRate usdAmount={totalReward} roiPercent={totalRate} />
         {allowApply && (
