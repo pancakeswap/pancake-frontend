@@ -502,9 +502,9 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const handleSelectCurrencyA = useCallback(
     (currency: Currency) => {
       if (currencyIdB && currencyId(currency) === currencyIdB) {
-        router.replace(`/remove/${currencyId(currency)}/${currencyIdA}`, undefined, { shallow: true })
+        router.replace(`/v2/remove/${currencyId(currency)}/${currencyIdA}`, undefined, { shallow: true })
       } else {
-        router.replace(`/remove/${currencyId(currency)}/${currencyIdB}`, undefined, { shallow: true })
+        router.replace(`/v2/remove/${currencyId(currency)}/${currencyIdB}`, undefined, { shallow: true })
       }
     },
     [currencyIdA, currencyIdB, router],
@@ -512,9 +512,9 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
   const handleSelectCurrencyB = useCallback(
     (currency: Currency) => {
       if (currencyIdA && currencyId(currency) === currencyIdA) {
-        router.replace(`/remove/${currencyIdB}/${currencyId(currency)}`, undefined, { shallow: true })
+        router.replace(`/v2/remove/${currencyIdB}/${currencyId(currency)}`, undefined, { shallow: true })
       } else {
-        router.replace(`/remove/${currencyIdA}/${currencyId(currency)}`, undefined, { shallow: true })
+        router.replace(`/v2/remove/${currencyIdA}/${currencyId(currency)}`, undefined, { shallow: true })
       }
     },
     [currencyIdA, currencyIdB, router],
@@ -671,7 +671,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                 <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
                   {oneCurrencyIsNative ? (
                     <StyledInternalLink
-                      href={`/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
+                      href={`/v2/remove/${currencyA?.isNative ? WNATIVE[chainId]?.address : currencyIdA}/${
                         currencyB?.isNative ? WNATIVE[chainId]?.address : currencyIdB
                       }`}
                     >
@@ -679,7 +679,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
                     </StyledInternalLink>
                   ) : oneCurrencyIsWNative ? (
                     <StyledInternalLink
-                      href={`/remove/${
+                      href={`/v2/remove/${
                         currencyA && currencyA.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdA
                       }/${currencyB && currencyB.equals(WNATIVE[chainId]) ? native?.symbol : currencyIdB}`}
                     >
