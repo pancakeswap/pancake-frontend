@@ -46,7 +46,7 @@ export const ethereumTokens = {
     18,
     'DAI',
     'Dai Stablecoin',
-    'http://www.makerdao.com/',
+    'https://www.makerdao.com/',
   ),
   ldo: new ERC20Token(
     ChainId.ETHEREUM,
