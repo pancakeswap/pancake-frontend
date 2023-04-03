@@ -159,7 +159,7 @@ export const useFarmsV3 = () => {
   )
 
   return {
-    data: isLoading ? farmV3.data : data ?? farmV3.data,
+    data: (isLoading ? farmV3.data : data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }
