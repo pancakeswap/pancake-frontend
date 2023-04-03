@@ -8,7 +8,7 @@ import { isPositionOutOfRange } from "@pancakeswap/utils/isPositionOutOfRange";
 import { formatPercent, formatFraction, formatPrice } from "@pancakeswap/utils/formatFractions";
 
 import { ScrollableContainer } from "../../components/RoiCalculatorModal/RoiCalculatorModal";
-import { LiquidityChartRangeInput, Button, DynamicSection, Flex } from "../../components";
+import { LiquidityChartRangeInput, Button, DynamicSection, Flex, Message, MessageText } from "../../components";
 import { Section } from "./Section";
 import { DepositAmountInput } from "./DepositAmount";
 import { RangeSelector } from "./RangeSelector";
@@ -256,6 +256,16 @@ export function RoiCalculator({
   const farmReward = cakeReward;
   const totalReward = lpReward + farmReward;
 
+  const warningMessage = (
+    <Message variant="warning" mb="1em">
+      <MessageText>
+        {t(
+          "We are in the early stage of V3 deployment. Due to a lack of historical data, numbers and estimates may be inaccurate."
+        )}
+      </MessageText>
+    </Message>
+  );
+
   const depositSection = (
     <Section title={t("Deposit Amount")}>
       <DepositAmountInput
@@ -381,6 +391,7 @@ export function RoiCalculator({
   return (
     <>
       <ScrollableContainer>
+        {warningMessage}
         {content}
         <ImpermanentLossCalculator
           lpReward={lpReward}
