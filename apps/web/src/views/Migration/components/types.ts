@@ -88,6 +88,12 @@ export const V3Step1DesktopColumnSchema: ColumnsDefTypes[] = [
     label: 'Liquidity',
   },
   {
+    id: 5,
+    name: 'multiplier',
+    sortable: true,
+    label: 'Multiplier',
+  },
+  {
     id: 6,
     name: 'unstake',
     sortable: true,
