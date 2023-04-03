@@ -1,22 +1,25 @@
-import { AutoColumn, Box, Flex, NextLinkFromReactRouter, Text } from '@pancakeswap/uikit'
+import {
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  AutoColumn,
+  Box,
+  Flex,
+  NextLinkFromReactRouter,
+  Text,
+} from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { TOKEN_HIDE, v3InfoPath } from '../../constants'
 import { TokenData } from '../../types'
 import { formatDollarAmount } from '../../utils/numbers'
-import { DarkGreyCard } from '../Card'
 import HoverInlineText from '../HoverInlineText'
 import Loader, { LoadingRows } from '../Loader'
 import Percent from '../Percent'
 import { RowFixed } from '../Row'
-import { Arrow, Break, PageButtons } from '../shared'
-
-const Wrapper = styled(DarkGreyCard)`
-  width: 100%;
-`
 
 const ResponsiveGrid = styled.div`
   display: grid;
@@ -24,7 +27,7 @@ const ResponsiveGrid = styled.div`
   align-items: center;
 
   grid-template-columns: 20px 3fr repeat(4, 1fr);
-
+  padding: 0 24px;
   @media screen and (max-width: 900px) {
     grid-template-columns: 20px 1.5fr repeat(3, 1fr);
     & :nth-child(4) {
@@ -174,29 +177,32 @@ export default function TokenTable({
   }
 
   return (
-    <Wrapper>
+    <TableWrapper>
       {sortedTokens.length > 0 ? (
         <AutoColumn gap="16px">
           <ResponsiveGrid>
             <Text color={theme.colors.textSubtle}>#</Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.name)}>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.name)}>
               Name {arrow(SORT_FIELD.name)}
-            </Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.priceUSD)}>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.priceUSD)}>
               Price {arrow(SORT_FIELD.priceUSD)}
-            </Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.priceUSDChange)}>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader
+              color={theme.colors.textSubtle}
+              onClick={() => handleSort(SORT_FIELD.priceUSDChange)}
+            >
               Price Change {arrow(SORT_FIELD.priceUSDChange)}
-            </Text>
+            </ClickableColumnHeader>
             {/* <ClickableText onClick={() => handleSort(SORT_FIELD.priceUSDChangeWeek)}>
             7d {arrow(SORT_FIELD.priceUSDChangeWeek)}
           </ClickableText> */}
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSD)}>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSD)}>
               Volume 24H {arrow(SORT_FIELD.volumeUSD)}
-            </Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.tvlUSD)}>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.tvlUSD)}>
               TVL {arrow(SORT_FIELD.tvlUSD)}
-            </Text>
+            </ClickableColumnHeader>
           </ResponsiveGrid>
 
           <Break />
@@ -217,7 +223,9 @@ export default function TokenTable({
                 setPage(page === 1 ? page : page - 1)
               }}
             >
-              <Arrow faded={page === 1}>←</Arrow>
+              <Arrow>
+                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+              </Arrow>
             </Box>
             <Text>{`Page ${page} of ${maxPage}`}</Text>
             <Box
@@ -225,7 +233,9 @@ export default function TokenTable({
                 setPage(page === maxPage ? page : page + 1)
               }}
             >
-              <Arrow faded={page === maxPage}>→</Arrow>
+              <Arrow>
+                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+              </Arrow>
             </Box>
           </PageButtons>
         </AutoColumn>
@@ -245,6 +255,6 @@ export default function TokenTable({
           <div />
         </LoadingRows>
       )}
-    </Wrapper>
+    </TableWrapper>
   )
 }

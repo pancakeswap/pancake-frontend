@@ -1,22 +1,18 @@
-import { AutoColumn, Box, Text } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, Box, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { POOL_HIDE, v3InfoPath } from '../../constants'
 import { PoolData } from '../../types'
 import { feeTierPercent } from '../../utils'
 import { formatDollarAmount } from '../../utils/numbers'
-import { DarkGreyCard, GreyBadge } from '../Card'
+import { GreyBadge } from '../Card'
 import Loader, { LoadingRows } from '../Loader'
 import { RowFixed } from '../Row'
-import { Arrow, Break, PageButtons } from '../shared'
-
-const Wrapper = styled(DarkGreyCard)`
-  width: 100%;
-`
 
 const ResponsiveGrid = styled.div`
   display: grid;
@@ -24,7 +20,7 @@ const ResponsiveGrid = styled.div`
   align-items: center;
 
   grid-template-columns: 20px 3.5fr repeat(3, 1fr);
-
+  padding: 0 24px;
   @media screen and (max-width: 900px) {
     grid-template-columns: 20px 1.5fr repeat(2, 1fr);
     & :nth-child(3) {
@@ -145,23 +141,23 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
   }
 
   return (
-    <Wrapper>
+    <TableWrapper>
       {sortedPools.length > 0 ? (
-        <AutoColumn gap="16px">
+        <>
           <ResponsiveGrid>
             <Text color={theme.colors.textSubtle}>#</Text>
             <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.feeTier)}>
               Pool {arrow(SORT_FIELD.feeTier)}
             </Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.tvlUSD)}>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.tvlUSD)}>
               TVL {arrow(SORT_FIELD.tvlUSD)}
-            </Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSD)}>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSD)}>
               Volume 24H {arrow(SORT_FIELD.volumeUSD)}
-            </Text>
-            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}>
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}>
               Volume 7D {arrow(SORT_FIELD.volumeUSDWeek)}
-            </Text>
+            </ClickableColumnHeader>
           </ResponsiveGrid>
           <Break />
           {sortedPools.map((poolData, i) => {
@@ -181,7 +177,9 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 setPage(page === 1 ? page : page - 1)
               }}
             >
-              <Arrow faded={page === 1}>←</Arrow>
+              <Arrow>
+                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+              </Arrow>
             </Box>
             <Text>{`Page ${page} of ${maxPage}`}</Text>
             <Box
@@ -189,10 +187,12 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
                 setPage(page === maxPage ? page : page + 1)
               }}
             >
-              <Arrow faded={page === maxPage}>→</Arrow>
+              <Arrow>
+                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+              </Arrow>
             </Box>
           </PageButtons>
-        </AutoColumn>
+        </>
       ) : (
         <LoadingRows>
           <div />
@@ -209,6 +209,6 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
           <div />
         </LoadingRows>
       )}
-    </Wrapper>
+    </TableWrapper>
   )
 }

@@ -1,21 +1,16 @@
-import { AutoColumn, LinkExternal, Text, Box } from '@pancakeswap/uikit'
+import { ArrowBackIcon, ArrowForwardIcon, AutoColumn, Box, LinkExternal, Text } from '@pancakeswap/uikit'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
 import { Transaction, TransactionType } from '../../types'
+import { getEtherscanLink, shortenAddress } from '../../utils'
 import { formatTime } from '../../utils/date'
 import { formatAmount, formatDollarAmount } from '../../utils/numbers'
-import { DarkGreyCard } from '../Card'
 import HoverInlineText from '../HoverInlineText'
 import Loader from '../Loader'
 import { RowFixed } from '../Row'
-import { Arrow, Break, PageButtons } from '../shared'
-import { getEtherscanLink, shortenAddress } from '../../utils'
-
-const Wrapper = styled(DarkGreyCard)`
-  width: 100%;
-`
 
 const ResponsiveGrid = styled.div`
   display: grid;
@@ -23,7 +18,7 @@ const ResponsiveGrid = styled.div`
   align-items: center;
 
   grid-template-columns: 1.5fr repeat(5, 1fr);
-
+  padding: 0 24px;
   @media screen and (max-width: 940px) {
     grid-template-columns: 1.5fr repeat(4, 1fr);
     & > *:nth-child(5) {
@@ -193,7 +188,7 @@ export default function TransactionTable({
   }
 
   return (
-    <Wrapper>
+    <TableWrapper>
       <AutoColumn gap="16px">
         <ResponsiveGrid>
           <RowFixed>
@@ -230,21 +225,21 @@ export default function TransactionTable({
               Removes
             </SortText>
           </RowFixed>
-          <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountUSD)}>
+          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountUSD)}>
             Total Value {arrow(SORT_FIELD.amountUSD)}
-          </Text>
-          <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken0)}>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken0)}>
             Token Amount {arrow(SORT_FIELD.amountToken0)}
-          </Text>
-          <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken1)}>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.amountToken1)}>
             Token Amount {arrow(SORT_FIELD.amountToken1)}
-          </Text>
-          <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.sender)}>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.sender)}>
             Account {arrow(SORT_FIELD.sender)}
-          </Text>
-          <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.timestamp)}>
+          </ClickableColumnHeader>
+          <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.timestamp)}>
             Time {arrow(SORT_FIELD.timestamp)}
-          </Text>
+          </ClickableColumnHeader>
         </ResponsiveGrid>
         <Break />
 
@@ -266,7 +261,9 @@ export default function TransactionTable({
               setPage(page === 1 ? page : page - 1)
             }}
           >
-            <Arrow faded={page === 1}>←</Arrow>
+            <Arrow>
+              <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+            </Arrow>
           </Box>
           <Text>{`Page ${page} of ${maxPage}`}</Text>
           <Box
@@ -274,10 +271,12 @@ export default function TransactionTable({
               setPage(page === maxPage ? page : page + 1)
             }}
           >
-            <Arrow faded={page === maxPage}>→</Arrow>
+            <Arrow>
+              <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+            </Arrow>
           </Box>
         </PageButtons>
       </AutoColumn>
-    </Wrapper>
+    </TableWrapper>
   )
 }
