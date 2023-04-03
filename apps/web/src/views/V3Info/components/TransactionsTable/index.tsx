@@ -155,7 +155,7 @@ export default function TransactionTable({
           .slice()
           .sort((a, b) => {
             if (a && b) {
-              return a[sortField as keyof Transaction] > b[sortField as keyof Transaction]
+              return a[sortField as keyof Transaction] < b[sortField as keyof Transaction]
                 ? (sortDirection ? -1 : 1) * 1
                 : (sortDirection ? -1 : 1) * -1
             }

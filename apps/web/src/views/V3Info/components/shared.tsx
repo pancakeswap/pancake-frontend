@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Flex } from '@pancakeswap/uikit'
+import { Flex, Link } from '@pancakeswap/uikit'
 
 export const PageButtons = styled.div`
   width: 100%;
@@ -75,5 +75,15 @@ export const ChartCardsContainer = styled(Flex)`
 
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
+  }
+`
+
+export const StyledCMCLink = styled(Link)`
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+
+  & :hover {
+    opacity: 0.8;
   }
 `

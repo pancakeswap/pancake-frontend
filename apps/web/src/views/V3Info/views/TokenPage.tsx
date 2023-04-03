@@ -1,35 +1,55 @@
-import { AutoColumn, Button, Text, LinkExternal, Box } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
+import {
+  AutoColumn,
+  Box,
+  Breadcrumbs,
+  Card,
+  Flex,
+  Heading,
+  Image,
+  LinkExternal,
+  NextLinkFromReactRouter,
+  Spinner,
+  Text,
+  useMatchBreakpoints,
+} from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
+import { TabToggle, TabToggleGroup } from 'components/TabToggle'
 import dayjs from 'dayjs'
-import { useActiveChainId } from 'hooks/useActiveChainId'
+// import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
-import NextLink from 'next/link'
-import React, { useEffect, useMemo, useState } from 'react'
 import dynamic from 'next/dynamic'
+import React, { useEffect, useMemo, useState } from 'react'
+import { getBlockExploreLink } from 'utils'
+import { formatAmount } from 'utils/formatInfoNumbers'
 
 // import { useSavedTokens } from 'state/user/hooks'
+import truncateHash from '@pancakeswap/utils/truncateHash'
+import { multiChainId, multiChainScan } from 'state/info/constant'
+import { useGetChainName, useMultiChainPath, useStableSwapPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import useCMCLink from 'views/Info/hooks/useCMCLink'
 import BarChart from '../components/BarChart/alt'
-import { DarkGreyCard, LightGreyCard } from '../components/Card'
-import Loader, { LocalLoader } from '../components/Loader'
+import { DarkGreyCard } from '../components/Card'
+import { LocalLoader } from '../components/Loader'
 import Percent from '../components/Percent'
 import PoolTable from '../components/PoolTable'
-import { AutoRow, RowBetween, RowFixed, RowFlat } from '../components/Row'
-import { MonoSpace } from '../components/shared'
 import TransactionTable from '../components/TransactionsTable'
-import { currentTimestamp, getEtherscanLink, shortenAddress } from '../utils'
-import { unixToDate } from '../utils/date'
-import { formatDollarAmount } from '../utils/numbers'
+import { MonoSpace, StyledCMCLink } from '../components/shared'
 import { ONE_HOUR_SECONDS, TimeWindow, v3InfoPath } from '../constants'
 import {
-  useTokenData,
+  usePoolsData,
   usePoolsForToken,
   useTokenChartData,
+  useTokenData,
   useTokenPriceData,
   useTokenTransactions,
-  usePoolsData,
 } from '../hooks'
+import { currentTimestamp } from '../utils'
+import { unixToDate } from '../utils/date'
+import { formatDollarAmount } from '../utils/numbers'
 
 const CandleChart = dynamic(() => import('../components/CandleChart'), {
   ssr: false,
@@ -39,32 +59,14 @@ const LineChart = dynamic(() => import('../components/LineChart/alt'), {
   ssr: false,
 })
 
-// import { SmallOptionButton } from '../../components/Button'
-// import { useCMCLink } from 'hooks/useCMCLink'
-
-const PriceText = styled(Text)`
-  font-size: 36px;
-  line-height: 0.8;
-`
-
 const ContentLayout = styled.div`
   margin-top: 16px;
   display: grid;
   grid-template-columns: 260px 1fr;
   grid-gap: 1em;
-
   @media screen and (max-width: 800px) {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
-  }
-`
-
-const ResponsiveRow = styled(RowBetween)`
-  ${({ theme }) => theme.mediaQueries.sm} {
-    flex-direction: column;
-    align-items: flex-start;
-    row-gap: 24px;
-    width: 100%;
   }
 `
 
@@ -77,10 +79,11 @@ enum ChartView {
 const DEFAULT_TIME_WINDOW = TimeWindow.WEEK
 
 const TokenPage: React.FC<{ address: string }> = ({ address }) => {
-  const { chainId } = useActiveChainId()
-
+  const { isXs, isSm } = useMatchBreakpoints()
+  // const { chainId } = useActiveChainId()
   // eslint-disable-next-line no-param-reassign
   address = address.toLowerCase()
+  const cmcLink = useCMCLink(address)
 
   const { theme, isDark } = useTheme()
   const backgroundColor = theme.colors.background
@@ -89,7 +92,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
+  const { t } = useTranslation()
   const tokenData = useTokenData(address)
   const poolsForToken = usePoolsForToken(address)
   const poolDatas = usePoolsData(poolsForToken ?? [])
@@ -143,6 +146,10 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     return undefined
   }, [priceData, tokenData])
 
+  const chainPath = useMultiChainPath()
+  const infoTypeParam = useStableSwapPath()
+  const chainName = useGetChainName()
+
   // watchlist
   // const [savedTokens, addSavedToken] = useSavedTokens()
 
@@ -150,219 +157,184 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
     <Page>
       {tokenData ? (
         !tokenData.exists ? (
-          <LightGreyCard style={{ textAlign: 'center' }}>
-            No pool has been created with this token yet. Create one
-            <LinkExternal style={{ marginLeft: '4px' }} href={`https://app.uniswap.org/#/add/${address}`}>
-              here.
-            </LinkExternal>
-          </LightGreyCard>
+          <Card>
+            <Box p="16px">
+              <Text>
+                {t('No pair has been created with this token yet. Create one')}
+                <NextLinkFromReactRouter style={{ display: 'inline', marginLeft: '6px' }} to={`/add/${address}`}>
+                  {t('here.')}
+                </NextLinkFromReactRouter>
+              </Text>
+            </Box>
+          </Card>
         ) : (
           <AutoColumn gap="32px">
             <AutoColumn gap="32px">
-              <RowBetween>
-                <AutoRow gap="4px">
-                  <NextLink href={`/${v3InfoPath}`}>
-                    <Text>{`Home > `}</Text>
-                  </NextLink>
-                  <NextLink href={`/${v3InfoPath}tokens`}>
-                    <Text>{` Tokens `}</Text>
-                  </NextLink>
-                  <Text>{` > `}</Text>
-                  <Text>{` ${tokenData.symbol} `}</Text>
-                  <LinkExternal href={getEtherscanLink(chainId, address, 'address')}>
-                    <Text>{` (${shortenAddress(address)}) `}</Text>
+              <Flex justifyContent="space-between" mb="24px" flexDirection={['column', 'column', 'row']}>
+                <Breadcrumbs mb="32px">
+                  <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}${infoTypeParam}`}>
+                    <Text color="primary">{t('Info')}</Text>
+                  </NextLinkFromReactRouter>
+                  <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/tokens${infoTypeParam}`}>
+                    <Text color="primary">{t('Tokens')}</Text>
+                  </NextLinkFromReactRouter>
+                  <Flex>
+                    <Text mr="8px">{tokenData.symbol}</Text>
+                    <Text>{`(${truncateHash(address)})`}</Text>
+                  </Flex>
+                </Breadcrumbs>
+                <Flex justifyContent={[null, null, 'flex-end']} mt={['8px', '8px', 0]}>
+                  <LinkExternal
+                    isBscScan={multiChainId[chainName] === ChainId.BSC}
+                    mr="8px"
+                    color="primary"
+                    href={getBlockExploreLink(address, 'address', multiChainId[chainName])}
+                  >
+                    {t('View on %site%', { site: multiChainScan[chainName] })}
                   </LinkExternal>
-                </AutoRow>
-                <RowFixed align="center" justify="center">
-                  {/* <StarLineIcon fill={savedTokens.includes(address)} onClick={() => addSavedToken(address)} /> */}
-                  {/* {cmcLink && (
-                    <StyledExternalLink href={cmcLink} style={{ marginLeft: '12px' }} onClickCapture={() => {}}>
-                      <StyledCMCLogo src={CMCLogo} alt="" />
-                    </StyledExternalLink>
-                  )} */}
-                  {/* <LinkExternal href={getEtherscanLink(chainId, address, 'address')}>
-                    <LinkExternal stroke={theme.colors.textSubtle} size="17px" style={{ marginLeft: '12px' }} />
-                  </LinkExternal> */}
-                </RowFixed>
-              </RowBetween>
-              <ResponsiveRow align="flex-end">
-                <AutoColumn gap="md">
-                  <RowFixed gap="lg">
-                    <CurrencyLogo address={address} />
-                    <Text ml="10px" fontSize="20px">
+                  {cmcLink && (
+                    <StyledCMCLink href={cmcLink} rel="noopener noreferrer nofollow" target="_blank">
+                      <Image src="/images/CMC-logo.svg" height={22} width={22} alt={t('View token on CoinMarketCap')} />
+                    </StyledCMCLink>
+                  )}
+                  {/* <SaveIcon fill={watchlistTokens.includes(address)} onClick={() => addWatchlistToken(address)} /> */}
+                </Flex>
+              </Flex>
+              <Flex justifyContent="space-between" flexDirection={['column', 'column', 'column', 'row']}>
+                <Flex flexDirection="column" mb={['8px', null]}>
+                  <Flex alignItems="center">
+                    <CurrencyLogo size="32px" address={address} chainName={chainName} />
+                    <Text
+                      ml="12px"
+                      bold
+                      lineHeight="0.7"
+                      fontSize={isXs || isSm ? '24px' : '40px'}
+                      id="info-token-name-title"
+                    >
                       {tokenData.name}
                     </Text>
-                    <Text ml="6px" fontSize="20px">
+                    <Text ml="12px" lineHeight="1" color="textSubtle" fontSize={isXs || isSm ? '14px' : '20px'}>
                       ({tokenData.symbol})
                     </Text>
-                    {/* {activeNetwork === EthereumNetworkInfo ? null : (
-                      <GenericImageWrapper src={activeNetwork.imageURL} style={{ marginLeft: '8px' }} size={'26px'} />
-                    )} */}
-                  </RowFixed>
-                  <RowFlat style={{ marginTop: '8px' }}>
-                    <PriceText mr="10px"> {formatDollarAmount(tokenData.priceUSD)}</PriceText>
-                    (<Percent value={tokenData.priceUSDChange} />)
-                  </RowFlat>
-                </AutoColumn>
-                {
-                  <RowFixed>
-                    <LinkExternal href={`https://app.uniswap.org/#/add/${address}`}>
-                      <Button width="170px" mr="12px" height="100%" style={{ height: '44px' }}>
-                        <RowBetween>
-                          {/* <Download size={24} /> */}
-                          <div style={{ display: 'flex', alignItems: 'center' }}>Add Liquidity</div>
-                        </RowBetween>
-                      </Button>
-                    </LinkExternal>
-                    <LinkExternal href={`https://app.uniswap.org/#/swap?inputCurrency=${address}`}>
-                      <Button variant="primary" width="100px" style={{ height: '44px' }}>
-                        Trade
-                      </Button>
-                    </LinkExternal>
-                  </RowFixed>
-                }
-              </ResponsiveRow>
+                  </Flex>
+                  <Flex mt="8px" ml="46px" alignItems="center">
+                    <Text mr="16px" bold fontSize="24px">
+                      ${formatAmount(tokenData.priceUSD, { notation: 'standard' })}
+                    </Text>
+                    <Percent value={tokenData.priceUSDChange} fontWeight={600} />
+                  </Flex>
+                </Flex>
+                <Flex>
+                  {/* <NextLinkFromReactRouter to={`/add/${address}?chain=${CHAIN_QUERY_NAME[chainId]}`}>
+                    <Button mr="8px" variant="secondary">
+                      {t('Add Liquidity')}
+                    </Button>
+                  </NextLinkFromReactRouter>
+                  <NextLinkFromReactRouter to={`/swap?outputCurrency=${address}&chainId=${multiChainId[chainName]}`}>
+                    <Button>{t('Trade')}</Button>
+                  </NextLinkFromReactRouter> */}
+                </Flex>
+              </Flex>
             </AutoColumn>
             <ContentLayout>
-              <DarkGreyCard>
-                <AutoColumn gap="lg">
-                  <AutoColumn gap="4px">
-                    <Text fontWeight={400}>TVL</Text>
-                    <Text fontSize="24px">{formatDollarAmount(tokenData.tvlUSD)}</Text>
-                    <Percent value={tokenData.tvlUSDChange} />
-                  </AutoColumn>
-                  <AutoColumn gap="4px">
-                    <Text fontWeight={400}>24h Trading Vol</Text>
-                    <Text fontSize="24px">{formatDollarAmount(tokenData.volumeUSD)}</Text>
-                    <Percent value={tokenData.volumeUSDChange} />
-                  </AutoColumn>
-                  <AutoColumn gap="4px">
-                    <Text fontWeight={400}>7d Trading Vol</Text>
-                    <Text fontSize="24px">{formatDollarAmount(tokenData.volumeUSDWeek)}</Text>
-                  </AutoColumn>
-                  <AutoColumn gap="4px">
-                    <Text fontWeight={400}>24h Fees</Text>
-                    <Text fontSize="24px">{formatDollarAmount(tokenData.feesUSD)}</Text>
-                  </AutoColumn>
-                </AutoColumn>
-              </DarkGreyCard>
-              <DarkGreyCard>
-                <RowBetween align="flex-start">
-                  <AutoColumn>
-                    <RowFixed>
-                      <Text fontSize="24px" height="30px">
-                        <MonoSpace>
-                          {latestValue
-                            ? formatDollarAmount(latestValue, 2)
-                            : view === ChartView.VOL
-                            ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
-                            : view === ChartView.TVL
-                            ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
-                            : formatDollarAmount(tokenData.priceUSD, 2)}
-                        </MonoSpace>
-                      </Text>
-                    </RowFixed>
-                    <Text height="20px" fontSize="12px">
-                      {valueLabel ? (
-                        <MonoSpace>{valueLabel} (UTC)</MonoSpace>
-                      ) : (
-                        <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
-                      )}
-                    </Text>
-                  </AutoColumn>
-                  <Box>
-                    <Button
-                      // isActive={view === ChartView.VOL}
-                      onClick={() => {
-                        setView(ChartView.VOL)
-                      }}
-                    >
-                      Volume
-                    </Button>
-                    <Button
-                      // isActive={view === ChartView.TVL}
-                      onClick={() => setView(ChartView.TVL)}
-                    >
-                      TVL
-                    </Button>
-                    <Button
-                      // isActive={view === ChartView.PRICE}
-                      onClick={() => setView(ChartView.PRICE)}
-                    >
-                      Price
-                    </Button>
-                  </Box>
-                </RowBetween>
-                {view === ChartView.TVL ? (
-                  <LineChart
-                    data={formattedTvlData}
-                    color={isDark ? '#9A6AFF' : '#7A6EAA'}
-                    minHeight={340}
-                    value={latestValue}
-                    label={valueLabel}
-                    setValue={setLatestValue}
-                    setLabel={setValueLabel}
-                  />
-                ) : view === ChartView.VOL ? (
-                  <BarChart
-                    data={formattedVolumeData}
-                    color="#1FC7D4"
-                    minHeight={340}
-                    value={latestValue}
-                    label={valueLabel}
-                    setValue={setLatestValue}
-                    setLabel={setValueLabel}
-                  />
-                ) : view === ChartView.PRICE ? (
-                  adjustedToCurrent ? (
-                    <Box height={300}>
-                      <CandleChart
-                        data={adjustedToCurrent}
-                        setValue={setLatestValue}
-                        setLabel={setValueLabel}
-                        color={backgroundColor}
-                      />
-                    </Box>
-                  ) : (
-                    <LocalLoader fill={false} />
-                  )
-                ) : null}
-                {/* <RowBetween width="100%">
-                  <div> </div>
-                  <AutoRow gap="4px" width="fit-content">
-                    <SmallOptionButton
-                      active={timeWindow === TimeWindow.DAY}
-                      onClick={() => setTimeWindow(TimeWindow.DAY)}
-                    >
-                      24H
-                    </SmallOptionButton>
-                    <SmallOptionButton
-                      active={timeWindow === TimeWindow.WEEK}
-                      onClick={() => setTimeWindow(TimeWindow.WEEK)}
-                    >
-                      1W
-                    </SmallOptionButton>
-                    <SmallOptionButton
-                      active={timeWindow === TimeWindow.MONTH}
-                      onClick={() => setTimeWindow(TimeWindow.MONTH)}
-                    >
-                      1M
-                    </SmallOptionButton>
-                    <SmallOptionButton
-                      active={timeWindow === TimeWindow.DAY}
-                      onClick={() => setTimeWindow(TimeWindow.DAY)}
-                    >
-                      All
-                    </SmallOptionButton>
-                  </AutoRow>
-                </RowBetween> */}
-              </DarkGreyCard>
+              <Card>
+                <Box p="24px">
+                  <Text bold small color="secondary" fontSize="12px" textTransform="uppercase">
+                    {t('TVL')}
+                  </Text>
+                  <Text bold fontSize="24px">
+                    ${formatAmount(tokenData.tvlUSD)}
+                  </Text>
+                  <Percent value={tokenData.tvlUSDChange} />
+
+                  <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
+                    {t('Volume 24H')}
+                  </Text>
+                  <Text bold fontSize="24px" textTransform="uppercase">
+                    ${formatAmount(tokenData.volumeUSD)}
+                  </Text>
+                  <Percent value={tokenData.volumeUSDChange} />
+
+                  <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
+                    {t('Volume 7D')}
+                  </Text>
+                  <Text bold fontSize="24px">
+                    ${formatAmount(tokenData.volumeUSDWeek)}
+                  </Text>
+
+                  <Text mt="24px" bold color="secondary" fontSize="12px" textTransform="uppercase">
+                    {t('Transactions 24H')}
+                  </Text>
+                  <Text bold fontSize="24px">
+                    {formatAmount(tokenData.txCount, { isInteger: true })}
+                  </Text>
+                </Box>
+              </Card>
+              <Card>
+                <TabToggleGroup>
+                  <TabToggle isActive={view === ChartView.VOL} onClick={() => setView(ChartView.VOL)}>
+                    <Text>{t('Volume')}</Text>
+                  </TabToggle>
+                  <TabToggle isActive={view === ChartView.TVL} onClick={() => setView(ChartView.TVL)}>
+                    <Text>{t('Liquidity')}</Text>
+                  </TabToggle>
+                  <TabToggle isActive={view === ChartView.PRICE} onClick={() => setView(ChartView.PRICE)}>
+                    <Text>{t('Price')}</Text>
+                  </TabToggle>
+                </TabToggleGroup>
+                <Flex flexDirection="column" px="24px" pt="24px">
+                  {latestValue
+                    ? formatDollarAmount(latestValue, 2)
+                    : view === ChartView.VOL
+                    ? formatDollarAmount(formattedVolumeData[formattedVolumeData.length - 1]?.value)
+                    : view === ChartView.TVL
+                    ? formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)
+                    : formatDollarAmount(tokenData.priceUSD, 2)}
+                  <Text small color="secondary">
+                    {valueLabel ? (
+                      <MonoSpace>{valueLabel} (UTC)</MonoSpace>
+                    ) : (
+                      <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
+                    )}
+                  </Text>
+                </Flex>
+                <Box px="24px" height="250px">
+                  {view === ChartView.TVL ? (
+                    <LineChart
+                      data={formattedTvlData}
+                      color={isDark ? '#9A6AFF' : '#7A6EAA'}
+                      minHeight={340}
+                      value={latestValue}
+                      label={valueLabel}
+                      setValue={setLatestValue}
+                      setLabel={setValueLabel}
+                    />
+                  ) : view === ChartView.VOL ? (
+                    <BarChart
+                      data={formattedVolumeData}
+                      color="#1FC7D4"
+                      minHeight={340}
+                      value={latestValue}
+                      label={valueLabel}
+                      setValue={setLatestValue}
+                      setLabel={setValueLabel}
+                    />
+                  ) : view === ChartView.PRICE ? (
+                    <CandleChart
+                      data={adjustedToCurrent}
+                      setValue={setLatestValue}
+                      setLabel={setValueLabel}
+                      color={backgroundColor}
+                    />
+                  ) : null}
+                </Box>
+              </Card>
             </ContentLayout>
-            <Text>Pools</Text>
+            <Heading>Pools</Heading>
             <DarkGreyCard>
               <PoolTable poolDatas={poolDatas ?? []} />
             </DarkGreyCard>
-            <Text>Transactions</Text>
+            <Heading>Transactions</Heading>
             <DarkGreyCard>
               {transactions ? (
                 <TransactionTable transactions={transactions} color={backgroundColor} />
@@ -373,7 +345,9 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
           </AutoColumn>
         )
       ) : (
-        <Loader />
+        <Flex mt="80px" justifyContent="center">
+          <Spinner />
+        </Flex>
       )}
     </Page>
   )
