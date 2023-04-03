@@ -2,7 +2,7 @@ import { gql, GraphQLClient } from 'graphql-request'
 import JSBI from 'jsbi'
 import keyBy from 'lodash/keyBy'
 import { TickMath, tickToPrice } from '@pancakeswap/v3-sdk'
-import { Token } from '@pancakeswap/sdk'
+import { Token, ChainId } from '@pancakeswap/sdk'
 
 const PRICE_FIXED_DIGITS = 4
 const DEFAULT_SURROUNDING_TICKS = 300
@@ -10,8 +10,8 @@ const FEE_TIER_TO_TICK_SPACING = (feeTier: string): number => {
   switch (feeTier) {
     case '10000':
       return 200
-    case '3000':
-      return 60
+    case '2500':
+      return 50
     case '500':
       return 10
     case '100':
@@ -155,6 +155,7 @@ const poolQuery = gql`
 export const fetchTicksSurroundingPrice = async (
   poolAddress: string,
   client: GraphQLClient,
+  chainId: ChainId,
   numSurroundingTicks = DEFAULT_SURROUNDING_TICKS,
 ): Promise<{
   error?: boolean
@@ -174,7 +175,6 @@ export const fetchTicksSurroundingPrice = async (
         token1: { id: token1Address, decimals: token1Decimals, symbol: token1Symbol },
       },
     } = poolResult
-
     const poolCurrentTickIdx = parseInt(poolCurrentTick)
     const tickSpacing = FEE_TIER_TO_TICK_SPACING(feeTier)
 
@@ -203,8 +203,8 @@ export const fetchTicksSurroundingPrice = async (
 
     const tickIdxToInitializedTick = keyBy(initializedTicks, 'tickIdx')
 
-    const token0 = new Token(1, token0Address, parseInt(token0Decimals), token0Symbol)
-    const token1 = new Token(1, token1Address, parseInt(token1Decimals), token1Symbol)
+    const token0 = new Token(chainId, token0Address, parseInt(token0Decimals), token0Symbol)
+    const token1 = new Token(chainId, token1Address, parseInt(token1Decimals), token1Symbol)
 
     // console.log({ activeTickIdx, poolCurrentTickIdx }, 'Active ticks')
 
