@@ -14,7 +14,6 @@ export const masterChefAddresses = {
   [ChainId.BSC]: '0xa5f8C5Dbd5F286960b9d90548680aE5ebFf07652',
 } as const
 
-// TODO: v3 contract addresses MasterChefV3
 export const masterChefV3Addresses = {
   [ChainId.ETHEREUM]: '0x556B9306565093C855AEA9AE92A594704c2Cd59e',
   [ChainId.GOERLI]: '0x864ED564875BdDD6F421e226494a0E7c071C06f8',

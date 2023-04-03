@@ -67,7 +67,6 @@
     "name": "Harvest",
     "type": "event"
   },
-  { "anonymous": false, "inputs": [], "name": "Init", "type": "event" },
   {
     "anonymous": false,
     "inputs": [{ "indexed": false, "internalType": "address", "name": "deployer", "type": "address" }],

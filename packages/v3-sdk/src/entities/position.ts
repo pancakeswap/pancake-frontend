@@ -18,7 +18,7 @@ interface PositionConstructorArgs {
 }
 
 /**
- * Represents a position on a Uniswap V3 Pool
+ * Represents a position on a Pancake V3 Pool
  */
 export class Position {
   public readonly pool: Pool

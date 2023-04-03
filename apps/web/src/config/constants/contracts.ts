@@ -173,7 +173,6 @@ export default {
     5: '0x7bb894Ca487568dD55054193c3238d7B1f46BB92',
     56: '0xfEACb05b373f1A08E68235bA7FC92636b92ced01',
   },
-  // TODO: v3 contract addresses NonfungiblePositionManager
   nftPositionManager: {
     1: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',
     5: '0x427bF5b37357632377eCbEC9de3626C71A5396c1',
@@ -181,8 +180,6 @@ export default {
     97: '0x427bF5b37357632377eCbEC9de3626C71A5396c1',
   },
   v3PoolDeployer: DEPLOYER_ADDRESSES,
-  // keep the test fail as we know the contract is missing
-  // TODO: v3 contract addresses V3Migrator
   v3Migrator: {
     1: '0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2',
     5: '0x46A15B0b27311cedF172AB29E4f4766fbE7F4364',

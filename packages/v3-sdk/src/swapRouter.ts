@@ -47,7 +47,7 @@ export interface SwapOptions {
 }
 
 /**
- * Represents the Uniswap V3 SwapRouter, and has static methods for helping execute trades.
+ * Represents the Pancake V3 SwapRouter, and has static methods for helping execute trades.
  */
 export abstract class SwapRouter {
   public static INTERFACE: Interface = new Interface(ISwapRouter)

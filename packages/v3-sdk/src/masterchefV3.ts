@@ -29,7 +29,6 @@ interface HarvestOptions {
 }
 
 export abstract class MasterChefV3 {
-  // TODO: Replace with MasterChef ABI
   public static INTERFACE: Interface = new Interface(IMasterChefABI)
 
   /**

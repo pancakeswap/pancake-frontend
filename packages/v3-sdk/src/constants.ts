@@ -2,7 +2,6 @@ import { ChainId } from '@pancakeswap/sdk'
 
 export const FACTORY_ADDRESS = '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865'
 
-// TODO: v3 contract addresses PancakeV3PoolDeployer
 export const DEPLOYER_ADDRESS = '0x41ff9AA7e16B8B1a8a8dc4f0eFacd93D02d071c9'
 export const DEPLOYER_ADDRESSES = {
   [ChainId.ETHEREUM]: DEPLOYER_ADDRESS,
@@ -13,7 +12,6 @@ export const DEPLOYER_ADDRESSES = {
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
-// TODO: v3 contract addresses POOL_INIT_CODE_HASH
 export const POOL_INIT_CODE_HASH = '0x6ce8eb472fa82df5469c6ab6d485f17c3ad13c8cd7af59b3d4a8026c5ce0f7e2'
 
 /**
