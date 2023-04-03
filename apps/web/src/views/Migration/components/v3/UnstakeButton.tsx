@@ -31,7 +31,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
   const { chainId } = useActiveChainId()
   const { toastSuccess } = useToast()
   const { lpAddress } = useFarmFromPid(pid)
-  const { loading: pendingTx, fetchTxResponse } = useCatchTxError()
+  const { loading: pendingTx, fetchTxResponse, fetchWithCatchTxError } = useCatchTxError()
   const { stakedBalance, proxy } = useFarmUser(pid)
   const { onUnstake } = useUnstakeFarms(pid, vaultPid)
   const dispatch = useAppDispatch()
@@ -50,75 +50,95 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
   // eslint-disable-next-line consistent-return
   const handleUnstake = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation()
-    if (shouldUseProxyFarm) {
-      const balance = getFullDisplayBalance(proxy?.stakedBalance)
-      return onUnstakeProxyFarm(balance)
-    }
-    const balance = getFullDisplayBalance(stakedBalance)
-
-    const receipt = await fetchTxResponse(() => {
-      setIsLoading(true)
-      return onUnstake(balance)
-    })
 
     if (vaultPid) {
-      if (receipt) {
-        const amount = balance
-        addTransaction(receipt, {
-          type: 'non-bsc-farm',
-          translatableSummary: {
-            text: 'Unstake %amount% %lpSymbol% Token',
-            data: { amount, lpSymbol: farm.lpSymbol },
-          },
-          nonBscFarm: {
-            type: NonBscFarmStepType.UNSTAKE,
-            status: FarmTransactionStatus.PENDING,
-            amount,
-            lpSymbol: farm.lpSymbol,
-            lpAddress,
-            steps: [
-              {
-                step: 1,
-                chainId,
-                tx: receipt.hash,
-                status: FarmTransactionStatus.PENDING,
-              },
-              {
-                step: 2,
-                chainId: ChainId.BSC,
-                tx: '',
-                status: FarmTransactionStatus.PENDING,
-              },
-              {
-                step: 3,
-                chainId,
-                tx: '',
-                status: FarmTransactionStatus.PENDING,
-              },
-            ],
-          },
-        })
+      setIsLoading(true)
 
-        dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
-      }
-    }
+      const receipt = await fetchTxResponse(() => {
+        const balance = getFullDisplayBalance(stakedBalance)
+        return onUnstake(balance)
+      })
 
-    const resp = await receipt.wait()
+      if (vaultPid) {
+        if (receipt) {
+          const amount = getFullDisplayBalance(stakedBalance)
+          addTransaction(receipt, {
+            type: 'non-bsc-farm',
+            translatableSummary: {
+              text: 'Unstake %amount% %lpSymbol% Token',
+              data: { amount, lpSymbol: farm.lpSymbol },
+            },
+            nonBscFarm: {
+              type: NonBscFarmStepType.UNSTAKE,
+              status: FarmTransactionStatus.PENDING,
+              amount,
+              lpSymbol: farm.lpSymbol,
+              lpAddress,
+              steps: [
+                {
+                  step: 1,
+                  chainId,
+                  tx: receipt.hash,
+                  status: FarmTransactionStatus.PENDING,
+                },
+                {
+                  step: 2,
+                  chainId: ChainId.BSC,
+                  tx: '',
+                  status: FarmTransactionStatus.PENDING,
+                },
+                {
+                  step: 3,
+                  chainId,
+                  tx: '',
+                  status: FarmTransactionStatus.PENDING,
+                },
+              ],
+            },
+          })
 
-    setIsLoading(false)
-
-    if (resp?.status) {
-      toastSuccess(
-        `${t('Unstaked')}!`,
-        <ToastDescriptionWithTx txHash={resp.transactionHash}>
-          {t('Your earnings have also been harvested to your wallet')}
-        </ToastDescriptionWithTx>,
-      )
-      if (shouldUseProxyFarm) {
-        onDone()
+          dispatch(pickFarmTransactionTx({ tx: receipt.hash, chainId }))
+        }
       }
 
-      dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress, chainId }))
+      const resp = await receipt.wait()
+      setIsLoading(false)
+
+      if (resp?.status) {
+        toastSuccess(
+          `${t('Unstaked')}!`,
+          <ToastDescriptionWithTx txHash={resp.transactionHash}>
+            {t('Your earnings have also been harvested to your wallet')}
+          </ToastDescriptionWithTx>,
+        )
+        if (shouldUseProxyFarm) {
+          onDone()
+        }
+
+        dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress, chainId }))
+      }
+    } else {
+      const receipt = await fetchWithCatchTxError(() => {
+        if (shouldUseProxyFarm) {
+          const balance = getFullDisplayBalance(proxy?.stakedBalance)
+          return onUnstakeProxyFarm(balance)
+        }
+        const balance = getFullDisplayBalance(stakedBalance)
+        return onUnstake(balance)
+      })
+
+      if (receipt?.status) {
+        toastSuccess(
+          `${t('Unstaked')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your earnings have also been harvested to your wallet')}
+          </ToastDescriptionWithTx>,
+        )
+        if (shouldUseProxyFarm) {
+          onDone()
+        }
+        dispatch(fetchFarmUserDataAsync({ account, pids: [pid], proxyAddress, chainId }))
+      }
     }
   }
 
