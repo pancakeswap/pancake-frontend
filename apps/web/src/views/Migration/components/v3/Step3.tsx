@@ -308,7 +308,9 @@ export function Step3() {
         </LightCard>
       </AutoRow>
       <AtomBox p="48px">
-        <LinkExternal m="auto">{t('Learn More')}</LinkExternal>
+        <LinkExternal m="auto" href="https://docs.pancakeswap.finance/code/v3-migration/how-to-migrate">
+          {t('Learn More')}
+        </LinkExternal>
       </AtomBox>
     </AtomBox>
   )
