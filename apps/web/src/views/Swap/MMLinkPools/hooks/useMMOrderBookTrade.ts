@@ -114,7 +114,7 @@ export const useMMTrade = (
   const bestTradeWithMM = useMemo(() => {
     if (!inputCurrency || !outputCurrency || !mmQuote || !mmQuote?.message?.takerSideTokenAmount) return null
 
-    const { takerSideTokenAmount, makerSideTokenAmount } = mmQuote?.message
+    const { takerSideTokenAmount, makerSideTokenAmount } = mmQuote?.message || {}
     return parseMMTrade(isExactIn, inputCurrency, outputCurrency, takerSideTokenAmount, makerSideTokenAmount)
   }, [inputCurrency, isExactIn, mmQuote, outputCurrency])
 
