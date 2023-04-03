@@ -243,11 +243,12 @@ export default function TransactionTable({
         </ResponsiveGrid>
         <Break />
 
-        {sortedTransactions.map((t) => {
-          if (t) {
+        {sortedTransactions.map((d, index) => {
+          if (d) {
             return (
-              <React.Fragment key={`${t.hash}transactionRecord`}>
-                <DataRow transaction={t} color={color} />
+              // eslint-disable-next-line react/no-array-index-key
+              <React.Fragment key={`${d.hash}/${d.timestamp}/${index}/transactionRecord`}>
+                <DataRow transaction={d} color={color} />
                 <Break />
               </React.Fragment>
             )
