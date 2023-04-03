@@ -13,13 +13,16 @@ const Wrapper = styled(Card)`
   width: 100%;
   padding: 1rem;
   display: flex;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: transparent;
   flex-direction: column;
   > * {
     font-size: 1rem;
   }
-  > #candle-chart > div:first-child {
+  > #candle-chart > div {
     display: none;
+  }
+  > #candle-chart > div:last-child {
+    display: block;
   }
 `
 

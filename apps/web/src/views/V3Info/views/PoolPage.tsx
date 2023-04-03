@@ -290,7 +290,13 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
                   ? ''
                   : formatDollarAmount(formattedTvlData[formattedTvlData.length - 1]?.value)}
                 <Text small color="secondary">
-                  {valueLabel ? <MonoSpace>{valueLabel} (UTC)</MonoSpace> : ''}
+                  {valueLabel ? (
+                    `${valueLabel} (UTC)`
+                  ) : (
+                    <Text small color="secondary" style={{ opacity: 0 }}>
+                      0
+                    </Text>
+                  )}
                 </Text>
               </Flex>
               <Box px="24px" height="335px">
