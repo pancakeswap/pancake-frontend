@@ -3,6 +3,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -58,9 +59,9 @@ const SORT_FIELD = {
   volumeUSDWeek: 'volumeUSDWeek',
 }
 
-const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
+const DataRow = ({ poolData, index, chainPath }: { poolData: PoolData; index: number; chainPath: string }) => {
   return (
-    <LinkWrapper href={`/${v3InfoPath}/pools/${poolData.address}`}>
+    <LinkWrapper href={`/${v3InfoPath}${chainPath}/pools/${poolData.address}`}>
       <ResponsiveGrid>
         <Text fontWeight={400}>{index + 1}</Text>
         <Text fontWeight={400}>
@@ -93,6 +94,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
   // for sorting
   const [sortField, setSortField] = useState(SORT_FIELD.tvlUSD)
   const [sortDirection, setSortDirection] = useState<boolean>(true)
+  const chainPath = useMultiChainPath()
 
   // pagination
   const [page, setPage] = useState(1)
@@ -164,7 +166,7 @@ export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDat
             if (poolData) {
               return (
                 <React.Fragment key={`${poolData?.address}_Row`}>
-                  <DataRow index={(page - 1) * MAX_ITEMS + i} poolData={poolData} />
+                  <DataRow index={(page - 1) * MAX_ITEMS + i} poolData={poolData} chainPath={chainPath} />
                   <Break />
                 </React.Fragment>
               )

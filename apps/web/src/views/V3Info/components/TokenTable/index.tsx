@@ -10,6 +10,7 @@ import {
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useMultiChainPath } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -68,10 +69,10 @@ const ResponsiveLogo = styled(CurrencyLogo)`
   }
 `
 
-const DataRow = ({ tokenData, index }: { tokenData: TokenData; index: number }) => {
+const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index: number; chainPath: string }) => {
   const { theme } = useTheme()
   return (
-    <LinkWrapper to={`/${v3InfoPath}/tokens/${tokenData.address}`}>
+    <LinkWrapper to={`/${v3InfoPath}${chainPath}/tokens/${tokenData.address}`}>
       <ResponsiveGrid>
         <Text>{index + 1}</Text>
         <Flex>
@@ -120,6 +121,7 @@ export default function TokenTable({
   maxItems?: number
 }) {
   const { chainId } = useActiveChainId()
+  const chainPath = useMultiChainPath()
 
   // theming
   const { theme } = useTheme()
@@ -210,7 +212,7 @@ export default function TokenTable({
             if (data) {
               return (
                 <React.Fragment key={`${data.address}_sortedTokens`}>
-                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} />
+                  <DataRow index={(page - 1) * MAX_ITEMS + i} tokenData={data} chainPath={chainPath} />
                   <Break />
                 </React.Fragment>
               )
