@@ -224,14 +224,11 @@ export default function V3FormView({
   )
 
   const nftPositionManagerAddress = useV3NFTPositionManagerContract()?.address
-  //   // check whether the user has approved the router on the tokens
+  // check whether the user has approved the router on the tokens
   const [approvalA, approveACallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_A], nftPositionManagerAddress)
   const [approvalB, approveBCallback] = useApproveCallback(parsedAmounts[Field.CURRENCY_B], nftPositionManagerAddress)
-  // Philip TODO: Add 'auto' allowedSlippage
+
   const [allowedSlippage] = useUserSlippage() // custom from users
-  // const allowedSlippage = useUserSlippageToleranceWithDefault(
-  //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
-  // )
 
   const onAdd = useCallback(async () => {
     if (!chainId || !signer || !account || !nftPositionManagerAddress) return

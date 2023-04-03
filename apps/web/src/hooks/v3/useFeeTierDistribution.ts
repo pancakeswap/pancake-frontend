@@ -106,16 +106,12 @@ function usePoolTVL(token0: Token | undefined, token1: Token | undefined) {
         acc[value.feeTier][0] = (acc[value.feeTier]?.[0] ?? 0) + Number(value.totalValueLockedToken0)
         // eslint-disable-next-line no-param-reassign
         acc[value.feeTier][1] = (acc[value.feeTier]?.[1] ?? 0) + Number(value.totalValueLockedToken1)
-        // // eslint-disable-next-line no-param-reassign
-        // acc[value.feeTier][0] = (acc[value.feeTier][0] ?? 0) + Number(value.totalValueLockedToken0)
-        // // eslint-disable-next-line no-param-reassign
-        // acc[value.feeTier][1] = (acc[value.feeTier][1] ?? 0) + Number(value.totalValueLockedToken1)
+
         return acc
       },
       {
         [FeeAmount.LOWEST]: [undefined, undefined],
         [FeeAmount.LOW]: [undefined, undefined],
-        // [3000]: [undefined, undefined], // in ethereum testing you have to use 3000
         [FeeAmount.MEDIUM]: [undefined, undefined],
         [FeeAmount.HIGH]: [undefined, undefined],
       },

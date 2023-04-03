@@ -128,12 +128,7 @@ export default function IncreaseLiquidityV3({ currencyA: baseCurrency, currencyB
   )
 
   const positionManager = useV3NFTPositionManagerContract()
-  //   // check whether the user has approved the router on the tokens
-  //   // Philip TODO: Add 'auto' allowedSlippage
   const [allowedSlippage] = useUserSlippage() // custom from users
-  //   // const allowedSlippage = useUserSlippageToleranceWithDefault(
-  //   //   outOfRange ? ZERO_PERCENT : DEFAULT_ADD_IN_RANGE_SLIPPAGE_TOLERANCE,
-  //   // )
 
   const isStakedInMCv3 = Boolean(tokenId && stakedTokenIds.find((id) => id.eq(tokenId)))
 
