@@ -12,8 +12,8 @@ dayjs.extend(weekOfYear)
 const ONE_DAY_UNIX = 24 * 60 * 60
 
 const GLOBAL_CHART = gql`
-  query uniswapDayDatas($startTime: Int!, $skip: Int!) {
-    uniswapDayDatas(
+  query pancakeDayDatas($startTime: Int!, $skip: Int!) {
+    pancakeDayDatas(
       first: 1000
       skip: $skip
       subgraphError: allow
@@ -30,7 +30,7 @@ const GLOBAL_CHART = gql`
 `
 
 interface ChartResults {
-  uniswapDayDatas: {
+  pancakeDayDatas: {
     date: number
     volumeUSD: string
     tvlUSD: string
@@ -54,7 +54,7 @@ export async function fetchChartData(client: GraphQLClient) {
       startTime: startTimestamp,
       skip,
     })
-    data = chartData.uniswapDayDatas
+    data = chartData.pancakeDayDatas
   } catch {
     error = true
   }
