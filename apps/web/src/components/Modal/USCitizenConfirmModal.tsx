@@ -4,6 +4,7 @@ import { memo, useCallback } from 'react'
 import { getPerpetualUrl } from 'utils/getPerpetualUrl'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { useTheme } from 'styled-components'
+import { Text, Link } from '@pancakeswap/uikit'
 
 import { useTranslation } from '@pancakeswap/localization'
 
@@ -27,16 +28,24 @@ const USCitizenConfirmModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss
     <DisclaimerModal
       modalHeader={t('PancakeSwap Perpetuals')}
       id="disclaimer-perpetual-us-citizen"
-      header={t(
-        'To proceed to PancakeSwap Perpetuals Trading, please check the checkbox below to confirm that you are not a US citizen:',
-      )}
+      header={t('To proceed to Pancakeswap Perpetuals Trading, please check the checkbox below:')}
       checks={[
         {
           key: 'checkbox',
-          content: t('I confirm that I am not a US citizen and I am eligible to trade derivatives on this platform.'),
+          content: t(
+            'I confirm that I am not from a prohibited jurisdiction and I am eligible to trade derivatives on this platform',
+          ),
         },
       ]}
-      footer={t('By proceeding, you agree to comply with all relevant laws and regulations.')}
+      footer={
+        <>
+          <Text as="span">{t('By proceeding, you agree to comply with our')}</Text>
+          <Link m="0 4px" display="inline" href="/terms-and-conditions">
+            {t('terms and conditions')}
+          </Link>
+          <Text as="span">{t('and all relevant laws and regulations')}</Text>
+        </>
+      }
       onSuccess={handleSuccess}
       onDismiss={onDismiss}
       headerStyle={{ fontWeight: 400, fontSize: 18 }}
