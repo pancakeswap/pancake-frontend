@@ -74,6 +74,8 @@ export const FarmV3LPPosition = ({
   const { priceLower, priceUpper, quote, base } = getPriceOrderingFromPositionForUI(position)
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
+  if (!position) return null
+
   return (
     <Box>
       <AutoRow gap="4px">
