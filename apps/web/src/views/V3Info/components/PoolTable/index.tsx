@@ -1,0 +1,221 @@
+import { ArrowBackIcon, ArrowForwardIcon, Box, Text } from '@pancakeswap/uikit'
+import { useActiveChainId } from 'hooks/useActiveChainId'
+import useTheme from 'hooks/useTheme'
+import NextLink from 'next/link'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
+import styled from 'styled-components'
+import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
+import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
+import { POOL_HIDE, v3InfoPath } from '../../constants'
+import { PoolData } from '../../types'
+import { feeTierPercent } from '../../utils'
+import { formatDollarAmount } from '../../utils/numbers'
+import { GreyBadge } from '../Card'
+import Loader, { LoadingRows } from '../Loader'
+import { RowFixed } from '../Row'
+
+const ResponsiveGrid = styled.div`
+  display: grid;
+  grid-gap: 1em;
+  align-items: center;
+
+  grid-template-columns: 20px 3.5fr repeat(3, 1fr);
+  padding: 0 24px;
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 20px 1.5fr repeat(2, 1fr);
+    & :nth-child(3) {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    grid-template-columns: 20px 1.5fr repeat(1, 1fr);
+    & :nth-child(5) {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    grid-template-columns: 2.5fr repeat(1, 1fr);
+    > *:nth-child(1) {
+      display: none;
+    }
+  }
+`
+
+const LinkWrapper = styled(NextLink)`
+  text-decoration: none;
+  :hover {
+    cursor: pointer;
+    opacity: 0.7;
+  }
+`
+
+const SORT_FIELD = {
+  feeTier: 'feeTier',
+  volumeUSD: 'volumeUSD',
+  tvlUSD: 'tvlUSD',
+  volumeUSDWeek: 'volumeUSDWeek',
+}
+
+const DataRow = ({ poolData, index, chainPath }: { poolData: PoolData; index: number; chainPath: string }) => {
+  const chainName = useGetChainName()
+  return (
+    <LinkWrapper href={`/${v3InfoPath}${chainPath}/pools/${poolData.address}`}>
+      <ResponsiveGrid>
+        <Text fontWeight={400}>{index + 1}</Text>
+        <Text fontWeight={400}>
+          <RowFixed>
+            <DoubleCurrencyLogo
+              address0={poolData.token0.address}
+              address1={poolData.token1.address}
+              chainName={chainName}
+            />
+            <Text ml="8px">
+              {poolData.token0.symbol}/{poolData.token1.symbol}
+            </Text>
+            <GreyBadge ml="10px" style={{ fontSize: 14 }}>
+              {feeTierPercent(poolData.feeTier)}
+            </GreyBadge>
+          </RowFixed>
+        </Text>
+        <Text fontWeight={400}>{formatDollarAmount(poolData.tvlUSD)}</Text>
+        <Text fontWeight={400}>{formatDollarAmount(poolData.volumeUSD)}</Text>
+        <Text fontWeight={400}>{formatDollarAmount(poolData.volumeUSDWeek)}</Text>
+      </ResponsiveGrid>
+    </LinkWrapper>
+  )
+}
+
+const MAX_ITEMS = 10
+
+export default function PoolTable({ poolDatas, maxItems = MAX_ITEMS }: { poolDatas: PoolData[]; maxItems?: number }) {
+  const { chainId } = useActiveChainId()
+
+  // theming
+  const { theme } = useTheme()
+
+  // for sorting
+  const [sortField, setSortField] = useState(SORT_FIELD.tvlUSD)
+  const [sortDirection, setSortDirection] = useState<boolean>(true)
+  const chainPath = useMultiChainPath()
+
+  // pagination
+  const [page, setPage] = useState(1)
+  const [maxPage, setMaxPage] = useState(1)
+  useEffect(() => {
+    let extraPages = 1
+    if (poolDatas.length % maxItems === 0) {
+      extraPages = 0
+    }
+    setMaxPage(Math.floor(poolDatas.length / maxItems) + extraPages)
+  }, [maxItems, poolDatas])
+
+  const sortedPools = useMemo(() => {
+    return poolDatas
+      ? poolDatas
+          .filter((x) => !!x && !POOL_HIDE[chainId].includes(x.address))
+          .sort((a, b) => {
+            if (a && b) {
+              return a[sortField as keyof PoolData] > b[sortField as keyof PoolData]
+                ? (sortDirection ? -1 : 1) * 1
+                : (sortDirection ? -1 : 1) * -1
+            }
+            return -1
+          })
+          .slice(maxItems * (page - 1), page * maxItems)
+      : []
+  }, [chainId, maxItems, page, poolDatas, sortDirection, sortField])
+
+  const handleSort = useCallback(
+    (newField: string) => {
+      setSortField(newField)
+      setSortDirection(sortField !== newField ? true : !sortDirection)
+    },
+    [sortDirection, sortField],
+  )
+
+  const arrow = useCallback(
+    (field: string) => {
+      return sortField === field ? (!sortDirection ? '↑' : '↓') : ''
+    },
+    [sortDirection, sortField],
+  )
+
+  if (!poolDatas) {
+    return <Loader />
+  }
+
+  return (
+    <TableWrapper>
+      {sortedPools.length > 0 ? (
+        <>
+          <ResponsiveGrid>
+            <Text color={theme.colors.textSubtle}>#</Text>
+            <Text color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.feeTier)}>
+              Pool {arrow(SORT_FIELD.feeTier)}
+            </Text>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.tvlUSD)}>
+              TVL {arrow(SORT_FIELD.tvlUSD)}
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSD)}>
+              Volume 24H {arrow(SORT_FIELD.volumeUSD)}
+            </ClickableColumnHeader>
+            <ClickableColumnHeader color={theme.colors.textSubtle} onClick={() => handleSort(SORT_FIELD.volumeUSDWeek)}>
+              Volume 7D {arrow(SORT_FIELD.volumeUSDWeek)}
+            </ClickableColumnHeader>
+          </ResponsiveGrid>
+          <Break />
+          {sortedPools.map((poolData, i) => {
+            if (poolData) {
+              return (
+                <React.Fragment key={`${poolData?.address}_Row`}>
+                  <DataRow index={(page - 1) * MAX_ITEMS + i} poolData={poolData} chainPath={chainPath} />
+                  <Break />
+                </React.Fragment>
+              )
+            }
+            return null
+          })}
+          <PageButtons>
+            <Box
+              onClick={() => {
+                setPage(page === 1 ? page : page - 1)
+              }}
+            >
+              <Arrow>
+                <ArrowBackIcon color={page === 1 ? 'textDisabled' : 'primary'} />
+              </Arrow>
+            </Box>
+            <Text>{`Page ${page} of ${maxPage}`}</Text>
+            <Box
+              onClick={() => {
+                setPage(page === maxPage ? page : page + 1)
+              }}
+            >
+              <Arrow>
+                <ArrowForwardIcon color={page === maxPage ? 'textDisabled' : 'primary'} />
+              </Arrow>
+            </Box>
+          </PageButtons>
+        </>
+      ) : (
+        <LoadingRows>
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+          <div />
+        </LoadingRows>
+      )}
+    </TableWrapper>
+  )
+}

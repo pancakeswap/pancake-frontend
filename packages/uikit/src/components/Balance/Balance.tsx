@@ -9,6 +9,7 @@ interface BalanceProps extends TextProps {
   isDisabled?: boolean;
   prefix?: string;
   onClick?: (event: React.MouseEvent<HTMLElement>) => void;
+  strikeThrough?: boolean;
 }
 
 const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
@@ -19,6 +20,7 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
   unit,
   prefix,
   onClick,
+  strikeThrough,
   ...props
 }) => {
   const prefixProp = useMemo(() => (prefix ? { prefix } : {}), [prefix]);
@@ -37,7 +39,12 @@ const Balance: React.FC<React.PropsWithChildren<BalanceProps>> = ({
       separator=","
     >
       {({ countUpRef }) => (
-        <Text color={isDisabled ? "textDisabled" : color} onClick={onClick} {...props}>
+        <Text
+          color={isDisabled ? "textDisabled" : color}
+          style={{ textDecoration: strikeThrough ? "line-through" : "none" }}
+          onClick={onClick}
+          {...props}
+        >
           <span ref={countUpRef} />
         </Text>
       )}

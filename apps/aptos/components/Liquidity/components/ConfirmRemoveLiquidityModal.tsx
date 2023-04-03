@@ -14,7 +14,7 @@ import {
 import { useTranslation } from '@pancakeswap/localization'
 import TransactionConfirmationModal from 'components/TransactionConfirmationModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from 'components/Logo'
-import { useUserSlippage } from 'state/user'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import formatAmountDisplay from 'utils/formatAmountDisplay'
 
 import { Field } from '../type'

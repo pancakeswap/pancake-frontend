@@ -1,5 +1,65 @@
 import { ethereumTokens } from '@pancakeswap/tokens'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
+
+export const farmsV3 = [
+  {
+    pid: 1,
+    lpSymbol: 'USDC-ETH LP',
+    lpAddress: '0x1ac1A8FEaAEa1900C4166dEeed0C11cC10669D36',
+    token: ethereumTokens.usdc,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 2,
+    lpSymbol: 'ETH-USDT LP',
+    lpAddress: '0x6CA298D2983aB03Aa1dA7679389D955A4eFEE15C',
+    token: ethereumTokens.weth,
+    quoteToken: ethereumTokens.usdt,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 3,
+    lpSymbol: 'USDC-USDT LP',
+    lpAddress: '0x04c8577958CcC170EB3d2CCa76F9d51bc6E42D8f',
+    token: ethereumTokens.usdc,
+    quoteToken: ethereumTokens.usdt,
+    feeAmount: FeeAmount.LOWEST,
+  },
+  {
+    pid: 4,
+    lpSymbol: 'WBTC-ETH LP',
+    lpAddress: '0x9b5699D18DFF51fc65fB8ad6F70d93287C36349f',
+    token: ethereumTokens.wbtc,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 5,
+    lpSymbol: 'CAKE-ETH LP',
+    lpAddress: '0x517F451b0A9E1b87Dc0Ae98A05Ee033C3310F046',
+    token: ethereumTokens.cake,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 6,
+    lpSymbol: 'CAKE-USDC LP',
+    lpAddress: '0x11A6713B702817DB0Aa0964D1AfEe4E641319732',
+    token: ethereumTokens.cake,
+    quoteToken: ethereumTokens.usdc,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 7,
+    lpSymbol: 'DAI-USDC LP',
+    lpAddress: '0xD9e497BD8f491fE163b42A62c296FB54CaEA74B7',
+    token: ethereumTokens.dai,
+    quoteToken: ethereumTokens.usdc,
+    feeAmount: FeeAmount.LOWEST,
+  },
+] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
   {

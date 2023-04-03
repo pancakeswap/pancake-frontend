@@ -39,8 +39,8 @@
       "cache": false
     },
     "postinstall": {
-      "inputs": ["src/config/abi/**"],
-      "outputs": ["src/config/abi/types/**"]
+      "inputs": ["src/config/abi/**", "**/abis/**"],
+      "outputs": ["src/config/abi/types/**", "**/abis/types/**"]
     }
   }
 }

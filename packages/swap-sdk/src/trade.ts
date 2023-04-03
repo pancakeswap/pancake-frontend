@@ -1,5 +1,5 @@
 import { Currency, Percent, TradeType } from '@pancakeswap/swap-sdk-core'
-import { Trade } from 'entities'
+import { Trade } from './entities'
 import { ONE_HUNDRED_PERCENT, ZERO_PERCENT } from './constants'
 
 // returns whether tradeB is better than tradeA by at least a threshold percentage amount

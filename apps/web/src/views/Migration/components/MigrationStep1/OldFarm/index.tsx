@@ -57,7 +57,7 @@ const OldFarmStep1: React.FC<React.PropsWithChildren> = () => {
   return (
     <MigrationFarmTable
       title={t('Old Farms')}
-      noStakedFarmText={t('You are not currently staking in any v1 farms.')}
+      noStakedFarmText={t('You are not currently staking in any farms that require migrations.')}
       account={account}
       cakePrice={cakePrice}
       columnSchema={DesktopColumnSchema}

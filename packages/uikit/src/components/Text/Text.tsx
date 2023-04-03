@@ -11,7 +11,18 @@ const getColor = ({ color, theme }: ThemedProps) => {
   return getThemeValue(theme, `colors.${color}`, color);
 };
 
-const Text = styled.div<TextProps>`
+const Text = styled.div.attrs<TextProps>((props) => {
+  const title =
+    typeof props.title !== "undefined"
+      ? props.title
+      : props.ellipsis && typeof props.children === "string"
+      ? props.children
+      : undefined;
+  return {
+    ...props,
+    title,
+  };
+})<TextProps>`
   color: ${getColor};
   font-weight: ${({ bold }) => (bold ? 600 : 400)};
   line-height: 1.5;
