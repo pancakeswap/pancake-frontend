@@ -107,14 +107,16 @@ export function AprCalculator({
     [pool?.feeProtocol],
   )
 
+  const inverted = baseCurrency?.wrapped?.address === tokenAmount1?.currency?.address
+
   const { apr } = useRoi({
     tickLower,
     tickUpper,
     sqrtRatioX96,
     fee: feeAmount,
     mostActiveLiquidity: pool?.liquidity,
-    amountA: tokenAmount1,
-    amountB: tokenAmount0,
+    amountA: amountA || (inverted ? tokenAmount1 : tokenAmount0),
+    amountB: amountB || (inverted ? tokenAmount0 : tokenAmount1),
     compoundOn: false,
     currencyAUsdPrice,
     currencyBUsdPrice,
