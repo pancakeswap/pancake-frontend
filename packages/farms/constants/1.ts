@@ -59,6 +59,46 @@ export const farmsV3 = [
     quoteToken: ethereumTokens.usdc,
     feeAmount: FeeAmount.LOWEST,
   },
+  {
+    pid: 8,
+    lpSymbol: 'LDO-ETH LP',
+    lpAddress: '0x34b8AB3a392d54D839dcDBd5Cd1330aBB24bE167',
+    token: ethereumTokens.ldo,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 9,
+    lpSymbol: 'LINK-ETH LP',
+    lpAddress: '0x7ca3EdB2c8fb3e657E282e67F4008d658aA161D2',
+    token: ethereumTokens.link,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 10,
+    lpSymbol: 'MATIC-ETH LP',
+    lpAddress: '0x8579630AC9c53CFEb5167f90Af90d2c0d52ED09c',
+    token: ethereumTokens.matic,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.MEDIUM,
+  },
+  {
+    pid: 12,
+    lpSymbol: 'wstETH-ETH LP',
+    lpAddress: '0x4F64951A6583D56004fF6310834C70d182142A07',
+    token: ethereumTokens.wstETH,
+    quoteToken: ethereumTokens.weth,
+    feeAmount: FeeAmount.LOW,
+  },
+  {
+    pid: 13,
+    lpSymbol: 'USDC-STG LP',
+    lpAddress: '0x7524Fe020EDcD072EE98126b49Fa65Eb85F8C44C',
+    token: ethereumTokens.usdc,
+    quoteToken: ethereumTokens.stg,
+    feeAmount: FeeAmount.MEDIUM,
+  },
 ] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
