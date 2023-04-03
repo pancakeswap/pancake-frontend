@@ -10,7 +10,7 @@ import {
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useMultiChainPath } from 'state/info/hooks'
+import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
 import styled from 'styled-components'
 import { CurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -71,13 +71,14 @@ const ResponsiveLogo = styled(CurrencyLogo)`
 
 const DataRow = ({ tokenData, index, chainPath }: { tokenData: TokenData; index: number; chainPath: string }) => {
   const { theme } = useTheme()
+  const chainName = useGetChainName()
   return (
     <LinkWrapper to={`/${v3InfoPath}${chainPath}/tokens/${tokenData.address}`}>
       <ResponsiveGrid>
         <Text>{index + 1}</Text>
         <Flex>
           <RowFixed>
-            <ResponsiveLogo address={tokenData.address} />
+            <ResponsiveLogo address={tokenData.address} chainName={chainName} />
           </RowFixed>
           <Text style={{ marginLeft: '6px' }}>
             <Text ml="8px">{tokenData.symbol}</Text>

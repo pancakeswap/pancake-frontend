@@ -3,7 +3,7 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 import useTheme from 'hooks/useTheme'
 import NextLink from 'next/link'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { useMultiChainPath } from 'state/info/hooks'
+import { useMultiChainPath, useGetChainName } from 'state/info/hooks'
 import styled from 'styled-components'
 import { DoubleCurrencyLogo } from 'views/Info/components/CurrencyLogo'
 import { Arrow, Break, ClickableColumnHeader, PageButtons, TableWrapper } from 'views/Info/components/InfoTables/shared'
@@ -60,13 +60,18 @@ const SORT_FIELD = {
 }
 
 const DataRow = ({ poolData, index, chainPath }: { poolData: PoolData; index: number; chainPath: string }) => {
+  const chainName = useGetChainName()
   return (
     <LinkWrapper href={`/${v3InfoPath}${chainPath}/pools/${poolData.address}`}>
       <ResponsiveGrid>
         <Text fontWeight={400}>{index + 1}</Text>
         <Text fontWeight={400}>
           <RowFixed>
-            <DoubleCurrencyLogo address0={poolData.token0.address} address1={poolData.token1.address} />
+            <DoubleCurrencyLogo
+              address0={poolData.token0.address}
+              address1={poolData.token1.address}
+              chainName={chainName}
+            />
             <Text ml="8px">
               {poolData.token0.symbol}/{poolData.token1.symbol}
             </Text>
