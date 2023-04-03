@@ -64,12 +64,11 @@ const AffiliateLinks: React.FC<React.PropsWithChildren<AffiliateLinksProps>> = (
   }, [affiliate, currentPage])
 
   const generateLink = ({ linkId, percentage }: { linkId: string; percentage: number }) => {
-    // const hostname = window?.location?.origin
-    // const name = affiliate.nickName ? affiliate.nickName : affiliate.name
-    // const displayName = name.replaceAll(' ', '_')
-    // const discount = new BigNumber(percentage).gt(0) ? new BigNumber(percentage).times(3).div(100).toFixed(2) : 0
-    // return `${hostname}/affiliates-program?ref=${linkId}&user=${displayName}&discount=${discount}&noperps=${affiliate.ablePerps}`
-    return 'https://pancakeswap.finance/affiliates-program?ref=37wjXkPsH7lMiqCGkQeb&user=Here_goes_the_nick_name&discount=1.50&noperps=false'
+    const hostname = window?.location?.origin
+    const name = affiliate.nickName ? affiliate.nickName : affiliate.name
+    const displayName = name.replaceAll(' ', '_')
+    const discount = new BigNumber(percentage).gt(0) ? new BigNumber(percentage).times(3).div(100).toFixed(2) : 0
+    return `${hostname}/affiliates-program?ref=${linkId}&user=${displayName}&discount=${discount}&noperps=${affiliate.ablePerps}`
   }
 
   return (
