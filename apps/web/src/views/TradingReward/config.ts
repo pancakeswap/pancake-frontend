@@ -1,0 +1,2 @@
+export const MIN_LOCK_CAKE_AMOUNT = 500
+export const LOCKED_WEEK_DURATION = 24
