@@ -716,6 +716,7 @@ type PositionTX = {
   amount0: string
   amount1: string
   timestamp: string
+  logIndex: string
 }
 
 type PositionHistoryResult = {
@@ -758,18 +759,21 @@ function PositionHistory_({
                   timestamp
                   amount1
                   amount0
+                  logIndex
                 }
                 burns(where: { or: [{ amount0_gt: "0" }, { amount1_gt: "0" }] }) {
                   id
                   timestamp
                   amount1
                   amount0
+                  logIndex
                 }
                 collects(where: { or: [{ amount0_gt: "0" }, { amount1_gt: "0" }] }) {
                   id
                   timestamp
                   amount0
                   amount1
+                  logIndex
                 }
               }
             }
@@ -835,7 +839,7 @@ function PositionHistory_({
                       (burnTx) =>
                         +collectTx.amount0 >= +burnTx.amount0 &&
                         +collectTx.amount1 >= +burnTx.amount1 &&
-                        burnTx.id < collectTx.id,
+                        +burnTx.logIndex < +collectTx.logIndex,
                     )
                     if (foundSameTxBurn) {
                       if (
