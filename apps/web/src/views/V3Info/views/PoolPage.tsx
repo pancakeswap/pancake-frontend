@@ -139,8 +139,8 @@ const PoolPage: React.FC<{ address: string }> = ({ address }) => {
               <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}${infoTypeParam}`}>
                 <Text color="primary">{t('Info')}</Text>
               </NextLinkFromReactRouter>
-              <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/pairs${infoTypeParam}`}>
-                <Text color="primary">{t('Pairs')}</Text>
+              <NextLinkFromReactRouter to={`/${v3InfoPath}${chainPath}/pools${infoTypeParam}`}>
+                <Text color="primary">{t('Pools')}</Text>
               </NextLinkFromReactRouter>
               <Flex>
                 <Text mr="8px">
