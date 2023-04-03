@@ -12,6 +12,9 @@ import {
   MobileColumnSchema,
   useMatchBreakpoints,
   V3DesktopColumnSchema,
+  Text,
+  useTooltip,
+  TooltipText,
 } from '@pancakeswap/uikit'
 import { createElement, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
@@ -123,6 +126,18 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
     setActionPanelExpanded(!actionPanelExpanded)
   }
 
+  const aprTooltip = useTooltip(
+    <>
+      <Text>
+        {t(
+          'Global APR calculated using the total amount of active & staked liquidity with the pool CAKE reward emissions.',
+        )}
+      </Text>
+      <br />
+      <Text>{t('APRs for individual positions may vary depend on their price range settings.')}</Text>
+    </>,
+  )
+
   useEffect(() => {
     setActionPanelExpanded(hasStakedAmount)
   }, [hasStakedAmount])
@@ -190,7 +205,10 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner onClick={(e) => e.stopPropagation()}>
                         <CellLayout label={t('APR')}>
-                          <FarmV3ApyButton farm={props.details} />
+                          <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
+                            <FarmV3ApyButton farm={props.details} />
+                          </TooltipText>
+                          {aprTooltip.tooltipVisible && aprTooltip.tooltip}
                         </CellLayout>
                       </CellInner>
                     </td>
