@@ -185,7 +185,7 @@ const V3LaunchBanner = () => {
           </TextBox>
           <NextLinkFromReactRouter
             target="_blank"
-            to="https://blog.pancakeswap.finance/articles/participate-in-pancake-swap-v3-launch-claim-135-k-cake-airdrop-and-receive-an-exclusive-nft-for-early-supporters"
+            to="https://blog.pancakeswap.finance/articles/introducing-pancake-swap-v3-a-more-efficient-and-user-friendly-dex-on-bnb-chain-and-ethereum"
             rel='"noopener noreferrer'
           >
             <StyledButtonLeft scale={isMobile ? 'sm' : 'md'}>
