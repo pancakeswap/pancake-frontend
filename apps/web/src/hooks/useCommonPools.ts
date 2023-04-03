@@ -6,8 +6,7 @@ import { useEffect, useMemo, useState, useCallback } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 import { useV3CandidatePools, useV3CandidatePoolsWithoutTicks, V3PoolsHookParams, V3PoolsResult } from './useV3Pools'
-import { useStableCandidatePools } from './usePoolsOnChain'
-import { useV2CandidatePools } from './useV2Pools'
+import { useStableCandidatePools, useV2CandidatePools } from './usePoolsOnChain'
 import { useActiveChainId } from './useActiveChainId'
 
 interface FactoryOptions {

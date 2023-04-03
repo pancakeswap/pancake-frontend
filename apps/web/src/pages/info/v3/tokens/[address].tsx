@@ -8,7 +8,7 @@ const TokenPage = ({ address }: { address: string }) => {
     return null
   }
 
-  return <Token address={address} />
+  return <Token address={address.toLowerCase()} />
 }
 
 TokenPage.Layout = InfoPageLayout

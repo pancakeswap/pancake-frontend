@@ -81,6 +81,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
           {isLargerScreen || !expanded ? (
             <ProxyFarmContainer farm={farm}>
               <Unstake {...unstake}>
+                {/* @ts-ignore */}
                 <UnstableButton {...unstake} />
               </Unstake>
             </ProxyFarmContainer>

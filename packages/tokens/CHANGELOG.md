@@ -1,6 +1,6 @@
-# @pancakeswap/multicall
+# @pancakeswap/tokens
 
-## 1.0.0
+## 0.1.0
 
 ### Minor Changes
 
@@ -10,9 +10,3 @@
 
 - Updated dependencies [65fbb250a]
   - @pancakeswap/sdk@3.2.0
-
-## 0.0.2
-
-### Patch Changes
-
-- 1e4a4b27c: Base multicall feature
