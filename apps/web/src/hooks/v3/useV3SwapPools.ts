@@ -6,9 +6,6 @@ import { PoolState } from './types'
 
 import { usePools } from './usePools'
 
-// TODO: replace with SupportedChain list if we add more chains
-const supportedOneChain = true
-
 /**
  * Returns all the existing pools that should be considered for swapping between an input currency and an output currency
  * @param currencyIn the input currency
@@ -26,18 +23,12 @@ export function useV3SwapPools(
   const allCurrencyCombinationsWithAllFees: [Token, Token, FeeAmount][] = useMemo(
     () =>
       allCurrencyCombinations.reduce<[Token, Token, FeeAmount][]>((list, [tokenA, tokenB]) => {
-        return supportedOneChain
-          ? list.concat([
-              [tokenA, tokenB, FeeAmount.LOW],
-              [tokenA, tokenB, FeeAmount.MEDIUM],
-              [tokenA, tokenB, FeeAmount.HIGH],
-            ])
-          : list.concat([
-              [tokenA, tokenB, FeeAmount.LOWEST],
-              [tokenA, tokenB, FeeAmount.LOW],
-              [tokenA, tokenB, FeeAmount.MEDIUM],
-              [tokenA, tokenB, FeeAmount.HIGH],
-            ])
+        return list.concat([
+          [tokenA, tokenB, FeeAmount.LOWEST],
+          [tokenA, tokenB, FeeAmount.LOW],
+          [tokenA, tokenB, FeeAmount.MEDIUM],
+          [tokenA, tokenB, FeeAmount.HIGH],
+        ])
       }, []),
     [allCurrencyCombinations],
   )
