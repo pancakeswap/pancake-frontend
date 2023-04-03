@@ -69,7 +69,7 @@ export const FarmV3Card: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
   const isPromotedFarm = farm.token.symbol === 'CAKE'
 
   const infoUrl = useMemo(() => {
-    return `/info${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
+    return `/info/v3${multiChainPaths[chainId]}/pairs/${lpAddress}?chain=${CHAIN_QUERY_NAME[chainId]}`
   }, [chainId, lpAddress])
 
   const toggleExpandableSection = useCallback(() => {
