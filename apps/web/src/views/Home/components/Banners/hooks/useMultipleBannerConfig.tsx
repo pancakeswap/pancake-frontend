@@ -36,25 +36,25 @@ export const useMultipleBannerConfig = () => {
   return useMemo(() => {
     const NO_SHUFFLE_BANNERS: IBannerConfig[] = [
       { shouldRender: true, banner: <V3LaunchBanner /> },
-      // { shouldRender: true, banner: <FarmV3MigrationBanner /> },
-      // // { shouldRender: true, banner: <TradingRewardBanner /> },
-      // { shouldRender: true, banner: <V3Banner /> },
-      // { shouldRender: true, banner: <AptosBanner /> },
-      // {
-      //   shouldRender: isRenderIFOBanner,
-      //   banner: <IFOBanner />,
-      // },
+      { shouldRender: true, banner: <FarmV3MigrationBanner /> },
+      // { shouldRender: true, banner: <TradingRewardBanner /> },
+      { shouldRender: true, banner: <V3Banner /> },
+      { shouldRender: true, banner: <AptosBanner /> },
+      {
+        shouldRender: isRenderIFOBanner,
+        banner: <IFOBanner />,
+      },
     ]
 
     const SHUFFLE_BANNERS: IBannerConfig[] = [
-      // {
-      //   shouldRender: isRenderCompetitionBanner,
-      //   banner: <CompetitionBanner />,
-      // },
-      // {
-      //   shouldRender: true,
-      //   banner: <PerpetualBanner />,
-      // },
+      {
+        shouldRender: isRenderCompetitionBanner,
+        banner: <CompetitionBanner />,
+      },
+      {
+        shouldRender: true,
+        banner: <PerpetualBanner />,
+      },
     ]
     return [...NO_SHUFFLE_BANNERS, ...shuffle(SHUFFLE_BANNERS)]
       .filter((bannerConfig: IBannerConfig) => bannerConfig.shouldRender)
