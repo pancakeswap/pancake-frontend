@@ -69,6 +69,7 @@ import { AprCalculator } from 'views/AddLiquidityV3/components/AprCalculator'
 import RateToggle from 'views/AddLiquidityV3/formViews/V3FormView/components/RateToggle'
 import Page from 'views/Page'
 import { useSigner } from 'wagmi'
+import dayjs from 'dayjs'
 
 export const BodyWrapper = styled(Card)`
   border-radius: 24px;
@@ -901,9 +902,59 @@ function PositionHistoryRow({
   currency0: Currency
   currency1: Currency
 }) {
+  const { isMobile } = useMatchBreakpoints()
+
   const date = new Date(+positionTx.timestamp * 1_000)
 
   const isPlus = type !== 'burn'
+
+  if (isMobile) {
+    return (
+      <Box>
+        <AutoRow gap="8px">
+          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
+          <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
+        </AutoRow>
+        <Text>{positionHistoryTypeText[type]}</Text>
+        <AutoColumn gap="4px">
+          {+positionTx.amount0 > 0 && (
+            <AutoRow flexWrap="nowrap" gap="12px" justifyContent="space-between">
+              <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+                <AtomBox minWidth="24px">
+                  <CurrencyLogo currency={currency0} />
+                </AtomBox>
+                <Text display={['none', , 'block']}>{currency0.symbol}</Text>
+              </AutoRow>
+              <Text bold ellipsis title={positionTx.amount0}>
+                {isPlus ? '+' : '-'}{' '}
+                {(+positionTx.amount0).toLocaleString(undefined, {
+                  maximumFractionDigits: 6,
+                  maximumSignificantDigits: 6,
+                })}
+              </Text>
+            </AutoRow>
+          )}
+          {+positionTx.amount1 > 0 && (
+            <AutoRow flexWrap="nowrap" gap="12px" justifyContent="space-between">
+              <AutoRow width="auto" flexWrap="nowrap" gap="4px">
+                <AtomBox minWidth="24px">
+                  <CurrencyLogo currency={currency1} />
+                </AtomBox>
+                <Text display={['none', , 'block']}>{currency1.symbol}</Text>
+              </AutoRow>
+              <Text bold ellipsis title={positionTx.amount1}>
+                {isPlus ? '+' : '-'}{' '}
+                {(+positionTx.amount1).toLocaleString(undefined, {
+                  maximumFractionDigits: 6,
+                  maximumSignificantDigits: 6,
+                })}
+              </Text>
+            </AutoRow>
+          )}
+        </AutoColumn>
+      </Box>
+    )
+  }
 
   return (
     <AtomBox
