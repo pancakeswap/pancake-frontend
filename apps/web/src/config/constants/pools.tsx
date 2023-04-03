@@ -70,8 +70,8 @@ export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
   },
   {
     sousId: 332,
-    stakingToken: bscTokens.csix,
-    earningToken: bscTokens.cake,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.csix,
     contractAddress: {
       56: '0x6fBD8a65c844a3565cA4e71Eb577a2a8F821ABB4',
       97: '',
@@ -82,8 +82,8 @@ export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
   },
   {
     sousId: 331,
-    stakingToken: bscTokens.mgp,
-    earningToken: bscTokens.cake,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens.mgp,
     contractAddress: {
       56: '0xCA4A503c79cfDa91246f2084fE315F1cA54694D8',
       97: '',
@@ -94,8 +94,8 @@ export const livePools: Pool.SerializedPoolConfig<SerializedWrappedToken>[] = [
   },
   {
     sousId: 330,
-    stakingToken: bscTokens['8pay'],
-    earningToken: bscTokens.cake,
+    stakingToken: bscTokens.cake,
+    earningToken: bscTokens['8pay'],
     contractAddress: {
       56: '0x67c7014b1C6B6a2d811687d4c5a53de518fA705f',
       97: '',
