@@ -6,7 +6,7 @@ import { AutoColumn, Button, CircleLoader, Text } from '@pancakeswap/uikit'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { FeeAmount } from '@pancakeswap/v3-sdk'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
-import { useV2Pair } from 'hooks/usePairs'
+import { PairState, useV2Pair } from 'hooks/usePairs'
 import { PoolState } from 'hooks/v3/types'
 import { useFeeTierDistribution } from 'hooks/v3/useFeeTierDistribution'
 import { usePools } from 'hooks/v3/usePools'
@@ -16,6 +16,8 @@ import { HandleFeePoolSelectFn, SELECTOR_TYPE } from 'views/AddLiquidityV3/types
 import { FeeOption } from './FeeOption'
 import { FeeTierPercentageBadge } from './FeeTierPercentageBadge'
 import { FEE_AMOUNT_DETAIL, SelectContainer } from './shared'
+
+const FEE_TIERS = [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH]
 
 export default function FeeSelector({
   feeAmount,
@@ -51,27 +53,7 @@ export default function FeeSelector({
     currencyB,
   )
 
-  const [, pair] = useV2Pair(currencyA, currencyB)
-
-  const v2PairHasBetterTokenAmounts = useMemo(() => {
-    if (!handleSelectV2) return false
-    if (isLoading || isError || !pair || !currencyA || !currencyB) {
-      return false
-    }
-    if (!isLoading && !largestUsageFeeTier) {
-      return true
-    }
-    if (largestUsageFeeTierTvl) {
-      if (!(largestUsageFeeTierTvl[0] && !largestUsageFeeTier[1])) {
-        return true
-      }
-      return (
-        pair.reserve0.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[0]), pair.token0)) ||
-        pair.reserve1.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[1]), pair.token1))
-      )
-    }
-    return true
-  }, [currencyA, currencyB, handleSelectV2, isError, isLoading, largestUsageFeeTier, largestUsageFeeTierTvl, pair])
+  const [pairState, pair] = useV2Pair(currencyA, currencyB)
 
   const [showOptions, setShowOptions] = useState(false)
   // get pool data on-chain for latest states
@@ -86,10 +68,12 @@ export default function FeeSelector({
     () =>
       pools.reduce(
         (acc, [curPoolState, curPool]) => {
-          return {
-            ...acc,
-            ...{ [curPool?.fee as FeeAmount]: curPoolState },
-          }
+          return curPool
+            ? {
+                ...acc,
+                ...{ [curPool.fee as FeeAmount]: curPoolState },
+              }
+            : acc
         },
         {
           // default all states to NOT_EXISTS
@@ -101,6 +85,50 @@ export default function FeeSelector({
       ),
     [pools],
   )
+
+  const v2PairHasBetterTokenAmounts = useMemo(() => {
+    if (!handleSelectV2) return false
+    if (
+      isLoading ||
+      isError ||
+      !currencyA ||
+      !currencyB ||
+      [PairState.LOADING, PairState.INVALID].includes(pairState)
+    ) {
+      return false
+    }
+
+    // Show Add V2 button when no v2 pool or no v3 pool
+    if (
+      (!isLoading && !largestUsageFeeTier) ||
+      pairState === PairState.NOT_EXISTS ||
+      FEE_TIERS.every((tier) => poolsByFeeTier[tier] === PoolState.NOT_EXISTS)
+    ) {
+      return true
+    }
+
+    if (largestUsageFeeTierTvl) {
+      if (!(largestUsageFeeTierTvl[0] && !largestUsageFeeTier[1])) {
+        return true
+      }
+      return (
+        pair.reserve0.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[0]), pair.token0)) ||
+        pair.reserve1.greaterThan(tryParseAmount(String(largestUsageFeeTierTvl[1]), pair.token1))
+      )
+    }
+    return true
+  }, [
+    poolsByFeeTier,
+    currencyA,
+    currencyB,
+    handleSelectV2,
+    isError,
+    isLoading,
+    largestUsageFeeTier,
+    largestUsageFeeTierTvl,
+    pair,
+    pairState,
+  ])
 
   useEffect(() => {
     if (feeAmount) {
@@ -159,7 +187,7 @@ export default function FeeSelector({
       content={
         <>
           <SelectContainer>
-            {[FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH].map((_feeAmount) => {
+            {FEE_TIERS.map((_feeAmount) => {
               const { supportedChains } = FEE_AMOUNT_DETAIL[_feeAmount]
               if (supportedChains.includes(chainId)) {
                 return (
