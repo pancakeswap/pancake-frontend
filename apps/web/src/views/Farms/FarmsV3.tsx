@@ -435,7 +435,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <MessageText>
                   CAKE reward emissions for V3 farms have yet to start. You can stake your V3 LPs now. Once CAKE
                   emission begins on V3, you will begin earning CAKE.{' '}
-                  <Link fontSize="14px" href="https://twitter.com/pancakeswap">
+                  <Link fontSize="14px" href="https://twitter.com/pancakeswap" external>
                     Follow our Twitter for news about the V3 launch.
                   </Link>
                   <br />
