@@ -303,6 +303,7 @@ const usePositionsByUserFarms = (
 export function useFarmsV3WithPositions(): {
   farmsWithPositions: FarmV3DataWithPriceAndUserInfo[]
   userDataLoaded: boolean
+  cakePerSecond: string
   poolLength: number
   isLoading: boolean
 } {
@@ -311,6 +312,7 @@ export function useFarmsV3WithPositions(): {
   return {
     ...usePositionsByUserFarms(data.farmsWithPrice),
     poolLength: data.poolLength,
+    cakePerSecond: data.cakePerSecond,
     isLoading,
   }
 }

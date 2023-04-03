@@ -18,6 +18,8 @@ import {
   Image,
   Link,
   Loading,
+  Message,
+  MessageText,
   NextLinkFromReactRouter,
   OptionProps,
   PageHeader,
@@ -27,6 +29,7 @@ import {
   Toggle,
   ToggleView,
 } from '@pancakeswap/uikit'
+import differenceInHours from 'date-fns/differenceInHours'
 import BigNumber from 'bignumber.js'
 import Page from 'components/Layout/Page'
 import { useActiveChainId } from 'hooks/useActiveChainId'
@@ -177,6 +180,8 @@ type V2AndV3Farms = Array<V3FarmWithoutStakedValue | V2FarmWithoutStakedValue>
 
 export type V2StakeValueAndV3Farm = V3Farm | V2Farm
 
+const EXPECTED_V3_EPOCH_TIME = new Date(1680544800 * 1_000)
+
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { pathname, query: urlQuery } = useRouter()
   const { t } = useTranslation()
@@ -186,6 +191,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
     farmsWithPositions: farmsV3,
     poolLength: v3PoolLength,
     isLoading,
+    cakePerSecond,
     userDataLoaded: v3UserDataLoaded,
   } = useFarmsV3WithPositions()
 
@@ -398,7 +404,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
             <FarmV3MigrationBanner />
           </Box>
           <FarmFlexWrapper justifyContent="space-between">
-            <Box>
+            <Box style={{ flex: '1 1 100%' }}>
               <FarmH1 as="h1" scale="xxl" color="secondary" mb="24px">
                 {t('Farms')}
               </FarmH1>
@@ -420,6 +426,23 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 <BCakeBoosterCard />
               </Box>
             )} */}
+            {!isLoading && !!cakePerSecond && cakePerSecond === '0' && (
+              <Message
+                variant="warning"
+                // @ts-ignore
+                style={{ alignSelf: 'center' }}
+              >
+                <MessageText>
+                  CAKE reward emissions for V3 farms have yet to start. You can stake your V3 LPs now. Once CAKE
+                  emission begins on V3, you will begin earning CAKE.{' '}
+                  <Link fontSize="14px" href="https://twitter.com/pancakeswap">
+                    Follow our Twitter for news about the V3 launch.
+                  </Link>
+                  <br />
+                  <MessageText bold>ETA: ~{differenceInHours(EXPECTED_V3_EPOCH_TIME, Date.now())} hours</MessageText>
+                </MessageText>
+              </Message>
+            )}
           </FarmFlexWrapper>
         </Flex>
       </PageHeader>
