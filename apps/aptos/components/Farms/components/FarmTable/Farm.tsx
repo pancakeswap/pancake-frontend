@@ -12,7 +12,6 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
   label,
   pid,
   isReady,
-  isStable,
 }) => {
   const { data: userInfo } = useFarmUserInfoCache(String(pid))
   const stakedBalance = userInfo?.amount ? new BigNumber(userInfo.amount) : BIG_ZERO
@@ -24,8 +23,7 @@ const Farm: React.FunctionComponent<React.PropsWithChildren<FarmTableFarmTokenIn
       token={token}
       quoteToken={quoteToken}
       isReady={isReady}
-      isStable={isStable}
-      stakedBalance={stakedBalance}
+      isStaking={stakedBalance.gt(0)}
     >
       <TokenPairImage width={40} height={40} variant="inverted" primaryToken={token} secondaryToken={quoteToken} />
     </FarmTokenInfo>
