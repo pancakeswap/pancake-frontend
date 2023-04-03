@@ -28,7 +28,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Terms Of Service"),
-        href: "/terms-of-service",
+        href: "https://pancakeswap.finance/terms-of-service",
       },
     ],
   },
