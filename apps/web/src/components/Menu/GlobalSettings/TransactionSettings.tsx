@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { escapeRegExp } from 'utils'
 import { Text, Button, Input, Flex, Box, QuestionHelper } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { useUserSlippageTolerance, useUserTransactionTTL } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
+import { useUserTransactionTTL } from 'state/user/hooks'
 
 enum SlippageError {
   InvalidInput = 'InvalidInput',
@@ -18,7 +19,7 @@ const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`) // match escaped "." charact
 const THREE_DAYS_IN_SECONDS = 60 * 60 * 24 * 3
 
 const SlippageTabs = () => {
-  const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippageTolerance()
+  const [userSlippageTolerance, setUserSlippageTolerance] = useUserSlippage()
   const [ttl, setTtl] = useUserTransactionTTL()
   const [slippageInput, setSlippageInput] = useState('')
   const [deadlineInput, setDeadlineInput] = useState('')
@@ -86,7 +87,7 @@ const SlippageTabs = () => {
             text={t(
               'Setting a high slippage tolerance can help transactions succeed, but you may not get such a good price. Use with caution.',
             )}
-            placement="top-start"
+            placement="top"
             ml="4px"
           />
         </Flex>
@@ -167,7 +168,7 @@ const SlippageTabs = () => {
           <Text>{t('Tx deadline (mins)')}</Text>
           <QuestionHelper
             text={t('Your transaction will revert if it is left confirming for longer than this time.')}
-            placement="top-start"
+            placement="top"
             ml="4px"
           />
         </Flex>

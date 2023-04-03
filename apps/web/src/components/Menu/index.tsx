@@ -1,26 +1,32 @@
-import { useMemo } from 'react'
-import { useRouter } from 'next/router'
-import { Menu as UikitMenu, NextLinkFromReactRouter, footerLinks } from '@pancakeswap/uikit'
-import { useTranslation, languageList } from '@pancakeswap/localization'
-import PhishingWarningBanner from 'components/PhishingWarningBanner'
+import { languageList, useTranslation } from '@pancakeswap/localization'
+import { footerLinks, Menu as UikitMenu, NextLinkFromReactRouter, useModal } from '@pancakeswap/uikit'
+import USCitizenConfirmModal from 'components/Modal/USCitizenConfirmModal'
 import { NetworkSwitcher } from 'components/NetworkSwitcher'
-import useTheme from 'hooks/useTheme'
+import PhishingWarningBanner from 'components/PhishingWarningBanner'
 import { useCakeBusdPrice } from 'hooks/useBUSDPrice'
-import { usePhishingBannerManager } from 'state/user/hooks'
-import UserMenu from './UserMenu'
-import { useMenuItems } from './hooks/useMenuItems'
+import useTheme from 'hooks/useTheme'
+import { useRouter } from 'next/router'
+import { useMemo } from 'react'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import GlobalSettings from './GlobalSettings'
-import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
 import { SettingsMode } from './GlobalSettings/types'
+import { useMenuItems } from './hooks/useMenuItems'
+import UserMenu from './UserMenu'
+import { getActiveMenuItem, getActiveSubMenuItem } from './utils'
+
+const LinkComponent = (linkProps) => {
+  return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
+}
 
 const Menu = (props) => {
   const { isDark, setTheme } = useTheme()
   const cakePriceUsd = useCakeBusdPrice({ forceMainnet: true })
   const { currentLanguage, setLanguage, t } = useTranslation()
   const { pathname } = useRouter()
-  const [showPhishingWarningBanner] = usePhishingBannerManager()
+  const [onUSCitizenModalPresent] = useModal(<USCitizenConfirmModal />, true, false, 'usCitizenConfirmModal')
+  const [showPhishingWarningBanner] = usePhishingBanner()
 
-  const menuItems = useMenuItems()
+  const menuItems = useMenuItems(onUSCitizenModalPresent)
 
   const activeMenuItem = getActiveMenuItem({ menuConfig: menuItems, pathname })
   const activeSubMenuItem = getActiveSubMenuItem({ menuItem: activeMenuItem, pathname })
@@ -36,9 +42,7 @@ const Menu = (props) => {
   return (
     <>
       <UikitMenu
-        linkComponent={(linkProps) => {
-          return <NextLinkFromReactRouter to={linkProps.href} {...linkProps} prefetch={false} />
-        }}
+        linkComponent={LinkComponent}
         rightSide={
           <>
             <GlobalSettings mode={SettingsMode.GLOBAL} />

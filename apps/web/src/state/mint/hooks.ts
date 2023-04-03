@@ -17,7 +17,7 @@ import { FetchStatus } from 'config/constants/types'
 import { useTradeExactIn } from 'hooks/Trades'
 import { useZapContract } from 'hooks/useContract'
 import useNativeCurrency from 'hooks/useNativeCurrency'
-import { PairState, usePair } from 'hooks/usePairs'
+import { PairState, useV2Pair } from 'hooks/usePairs'
 import { usePreviousValue } from '@pancakeswap/hooks'
 import { useSWRContract } from 'hooks/useSWRContract'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -95,7 +95,7 @@ export function useDerivedMintInfo(
   )
 
   // pair
-  const [pairState, pair] = usePair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
+  const [pairState, pair] = useV2Pair(currencies[Field.CURRENCY_A], currencies[Field.CURRENCY_B])
 
   const totalSupply = useTotalSupply(pair?.liquidityToken)
 
@@ -394,7 +394,7 @@ export function useZapIn({
     [parsedAmounts],
   )
 
-  const zapContract = useZapContract()
+  const zapContract = useZapContract(false)
 
   const rebalancing =
     !!zapTokenCheckedA && !!zapTokenCheckedB && !!parsedAmounts[Field.CURRENCY_A] && !!parsedAmounts[Field.CURRENCY_B]

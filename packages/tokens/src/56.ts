@@ -1,4 +1,5 @@
 import { ChainId, WBNB, ERC20Token } from '@pancakeswap/sdk'
+
 import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
 
 export const bscTokens = {
@@ -2528,5 +2529,13 @@ export const bscTokens = {
     'ID',
     'SPACE ID',
     'https://space.id/',
+  ),
+  rdnt: new ERC20Token(
+    ChainId.BSC,
+    '0xf7DE7E8A6bd59ED41a4b5fe50278b3B7f31384dF',
+    18,
+    'RDNT',
+    'Radiant',
+    'https://radiant.capital/',
   ),
 }

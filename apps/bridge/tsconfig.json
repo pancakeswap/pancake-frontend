@@ -1,6 +1,6 @@
 {
   "extends": "tsconfig/nextjs.json",
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "./src/**/*.ts", "./src/**/*.tsx"],
   "compilerOptions": {
     "target": "ES2015",
     "baseUrl": ".",

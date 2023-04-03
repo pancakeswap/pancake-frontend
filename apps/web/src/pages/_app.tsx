@@ -1,6 +1,7 @@
 import '@pancakeswap/ui/css/reset.css'
 import { ResetCSS, ScrollToTopButtonV2, ToastListener } from '@pancakeswap/uikit'
 import BigNumber from 'bignumber.js'
+import { Analytics } from '@vercel/analytics/react'
 import GlobalCheckClaimStatus from 'components/GlobalCheckClaimStatus'
 import { NetworkModal } from 'components/NetworkModal'
 import { FixedSubgraphHealthIndicator } from 'components/SubgraphHealthIndicator/FixedSubgraphHealthIndicator'
@@ -98,6 +99,7 @@ function MyApp(props: AppProps<{ initialReduxState: any }>) {
           </PersistGate>
         </Blocklist>
       </Providers>
+      <Analytics />
       <Script
         strategy="afterInteractive"
         id="google-tag"

@@ -1,19 +1,70 @@
-import { INFO_CLIENT, STABLESWAP_SUBGRAPH_CLIENT } from 'config/constants/endpoints'
+import { ChainId } from '@pancakeswap/sdk'
+import { INFO_CLIENT, INFO_CLIENT_ETH, STABLESWAP_SUBGRAPH_CLIENT, V3_SUBGRAPH_URLS } from 'config/constants/endpoints'
 import { ONE_DAY_UNIX, ONE_HOUR_SECONDS } from 'config/constants/info'
 import { getUnixTime, startOfHour, sub } from 'date-fns'
+import request from 'graphql-request'
 import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
+import { multiChainName } from 'state/info/constant'
 import { Block } from 'state/info/types'
 import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
 import { multiQuery } from 'views/Info/utils/infoQueryHelpers'
-import { getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
+import { getTVL, getDerivedPrices, getDerivedPricesQueryConstructor } from '../queries/getDerivedPrices'
 import { PairDataTimeWindowEnum } from '../types'
 
-const getTokenDerivedUSDCPrices = async (tokenAddress: string, blocks: Block[], isStableStable?: boolean) => {
+const PROTOCOL = ['v2', 'v3', 'stable'] as const
+type Protocol = (typeof PROTOCOL)[number]
+
+type ProtocolEndpoint = Record<Protocol, string>
+
+const SWAP_INFO_BY_CHAIN = {
+  [ChainId.BSC]: {
+    v2: INFO_CLIENT,
+    stable: STABLESWAP_SUBGRAPH_CLIENT,
+    // v3: V3_SUBGRAPH_URLS[ChainId.BSC],
+  },
+  [ChainId.ETHEREUM]: {
+    v2: INFO_CLIENT_ETH,
+    // v3: V3_SUBGRAPH_URLS[ChainId.ETHEREUM],
+  },
+  [ChainId.BSC_TESTNET]: {
+    v3: V3_SUBGRAPH_URLS[ChainId.BSC_TESTNET],
+  },
+  [ChainId.GOERLI]: {},
+} satisfies Record<ChainId, Partial<ProtocolEndpoint>>
+
+export const getTokenBestTvlProtocol = async (tokenAddress: string, chainId: ChainId): Promise<Protocol | null> => {
+  const infos = SWAP_INFO_BY_CHAIN[chainId]
+  if (infos) {
+    const [v2, v3, stable] = await Promise.allSettled([
+      'v2' in infos ? request(infos.v2, getTVL(tokenAddress.toLowerCase())) : Promise.resolve(),
+      'v3' in infos ? request(infos.v3, getTVL(tokenAddress.toLowerCase(), true)) : Promise.resolve(),
+      'stable' in infos ? request(infos.stable, getTVL(tokenAddress.toLowerCase())) : Promise.resolve(),
+    ])
+
+    const results = [v2, v3, stable]
+    let bestProtocol: Protocol = 'v2'
+    let bestTVL = 0
+    for (const [index, result] of results.entries()) {
+      if (result.status === 'fulfilled' && result.value && result.value.token) {
+        if (+result.value.token.totalValueLocked > bestTVL) {
+          bestTVL = +result.value.token.totalValueLocked
+          bestProtocol = PROTOCOL[index]
+        }
+      }
+    }
+
+    return bestProtocol
+  }
+
+  return null
+}
+
+const getTokenDerivedUSDCPrices = async (tokenAddress: string, blocks: Block[], endpoint: string) => {
   const rawPrices: any | undefined = await multiQuery(
     getDerivedPricesQueryConstructor,
     getDerivedPrices(tokenAddress, blocks),
-    isStableStable ? STABLESWAP_SUBGRAPH_CLIENT : INFO_CLIENT,
+    endpoint,
     200,
   )
 
@@ -84,31 +135,33 @@ const fetchDerivedPriceData = async (
   token0Address: string,
   token1Address: string,
   timeWindow: PairDataTimeWindowEnum,
-  // token0 has StableSwap involved
-  token0StableStable?: boolean,
-  // token1 has StableSwap involved
-  token1StableStable?: boolean,
+  protocol0: Protocol,
+  protocol1: Protocol,
+  chainId: ChainId,
 ) => {
   const interval = getInterval(timeWindow)
   const endTimestamp = getUnixTime(new Date())
   const startTimestamp = getUnixTime(startOfHour(sub(endTimestamp * 1000, { days: getSkipDaysToStart(timeWindow) })))
   const timestamps = []
   let time = startTimestamp
+  if (!SWAP_INFO_BY_CHAIN[chainId][protocol0] || !SWAP_INFO_BY_CHAIN[chainId][protocol1]) {
+    return null
+  }
   while (time <= endTimestamp) {
     timestamps.push(time)
     time += interval
   }
 
   try {
-    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500)
+    const blocks = await getBlocksFromTimestamps(timestamps, 'asc', 500, multiChainName[chainId])
     if (!blocks || blocks.length === 0) {
       console.error('Error fetching blocks for timestamps', timestamps)
       return null
     }
     blocks.pop() // the bsc graph is 32 block behind so pop the last
     const [token0DerivedUSD, token1DerivedUSD] = await Promise.all([
-      getTokenDerivedUSDCPrices(token0Address, blocks, token0StableStable),
-      getTokenDerivedUSDCPrices(token1Address, blocks, token1StableStable),
+      getTokenDerivedUSDCPrices(token0Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol0]),
+      getTokenDerivedUSDCPrices(token1Address, blocks, SWAP_INFO_BY_CHAIN[chainId][protocol1]),
     ])
     return { token0DerivedUSD, token1DerivedUSD }
   } catch (error) {

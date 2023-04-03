@@ -7,7 +7,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { useLPTokensWithBalanceByAccount } from 'views/Swap/StableSwap/hooks/useStableConfig'
 import FullPositionCard, { StableFullPositionCard } from '../../components/PositionCard'
 import { useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks'
-import { usePairs, PairState } from '../../hooks/usePairs'
+import { useV2Pairs, PairState } from '../../hooks/usePairs'
 import { toV2LiquidityToken, useTrackedTokenPairs } from '../../state/user/hooks'
 import Dots from '../../components/Loader/Dots'
 import { AppHeader, AppBody } from '../../components/App'
@@ -48,7 +48,7 @@ export default function Pool() {
     [tokenPairsWithLiquidityTokens, v2PairsBalances],
   )
 
-  const v2Pairs = usePairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
+  const v2Pairs = useV2Pairs(liquidityTokensWithBalances.map(({ tokens }) => tokens))
   const v2IsLoading =
     fetchingV2PairBalances ||
     v2Pairs?.length < liquidityTokensWithBalances.length ||
@@ -88,13 +88,13 @@ export default function Pool() {
     if (stablePairs?.length > 0) {
       positionCards = [
         ...positionCards,
-        ...stablePairs?.map((stablePair, index) => (
+        ...(stablePairs?.map((stablePair, index) => (
           <StableFullPositionCard
             key={`stable-${stablePair.liquidityToken.address}`}
             pair={stablePair}
             mb={index < stablePairs.length - 1 ? '16px' : 0}
           />
-        )),
+        )) || []),
       ]
     }
 
@@ -121,7 +121,7 @@ export default function Pool() {
                 {t("Don't see a pair you joined?")}
               </Text>
               <Link href="/find" passHref>
-                <Button id="import-pool-link" variant="secondary" scale="sm" as="a">
+                <Button id="import-pool-link" variant="secondary" scale="sm">
                   {t('Find other LP tokens')}
                 </Button>
               </Link>

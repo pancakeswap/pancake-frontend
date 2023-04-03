@@ -10,7 +10,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useCallback } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
 import { getBalanceAmount } from '@pancakeswap/utils/formatBalance'
 import MultiChainHarvestModal from 'views/Farms/components/MultiChainHarvestModal'
@@ -65,7 +65,7 @@ export const HarvestAction: React.FunctionComponent<React.PropsWithChildren<Harv
   const { toastSuccess } = useToast()
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const earningsBigNumber = new BigNumber(userData.earnings)
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
   let earnings = BIG_ZERO
   let earningsBusd = 0
   let displayBalance = userDataReady ? earnings.toFixed(5, BigNumber.ROUND_DOWN) : <Skeleton width={60} />

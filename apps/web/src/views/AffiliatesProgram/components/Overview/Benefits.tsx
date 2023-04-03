@@ -31,18 +31,23 @@ const StyledContainer = styled(Flex)`
 
 const BenefitsList = [
   {
-    title: <Trans>Market-Leading Commission</Trans>,
-    desc: <Trans>Earn up to 20% commissions on every successful referral.</Trans>,
-    imgUrl: '/images/affiliates-program/high-commission-rates.png',
+    title: <Trans>Partner with the Leading Brand in the Industry</Trans>,
+    desc: (
+      <Trans>
+        Forge a partnership with the most reputable global brand in the industry to make DeFi accessible and better for
+        everyone
+      </Trans>
+    ),
+    imgUrl: '/images/affiliates-program/partner.png',
   },
   {
-    title: <Trans>User-Friendly Platform</Trans>,
-    desc: <Trans>Provide a seamless experience for your referrals with our user-friendly platform</Trans>,
+    title: <Trans>User Friendly Platform</Trans>,
+    desc: <Trans>Provide a seamless experience for your referrals with our user friendly platform</Trans>,
     imgUrl: '/images/affiliates-program/user-friendly-platform.png',
   },
   {
     title: <Trans>Customize Profit-Sharing</Trans>,
-    desc: <Trans>Share a percentage of rewards with your community</Trans>,
+    desc: <Trans>Share the rewards with your community</Trans>,
     imgUrl: '/images/affiliates-program/profit-sharing.png',
   },
   {
@@ -52,7 +57,7 @@ const BenefitsList = [
   },
   {
     title: <Trans>Personalized Support</Trans>,
-    desc: <Trans>Personalized assistance from our account managers</Trans>,
+    desc: <Trans>Personalized assistance from our community managers</Trans>,
     imgUrl: '/images/affiliates-program/personalized-support.png',
   },
 ]
@@ -75,10 +80,6 @@ const Benefits = () => {
         <Heading maxWidth={['700px']} textAlign="center" scale="xl">
           {t('Unlock the Power of PancakeSwap Affiliate Benefits')}
         </Heading>
-        <Text color="textSubtle" margin={['48px 0']}>
-          With a wide variety of cryptocurrency options and user-friendly platform, you&aposll be able to offer your
-          audience a seamless investment experience.
-        </Text>
         <StyledContainer>
           {BenefitsList.map((benefit, index) => (
             // eslint-disable-next-line react/no-array-index-key

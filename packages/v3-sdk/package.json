@@ -1,0 +1,67 @@
+{
+  "name": "@pancakeswap/v3-sdk",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.0",
+  "description": "⚒️ An SDK for building applications on top of Pancakeswap V3",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "pancakeswap",
+    "bsc"
+  ],
+  "sideEffects": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest --run",
+    "coverage": "vitest run --coverage",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+  },
+  "dependencies": {
+    "@pancakeswap/sdk": "*",
+    "@pancakeswap/swap-sdk-core": "*",
+    "@pancakeswap/tokens": "*",
+    "@uniswap/v3-staker": "1.0.0",
+    "big.js": "^5.2.2",
+    "decimal.js-light": "^2.5.0",
+    "tiny-invariant": "^1.1.0",
+    "tiny-warning": "^1.0.3",
+    "toformat": "^2.0.0",
+    "jsbi": "^3.1.4"
+  },
+  "peerDependencies": {
+    "@ethersproject/bignumber": "^5.0.0",
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0",
+    "@ethersproject/address": "^5.0.0"
+  },
+  "devDependencies": {
+    "@ethersproject/bignumber": "^5.0.0",
+    "@ethersproject/abi": "^5.0.0",
+    "@ethersproject/solidity": "^5.0.0",
+    "@types/jest": "^24.0.25"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "semi": false,
+    "singleQuote": true
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  }
+}

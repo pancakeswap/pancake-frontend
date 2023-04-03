@@ -15,21 +15,23 @@ const withVanillaExtract = createVanillaExtractPlugin()
 const sentryWebpackPluginOptions =
   process.env.VERCEL_ENV === 'production'
     ? {
-        // Additional config options for the Sentry Webpack plugin. Keep in mind that
-        // the following options are set automatically, and overriding them is not
-        // recommended:
-        //   release, url, org, project, authToken, configFile, stripPrefix,
-        //   urlPrefix, include, ignore
-        silent: false, // Logging when deploying to check if there is any problem
-        validate: true,
-        // https://github.com/getsentry/sentry-webpack-plugin#options.
-      }
+      // Additional config options for the Sentry Webpack plugin. Keep in mind that
+      // the following options are set automatically, and overriding them is not
+      // recommended:
+      //   release, url, org, project, authToken, configFile, stripPrefix,
+      //   urlPrefix, include, ignore
+      silent: false, // Logging when deploying to check if there is any problem
+      validate: true,
+      hideSourceMaps: false,
+      // https://github.com/getsentry/sentry-webpack-plugin#options.
+    }
     : {
-        silent: true, // Suppresses all logs
-        dryRun: !process.env.SENTRY_AUTH_TOKEN,
-      }
+      hideSourceMaps: false,
+      silent: true, // Suppresses all logs
+      dryRun: !process.env.SENTRY_AUTH_TOKEN,
+    }
 
-const blocksPage = ['/affiliates-program', '/affiliates-program/dashboard']
+const blocksPage = ['/trading-reward', '/api/routing']
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -50,6 +52,7 @@ const config = {
     '@pancakeswap/token-lists',
     '@pancakeswap/utils',
     '@pancakeswap/tokens',
+    '@pancakeswap/v3-sdk',
     '@pancakeswap/smart-router',
     '@wagmi',
     'wagmi',
@@ -77,6 +80,10 @@ const config = {
       {
         source: '/info/pool/:address',
         destination: '/info/pools/:address',
+      },
+      {
+        source: '/nodeRealApi/:path*',
+        destination: 'https://pancake.nodereal.cc/graphql',
       },
     ]
   },

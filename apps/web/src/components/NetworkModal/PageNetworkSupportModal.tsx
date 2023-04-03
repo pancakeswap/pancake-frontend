@@ -23,7 +23,9 @@ export function PageNetworkSupportModal() {
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const historyManager = useHistory()
 
-  const lastValidPath = historyManager?.history?.find((h) => ['/swap', 'liquidity', '/', '/info'].includes(h))
+  const lastValidPath = historyManager?.history?.find((h) =>
+    ['/swap', 'liquidity', '/', '/info', '/v3Info'].includes(h),
+  )
 
   const menuItems = useMenuItems()
   const { pathname, push } = useRouter()
@@ -80,9 +82,7 @@ export function PageNetworkSupportModal() {
         )}
         {foundChain && lastValidPath && (
           <NextLink href={lastValidPath ?? ''} passHref>
-            <Button width="100%" as="a">
-              {t('Stay on %chain%', { chain: foundChain.name })}
-            </Button>
+            <Button width="100%">{t('Stay on %chain%', { chain: foundChain.name })}</Button>
           </NextLink>
         )}
       </Grid>

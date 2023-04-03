@@ -21,4 +21,5 @@ export interface ModalProps extends ModalWrapperProps {
   onBack?: () => void;
   bodyPadding?: string;
   headerBackground?: string;
+  headerRightSlot?: React.ReactNode;
 }

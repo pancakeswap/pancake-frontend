@@ -3,7 +3,7 @@ import { Currency, Trade, TradeType } from '@pancakeswap/aptos-swap-sdk'
 import { QuestionHelper, Text, RowBetween, RowFixed, AutoColumn } from '@pancakeswap/uikit'
 import { BUYBACK_FEE, LP_HOLDERS_FEE, TOTAL_FEE, TREASURY_FEE } from 'config/constants/info'
 import { Field } from 'state/swap'
-import { useUserSlippage } from 'state/user'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { computeSlippageAdjustedAmounts, computeTradePriceBreakdown } from 'utils/exchange'
 import FormattedPriceImpact from './FormattedPriceImpact'
 import SwapRoute from './SwapRoute'
@@ -106,7 +106,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
           <TradeSummary trade={trade} allowedSlippage={allowedSlippage} />
           {showRoute && (
             <>
-              <RowBetween py="0" px="16px" flexWrap="nowrap">
+              <RowBetween py="0px" px="16px" flexWrap="nowrap">
                 <span style={{ display: 'flex', alignItems: 'center' }}>
                   <Text fontSize="14px" color="textSubtle">
                     {t('Route')}
@@ -114,7 +114,7 @@ export function AdvancedSwapDetails({ trade }: AdvancedSwapDetailsProps) {
                   <QuestionHelper
                     text={t('Routing through these tokens resulted in the best price for your trade.')}
                     ml="4px"
-                    placement="top-start"
+                    placement="top"
                   />
                 </span>
                 <SwapRoute trade={trade} />

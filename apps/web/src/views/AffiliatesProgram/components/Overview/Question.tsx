@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Card, CardBody, CardHeader, Heading, Text, Flex, PageSection } from '@pancakeswap/uikit'
+import { Card, CardBody, CardHeader, Heading, Text, Flex, PageSection, Link } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
 import FoldableText from 'components/FoldableSection/FoldableText'
 import useTheme from 'hooks/useTheme'
@@ -54,7 +54,7 @@ const Question = () => {
         <Card>
           <CardHeader>
             <Heading color="secondary" scale="lg">
-              {t('Details')}
+              {t('FAQ')}
             </Heading>
           </CardHeader>
           <StyledCardBody>
@@ -71,11 +71,26 @@ const Question = () => {
                 {t('Strong understanding of PancakeSwap and our ecosystem')}
               </StyledListText>
             </FoldableText>
-            <FoldableText title={t('Pairs must meet the following eligibility criteria:')} mt="24px">
+            <FoldableText title={t('How do I earn commissions as an affiliate?')} mt="24px">
               <StyledListText color="textSubtle">
-                {t('Pairs must be in “PancakeSwap Extended” official token list')}
+                {t('You earn commissions from most trading fees paid by your invitees for a limited period of time')}
               </StyledListText>
               <StyledListText color="textSubtle">
+                {t('Trading pairs must meet the following eligibility criteria:')}
+              </StyledListText>
+              <StyledListText ml="16px" color="textSubtle">
+                {t('Pairs must be in “PancakeSwap Extended” Official')}
+                <Link
+                  style={{ display: 'inline-block' }}
+                  external
+                  href="https://tokenlists.org/token-list?url=https://tokens.pancakeswap.finance/pancakeswap-extended.json"
+                >
+                  <Text color="primary" ml="4px" as="span">
+                    {t('token list')}
+                  </Text>
+                </Link>
+              </StyledListText>
+              <StyledListText ml="16px" color="textSubtle">
                 {t('Pairs must include 1 major token (BNB, BTC, BUSD, ETH, USDT and USDC)')}
               </StyledListText>
             </FoldableText>

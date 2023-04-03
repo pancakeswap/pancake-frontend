@@ -1,30 +1,35 @@
-import { Card, Flex, Text, Button, Box } from '@pancakeswap/uikit'
-import { LightGreyCard } from 'components/Card'
-import styled from 'styled-components'
+// import { Card, Flex, Text, Button, Box } from '@pancakeswap/uikit'
+// import { LightGreyCard } from 'components/Card'
+// import styled from 'styled-components'
+import { Card, Flex, Text, Box } from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization'
+import ComingSoon from 'views/AffiliatesProgram/components/Dashboard/ComingSoon'
 
-const CardContainer = styled(Flex)`
-  flex-direction: column;
+// const CardContainer = styled(Flex)`
+//   flex-direction: column;
 
-  ${LightGreyCard} {
-    margin: 0 0 16px 0;
-    &:last-child {
-      margin: 0;
-    }
-  }
+//   ${LightGreyCard} {
+//     margin: 0 0 16px 0;
+//     &:last-child {
+//       margin: 0;
+//     }
+//   }
 
-  ${({ theme }) => theme.mediaQueries.md} {
-    flex-direction: row;
+//   ${({ theme }) => theme.mediaQueries.md} {
+//     flex-direction: row;
 
-    ${LightGreyCard} {
-      margin: 0 16px 0 0;
-      &:last-child {
-        margin: 0;
-      }
-    }
-  }
-`
+//     ${LightGreyCard} {
+//       margin: 0 16px 0 0;
+//       &:last-child {
+//         margin: 0;
+//       }
+//     }
+//   }
+// `
 
 const ClaimReward = () => {
+  const { t } = useTranslation()
+
   return (
     <Box mt="24px">
       <Flex maxWidth={['100%', '100%', '100%', '100%', '100%', '700px']} m="auto 0 100px auto">
@@ -38,13 +43,14 @@ const ClaimReward = () => {
                 fontSize={['12px']}
                 textTransform="uppercase"
               >
-                claim your rewards
+                {t('claim your rewards')}
               </Text>
-              <Button display={['none', 'none', 'none', 'block']} scale="sm" variant="secondary">
+              {/* <Button display={['none', 'none', 'none', 'block']} scale="sm" variant="secondary">
                 Claim Reward
-              </Button>
+              </Button> */}
             </Flex>
-            <CardContainer>
+            <ComingSoon />
+            {/* <CardContainer>
               <LightGreyCard>
                 <Text bold fontSize="12px" mb="22px">
                   v2/v3 Swaps & StableSwap
@@ -91,7 +97,7 @@ const ClaimReward = () => {
             </CardContainer>
             <Button display={['block', 'block', 'block', 'none']} variant="secondary" mt="18px" width="100%">
               Claim Reward
-            </Button>
+            </Button> */}
           </Flex>
         </Card>
       </Flex>

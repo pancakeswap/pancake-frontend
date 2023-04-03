@@ -65,7 +65,7 @@ const Banner = () => {
         <Text bold color="secondary" fontSize={['40px']}>
           {t('Dashboard')}
         </Text>
-        <Text fontSize={['20px']}>{t('Manage your affiliates link, see how much you’ve earned')}</Text>
+        <Text fontSize={['20px']}>{t('Manage your affiliate link, see how much you’ve earned')}</Text>
       </Box>
     </PageSection>
   )

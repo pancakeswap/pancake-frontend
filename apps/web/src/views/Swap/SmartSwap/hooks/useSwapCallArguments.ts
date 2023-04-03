@@ -10,7 +10,11 @@ import {
   TradeOptionsDeadline,
   TradeType,
 } from '@pancakeswap/sdk'
-import { isStableSwapPair, Trade, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import {
+  LegacyRouter,
+  LegacyTrade as Trade,
+  LegacyTradeWithStableSwap as TradeWithStableSwap,
+} from '@pancakeswap/smart-router/evm'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { BIPS_BASE } from 'config/constants/exchange'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
@@ -18,6 +22,8 @@ import useTransactionDeadline from 'hooks/useTransactionDeadline'
 import { useMemo } from 'react'
 import invariant from 'tiny-invariant'
 import { useSmartRouterContract } from '../utils/exchange'
+
+const { isStableSwapPair } = LegacyRouter
 
 const NATIVE_CURRENCY_ADDRESS = getAddress('0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE')
 

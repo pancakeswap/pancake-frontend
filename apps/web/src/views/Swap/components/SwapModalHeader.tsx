@@ -3,6 +3,7 @@ import { TradeType, CurrencyAmount, Currency, Percent } from '@pancakeswap/sdk'
 import { Button, Text, ErrorIcon, ArrowDownIcon, AutoColumn } from '@pancakeswap/uikit'
 import { Field } from 'state/swap/actions'
 import { useTranslation } from '@pancakeswap/localization'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { warningSeverity, basisPointsToPercent } from 'utils/exchange'
 import { CurrencyLogo } from 'components/Logo'
 import { RowBetween, RowFixed } from 'components/Layout/Row'
@@ -45,8 +46,8 @@ export default function SwapModalHeader({
 
   const amount =
     tradeType === TradeType.EXACT_INPUT
-      ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(6)
-      : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(6)
+      ? formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 6)
+      : formatAmount(slippageAdjustedAmounts[Field.INPUT], 6)
   const symbol = tradeType === TradeType.EXACT_INPUT ? outputAmount.currency.symbol : inputAmount.currency.symbol
 
   const tradeInfoText = useMemo(() => {
@@ -75,7 +76,7 @@ export default function SwapModalHeader({
         <RowFixed gap="4px">
           <CurrencyLogo currency={inputAmount.currency} size="24px" style={{ marginRight: '12px' }} />
           <TruncatedText fontSize="24px" color={inputTextColor}>
-            {inputAmount.toSignificant(6)}
+            {formatAmount(inputAmount, 6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed gap="0px">
@@ -100,7 +101,7 @@ export default function SwapModalHeader({
                 : 'text'
             }
           >
-            {outputAmount.toSignificant(6)}
+            {formatAmount(outputAmount, 6)}
           </TruncatedText>
         </RowFixed>
         <RowFixed>

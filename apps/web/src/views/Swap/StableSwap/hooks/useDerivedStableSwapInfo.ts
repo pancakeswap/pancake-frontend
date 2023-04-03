@@ -6,7 +6,7 @@ import { isAddress } from 'utils'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
 import { Field } from 'state/swap/actions'
 import { computeSlippageAdjustedAmounts } from 'utils/exchange'
-import { useUserSlippageTolerance } from 'state/user/hooks'
+import { useUserSlippage } from '@pancakeswap/utils/user'
 import { useCurrencyBalances } from 'state/wallet/hooks'
 import { useMemo } from 'react'
 import useStableTradeExactIn, { StableTrade } from './useStableTradeExactIn'
@@ -71,7 +71,7 @@ export function useDerivedStableSwapInfo(
     inputError = inputError ?? t('Enter a recipient')
   }
 
-  const [allowedSlippage] = useUserSlippageTolerance()
+  const [allowedSlippage] = useUserSlippage()
 
   const slippageAdjustedAmounts = v2Trade && allowedSlippage && computeSlippageAdjustedAmounts(v2Trade, allowedSlippage)
 

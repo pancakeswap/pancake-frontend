@@ -23,7 +23,7 @@ const FarmTransactionModal: React.FC<React.PropsWithChildren<FarmTransactionModa
     let title = ''
 
     if (pickedData?.nonBscFarm) {
-      const { type, status } = pickedData?.nonBscFarm
+      const { type, status } = pickedData?.nonBscFarm || {}
       const isPending = status === FarmTransactionStatus.PENDING
       if (type === NonBscFarmStepType.STAKE) {
         title = isPending ? t('Staking') : t('Staked!')
