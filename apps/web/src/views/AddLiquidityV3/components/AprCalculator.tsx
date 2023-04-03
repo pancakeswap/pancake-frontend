@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token, ZERO } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Token, ZERO, Price } from '@pancakeswap/sdk'
 import {
   useRoi,
   RoiCalculatorModalV2,
@@ -47,6 +47,14 @@ const AprButtonContainer = styled(Flex)`
   cursor: pointer;
 `
 
+const deriveUSDPrice = (baseUSDPrice?: Price<Currency, Currency>, pairPrice?: Price<Currency, Currency>) => {
+  if (baseUSDPrice && pairPrice && pairPrice.greaterThan(ZERO)) {
+    const baseUSDPriceFloat = parseFloat(formatPrice(baseUSDPrice, 6))
+    return baseUSDPriceFloat / parseFloat(formatPrice(pairPrice, 6))
+  }
+  return undefined
+}
+
 export function AprCalculator({
   baseCurrency,
   quoteCurrency,
@@ -91,11 +99,13 @@ export function AprCalculator({
 
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
-  const currencyAUsdPrice = parseFloat(formatPrice(baseUSDPrice, 6) || '0')
+  const currencyAUsdPrice = baseUSDPrice
+    ? parseFloat(formatPrice(baseUSDPrice, 6) || '0')
+    : deriveUSDPrice(quoteUSDPrice, price?.baseCurrency.equals(quoteCurrency) ? price : price?.invert())
   const currencyBUsdPrice =
-    price && price.greaterThan(ZERO)
-      ? currencyAUsdPrice / parseFloat(formatPrice(inverted ? price.invert() : price, 6))
-      : parseFloat(formatPrice(quoteUSDPrice, 6) || '0')
+    baseUSDPrice &&
+    (deriveUSDPrice(baseUSDPrice, price?.baseCurrency.equals(baseCurrency) ? price : price?.invert()) ||
+      parseFloat(formatPrice(quoteUSDPrice, 6) || '0'))
 
   const depositUsd = useMemo(
     () =>
