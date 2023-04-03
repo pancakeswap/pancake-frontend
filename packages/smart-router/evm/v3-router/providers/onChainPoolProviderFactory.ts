@@ -219,6 +219,10 @@ function createOnChainPoolFactory<TPool extends Pool, TPoolMeta extends PoolMeta
       calls = [...calls, ...poolCalls]
     }
 
+    if (!calls.length) {
+      return []
+    }
+
     const results = await multicallv2({
       abi,
       calls,
