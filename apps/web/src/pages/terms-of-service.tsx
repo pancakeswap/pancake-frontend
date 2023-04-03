@@ -19,7 +19,6 @@ const Container = styled(Flex)`
   }
 
   p {
-    text-align: justify;
     opacity: 0.94;
     margin-bottom: 1em;
     line-height: 24px;
@@ -44,7 +43,7 @@ const TermsOfService = () => {
           https://pancakeswap.finance
         </Link>
         <Text as="span">
-          and any subdomains associated with the website. You must read this Agreement carefully as it governs your use
+          and any subdomains associated with the Website. You must read this Agreement carefully as it governs your use
           of the Website. By accessing or using the Website, you signify that you have read, understand, and agree to be
           bound by this Agreement in its entirety. If you do not agree, you are not authorized to access or use the
           Website and should not use the Website.
@@ -81,7 +80,7 @@ const TermsOfService = () => {
           a current version of the Agreement at
         </Text>
         <Link m="0 4px" display="inline !important" href="https://pancakeswap.finance/terms-of-service">
-          https://pancakeswap.finance/terms-of-service
+          https://pancakeswap.finance/terms-of-service.
         </Link>
         <Text as="span">
           All modifications will be effective when they are posted, and your continued accessing or use of the Website
