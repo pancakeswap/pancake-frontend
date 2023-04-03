@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Heading, Text } from '@pancakeswap/uikit'
+import { Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
 // import { useWatchlistTokens } from 'state/user/hooks'
@@ -7,7 +7,6 @@ import { useTopTokensData } from 'views/V3Info/hooks'
 import TokenTable from '../components/TokenTable'
 import TopTokenMovers from '../components/TopTokenMovers'
 
-const watchListTokens = []
 const TokensOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
 
@@ -26,7 +25,7 @@ const TokensOverview: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <Page>
-      <Heading scale="lg" mb="16px">
+      {/* <Heading scale="lg" mb="16px">
         {t('Your Watchlist')}
       </Heading>
       {watchListTokens.length > 0 ? (
@@ -37,7 +36,7 @@ const TokensOverview: React.FC<React.PropsWithChildren> = () => {
             {t('Saved tokens will appear here')}
           </Text>
         </Card>
-      )}
+      )} */}
       <TopTokenMovers />
       <Heading scale="lg" mt="40px" mb="16px" id="info-tokens-title">
         {t('All Tokens')}

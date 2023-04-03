@@ -283,7 +283,7 @@ const Search = () => {
               <OptionButton enabled={!showWatchlist} onClick={() => setShowWatchlist(false)}>
                 {t('Search')}
               </OptionButton>
-              <OptionButton enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
+              <OptionButton style={{ display: 'none' }} enabled={showWatchlist} onClick={() => setShowWatchlist(true)}>
                 {t('Watchlist')}
               </OptionButton>
             </Flex>

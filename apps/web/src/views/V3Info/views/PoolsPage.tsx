@@ -1,12 +1,11 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Card, Heading, Text } from '@pancakeswap/uikit'
+import { Heading } from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import { useMemo } from 'react'
 import PoolTable from '../components/PoolTable'
 
 import { useTopPoolsData } from '../hooks'
 
-const watchListPoolsData = []
 const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const topPoolsData = useTopPoolsData()
@@ -23,10 +22,10 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
 
   return (
     <Page>
-      <Heading scale="lg" mb="16px">
+      {/* <Heading scale="lg" mb="16px">
         {t('Your Watchlist')}
       </Heading>
-      <Card>
+      <Card style={{ display: 'none' }}>
         {watchListPoolsData.length > 0 ? (
           <PoolTable poolDatas={watchListPoolsData} />
         ) : (
@@ -34,7 +33,7 @@ const PoolsOverview: React.FC<React.PropsWithChildren> = () => {
             {t('Saved pairs will appear here')}
           </Text>
         )}
-      </Card>
+      </Card> */}
       <Heading scale="lg" mt="40px" mb="16px" id="info-pools-title">
         {t('All Pairs')}
       </Heading>
