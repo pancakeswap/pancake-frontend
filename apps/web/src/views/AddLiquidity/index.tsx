@@ -266,7 +266,7 @@ export default function AddLiquidity({
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
-  const [onPresentAddLiquidityModal] = useModal(
+  const [onPresentAddLiquidityModal_] = useModal(
     <ConfirmAddLiquidityModal
       title={noLiquidity ? t('You are creating a trading pair') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
@@ -288,6 +288,15 @@ export default function AddLiquidity({
     true,
     'addLiquidityModal',
   )
+
+  const onPresentAddLiquidityModal = useCallback(() => {
+    setLiquidityState({
+      attemptingTxn: false,
+      liquidityErrorMessage: undefined,
+      txHash: undefined,
+    })
+    onPresentAddLiquidityModal_()
+  }, [onPresentAddLiquidityModal_])
 
   const isValid = !error && !addError
   const errorText = error ?? addError
