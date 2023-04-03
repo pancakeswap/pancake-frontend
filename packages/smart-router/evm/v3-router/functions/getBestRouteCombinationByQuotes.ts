@@ -47,7 +47,7 @@ export function getBestRouteCombinationByQuotes(
   const swapRoute = getBestSwapRouteBy(
     tradeType,
     percentToQuotes,
-    percents.sort(),
+    percents.sort((a, b) => a - b),
     chainId,
     (rq: RouteWithQuote) => rq.quoteAdjustedForGas,
     config,
