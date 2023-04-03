@@ -459,7 +459,11 @@ export function getFarmsPrices(
     return {
       ...farm,
       tokenPriceBusd: tokenPriceBusd.toString(),
-      quoteTokenPriceBusd: quoteTokenPriceBusd.toString(),
+      // adjust the quote token price by the token price vs quote
+      quoteTokenPriceBusd:
+        !quoteTokenPriceBusd.isZero() && farm.tokenPriceVsQuote
+          ? tokenPriceBusd.div(farm.tokenPriceVsQuote).toString()
+          : quoteTokenPriceBusd.toString(),
     }
   })
 }
