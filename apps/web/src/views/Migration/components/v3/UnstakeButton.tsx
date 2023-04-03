@@ -16,9 +16,10 @@ import { useActiveChainId } from 'hooks/useActiveChainId'
 
 export interface UnstakeButtonProps {
   pid: number
+  vaultPid?: number
 }
 
-const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ pid }) => {
+const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ pid, vaultPid }) => {
   const { t } = useTranslation()
   const { address: account } = useAccount()
   const { chainId } = useActiveChainId()
@@ -26,7 +27,7 @@ const UnstakeButton: React.FC<React.PropsWithChildren<UnstakeButtonProps>> = ({ 
   const { lpAddress } = useFarmFromPid(pid)
   const { fetchWithCatchTxError, loading: pendingTx } = useCatchTxError()
   const { stakedBalance, proxy } = useFarmUser(pid)
-  const { onUnstake } = useUnstakeFarms(pid)
+  const { onUnstake } = useUnstakeFarms(pid, vaultPid)
   const dispatch = useAppDispatch()
   const { shouldUseProxyFarm, proxyAddress } = useContext(YieldBoosterStateContext)
   const isNeedUnstake = stakedBalance.gt(0) || proxy?.stakedBalance.gt(0)
