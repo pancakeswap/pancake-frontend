@@ -1,4 +1,4 @@
-import { Currency, CurrencyAmount, Token } from '@pancakeswap/sdk'
+import { Currency, CurrencyAmount, Token, ZERO } from '@pancakeswap/sdk'
 import {
   useRoi,
   RoiCalculatorModalV2,
@@ -14,6 +14,7 @@ import { encodeSqrtRatioX96, parseProtocolFees, Pool } from '@pancakeswap/v3-sdk
 import { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
+import { formatPrice } from '@pancakeswap/utils/formatFractions'
 
 import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
 import { useDerivedPositionInfo } from 'hooks/v3/useDerivedPositionInfo'
@@ -86,10 +87,15 @@ export function AprCalculator({
   const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
   const { [Field.CURRENCY_A]: amountA, [Field.CURRENCY_B]: amountB } = parsedAmounts
 
+  const inverted = quoteCurrency?.wrapped.sortsBefore(baseCurrency?.wrapped)
+
   const baseUSDPrice = useStablecoinPrice(baseCurrency)
   const quoteUSDPrice = useStablecoinPrice(quoteCurrency)
-  const currencyAUsdPrice = parseFloat(baseUSDPrice?.toSignificant(6))
-  const currencyBUsdPrice = parseFloat(quoteUSDPrice?.toSignificant(6))
+  const currencyAUsdPrice = parseFloat(formatPrice(baseUSDPrice, 6) || '0')
+  const currencyBUsdPrice =
+    price && price.greaterThan(ZERO)
+      ? currencyAUsdPrice / parseFloat(formatPrice(inverted ? price.invert() : price, 6))
+      : parseFloat(formatPrice(quoteUSDPrice, 6) || '0')
 
   const depositUsd = useMemo(
     () =>
@@ -106,8 +112,6 @@ export function AprCalculator({
     () => (pool?.feeProtocol && parseProtocolFees(pool.feeProtocol)) || [],
     [pool?.feeProtocol],
   )
-
-  const inverted = baseCurrency?.wrapped?.address === tokenAmount1?.currency?.address
 
   const { apr } = useRoi({
     tickLower,
