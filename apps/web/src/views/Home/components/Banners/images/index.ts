@@ -26,6 +26,8 @@ import TradingRewardButter from './butter.png'
 import TradingRewardLoveButter from './love-butter.png'
 import TradingRewardBunny from './trading-reward-bunny.png'
 import TradingRewardBg from './trading-reward-bg.png'
+import ETHXPancakeSwap from './ethXpancakeswap.png'
+import ETHBunny from './ETHBunny.png'
 import v3LaunchBg from './v3LaunchBg.png'
 import v3LaunchBunny from './v3LaunchBunny.png'
 import v3LaunchBgMobile from './v3LaunchBgMobile.png'
@@ -60,6 +62,8 @@ export {
   TradingRewardLoveButter,
   TradingRewardBunny,
   TradingRewardBg,
+  ETHXPancakeSwap,
+  ETHBunny,
   v3LaunchBg,
   v3LaunchBunny,
   v3LaunchBgMobile,
