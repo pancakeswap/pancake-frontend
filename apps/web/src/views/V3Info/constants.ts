@@ -2,7 +2,7 @@ import { ChainId } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
 import { OpUnitType } from 'dayjs'
 
-export const v3InfoPath = `v3Info`
+export const v3InfoPath = `info/v3`
 
 export const POOL_HIDE: { [key: string]: string[] } = {
   // TODO: update to our own

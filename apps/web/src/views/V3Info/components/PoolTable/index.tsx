@@ -64,7 +64,7 @@ const SORT_FIELD = {
 
 const DataRow = ({ poolData, index }: { poolData: PoolData; index: number }) => {
   return (
-    <LinkWrapper href={`${v3InfoPath}/pools/${poolData.address}`}>
+    <LinkWrapper href={`/${v3InfoPath}/pools/${poolData.address}`}>
       <ResponsiveGrid>
         <Text fontWeight={400}>{index + 1}</Text>
         <Text fontWeight={400}>

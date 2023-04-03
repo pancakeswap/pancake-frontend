@@ -68,7 +68,7 @@ const ResponsiveLogo = styled(CurrencyLogo)`
 const DataRow = ({ tokenData, index }: { tokenData: TokenData; index: number }) => {
   const { theme } = useTheme()
   return (
-    <LinkWrapper to={`${v3InfoPath}/tokens/${tokenData.address}`}>
+    <LinkWrapper to={`/${v3InfoPath}/tokens/${tokenData.address}`}>
       <ResponsiveGrid>
         <Text>{index + 1}</Text>
         <Flex>
