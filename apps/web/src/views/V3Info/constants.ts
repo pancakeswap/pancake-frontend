@@ -15,7 +15,17 @@ export const POOL_HIDE: { [key: string]: string[] } = {
     '0x8c0411f2ad5470a66cb2e9c64536cfb8dcd54d51',
     '0x055284a4ca6532ecc219ac06b577d540c686669d',
   ],
-  [ChainId.BSC]: [],
+  [ChainId.BSC]: [
+    '0x87196a3bcec98116307bdc8b887c3074e8b5bc96',
+    '0x4b2c510fe0b6a50d117220cd6d66a9c714c83dfb',
+    '0xf0b579380ca08e75441dc73c2da9f27ce23725f2',
+    '0x9829f916c617e1b269b410dfd84c7f22ad479417',
+    '0x9829f916c617e1b269b410dfd84c7f22ad479417',
+    '0xa0e4442dc4addba0a57be757fbb802b48ba8051c',
+    '0xbadbedafe2ca7318a25b665bfa307e91a3eeb88d',
+    '0xa7619d726f619062d2d2bcadbb2ee1fb1952d6d7',
+    '0x5fb5eb2c8ecbf712115007990c70b79f6b256f9b',
+  ],
 }
 
 export const TOKEN_HIDE: { [key: string]: string[] } = {
@@ -25,7 +35,7 @@ export const TOKEN_HIDE: { [key: string]: string[] } = {
     '0x12b32f10a499bf40db334efe04226cca00bf2d9b',
     '0x160de4468586b6b2f8a92feb0c260fc6cfc743b1',
   ],
-  [ChainId.BSC]: [],
+  [ChainId.BSC]: ['0xdb19f2052d2b1ad46ed98c66336a5daadeb13005', '0x57a63c32cc2ad6ce4fbe5423d548d12d0eeddfc1'],
 }
 
 export const TimeWindow: {
