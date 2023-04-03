@@ -1,5 +1,15 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { ArrowForwardIcon, Box, Button, Heading, Link, PageHeader, RowBetween, Text } from '@pancakeswap/uikit'
+import {
+  ArrowForwardIcon,
+  AutoColumn,
+  Box,
+  Button,
+  Heading,
+  Link,
+  PageHeader,
+  RowBetween,
+  Text,
+} from '@pancakeswap/uikit'
 import Page from 'components/Layout/Page'
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
@@ -110,15 +120,24 @@ const MigrationPage: React.FC<React.PropsWithChildren> = () => {
             <Text fontSize={['12px', , '16px']} color="text">
               {t('Migrate your liquidity to Exchange V3 and keep farming CAKE rewards.')}
             </Text>
-            {/* TODO: v3 migration */}
-            <Link href="https://docs.pancakeswap.finance/code/migration/migrate-your-stakings" external>
-              <Button p="0" variant="text">
-                <Text color="primary" bold fontSize="16px" mr="4px">
-                  {t('Learn more')}
-                </Text>
-                <ArrowForwardIcon color="primary" />
-              </Button>
-            </Link>
+            <AutoColumn gap="4px" pt="4px">
+              <Link href="https://docs.pancakeswap.finance/code/v3-migration/how-to-migrate" external>
+                <Button p="0" variant="text" scale="sm">
+                  <Text color="primary" bold fontSize="16px" mr="4px">
+                    {t('Guide')}
+                  </Text>
+                  <ArrowForwardIcon color="primary" />
+                </Button>
+              </Link>
+              <Link href="https://docs.pancakeswap.finance/code/v3-migration/faq" external>
+                <Button p="0" variant="text" scale="sm">
+                  <Text color="primary" bold fontSize="16px" mr="4px">
+                    {t('Need help ?')}
+                  </Text>
+                  <ArrowForwardIcon color="primary" />
+                </Button>
+              </Link>
+            </AutoColumn>
           </AtomBox>
 
           <AtomBox

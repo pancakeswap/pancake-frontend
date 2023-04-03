@@ -63,10 +63,6 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
   const [chartCreated, setChart] = useState<IChartApi | undefined>();
 
   useEffect(() => {
-    const handleResize = () => {
-      chart.applyOptions({ width: chartRef?.current?.clientWidth, height: chartRef?.current?.clientHeight });
-    };
-
     if (!chartRef?.current) return;
 
     const chart = createChart(chartRef?.current, {
@@ -77,8 +73,6 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
       autoSize: true,
       handleScale: false,
       handleScroll: false,
-      // width: (chartRef?.current?.parentElement?.clientWidth ?? 0) - 32,
-      // height: (chartRef?.current?.parentElement?.clientHeight ?? 0),
       rightPriceScale: {
         scaleMargins: {
           top: 0.3,
@@ -162,11 +156,8 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
       }
     });
 
-    window.addEventListener("resize", handleResize);
-
     // eslint-disable-next-line consistent-return
     return () => {
-      window.removeEventListener("resize", handleResize);
       chart.remove();
     };
   }, [
@@ -185,7 +176,7 @@ export const SwapLineChart: React.FC<SwapLineChartNewProps> = ({
     <>
       {!chartCreated && <LineChartLoader />}
       <div style={{ display: "flex", flex: 1, height: "100%" }}>
-        <div style={{ flex: 1 }} ref={chartRef} id="swap-line-chart" {...rest} />
+        <div style={{ flex: 1, maxWidth: "100%" }} ref={chartRef} id="swap-line-chart" {...rest} />
       </div>
     </>
   );

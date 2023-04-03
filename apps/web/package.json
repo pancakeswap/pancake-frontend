@@ -70,7 +70,7 @@
     "graphql-request": "^5.0.0",
     "jotai": "^2.0.3",
     "js-cookie": "^3.0.1",
-    "lightweight-charts": "^3.8.0",
+    "lightweight-charts": "^4.0.1",
     "local-storage": "^2.0.0",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
