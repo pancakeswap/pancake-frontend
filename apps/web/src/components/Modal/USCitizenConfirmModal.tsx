@@ -40,7 +40,7 @@ const USCitizenConfirmModal: React.FC<{ onDismiss?: () => void }> = ({ onDismiss
       footer={
         <>
           <Text as="span">{t('By proceeding, you agree to comply with our')}</Text>
-          <Link m="0 4px" display="inline" href="/terms-and-conditions">
+          <Link m="0 4px" display="inline" href="/terms-of-service">
             {t('terms and conditions')}
           </Link>
           <Text as="span">{t('and all relevant laws and regulations')}</Text>
