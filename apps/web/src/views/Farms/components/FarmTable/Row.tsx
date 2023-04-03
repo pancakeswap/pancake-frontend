@@ -205,7 +205,7 @@ const Row: React.FunctionComponent<React.PropsWithChildren<RowPropsWithLoading>>
                     <td key={key}>
                       <CellInner onClick={(e) => e.stopPropagation()}>
                         <CellLayout label={t('APR')}>
-                          <TooltipText ref={aprTooltip.targetRef}>
+                          <TooltipText ref={aprTooltip.targetRef} decorationColor="secondary">
                             <FarmV3ApyButton farm={props.details} />
                           </TooltipText>
                           {aprTooltip.tooltipVisible && aprTooltip.tooltip}
