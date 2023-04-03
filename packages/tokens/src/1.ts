@@ -48,6 +48,14 @@ export const ethereumTokens = {
     'Dai Stablecoin',
     'http://www.makerdao.com/',
   ),
+  cbeth: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704',
+    18,
+    'cbETH',
+    'Coinbase Wrapped Staked ETH',
+    'https://www.coinbase.com/cbeth',
+  ),
   ldo: new ERC20Token(
     ChainId.ETHEREUM,
     '0x5A98FcBEA516Cf06857215779Fd812CA3beF1B32',
@@ -63,6 +71,14 @@ export const ethereumTokens = {
     'wstETH',
     'Wrapped liquid staked Ether 2.0',
     'https://lido.fi/',
+  ),
+  ape: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x4d224452801ACEd8B2F0aebE155379bb5D594381',
+    18,
+    'APE',
+    'ApeCoin',
+    'https://apecoin.com/',
   ),
   link: new ERC20Token(
     ChainId.ETHEREUM,
