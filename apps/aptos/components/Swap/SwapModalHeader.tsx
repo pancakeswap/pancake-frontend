@@ -75,7 +75,7 @@ export default function SwapModalHeader({
             {formatAmountDisplay(trade.inputAmount)}
           </TruncatedText>
         </RowFixed>
-        <RowFixed gap="0">
+        <RowFixed gap="0px">
           <Text fontSize="24px" ml="10px">
             {trade.inputAmount.currency.symbol}
           </Text>
@@ -107,7 +107,7 @@ export default function SwapModalHeader({
         </RowFixed>
       </RowBetween>
       {showAcceptChanges ? (
-        <SwapShowAcceptChanges justify="flex-start" gap="0">
+        <SwapShowAcceptChanges justify="flex-start" gap="0px">
           <RowBetween>
             <RowFixed>
               <ErrorIcon mr="8px" />

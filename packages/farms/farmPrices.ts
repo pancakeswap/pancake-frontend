@@ -1,1 +1,1 @@
-export * from './src/farmPrices'
+export * from './src/v2/farmPrices'
