@@ -57,8 +57,8 @@ export const FarmV3LPTitle = ({
 
 export const FarmV3LPPosition = ({
   position: position_,
-  token,
-  quoteToken,
+  token: _token,
+  quoteToken: _quoteToken,
 }: {
   position: PositionDetails
   token: Token
@@ -71,7 +71,7 @@ export const FarmV3LPPosition = ({
 
   const { position } = useDerivedPositionInfo(position_)
   const { tickLower, tickUpper, fee: feeAmount } = position_
-  const { priceLower, priceUpper } = getPriceOrderingFromPositionForUI(position)
+  const { priceLower, priceUpper, quote, base } = getPriceOrderingFromPositionForUI(position)
   const tickAtLimit = useIsTickAtLimit(feeAmount, tickLower, tickUpper)
 
   return (
@@ -95,8 +95,8 @@ export const FarmV3LPPosition = ({
         <Box>
           <Text bold fontSize="12px">
             {t('%assetA% per %assetB%', {
-              assetA: token.symbol,
-              assetB: quoteToken.symbol,
+              assetA: quote.symbol,
+              assetB: base.symbol,
             })}
           </Text>
         </Box>
