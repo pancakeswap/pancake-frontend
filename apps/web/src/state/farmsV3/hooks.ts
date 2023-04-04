@@ -94,7 +94,6 @@ export const useFarmsV3 = () => {
   const { chainId } = useActiveChainId()
 
   const farmV3 = useFarmsV3Public()
-  console.log('farmV3', farmV3)
   const cakePrice = useCakePriceAsBN()
 
   const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
