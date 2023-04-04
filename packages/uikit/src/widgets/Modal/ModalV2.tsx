@@ -34,7 +34,14 @@ export function useModalV2() {
   };
 }
 
-export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...props }: ModalV2Props & BoxProps) {
+export function ModalV2({
+  isOpen,
+  onDismiss,
+  closeOnOverlayClick,
+  children,
+  disableOutsidePointerEvents = true,
+  ...props
+}: ModalV2Props & BoxProps & { disableOutsidePointerEvents?: boolean }) {
   const animationRef = useRef<HTMLDivElement>(null);
 
   const handleOverlayDismiss = (e: any) => {
@@ -52,7 +59,11 @@ export function ModalV2({ isOpen, onDismiss, closeOnOverlayClick, children, ...p
         <LazyMotion features={domMax}>
           <AnimatePresence>
             {isOpen && (
-              <DismissableLayer role="dialog" disableOutsidePointerEvents onEscapeKeyDown={handleOverlayDismiss}>
+              <DismissableLayer
+                role="dialog"
+                disableOutsidePointerEvents={disableOutsidePointerEvents}
+                onEscapeKeyDown={handleOverlayDismiss}
+              >
                 <StyledModalWrapper
                   ref={animationRef}
                   // @ts-ignore
