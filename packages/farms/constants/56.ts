@@ -141,7 +141,7 @@ export const farmsV3 = [
     feeAmount: FeeAmount.MEDIUM,
   },
   {
-    pid: 17,
+    pid: 18,
     lpSymbol: 'ADA-BNB LP',
     token: bscTokens.ada,
     quoteToken: bscTokens.wbnb,
@@ -149,7 +149,7 @@ export const farmsV3 = [
     feeAmount: FeeAmount.MEDIUM,
   },
   {
-    pid: 17,
+    pid: 19,
     lpSymbol: 'DOT-BNB LP',
     token: bscTokens.dot,
     quoteToken: bscTokens.wbnb,
