@@ -134,9 +134,9 @@ export const farmsV3 = [
   },
   {
     pid: 17,
-    lpSymbol: 'TRX-BNB LP',
+    lpSymbol: 'TRX-BUSD LP',
     token: bscTokens.trx,
-    quoteToken: bscTokens.wbnb,
+    quoteToken: bscTokens.busd,
     lpAddress: '0x71f51e5070C7070B2d079c087BfA814642Fcef58',
     feeAmount: FeeAmount.MEDIUM,
   },
