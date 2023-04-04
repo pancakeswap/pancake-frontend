@@ -41,6 +41,7 @@ import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { LiquidityCardRow } from 'components/LiquidityCardRow'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
 import { useAtom } from 'jotai'
+import { FindOtherLP } from '@pancakeswap/uikit/src/widgets/Liquidity'
 
 const Body = styled(CardBody)`
   background-color: ${({ theme }) => theme.colors.dropdownDeep};
@@ -235,7 +236,11 @@ export default function PoolListPage() {
             </>
           }
         />
-        <Body>{mainSection}</Body>
+        <Body>
+          {mainSection}
+
+          {selectedTypeIndex === FILTER.V2 ? <FindOtherLP /> : null}
+        </Body>
         <CardFooter style={{ textAlign: 'center' }}>
           <NextLink href="/add" passHref>
             <Button id="join-pool-button" width="100%" startIcon={<AddIcon color="invertedContrast" />}>
