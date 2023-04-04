@@ -29,7 +29,6 @@ const REVALIDATE_AFTER = {
 interface FactoryOptions {
   // use to identify hook
   key: string
-  revalidateOnUpdate?: boolean
   useCommonPools: (currencyA?: Currency, currencyB?: Currency, params?: CommonPoolsParams) => PoolsWithState
   getBestTrade?: typeof SmartRouter.getBestTrade
   quoteProvider: QuoteProvider
@@ -49,6 +48,7 @@ interface Options {
   v3Swap?: boolean
   stableSwap?: boolean
   enabled?: boolean
+  autoRevalidate?: boolean
 }
 
 interface useBestAMMTradeOptions extends Options {
@@ -58,7 +58,7 @@ interface useBestAMMTradeOptions extends Options {
 export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeOptions) {
   const { amount, baseCurrency, currency } = params
   const isWrapping = useIsWrapping(baseCurrency, currency, amount?.toExact())
-  const isOffCHainEnabled = useMemo(
+  const isOffChainEnabled = useMemo(
     () =>
       !isWrapping &&
       typeof window !== 'undefined' &&
@@ -68,8 +68,16 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
   )
   const isQuoterEnabled = useMemo(() => !isWrapping && (type === 'quoter' || type === 'all'), [type, isWrapping])
 
-  const bestTradeFromOffchain = useBestAMMTradeFromOffchain({ ...params, enabled: isOffCHainEnabled })
-  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({ ...params, enabled: isQuoterEnabled })
+  const bestTradeFromOffchain = useBestAMMTradeFromOffchain({
+    ...params,
+    enabled: isOffChainEnabled,
+    autoRevalidate: isOffChainEnabled,
+  })
+  const bestTradeFromQuoter = useBestAMMTradeFromQuoter({
+    ...params,
+    enabled: isQuoterEnabled,
+    autoRevalidate: isQuoterEnabled && !isOffChainEnabled,
+  })
   return useMemo(() => {
     const { trade: tradeFromOffchain } = bestTradeFromOffchain
     const { trade: tradeFromQuoter } = bestTradeFromQuoter
@@ -94,7 +102,6 @@ export function useBestAMMTrade({ type = 'quoter', ...params }: useBestAMMTradeO
 
 function bestTradeHookFactory({
   key,
-  revalidateOnUpdate = true,
   useCommonPools,
   quoteProvider,
   quoterOptimization = true,
@@ -111,6 +118,7 @@ function bestTradeHookFactory({
     v3Swap = true,
     stableSwap = true,
     enabled = true,
+    autoRevalidate,
   }: Options) {
     const { gasPrice } = useFeeDataWithGasPrice()
     const currenciesUpdated = usePropsChanged(baseCurrency, currency)
@@ -195,8 +203,8 @@ function bestTradeHookFactory({
       refetchOnWindowFocus: false,
       keepPreviousData: !currenciesUpdated,
       retry: false,
-      staleTime: revalidateOnUpdate ? REVALIDATE_AFTER[amount?.currency.chainId] : 0,
-      refetchInterval: revalidateOnUpdate && REVALIDATE_AFTER[amount?.currency.chainId],
+      staleTime: autoRevalidate ? REVALIDATE_AFTER[amount?.currency.chainId] : 0,
+      refetchInterval: autoRevalidate && REVALIDATE_AFTER[amount?.currency.chainId],
     })
 
     const isValidating = fetchStatus === 'fetching'
@@ -216,14 +224,12 @@ function bestTradeHookFactory({
 
 export const useBestAMMTradeFromOffchain = bestTradeHookFactory({
   key: 'useBestAMMTradeFromOffchain',
-  revalidateOnUpdate: true,
   useCommonPools: useCommonPoolsWithTicks,
   quoteProvider: SmartRouter.createOffChainQuoteProvider(),
 })
 
 export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoter',
-  revalidateOnUpdate: false,
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
   // Since quotes are fetched on chain, which relies on network IO, not calculated offchain, we don't need to further optimize
@@ -232,7 +238,6 @@ export const useBestAMMTradeFromQuoter = bestTradeHookFactory({
 
 export const useBestAMMTradeFromQuoterApi = bestTradeHookFactory({
   key: 'useBestAMMTradeFromQuoterApi',
-  revalidateOnUpdate: false,
   useCommonPools: useCommonPoolsLite,
   quoteProvider: SmartRouter.createQuoteProvider({ onChainProvider: provider }),
   getBestTrade: async (
