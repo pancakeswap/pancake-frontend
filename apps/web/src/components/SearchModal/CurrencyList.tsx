@@ -205,7 +205,7 @@ export default function CurrencyList({
     ],
   )
 
-  const itemKey = useCallback((index: number, data: any) => currencyKey(data[index]), [])
+  const itemKey = useCallback((index: number, data: any) => `${currencyKey(data[index])}-${index}`, [])
 
   return (
     <FixedSizeList
