@@ -106,6 +106,7 @@ export const ImpermanentLossCalculator = memo(function ImpermanentLossCalculator
       typeof tickUpper === "number" &&
       typeof tickLower === "number" &&
       sqrtRatioX96 &&
+      tickLower < tickUpper &&
       FeeCalculator.getLiquidityByAmountsAndPrice({ amountA, amountB, tickUpper, tickLower, sqrtRatioX96 }),
     [amountA, amountB, tickUpper, tickLower, sqrtRatioX96]
   );
