@@ -53,7 +53,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
 }) => {
   const { isMobile, isXl, isXxl } = useMatchBreakpoints()
   const isLargerScreen = isXl || isXxl
-  const [expanded, setExpanded] = useState(false)
+  const [expanded, setExpanded] = useState(true)
 
   const { stakedBalance, proxy } = useFarmUser(farm.pid)
 
@@ -68,7 +68,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
       <StyledRow role="row" onClick={toggleExpanded}>
         <LeftContainer>
           <Farm {...farm} />
-          {isLargerScreen || !expanded ? (
+          {isLargerScreen || expanded ? (
             <>
               <Staked {...staked} stakedBalance={farm.boosted ? proxy?.stakedBalance : stakedBalance} />
               <Earned {...earned} />
@@ -78,7 +78,7 @@ export const V3OldFarmRow: React.FunctionComponent<React.PropsWithChildren<RowPr
           {isLargerScreen && <Liquidity {...liquidity} />}
         </LeftContainer>
         <RightContainer>
-          {isLargerScreen || !expanded ? (
+          {isLargerScreen || expanded ? (
             <ProxyFarmContainer farm={farm}>
               <Unstake {...unstake}>
                 {/* @ts-ignore */}
