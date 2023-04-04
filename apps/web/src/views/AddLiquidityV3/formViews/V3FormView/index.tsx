@@ -466,7 +466,9 @@ export default function V3FormView({
                     'This pool must be initialized before you can add liquidity. To initialize, select a starting price for the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher than usual due to the initialization transaction.',
                   )}
                   <br />
-                  {t('Fee-on transfer tokens and rebasing tokens are NOT compatible with V3.')}
+                  <br />
+
+                  <b>{t('Fee-on transfer tokens and rebasing tokens are NOT compatible with V3.')}</b>
                 </MessageText>
               </Message>
               <StyledInput className="start-price-input" value={startPriceTypedValue} onUserInput={onStartPriceInput} />
