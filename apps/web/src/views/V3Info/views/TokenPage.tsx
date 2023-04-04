@@ -292,7 +292,7 @@ const TokenPage: React.FC<{ address: string }> = ({ address }) => {
                     : formatDollarAmount(tokenData.priceUSD, 2)}
                   <Text small color="secondary">
                     {valueLabel ? (
-                      <MonoSpace>{valueLabel} (UTC)</MonoSpace>
+                      <MonoSpace>{valueLabel}</MonoSpace>
                     ) : (
                       <MonoSpace>{dayjs.utc().format('MMM D, YYYY')}</MonoSpace>
                     )}
