@@ -453,4 +453,6 @@ const TermsOfService = () => {
   )
 }
 
+TermsOfService.chains = []
+
 export default TermsOfService
