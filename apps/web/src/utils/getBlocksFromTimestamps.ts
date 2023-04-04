@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request'
 import orderBy from 'lodash/orderBy'
-import { multiChainBlocksClient, MultiChainName } from 'state/info/constant'
+import { multiChainBlocksClient, MultiChainNameExtend } from 'state/info/constant'
 import { Block } from '../state/info/types'
 import { multiQuery } from '../views/Info/utils/infoQueryHelpers'
 
@@ -27,7 +27,7 @@ export const getBlocksFromTimestamps = async (
   timestamps: number[],
   sortDirection: 'asc' | 'desc' | undefined = 'desc',
   skipCount: number | undefined = 500,
-  chainName: MultiChainName | undefined = 'BSC',
+  chainName: MultiChainNameExtend | undefined = 'BSC',
 ): Promise<Block[]> => {
   if (timestamps?.length === 0) {
     return []

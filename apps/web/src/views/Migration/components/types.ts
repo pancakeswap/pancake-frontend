@@ -62,6 +62,45 @@ export const DesktopColumnSchema: ColumnsDefTypes[] = [
   },
 ]
 
+export const V3Step1DesktopColumnSchema: ColumnsDefTypes[] = [
+  {
+    id: 1,
+    name: 'farm',
+    sortable: true,
+    label: '',
+  },
+  {
+    id: 2,
+    name: 'staked',
+    sortable: true,
+    label: 'Staked',
+  },
+  {
+    id: 3,
+    name: 'earned',
+    sortable: true,
+    label: 'Earned',
+  },
+  {
+    id: 4,
+    name: 'liquidity',
+    sortable: true,
+    label: 'Liquidity',
+  },
+  {
+    id: 5,
+    name: 'multiplier',
+    sortable: true,
+    label: 'Multiplier',
+  },
+  {
+    id: 6,
+    name: 'unstake',
+    sortable: true,
+    label: '',
+  },
+]
+
 export const DesktopV2ColumnSchema: ColumnsDefTypes[] = [
   {
     id: 1,

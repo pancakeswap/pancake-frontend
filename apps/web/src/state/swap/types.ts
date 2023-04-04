@@ -25,3 +25,11 @@ export enum PairDataTimeWindowEnum {
   MONTH,
   YEAR,
 }
+
+export enum TradeState {
+  INVALID,
+  LOADING,
+  NO_ROUTE_FOUND,
+  SYNCING,
+  VALID,
+}

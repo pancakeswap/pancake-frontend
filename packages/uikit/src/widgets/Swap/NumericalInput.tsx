@@ -2,9 +2,16 @@ import clsx from "clsx";
 import { memo } from "react";
 import { useTranslation } from "@pancakeswap/localization";
 import { escapeRegExp } from "@pancakeswap/utils/escapeRegExp";
-import { inputVariants } from "./SwapWidget.css";
+import { inputVariants, InputVariants } from "./SwapWidget.css";
 
 const inputRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`); // match escaped "." characters via in a non-capturing group
+
+export type NumericalInputProps = {
+  value: string | number;
+  onUserInput: (input: string) => void;
+  fontSize?: string;
+} & InputVariants &
+  Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">;
 
 export const NumericalInput = memo(function InnerInput({
   value,
@@ -13,14 +20,9 @@ export const NumericalInput = memo(function InnerInput({
   error,
   align,
   className,
+  loading,
   ...rest
-}: {
-  value: string | number;
-  onUserInput: (input: string) => void;
-  error?: boolean;
-  fontSize?: string;
-  align?: "right" | "left";
-} & Omit<React.HTMLProps<HTMLInputElement>, "ref" | "onChange" | "as">) {
+}: NumericalInputProps) {
   const enforcer = (nextUserInput: string) => {
     if (nextUserInput === "" || inputRegex.test(escapeRegExp(nextUserInput))) {
       onUserInput(nextUserInput);
@@ -36,6 +38,7 @@ export const NumericalInput = memo(function InnerInput({
         inputVariants({
           error,
           align,
+          loading,
         })
       )}
       {...rest}

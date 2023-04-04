@@ -1,11 +1,11 @@
 import { getLPOutputWithoutFee } from './getLPOutputWithoutFee'
 import { getLPOutput } from './getLPOutput'
-import { getSwapOutput, getSwapOutputWithoutFee } from './getSwapOutput'
+import { getSwapOutput, getSwapOutputWithoutFee, getSwapInput, getSwapInputWithtouFee } from './getSwapOutput'
 import { getD } from './amm'
 
-export * from './utils'
-
-export const StableSwap = {
+export {
+  getSwapInput,
+  getSwapInputWithtouFee,
   getSwapOutput,
   getSwapOutputWithoutFee,
   getLPOutputWithoutFee,

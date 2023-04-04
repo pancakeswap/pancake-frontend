@@ -1,14 +1,17 @@
 import { Component, PropsWithChildren, ReactNode } from 'react'
 
-export class ErrorBoundary extends Component<PropsWithChildren<{ fallback?: ReactNode }>, { hasError: boolean }> {
+export class ErrorBoundary extends Component<
+  PropsWithChildren<{ fallback?: ((error: Error) => ReactNode) | ReactNode }>,
+  { error: Error | undefined }
+> {
   constructor(props) {
     super(props)
-    this.state = { hasError: false }
+    this.state = { error: undefined }
   }
 
-  static getDerivedStateFromError(_error) {
+  static getDerivedStateFromError(error) {
     // Update state so the next render will show the fallback UI.
-    return { hasError: true }
+    return { error }
   }
 
   componentDidCatch(error, errorInfo) {
@@ -16,8 +19,9 @@ export class ErrorBoundary extends Component<PropsWithChildren<{ fallback?: Reac
   }
 
   render() {
-    if (this.state.hasError) {
+    if (this.state.error) {
       // You can render any custom fallback UI
+      if (typeof this.props.fallback === 'function') return this.props.fallback(this.state.error)
       return this.props.fallback || <h1>Something went wrong.</h1>
     }
 

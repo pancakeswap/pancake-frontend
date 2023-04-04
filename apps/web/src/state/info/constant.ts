@@ -13,6 +13,14 @@ import {
 
 export type MultiChainName = 'BSC' | 'ETH'
 
+export type MultiChainNameExtend = MultiChainName | 'BSC_TESTNET'
+
+export const multiChainName = {
+  [ChainId.BSC]: 'BSC',
+  [ChainId.ETHEREUM]: 'ETH',
+  [ChainId.BSC_TESTNET]: 'BSC_TESTNET',
+}
+
 export const multiChainQueryMainToken = {
   BSC: 'BNB',
   ETH: 'ETH',
@@ -21,6 +29,7 @@ export const multiChainQueryMainToken = {
 export const multiChainBlocksClient = {
   BSC: BLOCKS_CLIENT,
   ETH: BLOCKS_CLIENT_ETH,
+  BSC_TESTNET: 'https://api.thegraph.com/subgraphs/name/lengocphuc99/bsc_testnet-blocks',
 }
 
 export const multiChainStartTime = {

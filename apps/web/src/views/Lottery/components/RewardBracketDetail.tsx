@@ -1,7 +1,7 @@
 import BigNumber from 'bignumber.js'
 import { Flex, Skeleton, Text, Balance } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { getBalanceNumber, getFullDisplayBalance } from '@pancakeswap/utils/formatBalance'
 
 interface RewardBracketDetailProps {
@@ -22,7 +22,7 @@ const RewardBracketDetail: React.FC<React.PropsWithChildren<RewardBracketDetailP
   isLoading,
 }) => {
   const { t } = useTranslation()
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = usePriceCakeUSD()
 
   const getRewardText = () => {
     const numberMatch = rewardBracket + 1

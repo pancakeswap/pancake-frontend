@@ -10,8 +10,10 @@ export const Td = styled.td<TypographyProps>`
   ${typography}
 `;
 
-export const Th = styled(Td).attrs({ as: "th" })`
+export const Th = styled(Td).attrs({ as: "th" })<TypographyProps>`
   color: ${({ theme }) => theme.colors.secondary};
   font-size: 12px;
   text-transform: uppercase;
+
+  ${typography}
 `;

@@ -23,6 +23,9 @@ export function getSwapOutput({
   amount,
   fee,
 }: GetSwapOutputParams): CurrencyAmount<Currency> {
+  const validateAmountOut = (a: CurrencyAmount<Currency>) =>
+    invariant(!a.lessThan(ZERO), 'Insufficient liquidity to perform the swap')
+
   let i: number | null = null
   let j: number | null = null
   const balances: JSBI[] = []
@@ -50,13 +53,17 @@ export function getSwapOutput({
     const x = ONE_HUNDRED_PERCENT.subtract(fee).invert().multiply(getRawAmount(amount)).quotient
     const y = getY({ amplifier, balances, i, j, x })
     const dy = JSBI.subtract(y, balances[j])
-    return parseAmount(outputCurrency, dy)
+    const amountOut = parseAmount(outputCurrency, dy)
+    validateAmountOut(amountOut)
+    return amountOut
   }
 
   const y = getY({ amplifier, balances, i, j, x: getRawAmount(amount) })
   const dy = JSBI.subtract(balances[j], y)
   const feeAmount = fee.multiply(dy).quotient
-  return parseAmount(outputCurrency, JSBI.subtract(dy, feeAmount))
+  const amountOut = parseAmount(outputCurrency, JSBI.subtract(dy, feeAmount))
+  validateAmountOut(amountOut)
+  return amountOut
 }
 
 export function getSwapOutputWithoutFee(params: Omit<GetSwapOutputParams, 'fee'>): CurrencyAmount<Currency> {

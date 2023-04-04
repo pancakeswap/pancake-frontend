@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Trade, TradeType, CurrencyAmount, Currency } from '@pancakeswap/sdk'
 import { Button, Text, AutoRenewIcon, QuestionHelper, AutoColumn } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
+import { formatAmount } from '@pancakeswap/utils/formatFractions'
 import { Field } from 'state/swap/actions'
 import { computeTradePriceBreakdown, formatExecutionPrice, warningSeverity } from 'utils/exchange'
 import { AutoRow, RowBetween, RowFixed } from 'components/Layout/Row'
@@ -81,8 +82,8 @@ export default function SwapModalFooter({
           <RowFixed>
             <Text fontSize="14px">
               {trade.tradeType === TradeType.EXACT_INPUT
-                ? slippageAdjustedAmounts[Field.OUTPUT]?.toSignificant(4) ?? '-'
-                : slippageAdjustedAmounts[Field.INPUT]?.toSignificant(4) ?? '-'}
+                ? formatAmount(slippageAdjustedAmounts[Field.OUTPUT], 4) ?? '-'
+                : formatAmount(slippageAdjustedAmounts[Field.INPUT], 4) ?? '-'}
             </Text>
             <Text fontSize="14px" marginLeft="4px">
               {trade.tradeType === TradeType.EXACT_INPUT
@@ -119,7 +120,7 @@ export default function SwapModalFooter({
             />
           </RowFixed>
           <Text fontSize="14px">
-            {realizedLPFee ? `${realizedLPFee?.toSignificant(6)} ${trade.inputAmount.currency.symbol}` : '-'}
+            {realizedLPFee ? `${formatAmount(realizedLPFee, 6)} ${trade.inputAmount.currency.symbol}` : '-'}
           </Text>
         </RowBetween>
       </SwapModalFooterContainer>

@@ -1,14 +1,17 @@
-import { ChainId } from '@pancakeswap/sdk'
 import { useMatchBreakpoints } from '@pancakeswap/uikit'
-import { useAtom } from 'jotai'
+import { atom, useAtom } from 'jotai'
+import { useContext } from 'react'
 import atomWithStorageWithErrorCatch from 'utils/atomWithStorageWithErrorCatch'
-import { useActiveChainId } from './useActiveChainId'
+import { SwapFeaturesContext } from 'views/Swap/SwapFeaturesContext'
 
 const isSwapHotTokenDisplay = atomWithStorageWithErrorCatch<boolean>('pcs:isHotTokensDisplay', false)
 const isSwapHotTokenDisplayETH = atomWithStorageWithErrorCatch<boolean>('pcs:isHotTokensDisplayETH', true)
+const isHotTokensDisplayMobile = atom(false)
 
 export const useSwapHotTokenDisplay = () => {
-  const { chainId } = useActiveChainId()
   const { isMobile } = useMatchBreakpoints()
-  return useAtom(chainId === ChainId.BSC || isMobile ? isSwapHotTokenDisplay : isSwapHotTokenDisplayETH)
+  const { isChartSupported } = useContext(SwapFeaturesContext)
+  return useAtom(
+    isMobile ? isHotTokensDisplayMobile : isChartSupported ? isSwapHotTokenDisplay : isSwapHotTokenDisplayETH,
+  )
 }

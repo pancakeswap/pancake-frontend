@@ -8,24 +8,24 @@ import { Input } from "../Input";
 import { IconButton } from "../Button";
 import { CheckmarkIcon, PencilIcon } from "../Svg";
 
-const MILLION = 1000000;
-const TRILLION = 1000000000000;
+export const MILLION = 1000000;
+export const TRILLION = 1000000000000;
 
-const RoiCardWrapper = styled(Box)`
+export const RoiCardWrapper = styled(Box)`
   background: linear-gradient(180deg, #53dee9, #7645d9);
   padding: 1px;
   width: 100%;
   border-radius: ${({ theme }) => theme.radii.default};
 `;
 
-const RoiCardInner = styled(Box)`
+export const RoiCardInner = styled(Box)`
   min-height: 120px;
   padding: 24px;
   border-radius: ${({ theme }) => theme.radii.default};
   background: ${({ theme }) => theme.colors.gradientBubblegum};
 `;
 
-const RoiInputContainer = styled(Box)`
+export const RoiInputContainer = styled(Box)`
   position: relative;
   & > input {
     padding-left: 28px;
@@ -40,12 +40,12 @@ const RoiInputContainer = styled(Box)`
   }
 `;
 
-const RoiDisplayContainer = styled(Flex)`
+export const RoiDisplayContainer = styled(Flex)`
   max-width: 82%;
   margin-right: 8px;
 `;
 
-const RoiDollarAmount = styled(Text)<{ fadeOut: boolean }>`
+export const RoiDollarAmount = styled(Text)<{ fadeOut: boolean }>`
   position: relative;
   overflow-x: auto;
   &::-webkit-scrollbar {

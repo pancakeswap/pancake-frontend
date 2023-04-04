@@ -1,5 +1,17 @@
 import { goerliTestnetTokens } from '@pancakeswap/tokens'
-import { SerializedFarmConfig } from '@pancakeswap/farms'
+import { FarmConfigV3, SerializedFarmConfig } from '@pancakeswap/farms'
+import { FeeAmount } from '@pancakeswap/v3-sdk'
+
+export const farmsV3 = [
+  {
+    pid: 1,
+    lpSymbol: 'CAKE-BUSD LP',
+    lpAddress: '0xC6D589DC1E1041a45d7347520bdaA113392E7249',
+    token: goerliTestnetTokens.mockB,
+    quoteToken: goerliTestnetTokens.mockA,
+    feeAmount: FeeAmount.LOW,
+  },
+] satisfies FarmConfigV3[]
 
 const farms: SerializedFarmConfig[] = [
   {

@@ -1,6 +1,6 @@
 import type { FarmConfigBaseProps, SerializedFarmConfig } from '@pancakeswap/farms'
 import { ChainId, Currency, Token, Trade, TradeType } from '@pancakeswap/sdk'
-import { TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import { LegacyTradeWithStableSwap as TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
 import BigNumber from 'bignumber.js'
 import { StableTrade } from 'views/Swap/StableSwap/hooks/useStableTradeExactIn'
 // a list of tokens by chain
@@ -216,3 +216,8 @@ export type ITrade =
   | undefined
 
 export type V2TradeAndStableSwap = Trade<Currency, Currency, TradeType> | StableTrade | undefined
+
+export enum Bound {
+  LOWER = 'LOWER',
+  UPPER = 'UPPER',
+}

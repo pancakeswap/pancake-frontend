@@ -3,7 +3,7 @@ import { Text, Flex, Skeleton, Image, Balance } from '@pancakeswap/uikit'
 import { useFarmAuctionContract } from 'hooks/useContract'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { getBalanceNumber } from '@pancakeswap/utils/formatBalance'
 import { ethersToBigNumber } from '@pancakeswap/utils/bigNumber'
 import styled from 'styled-components'
@@ -21,7 +21,7 @@ const AuctionCakeBurn: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
   const farmAuctionContract = useFarmAuctionContract(false)
   const { observerRef, isIntersecting } = useIntersectionObserver()
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = usePriceCakeUSD()
 
   const burnedAmountAsUSD = cakePriceBusd.times(burnedCakeAmount)
 

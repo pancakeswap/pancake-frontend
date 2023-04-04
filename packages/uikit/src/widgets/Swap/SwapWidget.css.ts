@@ -2,15 +2,12 @@ import { atoms } from "@pancakeswap/ui/css/atoms";
 import { vars } from "@pancakeswap/ui/css/vars.css";
 import { responsiveStyle } from "@pancakeswap/ui/css/responsiveStyle";
 import { style } from "@vanilla-extract/css";
-import { recipe } from "@vanilla-extract/recipes";
+import { recipe, RecipeVariants } from "@vanilla-extract/recipes";
 
-export const switchButtonClass = style([
-  atoms({}),
-  style({
-    backgroundColor: "primary",
-    boxShadow: "inset 0px -2px 0px rgba(0, 0, 0, 0.1)",
-  }),
-]);
+export const switchButtonClass = style({
+  backgroundColor: "primary",
+  boxShadow: "inset 0px -2px 0px rgba(0, 0, 0, 0.1)",
+});
 
 export const iconDownClass = style({
   selectors: {
@@ -68,9 +65,17 @@ export const inputVariants = recipe({
         color: vars.colors.failure,
       },
     },
+    loading: {
+      true: {
+        color: vars.colors.textDisabled,
+      },
+    },
     align: {
       left: {
         textAlign: "left",
+      },
+      center: {
+        textAlign: "center",
       },
       right: {
         textAlign: "right",
@@ -83,30 +88,20 @@ export const inputVariants = recipe({
   },
 });
 
-export const inputRowVariants = recipe({
-  base: {
-    display: "flex",
-    flexFlow: "row nowrap",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  },
-  variants: {
-    selected: {
-      true: {
-        padding: "0.75rem 0.5rem 0.75rem 1rem",
-      },
-      false: {
-        padding: "0.75rem 0.75rem 0.75rem 1rem",
-      },
-    },
-  },
-});
+export type InputVariants = RecipeVariants<typeof inputVariants>;
 
 export const inputContainerVariants = recipe({
   base: style([
     atoms({
       borderRadius: "default",
       backgroundColor: "input",
+    }),
+    style({
+      selectors: {
+        "&:focus-within": {
+          boxShadow: vars.shadows.focus,
+        },
+      },
     }),
   ]),
   variants: {
@@ -141,7 +136,7 @@ export const pageVariants = recipe({
       height: "100%",
       background: "gradientBubblegum",
       padding: "16px",
-      paddingBottom: "0",
+      paddingBottom: "0px",
     }),
     style({
       backgroundSize: "auto",
@@ -149,11 +144,11 @@ export const pageVariants = recipe({
     responsiveStyle({
       sm: {
         padding: "24px",
-        paddingBottom: "0",
+        paddingBottom: "0px",
       },
       lg: {
         padding: "32px",
-        paddingBottom: "0",
+        paddingBottom: "0px",
       },
     }),
   ]),
@@ -173,9 +168,10 @@ export const pageVariants = recipe({
   },
 });
 
-export const balanceMaxMiniClass = style([
+export type PageVariants = RecipeVariants<typeof pageVariants>;
+
+export const iconButtonClass = style([
   atoms({
-    backgroundColor: "background",
     borderRadius: "circle",
     cursor: "pointer",
     color: "text",
@@ -192,14 +188,5 @@ export const balanceMaxMiniClass = style([
     fontWeight: 400,
     marginLeft: "0.4rem",
     float: "right",
-    selectors: {
-      "&:hover": {
-        backgroundColor: vars.colors.dropdown,
-      },
-      "&:focus": {
-        backgroundColor: vars.colors.dropdown,
-        outline: "none",
-      },
-    },
   }),
 ]);

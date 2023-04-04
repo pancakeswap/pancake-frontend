@@ -1,12 +1,12 @@
 {
-  "include": ["src", "test"],
+  "extends": "tsconfig/base",
+  "include": ["src"],
   "compilerOptions": {
     "target": "es2018",
     "module": "esnext",
     "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./",
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
@@ -19,11 +19,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "*": ["src/*", "node_modules/*"]
-    },
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "outDir": "./dist"
   }
 }

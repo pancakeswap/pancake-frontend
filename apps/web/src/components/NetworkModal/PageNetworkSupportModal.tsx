@@ -23,7 +23,9 @@ export function PageNetworkSupportModal() {
   const foundChain = useMemo(() => chains.find((c) => c.id === chainId), [chainId])
   const historyManager = useHistory()
 
-  const lastValidPath = historyManager?.history?.find((h) => ['/swap', 'liquidity', '/', '/info'].includes(h))
+  const lastValidPath = historyManager?.history?.find((h) =>
+    ['/swap', 'liquidity', '/', '/info', '/v3Info'].includes(h),
+  )
 
   const menuItems = useMenuItems()
   const { pathname, push } = useRouter()
