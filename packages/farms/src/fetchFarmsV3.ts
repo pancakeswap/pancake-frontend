@@ -1,5 +1,5 @@
 import { Call, MultiCallV2 } from '@pancakeswap/multicall'
-import { ERC20Token } from '@pancakeswap/sdk'
+import { ChainId, ERC20Token } from '@pancakeswap/sdk'
 import { CAKE } from '@pancakeswap/tokens'
 import { tickToPrice } from '@pancakeswap/v3-sdk'
 import BN from 'bignumber.js'
@@ -59,8 +59,8 @@ export async function farmV3FetchFarms({
     }
   })
 
-  const combinedCommonPrice = {
-    ...DEFAULT_COMMON_PRICE[chainId],
+  const combinedCommonPrice: CommonPrice = {
+    ...DEFAULT_COMMON_PRICE[chainId as ChainId],
     ...commonPrice,
   }
 
@@ -391,10 +391,18 @@ export function getFarmsPrices(
     }
 
     // try price via CAKE
-    if (tokenPriceBusd.isZero() && farm.token.equals(CAKE[farm.token.chainId])) {
+    if (
+      tokenPriceBusd.isZero() &&
+      farm.token.chainId in CAKE &&
+      farm.token.equals(CAKE[farm.token.chainId as keyof typeof CAKE])
+    ) {
       tokenPriceBusd = new BN(cakePriceUSD)
     }
-    if (quoteTokenPriceBusd.isZero() && farm.quoteToken.equals(CAKE[farm.quoteToken.chainId])) {
+    if (
+      quoteTokenPriceBusd.isZero() &&
+      farm.quoteToken.chainId in CAKE &&
+      farm.quoteToken.equals(CAKE[farm.quoteToken.chainId as keyof typeof CAKE])
+    ) {
       quoteTokenPriceBusd = new BN(cakePriceUSD)
     }
 

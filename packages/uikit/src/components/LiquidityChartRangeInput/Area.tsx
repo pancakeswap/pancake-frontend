@@ -30,7 +30,7 @@ export const Area = ({
   useMemo(
     () => (
       <Path
-        opacity={opacity}
+        opacity={opacity || 1}
         fill={fill}
         d={
           area()

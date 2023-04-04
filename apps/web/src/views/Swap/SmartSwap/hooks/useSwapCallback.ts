@@ -16,6 +16,7 @@ import { useGasPrice } from 'state/user/hooks'
 import { calculateGasMargin, isAddress } from 'utils'
 import { basisPointsToPercent } from 'utils/exchange'
 import { logSwap, logTx } from 'utils/log'
+import { isUserRejected } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 
 export enum SwapCallbackState {
@@ -190,7 +191,7 @@ export function useSwapCallback(
           })
           .catch((error: any) => {
             // if the user rejected the tx, pass this along
-            if (error?.code === 4001) {
+            if (isUserRejected(error)) {
               throw new Error('Transaction rejected.')
             } else {
               // otherwise, the error was unexpected and we need to convey that

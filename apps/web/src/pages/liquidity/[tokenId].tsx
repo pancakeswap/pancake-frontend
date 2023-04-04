@@ -530,8 +530,8 @@ export default function PoolPage() {
                         feeAmount={feeAmount}
                         positionDetails={positionDetails}
                         defaultDepositUsd={fiatValueOfLiquidity?.toFixed(2)}
-                        tokenAmount0={position?.amount0}
-                        tokenAmount1={position?.amount1}
+                        tokenAmount0={inRange ? position?.amount0 : undefined}
+                        tokenAmount1={inRange ? position?.amount1 : undefined}
                       />
                     </Flex>
                     <Text fontSize="12px" color="secondary" bold textTransform="uppercase">

@@ -1,7 +1,7 @@
 import { Dispatch, ReactElement, SetStateAction, useCallback, useContext, useMemo, useState } from 'react'
 import { CurrencyAmount, Token, Percent, Currency, Price } from '@pancakeswap/sdk'
 import { useModal } from '@pancakeswap/uikit'
-import { logError } from 'utils/sentry'
+import { isUserRejected, logError } from 'utils/sentry'
 import { useTranslation } from '@pancakeswap/localization'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
@@ -243,14 +243,14 @@ export default function AddStableLiquidity({
         }),
       )
       .catch((err) => {
-        if (err && err.code !== 4001) {
+        if (err && !isUserRejected(err)) {
           logError(err)
           console.error(`Add Liquidity failed`, err, args, value)
         }
         setLiquidityState({
           attemptingTxn: false,
           liquidityErrorMessage:
-            err && err.code !== 4001
+            err && !isUserRejected(error)
               ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
               : undefined,
           txHash: undefined,

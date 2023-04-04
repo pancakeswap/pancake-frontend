@@ -47,6 +47,7 @@ import TransactionConfirmationModal from 'components/TransactionConfirmationModa
 import { Bound } from 'config/constants/types'
 import { V3SubmitButton } from 'views/AddLiquidityV3/components/V3SubmitButton'
 import { formatCurrencyAmount, formatRawAmount } from 'utils/formatCurrencyAmount'
+import { isUserRejected } from 'utils/sentry'
 
 import RangeSelector from './components/RangeSelector'
 import { PositionPreview } from './components/PositionPreview'
@@ -289,7 +290,7 @@ export default function V3FormView({
           console.error('Failed to send transaction', error)
           setAttemptingTxn(false)
           // we only care if the error is something _other_ than the user rejected the tx
-          if (error?.code !== 4001) {
+          if (!isUserRejected(error)) {
             console.error(error)
           }
         })
@@ -338,7 +339,7 @@ export default function V3FormView({
   const [onPresentAddLiquidityModal] = useModal(
     <TransactionConfirmationModal
       minWidth={['100%', , '420px']}
-      title="Add Liquidity"
+      title={t('Add Liquidity')}
       customOnDismiss={handleDismissConfirmation}
       attemptingTxn={attemptingTxn}
       hash={txHash}
@@ -458,12 +459,14 @@ export default function V3FormView({
         <AutoColumn gap="16px">
           {noLiquidity && (
             <Box>
-              <PreTitle mb="8px">Set Starting Price</PreTitle>
+              <PreTitle mb="8px">{t('Set Starting Price')}</PreTitle>
               <Message variant="warning" mb="8px">
                 <MessageText>
-                  This pool must be initialized before you can add liquidity. To initialize, select a starting price for
-                  the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher than
-                  usual due to the initialization transaction.
+                  {t(
+                    'This pool must be initialized before you can add liquidity. To initialize, select a starting price for the pool. Then, enter your liquidity price range and deposit amount. Gas fees will be higher than usual due to the initialization transaction.',
+                  )}
+                  <br />
+                  {t('Fee-on transfer tokens and rebasing tokens are NOT compatible with V3.')}
                 </MessageText>
               </Message>
               <StyledInput className="start-price-input" value={startPriceTypedValue} onUserInput={onStartPriceInput} />
@@ -478,7 +481,7 @@ export default function V3FormView({
           )}
           <DynamicSection disabled={!feeAmount || invalidPool}>
             <RowBetween mb="8px">
-              <PreTitle>Set Price Range</PreTitle>
+              <PreTitle>{t('Set Price Range')}</PreTitle>
               <RateToggle
                 currencyA={baseCurrency}
                 handleRateToggle={() => {
@@ -515,7 +518,7 @@ export default function V3FormView({
                     style={{ marginTop: '0.5rem' }}
                   >
                     <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
-                      Current Price:
+                      {t('Current Price')}:
                     </Text>
                     <Text fontWeight={500} textAlign="center" fontSize={12} color="text1">
                       {invertPrice ? price.invert().toSignificant(6) : price.toSignificant(6)}

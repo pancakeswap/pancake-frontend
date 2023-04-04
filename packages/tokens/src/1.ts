@@ -80,4 +80,28 @@ export const ethereumTokens = {
     'Matic Token',
     'https://polygon.technology/',
   ),
+  cbEth: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xBe9895146f7AF43049ca1c1AE358B0541Ea49704',
+    18,
+    'cbETH',
+    'Coinbase Wrapped Staked ETH',
+    'https://www.coinbase.com/cbeth',
+  ),
+  ape: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0x4d224452801ACEd8B2F0aebE155379bb5D594381',
+    18,
+    'APE',
+    'ApeCoin',
+    'https://apecoin.com/',
+  ),
+  alcx: new ERC20Token(
+    ChainId.ETHEREUM,
+    '0xdBdb4d16EdA451D0503b854CF79D55697F90c8DF',
+    18,
+    'ALCX',
+    'Alchemix',
+    'https://alchemix.fi/',
+  ),
 }

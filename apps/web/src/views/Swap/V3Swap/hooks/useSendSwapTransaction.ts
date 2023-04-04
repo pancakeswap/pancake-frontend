@@ -15,6 +15,7 @@ import { useTransactionAdder } from 'state/transactions/hooks'
 import { INITIAL_ALLOWED_SLIPPAGE } from 'config/constants'
 import { calculateGasMargin, isAddress } from 'utils'
 import { logSwap, logTx } from 'utils/log'
+import { isUserRejected } from 'utils/sentry'
 
 import { isZero } from '../utils/isZero'
 
@@ -209,7 +210,7 @@ export default function useSendSwapTransaction(
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
-            if (error?.code === 4001 || error?.code === 'ACTION_REJECTED') {
+            if (isUserRejected(error)) {
               throw new TransactionRejectedError(t('Transaction rejected'))
             } else {
               // otherwise, the error was unexpected and we need to convey that

@@ -97,13 +97,9 @@ export const useFarmsV3 = () => {
 
   const cakePrice = useCakePriceAsBN()
 
-  const { data, isLoading } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
+  const { data } = useSWR<FarmsV3Response<FarmV3DataWithPriceTVL>>(
     [chainId, 'cake-apr-tvl', farmV3.data],
     async () => {
-      if (!cakePrice.gt(0)) {
-        return farmV3.data
-      }
-
       const farms = farmsV3ConfigChainMap[chainId as ChainId]
 
       const HOST = process.env.NEXT_PUBLIC_VERCEL_URL ? `` : 'http://localhost:3000'
@@ -154,12 +150,11 @@ export const useFarmsV3 = () => {
       refreshInterval: FAST_INTERVAL * 3,
       dedupingInterval: FAST_INTERVAL,
       keepPreviousData: true,
-      fallback: farmV3.data,
     },
   )
 
   return {
-    data: (isLoading ? farmV3.data : data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
+    data: (data ?? farmV3.data) as FarmsV3Response<FarmV3DataWithPriceTVL>,
     isLoading: farmV3.isLoading,
     error: farmV3.error,
   }

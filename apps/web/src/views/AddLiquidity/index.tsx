@@ -10,7 +10,7 @@ import { ROUTER_ADDRESS } from 'config/constants/exchange'
 import { useIsTransactionUnsupported, useIsTransactionWarning } from 'hooks/Trades'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useLPApr } from 'state/swap/useLPApr'
-import { logError } from 'utils/sentry'
+import { isUserRejected, logError } from 'utils/sentry'
 import { transactionErrorToUserReadableMessage } from 'utils/transactionErrorToUserReadableMessage'
 import { Handler } from '@pancakeswap/uikit/src/widgets/Modal/types'
 import { formatCurrencyAmount } from 'utils/formatCurrencyAmount'
@@ -234,14 +234,14 @@ export default function AddLiquidity({
         }),
       )
       .catch((err) => {
-        if (err && err.code !== 4001) {
+        if (err && !isUserRejected(err)) {
           logError(err)
           console.error(`Add Liquidity failed`, err, args, value)
         }
         setLiquidityState({
           attemptingTxn: false,
           liquidityErrorMessage:
-            err && err.code !== 4001
+            err && !isUserRejected(err)
               ? t('Add liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
               : undefined,
           txHash: undefined,
@@ -266,7 +266,7 @@ export default function AddLiquidity({
   const addIsUnsupported = useIsTransactionUnsupported(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
   const addIsWarning = useIsTransactionWarning(currencies?.CURRENCY_A, currencies?.CURRENCY_B)
 
-  const [onPresentAddLiquidityModal] = useModal(
+  const [onPresentAddLiquidityModal_] = useModal(
     <ConfirmAddLiquidityModal
       title={noLiquidity ? t('You are creating a trading pair') : t('You will receive')}
       customOnDismiss={handleDismissConfirmation}
@@ -288,6 +288,15 @@ export default function AddLiquidity({
     true,
     'addLiquidityModal',
   )
+
+  const onPresentAddLiquidityModal = useCallback(() => {
+    setLiquidityState({
+      attemptingTxn: false,
+      liquidityErrorMessage: undefined,
+      txHash: undefined,
+    })
+    onPresentAddLiquidityModal_()
+  }, [onPresentAddLiquidityModal_])
 
   const isValid = !error && !addError
   const errorText = error ?? addError
