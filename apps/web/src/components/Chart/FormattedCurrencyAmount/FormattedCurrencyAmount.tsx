@@ -12,7 +12,7 @@ export function formattedCurrencyAmount({ currencyAmount, significantDigits = 4 
   return !currencyAmount || currencyAmount.equalTo(JSBI.BigInt(0))
     ? '0'
     : currencyAmount.greaterThan(CURRENCY_AMOUNT_MIN)
-    ? currencyAmount.toFixed(significantDigits, { groupSeparator: ',' })
+    ? currencyAmount.toSignificant(significantDigits, { groupSeparator: ',' })
     : `<${CURRENCY_AMOUNT_MIN.toSignificant(1)}`
 }
 
