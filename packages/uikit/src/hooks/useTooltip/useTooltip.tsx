@@ -41,6 +41,7 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
     manualVisible = false,
     avoidToStopPropagation = false,
     strategy,
+    isInPortal = true,
   } = options || {};
 
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
@@ -235,7 +236,7 @@ const useTooltip = (content: React.ReactNode, options?: TooltipOptions): Tooltip
   );
 
   const portal = getPortalRoot();
-  const tooltipInPortal = portal ? createPortal(AnimatedTooltip, portal) : null;
+  const tooltipInPortal = portal && isInPortal ? createPortal(AnimatedTooltip, portal) : null;
 
   return {
     targetRef: setTargetElement,
