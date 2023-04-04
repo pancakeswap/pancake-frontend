@@ -5,7 +5,7 @@ import { AutoColumn, RowBetween, Text, TextProps, IconButton, PencilIcon } from 
 
 type SwapInfoType = {
   price: ReactNode;
-  allowedSlippage: number;
+  allowedSlippage?: number;
   onSlippageClick?: () => void;
   allowedSlippageSlot?: React.ReactNode;
 };
@@ -19,24 +19,26 @@ export const SwapInfo = ({ allowedSlippage, price, onSlippageClick, allowedSlipp
   const isMounted = useIsMounted();
 
   return (
-    <AutoColumn gap="sm" py="0" px="16px">
+    <AutoColumn gap="sm" py="0px" px="16px">
       <RowBetween alignItems="center">{price}</RowBetween>
-      <RowBetween alignItems="center">
-        <SwapInfoLabel>
-          {t("Slippage Tolerance")}
-          {onSlippageClick ? (
-            <IconButton scale="sm" variant="text" onClick={onSlippageClick}>
-              <PencilIcon color="primary" width="10px" />
-            </IconButton>
-          ) : null}
-        </SwapInfoLabel>
-        {isMounted &&
-          (allowedSlippageSlot ?? (
-            <Text bold color="primary">
-              {allowedSlippage / 100}%
-            </Text>
-          ))}
-      </RowBetween>
+      {typeof allowedSlippage === "number" && (
+        <RowBetween alignItems="center">
+          <SwapInfoLabel>
+            {t("Slippage Tolerance")}
+            {onSlippageClick ? (
+              <IconButton scale="sm" variant="text" onClick={onSlippageClick}>
+                <PencilIcon color="primary" width="10px" />
+              </IconButton>
+            ) : null}
+          </SwapInfoLabel>
+          {isMounted &&
+            (allowedSlippageSlot ?? (
+              <Text bold color="primary">
+                {allowedSlippage / 100}%
+              </Text>
+            ))}
+        </RowBetween>
+      )}
     </AutoColumn>
   );
 };

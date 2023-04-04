@@ -99,7 +99,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 <Text mr="8px">{token.name}</Text>
                 <Text>({token.symbol})</Text>
               </Flex>
-              {token.chainId && (
+              {!!token.chainId && (
                 <>
                   <Text mr="4px">{address}</Text>
                   <Link href={getBlockExploreLink(token.address, 'address', token.chainId)} external>

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, CloseIcon, IconButton, useMatchBreakpoints } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePhishingBannerManager } from 'state/user/hooks'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 
 const Container = styled(Flex)`
   overflow: hidden;
@@ -44,7 +44,7 @@ const domain = 'https://pancakeswap.finance'
 
 const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
   const { t } = useTranslation()
-  const [, hideBanner] = usePhishingBannerManager()
+  const [, hideBanner] = usePhishingBanner()
   const { isMobile, isMd } = useMatchBreakpoints()
   const warningTextAsParts = useMemo(() => {
     const warningText = t("please make sure you're visiting %domain% - check the URL carefully.", { domain })

@@ -47,7 +47,7 @@ interface SwapCommitButtonPropsType {
   mmQuoteExpiryRemainingSec?: number | null
 }
 
-export default function MMSwapCommitButton({
+export function MMSwapCommitButton({
   swapIsUnsupported,
   account,
   showWrap,

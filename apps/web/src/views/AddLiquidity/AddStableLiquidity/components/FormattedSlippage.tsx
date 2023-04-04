@@ -10,7 +10,7 @@ import { warningSeverity } from '../utils/slippage'
  */
 export function FormattedSlippage({ slippage, loading = false }: { slippage?: Percent; loading?: boolean }) {
   const slippageDisplay = slippage
-    ? slippage.lessThan(ONE_BIPS)
+    ? slippage.lessThan(ONE_BIPS) || slippage.equalTo(0)
       ? '<0.01%'
       : `${slippage.toFixed(2, { groupSeparator: '' }, Rounding.ROUND_DOWN)}%`
     : '-'

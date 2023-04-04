@@ -38,7 +38,7 @@ export const FarmApyButton: React.FC<React.PropsWithChildren<FarmApyButtonProps>
       >
         {children}
         {variant === "text-and-button" && (
-          <IconButton variant="text" scale="sm" ml="4px">
+          <IconButton variant="text" scale="sm" ml="4px" style={{ height: "auto" }}>
             <CalculateIcon width="18px" />
           </IconButton>
         )}

@@ -1,20 +1,16 @@
 import { AtomBox } from "@pancakeswap/ui";
 import { inputContainerVariants } from "./SwapWidget.css";
 
-import { NumericalInput } from "./NumericalInput";
+import { NumericalInput, NumericalInputProps } from "./NumericalInput";
 
 type ZapStyle = "noZap" | "zap";
 
-interface CurrencyInputPanelProps {
-  value: string;
-  onUserInput: (value: string) => void;
+interface CurrencyInputPanelProps extends Omit<NumericalInputProps, "onBlur"> {
   onInputBlur?: () => void;
   id: string;
   zapStyle?: ZapStyle;
   top?: React.ReactNode;
   bottom?: React.ReactNode;
-  disabled?: boolean;
-  error?: boolean;
   showBridgeWarning?: boolean;
 }
 export function CurrencyInputPanel({
@@ -27,10 +23,11 @@ export function CurrencyInputPanel({
   id,
   disabled,
   error,
+  loading,
   showBridgeWarning,
 }: CurrencyInputPanelProps) {
   return (
-    <AtomBox position="relative" id={id}>
+    <AtomBox position="relative" id={id} display="grid" gap="4px">
       <AtomBox display="flex" alignItems="center" justifyContent="space-between">
         {top}
       </AtomBox>
@@ -63,6 +60,7 @@ export function CurrencyInputPanel({
             <NumericalInput
               error={error}
               disabled={disabled}
+              loading={loading}
               className="token-amount-input"
               value={value}
               onBlur={onInputBlur}
@@ -74,7 +72,7 @@ export function CurrencyInputPanel({
           {bottom}
         </AtomBox>
         {disabled && (
-          <AtomBox role="presentation" position="absolute" inset="0" backgroundColor="backgroundAlt" opacity="0.6" />
+          <AtomBox role="presentation" position="absolute" inset="0px" backgroundColor="backgroundAlt" opacity="0.6" />
         )}
       </AtomBox>
     </AtomBox>

@@ -1,5 +1,4 @@
 import { createSprinkles, defineProperties } from '@vanilla-extract/sprinkles'
-import { calc } from '@vanilla-extract/css-utils'
 
 import { Breakpoint, breakpointNames, breakpoints } from './breakpoints'
 import { vars } from './vars.css'
@@ -7,21 +6,21 @@ import { vars } from './vars.css'
 const flexAlignment = ['flex-start', 'center', 'start', 'flex-end', 'stretch'] as const
 
 const negativeSpace = {
-  '-1px': `${calc(vars.space['1px']).negate()}`,
-  '-1': `${calc(vars.space['1']).negate()}`,
-  '-2': `${calc(vars.space['2']).negate()}`,
-  '-3': `${calc(vars.space['3']).negate()}`,
-  '-4': `${calc(vars.space['4']).negate()}`,
-  '-5': `${calc(vars.space['5']).negate()}`,
-  '-6': `${calc(vars.space['6']).negate()}`,
-  '-7': `${calc(vars.space['7']).negate()}`,
+  // '-1px': `${calc(vars.space['1px']).negate()}`,
+  // '-1': `${calc(vars.space['1']).negate()}`,
+  // '-2': `${calc(vars.space['2']).negate()}`,
+  // '-3': `${calc(vars.space['3']).negate()}`,
+  // '-4': `${calc(vars.space['4']).negate()}`,
+  // '-5': `${calc(vars.space['5']).negate()}`,
+  // '-6': `${calc(vars.space['6']).negate()}`,
+  // '-7': `${calc(vars.space['7']).negate()}`,
 }
 
 const extendedSpace = {
   '100%': '100%',
-  full: '100%',
   auto: 'auto',
-  fit: 'fit-content',
+  'fit-content': 'fit-content',
+  '420px': '420px',
   screenSm: breakpoints.sm,
   screenMd: breakpoints.md,
   screenLg: breakpoints.lg,
@@ -43,9 +42,10 @@ const responsiveProperties = defineProperties({
   defaultCondition: 'xs',
   responsiveArray: ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'],
   properties: {
-    display: ['block', 'flex', 'grid', 'inline', 'inline-flex', 'inline-block', 'none', 'contents'],
+    display: ['block', 'flex', 'grid', 'inline', 'inline-flex', 'inline-block', 'none'],
     flexDirection: ['column', 'row', 'column-reverse'],
     alignItems: ['center', 'end', 'baseLine', 'inherit', ...flexAlignment],
+    alignSelf: flexAlignment,
     flexWrap: ['wrap', 'nowrap'],
     flexGrow: [1],
     overflow: ['auto', 'hidden', 'scroll', 'unset'],
@@ -56,9 +56,8 @@ const responsiveProperties = defineProperties({
     justifyContent: [...flexAlignment, 'space-around', 'space-between'],
     justifyItems: [...flexAlignment, 'space-around', 'space-between'],
     justifySelf: [...flexAlignment],
-    inset: { ...vars.space, ...negativeSpace },
+    inset: { '0px': '0px' },
     height: { ...vars.space, ...extendedSpace, ...extendedHeight },
-    left: { ...vars.space, ...negativeSpace },
     marginBottom: { ...margin, ...negativeSpace },
     marginLeft: { ...margin, ...negativeSpace },
     marginRight: { ...margin, ...negativeSpace },
@@ -81,8 +80,6 @@ const responsiveProperties = defineProperties({
       ...vars.fontSizes,
       inherit: 'inherit',
     },
-    right: { ...vars.space, ...negativeSpace },
-    top: { ...vars.space, ...negativeSpace },
     flex: {
       1: '1 1 0%',
       auto: '1 1 auto',
@@ -120,15 +117,21 @@ const responsiveProperties = defineProperties({
     borderBottomLeftRadius: vars.radii,
     gap: {
       ...vars.space,
-      sm: '8px',
-      md: '12px',
-      lg: '24px',
+      sm: vars.space['8px'],
+      md: vars.space['12px'],
+      lg: vars.space['24px'],
     },
     rowGap: {
       ...vars.space,
-      sm: '8px',
-      md: '12px',
-      lg: '24px',
+      sm: vars.space['8px'],
+      md: vars.space['12px'],
+      lg: vars.space['24px'],
+    },
+    columnGap: {
+      ...vars.space,
+      sm: vars.space['8px'],
+      md: vars.space['12px'],
+      lg: vars.space['24px'],
     },
     gridAutoRows: ['auto'],
     opacity: {
@@ -136,7 +139,7 @@ const responsiveProperties = defineProperties({
       '0.6': 0.6,
     },
     lineHeight: {
-      '16px': '16px',
+      '16px': vars.space['16px'],
     },
     borderBottomColor: vars.colors,
     border: {
@@ -202,12 +205,6 @@ const interactiveProperties = defineProperties({
     borderColor: vars.colors,
     color: vars.colors,
     outlineColor: vars.colors,
-    opacity: {
-      '0': 0,
-      '0.5': 0.5,
-      '0.6': 0.6,
-      '1': 1,
-    },
   },
   shorthands: {
     bgc: ['backgroundColor'],

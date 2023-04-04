@@ -1,5 +1,6 @@
 import { useTranslation } from "@pancakeswap/localization";
-import { memo } from "react";
+import React, { memo } from "react";
+import type { FeeAmount } from "@pancakeswap/v3-sdk";
 import { Text, TooltipText } from "../../../../components/Text";
 import { Tag, TagProps } from "../../../../components/Tag/index";
 import { useTooltip } from "../../../../hooks/useTooltip";
@@ -13,7 +14,6 @@ import {
   VoteIcon,
   LockIcon,
   RocketIcon,
-  CurrencyIcon,
   CheckmarkCircleIcon,
 } from "../../../../components/Svg";
 
@@ -69,13 +69,7 @@ const StableFarmTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
         display="flex"
         style={{ textDecoration: "none", justifyContent: "center", alignSelf: "center" }}
       >
-        <Tag
-          variant="failure"
-          style={{ background: "none" }}
-          outline
-          startIcon={<CurrencyIcon width="18px" color="failure" mr="4px" />}
-          {...props}
-        >
+        <Tag variant="failure" style={{ background: "none" }} outline {...props}>
           {t("Stable LP")}
         </Tag>
       </TooltipText>
@@ -218,6 +212,18 @@ const BoostedTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
   );
 };
 
+const V2Tag: React.FC<TagProps> = (props) => (
+  <Tag variant="textDisabled" outline {...props}>
+    V2
+  </Tag>
+);
+
+const V3FeeTag: React.FC<TagProps & { feeAmount: FeeAmount }> = ({ feeAmount, ...props }) => (
+  <Tag variant="secondary" outline {...props}>
+    {feeAmount / 10_000}%
+  </Tag>
+);
+
 const Tags = {
   CoreTag,
   FarmAuctionTag,
@@ -233,6 +239,8 @@ const Tags = {
   LockedOrAutoPoolTag,
   BoostedTag,
   VotedTag,
+  V2Tag,
+  V3FeeTag,
 };
 
 export default Tags;

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import styled from 'styled-components'
 import { Text, Flex, Box, CloseIcon, IconButton } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization'
-import { usePhishingBanner } from 'state/user'
+import { usePhishingBanner } from '@pancakeswap/utils/user'
 import { DOMAIN } from 'config'
 import { AtomBox } from '@pancakeswap/ui'
 
@@ -76,13 +76,13 @@ const PhishingWarningBanner: React.FC<React.PropsWithChildren> = () => {
           background: linear-gradient(180deg, #12838e 0%, #005a5a 100%);
         }
       `}</style>
-      <AtomBox display={{ xs: 'flex', lg: 'none' }} alignItems="center" justifyContent="center" width="full">
+      <AtomBox display={{ xs: 'flex', lg: 'none' }} alignItems="center" justifyContent="center" width="100%">
         <Box>{warningTextComponent}</Box>
         <IconButton onClick={hideBanner} variant="text">
           <CloseIcon color="#FFFFFF" />
         </IconButton>
       </AtomBox>
-      <AtomBox display={{ xs: 'none', lg: 'flex' }} alignItems="center" justifyContent="center" width="full">
+      <AtomBox display={{ xs: 'none', lg: 'flex' }} alignItems="center" justifyContent="center" width="100%">
         <InnerContainer>
           <img src="/images/decorations/phishing-warning-bunny.png" alt="phishing-warning" width="78px" />
           <SpeechBubble>{warningTextComponent}</SpeechBubble>

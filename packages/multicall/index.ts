@@ -6,6 +6,9 @@ import type { Multicallv2Typed, Multicallv3Typed } from '@pancakeswap/utils/abit
 
 import multicallAbi from './Multicall.json'
 
+export type TMulticallv3Typed = typeof Multicallv3Typed
+export type TMulticallv2Typed = typeof Multicallv2Typed
+
 export const multicallAddresses = {
   1: '0xcA11bde05977b3631167028862bE2a173976CA11',
   4: '0xcA11bde05977b3631167028862bE2a173976CA11',
@@ -38,7 +41,7 @@ export interface MulticallOptions extends CallOverrides {
  * 2. The return includes a boolean whether the call was successful e.g. [wasSuccessful, callResult]
  */
 interface MulticallV2Params {
-  abi: any[]
+  abi: any[] | any
   calls: Call[]
   chainId?: ChainId
   options?: MulticallOptions

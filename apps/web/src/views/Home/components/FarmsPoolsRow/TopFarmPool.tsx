@@ -5,6 +5,7 @@ import { useTranslation } from '@pancakeswap/localization'
 
 interface TopFarmPoolProps {
   title: ReactNode
+  version?: 2 | 3
   percentage: number
   index: number
   visible: boolean

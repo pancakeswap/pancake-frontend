@@ -36,7 +36,7 @@ const PairPriceDisplay: React.FC<React.PropsWithChildren<TokenDisplayProps>> = (
     <FlexGap alignItems="baseline" {...props}>
       <Flex alignItems="inherit">
         <TextLabel mr="8px" bold>
-          {format ? formatAmount(typeof value === 'string' ? parseFloat(value) : value, formatOptions) : value}
+          {format ? formatAmount(typeof value === 'string' ? parseFloat(value) ?? 0 : value, formatOptions) : value}
         </TextLabel>
         {inputSymbol && outputSymbol && (
           <Text color="textSubtle" fontSize="20px" bold lineHeight={1.1}>

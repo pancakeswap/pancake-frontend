@@ -63,7 +63,7 @@ export const StepIntro = ({ docLink, docText }: { docLink: string; docText: stri
   return (
     <AtomBox
       display="flex"
-      width="full"
+      width="100%"
       flexDirection="column"
       style={{ gap: '24px' }}
       mx="auto"

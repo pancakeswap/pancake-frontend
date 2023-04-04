@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { RocketIcon, Text } from '@pancakeswap/uikit'
+import { RocketIcon, Flex, Text, useMatchBreakpoints } from '@pancakeswap/uikit'
 import isUndefinedOrNull from '@pancakeswap/utils/isUndefinedOrNull'
 import BigNumber from 'bignumber.js'
 import _toNumber from 'lodash/toNumber'
@@ -17,11 +17,13 @@ interface BoostedAprPropsType {
   mr?: string
   userBalanceInFarm: BigNumber
   lpTotalSupply: BigNumber
+  onlyShowAtDesktop?: boolean
 }
 
 function BoostedApr(props: BoostedAprPropsType) {
-  const { lpRewardsApr, apr, pid, userBalanceInFarm, lpTotalSupply, ...rest } = props
+  const { lpRewardsApr, apr, pid, userBalanceInFarm, lpTotalSupply, onlyShowAtDesktop, ...rest } = props
   const { boosterState, proxyAddress } = useContext(YieldBoosterStateContext)
+  const { isDesktop } = useMatchBreakpoints()
   const { t } = useTranslation()
 
   const boostedAprFromFE = useGetBoostedAPR(userBalanceInFarm, lpTotalSupply, apr, lpRewardsApr)
@@ -52,12 +54,12 @@ function BoostedApr(props: BoostedAprPropsType) {
   // }
 
   return (
-    <>
-      <RocketIcon m="4px" color="success" />
+    <Flex ml="4px">
+      {isDesktop && !onlyShowAtDesktop && <RocketIcon color="success" />}
       <Text bold color="success" {...rest} fontSize={16}>
         {msg}
       </Text>
-    </>
+    </Flex>
   )
 }
 
