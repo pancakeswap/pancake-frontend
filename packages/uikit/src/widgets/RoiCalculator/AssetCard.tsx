@@ -107,6 +107,7 @@ export const AssetCard = memo(function AssetCard({
       value={value}
       amount={amount}
       showPrice={showPrice}
+      decimals={18}
       priceEditable={priceEditable}
       priceChanged={priceChanged}
       name={<CurrencyLogoDisplay logo={<CurrencyLogo currency={currency} />} name={currency.symbol} />}
