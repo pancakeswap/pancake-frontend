@@ -49,7 +49,7 @@ import { calculateSlippageAmount } from '../../../utils/exchange'
 import { Field } from '../../../state/burn/actions'
 import { useGasPrice } from '../../../state/user/hooks'
 import ConfirmLiquidityModal from '../../Swap/components/ConfirmRemoveLiquidityModal'
-import { logError } from '../../../utils/sentry'
+import { isUserRejected, logError } from '../../../utils/sentry'
 import { CommonBasesType } from '../../../components/SearchModal/types'
 import { useStableDerivedBurnInfo } from './hooks/useStableDerivedBurnInfo'
 import SettingsModal from '../../../components/Menu/GlobalSettings/SettingsModal'
@@ -233,14 +233,14 @@ export default function RemoveStableLiquidity({ currencyA, currencyB, currencyId
           })
         })
         .catch((err) => {
-          if (err && err.code !== 4001) {
+          if (err && !isUserRejected(err)) {
             logError(err)
             console.error(`Remove Liquidity failed`, err, args)
           }
           setLiquidityState({
             attemptingTxn: false,
             liquidityErrorMessage:
-              err && err?.code !== 4001
+              err && !isUserRejected(err)
                 ? t('Remove liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
                 : undefined,
             txHash: undefined,

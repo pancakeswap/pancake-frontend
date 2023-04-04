@@ -67,7 +67,7 @@ import { Field } from '../../state/burn/actions'
 import { useGasPrice } from '../../state/user/hooks'
 import Page from '../Page'
 import ConfirmLiquidityModal from '../Swap/components/ConfirmRemoveLiquidityModal'
-import { logError } from '../../utils/sentry'
+import { isUserRejected, logError } from '../../utils/sentry'
 import { formatAmount } from '../../utils/formatInfoNumbers'
 import { CommonBasesType } from '../../components/SearchModal/types'
 import SettingsModal from '../../components/Menu/GlobalSettings/SettingsModal'
@@ -223,7 +223,7 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
       })
       .catch((err) => {
         // for all errors other than 4001 (EIP-1193 user rejected request), fall back to manual approve
-        if (err?.code !== 4001) {
+        if (!isUserRejected(err)) {
           approveCallback()
         }
       })
@@ -310,12 +310,12 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
         })
       })
       .catch((err) => {
-        if (err && err.code !== 4001) {
+        if (err && !isUserRejected(err)) {
           console.error(`Remove Liquidity failed`, err, args)
         }
         setLiquidityState({
           attemptingTxn: false,
-          liquidityErrorMessage: err && err?.code !== 4001 ? `Remove Liquidity failed: ${err.message}` : undefined,
+          liquidityErrorMessage: err && !isUserRejected(err) ? `Remove Liquidity failed: ${err.message}` : undefined,
           txHash: undefined,
         })
       })
@@ -463,14 +463,14 @@ export default function RemoveLiquidity({ currencyA, currencyB, currencyIdA, cur
           })
         })
         .catch((err) => {
-          if (err && err.code !== 4001) {
+          if (err && !isUserRejected(err)) {
             logError(err)
             console.error(`Remove Liquidity failed`, err, args)
           }
           setLiquidityState({
             attemptingTxn: false,
             liquidityErrorMessage:
-              err && err?.code !== 4001
+              err && !isUserRejected(err)
                 ? t('Remove liquidity failed: %message%', { message: transactionErrorToUserReadableMessage(err, t) })
                 : undefined,
             txHash: undefined,
