@@ -1,7 +1,7 @@
 import { ChainId, Currency } from '@pancakeswap/sdk'
 import { SmartRouter, V3Pool } from '@pancakeswap/smart-router/evm'
 import { computePoolAddress, DEPLOYER_ADDRESSES, FeeAmount, Tick } from '@pancakeswap/v3-sdk'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import useSWR from 'swr'
 
 import { v3Clients } from 'utils/graphql'
@@ -18,6 +18,7 @@ export interface V3PoolsHookParams {
 }
 
 export interface V3PoolsResult {
+  refresh: () => void
   pools: V3Pool[] | null
   loading: boolean
   syncing: boolean
@@ -35,6 +36,7 @@ export function useV3CandidatePools(
     syncing: isValidating,
     key,
     blockNumber,
+    refresh,
   } = useV3CandidatePoolsWithoutTicks(currencyA, currencyB, options)
 
   const {
@@ -50,6 +52,7 @@ export function useV3CandidatePools(
   const candidatePools = data?.pools ?? null
 
   return {
+    refresh,
     pools: candidatePools,
     loading: isLoading || ticksLoading,
     syncing: isValidating || ticksValidating,
@@ -76,7 +79,13 @@ export function useV3CandidatePoolsWithoutTicks(
     SmartRouter.metric('Getting pairs from', currencyA?.symbol, currencyB?.symbol)
     return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
   }, [currencyA, currencyB])
-  const { data: poolsFromSubgraphState, isLoading, isValidating } = useV3PoolsFromSubgraph(pairs, { ...options, key })
+
+  const {
+    data: poolsFromSubgraphState,
+    isLoading,
+    isValidating,
+    mutate,
+  } = useV3PoolsFromSubgraph(pairs, { ...options, key })
 
   const candidatePools = useMemo<V3Pool[] | null>(() => {
     if (!poolsFromSubgraphState?.pools || !currencyA || !currencyB) {
@@ -86,6 +95,7 @@ export function useV3CandidatePoolsWithoutTicks(
   }, [poolsFromSubgraphState, currencyA, currencyB])
 
   return {
+    refresh: mutate,
     pools: candidatePools,
     loading: isLoading,
     syncing: isValidating,
@@ -98,29 +108,35 @@ export function useV3PoolsWithTicks(
   pools: V3Pool[] | null | undefined,
   { key, blockNumber, enabled = true }: V3PoolsHookParams = {},
 ) {
+  const fetchingBlock = useRef<string | null>(null)
   const poolsWithTicks = useSWR(
     key && pools && enabled ? ['v3_pool_ticks', key] : null,
     async () => {
-      const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
-      SmartRouter.metric(label)
-      const poolTicks = await Promise.all(
-        pools.map(async ({ token0, token1, fee }) => {
-          return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
-            return data.map(
-              ({ tick, liquidityNet, liquidityGross }) =>
-                new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
-            )
-          })
-        }),
-      )
-      SmartRouter.metric(label, poolTicks)
-      return {
-        pools: pools.map((pool, i) => ({
-          ...pool,
-          ticks: poolTicks[i],
-        })),
-        key,
-        blockNumber,
+      fetchingBlock.current = blockNumber.toString()
+      try {
+        const label = `[V3_POOL_TICKS] ${key} ${blockNumber?.toString()}`
+        SmartRouter.metric(label)
+        const poolTicks = await Promise.all(
+          pools.map(async ({ token0, token1, fee }) => {
+            return getPoolTicks(token0.chainId, getV3PoolAddress(token0, token1, fee)).then((data) => {
+              return data.map(
+                ({ tick, liquidityNet, liquidityGross }) =>
+                  new Tick({ index: Number(tick), liquidityNet, liquidityGross }),
+              )
+            })
+          }),
+        )
+        SmartRouter.metric(label, poolTicks)
+        return {
+          pools: pools.map((pool, i) => ({
+            ...pool,
+            ticks: poolTicks[i],
+          })),
+          key,
+          blockNumber,
+        }
+      } finally {
+        fetchingBlock.current = null
       }
     },
     {
@@ -128,31 +144,44 @@ export function useV3PoolsWithTicks(
     },
   )
 
-  const { mutate } = poolsWithTicks
+  const { mutate, data } = poolsWithTicks
   useEffect(() => {
     // Revalidate pools if block number increases
-    mutate()
-  }, [blockNumber, mutate])
+    if (
+      blockNumber &&
+      fetchingBlock.current !== blockNumber.toString() &&
+      (!data?.blockNumber || blockNumber > data.blockNumber)
+    ) {
+      mutate()
+    }
+  }, [blockNumber, mutate, data?.blockNumber])
 
   return poolsWithTicks
 }
 
 export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabled = true }: V3PoolsHookParams = {}) {
+  const fetchingBlock = useRef<string | null>(null)
+  const queryEnabled = Boolean(enabled && key && pairs?.length)
   const result = useSWR<{
     pools: SmartRouter.SubgraphV3Pool[]
     key?: string
     blockNumber?: number
   }>(
-    enabled && key && pairs?.length && [key],
+    queryEnabled && [key],
     async () => {
-      const pools = await SmartRouter.getV3PoolSubgraph({
-        provider: ({ chainId }) => v3Clients[chainId],
-        pairs,
-      })
-      return {
-        pools,
-        key,
-        blockNumber,
+      fetchingBlock.current = blockNumber.toString()
+      try {
+        const pools = await SmartRouter.getV3PoolSubgraph({
+          provider: ({ chainId }) => v3Clients[chainId],
+          pairs,
+        })
+        return {
+          pools,
+          key,
+          blockNumber,
+        }
+      } finally {
+        fetchingBlock.current = null
       }
     },
     {
@@ -160,11 +189,18 @@ export function useV3PoolsFromSubgraph(pairs?: Pair[], { key, blockNumber, enabl
     },
   )
 
-  const { mutate } = result
+  const { mutate, data } = result
   useEffect(() => {
     // Revalidate pools if block number increases
-    mutate()
-  }, [blockNumber, mutate])
+    if (
+      queryEnabled &&
+      blockNumber &&
+      fetchingBlock.current !== blockNumber.toString() &&
+      (!data?.blockNumber || blockNumber > data.blockNumber)
+    ) {
+      mutate()
+    }
+  }, [blockNumber, mutate, data?.blockNumber, queryEnabled])
   return result
 }
 

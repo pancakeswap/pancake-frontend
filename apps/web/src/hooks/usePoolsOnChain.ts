@@ -3,7 +3,7 @@ import { BigintIsh, Currency, ChainId } from '@pancakeswap/sdk'
 import { SmartRouter, Pool } from '@pancakeswap/smart-router/evm'
 import { Provider as IProvider } from '@ethersproject/providers'
 import { useQuery } from '@tanstack/react-query'
-import { useMemo, useEffect } from 'react'
+import { useMemo, useEffect, useRef } from 'react'
 
 import { provider } from 'utils/wagmi'
 
@@ -36,6 +36,7 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
     currencyB?: Currency,
     { blockNumber, enabled = true }: Options = {},
   ) {
+    const fetchingBlock = useRef<string | null>(null)
     const key = useMemo(() => {
       if (!currencyA || !currencyB || currencyA.wrapped.equals(currencyB.wrapped)) {
         return ''
@@ -50,36 +51,48 @@ function candidatePoolsOnChainHookFactory<TPool extends Pool>(
       return currencyA && currencyB && SmartRouter.getPairCombinations(currencyA, currencyB)
     }, [currencyA, currencyB])
 
+    const queryEnabled = !!(enabled && blockNumber && key && pairs)
     const poolState = useQuery(
       [poolType, 'pools', key],
       async () => {
-        const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${blockNumber.toString()}`
-        SmartRouter.metric(label)
-        const pools = await getPoolsOnChain(pairs, provider, blockNumber)
-        SmartRouter.metric(label, pools)
+        fetchingBlock.current = blockNumber.toString()
+        try {
+          const label = `[POOLS_ONCHAIN](${poolType}) ${key} at block ${fetchingBlock.current}`
+          SmartRouter.metric(label)
+          const pools = await getPoolsOnChain(pairs, provider, blockNumber)
+          SmartRouter.metric(label, pools)
 
-        return {
-          pools,
-          key,
-          blockNumber,
+          return {
+            pools,
+            key,
+            blockNumber,
+          }
+        } finally {
+          fetchingBlock.current = null
         }
       },
       {
-        enabled: !!(enabled && blockNumber && key && pairs),
+        enabled: queryEnabled,
         refetchOnWindowFocus: false,
       },
     )
 
-    const { refetch, data, isLoading, isFetching: isValidating, isFetched } = poolState
+    const { refetch, data, isLoading, isFetching: isValidating } = poolState
     useEffect(() => {
       // Revalidate pools if block number increases
-      if (isFetched) {
+      if (
+        queryEnabled &&
+        blockNumber &&
+        fetchingBlock.current !== blockNumber.toString() &&
+        (!data?.blockNumber || blockNumber > data.blockNumber)
+      ) {
         refetch()
       }
       // eslint-disable-next-line
-    }, [blockNumber])
+    }, [blockNumber, data?.blockNumber, queryEnabled])
 
     return {
+      refresh: refetch,
       pools: data?.pools ?? null,
       loading: isLoading,
       syncing: isValidating,
