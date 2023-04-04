@@ -15,6 +15,7 @@ import {
   LockIcon,
   RocketIcon,
   CheckmarkCircleIcon,
+  CurrencyIcon,
 } from "../../../../components/Svg";
 
 const CoreTag: React.FC<React.PropsWithChildren<TagProps>> = (props) => {
