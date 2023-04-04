@@ -1,11 +1,28 @@
-import { Currency, CurrencyAmount } from '@pancakeswap/sdk'
+import { LegacyStableSwapPair } from '@pancakeswap/smart-router/evm'
+import { Contract } from '@ethersproject/contracts'
+import { Currency, CurrencyAmount, ERC20Token } from '@pancakeswap/sdk'
+import { createContext, useMemo } from 'react'
+
+import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
 import stableSwapInfoABI from 'config/abi/infoStableSwap.json'
 import stableLPABI from 'config/abi/stableLP.json'
 import stableSwapABI from 'config/abi/stableSwap.json'
 import { useContract } from 'hooks/useContract'
-import { createContext, useMemo } from 'react'
 import { useStableSwapPairs } from 'state/swap/useStableSwapPairs'
-import { useTokenBalancesWithLoadingIndicator } from 'state/wallet/hooks'
+
+interface StableSwapConfigType extends LegacyStableSwapPair {
+  liquidityToken: ERC20Token
+  token0: Currency
+  token1: Currency
+}
+
+export type StableSwapConfig = Omit<StableSwapConfigType, 'token' | 'quoteToken' | 'lpAddress'>
+
+export interface LPStablePair extends StableSwapConfig {
+  reserve0: CurrencyAmount<Currency>
+  reserve1: CurrencyAmount<Currency>
+  getLiquidityValue: () => CurrencyAmount<Currency>
+}
 
 function useFindStablePair({ tokenA, tokenB }: { tokenA: Currency | undefined; tokenB: Currency | undefined }) {
   const stablePairs = useStableSwapPairs()
@@ -46,7 +63,12 @@ export function useLPTokensWithBalanceByAccount(account) {
   }))
 }
 
-export const StableConfigContext = createContext(null)
+export const StableConfigContext = createContext<{
+  stableSwapInfoContract: Contract
+  stableSwapContract: Contract
+  stableSwapLPContract: Contract
+  stableSwapConfig: StableSwapConfig
+} | null>(null)
 
 export default function useStableConfig({ tokenA, tokenB }: { tokenA: Currency; tokenB: Currency }) {
   const stablePair = useFindStablePair({ tokenA, tokenB })

@@ -13,7 +13,7 @@ export const scaleVariants = {
   },
 };
 
-export const styleVariants = {
+export const styleVariants: { [key: string]: { backgroundColor?: string; bg?: string } } = {
   [variants.PRIMARY]: {
     backgroundColor: "primary",
   },
@@ -37,5 +37,11 @@ export const styleVariants = {
   },
   [variants.WARNING]: {
     backgroundColor: "warning",
+  },
+  [variants.WARNING]: {
+    backgroundColor: "warning",
+  },
+  [variants.GRADIENTBOLD]: {
+    bg: "gradientBold",
   },
 };

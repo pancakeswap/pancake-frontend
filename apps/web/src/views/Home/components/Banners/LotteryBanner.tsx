@@ -12,7 +12,7 @@ import { FetchStatus, LotteryStatus } from 'config/constants/types'
 import { useTranslation } from '@pancakeswap/localization'
 import Image from 'next/legacy/image'
 import { memo } from 'react'
-import { usePriceCakeBusd } from 'state/farms/hooks'
+import { usePriceCakeUSD } from 'state/farms/hooks'
 import { LotteryResponse } from 'state/types'
 import styled from 'styled-components'
 import useSWR from 'swr'
@@ -76,7 +76,7 @@ const isLotteryLive = (status: LotteryStatus) => status === LotteryStatus.OPEN
 
 const LotteryPrice: React.FC<React.PropsWithChildren> = () => {
   const { data } = useSWR<LotteryResponse>(['currentLottery'])
-  const cakePriceBusd = usePriceCakeBusd()
+  const cakePriceBusd = usePriceCakeUSD()
   const prizeInBusd = new BigNumber(data.amountCollectedInCake).times(cakePriceBusd)
   const prizeTotal = getBalanceNumber(prizeInBusd)
   const { t } = useTranslation()

@@ -1,0 +1,217 @@
+/* eslint-disable react/jsx-pascal-case */
+import { useTranslation } from '@pancakeswap/localization'
+import {
+  AutoRow,
+  CalculateIcon,
+  Farm as FarmUI,
+  IconButton,
+  RoiCalculatorModalV2,
+  Skeleton,
+  Text,
+  TooltipText,
+  useModalV2,
+  useRoi,
+} from '@pancakeswap/uikit'
+import { BIG_ZERO } from '@pancakeswap/utils/bigNumber'
+import { useCakePriceAsBN } from '@pancakeswap/utils/useCakePrice'
+import { encodeSqrtRatioX96, Position } from '@pancakeswap/v3-sdk'
+import BigNumber from 'bignumber.js'
+import { useMemo, useState } from 'react'
+
+import { Bound } from 'config/constants/types'
+import { usePoolAvgTradingVolume } from 'hooks/usePoolTradingVolume'
+import { useAllV3Ticks } from 'hooks/v3/usePoolTickData'
+import useV3DerivedInfo from 'hooks/v3/useV3DerivedInfo'
+import { usePairTokensPrice } from 'hooks/v3/usePairTokensPrice'
+import { useFarmsV3Public } from 'state/farmsV3/hooks'
+import { Field } from 'state/mint/actions'
+import LiquidityFormProvider from 'views/AddLiquidityV3/formViews/V3FormView/form/LiquidityFormProvider'
+import { useV3FormState } from 'views/AddLiquidityV3/formViews/V3FormView/form/reducer'
+import { V3Farm } from 'views/Farms/FarmsV3'
+import { getDisplayApr } from '../../getDisplayApr'
+
+type FarmV3ApyButtonProps = {
+  farm: V3Farm
+  existingPosition?: Position
+  isPositionStaked?: boolean
+}
+
+export function FarmV3ApyButton(props: FarmV3ApyButtonProps) {
+  return (
+    <LiquidityFormProvider>
+      <FarmV3ApyButton_ {...props} />
+    </LiquidityFormProvider>
+  )
+}
+
+function FarmV3ApyButton_({ farm, existingPosition: existingPosition_, isPositionStaked }: FarmV3ApyButtonProps) {
+  const { token: baseCurrency, quoteToken: quoteCurrency, feeAmount, lpAddress } = farm
+  const { t } = useTranslation()
+  const roiModal = useModalV2()
+
+  const [priceTimeWindow, setPriceTimeWindow] = useState(0)
+  const prices = usePairTokensPrice(lpAddress, priceTimeWindow, baseCurrency?.chainId)
+
+  const { ticks: data } = useAllV3Ticks(baseCurrency, quoteCurrency, feeAmount)
+
+  const formState = useV3FormState()
+
+  // use state to prevent existing position from being updated from props after changes on roi modal
+  const [existingPosition] = useState(existingPosition_)
+
+  const { pool, ticks, price, pricesAtTicks, currencyBalances, outOfRange } = useV3DerivedInfo(
+    baseCurrency ?? undefined,
+    quoteCurrency ?? undefined,
+    feeAmount,
+    baseCurrency ?? undefined,
+    existingPosition,
+    formState,
+  )
+
+  const cakePrice = useCakePriceAsBN()
+
+  const sqrtRatioX96 = price && encodeSqrtRatioX96(price.numerator, price.denominator)
+  const { [Bound.LOWER]: tickLower, [Bound.UPPER]: tickUpper } = ticks
+  const { [Bound.LOWER]: priceLower, [Bound.UPPER]: priceUpper } = pricesAtTicks
+
+  const currencyAUsdPrice = +farm.tokenPriceBusd
+  const currencyBUsdPrice = +farm.quoteTokenPriceBusd
+
+  const volume24H = usePoolAvgTradingVolume({
+    address: farm.lpAddress,
+    chainId: farm.token.chainId,
+  })
+
+  const balanceA = existingPosition_?.amount0 ?? currencyBalances[Field.CURRENCY_A]
+  const balanceB = existingPosition_?.amount1 ?? currencyBalances[Field.CURRENCY_B]
+
+  const depositUsdAsBN = useMemo(
+    () =>
+      balanceA &&
+      balanceB &&
+      currencyAUsdPrice &&
+      currencyBUsdPrice &&
+      new BigNumber(balanceA.toExact())
+        .times(currencyAUsdPrice)
+        .plus(new BigNumber(balanceB.toExact()).times(currencyBUsdPrice)),
+    [balanceA, balanceB, currencyAUsdPrice, currencyBUsdPrice],
+  )
+
+  const { data: farmV3 } = useFarmsV3Public()
+
+  const cakeAprFactor = useMemo(
+    () =>
+      new BigNumber(farm.poolWeight)
+        .times(farmV3.cakePerSecond)
+        .times(365 * 60 * 60 * 24)
+        .times(cakePrice.toFixed(3))
+        .div(
+          new BigNumber(farm.lmPoolLiquidity).plus(
+            isPositionStaked ? BIG_ZERO : existingPosition_?.liquidity.toString() ?? BIG_ZERO,
+          ),
+        )
+        .times(100),
+    [
+      cakePrice,
+      existingPosition_?.liquidity,
+      farm.lmPoolLiquidity,
+      farm.poolWeight,
+      farmV3.cakePerSecond,
+      isPositionStaked,
+    ],
+  )
+
+  const positionCakeApr = useMemo(
+    () =>
+      existingPosition_
+        ? outOfRange
+          ? 0
+          : new BigNumber(existingPosition_.liquidity.toString()).times(cakeAprFactor).div(depositUsdAsBN).toNumber()
+        : 0,
+    [cakeAprFactor, depositUsdAsBN, existingPosition_, outOfRange],
+  )
+
+  const { apr } = useRoi({
+    tickLower,
+    tickUpper,
+    sqrtRatioX96,
+    fee: feeAmount,
+    mostActiveLiquidity: pool?.liquidity,
+    amountA: existingPosition?.amount0,
+    amountB: existingPosition?.amount1,
+    compoundOn: false,
+    currencyAUsdPrice,
+    currencyBUsdPrice,
+    volume24H,
+  })
+
+  const positionDisplayApr = getDisplayApr(+positionCakeApr, +apr.toFixed(2))
+  const displayApr = getDisplayApr(+farm.cakeApr, +apr.toFixed(2))
+
+  if (farm.multiplier === '0X') {
+    return <Text fontSize="14px">0%</Text>
+  }
+
+  if (!displayApr) {
+    return <Skeleton height={24} width={80} />
+  }
+
+  return (
+    <>
+      {existingPosition_ ? (
+        <AutoRow width="auto" gap="2px">
+          {outOfRange ? (
+            <TooltipText decorationColor="failure" color="failure" fontSize="14px">
+              {positionCakeApr.toLocaleString('en-US', { maximumFractionDigits: 2 })}%
+            </TooltipText>
+          ) : (
+            <Text fontSize="14px">{positionDisplayApr}%</Text>
+          )}
+          <IconButton variant="text" style={{ height: 18, width: 18 }} scale="sm" onClick={roiModal.onOpen}>
+            <CalculateIcon width="18px" color="textSubtle" />
+          </IconButton>
+        </AutoRow>
+      ) : (
+        <FarmUI.FarmApyButton
+          variant="text-and-button"
+          handleClickButton={(e) => {
+            e.stopPropagation()
+            e.preventDefault()
+            roiModal.onOpen()
+          }}
+        >
+          {displayApr}%
+        </FarmUI.FarmApyButton>
+      )}
+      {cakePrice && cakeAprFactor && (
+        <RoiCalculatorModalV2
+          {...roiModal}
+          isFarm
+          maxLabel={existingPosition_ ? t('My Position') : undefined}
+          closeOnOverlayClick
+          depositAmountInUsd={depositUsdAsBN?.toString()}
+          max={depositUsdAsBN?.toString()}
+          balanceA={balanceA}
+          balanceB={balanceB}
+          price={price}
+          currencyA={baseCurrency}
+          currencyB={quoteCurrency}
+          currencyAUsdPrice={currencyAUsdPrice}
+          currencyBUsdPrice={currencyBUsdPrice}
+          sqrtRatioX96={sqrtRatioX96}
+          liquidity={pool?.liquidity}
+          feeAmount={feeAmount}
+          ticks={data}
+          volume24H={volume24H}
+          priceUpper={priceUpper}
+          priceLower={priceLower}
+          cakePrice={cakePrice.toFixed(3)}
+          cakeAprFactor={cakeAprFactor}
+          prices={prices}
+          priceSpan={priceTimeWindow}
+          onPriceSpanChange={setPriceTimeWindow}
+        />
+      )}
+    </>
+  )
+}

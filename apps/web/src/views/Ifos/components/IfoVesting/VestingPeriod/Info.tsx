@@ -55,7 +55,7 @@ const Info: React.FC<React.PropsWithChildren<InfoProps>> = ({ poolId, data, fetc
     },
   )
 
-  const { cliff } = publicIfoData[poolId]?.vestingInformation
+  const { cliff } = publicIfoData[poolId]?.vestingInformation || {}
   const currentTimeStamp = Date.now()
   const timeCliff = vestingStartTime === 0 ? currentTimeStamp : (vestingStartTime + cliff) * 1000
   const timeVestingEnd = (vestingStartTime + vestingInformationDuration) * 1000

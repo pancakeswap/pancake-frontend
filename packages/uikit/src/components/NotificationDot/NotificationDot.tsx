@@ -4,6 +4,7 @@ import { NotificationDotProps, DotProps } from "./types";
 
 const NotificationDotRoot = styled.span`
   display: inline-flex;
+  width: fit-content;
   position: relative;
 `;
 

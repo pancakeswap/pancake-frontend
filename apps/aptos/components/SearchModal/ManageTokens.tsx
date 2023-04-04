@@ -199,11 +199,11 @@ export default function ManageTokens({
             />
           )}
         </AutoColumn>
-        <AutoColumn gap="2">{tokenList}</AutoColumn>
+        <AutoColumn gap="8px">{tokenList}</AutoColumn>
         {Boolean(discoverRegisterTokens.length) && (
           <>
             <Text color="textSubtle">{t('Discovered from registered coins')}</Text>
-            <AutoColumn gap="2">
+            <AutoColumn gap="8px">
               {discoverRegisterTokens.map((discoveredToken) => (
                 <RowBetween key={discoveredToken.address} width="100%">
                   <RowFixed>

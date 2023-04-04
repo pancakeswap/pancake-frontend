@@ -14,7 +14,7 @@ import { fetchFarmUserDataAsync } from 'state/farms'
 import { useTransactionAdder, useNonBscFarmPendingTransaction } from 'state/transactions/hooks'
 import { FarmTransactionStatus, NonBscFarmStepType } from 'state/transactions/actions'
 import { pickFarmTransactionTx } from 'state/global/actions'
-import { usePriceCakeBusd, useFarmFromPid } from 'state/farms/hooks'
+import { usePriceCakeUSD, useFarmFromPid } from 'state/farms/hooks'
 import BCakeCalculator from 'views/Farms/components/YieldBooster/components/BCakeCalculator'
 import getLiquidityUrlPathParts from 'utils/getLiquidityUrlPathParts'
 import BigNumber from 'bignumber.js'
@@ -148,7 +148,7 @@ const Staked: React.FunctionComponent<React.PropsWithChildren<StackedActionProps
   const { tokenBalance, stakedBalance, allowance } = userData || {}
 
   const router = useRouter()
-  const cakePrice = usePriceCakeBusd()
+  const cakePrice = usePriceCakeUSD()
   const [bCakeMultiplier, setBCakeMultiplier] = useState<number | null>(() => null)
 
   const liquidityUrlPathParts = getLiquidityUrlPathParts({
