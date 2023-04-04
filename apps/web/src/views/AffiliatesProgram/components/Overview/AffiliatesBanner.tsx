@@ -169,7 +169,7 @@ const AffiliatesBanner = () => {
               >
                 <Button width="fit-content">{t('Join our Affiliate Program')}</Button>
               </Link>
-              <Link href="#calculate">
+              <Link href="#affiliate-benefits">
                 <Button ml="12px" variant="secondary" width="fit-content">
                   {t('Discover your Potential')}
                 </Button>

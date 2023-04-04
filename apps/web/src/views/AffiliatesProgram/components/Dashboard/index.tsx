@@ -57,4 +57,6 @@ const Dashboard = () => {
   )
 }
 
+Dashboard.chains = []
+
 export default Dashboard
