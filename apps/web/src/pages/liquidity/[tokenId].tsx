@@ -3,6 +3,7 @@ import { ChainId, Currency, CurrencyAmount, Fraction, Percent, Price, Token } fr
 import {
   AutoColumn,
   AutoRow,
+  RowFixed,
   Box,
   Button,
   Card,
@@ -914,15 +915,18 @@ function PositionHistoryRow({
 
   if (isMobile) {
     return (
-      <Box>
-        <AutoRow gap="8px">
-          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
-          <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
+      <Flex alignItems="center" justifyContent="center">
+        <AutoRow gap="4px">
+          <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+            <Text ellipsis>{dayjs(+positionTx.timestamp * 1_000).format('YYYY/MM/DD')}</Text>
+          </LinkExternal>
         </AutoRow>
-        <Text>{positionHistoryTypeText[type]}</Text>
-        <AutoColumn gap="4px">
+        <RowFixed justifyContent="center">
+          <Text>{positionHistoryTypeText[type]}</Text>
+        </RowFixed>
+        <AutoRow gap="4px">
           {+positionTx.amount0 > 0 && (
-            <AutoRow flexWrap="nowrap" gap="12px" justifyContent="space-between">
+            <AutoRow flexWrap="nowrap" gap="4px" justifyContent="flex-end">
               <AutoRow width="auto" flexWrap="nowrap" gap="4px">
                 <AtomBox minWidth="24px">
                   <CurrencyLogo currency={currency0} />
@@ -939,7 +943,7 @@ function PositionHistoryRow({
             </AutoRow>
           )}
           {+positionTx.amount1 > 0 && (
-            <AutoRow flexWrap="nowrap" gap="12px" justifyContent="space-between">
+            <AutoRow flexWrap="nowrap" gap="4px" justifyContent="flex-end">
               <AutoRow width="auto" flexWrap="nowrap" gap="4px">
                 <AtomBox minWidth="24px">
                   <CurrencyLogo currency={currency1} />
@@ -955,8 +959,8 @@ function PositionHistoryRow({
               </Text>
             </AutoRow>
           )}
-        </AutoColumn>
-      </Box>
+        </AutoRow>
+      </Flex>
     )
   }
 
@@ -970,8 +974,9 @@ function PositionHistoryRow({
       p="16px"
     >
       <AutoRow justifyContent="center" gap="8px">
-        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)} />
-        <Text ellipsis>{date.toLocaleString()}</Text>
+        <LinkExternal isBscScan href={getBlockExploreLink(positionTx.id, 'transaction', chainId)}>
+          <Text ellipsis>{date.toLocaleString()}</Text>
+        </LinkExternal>
       </AutoRow>
       <Text>{positionHistoryTypeText[type]}</Text>
       <AutoColumn gap="4px">
