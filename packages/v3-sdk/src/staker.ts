@@ -176,7 +176,7 @@ export abstract class Staker {
     let data: string
 
     if (incentiveKeys.length > 1) {
-      const keys = []
+      const keys: { rewardToken: string; pool: string; startTime: string; endTime: string; refundee: string }[] = []
       for (let i = 0; i < incentiveKeys.length; i++) {
         const incentiveKey = incentiveKeys[i]
         keys.push(this._encodeIncentiveKey(incentiveKey))

@@ -19,4 +19,6 @@ const AffiliatesProgram = () => {
   )
 }
 
+AffiliatesProgram.chains = []
+
 export default AffiliatesProgram
