@@ -11,12 +11,12 @@ import { Link, LinkExternal } from "../Link";
 import { HelpIcon } from "../Svg";
 import { Text } from "../Text";
 
-const Footer = styled(Flex)`
+export const Footer = styled(Flex)`
   width: 100%;
   background: ${({ theme }) => theme.colors.dropdown};
 `;
 
-const BulletList = styled.ul`
+export const BulletList = styled.ul`
   list-style-type: none;
   margin-top: 16px;
   padding: 0;
@@ -67,13 +67,15 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { t } = useTranslation();
+  const isAptos = rewardCakePerSecond === true;
+
   const {
     targetRef: multiplierRef,
     tooltip: multiplierTooltip,
     tooltipVisible: multiplierTooltipVisible,
   } = useTooltip(
     <>
-      {rewardCakePerSecond ? (
+      {isAptos ? (
         <>
           <Text>
             {t(
@@ -215,19 +217,27 @@ const RoiCalculatorFooter: React.FC<React.PropsWithChildren<RoiCalculatorFooterP
                   </Text>
                 </li>
                 <li>
-                  <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
-                    {t(
-                      "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the"
-                    )}
-                    <Link
-                      style={{ display: "inline-block" }}
-                      fontSize="12px"
-                      ml="3px"
-                      href={`/info${stableSwapAddress ? `/pairs/${stableSwapAddress}?type=stableSwap` : ""}`}
-                    >
-                      {t("Info Page")}
-                    </Link>
-                  </Text>
+                  {isAptos ? (
+                    <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+                      {t(
+                        "To provide stable estimates, APR figures are calculated and updated daily using volume data from CoinMarketCap"
+                      )}
+                    </Text>
+                  ) : (
+                    <Text fontSize="12px" textAlign="center" color="textSubtle" display="inline">
+                      {t(
+                        "To provide stable estimates, APR figures are calculated once per day on the farm page. For real time APR, please visit the"
+                      )}
+                      <Link
+                        style={{ display: "inline-block" }}
+                        fontSize="12px"
+                        ml="3px"
+                        href={`/info${stableSwapAddress ? `/pairs/${stableSwapAddress}?type=stableSwap` : ""}`}
+                      >
+                        {t("Info Page")}
+                      </Link>
+                    </Text>
+                  )}
                 </li>
               </>
             )}

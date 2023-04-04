@@ -16,7 +16,7 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       },
       {
         label: t("Blog"),
-        href: "https://medium.com/pancakeswap",
+        href: "https://blog.pancakeswap.finance/",
       },
       {
         label: t("Community"),
@@ -25,6 +25,10 @@ export const footerLinks: (t: ContextApi["t"]) => FooterLinkType[] = (t) => [
       {
         label: t("Litepaper"),
         href: "https://v2litepaper.pancakeswap.finance/",
+      },
+      {
+        label: t("Terms Of Service"),
+        href: "https://pancakeswap.finance/terms-of-service",
       },
     ],
   },

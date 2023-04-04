@@ -3,7 +3,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import BigNumber from 'bignumber.js'
 import { useRouter } from 'next/router'
 import { useAccount } from '@pancakeswap/awgmi'
-import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { usePriceCakeUsdc } from 'hooks/useStablePrice'
 import {
   Image,
@@ -26,7 +25,7 @@ import orderBy from 'lodash/orderBy'
 import Page from 'components/Layout/Page'
 import { useFarmViewMode, ViewMode, useFarmsStakedOnly } from 'state/user'
 import NoSSR from 'components/NoSSR'
-
+import useLpRewardsAprs from 'components/Farms/hooks/useLpRewardsAprs'
 import { useFarms } from 'state/farms/hook'
 import { useIntersectionObserver } from '@pancakeswap/hooks'
 import { getFarmApr } from 'utils/farmApr'
@@ -133,13 +132,13 @@ const NUMBER_OF_FARMS_VISIBLE = 12
 
 const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { t } = useTranslation()
-  const { chainId } = useActiveWeb3React()
   const cakePrice = usePriceCakeUsdc()
   const { pathname, query: urlQuery } = useRouter()
   const [viewMode, setViewMode] = useFarmViewMode()
   const [stakedOnly, setStakedOnly] = useFarmsStakedOnly()
   const [numberOfFarmsVisible, setNumberOfFarmsVisible] = useState(NUMBER_OF_FARMS_VISIBLE)
   const { data: farmsLP, userDataLoaded, poolLength, regularCakePerBlock } = useFarms()
+  const lpRewardsAprs = useLpRewardsAprs()
 
   const [_query, setQuery] = useState('')
   const normalizedUrlSearch = useMemo(() => (typeof urlQuery?.search === 'string' ? urlQuery.search : ''), [urlQuery])
@@ -183,23 +182,18 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
           return farm
         }
         const totalLiquidity = new BigNumber(farm.lpTotalInQuoteToken).times(farm.quoteTokenPriceBusd)
-        const { cakeRewardsApr, lpRewardsApr } = isActive
-          ? getFarmApr(
-              chainId,
-              new BigNumber(farm.poolWeight ?? 0),
-              cakePrice,
-              totalLiquidity,
-              farm.lpAddress,
-              regularCakePerBlock ?? 0,
-            )
-          : { cakeRewardsApr: 0, lpRewardsApr: 0 }
+        const { cakeRewardsApr } = isActive
+          ? getFarmApr(new BigNumber(farm.poolWeight ?? 0), cakePrice, totalLiquidity, regularCakePerBlock ?? 0)
+          : { cakeRewardsApr: 0 }
+
+        const lpRewardsApr = lpRewardsAprs?.[farm.lpAddress?.toLowerCase()] ?? 0
 
         return { ...farm, apr: cakeRewardsApr, lpRewardsApr, liquidity: totalLiquidity }
       })
 
       return filterFarmsByQuery(farmsToDisplayWithAPR, query)
     },
-    [query, isActive, chainId, cakePrice, regularCakePerBlock],
+    [query, isActive, cakePrice, regularCakePerBlock, lpRewardsAprs],
   )
 
   const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -297,8 +291,13 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
       <Page title={t('Farms')}>
         <ControlContainer>
           <ViewControls>
-            <NoSSR>
-              <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+            <Flex mt="20px">
+              <NoSSR>
+                <ToggleView idPrefix="clickFarm" viewMode={viewMode} onToggle={setViewMode} />
+              </NoSSR>
+            </Flex>
+            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
+            <Flex mt="20px">
               <ToggleWrapper>
                 <Toggle
                   id="staked-only-farms"
@@ -308,8 +307,7 @@ const Farms: React.FC<React.PropsWithChildren> = ({ children }) => {
                 />
                 <Text>{t('Staked only')}</Text>
               </ToggleWrapper>
-            </NoSSR>
-            <FarmUI.FarmTabButtons hasStakeInFinishedFarms={stakedInactiveFarms?.length > 0} />
+            </Flex>
           </ViewControls>
           <FilterContainer>
             <LabelWrapper>

@@ -1,5 +1,22 @@
 # @pancakeswap/sdk
 
+## 3.2.0
+
+### Minor Changes
+
+- 65fbb250a: Bump version
+
+### Patch Changes
+
+- Updated dependencies [65fbb250a]
+  - @pancakeswap/swap-sdk-core@0.1.0
+
+## 3.1.5
+
+### Patch Changes
+
+- 7fb419ece: chore: Add fetcher and tokenAmount
+
 ## 3.1.4
 
 ### Patch Changes

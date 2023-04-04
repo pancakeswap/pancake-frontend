@@ -78,10 +78,10 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
     tokenAddress: farm.token.address,
     chainId,
   })
-  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/${liquidityUrlPathParts}`
+  const addLiquidityUrl = `${BASE_ADD_LIQUIDITY_URL}/v2/${liquidityUrlPathParts}`
   const { lpAddress, stableSwapAddress, stableLpFee } = farm
   const isPromotedFarm = farm.token.symbol === 'CAKE'
-  const { stakedBalance, proxy, tokenBalance } = farm.userData
+  const { stakedBalance, proxy, tokenBalance } = farm?.userData || {}
 
   const infoUrl = useMemo(() => {
     if (farm.isStable) {
@@ -105,11 +105,13 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
           quoteToken={farm.quoteToken}
           boosted={farm.boosted}
           isStable={farm.isStable}
+          version={2}
+          pid={farm.pid}
         />
         {!removed && (
           <Flex justifyContent="space-between" alignItems="center">
             <Text>{t('APR')}:</Text>
-            <Text bold style={{ display: 'flex', alignItems: 'center' }}>
+            <Text style={{ display: 'flex', alignItems: 'center' }}>
               {farm.apr ? (
                 <>
                   {farm.boosted ? (
@@ -153,7 +155,7 @@ const FarmCard: React.FC<React.PropsWithChildren<FarmCardProps>> = ({
         )}
         <Flex justifyContent="space-between">
           <Text>{t('Earn')}:</Text>
-          <Text bold>{earnLabel}</Text>
+          <Text>{earnLabel}</Text>
         </Flex>
         <CardActionsContainer
           farm={farm}

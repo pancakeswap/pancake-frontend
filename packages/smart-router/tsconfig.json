@@ -1,5 +1,7 @@
 {
   "extends": "tsconfig/react-library",
+  "include": ["./evm"],
+  "exclude": ["**/*.test.ts"],
   "compilerOptions": {
     "esModuleInterop": true,
     "resolveJsonModule": true,

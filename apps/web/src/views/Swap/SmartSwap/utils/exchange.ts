@@ -1,5 +1,9 @@
 import { Currency, CurrencyAmount, Fraction, JSBI, Percent, TradeType, ChainId } from '@pancakeswap/sdk'
-import { TradeWithStableSwap, Trade, isStableSwapPair } from '@pancakeswap/smart-router/evm'
+import {
+  LegacyTradeWithStableSwap as TradeWithStableSwap,
+  LegacyTrade as Trade,
+  LegacyRouter,
+} from '@pancakeswap/smart-router/evm'
 
 import { BIPS_BASE, INPUT_FRACTION_AFTER_FEE, ONE_HUNDRED_PERCENT } from 'config/constants/exchange'
 import { Field } from 'state/swap/actions'
@@ -10,10 +14,12 @@ import { useContract } from 'hooks/useContract'
 import { useActiveChainId } from 'hooks/useActiveChainId'
 import { ChainMap } from 'config/constants/types'
 
+const { isStableSwapPair } = LegacyRouter
+
 export const SMART_ROUTER_ADDRESS: ChainMap<string> = {
   [ChainId.ETHEREUM]: '',
   [ChainId.GOERLI]: '',
-  [ChainId.BSC]: '0xC6665d98Efd81f47B03801187eB46cbC63F328B0',
+  [ChainId.BSC]: '0x64D74e1EAAe3176744b5767b93B7Bee39Cf7898F',
   [ChainId.BSC_TESTNET]: '0xCF457465fC0E98a50Bc3E1b3DDAAF1373622f059',
 }
 

@@ -2,6 +2,7 @@ import JSBI from 'jsbi'
 import invariant from 'tiny-invariant'
 import _Decimal from 'decimal.js-light'
 import _Big from 'big.js'
+// @ts-ignore
 import toFormat from 'toformat'
 
 import { BigintIsh, Rounding } from '../constants'

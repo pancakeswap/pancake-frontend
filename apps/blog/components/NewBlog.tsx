@@ -1,5 +1,5 @@
 import { useTranslation } from '@pancakeswap/localization'
-import { Box, Flex, Text } from '@pancakeswap/uikit'
+import { Box, Flex, Text, Card } from '@pancakeswap/uikit'
 import NextLink from 'next/link'
 import { useMemo } from 'react'
 import styled from 'styled-components'
@@ -81,49 +81,59 @@ const NewBlog = () => {
           </Box>
         </Flex>
         <NextLink passHref href={`/articles/${article?.slug}`}>
-          <StyleBlog>
-            <Box
-              overflow="hidden"
-              borderRadius={8}
-              mr={['0', '0', '0', '0', '0', '50px']}
-              minWidth={['152px', '192px', '488px']}
-              height={['200px', '228px', '420px', '530px', '530px', '275px']}
-            >
-              <StyledBackgroundImage imgUrl={article?.imgUrl ?? ''} />
-            </Box>
-            <Flex
-              overflow="hidden"
-              flexDirection="column"
-              width="100%"
-              mt={['16px', '16px', '20px', '40px', '40px', '0']}
-            >
-              <Box mb="24px" display={['none', null, null, 'block']}>
-                <StyledTagGroup>
-                  {article?.categories?.map((category: string) => (
-                    <Text bold key={category} fontSize="12px" color="textSubtle" textTransform="uppercase">
-                      {category}
-                    </Text>
-                  ))}
-                </StyledTagGroup>
-              </Box>
-              <StyledLineClamp
-                bold
-                ellipsis
-                line={2}
-                lineHeight={['1.5', '1.2']}
-                mb={['8px', '8px', '8px', '24px']}
-                fontSize={['16px', '24px', '24px', '24px', '24px', '48px']}
+          <Card>
+            <StyleBlog>
+              <Box
+                overflow="hidden"
+                borderRadius={8}
+                mr={['0', '0', '0', '0', '0', '50px']}
+                minWidth={['152px', '192px', '488px']}
+                height={['200px', '228px', '420px', '530px', '530px', '306px']}
               >
-                {article?.title}
-              </StyledLineClamp>
-              <Text display={['none', 'none', 'none', 'block']} ellipsis mb="24px">
-                {article?.description}
-              </Text>
-              <Text fontSize={['12px', '12px', '14px']} color="textSubtle">
-                {article?.createAt}
-              </Text>
-            </Flex>
-          </StyleBlog>
+                <StyledBackgroundImage imgUrl={article?.imgUrl ?? ''} />
+              </Box>
+              <Flex
+                overflow="hidden"
+                flexDirection="column"
+                width="100%"
+                padding={[
+                  '0 16px 16px 16px',
+                  '0 16px 16px 16px',
+                  '0 20px 20px 20px',
+                  '0 20px 20px 20px',
+                  '0 20px 20px 20px',
+                  '28px 28px 28px 0',
+                ]}
+                mt={['16px', '16px', '20px', '20px', '20px', '0']}
+              >
+                <Box mb="24px" display={['none', null, null, 'block']}>
+                  <StyledTagGroup>
+                    {article?.categories?.map((category: string) => (
+                      <Text bold key={category} fontSize="12px" color="textSubtle" textTransform="uppercase">
+                        {category}
+                      </Text>
+                    ))}
+                  </StyledTagGroup>
+                </Box>
+                <StyledLineClamp
+                  bold
+                  ellipsis
+                  line={2}
+                  lineHeight={['1.5', '1.2']}
+                  mb={['8px', '8px', '8px', '24px']}
+                  fontSize={['16px', '24px', '24px', '24px', '24px', '48px']}
+                >
+                  {article?.title}
+                </StyledLineClamp>
+                <Text display={['none', 'none', 'none', 'block']} ellipsis mb="24px">
+                  {article?.description}
+                </Text>
+                <Text fontSize={['12px', '12px', '14px']} color="textSubtle">
+                  {article?.createAt}
+                </Text>
+              </Flex>
+            </StyleBlog>
+          </Card>
         </NextLink>
       </Box>
     </StyledBackground>

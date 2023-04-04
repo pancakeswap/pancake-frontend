@@ -71,6 +71,7 @@ export default function AddLiquidityForm({ notSupportPair }: { notSupportPair: b
           value={formattedAmounts[Field.CURRENCY_A]}
           onUserInput={onFieldAInput}
           showMaxButton
+          showUSDPrice
           onMax={() => {
             onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
           }}
@@ -93,6 +94,7 @@ export default function AddLiquidityForm({ notSupportPair }: { notSupportPair: b
           value={formattedAmounts[Field.CURRENCY_B]}
           onUserInput={onFieldBInput}
           showMaxButton
+          showUSDPrice
           onMax={() => {
             onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
           }}

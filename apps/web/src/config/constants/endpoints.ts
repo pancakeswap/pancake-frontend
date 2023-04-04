@@ -29,8 +29,6 @@ export const GRAPH_HEALTH = 'https://api.thegraph.com/index-node/graphql'
 export const TC_MOBOX_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v3'
 export const TC_MOD_SUBGRAPH = 'https://api.thegraph.com/subgraphs/name/pancakeswap/trading-competition-v4'
 
-export const FARM_API = 'https://farms-api.pancakeswap.com'
-
 export const BIT_QUERY = 'https://graphql.bitquery.io'
 
 export const ACCESS_RISK_API = '/api/risk'
@@ -48,3 +46,12 @@ export const BLOCKS_CLIENT_WITH_CHAIN = {
 }
 
 export const ASSET_CDN = 'https://assets.pancakeswap.finance'
+
+export const V3_SUBGRAPH_URLS = {
+  [ChainId.ETHEREUM]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-eth',
+  [ChainId.GOERLI]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-goerli',
+  [ChainId.BSC]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-bsc',
+  [ChainId.BSC_TESTNET]: 'https://api.thegraph.com/subgraphs/name/pancakeswap/exchange-v3-chapel',
+} satisfies Record<ChainId, string>
+
+export const TRADING_REWARD_API = 'https://pancake-trading-fee-rebate-api.pancake.run/api/v1'

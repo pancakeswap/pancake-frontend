@@ -20,6 +20,9 @@ export const articles = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const data = await response.json()
+
+  res.setHeader('Cache-Control', 's-maxage=10, stale-while-revalidate=59')
+
   return res.status(200).json(data)
 }
 

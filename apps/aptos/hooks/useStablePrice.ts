@@ -1,8 +1,9 @@
 import { Currency, JSBI, Price, Trade } from '@pancakeswap/aptos-swap-sdk'
-import { L0_USDC, CAKE } from 'config/coins'
+import maxBy from 'lodash/maxBy'
+import { L0_USDC, CAKE, CE_USDC, WH_USDC } from 'config/coins'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useMemo } from 'react'
-import useSWRImmutable from 'swr/immutable'
+import { useCakePrice } from '@pancakeswap/utils/useCakePrice'
 import BigNumber from 'bignumber.js'
 import { useAllCommonPairs } from 'hooks/Trades'
 import tryParseAmount from '@pancakeswap/utils/tryParseAmount'
@@ -22,42 +23,67 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
   const native = useNativeCurrency(chainId)
   const wrapped = currency?.wrapped
   const wnative = native.wrapped
-  const stable = L0_USDC[chainId]
+  const defaultStable = useMemo(() => L0_USDC[chainId], [chainId])
+  const stableTokens = useMemo(() => [L0_USDC[chainId], WH_USDC[chainId], CE_USDC[chainId]], [chainId])
 
   const tokenPairs: [Currency | undefined, Currency | undefined][] = useMemo(
     () => [
       [chainId && wrapped && wnative?.equals(wrapped) ? undefined : currency, chainId ? wnative : undefined],
-      [stable && wrapped?.equals(stable) ? undefined : wrapped, stable],
-      [chainId ? wnative : undefined, stable],
+      [chainId ? wnative : undefined, defaultStable],
     ],
-    [wnative, stable, chainId, currency, wrapped],
+    [wnative, defaultStable, chainId, currency, wrapped],
+  )
+  const [[nativePairState, nativePair], [stableNativePairState, stableNativePair]] = usePairs(tokenPairs)
+
+  const stablePairs = usePairs(
+    useMemo(
+      () =>
+        stableTokens.map((stableToken) => {
+          return [stableToken && wrapped?.equals(stableToken) ? undefined : wrapped, stableToken]
+        }),
+      [stableTokens, wrapped],
+    ),
   )
 
-  const [[nativePairState, nativePair], [stablePairState, stablePair], [stableNativePairState, stableNativePair]] =
-    usePairs(tokenPairs)
-
   return useMemo(() => {
-    if (!currency || !wrapped || !chainId || !wnative || !stable) {
+    if (!currency || !wrapped || !chainId || !wnative || !stableTokens.filter(Boolean).length) {
       return undefined
     }
 
-    const isStablePairExist =
-      stablePair &&
-      stablePairState === PairState.EXISTS &&
-      stablePair.reserve0.greaterThan('0') &&
-      stablePair.reserve1.greaterThan('0')
+    const bestStablePair = maxBy(
+      stablePairs
+        .filter(
+          ([stablePairState, stablePair]) =>
+            stablePair &&
+            stablePairState === PairState.EXISTS &&
+            stablePair.reserve0.greaterThan('0') &&
+            stablePair.reserve1.greaterThan('0'),
+        )
+        .map(([, stablePair]) => stablePair),
+      (stablePair) => {
+        const stablePairToken = stableTokens.find((stableToken) => stablePair?.involvesToken(stableToken))
+        const stablePairTokenAmount = stablePairToken
+          ? stablePair?.reserveOf(stablePairToken).quotient.toString()
+          : null
+        if (stablePairToken && stablePairTokenAmount) {
+          return parseInt(stablePairTokenAmount)
+        }
+        return 0
+      },
+    )
 
     // handle wbnb/bnb
     if (wrapped.equals(wnative)) {
-      if (isStablePairExist) {
-        const price = stablePair.priceOf(wnative)
-        return new Price(currency, stable, price.denominator, price.numerator)
+      if (bestStablePair) {
+        const price = bestStablePair.priceOf(wnative)
+        const stablePairToken = stableTokens.find((stableToken) => bestStablePair.involvesToken(stableToken))
+        return new Price(currency, stablePairToken, price.denominator, price.numerator)
       }
       return undefined
     }
     // handle stable
-    if (wrapped.equals(stable)) {
-      return new Price(stable, stable, '1', '1')
+    if (wrapped.equals(defaultStable)) {
+      return new Price(defaultStable, defaultStable, '1', '1')
     }
 
     const isNativePairExist =
@@ -73,22 +99,28 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
 
     const nativePairNativeAmount = isNativePairExist && nativePair?.reserveOf(wnative)
     const nativePairNativeStableValue: JSBI =
-      nativePairNativeAmount && isStablePairExist && isStableNativePairExist
+      nativePairNativeAmount && bestStablePair && isStableNativePairExist
         ? stableNativePair.priceOf(wnative).quote(nativePairNativeAmount).quotient
         : JSBI.BigInt(0)
 
     // all other tokens
     // first try the stable pair
-    if (isStablePairExist && stablePair.reserveOf(stable).greaterThan(nativePairNativeStableValue)) {
-      const price = stablePair.priceOf(wrapped)
-      return new Price(currency, stable, price.denominator, price.numerator)
+    if (bestStablePair) {
+      const stablePairToken = stableTokens.find((stableToken) => bestStablePair.involvesToken(stableToken))
+      if (bestStablePair.reserveOf(stablePairToken).greaterThan(nativePairNativeStableValue)) {
+        const price = bestStablePair.priceOf(wrapped)
+        return new Price(currency, stablePairToken, price.denominator, price.numerator)
+      }
     }
     if (isNativePairExist && isStableNativePairExist) {
-      if (stableNativePair.reserveOf(stable).greaterThan('0') && nativePair.reserveOf(wnative).greaterThan('0')) {
-        const nativeStablePrice = stableNativePair.priceOf(stable)
+      if (
+        stableNativePair.reserveOf(defaultStable).greaterThan('0') &&
+        nativePair.reserveOf(wnative).greaterThan('0')
+      ) {
+        const nativeStablePrice = stableNativePair.priceOf(defaultStable)
         const currencyNativePrice = nativePair.priceOf(wnative)
         const stablePrice = nativeStablePrice.multiply(currencyNativePrice).invert()
-        return new Price(currency, stable, stablePrice.denominator, stablePrice.numerator)
+        return new Price(currency, defaultStable, stablePrice.denominator, stablePrice.numerator)
       }
     }
 
@@ -98,11 +130,11 @@ export default function useStablePrice(currency?: Currency): Price<Currency, Cur
     wrapped,
     chainId,
     wnative,
-    stable,
+    defaultStable,
     nativePair,
+    stablePairs,
+    stableTokens,
     stableNativePair,
-    stablePairState,
-    stablePair,
     nativePairState,
     stableNativePairState,
   ])
@@ -116,18 +148,7 @@ export const useStableCakeAmount = (_amount: number): number | undefined => {
   return undefined
 }
 
-export const useCakePrice = () => {
-  return useSWRImmutable(
-    ['cake-usd-price'],
-    async () => {
-      const cake = await (await fetch('https://farms-api.pancakeswap.com/price/cake')).json()
-      return cake.price
-    },
-    {
-      refreshInterval: 1_000 * 10,
-    },
-  )
-}
+export { useCakePrice }
 
 export const usePriceCakeUsdc = () => {
   const { chainId } = useActiveWeb3React()

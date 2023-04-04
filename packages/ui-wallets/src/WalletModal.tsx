@@ -94,7 +94,7 @@ const TabContainer = ({ children, docLink, docText }: PropsWithChildren<{ docLin
           md: 'card',
         }}
         zIndex="modal"
-        width="full"
+        width="100%"
       >
         {index === 0 && children}
         {index === 1 && <StepIntro docLink={docLink} docText={docText} />}
@@ -127,7 +127,7 @@ function MobileModal<T>({
   })
 
   return (
-    <AtomBox width="full">
+    <AtomBox width="100%">
       {error ? (
         <AtomBox
           display="flex"
@@ -230,7 +230,7 @@ function WalletSelect<T>({
                   <Icon width={24} height={24} color="textSubtle" />
                 )}
                 {wallet.id === selected?.id && (
-                  <AtomBox position="absolute" inset="0" bgc="secondary" opacity="0.5" borderRadius="12px" />
+                  <AtomBox position="absolute" inset="0px" bgc="secondary" opacity="0.5" borderRadius="12px" />
                 )}
               </AtomBox>
             </AtomBox>
@@ -419,7 +419,7 @@ export function WalletModalV2<T = unknown>(props: WalletModalV2Props<T>) {
   }
 
   return (
-    <ModalV2 closeOnOverlayClick {...rest}>
+    <ModalV2 closeOnOverlayClick disableOutsidePointerEvents={false} {...rest}>
       <ModalWrapper onDismiss={props.onDismiss} style={{ overflow: 'visible', border: 'none' }}>
         <AtomBox position="relative">
           <TabContainer docLink={docLink} docText={docText}>

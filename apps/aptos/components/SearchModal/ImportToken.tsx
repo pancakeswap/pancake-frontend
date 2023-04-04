@@ -20,7 +20,6 @@ import { useCombinedInactiveList } from 'state/lists/hooks'
 import { useTranslation } from '@pancakeswap/localization'
 import { useAddUserToken } from 'state/user'
 import { WrappedTokenInfo } from '@pancakeswap/token-lists'
-import { BAD_SRCS } from '../Logo/constants'
 
 interface ImportProps {
   tokens: Token[]
@@ -62,7 +61,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 variant="success"
                 outline
                 scale="sm"
-                startIcon={list.logoURI && <ListLogo badSrcs={BAD_SRCS} logoURI={list.logoURI} size="12px" />}
+                startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
               >
                 {t('via')} {list.name}
               </Tag>

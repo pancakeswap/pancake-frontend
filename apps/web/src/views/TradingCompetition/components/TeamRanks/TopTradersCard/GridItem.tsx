@@ -2,6 +2,7 @@ import { Flex, Heading, Text, SkeletonV2, ProfileAvatar } from '@pancakeswap/uik
 import { useProfileForAddress } from 'state/profile/hooks'
 import styled from 'styled-components'
 import truncateHash from '@pancakeswap/utils/truncateHash'
+import { useSidNameForAddress } from 'hooks/useSid'
 import { localiseTradingVolume } from '../../../helpers'
 import { LeaderboardDataItem } from '../../../types'
 
@@ -80,7 +81,8 @@ const GridItem: React.FC<
   }>
 > = ({ traderData = { address: '', volume: 0, teamId: 0, rank: 0 }, teamImages }) => {
   const { address, volume, teamId, rank } = traderData
-  const { profile, isFetching } = useProfileForAddress(address)
+  const { profile, isFetching: isProfileFetching } = useProfileForAddress(address)
+  const { sidName } = useSidNameForAddress(address)
 
   return (
     <Wrapper>
@@ -91,10 +93,16 @@ const GridItem: React.FC<
         <Text bold>${localiseTradingVolume(volume)}</Text>
       </Flex>
       <Flex alignItems="center" justifyContent="flex-start">
-        <SkeletonV2 width="32px" height="32px" mr={['4px', null, '12px']} borderRadius="50%" isDataReady={!isFetching}>
+        <SkeletonV2
+          width="32px"
+          height="32px"
+          mr={['4px', null, '12px']}
+          borderRadius="50%"
+          isDataReady={!isProfileFetching}
+        >
           <ProfileAvatar src={profile?.nft?.image?.thumbnail} width={32} height={32} mr={['4px', null, '12px']} />
         </SkeletonV2>
-        <Text color="primary">{truncateHash(address)}</Text>
+        <Text color="primary">{sidName || truncateHash(address)}</Text>
       </Flex>
       <TeamImageWrapper justifyContent="flex-end">{teamImages[teamId - 1]}</TeamImageWrapper>
     </Wrapper>

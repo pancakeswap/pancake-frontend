@@ -11,10 +11,11 @@ const Page = styled(Box)`
   display: flex;
   height: 100%;
   height: calc(100vh - 56px);
-  background: ${({ theme }) => theme.colors.gradientBubblegum};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 
   ${({ theme }) => theme.mediaQueries.sm} {
     min-height: 1000px;
+    background: ${({ theme }) => theme.colors.gradientBubblegum};
   }
 `
 
@@ -25,7 +26,7 @@ const AptosBridge = () => {
   useEffect(() => {
     customElements.whenDefined('aptos-bridge').then(() => {
       window.aptosBridge.bridge.setDstNativeAmount('0.05')
-      window.aptosBridge.config.setTokens(['CAKE', 'ETH', 'WETH', 'USDC', 'USDT'])
+      window.aptosBridge.config.setTokens(['ETH', 'WETH', 'USDC', 'USDT'])
       window.aptosBridge.config.setWallets(['MetaMask', 'CoinBase', 'Petra', 'Martian', 'Pontem', 'Fewcha'])
       setShow(true)
     })

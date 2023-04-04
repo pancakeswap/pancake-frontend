@@ -1,4 +1,4 @@
-import { Token } from '@pancakeswap/sdk'
+import { Token } from '@pancakeswap/swap-sdk-core'
 import { Pool } from '@pancakeswap/uikit'
 import StakeModal from './StakeModal'
 

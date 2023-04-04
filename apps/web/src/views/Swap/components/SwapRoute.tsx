@@ -10,9 +10,11 @@ export default memo(function SwapRoute({ path }: { path: Currency[] }) {
         const isLastItem: boolean = i === path.length - 1
         const currency = token.isToken ? unwrappedToken(token) : token
         return (
-          <Fragment key={token.isToken ? token.address : ''}>
+          // There might be same token appear more than once
+          // eslint-disable-next-line react/no-array-index-key
+          <Fragment key={`${currency.symbol}_${i}`}>
             <Flex alignItems="end">
-              <Text fontSize="14px" ml="0.125rem" mr="0.125rem">
+              <Text fontSize="14px" ml="0.125rem" mr="0.125rem" color="textSubtle">
                 {currency.symbol}
               </Text>
             </Flex>

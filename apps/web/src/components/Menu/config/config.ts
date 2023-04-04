@@ -54,12 +54,6 @@ const config: (
           href: '/swap',
         },
         {
-          label: t('Limit'),
-          href: '/limit-orders',
-          supportChainIds: SUPPORT_ONLY_BSC,
-          image: '/images/decorations/3d-coin.png',
-        },
-        {
           label: t('Liquidity'),
           href: '/liquidity',
         },
@@ -70,12 +64,19 @@ const config: (
             languageCode,
             isDark,
           }),
+          confirmModalId: 'usCitizenConfirmModal',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {
           label: t('Bridge'),
           href: 'https://bridge.pancakeswap.finance/',
           type: DropdownMenuItemType.EXTERNAL_LINK,
+        },
+        {
+          label: `${t('Limit')} (V2)`,
+          href: '/limit-orders',
+          supportChainIds: SUPPORT_ONLY_BSC,
+          image: '/images/decorations/3d-coin.png',
         },
       ].map((item) => addMenuItemSupported(item, chainId)),
     },
@@ -166,6 +167,10 @@ const config: (
           image: '/images/ifos/ifo-bunny.png',
         },
         {
+          label: t('Affiliate Program'),
+          href: '/affiliates-program',
+        },
+        {
           label: t('Voting'),
           href: '/voting',
           supportChainIds: SUPPORT_ONLY_BSC,
@@ -185,7 +190,7 @@ const config: (
         },
         {
           label: t('Blog'),
-          href: 'https://medium.com/pancakeswap',
+          href: 'https://blog.pancakeswap.finance',
           type: DropdownMenuItemType.EXTERNAL_LINK,
         },
         {

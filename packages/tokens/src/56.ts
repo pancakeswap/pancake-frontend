@@ -1,4 +1,5 @@
 import { ChainId, WBNB, ERC20Token } from '@pancakeswap/sdk'
+
 import { BUSD_BSC, CAKE_MAINNET, USDT_BSC } from './common'
 
 export const bscTokens = {
@@ -2282,7 +2283,7 @@ export const bscTokens = {
   ),
   xcad: new ERC20Token(
     ChainId.BSC,
-    '0x431e0cD023a32532BF3969CddFc002c00E98429d',
+    '0xa026Ad2ceDa16Ca5FC28fd3C72f99e2C332c8a26',
     18,
     'XCAD',
     'Chainport.io-Peg XCAD Token',
@@ -2472,5 +2473,69 @@ export const bscTokens = {
     'CSIX',
     'Carbon',
     'https://carbon.website/',
+  ),
+  bnbx: new ERC20Token(
+    ChainId.BSC,
+    '0x1bdd3Cf7F79cfB8EdbB955f20ad99211551BA275',
+    18,
+    'BNBx',
+    'Liquid Staking BNB',
+    'https://www.staderlabs.com/bnb/liquid-staking/bnbx/',
+  ),
+  sd: new ERC20Token(
+    ChainId.BSC,
+    '0x3BC5AC0dFdC871B365d159f728dd1B9A0B5481E8',
+    18,
+    'SD',
+    'Stader (Wormhole)',
+    'https://www.staderlabs.com/',
+  ),
+  ageur: new ERC20Token(
+    ChainId.BSC,
+    '0x12f31B73D812C6Bb0d735a218c086d44D5fe5f89',
+    18,
+    'agEUR',
+    'agEUR',
+    'https://app.angle.money/#/',
+  ),
+  caps: new ERC20Token(
+    ChainId.BSC,
+    '0xFfBa7529AC181c2Ee1844548e6D7061c9A597dF4',
+    18,
+    'CAPS',
+    'Capsule Coin',
+    'https://www.ternoa.network/en',
+  ),
+  lvl: new ERC20Token(
+    ChainId.BSC,
+    '0xB64E280e9D1B5DbEc4AcceDb2257A87b400DB149',
+    18,
+    'LVL',
+    'Level Token',
+    'https://level.finance/',
+  ),
+  unw: new ERC20Token(
+    ChainId.BSC,
+    '0x5b65cd9feb54F1Df3D0C60576003344079f8Dc06',
+    18,
+    'UNW',
+    'Uniwhale Token',
+    'https://www.uniwhale.co/',
+  ),
+  id: new ERC20Token(
+    ChainId.BSC,
+    '0x2dfF88A56767223A5529eA5960Da7A3F5f766406',
+    18,
+    'ID',
+    'SPACE ID',
+    'https://space.id/',
+  ),
+  rdnt: new ERC20Token(
+    ChainId.BSC,
+    '0xf7DE7E8A6bd59ED41a4b5fe50278b3B7f31384dF',
+    18,
+    'RDNT',
+    'Radiant',
+    'https://radiant.capital/',
   ),
 }

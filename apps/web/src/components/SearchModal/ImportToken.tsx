@@ -28,7 +28,6 @@ import { WrappedTokenInfo } from '@pancakeswap/token-lists'
 import AccessRisk from 'views/Swap/components/AccessRisk'
 import { SUPPORT_ONLY_BSC } from 'config/constants/supportChains'
 import { fetchRiskToken, TOKEN_RISK } from 'views/Swap/hooks/fetchTokenRisk'
-import { BAD_SRCS } from '../Logo/constants'
 
 interface ImportProps {
   tokens: Token[]
@@ -87,7 +86,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                   variant="success"
                   outline
                   scale="sm"
-                  startIcon={list.logoURI && <ListLogo badSrcs={BAD_SRCS} logoURI={list.logoURI} size="12px" />}
+                  startIcon={list.logoURI && <ListLogo logoURI={list.logoURI} size="12px" />}
                 >
                   {t('via')} {list.name}
                 </Tag>
@@ -100,7 +99,7 @@ function ImportToken({ tokens, handleCurrencySelect }: ImportProps) {
                 <Text mr="8px">{token.name}</Text>
                 <Text>({token.symbol})</Text>
               </Flex>
-              {token.chainId && (
+              {!!token.chainId && (
                 <>
                   <Text mr="4px">{address}</Text>
                   <Link href={getBlockExploreLink(token.address, 'address', token.chainId)} external>

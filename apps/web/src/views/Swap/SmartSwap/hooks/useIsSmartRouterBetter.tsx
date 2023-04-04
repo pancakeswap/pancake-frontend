@@ -1,5 +1,8 @@
 import { Currency, Trade, TradeType } from '@pancakeswap/sdk'
-import { RouteType, TradeWithStableSwap } from '@pancakeswap/smart-router/evm'
+import {
+  LegacyRouteType as RouteType,
+  LegacyTradeWithStableSwap as TradeWithStableSwap,
+} from '@pancakeswap/smart-router/evm'
 
 interface Options {
   trade?: TradeWithStableSwap<Currency, Currency, TradeType> | null
@@ -7,8 +10,12 @@ interface Options {
 }
 
 export const useIsSmartRouterBetter = ({ trade, v2Trade }: Options) => {
-  if (!trade || !v2Trade) {
+  if (!trade) {
     return false
+  }
+
+  if (!v2Trade && trade) {
+    return true
   }
 
   // trade might be outdated when currencies changed

@@ -34,7 +34,6 @@ import { selectorByUrlsAtom, useActiveListUrls, useAllLists, useIsListActive } f
 
 import Row, { RowBetween, RowFixed } from '../Layout/Row'
 import { CurrencyModalView } from './types'
-import { BAD_SRCS } from '../Logo/constants'
 
 function listVersionLabel(version: Version): string {
   return `v${version.major}.${version.minor}.${version.patch}`
@@ -111,7 +110,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
         </Button>
       )}
     </div>,
-    { placement: 'right-end', trigger: 'click' },
+    { placement: 'right-end', trigger: 'click', isInPortal: false },
   )
 
   if (!list) return null
@@ -125,13 +124,7 @@ const ListRow = memo(function ListRow({ listUrl }: { listUrl: string }) {
     >
       {tooltipVisible && tooltip}
       {list.logoURI ? (
-        <ListLogo
-          size="40px"
-          badSrcs={BAD_SRCS}
-          style={{ marginRight: '1rem' }}
-          logoURI={list.logoURI}
-          alt={`${list.name} list logo`}
-        />
+        <ListLogo size="40px" style={{ marginRight: '1rem' }} logoURI={list.logoURI} alt={`${list.name} list logo`} />
       ) : (
         <div style={{ width: '24px', height: '24px', marginRight: '1rem' }} />
       )}
@@ -312,7 +305,7 @@ function ManageLists({
           <Card padding="12px 20px">
             <RowBetween>
               <RowFixed>
-                {tempList.logoURI && <ListLogo badSrcs={BAD_SRCS} logoURI={tempList.logoURI} size="40px" />}
+                {tempList.logoURI && <ListLogo logoURI={tempList.logoURI} size="40px" />}
                 <AutoColumn gap="4px" style={{ marginLeft: '20px' }}>
                   <Text bold>{tempList.name}</Text>
                   <Text color="textSubtle" small textTransform="lowercase">

@@ -57,7 +57,7 @@ const CardUserInfo: React.FC<React.PropsWithChildren<CardUserInfoProps>> = ({
   const { t } = useTranslation()
   const [onPresentShareModal] = useModal(shareModal, false)
   const { global, team, volume, next_rank: nextRank } = userLeaderboardInformation
-  const { usernameWithVisibility } = useGetUsernameWithVisibility(profile)
+  const { usernameWithVisibility } = useGetUsernameWithVisibility(profile?.username)
   const shouldShowUserRanks = account && hasRegistered
 
   const getMedal = (currentRank: string | number) => {

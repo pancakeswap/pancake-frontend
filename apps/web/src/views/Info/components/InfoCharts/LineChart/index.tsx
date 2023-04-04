@@ -3,7 +3,7 @@ import { ResponsiveContainer, XAxis, YAxis, Tooltip, AreaChart, Area } from 'rec
 import useTheme from 'hooks/useTheme'
 import { formatAmount } from 'utils/formatInfoNumbers'
 import { LineChartLoader } from 'components/ChartLoaders'
-import { useTranslation } from '@pancakeswap/localization'
+import { useChartCallbacks } from '../../../hooks/useChartCallbacks'
 
 export type LineChartProps = {
   data: any[]
@@ -15,10 +15,8 @@ export type LineChartProps = {
  * Note: remember that it needs to be mounted inside the container with fixed height
  */
 const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
-  const {
-    currentLanguage: { locale },
-  } = useTranslation()
   const { theme } = useTheme()
+  const { onMouseLeave, onMouseMove } = useChartCallbacks(setHoverValue, setHoverDate)
   if (!data || data.length === 0) {
     return <LineChartLoader />
   }
@@ -34,10 +32,8 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           left: 0,
           bottom: 5,
         }}
-        onMouseLeave={() => {
-          if (setHoverDate) setHoverDate(undefined)
-          if (setHoverValue) setHoverValue(undefined)
-        }}
+        onMouseLeave={onMouseLeave}
+        onMouseMove={onMouseMove}
       >
         <defs>
           <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
@@ -63,21 +59,7 @@ const LineChart = ({ data, setHoverValue, setHoverDate }: LineChartProps) => {
           orientation="right"
           tick={{ dx: 10, fill: theme.colors.textSubtle }}
         />
-        <Tooltip
-          cursor={{ stroke: theme.colors.secondary }}
-          contentStyle={{ display: 'none' }}
-          formatter={(tooltipValue, name, props) => {
-            setHoverValue(props.payload.value)
-            setHoverDate(
-              props.payload.time.toLocaleString(locale, {
-                year: 'numeric',
-                day: 'numeric',
-                month: 'short',
-              }),
-            )
-            return null
-          }}
-        />
+        <Tooltip cursor={{ stroke: theme.colors.secondary }} contentStyle={{ display: 'none' }} />
         <Area dataKey="value" type="monotone" stroke={theme.colors.secondary} fill="url(#gradient)" strokeWidth={2} />
       </AreaChart>
     </ResponsiveContainer>

@@ -6,6 +6,7 @@ import useTheme from 'hooks/useTheme'
 import { FarmAuctionBidderConfig } from 'config/constants/types'
 import truncateHash from '@pancakeswap/utils/truncateHash'
 import useWhitelistedAddresses from '../hooks/useWhitelistedAddresses'
+import { useSidNameForAddress } from '../../../hooks/useSid'
 
 interface WhitelistedBiddersModalProps {
   onDismiss?: () => void
@@ -37,6 +38,7 @@ const AddressRow: React.FC<React.PropsWithChildren<{ bidder: FarmAuctionBidderCo
   isMobile,
 }) => {
   const { farmName, tokenName, account, projectSite } = bidder
+  const { sidName } = useSidNameForAddress(account)
   return (
     <a href={projectSite} target="_blank" rel="noopener noreferrer">
       <AddressRowContainer>
@@ -47,7 +49,7 @@ const AddressRow: React.FC<React.PropsWithChildren<{ bidder: FarmAuctionBidderCo
           </Text>
         </Flex>
         <Flex justifyContent={['center', null, 'flex-start']} alignItems="center" flex="6">
-          <Text mr="8px">{isMobile ? truncateHash(account) : account}</Text>
+          <Text mr="8px">{sidName || isMobile ? truncateHash(account) : account}</Text>
         </Flex>
         <OpenNewIcon color="primary" />
       </AddressRowContainer>
